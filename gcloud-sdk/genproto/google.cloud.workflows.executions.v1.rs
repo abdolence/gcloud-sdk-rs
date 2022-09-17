@@ -1,113 +1,113 @@
-///  A running instance of a
-///  \[Workflow\](/workflows/docs/reference/rest/v1/projects.locations.workflows).
+/// A running instance of a
+/// \[Workflow\](/workflows/docs/reference/rest/v1/projects.locations.workflows).
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Execution {
-    ///  Output only. The resource name of the execution.
-    ///  Format:
-    ///  projects/{project}/locations/{location}/workflows/{workflow}/executions/{execution}
+    /// Output only. The resource name of the execution.
+    /// Format:
+    /// projects/{project}/locations/{location}/workflows/{workflow}/executions/{execution}
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Output only. Marks the beginning of execution.
+    /// Output only. Marks the beginning of execution.
     #[prost(message, optional, tag="2")]
     pub start_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Output only. Marks the end of execution, successful or not.
+    /// Output only. Marks the end of execution, successful or not.
     #[prost(message, optional, tag="3")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Output only. Current state of the execution.
+    /// Output only. Current state of the execution.
     #[prost(enumeration="execution::State", tag="4")]
     pub state: i32,
-    ///  Input parameters of the execution represented as a JSON string.
-    ///  The size limit is 32KB.
+    /// Input parameters of the execution represented as a JSON string.
+    /// The size limit is 32KB.
     ///
-    ///  *Note*: If you are using the REST API directly to run your workflow, you
-    ///  must escape any JSON string value of `argument`. Example:
-    ///  `'{"argument":"{\"firstName\":\"FIRST\",\"lastName\":\"LAST\"}"}'`
+    /// *Note*: If you are using the REST API directly to run your workflow, you
+    /// must escape any JSON string value of `argument`. Example:
+    /// `'{"argument":"{\"firstName\":\"FIRST\",\"lastName\":\"LAST\"}"}'`
     #[prost(string, tag="5")]
     pub argument: ::prost::alloc::string::String,
-    ///  Output only. Output of the execution represented as a JSON string. The
-    ///  value can only be present if the execution's state is `SUCCEEDED`.
+    /// Output only. Output of the execution represented as a JSON string. The
+    /// value can only be present if the execution's state is `SUCCEEDED`.
     #[prost(string, tag="6")]
     pub result: ::prost::alloc::string::String,
-    ///  Output only. The error which caused the execution to finish prematurely.
-    ///  The value is only present if the execution's state is `FAILED`
-    ///  or `CANCELLED`.
+    /// Output only. The error which caused the execution to finish prematurely.
+    /// The value is only present if the execution's state is `FAILED`
+    /// or `CANCELLED`.
     #[prost(message, optional, tag="7")]
     pub error: ::core::option::Option<execution::Error>,
-    ///  Output only. Revision of the workflow this execution is using.
+    /// Output only. Revision of the workflow this execution is using.
     #[prost(string, tag="8")]
     pub workflow_revision_id: ::prost::alloc::string::String,
-    ///  The call logging level associated to this execution.
+    /// The call logging level associated to this execution.
     #[prost(enumeration="execution::CallLogLevel", tag="9")]
     pub call_log_level: i32,
 }
 /// Nested message and enum types in `Execution`.
 pub mod execution {
-    ///  A single stack element (frame) where an error occurred.
+    /// A single stack element (frame) where an error occurred.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct StackTraceElement {
-        ///  The step the error occurred at.
+        /// The step the error occurred at.
         #[prost(string, tag="1")]
         pub step: ::prost::alloc::string::String,
-        ///  The routine where the error occurred.
+        /// The routine where the error occurred.
         #[prost(string, tag="2")]
         pub routine: ::prost::alloc::string::String,
-        ///  The source position information of the stack trace element.
+        /// The source position information of the stack trace element.
         #[prost(message, optional, tag="3")]
         pub position: ::core::option::Option<stack_trace_element::Position>,
     }
     /// Nested message and enum types in `StackTraceElement`.
     pub mod stack_trace_element {
-        ///  Position contains source position information about the stack trace
-        ///  element such as line number, column number and length of the code block
-        ///  in bytes.
+        /// Position contains source position information about the stack trace
+        /// element such as line number, column number and length of the code block
+        /// in bytes.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Position {
-            ///  The source code line number the current instruction was generated from.
+            /// The source code line number the current instruction was generated from.
             #[prost(int64, tag="1")]
             pub line: i64,
-            ///  The source code column position (of the line) the current instruction
-            ///  was generated from.
+            /// The source code column position (of the line) the current instruction
+            /// was generated from.
             #[prost(int64, tag="2")]
             pub column: i64,
-            ///  The number of bytes of source code making up this stack trace element.
+            /// The number of bytes of source code making up this stack trace element.
             #[prost(int64, tag="3")]
             pub length: i64,
         }
     }
-    ///  A collection of stack elements (frames) where an error occurred.
+    /// A collection of stack elements (frames) where an error occurred.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct StackTrace {
-        ///  An array of stack elements.
+        /// An array of stack elements.
         #[prost(message, repeated, tag="1")]
         pub elements: ::prost::alloc::vec::Vec<StackTraceElement>,
     }
-    ///  Error describes why the execution was abnormally terminated.
+    /// Error describes why the execution was abnormally terminated.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Error {
-        ///  Error message and data returned represented as a JSON string.
+        /// Error message and data returned represented as a JSON string.
         #[prost(string, tag="1")]
         pub payload: ::prost::alloc::string::String,
-        ///  Human-readable stack trace string.
+        /// Human-readable stack trace string.
         #[prost(string, tag="2")]
         pub context: ::prost::alloc::string::String,
-        ///  Stack trace with detailed information of where error was generated.
+        /// Stack trace with detailed information of where error was generated.
         #[prost(message, optional, tag="3")]
         pub stack_trace: ::core::option::Option<StackTrace>,
     }
-    ///  Describes the current state of the execution. More states might be added
-    ///  in the future.
+    /// Describes the current state of the execution. More states might be added
+    /// in the future.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum State {
-        ///  Invalid state.
+        /// Invalid state.
         Unspecified = 0,
-        ///  The execution is in progress.
+        /// The execution is in progress.
         Active = 1,
-        ///  The execution finished successfully.
+        /// The execution finished successfully.
         Succeeded = 2,
-        ///  The execution failed with an error.
+        /// The execution failed with an error.
         Failed = 3,
-        ///  The execution was stopped intentionally.
+        /// The execution was stopped intentionally.
         Cancelled = 4,
     }
     impl State {
@@ -125,17 +125,17 @@ pub mod execution {
             }
         }
     }
-    ///  Describes the level of platform logging to apply to calls and call
-    ///  responses during workflow executions.
+    /// Describes the level of platform logging to apply to calls and call
+    /// responses during workflow executions.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum CallLogLevel {
-        ///  No call logging specified.
+        /// No call logging specified.
         Unspecified = 0,
-        ///  Log all call steps within workflows, all call returns, and all exceptions
-        ///  raised.
+        /// Log all call steps within workflows, all call returns, and all exceptions
+        /// raised.
         LogAllCalls = 1,
-        ///  Log only exceptions that are raised from call steps within workflows.
+        /// Log only exceptions that are raised from call steps within workflows.
         LogErrorsOnly = 2,
     }
     impl CallLogLevel {
@@ -152,98 +152,98 @@ pub mod execution {
         }
     }
 }
-///  Request for the
-///  \[ListExecutions][\]
-///  method.
+/// Request for the
+/// \[ListExecutions][\]
+/// method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListExecutionsRequest {
-    ///  Required. Name of the workflow for which the executions should be listed.
-    ///  Format: projects/{project}/locations/{location}/workflows/{workflow}
+    /// Required. Name of the workflow for which the executions should be listed.
+    /// Format: projects/{project}/locations/{location}/workflows/{workflow}
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Maximum number of executions to return per call.
-    ///  Max supported value depends on the selected Execution view: it's 10000 for
-    ///  BASIC and 100 for FULL. The default value used if the field is not
-    ///  specified is 100, regardless of the selected view. Values greater than
-    ///  the max value will be coerced down to it.
+    /// Maximum number of executions to return per call.
+    /// Max supported value depends on the selected Execution view: it's 10000 for
+    /// BASIC and 100 for FULL. The default value used if the field is not
+    /// specified is 100, regardless of the selected view. Values greater than
+    /// the max value will be coerced down to it.
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    ///  A page token, received from a previous `ListExecutions` call.
-    ///  Provide this to retrieve the subsequent page.
+    /// A page token, received from a previous `ListExecutions` call.
+    /// Provide this to retrieve the subsequent page.
     ///
-    ///  When paginating, all other parameters provided to `ListExecutions` must
-    ///  match the call that provided the page token.
+    /// When paginating, all other parameters provided to `ListExecutions` must
+    /// match the call that provided the page token.
     #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
-    ///  Optional. A view defining which fields should be filled in the returned executions.
-    ///  The API will default to the BASIC view.
+    /// Optional. A view defining which fields should be filled in the returned executions.
+    /// The API will default to the BASIC view.
     #[prost(enumeration="ExecutionView", tag="4")]
     pub view: i32,
 }
-///  Response for the
-///  \[ListExecutions][google.cloud.workflows.executions.v1.Executions.ListExecutions\]
-///  method.
+/// Response for the
+/// \[ListExecutions][google.cloud.workflows.executions.v1.Executions.ListExecutions\]
+/// method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListExecutionsResponse {
-    ///  The executions which match the request.
+    /// The executions which match the request.
     #[prost(message, repeated, tag="1")]
     pub executions: ::prost::alloc::vec::Vec<Execution>,
-    ///  A token, which can be sent as `page_token` to retrieve the next page.
-    ///  If this field is omitted, there are no subsequent pages.
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-///  Request for the
-///  \[CreateExecution][google.cloud.workflows.executions.v1.Executions.CreateExecution\]
-///  method.
+/// Request for the
+/// \[CreateExecution][google.cloud.workflows.executions.v1.Executions.CreateExecution\]
+/// method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateExecutionRequest {
-    ///  Required. Name of the workflow for which an execution should be created.
-    ///  Format: projects/{project}/locations/{location}/workflows/{workflow}
-    ///  The latest revision of the workflow will be used.
+    /// Required. Name of the workflow for which an execution should be created.
+    /// Format: projects/{project}/locations/{location}/workflows/{workflow}
+    /// The latest revision of the workflow will be used.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Required. Execution to be created.
+    /// Required. Execution to be created.
     #[prost(message, optional, tag="2")]
     pub execution: ::core::option::Option<Execution>,
 }
-///  Request for the
-///  \[GetExecution][google.cloud.workflows.executions.v1.Executions.GetExecution\]
-///  method.
+/// Request for the
+/// \[GetExecution][google.cloud.workflows.executions.v1.Executions.GetExecution\]
+/// method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetExecutionRequest {
-    ///  Required. Name of the execution to be retrieved.
-    ///  Format:
-    ///  projects/{project}/locations/{location}/workflows/{workflow}/executions/{execution}
+    /// Required. Name of the execution to be retrieved.
+    /// Format:
+    /// projects/{project}/locations/{location}/workflows/{workflow}/executions/{execution}
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Optional. A view defining which fields should be filled in the returned execution.
-    ///  The API will default to the FULL view.
+    /// Optional. A view defining which fields should be filled in the returned execution.
+    /// The API will default to the FULL view.
     #[prost(enumeration="ExecutionView", tag="2")]
     pub view: i32,
 }
-///  Request for the
-///  \[CancelExecution][google.cloud.workflows.executions.v1.Executions.CancelExecution\]
-///  method.
+/// Request for the
+/// \[CancelExecution][google.cloud.workflows.executions.v1.Executions.CancelExecution\]
+/// method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CancelExecutionRequest {
-    ///  Required. Name of the execution to be cancelled.
-    ///  Format:
-    ///  projects/{project}/locations/{location}/workflows/{workflow}/executions/{execution}
+    /// Required. Name of the execution to be cancelled.
+    /// Format:
+    /// projects/{project}/locations/{location}/workflows/{workflow}/executions/{execution}
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Defines possible views for execution resource.
+/// Defines possible views for execution resource.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum ExecutionView {
-    ///  The default / unset value.
+    /// The default / unset value.
     Unspecified = 0,
-    ///  Includes only basic metadata about the execution.
-    ///  Following fields are returned: name, start_time, end_time, state
-    ///  and workflow_revision_id.
+    /// Includes only basic metadata about the execution.
+    /// Following fields are returned: name, start_time, end_time, state
+    /// and workflow_revision_id.
     Basic = 1,
-    ///  Includes all data.
+    /// Includes all data.
     Full = 2,
 }
 impl ExecutionView {

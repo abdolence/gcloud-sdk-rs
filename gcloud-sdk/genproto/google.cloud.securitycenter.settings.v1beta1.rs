@@ -1,35 +1,35 @@
-//  If this field is populated and billing_tier is STANDARD, this is
-//  indication of a point in the _past_ when a PREMIUM access ended.
+// If this field is populated and billing_tier is STANDARD, this is
+// indication of a point in the _past_ when a PREMIUM access ended.
 
-///  Billing settings
+/// Billing settings
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BillingSettings {
-    ///  Output only. Billing tier selected by customer
+    /// Output only. Billing tier selected by customer
     #[prost(enumeration="BillingTier", tag="1")]
     pub billing_tier: i32,
-    ///  Output only. Type of billing method
+    /// Output only. Type of billing method
     #[prost(enumeration="BillingType", tag="2")]
     pub billing_type: i32,
-    ///  Output only. The absolute point in time when the subscription became effective.
-    ///  Can be compared to expire_time value to determine full contract duration
+    /// Output only. The absolute point in time when the subscription became effective.
+    /// Can be compared to expire_time value to determine full contract duration
     #[prost(message, optional, tag="3")]
     pub start_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Output only. The absolute point in time when the subscription expires.
+    /// Output only. The absolute point in time when the subscription expires.
     ///
-    ///  If this field is populated and billing_tier is STANDARD, this is
-    ///  indication of a point in the _past_ when a PREMIUM access ended.
+    /// If this field is populated and billing_tier is STANDARD, this is
+    /// indication of a point in the _past_ when a PREMIUM access ended.
     #[prost(message, optional, tag="4")]
     pub expire_time: ::core::option::Option<::prost_types::Timestamp>,
 }
-///  Billing tier options
+/// Billing tier options
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum BillingTier {
-    ///  Default value. This value is unused.
+    /// Default value. This value is unused.
     Unspecified = 0,
-    ///  The standard billing tier.
+    /// The standard billing tier.
     Standard = 1,
-    ///  The premium billing tier.
+    /// The premium billing tier.
     Premium = 2,
 }
 impl BillingTier {
@@ -45,17 +45,17 @@ impl BillingTier {
         }
     }
 }
-///  Billing type
+/// Billing type
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum BillingType {
-    ///  Default billing type
+    /// Default billing type
     Unspecified = 0,
-    ///  Subscription for Premium billing tier
+    /// Subscription for Premium billing tier
     Subscription = 1,
-    ///  Trial subscription for Premium billing tier
+    /// Trial subscription for Premium billing tier
     TrialSubscription = 2,
-    ///  Alpha customer for Premium billing tier
+    /// Alpha customer for Premium billing tier
     Alpha = 3,
 }
 impl BillingType {
@@ -72,11 +72,11 @@ impl BillingType {
         }
     }
 }
-///  Component Settings for Security Command Center
+/// Component Settings for Security Command Center
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ComponentSettings {
-    ///  The relative resource name of the component settings.
-    ///  Formats:
+    /// The relative resource name of the component settings.
+    /// Formats:
     ///   * `organizations/{organization}/components/{component}/settings`
     ///   * `folders/{folder}/components/{component}/settings`
     ///   * `projects/{project}/components/{component}/settings`
@@ -85,131 +85,131 @@ pub struct ComponentSettings {
     ///   * `projects/{project}/zones/{zone}/clusters/{cluster}/components/{component}/settings`
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  ENABLE to enable component, DISABLE to disable and INHERIT to inherit
-    ///  setting from ancestors.
+    /// ENABLE to enable component, DISABLE to disable and INHERIT to inherit
+    /// setting from ancestors.
     #[prost(enumeration="ComponentEnablementState", tag="2")]
     pub state: i32,
-    ///  Output only. The service account to be used for security center component.
-    ///  The component must have permission to "act as" the service account.
+    /// Output only. The service account to be used for security center component.
+    /// The component must have permission to "act as" the service account.
     #[prost(string, tag="3")]
     pub project_service_account: ::prost::alloc::string::String,
-    ///  Settings for detectors.  Not all detectors must have settings present at
-    ///  each and every level in the hierarchy.  If it is not present the setting
-    ///  will be inherited from its ancestors folders, organizations or the
-    ///  defaults.
+    /// Settings for detectors.  Not all detectors must have settings present at
+    /// each and every level in the hierarchy.  If it is not present the setting
+    /// will be inherited from its ancestors folders, organizations or the
+    /// defaults.
     #[prost(map="string, message", tag="4")]
     pub detector_settings: ::std::collections::HashMap<::prost::alloc::string::String, component_settings::DetectorSettings>,
-    ///  Output only. An fingerprint used for optimistic concurrency. If none is provided
-    ///  on updates then the existing metadata will be blindly overwritten.
+    /// Output only. An fingerprint used for optimistic concurrency. If none is provided
+    /// on updates then the existing metadata will be blindly overwritten.
     #[prost(string, tag="5")]
     pub etag: ::prost::alloc::string::String,
-    ///  Output only. The time these settings were last updated.
+    /// Output only. The time these settings were last updated.
     #[prost(message, optional, tag="6")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Component specific settings.  This must match the component value.
+    /// Component specific settings.  This must match the component value.
     #[prost(oneof="component_settings::SpecificSettings", tags="41, 42, 44, 40")]
     pub specific_settings: ::core::option::Option<component_settings::SpecificSettings>,
 }
 /// Nested message and enum types in `ComponentSettings`.
 pub mod component_settings {
-    ///  Settings for each detector.
+    /// Settings for each detector.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DetectorSettings {
-        ///  ENABLE to enable component, DISABLE to disable and INHERIT to inherit
-        ///  setting from ancestors.
+        /// ENABLE to enable component, DISABLE to disable and INHERIT to inherit
+        /// setting from ancestors.
         #[prost(enumeration="super::ComponentEnablementState", tag="1")]
         pub state: i32,
     }
-    ///  Component specific settings.  This must match the component value.
+    /// Component specific settings.  This must match the component value.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum SpecificSettings {
-        ///  Container Threate Detection specific settings
-        ///  For component, expect CONTAINER_THREAT_DETECTION
+        /// Container Threate Detection specific settings
+        /// For component, expect CONTAINER_THREAT_DETECTION
         #[prost(message, tag="41")]
         ContainerThreatDetectionSettings(super::ContainerThreatDetectionSettings),
-        ///  Event Threat Detection specific settings
-        ///  For component, expect EVENT_THREAT_DETECTION
+        /// Event Threat Detection specific settings
+        /// For component, expect EVENT_THREAT_DETECTION
         #[prost(message, tag="42")]
         EventThreatDetectionSettings(super::EventThreatDetectionSettings),
-        ///  Security Health Analytics specific settings
-        ///  For component, expect SECURITY_HEALTH_ANALYTICS
+        /// Security Health Analytics specific settings
+        /// For component, expect SECURITY_HEALTH_ANALYTICS
         #[prost(message, tag="44")]
         SecurityHealthAnalyticsSettings(super::SecurityHealthAnalyticsSettings),
-        ///  Web Security Scanner specific settings
-        ///  For component, expect WEB_SECURITY_SCANNER
+        /// Web Security Scanner specific settings
+        /// For component, expect WEB_SECURITY_SCANNER
         #[prost(message, tag="40")]
         WebSecurityScannerSettings(super::WebSecurityScanner),
     }
 }
-///  User specified settings for Web Security Scanner
+/// User specified settings for Web Security Scanner
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WebSecurityScanner {
 }
-///  User specified settings for KTD
+/// User specified settings for KTD
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ContainerThreatDetectionSettings {
 }
-///  User specified settings for ETD
+/// User specified settings for ETD
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EventThreatDetectionSettings {
 }
-///  User specified settings for Security Health Analytics
+/// User specified settings for Security Health Analytics
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SecurityHealthAnalyticsSettings {
-    ///  Settings for "NON_ORG_IAM_MEMBER" scanner.
+    /// Settings for "NON_ORG_IAM_MEMBER" scanner.
     #[prost(message, optional, tag="1")]
     pub non_org_iam_member_settings: ::core::option::Option<security_health_analytics_settings::NonOrgIamMemberSettings>,
-    ///  Settings for "ADMIN_SERVICE_ACCOUNT" scanner.
+    /// Settings for "ADMIN_SERVICE_ACCOUNT" scanner.
     #[prost(message, optional, tag="2")]
     pub admin_service_account_settings: ::core::option::Option<security_health_analytics_settings::AdminServiceAccountSettings>,
 }
 /// Nested message and enum types in `SecurityHealthAnalyticsSettings`.
 pub mod security_health_analytics_settings {
-    ///  Settings for "NON_ORG_IAM_MEMBER" scanner.
+    /// Settings for "NON_ORG_IAM_MEMBER" scanner.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct NonOrgIamMemberSettings {
-        ///  User emails ending in the provided identities are allowed to have IAM
-        ///  permissions on a project or the organization. Otherwise a finding will
-        ///  be created.
-        ///  A valid identity can be:
+        /// User emails ending in the provided identities are allowed to have IAM
+        /// permissions on a project or the organization. Otherwise a finding will
+        /// be created.
+        /// A valid identity can be:
         ///    *  a domain that starts with "@", e.g. "@yourdomain.com".
         ///    *  a fully specified email address that does not start with "@", e.g.
         ///    "abc@gmail.com"
-        ///  Regular expressions are not supported.
-        ///  Service accounts are not examined by the scanner and will be omitted if
-        ///  added to the list.
-        ///  If not specified, only Gmail accounts will be considered as non-approved.
+        /// Regular expressions are not supported.
+        /// Service accounts are not examined by the scanner and will be omitted if
+        /// added to the list.
+        /// If not specified, only Gmail accounts will be considered as non-approved.
         #[prost(string, repeated, tag="1")]
         pub approved_identities: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
-    ///  Settings for "ADMIN_SERVICE_ACCOUNT" scanner.
+    /// Settings for "ADMIN_SERVICE_ACCOUNT" scanner.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AdminServiceAccountSettings {
-        ///  User-created service accounts ending in the provided identities are
-        ///  allowed to have Admin, Owner or Editor roles granted to them. Otherwise
-        ///  a finding will be created.
-        ///  A valid identity can be:
+        /// User-created service accounts ending in the provided identities are
+        /// allowed to have Admin, Owner or Editor roles granted to them. Otherwise
+        /// a finding will be created.
+        /// A valid identity can be:
         ///    *  a partilly specified service account that starts with "@", e.g.
         ///    "@myproject.iam.gserviceaccount.com". This approves all the service
         ///    accounts suffixed with the specified identity.
         ///    *  a fully specified service account that does not start with "@", e.g.
         ///    "myadmin@myproject.iam.gserviceaccount.com".
-        ///  Google-created service accounts are all approved.
+        /// Google-created service accounts are all approved.
         #[prost(string, repeated, tag="1")]
         pub approved_identities: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
 }
-///  Valid states for a component
+/// Valid states for a component
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum ComponentEnablementState {
-    ///  No state specified, equivalent of INHERIT
+    /// No state specified, equivalent of INHERIT
     Unspecified = 0,
-    ///  Disable the component
+    /// Disable the component
     Disable = 1,
-    ///  Enable the component
+    /// Enable the component
     Enable = 2,
-    ///  Inherit the state from resources parent folder or organization.
+    /// Inherit the state from resources parent folder or organization.
     Inherit = 3,
 }
 impl ComponentEnablementState {
@@ -226,50 +226,50 @@ impl ComponentEnablementState {
         }
     }
 }
-///  Detector is a set of detectors or scanners act as individual checks done
-///  within a component e.g. bad IP, bad domains, IAM anomaly, cryptomining, open
-///  firewall, etc. Detector is independent of Organization, meaning each detector
-///  must be defined for a given Security Center component under a specified
-///  billing tier. Organizations can configure the list of detectors based on
-///  their subscribed billing tier.
+/// Detector is a set of detectors or scanners act as individual checks done
+/// within a component e.g. bad IP, bad domains, IAM anomaly, cryptomining, open
+/// firewall, etc. Detector is independent of Organization, meaning each detector
+/// must be defined for a given Security Center component under a specified
+/// billing tier. Organizations can configure the list of detectors based on
+/// their subscribed billing tier.
 ///
-///  Defines a detector, its billing tier and any applicable labels.
+/// Defines a detector, its billing tier and any applicable labels.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Detector {
-    ///  Output only. Detector Identifier
+    /// Output only. Detector Identifier
     #[prost(string, tag="1")]
     pub detector: ::prost::alloc::string::String,
-    ///  Output only. Component that supports detector type.  Multiple components may support the
-    ///  same detector.
+    /// Output only. Component that supports detector type.  Multiple components may support the
+    /// same detector.
     #[prost(string, tag="2")]
     pub component: ::prost::alloc::string::String,
-    ///  Output only. The billing tier may be different for a detector of the same name in
-    ///  another component.
+    /// Output only. The billing tier may be different for a detector of the same name in
+    /// another component.
     #[prost(enumeration="BillingTier", tag="3")]
     pub billing_tier: i32,
-    ///  Output only. Google curated detector labels. These are alphanumeric tags that are not
-    ///  necessarily human readable. Labels can be used to group detectors together
-    ///  in the future. An example might be tagging all detectors “PCI” that help
-    ///  with PCI compliance.
+    /// Output only. Google curated detector labels. These are alphanumeric tags that are not
+    /// necessarily human readable. Labels can be used to group detectors together
+    /// in the future. An example might be tagging all detectors “PCI” that help
+    /// with PCI compliance.
     #[prost(string, repeated, tag="4")]
     pub detector_labels: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-///  Sink Settings for Security Command Center
+/// Sink Settings for Security Command Center
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SinkSettings {
-    ///  The resource name of the project to send logs to. This project must be
-    ///  part of the same organization where the Security Center API is
-    ///  enabled. The format is `projects/{project}`. If it is empty, we do
-    ///  not output logs. If a project ID is provided it will be normalized to a
-    ///  project number.
+    /// The resource name of the project to send logs to. This project must be
+    /// part of the same organization where the Security Center API is
+    /// enabled. The format is `projects/{project}`. If it is empty, we do
+    /// not output logs. If a project ID is provided it will be normalized to a
+    /// project number.
     #[prost(string, tag="1")]
     pub logging_sink_project: ::prost::alloc::string::String,
 }
-///  Common configuration settings for all of Security Center.
+/// Common configuration settings for all of Security Center.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Settings {
-    ///  The relative resource name of the settings resource.
-    ///  Formats:
+    /// The relative resource name of the settings resource.
+    /// Formats:
     ///   * `organizations/{organization}/settings`
     ///   * `folders/{folder}/settings`
     ///   * `projects/{project}/settings`
@@ -278,67 +278,67 @@ pub struct Settings {
     ///   * `projects/{project}/zones/{zone}/clusters/{cluster}/settings`
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Billing settings
+    /// Billing settings
     #[prost(message, optional, tag="2")]
     pub billing_settings: ::core::option::Option<BillingSettings>,
-    ///  An enum representing the current on boarding state of SCC.
+    /// An enum representing the current on boarding state of SCC.
     #[prost(enumeration="settings::OnboardingState", tag="3")]
     pub state: i32,
-    ///  Output only. The organization-level service account to be used for security center
-    ///  components. The component must have permission to "act as" the service
-    ///  account.
+    /// Output only. The organization-level service account to be used for security center
+    /// components. The component must have permission to "act as" the service
+    /// account.
     #[prost(string, tag="5")]
     pub org_service_account: ::prost::alloc::string::String,
-    ///  Sink settings.
+    /// Sink settings.
     #[prost(message, optional, tag="6")]
     pub sink_settings: ::core::option::Option<SinkSettings>,
-    ///  The settings for detectors and/or scanners.
+    /// The settings for detectors and/or scanners.
     #[prost(map="string, message", tag="7")]
     pub component_settings: ::std::collections::HashMap<::prost::alloc::string::String, ComponentSettings>,
-    ///  Detector group settings for all Security Center components.
-    ///  The key is the name of the detector group and the value is the settings for
-    ///  that group.
+    /// Detector group settings for all Security Center components.
+    /// The key is the name of the detector group and the value is the settings for
+    /// that group.
     #[prost(map="string, message", tag="8")]
     pub detector_group_settings: ::std::collections::HashMap<::prost::alloc::string::String, settings::DetectorGroupSettings>,
-    ///  A fingerprint used for optimistic concurrency. If none is provided
-    ///  on updates then the existing metadata will be blindly overwritten.
+    /// A fingerprint used for optimistic concurrency. If none is provided
+    /// on updates then the existing metadata will be blindly overwritten.
     #[prost(string, tag="9")]
     pub etag: ::prost::alloc::string::String,
-    ///  Output only. The time these settings were last updated.
+    /// Output only. The time these settings were last updated.
     #[prost(message, optional, tag="10")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Nested message and enum types in `Settings`.
 pub mod settings {
-    ///  The DetectorGroupSettings define the configuration for a detector group.
+    /// The DetectorGroupSettings define the configuration for a detector group.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DetectorGroupSettings {
-        ///  The state determines if the group is enabled or not.
+        /// The state determines if the group is enabled or not.
         #[prost(enumeration="super::ComponentEnablementState", tag="1")]
         pub state: i32,
     }
-    ///  Defines the onboarding states for SCC
+    /// Defines the onboarding states for SCC
     ///
-    ///  Potentially is just an indicator that a user has reviewed some subset of
-    ///  our configuration surface, even if it's still currently set to its
-    ///  API-default state.
+    /// Potentially is just an indicator that a user has reviewed some subset of
+    /// our configuration surface, even if it's still currently set to its
+    /// API-default state.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum OnboardingState {
-        ///  No onboarding state has been set. Should not be seen in practice, but
-        ///  should be functionally equivalent to DISABLED.
+        /// No onboarding state has been set. Should not be seen in practice, but
+        /// should be functionally equivalent to DISABLED.
         Unspecified = 0,
-        ///  SCC is fully on boarded
+        /// SCC is fully on boarded
         Enabled = 1,
-        ///  SCC has been disabled after being on boarded
+        /// SCC has been disabled after being on boarded
         Disabled = 2,
-        ///  SCC's onboarding tier has been explicitly set
+        /// SCC's onboarding tier has been explicitly set
         BillingSelected = 3,
-        ///  SCC's CTD FindingsProviders have been chosen
+        /// SCC's CTD FindingsProviders have been chosen
         ProvidersSelected = 4,
-        ///  SCC's Service-Resource mappings have been set
+        /// SCC's Service-Resource mappings have been set
         ResourcesSelected = 5,
-        ///  SCC's core Service Account was created
+        /// SCC's core Service Account was created
         OrgServiceAccountCreated = 6,
     }
     impl OnboardingState {
@@ -359,36 +359,36 @@ pub mod settings {
         }
     }
 }
-///  Request message for GetServiceAccount.
+/// Request message for GetServiceAccount.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetServiceAccountRequest {
-    ///  Required. The relative resource name of the service account resource.
-    ///  Format:
+    /// Required. The relative resource name of the service account resource.
+    /// Format:
     ///   * `organizations/{organization}/serviceAccount`
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  An organization-level service account to be used by threat detection
-///  components.
+/// An organization-level service account to be used by threat detection
+/// components.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ServiceAccount {
-    ///  The relative resource name of the service account resource.
-    ///  Format:
+    /// The relative resource name of the service account resource.
+    /// Format:
     ///   * `organizations/{organization}/serviceAccount`
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Security Center managed service account for the organization
-    ///  example service-org-1234@scc.iam.gserviceaccount.com
-    ///  This service_account will be stored in the ComponentSettings field for the
-    ///  SCC, SHA, and Infra Automation components.
+    /// Security Center managed service account for the organization
+    /// example service-org-1234@scc.iam.gserviceaccount.com
+    /// This service_account will be stored in the ComponentSettings field for the
+    /// SCC, SHA, and Infra Automation components.
     #[prost(string, tag="2")]
     pub service_account: ::prost::alloc::string::String,
 }
-///  Request message for GetSettings.
+/// Request message for GetSettings.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetSettingsRequest {
-    ///  Required. The name of the settings to retrieve.
-    ///  Formats:
+    /// Required. The name of the settings to retrieve.
+    /// Formats:
     ///   * `organizations/{organization}/settings`
     ///   * `folders/{folder}/settings`
     ///   * `projects/{project}/settings`
@@ -398,13 +398,13 @@ pub struct GetSettingsRequest {
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Request message for UpdateSettings.
+/// Request message for UpdateSettings.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateSettingsRequest {
-    ///  Required. The settings to update.
+    /// Required. The settings to update.
     ///
-    ///  The settings' `name` field is used to identify the settings to be updated.
-    ///  Formats:
+    /// The settings' `name` field is used to identify the settings to be updated.
+    /// Formats:
     ///   * `organizations/{organization}/settings`
     ///   * `folders/{folder}/settings`
     ///   * `projects/{project}/settings`
@@ -413,15 +413,15 @@ pub struct UpdateSettingsRequest {
     ///   * `projects/{project}/zones/{zone}/clusters/{cluster}/settings`
     #[prost(message, optional, tag="1")]
     pub settings: ::core::option::Option<Settings>,
-    ///  The list of fields to be updated on the settings.
+    /// The list of fields to be updated on the settings.
     #[prost(message, optional, tag="2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
-///  Request message for ResetSettings.
+/// Request message for ResetSettings.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResetSettingsRequest {
-    ///  Required. The name of the settings to reset.
-    ///  Formats:
+    /// Required. The name of the settings to reset.
+    /// Formats:
     ///   * `organizations/{organization}/settings`
     ///   * `folders/{folder}/settings`
     ///   * `projects/{project}/settings`
@@ -430,23 +430,23 @@ pub struct ResetSettingsRequest {
     ///   * `projects/{project}/zones/{zone}/clusters/{cluster}/settings`
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  A fingerprint used for optimistic concurrency. If none is provided,
-    ///  then the existing settings will be blindly overwritten.
+    /// A fingerprint used for optimistic concurrency. If none is provided,
+    /// then the existing settings will be blindly overwritten.
     #[prost(string, tag="2")]
     pub etag: ::prost::alloc::string::String,
 }
-///  Request message for BatchGetSettings.
+/// Request message for BatchGetSettings.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchGetSettingsRequest {
-    ///  Required. The relative resource name of the organization shared by all of the
-    ///  settings being retrieved.
-    ///  Format:
+    /// Required. The relative resource name of the organization shared by all of the
+    /// settings being retrieved.
+    /// Format:
     ///   * `organizations/{organization}`
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  The names of the settings to retrieve.
-    ///  A maximum of 1000 settings can be retrieved in a batch.
-    ///  Formats:
+    /// The names of the settings to retrieve.
+    /// A maximum of 1000 settings can be retrieved in a batch.
+    /// Formats:
     ///   * `organizations/{organization}/settings`
     ///   * `folders/{folder}/settings`
     ///   * `projects/{project}/settings`
@@ -456,18 +456,18 @@ pub struct BatchGetSettingsRequest {
     #[prost(string, repeated, tag="2")]
     pub names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-///  Response message for BatchGetSettings.
+/// Response message for BatchGetSettings.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchGetSettingsResponse {
-    ///  Settings requested.
+    /// Settings requested.
     #[prost(message, repeated, tag="1")]
     pub settings: ::prost::alloc::vec::Vec<Settings>,
 }
-///  Request message for CalculateEffectiveSettings.
+/// Request message for CalculateEffectiveSettings.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CalculateEffectiveSettingsRequest {
-    ///  Required. The name of the effective settings to retrieve.
-    ///  Formats:
+    /// Required. The name of the effective settings to retrieve.
+    /// Formats:
     ///   * `organizations/{organization}/effectiveSettings`
     ///   * `folders/{folder}/effectiveSettings`
     ///   * `projects/{project}/effectiveSettings`
@@ -477,33 +477,33 @@ pub struct CalculateEffectiveSettingsRequest {
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Request message for BatchGetEffectiveSettings.
+/// Request message for BatchGetEffectiveSettings.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchCalculateEffectiveSettingsRequest {
-    ///  Required. The relative resource name of the organization shared by all of the
-    ///  settings being retrieved.
-    ///  Format:
+    /// Required. The relative resource name of the organization shared by all of the
+    /// settings being retrieved.
+    /// Format:
     ///   * `organizations/{organization}`
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  The requests specifying the effective settings to retrieve.
-    ///  A maximum of 1000 effective settings can be retrieved in a batch.
+    /// The requests specifying the effective settings to retrieve.
+    /// A maximum of 1000 effective settings can be retrieved in a batch.
     #[prost(message, repeated, tag="2")]
     pub requests: ::prost::alloc::vec::Vec<CalculateEffectiveSettingsRequest>,
 }
-///  Response message for BatchGetEffectiveSettings.
+/// Response message for BatchGetEffectiveSettings.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchCalculateEffectiveSettingsResponse {
-    ///  Settings requested.
+    /// Settings requested.
     #[prost(message, repeated, tag="1")]
     pub settings: ::prost::alloc::vec::Vec<Settings>,
 }
-///  Request message for GetComponentSettings.
+/// Request message for GetComponentSettings.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetComponentSettingsRequest {
-    ///  Required. The component settings to retrieve.
+    /// Required. The component settings to retrieve.
     ///
-    ///  Formats:
+    /// Formats:
     ///   * `organizations/{organization}/components/{component}/settings`
     ///   * `folders/{folder}/components/{component}/settings`
     ///   * `projects/{project}/components/{component}/settings`
@@ -513,13 +513,13 @@ pub struct GetComponentSettingsRequest {
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Request message for UpdateComponentSettings.
+/// Request message for UpdateComponentSettings.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateComponentSettingsRequest {
-    ///  Required. The component settings to update.
+    /// Required. The component settings to update.
     ///
-    ///  The component settings' `name` field is used to identify the component
-    ///  settings to be updated. Formats:
+    /// The component settings' `name` field is used to identify the component
+    /// settings to be updated. Formats:
     ///   * `organizations/{organization}/components/{component}/settings`
     ///   * `folders/{folder}/components/{component}/settings`
     ///   * `projects/{project}/components/{component}/settings`
@@ -528,16 +528,16 @@ pub struct UpdateComponentSettingsRequest {
     ///   * `projects/{project}/zones/{zone}/clusters/{cluster}/components/{component}/settings`
     #[prost(message, optional, tag="1")]
     pub component_settings: ::core::option::Option<ComponentSettings>,
-    ///  The list of fields to be updated on the component settings resource.
+    /// The list of fields to be updated on the component settings resource.
     #[prost(message, optional, tag="2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
-///  Request message for ResetComponentSettings.
+/// Request message for ResetComponentSettings.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResetComponentSettingsRequest {
-    ///  Required. The component settings to reset.
+    /// Required. The component settings to reset.
     ///
-    ///  Formats:
+    /// Formats:
     ///   * `organizations/{organization}/components/{component}/settings`
     ///   * `folders/{folder}/components/{component}/settings`
     ///   * `projects/{project}/components/{component}/settings`
@@ -546,17 +546,17 @@ pub struct ResetComponentSettingsRequest {
     ///   * `projects/{project}/zones/{zone}/clusters/{cluster}/components/{component}/settings`
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  An fingerprint used for optimistic concurrency. If none is provided,
-    ///  then the existing settings will be blindly overwritten.
+    /// An fingerprint used for optimistic concurrency. If none is provided,
+    /// then the existing settings will be blindly overwritten.
     #[prost(string, tag="2")]
     pub etag: ::prost::alloc::string::String,
 }
-///  Request message for CalculateEffectiveComponentSettings.
+/// Request message for CalculateEffectiveComponentSettings.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CalculateEffectiveComponentSettingsRequest {
-    ///  Required. The effective component settings to retrieve.
+    /// Required. The effective component settings to retrieve.
     ///
-    ///  Formats:
+    /// Formats:
     ///   * `organizations/{organization}/components/{component}/settings`
     ///   * `folders/{folder}/components/{component}/settings`
     ///   * `projects/{project}/components/{component}/settings`
@@ -566,80 +566,80 @@ pub struct CalculateEffectiveComponentSettingsRequest {
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Request message for ListDetectors.
+/// Request message for ListDetectors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDetectorsRequest {
-    ///  Required. The parent, which owns this collection of detectors.
-    ///  Format:
+    /// Required. The parent, which owns this collection of detectors.
+    /// Format:
     ///   * `organizations/{organization}`
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Filters to apply on the response. Filters can be applied on:
+    /// Filters to apply on the response. Filters can be applied on:
     ///   * components
     ///   * labels
     ///   * billing tiers
     ///
-    ///  Component filters will retrieve only detectors for the components
-    ///  specified. Label filters will retrieve only detectors that match one of the
-    ///  labels specified. Billing tier filters will retrieve only detectors for
-    ///  that billing tier.
+    /// Component filters will retrieve only detectors for the components
+    /// specified. Label filters will retrieve only detectors that match one of the
+    /// labels specified. Billing tier filters will retrieve only detectors for
+    /// that billing tier.
     ///
-    ///  The filters
+    /// The filters
     #[prost(string, tag="2")]
     pub filter: ::prost::alloc::string::String,
-    ///  The maximum number of detectors to return. The service may return fewer
-    ///  than this value. If unspecified, at most 100 detectors will be returned.
-    ///  The maximum value is 1000; values above 1000 will be coerced to 1000.
+    /// The maximum number of detectors to return. The service may return fewer
+    /// than this value. If unspecified, at most 100 detectors will be returned.
+    /// The maximum value is 1000; values above 1000 will be coerced to 1000.
     #[prost(int32, tag="3")]
     pub page_size: i32,
-    ///  A page token, received from a previous `ListDetectors` call.
-    ///  Provide this to retrieve the subsequent page.
+    /// A page token, received from a previous `ListDetectors` call.
+    /// Provide this to retrieve the subsequent page.
     ///
-    ///  When paginating, all other parameters provided to `ListDetectors` must
-    ///  match the call that provided the page token.
+    /// When paginating, all other parameters provided to `ListDetectors` must
+    /// match the call that provided the page token.
     #[prost(string, tag="4")]
     pub page_token: ::prost::alloc::string::String,
 }
-///  Response message for ListDetectors.
+/// Response message for ListDetectors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDetectorsResponse {
-    ///  The detectors from the specified organization.
+    /// The detectors from the specified organization.
     #[prost(message, repeated, tag="1")]
     pub detectors: ::prost::alloc::vec::Vec<Detector>,
-    ///  A token that can be sent as `page_token` to retrieve the next page.
-    ///  If this field is omitted, there are no subsequent pages.
+    /// A token that can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-///  Request message for ListComponents.
+/// Request message for ListComponents.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListComponentsRequest {
-    ///  Required. The parent, which owns this collection of components.
-    ///  Format:
+    /// Required. The parent, which owns this collection of components.
+    /// Format:
     ///   * `organizations/{organization}`
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  The maximum number of components to return. The service may return fewer
-    ///  than this value. If unspecified, at most 100 components will be returned.
-    ///  The maximum value is 1000; values above 1000 will be coerced to 1000.
+    /// The maximum number of components to return. The service may return fewer
+    /// than this value. If unspecified, at most 100 components will be returned.
+    /// The maximum value is 1000; values above 1000 will be coerced to 1000.
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    ///  A page token, received from a previous `ListComponents` call.
-    ///  Provide this to retrieve the subsequent page.
+    /// A page token, received from a previous `ListComponents` call.
+    /// Provide this to retrieve the subsequent page.
     ///
-    ///  When paginating, all other parameters provided to `ListComponents` must
-    ///  match the call that provided the page token.
+    /// When paginating, all other parameters provided to `ListComponents` must
+    /// match the call that provided the page token.
     #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
 }
-///  Response message for ListComponents.
+/// Response message for ListComponents.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListComponentsResponse {
-    ///  The components from the specified organization.
+    /// The components from the specified organization.
     #[prost(string, repeated, tag="1")]
     pub components: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    ///  A token that can be sent as `page_token` to retrieve the next page.
-    ///  If this field is omitted, there are no subsequent pages.
+    /// A token that can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }

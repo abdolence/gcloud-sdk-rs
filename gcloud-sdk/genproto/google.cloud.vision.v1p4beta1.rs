@@ -1,654 +1,654 @@
-///  A vertex represents a 2D point in the image.
-///  NOTE: the vertex coordinates are in the same scale as the original image.
+/// A vertex represents a 2D point in the image.
+/// NOTE: the vertex coordinates are in the same scale as the original image.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Vertex {
-    ///  X coordinate.
+    /// X coordinate.
     #[prost(int32, tag="1")]
     pub x: i32,
-    ///  Y coordinate.
+    /// Y coordinate.
     #[prost(int32, tag="2")]
     pub y: i32,
 }
-///  A vertex represents a 2D point in the image.
-///  NOTE: the normalized vertex coordinates are relative to the original image
-///  and range from 0 to 1.
+/// A vertex represents a 2D point in the image.
+/// NOTE: the normalized vertex coordinates are relative to the original image
+/// and range from 0 to 1.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NormalizedVertex {
-    ///  X coordinate.
+    /// X coordinate.
     #[prost(float, tag="1")]
     pub x: f32,
-    ///  Y coordinate.
+    /// Y coordinate.
     #[prost(float, tag="2")]
     pub y: f32,
 }
-///  A bounding polygon for the detected image annotation.
+/// A bounding polygon for the detected image annotation.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BoundingPoly {
-    ///  The bounding polygon vertices.
+    /// The bounding polygon vertices.
     #[prost(message, repeated, tag="1")]
     pub vertices: ::prost::alloc::vec::Vec<Vertex>,
-    ///  The bounding polygon normalized vertices.
+    /// The bounding polygon normalized vertices.
     #[prost(message, repeated, tag="2")]
     pub normalized_vertices: ::prost::alloc::vec::Vec<NormalizedVertex>,
 }
-///  A 3D position in the image, used primarily for Face detection landmarks.
-///  A valid Position must have both x and y coordinates.
-///  The position coordinates are in the same scale as the original image.
+/// A 3D position in the image, used primarily for Face detection landmarks.
+/// A valid Position must have both x and y coordinates.
+/// The position coordinates are in the same scale as the original image.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Position {
-    ///  X coordinate.
+    /// X coordinate.
     #[prost(float, tag="1")]
     pub x: f32,
-    ///  Y coordinate.
+    /// Y coordinate.
     #[prost(float, tag="2")]
     pub y: f32,
-    ///  Z coordinate (or depth).
+    /// Z coordinate (or depth).
     #[prost(float, tag="3")]
     pub z: f32,
 }
-///  Parameters for a celebrity recognition request.
+/// Parameters for a celebrity recognition request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FaceRecognitionParams {
-    ///  The resource names for one or more
-    ///  \[CelebritySet][google.cloud.vision.v1p4beta1.CelebritySet\]s. A celebrity
-    ///  set is preloaded and can be specified as "builtin/default". If this is
-    ///  specified, the algorithm will try to match the faces detected in the input
-    ///  image to the Celebrities in the CelebritySets.
+    /// The resource names for one or more
+    /// \[CelebritySet][google.cloud.vision.v1p4beta1.CelebritySet\]s. A celebrity
+    /// set is preloaded and can be specified as "builtin/default". If this is
+    /// specified, the algorithm will try to match the faces detected in the input
+    /// image to the Celebrities in the CelebritySets.
     #[prost(string, repeated, tag="1")]
     pub celebrity_set: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-///  A Celebrity is a group of Faces with an identity.
+/// A Celebrity is a group of Faces with an identity.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Celebrity {
-    ///  The resource name of the preloaded Celebrity. Has the format
-    ///  `builtin/{mid}`.
+    /// The resource name of the preloaded Celebrity. Has the format
+    /// `builtin/{mid}`.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  The Celebrity's display name.
+    /// The Celebrity's display name.
     #[prost(string, tag="2")]
     pub display_name: ::prost::alloc::string::String,
-    ///  The Celebrity's description.
+    /// The Celebrity's description.
     #[prost(string, tag="3")]
     pub description: ::prost::alloc::string::String,
 }
-///  Information about a face's identity.
+/// Information about a face's identity.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FaceRecognitionResult {
-    ///  The \[Celebrity][google.cloud.vision.v1p4beta1.Celebrity\] that this face was
-    ///  matched to.
+    /// The \[Celebrity][google.cloud.vision.v1p4beta1.Celebrity\] that this face was
+    /// matched to.
     #[prost(message, optional, tag="1")]
     pub celebrity: ::core::option::Option<Celebrity>,
-    ///  Recognition confidence. Range [0, 1].
+    /// Recognition confidence. Range [0, 1].
     #[prost(float, tag="2")]
     pub confidence: f32,
 }
-///  A Product contains ReferenceImages.
+/// A Product contains ReferenceImages.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Product {
-    ///  The resource name of the product.
+    /// The resource name of the product.
     ///
-    ///  Format is:
-    ///  `projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID`.
+    /// Format is:
+    /// `projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID`.
     ///
-    ///  This field is ignored when creating a product.
+    /// This field is ignored when creating a product.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  The user-provided name for this Product. Must not be empty. Must be at most
-    ///  4096 characters long.
+    /// The user-provided name for this Product. Must not be empty. Must be at most
+    /// 4096 characters long.
     #[prost(string, tag="2")]
     pub display_name: ::prost::alloc::string::String,
-    ///  User-provided metadata to be stored with this product. Must be at most 4096
-    ///  characters long.
+    /// User-provided metadata to be stored with this product. Must be at most 4096
+    /// characters long.
     #[prost(string, tag="3")]
     pub description: ::prost::alloc::string::String,
-    ///  Immutable. The category for the product identified by the reference image.
-    ///  This should be either "homegoods-v2", "apparel-v2", or "toys-v2". The
-    ///  legacy categories "homegoods", "apparel", and "toys" are still supported,
-    ///  but these should not be used for new products.
+    /// Immutable. The category for the product identified by the reference image.
+    /// This should be either "homegoods-v2", "apparel-v2", or "toys-v2". The
+    /// legacy categories "homegoods", "apparel", and "toys" are still supported,
+    /// but these should not be used for new products.
     #[prost(string, tag="4")]
     pub product_category: ::prost::alloc::string::String,
-    ///  Key-value pairs that can be attached to a product. At query time,
-    ///  constraints can be specified based on the product_labels.
+    /// Key-value pairs that can be attached to a product. At query time,
+    /// constraints can be specified based on the product_labels.
     ///
-    ///  Note that integer values can be provided as strings, e.g. "1199". Only
-    ///  strings with integer values can match a range-based restriction which is
-    ///  to be supported soon.
+    /// Note that integer values can be provided as strings, e.g. "1199". Only
+    /// strings with integer values can match a range-based restriction which is
+    /// to be supported soon.
     ///
-    ///  Multiple values can be assigned to the same key. One product may have up to
-    ///  500 product_labels.
+    /// Multiple values can be assigned to the same key. One product may have up to
+    /// 500 product_labels.
     ///
-    ///  Notice that the total number of distinct product_labels over all products
-    ///  in one ProductSet cannot exceed 1M, otherwise the product search pipeline
-    ///  will refuse to work for that ProductSet.
+    /// Notice that the total number of distinct product_labels over all products
+    /// in one ProductSet cannot exceed 1M, otherwise the product search pipeline
+    /// will refuse to work for that ProductSet.
     #[prost(message, repeated, tag="5")]
     pub product_labels: ::prost::alloc::vec::Vec<product::KeyValue>,
 }
 /// Nested message and enum types in `Product`.
 pub mod product {
-    ///  A product label represented as a key-value pair.
+    /// A product label represented as a key-value pair.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct KeyValue {
-        ///  The key of the label attached to the product. Cannot be empty and cannot
-        ///  exceed 128 bytes.
+        /// The key of the label attached to the product. Cannot be empty and cannot
+        /// exceed 128 bytes.
         #[prost(string, tag="1")]
         pub key: ::prost::alloc::string::String,
-        ///  The value of the label attached to the product. Cannot be empty and
-        ///  cannot exceed 128 bytes.
+        /// The value of the label attached to the product. Cannot be empty and
+        /// cannot exceed 128 bytes.
         #[prost(string, tag="2")]
         pub value: ::prost::alloc::string::String,
     }
 }
-///  A ProductSet contains Products. A ProductSet can contain a maximum of 1
-///  million reference images. If the limit is exceeded, periodic indexing will
-///  fail.
+/// A ProductSet contains Products. A ProductSet can contain a maximum of 1
+/// million reference images. If the limit is exceeded, periodic indexing will
+/// fail.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProductSet {
-    ///  The resource name of the ProductSet.
+    /// The resource name of the ProductSet.
     ///
-    ///  Format is:
-    ///  `projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID`.
+    /// Format is:
+    /// `projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID`.
     ///
-    ///  This field is ignored when creating a ProductSet.
+    /// This field is ignored when creating a ProductSet.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  The user-provided name for this ProductSet. Must not be empty. Must be at
-    ///  most 4096 characters long.
+    /// The user-provided name for this ProductSet. Must not be empty. Must be at
+    /// most 4096 characters long.
     #[prost(string, tag="2")]
     pub display_name: ::prost::alloc::string::String,
-    ///  Output only. The time at which this ProductSet was last indexed. Query
-    ///  results will reflect all updates before this time. If this ProductSet has
-    ///  never been indexed, this timestamp is the default value
-    ///  "1970-01-01T00:00:00Z".
+    /// Output only. The time at which this ProductSet was last indexed. Query
+    /// results will reflect all updates before this time. If this ProductSet has
+    /// never been indexed, this timestamp is the default value
+    /// "1970-01-01T00:00:00Z".
     ///
-    ///  This field is ignored when creating a ProductSet.
+    /// This field is ignored when creating a ProductSet.
     #[prost(message, optional, tag="3")]
     pub index_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Output only. If there was an error with indexing the product set, the field
-    ///  is populated.
+    /// Output only. If there was an error with indexing the product set, the field
+    /// is populated.
     ///
-    ///  This field is ignored when creating a ProductSet.
+    /// This field is ignored when creating a ProductSet.
     #[prost(message, optional, tag="4")]
     pub index_error: ::core::option::Option<super::super::super::rpc::Status>,
 }
-///  A `ReferenceImage` represents a product image and its associated metadata,
-///  such as bounding boxes.
+/// A `ReferenceImage` represents a product image and its associated metadata,
+/// such as bounding boxes.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReferenceImage {
-    ///  The resource name of the reference image.
+    /// The resource name of the reference image.
     ///
-    ///  Format is:
+    /// Format is:
     ///
-    ///  `projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID/referenceImages/IMAGE_ID`.
+    /// `projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID/referenceImages/IMAGE_ID`.
     ///
-    ///  This field is ignored when creating a reference image.
+    /// This field is ignored when creating a reference image.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Required. The Google Cloud Storage URI of the reference image.
+    /// Required. The Google Cloud Storage URI of the reference image.
     ///
-    ///  The URI must start with `gs://`.
+    /// The URI must start with `gs://`.
     #[prost(string, tag="2")]
     pub uri: ::prost::alloc::string::String,
-    ///  Optional. Bounding polygons around the areas of interest in the reference
-    ///  image. If this field is empty, the system will try to detect regions of
-    ///  interest. At most 10 bounding polygons will be used.
+    /// Optional. Bounding polygons around the areas of interest in the reference
+    /// image. If this field is empty, the system will try to detect regions of
+    /// interest. At most 10 bounding polygons will be used.
     ///
-    ///  The provided shape is converted into a non-rotated rectangle. Once
-    ///  converted, the small edge of the rectangle must be greater than or equal
-    ///  to 300 pixels. The aspect ratio must be 1:4 or less (i.e. 1:3 is ok; 1:5
-    ///  is not).
+    /// The provided shape is converted into a non-rotated rectangle. Once
+    /// converted, the small edge of the rectangle must be greater than or equal
+    /// to 300 pixels. The aspect ratio must be 1:4 or less (i.e. 1:3 is ok; 1:5
+    /// is not).
     #[prost(message, repeated, tag="3")]
     pub bounding_polys: ::prost::alloc::vec::Vec<BoundingPoly>,
 }
-///  Request message for the `CreateProduct` method.
+/// Request message for the `CreateProduct` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateProductRequest {
-    ///  Required. The project in which the Product should be created.
+    /// Required. The project in which the Product should be created.
     ///
-    ///  Format is
-    ///  `projects/PROJECT_ID/locations/LOC_ID`.
+    /// Format is
+    /// `projects/PROJECT_ID/locations/LOC_ID`.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Required. The product to create.
+    /// Required. The product to create.
     #[prost(message, optional, tag="2")]
     pub product: ::core::option::Option<Product>,
-    ///  A user-supplied resource id for this Product. If set, the server will
-    ///  attempt to use this value as the resource id. If it is already in use, an
-    ///  error is returned with code ALREADY_EXISTS. Must be at most 128 characters
-    ///  long. It cannot contain the character `/`.
+    /// A user-supplied resource id for this Product. If set, the server will
+    /// attempt to use this value as the resource id. If it is already in use, an
+    /// error is returned with code ALREADY_EXISTS. Must be at most 128 characters
+    /// long. It cannot contain the character `/`.
     #[prost(string, tag="3")]
     pub product_id: ::prost::alloc::string::String,
 }
-///  Request message for the `ListProducts` method.
+/// Request message for the `ListProducts` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListProductsRequest {
-    ///  Required. The project OR ProductSet from which Products should be listed.
+    /// Required. The project OR ProductSet from which Products should be listed.
     ///
-    ///  Format:
-    ///  `projects/PROJECT_ID/locations/LOC_ID`
+    /// Format:
+    /// `projects/PROJECT_ID/locations/LOC_ID`
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  The maximum number of items to return. Default 10, maximum 100.
+    /// The maximum number of items to return. Default 10, maximum 100.
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    ///  The next_page_token returned from a previous List request, if any.
+    /// The next_page_token returned from a previous List request, if any.
     #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
 }
-///  Response message for the `ListProducts` method.
+/// Response message for the `ListProducts` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListProductsResponse {
-    ///  List of products.
+    /// List of products.
     #[prost(message, repeated, tag="1")]
     pub products: ::prost::alloc::vec::Vec<Product>,
-    ///  Token to retrieve the next page of results, or empty if there are no more
-    ///  results in the list.
+    /// Token to retrieve the next page of results, or empty if there are no more
+    /// results in the list.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-///  Request message for the `GetProduct` method.
+/// Request message for the `GetProduct` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetProductRequest {
-    ///  Required. Resource name of the Product to get.
+    /// Required. Resource name of the Product to get.
     ///
-    ///  Format is:
-    ///  `projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID`
+    /// Format is:
+    /// `projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID`
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Request message for the `UpdateProduct` method.
+/// Request message for the `UpdateProduct` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateProductRequest {
-    ///  Required. The Product resource which replaces the one on the server.
-    ///  product.name is immutable.
+    /// Required. The Product resource which replaces the one on the server.
+    /// product.name is immutable.
     #[prost(message, optional, tag="1")]
     pub product: ::core::option::Option<Product>,
-    ///  The \[FieldMask][google.protobuf.FieldMask\] that specifies which fields
-    ///  to update.
-    ///  If update_mask isn't specified, all mutable fields are to be updated.
-    ///  Valid mask paths include `product_labels`, `display_name`, and
-    ///  `description`.
+    /// The \[FieldMask][google.protobuf.FieldMask\] that specifies which fields
+    /// to update.
+    /// If update_mask isn't specified, all mutable fields are to be updated.
+    /// Valid mask paths include `product_labels`, `display_name`, and
+    /// `description`.
     #[prost(message, optional, tag="2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
-///  Request message for the `DeleteProduct` method.
+/// Request message for the `DeleteProduct` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteProductRequest {
-    ///  Required. Resource name of product to delete.
+    /// Required. Resource name of product to delete.
     ///
-    ///  Format is:
-    ///  `projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID`
+    /// Format is:
+    /// `projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID`
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Request message for the `CreateProductSet` method.
+/// Request message for the `CreateProductSet` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateProductSetRequest {
-    ///  Required. The project in which the ProductSet should be created.
+    /// Required. The project in which the ProductSet should be created.
     ///
-    ///  Format is `projects/PROJECT_ID/locations/LOC_ID`.
+    /// Format is `projects/PROJECT_ID/locations/LOC_ID`.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Required. The ProductSet to create.
+    /// Required. The ProductSet to create.
     #[prost(message, optional, tag="2")]
     pub product_set: ::core::option::Option<ProductSet>,
-    ///  A user-supplied resource id for this ProductSet. If set, the server will
-    ///  attempt to use this value as the resource id. If it is already in use, an
-    ///  error is returned with code ALREADY_EXISTS. Must be at most 128 characters
-    ///  long. It cannot contain the character `/`.
+    /// A user-supplied resource id for this ProductSet. If set, the server will
+    /// attempt to use this value as the resource id. If it is already in use, an
+    /// error is returned with code ALREADY_EXISTS. Must be at most 128 characters
+    /// long. It cannot contain the character `/`.
     #[prost(string, tag="3")]
     pub product_set_id: ::prost::alloc::string::String,
 }
-///  Request message for the `ListProductSets` method.
+/// Request message for the `ListProductSets` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListProductSetsRequest {
-    ///  Required. The project from which ProductSets should be listed.
+    /// Required. The project from which ProductSets should be listed.
     ///
-    ///  Format is `projects/PROJECT_ID/locations/LOC_ID`.
+    /// Format is `projects/PROJECT_ID/locations/LOC_ID`.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  The maximum number of items to return. Default 10, maximum 100.
+    /// The maximum number of items to return. Default 10, maximum 100.
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    ///  The next_page_token returned from a previous List request, if any.
+    /// The next_page_token returned from a previous List request, if any.
     #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
 }
-///  Response message for the `ListProductSets` method.
+/// Response message for the `ListProductSets` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListProductSetsResponse {
-    ///  List of ProductSets.
+    /// List of ProductSets.
     #[prost(message, repeated, tag="1")]
     pub product_sets: ::prost::alloc::vec::Vec<ProductSet>,
-    ///  Token to retrieve the next page of results, or empty if there are no more
-    ///  results in the list.
+    /// Token to retrieve the next page of results, or empty if there are no more
+    /// results in the list.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-///  Request message for the `GetProductSet` method.
+/// Request message for the `GetProductSet` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetProductSetRequest {
-    ///  Required. Resource name of the ProductSet to get.
+    /// Required. Resource name of the ProductSet to get.
     ///
-    ///  Format is:
-    ///  `projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID`
+    /// Format is:
+    /// `projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID`
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Request message for the `UpdateProductSet` method.
+/// Request message for the `UpdateProductSet` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateProductSetRequest {
-    ///  Required. The ProductSet resource which replaces the one on the server.
+    /// Required. The ProductSet resource which replaces the one on the server.
     #[prost(message, optional, tag="1")]
     pub product_set: ::core::option::Option<ProductSet>,
-    ///  The \[FieldMask][google.protobuf.FieldMask\] that specifies which fields to
-    ///  update.
-    ///  If update_mask isn't specified, all mutable fields are to be updated.
-    ///  Valid mask path is `display_name`.
+    /// The \[FieldMask][google.protobuf.FieldMask\] that specifies which fields to
+    /// update.
+    /// If update_mask isn't specified, all mutable fields are to be updated.
+    /// Valid mask path is `display_name`.
     #[prost(message, optional, tag="2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
-///  Request message for the `DeleteProductSet` method.
+/// Request message for the `DeleteProductSet` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteProductSetRequest {
-    ///  Required. Resource name of the ProductSet to delete.
+    /// Required. Resource name of the ProductSet to delete.
     ///
-    ///  Format is:
-    ///  `projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID`
+    /// Format is:
+    /// `projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID`
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Request message for the `CreateReferenceImage` method.
+/// Request message for the `CreateReferenceImage` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateReferenceImageRequest {
-    ///  Required. Resource name of the product in which to create the reference
-    ///  image.
+    /// Required. Resource name of the product in which to create the reference
+    /// image.
     ///
-    ///  Format is
-    ///  `projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID`.
+    /// Format is
+    /// `projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID`.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Required. The reference image to create.
-    ///  If an image ID is specified, it is ignored.
+    /// Required. The reference image to create.
+    /// If an image ID is specified, it is ignored.
     #[prost(message, optional, tag="2")]
     pub reference_image: ::core::option::Option<ReferenceImage>,
-    ///  A user-supplied resource id for the ReferenceImage to be added. If set,
-    ///  the server will attempt to use this value as the resource id. If it is
-    ///  already in use, an error is returned with code ALREADY_EXISTS. Must be at
-    ///  most 128 characters long. It cannot contain the character `/`.
+    /// A user-supplied resource id for the ReferenceImage to be added. If set,
+    /// the server will attempt to use this value as the resource id. If it is
+    /// already in use, an error is returned with code ALREADY_EXISTS. Must be at
+    /// most 128 characters long. It cannot contain the character `/`.
     #[prost(string, tag="3")]
     pub reference_image_id: ::prost::alloc::string::String,
 }
-///  Request message for the `ListReferenceImages` method.
+/// Request message for the `ListReferenceImages` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListReferenceImagesRequest {
-    ///  Required. Resource name of the product containing the reference images.
+    /// Required. Resource name of the product containing the reference images.
     ///
-    ///  Format is
-    ///  `projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID`.
+    /// Format is
+    /// `projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID`.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  The maximum number of items to return. Default 10, maximum 100.
+    /// The maximum number of items to return. Default 10, maximum 100.
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    ///  A token identifying a page of results to be returned. This is the value
-    ///  of `nextPageToken` returned in a previous reference image list request.
+    /// A token identifying a page of results to be returned. This is the value
+    /// of `nextPageToken` returned in a previous reference image list request.
     ///
-    ///  Defaults to the first page if not specified.
+    /// Defaults to the first page if not specified.
     #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
 }
-///  Response message for the `ListReferenceImages` method.
+/// Response message for the `ListReferenceImages` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListReferenceImagesResponse {
-    ///  The list of reference images.
+    /// The list of reference images.
     #[prost(message, repeated, tag="1")]
     pub reference_images: ::prost::alloc::vec::Vec<ReferenceImage>,
-    ///  The maximum number of items to return. Default 10, maximum 100.
+    /// The maximum number of items to return. Default 10, maximum 100.
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    ///  The next_page_token returned from a previous List request, if any.
+    /// The next_page_token returned from a previous List request, if any.
     #[prost(string, tag="3")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-///  Request message for the `GetReferenceImage` method.
+/// Request message for the `GetReferenceImage` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetReferenceImageRequest {
-    ///  Required. The resource name of the ReferenceImage to get.
+    /// Required. The resource name of the ReferenceImage to get.
     ///
-    ///  Format is:
+    /// Format is:
     ///
-    ///  `projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID/referenceImages/IMAGE_ID`.
+    /// `projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID/referenceImages/IMAGE_ID`.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Request message for the `DeleteReferenceImage` method.
+/// Request message for the `DeleteReferenceImage` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteReferenceImageRequest {
-    ///  Required. The resource name of the reference image to delete.
+    /// Required. The resource name of the reference image to delete.
     ///
-    ///  Format is:
+    /// Format is:
     ///
-    ///  `projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID/referenceImages/IMAGE_ID`
+    /// `projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID/referenceImages/IMAGE_ID`
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Request message for the `AddProductToProductSet` method.
+/// Request message for the `AddProductToProductSet` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddProductToProductSetRequest {
-    ///  Required. The resource name for the ProductSet to modify.
+    /// Required. The resource name for the ProductSet to modify.
     ///
-    ///  Format is:
-    ///  `projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID`
+    /// Format is:
+    /// `projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID`
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Required. The resource name for the Product to be added to this ProductSet.
+    /// Required. The resource name for the Product to be added to this ProductSet.
     ///
-    ///  Format is:
-    ///  `projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID`
+    /// Format is:
+    /// `projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID`
     #[prost(string, tag="2")]
     pub product: ::prost::alloc::string::String,
 }
-///  Request message for the `RemoveProductFromProductSet` method.
+/// Request message for the `RemoveProductFromProductSet` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RemoveProductFromProductSetRequest {
-    ///  Required. The resource name for the ProductSet to modify.
+    /// Required. The resource name for the ProductSet to modify.
     ///
-    ///  Format is:
-    ///  `projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID`
+    /// Format is:
+    /// `projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID`
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Required. The resource name for the Product to be removed from this
-    ///  ProductSet.
+    /// Required. The resource name for the Product to be removed from this
+    /// ProductSet.
     ///
-    ///  Format is:
-    ///  `projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID`
+    /// Format is:
+    /// `projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID`
     #[prost(string, tag="2")]
     pub product: ::prost::alloc::string::String,
 }
-///  Request message for the `ListProductsInProductSet` method.
+/// Request message for the `ListProductsInProductSet` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListProductsInProductSetRequest {
-    ///  Required. The ProductSet resource for which to retrieve Products.
+    /// Required. The ProductSet resource for which to retrieve Products.
     ///
-    ///  Format is:
-    ///  `projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID`
+    /// Format is:
+    /// `projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID`
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  The maximum number of items to return. Default 10, maximum 100.
+    /// The maximum number of items to return. Default 10, maximum 100.
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    ///  The next_page_token returned from a previous List request, if any.
+    /// The next_page_token returned from a previous List request, if any.
     #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
 }
-///  Response message for the `ListProductsInProductSet` method.
+/// Response message for the `ListProductsInProductSet` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListProductsInProductSetResponse {
-    ///  The list of Products.
+    /// The list of Products.
     #[prost(message, repeated, tag="1")]
     pub products: ::prost::alloc::vec::Vec<Product>,
-    ///  Token to retrieve the next page of results, or empty if there are no more
-    ///  results in the list.
+    /// Token to retrieve the next page of results, or empty if there are no more
+    /// results in the list.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-///  The Google Cloud Storage location for a csv file which preserves a list of
-///  ImportProductSetRequests in each line.
+/// The Google Cloud Storage location for a csv file which preserves a list of
+/// ImportProductSetRequests in each line.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportProductSetsGcsSource {
-    ///  The Google Cloud Storage URI of the input csv file.
+    /// The Google Cloud Storage URI of the input csv file.
     ///
-    ///  The URI must start with `gs://`.
+    /// The URI must start with `gs://`.
     ///
-    ///  The format of the input csv file should be one image per line.
-    ///  In each line, there are 8 columns.
+    /// The format of the input csv file should be one image per line.
+    /// In each line, there are 8 columns.
     ///
-    ///  1.  image-uri
-    ///  2.  image-id
-    ///  3.  product-set-id
-    ///  4.  product-id
-    ///  5.  product-category
-    ///  6.  product-display-name
-    ///  7.  labels
-    ///  8.  bounding-poly
+    /// 1.  image-uri
+    /// 2.  image-id
+    /// 3.  product-set-id
+    /// 4.  product-id
+    /// 5.  product-category
+    /// 6.  product-display-name
+    /// 7.  labels
+    /// 8.  bounding-poly
     ///
-    ///  The `image-uri`, `product-set-id`, `product-id`, and `product-category`
-    ///  columns are required. All other columns are optional.
+    /// The `image-uri`, `product-set-id`, `product-id`, and `product-category`
+    /// columns are required. All other columns are optional.
     ///
-    ///  If the `ProductSet` or `Product` specified by the `product-set-id` and
-    ///  `product-id` values does not exist, then the system will create a new
-    ///  `ProductSet` or `Product` for the image. In this case, the
-    ///  `product-display-name` column refers to
-    ///  \[display_name][google.cloud.vision.v1p4beta1.Product.display_name\], the
-    ///  `product-category` column refers to
-    ///  \[product_category][google.cloud.vision.v1p4beta1.Product.product_category\],
-    ///  and the `labels` column refers to
-    ///  \[product_labels][google.cloud.vision.v1p4beta1.Product.product_labels\].
+    /// If the `ProductSet` or `Product` specified by the `product-set-id` and
+    /// `product-id` values does not exist, then the system will create a new
+    /// `ProductSet` or `Product` for the image. In this case, the
+    /// `product-display-name` column refers to
+    /// \[display_name][google.cloud.vision.v1p4beta1.Product.display_name\], the
+    /// `product-category` column refers to
+    /// \[product_category][google.cloud.vision.v1p4beta1.Product.product_category\],
+    /// and the `labels` column refers to
+    /// \[product_labels][google.cloud.vision.v1p4beta1.Product.product_labels\].
     ///
-    ///  The `image-id` column is optional but must be unique if provided. If it is
-    ///  empty, the system will automatically assign a unique id to the image.
+    /// The `image-id` column is optional but must be unique if provided. If it is
+    /// empty, the system will automatically assign a unique id to the image.
     ///
-    ///  The `product-display-name` column is optional. If it is empty, the system
-    ///  sets the \[display_name][google.cloud.vision.v1p4beta1.Product.display_name\]
-    ///  field for the product to a space (" "). You can update the `display_name`
-    ///  later by using the API.
+    /// The `product-display-name` column is optional. If it is empty, the system
+    /// sets the \[display_name][google.cloud.vision.v1p4beta1.Product.display_name\]
+    /// field for the product to a space (" "). You can update the `display_name`
+    /// later by using the API.
     ///
-    ///  If a `Product` with the specified `product-id` already exists, then the
-    ///  system ignores the `product-display-name`, `product-category`, and `labels`
-    ///  columns.
+    /// If a `Product` with the specified `product-id` already exists, then the
+    /// system ignores the `product-display-name`, `product-category`, and `labels`
+    /// columns.
     ///
-    ///  The `labels` column (optional) is a line containing a list of
-    ///  comma-separated key-value pairs, in the following format:
+    /// The `labels` column (optional) is a line containing a list of
+    /// comma-separated key-value pairs, in the following format:
     ///
     ///      "key_1=value_1,key_2=value_2,...,key_n=value_n"
     ///
-    ///  The `bounding-poly` column (optional) identifies one region of
-    ///  interest from the image in the same manner as `CreateReferenceImage`. If
-    ///  you do not specify the `bounding-poly` column, then the system will try to
-    ///  detect regions of interest automatically.
+    /// The `bounding-poly` column (optional) identifies one region of
+    /// interest from the image in the same manner as `CreateReferenceImage`. If
+    /// you do not specify the `bounding-poly` column, then the system will try to
+    /// detect regions of interest automatically.
     ///
-    ///  At most one `bounding-poly` column is allowed per line. If the image
-    ///  contains multiple regions of interest, add a line to the CSV file that
-    ///  includes the same product information, and the `bounding-poly` values for
-    ///  each region of interest.
+    /// At most one `bounding-poly` column is allowed per line. If the image
+    /// contains multiple regions of interest, add a line to the CSV file that
+    /// includes the same product information, and the `bounding-poly` values for
+    /// each region of interest.
     ///
-    ///  The `bounding-poly` column must contain an even number of comma-separated
-    ///  numbers, in the format "p1_x,p1_y,p2_x,p2_y,...,pn_x,pn_y". Use
-    ///  non-negative integers for absolute bounding polygons, and float values
-    ///  in [0, 1] for normalized bounding polygons.
+    /// The `bounding-poly` column must contain an even number of comma-separated
+    /// numbers, in the format "p1_x,p1_y,p2_x,p2_y,...,pn_x,pn_y". Use
+    /// non-negative integers for absolute bounding polygons, and float values
+    /// in [0, 1] for normalized bounding polygons.
     ///
-    ///  The system will resize the image if the image resolution is too
-    ///  large to process (larger than 20MP).
+    /// The system will resize the image if the image resolution is too
+    /// large to process (larger than 20MP).
     #[prost(string, tag="1")]
     pub csv_file_uri: ::prost::alloc::string::String,
 }
-///  The input content for the `ImportProductSets` method.
+/// The input content for the `ImportProductSets` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportProductSetsInputConfig {
-    ///  The source of the input.
+    /// The source of the input.
     #[prost(oneof="import_product_sets_input_config::Source", tags="1")]
     pub source: ::core::option::Option<import_product_sets_input_config::Source>,
 }
 /// Nested message and enum types in `ImportProductSetsInputConfig`.
 pub mod import_product_sets_input_config {
-    ///  The source of the input.
+    /// The source of the input.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
-        ///  The Google Cloud Storage location for a csv file which preserves a list
-        ///  of ImportProductSetRequests in each line.
+        /// The Google Cloud Storage location for a csv file which preserves a list
+        /// of ImportProductSetRequests in each line.
         #[prost(message, tag="1")]
         GcsSource(super::ImportProductSetsGcsSource),
     }
 }
-///  Request message for the `ImportProductSets` method.
+/// Request message for the `ImportProductSets` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportProductSetsRequest {
-    ///  Required. The project in which the ProductSets should be imported.
+    /// Required. The project in which the ProductSets should be imported.
     ///
-    ///  Format is `projects/PROJECT_ID/locations/LOC_ID`.
+    /// Format is `projects/PROJECT_ID/locations/LOC_ID`.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Required. The input content for the list of requests.
+    /// Required. The input content for the list of requests.
     #[prost(message, optional, tag="2")]
     pub input_config: ::core::option::Option<ImportProductSetsInputConfig>,
 }
-///  Response message for the `ImportProductSets` method.
+/// Response message for the `ImportProductSets` method.
 ///
-///  This message is returned by the
-///  \[google.longrunning.Operations.GetOperation][google.longrunning.Operations.GetOperation\]
-///  method in the returned
-///  \[google.longrunning.Operation.response][google.longrunning.Operation.response\]
-///  field.
+/// This message is returned by the
+/// \[google.longrunning.Operations.GetOperation][google.longrunning.Operations.GetOperation\]
+/// method in the returned
+/// \[google.longrunning.Operation.response][google.longrunning.Operation.response\]
+/// field.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportProductSetsResponse {
-    ///  The list of reference_images that are imported successfully.
+    /// The list of reference_images that are imported successfully.
     #[prost(message, repeated, tag="1")]
     pub reference_images: ::prost::alloc::vec::Vec<ReferenceImage>,
-    ///  The rpc status for each ImportProductSet request, including both successes
-    ///  and errors.
+    /// The rpc status for each ImportProductSet request, including both successes
+    /// and errors.
     ///
-    ///  The number of statuses here matches the number of lines in the csv file,
-    ///  and statuses\[i\] stores the success or failure status of processing the i-th
-    ///  line of the csv, starting from line 0.
+    /// The number of statuses here matches the number of lines in the csv file,
+    /// and statuses\[i\] stores the success or failure status of processing the i-th
+    /// line of the csv, starting from line 0.
     #[prost(message, repeated, tag="2")]
     pub statuses: ::prost::alloc::vec::Vec<super::super::super::rpc::Status>,
 }
-///  Metadata for the batch operations such as the current state.
+/// Metadata for the batch operations such as the current state.
 ///
-///  This is included in the `metadata` field of the `Operation` returned by the
-///  `GetOperation` call of the `google::longrunning::Operations` service.
+/// This is included in the `metadata` field of the `Operation` returned by the
+/// `GetOperation` call of the `google::longrunning::Operations` service.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchOperationMetadata {
-    ///  The current state of the batch operation.
+    /// The current state of the batch operation.
     #[prost(enumeration="batch_operation_metadata::State", tag="1")]
     pub state: i32,
-    ///  The time when the batch request was submitted to the server.
+    /// The time when the batch request was submitted to the server.
     #[prost(message, optional, tag="2")]
     pub submit_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  The time when the batch request is finished and
-    ///  \[google.longrunning.Operation.done][google.longrunning.Operation.done\] is
-    ///  set to true.
+    /// The time when the batch request is finished and
+    /// \[google.longrunning.Operation.done][google.longrunning.Operation.done\] is
+    /// set to true.
     #[prost(message, optional, tag="3")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Nested message and enum types in `BatchOperationMetadata`.
 pub mod batch_operation_metadata {
-    ///  Enumerates the possible states that the batch request can be in.
+    /// Enumerates the possible states that the batch request can be in.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum State {
-        ///  Invalid.
+        /// Invalid.
         Unspecified = 0,
-        ///  Request is actively being processed.
+        /// Request is actively being processed.
         Processing = 1,
-        ///  The request is done and at least one item has been successfully
-        ///  processed.
+        /// The request is done and at least one item has been successfully
+        /// processed.
         Successful = 2,
-        ///  The request is done and no item has been successfully processed.
+        /// The request is done and no item has been successfully processed.
         Failed = 3,
-        ///  The request is done after the longrunning.Operations.CancelOperation has
-        ///  been called by the user.  Any records that were processed before the
-        ///  cancel command are output as specified in the request.
+        /// The request is done after the longrunning.Operations.CancelOperation has
+        /// been called by the user.  Any records that were processed before the
+        /// cancel command are output as specified in the request.
         Cancelled = 4,
     }
     impl State {
@@ -667,41 +667,41 @@ pub mod batch_operation_metadata {
         }
     }
 }
-///  Config to control which ProductSet contains the Products to be deleted.
+/// Config to control which ProductSet contains the Products to be deleted.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProductSetPurgeConfig {
-    ///  The ProductSet that contains the Products to delete. If a Product is a
-    ///  member of product_set_id in addition to other ProductSets, the Product will
-    ///  still be deleted.
+    /// The ProductSet that contains the Products to delete. If a Product is a
+    /// member of product_set_id in addition to other ProductSets, the Product will
+    /// still be deleted.
     #[prost(string, tag="1")]
     pub product_set_id: ::prost::alloc::string::String,
 }
-///  Request message for the `PurgeProducts` method.
+/// Request message for the `PurgeProducts` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PurgeProductsRequest {
-    ///  Required. The project and location in which the Products should be deleted.
+    /// Required. The project and location in which the Products should be deleted.
     ///
-    ///  Format is `projects/PROJECT_ID/locations/LOC_ID`.
+    /// Format is `projects/PROJECT_ID/locations/LOC_ID`.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  The default value is false. Override this value to true to actually perform
-    ///  the purge.
+    /// The default value is false. Override this value to true to actually perform
+    /// the purge.
     #[prost(bool, tag="4")]
     pub force: bool,
-    ///  The Products to delete.
+    /// The Products to delete.
     #[prost(oneof="purge_products_request::Target", tags="2, 3")]
     pub target: ::core::option::Option<purge_products_request::Target>,
 }
 /// Nested message and enum types in `PurgeProductsRequest`.
 pub mod purge_products_request {
-    ///  The Products to delete.
+    /// The Products to delete.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Target {
-        ///  Specify which ProductSet contains the Products to be deleted.
+        /// Specify which ProductSet contains the Products to be deleted.
         #[prost(message, tag="2")]
         ProductSetPurgeConfig(super::ProductSetPurgeConfig),
-        ///  If delete_orphan_products is true, all Products that are not in any
-        ///  ProductSet will be deleted.
+        /// If delete_orphan_products is true, all Products that are not in any
+        /// ProductSet will be deleted.
         #[prost(bool, tag="3")]
         DeleteOrphanProducts(bool),
     }
@@ -1321,168 +1321,168 @@ pub mod product_search_client {
         }
     }
 }
-///  Parameters for a product search request.
+/// Parameters for a product search request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProductSearchParams {
-    ///  The bounding polygon around the area of interest in the image.
-    ///  If it is not specified, system discretion will be applied.
+    /// The bounding polygon around the area of interest in the image.
+    /// If it is not specified, system discretion will be applied.
     #[prost(message, optional, tag="9")]
     pub bounding_poly: ::core::option::Option<BoundingPoly>,
-    ///  The resource name of a
-    ///  \[ProductSet][google.cloud.vision.v1p4beta1.ProductSet\] to be searched for
-    ///  similar images.
+    /// The resource name of a
+    /// \[ProductSet][google.cloud.vision.v1p4beta1.ProductSet\] to be searched for
+    /// similar images.
     ///
-    ///  Format is:
-    ///  `projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID`.
+    /// Format is:
+    /// `projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID`.
     #[prost(string, tag="6")]
     pub product_set: ::prost::alloc::string::String,
-    ///  The list of product categories to search in. Currently, we only consider
-    ///  the first category, and either "homegoods-v2", "apparel-v2", "toys-v2",
-    ///  "packagedgoods-v1", or "general-v1" should be specified. The legacy
-    ///  categories "homegoods", "apparel", and "toys" are still supported but will
-    ///  be deprecated. For new products, please use "homegoods-v2", "apparel-v2",
-    ///  or "toys-v2" for better product search accuracy. It is recommended to
-    ///  migrate existing products to these categories as well.
+    /// The list of product categories to search in. Currently, we only consider
+    /// the first category, and either "homegoods-v2", "apparel-v2", "toys-v2",
+    /// "packagedgoods-v1", or "general-v1" should be specified. The legacy
+    /// categories "homegoods", "apparel", and "toys" are still supported but will
+    /// be deprecated. For new products, please use "homegoods-v2", "apparel-v2",
+    /// or "toys-v2" for better product search accuracy. It is recommended to
+    /// migrate existing products to these categories as well.
     #[prost(string, repeated, tag="7")]
     pub product_categories: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    ///  The filtering expression. This can be used to restrict search results based
-    ///  on Product labels. We currently support an AND of OR of key-value
-    ///  expressions, where each expression within an OR must have the same key. An
-    ///  '=' should be used to connect the key and value.
+    /// The filtering expression. This can be used to restrict search results based
+    /// on Product labels. We currently support an AND of OR of key-value
+    /// expressions, where each expression within an OR must have the same key. An
+    /// '=' should be used to connect the key and value.
     ///
-    ///  For example, "(color = red OR color = blue) AND brand = Google" is
-    ///  acceptable, but "(color = red OR brand = Google)" is not acceptable.
-    ///  "color: red" is not acceptable because it uses a ':' instead of an '='.
+    /// For example, "(color = red OR color = blue) AND brand = Google" is
+    /// acceptable, but "(color = red OR brand = Google)" is not acceptable.
+    /// "color: red" is not acceptable because it uses a ':' instead of an '='.
     #[prost(string, tag="8")]
     pub filter: ::prost::alloc::string::String,
 }
-///  Results for a product search request.
+/// Results for a product search request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProductSearchResults {
-    ///  Timestamp of the index which provided these results. Products added to the
-    ///  product set and products removed from the product set after this time are
-    ///  not reflected in the current results.
+    /// Timestamp of the index which provided these results. Products added to the
+    /// product set and products removed from the product set after this time are
+    /// not reflected in the current results.
     #[prost(message, optional, tag="2")]
     pub index_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  List of results, one for each product match.
+    /// List of results, one for each product match.
     #[prost(message, repeated, tag="5")]
     pub results: ::prost::alloc::vec::Vec<product_search_results::Result>,
-    ///  List of results grouped by products detected in the query image. Each entry
-    ///  corresponds to one bounding polygon in the query image, and contains the
-    ///  matching products specific to that region. There may be duplicate product
-    ///  matches in the union of all the per-product results.
+    /// List of results grouped by products detected in the query image. Each entry
+    /// corresponds to one bounding polygon in the query image, and contains the
+    /// matching products specific to that region. There may be duplicate product
+    /// matches in the union of all the per-product results.
     #[prost(message, repeated, tag="6")]
     pub product_grouped_results: ::prost::alloc::vec::Vec<product_search_results::GroupedResult>,
 }
 /// Nested message and enum types in `ProductSearchResults`.
 pub mod product_search_results {
-    ///  Information about a product.
+    /// Information about a product.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Result {
-        ///  The Product.
+        /// The Product.
         #[prost(message, optional, tag="1")]
         pub product: ::core::option::Option<super::Product>,
-        ///  A confidence level on the match, ranging from 0 (no confidence) to
-        ///  1 (full confidence).
+        /// A confidence level on the match, ranging from 0 (no confidence) to
+        /// 1 (full confidence).
         #[prost(float, tag="2")]
         pub score: f32,
-        ///  The resource name of the image from the product that is the closest match
-        ///  to the query.
+        /// The resource name of the image from the product that is the closest match
+        /// to the query.
         #[prost(string, tag="3")]
         pub image: ::prost::alloc::string::String,
     }
-    ///  Prediction for what the object in the bounding box is.
+    /// Prediction for what the object in the bounding box is.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ObjectAnnotation {
-        ///  Object ID that should align with EntityAnnotation mid.
+        /// Object ID that should align with EntityAnnotation mid.
         #[prost(string, tag="1")]
         pub mid: ::prost::alloc::string::String,
-        ///  The BCP-47 language code, such as "en-US" or "sr-Latn". For more
-        ///  information, see
-        ///  <http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.>
+        /// The BCP-47 language code, such as "en-US" or "sr-Latn". For more
+        /// information, see
+        /// <http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.>
         #[prost(string, tag="2")]
         pub language_code: ::prost::alloc::string::String,
-        ///  Object name, expressed in its `language_code` language.
+        /// Object name, expressed in its `language_code` language.
         #[prost(string, tag="3")]
         pub name: ::prost::alloc::string::String,
-        ///  Score of the result. Range [0, 1].
+        /// Score of the result. Range [0, 1].
         #[prost(float, tag="4")]
         pub score: f32,
     }
-    ///  Information about the products similar to a single product in a query
-    ///  image.
+    /// Information about the products similar to a single product in a query
+    /// image.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct GroupedResult {
-        ///  The bounding polygon around the product detected in the query image.
+        /// The bounding polygon around the product detected in the query image.
         #[prost(message, optional, tag="1")]
         pub bounding_poly: ::core::option::Option<super::BoundingPoly>,
-        ///  List of results, one for each product match.
+        /// List of results, one for each product match.
         #[prost(message, repeated, tag="2")]
         pub results: ::prost::alloc::vec::Vec<Result>,
-        ///  List of generic predictions for the object in the bounding box.
+        /// List of generic predictions for the object in the bounding box.
         #[prost(message, repeated, tag="3")]
         pub object_annotations: ::prost::alloc::vec::Vec<ObjectAnnotation>,
     }
 }
-///  TextAnnotation contains a structured representation of OCR extracted text.
-///  The hierarchy of an OCR extracted text structure is like this:
+/// TextAnnotation contains a structured representation of OCR extracted text.
+/// The hierarchy of an OCR extracted text structure is like this:
 ///      TextAnnotation -> Page -> Block -> Paragraph -> Word -> Symbol
-///  Each structural component, starting from Page, may further have their own
-///  properties. Properties describe detected languages, breaks etc.. Please refer
-///  to the
-///  \[TextAnnotation.TextProperty][google.cloud.vision.v1p4beta1.TextAnnotation.TextProperty\]
-///  message definition below for more detail.
+/// Each structural component, starting from Page, may further have their own
+/// properties. Properties describe detected languages, breaks etc.. Please refer
+/// to the
+/// \[TextAnnotation.TextProperty][google.cloud.vision.v1p4beta1.TextAnnotation.TextProperty\]
+/// message definition below for more detail.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TextAnnotation {
-    ///  List of pages detected by OCR.
+    /// List of pages detected by OCR.
     #[prost(message, repeated, tag="1")]
     pub pages: ::prost::alloc::vec::Vec<Page>,
-    ///  UTF-8 text detected on the pages.
+    /// UTF-8 text detected on the pages.
     #[prost(string, tag="2")]
     pub text: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `TextAnnotation`.
 pub mod text_annotation {
-    ///  Detected language for a structural component.
+    /// Detected language for a structural component.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DetectedLanguage {
-        ///  The BCP-47 language code, such as "en-US" or "sr-Latn". For more
-        ///  information, see
-        ///  <http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.>
+        /// The BCP-47 language code, such as "en-US" or "sr-Latn". For more
+        /// information, see
+        /// <http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.>
         #[prost(string, tag="1")]
         pub language_code: ::prost::alloc::string::String,
-        ///  Confidence of detected language. Range [0, 1].
+        /// Confidence of detected language. Range [0, 1].
         #[prost(float, tag="2")]
         pub confidence: f32,
     }
-    ///  Detected start or end of a structural component.
+    /// Detected start or end of a structural component.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DetectedBreak {
-        ///  Detected break type.
+        /// Detected break type.
         #[prost(enumeration="detected_break::BreakType", tag="1")]
         pub r#type: i32,
-        ///  True if break prepends the element.
+        /// True if break prepends the element.
         #[prost(bool, tag="2")]
         pub is_prefix: bool,
     }
     /// Nested message and enum types in `DetectedBreak`.
     pub mod detected_break {
-        ///  Enum to denote the type of break found. New line, space etc.
+        /// Enum to denote the type of break found. New line, space etc.
         #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
         #[repr(i32)]
         pub enum BreakType {
-            ///  Unknown break label type.
+            /// Unknown break label type.
             Unknown = 0,
-            ///  Regular space.
+            /// Regular space.
             Space = 1,
-            ///  Sure space (very wide).
+            /// Sure space (very wide).
             SureSpace = 2,
-            ///  Line-wrapping break.
+            /// Line-wrapping break.
             EolSureSpace = 3,
-            ///  End-line hyphen that is not present in text; does not co-occur with
-            ///  `SPACE`, `LEADER_SPACE`, or `LINE_BREAK`.
+            /// End-line hyphen that is not present in text; does not co-occur with
+            /// `SPACE`, `LEADER_SPACE`, or `LINE_BREAK`.
             Hyphen = 4,
-            ///  Line break that ends a paragraph.
+            /// Line break that ends a paragraph.
             LineBreak = 5,
         }
         impl BreakType {
@@ -1502,58 +1502,58 @@ pub mod text_annotation {
             }
         }
     }
-    ///  Additional information detected on the structural component.
+    /// Additional information detected on the structural component.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct TextProperty {
-        ///  A list of detected languages together with confidence.
+        /// A list of detected languages together with confidence.
         #[prost(message, repeated, tag="1")]
         pub detected_languages: ::prost::alloc::vec::Vec<DetectedLanguage>,
-        ///  Detected start or end of a text segment.
+        /// Detected start or end of a text segment.
         #[prost(message, optional, tag="2")]
         pub detected_break: ::core::option::Option<DetectedBreak>,
     }
 }
-///  Detected page from OCR.
+/// Detected page from OCR.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Page {
-    ///  Additional information detected on the page.
+    /// Additional information detected on the page.
     #[prost(message, optional, tag="1")]
     pub property: ::core::option::Option<text_annotation::TextProperty>,
-    ///  Page width. For PDFs the unit is points. For images (including
-    ///  TIFFs) the unit is pixels.
+    /// Page width. For PDFs the unit is points. For images (including
+    /// TIFFs) the unit is pixels.
     #[prost(int32, tag="2")]
     pub width: i32,
-    ///  Page height. For PDFs the unit is points. For images (including
-    ///  TIFFs) the unit is pixels.
+    /// Page height. For PDFs the unit is points. For images (including
+    /// TIFFs) the unit is pixels.
     #[prost(int32, tag="3")]
     pub height: i32,
-    ///  List of blocks of text, images etc on this page.
+    /// List of blocks of text, images etc on this page.
     #[prost(message, repeated, tag="4")]
     pub blocks: ::prost::alloc::vec::Vec<Block>,
-    ///  Confidence of the OCR results on the page. Range [0, 1].
+    /// Confidence of the OCR results on the page. Range [0, 1].
     #[prost(float, tag="5")]
     pub confidence: f32,
 }
-///  Logical element on the page.
+/// Logical element on the page.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Block {
-    ///  Additional information detected for the block.
+    /// Additional information detected for the block.
     #[prost(message, optional, tag="1")]
     pub property: ::core::option::Option<text_annotation::TextProperty>,
-    ///  The bounding box for the block.
-    ///  The vertices are in the order of top-left, top-right, bottom-right,
-    ///  bottom-left. When a rotation of the bounding box is detected the rotation
-    ///  is represented as around the top-left corner as defined when the text is
-    ///  read in the 'natural' orientation.
-    ///  For example:
+    /// The bounding box for the block.
+    /// The vertices are in the order of top-left, top-right, bottom-right,
+    /// bottom-left. When a rotation of the bounding box is detected the rotation
+    /// is represented as around the top-left corner as defined when the text is
+    /// read in the 'natural' orientation.
+    /// For example:
     ///
-    ///  * when the text is horizontal it might look like:
+    /// * when the text is horizontal it might look like:
     ///
     ///          0----1
     ///          |    |
     ///          3----2
     ///
-    ///  * when it's rotated 180 degrees around the top-left corner it becomes:
+    /// * when it's rotated 180 degrees around the top-left corner it becomes:
     ///
     ///          2----3
     ///          |    |
@@ -1562,33 +1562,33 @@ pub struct Block {
     ///    and the vertex order will still be (0, 1, 2, 3).
     #[prost(message, optional, tag="2")]
     pub bounding_box: ::core::option::Option<BoundingPoly>,
-    ///  List of paragraphs in this block (if this blocks is of type text).
+    /// List of paragraphs in this block (if this blocks is of type text).
     #[prost(message, repeated, tag="3")]
     pub paragraphs: ::prost::alloc::vec::Vec<Paragraph>,
-    ///  Detected block type (text, image etc) for this block.
+    /// Detected block type (text, image etc) for this block.
     #[prost(enumeration="block::BlockType", tag="4")]
     pub block_type: i32,
-    ///  Confidence of the OCR results on the block. Range [0, 1].
+    /// Confidence of the OCR results on the block. Range [0, 1].
     #[prost(float, tag="5")]
     pub confidence: f32,
 }
 /// Nested message and enum types in `Block`.
 pub mod block {
-    ///  Type of a block (text, image etc) as identified by OCR.
+    /// Type of a block (text, image etc) as identified by OCR.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum BlockType {
-        ///  Unknown block type.
+        /// Unknown block type.
         Unknown = 0,
-        ///  Regular text block.
+        /// Regular text block.
         Text = 1,
-        ///  Table block.
+        /// Table block.
         Table = 2,
-        ///  Image block.
+        /// Image block.
         Picture = 3,
-        ///  Horizontal/vertical line box.
+        /// Horizontal/vertical line box.
         Ruler = 4,
-        ///  Barcode block.
+        /// Barcode block.
         Barcode = 5,
     }
     impl BlockType {
@@ -1608,18 +1608,18 @@ pub mod block {
         }
     }
 }
-///  Structural unit of text representing a number of words in certain order.
+/// Structural unit of text representing a number of words in certain order.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Paragraph {
-    ///  Additional information detected for the paragraph.
+    /// Additional information detected for the paragraph.
     #[prost(message, optional, tag="1")]
     pub property: ::core::option::Option<text_annotation::TextProperty>,
-    ///  The bounding box for the paragraph.
-    ///  The vertices are in the order of top-left, top-right, bottom-right,
-    ///  bottom-left. When a rotation of the bounding box is detected the rotation
-    ///  is represented as around the top-left corner as defined when the text is
-    ///  read in the 'natural' orientation.
-    ///  For example:
+    /// The bounding box for the paragraph.
+    /// The vertices are in the order of top-left, top-right, bottom-right,
+    /// bottom-left. When a rotation of the bounding box is detected the rotation
+    /// is represented as around the top-left corner as defined when the text is
+    /// read in the 'natural' orientation.
+    /// For example:
     ///    * when the text is horizontal it might look like:
     ///       0----1
     ///       |    |
@@ -1631,25 +1631,25 @@ pub struct Paragraph {
     ///    and the vertex order will still be (0, 1, 2, 3).
     #[prost(message, optional, tag="2")]
     pub bounding_box: ::core::option::Option<BoundingPoly>,
-    ///  List of all words in this paragraph.
+    /// List of all words in this paragraph.
     #[prost(message, repeated, tag="3")]
     pub words: ::prost::alloc::vec::Vec<Word>,
-    ///  Confidence of the OCR results for the paragraph. Range [0, 1].
+    /// Confidence of the OCR results for the paragraph. Range [0, 1].
     #[prost(float, tag="4")]
     pub confidence: f32,
 }
-///  A word representation.
+/// A word representation.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Word {
-    ///  Additional information detected for the word.
+    /// Additional information detected for the word.
     #[prost(message, optional, tag="1")]
     pub property: ::core::option::Option<text_annotation::TextProperty>,
-    ///  The bounding box for the word.
-    ///  The vertices are in the order of top-left, top-right, bottom-right,
-    ///  bottom-left. When a rotation of the bounding box is detected the rotation
-    ///  is represented as around the top-left corner as defined when the text is
-    ///  read in the 'natural' orientation.
-    ///  For example:
+    /// The bounding box for the word.
+    /// The vertices are in the order of top-left, top-right, bottom-right,
+    /// bottom-left. When a rotation of the bounding box is detected the rotation
+    /// is represented as around the top-left corner as defined when the text is
+    /// read in the 'natural' orientation.
+    /// For example:
     ///    * when the text is horizontal it might look like:
     ///       0----1
     ///       |    |
@@ -1661,26 +1661,26 @@ pub struct Word {
     ///    and the vertex order will still be (0, 1, 2, 3).
     #[prost(message, optional, tag="2")]
     pub bounding_box: ::core::option::Option<BoundingPoly>,
-    ///  List of symbols in the word.
-    ///  The order of the symbols follows the natural reading order.
+    /// List of symbols in the word.
+    /// The order of the symbols follows the natural reading order.
     #[prost(message, repeated, tag="3")]
     pub symbols: ::prost::alloc::vec::Vec<Symbol>,
-    ///  Confidence of the OCR results for the word. Range [0, 1].
+    /// Confidence of the OCR results for the word. Range [0, 1].
     #[prost(float, tag="4")]
     pub confidence: f32,
 }
-///  A single symbol representation.
+/// A single symbol representation.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Symbol {
-    ///  Additional information detected for the symbol.
+    /// Additional information detected for the symbol.
     #[prost(message, optional, tag="1")]
     pub property: ::core::option::Option<text_annotation::TextProperty>,
-    ///  The bounding box for the symbol.
-    ///  The vertices are in the order of top-left, top-right, bottom-right,
-    ///  bottom-left. When a rotation of the bounding box is detected the rotation
-    ///  is represented as around the top-left corner as defined when the text is
-    ///  read in the 'natural' orientation.
-    ///  For example:
+    /// The bounding box for the symbol.
+    /// The vertices are in the order of top-left, top-right, bottom-right,
+    /// bottom-left. When a rotation of the bounding box is detected the rotation
+    /// is represented as around the top-left corner as defined when the text is
+    /// read in the 'natural' orientation.
+    /// For example:
     ///    * when the text is horizontal it might look like:
     ///       0----1
     ///       |    |
@@ -1692,156 +1692,156 @@ pub struct Symbol {
     ///    and the vertex order will still be (0, 1, 2, 3).
     #[prost(message, optional, tag="2")]
     pub bounding_box: ::core::option::Option<BoundingPoly>,
-    ///  The actual UTF-8 representation of the symbol.
+    /// The actual UTF-8 representation of the symbol.
     #[prost(string, tag="3")]
     pub text: ::prost::alloc::string::String,
-    ///  Confidence of the OCR results for the symbol. Range [0, 1].
+    /// Confidence of the OCR results for the symbol. Range [0, 1].
     #[prost(float, tag="4")]
     pub confidence: f32,
 }
-///  Relevant information for the image from the Internet.
+/// Relevant information for the image from the Internet.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WebDetection {
-    ///  Deduced entities from similar images on the Internet.
+    /// Deduced entities from similar images on the Internet.
     #[prost(message, repeated, tag="1")]
     pub web_entities: ::prost::alloc::vec::Vec<web_detection::WebEntity>,
-    ///  Fully matching images from the Internet.
-    ///  Can include resized copies of the query image.
+    /// Fully matching images from the Internet.
+    /// Can include resized copies of the query image.
     #[prost(message, repeated, tag="2")]
     pub full_matching_images: ::prost::alloc::vec::Vec<web_detection::WebImage>,
-    ///  Partial matching images from the Internet.
-    ///  Those images are similar enough to share some key-point features. For
-    ///  example an original image will likely have partial matching for its crops.
+    /// Partial matching images from the Internet.
+    /// Those images are similar enough to share some key-point features. For
+    /// example an original image will likely have partial matching for its crops.
     #[prost(message, repeated, tag="3")]
     pub partial_matching_images: ::prost::alloc::vec::Vec<web_detection::WebImage>,
-    ///  Web pages containing the matching images from the Internet.
+    /// Web pages containing the matching images from the Internet.
     #[prost(message, repeated, tag="4")]
     pub pages_with_matching_images: ::prost::alloc::vec::Vec<web_detection::WebPage>,
-    ///  The visually similar image results.
+    /// The visually similar image results.
     #[prost(message, repeated, tag="6")]
     pub visually_similar_images: ::prost::alloc::vec::Vec<web_detection::WebImage>,
-    ///  The service's best guess as to the topic of the request image.
-    ///  Inferred from similar images on the open web.
+    /// The service's best guess as to the topic of the request image.
+    /// Inferred from similar images on the open web.
     #[prost(message, repeated, tag="8")]
     pub best_guess_labels: ::prost::alloc::vec::Vec<web_detection::WebLabel>,
 }
 /// Nested message and enum types in `WebDetection`.
 pub mod web_detection {
-    ///  Entity deduced from similar images on the Internet.
+    /// Entity deduced from similar images on the Internet.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct WebEntity {
-        ///  Opaque entity ID.
+        /// Opaque entity ID.
         #[prost(string, tag="1")]
         pub entity_id: ::prost::alloc::string::String,
-        ///  Overall relevancy score for the entity.
-        ///  Not normalized and not comparable across different image queries.
+        /// Overall relevancy score for the entity.
+        /// Not normalized and not comparable across different image queries.
         #[prost(float, tag="2")]
         pub score: f32,
-        ///  Canonical description of the entity, in English.
+        /// Canonical description of the entity, in English.
         #[prost(string, tag="3")]
         pub description: ::prost::alloc::string::String,
     }
-    ///  Metadata for online images.
+    /// Metadata for online images.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct WebImage {
-        ///  The result image URL.
+        /// The result image URL.
         #[prost(string, tag="1")]
         pub url: ::prost::alloc::string::String,
-        ///  (Deprecated) Overall relevancy score for the image.
+        /// (Deprecated) Overall relevancy score for the image.
         #[prost(float, tag="2")]
         pub score: f32,
     }
-    ///  Metadata for web pages.
+    /// Metadata for web pages.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct WebPage {
-        ///  The result web page URL.
+        /// The result web page URL.
         #[prost(string, tag="1")]
         pub url: ::prost::alloc::string::String,
-        ///  (Deprecated) Overall relevancy score for the web page.
+        /// (Deprecated) Overall relevancy score for the web page.
         #[prost(float, tag="2")]
         pub score: f32,
-        ///  Title for the web page, may contain HTML markups.
+        /// Title for the web page, may contain HTML markups.
         #[prost(string, tag="3")]
         pub page_title: ::prost::alloc::string::String,
-        ///  Fully matching images on the page.
-        ///  Can include resized copies of the query image.
+        /// Fully matching images on the page.
+        /// Can include resized copies of the query image.
         #[prost(message, repeated, tag="4")]
         pub full_matching_images: ::prost::alloc::vec::Vec<WebImage>,
-        ///  Partial matching images on the page.
-        ///  Those images are similar enough to share some key-point features. For
-        ///  example an original image will likely have partial matching for its
-        ///  crops.
+        /// Partial matching images on the page.
+        /// Those images are similar enough to share some key-point features. For
+        /// example an original image will likely have partial matching for its
+        /// crops.
         #[prost(message, repeated, tag="5")]
         pub partial_matching_images: ::prost::alloc::vec::Vec<WebImage>,
     }
-    ///  Label to provide extra metadata for the web detection.
+    /// Label to provide extra metadata for the web detection.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct WebLabel {
-        ///  Label for extra metadata.
+        /// Label for extra metadata.
         #[prost(string, tag="1")]
         pub label: ::prost::alloc::string::String,
-        ///  The BCP-47 language code for `label`, such as "en-US" or "sr-Latn".
-        ///  For more information, see
-        ///  <http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.>
+        /// The BCP-47 language code for `label`, such as "en-US" or "sr-Latn".
+        /// For more information, see
+        /// <http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.>
         #[prost(string, tag="2")]
         pub language_code: ::prost::alloc::string::String,
     }
 }
-///  The type of Google Cloud Vision API detection to perform, and the maximum
-///  number of results to return for that type. Multiple `Feature` objects can
-///  be specified in the `features` list.
+/// The type of Google Cloud Vision API detection to perform, and the maximum
+/// number of results to return for that type. Multiple `Feature` objects can
+/// be specified in the `features` list.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Feature {
-    ///  The feature type.
+    /// The feature type.
     #[prost(enumeration="feature::Type", tag="1")]
     pub r#type: i32,
-    ///  Maximum number of results of this type. Does not apply to
-    ///  `TEXT_DETECTION`, `DOCUMENT_TEXT_DETECTION`, or `CROP_HINTS`.
+    /// Maximum number of results of this type. Does not apply to
+    /// `TEXT_DETECTION`, `DOCUMENT_TEXT_DETECTION`, or `CROP_HINTS`.
     #[prost(int32, tag="2")]
     pub max_results: i32,
-    ///  Model to use for the feature.
-    ///  Supported values: "builtin/stable" (the default if unset) and
-    ///  "builtin/latest". `DOCUMENT_TEXT_DETECTION` and `TEXT_DETECTION` also
-    ///  support "builtin/weekly" for the bleeding edge release updated weekly.
+    /// Model to use for the feature.
+    /// Supported values: "builtin/stable" (the default if unset) and
+    /// "builtin/latest". `DOCUMENT_TEXT_DETECTION` and `TEXT_DETECTION` also
+    /// support "builtin/weekly" for the bleeding edge release updated weekly.
     #[prost(string, tag="3")]
     pub model: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `Feature`.
 pub mod feature {
-    ///  Type of Google Cloud Vision API feature to be extracted.
+    /// Type of Google Cloud Vision API feature to be extracted.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum Type {
-        ///  Unspecified feature type.
+        /// Unspecified feature type.
         Unspecified = 0,
-        ///  Run face detection.
+        /// Run face detection.
         FaceDetection = 1,
-        ///  Run landmark detection.
+        /// Run landmark detection.
         LandmarkDetection = 2,
-        ///  Run logo detection.
+        /// Run logo detection.
         LogoDetection = 3,
-        ///  Run label detection.
+        /// Run label detection.
         LabelDetection = 4,
-        ///  Run text detection / optical character recognition (OCR). Text detection
-        ///  is optimized for areas of text within a larger image; if the image is
-        ///  a document, use `DOCUMENT_TEXT_DETECTION` instead.
+        /// Run text detection / optical character recognition (OCR). Text detection
+        /// is optimized for areas of text within a larger image; if the image is
+        /// a document, use `DOCUMENT_TEXT_DETECTION` instead.
         TextDetection = 5,
-        ///  Run dense text document OCR. Takes precedence when both
-        ///  `DOCUMENT_TEXT_DETECTION` and `TEXT_DETECTION` are present.
+        /// Run dense text document OCR. Takes precedence when both
+        /// `DOCUMENT_TEXT_DETECTION` and `TEXT_DETECTION` are present.
         DocumentTextDetection = 11,
-        ///  Run Safe Search to detect potentially unsafe
-        ///  or undesirable content.
+        /// Run Safe Search to detect potentially unsafe
+        /// or undesirable content.
         SafeSearchDetection = 6,
-        ///  Compute a set of image properties, such as the
-        ///  image's dominant colors.
+        /// Compute a set of image properties, such as the
+        /// image's dominant colors.
         ImageProperties = 7,
-        ///  Run crop hints.
+        /// Run crop hints.
         CropHints = 9,
-        ///  Run web detection.
+        /// Run web detection.
         WebDetection = 10,
-        ///  Run Product Search.
+        /// Run Product Search.
         ProductSearch = 12,
-        ///  Run localizer for object detection.
+        /// Run localizer for object detection.
         ObjectLocalization = 19,
     }
     impl Type {
@@ -1868,213 +1868,213 @@ pub mod feature {
         }
     }
 }
-///  External image source (Google Cloud Storage or web URL image location).
+/// External image source (Google Cloud Storage or web URL image location).
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImageSource {
-    ///  **Use `image_uri` instead.**
+    /// **Use `image_uri` instead.**
     ///
-    ///  The Google Cloud Storage  URI of the form
-    ///  `gs://bucket_name/object_name`. Object versioning is not supported. See
-    ///  [Google Cloud Storage Request
-    ///  URIs](<https://cloud.google.com/storage/docs/reference-uris>) for more info.
+    /// The Google Cloud Storage  URI of the form
+    /// `gs://bucket_name/object_name`. Object versioning is not supported. See
+    /// [Google Cloud Storage Request
+    /// URIs](<https://cloud.google.com/storage/docs/reference-uris>) for more info.
     #[prost(string, tag="1")]
     pub gcs_image_uri: ::prost::alloc::string::String,
-    ///  The URI of the source image. Can be either:
+    /// The URI of the source image. Can be either:
     ///
-    ///  1. A Google Cloud Storage URI of the form
+    /// 1. A Google Cloud Storage URI of the form
     ///     `gs://bucket_name/object_name`. Object versioning is not supported. See
     ///     [Google Cloud Storage Request
     ///     URIs](<https://cloud.google.com/storage/docs/reference-uris>) for more
     ///     info.
     ///
-    ///  2. A publicly-accessible image HTTP/HTTPS URL. When fetching images from
+    /// 2. A publicly-accessible image HTTP/HTTPS URL. When fetching images from
     ///     HTTP/HTTPS URLs, Google cannot guarantee that the request will be
     ///     completed. Your request may fail if the specified host denies the
     ///     request (e.g. due to request throttling or DOS prevention), or if Google
     ///     throttles requests to the site for abuse prevention. You should not
     ///     depend on externally-hosted images for production applications.
     ///
-    ///  When both `gcs_image_uri` and `image_uri` are specified, `image_uri` takes
-    ///  precedence.
+    /// When both `gcs_image_uri` and `image_uri` are specified, `image_uri` takes
+    /// precedence.
     #[prost(string, tag="2")]
     pub image_uri: ::prost::alloc::string::String,
 }
-///  Client image to perform Google Cloud Vision API tasks over.
+/// Client image to perform Google Cloud Vision API tasks over.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Image {
-    ///  Image content, represented as a stream of bytes.
-    ///  Note: As with all `bytes` fields, protobuffers use a pure binary
-    ///  representation, whereas JSON representations use base64.
+    /// Image content, represented as a stream of bytes.
+    /// Note: As with all `bytes` fields, protobuffers use a pure binary
+    /// representation, whereas JSON representations use base64.
     #[prost(bytes="vec", tag="1")]
     pub content: ::prost::alloc::vec::Vec<u8>,
-    ///  Google Cloud Storage image location, or publicly-accessible image
-    ///  URL. If both `content` and `source` are provided for an image, `content`
-    ///  takes precedence and is used to perform the image annotation request.
+    /// Google Cloud Storage image location, or publicly-accessible image
+    /// URL. If both `content` and `source` are provided for an image, `content`
+    /// takes precedence and is used to perform the image annotation request.
     #[prost(message, optional, tag="2")]
     pub source: ::core::option::Option<ImageSource>,
 }
-///  A face annotation object contains the results of face detection.
+/// A face annotation object contains the results of face detection.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FaceAnnotation {
-    ///  The bounding polygon around the face. The coordinates of the bounding box
-    ///  are in the original image's scale.
-    ///  The bounding box is computed to "frame" the face in accordance with human
-    ///  expectations. It is based on the landmarker results.
-    ///  Note that one or more x and/or y coordinates may not be generated in the
-    ///  `BoundingPoly` (the polygon will be unbounded) if only a partial face
-    ///  appears in the image to be annotated.
+    /// The bounding polygon around the face. The coordinates of the bounding box
+    /// are in the original image's scale.
+    /// The bounding box is computed to "frame" the face in accordance with human
+    /// expectations. It is based on the landmarker results.
+    /// Note that one or more x and/or y coordinates may not be generated in the
+    /// `BoundingPoly` (the polygon will be unbounded) if only a partial face
+    /// appears in the image to be annotated.
     #[prost(message, optional, tag="1")]
     pub bounding_poly: ::core::option::Option<BoundingPoly>,
-    ///  The `fd_bounding_poly` bounding polygon is tighter than the
-    ///  `boundingPoly`, and encloses only the skin part of the face. Typically, it
-    ///  is used to eliminate the face from any image analysis that detects the
-    ///  "amount of skin" visible in an image. It is not based on the
-    ///  landmarker results, only on the initial face detection, hence
-    ///  the <code>fd</code> (face detection) prefix.
+    /// The `fd_bounding_poly` bounding polygon is tighter than the
+    /// `boundingPoly`, and encloses only the skin part of the face. Typically, it
+    /// is used to eliminate the face from any image analysis that detects the
+    /// "amount of skin" visible in an image. It is not based on the
+    /// landmarker results, only on the initial face detection, hence
+    /// the <code>fd</code> (face detection) prefix.
     #[prost(message, optional, tag="2")]
     pub fd_bounding_poly: ::core::option::Option<BoundingPoly>,
-    ///  Detected face landmarks.
+    /// Detected face landmarks.
     #[prost(message, repeated, tag="3")]
     pub landmarks: ::prost::alloc::vec::Vec<face_annotation::Landmark>,
-    ///  Roll angle, which indicates the amount of clockwise/anti-clockwise rotation
-    ///  of the face relative to the image vertical about the axis perpendicular to
-    ///  the face. Range \[-180,180\].
+    /// Roll angle, which indicates the amount of clockwise/anti-clockwise rotation
+    /// of the face relative to the image vertical about the axis perpendicular to
+    /// the face. Range \[-180,180\].
     #[prost(float, tag="4")]
     pub roll_angle: f32,
-    ///  Yaw angle, which indicates the leftward/rightward angle that the face is
-    ///  pointing relative to the vertical plane perpendicular to the image. Range
-    ///  \[-180,180\].
+    /// Yaw angle, which indicates the leftward/rightward angle that the face is
+    /// pointing relative to the vertical plane perpendicular to the image. Range
+    /// \[-180,180\].
     #[prost(float, tag="5")]
     pub pan_angle: f32,
-    ///  Pitch angle, which indicates the upwards/downwards angle that the face is
-    ///  pointing relative to the image's horizontal plane. Range \[-180,180\].
+    /// Pitch angle, which indicates the upwards/downwards angle that the face is
+    /// pointing relative to the image's horizontal plane. Range \[-180,180\].
     #[prost(float, tag="6")]
     pub tilt_angle: f32,
-    ///  Detection confidence. Range [0, 1].
+    /// Detection confidence. Range [0, 1].
     #[prost(float, tag="7")]
     pub detection_confidence: f32,
-    ///  Face landmarking confidence. Range [0, 1].
+    /// Face landmarking confidence. Range [0, 1].
     #[prost(float, tag="8")]
     pub landmarking_confidence: f32,
-    ///  Joy likelihood.
+    /// Joy likelihood.
     #[prost(enumeration="Likelihood", tag="9")]
     pub joy_likelihood: i32,
-    ///  Sorrow likelihood.
+    /// Sorrow likelihood.
     #[prost(enumeration="Likelihood", tag="10")]
     pub sorrow_likelihood: i32,
-    ///  Anger likelihood.
+    /// Anger likelihood.
     #[prost(enumeration="Likelihood", tag="11")]
     pub anger_likelihood: i32,
-    ///  Surprise likelihood.
+    /// Surprise likelihood.
     #[prost(enumeration="Likelihood", tag="12")]
     pub surprise_likelihood: i32,
-    ///  Under-exposed likelihood.
+    /// Under-exposed likelihood.
     #[prost(enumeration="Likelihood", tag="13")]
     pub under_exposed_likelihood: i32,
-    ///  Blurred likelihood.
+    /// Blurred likelihood.
     #[prost(enumeration="Likelihood", tag="14")]
     pub blurred_likelihood: i32,
-    ///  Headwear likelihood.
+    /// Headwear likelihood.
     #[prost(enumeration="Likelihood", tag="15")]
     pub headwear_likelihood: i32,
-    ///  Additional recognition information. Only computed if
-    ///  image_context.face_recognition_params is provided, **and** a match is found
-    ///  to a \[Celebrity][google.cloud.vision.v1p4beta1.Celebrity\] in the input
-    ///  \[CelebritySet][google.cloud.vision.v1p4beta1.CelebritySet\]. This field is
-    ///  sorted in order of decreasing confidence values.
+    /// Additional recognition information. Only computed if
+    /// image_context.face_recognition_params is provided, **and** a match is found
+    /// to a \[Celebrity][google.cloud.vision.v1p4beta1.Celebrity\] in the input
+    /// \[CelebritySet][google.cloud.vision.v1p4beta1.CelebritySet\]. This field is
+    /// sorted in order of decreasing confidence values.
     #[prost(message, repeated, tag="16")]
     pub recognition_result: ::prost::alloc::vec::Vec<FaceRecognitionResult>,
 }
 /// Nested message and enum types in `FaceAnnotation`.
 pub mod face_annotation {
-    ///  A face-specific landmark (for example, a face feature).
+    /// A face-specific landmark (for example, a face feature).
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Landmark {
-        ///  Face landmark type.
+        /// Face landmark type.
         #[prost(enumeration="landmark::Type", tag="3")]
         pub r#type: i32,
-        ///  Face landmark position.
+        /// Face landmark position.
         #[prost(message, optional, tag="4")]
         pub position: ::core::option::Option<super::Position>,
     }
     /// Nested message and enum types in `Landmark`.
     pub mod landmark {
-        ///  Face landmark (feature) type.
-        ///  Left and right are defined from the vantage of the viewer of the image
-        ///  without considering mirror projections typical of photos. So, `LEFT_EYE`,
-        ///  typically, is the person's right eye.
+        /// Face landmark (feature) type.
+        /// Left and right are defined from the vantage of the viewer of the image
+        /// without considering mirror projections typical of photos. So, `LEFT_EYE`,
+        /// typically, is the person's right eye.
         #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
         #[repr(i32)]
         pub enum Type {
-            ///  Unknown face landmark detected. Should not be filled.
+            /// Unknown face landmark detected. Should not be filled.
             UnknownLandmark = 0,
-            ///  Left eye.
+            /// Left eye.
             LeftEye = 1,
-            ///  Right eye.
+            /// Right eye.
             RightEye = 2,
-            ///  Left of left eyebrow.
+            /// Left of left eyebrow.
             LeftOfLeftEyebrow = 3,
-            ///  Right of left eyebrow.
+            /// Right of left eyebrow.
             RightOfLeftEyebrow = 4,
-            ///  Left of right eyebrow.
+            /// Left of right eyebrow.
             LeftOfRightEyebrow = 5,
-            ///  Right of right eyebrow.
+            /// Right of right eyebrow.
             RightOfRightEyebrow = 6,
-            ///  Midpoint between eyes.
+            /// Midpoint between eyes.
             MidpointBetweenEyes = 7,
-            ///  Nose tip.
+            /// Nose tip.
             NoseTip = 8,
-            ///  Upper lip.
+            /// Upper lip.
             UpperLip = 9,
-            ///  Lower lip.
+            /// Lower lip.
             LowerLip = 10,
-            ///  Mouth left.
+            /// Mouth left.
             MouthLeft = 11,
-            ///  Mouth right.
+            /// Mouth right.
             MouthRight = 12,
-            ///  Mouth center.
+            /// Mouth center.
             MouthCenter = 13,
-            ///  Nose, bottom right.
+            /// Nose, bottom right.
             NoseBottomRight = 14,
-            ///  Nose, bottom left.
+            /// Nose, bottom left.
             NoseBottomLeft = 15,
-            ///  Nose, bottom center.
+            /// Nose, bottom center.
             NoseBottomCenter = 16,
-            ///  Left eye, top boundary.
+            /// Left eye, top boundary.
             LeftEyeTopBoundary = 17,
-            ///  Left eye, right corner.
+            /// Left eye, right corner.
             LeftEyeRightCorner = 18,
-            ///  Left eye, bottom boundary.
+            /// Left eye, bottom boundary.
             LeftEyeBottomBoundary = 19,
-            ///  Left eye, left corner.
+            /// Left eye, left corner.
             LeftEyeLeftCorner = 20,
-            ///  Right eye, top boundary.
+            /// Right eye, top boundary.
             RightEyeTopBoundary = 21,
-            ///  Right eye, right corner.
+            /// Right eye, right corner.
             RightEyeRightCorner = 22,
-            ///  Right eye, bottom boundary.
+            /// Right eye, bottom boundary.
             RightEyeBottomBoundary = 23,
-            ///  Right eye, left corner.
+            /// Right eye, left corner.
             RightEyeLeftCorner = 24,
-            ///  Left eyebrow, upper midpoint.
+            /// Left eyebrow, upper midpoint.
             LeftEyebrowUpperMidpoint = 25,
-            ///  Right eyebrow, upper midpoint.
+            /// Right eyebrow, upper midpoint.
             RightEyebrowUpperMidpoint = 26,
-            ///  Left ear tragion.
+            /// Left ear tragion.
             LeftEarTragion = 27,
-            ///  Right ear tragion.
+            /// Right ear tragion.
             RightEarTragion = 28,
-            ///  Left eye pupil.
+            /// Left eye pupil.
             LeftEyePupil = 29,
-            ///  Right eye pupil.
+            /// Right eye pupil.
             RightEyePupil = 30,
-            ///  Forehead glabella.
+            /// Forehead glabella.
             ForeheadGlabella = 31,
-            ///  Chin gnathion.
+            /// Chin gnathion.
             ChinGnathion = 32,
-            ///  Chin left gonion.
+            /// Chin left gonion.
             ChinLeftGonion = 33,
-            ///  Chin right gonion.
+            /// Chin right gonion.
             ChinRightGonion = 34,
         }
         impl Type {
@@ -2124,565 +2124,565 @@ pub mod face_annotation {
         }
     }
 }
-///  Detected entity location information.
+/// Detected entity location information.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LocationInfo {
-    ///  lat/long location coordinates.
+    /// lat/long location coordinates.
     #[prost(message, optional, tag="1")]
     pub lat_lng: ::core::option::Option<super::super::super::r#type::LatLng>,
 }
-///  A `Property` consists of a user-supplied name/value pair.
+/// A `Property` consists of a user-supplied name/value pair.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Property {
-    ///  Name of the property.
+    /// Name of the property.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Value of the property.
+    /// Value of the property.
     #[prost(string, tag="2")]
     pub value: ::prost::alloc::string::String,
-    ///  Value of numeric properties.
+    /// Value of numeric properties.
     #[prost(uint64, tag="3")]
     pub uint64_value: u64,
 }
-///  Set of detected entity features.
+/// Set of detected entity features.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EntityAnnotation {
-    ///  Opaque entity ID. Some IDs may be available in
-    ///  [Google Knowledge Graph Search
-    ///  API](<https://developers.google.com/knowledge-graph/>).
+    /// Opaque entity ID. Some IDs may be available in
+    /// [Google Knowledge Graph Search
+    /// API](<https://developers.google.com/knowledge-graph/>).
     #[prost(string, tag="1")]
     pub mid: ::prost::alloc::string::String,
-    ///  The language code for the locale in which the entity textual
-    ///  `description` is expressed.
+    /// The language code for the locale in which the entity textual
+    /// `description` is expressed.
     #[prost(string, tag="2")]
     pub locale: ::prost::alloc::string::String,
-    ///  Entity textual description, expressed in its `locale` language.
+    /// Entity textual description, expressed in its `locale` language.
     #[prost(string, tag="3")]
     pub description: ::prost::alloc::string::String,
-    ///  Overall score of the result. Range [0, 1].
+    /// Overall score of the result. Range [0, 1].
     #[prost(float, tag="4")]
     pub score: f32,
-    ///  **Deprecated. Use `score` instead.**
-    ///  The accuracy of the entity detection in an image.
-    ///  For example, for an image in which the "Eiffel Tower" entity is detected,
-    ///  this field represents the confidence that there is a tower in the query
-    ///  image. Range [0, 1].
+    /// **Deprecated. Use `score` instead.**
+    /// The accuracy of the entity detection in an image.
+    /// For example, for an image in which the "Eiffel Tower" entity is detected,
+    /// this field represents the confidence that there is a tower in the query
+    /// image. Range [0, 1].
     #[deprecated]
     #[prost(float, tag="5")]
     pub confidence: f32,
-    ///  The relevancy of the ICA (Image Content Annotation) label to the
-    ///  image. For example, the relevancy of "tower" is likely higher to an image
-    ///  containing the detected "Eiffel Tower" than to an image containing a
-    ///  detected distant towering building, even though the confidence that
-    ///  there is a tower in each image may be the same. Range [0, 1].
+    /// The relevancy of the ICA (Image Content Annotation) label to the
+    /// image. For example, the relevancy of "tower" is likely higher to an image
+    /// containing the detected "Eiffel Tower" than to an image containing a
+    /// detected distant towering building, even though the confidence that
+    /// there is a tower in each image may be the same. Range [0, 1].
     #[prost(float, tag="6")]
     pub topicality: f32,
-    ///  Image region to which this entity belongs. Not produced
-    ///  for `LABEL_DETECTION` features.
+    /// Image region to which this entity belongs. Not produced
+    /// for `LABEL_DETECTION` features.
     #[prost(message, optional, tag="7")]
     pub bounding_poly: ::core::option::Option<BoundingPoly>,
-    ///  The location information for the detected entity. Multiple
-    ///  `LocationInfo` elements can be present because one location may
-    ///  indicate the location of the scene in the image, and another location
-    ///  may indicate the location of the place where the image was taken.
-    ///  Location information is usually present for landmarks.
+    /// The location information for the detected entity. Multiple
+    /// `LocationInfo` elements can be present because one location may
+    /// indicate the location of the scene in the image, and another location
+    /// may indicate the location of the place where the image was taken.
+    /// Location information is usually present for landmarks.
     #[prost(message, repeated, tag="8")]
     pub locations: ::prost::alloc::vec::Vec<LocationInfo>,
-    ///  Some entities may have optional user-supplied `Property` (name/value)
-    ///  fields, such a score or string that qualifies the entity.
+    /// Some entities may have optional user-supplied `Property` (name/value)
+    /// fields, such a score or string that qualifies the entity.
     #[prost(message, repeated, tag="9")]
     pub properties: ::prost::alloc::vec::Vec<Property>,
 }
-///  Set of detected objects with bounding boxes.
+/// Set of detected objects with bounding boxes.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LocalizedObjectAnnotation {
-    ///  Object ID that should align with EntityAnnotation mid.
+    /// Object ID that should align with EntityAnnotation mid.
     #[prost(string, tag="1")]
     pub mid: ::prost::alloc::string::String,
-    ///  The BCP-47 language code, such as "en-US" or "sr-Latn". For more
-    ///  information, see
-    ///  <http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.>
+    /// The BCP-47 language code, such as "en-US" or "sr-Latn". For more
+    /// information, see
+    /// <http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.>
     #[prost(string, tag="2")]
     pub language_code: ::prost::alloc::string::String,
-    ///  Object name, expressed in its `language_code` language.
+    /// Object name, expressed in its `language_code` language.
     #[prost(string, tag="3")]
     pub name: ::prost::alloc::string::String,
-    ///  Score of the result. Range [0, 1].
+    /// Score of the result. Range [0, 1].
     #[prost(float, tag="4")]
     pub score: f32,
-    ///  Image region to which this object belongs. This must be populated.
+    /// Image region to which this object belongs. This must be populated.
     #[prost(message, optional, tag="5")]
     pub bounding_poly: ::core::option::Option<BoundingPoly>,
 }
-///  Set of features pertaining to the image, computed by computer vision
-///  methods over safe-search verticals (for example, adult, spoof, medical,
-///  violence).
+/// Set of features pertaining to the image, computed by computer vision
+/// methods over safe-search verticals (for example, adult, spoof, medical,
+/// violence).
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SafeSearchAnnotation {
-    ///  Represents the adult content likelihood for the image. Adult content may
-    ///  contain elements such as nudity, pornographic images or cartoons, or
-    ///  sexual activities.
+    /// Represents the adult content likelihood for the image. Adult content may
+    /// contain elements such as nudity, pornographic images or cartoons, or
+    /// sexual activities.
     #[prost(enumeration="Likelihood", tag="1")]
     pub adult: i32,
-    ///  Spoof likelihood. The likelihood that an modification
-    ///  was made to the image's canonical version to make it appear
-    ///  funny or offensive.
+    /// Spoof likelihood. The likelihood that an modification
+    /// was made to the image's canonical version to make it appear
+    /// funny or offensive.
     #[prost(enumeration="Likelihood", tag="2")]
     pub spoof: i32,
-    ///  Likelihood that this is a medical image.
+    /// Likelihood that this is a medical image.
     #[prost(enumeration="Likelihood", tag="3")]
     pub medical: i32,
-    ///  Likelihood that this image contains violent content.
+    /// Likelihood that this image contains violent content.
     #[prost(enumeration="Likelihood", tag="4")]
     pub violence: i32,
-    ///  Likelihood that the request image contains racy content. Racy content may
-    ///  include (but is not limited to) skimpy or sheer clothing, strategically
-    ///  covered nudity, lewd or provocative poses, or close-ups of sensitive
-    ///  body areas.
+    /// Likelihood that the request image contains racy content. Racy content may
+    /// include (but is not limited to) skimpy or sheer clothing, strategically
+    /// covered nudity, lewd or provocative poses, or close-ups of sensitive
+    /// body areas.
     #[prost(enumeration="Likelihood", tag="9")]
     pub racy: i32,
 }
-///  Rectangle determined by min and max `LatLng` pairs.
+/// Rectangle determined by min and max `LatLng` pairs.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LatLongRect {
-    ///  Min lat/long pair.
+    /// Min lat/long pair.
     #[prost(message, optional, tag="1")]
     pub min_lat_lng: ::core::option::Option<super::super::super::r#type::LatLng>,
-    ///  Max lat/long pair.
+    /// Max lat/long pair.
     #[prost(message, optional, tag="2")]
     pub max_lat_lng: ::core::option::Option<super::super::super::r#type::LatLng>,
 }
-///  Color information consists of RGB channels, score, and the fraction of
-///  the image that the color occupies in the image.
+/// Color information consists of RGB channels, score, and the fraction of
+/// the image that the color occupies in the image.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ColorInfo {
-    ///  RGB components of the color.
+    /// RGB components of the color.
     #[prost(message, optional, tag="1")]
     pub color: ::core::option::Option<super::super::super::r#type::Color>,
-    ///  Image-specific score for this color. Value in range [0, 1].
+    /// Image-specific score for this color. Value in range [0, 1].
     #[prost(float, tag="2")]
     pub score: f32,
-    ///  The fraction of pixels the color occupies in the image.
-    ///  Value in range [0, 1].
+    /// The fraction of pixels the color occupies in the image.
+    /// Value in range [0, 1].
     #[prost(float, tag="3")]
     pub pixel_fraction: f32,
 }
-///  Set of dominant colors and their corresponding scores.
+/// Set of dominant colors and their corresponding scores.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DominantColorsAnnotation {
-    ///  RGB color values with their score and pixel fraction.
+    /// RGB color values with their score and pixel fraction.
     #[prost(message, repeated, tag="1")]
     pub colors: ::prost::alloc::vec::Vec<ColorInfo>,
 }
-///  Stores image properties, such as dominant colors.
+/// Stores image properties, such as dominant colors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImageProperties {
-    ///  If present, dominant colors completed successfully.
+    /// If present, dominant colors completed successfully.
     #[prost(message, optional, tag="1")]
     pub dominant_colors: ::core::option::Option<DominantColorsAnnotation>,
 }
-///  Single crop hint that is used to generate a new crop when serving an image.
+/// Single crop hint that is used to generate a new crop when serving an image.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CropHint {
-    ///  The bounding polygon for the crop region. The coordinates of the bounding
-    ///  box are in the original image's scale.
+    /// The bounding polygon for the crop region. The coordinates of the bounding
+    /// box are in the original image's scale.
     #[prost(message, optional, tag="1")]
     pub bounding_poly: ::core::option::Option<BoundingPoly>,
-    ///  Confidence of this being a salient region.  Range [0, 1].
+    /// Confidence of this being a salient region.  Range [0, 1].
     #[prost(float, tag="2")]
     pub confidence: f32,
-    ///  Fraction of importance of this salient region with respect to the original
-    ///  image.
+    /// Fraction of importance of this salient region with respect to the original
+    /// image.
     #[prost(float, tag="3")]
     pub importance_fraction: f32,
 }
-///  Set of crop hints that are used to generate new crops when serving images.
+/// Set of crop hints that are used to generate new crops when serving images.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CropHintsAnnotation {
-    ///  Crop hint results.
+    /// Crop hint results.
     #[prost(message, repeated, tag="1")]
     pub crop_hints: ::prost::alloc::vec::Vec<CropHint>,
 }
-///  Parameters for crop hints annotation request.
+/// Parameters for crop hints annotation request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CropHintsParams {
-    ///  Aspect ratios in floats, representing the ratio of the width to the height
-    ///  of the image. For example, if the desired aspect ratio is 4/3, the
-    ///  corresponding float value should be 1.33333.  If not specified, the
-    ///  best possible crop is returned. The number of provided aspect ratios is
-    ///  limited to a maximum of 16; any aspect ratios provided after the 16th are
-    ///  ignored.
+    /// Aspect ratios in floats, representing the ratio of the width to the height
+    /// of the image. For example, if the desired aspect ratio is 4/3, the
+    /// corresponding float value should be 1.33333.  If not specified, the
+    /// best possible crop is returned. The number of provided aspect ratios is
+    /// limited to a maximum of 16; any aspect ratios provided after the 16th are
+    /// ignored.
     #[prost(float, repeated, tag="1")]
     pub aspect_ratios: ::prost::alloc::vec::Vec<f32>,
 }
-///  Parameters for web detection request.
+/// Parameters for web detection request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WebDetectionParams {
-    ///  Whether to include results derived from the geo information in the image.
+    /// Whether to include results derived from the geo information in the image.
     #[prost(bool, tag="2")]
     pub include_geo_results: bool,
 }
-///  Parameters for text detections. This is used to control TEXT_DETECTION and
-///  DOCUMENT_TEXT_DETECTION features.
+/// Parameters for text detections. This is used to control TEXT_DETECTION and
+/// DOCUMENT_TEXT_DETECTION features.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TextDetectionParams {
-    ///  By default, Cloud Vision API only includes confidence score for
-    ///  DOCUMENT_TEXT_DETECTION result. Set the flag to true to include confidence
-    ///  score for TEXT_DETECTION as well.
+    /// By default, Cloud Vision API only includes confidence score for
+    /// DOCUMENT_TEXT_DETECTION result. Set the flag to true to include confidence
+    /// score for TEXT_DETECTION as well.
     #[prost(bool, tag="9")]
     pub enable_text_detection_confidence_score: bool,
-    ///  A list of advanced OCR options to fine-tune OCR behavior.
+    /// A list of advanced OCR options to fine-tune OCR behavior.
     #[prost(string, repeated, tag="11")]
     pub advanced_ocr_options: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-///  Image context and/or feature-specific parameters.
+/// Image context and/or feature-specific parameters.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImageContext {
-    ///  Not used.
+    /// Not used.
     #[prost(message, optional, tag="1")]
     pub lat_long_rect: ::core::option::Option<LatLongRect>,
-    ///  List of languages to use for TEXT_DETECTION. In most cases, an empty value
-    ///  yields the best results since it enables automatic language detection. For
-    ///  languages based on the Latin alphabet, setting `language_hints` is not
-    ///  needed. In rare cases, when the language of the text in the image is known,
-    ///  setting a hint will help get better results (although it will be a
-    ///  significant hindrance if the hint is wrong). Text detection returns an
-    ///  error if one or more of the specified languages is not one of the
-    ///  [supported languages](<https://cloud.google.com/vision/docs/languages>).
+    /// List of languages to use for TEXT_DETECTION. In most cases, an empty value
+    /// yields the best results since it enables automatic language detection. For
+    /// languages based on the Latin alphabet, setting `language_hints` is not
+    /// needed. In rare cases, when the language of the text in the image is known,
+    /// setting a hint will help get better results (although it will be a
+    /// significant hindrance if the hint is wrong). Text detection returns an
+    /// error if one or more of the specified languages is not one of the
+    /// [supported languages](<https://cloud.google.com/vision/docs/languages>).
     #[prost(string, repeated, tag="2")]
     pub language_hints: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    ///  Parameters for crop hints annotation request.
+    /// Parameters for crop hints annotation request.
     #[prost(message, optional, tag="4")]
     pub crop_hints_params: ::core::option::Option<CropHintsParams>,
-    ///  Parameters for face recognition.
+    /// Parameters for face recognition.
     #[prost(message, optional, tag="10")]
     pub face_recognition_params: ::core::option::Option<FaceRecognitionParams>,
-    ///  Parameters for product search.
+    /// Parameters for product search.
     #[prost(message, optional, tag="5")]
     pub product_search_params: ::core::option::Option<ProductSearchParams>,
-    ///  Parameters for web detection.
+    /// Parameters for web detection.
     #[prost(message, optional, tag="6")]
     pub web_detection_params: ::core::option::Option<WebDetectionParams>,
-    ///  Parameters for text detection and document text detection.
+    /// Parameters for text detection and document text detection.
     #[prost(message, optional, tag="12")]
     pub text_detection_params: ::core::option::Option<TextDetectionParams>,
 }
-///  Request for performing Google Cloud Vision API tasks over a user-provided
-///  image, with user-requested features, and with context information.
+/// Request for performing Google Cloud Vision API tasks over a user-provided
+/// image, with user-requested features, and with context information.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnnotateImageRequest {
-    ///  The image to be processed.
+    /// The image to be processed.
     #[prost(message, optional, tag="1")]
     pub image: ::core::option::Option<Image>,
-    ///  Requested features.
+    /// Requested features.
     #[prost(message, repeated, tag="2")]
     pub features: ::prost::alloc::vec::Vec<Feature>,
-    ///  Additional context that may accompany the image.
+    /// Additional context that may accompany the image.
     #[prost(message, optional, tag="3")]
     pub image_context: ::core::option::Option<ImageContext>,
 }
-///  If an image was produced from a file (e.g. a PDF), this message gives
-///  information about the source of that image.
+/// If an image was produced from a file (e.g. a PDF), this message gives
+/// information about the source of that image.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImageAnnotationContext {
-    ///  The URI of the file used to produce the image.
+    /// The URI of the file used to produce the image.
     #[prost(string, tag="1")]
     pub uri: ::prost::alloc::string::String,
-    ///  If the file was a PDF or TIFF, this field gives the page number within
-    ///  the file used to produce the image.
+    /// If the file was a PDF or TIFF, this field gives the page number within
+    /// the file used to produce the image.
     #[prost(int32, tag="2")]
     pub page_number: i32,
 }
-///  Response to an image annotation request.
+/// Response to an image annotation request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnnotateImageResponse {
-    ///  If present, face detection has completed successfully.
+    /// If present, face detection has completed successfully.
     #[prost(message, repeated, tag="1")]
     pub face_annotations: ::prost::alloc::vec::Vec<FaceAnnotation>,
-    ///  If present, landmark detection has completed successfully.
+    /// If present, landmark detection has completed successfully.
     #[prost(message, repeated, tag="2")]
     pub landmark_annotations: ::prost::alloc::vec::Vec<EntityAnnotation>,
-    ///  If present, logo detection has completed successfully.
+    /// If present, logo detection has completed successfully.
     #[prost(message, repeated, tag="3")]
     pub logo_annotations: ::prost::alloc::vec::Vec<EntityAnnotation>,
-    ///  If present, label detection has completed successfully.
+    /// If present, label detection has completed successfully.
     #[prost(message, repeated, tag="4")]
     pub label_annotations: ::prost::alloc::vec::Vec<EntityAnnotation>,
-    ///  If present, localized object detection has completed successfully.
-    ///  This will be sorted descending by confidence score.
+    /// If present, localized object detection has completed successfully.
+    /// This will be sorted descending by confidence score.
     #[prost(message, repeated, tag="22")]
     pub localized_object_annotations: ::prost::alloc::vec::Vec<LocalizedObjectAnnotation>,
-    ///  If present, text (OCR) detection has completed successfully.
+    /// If present, text (OCR) detection has completed successfully.
     #[prost(message, repeated, tag="5")]
     pub text_annotations: ::prost::alloc::vec::Vec<EntityAnnotation>,
-    ///  If present, text (OCR) detection or document (OCR) text detection has
-    ///  completed successfully.
-    ///  This annotation provides the structural hierarchy for the OCR detected
-    ///  text.
+    /// If present, text (OCR) detection or document (OCR) text detection has
+    /// completed successfully.
+    /// This annotation provides the structural hierarchy for the OCR detected
+    /// text.
     #[prost(message, optional, tag="12")]
     pub full_text_annotation: ::core::option::Option<TextAnnotation>,
-    ///  If present, safe-search annotation has completed successfully.
+    /// If present, safe-search annotation has completed successfully.
     #[prost(message, optional, tag="6")]
     pub safe_search_annotation: ::core::option::Option<SafeSearchAnnotation>,
-    ///  If present, image properties were extracted successfully.
+    /// If present, image properties were extracted successfully.
     #[prost(message, optional, tag="8")]
     pub image_properties_annotation: ::core::option::Option<ImageProperties>,
-    ///  If present, crop hints have completed successfully.
+    /// If present, crop hints have completed successfully.
     #[prost(message, optional, tag="11")]
     pub crop_hints_annotation: ::core::option::Option<CropHintsAnnotation>,
-    ///  If present, web detection has completed successfully.
+    /// If present, web detection has completed successfully.
     #[prost(message, optional, tag="13")]
     pub web_detection: ::core::option::Option<WebDetection>,
-    ///  If present, product search has completed successfully.
+    /// If present, product search has completed successfully.
     #[prost(message, optional, tag="14")]
     pub product_search_results: ::core::option::Option<ProductSearchResults>,
-    ///  If set, represents the error message for the operation.
-    ///  Note that filled-in image annotations are guaranteed to be
-    ///  correct, even when `error` is set.
+    /// If set, represents the error message for the operation.
+    /// Note that filled-in image annotations are guaranteed to be
+    /// correct, even when `error` is set.
     #[prost(message, optional, tag="9")]
     pub error: ::core::option::Option<super::super::super::rpc::Status>,
-    ///  If present, contextual information is needed to understand where this image
-    ///  comes from.
+    /// If present, contextual information is needed to understand where this image
+    /// comes from.
     #[prost(message, optional, tag="21")]
     pub context: ::core::option::Option<ImageAnnotationContext>,
 }
-///  Multiple image annotation requests are batched into a single service call.
+/// Multiple image annotation requests are batched into a single service call.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchAnnotateImagesRequest {
-    ///  Required. Individual image annotation requests for this batch.
+    /// Required. Individual image annotation requests for this batch.
     #[prost(message, repeated, tag="1")]
     pub requests: ::prost::alloc::vec::Vec<AnnotateImageRequest>,
 }
-///  Response to a batch image annotation request.
+/// Response to a batch image annotation request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchAnnotateImagesResponse {
-    ///  Individual responses to image annotation requests within the batch.
+    /// Individual responses to image annotation requests within the batch.
     #[prost(message, repeated, tag="1")]
     pub responses: ::prost::alloc::vec::Vec<AnnotateImageResponse>,
 }
-///  A request to annotate one single file, e.g. a PDF, TIFF or GIF file.
+/// A request to annotate one single file, e.g. a PDF, TIFF or GIF file.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnnotateFileRequest {
-    ///  Required. Information about the input file.
+    /// Required. Information about the input file.
     #[prost(message, optional, tag="1")]
     pub input_config: ::core::option::Option<InputConfig>,
-    ///  Required. Requested features.
+    /// Required. Requested features.
     #[prost(message, repeated, tag="2")]
     pub features: ::prost::alloc::vec::Vec<Feature>,
-    ///  Additional context that may accompany the image(s) in the file.
+    /// Additional context that may accompany the image(s) in the file.
     #[prost(message, optional, tag="3")]
     pub image_context: ::core::option::Option<ImageContext>,
-    ///  Pages of the file to perform image annotation.
+    /// Pages of the file to perform image annotation.
     ///
-    ///  Pages starts from 1, we assume the first page of the file is page 1.
-    ///  At most 5 pages are supported per request. Pages can be negative.
+    /// Pages starts from 1, we assume the first page of the file is page 1.
+    /// At most 5 pages are supported per request. Pages can be negative.
     ///
-    ///  Page 1 means the first page.
-    ///  Page 2 means the second page.
-    ///  Page -1 means the last page.
-    ///  Page -2 means the second to the last page.
+    /// Page 1 means the first page.
+    /// Page 2 means the second page.
+    /// Page -1 means the last page.
+    /// Page -2 means the second to the last page.
     ///
-    ///  If the file is GIF instead of PDF or TIFF, page refers to GIF frames.
+    /// If the file is GIF instead of PDF or TIFF, page refers to GIF frames.
     ///
-    ///  If this field is empty, by default the service performs image annotation
-    ///  for the first 5 pages of the file.
+    /// If this field is empty, by default the service performs image annotation
+    /// for the first 5 pages of the file.
     #[prost(int32, repeated, tag="4")]
     pub pages: ::prost::alloc::vec::Vec<i32>,
 }
-///  Response to a single file annotation request. A file may contain one or more
-///  images, which individually have their own responses.
+/// Response to a single file annotation request. A file may contain one or more
+/// images, which individually have their own responses.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnnotateFileResponse {
-    ///  Information about the file for which this response is generated.
+    /// Information about the file for which this response is generated.
     #[prost(message, optional, tag="1")]
     pub input_config: ::core::option::Option<InputConfig>,
-    ///  Individual responses to images found within the file. This field will be
-    ///  empty if the `error` field is set.
+    /// Individual responses to images found within the file. This field will be
+    /// empty if the `error` field is set.
     #[prost(message, repeated, tag="2")]
     pub responses: ::prost::alloc::vec::Vec<AnnotateImageResponse>,
-    ///  This field gives the total number of pages in the file.
+    /// This field gives the total number of pages in the file.
     #[prost(int32, tag="3")]
     pub total_pages: i32,
-    ///  If set, represents the error message for the failed request. The
-    ///  `responses` field will not be set in this case.
+    /// If set, represents the error message for the failed request. The
+    /// `responses` field will not be set in this case.
     #[prost(message, optional, tag="4")]
     pub error: ::core::option::Option<super::super::super::rpc::Status>,
 }
-///  A list of requests to annotate files using the BatchAnnotateFiles API.
+/// A list of requests to annotate files using the BatchAnnotateFiles API.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchAnnotateFilesRequest {
-    ///  Required. The list of file annotation requests. Right now we support only
-    ///  one AnnotateFileRequest in BatchAnnotateFilesRequest.
+    /// Required. The list of file annotation requests. Right now we support only
+    /// one AnnotateFileRequest in BatchAnnotateFilesRequest.
     #[prost(message, repeated, tag="1")]
     pub requests: ::prost::alloc::vec::Vec<AnnotateFileRequest>,
 }
-///  A list of file annotation responses.
+/// A list of file annotation responses.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchAnnotateFilesResponse {
-    ///  The list of file annotation responses, each response corresponding to each
-    ///  AnnotateFileRequest in BatchAnnotateFilesRequest.
+    /// The list of file annotation responses, each response corresponding to each
+    /// AnnotateFileRequest in BatchAnnotateFilesRequest.
     #[prost(message, repeated, tag="1")]
     pub responses: ::prost::alloc::vec::Vec<AnnotateFileResponse>,
 }
-///  An offline file annotation request.
+/// An offline file annotation request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AsyncAnnotateFileRequest {
-    ///  Required. Information about the input file.
+    /// Required. Information about the input file.
     #[prost(message, optional, tag="1")]
     pub input_config: ::core::option::Option<InputConfig>,
-    ///  Required. Requested features.
+    /// Required. Requested features.
     #[prost(message, repeated, tag="2")]
     pub features: ::prost::alloc::vec::Vec<Feature>,
-    ///  Additional context that may accompany the image(s) in the file.
+    /// Additional context that may accompany the image(s) in the file.
     #[prost(message, optional, tag="3")]
     pub image_context: ::core::option::Option<ImageContext>,
-    ///  Required. The desired output location and metadata (e.g. format).
+    /// Required. The desired output location and metadata (e.g. format).
     #[prost(message, optional, tag="4")]
     pub output_config: ::core::option::Option<OutputConfig>,
 }
-///  The response for a single offline file annotation request.
+/// The response for a single offline file annotation request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AsyncAnnotateFileResponse {
-    ///  The output location and metadata from AsyncAnnotateFileRequest.
+    /// The output location and metadata from AsyncAnnotateFileRequest.
     #[prost(message, optional, tag="1")]
     pub output_config: ::core::option::Option<OutputConfig>,
 }
-///  Request for async image annotation for a list of images.
+/// Request for async image annotation for a list of images.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AsyncBatchAnnotateImagesRequest {
-    ///  Required. Individual image annotation requests for this batch.
+    /// Required. Individual image annotation requests for this batch.
     #[prost(message, repeated, tag="1")]
     pub requests: ::prost::alloc::vec::Vec<AnnotateImageRequest>,
-    ///  Required. The desired output location and metadata (e.g. format).
+    /// Required. The desired output location and metadata (e.g. format).
     #[prost(message, optional, tag="2")]
     pub output_config: ::core::option::Option<OutputConfig>,
 }
-///  Response to an async batch image annotation request.
+/// Response to an async batch image annotation request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AsyncBatchAnnotateImagesResponse {
-    ///  The output location and metadata from AsyncBatchAnnotateImagesRequest.
+    /// The output location and metadata from AsyncBatchAnnotateImagesRequest.
     #[prost(message, optional, tag="1")]
     pub output_config: ::core::option::Option<OutputConfig>,
 }
-///  Multiple async file annotation requests are batched into a single service
-///  call.
+/// Multiple async file annotation requests are batched into a single service
+/// call.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AsyncBatchAnnotateFilesRequest {
-    ///  Required. Individual async file annotation requests for this batch.
+    /// Required. Individual async file annotation requests for this batch.
     #[prost(message, repeated, tag="1")]
     pub requests: ::prost::alloc::vec::Vec<AsyncAnnotateFileRequest>,
 }
-///  Response to an async batch file annotation request.
+/// Response to an async batch file annotation request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AsyncBatchAnnotateFilesResponse {
-    ///  The list of file annotation responses, one for each request in
-    ///  AsyncBatchAnnotateFilesRequest.
+    /// The list of file annotation responses, one for each request in
+    /// AsyncBatchAnnotateFilesRequest.
     #[prost(message, repeated, tag="1")]
     pub responses: ::prost::alloc::vec::Vec<AsyncAnnotateFileResponse>,
 }
-///  The desired input location and metadata.
+/// The desired input location and metadata.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InputConfig {
-    ///  The Google Cloud Storage location to read the input from.
+    /// The Google Cloud Storage location to read the input from.
     #[prost(message, optional, tag="1")]
     pub gcs_source: ::core::option::Option<GcsSource>,
-    ///  File content, represented as a stream of bytes.
-    ///  Note: As with all `bytes` fields, protobuffers use a pure binary
-    ///  representation, whereas JSON representations use base64.
+    /// File content, represented as a stream of bytes.
+    /// Note: As with all `bytes` fields, protobuffers use a pure binary
+    /// representation, whereas JSON representations use base64.
     ///
-    ///  Currently, this field only works for BatchAnnotateFiles requests. It does
-    ///  not work for AsyncBatchAnnotateFiles requests.
+    /// Currently, this field only works for BatchAnnotateFiles requests. It does
+    /// not work for AsyncBatchAnnotateFiles requests.
     #[prost(bytes="vec", tag="3")]
     pub content: ::prost::alloc::vec::Vec<u8>,
-    ///  The type of the file. Currently only "application/pdf", "image/tiff" and
-    ///  "image/gif" are supported. Wildcards are not supported.
+    /// The type of the file. Currently only "application/pdf", "image/tiff" and
+    /// "image/gif" are supported. Wildcards are not supported.
     #[prost(string, tag="2")]
     pub mime_type: ::prost::alloc::string::String,
 }
-///  The desired output location and metadata.
+/// The desired output location and metadata.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OutputConfig {
-    ///  The Google Cloud Storage location to write the output(s) to.
+    /// The Google Cloud Storage location to write the output(s) to.
     #[prost(message, optional, tag="1")]
     pub gcs_destination: ::core::option::Option<GcsDestination>,
-    ///  The max number of response protos to put into each output JSON file on
-    ///  Google Cloud Storage.
-    ///  The valid range is [1, 100]. If not specified, the default value is 20.
+    /// The max number of response protos to put into each output JSON file on
+    /// Google Cloud Storage.
+    /// The valid range is [1, 100]. If not specified, the default value is 20.
     ///
-    ///  For example, for one pdf file with 100 pages, 100 response protos will
-    ///  be generated. If `batch_size` = 20, then 5 json files each
-    ///  containing 20 response protos will be written under the prefix
-    ///  `gcs_destination`.`uri`.
+    /// For example, for one pdf file with 100 pages, 100 response protos will
+    /// be generated. If `batch_size` = 20, then 5 json files each
+    /// containing 20 response protos will be written under the prefix
+    /// `gcs_destination`.`uri`.
     ///
-    ///  Currently, batch_size only applies to GcsDestination, with potential future
-    ///  support for other output configurations.
+    /// Currently, batch_size only applies to GcsDestination, with potential future
+    /// support for other output configurations.
     #[prost(int32, tag="2")]
     pub batch_size: i32,
 }
-///  The Google Cloud Storage location where the input will be read from.
+/// The Google Cloud Storage location where the input will be read from.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GcsSource {
-    ///  Google Cloud Storage URI for the input file. This must only be a
-    ///  Google Cloud Storage object. Wildcards are not currently supported.
+    /// Google Cloud Storage URI for the input file. This must only be a
+    /// Google Cloud Storage object. Wildcards are not currently supported.
     #[prost(string, tag="1")]
     pub uri: ::prost::alloc::string::String,
 }
-///  The Google Cloud Storage location where the output will be written to.
+/// The Google Cloud Storage location where the output will be written to.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GcsDestination {
-    ///  Google Cloud Storage URI prefix where the results will be stored. Results
-    ///  will be in JSON format and preceded by its corresponding input URI prefix.
-    ///  This field can either represent a gcs file prefix or gcs directory. In
-    ///  either case, the uri should be unique because in order to get all of the
-    ///  output files, you will need to do a wildcard gcs search on the uri prefix
-    ///  you provide.
+    /// Google Cloud Storage URI prefix where the results will be stored. Results
+    /// will be in JSON format and preceded by its corresponding input URI prefix.
+    /// This field can either represent a gcs file prefix or gcs directory. In
+    /// either case, the uri should be unique because in order to get all of the
+    /// output files, you will need to do a wildcard gcs search on the uri prefix
+    /// you provide.
     ///
-    ///  Examples:
+    /// Examples:
     ///
-    ///  *    File Prefix: gs://bucket-name/here/filenameprefix   The output files
-    ///  will be created in gs://bucket-name/here/ and the names of the
-    ///  output files will begin with "filenameprefix".
+    /// *    File Prefix: gs://bucket-name/here/filenameprefix   The output files
+    /// will be created in gs://bucket-name/here/ and the names of the
+    /// output files will begin with "filenameprefix".
     ///
-    ///  *    Directory Prefix: gs://bucket-name/some/location/   The output files
-    ///  will be created in gs://bucket-name/some/location/ and the names of the
-    ///  output files could be anything because there was no filename prefix
-    ///  specified.
+    /// *    Directory Prefix: gs://bucket-name/some/location/   The output files
+    /// will be created in gs://bucket-name/some/location/ and the names of the
+    /// output files could be anything because there was no filename prefix
+    /// specified.
     ///
-    ///  If multiple outputs, each response is still AnnotateFileResponse, each of
-    ///  which contains some subset of the full list of AnnotateImageResponse.
-    ///  Multiple outputs can happen if, for example, the output JSON is too large
-    ///  and overflows into multiple sharded files.
+    /// If multiple outputs, each response is still AnnotateFileResponse, each of
+    /// which contains some subset of the full list of AnnotateImageResponse.
+    /// Multiple outputs can happen if, for example, the output JSON is too large
+    /// and overflows into multiple sharded files.
     #[prost(string, tag="1")]
     pub uri: ::prost::alloc::string::String,
 }
-///  Contains metadata for the BatchAnnotateImages operation.
+/// Contains metadata for the BatchAnnotateImages operation.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationMetadata {
-    ///  Current state of the batch operation.
+    /// Current state of the batch operation.
     #[prost(enumeration="operation_metadata::State", tag="1")]
     pub state: i32,
-    ///  The time when the batch request was received.
+    /// The time when the batch request was received.
     #[prost(message, optional, tag="5")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  The time when the operation result was last updated.
+    /// The time when the operation result was last updated.
     #[prost(message, optional, tag="6")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Nested message and enum types in `OperationMetadata`.
 pub mod operation_metadata {
-    ///  Batch operation states.
+    /// Batch operation states.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum State {
-        ///  Invalid.
+        /// Invalid.
         Unspecified = 0,
-        ///  Request is received.
+        /// Request is received.
         Created = 1,
-        ///  Request is actively being processed.
+        /// Request is actively being processed.
         Running = 2,
-        ///  The batch processing is done.
+        /// The batch processing is done.
         Done = 3,
-        ///  The batch processing was cancelled.
+        /// The batch processing was cancelled.
         Cancelled = 4,
     }
     impl State {
@@ -2701,22 +2701,22 @@ pub mod operation_metadata {
         }
     }
 }
-///  A bucketized representation of likelihood, which is intended to give clients
-///  highly stable results across model upgrades.
+/// A bucketized representation of likelihood, which is intended to give clients
+/// highly stable results across model upgrades.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum Likelihood {
-    ///  Unknown likelihood.
+    /// Unknown likelihood.
     Unknown = 0,
-    ///  It is very unlikely.
+    /// It is very unlikely.
     VeryUnlikely = 1,
-    ///  It is unlikely.
+    /// It is unlikely.
     Unlikely = 2,
-    ///  It is possible.
+    /// It is possible.
     Possible = 3,
-    ///  It is likely.
+    /// It is likely.
     Likely = 4,
-    ///  It is very likely.
+    /// It is very likely.
     VeryLikely = 5,
 }
 impl Likelihood {

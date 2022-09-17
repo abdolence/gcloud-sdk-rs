@@ -1,8 +1,8 @@
-///  Request message for
-///  \[AccessibleBiddingStrategyService.GetAccessibleBiddingStrategy][google.ads.googleads.v9.services.AccessibleBiddingStrategyService.GetAccessibleBiddingStrategy\].
+/// Request message for
+/// \[AccessibleBiddingStrategyService.GetAccessibleBiddingStrategy][google.ads.googleads.v9.services.AccessibleBiddingStrategyService.GetAccessibleBiddingStrategy\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAccessibleBiddingStrategyRequest {
-    ///  Required. The resource name of the accessible bidding strategy to fetch.
+    /// Required. The resource name of the accessible bidding strategy to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
@@ -103,76 +103,76 @@ pub mod accessible_bidding_strategy_service_client {
         }
     }
 }
-///  Request message for
-///  \[AccountBudgetProposalService.GetAccountBudgetProposal][google.ads.googleads.v9.services.AccountBudgetProposalService.GetAccountBudgetProposal\].
+/// Request message for
+/// \[AccountBudgetProposalService.GetAccountBudgetProposal][google.ads.googleads.v9.services.AccountBudgetProposalService.GetAccountBudgetProposal\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAccountBudgetProposalRequest {
-    ///  Required. The resource name of the account-level budget proposal to fetch.
+    /// Required. The resource name of the account-level budget proposal to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Request message for
-///  \[AccountBudgetProposalService.MutateAccountBudgetProposal][google.ads.googleads.v9.services.AccountBudgetProposalService.MutateAccountBudgetProposal\].
+/// Request message for
+/// \[AccountBudgetProposalService.MutateAccountBudgetProposal][google.ads.googleads.v9.services.AccountBudgetProposalService.MutateAccountBudgetProposal\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAccountBudgetProposalRequest {
-    ///  Required. The ID of the customer.
+    /// Required. The ID of the customer.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The operation to perform on an individual account-level budget proposal.
+    /// Required. The operation to perform on an individual account-level budget proposal.
     #[prost(message, optional, tag="2")]
     pub operation: ::core::option::Option<AccountBudgetProposalOperation>,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="3")]
     pub validate_only: bool,
 }
-///  A single operation to propose the creation of a new account-level budget or
-///  edit/end/remove an existing one.
+/// A single operation to propose the creation of a new account-level budget or
+/// edit/end/remove an existing one.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AccountBudgetProposalOperation {
-    ///  FieldMask that determines which budget fields are modified.  While budgets
-    ///  may be modified, proposals that propose such modifications are final.
-    ///  Therefore, update operations are not supported for proposals.
+    /// FieldMask that determines which budget fields are modified.  While budgets
+    /// may be modified, proposals that propose such modifications are final.
+    /// Therefore, update operations are not supported for proposals.
     ///
-    ///  Proposals that modify budgets have the 'update' proposal type.  Specifying
-    ///  a mask for any other proposal type is considered an error.
+    /// Proposals that modify budgets have the 'update' proposal type.  Specifying
+    /// a mask for any other proposal type is considered an error.
     #[prost(message, optional, tag="3")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  The mutate operation.
+    /// The mutate operation.
     #[prost(oneof="account_budget_proposal_operation::Operation", tags="2, 1")]
     pub operation: ::core::option::Option<account_budget_proposal_operation::Operation>,
 }
 /// Nested message and enum types in `AccountBudgetProposalOperation`.
 pub mod account_budget_proposal_operation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  Create operation: A new proposal to create a new budget, edit an
-        ///  existing budget, end an actively running budget, or remove an approved
-        ///  budget scheduled to start in the future.
-        ///  No resource name is expected for the new proposal.
+        /// Create operation: A new proposal to create a new budget, edit an
+        /// existing budget, end an actively running budget, or remove an approved
+        /// budget scheduled to start in the future.
+        /// No resource name is expected for the new proposal.
         #[prost(message, tag="2")]
         Create(super::super::resources::AccountBudgetProposal),
-        ///  Remove operation: A resource name for the removed proposal is expected,
-        ///  in this format:
+        /// Remove operation: A resource name for the removed proposal is expected,
+        /// in this format:
         ///
-        ///  `customers/{customer_id}/accountBudgetProposals/{account_budget_proposal_id}`
-        ///  A request may be cancelled iff it is pending.
+        /// `customers/{customer_id}/accountBudgetProposals/{account_budget_proposal_id}`
+        /// A request may be cancelled iff it is pending.
         #[prost(string, tag="1")]
         Remove(::prost::alloc::string::String),
     }
 }
-///  Response message for account-level budget mutate operations.
+/// Response message for account-level budget mutate operations.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAccountBudgetProposalResponse {
-    ///  The result of the mutate.
+    /// The result of the mutate.
     #[prost(message, optional, tag="2")]
     pub result: ::core::option::Option<MutateAccountBudgetProposalResult>,
 }
-///  The result for the account budget proposal mutate.
+/// The result for the account budget proposal mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAccountBudgetProposalResult {
-    ///  Returned for successful operations.
+    /// Returned for successful operations.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
@@ -333,11 +333,11 @@ pub mod account_budget_proposal_service_client {
         }
     }
 }
-///  Request message for
-///  \[AccountBudgetService.GetAccountBudget][google.ads.googleads.v9.services.AccountBudgetService.GetAccountBudget\].
+/// Request message for
+/// \[AccountBudgetService.GetAccountBudget][google.ads.googleads.v9.services.AccountBudgetService.GetAccountBudget\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAccountBudgetRequest {
-    ///  Required. The resource name of the account-level budget to fetch.
+    /// Required. The resource name of the account-level budget to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
@@ -446,96 +446,96 @@ pub mod account_budget_service_client {
         }
     }
 }
-///  Request message for \[AccountLinkService.GetAccountLink][google.ads.googleads.v9.services.AccountLinkService.GetAccountLink\].
+/// Request message for \[AccountLinkService.GetAccountLink][google.ads.googleads.v9.services.AccountLinkService.GetAccountLink\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAccountLinkRequest {
-    ///  Required. Resource name of the account link.
+    /// Required. Resource name of the account link.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Request message for
-///  \[AccountLinkService.CreateAccountLink][google.ads.googleads.v9.services.AccountLinkService.CreateAccountLink\].
+/// Request message for
+/// \[AccountLinkService.CreateAccountLink][google.ads.googleads.v9.services.AccountLinkService.CreateAccountLink\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateAccountLinkRequest {
-    ///  Required. The ID of the customer for which the account link is created.
+    /// Required. The ID of the customer for which the account link is created.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The account link to be created.
+    /// Required. The account link to be created.
     #[prost(message, optional, tag="2")]
     pub account_link: ::core::option::Option<super::resources::AccountLink>,
 }
-///  Response message for
-///  \[AccountLinkService.CreateAccountLink][google.ads.googleads.v9.services.AccountLinkService.CreateAccountLink\].
+/// Response message for
+/// \[AccountLinkService.CreateAccountLink][google.ads.googleads.v9.services.AccountLinkService.CreateAccountLink\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateAccountLinkResponse {
-    ///  Returned for successful operations. Resource name of the account link.
+    /// Returned for successful operations. Resource name of the account link.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Request message for \[AccountLinkService.MutateAccountLink][google.ads.googleads.v9.services.AccountLinkService.MutateAccountLink\].
+/// Request message for \[AccountLinkService.MutateAccountLink][google.ads.googleads.v9.services.AccountLinkService.MutateAccountLink\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAccountLinkRequest {
-    ///  Required. The ID of the customer being modified.
+    /// Required. The ID of the customer being modified.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The operation to perform on the link.
+    /// Required. The operation to perform on the link.
     #[prost(message, optional, tag="2")]
     pub operation: ::core::option::Option<AccountLinkOperation>,
-    ///  If true, successful operations will be carried out and invalid
-    ///  operations will return errors. If false, all operations will be carried
-    ///  out in one transaction if and only if they are all valid.
-    ///  Default is false.
+    /// If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, all operations will be carried
+    /// out in one transaction if and only if they are all valid.
+    /// Default is false.
     #[prost(bool, tag="3")]
     pub partial_failure: bool,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="4")]
     pub validate_only: bool,
 }
-///  A single update on an account link.
+/// A single update on an account link.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AccountLinkOperation {
-    ///  FieldMask that determines which resource fields are modified in an update.
+    /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag="4")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  The operation to perform.
+    /// The operation to perform.
     #[prost(oneof="account_link_operation::Operation", tags="2, 3")]
     pub operation: ::core::option::Option<account_link_operation::Operation>,
 }
 /// Nested message and enum types in `AccountLinkOperation`.
 pub mod account_link_operation {
-    ///  The operation to perform.
+    /// The operation to perform.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  Update operation: The account link is expected to have
-        ///  a valid resource name.
+        /// Update operation: The account link is expected to have
+        /// a valid resource name.
         #[prost(message, tag="2")]
         Update(super::super::resources::AccountLink),
-        ///  Remove operation: A resource name for the account link to remove is
-        ///  expected, in this format:
+        /// Remove operation: A resource name for the account link to remove is
+        /// expected, in this format:
         ///
-        ///  `customers/{customer_id}/accountLinks/{account_link_id}`
+        /// `customers/{customer_id}/accountLinks/{account_link_id}`
         #[prost(string, tag="3")]
         Remove(::prost::alloc::string::String),
     }
 }
-///  Response message for account link mutate.
+/// Response message for account link mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAccountLinkResponse {
-    ///  Result for the mutate.
+    /// Result for the mutate.
     #[prost(message, optional, tag="1")]
     pub result: ::core::option::Option<MutateAccountLinkResult>,
-    ///  Errors that pertain to operation failures in the partial failure mode.
-    ///  Returned only when partial_failure = true and all errors occur inside the
-    ///  operations. If any errors occur outside the operations (e.g. auth errors),
-    ///  we return an RPC level error.
+    /// Errors that pertain to operation failures in the partial failure mode.
+    /// Returned only when partial_failure = true and all errors occur inside the
+    /// operations. If any errors occur outside the operations (e.g. auth errors),
+    /// we return an RPC level error.
     #[prost(message, optional, tag="2")]
     pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
 }
-///  The result for the account link mutate.
+/// The result for the account link mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAccountLinkResult {
-    ///  Returned for successful operations.
+    /// Returned for successful operations.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
@@ -709,10 +709,10 @@ pub mod account_link_service_client {
         }
     }
 }
-///  Request message for \[AdGroupAdAssetViewService.GetAdGroupAdAssetView][google.ads.googleads.v9.services.AdGroupAdAssetViewService.GetAdGroupAdAssetView\].
+/// Request message for \[AdGroupAdAssetViewService.GetAdGroupAdAssetView][google.ads.googleads.v9.services.AdGroupAdAssetViewService.GetAdGroupAdAssetView\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAdGroupAdAssetViewRequest {
-    ///  Required. The resource name of the ad group ad asset view to fetch.
+    /// Required. The resource name of the ad group ad asset view to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
@@ -821,75 +821,75 @@ pub mod ad_group_ad_asset_view_service_client {
         }
     }
 }
-///  Request message for \[AdGroupAdLabelService.GetAdGroupAdLabel][google.ads.googleads.v9.services.AdGroupAdLabelService.GetAdGroupAdLabel\].
+/// Request message for \[AdGroupAdLabelService.GetAdGroupAdLabel][google.ads.googleads.v9.services.AdGroupAdLabelService.GetAdGroupAdLabel\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAdGroupAdLabelRequest {
-    ///  Required. The resource name of the ad group ad label to fetch.
+    /// Required. The resource name of the ad group ad label to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Request message for \[AdGroupAdLabelService.MutateAdGroupAdLabels][google.ads.googleads.v9.services.AdGroupAdLabelService.MutateAdGroupAdLabels\].
+/// Request message for \[AdGroupAdLabelService.MutateAdGroupAdLabels][google.ads.googleads.v9.services.AdGroupAdLabelService.MutateAdGroupAdLabels\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAdGroupAdLabelsRequest {
-    ///  Required. ID of the customer whose ad group ad labels are being modified.
+    /// Required. ID of the customer whose ad group ad labels are being modified.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The list of operations to perform on ad group ad labels.
+    /// Required. The list of operations to perform on ad group ad labels.
     #[prost(message, repeated, tag="2")]
     pub operations: ::prost::alloc::vec::Vec<AdGroupAdLabelOperation>,
-    ///  If true, successful operations will be carried out and invalid
-    ///  operations will return errors. If false, all operations will be carried
-    ///  out in one transaction if and only if they are all valid.
-    ///  Default is false.
+    /// If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, all operations will be carried
+    /// out in one transaction if and only if they are all valid.
+    /// Default is false.
     #[prost(bool, tag="3")]
     pub partial_failure: bool,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="4")]
     pub validate_only: bool,
 }
-///  A single operation (create, remove) on an ad group ad label.
+/// A single operation (create, remove) on an ad group ad label.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AdGroupAdLabelOperation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[prost(oneof="ad_group_ad_label_operation::Operation", tags="1, 2")]
     pub operation: ::core::option::Option<ad_group_ad_label_operation::Operation>,
 }
 /// Nested message and enum types in `AdGroupAdLabelOperation`.
 pub mod ad_group_ad_label_operation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  Create operation: No resource name is expected for the new ad group ad
-        ///  label.
+        /// Create operation: No resource name is expected for the new ad group ad
+        /// label.
         #[prost(message, tag="1")]
         Create(super::super::resources::AdGroupAdLabel),
-        ///  Remove operation: A resource name for the ad group ad label
-        ///  being removed, in this format:
+        /// Remove operation: A resource name for the ad group ad label
+        /// being removed, in this format:
         ///
-        ///  `customers/{customer_id}/adGroupAdLabels/{ad_group_id}~{ad_id}
-        ///  _{label_id}`
+        /// `customers/{customer_id}/adGroupAdLabels/{ad_group_id}~{ad_id}
+        /// _{label_id}`
         #[prost(string, tag="2")]
         Remove(::prost::alloc::string::String),
     }
 }
-///  Response message for an ad group ad labels mutate.
+/// Response message for an ad group ad labels mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAdGroupAdLabelsResponse {
-    ///  Errors that pertain to operation failures in the partial failure mode.
-    ///  Returned only when partial_failure = true and all errors occur inside the
-    ///  operations. If any errors occur outside the operations (e.g. auth errors),
-    ///  we return an RPC level error.
+    /// Errors that pertain to operation failures in the partial failure mode.
+    /// Returned only when partial_failure = true and all errors occur inside the
+    /// operations. If any errors occur outside the operations (e.g. auth errors),
+    /// we return an RPC level error.
     #[prost(message, optional, tag="3")]
     pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
-    ///  All results for the mutate.
+    /// All results for the mutate.
     #[prost(message, repeated, tag="2")]
     pub results: ::prost::alloc::vec::Vec<MutateAdGroupAdLabelResult>,
 }
-///  The result for an ad group ad label mutate.
+/// The result for an ad group ad label mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAdGroupAdLabelResult {
-    ///  Returned for successful operations.
+    /// Returned for successful operations.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
@@ -1032,91 +1032,91 @@ pub mod ad_group_ad_label_service_client {
         }
     }
 }
-///  Request message for \[AdGroupAdService.GetAdGroupAd][google.ads.googleads.v9.services.AdGroupAdService.GetAdGroupAd\].
+/// Request message for \[AdGroupAdService.GetAdGroupAd][google.ads.googleads.v9.services.AdGroupAdService.GetAdGroupAd\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAdGroupAdRequest {
-    ///  Required. The resource name of the ad to fetch.
+    /// Required. The resource name of the ad to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Request message for \[AdGroupAdService.MutateAdGroupAds][google.ads.googleads.v9.services.AdGroupAdService.MutateAdGroupAds\].
+/// Request message for \[AdGroupAdService.MutateAdGroupAds][google.ads.googleads.v9.services.AdGroupAdService.MutateAdGroupAds\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAdGroupAdsRequest {
-    ///  Required. The ID of the customer whose ads are being modified.
+    /// Required. The ID of the customer whose ads are being modified.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The list of operations to perform on individual ads.
+    /// Required. The list of operations to perform on individual ads.
     #[prost(message, repeated, tag="2")]
     pub operations: ::prost::alloc::vec::Vec<AdGroupAdOperation>,
-    ///  If true, successful operations will be carried out and invalid
-    ///  operations will return errors. If false, all operations will be carried
-    ///  out in one transaction if and only if they are all valid.
-    ///  Default is false.
+    /// If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, all operations will be carried
+    /// out in one transaction if and only if they are all valid.
+    /// Default is false.
     #[prost(bool, tag="3")]
     pub partial_failure: bool,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="4")]
     pub validate_only: bool,
-    ///  The response content type setting. Determines whether the mutable resource
-    ///  or just the resource name should be returned post mutation.
+    /// The response content type setting. Determines whether the mutable resource
+    /// or just the resource name should be returned post mutation.
     #[prost(enumeration="super::enums::response_content_type_enum::ResponseContentType", tag="5")]
     pub response_content_type: i32,
 }
-///  A single operation (create, update, remove) on an ad group ad.
+/// A single operation (create, update, remove) on an ad group ad.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AdGroupAdOperation {
-    ///  FieldMask that determines which resource fields are modified in an update.
+    /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag="4")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  Configuration for how policies are validated.
+    /// Configuration for how policies are validated.
     #[prost(message, optional, tag="5")]
     pub policy_validation_parameter: ::core::option::Option<super::common::PolicyValidationParameter>,
-    ///  The mutate operation.
+    /// The mutate operation.
     #[prost(oneof="ad_group_ad_operation::Operation", tags="1, 2, 3")]
     pub operation: ::core::option::Option<ad_group_ad_operation::Operation>,
 }
 /// Nested message and enum types in `AdGroupAdOperation`.
 pub mod ad_group_ad_operation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  Create operation: No resource name is expected for the new ad.
+        /// Create operation: No resource name is expected for the new ad.
         #[prost(message, tag="1")]
         Create(super::super::resources::AdGroupAd),
-        ///  Update operation: The ad is expected to have a valid resource name.
+        /// Update operation: The ad is expected to have a valid resource name.
         #[prost(message, tag="2")]
         Update(super::super::resources::AdGroupAd),
-        ///  Remove operation: A resource name for the removed ad is expected,
-        ///  in this format:
+        /// Remove operation: A resource name for the removed ad is expected,
+        /// in this format:
         ///
-        ///  `customers/{customer_id}/adGroupAds/{ad_group_id}~{ad_id}`
+        /// `customers/{customer_id}/adGroupAds/{ad_group_id}~{ad_id}`
         #[prost(string, tag="3")]
         Remove(::prost::alloc::string::String),
     }
 }
-///  Response message for an ad group ad mutate.
+/// Response message for an ad group ad mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAdGroupAdsResponse {
-    ///  Errors that pertain to operation failures in the partial failure mode.
-    ///  Returned only when partial_failure = true and all errors occur inside the
-    ///  operations. If any errors occur outside the operations (e.g. auth errors),
-    ///  we return an RPC level error.
+    /// Errors that pertain to operation failures in the partial failure mode.
+    /// Returned only when partial_failure = true and all errors occur inside the
+    /// operations. If any errors occur outside the operations (e.g. auth errors),
+    /// we return an RPC level error.
     #[prost(message, optional, tag="3")]
     pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
-    ///  All results for the mutate.
+    /// All results for the mutate.
     #[prost(message, repeated, tag="2")]
     pub results: ::prost::alloc::vec::Vec<MutateAdGroupAdResult>,
 }
-///  The result for the ad mutate.
+/// The result for the ad mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAdGroupAdResult {
-    ///  The resource name returned for successful operations.
+    /// The resource name returned for successful operations.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
-    ///  The mutated ad group ad with only mutable fields after mutate. The field
-    ///  will only be returned when response_content_type is set to
-    ///  "MUTABLE_RESOURCE".
+    /// The mutated ad group ad with only mutable fields after mutate. The field
+    /// will only be returned when response_content_type is set to
+    /// "MUTABLE_RESOURCE".
     #[prost(message, optional, tag="2")]
     pub ad_group_ad: ::core::option::Option<super::resources::AdGroupAd>,
 }
@@ -1285,90 +1285,90 @@ pub mod ad_group_ad_service_client {
         }
     }
 }
-///  Request message for \[AdGroupAssetService.GetAdGroupAsset][google.ads.googleads.v9.services.AdGroupAssetService.GetAdGroupAsset\].
+/// Request message for \[AdGroupAssetService.GetAdGroupAsset][google.ads.googleads.v9.services.AdGroupAssetService.GetAdGroupAsset\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAdGroupAssetRequest {
-    ///  Required. The resource name of the ad group asset to fetch.
+    /// Required. The resource name of the ad group asset to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Request message for \[AdGroupAssetService.MutateAdGroupAssets][google.ads.googleads.v9.services.AdGroupAssetService.MutateAdGroupAssets\].
+/// Request message for \[AdGroupAssetService.MutateAdGroupAssets][google.ads.googleads.v9.services.AdGroupAssetService.MutateAdGroupAssets\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAdGroupAssetsRequest {
-    ///  Required. The ID of the customer whose ad group assets are being modified.
+    /// Required. The ID of the customer whose ad group assets are being modified.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The list of operations to perform on individual ad group assets.
+    /// Required. The list of operations to perform on individual ad group assets.
     #[prost(message, repeated, tag="2")]
     pub operations: ::prost::alloc::vec::Vec<AdGroupAssetOperation>,
-    ///  If true, successful operations will be carried out and invalid
-    ///  operations will return errors. If false, all operations will be carried
-    ///  out in one transaction if and only if they are all valid.
-    ///  Default is false.
+    /// If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, all operations will be carried
+    /// out in one transaction if and only if they are all valid.
+    /// Default is false.
     #[prost(bool, tag="3")]
     pub partial_failure: bool,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="4")]
     pub validate_only: bool,
-    ///  The response content type setting. Determines whether the mutable resource
-    ///  or just the resource name should be returned post mutation.
+    /// The response content type setting. Determines whether the mutable resource
+    /// or just the resource name should be returned post mutation.
     #[prost(enumeration="super::enums::response_content_type_enum::ResponseContentType", tag="5")]
     pub response_content_type: i32,
 }
-///  A single operation (create, update, remove) on an ad group asset.
+/// A single operation (create, update, remove) on an ad group asset.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AdGroupAssetOperation {
-    ///  FieldMask that determines which resource fields are modified in an update.
+    /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag="4")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  The mutate operation.
+    /// The mutate operation.
     #[prost(oneof="ad_group_asset_operation::Operation", tags="1, 3, 2")]
     pub operation: ::core::option::Option<ad_group_asset_operation::Operation>,
 }
 /// Nested message and enum types in `AdGroupAssetOperation`.
 pub mod ad_group_asset_operation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  Create operation: No resource name is expected for the new ad group
-        ///  asset.
+        /// Create operation: No resource name is expected for the new ad group
+        /// asset.
         #[prost(message, tag="1")]
         Create(super::super::resources::AdGroupAsset),
-        ///  Update operation: The ad group asset is expected to have a valid resource
-        ///  name.
+        /// Update operation: The ad group asset is expected to have a valid resource
+        /// name.
         #[prost(message, tag="3")]
         Update(super::super::resources::AdGroupAsset),
-        ///  Remove operation: A resource name for the removed ad group asset is
-        ///  expected, in this format:
+        /// Remove operation: A resource name for the removed ad group asset is
+        /// expected, in this format:
         ///
-        ///  `customers/{customer_id}/adGroupAssets/{ad_group_id}~{asset_id}~{field_type}`
+        /// `customers/{customer_id}/adGroupAssets/{ad_group_id}~{asset_id}~{field_type}`
         #[prost(string, tag="2")]
         Remove(::prost::alloc::string::String),
     }
 }
-///  Response message for an ad group asset mutate.
+/// Response message for an ad group asset mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAdGroupAssetsResponse {
-    ///  Errors that pertain to operation failures in the partial failure mode.
-    ///  Returned only when partial_failure = true and all errors occur inside the
-    ///  operations. If any errors occur outside the operations (e.g. auth errors),
-    ///  we return an RPC level error.
+    /// Errors that pertain to operation failures in the partial failure mode.
+    /// Returned only when partial_failure = true and all errors occur inside the
+    /// operations. If any errors occur outside the operations (e.g. auth errors),
+    /// we return an RPC level error.
     #[prost(message, optional, tag="1")]
     pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
-    ///  All results for the mutate.
+    /// All results for the mutate.
     #[prost(message, repeated, tag="2")]
     pub results: ::prost::alloc::vec::Vec<MutateAdGroupAssetResult>,
 }
-///  The result for the ad group asset mutate.
+/// The result for the ad group asset mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAdGroupAssetResult {
-    ///  Returned for successful operations.
+    /// Returned for successful operations.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
-    ///  The mutated ad group asset with only mutable fields after
-    ///  mutate. The field will only be returned when response_content_type is set
-    ///  to "MUTABLE_RESOURCE".
+    /// The mutated ad group asset with only mutable fields after
+    /// mutate. The field will only be returned when response_content_type is set
+    /// to "MUTABLE_RESOURCE".
     #[prost(message, optional, tag="2")]
     pub ad_group_asset: ::core::option::Option<super::resources::AdGroupAsset>,
 }
@@ -1509,10 +1509,10 @@ pub mod ad_group_asset_service_client {
         }
     }
 }
-///  Request message for \[AdGroupAudienceViewService.GetAdGroupAudienceView][google.ads.googleads.v9.services.AdGroupAudienceViewService.GetAdGroupAudienceView\].
+/// Request message for \[AdGroupAudienceViewService.GetAdGroupAudienceView][google.ads.googleads.v9.services.AdGroupAudienceViewService.GetAdGroupAudienceView\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAdGroupAudienceViewRequest {
-    ///  Required. The resource name of the ad group audience view to fetch.
+    /// Required. The resource name of the ad group audience view to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
@@ -1621,90 +1621,90 @@ pub mod ad_group_audience_view_service_client {
         }
     }
 }
-///  Request message for \[AdGroupBidModifierService.GetAdGroupBidModifier][google.ads.googleads.v9.services.AdGroupBidModifierService.GetAdGroupBidModifier\].
+/// Request message for \[AdGroupBidModifierService.GetAdGroupBidModifier][google.ads.googleads.v9.services.AdGroupBidModifierService.GetAdGroupBidModifier\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAdGroupBidModifierRequest {
-    ///  Required. The resource name of the ad group bid modifier to fetch.
+    /// Required. The resource name of the ad group bid modifier to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Request message for \[AdGroupBidModifierService.MutateAdGroupBidModifiers][google.ads.googleads.v9.services.AdGroupBidModifierService.MutateAdGroupBidModifiers\].
+/// Request message for \[AdGroupBidModifierService.MutateAdGroupBidModifiers][google.ads.googleads.v9.services.AdGroupBidModifierService.MutateAdGroupBidModifiers\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAdGroupBidModifiersRequest {
-    ///  Required. ID of the customer whose ad group bid modifiers are being modified.
+    /// Required. ID of the customer whose ad group bid modifiers are being modified.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The list of operations to perform on individual ad group bid modifiers.
+    /// Required. The list of operations to perform on individual ad group bid modifiers.
     #[prost(message, repeated, tag="2")]
     pub operations: ::prost::alloc::vec::Vec<AdGroupBidModifierOperation>,
-    ///  If true, successful operations will be carried out and invalid
-    ///  operations will return errors. If false, all operations will be carried
-    ///  out in one transaction if and only if they are all valid.
-    ///  Default is false.
+    /// If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, all operations will be carried
+    /// out in one transaction if and only if they are all valid.
+    /// Default is false.
     #[prost(bool, tag="3")]
     pub partial_failure: bool,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="4")]
     pub validate_only: bool,
-    ///  The response content type setting. Determines whether the mutable resource
-    ///  or just the resource name should be returned post mutation.
+    /// The response content type setting. Determines whether the mutable resource
+    /// or just the resource name should be returned post mutation.
     #[prost(enumeration="super::enums::response_content_type_enum::ResponseContentType", tag="5")]
     pub response_content_type: i32,
 }
-///  A single operation (create, remove, update) on an ad group bid modifier.
+/// A single operation (create, remove, update) on an ad group bid modifier.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AdGroupBidModifierOperation {
-    ///  FieldMask that determines which resource fields are modified in an update.
+    /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag="4")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  The mutate operation.
+    /// The mutate operation.
     #[prost(oneof="ad_group_bid_modifier_operation::Operation", tags="1, 2, 3")]
     pub operation: ::core::option::Option<ad_group_bid_modifier_operation::Operation>,
 }
 /// Nested message and enum types in `AdGroupBidModifierOperation`.
 pub mod ad_group_bid_modifier_operation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  Create operation: No resource name is expected for the new ad group bid
-        ///  modifier.
+        /// Create operation: No resource name is expected for the new ad group bid
+        /// modifier.
         #[prost(message, tag="1")]
         Create(super::super::resources::AdGroupBidModifier),
-        ///  Update operation: The ad group bid modifier is expected to have a valid
-        ///  resource name.
+        /// Update operation: The ad group bid modifier is expected to have a valid
+        /// resource name.
         #[prost(message, tag="2")]
         Update(super::super::resources::AdGroupBidModifier),
-        ///  Remove operation: A resource name for the removed ad group bid modifier
-        ///  is expected, in this format:
+        /// Remove operation: A resource name for the removed ad group bid modifier
+        /// is expected, in this format:
         ///
-        ///  `customers/{customer_id}/adGroupBidModifiers/{ad_group_id}~{criterion_id}`
+        /// `customers/{customer_id}/adGroupBidModifiers/{ad_group_id}~{criterion_id}`
         #[prost(string, tag="3")]
         Remove(::prost::alloc::string::String),
     }
 }
-///  Response message for ad group bid modifiers mutate.
+/// Response message for ad group bid modifiers mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAdGroupBidModifiersResponse {
-    ///  Errors that pertain to operation failures in the partial failure mode.
-    ///  Returned only when partial_failure = true and all errors occur inside the
-    ///  operations. If any errors occur outside the operations (e.g. auth errors),
-    ///  we return an RPC level error.
+    /// Errors that pertain to operation failures in the partial failure mode.
+    /// Returned only when partial_failure = true and all errors occur inside the
+    /// operations. If any errors occur outside the operations (e.g. auth errors),
+    /// we return an RPC level error.
     #[prost(message, optional, tag="3")]
     pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
-    ///  All results for the mutate.
+    /// All results for the mutate.
     #[prost(message, repeated, tag="2")]
     pub results: ::prost::alloc::vec::Vec<MutateAdGroupBidModifierResult>,
 }
-///  The result for the criterion mutate.
+/// The result for the criterion mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAdGroupBidModifierResult {
-    ///  Returned for successful operations.
+    /// Returned for successful operations.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
-    ///  The mutated ad group bid modifier with only mutable fields after mutate.
-    ///  The field will only be returned when response_content_type is set to
-    ///  "MUTABLE_RESOURCE".
+    /// The mutated ad group bid modifier with only mutable fields after mutate.
+    /// The field will only be returned when response_content_type is set to
+    /// "MUTABLE_RESOURCE".
     #[prost(message, optional, tag="2")]
     pub ad_group_bid_modifier: ::core::option::Option<super::resources::AdGroupBidModifier>,
 }
@@ -1862,79 +1862,79 @@ pub mod ad_group_bid_modifier_service_client {
         }
     }
 }
-///  Request message for
-///  \[AdGroupCriterionCustomizerService.MutateAdGroupCriterionCustomizers][google.ads.googleads.v9.services.AdGroupCriterionCustomizerService.MutateAdGroupCriterionCustomizers\].
+/// Request message for
+/// \[AdGroupCriterionCustomizerService.MutateAdGroupCriterionCustomizers][google.ads.googleads.v9.services.AdGroupCriterionCustomizerService.MutateAdGroupCriterionCustomizers\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAdGroupCriterionCustomizersRequest {
-    ///  Required. The ID of the customer whose ad group criterion customizers are being
-    ///  modified.
+    /// Required. The ID of the customer whose ad group criterion customizers are being
+    /// modified.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The list of operations to perform on individual ad group criterion
-    ///  customizers.
+    /// Required. The list of operations to perform on individual ad group criterion
+    /// customizers.
     #[prost(message, repeated, tag="2")]
     pub operations: ::prost::alloc::vec::Vec<AdGroupCriterionCustomizerOperation>,
-    ///  If true, successful operations will be carried out and invalid
-    ///  operations will return errors. If false, all operations will be carried
-    ///  out in one transaction if and only if they are all valid.
-    ///  Default is false.
+    /// If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, all operations will be carried
+    /// out in one transaction if and only if they are all valid.
+    /// Default is false.
     #[prost(bool, tag="3")]
     pub partial_failure: bool,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="4")]
     pub validate_only: bool,
-    ///  The response content type setting. Determines whether the mutable resource
-    ///  or just the resource name should be returned post mutation.
+    /// The response content type setting. Determines whether the mutable resource
+    /// or just the resource name should be returned post mutation.
     #[prost(enumeration="super::enums::response_content_type_enum::ResponseContentType", tag="5")]
     pub response_content_type: i32,
 }
-///  A single operation (create, remove) on an customizer attribute.
+/// A single operation (create, remove) on an customizer attribute.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AdGroupCriterionCustomizerOperation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[prost(oneof="ad_group_criterion_customizer_operation::Operation", tags="1, 2")]
     pub operation: ::core::option::Option<ad_group_criterion_customizer_operation::Operation>,
 }
 /// Nested message and enum types in `AdGroupCriterionCustomizerOperation`.
 pub mod ad_group_criterion_customizer_operation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  Create operation: No resource name is expected for the new ad group
-        ///  criterion customizer.
+        /// Create operation: No resource name is expected for the new ad group
+        /// criterion customizer.
         #[prost(message, tag="1")]
         Create(super::super::resources::AdGroupCriterionCustomizer),
-        ///  Remove operation: A resource name for the removed ad group criterion
-        ///  customizer is expected, in this format:
+        /// Remove operation: A resource name for the removed ad group criterion
+        /// customizer is expected, in this format:
         ///
-        ///  `customers/{customer_id}/adGroupCriterionCustomizers/{ad_group_id}~{criterion_id}~{customizer_attribute_id}`
+        /// `customers/{customer_id}/adGroupCriterionCustomizers/{ad_group_id}~{criterion_id}~{customizer_attribute_id}`
         #[prost(string, tag="2")]
         Remove(::prost::alloc::string::String),
     }
 }
-///  Response message for an ad group criterion customizer mutate.
+/// Response message for an ad group criterion customizer mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAdGroupCriterionCustomizersResponse {
-    ///  All results for the mutate.
+    /// All results for the mutate.
     #[prost(message, repeated, tag="1")]
     pub results: ::prost::alloc::vec::Vec<MutateAdGroupCriterionCustomizerResult>,
-    ///  Errors that pertain to operation failures in the partial failure mode.
-    ///  Returned only when partial_failure = true and all errors occur inside the
-    ///  operations. If any errors occur outside the operations (e.g. auth errors),
-    ///  we return an RPC level error.
+    /// Errors that pertain to operation failures in the partial failure mode.
+    /// Returned only when partial_failure = true and all errors occur inside the
+    /// operations. If any errors occur outside the operations (e.g. auth errors),
+    /// we return an RPC level error.
     #[prost(message, optional, tag="2")]
     pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
 }
-///  The result for the ad group criterion customizer mutate.
+/// The result for the ad group criterion customizer mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAdGroupCriterionCustomizerResult {
-    ///  Returned for successful operations.
+    /// Returned for successful operations.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
-    ///  The mutated AdGroupCriterionCustomizer with only mutable fields after
-    ///  mutate. The field will only be returned when response_content_type is set
-    ///  to "MUTABLE_RESOURCE".
+    /// The mutated AdGroupCriterionCustomizer with only mutable fields after
+    /// mutate. The field will only be returned when response_content_type is set
+    /// to "MUTABLE_RESOURCE".
     #[prost(message, optional, tag="2")]
     pub ad_group_criterion_customizer: ::core::option::Option<super::resources::AdGroupCriterionCustomizer>,
 }
@@ -2038,76 +2038,76 @@ pub mod ad_group_criterion_customizer_service_client {
         }
     }
 }
-///  Request message for
-///  \[AdGroupCriterionLabelService.GetAdGroupCriterionLabel][google.ads.googleads.v9.services.AdGroupCriterionLabelService.GetAdGroupCriterionLabel\].
+/// Request message for
+/// \[AdGroupCriterionLabelService.GetAdGroupCriterionLabel][google.ads.googleads.v9.services.AdGroupCriterionLabelService.GetAdGroupCriterionLabel\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAdGroupCriterionLabelRequest {
-    ///  Required. The resource name of the ad group criterion label to fetch.
+    /// Required. The resource name of the ad group criterion label to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Request message for
-///  \[AdGroupCriterionLabelService.MutateAdGroupCriterionLabels][google.ads.googleads.v9.services.AdGroupCriterionLabelService.MutateAdGroupCriterionLabels\].
+/// Request message for
+/// \[AdGroupCriterionLabelService.MutateAdGroupCriterionLabels][google.ads.googleads.v9.services.AdGroupCriterionLabelService.MutateAdGroupCriterionLabels\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAdGroupCriterionLabelsRequest {
-    ///  Required. ID of the customer whose ad group criterion labels are being modified.
+    /// Required. ID of the customer whose ad group criterion labels are being modified.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The list of operations to perform on ad group criterion labels.
+    /// Required. The list of operations to perform on ad group criterion labels.
     #[prost(message, repeated, tag="2")]
     pub operations: ::prost::alloc::vec::Vec<AdGroupCriterionLabelOperation>,
-    ///  If true, successful operations will be carried out and invalid
-    ///  operations will return errors. If false, all operations will be carried
-    ///  out in one transaction if and only if they are all valid.
-    ///  Default is false.
+    /// If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, all operations will be carried
+    /// out in one transaction if and only if they are all valid.
+    /// Default is false.
     #[prost(bool, tag="3")]
     pub partial_failure: bool,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="4")]
     pub validate_only: bool,
 }
-///  A single operation (create, remove) on an ad group criterion label.
+/// A single operation (create, remove) on an ad group criterion label.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AdGroupCriterionLabelOperation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[prost(oneof="ad_group_criterion_label_operation::Operation", tags="1, 2")]
     pub operation: ::core::option::Option<ad_group_criterion_label_operation::Operation>,
 }
 /// Nested message and enum types in `AdGroupCriterionLabelOperation`.
 pub mod ad_group_criterion_label_operation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  Create operation: No resource name is expected for the new ad group
-        ///  label.
+        /// Create operation: No resource name is expected for the new ad group
+        /// label.
         #[prost(message, tag="1")]
         Create(super::super::resources::AdGroupCriterionLabel),
-        ///  Remove operation: A resource name for the ad group criterion label
-        ///  being removed, in this format:
+        /// Remove operation: A resource name for the ad group criterion label
+        /// being removed, in this format:
         ///
-        ///  `customers/{customer_id}/adGroupCriterionLabels/{ad_group_id}~{criterion_id}~{label_id}`
+        /// `customers/{customer_id}/adGroupCriterionLabels/{ad_group_id}~{criterion_id}~{label_id}`
         #[prost(string, tag="2")]
         Remove(::prost::alloc::string::String),
     }
 }
-///  Response message for an ad group criterion labels mutate.
+/// Response message for an ad group criterion labels mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAdGroupCriterionLabelsResponse {
-    ///  Errors that pertain to operation failures in the partial failure mode.
-    ///  Returned only when partial_failure = true and all errors occur inside the
-    ///  operations. If any errors occur outside the operations (e.g. auth errors),
-    ///  we return an RPC level error.
+    /// Errors that pertain to operation failures in the partial failure mode.
+    /// Returned only when partial_failure = true and all errors occur inside the
+    /// operations. If any errors occur outside the operations (e.g. auth errors),
+    /// we return an RPC level error.
     #[prost(message, optional, tag="3")]
     pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
-    ///  All results for the mutate.
+    /// All results for the mutate.
     #[prost(message, repeated, tag="2")]
     pub results: ::prost::alloc::vec::Vec<MutateAdGroupCriterionLabelResult>,
 }
-///  The result for an ad group criterion label mutate.
+/// The result for an ad group criterion label mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAdGroupCriterionLabelResult {
-    ///  Returned for successful operations.
+    /// Returned for successful operations.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
@@ -2250,100 +2250,100 @@ pub mod ad_group_criterion_label_service_client {
         }
     }
 }
-///  Request message for \[AdGroupCriterionService.GetAdGroupCriterion][google.ads.googleads.v9.services.AdGroupCriterionService.GetAdGroupCriterion\].
+/// Request message for \[AdGroupCriterionService.GetAdGroupCriterion][google.ads.googleads.v9.services.AdGroupCriterionService.GetAdGroupCriterion\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAdGroupCriterionRequest {
-    ///  Required. The resource name of the criterion to fetch.
+    /// Required. The resource name of the criterion to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Request message for \[AdGroupCriterionService.MutateAdGroupCriteria][google.ads.googleads.v9.services.AdGroupCriterionService.MutateAdGroupCriteria\].
+/// Request message for \[AdGroupCriterionService.MutateAdGroupCriteria][google.ads.googleads.v9.services.AdGroupCriterionService.MutateAdGroupCriteria\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAdGroupCriteriaRequest {
-    ///  Required. ID of the customer whose criteria are being modified.
+    /// Required. ID of the customer whose criteria are being modified.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The list of operations to perform on individual criteria.
+    /// Required. The list of operations to perform on individual criteria.
     #[prost(message, repeated, tag="2")]
     pub operations: ::prost::alloc::vec::Vec<AdGroupCriterionOperation>,
-    ///  If true, successful operations will be carried out and invalid
-    ///  operations will return errors. If false, all operations will be carried
-    ///  out in one transaction if and only if they are all valid.
-    ///  Default is false.
+    /// If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, all operations will be carried
+    /// out in one transaction if and only if they are all valid.
+    /// Default is false.
     #[prost(bool, tag="3")]
     pub partial_failure: bool,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="4")]
     pub validate_only: bool,
-    ///  The response content type setting. Determines whether the mutable resource
-    ///  or just the resource name should be returned post mutation.
+    /// The response content type setting. Determines whether the mutable resource
+    /// or just the resource name should be returned post mutation.
     #[prost(enumeration="super::enums::response_content_type_enum::ResponseContentType", tag="5")]
     pub response_content_type: i32,
 }
-///  A single operation (create, remove, update) on an ad group criterion.
+/// A single operation (create, remove, update) on an ad group criterion.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AdGroupCriterionOperation {
-    ///  FieldMask that determines which resource fields are modified in an update.
+    /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag="4")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  The list of policy violation keys that should not cause a
-    ///  PolicyViolationError to be reported. Not all policy violations are
-    ///  exemptable, please refer to the is_exemptible field in the returned
-    ///  PolicyViolationError.
+    /// The list of policy violation keys that should not cause a
+    /// PolicyViolationError to be reported. Not all policy violations are
+    /// exemptable, please refer to the is_exemptible field in the returned
+    /// PolicyViolationError.
     ///
-    ///  Resources violating these polices will be saved, but will not be eligible
-    ///  to serve. They may begin serving at a later time due to a change in
-    ///  policies, re-review of the resource, or a change in advertiser
-    ///  certificates.
+    /// Resources violating these polices will be saved, but will not be eligible
+    /// to serve. They may begin serving at a later time due to a change in
+    /// policies, re-review of the resource, or a change in advertiser
+    /// certificates.
     #[prost(message, repeated, tag="5")]
     pub exempt_policy_violation_keys: ::prost::alloc::vec::Vec<super::common::PolicyViolationKey>,
-    ///  The mutate operation.
+    /// The mutate operation.
     #[prost(oneof="ad_group_criterion_operation::Operation", tags="1, 2, 3")]
     pub operation: ::core::option::Option<ad_group_criterion_operation::Operation>,
 }
 /// Nested message and enum types in `AdGroupCriterionOperation`.
 pub mod ad_group_criterion_operation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  Create operation: No resource name is expected for the new criterion.
+        /// Create operation: No resource name is expected for the new criterion.
         #[prost(message, tag="1")]
         Create(super::super::resources::AdGroupCriterion),
-        ///  Update operation: The criterion is expected to have a valid resource
-        ///  name.
+        /// Update operation: The criterion is expected to have a valid resource
+        /// name.
         #[prost(message, tag="2")]
         Update(super::super::resources::AdGroupCriterion),
-        ///  Remove operation: A resource name for the removed criterion is expected,
-        ///  in this format:
+        /// Remove operation: A resource name for the removed criterion is expected,
+        /// in this format:
         ///
-        ///  `customers/{customer_id}/adGroupCriteria/{ad_group_id}~{criterion_id}`
+        /// `customers/{customer_id}/adGroupCriteria/{ad_group_id}~{criterion_id}`
         #[prost(string, tag="3")]
         Remove(::prost::alloc::string::String),
     }
 }
-///  Response message for an ad group criterion mutate.
+/// Response message for an ad group criterion mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAdGroupCriteriaResponse {
-    ///  Errors that pertain to operation failures in the partial failure mode.
-    ///  Returned only when partial_failure = true and all errors occur inside the
-    ///  operations. If any errors occur outside the operations (e.g. auth errors),
-    ///  we return an RPC level error.
+    /// Errors that pertain to operation failures in the partial failure mode.
+    /// Returned only when partial_failure = true and all errors occur inside the
+    /// operations. If any errors occur outside the operations (e.g. auth errors),
+    /// we return an RPC level error.
     #[prost(message, optional, tag="3")]
     pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
-    ///  All results for the mutate.
+    /// All results for the mutate.
     #[prost(message, repeated, tag="2")]
     pub results: ::prost::alloc::vec::Vec<MutateAdGroupCriterionResult>,
 }
-///  The result for the criterion mutate.
+/// The result for the criterion mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAdGroupCriterionResult {
-    ///  Returned for successful operations.
+    /// Returned for successful operations.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
-    ///  The mutated ad group criterion with only mutable fields after mutate. The
-    ///  field will only be returned when response_content_type is set to
-    ///  "MUTABLE_RESOURCE".
+    /// The mutated ad group criterion with only mutable fields after mutate. The
+    /// field will only be returned when response_content_type is set to
+    /// "MUTABLE_RESOURCE".
     #[prost(message, optional, tag="2")]
     pub ad_group_criterion: ::core::option::Option<super::resources::AdGroupCriterion>,
 }
@@ -2510,11 +2510,11 @@ pub mod ad_group_criterion_service_client {
         }
     }
 }
-///  Request message for
-///  \[AdGroupCriterionSimulationService.GetAdGroupCriterionSimulation][google.ads.googleads.v9.services.AdGroupCriterionSimulationService.GetAdGroupCriterionSimulation\].
+/// Request message for
+/// \[AdGroupCriterionSimulationService.GetAdGroupCriterionSimulation][google.ads.googleads.v9.services.AdGroupCriterionSimulationService.GetAdGroupCriterionSimulation\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAdGroupCriterionSimulationRequest {
-    ///  Required. The resource name of the ad group criterion simulation to fetch.
+    /// Required. The resource name of the ad group criterion simulation to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
@@ -2623,76 +2623,76 @@ pub mod ad_group_criterion_simulation_service_client {
         }
     }
 }
-///  Request message for
-///  \[AdGroupCustomizerService.MutateAdGroupCustomizers][google.ads.googleads.v9.services.AdGroupCustomizerService.MutateAdGroupCustomizers\].
+/// Request message for
+/// \[AdGroupCustomizerService.MutateAdGroupCustomizers][google.ads.googleads.v9.services.AdGroupCustomizerService.MutateAdGroupCustomizers\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAdGroupCustomizersRequest {
-    ///  Required. The ID of the customer whose ad group customizers are being modified.
+    /// Required. The ID of the customer whose ad group customizers are being modified.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The list of operations to perform on individual ad group customizers.
+    /// Required. The list of operations to perform on individual ad group customizers.
     #[prost(message, repeated, tag="2")]
     pub operations: ::prost::alloc::vec::Vec<AdGroupCustomizerOperation>,
-    ///  If true, successful operations will be carried out and invalid
-    ///  operations will return errors. If false, all operations will be carried
-    ///  out in one transaction if and only if they are all valid.
-    ///  Default is false.
+    /// If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, all operations will be carried
+    /// out in one transaction if and only if they are all valid.
+    /// Default is false.
     #[prost(bool, tag="3")]
     pub partial_failure: bool,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="4")]
     pub validate_only: bool,
-    ///  The response content type setting. Determines whether the mutable resource
-    ///  or just the resource name should be returned post mutation.
+    /// The response content type setting. Determines whether the mutable resource
+    /// or just the resource name should be returned post mutation.
     #[prost(enumeration="super::enums::response_content_type_enum::ResponseContentType", tag="5")]
     pub response_content_type: i32,
 }
-///  A single operation (create, remove) on an customizer attribute.
+/// A single operation (create, remove) on an customizer attribute.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AdGroupCustomizerOperation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[prost(oneof="ad_group_customizer_operation::Operation", tags="1, 2")]
     pub operation: ::core::option::Option<ad_group_customizer_operation::Operation>,
 }
 /// Nested message and enum types in `AdGroupCustomizerOperation`.
 pub mod ad_group_customizer_operation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  Create operation: No resource name is expected for the new ad group
-        ///  customizer
+        /// Create operation: No resource name is expected for the new ad group
+        /// customizer
         #[prost(message, tag="1")]
         Create(super::super::resources::AdGroupCustomizer),
-        ///  Remove operation: A resource name for the removed ad group customizer is
-        ///  expected, in this format:
-        ///  `customers/{customer_id}/adGroupCustomizers/{ad_group_id}~{customizer_attribute_id}`
+        /// Remove operation: A resource name for the removed ad group customizer is
+        /// expected, in this format:
+        /// `customers/{customer_id}/adGroupCustomizers/{ad_group_id}~{customizer_attribute_id}`
         #[prost(string, tag="2")]
         Remove(::prost::alloc::string::String),
     }
 }
-///  Response message for an ad group customizer mutate.
+/// Response message for an ad group customizer mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAdGroupCustomizersResponse {
-    ///  All results for the mutate.
+    /// All results for the mutate.
     #[prost(message, repeated, tag="1")]
     pub results: ::prost::alloc::vec::Vec<MutateAdGroupCustomizerResult>,
-    ///  Errors that pertain to operation failures in the partial failure mode.
-    ///  Returned only when partial_failure = true and all errors occur inside the
-    ///  operations. If any errors occur outside the operations (e.g. auth errors),
-    ///  we return an RPC level error.
+    /// Errors that pertain to operation failures in the partial failure mode.
+    /// Returned only when partial_failure = true and all errors occur inside the
+    /// operations. If any errors occur outside the operations (e.g. auth errors),
+    /// we return an RPC level error.
     #[prost(message, optional, tag="2")]
     pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
 }
-///  The result for the ad group customizer mutate.
+/// The result for the ad group customizer mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAdGroupCustomizerResult {
-    ///  Returned for successful operations.
+    /// Returned for successful operations.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
-    ///  The mutated AdGroupCustomizer with only mutable fields after mutate.
-    ///  The field will only be returned when response_content_type is set to
-    ///  "MUTABLE_RESOURCE".
+    /// The mutated AdGroupCustomizer with only mutable fields after mutate.
+    /// The field will only be returned when response_content_type is set to
+    /// "MUTABLE_RESOURCE".
     #[prost(message, optional, tag="2")]
     pub ad_group_customizer: ::core::option::Option<super::resources::AdGroupCustomizer>,
 }
@@ -2794,94 +2794,94 @@ pub mod ad_group_customizer_service_client {
         }
     }
 }
-///  Request message for
-///  \[AdGroupExtensionSettingService.GetAdGroupExtensionSetting][google.ads.googleads.v9.services.AdGroupExtensionSettingService.GetAdGroupExtensionSetting\].
+/// Request message for
+/// \[AdGroupExtensionSettingService.GetAdGroupExtensionSetting][google.ads.googleads.v9.services.AdGroupExtensionSettingService.GetAdGroupExtensionSetting\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAdGroupExtensionSettingRequest {
-    ///  Required. The resource name of the ad group extension setting to fetch.
+    /// Required. The resource name of the ad group extension setting to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Request message for
-///  \[AdGroupExtensionSettingService.MutateAdGroupExtensionSettings][google.ads.googleads.v9.services.AdGroupExtensionSettingService.MutateAdGroupExtensionSettings\].
+/// Request message for
+/// \[AdGroupExtensionSettingService.MutateAdGroupExtensionSettings][google.ads.googleads.v9.services.AdGroupExtensionSettingService.MutateAdGroupExtensionSettings\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAdGroupExtensionSettingsRequest {
-    ///  Required. The ID of the customer whose ad group extension settings are being
-    ///  modified.
+    /// Required. The ID of the customer whose ad group extension settings are being
+    /// modified.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The list of operations to perform on individual ad group extension
-    ///  settings.
+    /// Required. The list of operations to perform on individual ad group extension
+    /// settings.
     #[prost(message, repeated, tag="2")]
     pub operations: ::prost::alloc::vec::Vec<AdGroupExtensionSettingOperation>,
-    ///  If true, successful operations will be carried out and invalid
-    ///  operations will return errors. If false, all operations will be carried
-    ///  out in one transaction if and only if they are all valid.
-    ///  Default is false.
+    /// If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, all operations will be carried
+    /// out in one transaction if and only if they are all valid.
+    /// Default is false.
     #[prost(bool, tag="3")]
     pub partial_failure: bool,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="4")]
     pub validate_only: bool,
 }
-///  A single operation (create, update, remove) on an ad group extension setting.
+/// A single operation (create, update, remove) on an ad group extension setting.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AdGroupExtensionSettingOperation {
-    ///  FieldMask that determines which resource fields are modified in an update.
+    /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag="4")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  The response content type setting. Determines whether the mutable resource
-    ///  or just the resource name should be returned post mutation.
+    /// The response content type setting. Determines whether the mutable resource
+    /// or just the resource name should be returned post mutation.
     #[prost(enumeration="super::enums::response_content_type_enum::ResponseContentType", tag="5")]
     pub response_content_type: i32,
-    ///  The mutate operation.
+    /// The mutate operation.
     #[prost(oneof="ad_group_extension_setting_operation::Operation", tags="1, 2, 3")]
     pub operation: ::core::option::Option<ad_group_extension_setting_operation::Operation>,
 }
 /// Nested message and enum types in `AdGroupExtensionSettingOperation`.
 pub mod ad_group_extension_setting_operation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  Create operation: No resource name is expected for the new ad group
-        ///  extension setting.
+        /// Create operation: No resource name is expected for the new ad group
+        /// extension setting.
         #[prost(message, tag="1")]
         Create(super::super::resources::AdGroupExtensionSetting),
-        ///  Update operation: The ad group extension setting is expected to have a
-        ///  valid resource name.
+        /// Update operation: The ad group extension setting is expected to have a
+        /// valid resource name.
         #[prost(message, tag="2")]
         Update(super::super::resources::AdGroupExtensionSetting),
-        ///  Remove operation: A resource name for the removed ad group extension
-        ///  setting is expected, in this format:
+        /// Remove operation: A resource name for the removed ad group extension
+        /// setting is expected, in this format:
         ///
-        ///  `customers/{customer_id}/adGroupExtensionSettings/{ad_group_id}~{extension_type}`
+        /// `customers/{customer_id}/adGroupExtensionSettings/{ad_group_id}~{extension_type}`
         #[prost(string, tag="3")]
         Remove(::prost::alloc::string::String),
     }
 }
-///  Response message for an ad group extension setting mutate.
+/// Response message for an ad group extension setting mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAdGroupExtensionSettingsResponse {
-    ///  Errors that pertain to operation failures in the partial failure mode.
-    ///  Returned only when partial_failure = true and all errors occur inside the
-    ///  operations. If any errors occur outside the operations (e.g. auth errors),
-    ///  we return an RPC level error.
+    /// Errors that pertain to operation failures in the partial failure mode.
+    /// Returned only when partial_failure = true and all errors occur inside the
+    /// operations. If any errors occur outside the operations (e.g. auth errors),
+    /// we return an RPC level error.
     #[prost(message, optional, tag="3")]
     pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
-    ///  All results for the mutate.
+    /// All results for the mutate.
     #[prost(message, repeated, tag="2")]
     pub results: ::prost::alloc::vec::Vec<MutateAdGroupExtensionSettingResult>,
 }
-///  The result for the ad group extension setting mutate.
+/// The result for the ad group extension setting mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAdGroupExtensionSettingResult {
-    ///  Returned for successful operations.
+    /// Returned for successful operations.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
-    ///  The mutated AdGroupExtensionSetting with only mutable fields after mutate.
-    ///  The field will only be returned when response_content_type is set to
-    ///  "MUTABLE_RESOURCE".
+    /// The mutated AdGroupExtensionSetting with only mutable fields after mutate.
+    /// The field will only be returned when response_content_type is set to
+    /// "MUTABLE_RESOURCE".
     #[prost(message, optional, tag="2")]
     pub ad_group_extension_setting: ::core::option::Option<super::resources::AdGroupExtensionSetting>,
 }
@@ -3046,89 +3046,89 @@ pub mod ad_group_extension_setting_service_client {
         }
     }
 }
-///  Request message for \[AdGroupFeedService.GetAdGroupFeed][google.ads.googleads.v9.services.AdGroupFeedService.GetAdGroupFeed\].
+/// Request message for \[AdGroupFeedService.GetAdGroupFeed][google.ads.googleads.v9.services.AdGroupFeedService.GetAdGroupFeed\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAdGroupFeedRequest {
-    ///  Required. The resource name of the ad group feed to fetch.
+    /// Required. The resource name of the ad group feed to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Request message for \[AdGroupFeedService.MutateAdGroupFeeds][google.ads.googleads.v9.services.AdGroupFeedService.MutateAdGroupFeeds\].
+/// Request message for \[AdGroupFeedService.MutateAdGroupFeeds][google.ads.googleads.v9.services.AdGroupFeedService.MutateAdGroupFeeds\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAdGroupFeedsRequest {
-    ///  Required. The ID of the customer whose ad group feeds are being modified.
+    /// Required. The ID of the customer whose ad group feeds are being modified.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The list of operations to perform on individual ad group feeds.
+    /// Required. The list of operations to perform on individual ad group feeds.
     #[prost(message, repeated, tag="2")]
     pub operations: ::prost::alloc::vec::Vec<AdGroupFeedOperation>,
-    ///  If true, successful operations will be carried out and invalid
-    ///  operations will return errors. If false, all operations will be carried
-    ///  out in one transaction if and only if they are all valid.
-    ///  Default is false.
+    /// If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, all operations will be carried
+    /// out in one transaction if and only if they are all valid.
+    /// Default is false.
     #[prost(bool, tag="3")]
     pub partial_failure: bool,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="4")]
     pub validate_only: bool,
-    ///  The response content type setting. Determines whether the mutable resource
-    ///  or just the resource name should be returned post mutation.
+    /// The response content type setting. Determines whether the mutable resource
+    /// or just the resource name should be returned post mutation.
     #[prost(enumeration="super::enums::response_content_type_enum::ResponseContentType", tag="5")]
     pub response_content_type: i32,
 }
-///  A single operation (create, update, remove) on an ad group feed.
+/// A single operation (create, update, remove) on an ad group feed.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AdGroupFeedOperation {
-    ///  FieldMask that determines which resource fields are modified in an update.
+    /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag="4")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  The mutate operation.
+    /// The mutate operation.
     #[prost(oneof="ad_group_feed_operation::Operation", tags="1, 2, 3")]
     pub operation: ::core::option::Option<ad_group_feed_operation::Operation>,
 }
 /// Nested message and enum types in `AdGroupFeedOperation`.
 pub mod ad_group_feed_operation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  Create operation: No resource name is expected for the new ad group feed.
+        /// Create operation: No resource name is expected for the new ad group feed.
         #[prost(message, tag="1")]
         Create(super::super::resources::AdGroupFeed),
-        ///  Update operation: The ad group feed is expected to have a valid resource
-        ///  name.
+        /// Update operation: The ad group feed is expected to have a valid resource
+        /// name.
         #[prost(message, tag="2")]
         Update(super::super::resources::AdGroupFeed),
-        ///  Remove operation: A resource name for the removed ad group feed is
-        ///  expected, in this format:
+        /// Remove operation: A resource name for the removed ad group feed is
+        /// expected, in this format:
         ///
-        ///  `customers/{customer_id}/adGroupFeeds/{ad_group_id}~{feed_id}`
+        /// `customers/{customer_id}/adGroupFeeds/{ad_group_id}~{feed_id}`
         #[prost(string, tag="3")]
         Remove(::prost::alloc::string::String),
     }
 }
-///  Response message for an ad group feed mutate.
+/// Response message for an ad group feed mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAdGroupFeedsResponse {
-    ///  Errors that pertain to operation failures in the partial failure mode.
-    ///  Returned only when partial_failure = true and all errors occur inside the
-    ///  operations. If any errors occur outside the operations (e.g. auth errors),
-    ///  we return an RPC level error.
+    /// Errors that pertain to operation failures in the partial failure mode.
+    /// Returned only when partial_failure = true and all errors occur inside the
+    /// operations. If any errors occur outside the operations (e.g. auth errors),
+    /// we return an RPC level error.
     #[prost(message, optional, tag="3")]
     pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
-    ///  All results for the mutate.
+    /// All results for the mutate.
     #[prost(message, repeated, tag="2")]
     pub results: ::prost::alloc::vec::Vec<MutateAdGroupFeedResult>,
 }
-///  The result for the ad group feed mutate.
+/// The result for the ad group feed mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAdGroupFeedResult {
-    ///  Returned for successful operations.
+    /// Returned for successful operations.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
-    ///  The mutated ad group feed with only mutable fields after mutate. The field
-    ///  will only be returned when response_content_type is set to
-    ///  "MUTABLE_RESOURCE".
+    /// The mutated ad group feed with only mutable fields after mutate. The field
+    /// will only be returned when response_content_type is set to
+    /// "MUTABLE_RESOURCE".
     #[prost(message, optional, tag="2")]
     pub ad_group_feed: ::core::option::Option<super::resources::AdGroupFeed>,
 }
@@ -3280,74 +3280,74 @@ pub mod ad_group_feed_service_client {
         }
     }
 }
-///  Request message for \[AdGroupLabelService.GetAdGroupLabel][google.ads.googleads.v9.services.AdGroupLabelService.GetAdGroupLabel\].
+/// Request message for \[AdGroupLabelService.GetAdGroupLabel][google.ads.googleads.v9.services.AdGroupLabelService.GetAdGroupLabel\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAdGroupLabelRequest {
-    ///  Required. The resource name of the ad group label to fetch.
+    /// Required. The resource name of the ad group label to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Request message for \[AdGroupLabelService.MutateAdGroupLabels][google.ads.googleads.v9.services.AdGroupLabelService.MutateAdGroupLabels\].
+/// Request message for \[AdGroupLabelService.MutateAdGroupLabels][google.ads.googleads.v9.services.AdGroupLabelService.MutateAdGroupLabels\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAdGroupLabelsRequest {
-    ///  Required. ID of the customer whose ad group labels are being modified.
+    /// Required. ID of the customer whose ad group labels are being modified.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The list of operations to perform on ad group labels.
+    /// Required. The list of operations to perform on ad group labels.
     #[prost(message, repeated, tag="2")]
     pub operations: ::prost::alloc::vec::Vec<AdGroupLabelOperation>,
-    ///  If true, successful operations will be carried out and invalid
-    ///  operations will return errors. If false, all operations will be carried
-    ///  out in one transaction if and only if they are all valid.
-    ///  Default is false.
+    /// If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, all operations will be carried
+    /// out in one transaction if and only if they are all valid.
+    /// Default is false.
     #[prost(bool, tag="3")]
     pub partial_failure: bool,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="4")]
     pub validate_only: bool,
 }
-///  A single operation (create, remove) on an ad group label.
+/// A single operation (create, remove) on an ad group label.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AdGroupLabelOperation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[prost(oneof="ad_group_label_operation::Operation", tags="1, 2")]
     pub operation: ::core::option::Option<ad_group_label_operation::Operation>,
 }
 /// Nested message and enum types in `AdGroupLabelOperation`.
 pub mod ad_group_label_operation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  Create operation: No resource name is expected for the new ad group
-        ///  label.
+        /// Create operation: No resource name is expected for the new ad group
+        /// label.
         #[prost(message, tag="1")]
         Create(super::super::resources::AdGroupLabel),
-        ///  Remove operation: A resource name for the ad group label
-        ///  being removed, in this format:
+        /// Remove operation: A resource name for the ad group label
+        /// being removed, in this format:
         ///
-        ///  `customers/{customer_id}/adGroupLabels/{ad_group_id}~{label_id}`
+        /// `customers/{customer_id}/adGroupLabels/{ad_group_id}~{label_id}`
         #[prost(string, tag="2")]
         Remove(::prost::alloc::string::String),
     }
 }
-///  Response message for an ad group labels mutate.
+/// Response message for an ad group labels mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAdGroupLabelsResponse {
-    ///  Errors that pertain to operation failures in the partial failure mode.
-    ///  Returned only when partial_failure = true and all errors occur inside the
-    ///  operations. If any errors occur outside the operations (e.g. auth errors),
-    ///  we return an RPC level error.
+    /// Errors that pertain to operation failures in the partial failure mode.
+    /// Returned only when partial_failure = true and all errors occur inside the
+    /// operations. If any errors occur outside the operations (e.g. auth errors),
+    /// we return an RPC level error.
     #[prost(message, optional, tag="3")]
     pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
-    ///  All results for the mutate.
+    /// All results for the mutate.
     #[prost(message, repeated, tag="2")]
     pub results: ::prost::alloc::vec::Vec<MutateAdGroupLabelResult>,
 }
-///  The result for an ad group label mutate.
+/// The result for an ad group label mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAdGroupLabelResult {
-    ///  Returned for successful operations.
+    /// Returned for successful operations.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
@@ -3488,87 +3488,87 @@ pub mod ad_group_label_service_client {
         }
     }
 }
-///  Request message for \[AdGroupService.GetAdGroup][google.ads.googleads.v9.services.AdGroupService.GetAdGroup\].
+/// Request message for \[AdGroupService.GetAdGroup][google.ads.googleads.v9.services.AdGroupService.GetAdGroup\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAdGroupRequest {
-    ///  Required. The resource name of the ad group to fetch.
+    /// Required. The resource name of the ad group to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Request message for \[AdGroupService.MutateAdGroups][google.ads.googleads.v9.services.AdGroupService.MutateAdGroups\].
+/// Request message for \[AdGroupService.MutateAdGroups][google.ads.googleads.v9.services.AdGroupService.MutateAdGroups\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAdGroupsRequest {
-    ///  Required. The ID of the customer whose ad groups are being modified.
+    /// Required. The ID of the customer whose ad groups are being modified.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The list of operations to perform on individual ad groups.
+    /// Required. The list of operations to perform on individual ad groups.
     #[prost(message, repeated, tag="2")]
     pub operations: ::prost::alloc::vec::Vec<AdGroupOperation>,
-    ///  If true, successful operations will be carried out and invalid
-    ///  operations will return errors. If false, all operations will be carried
-    ///  out in one transaction if and only if they are all valid.
-    ///  Default is false.
+    /// If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, all operations will be carried
+    /// out in one transaction if and only if they are all valid.
+    /// Default is false.
     #[prost(bool, tag="3")]
     pub partial_failure: bool,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="4")]
     pub validate_only: bool,
-    ///  The response content type setting. Determines whether the mutable resource
-    ///  or just the resource name should be returned post mutation.
+    /// The response content type setting. Determines whether the mutable resource
+    /// or just the resource name should be returned post mutation.
     #[prost(enumeration="super::enums::response_content_type_enum::ResponseContentType", tag="5")]
     pub response_content_type: i32,
 }
-///  A single operation (create, update, remove) on an ad group.
+/// A single operation (create, update, remove) on an ad group.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AdGroupOperation {
-    ///  FieldMask that determines which resource fields are modified in an update.
+    /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag="4")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  The mutate operation.
+    /// The mutate operation.
     #[prost(oneof="ad_group_operation::Operation", tags="1, 2, 3")]
     pub operation: ::core::option::Option<ad_group_operation::Operation>,
 }
 /// Nested message and enum types in `AdGroupOperation`.
 pub mod ad_group_operation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  Create operation: No resource name is expected for the new ad group.
+        /// Create operation: No resource name is expected for the new ad group.
         #[prost(message, tag="1")]
         Create(super::super::resources::AdGroup),
-        ///  Update operation: The ad group is expected to have a valid resource name.
+        /// Update operation: The ad group is expected to have a valid resource name.
         #[prost(message, tag="2")]
         Update(super::super::resources::AdGroup),
-        ///  Remove operation: A resource name for the removed ad group is expected,
-        ///  in this format:
+        /// Remove operation: A resource name for the removed ad group is expected,
+        /// in this format:
         ///
-        ///  `customers/{customer_id}/adGroups/{ad_group_id}`
+        /// `customers/{customer_id}/adGroups/{ad_group_id}`
         #[prost(string, tag="3")]
         Remove(::prost::alloc::string::String),
     }
 }
-///  Response message for an ad group mutate.
+/// Response message for an ad group mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAdGroupsResponse {
-    ///  Errors that pertain to operation failures in the partial failure mode.
-    ///  Returned only when partial_failure = true and all errors occur inside the
-    ///  operations. If any errors occur outside the operations (e.g. auth errors),
-    ///  we return an RPC level error.
+    /// Errors that pertain to operation failures in the partial failure mode.
+    /// Returned only when partial_failure = true and all errors occur inside the
+    /// operations. If any errors occur outside the operations (e.g. auth errors),
+    /// we return an RPC level error.
     #[prost(message, optional, tag="3")]
     pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
-    ///  All results for the mutate.
+    /// All results for the mutate.
     #[prost(message, repeated, tag="2")]
     pub results: ::prost::alloc::vec::Vec<MutateAdGroupResult>,
 }
-///  The result for the ad group mutate.
+/// The result for the ad group mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAdGroupResult {
-    ///  Returned for successful operations.
+    /// Returned for successful operations.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
-    ///  The mutated ad group with only mutable fields after mutate. The field will
-    ///  only be returned when response_content_type is set to "MUTABLE_RESOURCE".
+    /// The mutated ad group with only mutable fields after mutate. The field will
+    /// only be returned when response_content_type is set to "MUTABLE_RESOURCE".
     #[prost(message, optional, tag="2")]
     pub ad_group: ::core::option::Option<super::resources::AdGroup>,
 }
@@ -3725,10 +3725,10 @@ pub mod ad_group_service_client {
         }
     }
 }
-///  Request message for \[AdGroupSimulationService.GetAdGroupSimulation][google.ads.googleads.v9.services.AdGroupSimulationService.GetAdGroupSimulation\].
+/// Request message for \[AdGroupSimulationService.GetAdGroupSimulation][google.ads.googleads.v9.services.AdGroupSimulationService.GetAdGroupSimulation\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAdGroupSimulationRequest {
-    ///  Required. The resource name of the ad group simulation to fetch.
+    /// Required. The resource name of the ad group simulation to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
@@ -3837,89 +3837,89 @@ pub mod ad_group_simulation_service_client {
         }
     }
 }
-///  Request message for \[AdParameterService.GetAdParameter][google.ads.googleads.v9.services.AdParameterService.GetAdParameter\]
+/// Request message for \[AdParameterService.GetAdParameter][google.ads.googleads.v9.services.AdParameterService.GetAdParameter\]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAdParameterRequest {
-    ///  Required. The resource name of the ad parameter to fetch.
+    /// Required. The resource name of the ad parameter to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Request message for \[AdParameterService.MutateAdParameters][google.ads.googleads.v9.services.AdParameterService.MutateAdParameters\]
+/// Request message for \[AdParameterService.MutateAdParameters][google.ads.googleads.v9.services.AdParameterService.MutateAdParameters\]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAdParametersRequest {
-    ///  Required. The ID of the customer whose ad parameters are being modified.
+    /// Required. The ID of the customer whose ad parameters are being modified.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The list of operations to perform on individual ad parameters.
+    /// Required. The list of operations to perform on individual ad parameters.
     #[prost(message, repeated, tag="2")]
     pub operations: ::prost::alloc::vec::Vec<AdParameterOperation>,
-    ///  If true, successful operations will be carried out and invalid
-    ///  operations will return errors. If false, all operations will be carried
-    ///  out in one transaction if and only if they are all valid.
-    ///  Default is false.
+    /// If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, all operations will be carried
+    /// out in one transaction if and only if they are all valid.
+    /// Default is false.
     #[prost(bool, tag="3")]
     pub partial_failure: bool,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="4")]
     pub validate_only: bool,
-    ///  The response content type setting. Determines whether the mutable resource
-    ///  or just the resource name should be returned post mutation.
+    /// The response content type setting. Determines whether the mutable resource
+    /// or just the resource name should be returned post mutation.
     #[prost(enumeration="super::enums::response_content_type_enum::ResponseContentType", tag="5")]
     pub response_content_type: i32,
 }
-///  A single operation (create, update, remove) on ad parameter.
+/// A single operation (create, update, remove) on ad parameter.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AdParameterOperation {
-    ///  FieldMask that determines which resource fields are modified in an update.
+    /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag="4")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  The mutate operation.
+    /// The mutate operation.
     #[prost(oneof="ad_parameter_operation::Operation", tags="1, 2, 3")]
     pub operation: ::core::option::Option<ad_parameter_operation::Operation>,
 }
 /// Nested message and enum types in `AdParameterOperation`.
 pub mod ad_parameter_operation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  Create operation: No resource name is expected for the new ad parameter.
+        /// Create operation: No resource name is expected for the new ad parameter.
         #[prost(message, tag="1")]
         Create(super::super::resources::AdParameter),
-        ///  Update operation: The ad parameter is expected to have a valid resource
-        ///  name.
+        /// Update operation: The ad parameter is expected to have a valid resource
+        /// name.
         #[prost(message, tag="2")]
         Update(super::super::resources::AdParameter),
-        ///  Remove operation: A resource name for the ad parameter to remove is
-        ///  expected in this format:
+        /// Remove operation: A resource name for the ad parameter to remove is
+        /// expected in this format:
         ///
-        ///  `customers/{customer_id}/adParameters/{ad_group_id}~{criterion_id}~{parameter_index}`
+        /// `customers/{customer_id}/adParameters/{ad_group_id}~{criterion_id}~{parameter_index}`
         #[prost(string, tag="3")]
         Remove(::prost::alloc::string::String),
     }
 }
-///  Response message for an ad parameter mutate.
+/// Response message for an ad parameter mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAdParametersResponse {
-    ///  Errors that pertain to operation failures in the partial failure mode.
-    ///  Returned only when partial_failure = true and all errors occur inside the
-    ///  operations. If any errors occur outside the operations (e.g. auth errors),
-    ///  we return an RPC level error.
+    /// Errors that pertain to operation failures in the partial failure mode.
+    /// Returned only when partial_failure = true and all errors occur inside the
+    /// operations. If any errors occur outside the operations (e.g. auth errors),
+    /// we return an RPC level error.
     #[prost(message, optional, tag="3")]
     pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
-    ///  All results for the mutate.
+    /// All results for the mutate.
     #[prost(message, repeated, tag="2")]
     pub results: ::prost::alloc::vec::Vec<MutateAdParameterResult>,
 }
-///  The result for the ad parameter mutate.
+/// The result for the ad parameter mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAdParameterResult {
-    ///  The resource name returned for successful operations.
+    /// The resource name returned for successful operations.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
-    ///  The mutated AdParameter with only mutable fields after mutate. The field
-    ///  will only be returned when response_content_type is set to
-    ///  "MUTABLE_RESOURCE".
+    /// The mutated AdParameter with only mutable fields after mutate. The field
+    /// will only be returned when response_content_type is set to
+    /// "MUTABLE_RESOURCE".
     #[prost(message, optional, tag="2")]
     pub ad_parameter: ::core::option::Option<super::resources::AdParameter>,
 }
@@ -4061,10 +4061,10 @@ pub mod ad_parameter_service_client {
         }
     }
 }
-///  Request message for \[AdScheduleViewService.GetAdScheduleView][google.ads.googleads.v9.services.AdScheduleViewService.GetAdScheduleView\].
+/// Request message for \[AdScheduleViewService.GetAdScheduleView][google.ads.googleads.v9.services.AdScheduleViewService.GetAdScheduleView\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAdScheduleViewRequest {
-    ///  Required. The resource name of the ad schedule view to fetch.
+    /// Required. The resource name of the ad schedule view to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
@@ -4171,84 +4171,84 @@ pub mod ad_schedule_view_service_client {
         }
     }
 }
-///  Request message for \[AdService.GetAd][google.ads.googleads.v9.services.AdService.GetAd\].
+/// Request message for \[AdService.GetAd][google.ads.googleads.v9.services.AdService.GetAd\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAdRequest {
-    ///  Required. The resource name of the ad to fetch.
+    /// Required. The resource name of the ad to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Request message for \[AdService.MutateAds][google.ads.googleads.v9.services.AdService.MutateAds\].
+/// Request message for \[AdService.MutateAds][google.ads.googleads.v9.services.AdService.MutateAds\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAdsRequest {
-    ///  Required. The ID of the customer whose ads are being modified.
+    /// Required. The ID of the customer whose ads are being modified.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The list of operations to perform on individual ads.
+    /// Required. The list of operations to perform on individual ads.
     #[prost(message, repeated, tag="2")]
     pub operations: ::prost::alloc::vec::Vec<AdOperation>,
-    ///  If true, successful operations will be carried out and invalid
-    ///  operations will return errors. If false, all operations will be carried
-    ///  out in one transaction if and only if they are all valid.
-    ///  Default is false.
+    /// If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, all operations will be carried
+    /// out in one transaction if and only if they are all valid.
+    /// Default is false.
     #[prost(bool, tag="4")]
     pub partial_failure: bool,
-    ///  The response content type setting. Determines whether the mutable resource
-    ///  or just the resource name should be returned post mutation.
+    /// The response content type setting. Determines whether the mutable resource
+    /// or just the resource name should be returned post mutation.
     #[prost(enumeration="super::enums::response_content_type_enum::ResponseContentType", tag="5")]
     pub response_content_type: i32,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="3")]
     pub validate_only: bool,
 }
-///  A single update operation on an ad.
+/// A single update operation on an ad.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AdOperation {
-    ///  FieldMask that determines which resource fields are modified in an update.
+    /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag="2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  Configuration for how policies are validated.
+    /// Configuration for how policies are validated.
     #[prost(message, optional, tag="3")]
     pub policy_validation_parameter: ::core::option::Option<super::common::PolicyValidationParameter>,
-    ///  The mutate operation.
+    /// The mutate operation.
     #[prost(oneof="ad_operation::Operation", tags="1")]
     pub operation: ::core::option::Option<ad_operation::Operation>,
 }
 /// Nested message and enum types in `AdOperation`.
 pub mod ad_operation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  Update operation: The ad is expected to have a valid resource name
-        ///  in this format:
+        /// Update operation: The ad is expected to have a valid resource name
+        /// in this format:
         ///
-        ///  `customers/{customer_id}/ads/{ad_id}`
+        /// `customers/{customer_id}/ads/{ad_id}`
         #[prost(message, tag="1")]
         Update(super::super::resources::Ad),
     }
 }
-///  Response message for an ad mutate.
+/// Response message for an ad mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAdsResponse {
-    ///  Errors that pertain to operation failures in the partial failure mode.
-    ///  Returned only when partial_failure = true and all errors occur inside the
-    ///  operations. If any errors occur outside the operations (e.g. auth errors),
-    ///  we return an RPC level error.
+    /// Errors that pertain to operation failures in the partial failure mode.
+    /// Returned only when partial_failure = true and all errors occur inside the
+    /// operations. If any errors occur outside the operations (e.g. auth errors),
+    /// we return an RPC level error.
     #[prost(message, optional, tag="3")]
     pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
-    ///  All results for the mutate.
+    /// All results for the mutate.
     #[prost(message, repeated, tag="2")]
     pub results: ::prost::alloc::vec::Vec<MutateAdResult>,
 }
-///  The result for the ad mutate.
+/// The result for the ad mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAdResult {
-    ///  The resource name returned for successful operations.
+    /// The resource name returned for successful operations.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
-    ///  The mutated ad with only mutable fields after mutate. The field will only
-    ///  be returned when response_content_type is set to "MUTABLE_RESOURCE".
+    /// The mutated ad with only mutable fields after mutate. The field will only
+    /// be returned when response_content_type is set to "MUTABLE_RESOURCE".
     #[prost(message, optional, tag="2")]
     pub ad: ::core::option::Option<super::resources::Ad>,
 }
@@ -4413,10 +4413,10 @@ pub mod ad_service_client {
         }
     }
 }
-///  Request message for \[AgeRangeViewService.GetAgeRangeView][google.ads.googleads.v9.services.AgeRangeViewService.GetAgeRangeView\].
+/// Request message for \[AgeRangeViewService.GetAgeRangeView][google.ads.googleads.v9.services.AgeRangeViewService.GetAgeRangeView\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAgeRangeViewRequest {
-    ///  Required. The resource name of the age range view to fetch.
+    /// Required. The resource name of the age range view to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
@@ -4523,10 +4523,10 @@ pub mod age_range_view_service_client {
         }
     }
 }
-///  Request message for \[AssetFieldTypeViewService.GetAssetFieldTypeView][google.ads.googleads.v9.services.AssetFieldTypeViewService.GetAssetFieldTypeView\].
+/// Request message for \[AssetFieldTypeViewService.GetAssetFieldTypeView][google.ads.googleads.v9.services.AssetFieldTypeViewService.GetAssetFieldTypeView\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAssetFieldTypeViewRequest {
-    ///  Required. The resource name of the asset field type view to fetch.
+    /// Required. The resource name of the asset field type view to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
@@ -4627,80 +4627,80 @@ pub mod asset_field_type_view_service_client {
         }
     }
 }
-///  Request message for \[AssetGroupAssetService.GetAssetGroupAsset][google.ads.googleads.v9.services.AssetGroupAssetService.GetAssetGroupAsset\].
+/// Request message for \[AssetGroupAssetService.GetAssetGroupAsset][google.ads.googleads.v9.services.AssetGroupAssetService.GetAssetGroupAsset\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAssetGroupAssetRequest {
-    ///  Required. The resource name of the asset group asset to fetch.
+    /// Required. The resource name of the asset group asset to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Request message for \[AssetGroupAssetService.MutateAssetGroupAssets][google.ads.googleads.v9.services.AssetGroupAssetService.MutateAssetGroupAssets\].
+/// Request message for \[AssetGroupAssetService.MutateAssetGroupAssets][google.ads.googleads.v9.services.AssetGroupAssetService.MutateAssetGroupAssets\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAssetGroupAssetsRequest {
-    ///  Required. The ID of the customer whose asset group assets are being modified.
+    /// Required. The ID of the customer whose asset group assets are being modified.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The list of operations to perform on individual asset group assets.
+    /// Required. The list of operations to perform on individual asset group assets.
     #[prost(message, repeated, tag="2")]
     pub operations: ::prost::alloc::vec::Vec<AssetGroupAssetOperation>,
-    ///  If true, successful operations will be carried out and invalid
-    ///  operations will return errors. If false, all operations will be carried
-    ///  out in one transaction if and only if they are all valid.
-    ///  Default is false.
+    /// If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, all operations will be carried
+    /// out in one transaction if and only if they are all valid.
+    /// Default is false.
     #[prost(bool, tag="3")]
     pub partial_failure: bool,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="4")]
     pub validate_only: bool,
 }
-///  A single operation (create, remove) on an asset group asset.
+/// A single operation (create, remove) on an asset group asset.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AssetGroupAssetOperation {
-    ///  FieldMask that determines which resource fields are modified in an update.
+    /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag="4")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  The mutate operation.
+    /// The mutate operation.
     #[prost(oneof="asset_group_asset_operation::Operation", tags="1, 2, 3")]
     pub operation: ::core::option::Option<asset_group_asset_operation::Operation>,
 }
 /// Nested message and enum types in `AssetGroupAssetOperation`.
 pub mod asset_group_asset_operation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  Create operation: No resource name is expected for the new asset group
-        ///  asset
+        /// Create operation: No resource name is expected for the new asset group
+        /// asset
         #[prost(message, tag="1")]
         Create(super::super::resources::AssetGroupAsset),
-        ///  Update operation: The asset group asset sis expected to have a valid
-        ///  resource name.
+        /// Update operation: The asset group asset sis expected to have a valid
+        /// resource name.
         #[prost(message, tag="2")]
         Update(super::super::resources::AssetGroupAsset),
-        ///  Remove operation: A resource name for the removed asset group asset is
-        ///  expected, in this format:
-        ///  `customers/{customer_id}/assetGroupAssets/{asset_group_id}~{asset_id}~{field_type}`
+        /// Remove operation: A resource name for the removed asset group asset is
+        /// expected, in this format:
+        /// `customers/{customer_id}/assetGroupAssets/{asset_group_id}~{asset_id}~{field_type}`
         #[prost(string, tag="3")]
         Remove(::prost::alloc::string::String),
     }
 }
-///  Response message for an asset group asset mutate.
+/// Response message for an asset group asset mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAssetGroupAssetsResponse {
-    ///  All results for the mutate.
+    /// All results for the mutate.
     #[prost(message, repeated, tag="1")]
     pub results: ::prost::alloc::vec::Vec<MutateAssetGroupAssetResult>,
-    ///  Errors that pertain to operation failures in the partial failure mode.
-    ///  Returned only when partial_failure = true and all errors occur inside the
-    ///  operations. If any errors occur outside the operations (e.g. auth errors),
-    ///  we return an RPC level error.
+    /// Errors that pertain to operation failures in the partial failure mode.
+    /// Returned only when partial_failure = true and all errors occur inside the
+    /// operations. If any errors occur outside the operations (e.g. auth errors),
+    /// we return an RPC level error.
     #[prost(message, optional, tag="2")]
     pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
 }
-///  The result for the asset group asset mutate.
+/// The result for the asset group asset mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAssetGroupAssetResult {
-    ///  Returned for successful operations.
+    /// Returned for successful operations.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
@@ -4825,78 +4825,78 @@ pub mod asset_group_asset_service_client {
         }
     }
 }
-///  Request message for
-///  \[AssetGroupListingGroupFilterService.MutateAssetGroupListingGroupFilters][google.ads.googleads.v9.services.AssetGroupListingGroupFilterService.MutateAssetGroupListingGroupFilters\].
-///  partial_failure is not supported because the tree needs to be validated
-///  together.
+/// Request message for
+/// \[AssetGroupListingGroupFilterService.MutateAssetGroupListingGroupFilters][google.ads.googleads.v9.services.AssetGroupListingGroupFilterService.MutateAssetGroupListingGroupFilters\].
+/// partial_failure is not supported because the tree needs to be validated
+/// together.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAssetGroupListingGroupFiltersRequest {
-    ///  Required. The ID of the customer whose asset group listing group filters are being
-    ///  modified.
+    /// Required. The ID of the customer whose asset group listing group filters are being
+    /// modified.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The list of operations to perform on individual asset group listing group
-    ///  filters.
+    /// Required. The list of operations to perform on individual asset group listing group
+    /// filters.
     #[prost(message, repeated, tag="2")]
     pub operations: ::prost::alloc::vec::Vec<AssetGroupListingGroupFilterOperation>,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="3")]
     pub validate_only: bool,
-    ///  The response content type setting. Determines whether the mutable resource
-    ///  or just the resource name should be returned post mutation.
+    /// The response content type setting. Determines whether the mutable resource
+    /// or just the resource name should be returned post mutation.
     #[prost(enumeration="super::enums::response_content_type_enum::ResponseContentType", tag="4")]
     pub response_content_type: i32,
 }
-///  A single operation (create, remove) on an asset group listing group filter.
+/// A single operation (create, remove) on an asset group listing group filter.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AssetGroupListingGroupFilterOperation {
-    ///  FieldMask that determines which resource fields are modified in an update.
+    /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag="4")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  The mutate operation.
+    /// The mutate operation.
     #[prost(oneof="asset_group_listing_group_filter_operation::Operation", tags="1, 2, 3")]
     pub operation: ::core::option::Option<asset_group_listing_group_filter_operation::Operation>,
 }
 /// Nested message and enum types in `AssetGroupListingGroupFilterOperation`.
 pub mod asset_group_listing_group_filter_operation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  Create operation: No resource name is expected for the new asset group
-        ///  listing group filter.
+        /// Create operation: No resource name is expected for the new asset group
+        /// listing group filter.
         #[prost(message, tag="1")]
         Create(super::super::resources::AssetGroupListingGroupFilter),
-        ///  Update operation: The asset group listing group filter is expected to
-        ///  have a valid resource name.
+        /// Update operation: The asset group listing group filter is expected to
+        /// have a valid resource name.
         #[prost(message, tag="2")]
         Update(super::super::resources::AssetGroupListingGroupFilter),
-        ///  Remove operation: A resource name for the removed asset group listing
-        ///  group filter is expected, in this format:
-        ///  `customers/{customer_id}/assetGroupListingGroupFilters/{asset_group_id}~{listing_group_filter_id}`
-        ///  An entity can be removed only if it's not referenced by other
-        ///  parent_listing_group_id. If multiple entities are being deleted, the
-        ///  mutates must be in the correct order.
+        /// Remove operation: A resource name for the removed asset group listing
+        /// group filter is expected, in this format:
+        /// `customers/{customer_id}/assetGroupListingGroupFilters/{asset_group_id}~{listing_group_filter_id}`
+        /// An entity can be removed only if it's not referenced by other
+        /// parent_listing_group_id. If multiple entities are being deleted, the
+        /// mutates must be in the correct order.
         #[prost(string, tag="3")]
         Remove(::prost::alloc::string::String),
     }
 }
-///  Response message for an asset group listing group filter mutate.
+/// Response message for an asset group listing group filter mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAssetGroupListingGroupFiltersResponse {
-    ///  All results for the mutate.
+    /// All results for the mutate.
     #[prost(message, repeated, tag="1")]
     pub results: ::prost::alloc::vec::Vec<MutateAssetGroupListingGroupFilterResult>,
 }
-///  The result for the asset group listing group filter mutate.
+/// The result for the asset group listing group filter mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAssetGroupListingGroupFilterResult {
-    ///  Returned for successful operations.
+    /// Returned for successful operations.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
-    ///  The mutated AssetGroupListingGroupFilter with only mutable fields after
-    ///  mutate. The field will only be returned when response_content_type is set
-    ///  to "MUTABLE_RESOURCE".
+    /// The mutated AssetGroupListingGroupFilter with only mutable fields after
+    /// mutate. The field will only be returned when response_content_type is set
+    /// to "MUTABLE_RESOURCE".
     #[prost(message, optional, tag="2")]
     pub asset_group_listing_group_filter: ::core::option::Option<super::resources::AssetGroupListingGroupFilter>,
 }
@@ -5000,73 +5000,73 @@ pub mod asset_group_listing_group_filter_service_client {
         }
     }
 }
-///  Request message for \[AssetGroupService.GetAssetGroup][google.ads.googleads.v9.services.AssetGroupService.GetAssetGroup\].
+/// Request message for \[AssetGroupService.GetAssetGroup][google.ads.googleads.v9.services.AssetGroupService.GetAssetGroup\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAssetGroupRequest {
-    ///  Required. The resource name of the asset group to fetch.
+    /// Required. The resource name of the asset group to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Request message for \[AssetGroupService.MutateAssetGroups][google.ads.googleads.v9.services.AssetGroupService.MutateAssetGroups\].
+/// Request message for \[AssetGroupService.MutateAssetGroups][google.ads.googleads.v9.services.AssetGroupService.MutateAssetGroups\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAssetGroupsRequest {
-    ///  Required. The ID of the customer whose asset groups are being modified.
+    /// Required. The ID of the customer whose asset groups are being modified.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The list of operations to perform on individual asset groups.
+    /// Required. The list of operations to perform on individual asset groups.
     #[prost(message, repeated, tag="2")]
     pub operations: ::prost::alloc::vec::Vec<AssetGroupOperation>,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="4")]
     pub validate_only: bool,
 }
-///  A single operation (create, remove) on an asset group.
+/// A single operation (create, remove) on an asset group.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AssetGroupOperation {
-    ///  FieldMask that determines which resource fields are modified in an update.
+    /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag="4")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  The mutate operation.
+    /// The mutate operation.
     #[prost(oneof="asset_group_operation::Operation", tags="1, 2, 3")]
     pub operation: ::core::option::Option<asset_group_operation::Operation>,
 }
 /// Nested message and enum types in `AssetGroupOperation`.
 pub mod asset_group_operation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  Create operation: No resource name is expected for the new asset group
+        /// Create operation: No resource name is expected for the new asset group
         #[prost(message, tag="1")]
         Create(super::super::resources::AssetGroup),
-        ///  Update operation: The asset group is expected to have a valid resource
-        ///  name.
+        /// Update operation: The asset group is expected to have a valid resource
+        /// name.
         #[prost(message, tag="2")]
         Update(super::super::resources::AssetGroup),
-        ///  Remove operation: A resource name for the removed asset group is
-        ///  expected, in this format:
-        ///  `customers/{customer_id}/assetGroups/{asset_group_id}`
+        /// Remove operation: A resource name for the removed asset group is
+        /// expected, in this format:
+        /// `customers/{customer_id}/assetGroups/{asset_group_id}`
         #[prost(string, tag="3")]
         Remove(::prost::alloc::string::String),
     }
 }
-///  Response message for an asset group mutate.
+/// Response message for an asset group mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAssetGroupsResponse {
-    ///  All results for the mutate.
+    /// All results for the mutate.
     #[prost(message, repeated, tag="1")]
     pub results: ::prost::alloc::vec::Vec<MutateAssetGroupResult>,
-    ///  Errors that pertain to operation failures in the partial failure mode.
-    ///  Returned only when partial_failure = true and all errors occur inside the
-    ///  operations. If any errors occur outside the operations (e.g. auth errors),
-    ///  we return an RPC level error.
+    /// Errors that pertain to operation failures in the partial failure mode.
+    /// Returned only when partial_failure = true and all errors occur inside the
+    /// operations. If any errors occur outside the operations (e.g. auth errors),
+    /// we return an RPC level error.
     #[prost(message, optional, tag="2")]
     pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
 }
-///  The result for the asset group mutate.
+/// The result for the asset group mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAssetGroupResult {
-    ///  Returned for successful operations.
+    /// Returned for successful operations.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
@@ -5186,86 +5186,86 @@ pub mod asset_group_service_client {
         }
     }
 }
-///  Request message for \[AssetService.GetAsset][google.ads.googleads.v9.services.AssetService.GetAsset\]
+/// Request message for \[AssetService.GetAsset][google.ads.googleads.v9.services.AssetService.GetAsset\]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAssetRequest {
-    ///  Required. The resource name of the asset to fetch.
+    /// Required. The resource name of the asset to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Request message for \[AssetService.MutateAssets][google.ads.googleads.v9.services.AssetService.MutateAssets\]
+/// Request message for \[AssetService.MutateAssets][google.ads.googleads.v9.services.AssetService.MutateAssets\]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAssetsRequest {
-    ///  Required. The ID of the customer whose assets are being modified.
+    /// Required. The ID of the customer whose assets are being modified.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The list of operations to perform on individual assets.
+    /// Required. The list of operations to perform on individual assets.
     #[prost(message, repeated, tag="2")]
     pub operations: ::prost::alloc::vec::Vec<AssetOperation>,
-    ///  If true, successful operations will be carried out and invalid
-    ///  operations will return errors. If false, all operations will be carried
-    ///  out in one transaction if and only if they are all valid.
-    ///  Default is false.
+    /// If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, all operations will be carried
+    /// out in one transaction if and only if they are all valid.
+    /// Default is false.
     #[prost(bool, tag="5")]
     pub partial_failure: bool,
-    ///  The response content type setting. Determines whether the mutable resource
-    ///  or just the resource name should be returned post mutation.
+    /// The response content type setting. Determines whether the mutable resource
+    /// or just the resource name should be returned post mutation.
     #[prost(enumeration="super::enums::response_content_type_enum::ResponseContentType", tag="3")]
     pub response_content_type: i32,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="4")]
     pub validate_only: bool,
 }
-///  A single operation to create an asset. Supported asset types are
-///  YoutubeVideoAsset, MediaBundleAsset, ImageAsset, and LeadFormAsset. TextAsset
-///  should be created with Ad inline.
+/// A single operation to create an asset. Supported asset types are
+/// YoutubeVideoAsset, MediaBundleAsset, ImageAsset, and LeadFormAsset. TextAsset
+/// should be created with Ad inline.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AssetOperation {
-    ///  FieldMask that determines which resource fields are modified in an update.
+    /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag="3")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  The mutate operation.
+    /// The mutate operation.
     #[prost(oneof="asset_operation::Operation", tags="1, 2")]
     pub operation: ::core::option::Option<asset_operation::Operation>,
 }
 /// Nested message and enum types in `AssetOperation`.
 pub mod asset_operation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  Create operation: No resource name is expected for the new asset.
+        /// Create operation: No resource name is expected for the new asset.
         #[prost(message, tag="1")]
         Create(super::super::resources::Asset),
-        ///  Update operation: The asset is expected to have a valid resource name in
-        ///  this format:
+        /// Update operation: The asset is expected to have a valid resource name in
+        /// this format:
         ///
-        ///  `customers/{customer_id}/assets/{asset_id}`
+        /// `customers/{customer_id}/assets/{asset_id}`
         #[prost(message, tag="2")]
         Update(super::super::resources::Asset),
     }
 }
-///  Response message for an asset mutate.
+/// Response message for an asset mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAssetsResponse {
-    ///  Errors that pertain to operation failures in the partial failure mode.
-    ///  Returned only when partial_failure = true and all errors occur inside the
-    ///  operations. If any errors occur outside the operations (e.g. auth errors),
-    ///  we return an RPC level error.
+    /// Errors that pertain to operation failures in the partial failure mode.
+    /// Returned only when partial_failure = true and all errors occur inside the
+    /// operations. If any errors occur outside the operations (e.g. auth errors),
+    /// we return an RPC level error.
     #[prost(message, optional, tag="3")]
     pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
-    ///  All results for the mutate.
+    /// All results for the mutate.
     #[prost(message, repeated, tag="2")]
     pub results: ::prost::alloc::vec::Vec<MutateAssetResult>,
 }
-///  The result for the asset mutate.
+/// The result for the asset mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAssetResult {
-    ///  The resource name returned for successful operations.
+    /// The resource name returned for successful operations.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
-    ///  The mutated asset with only mutable fields after mutate. The field will
-    ///  only be returned when response_content_type is set to "MUTABLE_RESOURCE".
+    /// The mutated asset with only mutable fields after mutate. The field will
+    /// only be returned when response_content_type is set to "MUTABLE_RESOURCE".
     #[prost(message, optional, tag="2")]
     pub asset: ::core::option::Option<super::resources::Asset>,
 }
@@ -5420,75 +5420,75 @@ pub mod asset_service_client {
         }
     }
 }
-///  Request message for \[AssetSetAssetService.MutateAssetSetAssets][google.ads.googleads.v9.services.AssetSetAssetService.MutateAssetSetAssets\].
+/// Request message for \[AssetSetAssetService.MutateAssetSetAssets][google.ads.googleads.v9.services.AssetSetAssetService.MutateAssetSetAssets\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAssetSetAssetsRequest {
-    ///  Required. The ID of the customer whose asset set assets are being modified.
+    /// Required. The ID of the customer whose asset set assets are being modified.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The list of operations to perform on individual asset set assets.
+    /// Required. The list of operations to perform on individual asset set assets.
     #[prost(message, repeated, tag="2")]
     pub operations: ::prost::alloc::vec::Vec<AssetSetAssetOperation>,
-    ///  If true, successful operations will be carried out and invalid
-    ///  operations will return errors. If false, all operations will be carried
-    ///  out in one transaction if and only if they are all valid.
-    ///  Default is false.
+    /// If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, all operations will be carried
+    /// out in one transaction if and only if they are all valid.
+    /// Default is false.
     #[prost(bool, tag="3")]
     pub partial_failure: bool,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="4")]
     pub validate_only: bool,
-    ///  The response content type setting. Determines whether the mutable resource
-    ///  or just the resource name should be returned post mutation.
+    /// The response content type setting. Determines whether the mutable resource
+    /// or just the resource name should be returned post mutation.
     #[prost(enumeration="super::enums::response_content_type_enum::ResponseContentType", tag="5")]
     pub response_content_type: i32,
 }
-///  A single operation (create, remove) on an asset set asset.
+/// A single operation (create, remove) on an asset set asset.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AssetSetAssetOperation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[prost(oneof="asset_set_asset_operation::Operation", tags="1, 2")]
     pub operation: ::core::option::Option<asset_set_asset_operation::Operation>,
 }
 /// Nested message and enum types in `AssetSetAssetOperation`.
 pub mod asset_set_asset_operation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  Create operation: No resource name is expected for the new asset set
-        ///  asset
+        /// Create operation: No resource name is expected for the new asset set
+        /// asset
         #[prost(message, tag="1")]
         Create(super::super::resources::AssetSetAsset),
-        ///  Remove operation: A resource name for the removed asset set asset is
-        ///  expected, in this format:
-        ///  `customers/{customer_id}/assetSetAssets/{asset_set_id}~{asset_id}`
+        /// Remove operation: A resource name for the removed asset set asset is
+        /// expected, in this format:
+        /// `customers/{customer_id}/assetSetAssets/{asset_set_id}~{asset_id}`
         #[prost(string, tag="2")]
         Remove(::prost::alloc::string::String),
     }
 }
-///  Response message for an asset set asset mutate.
+/// Response message for an asset set asset mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAssetSetAssetsResponse {
-    ///  All results for the mutate.
+    /// All results for the mutate.
     #[prost(message, repeated, tag="1")]
     pub results: ::prost::alloc::vec::Vec<MutateAssetSetAssetResult>,
-    ///  Errors that pertain to operation failures in the partial failure mode.
-    ///  Returned only when partial_failure = true and all errors occur inside the
-    ///  operations. If any errors occur outside the operations (e.g. auth errors),
-    ///  we return an RPC level error.
+    /// Errors that pertain to operation failures in the partial failure mode.
+    /// Returned only when partial_failure = true and all errors occur inside the
+    /// operations. If any errors occur outside the operations (e.g. auth errors),
+    /// we return an RPC level error.
     #[prost(message, optional, tag="2")]
     pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
 }
-///  The result for the asset set asset mutate.
+/// The result for the asset set asset mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAssetSetAssetResult {
-    ///  Returned for successful operations.
+    /// Returned for successful operations.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
-    ///  The mutated asset set asset with only mutable fields after mutate. The
-    ///  field will only be returned when response_content_type is set to
-    ///  "MUTABLE_RESOURCE".
+    /// The mutated asset set asset with only mutable fields after mutate. The
+    /// field will only be returned when response_content_type is set to
+    /// "MUTABLE_RESOURCE".
     #[prost(message, optional, tag="2")]
     pub asset_set_asset: ::core::option::Option<super::resources::AssetSetAsset>,
 }
@@ -5588,80 +5588,80 @@ pub mod asset_set_asset_service_client {
         }
     }
 }
-///  Request message for \[AssetSetService.MutateAssetSets][google.ads.googleads.v9.services.AssetSetService.MutateAssetSets\].
+/// Request message for \[AssetSetService.MutateAssetSets][google.ads.googleads.v9.services.AssetSetService.MutateAssetSets\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAssetSetsRequest {
-    ///  Required. The ID of the customer whose asset sets are being modified.
+    /// Required. The ID of the customer whose asset sets are being modified.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The list of operations to perform on individual asset sets.
+    /// Required. The list of operations to perform on individual asset sets.
     #[prost(message, repeated, tag="2")]
     pub operations: ::prost::alloc::vec::Vec<AssetSetOperation>,
-    ///  If true, successful operations will be carried out and invalid
-    ///  operations will return errors. If false, all operations will be carried
-    ///  out in one transaction if and only if they are all valid.
-    ///  Default is false.
+    /// If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, all operations will be carried
+    /// out in one transaction if and only if they are all valid.
+    /// Default is false.
     #[prost(bool, tag="3")]
     pub partial_failure: bool,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="4")]
     pub validate_only: bool,
-    ///  The response content type setting. Determines whether the mutable resource
-    ///  or just the resource name should be returned post mutation.
+    /// The response content type setting. Determines whether the mutable resource
+    /// or just the resource name should be returned post mutation.
     #[prost(enumeration="super::enums::response_content_type_enum::ResponseContentType", tag="5")]
     pub response_content_type: i32,
 }
-///  A single operation (create, remove) on an asset set.
+/// A single operation (create, remove) on an asset set.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AssetSetOperation {
-    ///  FieldMask that determines which resource fields are modified in an update.
+    /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag="4")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  The mutate operation.
+    /// The mutate operation.
     #[prost(oneof="asset_set_operation::Operation", tags="1, 2, 3")]
     pub operation: ::core::option::Option<asset_set_operation::Operation>,
 }
 /// Nested message and enum types in `AssetSetOperation`.
 pub mod asset_set_operation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  Create operation: No resource name is expected for the new asset set
+        /// Create operation: No resource name is expected for the new asset set
         #[prost(message, tag="1")]
         Create(super::super::resources::AssetSet),
-        ///  Update operation: The asset set is expected to have a valid resource
-        ///  name.
+        /// Update operation: The asset set is expected to have a valid resource
+        /// name.
         #[prost(message, tag="2")]
         Update(super::super::resources::AssetSet),
-        ///  Remove operation: A resource name for the removed asset set is
-        ///  expected, in this format:
-        ///  `customers/{customer_id}/assetSets/{asset_set_id}`
+        /// Remove operation: A resource name for the removed asset set is
+        /// expected, in this format:
+        /// `customers/{customer_id}/assetSets/{asset_set_id}`
         #[prost(string, tag="3")]
         Remove(::prost::alloc::string::String),
     }
 }
-///  Response message for an asset set mutate.
+/// Response message for an asset set mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAssetSetsResponse {
-    ///  All results for the mutate.
+    /// All results for the mutate.
     #[prost(message, repeated, tag="1")]
     pub results: ::prost::alloc::vec::Vec<MutateAssetSetResult>,
-    ///  Errors that pertain to operation failures in the partial failure mode.
-    ///  Returned only when partial_failure = true and all errors occur inside the
-    ///  operations. If any errors occur outside the operations (e.g. auth errors),
-    ///  we return an RPC level error.
+    /// Errors that pertain to operation failures in the partial failure mode.
+    /// Returned only when partial_failure = true and all errors occur inside the
+    /// operations. If any errors occur outside the operations (e.g. auth errors),
+    /// we return an RPC level error.
     #[prost(message, optional, tag="2")]
     pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
 }
-///  The result for the asset set mutate.
+/// The result for the asset set mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateAssetSetResult {
-    ///  Returned for successful operations.
+    /// Returned for successful operations.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
-    ///  The mutated asset set with only mutable fields after mutate. The field will
-    ///  only be returned when response_content_type is set to "MUTABLE_RESOURCE".
+    /// The mutated asset set with only mutable fields after mutate. The field will
+    /// only be returned when response_content_type is set to "MUTABLE_RESOURCE".
     #[prost(message, optional, tag="2")]
     pub asset_set: ::core::option::Option<super::resources::AssetSet>,
 }
@@ -5758,92 +5758,92 @@ pub mod asset_set_service_client {
         }
     }
 }
-///  Request message for
-///  \[BiddingDataExclusionService.GetBiddingDataExclusion][google.ads.googleads.v9.services.BiddingDataExclusionService.GetBiddingDataExclusion\].
+/// Request message for
+/// \[BiddingDataExclusionService.GetBiddingDataExclusion][google.ads.googleads.v9.services.BiddingDataExclusionService.GetBiddingDataExclusion\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetBiddingDataExclusionRequest {
-    ///  Required. The resource name of the data exclusion to fetch.
+    /// Required. The resource name of the data exclusion to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Request message for
-///  \[BiddingDataExclusionService.MutateBiddingDataExclusions][google.ads.googleads.v9.services.BiddingDataExclusionService.MutateBiddingDataExclusions\].
+/// Request message for
+/// \[BiddingDataExclusionService.MutateBiddingDataExclusions][google.ads.googleads.v9.services.BiddingDataExclusionService.MutateBiddingDataExclusions\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateBiddingDataExclusionsRequest {
-    ///  Required. ID of the customer whose data exclusions are being modified.
+    /// Required. ID of the customer whose data exclusions are being modified.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The list of operations to perform on individual data exclusions.
+    /// Required. The list of operations to perform on individual data exclusions.
     #[prost(message, repeated, tag="2")]
     pub operations: ::prost::alloc::vec::Vec<BiddingDataExclusionOperation>,
-    ///  If true, successful operations will be carried out and invalid
-    ///  operations will return errors. If false, all operations will be carried
-    ///  out in one transaction if and only if they are all valid.
-    ///  Default is false.
+    /// If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, all operations will be carried
+    /// out in one transaction if and only if they are all valid.
+    /// Default is false.
     #[prost(bool, tag="3")]
     pub partial_failure: bool,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="4")]
     pub validate_only: bool,
-    ///  The response content type setting. Determines whether the mutable resource
-    ///  or just the resource name should be returned post mutation.
+    /// The response content type setting. Determines whether the mutable resource
+    /// or just the resource name should be returned post mutation.
     #[prost(enumeration="super::enums::response_content_type_enum::ResponseContentType", tag="5")]
     pub response_content_type: i32,
 }
-///  A single operation (create, remove, update) on a data exclusion.
+/// A single operation (create, remove, update) on a data exclusion.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BiddingDataExclusionOperation {
-    ///  FieldMask that determines which resource fields are modified in an update.
+    /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag="4")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  The mutate operation.
+    /// The mutate operation.
     #[prost(oneof="bidding_data_exclusion_operation::Operation", tags="1, 2, 3")]
     pub operation: ::core::option::Option<bidding_data_exclusion_operation::Operation>,
 }
 /// Nested message and enum types in `BiddingDataExclusionOperation`.
 pub mod bidding_data_exclusion_operation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  Create operation: No resource name is expected for the new data
-        ///  exclusion.
+        /// Create operation: No resource name is expected for the new data
+        /// exclusion.
         #[prost(message, tag="1")]
         Create(super::super::resources::BiddingDataExclusion),
-        ///  Update operation: The data exclusion is expected to have a valid
-        ///  resource name.
+        /// Update operation: The data exclusion is expected to have a valid
+        /// resource name.
         #[prost(message, tag="2")]
         Update(super::super::resources::BiddingDataExclusion),
-        ///  Remove operation: A resource name for the removed data exclusion
-        ///  is expected, in this format:
+        /// Remove operation: A resource name for the removed data exclusion
+        /// is expected, in this format:
         ///
-        ///  `customers/{customer_id}/biddingDataExclusions/{data_exclusion_id}`
+        /// `customers/{customer_id}/biddingDataExclusions/{data_exclusion_id}`
         #[prost(string, tag="3")]
         Remove(::prost::alloc::string::String),
     }
 }
-///  Response message for data exlusions mutate.
+/// Response message for data exlusions mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateBiddingDataExclusionsResponse {
-    ///  Errors that pertain to operation failures in the partial failure mode.
-    ///  Returned only when partial_failure = true and all errors occur inside the
-    ///  operations. If any errors occur outside the operations (e.g. auth errors),
-    ///  we return an RPC level error.
+    /// Errors that pertain to operation failures in the partial failure mode.
+    /// Returned only when partial_failure = true and all errors occur inside the
+    /// operations. If any errors occur outside the operations (e.g. auth errors),
+    /// we return an RPC level error.
     #[prost(message, optional, tag="3")]
     pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
-    ///  All results for the mutate.
+    /// All results for the mutate.
     #[prost(message, repeated, tag="2")]
     pub results: ::prost::alloc::vec::Vec<MutateBiddingDataExclusionsResult>,
 }
-///  The result for the data exclusion mutate.
+/// The result for the data exclusion mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateBiddingDataExclusionsResult {
-    ///  Returned for successful operations.
+    /// Returned for successful operations.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
-    ///  The mutated bidding data exclusion with only mutable fields after mutate.
-    ///  The field will only be returned when response_content_type is set
-    ///  to "MUTABLE_RESOURCE".
+    /// The mutated bidding data exclusion with only mutable fields after mutate.
+    /// The field will only be returned when response_content_type is set
+    /// to "MUTABLE_RESOURCE".
     #[prost(message, optional, tag="2")]
     pub bidding_data_exclusion: ::core::option::Option<super::resources::BiddingDataExclusion>,
 }
@@ -5968,92 +5968,92 @@ pub mod bidding_data_exclusion_service_client {
         }
     }
 }
-///  Request message for
-///  \[BiddingSeasonalityAdjustmentService.GetBiddingSeasonalityAdjustment][google.ads.googleads.v9.services.BiddingSeasonalityAdjustmentService.GetBiddingSeasonalityAdjustment\].
+/// Request message for
+/// \[BiddingSeasonalityAdjustmentService.GetBiddingSeasonalityAdjustment][google.ads.googleads.v9.services.BiddingSeasonalityAdjustmentService.GetBiddingSeasonalityAdjustment\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetBiddingSeasonalityAdjustmentRequest {
-    ///  Required. The resource name of the seasonality adjustment to fetch.
+    /// Required. The resource name of the seasonality adjustment to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Request message for
-///  \[BiddingSeasonalityAdjustmentService.MutateBiddingSeasonalityAdjustments][google.ads.googleads.v9.services.BiddingSeasonalityAdjustmentService.MutateBiddingSeasonalityAdjustments\].
+/// Request message for
+/// \[BiddingSeasonalityAdjustmentService.MutateBiddingSeasonalityAdjustments][google.ads.googleads.v9.services.BiddingSeasonalityAdjustmentService.MutateBiddingSeasonalityAdjustments\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateBiddingSeasonalityAdjustmentsRequest {
-    ///  Required. ID of the customer whose seasonality adjustments are being modified.
+    /// Required. ID of the customer whose seasonality adjustments are being modified.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The list of operations to perform on individual seasonality adjustments.
+    /// Required. The list of operations to perform on individual seasonality adjustments.
     #[prost(message, repeated, tag="2")]
     pub operations: ::prost::alloc::vec::Vec<BiddingSeasonalityAdjustmentOperation>,
-    ///  If true, successful operations will be carried out and invalid
-    ///  operations will return errors. If false, all operations will be carried
-    ///  out in one transaction if and only if they are all valid.
-    ///  Default is false.
+    /// If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, all operations will be carried
+    /// out in one transaction if and only if they are all valid.
+    /// Default is false.
     #[prost(bool, tag="3")]
     pub partial_failure: bool,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="4")]
     pub validate_only: bool,
-    ///  The response content type setting. Determines whether the mutable resource
-    ///  or just the resource name should be returned post mutation.
+    /// The response content type setting. Determines whether the mutable resource
+    /// or just the resource name should be returned post mutation.
     #[prost(enumeration="super::enums::response_content_type_enum::ResponseContentType", tag="5")]
     pub response_content_type: i32,
 }
-///  A single operation (create, remove, update) on a seasonality adjustment.
+/// A single operation (create, remove, update) on a seasonality adjustment.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BiddingSeasonalityAdjustmentOperation {
-    ///  FieldMask that determines which resource fields are modified in an update.
+    /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag="4")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  The mutate operation.
+    /// The mutate operation.
     #[prost(oneof="bidding_seasonality_adjustment_operation::Operation", tags="1, 2, 3")]
     pub operation: ::core::option::Option<bidding_seasonality_adjustment_operation::Operation>,
 }
 /// Nested message and enum types in `BiddingSeasonalityAdjustmentOperation`.
 pub mod bidding_seasonality_adjustment_operation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  Create operation: No resource name is expected for the new seasonality
-        ///  adjustment.
+        /// Create operation: No resource name is expected for the new seasonality
+        /// adjustment.
         #[prost(message, tag="1")]
         Create(super::super::resources::BiddingSeasonalityAdjustment),
-        ///  Update operation: The seasonality adjustment is expected to have a valid
-        ///  resource name.
+        /// Update operation: The seasonality adjustment is expected to have a valid
+        /// resource name.
         #[prost(message, tag="2")]
         Update(super::super::resources::BiddingSeasonalityAdjustment),
-        ///  Remove operation: A resource name for the removed seasonality adjustment
-        ///  is expected, in this format:
+        /// Remove operation: A resource name for the removed seasonality adjustment
+        /// is expected, in this format:
         ///
-        ///  `customers/{customer_id}/biddingSeasonalityAdjustments/{seasonality_adjustment_id}`
+        /// `customers/{customer_id}/biddingSeasonalityAdjustments/{seasonality_adjustment_id}`
         #[prost(string, tag="3")]
         Remove(::prost::alloc::string::String),
     }
 }
-///  Response message for seasonality adjustments mutate.
+/// Response message for seasonality adjustments mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateBiddingSeasonalityAdjustmentsResponse {
-    ///  Errors that pertain to operation failures in the partial failure mode.
-    ///  Returned only when partial_failure = true and all errors occur inside the
-    ///  operations. If any errors occur outside the operations (e.g. auth errors),
-    ///  we return an RPC level error.
+    /// Errors that pertain to operation failures in the partial failure mode.
+    /// Returned only when partial_failure = true and all errors occur inside the
+    /// operations. If any errors occur outside the operations (e.g. auth errors),
+    /// we return an RPC level error.
     #[prost(message, optional, tag="3")]
     pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
-    ///  All results for the mutate.
+    /// All results for the mutate.
     #[prost(message, repeated, tag="2")]
     pub results: ::prost::alloc::vec::Vec<MutateBiddingSeasonalityAdjustmentsResult>,
 }
-///  The result for the seasonality adjustment mutate.
+/// The result for the seasonality adjustment mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateBiddingSeasonalityAdjustmentsResult {
-    ///  Returned for successful operations.
+    /// Returned for successful operations.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
-    ///  The mutated bidding seasonality adjustment with only mutable fields after
-    ///  mutate. The field will only be returned when response_content_type is set
-    ///  to "MUTABLE_RESOURCE".
+    /// The mutated bidding seasonality adjustment with only mutable fields after
+    /// mutate. The field will only be returned when response_content_type is set
+    /// to "MUTABLE_RESOURCE".
     #[prost(message, optional, tag="2")]
     pub bidding_seasonality_adjustment: ::core::option::Option<super::resources::BiddingSeasonalityAdjustment>,
 }
@@ -6182,90 +6182,90 @@ pub mod bidding_seasonality_adjustment_service_client {
         }
     }
 }
-///  Request message for \[BiddingStrategyService.GetBiddingStrategy][google.ads.googleads.v9.services.BiddingStrategyService.GetBiddingStrategy\].
+/// Request message for \[BiddingStrategyService.GetBiddingStrategy][google.ads.googleads.v9.services.BiddingStrategyService.GetBiddingStrategy\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetBiddingStrategyRequest {
-    ///  Required. The resource name of the bidding strategy to fetch.
+    /// Required. The resource name of the bidding strategy to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Request message for \[BiddingStrategyService.MutateBiddingStrategies][google.ads.googleads.v9.services.BiddingStrategyService.MutateBiddingStrategies\].
+/// Request message for \[BiddingStrategyService.MutateBiddingStrategies][google.ads.googleads.v9.services.BiddingStrategyService.MutateBiddingStrategies\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateBiddingStrategiesRequest {
-    ///  Required. The ID of the customer whose bidding strategies are being modified.
+    /// Required. The ID of the customer whose bidding strategies are being modified.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The list of operations to perform on individual bidding strategies.
+    /// Required. The list of operations to perform on individual bidding strategies.
     #[prost(message, repeated, tag="2")]
     pub operations: ::prost::alloc::vec::Vec<BiddingStrategyOperation>,
-    ///  If true, successful operations will be carried out and invalid
-    ///  operations will return errors. If false, all operations will be carried
-    ///  out in one transaction if and only if they are all valid.
-    ///  Default is false.
+    /// If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, all operations will be carried
+    /// out in one transaction if and only if they are all valid.
+    /// Default is false.
     #[prost(bool, tag="3")]
     pub partial_failure: bool,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="4")]
     pub validate_only: bool,
-    ///  The response content type setting. Determines whether the mutable resource
-    ///  or just the resource name should be returned post mutation.
+    /// The response content type setting. Determines whether the mutable resource
+    /// or just the resource name should be returned post mutation.
     #[prost(enumeration="super::enums::response_content_type_enum::ResponseContentType", tag="5")]
     pub response_content_type: i32,
 }
-///  A single operation (create, update, remove) on a bidding strategy.
+/// A single operation (create, update, remove) on a bidding strategy.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BiddingStrategyOperation {
-    ///  FieldMask that determines which resource fields are modified in an update.
+    /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag="4")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  The mutate operation.
+    /// The mutate operation.
     #[prost(oneof="bidding_strategy_operation::Operation", tags="1, 2, 3")]
     pub operation: ::core::option::Option<bidding_strategy_operation::Operation>,
 }
 /// Nested message and enum types in `BiddingStrategyOperation`.
 pub mod bidding_strategy_operation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  Create operation: No resource name is expected for the new bidding
-        ///  strategy.
+        /// Create operation: No resource name is expected for the new bidding
+        /// strategy.
         #[prost(message, tag="1")]
         Create(super::super::resources::BiddingStrategy),
-        ///  Update operation: The bidding strategy is expected to have a valid
-        ///  resource name.
+        /// Update operation: The bidding strategy is expected to have a valid
+        /// resource name.
         #[prost(message, tag="2")]
         Update(super::super::resources::BiddingStrategy),
-        ///  Remove operation: A resource name for the removed bidding strategy is
-        ///  expected, in this format:
+        /// Remove operation: A resource name for the removed bidding strategy is
+        /// expected, in this format:
         ///
-        ///  `customers/{customer_id}/biddingStrategies/{bidding_strategy_id}`
+        /// `customers/{customer_id}/biddingStrategies/{bidding_strategy_id}`
         #[prost(string, tag="3")]
         Remove(::prost::alloc::string::String),
     }
 }
-///  Response message for bidding strategy mutate.
+/// Response message for bidding strategy mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateBiddingStrategiesResponse {
-    ///  Errors that pertain to operation failures in the partial failure mode.
-    ///  Returned only when partial_failure = true and all errors occur inside the
-    ///  operations. If any errors occur outside the operations (e.g. auth errors),
-    ///  we return an RPC level error.
+    /// Errors that pertain to operation failures in the partial failure mode.
+    /// Returned only when partial_failure = true and all errors occur inside the
+    /// operations. If any errors occur outside the operations (e.g. auth errors),
+    /// we return an RPC level error.
     #[prost(message, optional, tag="3")]
     pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
-    ///  All results for the mutate.
+    /// All results for the mutate.
     #[prost(message, repeated, tag="2")]
     pub results: ::prost::alloc::vec::Vec<MutateBiddingStrategyResult>,
 }
-///  The result for the bidding strategy mutate.
+/// The result for the bidding strategy mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateBiddingStrategyResult {
-    ///  Returned for successful operations.
+    /// Returned for successful operations.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
-    ///  The mutated bidding strategy with only mutable fields after mutate. The
-    ///  field will only be returned when response_content_type is set to
-    ///  "MUTABLE_RESOURCE".
+    /// The mutated bidding strategy with only mutable fields after mutate. The
+    /// field will only be returned when response_content_type is set to
+    /// "MUTABLE_RESOURCE".
     #[prost(message, optional, tag="2")]
     pub bidding_strategy: ::core::option::Option<super::resources::BiddingStrategy>,
 }
@@ -6426,90 +6426,90 @@ pub mod bidding_strategy_service_client {
         }
     }
 }
-///  Request message for \[CampaignAssetService.GetCampaignAsset][google.ads.googleads.v9.services.CampaignAssetService.GetCampaignAsset\].
+/// Request message for \[CampaignAssetService.GetCampaignAsset][google.ads.googleads.v9.services.CampaignAssetService.GetCampaignAsset\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCampaignAssetRequest {
-    ///  Required. The resource name of the campaign asset to fetch.
+    /// Required. The resource name of the campaign asset to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Request message for \[CampaignAssetService.MutateCampaignAssets][google.ads.googleads.v9.services.CampaignAssetService.MutateCampaignAssets\].
+/// Request message for \[CampaignAssetService.MutateCampaignAssets][google.ads.googleads.v9.services.CampaignAssetService.MutateCampaignAssets\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCampaignAssetsRequest {
-    ///  Required. The ID of the customer whose campaign assets are being modified.
+    /// Required. The ID of the customer whose campaign assets are being modified.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The list of operations to perform on individual campaign assets.
+    /// Required. The list of operations to perform on individual campaign assets.
     #[prost(message, repeated, tag="2")]
     pub operations: ::prost::alloc::vec::Vec<CampaignAssetOperation>,
-    ///  If true, successful operations will be carried out and invalid
-    ///  operations will return errors. If false, all operations will be carried
-    ///  out in one transaction if and only if they are all valid.
-    ///  Default is false.
+    /// If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, all operations will be carried
+    /// out in one transaction if and only if they are all valid.
+    /// Default is false.
     #[prost(bool, tag="3")]
     pub partial_failure: bool,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="4")]
     pub validate_only: bool,
-    ///  The response content type setting. Determines whether the mutable resource
-    ///  or just the resource name should be returned post mutation.
+    /// The response content type setting. Determines whether the mutable resource
+    /// or just the resource name should be returned post mutation.
     #[prost(enumeration="super::enums::response_content_type_enum::ResponseContentType", tag="5")]
     pub response_content_type: i32,
 }
-///  A single operation (create, update, remove) on a campaign asset.
+/// A single operation (create, update, remove) on a campaign asset.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CampaignAssetOperation {
-    ///  FieldMask that determines which resource fields are modified in an update.
+    /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag="4")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  The mutate operation.
+    /// The mutate operation.
     #[prost(oneof="campaign_asset_operation::Operation", tags="1, 3, 2")]
     pub operation: ::core::option::Option<campaign_asset_operation::Operation>,
 }
 /// Nested message and enum types in `CampaignAssetOperation`.
 pub mod campaign_asset_operation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  Create operation: No resource name is expected for the new campaign
-        ///  asset.
+        /// Create operation: No resource name is expected for the new campaign
+        /// asset.
         #[prost(message, tag="1")]
         Create(super::super::resources::CampaignAsset),
-        ///  Update operation: The campaign asset is expected to have a valid resource
-        ///  name.
+        /// Update operation: The campaign asset is expected to have a valid resource
+        /// name.
         #[prost(message, tag="3")]
         Update(super::super::resources::CampaignAsset),
-        ///  Remove operation: A resource name for the removed campaign asset is
-        ///  expected, in this format:
+        /// Remove operation: A resource name for the removed campaign asset is
+        /// expected, in this format:
         ///
-        ///  `customers/{customer_id}/campaignAssets/{campaign_id}~{asset_id}~{field_type}`
+        /// `customers/{customer_id}/campaignAssets/{campaign_id}~{asset_id}~{field_type}`
         #[prost(string, tag="2")]
         Remove(::prost::alloc::string::String),
     }
 }
-///  Response message for a campaign asset mutate.
+/// Response message for a campaign asset mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCampaignAssetsResponse {
-    ///  Errors that pertain to operation failures in the partial failure mode.
-    ///  Returned only when partial_failure = true and all errors occur inside the
-    ///  operations. If any errors occur outside the operations (e.g. auth errors),
-    ///  we return an RPC level error.
+    /// Errors that pertain to operation failures in the partial failure mode.
+    /// Returned only when partial_failure = true and all errors occur inside the
+    /// operations. If any errors occur outside the operations (e.g. auth errors),
+    /// we return an RPC level error.
     #[prost(message, optional, tag="1")]
     pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
-    ///  All results for the mutate.
+    /// All results for the mutate.
     #[prost(message, repeated, tag="2")]
     pub results: ::prost::alloc::vec::Vec<MutateCampaignAssetResult>,
 }
-///  The result for the campaign asset mutate.
+/// The result for the campaign asset mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCampaignAssetResult {
-    ///  Returned for successful operations.
+    /// Returned for successful operations.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
-    ///  The mutated campaign asset with only mutable fields after
-    ///  mutate. The field will only be returned when response_content_type is set
-    ///  to "MUTABLE_RESOURCE".
+    /// The mutated campaign asset with only mutable fields after
+    /// mutate. The field will only be returned when response_content_type is set
+    /// to "MUTABLE_RESOURCE".
     #[prost(message, optional, tag="2")]
     pub campaign_asset: ::core::option::Option<super::resources::CampaignAsset>,
 }
@@ -6654,75 +6654,75 @@ pub mod campaign_asset_service_client {
         }
     }
 }
-///  Request message for \[CampaignAssetSetService.MutateCampaignAssetSets][google.ads.googleads.v9.services.CampaignAssetSetService.MutateCampaignAssetSets\].
+/// Request message for \[CampaignAssetSetService.MutateCampaignAssetSets][google.ads.googleads.v9.services.CampaignAssetSetService.MutateCampaignAssetSets\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCampaignAssetSetsRequest {
-    ///  Required. The ID of the customer whose campaign asset sets are being modified.
+    /// Required. The ID of the customer whose campaign asset sets are being modified.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The list of operations to perform on individual campaign asset sets.
+    /// Required. The list of operations to perform on individual campaign asset sets.
     #[prost(message, repeated, tag="2")]
     pub operations: ::prost::alloc::vec::Vec<CampaignAssetSetOperation>,
-    ///  If true, successful operations will be carried out and invalid
-    ///  operations will return errors. If false, all operations will be carried
-    ///  out in one transaction if and only if they are all valid.
-    ///  Default is false.
+    /// If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, all operations will be carried
+    /// out in one transaction if and only if they are all valid.
+    /// Default is false.
     #[prost(bool, tag="3")]
     pub partial_failure: bool,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="4")]
     pub validate_only: bool,
-    ///  The response content type setting. Determines whether the mutable resource
-    ///  or just the resource name should be returned post mutation.
+    /// The response content type setting. Determines whether the mutable resource
+    /// or just the resource name should be returned post mutation.
     #[prost(enumeration="super::enums::response_content_type_enum::ResponseContentType", tag="5")]
     pub response_content_type: i32,
 }
-///  A single operation (create, remove) on a campaign asset set.
+/// A single operation (create, remove) on a campaign asset set.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CampaignAssetSetOperation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[prost(oneof="campaign_asset_set_operation::Operation", tags="1, 2")]
     pub operation: ::core::option::Option<campaign_asset_set_operation::Operation>,
 }
 /// Nested message and enum types in `CampaignAssetSetOperation`.
 pub mod campaign_asset_set_operation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  Create operation: No resource name is expected for the new campaign asset
-        ///  set.
+        /// Create operation: No resource name is expected for the new campaign asset
+        /// set.
         #[prost(message, tag="1")]
         Create(super::super::resources::CampaignAssetSet),
-        ///  Remove operation: A resource name for the removed campaign asset set is
-        ///  expected, in this format:
-        ///  `customers/{customer_id}/campaignAssetSets/{campaign_id}~{asset_set_id}`
+        /// Remove operation: A resource name for the removed campaign asset set is
+        /// expected, in this format:
+        /// `customers/{customer_id}/campaignAssetSets/{campaign_id}~{asset_set_id}`
         #[prost(string, tag="2")]
         Remove(::prost::alloc::string::String),
     }
 }
-///  Response message for a campaign asset set mutate.
+/// Response message for a campaign asset set mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCampaignAssetSetsResponse {
-    ///  All results for the mutate.
+    /// All results for the mutate.
     #[prost(message, repeated, tag="1")]
     pub results: ::prost::alloc::vec::Vec<MutateCampaignAssetSetResult>,
-    ///  Errors that pertain to operation failures in the partial failure mode.
-    ///  Returned only when partial_failure = true and all errors occur inside the
-    ///  operations. If any errors occur outside the operations (e.g. auth errors),
-    ///  we return an RPC level error.
+    /// Errors that pertain to operation failures in the partial failure mode.
+    /// Returned only when partial_failure = true and all errors occur inside the
+    /// operations. If any errors occur outside the operations (e.g. auth errors),
+    /// we return an RPC level error.
     #[prost(message, optional, tag="2")]
     pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
 }
-///  The result for the campaign asset set mutate.
+/// The result for the campaign asset set mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCampaignAssetSetResult {
-    ///  Returned for successful operations.
+    /// Returned for successful operations.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
-    ///  The mutated campaign asset set with only mutable fields after mutate. The
-    ///  field will only be returned when response_content_type is set to
-    ///  "MUTABLE_RESOURCE".
+    /// The mutated campaign asset set with only mutable fields after mutate. The
+    /// field will only be returned when response_content_type is set to
+    /// "MUTABLE_RESOURCE".
     #[prost(message, optional, tag="2")]
     pub campaign_asset_set: ::core::option::Option<super::resources::CampaignAssetSet>,
 }
@@ -6824,91 +6824,91 @@ pub mod campaign_asset_set_service_client {
         }
     }
 }
-///  Request message for \[CampaignBidModifierService.GetCampaignBidModifier][google.ads.googleads.v9.services.CampaignBidModifierService.GetCampaignBidModifier\].
+/// Request message for \[CampaignBidModifierService.GetCampaignBidModifier][google.ads.googleads.v9.services.CampaignBidModifierService.GetCampaignBidModifier\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCampaignBidModifierRequest {
-    ///  Required. The resource name of the campaign bid modifier to fetch.
+    /// Required. The resource name of the campaign bid modifier to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Request message for
-///  \[CampaignBidModifierService.MutateCampaignBidModifiers][google.ads.googleads.v9.services.CampaignBidModifierService.MutateCampaignBidModifiers\].
+/// Request message for
+/// \[CampaignBidModifierService.MutateCampaignBidModifiers][google.ads.googleads.v9.services.CampaignBidModifierService.MutateCampaignBidModifiers\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCampaignBidModifiersRequest {
-    ///  Required. ID of the customer whose campaign bid modifiers are being modified.
+    /// Required. ID of the customer whose campaign bid modifiers are being modified.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The list of operations to perform on individual campaign bid modifiers.
+    /// Required. The list of operations to perform on individual campaign bid modifiers.
     #[prost(message, repeated, tag="2")]
     pub operations: ::prost::alloc::vec::Vec<CampaignBidModifierOperation>,
-    ///  If true, successful operations will be carried out and invalid
-    ///  operations will return errors. If false, all operations will be carried
-    ///  out in one transaction if and only if they are all valid.
-    ///  Default is false.
+    /// If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, all operations will be carried
+    /// out in one transaction if and only if they are all valid.
+    /// Default is false.
     #[prost(bool, tag="3")]
     pub partial_failure: bool,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="4")]
     pub validate_only: bool,
-    ///  The response content type setting. Determines whether the mutable resource
-    ///  or just the resource name should be returned post mutation.
+    /// The response content type setting. Determines whether the mutable resource
+    /// or just the resource name should be returned post mutation.
     #[prost(enumeration="super::enums::response_content_type_enum::ResponseContentType", tag="5")]
     pub response_content_type: i32,
 }
-///  A single operation (create, remove, update) on a campaign bid modifier.
+/// A single operation (create, remove, update) on a campaign bid modifier.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CampaignBidModifierOperation {
-    ///  FieldMask that determines which resource fields are modified in an update.
+    /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag="4")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  The mutate operation.
+    /// The mutate operation.
     #[prost(oneof="campaign_bid_modifier_operation::Operation", tags="1, 2, 3")]
     pub operation: ::core::option::Option<campaign_bid_modifier_operation::Operation>,
 }
 /// Nested message and enum types in `CampaignBidModifierOperation`.
 pub mod campaign_bid_modifier_operation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  Create operation: No resource name is expected for the new campaign bid
-        ///  modifier.
+        /// Create operation: No resource name is expected for the new campaign bid
+        /// modifier.
         #[prost(message, tag="1")]
         Create(super::super::resources::CampaignBidModifier),
-        ///  Update operation: The campaign bid modifier is expected to have a valid
-        ///  resource name.
+        /// Update operation: The campaign bid modifier is expected to have a valid
+        /// resource name.
         #[prost(message, tag="2")]
         Update(super::super::resources::CampaignBidModifier),
-        ///  Remove operation: A resource name for the removed campaign bid modifier
-        ///  is expected, in this format:
+        /// Remove operation: A resource name for the removed campaign bid modifier
+        /// is expected, in this format:
         ///
-        ///  `customers/{customer_id}/CampaignBidModifiers/{campaign_id}~{criterion_id}`
+        /// `customers/{customer_id}/CampaignBidModifiers/{campaign_id}~{criterion_id}`
         #[prost(string, tag="3")]
         Remove(::prost::alloc::string::String),
     }
 }
-///  Response message for campaign bid modifiers mutate.
+/// Response message for campaign bid modifiers mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCampaignBidModifiersResponse {
-    ///  Errors that pertain to operation failures in the partial failure mode.
-    ///  Returned only when partial_failure = true and all errors occur inside the
-    ///  operations. If any errors occur outside the operations (e.g. auth errors),
-    ///  we return an RPC level error.
+    /// Errors that pertain to operation failures in the partial failure mode.
+    /// Returned only when partial_failure = true and all errors occur inside the
+    /// operations. If any errors occur outside the operations (e.g. auth errors),
+    /// we return an RPC level error.
     #[prost(message, optional, tag="3")]
     pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
-    ///  All results for the mutate.
+    /// All results for the mutate.
     #[prost(message, repeated, tag="2")]
     pub results: ::prost::alloc::vec::Vec<MutateCampaignBidModifierResult>,
 }
-///  The result for the criterion mutate.
+/// The result for the criterion mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCampaignBidModifierResult {
-    ///  Returned for successful operations.
+    /// Returned for successful operations.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
-    ///  The mutated campaign bid modifier with only mutable fields after mutate.
-    ///  The field will only be returned when response_content_type is set to
-    ///  "MUTABLE_RESOURCE".
+    /// The mutated campaign bid modifier with only mutable fields after mutate.
+    /// The field will only be returned when response_content_type is set to
+    /// "MUTABLE_RESOURCE".
     #[prost(message, optional, tag="2")]
     pub campaign_bid_modifier: ::core::option::Option<super::resources::CampaignBidModifier>,
 }
@@ -7065,89 +7065,89 @@ pub mod campaign_bid_modifier_service_client {
         }
     }
 }
-///  Request message for \[CampaignBudgetService.GetCampaignBudget][google.ads.googleads.v9.services.CampaignBudgetService.GetCampaignBudget\].
+/// Request message for \[CampaignBudgetService.GetCampaignBudget][google.ads.googleads.v9.services.CampaignBudgetService.GetCampaignBudget\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCampaignBudgetRequest {
-    ///  Required. The resource name of the campaign budget to fetch.
+    /// Required. The resource name of the campaign budget to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Request message for \[CampaignBudgetService.MutateCampaignBudgets][google.ads.googleads.v9.services.CampaignBudgetService.MutateCampaignBudgets\].
+/// Request message for \[CampaignBudgetService.MutateCampaignBudgets][google.ads.googleads.v9.services.CampaignBudgetService.MutateCampaignBudgets\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCampaignBudgetsRequest {
-    ///  Required. The ID of the customer whose campaign budgets are being modified.
+    /// Required. The ID of the customer whose campaign budgets are being modified.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The list of operations to perform on individual campaign budgets.
+    /// Required. The list of operations to perform on individual campaign budgets.
     #[prost(message, repeated, tag="2")]
     pub operations: ::prost::alloc::vec::Vec<CampaignBudgetOperation>,
-    ///  If true, successful operations will be carried out and invalid
-    ///  operations will return errors. If false, all operations will be carried
-    ///  out in one transaction if and only if they are all valid.
-    ///  Default is false.
+    /// If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, all operations will be carried
+    /// out in one transaction if and only if they are all valid.
+    /// Default is false.
     #[prost(bool, tag="3")]
     pub partial_failure: bool,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="4")]
     pub validate_only: bool,
-    ///  The response content type setting. Determines whether the mutable resource
-    ///  or just the resource name should be returned post mutation.
+    /// The response content type setting. Determines whether the mutable resource
+    /// or just the resource name should be returned post mutation.
     #[prost(enumeration="super::enums::response_content_type_enum::ResponseContentType", tag="5")]
     pub response_content_type: i32,
 }
-///  A single operation (create, update, remove) on a campaign budget.
+/// A single operation (create, update, remove) on a campaign budget.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CampaignBudgetOperation {
-    ///  FieldMask that determines which resource fields are modified in an update.
+    /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag="4")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  The mutate operation.
+    /// The mutate operation.
     #[prost(oneof="campaign_budget_operation::Operation", tags="1, 2, 3")]
     pub operation: ::core::option::Option<campaign_budget_operation::Operation>,
 }
 /// Nested message and enum types in `CampaignBudgetOperation`.
 pub mod campaign_budget_operation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  Create operation: No resource name is expected for the new budget.
+        /// Create operation: No resource name is expected for the new budget.
         #[prost(message, tag="1")]
         Create(super::super::resources::CampaignBudget),
-        ///  Update operation: The campaign budget is expected to have a valid
-        ///  resource name.
+        /// Update operation: The campaign budget is expected to have a valid
+        /// resource name.
         #[prost(message, tag="2")]
         Update(super::super::resources::CampaignBudget),
-        ///  Remove operation: A resource name for the removed budget is expected, in
-        ///  this format:
+        /// Remove operation: A resource name for the removed budget is expected, in
+        /// this format:
         ///
-        ///  `customers/{customer_id}/campaignBudgets/{budget_id}`
+        /// `customers/{customer_id}/campaignBudgets/{budget_id}`
         #[prost(string, tag="3")]
         Remove(::prost::alloc::string::String),
     }
 }
-///  Response message for campaign budget mutate.
+/// Response message for campaign budget mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCampaignBudgetsResponse {
-    ///  Errors that pertain to operation failures in the partial failure mode.
-    ///  Returned only when partial_failure = true and all errors occur inside the
-    ///  operations. If any errors occur outside the operations (e.g. auth errors),
-    ///  we return an RPC level error.
+    /// Errors that pertain to operation failures in the partial failure mode.
+    /// Returned only when partial_failure = true and all errors occur inside the
+    /// operations. If any errors occur outside the operations (e.g. auth errors),
+    /// we return an RPC level error.
     #[prost(message, optional, tag="3")]
     pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
-    ///  All results for the mutate.
+    /// All results for the mutate.
     #[prost(message, repeated, tag="2")]
     pub results: ::prost::alloc::vec::Vec<MutateCampaignBudgetResult>,
 }
-///  The result for the campaign budget mutate.
+/// The result for the campaign budget mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCampaignBudgetResult {
-    ///  Returned for successful operations.
+    /// Returned for successful operations.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
-    ///  The mutated campaign budget with only mutable fields after mutate. The
-    ///  field will only be returned when response_content_type is set to
-    ///  "MUTABLE_RESOURCE".
+    /// The mutated campaign budget with only mutable fields after mutate. The
+    /// field will only be returned when response_content_type is set to
+    /// "MUTABLE_RESOURCE".
     #[prost(message, optional, tag="2")]
     pub campaign_budget: ::core::option::Option<super::resources::CampaignBudget>,
 }
@@ -7297,53 +7297,53 @@ pub mod campaign_budget_service_client {
         }
     }
 }
-///  Request message for
-///  \[CampaignConversionGoalService.MutateCampaignConversionGoals][google.ads.googleads.v9.services.CampaignConversionGoalService.MutateCampaignConversionGoals\].
+/// Request message for
+/// \[CampaignConversionGoalService.MutateCampaignConversionGoals][google.ads.googleads.v9.services.CampaignConversionGoalService.MutateCampaignConversionGoals\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCampaignConversionGoalsRequest {
-    ///  Required. The ID of the customer whose campaign conversion goals are being modified.
+    /// Required. The ID of the customer whose campaign conversion goals are being modified.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The list of operations to perform on individual campaign conversion goal.
+    /// Required. The list of operations to perform on individual campaign conversion goal.
     #[prost(message, repeated, tag="2")]
     pub operations: ::prost::alloc::vec::Vec<CampaignConversionGoalOperation>,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="3")]
     pub validate_only: bool,
 }
-///  A single operation (update) on a campaign conversion goal.
+/// A single operation (update) on a campaign conversion goal.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CampaignConversionGoalOperation {
-    ///  FieldMask that determines which resource fields are modified in an update.
+    /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag="2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  The mutate operation.
+    /// The mutate operation.
     #[prost(oneof="campaign_conversion_goal_operation::Operation", tags="1")]
     pub operation: ::core::option::Option<campaign_conversion_goal_operation::Operation>,
 }
 /// Nested message and enum types in `CampaignConversionGoalOperation`.
 pub mod campaign_conversion_goal_operation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  Update operation: The customer conversion goal is expected to have a
-        ///  valid resource name.
+        /// Update operation: The customer conversion goal is expected to have a
+        /// valid resource name.
         #[prost(message, tag="1")]
         Update(super::super::resources::CampaignConversionGoal),
     }
 }
-///  Response message for a campaign conversion goal mutate.
+/// Response message for a campaign conversion goal mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCampaignConversionGoalsResponse {
-    ///  All results for the mutate.
+    /// All results for the mutate.
     #[prost(message, repeated, tag="1")]
     pub results: ::prost::alloc::vec::Vec<MutateCampaignConversionGoalResult>,
 }
-///  The result for the campaign conversion goal mutate.
+/// The result for the campaign conversion goal mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCampaignConversionGoalResult {
-    ///  Returned for successful operations.
+    /// Returned for successful operations.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
@@ -7445,89 +7445,89 @@ pub mod campaign_conversion_goal_service_client {
         }
     }
 }
-///  Request message for \[CampaignCriterionService.GetCampaignCriterion][google.ads.googleads.v9.services.CampaignCriterionService.GetCampaignCriterion\].
+/// Request message for \[CampaignCriterionService.GetCampaignCriterion][google.ads.googleads.v9.services.CampaignCriterionService.GetCampaignCriterion\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCampaignCriterionRequest {
-    ///  Required. The resource name of the criterion to fetch.
+    /// Required. The resource name of the criterion to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Request message for \[CampaignCriterionService.MutateCampaignCriteria][google.ads.googleads.v9.services.CampaignCriterionService.MutateCampaignCriteria\].
+/// Request message for \[CampaignCriterionService.MutateCampaignCriteria][google.ads.googleads.v9.services.CampaignCriterionService.MutateCampaignCriteria\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCampaignCriteriaRequest {
-    ///  Required. The ID of the customer whose criteria are being modified.
+    /// Required. The ID of the customer whose criteria are being modified.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The list of operations to perform on individual criteria.
+    /// Required. The list of operations to perform on individual criteria.
     #[prost(message, repeated, tag="2")]
     pub operations: ::prost::alloc::vec::Vec<CampaignCriterionOperation>,
-    ///  If true, successful operations will be carried out and invalid
-    ///  operations will return errors. If false, all operations will be carried
-    ///  out in one transaction if and only if they are all valid.
-    ///  Default is false.
+    /// If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, all operations will be carried
+    /// out in one transaction if and only if they are all valid.
+    /// Default is false.
     #[prost(bool, tag="3")]
     pub partial_failure: bool,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="4")]
     pub validate_only: bool,
-    ///  The response content type setting. Determines whether the mutable resource
-    ///  or just the resource name should be returned post mutation.
+    /// The response content type setting. Determines whether the mutable resource
+    /// or just the resource name should be returned post mutation.
     #[prost(enumeration="super::enums::response_content_type_enum::ResponseContentType", tag="5")]
     pub response_content_type: i32,
 }
-///  A single operation (create, update, remove) on a campaign criterion.
+/// A single operation (create, update, remove) on a campaign criterion.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CampaignCriterionOperation {
-    ///  FieldMask that determines which resource fields are modified in an update.
+    /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag="4")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  The mutate operation.
+    /// The mutate operation.
     #[prost(oneof="campaign_criterion_operation::Operation", tags="1, 2, 3")]
     pub operation: ::core::option::Option<campaign_criterion_operation::Operation>,
 }
 /// Nested message and enum types in `CampaignCriterionOperation`.
 pub mod campaign_criterion_operation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  Create operation: No resource name is expected for the new criterion.
+        /// Create operation: No resource name is expected for the new criterion.
         #[prost(message, tag="1")]
         Create(super::super::resources::CampaignCriterion),
-        ///  Update operation: The criterion is expected to have a valid resource
-        ///  name.
+        /// Update operation: The criterion is expected to have a valid resource
+        /// name.
         #[prost(message, tag="2")]
         Update(super::super::resources::CampaignCriterion),
-        ///  Remove operation: A resource name for the removed criterion is expected,
-        ///  in this format:
+        /// Remove operation: A resource name for the removed criterion is expected,
+        /// in this format:
         ///
-        ///  `customers/{customer_id}/campaignCriteria/{campaign_id}~{criterion_id}`
+        /// `customers/{customer_id}/campaignCriteria/{campaign_id}~{criterion_id}`
         #[prost(string, tag="3")]
         Remove(::prost::alloc::string::String),
     }
 }
-///  Response message for campaign criterion mutate.
+/// Response message for campaign criterion mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCampaignCriteriaResponse {
-    ///  Errors that pertain to operation failures in the partial failure mode.
-    ///  Returned only when partial_failure = true and all errors occur inside the
-    ///  operations. If any errors occur outside the operations (e.g. auth errors),
-    ///  we return an RPC level error.
+    /// Errors that pertain to operation failures in the partial failure mode.
+    /// Returned only when partial_failure = true and all errors occur inside the
+    /// operations. If any errors occur outside the operations (e.g. auth errors),
+    /// we return an RPC level error.
     #[prost(message, optional, tag="3")]
     pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
-    ///  All results for the mutate.
+    /// All results for the mutate.
     #[prost(message, repeated, tag="2")]
     pub results: ::prost::alloc::vec::Vec<MutateCampaignCriterionResult>,
 }
-///  The result for the criterion mutate.
+/// The result for the criterion mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCampaignCriterionResult {
-    ///  Returned for successful operations.
+    /// Returned for successful operations.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
-    ///  The mutated campaign criterion with only mutable fields after mutate. The
-    ///  field will only be returned when response_content_type is set to
-    ///  "MUTABLE_RESOURCE".
+    /// The mutated campaign criterion with only mutable fields after mutate. The
+    /// field will only be returned when response_content_type is set to
+    /// "MUTABLE_RESOURCE".
     #[prost(message, optional, tag="2")]
     pub campaign_criterion: ::core::option::Option<super::resources::CampaignCriterion>,
 }
@@ -7690,76 +7690,76 @@ pub mod campaign_criterion_service_client {
         }
     }
 }
-///  Request message for
-///  \[CampaignCustomizerService.MutateCampaignCustomizers][google.ads.googleads.v9.services.CampaignCustomizerService.MutateCampaignCustomizers\].
+/// Request message for
+/// \[CampaignCustomizerService.MutateCampaignCustomizers][google.ads.googleads.v9.services.CampaignCustomizerService.MutateCampaignCustomizers\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCampaignCustomizersRequest {
-    ///  Required. The ID of the customer whose campaign customizers are being modified.
+    /// Required. The ID of the customer whose campaign customizers are being modified.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The list of operations to perform on individual campaign customizers.
+    /// Required. The list of operations to perform on individual campaign customizers.
     #[prost(message, repeated, tag="2")]
     pub operations: ::prost::alloc::vec::Vec<CampaignCustomizerOperation>,
-    ///  If true, successful operations will be carried out and invalid
-    ///  operations will return errors. If false, all operations will be carried
-    ///  out in one transaction if and only if they are all valid.
-    ///  Default is false.
+    /// If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, all operations will be carried
+    /// out in one transaction if and only if they are all valid.
+    /// Default is false.
     #[prost(bool, tag="3")]
     pub partial_failure: bool,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="4")]
     pub validate_only: bool,
-    ///  The response content type setting. Determines whether the mutable resource
-    ///  or just the resource name should be returned post mutation.
+    /// The response content type setting. Determines whether the mutable resource
+    /// or just the resource name should be returned post mutation.
     #[prost(enumeration="super::enums::response_content_type_enum::ResponseContentType", tag="5")]
     pub response_content_type: i32,
 }
-///  A single operation (create, remove) on an customizer attribute.
+/// A single operation (create, remove) on an customizer attribute.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CampaignCustomizerOperation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[prost(oneof="campaign_customizer_operation::Operation", tags="1, 2")]
     pub operation: ::core::option::Option<campaign_customizer_operation::Operation>,
 }
 /// Nested message and enum types in `CampaignCustomizerOperation`.
 pub mod campaign_customizer_operation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  Create operation: No resource name is expected for the new campaign
-        ///  customizer
+        /// Create operation: No resource name is expected for the new campaign
+        /// customizer
         #[prost(message, tag="1")]
         Create(super::super::resources::CampaignCustomizer),
-        ///  Remove operation: A resource name for the removed campaign customizer is
-        ///  expected, in this format:
-        ///  `customers/{customer_id}/campaignCustomizers/{campaign_id}~{customizer_attribute_id}`
+        /// Remove operation: A resource name for the removed campaign customizer is
+        /// expected, in this format:
+        /// `customers/{customer_id}/campaignCustomizers/{campaign_id}~{customizer_attribute_id}`
         #[prost(string, tag="2")]
         Remove(::prost::alloc::string::String),
     }
 }
-///  Response message for an campaign customizer mutate.
+/// Response message for an campaign customizer mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCampaignCustomizersResponse {
-    ///  All results for the mutate.
+    /// All results for the mutate.
     #[prost(message, repeated, tag="1")]
     pub results: ::prost::alloc::vec::Vec<MutateCampaignCustomizerResult>,
-    ///  Errors that pertain to operation failures in the partial failure mode.
-    ///  Returned only when partial_failure = true and all errors occur inside the
-    ///  operations. If any errors occur outside the operations (e.g. auth errors),
-    ///  we return an RPC level error.
+    /// Errors that pertain to operation failures in the partial failure mode.
+    /// Returned only when partial_failure = true and all errors occur inside the
+    /// operations. If any errors occur outside the operations (e.g. auth errors),
+    /// we return an RPC level error.
     #[prost(message, optional, tag="2")]
     pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
 }
-///  The result for the campaign customizer mutate.
+/// The result for the campaign customizer mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCampaignCustomizerResult {
-    ///  Returned for successful operations.
+    /// Returned for successful operations.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
-    ///  The mutated CampaignCustomizer with only mutable fields after mutate.
-    ///  The field will only be returned when response_content_type is set to
-    ///  "MUTABLE_RESOURCE".
+    /// The mutated CampaignCustomizer with only mutable fields after mutate.
+    /// The field will only be returned when response_content_type is set to
+    /// "MUTABLE_RESOURCE".
     #[prost(message, optional, tag="2")]
     pub campaign_customizer: ::core::option::Option<super::resources::CampaignCustomizer>,
 }
@@ -7861,132 +7861,132 @@ pub mod campaign_customizer_service_client {
         }
     }
 }
-///  Request message for \[CampaignDraftService.GetCampaignDraft][google.ads.googleads.v9.services.CampaignDraftService.GetCampaignDraft\].
+/// Request message for \[CampaignDraftService.GetCampaignDraft][google.ads.googleads.v9.services.CampaignDraftService.GetCampaignDraft\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCampaignDraftRequest {
-    ///  Required. The resource name of the campaign draft to fetch.
+    /// Required. The resource name of the campaign draft to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Request message for \[CampaignDraftService.MutateCampaignDrafts][google.ads.googleads.v9.services.CampaignDraftService.MutateCampaignDrafts\].
+/// Request message for \[CampaignDraftService.MutateCampaignDrafts][google.ads.googleads.v9.services.CampaignDraftService.MutateCampaignDrafts\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCampaignDraftsRequest {
-    ///  Required. The ID of the customer whose campaign drafts are being modified.
+    /// Required. The ID of the customer whose campaign drafts are being modified.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The list of operations to perform on individual campaign drafts.
+    /// Required. The list of operations to perform on individual campaign drafts.
     #[prost(message, repeated, tag="2")]
     pub operations: ::prost::alloc::vec::Vec<CampaignDraftOperation>,
-    ///  If true, successful operations will be carried out and invalid
-    ///  operations will return errors. If false, all operations will be carried
-    ///  out in one transaction if and only if they are all valid.
-    ///  Default is false.
+    /// If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, all operations will be carried
+    /// out in one transaction if and only if they are all valid.
+    /// Default is false.
     #[prost(bool, tag="3")]
     pub partial_failure: bool,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="4")]
     pub validate_only: bool,
-    ///  The response content type setting. Determines whether the mutable resource
-    ///  or just the resource name should be returned post mutation.
+    /// The response content type setting. Determines whether the mutable resource
+    /// or just the resource name should be returned post mutation.
     #[prost(enumeration="super::enums::response_content_type_enum::ResponseContentType", tag="5")]
     pub response_content_type: i32,
 }
-///  Request message for \[CampaignDraftService.PromoteCampaignDraft][google.ads.googleads.v9.services.CampaignDraftService.PromoteCampaignDraft\].
+/// Request message for \[CampaignDraftService.PromoteCampaignDraft][google.ads.googleads.v9.services.CampaignDraftService.PromoteCampaignDraft\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PromoteCampaignDraftRequest {
-    ///  Required. The resource name of the campaign draft to promote.
+    /// Required. The resource name of the campaign draft to promote.
     #[prost(string, tag="1")]
     pub campaign_draft: ::prost::alloc::string::String,
-    ///  If true, the request is validated but no Long Running Operation is created.
-    ///  Only errors are returned.
+    /// If true, the request is validated but no Long Running Operation is created.
+    /// Only errors are returned.
     #[prost(bool, tag="2")]
     pub validate_only: bool,
 }
-///  A single operation (create, update, remove) on a campaign draft.
+/// A single operation (create, update, remove) on a campaign draft.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CampaignDraftOperation {
-    ///  FieldMask that determines which resource fields are modified in an update.
+    /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag="4")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  The mutate operation.
+    /// The mutate operation.
     #[prost(oneof="campaign_draft_operation::Operation", tags="1, 2, 3")]
     pub operation: ::core::option::Option<campaign_draft_operation::Operation>,
 }
 /// Nested message and enum types in `CampaignDraftOperation`.
 pub mod campaign_draft_operation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  Create operation: No resource name is expected for the new campaign
-        ///  draft.
+        /// Create operation: No resource name is expected for the new campaign
+        /// draft.
         #[prost(message, tag="1")]
         Create(super::super::resources::CampaignDraft),
-        ///  Update operation: The campaign draft is expected to have a valid
-        ///  resource name.
+        /// Update operation: The campaign draft is expected to have a valid
+        /// resource name.
         #[prost(message, tag="2")]
         Update(super::super::resources::CampaignDraft),
-        ///  Remove operation: The campaign draft is expected to have a valid
-        ///  resource name, in this format:
+        /// Remove operation: The campaign draft is expected to have a valid
+        /// resource name, in this format:
         ///
-        ///  `customers/{customer_id}/campaignDrafts/{base_campaign_id}~{draft_id}`
+        /// `customers/{customer_id}/campaignDrafts/{base_campaign_id}~{draft_id}`
         #[prost(string, tag="3")]
         Remove(::prost::alloc::string::String),
     }
 }
-///  Response message for campaign draft mutate.
+/// Response message for campaign draft mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCampaignDraftsResponse {
-    ///  Errors that pertain to operation failures in the partial failure mode.
-    ///  Returned only when partial_failure = true and all errors occur inside the
-    ///  operations. If any errors occur outside the operations (e.g. auth errors),
-    ///  we return an RPC level error.
+    /// Errors that pertain to operation failures in the partial failure mode.
+    /// Returned only when partial_failure = true and all errors occur inside the
+    /// operations. If any errors occur outside the operations (e.g. auth errors),
+    /// we return an RPC level error.
     #[prost(message, optional, tag="3")]
     pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
-    ///  All results for the mutate.
+    /// All results for the mutate.
     #[prost(message, repeated, tag="2")]
     pub results: ::prost::alloc::vec::Vec<MutateCampaignDraftResult>,
 }
-///  The result for the campaign draft mutate.
+/// The result for the campaign draft mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCampaignDraftResult {
-    ///  Returned for successful operations.
+    /// Returned for successful operations.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
-    ///  The mutated campaign draft with only mutable fields after mutate. The field
-    ///  will only be returned when response_content_type is set to
-    ///  "MUTABLE_RESOURCE".
+    /// The mutated campaign draft with only mutable fields after mutate. The field
+    /// will only be returned when response_content_type is set to
+    /// "MUTABLE_RESOURCE".
     #[prost(message, optional, tag="2")]
     pub campaign_draft: ::core::option::Option<super::resources::CampaignDraft>,
 }
-///  Request message for \[CampaignDraftService.ListCampaignDraftAsyncErrors][google.ads.googleads.v9.services.CampaignDraftService.ListCampaignDraftAsyncErrors\].
+/// Request message for \[CampaignDraftService.ListCampaignDraftAsyncErrors][google.ads.googleads.v9.services.CampaignDraftService.ListCampaignDraftAsyncErrors\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCampaignDraftAsyncErrorsRequest {
-    ///  Required. The name of the campaign draft from which to retrieve the async errors.
+    /// Required. The name of the campaign draft from which to retrieve the async errors.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
-    ///  Token of the page to retrieve. If not specified, the first
-    ///  page of results will be returned. Use the value obtained from
-    ///  `next_page_token` in the previous response in order to request
-    ///  the next page of results.
+    /// Token of the page to retrieve. If not specified, the first
+    /// page of results will be returned. Use the value obtained from
+    /// `next_page_token` in the previous response in order to request
+    /// the next page of results.
     #[prost(string, tag="2")]
     pub page_token: ::prost::alloc::string::String,
-    ///  Number of elements to retrieve in a single page.
-    ///  When a page request is too large, the server may decide to
-    ///  further limit the number of returned resources.
+    /// Number of elements to retrieve in a single page.
+    /// When a page request is too large, the server may decide to
+    /// further limit the number of returned resources.
     #[prost(int32, tag="3")]
     pub page_size: i32,
 }
-///  Response message for \[CampaignDraftService.ListCampaignDraftAsyncErrors][google.ads.googleads.v9.services.CampaignDraftService.ListCampaignDraftAsyncErrors\].
+/// Response message for \[CampaignDraftService.ListCampaignDraftAsyncErrors][google.ads.googleads.v9.services.CampaignDraftService.ListCampaignDraftAsyncErrors\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCampaignDraftAsyncErrorsResponse {
-    ///  Details of the errors when performing the asynchronous operation.
+    /// Details of the errors when performing the asynchronous operation.
     #[prost(message, repeated, tag="1")]
     pub errors: ::prost::alloc::vec::Vec<super::super::super::super::rpc::Status>,
-    ///  Pagination token used to retrieve the next page of results.
-    ///  Pass the content of this string as the `page_token` attribute of
-    ///  the next request. `next_page_token` is not returned for the last
-    ///  page.
+    /// Pagination token used to retrieve the next page of results.
+    /// Pass the content of this string as the `page_token` attribute of
+    /// the next request. `next_page_token` is not returned for the last
+    /// page.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
@@ -8202,187 +8202,187 @@ pub mod campaign_draft_service_client {
         }
     }
 }
-///  Request message for \[CampaignExperimentService.GetCampaignExperiment][google.ads.googleads.v9.services.CampaignExperimentService.GetCampaignExperiment\].
+/// Request message for \[CampaignExperimentService.GetCampaignExperiment][google.ads.googleads.v9.services.CampaignExperimentService.GetCampaignExperiment\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCampaignExperimentRequest {
-    ///  Required. The resource name of the campaign experiment to fetch.
+    /// Required. The resource name of the campaign experiment to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Request message for \[CampaignExperimentService.MutateCampaignExperiments][google.ads.googleads.v9.services.CampaignExperimentService.MutateCampaignExperiments\].
+/// Request message for \[CampaignExperimentService.MutateCampaignExperiments][google.ads.googleads.v9.services.CampaignExperimentService.MutateCampaignExperiments\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCampaignExperimentsRequest {
-    ///  Required. The ID of the customer whose campaign experiments are being modified.
+    /// Required. The ID of the customer whose campaign experiments are being modified.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The list of operations to perform on individual campaign experiments.
+    /// Required. The list of operations to perform on individual campaign experiments.
     #[prost(message, repeated, tag="2")]
     pub operations: ::prost::alloc::vec::Vec<CampaignExperimentOperation>,
-    ///  If true, successful operations will be carried out and invalid
-    ///  operations will return errors. If false, all operations will be carried
-    ///  out in one transaction if and only if they are all valid.
-    ///  Default is false.
+    /// If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, all operations will be carried
+    /// out in one transaction if and only if they are all valid.
+    /// Default is false.
     #[prost(bool, tag="3")]
     pub partial_failure: bool,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="4")]
     pub validate_only: bool,
-    ///  The response content type setting. Determines whether the mutable resource
-    ///  or just the resource name should be returned post mutation.
+    /// The response content type setting. Determines whether the mutable resource
+    /// or just the resource name should be returned post mutation.
     #[prost(enumeration="super::enums::response_content_type_enum::ResponseContentType", tag="5")]
     pub response_content_type: i32,
 }
-///  A single update operation on a campaign experiment.
+/// A single update operation on a campaign experiment.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CampaignExperimentOperation {
-    ///  FieldMask that determines which resource fields are modified in an update.
+    /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag="3")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  The mutate operation.
+    /// The mutate operation.
     #[prost(oneof="campaign_experiment_operation::Operation", tags="1, 2")]
     pub operation: ::core::option::Option<campaign_experiment_operation::Operation>,
 }
 /// Nested message and enum types in `CampaignExperimentOperation`.
 pub mod campaign_experiment_operation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  Update operation: The campaign experiment is expected to have a valid
-        ///  resource name.
+        /// Update operation: The campaign experiment is expected to have a valid
+        /// resource name.
         #[prost(message, tag="1")]
         Update(super::super::resources::CampaignExperiment),
-        ///  Remove operation: The campaign experiment is expected to have a valid
-        ///  resource name, in this format:
+        /// Remove operation: The campaign experiment is expected to have a valid
+        /// resource name, in this format:
         ///
-        ///  `customers/{customer_id}/campaignExperiments/{campaign_experiment_id}`
+        /// `customers/{customer_id}/campaignExperiments/{campaign_experiment_id}`
         #[prost(string, tag="2")]
         Remove(::prost::alloc::string::String),
     }
 }
-///  Response message for campaign experiment mutate.
+/// Response message for campaign experiment mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCampaignExperimentsResponse {
-    ///  Errors that pertain to operation failures in the partial failure mode.
-    ///  Returned only when partial_failure = true and all errors occur inside the
-    ///  operations. If any errors occur outside the operations (e.g. auth errors),
-    ///  we return an RPC level error.
+    /// Errors that pertain to operation failures in the partial failure mode.
+    /// Returned only when partial_failure = true and all errors occur inside the
+    /// operations. If any errors occur outside the operations (e.g. auth errors),
+    /// we return an RPC level error.
     #[prost(message, optional, tag="3")]
     pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
-    ///  All results for the mutate.
+    /// All results for the mutate.
     #[prost(message, repeated, tag="2")]
     pub results: ::prost::alloc::vec::Vec<MutateCampaignExperimentResult>,
 }
-///  The result for the campaign experiment mutate.
+/// The result for the campaign experiment mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCampaignExperimentResult {
-    ///  Returned for successful operations.
+    /// Returned for successful operations.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
-    ///  The mutated campaign experiment with only mutable fields after mutate. The
-    ///  field will only be returned when response_content_type is set to
-    ///  "MUTABLE_RESOURCE".
+    /// The mutated campaign experiment with only mutable fields after mutate. The
+    /// field will only be returned when response_content_type is set to
+    /// "MUTABLE_RESOURCE".
     #[prost(message, optional, tag="2")]
     pub campaign_experiment: ::core::option::Option<super::resources::CampaignExperiment>,
 }
-///  Request message for \[CampaignExperimentService.CreateCampaignExperiment][google.ads.googleads.v9.services.CampaignExperimentService.CreateCampaignExperiment\].
+/// Request message for \[CampaignExperimentService.CreateCampaignExperiment][google.ads.googleads.v9.services.CampaignExperimentService.CreateCampaignExperiment\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateCampaignExperimentRequest {
-    ///  Required. The ID of the customer whose campaign experiment is being created.
+    /// Required. The ID of the customer whose campaign experiment is being created.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The campaign experiment to be created.
+    /// Required. The campaign experiment to be created.
     #[prost(message, optional, tag="2")]
     pub campaign_experiment: ::core::option::Option<super::resources::CampaignExperiment>,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="3")]
     pub validate_only: bool,
 }
-///  Message used as metadata returned in Long Running Operations for
-///  CreateCampaignExperimentRequest
+/// Message used as metadata returned in Long Running Operations for
+/// CreateCampaignExperimentRequest
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateCampaignExperimentMetadata {
-    ///  Resource name of campaign experiment created.
+    /// Resource name of campaign experiment created.
     #[prost(string, tag="1")]
     pub campaign_experiment: ::prost::alloc::string::String,
 }
-///  Request message for \[CampaignExperimentService.GraduateCampaignExperiment][google.ads.googleads.v9.services.CampaignExperimentService.GraduateCampaignExperiment\].
+/// Request message for \[CampaignExperimentService.GraduateCampaignExperiment][google.ads.googleads.v9.services.CampaignExperimentService.GraduateCampaignExperiment\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GraduateCampaignExperimentRequest {
-    ///  Required. The resource name of the campaign experiment to graduate.
+    /// Required. The resource name of the campaign experiment to graduate.
     #[prost(string, tag="1")]
     pub campaign_experiment: ::prost::alloc::string::String,
-    ///  Required. Resource name of the budget to attach to the campaign graduated from the
-    ///  experiment.
+    /// Required. Resource name of the budget to attach to the campaign graduated from the
+    /// experiment.
     #[prost(string, tag="2")]
     pub campaign_budget: ::prost::alloc::string::String,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="3")]
     pub validate_only: bool,
 }
-///  Response message for campaign experiment graduate.
+/// Response message for campaign experiment graduate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GraduateCampaignExperimentResponse {
-    ///  The resource name of the campaign from the graduated experiment.
-    ///  This campaign is the same one as CampaignExperiment.experiment_campaign.
+    /// The resource name of the campaign from the graduated experiment.
+    /// This campaign is the same one as CampaignExperiment.experiment_campaign.
     #[prost(string, tag="1")]
     pub graduated_campaign: ::prost::alloc::string::String,
 }
-///  Request message for \[CampaignExperimentService.PromoteCampaignExperiment][google.ads.googleads.v9.services.CampaignExperimentService.PromoteCampaignExperiment\].
+/// Request message for \[CampaignExperimentService.PromoteCampaignExperiment][google.ads.googleads.v9.services.CampaignExperimentService.PromoteCampaignExperiment\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PromoteCampaignExperimentRequest {
-    ///  Required. The resource name of the campaign experiment to promote.
+    /// Required. The resource name of the campaign experiment to promote.
     #[prost(string, tag="1")]
     pub campaign_experiment: ::prost::alloc::string::String,
-    ///  If true, the request is validated but no Long Running Operation is created.
-    ///  Only errors are returned.
+    /// If true, the request is validated but no Long Running Operation is created.
+    /// Only errors are returned.
     #[prost(bool, tag="2")]
     pub validate_only: bool,
 }
-///  Request message for \[CampaignExperimentService.EndCampaignExperiment][google.ads.googleads.v9.services.CampaignExperimentService.EndCampaignExperiment\].
+/// Request message for \[CampaignExperimentService.EndCampaignExperiment][google.ads.googleads.v9.services.CampaignExperimentService.EndCampaignExperiment\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EndCampaignExperimentRequest {
-    ///  Required. The resource name of the campaign experiment to end.
+    /// Required. The resource name of the campaign experiment to end.
     #[prost(string, tag="1")]
     pub campaign_experiment: ::prost::alloc::string::String,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="2")]
     pub validate_only: bool,
 }
-///  Request message for
-///  \[CampaignExperimentService.ListCampaignExperimentAsyncErrors][google.ads.googleads.v9.services.CampaignExperimentService.ListCampaignExperimentAsyncErrors\].
+/// Request message for
+/// \[CampaignExperimentService.ListCampaignExperimentAsyncErrors][google.ads.googleads.v9.services.CampaignExperimentService.ListCampaignExperimentAsyncErrors\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCampaignExperimentAsyncErrorsRequest {
-    ///  Required. The name of the campaign experiment from which to retrieve the async
-    ///  errors.
+    /// Required. The name of the campaign experiment from which to retrieve the async
+    /// errors.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
-    ///  Token of the page to retrieve. If not specified, the first
-    ///  page of results will be returned. Use the value obtained from
-    ///  `next_page_token` in the previous response in order to request
-    ///  the next page of results.
+    /// Token of the page to retrieve. If not specified, the first
+    /// page of results will be returned. Use the value obtained from
+    /// `next_page_token` in the previous response in order to request
+    /// the next page of results.
     #[prost(string, tag="2")]
     pub page_token: ::prost::alloc::string::String,
-    ///  Number of elements to retrieve in a single page.
-    ///  When a page request is too large, the server may decide to
-    ///  further limit the number of returned resources.
+    /// Number of elements to retrieve in a single page.
+    /// When a page request is too large, the server may decide to
+    /// further limit the number of returned resources.
     #[prost(int32, tag="3")]
     pub page_size: i32,
 }
-///  Response message for
-///  \[CampaignExperimentService.ListCampaignExperimentAsyncErrors][google.ads.googleads.v9.services.CampaignExperimentService.ListCampaignExperimentAsyncErrors\].
+/// Response message for
+/// \[CampaignExperimentService.ListCampaignExperimentAsyncErrors][google.ads.googleads.v9.services.CampaignExperimentService.ListCampaignExperimentAsyncErrors\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCampaignExperimentAsyncErrorsResponse {
-    ///  Details of the errors when performing the asynchronous operation.
+    /// Details of the errors when performing the asynchronous operation.
     #[prost(message, repeated, tag="1")]
     pub errors: ::prost::alloc::vec::Vec<super::super::super::super::rpc::Status>,
-    ///  Pagination token used to retrieve the next page of results.
-    ///  Pass the content of this string as the `page_token` attribute of
-    ///  the next request. `next_page_token` is not returned for the last
-    ///  page.
+    /// Pagination token used to retrieve the next page of results.
+    /// Pass the content of this string as the `page_token` attribute of
+    /// the next request. `next_page_token` is not returned for the last
+    /// page.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
@@ -8714,94 +8714,94 @@ pub mod campaign_experiment_service_client {
         }
     }
 }
-///  Request message for
-///  \[CampaignExtensionSettingService.GetCampaignExtensionSetting][google.ads.googleads.v9.services.CampaignExtensionSettingService.GetCampaignExtensionSetting\].
+/// Request message for
+/// \[CampaignExtensionSettingService.GetCampaignExtensionSetting][google.ads.googleads.v9.services.CampaignExtensionSettingService.GetCampaignExtensionSetting\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCampaignExtensionSettingRequest {
-    ///  Required. The resource name of the campaign extension setting to fetch.
+    /// Required. The resource name of the campaign extension setting to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Request message for
-///  \[CampaignExtensionSettingService.MutateCampaignExtensionSettings][google.ads.googleads.v9.services.CampaignExtensionSettingService.MutateCampaignExtensionSettings\].
+/// Request message for
+/// \[CampaignExtensionSettingService.MutateCampaignExtensionSettings][google.ads.googleads.v9.services.CampaignExtensionSettingService.MutateCampaignExtensionSettings\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCampaignExtensionSettingsRequest {
-    ///  Required. The ID of the customer whose campaign extension settings are being
-    ///  modified.
+    /// Required. The ID of the customer whose campaign extension settings are being
+    /// modified.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The list of operations to perform on individual campaign extension
-    ///  settings.
+    /// Required. The list of operations to perform on individual campaign extension
+    /// settings.
     #[prost(message, repeated, tag="2")]
     pub operations: ::prost::alloc::vec::Vec<CampaignExtensionSettingOperation>,
-    ///  If true, successful operations will be carried out and invalid
-    ///  operations will return errors. If false, all operations will be carried
-    ///  out in one transaction if and only if they are all valid.
-    ///  Default is false.
+    /// If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, all operations will be carried
+    /// out in one transaction if and only if they are all valid.
+    /// Default is false.
     #[prost(bool, tag="3")]
     pub partial_failure: bool,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="4")]
     pub validate_only: bool,
-    ///  The response content type setting. Determines whether the mutable resource
-    ///  or just the resource name should be returned post mutation.
+    /// The response content type setting. Determines whether the mutable resource
+    /// or just the resource name should be returned post mutation.
     #[prost(enumeration="super::enums::response_content_type_enum::ResponseContentType", tag="5")]
     pub response_content_type: i32,
 }
-///  A single operation (create, update, remove) on a campaign extension setting.
+/// A single operation (create, update, remove) on a campaign extension setting.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CampaignExtensionSettingOperation {
-    ///  FieldMask that determines which resource fields are modified in an update.
+    /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag="4")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  The mutate operation.
+    /// The mutate operation.
     #[prost(oneof="campaign_extension_setting_operation::Operation", tags="1, 2, 3")]
     pub operation: ::core::option::Option<campaign_extension_setting_operation::Operation>,
 }
 /// Nested message and enum types in `CampaignExtensionSettingOperation`.
 pub mod campaign_extension_setting_operation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  Create operation: No resource name is expected for the new campaign
-        ///  extension setting.
+        /// Create operation: No resource name is expected for the new campaign
+        /// extension setting.
         #[prost(message, tag="1")]
         Create(super::super::resources::CampaignExtensionSetting),
-        ///  Update operation: The campaign extension setting is expected to have a
-        ///  valid resource name.
+        /// Update operation: The campaign extension setting is expected to have a
+        /// valid resource name.
         #[prost(message, tag="2")]
         Update(super::super::resources::CampaignExtensionSetting),
-        ///  Remove operation: A resource name for the removed campaign extension
-        ///  setting is expected, in this format:
+        /// Remove operation: A resource name for the removed campaign extension
+        /// setting is expected, in this format:
         ///
-        ///  `customers/{customer_id}/campaignExtensionSettings/{campaign_id}~{extension_type}`
+        /// `customers/{customer_id}/campaignExtensionSettings/{campaign_id}~{extension_type}`
         #[prost(string, tag="3")]
         Remove(::prost::alloc::string::String),
     }
 }
-///  Response message for a campaign extension setting mutate.
+/// Response message for a campaign extension setting mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCampaignExtensionSettingsResponse {
-    ///  Errors that pertain to operation failures in the partial failure mode.
-    ///  Returned only when partial_failure = true and all errors occur inside the
-    ///  operations. If any errors occur outside the operations (e.g. auth errors),
-    ///  we return an RPC level error.
+    /// Errors that pertain to operation failures in the partial failure mode.
+    /// Returned only when partial_failure = true and all errors occur inside the
+    /// operations. If any errors occur outside the operations (e.g. auth errors),
+    /// we return an RPC level error.
     #[prost(message, optional, tag="3")]
     pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
-    ///  All results for the mutate.
+    /// All results for the mutate.
     #[prost(message, repeated, tag="2")]
     pub results: ::prost::alloc::vec::Vec<MutateCampaignExtensionSettingResult>,
 }
-///  The result for the campaign extension setting mutate.
+/// The result for the campaign extension setting mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCampaignExtensionSettingResult {
-    ///  Returned for successful operations.
+    /// Returned for successful operations.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
-    ///  The mutated campaign extension setting with only mutable fields after
-    ///  mutate. The field will only be returned when response_content_type is set
-    ///  to "MUTABLE_RESOURCE".
+    /// The mutated campaign extension setting with only mutable fields after
+    /// mutate. The field will only be returned when response_content_type is set
+    /// to "MUTABLE_RESOURCE".
     #[prost(message, optional, tag="2")]
     pub campaign_extension_setting: ::core::option::Option<super::resources::CampaignExtensionSetting>,
 }
@@ -8965,89 +8965,89 @@ pub mod campaign_extension_setting_service_client {
         }
     }
 }
-///  Request message for \[CampaignFeedService.GetCampaignFeed][google.ads.googleads.v9.services.CampaignFeedService.GetCampaignFeed\].
+/// Request message for \[CampaignFeedService.GetCampaignFeed][google.ads.googleads.v9.services.CampaignFeedService.GetCampaignFeed\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCampaignFeedRequest {
-    ///  Required. The resource name of the campaign feed to fetch.
+    /// Required. The resource name of the campaign feed to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Request message for \[CampaignFeedService.MutateCampaignFeeds][google.ads.googleads.v9.services.CampaignFeedService.MutateCampaignFeeds\].
+/// Request message for \[CampaignFeedService.MutateCampaignFeeds][google.ads.googleads.v9.services.CampaignFeedService.MutateCampaignFeeds\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCampaignFeedsRequest {
-    ///  Required. The ID of the customer whose campaign feeds are being modified.
+    /// Required. The ID of the customer whose campaign feeds are being modified.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The list of operations to perform on individual campaign feeds.
+    /// Required. The list of operations to perform on individual campaign feeds.
     #[prost(message, repeated, tag="2")]
     pub operations: ::prost::alloc::vec::Vec<CampaignFeedOperation>,
-    ///  If true, successful operations will be carried out and invalid
-    ///  operations will return errors. If false, all operations will be carried
-    ///  out in one transaction if and only if they are all valid.
-    ///  Default is false.
+    /// If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, all operations will be carried
+    /// out in one transaction if and only if they are all valid.
+    /// Default is false.
     #[prost(bool, tag="3")]
     pub partial_failure: bool,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="4")]
     pub validate_only: bool,
-    ///  The response content type setting. Determines whether the mutable resource
-    ///  or just the resource name should be returned post mutation.
+    /// The response content type setting. Determines whether the mutable resource
+    /// or just the resource name should be returned post mutation.
     #[prost(enumeration="super::enums::response_content_type_enum::ResponseContentType", tag="5")]
     pub response_content_type: i32,
 }
-///  A single operation (create, update, remove) on a campaign feed.
+/// A single operation (create, update, remove) on a campaign feed.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CampaignFeedOperation {
-    ///  FieldMask that determines which resource fields are modified in an update.
+    /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag="4")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  The mutate operation.
+    /// The mutate operation.
     #[prost(oneof="campaign_feed_operation::Operation", tags="1, 2, 3")]
     pub operation: ::core::option::Option<campaign_feed_operation::Operation>,
 }
 /// Nested message and enum types in `CampaignFeedOperation`.
 pub mod campaign_feed_operation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  Create operation: No resource name is expected for the new campaign feed.
+        /// Create operation: No resource name is expected for the new campaign feed.
         #[prost(message, tag="1")]
         Create(super::super::resources::CampaignFeed),
-        ///  Update operation: The campaign feed is expected to have a valid resource
-        ///  name.
+        /// Update operation: The campaign feed is expected to have a valid resource
+        /// name.
         #[prost(message, tag="2")]
         Update(super::super::resources::CampaignFeed),
-        ///  Remove operation: A resource name for the removed campaign feed is
-        ///  expected, in this format:
+        /// Remove operation: A resource name for the removed campaign feed is
+        /// expected, in this format:
         ///
-        ///  `customers/{customer_id}/campaignFeeds/{campaign_id}~{feed_id}`
+        /// `customers/{customer_id}/campaignFeeds/{campaign_id}~{feed_id}`
         #[prost(string, tag="3")]
         Remove(::prost::alloc::string::String),
     }
 }
-///  Response message for a campaign feed mutate.
+/// Response message for a campaign feed mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCampaignFeedsResponse {
-    ///  Errors that pertain to operation failures in the partial failure mode.
-    ///  Returned only when partial_failure = true and all errors occur inside the
-    ///  operations. If any errors occur outside the operations (e.g. auth errors),
-    ///  we return an RPC level error.
+    /// Errors that pertain to operation failures in the partial failure mode.
+    /// Returned only when partial_failure = true and all errors occur inside the
+    /// operations. If any errors occur outside the operations (e.g. auth errors),
+    /// we return an RPC level error.
     #[prost(message, optional, tag="3")]
     pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
-    ///  All results for the mutate.
+    /// All results for the mutate.
     #[prost(message, repeated, tag="2")]
     pub results: ::prost::alloc::vec::Vec<MutateCampaignFeedResult>,
 }
-///  The result for the campaign feed mutate.
+/// The result for the campaign feed mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCampaignFeedResult {
-    ///  Returned for successful operations.
+    /// Returned for successful operations.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
-    ///  The mutated campaign feed with only mutable fields after mutate. The field
-    ///  will only be returned when response_content_type is set to
-    ///  "MUTABLE_RESOURCE".
+    /// The mutated campaign feed with only mutable fields after mutate. The field
+    /// will only be returned when response_content_type is set to
+    /// "MUTABLE_RESOURCE".
     #[prost(message, optional, tag="2")]
     pub campaign_feed: ::core::option::Option<super::resources::CampaignFeed>,
 }
@@ -9200,74 +9200,74 @@ pub mod campaign_feed_service_client {
         }
     }
 }
-///  Request message for \[CampaignLabelService.GetCampaignLabel][google.ads.googleads.v9.services.CampaignLabelService.GetCampaignLabel\].
+/// Request message for \[CampaignLabelService.GetCampaignLabel][google.ads.googleads.v9.services.CampaignLabelService.GetCampaignLabel\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCampaignLabelRequest {
-    ///  Required. The resource name of the campaign-label relationship to fetch.
+    /// Required. The resource name of the campaign-label relationship to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Request message for \[CampaignLabelService.MutateCampaignLabels][google.ads.googleads.v9.services.CampaignLabelService.MutateCampaignLabels\].
+/// Request message for \[CampaignLabelService.MutateCampaignLabels][google.ads.googleads.v9.services.CampaignLabelService.MutateCampaignLabels\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCampaignLabelsRequest {
-    ///  Required. ID of the customer whose campaign-label relationships are being modified.
+    /// Required. ID of the customer whose campaign-label relationships are being modified.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The list of operations to perform on campaign-label relationships.
+    /// Required. The list of operations to perform on campaign-label relationships.
     #[prost(message, repeated, tag="2")]
     pub operations: ::prost::alloc::vec::Vec<CampaignLabelOperation>,
-    ///  If true, successful operations will be carried out and invalid
-    ///  operations will return errors. If false, all operations will be carried
-    ///  out in one transaction if and only if they are all valid.
-    ///  Default is false.
+    /// If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, all operations will be carried
+    /// out in one transaction if and only if they are all valid.
+    /// Default is false.
     #[prost(bool, tag="3")]
     pub partial_failure: bool,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="4")]
     pub validate_only: bool,
 }
-///  A single operation (create, remove) on a campaign-label relationship.
+/// A single operation (create, remove) on a campaign-label relationship.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CampaignLabelOperation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[prost(oneof="campaign_label_operation::Operation", tags="1, 2")]
     pub operation: ::core::option::Option<campaign_label_operation::Operation>,
 }
 /// Nested message and enum types in `CampaignLabelOperation`.
 pub mod campaign_label_operation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  Create operation: No resource name is expected for the new campaign-label
-        ///  relationship.
+        /// Create operation: No resource name is expected for the new campaign-label
+        /// relationship.
         #[prost(message, tag="1")]
         Create(super::super::resources::CampaignLabel),
-        ///  Remove operation: A resource name for the campaign-label relationship
-        ///  being removed, in this format:
+        /// Remove operation: A resource name for the campaign-label relationship
+        /// being removed, in this format:
         ///
-        ///  `customers/{customer_id}/campaignLabels/{campaign_id}~{label_id}`
+        /// `customers/{customer_id}/campaignLabels/{campaign_id}~{label_id}`
         #[prost(string, tag="2")]
         Remove(::prost::alloc::string::String),
     }
 }
-///  Response message for a campaign labels mutate.
+/// Response message for a campaign labels mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCampaignLabelsResponse {
-    ///  Errors that pertain to operation failures in the partial failure mode.
-    ///  Returned only when partial_failure = true and all errors occur inside the
-    ///  operations. If any errors occur outside the operations (e.g. auth errors),
-    ///  we return an RPC level error.
+    /// Errors that pertain to operation failures in the partial failure mode.
+    /// Returned only when partial_failure = true and all errors occur inside the
+    /// operations. If any errors occur outside the operations (e.g. auth errors),
+    /// we return an RPC level error.
     #[prost(message, optional, tag="3")]
     pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
-    ///  All results for the mutate.
+    /// All results for the mutate.
     #[prost(message, repeated, tag="2")]
     pub results: ::prost::alloc::vec::Vec<MutateCampaignLabelResult>,
 }
-///  The result for a campaign label mutate.
+/// The result for a campaign label mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCampaignLabelResult {
-    ///  Returned for successful operations.
+    /// Returned for successful operations.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
@@ -9411,88 +9411,88 @@ pub mod campaign_label_service_client {
         }
     }
 }
-///  Request message for \[CampaignService.GetCampaign][google.ads.googleads.v9.services.CampaignService.GetCampaign\].
+/// Request message for \[CampaignService.GetCampaign][google.ads.googleads.v9.services.CampaignService.GetCampaign\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCampaignRequest {
-    ///  Required. The resource name of the campaign to fetch.
+    /// Required. The resource name of the campaign to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Request message for \[CampaignService.MutateCampaigns][google.ads.googleads.v9.services.CampaignService.MutateCampaigns\].
+/// Request message for \[CampaignService.MutateCampaigns][google.ads.googleads.v9.services.CampaignService.MutateCampaigns\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCampaignsRequest {
-    ///  Required. The ID of the customer whose campaigns are being modified.
+    /// Required. The ID of the customer whose campaigns are being modified.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The list of operations to perform on individual campaigns.
+    /// Required. The list of operations to perform on individual campaigns.
     #[prost(message, repeated, tag="2")]
     pub operations: ::prost::alloc::vec::Vec<CampaignOperation>,
-    ///  If true, successful operations will be carried out and invalid
-    ///  operations will return errors. If false, all operations will be carried
-    ///  out in one transaction if and only if they are all valid.
-    ///  Default is false.
+    /// If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, all operations will be carried
+    /// out in one transaction if and only if they are all valid.
+    /// Default is false.
     #[prost(bool, tag="3")]
     pub partial_failure: bool,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="4")]
     pub validate_only: bool,
-    ///  The response content type setting. Determines whether the mutable resource
-    ///  or just the resource name should be returned post mutation.
+    /// The response content type setting. Determines whether the mutable resource
+    /// or just the resource name should be returned post mutation.
     #[prost(enumeration="super::enums::response_content_type_enum::ResponseContentType", tag="5")]
     pub response_content_type: i32,
 }
-///  A single operation (create, update, remove) on a campaign.
+/// A single operation (create, update, remove) on a campaign.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CampaignOperation {
-    ///  FieldMask that determines which resource fields are modified in an update.
+    /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag="4")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  The mutate operation.
+    /// The mutate operation.
     #[prost(oneof="campaign_operation::Operation", tags="1, 2, 3")]
     pub operation: ::core::option::Option<campaign_operation::Operation>,
 }
 /// Nested message and enum types in `CampaignOperation`.
 pub mod campaign_operation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  Create operation: No resource name is expected for the new campaign.
+        /// Create operation: No resource name is expected for the new campaign.
         #[prost(message, tag="1")]
         Create(super::super::resources::Campaign),
-        ///  Update operation: The campaign is expected to have a valid
-        ///  resource name.
+        /// Update operation: The campaign is expected to have a valid
+        /// resource name.
         #[prost(message, tag="2")]
         Update(super::super::resources::Campaign),
-        ///  Remove operation: A resource name for the removed campaign is
-        ///  expected, in this format:
+        /// Remove operation: A resource name for the removed campaign is
+        /// expected, in this format:
         ///
-        ///  `customers/{customer_id}/campaigns/{campaign_id}`
+        /// `customers/{customer_id}/campaigns/{campaign_id}`
         #[prost(string, tag="3")]
         Remove(::prost::alloc::string::String),
     }
 }
-///  Response message for campaign mutate.
+/// Response message for campaign mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCampaignsResponse {
-    ///  Errors that pertain to operation failures in the partial failure mode.
-    ///  Returned only when partial_failure = true and all errors occur inside the
-    ///  operations. If any errors occur outside the operations (e.g. auth errors),
-    ///  we return an RPC level error.
+    /// Errors that pertain to operation failures in the partial failure mode.
+    /// Returned only when partial_failure = true and all errors occur inside the
+    /// operations. If any errors occur outside the operations (e.g. auth errors),
+    /// we return an RPC level error.
     #[prost(message, optional, tag="3")]
     pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
-    ///  All results for the mutate.
+    /// All results for the mutate.
     #[prost(message, repeated, tag="2")]
     pub results: ::prost::alloc::vec::Vec<MutateCampaignResult>,
 }
-///  The result for the campaign mutate.
+/// The result for the campaign mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCampaignResult {
-    ///  Returned for successful operations.
+    /// Returned for successful operations.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
-    ///  The mutated campaign with only mutable fields after mutate. The field will
-    ///  only be returned when response_content_type is set to "MUTABLE_RESOURCE".
+    /// The mutated campaign with only mutable fields after mutate. The field will
+    /// only be returned when response_content_type is set to "MUTABLE_RESOURCE".
     #[prost(message, optional, tag="2")]
     pub campaign: ::core::option::Option<super::resources::Campaign>,
 }
@@ -9653,83 +9653,83 @@ pub mod campaign_service_client {
         }
     }
 }
-///  Request message for \[CampaignSharedSetService.GetCampaignSharedSet][google.ads.googleads.v9.services.CampaignSharedSetService.GetCampaignSharedSet\].
+/// Request message for \[CampaignSharedSetService.GetCampaignSharedSet][google.ads.googleads.v9.services.CampaignSharedSetService.GetCampaignSharedSet\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCampaignSharedSetRequest {
-    ///  Required. The resource name of the campaign shared set to fetch.
+    /// Required. The resource name of the campaign shared set to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Request message for \[CampaignSharedSetService.MutateCampaignSharedSets][google.ads.googleads.v9.services.CampaignSharedSetService.MutateCampaignSharedSets\].
+/// Request message for \[CampaignSharedSetService.MutateCampaignSharedSets][google.ads.googleads.v9.services.CampaignSharedSetService.MutateCampaignSharedSets\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCampaignSharedSetsRequest {
-    ///  Required. The ID of the customer whose campaign shared sets are being modified.
+    /// Required. The ID of the customer whose campaign shared sets are being modified.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The list of operations to perform on individual campaign shared sets.
+    /// Required. The list of operations to perform on individual campaign shared sets.
     #[prost(message, repeated, tag="2")]
     pub operations: ::prost::alloc::vec::Vec<CampaignSharedSetOperation>,
-    ///  If true, successful operations will be carried out and invalid
-    ///  operations will return errors. If false, all operations will be carried
-    ///  out in one transaction if and only if they are all valid.
-    ///  Default is false.
+    /// If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, all operations will be carried
+    /// out in one transaction if and only if they are all valid.
+    /// Default is false.
     #[prost(bool, tag="3")]
     pub partial_failure: bool,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="4")]
     pub validate_only: bool,
-    ///  The response content type setting. Determines whether the mutable resource
-    ///  or just the resource name should be returned post mutation.
+    /// The response content type setting. Determines whether the mutable resource
+    /// or just the resource name should be returned post mutation.
     #[prost(enumeration="super::enums::response_content_type_enum::ResponseContentType", tag="5")]
     pub response_content_type: i32,
 }
-///  A single operation (create, remove) on an campaign shared set.
+/// A single operation (create, remove) on an campaign shared set.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CampaignSharedSetOperation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[prost(oneof="campaign_shared_set_operation::Operation", tags="1, 3")]
     pub operation: ::core::option::Option<campaign_shared_set_operation::Operation>,
 }
 /// Nested message and enum types in `CampaignSharedSetOperation`.
 pub mod campaign_shared_set_operation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  Create operation: No resource name is expected for the new campaign
-        ///  shared set.
+        /// Create operation: No resource name is expected for the new campaign
+        /// shared set.
         #[prost(message, tag="1")]
         Create(super::super::resources::CampaignSharedSet),
-        ///  Remove operation: A resource name for the removed campaign shared set is
-        ///  expected, in this format:
+        /// Remove operation: A resource name for the removed campaign shared set is
+        /// expected, in this format:
         ///
-        ///  `customers/{customer_id}/campaignSharedSets/{campaign_id}~{shared_set_id}`
+        /// `customers/{customer_id}/campaignSharedSets/{campaign_id}~{shared_set_id}`
         #[prost(string, tag="3")]
         Remove(::prost::alloc::string::String),
     }
 }
-///  Response message for a campaign shared set mutate.
+/// Response message for a campaign shared set mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCampaignSharedSetsResponse {
-    ///  Errors that pertain to operation failures in the partial failure mode.
-    ///  Returned only when partial_failure = true and all errors occur inside the
-    ///  operations. If any errors occur outside the operations (e.g. auth errors),
-    ///  we return an RPC level error.
+    /// Errors that pertain to operation failures in the partial failure mode.
+    /// Returned only when partial_failure = true and all errors occur inside the
+    /// operations. If any errors occur outside the operations (e.g. auth errors),
+    /// we return an RPC level error.
     #[prost(message, optional, tag="3")]
     pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
-    ///  All results for the mutate.
+    /// All results for the mutate.
     #[prost(message, repeated, tag="2")]
     pub results: ::prost::alloc::vec::Vec<MutateCampaignSharedSetResult>,
 }
-///  The result for the campaign shared set mutate.
+/// The result for the campaign shared set mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCampaignSharedSetResult {
-    ///  Returned for successful operations.
+    /// Returned for successful operations.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
-    ///  The mutated campaign shared set with only mutable fields after mutate. The
-    ///  field will only be returned when response_content_type is set to
-    ///  "MUTABLE_RESOURCE".
+    /// The mutated campaign shared set with only mutable fields after mutate. The
+    /// field will only be returned when response_content_type is set to
+    /// "MUTABLE_RESOURCE".
     #[prost(message, optional, tag="2")]
     pub campaign_shared_set: ::core::option::Option<super::resources::CampaignSharedSet>,
 }
@@ -9885,90 +9885,90 @@ pub mod campaign_shared_set_service_client {
         }
     }
 }
-///  Request message for \[ConversionActionService.GetConversionAction][google.ads.googleads.v9.services.ConversionActionService.GetConversionAction\].
+/// Request message for \[ConversionActionService.GetConversionAction][google.ads.googleads.v9.services.ConversionActionService.GetConversionAction\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetConversionActionRequest {
-    ///  Required. The resource name of the conversion action to fetch.
+    /// Required. The resource name of the conversion action to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Request message for \[ConversionActionService.MutateConversionActions][google.ads.googleads.v9.services.ConversionActionService.MutateConversionActions\].
+/// Request message for \[ConversionActionService.MutateConversionActions][google.ads.googleads.v9.services.ConversionActionService.MutateConversionActions\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateConversionActionsRequest {
-    ///  Required. The ID of the customer whose conversion actions are being modified.
+    /// Required. The ID of the customer whose conversion actions are being modified.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The list of operations to perform on individual conversion actions.
+    /// Required. The list of operations to perform on individual conversion actions.
     #[prost(message, repeated, tag="2")]
     pub operations: ::prost::alloc::vec::Vec<ConversionActionOperation>,
-    ///  If true, successful operations will be carried out and invalid
-    ///  operations will return errors. If false, all operations will be carried
-    ///  out in one transaction if and only if they are all valid.
-    ///  Default is false.
+    /// If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, all operations will be carried
+    /// out in one transaction if and only if they are all valid.
+    /// Default is false.
     #[prost(bool, tag="3")]
     pub partial_failure: bool,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="4")]
     pub validate_only: bool,
-    ///  The response content type setting. Determines whether the mutable resource
-    ///  or just the resource name should be returned post mutation.
+    /// The response content type setting. Determines whether the mutable resource
+    /// or just the resource name should be returned post mutation.
     #[prost(enumeration="super::enums::response_content_type_enum::ResponseContentType", tag="5")]
     pub response_content_type: i32,
 }
-///  A single operation (create, update, remove) on a conversion action.
+/// A single operation (create, update, remove) on a conversion action.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConversionActionOperation {
-    ///  FieldMask that determines which resource fields are modified in an update.
+    /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag="4")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  The mutate operation.
+    /// The mutate operation.
     #[prost(oneof="conversion_action_operation::Operation", tags="1, 2, 3")]
     pub operation: ::core::option::Option<conversion_action_operation::Operation>,
 }
 /// Nested message and enum types in `ConversionActionOperation`.
 pub mod conversion_action_operation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  Create operation: No resource name is expected for the new conversion
-        ///  action.
+        /// Create operation: No resource name is expected for the new conversion
+        /// action.
         #[prost(message, tag="1")]
         Create(super::super::resources::ConversionAction),
-        ///  Update operation: The conversion action is expected to have a valid
-        ///  resource name.
+        /// Update operation: The conversion action is expected to have a valid
+        /// resource name.
         #[prost(message, tag="2")]
         Update(super::super::resources::ConversionAction),
-        ///  Remove operation: A resource name for the removed conversion action is
-        ///  expected, in this format:
+        /// Remove operation: A resource name for the removed conversion action is
+        /// expected, in this format:
         ///
-        ///  `customers/{customer_id}/conversionActions/{conversion_action_id}`
+        /// `customers/{customer_id}/conversionActions/{conversion_action_id}`
         #[prost(string, tag="3")]
         Remove(::prost::alloc::string::String),
     }
 }
-///  Response message for \[ConversionActionService.MutateConversionActions][google.ads.googleads.v9.services.ConversionActionService.MutateConversionActions\].
+/// Response message for \[ConversionActionService.MutateConversionActions][google.ads.googleads.v9.services.ConversionActionService.MutateConversionActions\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateConversionActionsResponse {
-    ///  Errors that pertain to operation failures in the partial failure mode.
-    ///  Returned only when partial_failure = true and all errors occur inside the
-    ///  operations. If any errors occur outside the operations (e.g. auth errors),
-    ///  we return an RPC level error.
+    /// Errors that pertain to operation failures in the partial failure mode.
+    /// Returned only when partial_failure = true and all errors occur inside the
+    /// operations. If any errors occur outside the operations (e.g. auth errors),
+    /// we return an RPC level error.
     #[prost(message, optional, tag="3")]
     pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
-    ///  All results for the mutate.
+    /// All results for the mutate.
     #[prost(message, repeated, tag="2")]
     pub results: ::prost::alloc::vec::Vec<MutateConversionActionResult>,
 }
-///  The result for the conversion action mutate.
+/// The result for the conversion action mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateConversionActionResult {
-    ///  Returned for successful operations.
+    /// Returned for successful operations.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
-    ///  The mutated conversion action with only mutable fields after mutate. The
-    ///  field will only be returned when response_content_type is set to
-    ///  "MUTABLE_RESOURCE".
+    /// The mutated conversion action with only mutable fields after mutate. The
+    /// field will only be returned when response_content_type is set to
+    /// "MUTABLE_RESOURCE".
     #[prost(message, optional, tag="2")]
     pub conversion_action: ::core::option::Option<super::resources::ConversionAction>,
 }
@@ -10119,89 +10119,89 @@ pub mod conversion_action_service_client {
         }
     }
 }
-///  Request message for
-///  \[ConversionCustomVariableService.GetConversionCustomVariable][google.ads.googleads.v9.services.ConversionCustomVariableService.GetConversionCustomVariable\].
+/// Request message for
+/// \[ConversionCustomVariableService.GetConversionCustomVariable][google.ads.googleads.v9.services.ConversionCustomVariableService.GetConversionCustomVariable\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetConversionCustomVariableRequest {
-    ///  Required. The resource name of the conversion custom variable to fetch.
+    /// Required. The resource name of the conversion custom variable to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Request message for
-///  \[ConversionCustomVariableService.MutateConversionCustomVariables][google.ads.googleads.v9.services.ConversionCustomVariableService.MutateConversionCustomVariables\].
+/// Request message for
+/// \[ConversionCustomVariableService.MutateConversionCustomVariables][google.ads.googleads.v9.services.ConversionCustomVariableService.MutateConversionCustomVariables\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateConversionCustomVariablesRequest {
-    ///  Required. The ID of the customer whose conversion custom variables are being
-    ///  modified.
+    /// Required. The ID of the customer whose conversion custom variables are being
+    /// modified.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The list of operations to perform on individual conversion custom
-    ///  variables.
+    /// Required. The list of operations to perform on individual conversion custom
+    /// variables.
     #[prost(message, repeated, tag="2")]
     pub operations: ::prost::alloc::vec::Vec<ConversionCustomVariableOperation>,
-    ///  If true, successful operations will be carried out and invalid
-    ///  operations will return errors. If false, all operations will be carried
-    ///  out in one transaction if and only if they are all valid.
-    ///  Default is false.
+    /// If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, all operations will be carried
+    /// out in one transaction if and only if they are all valid.
+    /// Default is false.
     #[prost(bool, tag="3")]
     pub partial_failure: bool,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="4")]
     pub validate_only: bool,
-    ///  The response content type setting. Determines whether the mutable resource
-    ///  or just the resource name should be returned post mutation.
+    /// The response content type setting. Determines whether the mutable resource
+    /// or just the resource name should be returned post mutation.
     #[prost(enumeration="super::enums::response_content_type_enum::ResponseContentType", tag="5")]
     pub response_content_type: i32,
 }
-///  A single operation (create, update) on a conversion custom variable.
+/// A single operation (create, update) on a conversion custom variable.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConversionCustomVariableOperation {
-    ///  FieldMask that determines which resource fields are modified in an update.
+    /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag="3")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  The mutate operation.
+    /// The mutate operation.
     #[prost(oneof="conversion_custom_variable_operation::Operation", tags="1, 2")]
     pub operation: ::core::option::Option<conversion_custom_variable_operation::Operation>,
 }
 /// Nested message and enum types in `ConversionCustomVariableOperation`.
 pub mod conversion_custom_variable_operation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  Create operation: No resource name is expected for the new conversion
-        ///  custom variable.
+        /// Create operation: No resource name is expected for the new conversion
+        /// custom variable.
         #[prost(message, tag="1")]
         Create(super::super::resources::ConversionCustomVariable),
-        ///  Update operation: The conversion custom variable is expected to have a
-        ///  valid resource name.
+        /// Update operation: The conversion custom variable is expected to have a
+        /// valid resource name.
         #[prost(message, tag="2")]
         Update(super::super::resources::ConversionCustomVariable),
     }
 }
-///  Response message for
-///  \[ConversionCustomVariableService.MutateConversionCustomVariables][google.ads.googleads.v9.services.ConversionCustomVariableService.MutateConversionCustomVariables\].
+/// Response message for
+/// \[ConversionCustomVariableService.MutateConversionCustomVariables][google.ads.googleads.v9.services.ConversionCustomVariableService.MutateConversionCustomVariables\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateConversionCustomVariablesResponse {
-    ///  Errors that pertain to operation failures in the partial failure mode.
-    ///  Returned only when partial_failure = true and all errors occur inside the
-    ///  operations. If any errors occur outside the operations (e.g. auth errors),
-    ///  we return an RPC level error.
+    /// Errors that pertain to operation failures in the partial failure mode.
+    /// Returned only when partial_failure = true and all errors occur inside the
+    /// operations. If any errors occur outside the operations (e.g. auth errors),
+    /// we return an RPC level error.
     #[prost(message, optional, tag="1")]
     pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
-    ///  All results for the mutate.
+    /// All results for the mutate.
     #[prost(message, repeated, tag="2")]
     pub results: ::prost::alloc::vec::Vec<MutateConversionCustomVariableResult>,
 }
-///  The result for the conversion custom variable mutate.
+/// The result for the conversion custom variable mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateConversionCustomVariableResult {
-    ///  Returned for successful operations.
+    /// Returned for successful operations.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
-    ///  The mutated conversion custom variable with only mutable fields after
-    ///  mutate. The field will only be returned when response_content_type is set
-    ///  to "MUTABLE_RESOURCE".
+    /// The mutated conversion custom variable with only mutable fields after
+    /// mutate. The field will only be returned when response_content_type is set
+    /// to "MUTABLE_RESOURCE".
     #[prost(message, optional, tag="2")]
     pub conversion_custom_variable: ::core::option::Option<super::resources::ConversionCustomVariable>,
 }
@@ -10346,63 +10346,63 @@ pub mod conversion_custom_variable_service_client {
         }
     }
 }
-///  Request message for
-///  \[ConversionGoalCampaignConfigService.MutateConversionGoalCampaignConfig][\].
+/// Request message for
+/// \[ConversionGoalCampaignConfigService.MutateConversionGoalCampaignConfig][\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateConversionGoalCampaignConfigsRequest {
-    ///  Required. The ID of the customer whose custom conversion goals are being modified.
+    /// Required. The ID of the customer whose custom conversion goals are being modified.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The list of operations to perform on individual conversion goal campaign
-    ///  config.
+    /// Required. The list of operations to perform on individual conversion goal campaign
+    /// config.
     #[prost(message, repeated, tag="2")]
     pub operations: ::prost::alloc::vec::Vec<ConversionGoalCampaignConfigOperation>,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="3")]
     pub validate_only: bool,
-    ///  The response content type setting. Determines whether the mutable resource
-    ///  or just the resource name should be returned post mutation.
+    /// The response content type setting. Determines whether the mutable resource
+    /// or just the resource name should be returned post mutation.
     #[prost(enumeration="super::enums::response_content_type_enum::ResponseContentType", tag="4")]
     pub response_content_type: i32,
 }
-///  A single operation (update) on a conversion goal campaign config.
+/// A single operation (update) on a conversion goal campaign config.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConversionGoalCampaignConfigOperation {
-    ///  FieldMask that determines which resource fields are modified in an update.
+    /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag="2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  The mutate operation.
+    /// The mutate operation.
     #[prost(oneof="conversion_goal_campaign_config_operation::Operation", tags="1")]
     pub operation: ::core::option::Option<conversion_goal_campaign_config_operation::Operation>,
 }
 /// Nested message and enum types in `ConversionGoalCampaignConfigOperation`.
 pub mod conversion_goal_campaign_config_operation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  Update operation: The conversion goal campaign config is expected to have
-        ///  a valid resource name.
+        /// Update operation: The conversion goal campaign config is expected to have
+        /// a valid resource name.
         #[prost(message, tag="1")]
         Update(super::super::resources::ConversionGoalCampaignConfig),
     }
 }
-///  Response message for a conversion goal campaign config mutate.
+/// Response message for a conversion goal campaign config mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateConversionGoalCampaignConfigsResponse {
-    ///  All results for the mutate.
+    /// All results for the mutate.
     #[prost(message, repeated, tag="1")]
     pub results: ::prost::alloc::vec::Vec<MutateConversionGoalCampaignConfigResult>,
 }
-///  The result for the conversion goal campaign config mutate.
+/// The result for the conversion goal campaign config mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateConversionGoalCampaignConfigResult {
-    ///  Returned for successful operations.
+    /// Returned for successful operations.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
-    ///  The mutated ConversionGoalCampaignConfig with only mutable fields after
-    ///  mutate. The field will only be returned when response_content_type is set
-    ///  to "MUTABLE_RESOURCE".
+    /// The mutated ConversionGoalCampaignConfig with only mutable fields after
+    /// mutate. The field will only be returned when response_content_type is set
+    /// to "MUTABLE_RESOURCE".
     #[prost(message, optional, tag="2")]
     pub conversion_goal_campaign_config: ::core::option::Option<super::resources::ConversionGoalCampaignConfig>,
 }
@@ -10506,93 +10506,93 @@ pub mod conversion_goal_campaign_config_service_client {
         }
     }
 }
-///  Request message for
-///  \[ConversionValueRuleService.GetConversionValueRule][google.ads.googleads.v9.services.ConversionValueRuleService.GetConversionValueRule\].
+/// Request message for
+/// \[ConversionValueRuleService.GetConversionValueRule][google.ads.googleads.v9.services.ConversionValueRuleService.GetConversionValueRule\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetConversionValueRuleRequest {
-    ///  Required. The resource name of the conversion value rule to fetch.
+    /// Required. The resource name of the conversion value rule to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Request message for
-///  \[ConversionValueRuleService.MutateConversionValueRules][google.ads.googleads.v9.services.ConversionValueRuleService.MutateConversionValueRules\].
+/// Request message for
+/// \[ConversionValueRuleService.MutateConversionValueRules][google.ads.googleads.v9.services.ConversionValueRuleService.MutateConversionValueRules\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateConversionValueRulesRequest {
-    ///  Required. The ID of the customer whose conversion value rules are being modified.
+    /// Required. The ID of the customer whose conversion value rules are being modified.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The list of operations to perform on individual conversion value rules.
+    /// Required. The list of operations to perform on individual conversion value rules.
     #[prost(message, repeated, tag="2")]
     pub operations: ::prost::alloc::vec::Vec<ConversionValueRuleOperation>,
-    ///  If true, successful operations will be carried out and invalid
-    ///  operations will return errors. If false, all operations will be carried
-    ///  out in one transaction if and only if they are all valid.
-    ///  Default is false.
+    /// If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, all operations will be carried
+    /// out in one transaction if and only if they are all valid.
+    /// Default is false.
     #[prost(bool, tag="5")]
     pub partial_failure: bool,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="3")]
     pub validate_only: bool,
-    ///  The response content type setting. Determines whether the mutable resource
-    ///  or just the resource name should be returned post mutation.
+    /// The response content type setting. Determines whether the mutable resource
+    /// or just the resource name should be returned post mutation.
     #[prost(enumeration="super::enums::response_content_type_enum::ResponseContentType", tag="4")]
     pub response_content_type: i32,
 }
-///  A single operation (create, update, remove) on a conversion value rule.
+/// A single operation (create, update, remove) on a conversion value rule.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConversionValueRuleOperation {
-    ///  FieldMask that determines which resource fields are modified in an update.
+    /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag="4")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  The mutate operation.
+    /// The mutate operation.
     #[prost(oneof="conversion_value_rule_operation::Operation", tags="1, 2, 3")]
     pub operation: ::core::option::Option<conversion_value_rule_operation::Operation>,
 }
 /// Nested message and enum types in `ConversionValueRuleOperation`.
 pub mod conversion_value_rule_operation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  Create operation: No resource name is expected for the new conversion
-        ///  value rule.
+        /// Create operation: No resource name is expected for the new conversion
+        /// value rule.
         #[prost(message, tag="1")]
         Create(super::super::resources::ConversionValueRule),
-        ///  Update operation: The conversion value rule is expected to have a valid
-        ///  resource name.
+        /// Update operation: The conversion value rule is expected to have a valid
+        /// resource name.
         #[prost(message, tag="2")]
         Update(super::super::resources::ConversionValueRule),
-        ///  Remove operation: A resource name for the removed conversion value rule
-        ///  is expected, in this format:
+        /// Remove operation: A resource name for the removed conversion value rule
+        /// is expected, in this format:
         ///
-        ///  `customers/{customer_id}/conversionValueRules/{conversion_value_rule_id}`
+        /// `customers/{customer_id}/conversionValueRules/{conversion_value_rule_id}`
         #[prost(string, tag="3")]
         Remove(::prost::alloc::string::String),
     }
 }
-///  Response message for
-///  \[ConversionValueRuleService.MutateConversionValueRules][google.ads.googleads.v9.services.ConversionValueRuleService.MutateConversionValueRules\].
+/// Response message for
+/// \[ConversionValueRuleService.MutateConversionValueRules][google.ads.googleads.v9.services.ConversionValueRuleService.MutateConversionValueRules\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateConversionValueRulesResponse {
-    ///  All results for the mutate.
+    /// All results for the mutate.
     #[prost(message, repeated, tag="2")]
     pub results: ::prost::alloc::vec::Vec<MutateConversionValueRuleResult>,
-    ///  Errors that pertain to operation failures in the partial failure mode.
-    ///  Returned only when partial_failure = true and all errors occur inside the
-    ///  operations. If any errors occur outside the operations (e.g. auth errors),
-    ///  we return an RPC level error.
+    /// Errors that pertain to operation failures in the partial failure mode.
+    /// Returned only when partial_failure = true and all errors occur inside the
+    /// operations. If any errors occur outside the operations (e.g. auth errors),
+    /// we return an RPC level error.
     #[prost(message, optional, tag="3")]
     pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
 }
-///  The result for the conversion value rule mutate.
+/// The result for the conversion value rule mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateConversionValueRuleResult {
-    ///  Returned for successful operations.
+    /// Returned for successful operations.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
-    ///  The mutated conversion value rule with only mutable fields after
-    ///  mutate. The field will only be returned when response_content_type is set
-    ///  to "MUTABLE_RESOURCE".
+    /// The mutated conversion value rule with only mutable fields after
+    /// mutate. The field will only be returned when response_content_type is set
+    /// to "MUTABLE_RESOURCE".
     #[prost(message, optional, tag="2")]
     pub conversion_value_rule: ::core::option::Option<super::resources::ConversionValueRule>,
 }
@@ -10717,93 +10717,93 @@ pub mod conversion_value_rule_service_client {
         }
     }
 }
-///  Request message for
-///  \[ConversionValueRuleSetService.GetConversionValueRuleSet][google.ads.googleads.v9.services.ConversionValueRuleSetService.GetConversionValueRuleSet\].
+/// Request message for
+/// \[ConversionValueRuleSetService.GetConversionValueRuleSet][google.ads.googleads.v9.services.ConversionValueRuleSetService.GetConversionValueRuleSet\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetConversionValueRuleSetRequest {
-    ///  Required. The resource name of the conversion value rule set to fetch.
+    /// Required. The resource name of the conversion value rule set to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Request message for
-///  \[ConversionValueRuleSetService.MutateConversionValueRuleSets][google.ads.googleads.v9.services.ConversionValueRuleSetService.MutateConversionValueRuleSets\].
+/// Request message for
+/// \[ConversionValueRuleSetService.MutateConversionValueRuleSets][google.ads.googleads.v9.services.ConversionValueRuleSetService.MutateConversionValueRuleSets\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateConversionValueRuleSetsRequest {
-    ///  Required. The ID of the customer whose conversion value rule sets are being modified.
+    /// Required. The ID of the customer whose conversion value rule sets are being modified.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The list of operations to perform on individual conversion value rule sets.
+    /// Required. The list of operations to perform on individual conversion value rule sets.
     #[prost(message, repeated, tag="2")]
     pub operations: ::prost::alloc::vec::Vec<ConversionValueRuleSetOperation>,
-    ///  If true, successful operations will be carried out and invalid
-    ///  operations will return errors. If false, all operations will be carried
-    ///  out in one transaction if and only if they are all valid.
-    ///  Default is false.
+    /// If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, all operations will be carried
+    /// out in one transaction if and only if they are all valid.
+    /// Default is false.
     #[prost(bool, tag="5")]
     pub partial_failure: bool,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="3")]
     pub validate_only: bool,
-    ///  The response content type setting. Determines whether the mutable resource
-    ///  or just the resource name should be returned post mutation.
+    /// The response content type setting. Determines whether the mutable resource
+    /// or just the resource name should be returned post mutation.
     #[prost(enumeration="super::enums::response_content_type_enum::ResponseContentType", tag="4")]
     pub response_content_type: i32,
 }
-///  A single operation (create, update, remove) on a conversion value rule set.
+/// A single operation (create, update, remove) on a conversion value rule set.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConversionValueRuleSetOperation {
-    ///  FieldMask that determines which resource fields are modified in an update.
+    /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag="4")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  The mutate operation.
+    /// The mutate operation.
     #[prost(oneof="conversion_value_rule_set_operation::Operation", tags="1, 2, 3")]
     pub operation: ::core::option::Option<conversion_value_rule_set_operation::Operation>,
 }
 /// Nested message and enum types in `ConversionValueRuleSetOperation`.
 pub mod conversion_value_rule_set_operation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  Create operation: No resource name is expected for the new conversion
-        ///  value rule set.
+        /// Create operation: No resource name is expected for the new conversion
+        /// value rule set.
         #[prost(message, tag="1")]
         Create(super::super::resources::ConversionValueRuleSet),
-        ///  Update operation: The conversion value rule set is expected to have a
-        ///  valid resource name.
+        /// Update operation: The conversion value rule set is expected to have a
+        /// valid resource name.
         #[prost(message, tag="2")]
         Update(super::super::resources::ConversionValueRuleSet),
-        ///  Remove operation: A resource name for the removed conversion value rule
-        ///  set is expected, in this format:
+        /// Remove operation: A resource name for the removed conversion value rule
+        /// set is expected, in this format:
         ///
-        ///  `customers/{customer_id}/conversionValueRuleSets/{conversion_value_rule_set_id}`
+        /// `customers/{customer_id}/conversionValueRuleSets/{conversion_value_rule_set_id}`
         #[prost(string, tag="3")]
         Remove(::prost::alloc::string::String),
     }
 }
-///  Response message for
-///  \[ConversionValueRuleSetService.MutateConversionValueRuleSets][google.ads.googleads.v9.services.ConversionValueRuleSetService.MutateConversionValueRuleSets\].
+/// Response message for
+/// \[ConversionValueRuleSetService.MutateConversionValueRuleSets][google.ads.googleads.v9.services.ConversionValueRuleSetService.MutateConversionValueRuleSets\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateConversionValueRuleSetsResponse {
-    ///  All results for the mutate.
+    /// All results for the mutate.
     #[prost(message, repeated, tag="1")]
     pub results: ::prost::alloc::vec::Vec<MutateConversionValueRuleSetResult>,
-    ///  Errors that pertain to operation failures in the partial failure mode.
-    ///  Returned only when partial_failure = true and all errors occur inside the
-    ///  operations. If any errors occur outside the operations (e.g. auth errors),
-    ///  we return an RPC level error.
+    /// Errors that pertain to operation failures in the partial failure mode.
+    /// Returned only when partial_failure = true and all errors occur inside the
+    /// operations. If any errors occur outside the operations (e.g. auth errors),
+    /// we return an RPC level error.
     #[prost(message, optional, tag="2")]
     pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
 }
-///  The result for the conversion value rule set mutate.
+/// The result for the conversion value rule set mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateConversionValueRuleSetResult {
-    ///  Returned for successful operations.
+    /// Returned for successful operations.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
-    ///  The mutated conversion value rule set with only mutable fields after
-    ///  mutate. The field will only be returned when response_content_type is set
-    ///  to "MUTABLE_RESOURCE".
+    /// The mutated conversion value rule set with only mutable fields after
+    /// mutate. The field will only be returned when response_content_type is set
+    /// to "MUTABLE_RESOURCE".
     #[prost(message, optional, tag="2")]
     pub conversion_value_rule_set: ::core::option::Option<super::resources::ConversionValueRuleSet>,
 }
@@ -10928,72 +10928,72 @@ pub mod conversion_value_rule_set_service_client {
         }
     }
 }
-///  Request message for
-///  \[CustomConversionGoalService.MutateCustomConversionGoals][google.ads.googleads.v9.services.CustomConversionGoalService.MutateCustomConversionGoals\].
+/// Request message for
+/// \[CustomConversionGoalService.MutateCustomConversionGoals][google.ads.googleads.v9.services.CustomConversionGoalService.MutateCustomConversionGoals\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCustomConversionGoalsRequest {
-    ///  Required. The ID of the customer whose custom conversion goals are being modified.
+    /// Required. The ID of the customer whose custom conversion goals are being modified.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The list of operations to perform on individual custom conversion goal.
+    /// Required. The list of operations to perform on individual custom conversion goal.
     #[prost(message, repeated, tag="2")]
     pub operations: ::prost::alloc::vec::Vec<CustomConversionGoalOperation>,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="3")]
     pub validate_only: bool,
-    ///  The response content type setting. Determines whether the mutable resource
-    ///  or just the resource name should be returned post mutation.
+    /// The response content type setting. Determines whether the mutable resource
+    /// or just the resource name should be returned post mutation.
     #[prost(enumeration="super::enums::response_content_type_enum::ResponseContentType", tag="4")]
     pub response_content_type: i32,
 }
-///  A single operation (create, remove) on a custom conversion goal.
+/// A single operation (create, remove) on a custom conversion goal.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomConversionGoalOperation {
-    ///  FieldMask that determines which resource fields are modified in an update.
+    /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag="4")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  The mutate operation.
+    /// The mutate operation.
     #[prost(oneof="custom_conversion_goal_operation::Operation", tags="1, 2, 3")]
     pub operation: ::core::option::Option<custom_conversion_goal_operation::Operation>,
 }
 /// Nested message and enum types in `CustomConversionGoalOperation`.
 pub mod custom_conversion_goal_operation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  Create operation: No resource name is expected for the new custom
-        ///  conversion goal
+        /// Create operation: No resource name is expected for the new custom
+        /// conversion goal
         #[prost(message, tag="1")]
         Create(super::super::resources::CustomConversionGoal),
-        ///  Update operation: The custom conversion goal is expected to have a
-        ///  valid resource name.
+        /// Update operation: The custom conversion goal is expected to have a
+        /// valid resource name.
         #[prost(message, tag="2")]
         Update(super::super::resources::CustomConversionGoal),
-        ///  Remove operation: A resource name for the removed custom conversion goal
-        ///  is expected, in this format:
+        /// Remove operation: A resource name for the removed custom conversion goal
+        /// is expected, in this format:
         ///
-        ///  'customers/{customer_id}/conversionActions/{ConversionGoal.custom_goal_config.conversion_type_ids}'
+        /// 'customers/{customer_id}/conversionActions/{ConversionGoal.custom_goal_config.conversion_type_ids}'
         #[prost(string, tag="3")]
         Remove(::prost::alloc::string::String),
     }
 }
-///  Response message for a custom conversion goal mutate.
+/// Response message for a custom conversion goal mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCustomConversionGoalsResponse {
-    ///  All results for the mutate.
+    /// All results for the mutate.
     #[prost(message, repeated, tag="1")]
     pub results: ::prost::alloc::vec::Vec<MutateCustomConversionGoalResult>,
 }
-///  The result for the custom conversion goal mutate.
+/// The result for the custom conversion goal mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCustomConversionGoalResult {
-    ///  Returned for successful operations.
+    /// Returned for successful operations.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
-    ///  The mutated CustomConversionGoal with only mutable fields after mutate.
-    ///  The field will only be returned when response_content_type is set to
-    ///  "MUTABLE_RESOURCE".
+    /// The mutated CustomConversionGoal with only mutable fields after mutate.
+    /// The field will only be returned when response_content_type is set to
+    /// "MUTABLE_RESOURCE".
     #[prost(message, optional, tag="2")]
     pub custom_conversion_goal: ::core::option::Option<super::resources::CustomConversionGoal>,
 }
@@ -11095,90 +11095,90 @@ pub mod custom_conversion_goal_service_client {
         }
     }
 }
-///  Request message for \[CustomerAssetService.GetCustomerAsset][google.ads.googleads.v9.services.CustomerAssetService.GetCustomerAsset\].
+/// Request message for \[CustomerAssetService.GetCustomerAsset][google.ads.googleads.v9.services.CustomerAssetService.GetCustomerAsset\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCustomerAssetRequest {
-    ///  Required. The resource name of the customer asset to fetch.
+    /// Required. The resource name of the customer asset to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Request message for \[CustomerAssetService.MutateCustomerAssets][google.ads.googleads.v9.services.CustomerAssetService.MutateCustomerAssets\].
+/// Request message for \[CustomerAssetService.MutateCustomerAssets][google.ads.googleads.v9.services.CustomerAssetService.MutateCustomerAssets\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCustomerAssetsRequest {
-    ///  Required. The ID of the customer whose customer assets are being modified.
+    /// Required. The ID of the customer whose customer assets are being modified.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The list of operations to perform on individual customer assets.
+    /// Required. The list of operations to perform on individual customer assets.
     #[prost(message, repeated, tag="2")]
     pub operations: ::prost::alloc::vec::Vec<CustomerAssetOperation>,
-    ///  If true, successful operations will be carried out and invalid
-    ///  operations will return errors. If false, all operations will be carried
-    ///  out in one transaction if and only if they are all valid.
-    ///  Default is false.
+    /// If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, all operations will be carried
+    /// out in one transaction if and only if they are all valid.
+    /// Default is false.
     #[prost(bool, tag="3")]
     pub partial_failure: bool,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="4")]
     pub validate_only: bool,
-    ///  The response content type setting. Determines whether the mutable resource
-    ///  or just the resource name should be returned post mutation.
+    /// The response content type setting. Determines whether the mutable resource
+    /// or just the resource name should be returned post mutation.
     #[prost(enumeration="super::enums::response_content_type_enum::ResponseContentType", tag="5")]
     pub response_content_type: i32,
 }
-///  A single operation (create, update, remove) on a customer asset.
+/// A single operation (create, update, remove) on a customer asset.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomerAssetOperation {
-    ///  FieldMask that determines which resource fields are modified in an update.
+    /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag="4")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  The mutate operation.
+    /// The mutate operation.
     #[prost(oneof="customer_asset_operation::Operation", tags="1, 3, 2")]
     pub operation: ::core::option::Option<customer_asset_operation::Operation>,
 }
 /// Nested message and enum types in `CustomerAssetOperation`.
 pub mod customer_asset_operation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  Create operation: No resource name is expected for the new customer
-        ///  asset.
+        /// Create operation: No resource name is expected for the new customer
+        /// asset.
         #[prost(message, tag="1")]
         Create(super::super::resources::CustomerAsset),
-        ///  Update operation: The customer asset is expected to have a valid resource
-        ///  name.
+        /// Update operation: The customer asset is expected to have a valid resource
+        /// name.
         #[prost(message, tag="3")]
         Update(super::super::resources::CustomerAsset),
-        ///  Remove operation: A resource name for the removed customer asset is
-        ///  expected, in this format:
+        /// Remove operation: A resource name for the removed customer asset is
+        /// expected, in this format:
         ///
-        ///  `customers/{customer_id}/customerAssets/{asset_id}~{field_type}`
+        /// `customers/{customer_id}/customerAssets/{asset_id}~{field_type}`
         #[prost(string, tag="2")]
         Remove(::prost::alloc::string::String),
     }
 }
-///  Response message for a customer asset mutate.
+/// Response message for a customer asset mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCustomerAssetsResponse {
-    ///  Errors that pertain to operation failures in the partial failure mode.
-    ///  Returned only when partial_failure = true and all errors occur inside the
-    ///  operations. If any errors occur outside the operations (e.g. auth errors),
-    ///  we return an RPC level error.
+    /// Errors that pertain to operation failures in the partial failure mode.
+    /// Returned only when partial_failure = true and all errors occur inside the
+    /// operations. If any errors occur outside the operations (e.g. auth errors),
+    /// we return an RPC level error.
     #[prost(message, optional, tag="1")]
     pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
-    ///  All results for the mutate.
+    /// All results for the mutate.
     #[prost(message, repeated, tag="2")]
     pub results: ::prost::alloc::vec::Vec<MutateCustomerAssetResult>,
 }
-///  The result for the customer asset mutate.
+/// The result for the customer asset mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCustomerAssetResult {
-    ///  Returned for successful operations.
+    /// Returned for successful operations.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
-    ///  The mutated customer asset with only mutable fields after
-    ///  mutate. The field will only be returned when response_content_type is set
-    ///  to "MUTABLE_RESOURCE".
+    /// The mutated customer asset with only mutable fields after
+    /// mutate. The field will only be returned when response_content_type is set
+    /// to "MUTABLE_RESOURCE".
     #[prost(message, optional, tag="2")]
     pub customer_asset: ::core::option::Option<super::resources::CustomerAsset>,
 }
@@ -11320,53 +11320,53 @@ pub mod customer_asset_service_client {
         }
     }
 }
-///  Request message for
-///  \[CustomerConversionGoalService.MutateCustomerConversionGoals][google.ads.googleads.v9.services.CustomerConversionGoalService.MutateCustomerConversionGoals\].
+/// Request message for
+/// \[CustomerConversionGoalService.MutateCustomerConversionGoals][google.ads.googleads.v9.services.CustomerConversionGoalService.MutateCustomerConversionGoals\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCustomerConversionGoalsRequest {
-    ///  Required. The ID of the customer whose customer conversion goals are being modified.
+    /// Required. The ID of the customer whose customer conversion goals are being modified.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The list of operations to perform on individual customer conversion goal.
+    /// Required. The list of operations to perform on individual customer conversion goal.
     #[prost(message, repeated, tag="2")]
     pub operations: ::prost::alloc::vec::Vec<CustomerConversionGoalOperation>,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="3")]
     pub validate_only: bool,
 }
-///  A single operation (update) on a customer conversion goal.
+/// A single operation (update) on a customer conversion goal.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomerConversionGoalOperation {
-    ///  FieldMask that determines which resource fields are modified in an update.
+    /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag="2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  The mutate operation.
+    /// The mutate operation.
     #[prost(oneof="customer_conversion_goal_operation::Operation", tags="1")]
     pub operation: ::core::option::Option<customer_conversion_goal_operation::Operation>,
 }
 /// Nested message and enum types in `CustomerConversionGoalOperation`.
 pub mod customer_conversion_goal_operation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  Update operation: The customer conversion goal is expected to have a
-        ///  valid resource name.
+        /// Update operation: The customer conversion goal is expected to have a
+        /// valid resource name.
         #[prost(message, tag="1")]
         Update(super::super::resources::CustomerConversionGoal),
     }
 }
-///  Response message for a customer conversion goal mutate.
+/// Response message for a customer conversion goal mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCustomerConversionGoalsResponse {
-    ///  All results for the mutate.
+    /// All results for the mutate.
     #[prost(message, repeated, tag="1")]
     pub results: ::prost::alloc::vec::Vec<MutateCustomerConversionGoalResult>,
 }
-///  The result for the customer conversion goal mutate.
+/// The result for the customer conversion goal mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCustomerConversionGoalResult {
-    ///  Returned for successful operations.
+    /// Returned for successful operations.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
@@ -11468,76 +11468,76 @@ pub mod customer_conversion_goal_service_client {
         }
     }
 }
-///  Request message for
-///  \[CustomerCustomizerService.MutateCustomerCustomizers][google.ads.googleads.v9.services.CustomerCustomizerService.MutateCustomerCustomizers\].
+/// Request message for
+/// \[CustomerCustomizerService.MutateCustomerCustomizers][google.ads.googleads.v9.services.CustomerCustomizerService.MutateCustomerCustomizers\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCustomerCustomizersRequest {
-    ///  Required. The ID of the customer whose customer customizers are being modified.
+    /// Required. The ID of the customer whose customer customizers are being modified.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The list of operations to perform on individual customer customizers.
+    /// Required. The list of operations to perform on individual customer customizers.
     #[prost(message, repeated, tag="2")]
     pub operations: ::prost::alloc::vec::Vec<CustomerCustomizerOperation>,
-    ///  If true, successful operations will be carried out and invalid
-    ///  operations will return errors. If false, all operations will be carried
-    ///  out in one transaction if and only if they are all valid.
-    ///  Default is false.
+    /// If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, all operations will be carried
+    /// out in one transaction if and only if they are all valid.
+    /// Default is false.
     #[prost(bool, tag="3")]
     pub partial_failure: bool,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="4")]
     pub validate_only: bool,
-    ///  The response content type setting. Determines whether the mutable resource
-    ///  or just the resource name should be returned post mutation.
+    /// The response content type setting. Determines whether the mutable resource
+    /// or just the resource name should be returned post mutation.
     #[prost(enumeration="super::enums::response_content_type_enum::ResponseContentType", tag="5")]
     pub response_content_type: i32,
 }
-///  A single operation (create, remove) on an customizer attribute.
+/// A single operation (create, remove) on an customizer attribute.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomerCustomizerOperation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[prost(oneof="customer_customizer_operation::Operation", tags="1, 2")]
     pub operation: ::core::option::Option<customer_customizer_operation::Operation>,
 }
 /// Nested message and enum types in `CustomerCustomizerOperation`.
 pub mod customer_customizer_operation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  Create operation: No resource name is expected for the new customer
-        ///  customizer
+        /// Create operation: No resource name is expected for the new customer
+        /// customizer
         #[prost(message, tag="1")]
         Create(super::super::resources::CustomerCustomizer),
-        ///  Remove operation: A resource name for the removed customer customizer is
-        ///  expected, in this format:
-        ///  `customers/{customer_id}/customerCustomizers/{customizer_attribute_id}`
+        /// Remove operation: A resource name for the removed customer customizer is
+        /// expected, in this format:
+        /// `customers/{customer_id}/customerCustomizers/{customizer_attribute_id}`
         #[prost(string, tag="2")]
         Remove(::prost::alloc::string::String),
     }
 }
-///  Response message for an customizer attribute mutate.
+/// Response message for an customizer attribute mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCustomerCustomizersResponse {
-    ///  All results for the mutate.
+    /// All results for the mutate.
     #[prost(message, repeated, tag="1")]
     pub results: ::prost::alloc::vec::Vec<MutateCustomerCustomizerResult>,
-    ///  Errors that pertain to operation failures in the partial failure mode.
-    ///  Returned only when partial_failure = true and all errors occur inside the
-    ///  operations. If any errors occur outside the operations (e.g. auth errors),
-    ///  we return an RPC level error.
+    /// Errors that pertain to operation failures in the partial failure mode.
+    /// Returned only when partial_failure = true and all errors occur inside the
+    /// operations. If any errors occur outside the operations (e.g. auth errors),
+    /// we return an RPC level error.
     #[prost(message, optional, tag="2")]
     pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
 }
-///  The result for the customizer attribute mutate.
+/// The result for the customizer attribute mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCustomerCustomizerResult {
-    ///  Returned for successful operations.
+    /// Returned for successful operations.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
-    ///  The mutated CustomerCustomizer with only mutable fields after mutate.
-    ///  The field will only be returned when response_content_type is set to
-    ///  "MUTABLE_RESOURCE".
+    /// The mutated CustomerCustomizer with only mutable fields after mutate.
+    /// The field will only be returned when response_content_type is set to
+    /// "MUTABLE_RESOURCE".
     #[prost(message, optional, tag="2")]
     pub customer_customizer: ::core::option::Option<super::resources::CustomerCustomizer>,
 }
@@ -11639,94 +11639,94 @@ pub mod customer_customizer_service_client {
         }
     }
 }
-///  Request message for
-///  \[CustomerExtensionSettingService.GetCustomerExtensionSetting][google.ads.googleads.v9.services.CustomerExtensionSettingService.GetCustomerExtensionSetting\].
+/// Request message for
+/// \[CustomerExtensionSettingService.GetCustomerExtensionSetting][google.ads.googleads.v9.services.CustomerExtensionSettingService.GetCustomerExtensionSetting\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCustomerExtensionSettingRequest {
-    ///  Required. The resource name of the customer extension setting to fetch.
+    /// Required. The resource name of the customer extension setting to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Request message for
-///  \[CustomerExtensionSettingService.MutateCustomerExtensionSettings][google.ads.googleads.v9.services.CustomerExtensionSettingService.MutateCustomerExtensionSettings\].
+/// Request message for
+/// \[CustomerExtensionSettingService.MutateCustomerExtensionSettings][google.ads.googleads.v9.services.CustomerExtensionSettingService.MutateCustomerExtensionSettings\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCustomerExtensionSettingsRequest {
-    ///  Required. The ID of the customer whose customer extension settings are being
-    ///  modified.
+    /// Required. The ID of the customer whose customer extension settings are being
+    /// modified.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The list of operations to perform on individual customer extension
-    ///  settings.
+    /// Required. The list of operations to perform on individual customer extension
+    /// settings.
     #[prost(message, repeated, tag="2")]
     pub operations: ::prost::alloc::vec::Vec<CustomerExtensionSettingOperation>,
-    ///  If true, successful operations will be carried out and invalid
-    ///  operations will return errors. If false, all operations will be carried
-    ///  out in one transaction if and only if they are all valid.
-    ///  Default is false.
+    /// If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, all operations will be carried
+    /// out in one transaction if and only if they are all valid.
+    /// Default is false.
     #[prost(bool, tag="3")]
     pub partial_failure: bool,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="4")]
     pub validate_only: bool,
-    ///  The response content type setting. Determines whether the mutable resource
-    ///  or just the resource name should be returned post mutation.
+    /// The response content type setting. Determines whether the mutable resource
+    /// or just the resource name should be returned post mutation.
     #[prost(enumeration="super::enums::response_content_type_enum::ResponseContentType", tag="5")]
     pub response_content_type: i32,
 }
-///  A single operation (create, update, remove) on a customer extension setting.
+/// A single operation (create, update, remove) on a customer extension setting.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomerExtensionSettingOperation {
-    ///  FieldMask that determines which resource fields are modified in an update.
+    /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag="4")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  The mutate operation.
+    /// The mutate operation.
     #[prost(oneof="customer_extension_setting_operation::Operation", tags="1, 2, 3")]
     pub operation: ::core::option::Option<customer_extension_setting_operation::Operation>,
 }
 /// Nested message and enum types in `CustomerExtensionSettingOperation`.
 pub mod customer_extension_setting_operation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  Create operation: No resource name is expected for the new customer
-        ///  extension setting.
+        /// Create operation: No resource name is expected for the new customer
+        /// extension setting.
         #[prost(message, tag="1")]
         Create(super::super::resources::CustomerExtensionSetting),
-        ///  Update operation: The customer extension setting is expected to have a
-        ///  valid resource name.
+        /// Update operation: The customer extension setting is expected to have a
+        /// valid resource name.
         #[prost(message, tag="2")]
         Update(super::super::resources::CustomerExtensionSetting),
-        ///  Remove operation: A resource name for the removed customer extension
-        ///  setting is expected, in this format:
+        /// Remove operation: A resource name for the removed customer extension
+        /// setting is expected, in this format:
         ///
-        ///  `customers/{customer_id}/customerExtensionSettings/{extension_type}`
+        /// `customers/{customer_id}/customerExtensionSettings/{extension_type}`
         #[prost(string, tag="3")]
         Remove(::prost::alloc::string::String),
     }
 }
-///  Response message for a customer extension setting mutate.
+/// Response message for a customer extension setting mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCustomerExtensionSettingsResponse {
-    ///  Errors that pertain to operation failures in the partial failure mode.
-    ///  Returned only when partial_failure = true and all errors occur inside the
-    ///  operations. If any errors occur outside the operations (e.g. auth errors),
-    ///  we return an RPC level error.
+    /// Errors that pertain to operation failures in the partial failure mode.
+    /// Returned only when partial_failure = true and all errors occur inside the
+    /// operations. If any errors occur outside the operations (e.g. auth errors),
+    /// we return an RPC level error.
     #[prost(message, optional, tag="3")]
     pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
-    ///  All results for the mutate.
+    /// All results for the mutate.
     #[prost(message, repeated, tag="2")]
     pub results: ::prost::alloc::vec::Vec<MutateCustomerExtensionSettingResult>,
 }
-///  The result for the customer extension setting mutate.
+/// The result for the customer extension setting mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCustomerExtensionSettingResult {
-    ///  Returned for successful operations.
+    /// Returned for successful operations.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
-    ///  The mutated CustomerExtensionSetting with only mutable fields after mutate.
-    ///  The field will only be returned when response_content_type is set to
-    ///  "MUTABLE_RESOURCE".
+    /// The mutated CustomerExtensionSetting with only mutable fields after mutate.
+    /// The field will only be returned when response_content_type is set to
+    /// "MUTABLE_RESOURCE".
     #[prost(message, optional, tag="2")]
     pub customer_extension_setting: ::core::option::Option<super::resources::CustomerExtensionSetting>,
 }
@@ -11888,89 +11888,89 @@ pub mod customer_extension_setting_service_client {
         }
     }
 }
-///  Request message for \[CustomerFeedService.GetCustomerFeed][google.ads.googleads.v9.services.CustomerFeedService.GetCustomerFeed\].
+/// Request message for \[CustomerFeedService.GetCustomerFeed][google.ads.googleads.v9.services.CustomerFeedService.GetCustomerFeed\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCustomerFeedRequest {
-    ///  Required. The resource name of the customer feed to fetch.
+    /// Required. The resource name of the customer feed to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Request message for \[CustomerFeedService.MutateCustomerFeeds][google.ads.googleads.v9.services.CustomerFeedService.MutateCustomerFeeds\].
+/// Request message for \[CustomerFeedService.MutateCustomerFeeds][google.ads.googleads.v9.services.CustomerFeedService.MutateCustomerFeeds\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCustomerFeedsRequest {
-    ///  Required. The ID of the customer whose customer feeds are being modified.
+    /// Required. The ID of the customer whose customer feeds are being modified.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The list of operations to perform on individual customer feeds.
+    /// Required. The list of operations to perform on individual customer feeds.
     #[prost(message, repeated, tag="2")]
     pub operations: ::prost::alloc::vec::Vec<CustomerFeedOperation>,
-    ///  If true, successful operations will be carried out and invalid
-    ///  operations will return errors. If false, all operations will be carried
-    ///  out in one transaction if and only if they are all valid.
-    ///  Default is false.
+    /// If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, all operations will be carried
+    /// out in one transaction if and only if they are all valid.
+    /// Default is false.
     #[prost(bool, tag="3")]
     pub partial_failure: bool,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="4")]
     pub validate_only: bool,
-    ///  The response content type setting. Determines whether the mutable resource
-    ///  or just the resource name should be returned post mutation.
+    /// The response content type setting. Determines whether the mutable resource
+    /// or just the resource name should be returned post mutation.
     #[prost(enumeration="super::enums::response_content_type_enum::ResponseContentType", tag="5")]
     pub response_content_type: i32,
 }
-///  A single operation (create, update, remove) on a customer feed.
+/// A single operation (create, update, remove) on a customer feed.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomerFeedOperation {
-    ///  FieldMask that determines which resource fields are modified in an update.
+    /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag="4")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  The mutate operation.
+    /// The mutate operation.
     #[prost(oneof="customer_feed_operation::Operation", tags="1, 2, 3")]
     pub operation: ::core::option::Option<customer_feed_operation::Operation>,
 }
 /// Nested message and enum types in `CustomerFeedOperation`.
 pub mod customer_feed_operation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  Create operation: No resource name is expected for the new customer feed.
+        /// Create operation: No resource name is expected for the new customer feed.
         #[prost(message, tag="1")]
         Create(super::super::resources::CustomerFeed),
-        ///  Update operation: The customer feed is expected to have a valid resource
-        ///  name.
+        /// Update operation: The customer feed is expected to have a valid resource
+        /// name.
         #[prost(message, tag="2")]
         Update(super::super::resources::CustomerFeed),
-        ///  Remove operation: A resource name for the removed customer feed is
-        ///  expected, in this format:
+        /// Remove operation: A resource name for the removed customer feed is
+        /// expected, in this format:
         ///
-        ///  `customers/{customer_id}/customerFeeds/{feed_id}`
+        /// `customers/{customer_id}/customerFeeds/{feed_id}`
         #[prost(string, tag="3")]
         Remove(::prost::alloc::string::String),
     }
 }
-///  Response message for a customer feed mutate.
+/// Response message for a customer feed mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCustomerFeedsResponse {
-    ///  Errors that pertain to operation failures in the partial failure mode.
-    ///  Returned only when partial_failure = true and all errors occur inside the
-    ///  operations. If any errors occur outside the operations (e.g. auth errors),
-    ///  we return an RPC level error.
+    /// Errors that pertain to operation failures in the partial failure mode.
+    /// Returned only when partial_failure = true and all errors occur inside the
+    /// operations. If any errors occur outside the operations (e.g. auth errors),
+    /// we return an RPC level error.
     #[prost(message, optional, tag="3")]
     pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
-    ///  All results for the mutate.
+    /// All results for the mutate.
     #[prost(message, repeated, tag="2")]
     pub results: ::prost::alloc::vec::Vec<MutateCustomerFeedResult>,
 }
-///  The result for the customer feed mutate.
+/// The result for the customer feed mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCustomerFeedResult {
-    ///  Returned for successful operations.
+    /// Returned for successful operations.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
-    ///  The mutated customer feed with only mutable fields after mutate. The field
-    ///  will only be returned when response_content_type is set to
-    ///  "MUTABLE_RESOURCE".
+    /// The mutated customer feed with only mutable fields after mutate. The field
+    /// will only be returned when response_content_type is set to
+    /// "MUTABLE_RESOURCE".
     #[prost(message, optional, tag="2")]
     pub customer_feed: ::core::option::Option<super::resources::CustomerFeed>,
 }
@@ -12122,74 +12122,74 @@ pub mod customer_feed_service_client {
         }
     }
 }
-///  Request message for \[CustomerLabelService.GetCustomerLabel][google.ads.googleads.v9.services.CustomerLabelService.GetCustomerLabel\].
+/// Request message for \[CustomerLabelService.GetCustomerLabel][google.ads.googleads.v9.services.CustomerLabelService.GetCustomerLabel\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCustomerLabelRequest {
-    ///  Required. The resource name of the customer-label relationship to fetch.
+    /// Required. The resource name of the customer-label relationship to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Request message for \[CustomerLabelService.MutateCustomerLabels][google.ads.googleads.v9.services.CustomerLabelService.MutateCustomerLabels\].
+/// Request message for \[CustomerLabelService.MutateCustomerLabels][google.ads.googleads.v9.services.CustomerLabelService.MutateCustomerLabels\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCustomerLabelsRequest {
-    ///  Required. ID of the customer whose customer-label relationships are being modified.
+    /// Required. ID of the customer whose customer-label relationships are being modified.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The list of operations to perform on customer-label relationships.
+    /// Required. The list of operations to perform on customer-label relationships.
     #[prost(message, repeated, tag="2")]
     pub operations: ::prost::alloc::vec::Vec<CustomerLabelOperation>,
-    ///  If true, successful operations will be carried out and invalid
-    ///  operations will return errors. If false, all operations will be carried
-    ///  out in one transaction if and only if they are all valid.
-    ///  Default is false.
+    /// If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, all operations will be carried
+    /// out in one transaction if and only if they are all valid.
+    /// Default is false.
     #[prost(bool, tag="3")]
     pub partial_failure: bool,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="4")]
     pub validate_only: bool,
 }
-///  A single operation (create, remove) on a customer-label relationship.
+/// A single operation (create, remove) on a customer-label relationship.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomerLabelOperation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[prost(oneof="customer_label_operation::Operation", tags="1, 2")]
     pub operation: ::core::option::Option<customer_label_operation::Operation>,
 }
 /// Nested message and enum types in `CustomerLabelOperation`.
 pub mod customer_label_operation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  Create operation: No resource name is expected for the new customer-label
-        ///  relationship.
+        /// Create operation: No resource name is expected for the new customer-label
+        /// relationship.
         #[prost(message, tag="1")]
         Create(super::super::resources::CustomerLabel),
-        ///  Remove operation: A resource name for the customer-label relationship
-        ///  being removed, in this format:
+        /// Remove operation: A resource name for the customer-label relationship
+        /// being removed, in this format:
         ///
-        ///  `customers/{customer_id}/customerLabels/{label_id}`
+        /// `customers/{customer_id}/customerLabels/{label_id}`
         #[prost(string, tag="2")]
         Remove(::prost::alloc::string::String),
     }
 }
-///  Response message for a customer labels mutate.
+/// Response message for a customer labels mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCustomerLabelsResponse {
-    ///  Errors that pertain to operation failures in the partial failure mode.
-    ///  Returned only when partial_failure = true and all errors occur inside the
-    ///  operations. If any errors occur outside the operations (e.g. auth errors),
-    ///  we return an RPC level error.
+    /// Errors that pertain to operation failures in the partial failure mode.
+    /// Returned only when partial_failure = true and all errors occur inside the
+    /// operations. If any errors occur outside the operations (e.g. auth errors),
+    /// we return an RPC level error.
     #[prost(message, optional, tag="3")]
     pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
-    ///  All results for the mutate.
+    /// All results for the mutate.
     #[prost(message, repeated, tag="2")]
     pub results: ::prost::alloc::vec::Vec<MutateCustomerLabelResult>,
 }
-///  The result for a customer label mutate.
+/// The result for a customer label mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCustomerLabelResult {
-    ///  Returned for successful operations.
+    /// Returned for successful operations.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
@@ -12331,83 +12331,83 @@ pub mod customer_label_service_client {
         }
     }
 }
-///  Request message for
-///  \[CustomerNegativeCriterionService.GetCustomerNegativeCriterion][google.ads.googleads.v9.services.CustomerNegativeCriterionService.GetCustomerNegativeCriterion\].
+/// Request message for
+/// \[CustomerNegativeCriterionService.GetCustomerNegativeCriterion][google.ads.googleads.v9.services.CustomerNegativeCriterionService.GetCustomerNegativeCriterion\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCustomerNegativeCriterionRequest {
-    ///  Required. The resource name of the criterion to fetch.
+    /// Required. The resource name of the criterion to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Request message for
-///  \[CustomerNegativeCriterionService.MutateCustomerNegativeCriteria][google.ads.googleads.v9.services.CustomerNegativeCriterionService.MutateCustomerNegativeCriteria\].
+/// Request message for
+/// \[CustomerNegativeCriterionService.MutateCustomerNegativeCriteria][google.ads.googleads.v9.services.CustomerNegativeCriterionService.MutateCustomerNegativeCriteria\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCustomerNegativeCriteriaRequest {
-    ///  Required. The ID of the customer whose criteria are being modified.
+    /// Required. The ID of the customer whose criteria are being modified.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The list of operations to perform on individual criteria.
+    /// Required. The list of operations to perform on individual criteria.
     #[prost(message, repeated, tag="2")]
     pub operations: ::prost::alloc::vec::Vec<CustomerNegativeCriterionOperation>,
-    ///  If true, successful operations will be carried out and invalid
-    ///  operations will return errors. If false, all operations will be carried
-    ///  out in one transaction if and only if they are all valid.
-    ///  Default is false.
+    /// If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, all operations will be carried
+    /// out in one transaction if and only if they are all valid.
+    /// Default is false.
     #[prost(bool, tag="3")]
     pub partial_failure: bool,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="4")]
     pub validate_only: bool,
-    ///  The response content type setting. Determines whether the mutable resource
-    ///  or just the resource name should be returned post mutation.
+    /// The response content type setting. Determines whether the mutable resource
+    /// or just the resource name should be returned post mutation.
     #[prost(enumeration="super::enums::response_content_type_enum::ResponseContentType", tag="5")]
     pub response_content_type: i32,
 }
-///  A single operation (create or remove) on a customer level negative criterion.
+/// A single operation (create or remove) on a customer level negative criterion.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomerNegativeCriterionOperation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[prost(oneof="customer_negative_criterion_operation::Operation", tags="1, 2")]
     pub operation: ::core::option::Option<customer_negative_criterion_operation::Operation>,
 }
 /// Nested message and enum types in `CustomerNegativeCriterionOperation`.
 pub mod customer_negative_criterion_operation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  Create operation: No resource name is expected for the new criterion.
+        /// Create operation: No resource name is expected for the new criterion.
         #[prost(message, tag="1")]
         Create(super::super::resources::CustomerNegativeCriterion),
-        ///  Remove operation: A resource name for the removed criterion is expected,
-        ///  in this format:
+        /// Remove operation: A resource name for the removed criterion is expected,
+        /// in this format:
         ///
-        ///  `customers/{customer_id}/customerNegativeCriteria/{criterion_id}`
+        /// `customers/{customer_id}/customerNegativeCriteria/{criterion_id}`
         #[prost(string, tag="2")]
         Remove(::prost::alloc::string::String),
     }
 }
-///  Response message for customer negative criterion mutate.
+/// Response message for customer negative criterion mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCustomerNegativeCriteriaResponse {
-    ///  Errors that pertain to operation failures in the partial failure mode.
-    ///  Returned only when partial_failure = true and all errors occur inside the
-    ///  operations. If any errors occur outside the operations (e.g. auth errors),
-    ///  we return an RPC level error.
+    /// Errors that pertain to operation failures in the partial failure mode.
+    /// Returned only when partial_failure = true and all errors occur inside the
+    /// operations. If any errors occur outside the operations (e.g. auth errors),
+    /// we return an RPC level error.
     #[prost(message, optional, tag="3")]
     pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
-    ///  All results for the mutate.
+    /// All results for the mutate.
     #[prost(message, repeated, tag="2")]
     pub results: ::prost::alloc::vec::Vec<MutateCustomerNegativeCriteriaResult>,
 }
-///  The result for the criterion mutate.
+/// The result for the criterion mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCustomerNegativeCriteriaResult {
-    ///  Returned for successful operations.
+    /// Returned for successful operations.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
-    ///  The mutated criterion with only mutable fields after mutate. The field will
-    ///  only be returned when response_content_type is set to "MUTABLE_RESOURCE".
+    /// The mutated criterion with only mutable fields after mutate. The field will
+    /// only be returned when response_content_type is set to "MUTABLE_RESOURCE".
     #[prost(message, optional, tag="2")]
     pub customer_negative_criterion: ::core::option::Option<super::resources::CustomerNegativeCriterion>,
 }
@@ -12553,102 +12553,102 @@ pub mod customer_negative_criterion_service_client {
         }
     }
 }
-///  Request message for \[CustomerService.GetCustomer][google.ads.googleads.v9.services.CustomerService.GetCustomer\].
+/// Request message for \[CustomerService.GetCustomer][google.ads.googleads.v9.services.CustomerService.GetCustomer\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCustomerRequest {
-    ///  Required. The resource name of the customer to fetch.
+    /// Required. The resource name of the customer to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Request message for \[CustomerService.MutateCustomer][google.ads.googleads.v9.services.CustomerService.MutateCustomer\].
+/// Request message for \[CustomerService.MutateCustomer][google.ads.googleads.v9.services.CustomerService.MutateCustomer\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCustomerRequest {
-    ///  Required. The ID of the customer being modified.
+    /// Required. The ID of the customer being modified.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The operation to perform on the customer
+    /// Required. The operation to perform on the customer
     #[prost(message, optional, tag="4")]
     pub operation: ::core::option::Option<CustomerOperation>,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="5")]
     pub validate_only: bool,
-    ///  The response content type setting. Determines whether the mutable resource
-    ///  or just the resource name should be returned post mutation.
+    /// The response content type setting. Determines whether the mutable resource
+    /// or just the resource name should be returned post mutation.
     #[prost(enumeration="super::enums::response_content_type_enum::ResponseContentType", tag="6")]
     pub response_content_type: i32,
 }
-///  Request message for \[CustomerService.CreateCustomerClient][google.ads.googleads.v9.services.CustomerService.CreateCustomerClient\].
+/// Request message for \[CustomerService.CreateCustomerClient][google.ads.googleads.v9.services.CustomerService.CreateCustomerClient\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateCustomerClientRequest {
-    ///  Required. The ID of the Manager under whom client customer is being created.
+    /// Required. The ID of the Manager under whom client customer is being created.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The new client customer to create. The resource name on this customer
-    ///  will be ignored.
+    /// Required. The new client customer to create. The resource name on this customer
+    /// will be ignored.
     #[prost(message, optional, tag="2")]
     pub customer_client: ::core::option::Option<super::resources::Customer>,
-    ///  Email address of the user who should be invited on the created client
-    ///  customer. Accessible only to customers on the allow-list.
+    /// Email address of the user who should be invited on the created client
+    /// customer. Accessible only to customers on the allow-list.
     #[prost(string, optional, tag="5")]
     pub email_address: ::core::option::Option<::prost::alloc::string::String>,
-    ///  The proposed role of user on the created client customer.
-    ///  Accessible only to customers on the allow-list.
+    /// The proposed role of user on the created client customer.
+    /// Accessible only to customers on the allow-list.
     #[prost(enumeration="super::enums::access_role_enum::AccessRole", tag="4")]
     pub access_role: i32,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="6")]
     pub validate_only: bool,
 }
-///  A single update on a customer.
+/// A single update on a customer.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomerOperation {
-    ///  Mutate operation. Only updates are supported for customer.
+    /// Mutate operation. Only updates are supported for customer.
     #[prost(message, optional, tag="1")]
     pub update: ::core::option::Option<super::resources::Customer>,
-    ///  FieldMask that determines which resource fields are modified in an update.
+    /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag="2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
-///  Response message for CreateCustomerClient mutate.
+/// Response message for CreateCustomerClient mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateCustomerClientResponse {
-    ///  The resource name of the newly created customer client.
+    /// The resource name of the newly created customer client.
     #[prost(string, tag="2")]
     pub resource_name: ::prost::alloc::string::String,
-    ///  Link for inviting user to access the created customer. Accessible to
-    ///  allowlisted customers only.
+    /// Link for inviting user to access the created customer. Accessible to
+    /// allowlisted customers only.
     #[prost(string, tag="3")]
     pub invitation_link: ::prost::alloc::string::String,
 }
-///  Response message for customer mutate.
+/// Response message for customer mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCustomerResponse {
-    ///  Result for the mutate.
+    /// Result for the mutate.
     #[prost(message, optional, tag="2")]
     pub result: ::core::option::Option<MutateCustomerResult>,
 }
-///  The result for the customer mutate.
+/// The result for the customer mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCustomerResult {
-    ///  Returned for successful operations.
+    /// Returned for successful operations.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
-    ///  The mutated customer with only mutable fields after mutate. The fields will
-    ///  only be returned when response_content_type is set to "MUTABLE_RESOURCE".
+    /// The mutated customer with only mutable fields after mutate. The fields will
+    /// only be returned when response_content_type is set to "MUTABLE_RESOURCE".
     #[prost(message, optional, tag="2")]
     pub customer: ::core::option::Option<super::resources::Customer>,
 }
-///  Request message for \[CustomerService.ListAccessibleCustomers][google.ads.googleads.v9.services.CustomerService.ListAccessibleCustomers\].
+/// Request message for \[CustomerService.ListAccessibleCustomers][google.ads.googleads.v9.services.CustomerService.ListAccessibleCustomers\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAccessibleCustomersRequest {
 }
-///  Response message for \[CustomerService.ListAccessibleCustomers][google.ads.googleads.v9.services.CustomerService.ListAccessibleCustomers\].
+/// Response message for \[CustomerService.ListAccessibleCustomers][google.ads.googleads.v9.services.CustomerService.ListAccessibleCustomers\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAccessibleCustomersResponse {
-    ///  Resource name of customers directly accessible by the
-    ///  user authenticating the call.
+    /// Resource name of customers directly accessible by the
+    /// user authenticating the call.
     #[prost(string, repeated, tag="1")]
     pub resource_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
@@ -12851,79 +12851,79 @@ pub mod customer_service_client {
         }
     }
 }
-///  Request message for
-///  \[CustomizerAttributeService.MutateCustomizerAttributes][google.ads.googleads.v9.services.CustomizerAttributeService.MutateCustomizerAttributes\].
+/// Request message for
+/// \[CustomizerAttributeService.MutateCustomizerAttributes][google.ads.googleads.v9.services.CustomizerAttributeService.MutateCustomizerAttributes\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCustomizerAttributesRequest {
-    ///  Required. The ID of the customer whose customizer attributes are being modified.
+    /// Required. The ID of the customer whose customizer attributes are being modified.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The list of operations to perform on individual customizer attributes.
+    /// Required. The list of operations to perform on individual customizer attributes.
     #[prost(message, repeated, tag="2")]
     pub operations: ::prost::alloc::vec::Vec<CustomizerAttributeOperation>,
-    ///  If true, successful operations will be carried out and invalid
-    ///  operations will return errors. If false, all operations will be carried
-    ///  out in one transaction if and only if they are all valid.
-    ///  Default is false.
+    /// If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, all operations will be carried
+    /// out in one transaction if and only if they are all valid.
+    /// Default is false.
     #[prost(bool, tag="3")]
     pub partial_failure: bool,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="4")]
     pub validate_only: bool,
-    ///  The response content type setting. Determines whether the mutable resource
-    ///  or just the resource name should be returned post mutation.
+    /// The response content type setting. Determines whether the mutable resource
+    /// or just the resource name should be returned post mutation.
     #[prost(enumeration="super::enums::response_content_type_enum::ResponseContentType", tag="5")]
     pub response_content_type: i32,
 }
-///  A single operation (create, remove) on an customizer attribute.
+/// A single operation (create, remove) on an customizer attribute.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomizerAttributeOperation {
-    ///  FieldMask that determines which resource fields are modified in an update.
+    /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag="4")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  The mutate operation.
+    /// The mutate operation.
     #[prost(oneof="customizer_attribute_operation::Operation", tags="1, 2")]
     pub operation: ::core::option::Option<customizer_attribute_operation::Operation>,
 }
 /// Nested message and enum types in `CustomizerAttributeOperation`.
 pub mod customizer_attribute_operation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  Create operation: No resource name is expected for the new customizer
-        ///  attribute
+        /// Create operation: No resource name is expected for the new customizer
+        /// attribute
         #[prost(message, tag="1")]
         Create(super::super::resources::CustomizerAttribute),
-        ///  Remove operation: A resource name for the removed customizer attribute is
-        ///  expected, in this format:
-        ///  `customers/{customer_id}/customizerAttributes/{customizer_attribute_id}`
+        /// Remove operation: A resource name for the removed customizer attribute is
+        /// expected, in this format:
+        /// `customers/{customer_id}/customizerAttributes/{customizer_attribute_id}`
         #[prost(string, tag="2")]
         Remove(::prost::alloc::string::String),
     }
 }
-///  Response message for an customizer attribute mutate.
+/// Response message for an customizer attribute mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCustomizerAttributesResponse {
-    ///  All results for the mutate.
+    /// All results for the mutate.
     #[prost(message, repeated, tag="1")]
     pub results: ::prost::alloc::vec::Vec<MutateCustomizerAttributeResult>,
-    ///  Errors that pertain to operation failures in the partial failure mode.
-    ///  Returned only when partial_failure = true and all errors occur inside the
-    ///  operations. If any errors occur outside the operations (e.g. auth errors),
-    ///  we return an RPC level error.
+    /// Errors that pertain to operation failures in the partial failure mode.
+    /// Returned only when partial_failure = true and all errors occur inside the
+    /// operations. If any errors occur outside the operations (e.g. auth errors),
+    /// we return an RPC level error.
     #[prost(message, optional, tag="2")]
     pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
 }
-///  The result for the customizer attribute mutate.
+/// The result for the customizer attribute mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCustomizerAttributeResult {
-    ///  Returned for successful operations.
+    /// Returned for successful operations.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
-    ///  The mutated CustomizerAttribute with only mutable fields after mutate.
-    ///  The field will only be returned when response_content_type is set to
-    ///  "MUTABLE_RESOURCE".
+    /// The mutated CustomizerAttribute with only mutable fields after mutate.
+    /// The field will only be returned when response_content_type is set to
+    /// "MUTABLE_RESOURCE".
     #[prost(message, optional, tag="2")]
     pub customizer_attribute: ::core::option::Option<super::resources::CustomizerAttribute>,
 }
@@ -13025,91 +13025,91 @@ pub mod customizer_attribute_service_client {
         }
     }
 }
-///  Request message for \[ExtensionFeedItemService.GetExtensionFeedItem][google.ads.googleads.v9.services.ExtensionFeedItemService.GetExtensionFeedItem\].
+/// Request message for \[ExtensionFeedItemService.GetExtensionFeedItem][google.ads.googleads.v9.services.ExtensionFeedItemService.GetExtensionFeedItem\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetExtensionFeedItemRequest {
-    ///  Required. The resource name of the extension feed item to fetch.
+    /// Required. The resource name of the extension feed item to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Request message for \[ExtensionFeedItemService.MutateExtensionFeedItems][google.ads.googleads.v9.services.ExtensionFeedItemService.MutateExtensionFeedItems\].
+/// Request message for \[ExtensionFeedItemService.MutateExtensionFeedItems][google.ads.googleads.v9.services.ExtensionFeedItemService.MutateExtensionFeedItems\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateExtensionFeedItemsRequest {
-    ///  Required. The ID of the customer whose extension feed items are being
-    ///  modified.
+    /// Required. The ID of the customer whose extension feed items are being
+    /// modified.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The list of operations to perform on individual extension feed items.
+    /// Required. The list of operations to perform on individual extension feed items.
     #[prost(message, repeated, tag="2")]
     pub operations: ::prost::alloc::vec::Vec<ExtensionFeedItemOperation>,
-    ///  If true, successful operations will be carried out and invalid
-    ///  operations will return errors. If false, all operations will be carried
-    ///  out in one transaction if and only if they are all valid.
-    ///  Default is false.
+    /// If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, all operations will be carried
+    /// out in one transaction if and only if they are all valid.
+    /// Default is false.
     #[prost(bool, tag="3")]
     pub partial_failure: bool,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="4")]
     pub validate_only: bool,
-    ///  The response content type setting. Determines whether the mutable resource
-    ///  or just the resource name should be returned post mutation.
+    /// The response content type setting. Determines whether the mutable resource
+    /// or just the resource name should be returned post mutation.
     #[prost(enumeration="super::enums::response_content_type_enum::ResponseContentType", tag="5")]
     pub response_content_type: i32,
 }
-///  A single operation (create, update, remove) on an extension feed item.
+/// A single operation (create, update, remove) on an extension feed item.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExtensionFeedItemOperation {
-    ///  FieldMask that determines which resource fields are modified in an update.
+    /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag="4")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  The mutate operation.
+    /// The mutate operation.
     #[prost(oneof="extension_feed_item_operation::Operation", tags="1, 2, 3")]
     pub operation: ::core::option::Option<extension_feed_item_operation::Operation>,
 }
 /// Nested message and enum types in `ExtensionFeedItemOperation`.
 pub mod extension_feed_item_operation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  Create operation: No resource name is expected for the new extension
-        ///  feed item.
+        /// Create operation: No resource name is expected for the new extension
+        /// feed item.
         #[prost(message, tag="1")]
         Create(super::super::resources::ExtensionFeedItem),
-        ///  Update operation: The extension feed item is expected to have a
-        ///  valid resource name.
+        /// Update operation: The extension feed item is expected to have a
+        /// valid resource name.
         #[prost(message, tag="2")]
         Update(super::super::resources::ExtensionFeedItem),
-        ///  Remove operation: A resource name for the removed extension feed item
-        ///  is expected, in this format:
+        /// Remove operation: A resource name for the removed extension feed item
+        /// is expected, in this format:
         ///
-        ///  `customers/{customer_id}/extensionFeedItems/{feed_item_id}`
+        /// `customers/{customer_id}/extensionFeedItems/{feed_item_id}`
         #[prost(string, tag="3")]
         Remove(::prost::alloc::string::String),
     }
 }
-///  Response message for an extension feed item mutate.
+/// Response message for an extension feed item mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateExtensionFeedItemsResponse {
-    ///  Errors that pertain to operation failures in the partial failure mode.
-    ///  Returned only when partial_failure = true and all errors occur inside the
-    ///  operations. If any errors occur outside the operations (e.g. auth errors),
-    ///  we return an RPC level error.
+    /// Errors that pertain to operation failures in the partial failure mode.
+    /// Returned only when partial_failure = true and all errors occur inside the
+    /// operations. If any errors occur outside the operations (e.g. auth errors),
+    /// we return an RPC level error.
     #[prost(message, optional, tag="3")]
     pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
-    ///  All results for the mutate.
+    /// All results for the mutate.
     #[prost(message, repeated, tag="2")]
     pub results: ::prost::alloc::vec::Vec<MutateExtensionFeedItemResult>,
 }
-///  The result for the extension feed item mutate.
+/// The result for the extension feed item mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateExtensionFeedItemResult {
-    ///  Returned for successful operations.
+    /// Returned for successful operations.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
-    ///  The mutated extension feed item with only mutable fields after mutate. The
-    ///  field will only be returned when response_content_type is set to
-    ///  "MUTABLE_RESOURCE".
+    /// The mutated extension feed item with only mutable fields after mutate. The
+    /// field will only be returned when response_content_type is set to
+    /// "MUTABLE_RESOURCE".
     #[prost(message, optional, tag="2")]
     pub extension_feed_item: ::core::option::Option<super::resources::ExtensionFeedItem>,
 }
@@ -13267,88 +13267,88 @@ pub mod extension_feed_item_service_client {
         }
     }
 }
-///  Request message for \[FeedItemService.GetFeedItem][google.ads.googleads.v9.services.FeedItemService.GetFeedItem\].
+/// Request message for \[FeedItemService.GetFeedItem][google.ads.googleads.v9.services.FeedItemService.GetFeedItem\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetFeedItemRequest {
-    ///  Required. The resource name of the feed item to fetch.
+    /// Required. The resource name of the feed item to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Request message for \[FeedItemService.MutateFeedItems][google.ads.googleads.v9.services.FeedItemService.MutateFeedItems\].
+/// Request message for \[FeedItemService.MutateFeedItems][google.ads.googleads.v9.services.FeedItemService.MutateFeedItems\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateFeedItemsRequest {
-    ///  Required. The ID of the customer whose feed items are being modified.
+    /// Required. The ID of the customer whose feed items are being modified.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The list of operations to perform on individual feed items.
+    /// Required. The list of operations to perform on individual feed items.
     #[prost(message, repeated, tag="2")]
     pub operations: ::prost::alloc::vec::Vec<FeedItemOperation>,
-    ///  If true, successful operations will be carried out and invalid
-    ///  operations will return errors. If false, all operations will be carried
-    ///  out in one transaction if and only if they are all valid.
-    ///  Default is false.
+    /// If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, all operations will be carried
+    /// out in one transaction if and only if they are all valid.
+    /// Default is false.
     #[prost(bool, tag="3")]
     pub partial_failure: bool,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="4")]
     pub validate_only: bool,
-    ///  The response content type setting. Determines whether the mutable resource
-    ///  or just the resource name should be returned post mutation.
+    /// The response content type setting. Determines whether the mutable resource
+    /// or just the resource name should be returned post mutation.
     #[prost(enumeration="super::enums::response_content_type_enum::ResponseContentType", tag="5")]
     pub response_content_type: i32,
 }
-///  A single operation (create, update, remove) on an feed item.
+/// A single operation (create, update, remove) on an feed item.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FeedItemOperation {
-    ///  FieldMask that determines which resource fields are modified in an update.
+    /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag="4")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  The mutate operation.
+    /// The mutate operation.
     #[prost(oneof="feed_item_operation::Operation", tags="1, 2, 3")]
     pub operation: ::core::option::Option<feed_item_operation::Operation>,
 }
 /// Nested message and enum types in `FeedItemOperation`.
 pub mod feed_item_operation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  Create operation: No resource name is expected for the new feed item.
+        /// Create operation: No resource name is expected for the new feed item.
         #[prost(message, tag="1")]
         Create(super::super::resources::FeedItem),
-        ///  Update operation: The feed item is expected to have a valid resource
-        ///  name.
+        /// Update operation: The feed item is expected to have a valid resource
+        /// name.
         #[prost(message, tag="2")]
         Update(super::super::resources::FeedItem),
-        ///  Remove operation: A resource name for the removed feed item is
-        ///  expected, in this format:
+        /// Remove operation: A resource name for the removed feed item is
+        /// expected, in this format:
         ///
-        ///  `customers/{customer_id}/feedItems/{feed_id}~{feed_item_id}`
+        /// `customers/{customer_id}/feedItems/{feed_id}~{feed_item_id}`
         #[prost(string, tag="3")]
         Remove(::prost::alloc::string::String),
     }
 }
-///  Response message for an feed item mutate.
+/// Response message for an feed item mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateFeedItemsResponse {
-    ///  Errors that pertain to operation failures in the partial failure mode.
-    ///  Returned only when partial_failure = true and all errors occur inside the
-    ///  operations. If any errors occur outside the operations (e.g. auth errors),
-    ///  we return an RPC level error.
+    /// Errors that pertain to operation failures in the partial failure mode.
+    /// Returned only when partial_failure = true and all errors occur inside the
+    /// operations. If any errors occur outside the operations (e.g. auth errors),
+    /// we return an RPC level error.
     #[prost(message, optional, tag="3")]
     pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
-    ///  All results for the mutate.
+    /// All results for the mutate.
     #[prost(message, repeated, tag="2")]
     pub results: ::prost::alloc::vec::Vec<MutateFeedItemResult>,
 }
-///  The result for the feed item mutate.
+/// The result for the feed item mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateFeedItemResult {
-    ///  Returned for successful operations.
+    /// Returned for successful operations.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
-    ///  The mutated feed item with only mutable fields after mutate. The field will
-    ///  only be returned when response_content_type is set to "MUTABLE_RESOURCE".
+    /// The mutated feed item with only mutable fields after mutate. The field will
+    /// only be returned when response_content_type is set to "MUTABLE_RESOURCE".
     #[prost(message, optional, tag="2")]
     pub feed_item: ::core::option::Option<super::resources::FeedItem>,
 }
@@ -13500,74 +13500,74 @@ pub mod feed_item_service_client {
         }
     }
 }
-///  Request message for \[FeedItemSetLinkService.GetFeedItemSetLinks][\].
+/// Request message for \[FeedItemSetLinkService.GetFeedItemSetLinks][\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetFeedItemSetLinkRequest {
-    ///  Required. The resource name of the feed item set link to fetch.
+    /// Required. The resource name of the feed item set link to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Request message for \[FeedItemSetLinkService.MutateFeedItemSetLinks][google.ads.googleads.v9.services.FeedItemSetLinkService.MutateFeedItemSetLinks\].
+/// Request message for \[FeedItemSetLinkService.MutateFeedItemSetLinks][google.ads.googleads.v9.services.FeedItemSetLinkService.MutateFeedItemSetLinks\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateFeedItemSetLinksRequest {
-    ///  Required. The ID of the customer whose feed item set links are being modified.
+    /// Required. The ID of the customer whose feed item set links are being modified.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The list of operations to perform on individual feed item set links.
+    /// Required. The list of operations to perform on individual feed item set links.
     #[prost(message, repeated, tag="2")]
     pub operations: ::prost::alloc::vec::Vec<FeedItemSetLinkOperation>,
-    ///  If true, successful operations will be carried out and invalid
-    ///  operations will return errors. If false, all operations will be carried
-    ///  out in one transaction if and only if they are all valid.
-    ///  Default is false.
+    /// If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, all operations will be carried
+    /// out in one transaction if and only if they are all valid.
+    /// Default is false.
     #[prost(bool, tag="3")]
     pub partial_failure: bool,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="4")]
     pub validate_only: bool,
 }
-///  A single operation (create, update, remove) on a feed item set link.
+/// A single operation (create, update, remove) on a feed item set link.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FeedItemSetLinkOperation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[prost(oneof="feed_item_set_link_operation::Operation", tags="1, 2")]
     pub operation: ::core::option::Option<feed_item_set_link_operation::Operation>,
 }
 /// Nested message and enum types in `FeedItemSetLinkOperation`.
 pub mod feed_item_set_link_operation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  Create operation: No resource name is expected for the
-        ///  new feed item set link.
+        /// Create operation: No resource name is expected for the
+        /// new feed item set link.
         #[prost(message, tag="1")]
         Create(super::super::resources::FeedItemSetLink),
-        ///  Remove operation: A resource name for the removed feed item set link is
-        ///  expected, in this format:
+        /// Remove operation: A resource name for the removed feed item set link is
+        /// expected, in this format:
         ///
-        ///  `customers/{customer_id}/feedItemSetLinks/{feed_id}_{feed_item_set_id}_{feed_item_id}`
+        /// `customers/{customer_id}/feedItemSetLinks/{feed_id}_{feed_item_set_id}_{feed_item_id}`
         #[prost(string, tag="2")]
         Remove(::prost::alloc::string::String),
     }
 }
-///  Response message for a feed item set link mutate.
+/// Response message for a feed item set link mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateFeedItemSetLinksResponse {
-    ///  All results for the mutate.
+    /// All results for the mutate.
     #[prost(message, repeated, tag="1")]
     pub results: ::prost::alloc::vec::Vec<MutateFeedItemSetLinkResult>,
-    ///  Errors that pertain to operation failures in the partial failure mode.
-    ///  Returned only when partial_failure = true and all errors occur inside the
-    ///  operations. If any errors occur outside the operations (e.g. auth errors),
-    ///  we return an RPC level error.
+    /// Errors that pertain to operation failures in the partial failure mode.
+    /// Returned only when partial_failure = true and all errors occur inside the
+    /// operations. If any errors occur outside the operations (e.g. auth errors),
+    /// we return an RPC level error.
     #[prost(message, optional, tag="2")]
     pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
 }
-///  The result for the feed item set link mutate.
+/// The result for the feed item set link mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateFeedItemSetLinkResult {
-    ///  Returned for successful operations.
+    /// Returned for successful operations.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
@@ -13707,79 +13707,79 @@ pub mod feed_item_set_link_service_client {
         }
     }
 }
-///  Request message for \[FeedItemSetService.GetFeedItemSet][google.ads.googleads.v9.services.FeedItemSetService.GetFeedItemSet\].
+/// Request message for \[FeedItemSetService.GetFeedItemSet][google.ads.googleads.v9.services.FeedItemSetService.GetFeedItemSet\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetFeedItemSetRequest {
-    ///  Required. The resource name of the feed item set to fetch.
+    /// Required. The resource name of the feed item set to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Request message for \[FeedItemSetService.MutateFeedItemSets][google.ads.googleads.v9.services.FeedItemSetService.MutateFeedItemSets\].
+/// Request message for \[FeedItemSetService.MutateFeedItemSets][google.ads.googleads.v9.services.FeedItemSetService.MutateFeedItemSets\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateFeedItemSetsRequest {
-    ///  Required. The ID of the customer whose feed item sets are being modified.
+    /// Required. The ID of the customer whose feed item sets are being modified.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The list of operations to perform on individual feed item sets.
+    /// Required. The list of operations to perform on individual feed item sets.
     #[prost(message, repeated, tag="2")]
     pub operations: ::prost::alloc::vec::Vec<FeedItemSetOperation>,
-    ///  If true, successful operations will be carried out and invalid
-    ///  operations will return errors. If false, all operations will be carried
-    ///  out in one transaction if and only if they are all valid.
-    ///  Default is false.
+    /// If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, all operations will be carried
+    /// out in one transaction if and only if they are all valid.
+    /// Default is false.
     #[prost(bool, tag="3")]
     pub partial_failure: bool,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="4")]
     pub validate_only: bool,
 }
-///  A single operation (create, remove) on an feed item set.
+/// A single operation (create, remove) on an feed item set.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FeedItemSetOperation {
-    ///  FieldMask that determines which resource fields are modified in an update.
+    /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag="4")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  The mutate operation.
+    /// The mutate operation.
     #[prost(oneof="feed_item_set_operation::Operation", tags="1, 2, 3")]
     pub operation: ::core::option::Option<feed_item_set_operation::Operation>,
 }
 /// Nested message and enum types in `FeedItemSetOperation`.
 pub mod feed_item_set_operation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  Create operation: No resource name is expected for the new feed item set
+        /// Create operation: No resource name is expected for the new feed item set
         #[prost(message, tag="1")]
         Create(super::super::resources::FeedItemSet),
-        ///  Update operation: The feed item set is expected to have a valid resource
-        ///  name.
+        /// Update operation: The feed item set is expected to have a valid resource
+        /// name.
         #[prost(message, tag="2")]
         Update(super::super::resources::FeedItemSet),
-        ///  Remove operation: A resource name for the removed feed item is
-        ///  expected, in this format:
-        ///  `customers/{customer_id}/feedItems/{feed_id}~{feed_item_set_id}`
+        /// Remove operation: A resource name for the removed feed item is
+        /// expected, in this format:
+        /// `customers/{customer_id}/feedItems/{feed_id}~{feed_item_set_id}`
         #[prost(string, tag="3")]
         Remove(::prost::alloc::string::String),
     }
 }
-///  Response message for an feed item set mutate.
+/// Response message for an feed item set mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateFeedItemSetsResponse {
-    ///  All results for the mutate.
+    /// All results for the mutate.
     #[prost(message, repeated, tag="1")]
     pub results: ::prost::alloc::vec::Vec<MutateFeedItemSetResult>,
-    ///  Errors that pertain to operation failures in the partial failure mode.
-    ///  Returned only when partial_failure = true and all errors occur inside the
-    ///  operations. If any errors occur outside the operations (e.g. auth errors),
-    ///  we return an RPC level error.
+    /// Errors that pertain to operation failures in the partial failure mode.
+    /// Returned only when partial_failure = true and all errors occur inside the
+    /// operations. If any errors occur outside the operations (e.g. auth errors),
+    /// we return an RPC level error.
     #[prost(message, optional, tag="2")]
     pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
 }
-///  The result for the feed item set mutate.
+/// The result for the feed item set mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateFeedItemSetResult {
-    ///  Returned for successful operations.
+    /// Returned for successful operations.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
@@ -13916,83 +13916,83 @@ pub mod feed_item_set_service_client {
         }
     }
 }
-///  Request message for \[FeedItemTargetService.GetFeedItemTarget][google.ads.googleads.v9.services.FeedItemTargetService.GetFeedItemTarget\].
+/// Request message for \[FeedItemTargetService.GetFeedItemTarget][google.ads.googleads.v9.services.FeedItemTargetService.GetFeedItemTarget\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetFeedItemTargetRequest {
-    ///  Required. The resource name of the feed item targets to fetch.
+    /// Required. The resource name of the feed item targets to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Request message for \[FeedItemTargetService.MutateFeedItemTargets][google.ads.googleads.v9.services.FeedItemTargetService.MutateFeedItemTargets\].
+/// Request message for \[FeedItemTargetService.MutateFeedItemTargets][google.ads.googleads.v9.services.FeedItemTargetService.MutateFeedItemTargets\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateFeedItemTargetsRequest {
-    ///  Required. The ID of the customer whose feed item targets are being modified.
+    /// Required. The ID of the customer whose feed item targets are being modified.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The list of operations to perform on individual feed item targets.
+    /// Required. The list of operations to perform on individual feed item targets.
     #[prost(message, repeated, tag="2")]
     pub operations: ::prost::alloc::vec::Vec<FeedItemTargetOperation>,
-    ///  If true, successful operations will be carried out and invalid
-    ///  operations will return errors. If false, all operations will be carried
-    ///  out in one transaction if and only if they are all valid.
-    ///  Default is false.
+    /// If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, all operations will be carried
+    /// out in one transaction if and only if they are all valid.
+    /// Default is false.
     #[prost(bool, tag="4")]
     pub partial_failure: bool,
-    ///  The response content type setting. Determines whether the mutable resource
-    ///  or just the resource name should be returned post mutation.
+    /// The response content type setting. Determines whether the mutable resource
+    /// or just the resource name should be returned post mutation.
     #[prost(enumeration="super::enums::response_content_type_enum::ResponseContentType", tag="5")]
     pub response_content_type: i32,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="3")]
     pub validate_only: bool,
 }
-///  A single operation (create, remove) on an feed item target.
+/// A single operation (create, remove) on an feed item target.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FeedItemTargetOperation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[prost(oneof="feed_item_target_operation::Operation", tags="1, 2")]
     pub operation: ::core::option::Option<feed_item_target_operation::Operation>,
 }
 /// Nested message and enum types in `FeedItemTargetOperation`.
 pub mod feed_item_target_operation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  Create operation: No resource name is expected for the new feed item
-        ///  target.
+        /// Create operation: No resource name is expected for the new feed item
+        /// target.
         #[prost(message, tag="1")]
         Create(super::super::resources::FeedItemTarget),
-        ///  Remove operation: A resource name for the removed feed item target is
-        ///  expected, in this format:
+        /// Remove operation: A resource name for the removed feed item target is
+        /// expected, in this format:
         ///
-        ///  `customers/{customer_id}/feedItemTargets/{feed_id}~{feed_item_id}~{feed_item_target_type}~{feed_item_target_id}`
+        /// `customers/{customer_id}/feedItemTargets/{feed_id}~{feed_item_id}~{feed_item_target_type}~{feed_item_target_id}`
         #[prost(string, tag="2")]
         Remove(::prost::alloc::string::String),
     }
 }
-///  Response message for an feed item target mutate.
+/// Response message for an feed item target mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateFeedItemTargetsResponse {
-    ///  Errors that pertain to operation failures in the partial failure mode.
-    ///  Returned only when partial_failure = true and all errors occur inside the
-    ///  operations. If any errors occur outside the operations (e.g. auth errors),
-    ///  we return an RPC level error.
+    /// Errors that pertain to operation failures in the partial failure mode.
+    /// Returned only when partial_failure = true and all errors occur inside the
+    /// operations. If any errors occur outside the operations (e.g. auth errors),
+    /// we return an RPC level error.
     #[prost(message, optional, tag="3")]
     pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
-    ///  All results for the mutate.
+    /// All results for the mutate.
     #[prost(message, repeated, tag="2")]
     pub results: ::prost::alloc::vec::Vec<MutateFeedItemTargetResult>,
 }
-///  The result for the feed item target mutate.
+/// The result for the feed item target mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateFeedItemTargetResult {
-    ///  Returned for successful operations.
+    /// Returned for successful operations.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
-    ///  The mutated feed item target with only mutable fields after mutate. The
-    ///  field will only be returned when response_content_type is set to
-    ///  "MUTABLE_RESOURCE".
+    /// The mutated feed item target with only mutable fields after mutate. The
+    /// field will only be returned when response_content_type is set to
+    /// "MUTABLE_RESOURCE".
     #[prost(message, optional, tag="2")]
     pub feed_item_target: ::core::option::Option<super::resources::FeedItemTarget>,
 }
@@ -14143,82 +14143,82 @@ pub mod feed_item_target_service_client {
         }
     }
 }
-///  Request message for \[FeedMappingService.GetFeedMapping][google.ads.googleads.v9.services.FeedMappingService.GetFeedMapping\].
+/// Request message for \[FeedMappingService.GetFeedMapping][google.ads.googleads.v9.services.FeedMappingService.GetFeedMapping\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetFeedMappingRequest {
-    ///  Required. The resource name of the feed mapping to fetch.
+    /// Required. The resource name of the feed mapping to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Request message for \[FeedMappingService.MutateFeedMappings][google.ads.googleads.v9.services.FeedMappingService.MutateFeedMappings\].
+/// Request message for \[FeedMappingService.MutateFeedMappings][google.ads.googleads.v9.services.FeedMappingService.MutateFeedMappings\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateFeedMappingsRequest {
-    ///  Required. The ID of the customer whose feed mappings are being modified.
+    /// Required. The ID of the customer whose feed mappings are being modified.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The list of operations to perform on individual feed mappings.
+    /// Required. The list of operations to perform on individual feed mappings.
     #[prost(message, repeated, tag="2")]
     pub operations: ::prost::alloc::vec::Vec<FeedMappingOperation>,
-    ///  If true, successful operations will be carried out and invalid
-    ///  operations will return errors. If false, all operations will be carried
-    ///  out in one transaction if and only if they are all valid.
-    ///  Default is false.
+    /// If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, all operations will be carried
+    /// out in one transaction if and only if they are all valid.
+    /// Default is false.
     #[prost(bool, tag="3")]
     pub partial_failure: bool,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="4")]
     pub validate_only: bool,
-    ///  The response content type setting. Determines whether the mutable resource
-    ///  or just the resource name should be returned post mutation.
+    /// The response content type setting. Determines whether the mutable resource
+    /// or just the resource name should be returned post mutation.
     #[prost(enumeration="super::enums::response_content_type_enum::ResponseContentType", tag="5")]
     pub response_content_type: i32,
 }
-///  A single operation (create, remove) on a feed mapping.
+/// A single operation (create, remove) on a feed mapping.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FeedMappingOperation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[prost(oneof="feed_mapping_operation::Operation", tags="1, 3")]
     pub operation: ::core::option::Option<feed_mapping_operation::Operation>,
 }
 /// Nested message and enum types in `FeedMappingOperation`.
 pub mod feed_mapping_operation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  Create operation: No resource name is expected for the new feed mapping.
+        /// Create operation: No resource name is expected for the new feed mapping.
         #[prost(message, tag="1")]
         Create(super::super::resources::FeedMapping),
-        ///  Remove operation: A resource name for the removed feed mapping is
-        ///  expected, in this format:
+        /// Remove operation: A resource name for the removed feed mapping is
+        /// expected, in this format:
         ///
-        ///  `customers/{customer_id}/feedMappings/{feed_id}~{feed_mapping_id}`
+        /// `customers/{customer_id}/feedMappings/{feed_id}~{feed_mapping_id}`
         #[prost(string, tag="3")]
         Remove(::prost::alloc::string::String),
     }
 }
-///  Response message for a feed mapping mutate.
+/// Response message for a feed mapping mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateFeedMappingsResponse {
-    ///  Errors that pertain to operation failures in the partial failure mode.
-    ///  Returned only when partial_failure = true and all errors occur inside the
-    ///  operations. If any errors occur outside the operations (e.g. auth errors),
-    ///  we return an RPC level error.
+    /// Errors that pertain to operation failures in the partial failure mode.
+    /// Returned only when partial_failure = true and all errors occur inside the
+    /// operations. If any errors occur outside the operations (e.g. auth errors),
+    /// we return an RPC level error.
     #[prost(message, optional, tag="3")]
     pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
-    ///  All results for the mutate.
+    /// All results for the mutate.
     #[prost(message, repeated, tag="2")]
     pub results: ::prost::alloc::vec::Vec<MutateFeedMappingResult>,
 }
-///  The result for the feed mapping mutate.
+/// The result for the feed mapping mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateFeedMappingResult {
-    ///  Returned for successful operations.
+    /// Returned for successful operations.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
-    ///  The mutated feed mapping with only mutable fields after mutate. The field
-    ///  will only be returned when response_content_type is set to
-    ///  "MUTABLE_RESOURCE".
+    /// The mutated feed mapping with only mutable fields after mutate. The field
+    /// will only be returned when response_content_type is set to
+    /// "MUTABLE_RESOURCE".
     #[prost(message, optional, tag="2")]
     pub feed_mapping: ::core::option::Option<super::resources::FeedMapping>,
 }
@@ -14367,88 +14367,88 @@ pub mod feed_mapping_service_client {
         }
     }
 }
-///  Request message for \[FeedService.GetFeed][google.ads.googleads.v9.services.FeedService.GetFeed\].
+/// Request message for \[FeedService.GetFeed][google.ads.googleads.v9.services.FeedService.GetFeed\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetFeedRequest {
-    ///  Required. The resource name of the feed to fetch.
+    /// Required. The resource name of the feed to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Request message for \[FeedService.MutateFeeds][google.ads.googleads.v9.services.FeedService.MutateFeeds\].
+/// Request message for \[FeedService.MutateFeeds][google.ads.googleads.v9.services.FeedService.MutateFeeds\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateFeedsRequest {
-    ///  Required. The ID of the customer whose feeds are being modified.
+    /// Required. The ID of the customer whose feeds are being modified.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The list of operations to perform on individual feeds.
+    /// Required. The list of operations to perform on individual feeds.
     #[prost(message, repeated, tag="2")]
     pub operations: ::prost::alloc::vec::Vec<FeedOperation>,
-    ///  If true, successful operations will be carried out and invalid
-    ///  operations will return errors. If false, all operations will be carried
-    ///  out in one transaction if and only if they are all valid.
-    ///  Default is false.
+    /// If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, all operations will be carried
+    /// out in one transaction if and only if they are all valid.
+    /// Default is false.
     #[prost(bool, tag="3")]
     pub partial_failure: bool,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="4")]
     pub validate_only: bool,
-    ///  The response content type setting. Determines whether the mutable resource
-    ///  or just the resource name should be returned post mutation.
+    /// The response content type setting. Determines whether the mutable resource
+    /// or just the resource name should be returned post mutation.
     #[prost(enumeration="super::enums::response_content_type_enum::ResponseContentType", tag="5")]
     pub response_content_type: i32,
 }
-///  A single operation (create, update, remove) on an feed.
+/// A single operation (create, update, remove) on an feed.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FeedOperation {
-    ///  FieldMask that determines which resource fields are modified in an update.
+    /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag="4")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  The mutate operation.
+    /// The mutate operation.
     #[prost(oneof="feed_operation::Operation", tags="1, 2, 3")]
     pub operation: ::core::option::Option<feed_operation::Operation>,
 }
 /// Nested message and enum types in `FeedOperation`.
 pub mod feed_operation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  Create operation: No resource name is expected for the new feed.
+        /// Create operation: No resource name is expected for the new feed.
         #[prost(message, tag="1")]
         Create(super::super::resources::Feed),
-        ///  Update operation: The feed is expected to have a valid resource
-        ///  name.
+        /// Update operation: The feed is expected to have a valid resource
+        /// name.
         #[prost(message, tag="2")]
         Update(super::super::resources::Feed),
-        ///  Remove operation: A resource name for the removed feed is
-        ///  expected, in this format:
+        /// Remove operation: A resource name for the removed feed is
+        /// expected, in this format:
         ///
-        ///  `customers/{customer_id}/feeds/{feed_id}`
+        /// `customers/{customer_id}/feeds/{feed_id}`
         #[prost(string, tag="3")]
         Remove(::prost::alloc::string::String),
     }
 }
-///  Response message for an feed mutate.
+/// Response message for an feed mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateFeedsResponse {
-    ///  Errors that pertain to operation failures in the partial failure mode.
-    ///  Returned only when partial_failure = true and all errors occur inside the
-    ///  operations. If any errors occur outside the operations (e.g. auth errors),
-    ///  we return an RPC level error.
+    /// Errors that pertain to operation failures in the partial failure mode.
+    /// Returned only when partial_failure = true and all errors occur inside the
+    /// operations. If any errors occur outside the operations (e.g. auth errors),
+    /// we return an RPC level error.
     #[prost(message, optional, tag="3")]
     pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
-    ///  All results for the mutate.
+    /// All results for the mutate.
     #[prost(message, repeated, tag="2")]
     pub results: ::prost::alloc::vec::Vec<MutateFeedResult>,
 }
-///  The result for the feed mutate.
+/// The result for the feed mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateFeedResult {
-    ///  Returned for successful operations.
+    /// Returned for successful operations.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
-    ///  The mutated feed with only mutable fields after mutate. The field will only
-    ///  be returned when response_content_type is set to "MUTABLE_RESOURCE".
+    /// The mutated feed with only mutable fields after mutate. The field will only
+    /// be returned when response_content_type is set to "MUTABLE_RESOURCE".
     #[prost(message, optional, tag="2")]
     pub feed: ::core::option::Option<super::resources::Feed>,
 }
@@ -14599,87 +14599,87 @@ pub mod feed_service_client {
         }
     }
 }
-///  Request message for
-///  \[KeywordPlanAdGroupKeywordService.GetKeywordPlanAdGroupKeyword][google.ads.googleads.v9.services.KeywordPlanAdGroupKeywordService.GetKeywordPlanAdGroupKeyword\].
+/// Request message for
+/// \[KeywordPlanAdGroupKeywordService.GetKeywordPlanAdGroupKeyword][google.ads.googleads.v9.services.KeywordPlanAdGroupKeywordService.GetKeywordPlanAdGroupKeyword\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetKeywordPlanAdGroupKeywordRequest {
-    ///  Required. The resource name of the ad group keyword to fetch.
+    /// Required. The resource name of the ad group keyword to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Request message for
-///  \[KeywordPlanAdGroupKeywordService.MutateKeywordPlanAdGroupKeywords][google.ads.googleads.v9.services.KeywordPlanAdGroupKeywordService.MutateKeywordPlanAdGroupKeywords\].
+/// Request message for
+/// \[KeywordPlanAdGroupKeywordService.MutateKeywordPlanAdGroupKeywords][google.ads.googleads.v9.services.KeywordPlanAdGroupKeywordService.MutateKeywordPlanAdGroupKeywords\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateKeywordPlanAdGroupKeywordsRequest {
-    ///  Required. The ID of the customer whose Keyword Plan ad group keywords are being
-    ///  modified.
+    /// Required. The ID of the customer whose Keyword Plan ad group keywords are being
+    /// modified.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The list of operations to perform on individual Keyword Plan ad group
-    ///  keywords.
+    /// Required. The list of operations to perform on individual Keyword Plan ad group
+    /// keywords.
     #[prost(message, repeated, tag="2")]
     pub operations: ::prost::alloc::vec::Vec<KeywordPlanAdGroupKeywordOperation>,
-    ///  If true, successful operations will be carried out and invalid
-    ///  operations will return errors. If false, all operations will be carried
-    ///  out in one transaction if and only if they are all valid.
-    ///  Default is false.
+    /// If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, all operations will be carried
+    /// out in one transaction if and only if they are all valid.
+    /// Default is false.
     #[prost(bool, tag="3")]
     pub partial_failure: bool,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="4")]
     pub validate_only: bool,
 }
-///  A single operation (create, update, remove) on a Keyword Plan ad group
-///  keyword.
+/// A single operation (create, update, remove) on a Keyword Plan ad group
+/// keyword.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KeywordPlanAdGroupKeywordOperation {
-    ///  The FieldMask that determines which resource fields are modified in an
-    ///  update.
+    /// The FieldMask that determines which resource fields are modified in an
+    /// update.
     #[prost(message, optional, tag="4")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  The mutate operation.
+    /// The mutate operation.
     #[prost(oneof="keyword_plan_ad_group_keyword_operation::Operation", tags="1, 2, 3")]
     pub operation: ::core::option::Option<keyword_plan_ad_group_keyword_operation::Operation>,
 }
 /// Nested message and enum types in `KeywordPlanAdGroupKeywordOperation`.
 pub mod keyword_plan_ad_group_keyword_operation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  Create operation: No resource name is expected for the new Keyword Plan
-        ///  ad group keyword.
+        /// Create operation: No resource name is expected for the new Keyword Plan
+        /// ad group keyword.
         #[prost(message, tag="1")]
         Create(super::super::resources::KeywordPlanAdGroupKeyword),
-        ///  Update operation: The Keyword Plan ad group keyword is expected to have a
-        ///  valid resource name.
+        /// Update operation: The Keyword Plan ad group keyword is expected to have a
+        /// valid resource name.
         #[prost(message, tag="2")]
         Update(super::super::resources::KeywordPlanAdGroupKeyword),
-        ///  Remove operation: A resource name for the removed Keyword Plan ad group
-        ///  keyword is expected, in this format:
+        /// Remove operation: A resource name for the removed Keyword Plan ad group
+        /// keyword is expected, in this format:
         ///
-        ///  `customers/{customer_id}/keywordPlanAdGroupKeywords/{kp_ad_group_keyword_id}`
+        /// `customers/{customer_id}/keywordPlanAdGroupKeywords/{kp_ad_group_keyword_id}`
         #[prost(string, tag="3")]
         Remove(::prost::alloc::string::String),
     }
 }
-///  Response message for a Keyword Plan ad group keyword mutate.
+/// Response message for a Keyword Plan ad group keyword mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateKeywordPlanAdGroupKeywordsResponse {
-    ///  Errors that pertain to operation failures in the partial failure mode.
-    ///  Returned only when partial_failure = true and all errors occur inside the
-    ///  operations. If any errors occur outside the operations (e.g. auth errors),
-    ///  we return an RPC level error.
+    /// Errors that pertain to operation failures in the partial failure mode.
+    /// Returned only when partial_failure = true and all errors occur inside the
+    /// operations. If any errors occur outside the operations (e.g. auth errors),
+    /// we return an RPC level error.
     #[prost(message, optional, tag="3")]
     pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
-    ///  All results for the mutate.
+    /// All results for the mutate.
     #[prost(message, repeated, tag="2")]
     pub results: ::prost::alloc::vec::Vec<MutateKeywordPlanAdGroupKeywordResult>,
 }
-///  The result for the Keyword Plan ad group keyword mutate.
+/// The result for the Keyword Plan ad group keyword mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateKeywordPlanAdGroupKeywordResult {
-    ///  Returned for successful operations.
+    /// Returned for successful operations.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
@@ -14832,83 +14832,83 @@ pub mod keyword_plan_ad_group_keyword_service_client {
         }
     }
 }
-///  Request message for \[KeywordPlanAdGroupService.GetKeywordPlanAdGroup][google.ads.googleads.v9.services.KeywordPlanAdGroupService.GetKeywordPlanAdGroup\].
+/// Request message for \[KeywordPlanAdGroupService.GetKeywordPlanAdGroup][google.ads.googleads.v9.services.KeywordPlanAdGroupService.GetKeywordPlanAdGroup\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetKeywordPlanAdGroupRequest {
-    ///  Required. The resource name of the Keyword Plan ad group to fetch.
+    /// Required. The resource name of the Keyword Plan ad group to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Request message for \[KeywordPlanAdGroupService.MutateKeywordPlanAdGroups][google.ads.googleads.v9.services.KeywordPlanAdGroupService.MutateKeywordPlanAdGroups\].
+/// Request message for \[KeywordPlanAdGroupService.MutateKeywordPlanAdGroups][google.ads.googleads.v9.services.KeywordPlanAdGroupService.MutateKeywordPlanAdGroups\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateKeywordPlanAdGroupsRequest {
-    ///  Required. The ID of the customer whose Keyword Plan ad groups are being modified.
+    /// Required. The ID of the customer whose Keyword Plan ad groups are being modified.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The list of operations to perform on individual Keyword Plan ad groups.
+    /// Required. The list of operations to perform on individual Keyword Plan ad groups.
     #[prost(message, repeated, tag="2")]
     pub operations: ::prost::alloc::vec::Vec<KeywordPlanAdGroupOperation>,
-    ///  If true, successful operations will be carried out and invalid
-    ///  operations will return errors. If false, all operations will be carried
-    ///  out in one transaction if and only if they are all valid.
-    ///  Default is false.
+    /// If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, all operations will be carried
+    /// out in one transaction if and only if they are all valid.
+    /// Default is false.
     #[prost(bool, tag="3")]
     pub partial_failure: bool,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="4")]
     pub validate_only: bool,
 }
-///  A single operation (create, update, remove) on a Keyword Plan ad group.
+/// A single operation (create, update, remove) on a Keyword Plan ad group.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KeywordPlanAdGroupOperation {
-    ///  The FieldMask that determines which resource fields are modified in an
-    ///  update.
+    /// The FieldMask that determines which resource fields are modified in an
+    /// update.
     #[prost(message, optional, tag="4")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  The mutate operation.
+    /// The mutate operation.
     #[prost(oneof="keyword_plan_ad_group_operation::Operation", tags="1, 2, 3")]
     pub operation: ::core::option::Option<keyword_plan_ad_group_operation::Operation>,
 }
 /// Nested message and enum types in `KeywordPlanAdGroupOperation`.
 pub mod keyword_plan_ad_group_operation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  Create operation: No resource name is expected for the new Keyword Plan
-        ///  ad group.
+        /// Create operation: No resource name is expected for the new Keyword Plan
+        /// ad group.
         #[prost(message, tag="1")]
         Create(super::super::resources::KeywordPlanAdGroup),
-        ///  Update operation: The Keyword Plan ad group is expected to have a valid
-        ///  resource name.
+        /// Update operation: The Keyword Plan ad group is expected to have a valid
+        /// resource name.
         #[prost(message, tag="2")]
         Update(super::super::resources::KeywordPlanAdGroup),
-        ///  Remove operation: A resource name for the removed Keyword Plan ad group
-        ///  is expected, in this format:
+        /// Remove operation: A resource name for the removed Keyword Plan ad group
+        /// is expected, in this format:
         ///
-        ///  `customers/{customer_id}/keywordPlanAdGroups/{kp_ad_group_id}`
+        /// `customers/{customer_id}/keywordPlanAdGroups/{kp_ad_group_id}`
         #[prost(string, tag="3")]
         Remove(::prost::alloc::string::String),
     }
 }
-///  Response message for a Keyword Plan ad group mutate.
+/// Response message for a Keyword Plan ad group mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateKeywordPlanAdGroupsResponse {
-    ///  Errors that pertain to operation failures in the partial failure mode.
-    ///  Returned only when partial_failure = true and all errors occur inside the
-    ///  operations. If any errors occur outside the operations (e.g. auth errors),
-    ///  we return an RPC level error.
+    /// Errors that pertain to operation failures in the partial failure mode.
+    /// Returned only when partial_failure = true and all errors occur inside the
+    /// operations. If any errors occur outside the operations (e.g. auth errors),
+    /// we return an RPC level error.
     #[prost(message, optional, tag="3")]
     pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
-    ///  All results for the mutate. The order of the results is determined by the
-    ///  order of the keywords in the original request.
+    /// All results for the mutate. The order of the results is determined by the
+    /// order of the keywords in the original request.
     #[prost(message, repeated, tag="2")]
     pub results: ::prost::alloc::vec::Vec<MutateKeywordPlanAdGroupResult>,
 }
-///  The result for the Keyword Plan ad group mutate.
+/// The result for the Keyword Plan ad group mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateKeywordPlanAdGroupResult {
-    ///  Returned for successful operations.
+    /// Returned for successful operations.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
@@ -15057,86 +15057,86 @@ pub mod keyword_plan_ad_group_service_client {
         }
     }
 }
-///  Request message for
-///  \[KeywordPlanCampaignKeywordService.GetKeywordPlanCampaignKeyword][google.ads.googleads.v9.services.KeywordPlanCampaignKeywordService.GetKeywordPlanCampaignKeyword\].
+/// Request message for
+/// \[KeywordPlanCampaignKeywordService.GetKeywordPlanCampaignKeyword][google.ads.googleads.v9.services.KeywordPlanCampaignKeywordService.GetKeywordPlanCampaignKeyword\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetKeywordPlanCampaignKeywordRequest {
-    ///  Required. The resource name of the plan to fetch.
+    /// Required. The resource name of the plan to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Request message for
-///  \[KeywordPlanCampaignKeywordService.MutateKeywordPlanCampaignKeywords][google.ads.googleads.v9.services.KeywordPlanCampaignKeywordService.MutateKeywordPlanCampaignKeywords\].
+/// Request message for
+/// \[KeywordPlanCampaignKeywordService.MutateKeywordPlanCampaignKeywords][google.ads.googleads.v9.services.KeywordPlanCampaignKeywordService.MutateKeywordPlanCampaignKeywords\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateKeywordPlanCampaignKeywordsRequest {
-    ///  Required. The ID of the customer whose campaign keywords are being modified.
+    /// Required. The ID of the customer whose campaign keywords are being modified.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The list of operations to perform on individual Keyword Plan campaign
-    ///  keywords.
+    /// Required. The list of operations to perform on individual Keyword Plan campaign
+    /// keywords.
     #[prost(message, repeated, tag="2")]
     pub operations: ::prost::alloc::vec::Vec<KeywordPlanCampaignKeywordOperation>,
-    ///  If true, successful operations will be carried out and invalid
-    ///  operations will return errors. If false, all operations will be carried
-    ///  out in one transaction if and only if they are all valid.
-    ///  Default is false.
+    /// If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, all operations will be carried
+    /// out in one transaction if and only if they are all valid.
+    /// Default is false.
     #[prost(bool, tag="3")]
     pub partial_failure: bool,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="4")]
     pub validate_only: bool,
 }
-///  A single operation (create, update, remove) on a Keyword Plan campaign
-///  keyword.
+/// A single operation (create, update, remove) on a Keyword Plan campaign
+/// keyword.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KeywordPlanCampaignKeywordOperation {
-    ///  The FieldMask that determines which resource fields are modified in an
-    ///  update.
+    /// The FieldMask that determines which resource fields are modified in an
+    /// update.
     #[prost(message, optional, tag="4")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  The mutate operation.
+    /// The mutate operation.
     #[prost(oneof="keyword_plan_campaign_keyword_operation::Operation", tags="1, 2, 3")]
     pub operation: ::core::option::Option<keyword_plan_campaign_keyword_operation::Operation>,
 }
 /// Nested message and enum types in `KeywordPlanCampaignKeywordOperation`.
 pub mod keyword_plan_campaign_keyword_operation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  Create operation: No resource name is expected for the new Keyword Plan
-        ///  campaign keyword.
+        /// Create operation: No resource name is expected for the new Keyword Plan
+        /// campaign keyword.
         #[prost(message, tag="1")]
         Create(super::super::resources::KeywordPlanCampaignKeyword),
-        ///  Update operation: The Keyword Plan campaign keyword expected to have a
-        ///  valid resource name.
+        /// Update operation: The Keyword Plan campaign keyword expected to have a
+        /// valid resource name.
         #[prost(message, tag="2")]
         Update(super::super::resources::KeywordPlanCampaignKeyword),
-        ///  Remove operation: A resource name for the removed Keyword Plan campaign
-        ///  keywords expected in this format:
+        /// Remove operation: A resource name for the removed Keyword Plan campaign
+        /// keywords expected in this format:
         ///
-        ///  `customers/{customer_id}/keywordPlanCampaignKeywords/{kp_campaign_keyword_id}`
+        /// `customers/{customer_id}/keywordPlanCampaignKeywords/{kp_campaign_keyword_id}`
         #[prost(string, tag="3")]
         Remove(::prost::alloc::string::String),
     }
 }
-///  Response message for a Keyword Plan campaign keyword mutate.
+/// Response message for a Keyword Plan campaign keyword mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateKeywordPlanCampaignKeywordsResponse {
-    ///  Errors that pertain to operation failures in the partial failure mode.
-    ///  Returned only when partial_failure = true and all errors occur inside the
-    ///  operations. If any errors occur outside the operations (e.g. auth errors),
-    ///  we return an RPC level error.
+    /// Errors that pertain to operation failures in the partial failure mode.
+    /// Returned only when partial_failure = true and all errors occur inside the
+    /// operations. If any errors occur outside the operations (e.g. auth errors),
+    /// we return an RPC level error.
     #[prost(message, optional, tag="3")]
     pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
-    ///  All results for the mutate.
+    /// All results for the mutate.
     #[prost(message, repeated, tag="2")]
     pub results: ::prost::alloc::vec::Vec<MutateKeywordPlanCampaignKeywordResult>,
 }
-///  The result for the Keyword Plan campaign keyword mutate.
+/// The result for the Keyword Plan campaign keyword mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateKeywordPlanCampaignKeywordResult {
-    ///  Returned for successful operations.
+    /// Returned for successful operations.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
@@ -15287,83 +15287,83 @@ pub mod keyword_plan_campaign_keyword_service_client {
         }
     }
 }
-///  Request message for \[KeywordPlanCampaignService.GetKeywordPlanCampaign][google.ads.googleads.v9.services.KeywordPlanCampaignService.GetKeywordPlanCampaign\].
+/// Request message for \[KeywordPlanCampaignService.GetKeywordPlanCampaign][google.ads.googleads.v9.services.KeywordPlanCampaignService.GetKeywordPlanCampaign\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetKeywordPlanCampaignRequest {
-    ///  Required. The resource name of the Keyword Plan campaign to fetch.
+    /// Required. The resource name of the Keyword Plan campaign to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Request message for
-///  \[KeywordPlanCampaignService.MutateKeywordPlanCampaigns][google.ads.googleads.v9.services.KeywordPlanCampaignService.MutateKeywordPlanCampaigns\].
+/// Request message for
+/// \[KeywordPlanCampaignService.MutateKeywordPlanCampaigns][google.ads.googleads.v9.services.KeywordPlanCampaignService.MutateKeywordPlanCampaigns\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateKeywordPlanCampaignsRequest {
-    ///  Required. The ID of the customer whose Keyword Plan campaigns are being modified.
+    /// Required. The ID of the customer whose Keyword Plan campaigns are being modified.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The list of operations to perform on individual Keyword Plan campaigns.
+    /// Required. The list of operations to perform on individual Keyword Plan campaigns.
     #[prost(message, repeated, tag="2")]
     pub operations: ::prost::alloc::vec::Vec<KeywordPlanCampaignOperation>,
-    ///  If true, successful operations will be carried out and invalid
-    ///  operations will return errors. If false, all operations will be carried
-    ///  out in one transaction if and only if they are all valid.
-    ///  Default is false.
+    /// If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, all operations will be carried
+    /// out in one transaction if and only if they are all valid.
+    /// Default is false.
     #[prost(bool, tag="3")]
     pub partial_failure: bool,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="4")]
     pub validate_only: bool,
 }
-///  A single operation (create, update, remove) on a Keyword Plan campaign.
+/// A single operation (create, update, remove) on a Keyword Plan campaign.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KeywordPlanCampaignOperation {
-    ///  The FieldMask that determines which resource fields are modified in an
-    ///  update.
+    /// The FieldMask that determines which resource fields are modified in an
+    /// update.
     #[prost(message, optional, tag="4")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  The mutate operation.
+    /// The mutate operation.
     #[prost(oneof="keyword_plan_campaign_operation::Operation", tags="1, 2, 3")]
     pub operation: ::core::option::Option<keyword_plan_campaign_operation::Operation>,
 }
 /// Nested message and enum types in `KeywordPlanCampaignOperation`.
 pub mod keyword_plan_campaign_operation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  Create operation: No resource name is expected for the new Keyword Plan
-        ///  campaign.
+        /// Create operation: No resource name is expected for the new Keyword Plan
+        /// campaign.
         #[prost(message, tag="1")]
         Create(super::super::resources::KeywordPlanCampaign),
-        ///  Update operation: The Keyword Plan campaign is expected to have a valid
-        ///  resource name.
+        /// Update operation: The Keyword Plan campaign is expected to have a valid
+        /// resource name.
         #[prost(message, tag="2")]
         Update(super::super::resources::KeywordPlanCampaign),
-        ///  Remove operation: A resource name for the removed Keyword Plan campaign
-        ///  is expected, in this format:
+        /// Remove operation: A resource name for the removed Keyword Plan campaign
+        /// is expected, in this format:
         ///
-        ///  `customers/{customer_id}/keywordPlanCampaigns/{keywordPlan_campaign_id}`
+        /// `customers/{customer_id}/keywordPlanCampaigns/{keywordPlan_campaign_id}`
         #[prost(string, tag="3")]
         Remove(::prost::alloc::string::String),
     }
 }
-///  Response message for a Keyword Plan campaign mutate.
+/// Response message for a Keyword Plan campaign mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateKeywordPlanCampaignsResponse {
-    ///  Errors that pertain to operation failures in the partial failure mode.
-    ///  Returned only when partial_failure = true and all errors occur inside the
-    ///  operations. If any errors occur outside the operations (e.g. auth errors),
-    ///  we return an RPC level error.
+    /// Errors that pertain to operation failures in the partial failure mode.
+    /// Returned only when partial_failure = true and all errors occur inside the
+    /// operations. If any errors occur outside the operations (e.g. auth errors),
+    /// we return an RPC level error.
     #[prost(message, optional, tag="3")]
     pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
-    ///  All results for the mutate.
+    /// All results for the mutate.
     #[prost(message, repeated, tag="2")]
     pub results: ::prost::alloc::vec::Vec<MutateKeywordPlanCampaignResult>,
 }
-///  The result for the Keyword Plan campaign mutate.
+/// The result for the Keyword Plan campaign mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateKeywordPlanCampaignResult {
-    ///  Returned for successful operations.
+    /// Returned for successful operations.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
@@ -15513,285 +15513,285 @@ pub mod keyword_plan_campaign_service_client {
         }
     }
 }
-///  Request message for \[KeywordPlanService.GetKeywordPlan][google.ads.googleads.v9.services.KeywordPlanService.GetKeywordPlan\].
+/// Request message for \[KeywordPlanService.GetKeywordPlan][google.ads.googleads.v9.services.KeywordPlanService.GetKeywordPlan\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetKeywordPlanRequest {
-    ///  Required. The resource name of the plan to fetch.
+    /// Required. The resource name of the plan to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Request message for \[KeywordPlanService.MutateKeywordPlans][google.ads.googleads.v9.services.KeywordPlanService.MutateKeywordPlans\].
+/// Request message for \[KeywordPlanService.MutateKeywordPlans][google.ads.googleads.v9.services.KeywordPlanService.MutateKeywordPlans\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateKeywordPlansRequest {
-    ///  Required. The ID of the customer whose keyword plans are being modified.
+    /// Required. The ID of the customer whose keyword plans are being modified.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The list of operations to perform on individual keyword plans.
+    /// Required. The list of operations to perform on individual keyword plans.
     #[prost(message, repeated, tag="2")]
     pub operations: ::prost::alloc::vec::Vec<KeywordPlanOperation>,
-    ///  If true, successful operations will be carried out and invalid
-    ///  operations will return errors. If false, all operations will be carried
-    ///  out in one transaction if and only if they are all valid.
-    ///  Default is false.
+    /// If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, all operations will be carried
+    /// out in one transaction if and only if they are all valid.
+    /// Default is false.
     #[prost(bool, tag="3")]
     pub partial_failure: bool,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="4")]
     pub validate_only: bool,
 }
-///  A single operation (create, update, remove) on a keyword plan.
+/// A single operation (create, update, remove) on a keyword plan.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KeywordPlanOperation {
-    ///  The FieldMask that determines which resource fields are modified in an
-    ///  update.
+    /// The FieldMask that determines which resource fields are modified in an
+    /// update.
     #[prost(message, optional, tag="4")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  The mutate operation.
+    /// The mutate operation.
     #[prost(oneof="keyword_plan_operation::Operation", tags="1, 2, 3")]
     pub operation: ::core::option::Option<keyword_plan_operation::Operation>,
 }
 /// Nested message and enum types in `KeywordPlanOperation`.
 pub mod keyword_plan_operation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  Create operation: No resource name is expected for the new keyword plan.
+        /// Create operation: No resource name is expected for the new keyword plan.
         #[prost(message, tag="1")]
         Create(super::super::resources::KeywordPlan),
-        ///  Update operation: The keyword plan is expected to have a valid resource
-        ///  name.
+        /// Update operation: The keyword plan is expected to have a valid resource
+        /// name.
         #[prost(message, tag="2")]
         Update(super::super::resources::KeywordPlan),
-        ///  Remove operation: A resource name for the removed keyword plan is
-        ///  expected in this format:
+        /// Remove operation: A resource name for the removed keyword plan is
+        /// expected in this format:
         ///
-        ///  `customers/{customer_id}/keywordPlans/{keyword_plan_id}`
+        /// `customers/{customer_id}/keywordPlans/{keyword_plan_id}`
         #[prost(string, tag="3")]
         Remove(::prost::alloc::string::String),
     }
 }
-///  Response message for a keyword plan mutate.
+/// Response message for a keyword plan mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateKeywordPlansResponse {
-    ///  Errors that pertain to operation failures in the partial failure mode.
-    ///  Returned only when partial_failure = true and all errors occur inside the
-    ///  operations. If any errors occur outside the operations (e.g. auth errors),
-    ///  we return an RPC level error.
+    /// Errors that pertain to operation failures in the partial failure mode.
+    /// Returned only when partial_failure = true and all errors occur inside the
+    /// operations. If any errors occur outside the operations (e.g. auth errors),
+    /// we return an RPC level error.
     #[prost(message, optional, tag="3")]
     pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
-    ///  All results for the mutate.
+    /// All results for the mutate.
     #[prost(message, repeated, tag="2")]
     pub results: ::prost::alloc::vec::Vec<MutateKeywordPlansResult>,
 }
-///  The result for the keyword plan mutate.
+/// The result for the keyword plan mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateKeywordPlansResult {
-    ///  Returned for successful operations.
+    /// Returned for successful operations.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Request message for \[KeywordPlanService.GenerateForecastCurve][google.ads.googleads.v9.services.KeywordPlanService.GenerateForecastCurve\].
+/// Request message for \[KeywordPlanService.GenerateForecastCurve][google.ads.googleads.v9.services.KeywordPlanService.GenerateForecastCurve\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateForecastCurveRequest {
-    ///  Required. The resource name of the keyword plan to be forecasted.
+    /// Required. The resource name of the keyword plan to be forecasted.
     #[prost(string, tag="1")]
     pub keyword_plan: ::prost::alloc::string::String,
 }
-///  Response message for \[KeywordPlanService.GenerateForecastCurve][google.ads.googleads.v9.services.KeywordPlanService.GenerateForecastCurve\].
+/// Response message for \[KeywordPlanService.GenerateForecastCurve][google.ads.googleads.v9.services.KeywordPlanService.GenerateForecastCurve\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateForecastCurveResponse {
-    ///  List of forecast curves for the keyword plan campaign.
-    ///  One maximum.
+    /// List of forecast curves for the keyword plan campaign.
+    /// One maximum.
     #[prost(message, repeated, tag="1")]
     pub campaign_forecast_curves: ::prost::alloc::vec::Vec<KeywordPlanCampaignForecastCurve>,
 }
-///  Request message for \[KeywordPlanService.GenerateForecastTimeSeries][google.ads.googleads.v9.services.KeywordPlanService.GenerateForecastTimeSeries\].
+/// Request message for \[KeywordPlanService.GenerateForecastTimeSeries][google.ads.googleads.v9.services.KeywordPlanService.GenerateForecastTimeSeries\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateForecastTimeSeriesRequest {
-    ///  Required. The resource name of the keyword plan to be forecasted.
+    /// Required. The resource name of the keyword plan to be forecasted.
     #[prost(string, tag="1")]
     pub keyword_plan: ::prost::alloc::string::String,
 }
-///  Response message for \[KeywordPlanService.GenerateForecastTimeSeries][google.ads.googleads.v9.services.KeywordPlanService.GenerateForecastTimeSeries\].
+/// Response message for \[KeywordPlanService.GenerateForecastTimeSeries][google.ads.googleads.v9.services.KeywordPlanService.GenerateForecastTimeSeries\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateForecastTimeSeriesResponse {
-    ///  List of weekly time series forecasts for the keyword plan campaign.
-    ///  One maximum.
+    /// List of weekly time series forecasts for the keyword plan campaign.
+    /// One maximum.
     #[prost(message, repeated, tag="1")]
     pub weekly_time_series_forecasts: ::prost::alloc::vec::Vec<KeywordPlanWeeklyTimeSeriesForecast>,
 }
-///  Request message for \[KeywordPlanService.GenerateForecastMetrics][google.ads.googleads.v9.services.KeywordPlanService.GenerateForecastMetrics\].
+/// Request message for \[KeywordPlanService.GenerateForecastMetrics][google.ads.googleads.v9.services.KeywordPlanService.GenerateForecastMetrics\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateForecastMetricsRequest {
-    ///  Required. The resource name of the keyword plan to be forecasted.
+    /// Required. The resource name of the keyword plan to be forecasted.
     #[prost(string, tag="1")]
     pub keyword_plan: ::prost::alloc::string::String,
 }
-///  Response message for \[KeywordPlanService.GenerateForecastMetrics][google.ads.googleads.v9.services.KeywordPlanService.GenerateForecastMetrics\].
+/// Response message for \[KeywordPlanService.GenerateForecastMetrics][google.ads.googleads.v9.services.KeywordPlanService.GenerateForecastMetrics\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateForecastMetricsResponse {
-    ///  List of campaign forecasts.
-    ///  One maximum.
+    /// List of campaign forecasts.
+    /// One maximum.
     #[prost(message, repeated, tag="1")]
     pub campaign_forecasts: ::prost::alloc::vec::Vec<KeywordPlanCampaignForecast>,
-    ///  List of ad group forecasts.
+    /// List of ad group forecasts.
     #[prost(message, repeated, tag="2")]
     pub ad_group_forecasts: ::prost::alloc::vec::Vec<KeywordPlanAdGroupForecast>,
-    ///  List of keyword forecasts.
+    /// List of keyword forecasts.
     #[prost(message, repeated, tag="3")]
     pub keyword_forecasts: ::prost::alloc::vec::Vec<KeywordPlanKeywordForecast>,
 }
-///  A campaign forecast.
+/// A campaign forecast.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KeywordPlanCampaignForecast {
-    ///  The resource name of the Keyword Plan campaign related to the forecast.
+    /// The resource name of the Keyword Plan campaign related to the forecast.
     ///
-    ///  `customers/{customer_id}/keywordPlanCampaigns/{keyword_plan_campaign_id}`
+    /// `customers/{customer_id}/keywordPlanCampaigns/{keyword_plan_campaign_id}`
     #[prost(string, optional, tag="3")]
     pub keyword_plan_campaign: ::core::option::Option<::prost::alloc::string::String>,
-    ///  The forecast for the Keyword Plan campaign.
+    /// The forecast for the Keyword Plan campaign.
     #[prost(message, optional, tag="2")]
     pub campaign_forecast: ::core::option::Option<ForecastMetrics>,
 }
-///  An ad group forecast.
+/// An ad group forecast.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KeywordPlanAdGroupForecast {
-    ///  The resource name of the Keyword Plan ad group related to the forecast.
+    /// The resource name of the Keyword Plan ad group related to the forecast.
     ///
-    ///  `customers/{customer_id}/keywordPlanAdGroups/{keyword_plan_ad_group_id}`
+    /// `customers/{customer_id}/keywordPlanAdGroups/{keyword_plan_ad_group_id}`
     #[prost(string, optional, tag="3")]
     pub keyword_plan_ad_group: ::core::option::Option<::prost::alloc::string::String>,
-    ///  The forecast for the Keyword Plan ad group.
+    /// The forecast for the Keyword Plan ad group.
     #[prost(message, optional, tag="2")]
     pub ad_group_forecast: ::core::option::Option<ForecastMetrics>,
 }
-///  A keyword forecast.
+/// A keyword forecast.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KeywordPlanKeywordForecast {
-    ///  The resource name of the Keyword Plan keyword related to the forecast.
+    /// The resource name of the Keyword Plan keyword related to the forecast.
     ///
-    ///  `customers/{customer_id}/keywordPlanAdGroupKeywords/{keyword_plan_ad_group_keyword_id}`
+    /// `customers/{customer_id}/keywordPlanAdGroupKeywords/{keyword_plan_ad_group_keyword_id}`
     #[prost(string, optional, tag="3")]
     pub keyword_plan_ad_group_keyword: ::core::option::Option<::prost::alloc::string::String>,
-    ///  The forecast for the Keyword Plan keyword.
+    /// The forecast for the Keyword Plan keyword.
     #[prost(message, optional, tag="2")]
     pub keyword_forecast: ::core::option::Option<ForecastMetrics>,
 }
-///  The forecast curve for the campaign.
+/// The forecast curve for the campaign.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KeywordPlanCampaignForecastCurve {
-    ///  The resource name of the Keyword Plan campaign related to the forecast.
+    /// The resource name of the Keyword Plan campaign related to the forecast.
     ///
-    ///  `customers/{customer_id}/keywordPlanCampaigns/{keyword_plan_campaign_id}`
+    /// `customers/{customer_id}/keywordPlanCampaigns/{keyword_plan_campaign_id}`
     #[prost(string, optional, tag="3")]
     pub keyword_plan_campaign: ::core::option::Option<::prost::alloc::string::String>,
-    ///  The max cpc bid forecast curve for the campaign.
+    /// The max cpc bid forecast curve for the campaign.
     #[prost(message, optional, tag="2")]
     pub max_cpc_bid_forecast_curve: ::core::option::Option<KeywordPlanMaxCpcBidForecastCurve>,
 }
-///  The max cpc bid forecast curve.
+/// The max cpc bid forecast curve.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KeywordPlanMaxCpcBidForecastCurve {
-    ///  The forecasts for the Keyword Plan campaign at different max CPC bids.
+    /// The forecasts for the Keyword Plan campaign at different max CPC bids.
     #[prost(message, repeated, tag="1")]
     pub max_cpc_bid_forecasts: ::prost::alloc::vec::Vec<KeywordPlanMaxCpcBidForecast>,
 }
-///  The forecast of the campaign at a specific bid.
+/// The forecast of the campaign at a specific bid.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KeywordPlanMaxCpcBidForecast {
-    ///  The max cpc bid in micros.
+    /// The max cpc bid in micros.
     #[prost(int64, optional, tag="3")]
     pub max_cpc_bid_micros: ::core::option::Option<i64>,
-    ///  The forecast for the Keyword Plan campaign at the specific bid.
+    /// The forecast for the Keyword Plan campaign at the specific bid.
     #[prost(message, optional, tag="2")]
     pub max_cpc_bid_forecast: ::core::option::Option<ForecastMetrics>,
 }
-///  The weekly time series forecast for the keyword plan campaign.
+/// The weekly time series forecast for the keyword plan campaign.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KeywordPlanWeeklyTimeSeriesForecast {
-    ///  The resource name of the Keyword Plan campaign related to the forecast.
+    /// The resource name of the Keyword Plan campaign related to the forecast.
     ///
-    ///  `customers/{customer_id}/keywordPlanCampaigns/{keyword_plan_campaign_id}`
+    /// `customers/{customer_id}/keywordPlanCampaigns/{keyword_plan_campaign_id}`
     #[prost(string, optional, tag="1")]
     pub keyword_plan_campaign: ::core::option::Option<::prost::alloc::string::String>,
-    ///  The forecasts for the Keyword Plan campaign at different max CPC bids.
+    /// The forecasts for the Keyword Plan campaign at different max CPC bids.
     #[prost(message, repeated, tag="2")]
     pub weekly_forecasts: ::prost::alloc::vec::Vec<KeywordPlanWeeklyForecast>,
 }
-///  The forecast of the campaign for the week starting start_date.
+/// The forecast of the campaign for the week starting start_date.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KeywordPlanWeeklyForecast {
-    ///  The start date, in yyyy-mm-dd format. This date is inclusive.
+    /// The start date, in yyyy-mm-dd format. This date is inclusive.
     #[prost(string, optional, tag="1")]
     pub start_date: ::core::option::Option<::prost::alloc::string::String>,
-    ///  The forecast for the Keyword Plan campaign for the week.
+    /// The forecast for the Keyword Plan campaign for the week.
     #[prost(message, optional, tag="2")]
     pub forecast: ::core::option::Option<ForecastMetrics>,
 }
-///  Forecast metrics.
+/// Forecast metrics.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ForecastMetrics {
-    ///  Impressions
+    /// Impressions
     #[prost(double, optional, tag="7")]
     pub impressions: ::core::option::Option<f64>,
-    ///  Ctr
+    /// Ctr
     #[prost(double, optional, tag="8")]
     pub ctr: ::core::option::Option<f64>,
-    ///  AVG cpc
+    /// AVG cpc
     #[prost(int64, optional, tag="9")]
     pub average_cpc: ::core::option::Option<i64>,
-    ///  Clicks
+    /// Clicks
     #[prost(double, optional, tag="10")]
     pub clicks: ::core::option::Option<f64>,
-    ///  Cost
+    /// Cost
     #[prost(int64, optional, tag="11")]
     pub cost_micros: ::core::option::Option<i64>,
 }
-///  Request message for \[KeywordPlanService.GenerateHistoricalMetrics][google.ads.googleads.v9.services.KeywordPlanService.GenerateHistoricalMetrics\].
+/// Request message for \[KeywordPlanService.GenerateHistoricalMetrics][google.ads.googleads.v9.services.KeywordPlanService.GenerateHistoricalMetrics\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateHistoricalMetricsRequest {
-    ///  Required. The resource name of the keyword plan of which historical metrics are
-    ///  requested.
+    /// Required. The resource name of the keyword plan of which historical metrics are
+    /// requested.
     #[prost(string, tag="1")]
     pub keyword_plan: ::prost::alloc::string::String,
-    ///  The aggregate fields to include in response.
+    /// The aggregate fields to include in response.
     #[prost(message, optional, tag="2")]
     pub aggregate_metrics: ::core::option::Option<super::common::KeywordPlanAggregateMetrics>,
-    ///  The options for historical metrics data.
+    /// The options for historical metrics data.
     #[prost(message, optional, tag="3")]
     pub historical_metrics_options: ::core::option::Option<super::common::HistoricalMetricsOptions>,
 }
-///  Response message for \[KeywordPlanService.GenerateHistoricalMetrics][google.ads.googleads.v9.services.KeywordPlanService.GenerateHistoricalMetrics\].
+/// Response message for \[KeywordPlanService.GenerateHistoricalMetrics][google.ads.googleads.v9.services.KeywordPlanService.GenerateHistoricalMetrics\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateHistoricalMetricsResponse {
-    ///  List of keyword historical metrics.
+    /// List of keyword historical metrics.
     #[prost(message, repeated, tag="1")]
     pub metrics: ::prost::alloc::vec::Vec<KeywordPlanKeywordHistoricalMetrics>,
-    ///  The aggregate metrics for all the keywords in the keyword planner plan.
+    /// The aggregate metrics for all the keywords in the keyword planner plan.
     #[prost(message, optional, tag="2")]
     pub aggregate_metric_results: ::core::option::Option<super::common::KeywordPlanAggregateMetricResults>,
 }
-///  A keyword historical metrics.
+/// A keyword historical metrics.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KeywordPlanKeywordHistoricalMetrics {
-    ///  The text of the query associated with one or more ad_group_keywords in the
-    ///  plan.
+    /// The text of the query associated with one or more ad_group_keywords in the
+    /// plan.
     ///
-    ///  Note that we de-dupe your keywords list, eliminating close variants before
-    ///  returning the plan's keywords as text. For example, if your plan originally
-    ///  contained the keywords 'car' and 'cars', the returned search query will
-    ///  only contain 'cars'.
-    ///  Starting V5, the list of de-duped queries will be included in
-    ///  close_variants field.
+    /// Note that we de-dupe your keywords list, eliminating close variants before
+    /// returning the plan's keywords as text. For example, if your plan originally
+    /// contained the keywords 'car' and 'cars', the returned search query will
+    /// only contain 'cars'.
+    /// Starting V5, the list of de-duped queries will be included in
+    /// close_variants field.
     #[prost(string, optional, tag="4")]
     pub search_query: ::core::option::Option<::prost::alloc::string::String>,
-    ///  The list of close variant queries for search_query whose search results
-    ///  are combined into the search_query.
+    /// The list of close variant queries for search_query whose search results
+    /// are combined into the search_query.
     #[prost(string, repeated, tag="3")]
     pub close_variants: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    ///  The historical metrics for the query associated with one or more
-    ///  ad_group_keywords in the plan.
+    /// The historical metrics for the query associated with one or more
+    /// ad_group_keywords in the plan.
     #[prost(message, optional, tag="2")]
     pub keyword_metrics: ::core::option::Option<super::common::KeywordPlanHistoricalMetrics>,
 }
@@ -16073,87 +16073,87 @@ pub mod keyword_plan_service_client {
         }
     }
 }
-///  Request message for \[LabelService.GetLabel][google.ads.googleads.v9.services.LabelService.GetLabel\].
+/// Request message for \[LabelService.GetLabel][google.ads.googleads.v9.services.LabelService.GetLabel\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetLabelRequest {
-    ///  Required. The resource name of the label to fetch.
+    /// Required. The resource name of the label to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Request message for \[LabelService.MutateLabels][google.ads.googleads.v9.services.LabelService.MutateLabels\].
+/// Request message for \[LabelService.MutateLabels][google.ads.googleads.v9.services.LabelService.MutateLabels\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateLabelsRequest {
-    ///  Required. ID of the customer whose labels are being modified.
+    /// Required. ID of the customer whose labels are being modified.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The list of operations to perform on labels.
+    /// Required. The list of operations to perform on labels.
     #[prost(message, repeated, tag="2")]
     pub operations: ::prost::alloc::vec::Vec<LabelOperation>,
-    ///  If true, successful operations will be carried out and invalid
-    ///  operations will return errors. If false, all operations will be carried
-    ///  out in one transaction if and only if they are all valid.
-    ///  Default is false.
+    /// If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, all operations will be carried
+    /// out in one transaction if and only if they are all valid.
+    /// Default is false.
     #[prost(bool, tag="3")]
     pub partial_failure: bool,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="4")]
     pub validate_only: bool,
-    ///  The response content type setting. Determines whether the mutable resource
-    ///  or just the resource name should be returned post mutation.
+    /// The response content type setting. Determines whether the mutable resource
+    /// or just the resource name should be returned post mutation.
     #[prost(enumeration="super::enums::response_content_type_enum::ResponseContentType", tag="5")]
     pub response_content_type: i32,
 }
-///  A single operation (create, remove, update) on a label.
+/// A single operation (create, remove, update) on a label.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LabelOperation {
-    ///  FieldMask that determines which resource fields are modified in an update.
+    /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag="4")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  The mutate operation.
+    /// The mutate operation.
     #[prost(oneof="label_operation::Operation", tags="1, 2, 3")]
     pub operation: ::core::option::Option<label_operation::Operation>,
 }
 /// Nested message and enum types in `LabelOperation`.
 pub mod label_operation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  Create operation: No resource name is expected for the new label.
+        /// Create operation: No resource name is expected for the new label.
         #[prost(message, tag="1")]
         Create(super::super::resources::Label),
-        ///  Update operation: The label is expected to have a valid resource name.
+        /// Update operation: The label is expected to have a valid resource name.
         #[prost(message, tag="2")]
         Update(super::super::resources::Label),
-        ///  Remove operation: A resource name for the label being removed, in
-        ///  this format:
+        /// Remove operation: A resource name for the label being removed, in
+        /// this format:
         ///
-        ///  `customers/{customer_id}/labels/{label_id}`
+        /// `customers/{customer_id}/labels/{label_id}`
         #[prost(string, tag="3")]
         Remove(::prost::alloc::string::String),
     }
 }
-///  Response message for a labels mutate.
+/// Response message for a labels mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateLabelsResponse {
-    ///  Errors that pertain to operation failures in the partial failure mode.
-    ///  Returned only when partial_failure = true and all errors occur inside the
-    ///  operations. If any errors occur outside the operations (e.g. auth errors),
-    ///  we return an RPC level error.
+    /// Errors that pertain to operation failures in the partial failure mode.
+    /// Returned only when partial_failure = true and all errors occur inside the
+    /// operations. If any errors occur outside the operations (e.g. auth errors),
+    /// we return an RPC level error.
     #[prost(message, optional, tag="3")]
     pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
-    ///  All results for the mutate.
+    /// All results for the mutate.
     #[prost(message, repeated, tag="2")]
     pub results: ::prost::alloc::vec::Vec<MutateLabelResult>,
 }
-///  The result for a label mutate.
+/// The result for a label mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateLabelResult {
-    ///  Returned for successful operations.
+    /// Returned for successful operations.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
-    ///  The mutated label with only mutable fields after mutate. The field will
-    ///  only be returned when response_content_type is set to "MUTABLE_RESOURCE".
+    /// The mutated label with only mutable fields after mutate. The field will
+    /// only be returned when response_content_type is set to "MUTABLE_RESOURCE".
     #[prost(message, optional, tag="2")]
     pub label: ::core::option::Option<super::resources::Label>,
 }
@@ -16302,76 +16302,76 @@ pub mod label_service_client {
         }
     }
 }
-///  Request message for \[MediaFileService.GetMediaFile][google.ads.googleads.v9.services.MediaFileService.GetMediaFile\]
+/// Request message for \[MediaFileService.GetMediaFile][google.ads.googleads.v9.services.MediaFileService.GetMediaFile\]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetMediaFileRequest {
-    ///  Required. The resource name of the media file to fetch.
+    /// Required. The resource name of the media file to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Request message for \[MediaFileService.MutateMediaFiles][google.ads.googleads.v9.services.MediaFileService.MutateMediaFiles\]
+/// Request message for \[MediaFileService.MutateMediaFiles][google.ads.googleads.v9.services.MediaFileService.MutateMediaFiles\]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateMediaFilesRequest {
-    ///  Required. The ID of the customer whose media files are being modified.
+    /// Required. The ID of the customer whose media files are being modified.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The list of operations to perform on individual media file.
+    /// Required. The list of operations to perform on individual media file.
     #[prost(message, repeated, tag="2")]
     pub operations: ::prost::alloc::vec::Vec<MediaFileOperation>,
-    ///  If true, successful operations will be carried out and invalid
-    ///  operations will return errors. If false, all operations will be carried
-    ///  out in one transaction if and only if they are all valid.
-    ///  Default is false.
+    /// If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, all operations will be carried
+    /// out in one transaction if and only if they are all valid.
+    /// Default is false.
     #[prost(bool, tag="3")]
     pub partial_failure: bool,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="4")]
     pub validate_only: bool,
-    ///  The response content type setting. Determines whether the mutable resource
-    ///  or just the resource name should be returned post mutation.
+    /// The response content type setting. Determines whether the mutable resource
+    /// or just the resource name should be returned post mutation.
     #[prost(enumeration="super::enums::response_content_type_enum::ResponseContentType", tag="5")]
     pub response_content_type: i32,
 }
-///  A single operation to create media file.
+/// A single operation to create media file.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MediaFileOperation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[prost(oneof="media_file_operation::Operation", tags="1")]
     pub operation: ::core::option::Option<media_file_operation::Operation>,
 }
 /// Nested message and enum types in `MediaFileOperation`.
 pub mod media_file_operation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  Create operation: No resource name is expected for the new media file.
+        /// Create operation: No resource name is expected for the new media file.
         #[prost(message, tag="1")]
         Create(super::super::resources::MediaFile),
     }
 }
-///  Response message for a media file mutate.
+/// Response message for a media file mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateMediaFilesResponse {
-    ///  Errors that pertain to operation failures in the partial failure mode.
-    ///  Returned only when partial_failure = true and all errors occur inside the
-    ///  operations. If any errors occur outside the operations (e.g. auth errors),
-    ///  we return an RPC level error.
+    /// Errors that pertain to operation failures in the partial failure mode.
+    /// Returned only when partial_failure = true and all errors occur inside the
+    /// operations. If any errors occur outside the operations (e.g. auth errors),
+    /// we return an RPC level error.
     #[prost(message, optional, tag="3")]
     pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
-    ///  All results for the mutate.
+    /// All results for the mutate.
     #[prost(message, repeated, tag="2")]
     pub results: ::prost::alloc::vec::Vec<MutateMediaFileResult>,
 }
-///  The result for the media file mutate.
+/// The result for the media file mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateMediaFileResult {
-    ///  The resource name returned for successful operations.
+    /// The resource name returned for successful operations.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
-    ///  The mutated media file with only mutable fields after mutate. The field
-    ///  will only be returned when response_content_type is set to
-    ///  "MUTABLE_RESOURCE".
+    /// The mutated media file with only mutable fields after mutate. The field
+    /// will only be returned when response_content_type is set to
+    /// "MUTABLE_RESOURCE".
     #[prost(message, optional, tag="2")]
     pub media_file: ::core::option::Option<super::resources::MediaFile>,
 }
@@ -16518,75 +16518,75 @@ pub mod media_file_service_client {
         }
     }
 }
-///  Request message for \[RemarketingActionService.GetRemarketingAction][google.ads.googleads.v9.services.RemarketingActionService.GetRemarketingAction\].
+/// Request message for \[RemarketingActionService.GetRemarketingAction][google.ads.googleads.v9.services.RemarketingActionService.GetRemarketingAction\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetRemarketingActionRequest {
-    ///  Required. The resource name of the remarketing action to fetch.
+    /// Required. The resource name of the remarketing action to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Request message for \[RemarketingActionService.MutateRemarketingActions][google.ads.googleads.v9.services.RemarketingActionService.MutateRemarketingActions\].
+/// Request message for \[RemarketingActionService.MutateRemarketingActions][google.ads.googleads.v9.services.RemarketingActionService.MutateRemarketingActions\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateRemarketingActionsRequest {
-    ///  Required. The ID of the customer whose remarketing actions are being modified.
+    /// Required. The ID of the customer whose remarketing actions are being modified.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The list of operations to perform on individual remarketing actions.
+    /// Required. The list of operations to perform on individual remarketing actions.
     #[prost(message, repeated, tag="2")]
     pub operations: ::prost::alloc::vec::Vec<RemarketingActionOperation>,
-    ///  If true, successful operations will be carried out and invalid
-    ///  operations will return errors. If false, all operations will be carried
-    ///  out in one transaction if and only if they are all valid.
-    ///  Default is false.
+    /// If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, all operations will be carried
+    /// out in one transaction if and only if they are all valid.
+    /// Default is false.
     #[prost(bool, tag="3")]
     pub partial_failure: bool,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="4")]
     pub validate_only: bool,
 }
-///  A single operation (create, update) on a remarketing action.
+/// A single operation (create, update) on a remarketing action.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RemarketingActionOperation {
-    ///  FieldMask that determines which resource fields are modified in an update.
+    /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag="4")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  The mutate operation.
+    /// The mutate operation.
     #[prost(oneof="remarketing_action_operation::Operation", tags="1, 2")]
     pub operation: ::core::option::Option<remarketing_action_operation::Operation>,
 }
 /// Nested message and enum types in `RemarketingActionOperation`.
 pub mod remarketing_action_operation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  Create operation: No resource name is expected for the new remarketing
-        ///  action.
+        /// Create operation: No resource name is expected for the new remarketing
+        /// action.
         #[prost(message, tag="1")]
         Create(super::super::resources::RemarketingAction),
-        ///  Update operation: The remarketing action is expected to have a valid
-        ///  resource name.
+        /// Update operation: The remarketing action is expected to have a valid
+        /// resource name.
         #[prost(message, tag="2")]
         Update(super::super::resources::RemarketingAction),
     }
 }
-///  Response message for remarketing action mutate.
+/// Response message for remarketing action mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateRemarketingActionsResponse {
-    ///  Errors that pertain to operation failures in the partial failure mode.
-    ///  Returned only when partial_failure = true and all errors occur inside the
-    ///  operations. If any errors occur outside the operations (e.g. auth errors),
-    ///  we return an RPC level error.
+    /// Errors that pertain to operation failures in the partial failure mode.
+    /// Returned only when partial_failure = true and all errors occur inside the
+    /// operations. If any errors occur outside the operations (e.g. auth errors),
+    /// we return an RPC level error.
     #[prost(message, optional, tag="3")]
     pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
-    ///  All results for the mutate.
+    /// All results for the mutate.
     #[prost(message, repeated, tag="2")]
     pub results: ::prost::alloc::vec::Vec<MutateRemarketingActionResult>,
 }
-///  The result for the remarketing action mutate.
+/// The result for the remarketing action mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateRemarketingActionResult {
-    ///  Returned for successful operations.
+    /// Returned for successful operations.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
@@ -16727,83 +16727,83 @@ pub mod remarketing_action_service_client {
         }
     }
 }
-///  Request message for \[SharedCriterionService.GetSharedCriterion][google.ads.googleads.v9.services.SharedCriterionService.GetSharedCriterion\].
+/// Request message for \[SharedCriterionService.GetSharedCriterion][google.ads.googleads.v9.services.SharedCriterionService.GetSharedCriterion\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetSharedCriterionRequest {
-    ///  Required. The resource name of the shared criterion to fetch.
+    /// Required. The resource name of the shared criterion to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Request message for \[SharedCriterionService.MutateSharedCriteria][google.ads.googleads.v9.services.SharedCriterionService.MutateSharedCriteria\].
+/// Request message for \[SharedCriterionService.MutateSharedCriteria][google.ads.googleads.v9.services.SharedCriterionService.MutateSharedCriteria\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateSharedCriteriaRequest {
-    ///  Required. The ID of the customer whose shared criteria are being modified.
+    /// Required. The ID of the customer whose shared criteria are being modified.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The list of operations to perform on individual shared criteria.
+    /// Required. The list of operations to perform on individual shared criteria.
     #[prost(message, repeated, tag="2")]
     pub operations: ::prost::alloc::vec::Vec<SharedCriterionOperation>,
-    ///  If true, successful operations will be carried out and invalid
-    ///  operations will return errors. If false, all operations will be carried
-    ///  out in one transaction if and only if they are all valid.
-    ///  Default is false.
+    /// If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, all operations will be carried
+    /// out in one transaction if and only if they are all valid.
+    /// Default is false.
     #[prost(bool, tag="3")]
     pub partial_failure: bool,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="4")]
     pub validate_only: bool,
-    ///  The response content type setting. Determines whether the mutable resource
-    ///  or just the resource name should be returned post mutation.
+    /// The response content type setting. Determines whether the mutable resource
+    /// or just the resource name should be returned post mutation.
     #[prost(enumeration="super::enums::response_content_type_enum::ResponseContentType", tag="5")]
     pub response_content_type: i32,
 }
-///  A single operation (create, remove) on an shared criterion.
+/// A single operation (create, remove) on an shared criterion.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SharedCriterionOperation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[prost(oneof="shared_criterion_operation::Operation", tags="1, 3")]
     pub operation: ::core::option::Option<shared_criterion_operation::Operation>,
 }
 /// Nested message and enum types in `SharedCriterionOperation`.
 pub mod shared_criterion_operation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  Create operation: No resource name is expected for the new shared
-        ///  criterion.
+        /// Create operation: No resource name is expected for the new shared
+        /// criterion.
         #[prost(message, tag="1")]
         Create(super::super::resources::SharedCriterion),
-        ///  Remove operation: A resource name for the removed shared criterion is
-        ///  expected, in this format:
+        /// Remove operation: A resource name for the removed shared criterion is
+        /// expected, in this format:
         ///
-        ///  `customers/{customer_id}/sharedCriteria/{shared_set_id}~{criterion_id}`
+        /// `customers/{customer_id}/sharedCriteria/{shared_set_id}~{criterion_id}`
         #[prost(string, tag="3")]
         Remove(::prost::alloc::string::String),
     }
 }
-///  Response message for a shared criterion mutate.
+/// Response message for a shared criterion mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateSharedCriteriaResponse {
-    ///  Errors that pertain to operation failures in the partial failure mode.
-    ///  Returned only when partial_failure = true and all errors occur inside the
-    ///  operations. If any errors occur outside the operations (e.g. auth errors),
-    ///  we return an RPC level error.
+    /// Errors that pertain to operation failures in the partial failure mode.
+    /// Returned only when partial_failure = true and all errors occur inside the
+    /// operations. If any errors occur outside the operations (e.g. auth errors),
+    /// we return an RPC level error.
     #[prost(message, optional, tag="3")]
     pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
-    ///  All results for the mutate.
+    /// All results for the mutate.
     #[prost(message, repeated, tag="2")]
     pub results: ::prost::alloc::vec::Vec<MutateSharedCriterionResult>,
 }
-///  The result for the shared criterion mutate.
+/// The result for the shared criterion mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateSharedCriterionResult {
-    ///  Returned for successful operations.
+    /// Returned for successful operations.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
-    ///  The mutated shared criterion with only mutable fields after mutate. The
-    ///  field will only be returned when response_content_type is set to
-    ///  "MUTABLE_RESOURCE".
+    /// The mutated shared criterion with only mutable fields after mutate. The
+    /// field will only be returned when response_content_type is set to
+    /// "MUTABLE_RESOURCE".
     #[prost(message, optional, tag="2")]
     pub shared_criterion: ::core::option::Option<super::resources::SharedCriterion>,
 }
@@ -16957,89 +16957,89 @@ pub mod shared_criterion_service_client {
         }
     }
 }
-///  Request message for \[SharedSetService.GetSharedSet][google.ads.googleads.v9.services.SharedSetService.GetSharedSet\].
+/// Request message for \[SharedSetService.GetSharedSet][google.ads.googleads.v9.services.SharedSetService.GetSharedSet\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetSharedSetRequest {
-    ///  Required. The resource name of the shared set to fetch.
+    /// Required. The resource name of the shared set to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Request message for \[SharedSetService.MutateSharedSets][google.ads.googleads.v9.services.SharedSetService.MutateSharedSets\].
+/// Request message for \[SharedSetService.MutateSharedSets][google.ads.googleads.v9.services.SharedSetService.MutateSharedSets\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateSharedSetsRequest {
-    ///  Required. The ID of the customer whose shared sets are being modified.
+    /// Required. The ID of the customer whose shared sets are being modified.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The list of operations to perform on individual shared sets.
+    /// Required. The list of operations to perform on individual shared sets.
     #[prost(message, repeated, tag="2")]
     pub operations: ::prost::alloc::vec::Vec<SharedSetOperation>,
-    ///  If true, successful operations will be carried out and invalid
-    ///  operations will return errors. If false, all operations will be carried
-    ///  out in one transaction if and only if they are all valid.
-    ///  Default is false.
+    /// If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, all operations will be carried
+    /// out in one transaction if and only if they are all valid.
+    /// Default is false.
     #[prost(bool, tag="3")]
     pub partial_failure: bool,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="4")]
     pub validate_only: bool,
-    ///  The response content type setting. Determines whether the mutable resource
-    ///  or just the resource name should be returned post mutation.
+    /// The response content type setting. Determines whether the mutable resource
+    /// or just the resource name should be returned post mutation.
     #[prost(enumeration="super::enums::response_content_type_enum::ResponseContentType", tag="5")]
     pub response_content_type: i32,
 }
-///  A single operation (create, update, remove) on an shared set.
+/// A single operation (create, update, remove) on an shared set.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SharedSetOperation {
-    ///  FieldMask that determines which resource fields are modified in an update.
+    /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag="4")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  The mutate operation.
+    /// The mutate operation.
     #[prost(oneof="shared_set_operation::Operation", tags="1, 2, 3")]
     pub operation: ::core::option::Option<shared_set_operation::Operation>,
 }
 /// Nested message and enum types in `SharedSetOperation`.
 pub mod shared_set_operation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  Create operation: No resource name is expected for the new shared set.
+        /// Create operation: No resource name is expected for the new shared set.
         #[prost(message, tag="1")]
         Create(super::super::resources::SharedSet),
-        ///  Update operation: The shared set is expected to have a valid resource
-        ///  name.
+        /// Update operation: The shared set is expected to have a valid resource
+        /// name.
         #[prost(message, tag="2")]
         Update(super::super::resources::SharedSet),
-        ///  Remove operation: A resource name for the removed shared set is expected,
-        ///  in this format:
+        /// Remove operation: A resource name for the removed shared set is expected,
+        /// in this format:
         ///
-        ///  `customers/{customer_id}/sharedSets/{shared_set_id}`
+        /// `customers/{customer_id}/sharedSets/{shared_set_id}`
         #[prost(string, tag="3")]
         Remove(::prost::alloc::string::String),
     }
 }
-///  Response message for a shared set mutate.
+/// Response message for a shared set mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateSharedSetsResponse {
-    ///  Errors that pertain to operation failures in the partial failure mode.
-    ///  Returned only when partial_failure = true and all errors occur inside the
-    ///  operations. If any errors occur outside the operations (e.g. auth errors),
-    ///  we return an RPC level error.
+    /// Errors that pertain to operation failures in the partial failure mode.
+    /// Returned only when partial_failure = true and all errors occur inside the
+    /// operations. If any errors occur outside the operations (e.g. auth errors),
+    /// we return an RPC level error.
     #[prost(message, optional, tag="3")]
     pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
-    ///  All results for the mutate.
+    /// All results for the mutate.
     #[prost(message, repeated, tag="2")]
     pub results: ::prost::alloc::vec::Vec<MutateSharedSetResult>,
 }
-///  The result for the shared set mutate.
+/// The result for the shared set mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateSharedSetResult {
-    ///  Returned for successful operations.
+    /// Returned for successful operations.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
-    ///  The mutated shared set with only mutable fields after mutate. The field
-    ///  will only be returned when response_content_type is set to
-    ///  "MUTABLE_RESOURCE".
+    /// The mutated shared set with only mutable fields after mutate. The field
+    /// will only be returned when response_content_type is set to
+    /// "MUTABLE_RESOURCE".
     #[prost(message, optional, tag="2")]
     pub shared_set: ::core::option::Option<super::resources::SharedSet>,
 }
@@ -17188,71 +17188,71 @@ pub mod shared_set_service_client {
         }
     }
 }
-///  Request message for \[SmartCampaignSettingService.GetSmartCampaignSetting][google.ads.googleads.v9.services.SmartCampaignSettingService.GetSmartCampaignSetting\].
+/// Request message for \[SmartCampaignSettingService.GetSmartCampaignSetting][google.ads.googleads.v9.services.SmartCampaignSettingService.GetSmartCampaignSetting\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetSmartCampaignSettingRequest {
-    ///  Required. The resource name of the Smart campaign setting to fetch.
+    /// Required. The resource name of the Smart campaign setting to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Request message for
-///  \[SmartCampaignSettingService.MutateSmartCampaignSetting][\].
+/// Request message for
+/// \[SmartCampaignSettingService.MutateSmartCampaignSetting][\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateSmartCampaignSettingsRequest {
-    ///  Required. The ID of the customer whose Smart campaign settings are being modified.
+    /// Required. The ID of the customer whose Smart campaign settings are being modified.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The list of operations to perform on individual Smart campaign settings.
+    /// Required. The list of operations to perform on individual Smart campaign settings.
     #[prost(message, repeated, tag="2")]
     pub operations: ::prost::alloc::vec::Vec<SmartCampaignSettingOperation>,
-    ///  If true, successful operations will be carried out and invalid
-    ///  operations will return errors. If false, all operations will be carried
-    ///  out in one transaction if and only if they are all valid.
-    ///  Default is false.
+    /// If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, all operations will be carried
+    /// out in one transaction if and only if they are all valid.
+    /// Default is false.
     #[prost(bool, tag="3")]
     pub partial_failure: bool,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="4")]
     pub validate_only: bool,
-    ///  The response content type setting. Determines whether the mutable resource
-    ///  or just the resource name should be returned post mutation.
+    /// The response content type setting. Determines whether the mutable resource
+    /// or just the resource name should be returned post mutation.
     #[prost(enumeration="super::enums::response_content_type_enum::ResponseContentType", tag="5")]
     pub response_content_type: i32,
 }
-///  A single operation to update Smart campaign settings for a campaign.
+/// A single operation to update Smart campaign settings for a campaign.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SmartCampaignSettingOperation {
-    ///  Update operation: The Smart campaign setting must specify a valid
-    ///  resource name.
+    /// Update operation: The Smart campaign setting must specify a valid
+    /// resource name.
     #[prost(message, optional, tag="1")]
     pub update: ::core::option::Option<super::resources::SmartCampaignSetting>,
-    ///  FieldMask that determines which resource fields are modified in an update.
+    /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag="2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
-///  Response message for campaign mutate.
+/// Response message for campaign mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateSmartCampaignSettingsResponse {
-    ///  Errors that pertain to operation failures in the partial failure mode.
-    ///  Returned only when partial_failure = true and all errors occur inside the
-    ///  operations. If any errors occur outside the operations (e.g. auth errors),
-    ///  we return an RPC level error.
+    /// Errors that pertain to operation failures in the partial failure mode.
+    /// Returned only when partial_failure = true and all errors occur inside the
+    /// operations. If any errors occur outside the operations (e.g. auth errors),
+    /// we return an RPC level error.
     #[prost(message, optional, tag="1")]
     pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
-    ///  All results for the mutate.
+    /// All results for the mutate.
     #[prost(message, repeated, tag="2")]
     pub results: ::prost::alloc::vec::Vec<MutateSmartCampaignSettingResult>,
 }
-///  The result for the Smart campaign setting mutate.
+/// The result for the Smart campaign setting mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateSmartCampaignSettingResult {
-    ///  Returned for successful operations.
+    /// Returned for successful operations.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
-    ///  The mutated Smart campaign setting with only mutable fields after mutate.
-    ///  The field will only be returned when response_content_type is set to
-    ///  "MUTABLE_RESOURCE".
+    /// The mutated Smart campaign setting with only mutable fields after mutate.
+    /// The field will only be returned when response_content_type is set to
+    /// "MUTABLE_RESOURCE".
     #[prost(message, optional, tag="2")]
     pub smart_campaign_setting: ::core::option::Option<super::resources::SmartCampaignSetting>,
 }
@@ -17376,80 +17376,80 @@ pub mod smart_campaign_setting_service_client {
         }
     }
 }
-///  Request message for \[UserListService.GetUserList][google.ads.googleads.v9.services.UserListService.GetUserList\].
+/// Request message for \[UserListService.GetUserList][google.ads.googleads.v9.services.UserListService.GetUserList\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetUserListRequest {
-    ///  Required. The resource name of the user list to fetch.
+    /// Required. The resource name of the user list to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Request message for \[UserListService.MutateUserLists][google.ads.googleads.v9.services.UserListService.MutateUserLists\].
+/// Request message for \[UserListService.MutateUserLists][google.ads.googleads.v9.services.UserListService.MutateUserLists\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateUserListsRequest {
-    ///  Required. The ID of the customer whose user lists are being modified.
+    /// Required. The ID of the customer whose user lists are being modified.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The list of operations to perform on individual user lists.
+    /// Required. The list of operations to perform on individual user lists.
     #[prost(message, repeated, tag="2")]
     pub operations: ::prost::alloc::vec::Vec<UserListOperation>,
-    ///  If true, successful operations will be carried out and invalid
-    ///  operations will return errors. If false, all operations will be carried
-    ///  out in one transaction if and only if they are all valid.
-    ///  Default is false.
+    /// If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, all operations will be carried
+    /// out in one transaction if and only if they are all valid.
+    /// Default is false.
     #[prost(bool, tag="3")]
     pub partial_failure: bool,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="4")]
     pub validate_only: bool,
 }
-///  A single operation (create, update) on a user list.
+/// A single operation (create, update) on a user list.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UserListOperation {
-    ///  FieldMask that determines which resource fields are modified in an update.
+    /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag="4")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  The mutate operation.
+    /// The mutate operation.
     #[prost(oneof="user_list_operation::Operation", tags="1, 2, 3")]
     pub operation: ::core::option::Option<user_list_operation::Operation>,
 }
 /// Nested message and enum types in `UserListOperation`.
 pub mod user_list_operation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  Create operation: No resource name is expected for the new user list.
+        /// Create operation: No resource name is expected for the new user list.
         #[prost(message, tag="1")]
         Create(super::super::resources::UserList),
-        ///  Update operation: The user list is expected to have a valid resource
-        ///  name.
+        /// Update operation: The user list is expected to have a valid resource
+        /// name.
         #[prost(message, tag="2")]
         Update(super::super::resources::UserList),
-        ///  Remove operation: A resource name for the removed user list is expected,
-        ///  in this format:
+        /// Remove operation: A resource name for the removed user list is expected,
+        /// in this format:
         ///
-        ///  `customers/{customer_id}/userLists/{user_list_id}`
+        /// `customers/{customer_id}/userLists/{user_list_id}`
         #[prost(string, tag="3")]
         Remove(::prost::alloc::string::String),
     }
 }
-///  Response message for user list mutate.
+/// Response message for user list mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateUserListsResponse {
-    ///  Errors that pertain to operation failures in the partial failure mode.
-    ///  Returned only when partial_failure = true and all errors occur inside the
-    ///  operations. If any errors occur outside the operations (e.g. auth errors),
-    ///  we return an RPC level error.
+    /// Errors that pertain to operation failures in the partial failure mode.
+    /// Returned only when partial_failure = true and all errors occur inside the
+    /// operations. If any errors occur outside the operations (e.g. auth errors),
+    /// we return an RPC level error.
     #[prost(message, optional, tag="3")]
     pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
-    ///  All results for the mutate.
+    /// All results for the mutate.
     #[prost(message, repeated, tag="2")]
     pub results: ::prost::alloc::vec::Vec<MutateUserListResult>,
 }
-///  The result for the user list mutate.
+/// The result for the user list mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateUserListResult {
-    ///  Returned for successful operations.
+    /// Returned for successful operations.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
@@ -17595,1029 +17595,1029 @@ pub mod user_list_service_client {
         }
     }
 }
-///  Request message for \[GoogleAdsService.Search][google.ads.googleads.v9.services.GoogleAdsService.Search\].
+/// Request message for \[GoogleAdsService.Search][google.ads.googleads.v9.services.GoogleAdsService.Search\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchGoogleAdsRequest {
-    ///  Required. The ID of the customer being queried.
+    /// Required. The ID of the customer being queried.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The query string.
+    /// Required. The query string.
     #[prost(string, tag="2")]
     pub query: ::prost::alloc::string::String,
-    ///  Token of the page to retrieve. If not specified, the first
-    ///  page of results will be returned. Use the value obtained from
-    ///  `next_page_token` in the previous response in order to request
-    ///  the next page of results.
+    /// Token of the page to retrieve. If not specified, the first
+    /// page of results will be returned. Use the value obtained from
+    /// `next_page_token` in the previous response in order to request
+    /// the next page of results.
     #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
-    ///  Number of elements to retrieve in a single page.
-    ///  When too large a page is requested, the server may decide to
-    ///  further limit the number of returned resources.
+    /// Number of elements to retrieve in a single page.
+    /// When too large a page is requested, the server may decide to
+    /// further limit the number of returned resources.
     #[prost(int32, tag="4")]
     pub page_size: i32,
-    ///  If true, the request is validated but not executed.
+    /// If true, the request is validated but not executed.
     #[prost(bool, tag="5")]
     pub validate_only: bool,
-    ///  If true, the total number of results that match the query ignoring the
-    ///  LIMIT clause will be included in the response.
-    ///  Default is false.
+    /// If true, the total number of results that match the query ignoring the
+    /// LIMIT clause will be included in the response.
+    /// Default is false.
     #[prost(bool, tag="7")]
     pub return_total_results_count: bool,
-    ///  Determines whether a summary row will be returned. By default, summary row
-    ///  is not returned. If requested, the summary row will be sent in a response
-    ///  by itself after all other query results are returned.
+    /// Determines whether a summary row will be returned. By default, summary row
+    /// is not returned. If requested, the summary row will be sent in a response
+    /// by itself after all other query results are returned.
     #[prost(enumeration="super::enums::summary_row_setting_enum::SummaryRowSetting", tag="8")]
     pub summary_row_setting: i32,
 }
-///  Response message for \[GoogleAdsService.Search][google.ads.googleads.v9.services.GoogleAdsService.Search\].
+/// Response message for \[GoogleAdsService.Search][google.ads.googleads.v9.services.GoogleAdsService.Search\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchGoogleAdsResponse {
-    ///  The list of rows that matched the query.
+    /// The list of rows that matched the query.
     #[prost(message, repeated, tag="1")]
     pub results: ::prost::alloc::vec::Vec<GoogleAdsRow>,
-    ///  Pagination token used to retrieve the next page of results.
-    ///  Pass the content of this string as the `page_token` attribute of
-    ///  the next request. `next_page_token` is not returned for the last
-    ///  page.
+    /// Pagination token used to retrieve the next page of results.
+    /// Pass the content of this string as the `page_token` attribute of
+    /// the next request. `next_page_token` is not returned for the last
+    /// page.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
-    ///  Total number of results that match the query ignoring the LIMIT
-    ///  clause.
+    /// Total number of results that match the query ignoring the LIMIT
+    /// clause.
     #[prost(int64, tag="3")]
     pub total_results_count: i64,
-    ///  FieldMask that represents what fields were requested by the user.
+    /// FieldMask that represents what fields were requested by the user.
     #[prost(message, optional, tag="5")]
     pub field_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  Summary row that contains summary of metrics in results.
-    ///  Summary of metrics means aggregation of metrics across all results,
-    ///  here aggregation could be sum, average, rate, etc.
+    /// Summary row that contains summary of metrics in results.
+    /// Summary of metrics means aggregation of metrics across all results,
+    /// here aggregation could be sum, average, rate, etc.
     #[prost(message, optional, tag="6")]
     pub summary_row: ::core::option::Option<GoogleAdsRow>,
 }
-///  Request message for \[GoogleAdsService.SearchStream][google.ads.googleads.v9.services.GoogleAdsService.SearchStream\].
+/// Request message for \[GoogleAdsService.SearchStream][google.ads.googleads.v9.services.GoogleAdsService.SearchStream\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchGoogleAdsStreamRequest {
-    ///  Required. The ID of the customer being queried.
+    /// Required. The ID of the customer being queried.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The query string.
+    /// Required. The query string.
     #[prost(string, tag="2")]
     pub query: ::prost::alloc::string::String,
-    ///  Determines whether a summary row will be returned. By default, summary row
-    ///  is not returned. If requested, the summary row will be sent in a response
-    ///  by itself after all other query results are returned.
+    /// Determines whether a summary row will be returned. By default, summary row
+    /// is not returned. If requested, the summary row will be sent in a response
+    /// by itself after all other query results are returned.
     #[prost(enumeration="super::enums::summary_row_setting_enum::SummaryRowSetting", tag="3")]
     pub summary_row_setting: i32,
 }
-///  Response message for \[GoogleAdsService.SearchStream][google.ads.googleads.v9.services.GoogleAdsService.SearchStream\].
+/// Response message for \[GoogleAdsService.SearchStream][google.ads.googleads.v9.services.GoogleAdsService.SearchStream\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchGoogleAdsStreamResponse {
-    ///  The list of rows that matched the query.
+    /// The list of rows that matched the query.
     #[prost(message, repeated, tag="1")]
     pub results: ::prost::alloc::vec::Vec<GoogleAdsRow>,
-    ///  FieldMask that represents what fields were requested by the user.
+    /// FieldMask that represents what fields were requested by the user.
     #[prost(message, optional, tag="2")]
     pub field_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  Summary row that contains summary of metrics in results.
-    ///  Summary of metrics means aggregation of metrics across all results,
-    ///  here aggregation could be sum, average, rate, etc.
+    /// Summary row that contains summary of metrics in results.
+    /// Summary of metrics means aggregation of metrics across all results,
+    /// here aggregation could be sum, average, rate, etc.
     #[prost(message, optional, tag="3")]
     pub summary_row: ::core::option::Option<GoogleAdsRow>,
-    ///  The unique id of the request that is used for debugging purposes.
+    /// The unique id of the request that is used for debugging purposes.
     #[prost(string, tag="4")]
     pub request_id: ::prost::alloc::string::String,
 }
-///  A returned row from the query.
+/// A returned row from the query.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GoogleAdsRow {
-    ///  The account budget in the query.
+    /// The account budget in the query.
     #[prost(message, optional, tag="42")]
     pub account_budget: ::core::option::Option<super::resources::AccountBudget>,
-    ///  The account budget proposal referenced in the query.
+    /// The account budget proposal referenced in the query.
     #[prost(message, optional, tag="43")]
     pub account_budget_proposal: ::core::option::Option<super::resources::AccountBudgetProposal>,
-    ///  The AccountLink referenced in the query.
+    /// The AccountLink referenced in the query.
     #[prost(message, optional, tag="143")]
     pub account_link: ::core::option::Option<super::resources::AccountLink>,
-    ///  The ad group referenced in the query.
+    /// The ad group referenced in the query.
     #[prost(message, optional, tag="3")]
     pub ad_group: ::core::option::Option<super::resources::AdGroup>,
-    ///  The ad referenced in the query.
+    /// The ad referenced in the query.
     #[prost(message, optional, tag="16")]
     pub ad_group_ad: ::core::option::Option<super::resources::AdGroupAd>,
-    ///  The ad group ad asset view in the query.
+    /// The ad group ad asset view in the query.
     #[prost(message, optional, tag="131")]
     pub ad_group_ad_asset_view: ::core::option::Option<super::resources::AdGroupAdAssetView>,
-    ///  The ad group ad label referenced in the query.
+    /// The ad group ad label referenced in the query.
     #[prost(message, optional, tag="120")]
     pub ad_group_ad_label: ::core::option::Option<super::resources::AdGroupAdLabel>,
-    ///  The ad group asset referenced in the query.
+    /// The ad group asset referenced in the query.
     #[prost(message, optional, tag="154")]
     pub ad_group_asset: ::core::option::Option<super::resources::AdGroupAsset>,
-    ///  The ad group audience view referenced in the query.
+    /// The ad group audience view referenced in the query.
     #[prost(message, optional, tag="57")]
     pub ad_group_audience_view: ::core::option::Option<super::resources::AdGroupAudienceView>,
-    ///  The bid modifier referenced in the query.
+    /// The bid modifier referenced in the query.
     #[prost(message, optional, tag="24")]
     pub ad_group_bid_modifier: ::core::option::Option<super::resources::AdGroupBidModifier>,
-    ///  The criterion referenced in the query.
+    /// The criterion referenced in the query.
     #[prost(message, optional, tag="17")]
     pub ad_group_criterion: ::core::option::Option<super::resources::AdGroupCriterion>,
-    ///  The ad group criterion customizer referenced in the query.
+    /// The ad group criterion customizer referenced in the query.
     #[prost(message, optional, tag="187")]
     pub ad_group_criterion_customizer: ::core::option::Option<super::resources::AdGroupCriterionCustomizer>,
-    ///  The ad group criterion label referenced in the query.
+    /// The ad group criterion label referenced in the query.
     #[prost(message, optional, tag="121")]
     pub ad_group_criterion_label: ::core::option::Option<super::resources::AdGroupCriterionLabel>,
-    ///  The ad group criterion simulation referenced in the query.
+    /// The ad group criterion simulation referenced in the query.
     #[prost(message, optional, tag="110")]
     pub ad_group_criterion_simulation: ::core::option::Option<super::resources::AdGroupCriterionSimulation>,
-    ///  The ad group customizer referenced in the query.
+    /// The ad group customizer referenced in the query.
     #[prost(message, optional, tag="185")]
     pub ad_group_customizer: ::core::option::Option<super::resources::AdGroupCustomizer>,
-    ///  The ad group extension setting referenced in the query.
+    /// The ad group extension setting referenced in the query.
     #[prost(message, optional, tag="112")]
     pub ad_group_extension_setting: ::core::option::Option<super::resources::AdGroupExtensionSetting>,
-    ///  The ad group feed referenced in the query.
+    /// The ad group feed referenced in the query.
     #[prost(message, optional, tag="67")]
     pub ad_group_feed: ::core::option::Option<super::resources::AdGroupFeed>,
-    ///  The ad group label referenced in the query.
+    /// The ad group label referenced in the query.
     #[prost(message, optional, tag="115")]
     pub ad_group_label: ::core::option::Option<super::resources::AdGroupLabel>,
-    ///  The ad group simulation referenced in the query.
+    /// The ad group simulation referenced in the query.
     #[prost(message, optional, tag="107")]
     pub ad_group_simulation: ::core::option::Option<super::resources::AdGroupSimulation>,
-    ///  The ad parameter referenced in the query.
+    /// The ad parameter referenced in the query.
     #[prost(message, optional, tag="130")]
     pub ad_parameter: ::core::option::Option<super::resources::AdParameter>,
-    ///  The age range view referenced in the query.
+    /// The age range view referenced in the query.
     #[prost(message, optional, tag="48")]
     pub age_range_view: ::core::option::Option<super::resources::AgeRangeView>,
-    ///  The ad schedule view referenced in the query.
+    /// The ad schedule view referenced in the query.
     #[prost(message, optional, tag="89")]
     pub ad_schedule_view: ::core::option::Option<super::resources::AdScheduleView>,
-    ///  The domain category referenced in the query.
+    /// The domain category referenced in the query.
     #[prost(message, optional, tag="91")]
     pub domain_category: ::core::option::Option<super::resources::DomainCategory>,
-    ///  The asset referenced in the query.
+    /// The asset referenced in the query.
     #[prost(message, optional, tag="105")]
     pub asset: ::core::option::Option<super::resources::Asset>,
-    ///  The asset field type view referenced in the query.
+    /// The asset field type view referenced in the query.
     #[prost(message, optional, tag="168")]
     pub asset_field_type_view: ::core::option::Option<super::resources::AssetFieldTypeView>,
-    ///  The asset group asset referenced in the query.
+    /// The asset group asset referenced in the query.
     #[prost(message, optional, tag="173")]
     pub asset_group_asset: ::core::option::Option<super::resources::AssetGroupAsset>,
-    ///  The asset group listing group filter referenced in the query.
+    /// The asset group listing group filter referenced in the query.
     #[prost(message, optional, tag="182")]
     pub asset_group_listing_group_filter: ::core::option::Option<super::resources::AssetGroupListingGroupFilter>,
-    ///  The asset group product group view referenced in the query.
+    /// The asset group product group view referenced in the query.
     #[prost(message, optional, tag="189")]
     pub asset_group_product_group_view: ::core::option::Option<super::resources::AssetGroupProductGroupView>,
-    ///  The asset group referenced in the query.
+    /// The asset group referenced in the query.
     #[prost(message, optional, tag="172")]
     pub asset_group: ::core::option::Option<super::resources::AssetGroup>,
-    ///  The asset set asset referenced in the query.
+    /// The asset set asset referenced in the query.
     #[prost(message, optional, tag="180")]
     pub asset_set_asset: ::core::option::Option<super::resources::AssetSetAsset>,
-    ///  The asset set referenced in the query.
+    /// The asset set referenced in the query.
     #[prost(message, optional, tag="179")]
     pub asset_set: ::core::option::Option<super::resources::AssetSet>,
-    ///  The batch job referenced in the query.
+    /// The batch job referenced in the query.
     #[prost(message, optional, tag="139")]
     pub batch_job: ::core::option::Option<super::resources::BatchJob>,
-    ///  The bidding data exclusion referenced in the query.
+    /// The bidding data exclusion referenced in the query.
     #[prost(message, optional, tag="159")]
     pub bidding_data_exclusion: ::core::option::Option<super::resources::BiddingDataExclusion>,
-    ///  The bidding seasonality adjustment referenced in the query.
+    /// The bidding seasonality adjustment referenced in the query.
     #[prost(message, optional, tag="160")]
     pub bidding_seasonality_adjustment: ::core::option::Option<super::resources::BiddingSeasonalityAdjustment>,
-    ///  The bidding strategy referenced in the query.
+    /// The bidding strategy referenced in the query.
     #[prost(message, optional, tag="18")]
     pub bidding_strategy: ::core::option::Option<super::resources::BiddingStrategy>,
-    ///  The bidding strategy simulation referenced in the query.
+    /// The bidding strategy simulation referenced in the query.
     #[prost(message, optional, tag="158")]
     pub bidding_strategy_simulation: ::core::option::Option<super::resources::BiddingStrategySimulation>,
-    ///  The billing setup referenced in the query.
+    /// The billing setup referenced in the query.
     #[prost(message, optional, tag="41")]
     pub billing_setup: ::core::option::Option<super::resources::BillingSetup>,
-    ///  The call view referenced in the query.
+    /// The call view referenced in the query.
     #[prost(message, optional, tag="152")]
     pub call_view: ::core::option::Option<super::resources::CallView>,
-    ///  The campaign budget referenced in the query.
+    /// The campaign budget referenced in the query.
     #[prost(message, optional, tag="19")]
     pub campaign_budget: ::core::option::Option<super::resources::CampaignBudget>,
-    ///  The campaign referenced in the query.
+    /// The campaign referenced in the query.
     #[prost(message, optional, tag="2")]
     pub campaign: ::core::option::Option<super::resources::Campaign>,
-    ///  The campaign asset referenced in the query.
+    /// The campaign asset referenced in the query.
     #[prost(message, optional, tag="142")]
     pub campaign_asset: ::core::option::Option<super::resources::CampaignAsset>,
-    ///  The campaign asset set referenced in the query.
+    /// The campaign asset set referenced in the query.
     #[prost(message, optional, tag="181")]
     pub campaign_asset_set: ::core::option::Option<super::resources::CampaignAssetSet>,
-    ///  The campaign audience view referenced in the query.
+    /// The campaign audience view referenced in the query.
     #[prost(message, optional, tag="69")]
     pub campaign_audience_view: ::core::option::Option<super::resources::CampaignAudienceView>,
-    ///  The campaign bid modifier referenced in the query.
+    /// The campaign bid modifier referenced in the query.
     #[prost(message, optional, tag="26")]
     pub campaign_bid_modifier: ::core::option::Option<super::resources::CampaignBidModifier>,
-    ///  The CampaignConversionGoal referenced in the query.
+    /// The CampaignConversionGoal referenced in the query.
     #[prost(message, optional, tag="175")]
     pub campaign_conversion_goal: ::core::option::Option<super::resources::CampaignConversionGoal>,
-    ///  The campaign criterion referenced in the query.
+    /// The campaign criterion referenced in the query.
     #[prost(message, optional, tag="20")]
     pub campaign_criterion: ::core::option::Option<super::resources::CampaignCriterion>,
-    ///  The campaign criterion simulation referenced in the query.
+    /// The campaign criterion simulation referenced in the query.
     #[prost(message, optional, tag="111")]
     pub campaign_criterion_simulation: ::core::option::Option<super::resources::CampaignCriterionSimulation>,
-    ///  The campaign customizer referenced in the query.
+    /// The campaign customizer referenced in the query.
     #[prost(message, optional, tag="186")]
     pub campaign_customizer: ::core::option::Option<super::resources::CampaignCustomizer>,
-    ///  The campaign draft referenced in the query.
+    /// The campaign draft referenced in the query.
     #[prost(message, optional, tag="49")]
     pub campaign_draft: ::core::option::Option<super::resources::CampaignDraft>,
-    ///  The campaign experiment referenced in the query.
+    /// The campaign experiment referenced in the query.
     #[prost(message, optional, tag="84")]
     pub campaign_experiment: ::core::option::Option<super::resources::CampaignExperiment>,
-    ///  The campaign extension setting referenced in the query.
+    /// The campaign extension setting referenced in the query.
     #[prost(message, optional, tag="113")]
     pub campaign_extension_setting: ::core::option::Option<super::resources::CampaignExtensionSetting>,
-    ///  The campaign feed referenced in the query.
+    /// The campaign feed referenced in the query.
     #[prost(message, optional, tag="63")]
     pub campaign_feed: ::core::option::Option<super::resources::CampaignFeed>,
-    ///  The campaign label referenced in the query.
+    /// The campaign label referenced in the query.
     #[prost(message, optional, tag="108")]
     pub campaign_label: ::core::option::Option<super::resources::CampaignLabel>,
-    ///  Campaign Shared Set referenced in AWQL query.
+    /// Campaign Shared Set referenced in AWQL query.
     #[prost(message, optional, tag="30")]
     pub campaign_shared_set: ::core::option::Option<super::resources::CampaignSharedSet>,
-    ///  The campaign simulation referenced in the query.
+    /// The campaign simulation referenced in the query.
     #[prost(message, optional, tag="157")]
     pub campaign_simulation: ::core::option::Option<super::resources::CampaignSimulation>,
-    ///  The carrier constant referenced in the query.
+    /// The carrier constant referenced in the query.
     #[prost(message, optional, tag="66")]
     pub carrier_constant: ::core::option::Option<super::resources::CarrierConstant>,
-    ///  The ChangeEvent referenced in the query.
+    /// The ChangeEvent referenced in the query.
     #[prost(message, optional, tag="145")]
     pub change_event: ::core::option::Option<super::resources::ChangeEvent>,
-    ///  The ChangeStatus referenced in the query.
+    /// The ChangeStatus referenced in the query.
     #[prost(message, optional, tag="37")]
     pub change_status: ::core::option::Option<super::resources::ChangeStatus>,
-    ///  The CombinedAudience referenced in the query.
+    /// The CombinedAudience referenced in the query.
     #[prost(message, optional, tag="148")]
     pub combined_audience: ::core::option::Option<super::resources::CombinedAudience>,
-    ///  The conversion action referenced in the query.
+    /// The conversion action referenced in the query.
     #[prost(message, optional, tag="103")]
     pub conversion_action: ::core::option::Option<super::resources::ConversionAction>,
-    ///  The conversion custom variable referenced in the query.
+    /// The conversion custom variable referenced in the query.
     #[prost(message, optional, tag="153")]
     pub conversion_custom_variable: ::core::option::Option<super::resources::ConversionCustomVariable>,
-    ///  The ConversionGoalCampaignConfig referenced in the query.
+    /// The ConversionGoalCampaignConfig referenced in the query.
     #[prost(message, optional, tag="177")]
     pub conversion_goal_campaign_config: ::core::option::Option<super::resources::ConversionGoalCampaignConfig>,
-    ///  The conversion value rule referenced in the query.
+    /// The conversion value rule referenced in the query.
     #[prost(message, optional, tag="164")]
     pub conversion_value_rule: ::core::option::Option<super::resources::ConversionValueRule>,
-    ///  The conversion value rule set referenced in the query.
+    /// The conversion value rule set referenced in the query.
     #[prost(message, optional, tag="165")]
     pub conversion_value_rule_set: ::core::option::Option<super::resources::ConversionValueRuleSet>,
-    ///  The ClickView referenced in the query.
+    /// The ClickView referenced in the query.
     #[prost(message, optional, tag="122")]
     pub click_view: ::core::option::Option<super::resources::ClickView>,
-    ///  The currency constant referenced in the query.
+    /// The currency constant referenced in the query.
     #[prost(message, optional, tag="134")]
     pub currency_constant: ::core::option::Option<super::resources::CurrencyConstant>,
-    ///  The CustomAudience referenced in the query.
+    /// The CustomAudience referenced in the query.
     #[prost(message, optional, tag="147")]
     pub custom_audience: ::core::option::Option<super::resources::CustomAudience>,
-    ///  The CustomConversionGoal referenced in the query.
+    /// The CustomConversionGoal referenced in the query.
     #[prost(message, optional, tag="176")]
     pub custom_conversion_goal: ::core::option::Option<super::resources::CustomConversionGoal>,
-    ///  The CustomInterest referenced in the query.
+    /// The CustomInterest referenced in the query.
     #[prost(message, optional, tag="104")]
     pub custom_interest: ::core::option::Option<super::resources::CustomInterest>,
-    ///  The customer referenced in the query.
+    /// The customer referenced in the query.
     #[prost(message, optional, tag="1")]
     pub customer: ::core::option::Option<super::resources::Customer>,
-    ///  The customer asset referenced in the query.
+    /// The customer asset referenced in the query.
     #[prost(message, optional, tag="155")]
     pub customer_asset: ::core::option::Option<super::resources::CustomerAsset>,
-    ///  The accessible bidding strategy referenced in the query.
+    /// The accessible bidding strategy referenced in the query.
     #[prost(message, optional, tag="169")]
     pub accessible_bidding_strategy: ::core::option::Option<super::resources::AccessibleBiddingStrategy>,
-    ///  The customer customizer referenced in the query.
+    /// The customer customizer referenced in the query.
     #[prost(message, optional, tag="184")]
     pub customer_customizer: ::core::option::Option<super::resources::CustomerCustomizer>,
-    ///  The CustomerManagerLink referenced in the query.
+    /// The CustomerManagerLink referenced in the query.
     #[prost(message, optional, tag="61")]
     pub customer_manager_link: ::core::option::Option<super::resources::CustomerManagerLink>,
-    ///  The CustomerClientLink referenced in the query.
+    /// The CustomerClientLink referenced in the query.
     #[prost(message, optional, tag="62")]
     pub customer_client_link: ::core::option::Option<super::resources::CustomerClientLink>,
-    ///  The CustomerClient referenced in the query.
+    /// The CustomerClient referenced in the query.
     #[prost(message, optional, tag="70")]
     pub customer_client: ::core::option::Option<super::resources::CustomerClient>,
-    ///  The CustomerConversionGoal referenced in the query.
+    /// The CustomerConversionGoal referenced in the query.
     #[prost(message, optional, tag="174")]
     pub customer_conversion_goal: ::core::option::Option<super::resources::CustomerConversionGoal>,
-    ///  The customer extension setting referenced in the query.
+    /// The customer extension setting referenced in the query.
     #[prost(message, optional, tag="114")]
     pub customer_extension_setting: ::core::option::Option<super::resources::CustomerExtensionSetting>,
-    ///  The customer feed referenced in the query.
+    /// The customer feed referenced in the query.
     #[prost(message, optional, tag="64")]
     pub customer_feed: ::core::option::Option<super::resources::CustomerFeed>,
-    ///  The customer label referenced in the query.
+    /// The customer label referenced in the query.
     #[prost(message, optional, tag="124")]
     pub customer_label: ::core::option::Option<super::resources::CustomerLabel>,
-    ///  The customer negative criterion referenced in the query.
+    /// The customer negative criterion referenced in the query.
     #[prost(message, optional, tag="88")]
     pub customer_negative_criterion: ::core::option::Option<super::resources::CustomerNegativeCriterion>,
-    ///  The CustomerUserAccess referenced in the query.
+    /// The CustomerUserAccess referenced in the query.
     #[prost(message, optional, tag="146")]
     pub customer_user_access: ::core::option::Option<super::resources::CustomerUserAccess>,
-    ///  The CustomerUserAccessInvitation referenced in the query.
+    /// The CustomerUserAccessInvitation referenced in the query.
     #[prost(message, optional, tag="150")]
     pub customer_user_access_invitation: ::core::option::Option<super::resources::CustomerUserAccessInvitation>,
-    ///  The customizer attribute referenced in the query.
+    /// The customizer attribute referenced in the query.
     #[prost(message, optional, tag="178")]
     pub customizer_attribute: ::core::option::Option<super::resources::CustomizerAttribute>,
-    ///  The detail placement view referenced in the query.
+    /// The detail placement view referenced in the query.
     #[prost(message, optional, tag="118")]
     pub detail_placement_view: ::core::option::Option<super::resources::DetailPlacementView>,
-    ///  The detailed demographic referenced in the query.
+    /// The detailed demographic referenced in the query.
     #[prost(message, optional, tag="166")]
     pub detailed_demographic: ::core::option::Option<super::resources::DetailedDemographic>,
-    ///  The display keyword view referenced in the query.
+    /// The display keyword view referenced in the query.
     #[prost(message, optional, tag="47")]
     pub display_keyword_view: ::core::option::Option<super::resources::DisplayKeywordView>,
-    ///  The distance view referenced in the query.
+    /// The distance view referenced in the query.
     #[prost(message, optional, tag="132")]
     pub distance_view: ::core::option::Option<super::resources::DistanceView>,
-    ///  The dynamic search ads search term view referenced in the query.
+    /// The dynamic search ads search term view referenced in the query.
     #[prost(message, optional, tag="106")]
     pub dynamic_search_ads_search_term_view: ::core::option::Option<super::resources::DynamicSearchAdsSearchTermView>,
-    ///  The expanded landing page view referenced in the query.
+    /// The expanded landing page view referenced in the query.
     #[prost(message, optional, tag="128")]
     pub expanded_landing_page_view: ::core::option::Option<super::resources::ExpandedLandingPageView>,
-    ///  The extension feed item referenced in the query.
+    /// The extension feed item referenced in the query.
     #[prost(message, optional, tag="85")]
     pub extension_feed_item: ::core::option::Option<super::resources::ExtensionFeedItem>,
-    ///  The feed referenced in the query.
+    /// The feed referenced in the query.
     #[prost(message, optional, tag="46")]
     pub feed: ::core::option::Option<super::resources::Feed>,
-    ///  The feed item referenced in the query.
+    /// The feed item referenced in the query.
     #[prost(message, optional, tag="50")]
     pub feed_item: ::core::option::Option<super::resources::FeedItem>,
-    ///  The feed item set referenced in the query.
+    /// The feed item set referenced in the query.
     #[prost(message, optional, tag="149")]
     pub feed_item_set: ::core::option::Option<super::resources::FeedItemSet>,
-    ///  The feed item set link referenced in the query.
+    /// The feed item set link referenced in the query.
     #[prost(message, optional, tag="151")]
     pub feed_item_set_link: ::core::option::Option<super::resources::FeedItemSetLink>,
-    ///  The feed item target referenced in the query.
+    /// The feed item target referenced in the query.
     #[prost(message, optional, tag="116")]
     pub feed_item_target: ::core::option::Option<super::resources::FeedItemTarget>,
-    ///  The feed mapping referenced in the query.
+    /// The feed mapping referenced in the query.
     #[prost(message, optional, tag="58")]
     pub feed_mapping: ::core::option::Option<super::resources::FeedMapping>,
-    ///  The feed placeholder view referenced in the query.
+    /// The feed placeholder view referenced in the query.
     #[prost(message, optional, tag="97")]
     pub feed_placeholder_view: ::core::option::Option<super::resources::FeedPlaceholderView>,
-    ///  The gender view referenced in the query.
+    /// The gender view referenced in the query.
     #[prost(message, optional, tag="40")]
     pub gender_view: ::core::option::Option<super::resources::GenderView>,
-    ///  The geo target constant referenced in the query.
+    /// The geo target constant referenced in the query.
     #[prost(message, optional, tag="23")]
     pub geo_target_constant: ::core::option::Option<super::resources::GeoTargetConstant>,
-    ///  The geographic view referenced in the query.
+    /// The geographic view referenced in the query.
     #[prost(message, optional, tag="125")]
     pub geographic_view: ::core::option::Option<super::resources::GeographicView>,
-    ///  The group placement view referenced in the query.
+    /// The group placement view referenced in the query.
     #[prost(message, optional, tag="119")]
     pub group_placement_view: ::core::option::Option<super::resources::GroupPlacementView>,
-    ///  The hotel group view referenced in the query.
+    /// The hotel group view referenced in the query.
     #[prost(message, optional, tag="51")]
     pub hotel_group_view: ::core::option::Option<super::resources::HotelGroupView>,
-    ///  The hotel performance view referenced in the query.
+    /// The hotel performance view referenced in the query.
     #[prost(message, optional, tag="71")]
     pub hotel_performance_view: ::core::option::Option<super::resources::HotelPerformanceView>,
-    ///  The hotel reconciliation referenced in the query.
+    /// The hotel reconciliation referenced in the query.
     #[prost(message, optional, tag="188")]
     pub hotel_reconciliation: ::core::option::Option<super::resources::HotelReconciliation>,
-    ///  The income range view referenced in the query.
+    /// The income range view referenced in the query.
     #[prost(message, optional, tag="138")]
     pub income_range_view: ::core::option::Option<super::resources::IncomeRangeView>,
-    ///  The keyword view referenced in the query.
+    /// The keyword view referenced in the query.
     #[prost(message, optional, tag="21")]
     pub keyword_view: ::core::option::Option<super::resources::KeywordView>,
-    ///  The keyword plan referenced in the query.
+    /// The keyword plan referenced in the query.
     #[prost(message, optional, tag="32")]
     pub keyword_plan: ::core::option::Option<super::resources::KeywordPlan>,
-    ///  The keyword plan campaign referenced in the query.
+    /// The keyword plan campaign referenced in the query.
     #[prost(message, optional, tag="33")]
     pub keyword_plan_campaign: ::core::option::Option<super::resources::KeywordPlanCampaign>,
-    ///  The keyword plan campaign keyword referenced in the query.
+    /// The keyword plan campaign keyword referenced in the query.
     #[prost(message, optional, tag="140")]
     pub keyword_plan_campaign_keyword: ::core::option::Option<super::resources::KeywordPlanCampaignKeyword>,
-    ///  The keyword plan ad group referenced in the query.
+    /// The keyword plan ad group referenced in the query.
     #[prost(message, optional, tag="35")]
     pub keyword_plan_ad_group: ::core::option::Option<super::resources::KeywordPlanAdGroup>,
-    ///  The keyword plan ad group referenced in the query.
+    /// The keyword plan ad group referenced in the query.
     #[prost(message, optional, tag="141")]
     pub keyword_plan_ad_group_keyword: ::core::option::Option<super::resources::KeywordPlanAdGroupKeyword>,
-    ///  The keyword theme constant referenced in the query.
+    /// The keyword theme constant referenced in the query.
     #[prost(message, optional, tag="163")]
     pub keyword_theme_constant: ::core::option::Option<super::resources::KeywordThemeConstant>,
-    ///  The label referenced in the query.
+    /// The label referenced in the query.
     #[prost(message, optional, tag="52")]
     pub label: ::core::option::Option<super::resources::Label>,
-    ///  The landing page view referenced in the query.
+    /// The landing page view referenced in the query.
     #[prost(message, optional, tag="126")]
     pub landing_page_view: ::core::option::Option<super::resources::LandingPageView>,
-    ///  The language constant referenced in the query.
+    /// The language constant referenced in the query.
     #[prost(message, optional, tag="55")]
     pub language_constant: ::core::option::Option<super::resources::LanguageConstant>,
-    ///  The location view referenced in the query.
+    /// The location view referenced in the query.
     #[prost(message, optional, tag="123")]
     pub location_view: ::core::option::Option<super::resources::LocationView>,
-    ///  The managed placement view referenced in the query.
+    /// The managed placement view referenced in the query.
     #[prost(message, optional, tag="53")]
     pub managed_placement_view: ::core::option::Option<super::resources::ManagedPlacementView>,
-    ///  The media file referenced in the query.
+    /// The media file referenced in the query.
     #[prost(message, optional, tag="90")]
     pub media_file: ::core::option::Option<super::resources::MediaFile>,
-    ///  The mobile app category constant referenced in the query.
+    /// The mobile app category constant referenced in the query.
     #[prost(message, optional, tag="87")]
     pub mobile_app_category_constant: ::core::option::Option<super::resources::MobileAppCategoryConstant>,
-    ///  The mobile device constant referenced in the query.
+    /// The mobile device constant referenced in the query.
     #[prost(message, optional, tag="98")]
     pub mobile_device_constant: ::core::option::Option<super::resources::MobileDeviceConstant>,
-    ///  The offline user data job referenced in the query.
+    /// The offline user data job referenced in the query.
     #[prost(message, optional, tag="137")]
     pub offline_user_data_job: ::core::option::Option<super::resources::OfflineUserDataJob>,
-    ///  The operating system version constant referenced in the query.
+    /// The operating system version constant referenced in the query.
     #[prost(message, optional, tag="86")]
     pub operating_system_version_constant: ::core::option::Option<super::resources::OperatingSystemVersionConstant>,
-    ///  The paid organic search term view referenced in the query.
+    /// The paid organic search term view referenced in the query.
     #[prost(message, optional, tag="129")]
     pub paid_organic_search_term_view: ::core::option::Option<super::resources::PaidOrganicSearchTermView>,
-    ///  The parental status view referenced in the query.
+    /// The parental status view referenced in the query.
     #[prost(message, optional, tag="45")]
     pub parental_status_view: ::core::option::Option<super::resources::ParentalStatusView>,
-    ///  The Product Bidding Category referenced in the query.
+    /// The Product Bidding Category referenced in the query.
     #[prost(message, optional, tag="109")]
     pub product_bidding_category_constant: ::core::option::Option<super::resources::ProductBiddingCategoryConstant>,
-    ///  The product group view referenced in the query.
+    /// The product group view referenced in the query.
     #[prost(message, optional, tag="54")]
     pub product_group_view: ::core::option::Option<super::resources::ProductGroupView>,
-    ///  The recommendation referenced in the query.
+    /// The recommendation referenced in the query.
     #[prost(message, optional, tag="22")]
     pub recommendation: ::core::option::Option<super::resources::Recommendation>,
-    ///  The search term view referenced in the query.
+    /// The search term view referenced in the query.
     #[prost(message, optional, tag="68")]
     pub search_term_view: ::core::option::Option<super::resources::SearchTermView>,
-    ///  The shared set referenced in the query.
+    /// The shared set referenced in the query.
     #[prost(message, optional, tag="29")]
     pub shared_criterion: ::core::option::Option<super::resources::SharedCriterion>,
-    ///  The shared set referenced in the query.
+    /// The shared set referenced in the query.
     #[prost(message, optional, tag="27")]
     pub shared_set: ::core::option::Option<super::resources::SharedSet>,
-    ///  The Smart campaign setting referenced in the query.
+    /// The Smart campaign setting referenced in the query.
     #[prost(message, optional, tag="167")]
     pub smart_campaign_setting: ::core::option::Option<super::resources::SmartCampaignSetting>,
-    ///  The shopping performance view referenced in the query.
+    /// The shopping performance view referenced in the query.
     #[prost(message, optional, tag="117")]
     pub shopping_performance_view: ::core::option::Option<super::resources::ShoppingPerformanceView>,
-    ///  The Smart campaign search term view referenced in the query.
+    /// The Smart campaign search term view referenced in the query.
     #[prost(message, optional, tag="170")]
     pub smart_campaign_search_term_view: ::core::option::Option<super::resources::SmartCampaignSearchTermView>,
-    ///  The AccountLink referenced in the query.
+    /// The AccountLink referenced in the query.
     #[prost(message, optional, tag="144")]
     pub third_party_app_analytics_link: ::core::option::Option<super::resources::ThirdPartyAppAnalyticsLink>,
-    ///  The topic view referenced in the query.
+    /// The topic view referenced in the query.
     #[prost(message, optional, tag="44")]
     pub topic_view: ::core::option::Option<super::resources::TopicView>,
-    ///  The user interest referenced in the query.
+    /// The user interest referenced in the query.
     #[prost(message, optional, tag="59")]
     pub user_interest: ::core::option::Option<super::resources::UserInterest>,
-    ///  The life event referenced in the query.
+    /// The life event referenced in the query.
     #[prost(message, optional, tag="161")]
     pub life_event: ::core::option::Option<super::resources::LifeEvent>,
-    ///  The user list referenced in the query.
+    /// The user list referenced in the query.
     #[prost(message, optional, tag="38")]
     pub user_list: ::core::option::Option<super::resources::UserList>,
-    ///  The user location view referenced in the query.
+    /// The user location view referenced in the query.
     #[prost(message, optional, tag="135")]
     pub user_location_view: ::core::option::Option<super::resources::UserLocationView>,
-    ///  The remarketing action referenced in the query.
+    /// The remarketing action referenced in the query.
     #[prost(message, optional, tag="60")]
     pub remarketing_action: ::core::option::Option<super::resources::RemarketingAction>,
-    ///  The topic constant referenced in the query.
+    /// The topic constant referenced in the query.
     #[prost(message, optional, tag="31")]
     pub topic_constant: ::core::option::Option<super::resources::TopicConstant>,
-    ///  The video referenced in the query.
+    /// The video referenced in the query.
     #[prost(message, optional, tag="39")]
     pub video: ::core::option::Option<super::resources::Video>,
-    ///  The webpage view referenced in the query.
+    /// The webpage view referenced in the query.
     #[prost(message, optional, tag="162")]
     pub webpage_view: ::core::option::Option<super::resources::WebpageView>,
-    ///  The metrics.
+    /// The metrics.
     #[prost(message, optional, tag="4")]
     pub metrics: ::core::option::Option<super::common::Metrics>,
-    ///  The segments.
+    /// The segments.
     #[prost(message, optional, tag="102")]
     pub segments: ::core::option::Option<super::common::Segments>,
 }
-///  Request message for \[GoogleAdsService.Mutate][google.ads.googleads.v9.services.GoogleAdsService.Mutate\].
+/// Request message for \[GoogleAdsService.Mutate][google.ads.googleads.v9.services.GoogleAdsService.Mutate\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateGoogleAdsRequest {
-    ///  Required. The ID of the customer whose resources are being modified.
+    /// Required. The ID of the customer whose resources are being modified.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The list of operations to perform on individual resources.
+    /// Required. The list of operations to perform on individual resources.
     #[prost(message, repeated, tag="2")]
     pub mutate_operations: ::prost::alloc::vec::Vec<MutateOperation>,
-    ///  If true, successful operations will be carried out and invalid
-    ///  operations will return errors. If false, all operations will be carried
-    ///  out in one transaction if and only if they are all valid.
-    ///  Default is false.
+    /// If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, all operations will be carried
+    /// out in one transaction if and only if they are all valid.
+    /// Default is false.
     #[prost(bool, tag="3")]
     pub partial_failure: bool,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="4")]
     pub validate_only: bool,
-    ///  The response content type setting. Determines whether the mutable resource
-    ///  or just the resource name should be returned post mutation. The mutable
-    ///  resource will only be returned if the resource has the appropriate response
-    ///  field. E.g. MutateCampaignResult.campaign.
+    /// The response content type setting. Determines whether the mutable resource
+    /// or just the resource name should be returned post mutation. The mutable
+    /// resource will only be returned if the resource has the appropriate response
+    /// field. E.g. MutateCampaignResult.campaign.
     #[prost(enumeration="super::enums::response_content_type_enum::ResponseContentType", tag="5")]
     pub response_content_type: i32,
 }
-///  Response message for \[GoogleAdsService.Mutate][google.ads.googleads.v9.services.GoogleAdsService.Mutate\].
+/// Response message for \[GoogleAdsService.Mutate][google.ads.googleads.v9.services.GoogleAdsService.Mutate\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateGoogleAdsResponse {
-    ///  Errors that pertain to operation failures in the partial failure mode.
-    ///  Returned only when partial_failure = true and all errors occur inside the
-    ///  operations. If any errors occur outside the operations (e.g., auth errors),
-    ///  we return an RPC level error.
+    /// Errors that pertain to operation failures in the partial failure mode.
+    /// Returned only when partial_failure = true and all errors occur inside the
+    /// operations. If any errors occur outside the operations (e.g., auth errors),
+    /// we return an RPC level error.
     #[prost(message, optional, tag="3")]
     pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
-    ///  All responses for the mutate.
+    /// All responses for the mutate.
     #[prost(message, repeated, tag="1")]
     pub mutate_operation_responses: ::prost::alloc::vec::Vec<MutateOperationResponse>,
 }
-///  A single operation (create, update, remove) on a resource.
+/// A single operation (create, update, remove) on a resource.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateOperation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[prost(oneof="mutate_operation::Operation", tags="17, 1, 56, 2, 77, 18, 3, 75, 19, 20, 21, 5, 49, 22, 23, 65, 78, 62, 71, 72, 58, 59, 6, 52, 73, 7, 8, 67, 13, 76, 24, 25, 26, 27, 28, 10, 11, 12, 55, 69, 63, 64, 68, 57, 66, 74, 30, 31, 32, 34, 35, 70, 36, 37, 53, 54, 38, 39, 40, 44, 50, 51, 45, 48, 41, 42, 43, 14, 15, 61, 16")]
     pub operation: ::core::option::Option<mutate_operation::Operation>,
 }
 /// Nested message and enum types in `MutateOperation`.
 pub mod mutate_operation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  An ad group ad label mutate operation.
+        /// An ad group ad label mutate operation.
         #[prost(message, tag="17")]
         AdGroupAdLabelOperation(super::AdGroupAdLabelOperation),
-        ///  An ad group ad mutate operation.
+        /// An ad group ad mutate operation.
         #[prost(message, tag="1")]
         AdGroupAdOperation(super::AdGroupAdOperation),
-        ///  An ad group asset mutate operation.
+        /// An ad group asset mutate operation.
         #[prost(message, tag="56")]
         AdGroupAssetOperation(super::AdGroupAssetOperation),
-        ///  An ad group bid modifier mutate operation.
+        /// An ad group bid modifier mutate operation.
         #[prost(message, tag="2")]
         AdGroupBidModifierOperation(super::AdGroupBidModifierOperation),
-        ///  An ad group criterion customizer mutate operation.
+        /// An ad group criterion customizer mutate operation.
         #[prost(message, tag="77")]
         AdGroupCriterionCustomizerOperation(super::AdGroupCriterionCustomizerOperation),
-        ///  An ad group criterion label mutate operation.
+        /// An ad group criterion label mutate operation.
         #[prost(message, tag="18")]
         AdGroupCriterionLabelOperation(super::AdGroupCriterionLabelOperation),
-        ///  An ad group criterion mutate operation.
+        /// An ad group criterion mutate operation.
         #[prost(message, tag="3")]
         AdGroupCriterionOperation(super::AdGroupCriterionOperation),
-        ///  An ad group customizer mutate operation.
+        /// An ad group customizer mutate operation.
         #[prost(message, tag="75")]
         AdGroupCustomizerOperation(super::AdGroupCustomizerOperation),
-        ///  An ad group extension setting mutate operation.
+        /// An ad group extension setting mutate operation.
         #[prost(message, tag="19")]
         AdGroupExtensionSettingOperation(super::AdGroupExtensionSettingOperation),
-        ///  An ad group feed mutate operation.
+        /// An ad group feed mutate operation.
         #[prost(message, tag="20")]
         AdGroupFeedOperation(super::AdGroupFeedOperation),
-        ///  An ad group label mutate operation.
+        /// An ad group label mutate operation.
         #[prost(message, tag="21")]
         AdGroupLabelOperation(super::AdGroupLabelOperation),
-        ///  An ad group mutate operation.
+        /// An ad group mutate operation.
         #[prost(message, tag="5")]
         AdGroupOperation(super::AdGroupOperation),
-        ///  An ad mutate operation.
+        /// An ad mutate operation.
         #[prost(message, tag="49")]
         AdOperation(super::AdOperation),
-        ///  An ad parameter mutate operation.
+        /// An ad parameter mutate operation.
         #[prost(message, tag="22")]
         AdParameterOperation(super::AdParameterOperation),
-        ///  An asset mutate operation.
+        /// An asset mutate operation.
         #[prost(message, tag="23")]
         AssetOperation(super::AssetOperation),
-        ///  An asset group asset mutate operation.
+        /// An asset group asset mutate operation.
         #[prost(message, tag="65")]
         AssetGroupAssetOperation(super::AssetGroupAssetOperation),
-        ///  An asset group listing group filter mutate operation.
+        /// An asset group listing group filter mutate operation.
         #[prost(message, tag="78")]
         AssetGroupListingGroupFilterOperation(super::AssetGroupListingGroupFilterOperation),
-        ///  An asset group mutate operation.
+        /// An asset group mutate operation.
         #[prost(message, tag="62")]
         AssetGroupOperation(super::AssetGroupOperation),
-        ///  An asset set asset mutate operation.
+        /// An asset set asset mutate operation.
         #[prost(message, tag="71")]
         AssetSetAssetOperation(super::AssetSetAssetOperation),
-        ///  An asset set mutate operation.
+        /// An asset set mutate operation.
         #[prost(message, tag="72")]
         AssetSetOperation(super::AssetSetOperation),
-        ///  A bidding data exclusion mutate operation.
+        /// A bidding data exclusion mutate operation.
         #[prost(message, tag="58")]
         BiddingDataExclusionOperation(super::BiddingDataExclusionOperation),
-        ///  A bidding seasonality adjustment mutate operation.
+        /// A bidding seasonality adjustment mutate operation.
         #[prost(message, tag="59")]
         BiddingSeasonalityAdjustmentOperation(super::BiddingSeasonalityAdjustmentOperation),
-        ///  A bidding strategy mutate operation.
+        /// A bidding strategy mutate operation.
         #[prost(message, tag="6")]
         BiddingStrategyOperation(super::BiddingStrategyOperation),
-        ///  A campaign asset mutate operation.
+        /// A campaign asset mutate operation.
         #[prost(message, tag="52")]
         CampaignAssetOperation(super::CampaignAssetOperation),
-        ///  A campaign asset mutate operation.
+        /// A campaign asset mutate operation.
         #[prost(message, tag="73")]
         CampaignAssetSetOperation(super::CampaignAssetSetOperation),
-        ///  A campaign bid modifier mutate operation.
+        /// A campaign bid modifier mutate operation.
         #[prost(message, tag="7")]
         CampaignBidModifierOperation(super::CampaignBidModifierOperation),
-        ///  A campaign budget mutate operation.
+        /// A campaign budget mutate operation.
         #[prost(message, tag="8")]
         CampaignBudgetOperation(super::CampaignBudgetOperation),
-        ///  A campaign conversion goal mutate operation.
+        /// A campaign conversion goal mutate operation.
         #[prost(message, tag="67")]
         CampaignConversionGoalOperation(super::CampaignConversionGoalOperation),
-        ///  A campaign criterion mutate operation.
+        /// A campaign criterion mutate operation.
         #[prost(message, tag="13")]
         CampaignCriterionOperation(super::CampaignCriterionOperation),
-        ///  An campaign customizer mutate operation.
+        /// An campaign customizer mutate operation.
         #[prost(message, tag="76")]
         CampaignCustomizerOperation(super::CampaignCustomizerOperation),
-        ///  A campaign draft mutate operation.
+        /// A campaign draft mutate operation.
         #[prost(message, tag="24")]
         CampaignDraftOperation(super::CampaignDraftOperation),
-        ///  A campaign experiment mutate operation.
+        /// A campaign experiment mutate operation.
         #[prost(message, tag="25")]
         CampaignExperimentOperation(super::CampaignExperimentOperation),
-        ///  A campaign extension setting mutate operation.
+        /// A campaign extension setting mutate operation.
         #[prost(message, tag="26")]
         CampaignExtensionSettingOperation(super::CampaignExtensionSettingOperation),
-        ///  A campaign feed mutate operation.
+        /// A campaign feed mutate operation.
         #[prost(message, tag="27")]
         CampaignFeedOperation(super::CampaignFeedOperation),
-        ///  A campaign label mutate operation.
+        /// A campaign label mutate operation.
         #[prost(message, tag="28")]
         CampaignLabelOperation(super::CampaignLabelOperation),
-        ///  A campaign mutate operation.
+        /// A campaign mutate operation.
         #[prost(message, tag="10")]
         CampaignOperation(super::CampaignOperation),
-        ///  A campaign shared set mutate operation.
+        /// A campaign shared set mutate operation.
         #[prost(message, tag="11")]
         CampaignSharedSetOperation(super::CampaignSharedSetOperation),
-        ///  A conversion action mutate operation.
+        /// A conversion action mutate operation.
         #[prost(message, tag="12")]
         ConversionActionOperation(super::ConversionActionOperation),
-        ///  A conversion custom variable mutate operation.
+        /// A conversion custom variable mutate operation.
         #[prost(message, tag="55")]
         ConversionCustomVariableOperation(super::ConversionCustomVariableOperation),
-        ///  A conversion goal campaign config mutate operation.
+        /// A conversion goal campaign config mutate operation.
         #[prost(message, tag="69")]
         ConversionGoalCampaignConfigOperation(super::ConversionGoalCampaignConfigOperation),
-        ///  A conversion value rule mutate operation.
+        /// A conversion value rule mutate operation.
         #[prost(message, tag="63")]
         ConversionValueRuleOperation(super::ConversionValueRuleOperation),
-        ///  A conversion value rule set mutate operation.
+        /// A conversion value rule set mutate operation.
         #[prost(message, tag="64")]
         ConversionValueRuleSetOperation(super::ConversionValueRuleSetOperation),
-        ///  A custom conversion goal mutate operation.
+        /// A custom conversion goal mutate operation.
         #[prost(message, tag="68")]
         CustomConversionGoalOperation(super::CustomConversionGoalOperation),
-        ///  A customer asset mutate operation.
+        /// A customer asset mutate operation.
         #[prost(message, tag="57")]
         CustomerAssetOperation(super::CustomerAssetOperation),
-        ///  A customer conversion goal mutate operation.
+        /// A customer conversion goal mutate operation.
         #[prost(message, tag="66")]
         CustomerConversionGoalOperation(super::CustomerConversionGoalOperation),
-        ///  An customer customizer mutate operation.
+        /// An customer customizer mutate operation.
         #[prost(message, tag="74")]
         CustomizerCustomizerOperation(super::CustomerCustomizerOperation),
-        ///  A customer extension setting mutate operation.
+        /// A customer extension setting mutate operation.
         #[prost(message, tag="30")]
         CustomerExtensionSettingOperation(super::CustomerExtensionSettingOperation),
-        ///  A customer feed mutate operation.
+        /// A customer feed mutate operation.
         #[prost(message, tag="31")]
         CustomerFeedOperation(super::CustomerFeedOperation),
-        ///  A customer label mutate operation.
+        /// A customer label mutate operation.
         #[prost(message, tag="32")]
         CustomerLabelOperation(super::CustomerLabelOperation),
-        ///  A customer negative criterion mutate operation.
+        /// A customer negative criterion mutate operation.
         #[prost(message, tag="34")]
         CustomerNegativeCriterionOperation(super::CustomerNegativeCriterionOperation),
-        ///  A customer mutate operation.
+        /// A customer mutate operation.
         #[prost(message, tag="35")]
         CustomerOperation(super::CustomerOperation),
-        ///  An customizer attribute mutate operation.
+        /// An customizer attribute mutate operation.
         #[prost(message, tag="70")]
         CustomizerAttributeOperation(super::CustomizerAttributeOperation),
-        ///  An extension feed item mutate operation.
+        /// An extension feed item mutate operation.
         #[prost(message, tag="36")]
         ExtensionFeedItemOperation(super::ExtensionFeedItemOperation),
-        ///  A feed item mutate operation.
+        /// A feed item mutate operation.
         #[prost(message, tag="37")]
         FeedItemOperation(super::FeedItemOperation),
-        ///  A feed item set mutate operation.
+        /// A feed item set mutate operation.
         #[prost(message, tag="53")]
         FeedItemSetOperation(super::FeedItemSetOperation),
-        ///  A feed item set link mutate operation.
+        /// A feed item set link mutate operation.
         #[prost(message, tag="54")]
         FeedItemSetLinkOperation(super::FeedItemSetLinkOperation),
-        ///  A feed item target mutate operation.
+        /// A feed item target mutate operation.
         #[prost(message, tag="38")]
         FeedItemTargetOperation(super::FeedItemTargetOperation),
-        ///  A feed mapping mutate operation.
+        /// A feed mapping mutate operation.
         #[prost(message, tag="39")]
         FeedMappingOperation(super::FeedMappingOperation),
-        ///  A feed mutate operation.
+        /// A feed mutate operation.
         #[prost(message, tag="40")]
         FeedOperation(super::FeedOperation),
-        ///  A keyword plan ad group operation.
+        /// A keyword plan ad group operation.
         #[prost(message, tag="44")]
         KeywordPlanAdGroupOperation(super::KeywordPlanAdGroupOperation),
-        ///  A keyword plan ad group keyword operation.
+        /// A keyword plan ad group keyword operation.
         #[prost(message, tag="50")]
         KeywordPlanAdGroupKeywordOperation(super::KeywordPlanAdGroupKeywordOperation),
-        ///  A keyword plan campaign keyword operation.
+        /// A keyword plan campaign keyword operation.
         #[prost(message, tag="51")]
         KeywordPlanCampaignKeywordOperation(super::KeywordPlanCampaignKeywordOperation),
-        ///  A keyword plan campaign operation.
+        /// A keyword plan campaign operation.
         #[prost(message, tag="45")]
         KeywordPlanCampaignOperation(super::KeywordPlanCampaignOperation),
-        ///  A keyword plan operation.
+        /// A keyword plan operation.
         #[prost(message, tag="48")]
         KeywordPlanOperation(super::KeywordPlanOperation),
-        ///  A label mutate operation.
+        /// A label mutate operation.
         #[prost(message, tag="41")]
         LabelOperation(super::LabelOperation),
-        ///  A media file mutate operation.
+        /// A media file mutate operation.
         #[prost(message, tag="42")]
         MediaFileOperation(super::MediaFileOperation),
-        ///  A remarketing action mutate operation.
+        /// A remarketing action mutate operation.
         #[prost(message, tag="43")]
         RemarketingActionOperation(super::RemarketingActionOperation),
-        ///  A shared criterion mutate operation.
+        /// A shared criterion mutate operation.
         #[prost(message, tag="14")]
         SharedCriterionOperation(super::SharedCriterionOperation),
-        ///  A shared set mutate operation.
+        /// A shared set mutate operation.
         #[prost(message, tag="15")]
         SharedSetOperation(super::SharedSetOperation),
-        ///  A Smart campaign setting mutate operation.
+        /// A Smart campaign setting mutate operation.
         #[prost(message, tag="61")]
         SmartCampaignSettingOperation(super::SmartCampaignSettingOperation),
-        ///  A user list mutate operation.
+        /// A user list mutate operation.
         #[prost(message, tag="16")]
         UserListOperation(super::UserListOperation),
     }
 }
-///  Response message for the resource mutate.
+/// Response message for the resource mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateOperationResponse {
-    ///  The mutate response.
+    /// The mutate response.
     #[prost(oneof="mutate_operation_response::Response", tags="17, 1, 56, 2, 77, 18, 3, 75, 19, 20, 21, 5, 22, 49, 23, 65, 78, 62, 71, 72, 58, 59, 6, 52, 73, 7, 8, 67, 13, 76, 24, 25, 26, 27, 28, 10, 11, 12, 55, 69, 63, 64, 68, 57, 66, 74, 30, 31, 32, 34, 35, 70, 36, 37, 53, 54, 38, 39, 40, 44, 45, 50, 51, 48, 41, 42, 43, 14, 15, 61, 16")]
     pub response: ::core::option::Option<mutate_operation_response::Response>,
 }
 /// Nested message and enum types in `MutateOperationResponse`.
 pub mod mutate_operation_response {
-    ///  The mutate response.
+    /// The mutate response.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Response {
-        ///  The result for the ad group ad label mutate.
+        /// The result for the ad group ad label mutate.
         #[prost(message, tag="17")]
         AdGroupAdLabelResult(super::MutateAdGroupAdLabelResult),
-        ///  The result for the ad group ad mutate.
+        /// The result for the ad group ad mutate.
         #[prost(message, tag="1")]
         AdGroupAdResult(super::MutateAdGroupAdResult),
-        ///  The result for the ad group asset mutate.
+        /// The result for the ad group asset mutate.
         #[prost(message, tag="56")]
         AdGroupAssetResult(super::MutateAdGroupAssetResult),
-        ///  The result for the ad group bid modifier mutate.
+        /// The result for the ad group bid modifier mutate.
         #[prost(message, tag="2")]
         AdGroupBidModifierResult(super::MutateAdGroupBidModifierResult),
-        ///  The result for the ad group criterion customizer mutate.
+        /// The result for the ad group criterion customizer mutate.
         #[prost(message, tag="77")]
         AdGroupCriterionCustomizerResult(super::MutateAdGroupCriterionCustomizerResult),
-        ///  The result for the ad group criterion label mutate.
+        /// The result for the ad group criterion label mutate.
         #[prost(message, tag="18")]
         AdGroupCriterionLabelResult(super::MutateAdGroupCriterionLabelResult),
-        ///  The result for the ad group criterion mutate.
+        /// The result for the ad group criterion mutate.
         #[prost(message, tag="3")]
         AdGroupCriterionResult(super::MutateAdGroupCriterionResult),
-        ///  The result for the ad group customizer mutate.
+        /// The result for the ad group customizer mutate.
         #[prost(message, tag="75")]
         AdGroupCustomizerResult(super::MutateAdGroupCustomizerResult),
-        ///  The result for the ad group extension setting mutate.
+        /// The result for the ad group extension setting mutate.
         #[prost(message, tag="19")]
         AdGroupExtensionSettingResult(super::MutateAdGroupExtensionSettingResult),
-        ///  The result for the ad group feed mutate.
+        /// The result for the ad group feed mutate.
         #[prost(message, tag="20")]
         AdGroupFeedResult(super::MutateAdGroupFeedResult),
-        ///  The result for the ad group label mutate.
+        /// The result for the ad group label mutate.
         #[prost(message, tag="21")]
         AdGroupLabelResult(super::MutateAdGroupLabelResult),
-        ///  The result for the ad group mutate.
+        /// The result for the ad group mutate.
         #[prost(message, tag="5")]
         AdGroupResult(super::MutateAdGroupResult),
-        ///  The result for the ad parameter mutate.
+        /// The result for the ad parameter mutate.
         #[prost(message, tag="22")]
         AdParameterResult(super::MutateAdParameterResult),
-        ///  The result for the ad mutate.
+        /// The result for the ad mutate.
         #[prost(message, tag="49")]
         AdResult(super::MutateAdResult),
-        ///  The result for the asset mutate.
+        /// The result for the asset mutate.
         #[prost(message, tag="23")]
         AssetResult(super::MutateAssetResult),
-        ///  The result for the asset group asset mutate.
+        /// The result for the asset group asset mutate.
         #[prost(message, tag="65")]
         AssetGroupAssetResult(super::MutateAssetGroupAssetResult),
-        ///  The result for the asset group listing group filter mutate.
+        /// The result for the asset group listing group filter mutate.
         #[prost(message, tag="78")]
         AssetGroupListingGroupFilterResult(super::MutateAssetGroupListingGroupFilterResult),
-        ///  The result for the asset group mutate.
+        /// The result for the asset group mutate.
         #[prost(message, tag="62")]
         AssetGroupResult(super::MutateAssetGroupResult),
-        ///  The result for the asset set asset mutate.
+        /// The result for the asset set asset mutate.
         #[prost(message, tag="71")]
         AssetSetAssetResult(super::MutateAssetSetAssetResult),
-        ///  The result for the asset set mutate.
+        /// The result for the asset set mutate.
         #[prost(message, tag="72")]
         AssetSetResult(super::MutateAssetSetResult),
-        ///  The result for the bidding data exclusion mutate.
+        /// The result for the bidding data exclusion mutate.
         #[prost(message, tag="58")]
         BiddingDataExclusionResult(super::MutateBiddingDataExclusionsResult),
-        ///  The result for the bidding seasonality adjustment mutate.
+        /// The result for the bidding seasonality adjustment mutate.
         #[prost(message, tag="59")]
         BiddingSeasonalityAdjustmentResult(super::MutateBiddingSeasonalityAdjustmentsResult),
-        ///  The result for the bidding strategy mutate.
+        /// The result for the bidding strategy mutate.
         #[prost(message, tag="6")]
         BiddingStrategyResult(super::MutateBiddingStrategyResult),
-        ///  The result for the campaign asset mutate.
+        /// The result for the campaign asset mutate.
         #[prost(message, tag="52")]
         CampaignAssetResult(super::MutateCampaignAssetResult),
-        ///  The result for the campaign asset set mutate.
+        /// The result for the campaign asset set mutate.
         #[prost(message, tag="73")]
         CampaignAssetSetResult(super::MutateCampaignAssetSetResult),
-        ///  The result for the campaign bid modifier mutate.
+        /// The result for the campaign bid modifier mutate.
         #[prost(message, tag="7")]
         CampaignBidModifierResult(super::MutateCampaignBidModifierResult),
-        ///  The result for the campaign budget mutate.
+        /// The result for the campaign budget mutate.
         #[prost(message, tag="8")]
         CampaignBudgetResult(super::MutateCampaignBudgetResult),
-        ///  The result for the campaign conversion goal mutate.
+        /// The result for the campaign conversion goal mutate.
         #[prost(message, tag="67")]
         CampaignConversionGoalResult(super::MutateCampaignConversionGoalResult),
-        ///  The result for the campaign criterion mutate.
+        /// The result for the campaign criterion mutate.
         #[prost(message, tag="13")]
         CampaignCriterionResult(super::MutateCampaignCriterionResult),
-        ///  The result for the campaign customizer mutate.
+        /// The result for the campaign customizer mutate.
         #[prost(message, tag="76")]
         CampaignCustomizerResult(super::MutateCampaignCustomizerResult),
-        ///  The result for the campaign draft mutate.
+        /// The result for the campaign draft mutate.
         #[prost(message, tag="24")]
         CampaignDraftResult(super::MutateCampaignDraftResult),
-        ///  The result for the campaign experiment mutate.
+        /// The result for the campaign experiment mutate.
         #[prost(message, tag="25")]
         CampaignExperimentResult(super::MutateCampaignExperimentResult),
-        ///  The result for the campaign extension setting mutate.
+        /// The result for the campaign extension setting mutate.
         #[prost(message, tag="26")]
         CampaignExtensionSettingResult(super::MutateCampaignExtensionSettingResult),
-        ///  The result for the campaign feed mutate.
+        /// The result for the campaign feed mutate.
         #[prost(message, tag="27")]
         CampaignFeedResult(super::MutateCampaignFeedResult),
-        ///  The result for the campaign label mutate.
+        /// The result for the campaign label mutate.
         #[prost(message, tag="28")]
         CampaignLabelResult(super::MutateCampaignLabelResult),
-        ///  The result for the campaign mutate.
+        /// The result for the campaign mutate.
         #[prost(message, tag="10")]
         CampaignResult(super::MutateCampaignResult),
-        ///  The result for the campaign shared set mutate.
+        /// The result for the campaign shared set mutate.
         #[prost(message, tag="11")]
         CampaignSharedSetResult(super::MutateCampaignSharedSetResult),
-        ///  The result for the conversion action mutate.
+        /// The result for the conversion action mutate.
         #[prost(message, tag="12")]
         ConversionActionResult(super::MutateConversionActionResult),
-        ///  The result for the conversion custom variable mutate.
+        /// The result for the conversion custom variable mutate.
         #[prost(message, tag="55")]
         ConversionCustomVariableResult(super::MutateConversionCustomVariableResult),
-        ///  The result for the conversion goal campaign config mutate.
+        /// The result for the conversion goal campaign config mutate.
         #[prost(message, tag="69")]
         ConversionGoalCampaignConfigResult(super::MutateConversionGoalCampaignConfigResult),
-        ///  The result for the conversion value rule mutate.
+        /// The result for the conversion value rule mutate.
         #[prost(message, tag="63")]
         ConversionValueRuleResult(super::MutateConversionValueRuleResult),
-        ///  The result for the conversion value rule set mutate.
+        /// The result for the conversion value rule set mutate.
         #[prost(message, tag="64")]
         ConversionValueRuleSetResult(super::MutateConversionValueRuleSetResult),
-        ///  The result for the custom conversion goal mutate.
+        /// The result for the custom conversion goal mutate.
         #[prost(message, tag="68")]
         CustomConversionGoalResult(super::MutateCustomConversionGoalResult),
-        ///  The result for the customer asset mutate.
+        /// The result for the customer asset mutate.
         #[prost(message, tag="57")]
         CustomerAssetResult(super::MutateCustomerAssetResult),
-        ///  The result for the customer conversion goal mutate.
+        /// The result for the customer conversion goal mutate.
         #[prost(message, tag="66")]
         CustomerConversionGoalResult(super::MutateCustomerConversionGoalResult),
-        ///  The result for the customer customizer mutate.
+        /// The result for the customer customizer mutate.
         #[prost(message, tag="74")]
         CustomerCustomizerResult(super::MutateCustomerCustomizerResult),
-        ///  The result for the customer extension setting mutate.
+        /// The result for the customer extension setting mutate.
         #[prost(message, tag="30")]
         CustomerExtensionSettingResult(super::MutateCustomerExtensionSettingResult),
-        ///  The result for the customer feed mutate.
+        /// The result for the customer feed mutate.
         #[prost(message, tag="31")]
         CustomerFeedResult(super::MutateCustomerFeedResult),
-        ///  The result for the customer label mutate.
+        /// The result for the customer label mutate.
         #[prost(message, tag="32")]
         CustomerLabelResult(super::MutateCustomerLabelResult),
-        ///  The result for the customer negative criterion mutate.
+        /// The result for the customer negative criterion mutate.
         #[prost(message, tag="34")]
         CustomerNegativeCriterionResult(super::MutateCustomerNegativeCriteriaResult),
-        ///  The result for the customer mutate.
+        /// The result for the customer mutate.
         #[prost(message, tag="35")]
         CustomerResult(super::MutateCustomerResult),
-        ///  The result for the customizer attribute mutate.
+        /// The result for the customizer attribute mutate.
         #[prost(message, tag="70")]
         CustomizerAttributeResult(super::MutateCustomizerAttributeResult),
-        ///  The result for the extension feed item mutate.
+        /// The result for the extension feed item mutate.
         #[prost(message, tag="36")]
         ExtensionFeedItemResult(super::MutateExtensionFeedItemResult),
-        ///  The result for the feed item mutate.
+        /// The result for the feed item mutate.
         #[prost(message, tag="37")]
         FeedItemResult(super::MutateFeedItemResult),
-        ///  The result for the feed item set mutate.
+        /// The result for the feed item set mutate.
         #[prost(message, tag="53")]
         FeedItemSetResult(super::MutateFeedItemSetResult),
-        ///  The result for the feed item set link mutate.
+        /// The result for the feed item set link mutate.
         #[prost(message, tag="54")]
         FeedItemSetLinkResult(super::MutateFeedItemSetLinkResult),
-        ///  The result for the feed item target mutate.
+        /// The result for the feed item target mutate.
         #[prost(message, tag="38")]
         FeedItemTargetResult(super::MutateFeedItemTargetResult),
-        ///  The result for the feed mapping mutate.
+        /// The result for the feed mapping mutate.
         #[prost(message, tag="39")]
         FeedMappingResult(super::MutateFeedMappingResult),
-        ///  The result for the feed mutate.
+        /// The result for the feed mutate.
         #[prost(message, tag="40")]
         FeedResult(super::MutateFeedResult),
-        ///  The result for the keyword plan ad group mutate.
+        /// The result for the keyword plan ad group mutate.
         #[prost(message, tag="44")]
         KeywordPlanAdGroupResult(super::MutateKeywordPlanAdGroupResult),
-        ///  The result for the keyword plan campaign mutate.
+        /// The result for the keyword plan campaign mutate.
         #[prost(message, tag="45")]
         KeywordPlanCampaignResult(super::MutateKeywordPlanCampaignResult),
-        ///  The result for the keyword plan ad group keyword mutate.
+        /// The result for the keyword plan ad group keyword mutate.
         #[prost(message, tag="50")]
         KeywordPlanAdGroupKeywordResult(super::MutateKeywordPlanAdGroupKeywordResult),
-        ///  The result for the keyword plan campaign keyword mutate.
+        /// The result for the keyword plan campaign keyword mutate.
         #[prost(message, tag="51")]
         KeywordPlanCampaignKeywordResult(super::MutateKeywordPlanCampaignKeywordResult),
-        ///  The result for the keyword plan mutate.
+        /// The result for the keyword plan mutate.
         #[prost(message, tag="48")]
         KeywordPlanResult(super::MutateKeywordPlansResult),
-        ///  The result for the label mutate.
+        /// The result for the label mutate.
         #[prost(message, tag="41")]
         LabelResult(super::MutateLabelResult),
-        ///  The result for the media file mutate.
+        /// The result for the media file mutate.
         #[prost(message, tag="42")]
         MediaFileResult(super::MutateMediaFileResult),
-        ///  The result for the remarketing action mutate.
+        /// The result for the remarketing action mutate.
         #[prost(message, tag="43")]
         RemarketingActionResult(super::MutateRemarketingActionResult),
-        ///  The result for the shared criterion mutate.
+        /// The result for the shared criterion mutate.
         #[prost(message, tag="14")]
         SharedCriterionResult(super::MutateSharedCriterionResult),
-        ///  The result for the shared set mutate.
+        /// The result for the shared set mutate.
         #[prost(message, tag="15")]
         SharedSetResult(super::MutateSharedSetResult),
-        ///  The result for the Smart campaign setting mutate.
+        /// The result for the Smart campaign setting mutate.
         #[prost(message, tag="61")]
         SmartCampaignSettingResult(super::MutateSmartCampaignSettingResult),
-        ///  The result for the user list mutate.
+        /// The result for the user list mutate.
         #[prost(message, tag="16")]
         UserListResult(super::MutateUserListResult),
     }
@@ -18894,145 +18894,145 @@ pub mod google_ads_service_client {
         }
     }
 }
-///  Request message for \[BatchJobService.MutateBatchJob][google.ads.googleads.v9.services.BatchJobService.MutateBatchJob\].
+/// Request message for \[BatchJobService.MutateBatchJob][google.ads.googleads.v9.services.BatchJobService.MutateBatchJob\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateBatchJobRequest {
-    ///  Required. The ID of the customer for which to create a batch job.
+    /// Required. The ID of the customer for which to create a batch job.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The operation to perform on an individual batch job.
+    /// Required. The operation to perform on an individual batch job.
     #[prost(message, optional, tag="2")]
     pub operation: ::core::option::Option<BatchJobOperation>,
 }
-///  A single operation on a batch job.
+/// A single operation on a batch job.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchJobOperation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[prost(oneof="batch_job_operation::Operation", tags="1")]
     pub operation: ::core::option::Option<batch_job_operation::Operation>,
 }
 /// Nested message and enum types in `BatchJobOperation`.
 pub mod batch_job_operation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  Create operation: No resource name is expected for the new batch job.
+        /// Create operation: No resource name is expected for the new batch job.
         #[prost(message, tag="1")]
         Create(super::super::resources::BatchJob),
     }
 }
-///  Response message for \[BatchJobService.MutateBatchJob][google.ads.googleads.v9.services.BatchJobService.MutateBatchJob\].
+/// Response message for \[BatchJobService.MutateBatchJob][google.ads.googleads.v9.services.BatchJobService.MutateBatchJob\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateBatchJobResponse {
-    ///  The result for the mutate.
+    /// The result for the mutate.
     #[prost(message, optional, tag="1")]
     pub result: ::core::option::Option<MutateBatchJobResult>,
 }
-///  The result for the batch job mutate.
+/// The result for the batch job mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateBatchJobResult {
-    ///  The resource name of the batch job.
+    /// The resource name of the batch job.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Request message for \[BatchJobService.GetBatchJob][google.ads.googleads.v9.services.BatchJobService.GetBatchJob\].
+/// Request message for \[BatchJobService.GetBatchJob][google.ads.googleads.v9.services.BatchJobService.GetBatchJob\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetBatchJobRequest {
-    ///  Required. The resource name of the batch job to get.
+    /// Required. The resource name of the batch job to get.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Request message for \[BatchJobService.RunBatchJob][google.ads.googleads.v9.services.BatchJobService.RunBatchJob\].
+/// Request message for \[BatchJobService.RunBatchJob][google.ads.googleads.v9.services.BatchJobService.RunBatchJob\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RunBatchJobRequest {
-    ///  Required. The resource name of the BatchJob to run.
+    /// Required. The resource name of the BatchJob to run.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Request message for \[BatchJobService.AddBatchJobOperations][google.ads.googleads.v9.services.BatchJobService.AddBatchJobOperations\].
+/// Request message for \[BatchJobService.AddBatchJobOperations][google.ads.googleads.v9.services.BatchJobService.AddBatchJobOperations\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddBatchJobOperationsRequest {
-    ///  Required. The resource name of the batch job.
+    /// Required. The resource name of the batch job.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
-    ///  A token used to enforce sequencing.
+    /// A token used to enforce sequencing.
     ///
-    ///  The first AddBatchJobOperations request for a batch job should not set
-    ///  sequence_token. Subsequent requests must set sequence_token to the value of
-    ///  next_sequence_token received in the previous AddBatchJobOperations
-    ///  response.
+    /// The first AddBatchJobOperations request for a batch job should not set
+    /// sequence_token. Subsequent requests must set sequence_token to the value of
+    /// next_sequence_token received in the previous AddBatchJobOperations
+    /// response.
     #[prost(string, tag="2")]
     pub sequence_token: ::prost::alloc::string::String,
-    ///  Required. The list of mutates being added.
+    /// Required. The list of mutates being added.
     ///
-    ///  Operations can use negative integers as temp ids to signify dependencies
-    ///  between entities created in this batch job. For example, a customer with
-    ///  id = 1234 can create a campaign and an ad group in that same campaign by
-    ///  creating a campaign in the first operation with the resource name
-    ///  explicitly set to "customers/1234/campaigns/-1", and creating an ad group
-    ///  in the second operation with the campaign field also set to
-    ///  "customers/1234/campaigns/-1".
+    /// Operations can use negative integers as temp ids to signify dependencies
+    /// between entities created in this batch job. For example, a customer with
+    /// id = 1234 can create a campaign and an ad group in that same campaign by
+    /// creating a campaign in the first operation with the resource name
+    /// explicitly set to "customers/1234/campaigns/-1", and creating an ad group
+    /// in the second operation with the campaign field also set to
+    /// "customers/1234/campaigns/-1".
     #[prost(message, repeated, tag="3")]
     pub mutate_operations: ::prost::alloc::vec::Vec<MutateOperation>,
 }
-///  Response message for \[BatchJobService.AddBatchJobOperations][google.ads.googleads.v9.services.BatchJobService.AddBatchJobOperations\].
+/// Response message for \[BatchJobService.AddBatchJobOperations][google.ads.googleads.v9.services.BatchJobService.AddBatchJobOperations\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddBatchJobOperationsResponse {
-    ///  The total number of operations added so far for this batch job.
+    /// The total number of operations added so far for this batch job.
     #[prost(int64, tag="1")]
     pub total_operations: i64,
-    ///  The sequence token to be used when calling AddBatchJobOperations again if
-    ///  more operations need to be added. The next AddBatchJobOperations request
-    ///  must set the sequence_token field to the value of this field.
+    /// The sequence token to be used when calling AddBatchJobOperations again if
+    /// more operations need to be added. The next AddBatchJobOperations request
+    /// must set the sequence_token field to the value of this field.
     #[prost(string, tag="2")]
     pub next_sequence_token: ::prost::alloc::string::String,
 }
-///  Request message for \[BatchJobService.ListBatchJobResults][google.ads.googleads.v9.services.BatchJobService.ListBatchJobResults\].
+/// Request message for \[BatchJobService.ListBatchJobResults][google.ads.googleads.v9.services.BatchJobService.ListBatchJobResults\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListBatchJobResultsRequest {
-    ///  Required. The resource name of the batch job whose results are being listed.
+    /// Required. The resource name of the batch job whose results are being listed.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
-    ///  Token of the page to retrieve. If not specified, the first
-    ///  page of results will be returned. Use the value obtained from
-    ///  `next_page_token` in the previous response in order to request
-    ///  the next page of results.
+    /// Token of the page to retrieve. If not specified, the first
+    /// page of results will be returned. Use the value obtained from
+    /// `next_page_token` in the previous response in order to request
+    /// the next page of results.
     #[prost(string, tag="2")]
     pub page_token: ::prost::alloc::string::String,
-    ///  Number of elements to retrieve in a single page.
-    ///  When a page request is too large, the server may decide to
-    ///  further limit the number of returned resources.
+    /// Number of elements to retrieve in a single page.
+    /// When a page request is too large, the server may decide to
+    /// further limit the number of returned resources.
     #[prost(int32, tag="3")]
     pub page_size: i32,
-    ///  The response content type setting. Determines whether the mutable resource
-    ///  or just the resource name should be returned.
+    /// The response content type setting. Determines whether the mutable resource
+    /// or just the resource name should be returned.
     #[prost(enumeration="super::enums::response_content_type_enum::ResponseContentType", tag="4")]
     pub response_content_type: i32,
 }
-///  Response message for \[BatchJobService.ListBatchJobResults][google.ads.googleads.v9.services.BatchJobService.ListBatchJobResults\].
+/// Response message for \[BatchJobService.ListBatchJobResults][google.ads.googleads.v9.services.BatchJobService.ListBatchJobResults\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListBatchJobResultsResponse {
-    ///  The list of rows that matched the query.
+    /// The list of rows that matched the query.
     #[prost(message, repeated, tag="1")]
     pub results: ::prost::alloc::vec::Vec<BatchJobResult>,
-    ///  Pagination token used to retrieve the next page of results.
-    ///  Pass the content of this string as the `page_token` attribute of
-    ///  the next request. `next_page_token` is not returned for the last
-    ///  page.
+    /// Pagination token used to retrieve the next page of results.
+    /// Pass the content of this string as the `page_token` attribute of
+    /// the next request. `next_page_token` is not returned for the last
+    /// page.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-///  An individual batch job result.
+/// An individual batch job result.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchJobResult {
-    ///  Index of the mutate operation.
+    /// Index of the mutate operation.
     #[prost(int64, tag="1")]
     pub operation_index: i64,
-    ///  Response for the mutate.
-    ///  May be empty if errors occurred.
+    /// Response for the mutate.
+    /// May be empty if errors occurred.
     #[prost(message, optional, tag="2")]
     pub mutate_operation_response: ::core::option::Option<MutateOperationResponse>,
-    ///  Details of the errors when processing the operation.
+    /// Details of the errors when processing the operation.
     #[prost(message, optional, tag="3")]
     pub status: ::core::option::Option<super::super::super::super::rpc::Status>,
 }
@@ -19264,11 +19264,11 @@ pub mod batch_job_service_client {
         }
     }
 }
-///  Request message for
-///  \[BiddingStrategySimulationService.GetBiddingStrategySimulation][google.ads.googleads.v9.services.BiddingStrategySimulationService.GetBiddingStrategySimulation\].
+/// Request message for
+/// \[BiddingStrategySimulationService.GetBiddingStrategySimulation][google.ads.googleads.v9.services.BiddingStrategySimulationService.GetBiddingStrategySimulation\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetBiddingStrategySimulationRequest {
-    ///  Required. The resource name of the bidding strategy simulation to fetch.
+    /// Required. The resource name of the bidding strategy simulation to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
@@ -19369,62 +19369,62 @@ pub mod bidding_strategy_simulation_service_client {
         }
     }
 }
-///  Request message for
-///  \[BillingSetupService.GetBillingSetup][google.ads.googleads.v9.services.BillingSetupService.GetBillingSetup\].
+/// Request message for
+/// \[BillingSetupService.GetBillingSetup][google.ads.googleads.v9.services.BillingSetupService.GetBillingSetup\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetBillingSetupRequest {
-    ///  Required. The resource name of the billing setup to fetch.
+    /// Required. The resource name of the billing setup to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Request message for billing setup mutate operations.
+/// Request message for billing setup mutate operations.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateBillingSetupRequest {
-    ///  Required. Id of the customer to apply the billing setup mutate operation to.
+    /// Required. Id of the customer to apply the billing setup mutate operation to.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The operation to perform.
+    /// Required. The operation to perform.
     #[prost(message, optional, tag="2")]
     pub operation: ::core::option::Option<BillingSetupOperation>,
 }
-///  A single operation on a billing setup, which describes the cancellation of an
-///  existing billing setup.
+/// A single operation on a billing setup, which describes the cancellation of an
+/// existing billing setup.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BillingSetupOperation {
-    ///  Only one of these operations can be set. "Update" operations are not
-    ///  supported.
+    /// Only one of these operations can be set. "Update" operations are not
+    /// supported.
     #[prost(oneof="billing_setup_operation::Operation", tags="2, 1")]
     pub operation: ::core::option::Option<billing_setup_operation::Operation>,
 }
 /// Nested message and enum types in `BillingSetupOperation`.
 pub mod billing_setup_operation {
-    ///  Only one of these operations can be set. "Update" operations are not
-    ///  supported.
+    /// Only one of these operations can be set. "Update" operations are not
+    /// supported.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  Creates a billing setup. No resource name is expected for the new billing
-        ///  setup.
+        /// Creates a billing setup. No resource name is expected for the new billing
+        /// setup.
         #[prost(message, tag="2")]
         Create(super::super::resources::BillingSetup),
-        ///  Resource name of the billing setup to remove. A setup cannot be
-        ///  removed unless it is in a pending state or its scheduled start time is in
-        ///  the future. The resource name looks like
-        ///  `customers/{customer_id}/billingSetups/{billing_id}`.
+        /// Resource name of the billing setup to remove. A setup cannot be
+        /// removed unless it is in a pending state or its scheduled start time is in
+        /// the future. The resource name looks like
+        /// `customers/{customer_id}/billingSetups/{billing_id}`.
         #[prost(string, tag="1")]
         Remove(::prost::alloc::string::String),
     }
 }
-///  Response message for a billing setup operation.
+/// Response message for a billing setup operation.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateBillingSetupResponse {
-    ///  A result that identifies the resource affected by the mutate request.
+    /// A result that identifies the resource affected by the mutate request.
     #[prost(message, optional, tag="1")]
     pub result: ::core::option::Option<MutateBillingSetupResult>,
 }
-///  Result for a single billing setup mutate.
+/// Result for a single billing setup mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateBillingSetupResult {
-    ///  Returned for successful operations.
+    /// Returned for successful operations.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
@@ -19571,10 +19571,10 @@ pub mod billing_setup_service_client {
         }
     }
 }
-///  Request message for \[CampaignAudienceViewService.GetCampaignAudienceView][google.ads.googleads.v9.services.CampaignAudienceViewService.GetCampaignAudienceView\].
+/// Request message for \[CampaignAudienceViewService.GetCampaignAudienceView][google.ads.googleads.v9.services.CampaignAudienceViewService.GetCampaignAudienceView\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCampaignAudienceViewRequest {
-    ///  Required. The resource name of the campaign audience view to fetch.
+    /// Required. The resource name of the campaign audience view to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
@@ -19683,11 +19683,11 @@ pub mod campaign_audience_view_service_client {
         }
     }
 }
-///  Request message for
-///  \[CampaignCriterionSimulationService.GetCampaignCriterionSimulation][google.ads.googleads.v9.services.CampaignCriterionSimulationService.GetCampaignCriterionSimulation\].
+/// Request message for
+/// \[CampaignCriterionSimulationService.GetCampaignCriterionSimulation][google.ads.googleads.v9.services.CampaignCriterionSimulationService.GetCampaignCriterionSimulation\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCampaignCriterionSimulationRequest {
-    ///  Required. The resource name of the campaign criterion simulation to fetch.
+    /// Required. The resource name of the campaign criterion simulation to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
@@ -19798,11 +19798,11 @@ pub mod campaign_criterion_simulation_service_client {
         }
     }
 }
-///  Request message for
-///  \[CampaignSimulationService.GetCampaignSimulation][google.ads.googleads.v9.services.CampaignSimulationService.GetCampaignSimulation\].
+/// Request message for
+/// \[CampaignSimulationService.GetCampaignSimulation][google.ads.googleads.v9.services.CampaignSimulationService.GetCampaignSimulation\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCampaignSimulationRequest {
-    ///  Required. The resource name of the campaign simulation to fetch.
+    /// Required. The resource name of the campaign simulation to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
@@ -19903,10 +19903,10 @@ pub mod campaign_simulation_service_client {
         }
     }
 }
-///  Request message for \[CarrierConstantService.GetCarrierConstant][google.ads.googleads.v9.services.CarrierConstantService.GetCarrierConstant\].
+/// Request message for \[CarrierConstantService.GetCarrierConstant][google.ads.googleads.v9.services.CarrierConstantService.GetCarrierConstant\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCarrierConstantRequest {
-    ///  Required. Resource name of the carrier constant to fetch.
+    /// Required. Resource name of the carrier constant to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
@@ -20015,10 +20015,10 @@ pub mod carrier_constant_service_client {
         }
     }
 }
-///  Request message for '\[ChangeStatusService.GetChangeStatus][google.ads.googleads.v9.services.ChangeStatusService.GetChangeStatus\]'.
+/// Request message for '\[ChangeStatusService.GetChangeStatus][google.ads.googleads.v9.services.ChangeStatusService.GetChangeStatus\]'.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetChangeStatusRequest {
-    ///  Required. The resource name of the change status to fetch.
+    /// Required. The resource name of the change status to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
@@ -20125,10 +20125,10 @@ pub mod change_status_service_client {
         }
     }
 }
-///  Request message for \[ClickViewService.GetClickView][google.ads.googleads.v9.services.ClickViewService.GetClickView\].
+/// Request message for \[ClickViewService.GetClickView][google.ads.googleads.v9.services.ClickViewService.GetClickView\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetClickViewRequest {
-    ///  Required. The resource name of the click view to fetch.
+    /// Required. The resource name of the click view to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
@@ -20232,10 +20232,10 @@ pub mod click_view_service_client {
         }
     }
 }
-///  Request message for \[CombinedAudienceService.GetCombinedAudience][google.ads.googleads.v9.services.CombinedAudienceService.GetCombinedAudience\].
+/// Request message for \[CombinedAudienceService.GetCombinedAudience][google.ads.googleads.v9.services.CombinedAudienceService.GetCombinedAudience\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCombinedAudienceRequest {
-    ///  Required. The resource name of the combined audience to fetch.
+    /// Required. The resource name of the combined audience to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
@@ -20346,152 +20346,152 @@ pub mod combined_audience_service_client {
         }
     }
 }
-///  Request message for
-///  \[ConversionAdjustmentUploadService.UploadConversionAdjustments][google.ads.googleads.v9.services.ConversionAdjustmentUploadService.UploadConversionAdjustments\].
+/// Request message for
+/// \[ConversionAdjustmentUploadService.UploadConversionAdjustments][google.ads.googleads.v9.services.ConversionAdjustmentUploadService.UploadConversionAdjustments\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UploadConversionAdjustmentsRequest {
-    ///  Required. The ID of the customer performing the upload.
+    /// Required. The ID of the customer performing the upload.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The conversion adjustments that are being uploaded.
+    /// Required. The conversion adjustments that are being uploaded.
     #[prost(message, repeated, tag="2")]
     pub conversion_adjustments: ::prost::alloc::vec::Vec<ConversionAdjustment>,
-    ///  Required. If true, successful operations will be carried out and invalid
-    ///  operations will return errors. If false, all operations will be carried out
-    ///  in one transaction if and only if they are all valid. This should always be
-    ///  set to true.
-    ///  See
-    ///  <https://developers.google.com/google-ads/api/docs/best-practices/partial-failures>
-    ///  for more information about partial failure.
+    /// Required. If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, all operations will be carried out
+    /// in one transaction if and only if they are all valid. This should always be
+    /// set to true.
+    /// See
+    /// <https://developers.google.com/google-ads/api/docs/best-practices/partial-failures>
+    /// for more information about partial failure.
     #[prost(bool, tag="3")]
     pub partial_failure: bool,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="4")]
     pub validate_only: bool,
 }
-///  Response message for
-///  \[ConversionAdjustmentUploadService.UploadConversionAdjustments][google.ads.googleads.v9.services.ConversionAdjustmentUploadService.UploadConversionAdjustments\].
+/// Response message for
+/// \[ConversionAdjustmentUploadService.UploadConversionAdjustments][google.ads.googleads.v9.services.ConversionAdjustmentUploadService.UploadConversionAdjustments\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UploadConversionAdjustmentsResponse {
-    ///  Errors that pertain to conversion adjustment failures in the partial
-    ///  failure mode. Returned when all errors occur inside the adjustments. If any
-    ///  errors occur outside the adjustments (e.g. auth errors), we return an RPC
-    ///  level error.
-    ///  See
-    ///  <https://developers.google.com/google-ads/api/docs/best-practices/partial-failures>
-    ///  for more information about partial failure.
+    /// Errors that pertain to conversion adjustment failures in the partial
+    /// failure mode. Returned when all errors occur inside the adjustments. If any
+    /// errors occur outside the adjustments (e.g. auth errors), we return an RPC
+    /// level error.
+    /// See
+    /// <https://developers.google.com/google-ads/api/docs/best-practices/partial-failures>
+    /// for more information about partial failure.
     #[prost(message, optional, tag="1")]
     pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
-    ///  Returned for successfully processed conversion adjustments. Proto will be
-    ///  empty for rows that received an error. Results are not returned when
-    ///  validate_only is true.
+    /// Returned for successfully processed conversion adjustments. Proto will be
+    /// empty for rows that received an error. Results are not returned when
+    /// validate_only is true.
     #[prost(message, repeated, tag="2")]
     pub results: ::prost::alloc::vec::Vec<ConversionAdjustmentResult>,
 }
-///  A conversion adjustment.
+/// A conversion adjustment.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConversionAdjustment {
-    ///  For adjustments, uniquely identifies a conversion that was reported
-    ///  without an order ID specified. If the adjustment_type is ENHANCEMENT, this
-    ///  value is optional but may be set in addition to the order_id.
+    /// For adjustments, uniquely identifies a conversion that was reported
+    /// without an order ID specified. If the adjustment_type is ENHANCEMENT, this
+    /// value is optional but may be set in addition to the order_id.
     #[prost(message, optional, tag="12")]
     pub gclid_date_time_pair: ::core::option::Option<GclidDateTimePair>,
-    ///  The order ID of the conversion to be adjusted. If the conversion was
-    ///  reported with an order ID specified, that order ID must be used as the
-    ///  identifier here. The order ID is required for enhancements.
+    /// The order ID of the conversion to be adjusted. If the conversion was
+    /// reported with an order ID specified, that order ID must be used as the
+    /// identifier here. The order ID is required for enhancements.
     #[prost(string, optional, tag="13")]
     pub order_id: ::core::option::Option<::prost::alloc::string::String>,
-    ///  Resource name of the conversion action associated with this conversion
-    ///  adjustment. Note: Although this resource name consists of a customer id and
-    ///  a conversion action id, validation will ignore the customer id and use the
-    ///  conversion action id as the sole identifier of the conversion action.
+    /// Resource name of the conversion action associated with this conversion
+    /// adjustment. Note: Although this resource name consists of a customer id and
+    /// a conversion action id, validation will ignore the customer id and use the
+    /// conversion action id as the sole identifier of the conversion action.
     #[prost(string, optional, tag="8")]
     pub conversion_action: ::core::option::Option<::prost::alloc::string::String>,
-    ///  The date time at which the adjustment occurred. Must be after the
-    ///  conversion_date_time. The timezone must be specified. The format is
-    ///  "yyyy-mm-dd hh:mm:ss+|-hh:mm", e.g. "2019-01-01 12:32:45-08:00".
+    /// The date time at which the adjustment occurred. Must be after the
+    /// conversion_date_time. The timezone must be specified. The format is
+    /// "yyyy-mm-dd hh:mm:ss+|-hh:mm", e.g. "2019-01-01 12:32:45-08:00".
     #[prost(string, optional, tag="9")]
     pub adjustment_date_time: ::core::option::Option<::prost::alloc::string::String>,
-    ///  The adjustment type.
+    /// The adjustment type.
     #[prost(enumeration="super::enums::conversion_adjustment_type_enum::ConversionAdjustmentType", tag="5")]
     pub adjustment_type: i32,
-    ///  Information needed to restate the conversion's value.
-    ///  Required for restatements. Should not be supplied for retractions. An error
-    ///  will be returned if provided for a retraction.
-    ///  NOTE: If you want to upload a second restatement with a different adjusted
-    ///  value, it must have a new, more recent, adjustment occurrence time.
-    ///  Otherwise, it will be treated as a duplicate of the previous restatement
-    ///  and ignored.
+    /// Information needed to restate the conversion's value.
+    /// Required for restatements. Should not be supplied for retractions. An error
+    /// will be returned if provided for a retraction.
+    /// NOTE: If you want to upload a second restatement with a different adjusted
+    /// value, it must have a new, more recent, adjustment occurrence time.
+    /// Otherwise, it will be treated as a duplicate of the previous restatement
+    /// and ignored.
     #[prost(message, optional, tag="6")]
     pub restatement_value: ::core::option::Option<RestatementValue>,
-    ///  The user identifiers to enhance the original conversion.
-    ///  ConversionAdjustmentUploadService only accepts user identifiers in
-    ///  enhancements. The maximum number of user identifiers for each
-    ///  enhancement is 5.
+    /// The user identifiers to enhance the original conversion.
+    /// ConversionAdjustmentUploadService only accepts user identifiers in
+    /// enhancements. The maximum number of user identifiers for each
+    /// enhancement is 5.
     #[prost(message, repeated, tag="10")]
     pub user_identifiers: ::prost::alloc::vec::Vec<super::common::UserIdentifier>,
-    ///  The user agent to enhance the original conversion. This can be found in
-    ///  your user's HTTP request header when they convert on your web page.
-    ///  Example, "Mozilla/5.0 (iPhone; CPU iPhone OS 12_2 like Mac OS X)". User
-    ///  agent can only be specified in enhancements with user identifiers. This
-    ///  should match the user agent of the request that sent the original
-    ///  conversion so the conversion and its enhancement are either both attributed
-    ///  as same-device or both attributed as cross-device.
+    /// The user agent to enhance the original conversion. This can be found in
+    /// your user's HTTP request header when they convert on your web page.
+    /// Example, "Mozilla/5.0 (iPhone; CPU iPhone OS 12_2 like Mac OS X)". User
+    /// agent can only be specified in enhancements with user identifiers. This
+    /// should match the user agent of the request that sent the original
+    /// conversion so the conversion and its enhancement are either both attributed
+    /// as same-device or both attributed as cross-device.
     #[prost(string, optional, tag="11")]
     pub user_agent: ::core::option::Option<::prost::alloc::string::String>,
 }
-///  Contains information needed to restate a conversion's value.
+/// Contains information needed to restate a conversion's value.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RestatementValue {
-    ///  The restated conversion value. This is the value of the conversion after
-    ///  restatement. For example, to change the value of a conversion from 100 to
-    ///  70, an adjusted value of 70 should be reported.
-    ///  NOTE: If you want to upload a second restatement with a different adjusted
-    ///  value, it must have a new, more recent, adjustment occurrence time.
-    ///  Otherwise, it will be treated as a duplicate of the previous restatement
-    ///  and ignored.
+    /// The restated conversion value. This is the value of the conversion after
+    /// restatement. For example, to change the value of a conversion from 100 to
+    /// 70, an adjusted value of 70 should be reported.
+    /// NOTE: If you want to upload a second restatement with a different adjusted
+    /// value, it must have a new, more recent, adjustment occurrence time.
+    /// Otherwise, it will be treated as a duplicate of the previous restatement
+    /// and ignored.
     #[prost(double, optional, tag="3")]
     pub adjusted_value: ::core::option::Option<f64>,
-    ///  The currency of the restated value. If not provided, then the default
-    ///  currency from the conversion action is used, and if that is not set then
-    ///  the account currency is used. This is the ISO 4217 3-character currency
-    ///  code e.g. USD or EUR.
+    /// The currency of the restated value. If not provided, then the default
+    /// currency from the conversion action is used, and if that is not set then
+    /// the account currency is used. This is the ISO 4217 3-character currency
+    /// code e.g. USD or EUR.
     #[prost(string, optional, tag="4")]
     pub currency_code: ::core::option::Option<::prost::alloc::string::String>,
 }
-///  Uniquely identifies a conversion that was reported without an order ID
-///  specified.
+/// Uniquely identifies a conversion that was reported without an order ID
+/// specified.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GclidDateTimePair {
-    ///  Google click ID (gclid) associated with the original conversion for this
-    ///  adjustment.
+    /// Google click ID (gclid) associated with the original conversion for this
+    /// adjustment.
     #[prost(string, optional, tag="3")]
     pub gclid: ::core::option::Option<::prost::alloc::string::String>,
-    ///  The date time at which the original conversion for this adjustment
-    ///  occurred. The timezone must be specified. The format is "yyyy-mm-dd
-    ///  hh:mm:ss+|-hh:mm", e.g. "2019-01-01 12:32:45-08:00".
+    /// The date time at which the original conversion for this adjustment
+    /// occurred. The timezone must be specified. The format is "yyyy-mm-dd
+    /// hh:mm:ss+|-hh:mm", e.g. "2019-01-01 12:32:45-08:00".
     #[prost(string, optional, tag="4")]
     pub conversion_date_time: ::core::option::Option<::prost::alloc::string::String>,
 }
-///  Information identifying a successfully processed ConversionAdjustment.
+/// Information identifying a successfully processed ConversionAdjustment.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConversionAdjustmentResult {
-    ///  The gclid and conversion date time of the conversion.
+    /// The gclid and conversion date time of the conversion.
     #[prost(message, optional, tag="9")]
     pub gclid_date_time_pair: ::core::option::Option<GclidDateTimePair>,
-    ///  The order ID of the conversion to be adjusted.
+    /// The order ID of the conversion to be adjusted.
     #[prost(string, tag="10")]
     pub order_id: ::prost::alloc::string::String,
-    ///  Resource name of the conversion action associated with this conversion
-    ///  adjustment.
+    /// Resource name of the conversion action associated with this conversion
+    /// adjustment.
     #[prost(string, optional, tag="7")]
     pub conversion_action: ::core::option::Option<::prost::alloc::string::String>,
-    ///  The date time at which the adjustment occurred. The format is
-    ///  "yyyy-mm-dd hh:mm:ss+|-hh:mm", e.g. "2019-01-01 12:32:45-08:00".
+    /// The date time at which the adjustment occurred. The format is
+    /// "yyyy-mm-dd hh:mm:ss+|-hh:mm", e.g. "2019-01-01 12:32:45-08:00".
     #[prost(string, optional, tag="8")]
     pub adjustment_date_time: ::core::option::Option<::prost::alloc::string::String>,
-    ///  The adjustment type.
+    /// The adjustment type.
     #[prost(enumeration="super::enums::conversion_adjustment_type_enum::ConversionAdjustmentType", tag="5")]
     pub adjustment_type: i32,
 }
@@ -20601,282 +20601,282 @@ pub mod conversion_adjustment_upload_service_client {
         }
     }
 }
-///  Request message for \[ConversionUploadService.UploadClickConversions][google.ads.googleads.v9.services.ConversionUploadService.UploadClickConversions\].
+/// Request message for \[ConversionUploadService.UploadClickConversions][google.ads.googleads.v9.services.ConversionUploadService.UploadClickConversions\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UploadClickConversionsRequest {
-    ///  Required. The ID of the customer performing the upload.
+    /// Required. The ID of the customer performing the upload.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The conversions that are being uploaded.
+    /// Required. The conversions that are being uploaded.
     #[prost(message, repeated, tag="2")]
     pub conversions: ::prost::alloc::vec::Vec<ClickConversion>,
-    ///  Required. If true, successful operations will be carried out and invalid
-    ///  operations will return errors. If false, all operations will be carried
-    ///  out in one transaction if and only if they are all valid.
-    ///  This should always be set to true.
-    ///  See
-    ///  <https://developers.google.com/google-ads/api/docs/best-practices/partial-failures>
-    ///  for more information about partial failure.
+    /// Required. If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, all operations will be carried
+    /// out in one transaction if and only if they are all valid.
+    /// This should always be set to true.
+    /// See
+    /// <https://developers.google.com/google-ads/api/docs/best-practices/partial-failures>
+    /// for more information about partial failure.
     #[prost(bool, tag="3")]
     pub partial_failure: bool,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="4")]
     pub validate_only: bool,
 }
-///  Response message for \[ConversionUploadService.UploadClickConversions][google.ads.googleads.v9.services.ConversionUploadService.UploadClickConversions\].
+/// Response message for \[ConversionUploadService.UploadClickConversions][google.ads.googleads.v9.services.ConversionUploadService.UploadClickConversions\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UploadClickConversionsResponse {
-    ///  Errors that pertain to conversion failures in the partial failure mode.
-    ///  Returned when all errors occur inside the conversions. If any errors occur
-    ///  outside the conversions (e.g. auth errors), we return an RPC level error.
-    ///  See
-    ///  <https://developers.google.com/google-ads/api/docs/best-practices/partial-failures>
-    ///  for more information about partial failure.
+    /// Errors that pertain to conversion failures in the partial failure mode.
+    /// Returned when all errors occur inside the conversions. If any errors occur
+    /// outside the conversions (e.g. auth errors), we return an RPC level error.
+    /// See
+    /// <https://developers.google.com/google-ads/api/docs/best-practices/partial-failures>
+    /// for more information about partial failure.
     #[prost(message, optional, tag="1")]
     pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
-    ///  Returned for successfully processed conversions. Proto will be empty for
-    ///  rows that received an error. Results are not returned when validate_only is
-    ///  true.
+    /// Returned for successfully processed conversions. Proto will be empty for
+    /// rows that received an error. Results are not returned when validate_only is
+    /// true.
     #[prost(message, repeated, tag="2")]
     pub results: ::prost::alloc::vec::Vec<ClickConversionResult>,
 }
-///  Request message for \[ConversionUploadService.UploadCallConversions][google.ads.googleads.v9.services.ConversionUploadService.UploadCallConversions\].
+/// Request message for \[ConversionUploadService.UploadCallConversions][google.ads.googleads.v9.services.ConversionUploadService.UploadCallConversions\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UploadCallConversionsRequest {
-    ///  Required. The ID of the customer performing the upload.
+    /// Required. The ID of the customer performing the upload.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The conversions that are being uploaded.
+    /// Required. The conversions that are being uploaded.
     #[prost(message, repeated, tag="2")]
     pub conversions: ::prost::alloc::vec::Vec<CallConversion>,
-    ///  Required. If true, successful operations will be carried out and invalid
-    ///  operations will return errors. If false, all operations will be carried
-    ///  out in one transaction if and only if they are all valid.
-    ///  This should always be set to true.
-    ///  See
-    ///  <https://developers.google.com/google-ads/api/docs/best-practices/partial-failures>
-    ///  for more information about partial failure.
+    /// Required. If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, all operations will be carried
+    /// out in one transaction if and only if they are all valid.
+    /// This should always be set to true.
+    /// See
+    /// <https://developers.google.com/google-ads/api/docs/best-practices/partial-failures>
+    /// for more information about partial failure.
     #[prost(bool, tag="3")]
     pub partial_failure: bool,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="4")]
     pub validate_only: bool,
 }
-///  Response message for \[ConversionUploadService.UploadCallConversions][google.ads.googleads.v9.services.ConversionUploadService.UploadCallConversions\].
+/// Response message for \[ConversionUploadService.UploadCallConversions][google.ads.googleads.v9.services.ConversionUploadService.UploadCallConversions\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UploadCallConversionsResponse {
-    ///  Errors that pertain to conversion failures in the partial failure mode.
-    ///  Returned when all errors occur inside the conversions. If any errors occur
-    ///  outside the conversions (e.g. auth errors), we return an RPC level error.
-    ///  See
-    ///  <https://developers.google.com/google-ads/api/docs/best-practices/partial-failures>
-    ///  for more information about partial failure.
+    /// Errors that pertain to conversion failures in the partial failure mode.
+    /// Returned when all errors occur inside the conversions. If any errors occur
+    /// outside the conversions (e.g. auth errors), we return an RPC level error.
+    /// See
+    /// <https://developers.google.com/google-ads/api/docs/best-practices/partial-failures>
+    /// for more information about partial failure.
     #[prost(message, optional, tag="1")]
     pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
-    ///  Returned for successfully processed conversions. Proto will be empty for
-    ///  rows that received an error. Results are not returned when validate_only is
-    ///  true.
+    /// Returned for successfully processed conversions. Proto will be empty for
+    /// rows that received an error. Results are not returned when validate_only is
+    /// true.
     #[prost(message, repeated, tag="2")]
     pub results: ::prost::alloc::vec::Vec<CallConversionResult>,
 }
-///  A click conversion.
+/// A click conversion.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ClickConversion {
-    ///  The Google click ID (gclid) associated with this conversion.
+    /// The Google click ID (gclid) associated with this conversion.
     #[prost(string, optional, tag="9")]
     pub gclid: ::core::option::Option<::prost::alloc::string::String>,
-    ///  The click identifier for clicks associated with app conversions and
-    ///  originating from iOS devices starting with iOS14.
+    /// The click identifier for clicks associated with app conversions and
+    /// originating from iOS devices starting with iOS14.
     #[prost(string, tag="18")]
     pub gbraid: ::prost::alloc::string::String,
-    ///  The click identifier for clicks associated with web conversions and
-    ///  originating from iOS devices starting with iOS14.
+    /// The click identifier for clicks associated with web conversions and
+    /// originating from iOS devices starting with iOS14.
     #[prost(string, tag="19")]
     pub wbraid: ::prost::alloc::string::String,
-    ///  Resource name of the conversion action associated with this conversion.
-    ///  Note: Although this resource name consists of a customer id and a
-    ///  conversion action id, validation will ignore the customer id and use the
-    ///  conversion action id as the sole identifier of the conversion action.
+    /// Resource name of the conversion action associated with this conversion.
+    /// Note: Although this resource name consists of a customer id and a
+    /// conversion action id, validation will ignore the customer id and use the
+    /// conversion action id as the sole identifier of the conversion action.
     #[prost(string, optional, tag="10")]
     pub conversion_action: ::core::option::Option<::prost::alloc::string::String>,
-    ///  The date time at which the conversion occurred. Must be after
-    ///  the click time. The timezone must be specified. The format is
-    ///  "yyyy-mm-dd hh:mm:ss+|-hh:mm", e.g. “2019-01-01 12:32:45-08:00”.
+    /// The date time at which the conversion occurred. Must be after
+    /// the click time. The timezone must be specified. The format is
+    /// "yyyy-mm-dd hh:mm:ss+|-hh:mm", e.g. “2019-01-01 12:32:45-08:00”.
     #[prost(string, optional, tag="11")]
     pub conversion_date_time: ::core::option::Option<::prost::alloc::string::String>,
-    ///  The value of the conversion for the advertiser.
+    /// The value of the conversion for the advertiser.
     #[prost(double, optional, tag="12")]
     pub conversion_value: ::core::option::Option<f64>,
-    ///  Currency associated with the conversion value. This is the ISO 4217
-    ///  3-character currency code. For example: USD, EUR.
+    /// Currency associated with the conversion value. This is the ISO 4217
+    /// 3-character currency code. For example: USD, EUR.
     #[prost(string, optional, tag="13")]
     pub currency_code: ::core::option::Option<::prost::alloc::string::String>,
-    ///  The order ID associated with the conversion. An order id can only be used
-    ///  for one conversion per conversion action.
+    /// The order ID associated with the conversion. An order id can only be used
+    /// for one conversion per conversion action.
     #[prost(string, optional, tag="14")]
     pub order_id: ::core::option::Option<::prost::alloc::string::String>,
-    ///  Additional data about externally attributed conversions. This field
-    ///  is required for conversions with an externally attributed conversion
-    ///  action, but should not be set otherwise.
+    /// Additional data about externally attributed conversions. This field
+    /// is required for conversions with an externally attributed conversion
+    /// action, but should not be set otherwise.
     #[prost(message, optional, tag="7")]
     pub external_attribution_data: ::core::option::Option<ExternalAttributionData>,
-    ///  The custom variables associated with this conversion.
+    /// The custom variables associated with this conversion.
     #[prost(message, repeated, tag="15")]
     pub custom_variables: ::prost::alloc::vec::Vec<CustomVariable>,
-    ///  The cart data associated with this conversion.
+    /// The cart data associated with this conversion.
     #[prost(message, optional, tag="16")]
     pub cart_data: ::core::option::Option<CartData>,
-    ///  The user identifiers associated with this conversion. Only hashed_email and
-    ///  hashed_phone_number are supported for conversion uploads. The maximum
-    ///  number of user identifiers for each conversion is 5.
+    /// The user identifiers associated with this conversion. Only hashed_email and
+    /// hashed_phone_number are supported for conversion uploads. The maximum
+    /// number of user identifiers for each conversion is 5.
     #[prost(message, repeated, tag="17")]
     pub user_identifiers: ::prost::alloc::vec::Vec<super::common::UserIdentifier>,
 }
-///  A call conversion.
+/// A call conversion.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CallConversion {
-    ///  The caller id from which this call was placed. Caller id is expected to be
-    ///  in E.164 format with preceding '+' sign. e.g. "+16502531234".
+    /// The caller id from which this call was placed. Caller id is expected to be
+    /// in E.164 format with preceding '+' sign. e.g. "+16502531234".
     #[prost(string, optional, tag="7")]
     pub caller_id: ::core::option::Option<::prost::alloc::string::String>,
-    ///  The date time at which the call occurred. The timezone must be specified.
-    ///  The format is "yyyy-mm-dd hh:mm:ss+|-hh:mm",
-    ///  e.g. "2019-01-01 12:32:45-08:00".
+    /// The date time at which the call occurred. The timezone must be specified.
+    /// The format is "yyyy-mm-dd hh:mm:ss+|-hh:mm",
+    /// e.g. "2019-01-01 12:32:45-08:00".
     #[prost(string, optional, tag="8")]
     pub call_start_date_time: ::core::option::Option<::prost::alloc::string::String>,
-    ///  Resource name of the conversion action associated with this conversion.
-    ///  Note: Although this resource name consists of a customer id and a
-    ///  conversion action id, validation will ignore the customer id and use the
-    ///  conversion action id as the sole identifier of the conversion action.
+    /// Resource name of the conversion action associated with this conversion.
+    /// Note: Although this resource name consists of a customer id and a
+    /// conversion action id, validation will ignore the customer id and use the
+    /// conversion action id as the sole identifier of the conversion action.
     #[prost(string, optional, tag="9")]
     pub conversion_action: ::core::option::Option<::prost::alloc::string::String>,
-    ///  The date time at which the conversion occurred. Must be after the call
-    ///  time. The timezone must be specified. The format is
-    ///  "yyyy-mm-dd hh:mm:ss+|-hh:mm", e.g. "2019-01-01 12:32:45-08:00".
+    /// The date time at which the conversion occurred. Must be after the call
+    /// time. The timezone must be specified. The format is
+    /// "yyyy-mm-dd hh:mm:ss+|-hh:mm", e.g. "2019-01-01 12:32:45-08:00".
     #[prost(string, optional, tag="10")]
     pub conversion_date_time: ::core::option::Option<::prost::alloc::string::String>,
-    ///  The value of the conversion for the advertiser.
+    /// The value of the conversion for the advertiser.
     #[prost(double, optional, tag="11")]
     pub conversion_value: ::core::option::Option<f64>,
-    ///  Currency associated with the conversion value. This is the ISO 4217
-    ///  3-character currency code. For example: USD, EUR.
+    /// Currency associated with the conversion value. This is the ISO 4217
+    /// 3-character currency code. For example: USD, EUR.
     #[prost(string, optional, tag="12")]
     pub currency_code: ::core::option::Option<::prost::alloc::string::String>,
-    ///  The custom variables associated with this conversion.
+    /// The custom variables associated with this conversion.
     #[prost(message, repeated, tag="13")]
     pub custom_variables: ::prost::alloc::vec::Vec<CustomVariable>,
 }
-///  Contains additional information about externally attributed conversions.
+/// Contains additional information about externally attributed conversions.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExternalAttributionData {
-    ///  Represents the fraction of the conversion that is attributed to the
-    ///  Google Ads click.
+    /// Represents the fraction of the conversion that is attributed to the
+    /// Google Ads click.
     #[prost(double, optional, tag="3")]
     pub external_attribution_credit: ::core::option::Option<f64>,
-    ///  Specifies the attribution model name.
+    /// Specifies the attribution model name.
     #[prost(string, optional, tag="4")]
     pub external_attribution_model: ::core::option::Option<::prost::alloc::string::String>,
 }
-///  Identifying information for a successfully processed ClickConversion.
+/// Identifying information for a successfully processed ClickConversion.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ClickConversionResult {
-    ///  The Google Click ID (gclid) associated with this conversion.
+    /// The Google Click ID (gclid) associated with this conversion.
     #[prost(string, optional, tag="4")]
     pub gclid: ::core::option::Option<::prost::alloc::string::String>,
-    ///  The click identifier for clicks associated with app conversions and
-    ///  originating from iOS devices starting with iOS14.
+    /// The click identifier for clicks associated with app conversions and
+    /// originating from iOS devices starting with iOS14.
     #[prost(string, tag="8")]
     pub gbraid: ::prost::alloc::string::String,
-    ///  The click identifier for clicks associated with web conversions and
-    ///  originating from iOS devices starting with iOS14.
+    /// The click identifier for clicks associated with web conversions and
+    /// originating from iOS devices starting with iOS14.
     #[prost(string, tag="9")]
     pub wbraid: ::prost::alloc::string::String,
-    ///  Resource name of the conversion action associated with this conversion.
+    /// Resource name of the conversion action associated with this conversion.
     #[prost(string, optional, tag="5")]
     pub conversion_action: ::core::option::Option<::prost::alloc::string::String>,
-    ///  The date time at which the conversion occurred. The format is
-    ///  "yyyy-mm-dd hh:mm:ss+|-hh:mm", e.g. “2019-01-01 12:32:45-08:00”.
+    /// The date time at which the conversion occurred. The format is
+    /// "yyyy-mm-dd hh:mm:ss+|-hh:mm", e.g. “2019-01-01 12:32:45-08:00”.
     #[prost(string, optional, tag="6")]
     pub conversion_date_time: ::core::option::Option<::prost::alloc::string::String>,
-    ///  The user identifiers associated with this conversion. Only hashed_email and
-    ///  hashed_phone_number are supported for conversion uploads. The maximum
-    ///  number of user identifiers for each conversion is 5.
+    /// The user identifiers associated with this conversion. Only hashed_email and
+    /// hashed_phone_number are supported for conversion uploads. The maximum
+    /// number of user identifiers for each conversion is 5.
     #[prost(message, repeated, tag="7")]
     pub user_identifiers: ::prost::alloc::vec::Vec<super::common::UserIdentifier>,
 }
-///  Identifying information for a successfully processed CallConversionUpload.
+/// Identifying information for a successfully processed CallConversionUpload.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CallConversionResult {
-    ///  The caller id from which this call was placed. Caller id is expected to be
-    ///  in E.164 format with preceding '+' sign.
+    /// The caller id from which this call was placed. Caller id is expected to be
+    /// in E.164 format with preceding '+' sign.
     #[prost(string, optional, tag="5")]
     pub caller_id: ::core::option::Option<::prost::alloc::string::String>,
-    ///  The date time at which the call occurred. The format is
-    ///  "yyyy-mm-dd hh:mm:ss+|-hh:mm", e.g. "2019-01-01 12:32:45-08:00".
+    /// The date time at which the call occurred. The format is
+    /// "yyyy-mm-dd hh:mm:ss+|-hh:mm", e.g. "2019-01-01 12:32:45-08:00".
     #[prost(string, optional, tag="6")]
     pub call_start_date_time: ::core::option::Option<::prost::alloc::string::String>,
-    ///  Resource name of the conversion action associated with this conversion.
+    /// Resource name of the conversion action associated with this conversion.
     #[prost(string, optional, tag="7")]
     pub conversion_action: ::core::option::Option<::prost::alloc::string::String>,
-    ///  The date time at which the conversion occurred. The format is
-    ///  "yyyy-mm-dd hh:mm:ss+|-hh:mm", e.g. "2019-01-01 12:32:45-08:00".
+    /// The date time at which the conversion occurred. The format is
+    /// "yyyy-mm-dd hh:mm:ss+|-hh:mm", e.g. "2019-01-01 12:32:45-08:00".
     #[prost(string, optional, tag="8")]
     pub conversion_date_time: ::core::option::Option<::prost::alloc::string::String>,
 }
-///  A custom variable.
+/// A custom variable.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomVariable {
-    ///  Resource name of the custom variable associated with this conversion.
-    ///  Note: Although this resource name consists of a customer id and a
-    ///  conversion custom variable id, validation will ignore the customer id and
-    ///  use the conversion custom variable id as the sole identifier of the
-    ///  conversion custom variable.
+    /// Resource name of the custom variable associated with this conversion.
+    /// Note: Although this resource name consists of a customer id and a
+    /// conversion custom variable id, validation will ignore the customer id and
+    /// use the conversion custom variable id as the sole identifier of the
+    /// conversion custom variable.
     #[prost(string, tag="1")]
     pub conversion_custom_variable: ::prost::alloc::string::String,
-    ///  The value string of this custom variable.
-    ///  The value of the custom variable should not contain private customer data,
-    ///  such as email addresses or phone numbers.
+    /// The value string of this custom variable.
+    /// The value of the custom variable should not contain private customer data,
+    /// such as email addresses or phone numbers.
     #[prost(string, tag="2")]
     pub value: ::prost::alloc::string::String,
 }
-///  Contains additional information about cart data.
+/// Contains additional information about cart data.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CartData {
-    ///  The Merchant Center ID where the items are uploaded.
+    /// The Merchant Center ID where the items are uploaded.
     #[prost(int64, tag="6")]
     pub merchant_id: i64,
-    ///  The country code associated with the feed where the items are uploaded.
+    /// The country code associated with the feed where the items are uploaded.
     #[prost(string, tag="2")]
     pub feed_country_code: ::prost::alloc::string::String,
-    ///  The language code associated with the feed where the items are uploaded.
+    /// The language code associated with the feed where the items are uploaded.
     #[prost(string, tag="3")]
     pub feed_language_code: ::prost::alloc::string::String,
-    ///  Sum of all transaction level discounts, such as free shipping and
-    ///  coupon discounts for the whole cart. The currency code is the same
-    ///  as that in the ClickConversion message.
+    /// Sum of all transaction level discounts, such as free shipping and
+    /// coupon discounts for the whole cart. The currency code is the same
+    /// as that in the ClickConversion message.
     #[prost(double, tag="4")]
     pub local_transaction_cost: f64,
-    ///  Data of the items purchased.
+    /// Data of the items purchased.
     #[prost(message, repeated, tag="5")]
     pub items: ::prost::alloc::vec::Vec<cart_data::Item>,
 }
 /// Nested message and enum types in `CartData`.
 pub mod cart_data {
-    ///  Contains data of the items purchased.
+    /// Contains data of the items purchased.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Item {
-        ///  The shopping id of the item. Must be equal to the Merchant Center product
-        ///  identifier.
+        /// The shopping id of the item. Must be equal to the Merchant Center product
+        /// identifier.
         #[prost(string, tag="1")]
         pub product_id: ::prost::alloc::string::String,
-        ///  Number of items sold.
+        /// Number of items sold.
         #[prost(int32, tag="2")]
         pub quantity: i32,
-        ///  Unit price excluding tax, shipping, and any transaction
-        ///  level discounts. The currency code is the same as that in the
-        ///  ClickConversion message.
+        /// Unit price excluding tax, shipping, and any transaction
+        /// level discounts. The currency code is the same as that in the
+        /// ClickConversion message.
         #[prost(double, tag="3")]
         pub unit_price: f64,
     }
@@ -21020,10 +21020,10 @@ pub mod conversion_upload_service_client {
         }
     }
 }
-///  Request message for \[CurrencyConstantService.GetCurrencyConstant][google.ads.googleads.v9.services.CurrencyConstantService.GetCurrencyConstant\].
+/// Request message for \[CurrencyConstantService.GetCurrencyConstant][google.ads.googleads.v9.services.CurrencyConstantService.GetCurrencyConstant\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCurrencyConstantRequest {
-    ///  Required. Resource name of the currency constant to fetch.
+    /// Required. Resource name of the currency constant to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
@@ -21132,69 +21132,69 @@ pub mod currency_constant_service_client {
         }
     }
 }
-///  Request message for \[CustomAudienceService.GetCustomAudience][google.ads.googleads.v9.services.CustomAudienceService.GetCustomAudience\].
+/// Request message for \[CustomAudienceService.GetCustomAudience][google.ads.googleads.v9.services.CustomAudienceService.GetCustomAudience\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCustomAudienceRequest {
-    ///  Required. The resource name of the custom audience to fetch.
+    /// Required. The resource name of the custom audience to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Request message for \[CustomAudienceService.MutateCustomAudiences][google.ads.googleads.v9.services.CustomAudienceService.MutateCustomAudiences\].
+/// Request message for \[CustomAudienceService.MutateCustomAudiences][google.ads.googleads.v9.services.CustomAudienceService.MutateCustomAudiences\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCustomAudiencesRequest {
-    ///  Required. The ID of the customer whose custom audiences are being modified.
+    /// Required. The ID of the customer whose custom audiences are being modified.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The list of operations to perform on individual custom audiences.
+    /// Required. The list of operations to perform on individual custom audiences.
     #[prost(message, repeated, tag="2")]
     pub operations: ::prost::alloc::vec::Vec<CustomAudienceOperation>,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="3")]
     pub validate_only: bool,
 }
-///  A single operation (create, update) on a custom audience.
+/// A single operation (create, update) on a custom audience.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomAudienceOperation {
-    ///  FieldMask that determines which resource fields are modified in an update.
+    /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag="4")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  The mutate operation.
+    /// The mutate operation.
     #[prost(oneof="custom_audience_operation::Operation", tags="1, 2, 3")]
     pub operation: ::core::option::Option<custom_audience_operation::Operation>,
 }
 /// Nested message and enum types in `CustomAudienceOperation`.
 pub mod custom_audience_operation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  Create operation: No resource name is expected for the new custom
-        ///  audience.
+        /// Create operation: No resource name is expected for the new custom
+        /// audience.
         #[prost(message, tag="1")]
         Create(super::super::resources::CustomAudience),
-        ///  Update operation: The custom audience is expected to have a valid
-        ///  resource name.
+        /// Update operation: The custom audience is expected to have a valid
+        /// resource name.
         #[prost(message, tag="2")]
         Update(super::super::resources::CustomAudience),
-        ///  Remove operation: A resource name for the removed custom audience is
-        ///  expected, in this format:
+        /// Remove operation: A resource name for the removed custom audience is
+        /// expected, in this format:
         ///
-        ///  `customers/{customer_id}/customAudiences/{custom_audience_id}`
+        /// `customers/{customer_id}/customAudiences/{custom_audience_id}`
         #[prost(string, tag="3")]
         Remove(::prost::alloc::string::String),
     }
 }
-///  Response message for custom audience mutate.
+/// Response message for custom audience mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCustomAudiencesResponse {
-    ///  All results for the mutate.
+    /// All results for the mutate.
     #[prost(message, repeated, tag="1")]
     pub results: ::prost::alloc::vec::Vec<MutateCustomAudienceResult>,
 }
-///  The result for the custom audience mutate.
+/// The result for the custom audience mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCustomAudienceResult {
-    ///  Returned for successful operations.
+    /// Returned for successful operations.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
@@ -21339,63 +21339,63 @@ pub mod custom_audience_service_client {
         }
     }
 }
-///  Request message for \[CustomInterestService.GetCustomInterest][google.ads.googleads.v9.services.CustomInterestService.GetCustomInterest\].
+/// Request message for \[CustomInterestService.GetCustomInterest][google.ads.googleads.v9.services.CustomInterestService.GetCustomInterest\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCustomInterestRequest {
-    ///  Required. The resource name of the custom interest to fetch.
+    /// Required. The resource name of the custom interest to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Request message for \[CustomInterestService.MutateCustomInterests][google.ads.googleads.v9.services.CustomInterestService.MutateCustomInterests\].
+/// Request message for \[CustomInterestService.MutateCustomInterests][google.ads.googleads.v9.services.CustomInterestService.MutateCustomInterests\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCustomInterestsRequest {
-    ///  Required. The ID of the customer whose custom interests are being modified.
+    /// Required. The ID of the customer whose custom interests are being modified.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The list of operations to perform on individual custom interests.
+    /// Required. The list of operations to perform on individual custom interests.
     #[prost(message, repeated, tag="2")]
     pub operations: ::prost::alloc::vec::Vec<CustomInterestOperation>,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="4")]
     pub validate_only: bool,
 }
-///  A single operation (create, update) on a custom interest.
+/// A single operation (create, update) on a custom interest.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomInterestOperation {
-    ///  FieldMask that determines which resource fields are modified in an update.
+    /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag="4")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  The mutate operation.
+    /// The mutate operation.
     #[prost(oneof="custom_interest_operation::Operation", tags="1, 2")]
     pub operation: ::core::option::Option<custom_interest_operation::Operation>,
 }
 /// Nested message and enum types in `CustomInterestOperation`.
 pub mod custom_interest_operation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  Create operation: No resource name is expected for the new custom
-        ///  interest.
+        /// Create operation: No resource name is expected for the new custom
+        /// interest.
         #[prost(message, tag="1")]
         Create(super::super::resources::CustomInterest),
-        ///  Update operation: The custom interest is expected to have a valid
-        ///  resource name.
+        /// Update operation: The custom interest is expected to have a valid
+        /// resource name.
         #[prost(message, tag="2")]
         Update(super::super::resources::CustomInterest),
     }
 }
-///  Response message for custom interest mutate.
+/// Response message for custom interest mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCustomInterestsResponse {
-    ///  All results for the mutate.
+    /// All results for the mutate.
     #[prost(message, repeated, tag="2")]
     pub results: ::prost::alloc::vec::Vec<MutateCustomInterestResult>,
 }
-///  The result for the custom interest mutate.
+/// The result for the custom interest mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCustomInterestResult {
-    ///  Returned for successful operations.
+    /// Returned for successful operations.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
@@ -21538,61 +21538,61 @@ pub mod custom_interest_service_client {
         }
     }
 }
-///  Request message for \[CustomerClientLinkService.GetCustomerClientLink][google.ads.googleads.v9.services.CustomerClientLinkService.GetCustomerClientLink\].
+/// Request message for \[CustomerClientLinkService.GetCustomerClientLink][google.ads.googleads.v9.services.CustomerClientLinkService.GetCustomerClientLink\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCustomerClientLinkRequest {
-    ///  Required. The resource name of the customer client link to fetch.
+    /// Required. The resource name of the customer client link to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Request message for \[CustomerClientLinkService.MutateCustomerClientLink][google.ads.googleads.v9.services.CustomerClientLinkService.MutateCustomerClientLink\].
+/// Request message for \[CustomerClientLinkService.MutateCustomerClientLink][google.ads.googleads.v9.services.CustomerClientLinkService.MutateCustomerClientLink\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCustomerClientLinkRequest {
-    ///  Required. The ID of the customer whose customer link are being modified.
+    /// Required. The ID of the customer whose customer link are being modified.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The operation to perform on the individual CustomerClientLink.
+    /// Required. The operation to perform on the individual CustomerClientLink.
     #[prost(message, optional, tag="2")]
     pub operation: ::core::option::Option<CustomerClientLinkOperation>,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="3")]
     pub validate_only: bool,
 }
-///  A single operation (create, update) on a CustomerClientLink.
+/// A single operation (create, update) on a CustomerClientLink.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomerClientLinkOperation {
-    ///  FieldMask that determines which resource fields are modified in an update.
+    /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag="4")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  The mutate operation.
+    /// The mutate operation.
     #[prost(oneof="customer_client_link_operation::Operation", tags="1, 2")]
     pub operation: ::core::option::Option<customer_client_link_operation::Operation>,
 }
 /// Nested message and enum types in `CustomerClientLinkOperation`.
 pub mod customer_client_link_operation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  Create operation: No resource name is expected for the new link.
+        /// Create operation: No resource name is expected for the new link.
         #[prost(message, tag="1")]
         Create(super::super::resources::CustomerClientLink),
-        ///  Update operation: The link is expected to have a valid resource name.
+        /// Update operation: The link is expected to have a valid resource name.
         #[prost(message, tag="2")]
         Update(super::super::resources::CustomerClientLink),
     }
 }
-///  Response message for a CustomerClientLink mutate.
+/// Response message for a CustomerClientLink mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCustomerClientLinkResponse {
-    ///  A result that identifies the resource affected by the mutate request.
+    /// A result that identifies the resource affected by the mutate request.
     #[prost(message, optional, tag="1")]
     pub result: ::core::option::Option<MutateCustomerClientLinkResult>,
 }
-///  The result for a single customer client link mutate.
+/// The result for a single customer client link mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCustomerClientLinkResult {
-    ///  Returned for successful operations.
+    /// Returned for successful operations.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
@@ -21738,10 +21738,10 @@ pub mod customer_client_link_service_client {
         }
     }
 }
-///  Request message for \[CustomerClientService.GetCustomerClient][google.ads.googleads.v9.services.CustomerClientService.GetCustomerClient\].
+/// Request message for \[CustomerClientService.GetCustomerClient][google.ads.googleads.v9.services.CustomerClientService.GetCustomerClient\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCustomerClientRequest {
-    ///  Required. The resource name of the client to fetch.
+    /// Required. The resource name of the client to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
@@ -21848,91 +21848,91 @@ pub mod customer_client_service_client {
         }
     }
 }
-///  Request message for \[CustomerManagerLinkService.GetCustomerManagerLink][google.ads.googleads.v9.services.CustomerManagerLinkService.GetCustomerManagerLink\].
+/// Request message for \[CustomerManagerLinkService.GetCustomerManagerLink][google.ads.googleads.v9.services.CustomerManagerLinkService.GetCustomerManagerLink\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCustomerManagerLinkRequest {
-    ///  Required. The resource name of the CustomerManagerLink to fetch.
+    /// Required. The resource name of the CustomerManagerLink to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Request message for \[CustomerManagerLinkService.MutateCustomerManagerLink][google.ads.googleads.v9.services.CustomerManagerLinkService.MutateCustomerManagerLink\].
+/// Request message for \[CustomerManagerLinkService.MutateCustomerManagerLink][google.ads.googleads.v9.services.CustomerManagerLinkService.MutateCustomerManagerLink\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCustomerManagerLinkRequest {
-    ///  Required. The ID of the customer whose customer manager links are being modified.
+    /// Required. The ID of the customer whose customer manager links are being modified.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The list of operations to perform on individual customer manager links.
+    /// Required. The list of operations to perform on individual customer manager links.
     #[prost(message, repeated, tag="2")]
     pub operations: ::prost::alloc::vec::Vec<CustomerManagerLinkOperation>,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="3")]
     pub validate_only: bool,
 }
-///  Request message for \[CustomerManagerLinkService.MoveManagerLink][google.ads.googleads.v9.services.CustomerManagerLinkService.MoveManagerLink\].
+/// Request message for \[CustomerManagerLinkService.MoveManagerLink][google.ads.googleads.v9.services.CustomerManagerLinkService.MoveManagerLink\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MoveManagerLinkRequest {
-    ///  Required. The ID of the client customer that is being moved.
+    /// Required. The ID of the client customer that is being moved.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The resource name of the previous CustomerManagerLink.
-    ///  The resource name has the form:
-    ///  `customers/{customer_id}/customerManagerLinks/{manager_customer_id}~{manager_link_id}`
+    /// Required. The resource name of the previous CustomerManagerLink.
+    /// The resource name has the form:
+    /// `customers/{customer_id}/customerManagerLinks/{manager_customer_id}~{manager_link_id}`
     #[prost(string, tag="2")]
     pub previous_customer_manager_link: ::prost::alloc::string::String,
-    ///  Required. The resource name of the new manager customer that the client wants to move
-    ///  to. Customer resource names have the format: "customers/{customer_id}"
+    /// Required. The resource name of the new manager customer that the client wants to move
+    /// to. Customer resource names have the format: "customers/{customer_id}"
     #[prost(string, tag="3")]
     pub new_manager: ::prost::alloc::string::String,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="4")]
     pub validate_only: bool,
 }
-///  Updates the status of a CustomerManagerLink.
-///  The following actions are possible:
-///  1. Update operation with status ACTIVE accepts a pending invitation.
-///  2. Update operation with status REFUSED declines a pending invitation.
-///  3. Update operation with status INACTIVE terminates link to manager.
+/// Updates the status of a CustomerManagerLink.
+/// The following actions are possible:
+/// 1. Update operation with status ACTIVE accepts a pending invitation.
+/// 2. Update operation with status REFUSED declines a pending invitation.
+/// 3. Update operation with status INACTIVE terminates link to manager.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomerManagerLinkOperation {
-    ///  FieldMask that determines which resource fields are modified in an update.
+    /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag="4")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  The mutate operation.
+    /// The mutate operation.
     #[prost(oneof="customer_manager_link_operation::Operation", tags="2")]
     pub operation: ::core::option::Option<customer_manager_link_operation::Operation>,
 }
 /// Nested message and enum types in `CustomerManagerLinkOperation`.
 pub mod customer_manager_link_operation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  Update operation: The link is expected to have a valid resource name.
+        /// Update operation: The link is expected to have a valid resource name.
         #[prost(message, tag="2")]
         Update(super::super::resources::CustomerManagerLink),
     }
 }
-///  Response message for a CustomerManagerLink mutate.
+/// Response message for a CustomerManagerLink mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCustomerManagerLinkResponse {
-    ///  A result that identifies the resource affected by the mutate request.
+    /// A result that identifies the resource affected by the mutate request.
     #[prost(message, repeated, tag="1")]
     pub results: ::prost::alloc::vec::Vec<MutateCustomerManagerLinkResult>,
 }
-///  Response message for a CustomerManagerLink moveManagerLink.
+/// Response message for a CustomerManagerLink moveManagerLink.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MoveManagerLinkResponse {
-    ///  Returned for successful operations. Represents a CustomerManagerLink
-    ///  resource of the newly created link between client customer and new manager
-    ///  customer.
+    /// Returned for successful operations. Represents a CustomerManagerLink
+    /// resource of the newly created link between client customer and new manager
+    /// customer.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  The result for the customer manager link mutate.
+/// The result for the customer manager link mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCustomerManagerLinkResult {
-    ///  Returned for successful operations.
+    /// Returned for successful operations.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
@@ -22112,60 +22112,60 @@ pub mod customer_manager_link_service_client {
         }
     }
 }
-///  Request message for
-///  \[CustomerUserAccessInvitation.GetCustomerUserAccessInvitation][\]
+/// Request message for
+/// \[CustomerUserAccessInvitation.GetCustomerUserAccessInvitation][\]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCustomerUserAccessInvitationRequest {
-    ///  Required. Resource name of the access invitation.
+    /// Required. Resource name of the access invitation.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Request message for
-///  \[CustomerUserAccessInvitation.MutateCustomerUserAccessInvitation][\]
+/// Request message for
+/// \[CustomerUserAccessInvitation.MutateCustomerUserAccessInvitation][\]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCustomerUserAccessInvitationRequest {
-    ///  Required. The ID of the customer whose access invitation is being modified.
+    /// Required. The ID of the customer whose access invitation is being modified.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The operation to perform on the access invitation
+    /// Required. The operation to perform on the access invitation
     #[prost(message, optional, tag="2")]
     pub operation: ::core::option::Option<CustomerUserAccessInvitationOperation>,
 }
-///  A single operation (create or remove) on customer user access invitation.
+/// A single operation (create or remove) on customer user access invitation.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomerUserAccessInvitationOperation {
-    ///  The mutate operation
+    /// The mutate operation
     #[prost(oneof="customer_user_access_invitation_operation::Operation", tags="1, 2")]
     pub operation: ::core::option::Option<customer_user_access_invitation_operation::Operation>,
 }
 /// Nested message and enum types in `CustomerUserAccessInvitationOperation`.
 pub mod customer_user_access_invitation_operation {
-    ///  The mutate operation
+    /// The mutate operation
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  Create operation: No resource name is expected for the new access
-        ///  invitation.
+        /// Create operation: No resource name is expected for the new access
+        /// invitation.
         #[prost(message, tag="1")]
         Create(super::super::resources::CustomerUserAccessInvitation),
-        ///  Remove operation: A resource name for the revoke invitation is
-        ///  expected, in this format:
+        /// Remove operation: A resource name for the revoke invitation is
+        /// expected, in this format:
         ///
-        ///  `customers/{customer_id}/customerUserAccessInvitations/{invitation_id}`
+        /// `customers/{customer_id}/customerUserAccessInvitations/{invitation_id}`
         #[prost(string, tag="2")]
         Remove(::prost::alloc::string::String),
     }
 }
-///  Response message for access invitation mutate.
+/// Response message for access invitation mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCustomerUserAccessInvitationResponse {
-    ///  Result for the mutate.
+    /// Result for the mutate.
     #[prost(message, optional, tag="1")]
     pub result: ::core::option::Option<MutateCustomerUserAccessInvitationResult>,
 }
-///  The result for the access invitation mutate.
+/// The result for the access invitation mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCustomerUserAccessInvitationResult {
-    ///  Returned for successful operations.
+    /// Returned for successful operations.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
@@ -22311,63 +22311,63 @@ pub mod customer_user_access_invitation_service_client {
         }
     }
 }
-///  Request message for
-///  \[CustomerUserAccessService.GetCustomerUserAccess][google.ads.googleads.v9.services.CustomerUserAccessService.GetCustomerUserAccess\].
+/// Request message for
+/// \[CustomerUserAccessService.GetCustomerUserAccess][google.ads.googleads.v9.services.CustomerUserAccessService.GetCustomerUserAccess\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCustomerUserAccessRequest {
-    ///  Required. Resource name of the customer user access.
+    /// Required. Resource name of the customer user access.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Mutate Request for
-///  \[CustomerUserAccessService.MutateCustomerUserAccess][google.ads.googleads.v9.services.CustomerUserAccessService.MutateCustomerUserAccess\].
+/// Mutate Request for
+/// \[CustomerUserAccessService.MutateCustomerUserAccess][google.ads.googleads.v9.services.CustomerUserAccessService.MutateCustomerUserAccess\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCustomerUserAccessRequest {
-    ///  Required. The ID of the customer being modified.
+    /// Required. The ID of the customer being modified.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The operation to perform on the customer
+    /// Required. The operation to perform on the customer
     #[prost(message, optional, tag="2")]
     pub operation: ::core::option::Option<CustomerUserAccessOperation>,
 }
-///  A single operation (update, remove) on customer user access.
+/// A single operation (update, remove) on customer user access.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomerUserAccessOperation {
-    ///  FieldMask that determines which resource fields are modified in an update.
+    /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag="3")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  The mutate operation.
+    /// The mutate operation.
     #[prost(oneof="customer_user_access_operation::Operation", tags="1, 2")]
     pub operation: ::core::option::Option<customer_user_access_operation::Operation>,
 }
 /// Nested message and enum types in `CustomerUserAccessOperation`.
 pub mod customer_user_access_operation {
-    ///  The mutate operation.
+    /// The mutate operation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  Update operation: The customer user access is expected to have a valid
-        ///  resource name.
+        /// Update operation: The customer user access is expected to have a valid
+        /// resource name.
         #[prost(message, tag="1")]
         Update(super::super::resources::CustomerUserAccess),
-        ///  Remove operation: A resource name for the removed access is
-        ///  expected, in this format:
+        /// Remove operation: A resource name for the removed access is
+        /// expected, in this format:
         ///
-        ///  `customers/{customer_id}/customerUserAccesses/{CustomerUserAccess.user_id}`
+        /// `customers/{customer_id}/customerUserAccesses/{CustomerUserAccess.user_id}`
         #[prost(string, tag="2")]
         Remove(::prost::alloc::string::String),
     }
 }
-///  Response message for customer user access mutate.
+/// Response message for customer user access mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCustomerUserAccessResponse {
-    ///  Result for the mutate.
+    /// Result for the mutate.
     #[prost(message, optional, tag="1")]
     pub result: ::core::option::Option<MutateCustomerUserAccessResult>,
 }
-///  The result for the customer user access mutate.
+/// The result for the customer user access mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateCustomerUserAccessResult {
-    ///  Returned for successful operations.
+    /// Returned for successful operations.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
@@ -22511,10 +22511,10 @@ pub mod customer_user_access_service_client {
         }
     }
 }
-///  Request message for \[DetailPlacementViewService.GetDetailPlacementView][google.ads.googleads.v9.services.DetailPlacementViewService.GetDetailPlacementView\].
+/// Request message for \[DetailPlacementViewService.GetDetailPlacementView][google.ads.googleads.v9.services.DetailPlacementViewService.GetDetailPlacementView\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetDetailPlacementViewRequest {
-    ///  Required. The resource name of the Detail Placement view to fetch.
+    /// Required. The resource name of the Detail Placement view to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
@@ -22623,10 +22623,10 @@ pub mod detail_placement_view_service_client {
         }
     }
 }
-///  Request message for \[DetailedDemographicService.GetDetailedDemographic][google.ads.googleads.v9.services.DetailedDemographicService.GetDetailedDemographic\].
+/// Request message for \[DetailedDemographicService.GetDetailedDemographic][google.ads.googleads.v9.services.DetailedDemographicService.GetDetailedDemographic\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetDetailedDemographicRequest {
-    ///  Required. Resource name of the DetailedDemographic to fetch.
+    /// Required. Resource name of the DetailedDemographic to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
@@ -22727,10 +22727,10 @@ pub mod detailed_demographic_service_client {
         }
     }
 }
-///  Request message for \[DisplayKeywordViewService.GetDisplayKeywordView][google.ads.googleads.v9.services.DisplayKeywordViewService.GetDisplayKeywordView\].
+/// Request message for \[DisplayKeywordViewService.GetDisplayKeywordView][google.ads.googleads.v9.services.DisplayKeywordViewService.GetDisplayKeywordView\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetDisplayKeywordViewRequest {
-    ///  Required. The resource name of the display keyword view to fetch.
+    /// Required. The resource name of the display keyword view to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
@@ -22839,10 +22839,10 @@ pub mod display_keyword_view_service_client {
         }
     }
 }
-///  Request message for \[DistanceViewService.GetDistanceView][google.ads.googleads.v9.services.DistanceViewService.GetDistanceView\].
+/// Request message for \[DistanceViewService.GetDistanceView][google.ads.googleads.v9.services.DistanceViewService.GetDistanceView\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetDistanceViewRequest {
-    ///  Required. The resource name of the distance view to fetch.
+    /// Required. The resource name of the distance view to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
@@ -22949,11 +22949,11 @@ pub mod distance_view_service_client {
         }
     }
 }
-///  Request message for
-///  \[DomainCategoryService.GetDomainCategory][google.ads.googleads.v9.services.DomainCategoryService.GetDomainCategory\].
+/// Request message for
+/// \[DomainCategoryService.GetDomainCategory][google.ads.googleads.v9.services.DomainCategoryService.GetDomainCategory\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetDomainCategoryRequest {
-    ///  Required. Resource name of the domain category to fetch.
+    /// Required. Resource name of the domain category to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
@@ -23060,11 +23060,11 @@ pub mod domain_category_service_client {
         }
     }
 }
-///  Request message for
-///  \[DynamicSearchAdsSearchTermViewService.GetDynamicSearchAdsSearchTermView][google.ads.googleads.v9.services.DynamicSearchAdsSearchTermViewService.GetDynamicSearchAdsSearchTermView\].
+/// Request message for
+/// \[DynamicSearchAdsSearchTermViewService.GetDynamicSearchAdsSearchTermView][google.ads.googleads.v9.services.DynamicSearchAdsSearchTermViewService.GetDynamicSearchAdsSearchTermView\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetDynamicSearchAdsSearchTermViewRequest {
-    ///  Required. The resource name of the dynamic search ads search term view to fetch.
+    /// Required. The resource name of the dynamic search ads search term view to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
@@ -23175,11 +23175,11 @@ pub mod dynamic_search_ads_search_term_view_service_client {
         }
     }
 }
-///  Request message for
-///  \[ExpandedLandingPageViewService.GetExpandedLandingPageView][google.ads.googleads.v9.services.ExpandedLandingPageViewService.GetExpandedLandingPageView\].
+/// Request message for
+/// \[ExpandedLandingPageViewService.GetExpandedLandingPageView][google.ads.googleads.v9.services.ExpandedLandingPageViewService.GetExpandedLandingPageView\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetExpandedLandingPageViewRequest {
-    ///  Required. The resource name of the expanded landing page view to fetch.
+    /// Required. The resource name of the expanded landing page view to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
@@ -23288,10 +23288,10 @@ pub mod expanded_landing_page_view_service_client {
         }
     }
 }
-///  Request message for \[FeedPlaceholderViewService.GetFeedPlaceholderView][google.ads.googleads.v9.services.FeedPlaceholderViewService.GetFeedPlaceholderView\].
+/// Request message for \[FeedPlaceholderViewService.GetFeedPlaceholderView][google.ads.googleads.v9.services.FeedPlaceholderViewService.GetFeedPlaceholderView\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetFeedPlaceholderViewRequest {
-    ///  Required. The resource name of the feed placeholder view to fetch.
+    /// Required. The resource name of the feed placeholder view to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
@@ -23400,10 +23400,10 @@ pub mod feed_placeholder_view_service_client {
         }
     }
 }
-///  Request message for \[GenderViewService.GetGenderView][google.ads.googleads.v9.services.GenderViewService.GetGenderView\].
+/// Request message for \[GenderViewService.GetGenderView][google.ads.googleads.v9.services.GenderViewService.GetGenderView\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetGenderViewRequest {
-    ///  Required. The resource name of the gender view to fetch.
+    /// Required. The resource name of the gender view to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
@@ -23510,84 +23510,84 @@ pub mod gender_view_service_client {
         }
     }
 }
-///  Request message for \[GeoTargetConstantService.GetGeoTargetConstant][google.ads.googleads.v9.services.GeoTargetConstantService.GetGeoTargetConstant\].
+/// Request message for \[GeoTargetConstantService.GetGeoTargetConstant][google.ads.googleads.v9.services.GeoTargetConstantService.GetGeoTargetConstant\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetGeoTargetConstantRequest {
-    ///  Required. The resource name of the geo target constant to fetch.
+    /// Required. The resource name of the geo target constant to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Request message for
-///  \[GeoTargetConstantService.SuggestGeoTargetConstants][google.ads.googleads.v9.services.GeoTargetConstantService.SuggestGeoTargetConstants\].
+/// Request message for
+/// \[GeoTargetConstantService.SuggestGeoTargetConstants][google.ads.googleads.v9.services.GeoTargetConstantService.SuggestGeoTargetConstants\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SuggestGeoTargetConstantsRequest {
-    ///  If possible, returned geo targets are translated using this locale. If not,
-    ///  en is used by default. This is also used as a hint for returned geo
-    ///  targets.
+    /// If possible, returned geo targets are translated using this locale. If not,
+    /// en is used by default. This is also used as a hint for returned geo
+    /// targets.
     #[prost(string, optional, tag="6")]
     pub locale: ::core::option::Option<::prost::alloc::string::String>,
-    ///  Returned geo targets are restricted to this country code.
+    /// Returned geo targets are restricted to this country code.
     #[prost(string, optional, tag="7")]
     pub country_code: ::core::option::Option<::prost::alloc::string::String>,
-    ///  Required. A selector of geo target constants.
+    /// Required. A selector of geo target constants.
     #[prost(oneof="suggest_geo_target_constants_request::Query", tags="1, 2")]
     pub query: ::core::option::Option<suggest_geo_target_constants_request::Query>,
 }
 /// Nested message and enum types in `SuggestGeoTargetConstantsRequest`.
 pub mod suggest_geo_target_constants_request {
-    ///  A list of location names.
+    /// A list of location names.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct LocationNames {
-        ///  A list of location names.
+        /// A list of location names.
         #[prost(string, repeated, tag="2")]
         pub names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
-    ///  A list of geo target constant resource names.
+    /// A list of geo target constant resource names.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct GeoTargets {
-        ///  A list of geo target constant resource names.
+        /// A list of geo target constant resource names.
         #[prost(string, repeated, tag="2")]
         pub geo_target_constants: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
-    ///  Required. A selector of geo target constants.
+    /// Required. A selector of geo target constants.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Query {
-        ///  The location names to search by. At most 25 names can be set.
+        /// The location names to search by. At most 25 names can be set.
         #[prost(message, tag="1")]
         LocationNames(LocationNames),
-        ///  The geo target constant resource names to filter by.
+        /// The geo target constant resource names to filter by.
         #[prost(message, tag="2")]
         GeoTargets(GeoTargets),
     }
 }
-///  Response message for \[GeoTargetConstantService.SuggestGeoTargetConstants][google.ads.googleads.v9.services.GeoTargetConstantService.SuggestGeoTargetConstants\].
+/// Response message for \[GeoTargetConstantService.SuggestGeoTargetConstants][google.ads.googleads.v9.services.GeoTargetConstantService.SuggestGeoTargetConstants\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SuggestGeoTargetConstantsResponse {
-    ///  Geo target constant suggestions.
+    /// Geo target constant suggestions.
     #[prost(message, repeated, tag="1")]
     pub geo_target_constant_suggestions: ::prost::alloc::vec::Vec<GeoTargetConstantSuggestion>,
 }
-///  A geo target constant suggestion.
+/// A geo target constant suggestion.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GeoTargetConstantSuggestion {
-    ///  The language this GeoTargetConstantSuggestion is currently translated to.
-    ///  It affects the name of geo target fields. For example, if locale=en, then
-    ///  name=Spain. If locale=es, then name=España. The default locale will be
-    ///  returned if no translation exists for the locale in the request.
+    /// The language this GeoTargetConstantSuggestion is currently translated to.
+    /// It affects the name of geo target fields. For example, if locale=en, then
+    /// name=Spain. If locale=es, then name=España. The default locale will be
+    /// returned if no translation exists for the locale in the request.
     #[prost(string, optional, tag="6")]
     pub locale: ::core::option::Option<::prost::alloc::string::String>,
-    ///  Approximate user population that will be targeted, rounded to the
-    ///  nearest 100.
+    /// Approximate user population that will be targeted, rounded to the
+    /// nearest 100.
     #[prost(int64, optional, tag="7")]
     pub reach: ::core::option::Option<i64>,
-    ///  If the request searched by location name, this is the location name that
-    ///  matched the geo target.
+    /// If the request searched by location name, this is the location name that
+    /// matched the geo target.
     #[prost(string, optional, tag="8")]
     pub search_term: ::core::option::Option<::prost::alloc::string::String>,
-    ///  The GeoTargetConstant result.
+    /// The GeoTargetConstant result.
     #[prost(message, optional, tag="4")]
     pub geo_target_constant: ::core::option::Option<super::resources::GeoTargetConstant>,
-    ///  The list of parents of the geo target constant.
+    /// The list of parents of the geo target constant.
     #[prost(message, repeated, tag="5")]
     pub geo_target_constant_parents: ::prost::alloc::vec::Vec<super::resources::GeoTargetConstant>,
 }
@@ -23728,10 +23728,10 @@ pub mod geo_target_constant_service_client {
         }
     }
 }
-///  Request message for \[GeographicViewService.GetGeographicView][google.ads.googleads.v9.services.GeographicViewService.GetGeographicView\].
+/// Request message for \[GeographicViewService.GetGeographicView][google.ads.googleads.v9.services.GeographicViewService.GetGeographicView\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetGeographicViewRequest {
-    ///  Required. The resource name of the geographic view to fetch.
+    /// Required. The resource name of the geographic view to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
@@ -23838,42 +23838,42 @@ pub mod geographic_view_service_client {
         }
     }
 }
-///  Request message for \[GoogleAdsFieldService.GetGoogleAdsField][google.ads.googleads.v9.services.GoogleAdsFieldService.GetGoogleAdsField\].
+/// Request message for \[GoogleAdsFieldService.GetGoogleAdsField][google.ads.googleads.v9.services.GoogleAdsFieldService.GetGoogleAdsField\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetGoogleAdsFieldRequest {
-    ///  Required. The resource name of the field to get.
+    /// Required. The resource name of the field to get.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Request message for \[GoogleAdsFieldService.SearchGoogleAdsFields][google.ads.googleads.v9.services.GoogleAdsFieldService.SearchGoogleAdsFields\].
+/// Request message for \[GoogleAdsFieldService.SearchGoogleAdsFields][google.ads.googleads.v9.services.GoogleAdsFieldService.SearchGoogleAdsFields\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchGoogleAdsFieldsRequest {
-    ///  Required. The query string.
+    /// Required. The query string.
     #[prost(string, tag="1")]
     pub query: ::prost::alloc::string::String,
-    ///  Token of the page to retrieve. If not specified, the first page of
-    ///  results will be returned. Use the value obtained from `next_page_token`
-    ///  in the previous response in order to request the next page of results.
+    /// Token of the page to retrieve. If not specified, the first page of
+    /// results will be returned. Use the value obtained from `next_page_token`
+    /// in the previous response in order to request the next page of results.
     #[prost(string, tag="2")]
     pub page_token: ::prost::alloc::string::String,
-    ///  Number of elements to retrieve in a single page.
-    ///  When too large a page is requested, the server may decide to further
-    ///  limit the number of returned resources.
+    /// Number of elements to retrieve in a single page.
+    /// When too large a page is requested, the server may decide to further
+    /// limit the number of returned resources.
     #[prost(int32, tag="3")]
     pub page_size: i32,
 }
-///  Response message for \[GoogleAdsFieldService.SearchGoogleAdsFields][google.ads.googleads.v9.services.GoogleAdsFieldService.SearchGoogleAdsFields\].
+/// Response message for \[GoogleAdsFieldService.SearchGoogleAdsFields][google.ads.googleads.v9.services.GoogleAdsFieldService.SearchGoogleAdsFields\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchGoogleAdsFieldsResponse {
-    ///  The list of fields that matched the query.
+    /// The list of fields that matched the query.
     #[prost(message, repeated, tag="1")]
     pub results: ::prost::alloc::vec::Vec<super::resources::GoogleAdsField>,
-    ///  Pagination token used to retrieve the next page of results. Pass the
-    ///  content of this string as the `page_token` attribute of the next request.
-    ///  `next_page_token` is not returned for the last page.
+    /// Pagination token used to retrieve the next page of results. Pass the
+    /// content of this string as the `page_token` attribute of the next request.
+    /// `next_page_token` is not returned for the last page.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
-    ///  Total number of results that match the query ignoring the LIMIT clause.
+    /// Total number of results that match the query ignoring the LIMIT clause.
     #[prost(int64, tag="3")]
     pub total_results_count: i64,
 }
@@ -24012,10 +24012,10 @@ pub mod google_ads_field_service_client {
         }
     }
 }
-///  Request message for \[GroupPlacementViewService.GetGroupPlacementView][google.ads.googleads.v9.services.GroupPlacementViewService.GetGroupPlacementView\].
+/// Request message for \[GroupPlacementViewService.GetGroupPlacementView][google.ads.googleads.v9.services.GroupPlacementViewService.GetGroupPlacementView\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetGroupPlacementViewRequest {
-    ///  Required. The resource name of the Group Placement view to fetch.
+    /// Required. The resource name of the Group Placement view to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
@@ -24124,10 +24124,10 @@ pub mod group_placement_view_service_client {
         }
     }
 }
-///  Request message for \[HotelGroupViewService.GetHotelGroupView][google.ads.googleads.v9.services.HotelGroupViewService.GetHotelGroupView\].
+/// Request message for \[HotelGroupViewService.GetHotelGroupView][google.ads.googleads.v9.services.HotelGroupViewService.GetHotelGroupView\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetHotelGroupViewRequest {
-    ///  Required. Resource name of the Hotel Group View to fetch.
+    /// Required. Resource name of the Hotel Group View to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
@@ -24234,10 +24234,10 @@ pub mod hotel_group_view_service_client {
         }
     }
 }
-///  Request message for \[HotelPerformanceViewService.GetHotelPerformanceView][google.ads.googleads.v9.services.HotelPerformanceViewService.GetHotelPerformanceView\].
+/// Request message for \[HotelPerformanceViewService.GetHotelPerformanceView][google.ads.googleads.v9.services.HotelPerformanceViewService.GetHotelPerformanceView\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetHotelPerformanceViewRequest {
-    ///  Required. Resource name of the Hotel Performance View to fetch.
+    /// Required. Resource name of the Hotel Performance View to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
@@ -24346,10 +24346,10 @@ pub mod hotel_performance_view_service_client {
         }
     }
 }
-///  Request message for \[IncomeRangeViewService.GetIncomeRangeView][google.ads.googleads.v9.services.IncomeRangeViewService.GetIncomeRangeView\].
+/// Request message for \[IncomeRangeViewService.GetIncomeRangeView][google.ads.googleads.v9.services.IncomeRangeViewService.GetIncomeRangeView\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetIncomeRangeViewRequest {
-    ///  Required. The resource name of the income range view to fetch.
+    /// Required. The resource name of the income range view to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
@@ -24458,30 +24458,30 @@ pub mod income_range_view_service_client {
         }
     }
 }
-///  Request message for fetching the invoices of a given billing setup that were
-///  issued during a given month.
+/// Request message for fetching the invoices of a given billing setup that were
+/// issued during a given month.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListInvoicesRequest {
-    ///  Required. The ID of the customer to fetch invoices for.
+    /// Required. The ID of the customer to fetch invoices for.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The billing setup resource name of the requested invoices.
+    /// Required. The billing setup resource name of the requested invoices.
     ///
-    ///  `customers/{customer_id}/billingSetups/{billing_setup_id}`
+    /// `customers/{customer_id}/billingSetups/{billing_setup_id}`
     #[prost(string, tag="2")]
     pub billing_setup: ::prost::alloc::string::String,
-    ///  Required. The issue year to retrieve invoices, in yyyy format. Only
-    ///  invoices issued in 2019 or later can be retrieved.
+    /// Required. The issue year to retrieve invoices, in yyyy format. Only
+    /// invoices issued in 2019 or later can be retrieved.
     #[prost(string, tag="3")]
     pub issue_year: ::prost::alloc::string::String,
-    ///  Required. The issue month to retrieve invoices.
+    /// Required. The issue month to retrieve invoices.
     #[prost(enumeration="super::enums::month_of_year_enum::MonthOfYear", tag="4")]
     pub issue_month: i32,
 }
-///  Response message for \[InvoiceService.ListInvoices][google.ads.googleads.v9.services.InvoiceService.ListInvoices\].
+/// Response message for \[InvoiceService.ListInvoices][google.ads.googleads.v9.services.InvoiceService.ListInvoices\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListInvoicesResponse {
-    ///  The list of invoices that match the billing setup and time period.
+    /// The list of invoices that match the billing setup and time period.
     #[prost(message, repeated, tag="1")]
     pub invoices: ::prost::alloc::vec::Vec<super::resources::Invoice>,
 }
@@ -24587,140 +24587,140 @@ pub mod invoice_service_client {
         }
     }
 }
-///  Request message for \[KeywordPlanIdeaService.GenerateKeywordIdeas][google.ads.googleads.v9.services.KeywordPlanIdeaService.GenerateKeywordIdeas\].
+/// Request message for \[KeywordPlanIdeaService.GenerateKeywordIdeas][google.ads.googleads.v9.services.KeywordPlanIdeaService.GenerateKeywordIdeas\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateKeywordIdeasRequest {
-    ///  The ID of the customer with the recommendation.
+    /// The ID of the customer with the recommendation.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  The resource name of the language to target.
-    ///  Required
+    /// The resource name of the language to target.
+    /// Required
     #[prost(string, optional, tag="14")]
     pub language: ::core::option::Option<::prost::alloc::string::String>,
-    ///  The resource names of the location to target.
-    ///  Max 10
+    /// The resource names of the location to target.
+    /// Max 10
     #[prost(string, repeated, tag="15")]
     pub geo_target_constants: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    ///  If true, adult keywords will be included in response.
-    ///  The default value is false.
+    /// If true, adult keywords will be included in response.
+    /// The default value is false.
     #[prost(bool, tag="10")]
     pub include_adult_keywords: bool,
-    ///  Token of the page to retrieve. If not specified, the first
-    ///  page of results will be returned. To request next page of results use the
-    ///  value obtained from `next_page_token` in the previous response.
-    ///  The request fields must match across pages.
+    /// Token of the page to retrieve. If not specified, the first
+    /// page of results will be returned. To request next page of results use the
+    /// value obtained from `next_page_token` in the previous response.
+    /// The request fields must match across pages.
     #[prost(string, tag="12")]
     pub page_token: ::prost::alloc::string::String,
-    ///  Number of results to retrieve in a single page.
-    ///  A maximum of 10,000 results may be returned, if the page_size
-    ///  exceeds this, it is ignored.
-    ///  If unspecified, at most 10,000 results will be returned.
-    ///  The server may decide to further limit the number of returned resources.
-    ///  If the response contains fewer than 10,000 results it may not be assumed
-    ///  as last page of results.
+    /// Number of results to retrieve in a single page.
+    /// A maximum of 10,000 results may be returned, if the page_size
+    /// exceeds this, it is ignored.
+    /// If unspecified, at most 10,000 results will be returned.
+    /// The server may decide to further limit the number of returned resources.
+    /// If the response contains fewer than 10,000 results it may not be assumed
+    /// as last page of results.
     #[prost(int32, tag="13")]
     pub page_size: i32,
-    ///  Targeting network.
+    /// Targeting network.
     #[prost(enumeration="super::enums::keyword_plan_network_enum::KeywordPlanNetwork", tag="9")]
     pub keyword_plan_network: i32,
-    ///  The keyword annotations to include in response.
+    /// The keyword annotations to include in response.
     #[prost(enumeration="super::enums::keyword_plan_keyword_annotation_enum::KeywordPlanKeywordAnnotation", repeated, tag="17")]
     pub keyword_annotation: ::prost::alloc::vec::Vec<i32>,
-    ///  The aggregate fields to include in response.
+    /// The aggregate fields to include in response.
     #[prost(message, optional, tag="16")]
     pub aggregate_metrics: ::core::option::Option<super::common::KeywordPlanAggregateMetrics>,
-    ///  The options for historical metrics data.
+    /// The options for historical metrics data.
     #[prost(message, optional, tag="18")]
     pub historical_metrics_options: ::core::option::Option<super::common::HistoricalMetricsOptions>,
-    ///  The type of seed to generate keyword ideas.
+    /// The type of seed to generate keyword ideas.
     #[prost(oneof="generate_keyword_ideas_request::Seed", tags="2, 3, 5, 11")]
     pub seed: ::core::option::Option<generate_keyword_ideas_request::Seed>,
 }
 /// Nested message and enum types in `GenerateKeywordIdeasRequest`.
 pub mod generate_keyword_ideas_request {
-    ///  The type of seed to generate keyword ideas.
+    /// The type of seed to generate keyword ideas.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Seed {
-        ///  A Keyword and a specific Url to generate ideas from
-        ///  e.g. cars, www.example.com/cars.
+        /// A Keyword and a specific Url to generate ideas from
+        /// e.g. cars, www.example.com/cars.
         #[prost(message, tag="2")]
         KeywordAndUrlSeed(super::KeywordAndUrlSeed),
-        ///  A Keyword or phrase to generate ideas from, e.g. cars.
+        /// A Keyword or phrase to generate ideas from, e.g. cars.
         #[prost(message, tag="3")]
         KeywordSeed(super::KeywordSeed),
-        ///  A specific url to generate ideas from, e.g. www.example.com/cars.
+        /// A specific url to generate ideas from, e.g. www.example.com/cars.
         #[prost(message, tag="5")]
         UrlSeed(super::UrlSeed),
-        ///  The site to generate ideas from, e.g. www.example.com.
+        /// The site to generate ideas from, e.g. www.example.com.
         #[prost(message, tag="11")]
         SiteSeed(super::SiteSeed),
     }
 }
-///  Keyword And Url Seed
+/// Keyword And Url Seed
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KeywordAndUrlSeed {
-    ///  The URL to crawl in order to generate keyword ideas.
+    /// The URL to crawl in order to generate keyword ideas.
     #[prost(string, optional, tag="3")]
     pub url: ::core::option::Option<::prost::alloc::string::String>,
-    ///  Requires at least one keyword.
+    /// Requires at least one keyword.
     #[prost(string, repeated, tag="4")]
     pub keywords: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-///  Keyword Seed
+/// Keyword Seed
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KeywordSeed {
-    ///  Requires at least one keyword.
+    /// Requires at least one keyword.
     #[prost(string, repeated, tag="2")]
     pub keywords: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-///  Site Seed
+/// Site Seed
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SiteSeed {
-    ///  The domain name of the site. If the customer requesting the ideas doesn't
-    ///  own the site provided only public information is returned.
+    /// The domain name of the site. If the customer requesting the ideas doesn't
+    /// own the site provided only public information is returned.
     #[prost(string, optional, tag="2")]
     pub site: ::core::option::Option<::prost::alloc::string::String>,
 }
-///  Url Seed
+/// Url Seed
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UrlSeed {
-    ///  The URL to crawl in order to generate keyword ideas.
+    /// The URL to crawl in order to generate keyword ideas.
     #[prost(string, optional, tag="2")]
     pub url: ::core::option::Option<::prost::alloc::string::String>,
 }
-///  Response message for \[KeywordPlanIdeaService.GenerateKeywordIdeas][google.ads.googleads.v9.services.KeywordPlanIdeaService.GenerateKeywordIdeas\].
+/// Response message for \[KeywordPlanIdeaService.GenerateKeywordIdeas][google.ads.googleads.v9.services.KeywordPlanIdeaService.GenerateKeywordIdeas\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateKeywordIdeaResponse {
-    ///  Results of generating keyword ideas.
+    /// Results of generating keyword ideas.
     #[prost(message, repeated, tag="1")]
     pub results: ::prost::alloc::vec::Vec<GenerateKeywordIdeaResult>,
-    ///  The aggregate metrics for all keyword ideas.
+    /// The aggregate metrics for all keyword ideas.
     #[prost(message, optional, tag="4")]
     pub aggregate_metric_results: ::core::option::Option<super::common::KeywordPlanAggregateMetricResults>,
-    ///  Pagination token used to retrieve the next page of results.
-    ///  Pass the content of this string as the `page_token` attribute of
-    ///  the next request.
-    ///  `next_page_token` is not returned for the last page.
+    /// Pagination token used to retrieve the next page of results.
+    /// Pass the content of this string as the `page_token` attribute of
+    /// the next request.
+    /// `next_page_token` is not returned for the last page.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
-    ///  Total number of results available.
+    /// Total number of results available.
     #[prost(int64, tag="3")]
     pub total_size: i64,
 }
-///  The result of generating keyword ideas.
+/// The result of generating keyword ideas.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateKeywordIdeaResult {
-    ///  Text of the keyword idea.
-    ///  As in Keyword Plan historical metrics, this text may not be an actual
-    ///  keyword, but the canonical form of multiple keywords.
-    ///  See KeywordPlanKeywordHistoricalMetrics message in KeywordPlanService.
+    /// Text of the keyword idea.
+    /// As in Keyword Plan historical metrics, this text may not be an actual
+    /// keyword, but the canonical form of multiple keywords.
+    /// See KeywordPlanKeywordHistoricalMetrics message in KeywordPlanService.
     #[prost(string, optional, tag="5")]
     pub text: ::core::option::Option<::prost::alloc::string::String>,
-    ///  The historical metrics for the keyword.
+    /// The historical metrics for the keyword.
     #[prost(message, optional, tag="3")]
     pub keyword_idea_metrics: ::core::option::Option<super::common::KeywordPlanHistoricalMetrics>,
-    ///  The annotations for the keyword.
-    ///  The annotation data is only provided if requested.
+    /// The annotations for the keyword.
+    /// The annotation data is only provided if requested.
     #[prost(message, optional, tag="6")]
     pub keyword_annotations: ::core::option::Option<super::common::KeywordAnnotations>,
 }
@@ -24828,35 +24828,35 @@ pub mod keyword_plan_idea_service_client {
         }
     }
 }
-///  Request message for \[KeywordThemeConstantService.GetKeywordThemeConstant][google.ads.googleads.v9.services.KeywordThemeConstantService.GetKeywordThemeConstant\].
+/// Request message for \[KeywordThemeConstantService.GetKeywordThemeConstant][google.ads.googleads.v9.services.KeywordThemeConstantService.GetKeywordThemeConstant\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetKeywordThemeConstantRequest {
-    ///  Required. The resource name of the keyword theme constant to fetch.
+    /// Required. The resource name of the keyword theme constant to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Request message for
-///  \[KeywordThemeConstantService.SuggestKeywordThemeConstants][google.ads.googleads.v9.services.KeywordThemeConstantService.SuggestKeywordThemeConstants\].
+/// Request message for
+/// \[KeywordThemeConstantService.SuggestKeywordThemeConstants][google.ads.googleads.v9.services.KeywordThemeConstantService.SuggestKeywordThemeConstants\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SuggestKeywordThemeConstantsRequest {
-    ///  The query text of a keyword theme that will be used to map to similar
-    ///  keyword themes. E.g. "plumber" or "roofer".
+    /// The query text of a keyword theme that will be used to map to similar
+    /// keyword themes. E.g. "plumber" or "roofer".
     #[prost(string, tag="1")]
     pub query_text: ::prost::alloc::string::String,
-    ///  Upper-case, two-letter country code as defined by ISO-3166. This for
-    ///  refining the scope of the query, default to 'US' if not set.
+    /// Upper-case, two-letter country code as defined by ISO-3166. This for
+    /// refining the scope of the query, default to 'US' if not set.
     #[prost(string, tag="2")]
     pub country_code: ::prost::alloc::string::String,
-    ///  The two letter language code for get corresponding keyword theme for
-    ///  refining the scope of the query, default to 'en' if not set.
+    /// The two letter language code for get corresponding keyword theme for
+    /// refining the scope of the query, default to 'en' if not set.
     #[prost(string, tag="3")]
     pub language_code: ::prost::alloc::string::String,
 }
-///  Response message for
-///  \[KeywordThemeConstantService.SuggestKeywordThemeConstants][google.ads.googleads.v9.services.KeywordThemeConstantService.SuggestKeywordThemeConstants\].
+/// Response message for
+/// \[KeywordThemeConstantService.SuggestKeywordThemeConstants][google.ads.googleads.v9.services.KeywordThemeConstantService.SuggestKeywordThemeConstants\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SuggestKeywordThemeConstantsResponse {
-    ///  Smart Campaign keyword theme suggestions.
+    /// Smart Campaign keyword theme suggestions.
     #[prost(message, repeated, tag="1")]
     pub keyword_theme_constants: ::prost::alloc::vec::Vec<super::resources::KeywordThemeConstant>,
 }
@@ -24988,10 +24988,10 @@ pub mod keyword_theme_constant_service_client {
         }
     }
 }
-///  Request message for \[KeywordViewService.GetKeywordView][google.ads.googleads.v9.services.KeywordViewService.GetKeywordView\].
+/// Request message for \[KeywordViewService.GetKeywordView][google.ads.googleads.v9.services.KeywordViewService.GetKeywordView\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetKeywordViewRequest {
-    ///  Required. The resource name of the keyword view to fetch.
+    /// Required. The resource name of the keyword view to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
@@ -25098,10 +25098,10 @@ pub mod keyword_view_service_client {
         }
     }
 }
-///  Request message for \[LandingPageViewService.GetLandingPageView][google.ads.googleads.v9.services.LandingPageViewService.GetLandingPageView\].
+/// Request message for \[LandingPageViewService.GetLandingPageView][google.ads.googleads.v9.services.LandingPageViewService.GetLandingPageView\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetLandingPageViewRequest {
-    ///  Required. The resource name of the landing page view to fetch.
+    /// Required. The resource name of the landing page view to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
@@ -25210,10 +25210,10 @@ pub mod landing_page_view_service_client {
         }
     }
 }
-///  Request message for \[LanguageConstantService.GetLanguageConstant][google.ads.googleads.v9.services.LanguageConstantService.GetLanguageConstant\].
+/// Request message for \[LanguageConstantService.GetLanguageConstant][google.ads.googleads.v9.services.LanguageConstantService.GetLanguageConstant\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetLanguageConstantRequest {
-    ///  Required. Resource name of the language constant to fetch.
+    /// Required. Resource name of the language constant to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
@@ -25322,10 +25322,10 @@ pub mod language_constant_service_client {
         }
     }
 }
-///  Request message for \[LifeEventService.GetLifeEvent][google.ads.googleads.v9.services.LifeEventService.GetLifeEvent\].
+/// Request message for \[LifeEventService.GetLifeEvent][google.ads.googleads.v9.services.LifeEventService.GetLifeEvent\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetLifeEventRequest {
-    ///  Required. Resource name of the LifeEvent to fetch.
+    /// Required. Resource name of the LifeEvent to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
@@ -25421,10 +25421,10 @@ pub mod life_event_service_client {
         }
     }
 }
-///  Request message for \[LocationViewService.GetLocationView][google.ads.googleads.v9.services.LocationViewService.GetLocationView\].
+/// Request message for \[LocationViewService.GetLocationView][google.ads.googleads.v9.services.LocationViewService.GetLocationView\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetLocationViewRequest {
-    ///  Required. The resource name of the location view to fetch.
+    /// Required. The resource name of the location view to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
@@ -25531,10 +25531,10 @@ pub mod location_view_service_client {
         }
     }
 }
-///  Request message for \[ManagedPlacementViewService.GetManagedPlacementView][google.ads.googleads.v9.services.ManagedPlacementViewService.GetManagedPlacementView\].
+/// Request message for \[ManagedPlacementViewService.GetManagedPlacementView][google.ads.googleads.v9.services.ManagedPlacementViewService.GetManagedPlacementView\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetManagedPlacementViewRequest {
-    ///  Required. The resource name of the Managed Placement View to fetch.
+    /// Required. The resource name of the Managed Placement View to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
@@ -25643,80 +25643,80 @@ pub mod managed_placement_view_service_client {
         }
     }
 }
-///  Request message for \[MerchantCenterLinkService.ListMerchantCenterLinks][google.ads.googleads.v9.services.MerchantCenterLinkService.ListMerchantCenterLinks\].
+/// Request message for \[MerchantCenterLinkService.ListMerchantCenterLinks][google.ads.googleads.v9.services.MerchantCenterLinkService.ListMerchantCenterLinks\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListMerchantCenterLinksRequest {
-    ///  Required. The ID of the customer onto which to apply the Merchant Center link list
-    ///  operation.
+    /// Required. The ID of the customer onto which to apply the Merchant Center link list
+    /// operation.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
 }
-///  Response message for \[MerchantCenterLinkService.ListMerchantCenterLinks][google.ads.googleads.v9.services.MerchantCenterLinkService.ListMerchantCenterLinks\].
+/// Response message for \[MerchantCenterLinkService.ListMerchantCenterLinks][google.ads.googleads.v9.services.MerchantCenterLinkService.ListMerchantCenterLinks\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListMerchantCenterLinksResponse {
-    ///  Merchant Center links available for the requested customer
+    /// Merchant Center links available for the requested customer
     #[prost(message, repeated, tag="1")]
     pub merchant_center_links: ::prost::alloc::vec::Vec<super::resources::MerchantCenterLink>,
 }
-///  Request message for \[MerchantCenterLinkService.GetMerchantCenterLink][google.ads.googleads.v9.services.MerchantCenterLinkService.GetMerchantCenterLink\].
+/// Request message for \[MerchantCenterLinkService.GetMerchantCenterLink][google.ads.googleads.v9.services.MerchantCenterLinkService.GetMerchantCenterLink\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetMerchantCenterLinkRequest {
-    ///  Required. Resource name of the Merchant Center link.
+    /// Required. Resource name of the Merchant Center link.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Request message for \[MerchantCenterLinkService.MutateMerchantCenterLink][google.ads.googleads.v9.services.MerchantCenterLinkService.MutateMerchantCenterLink\].
+/// Request message for \[MerchantCenterLinkService.MutateMerchantCenterLink][google.ads.googleads.v9.services.MerchantCenterLinkService.MutateMerchantCenterLink\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateMerchantCenterLinkRequest {
-    ///  Required. The ID of the customer being modified.
+    /// Required. The ID of the customer being modified.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The operation to perform on the link
+    /// Required. The operation to perform on the link
     #[prost(message, optional, tag="2")]
     pub operation: ::core::option::Option<MerchantCenterLinkOperation>,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="3")]
     pub validate_only: bool,
 }
-///  A single update on a Merchant Center link.
+/// A single update on a Merchant Center link.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MerchantCenterLinkOperation {
-    ///  FieldMask that determines which resource fields are modified in an update.
+    /// FieldMask that determines which resource fields are modified in an update.
     #[prost(message, optional, tag="3")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  The operation to perform
+    /// The operation to perform
     #[prost(oneof="merchant_center_link_operation::Operation", tags="1, 2")]
     pub operation: ::core::option::Option<merchant_center_link_operation::Operation>,
 }
 /// Nested message and enum types in `MerchantCenterLinkOperation`.
 pub mod merchant_center_link_operation {
-    ///  The operation to perform
+    /// The operation to perform
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  Update operation: The merchant center link is expected to have a valid
-        ///  resource name.
+        /// Update operation: The merchant center link is expected to have a valid
+        /// resource name.
         #[prost(message, tag="1")]
         Update(super::super::resources::MerchantCenterLink),
-        ///  Remove operation: A resource name for the removed merchant center link is
-        ///  expected, in this format:
+        /// Remove operation: A resource name for the removed merchant center link is
+        /// expected, in this format:
         ///
-        ///  `customers/{customer_id}/merchantCenterLinks/{merchant_center_id}`
+        /// `customers/{customer_id}/merchantCenterLinks/{merchant_center_id}`
         #[prost(string, tag="2")]
         Remove(::prost::alloc::string::String),
     }
 }
-///  Response message for Merchant Center link mutate.
+/// Response message for Merchant Center link mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateMerchantCenterLinkResponse {
-    ///  Result for the mutate.
+    /// Result for the mutate.
     #[prost(message, optional, tag="2")]
     pub result: ::core::option::Option<MutateMerchantCenterLinkResult>,
 }
-///  The result for the Merchant Center link mutate.
+/// The result for the Merchant Center link mutate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutateMerchantCenterLinkResult {
-    ///  Returned for successful operations.
+    /// Returned for successful operations.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
@@ -25889,11 +25889,11 @@ pub mod merchant_center_link_service_client {
         }
     }
 }
-///  Request message for
-///  \[MobileAppCategoryConstantService.GetMobileAppCategoryConstant][google.ads.googleads.v9.services.MobileAppCategoryConstantService.GetMobileAppCategoryConstant\].
+/// Request message for
+/// \[MobileAppCategoryConstantService.GetMobileAppCategoryConstant][google.ads.googleads.v9.services.MobileAppCategoryConstantService.GetMobileAppCategoryConstant\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetMobileAppCategoryConstantRequest {
-    ///  Required. Resource name of the mobile app category constant to fetch.
+    /// Required. Resource name of the mobile app category constant to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
@@ -26002,10 +26002,10 @@ pub mod mobile_app_category_constant_service_client {
         }
     }
 }
-///  Request message for \[MobileDeviceConstantService.GetMobileDeviceConstant][google.ads.googleads.v9.services.MobileDeviceConstantService.GetMobileDeviceConstant\].
+/// Request message for \[MobileDeviceConstantService.GetMobileDeviceConstant][google.ads.googleads.v9.services.MobileDeviceConstantService.GetMobileDeviceConstant\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetMobileDeviceConstantRequest {
-    ///  Required. Resource name of the mobile device to fetch.
+    /// Required. Resource name of the mobile device to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
@@ -26114,112 +26114,112 @@ pub mod mobile_device_constant_service_client {
         }
     }
 }
-///  Request message for
-///  \[OfflineUserDataJobService.CreateOfflineUserDataJob][google.ads.googleads.v9.services.OfflineUserDataJobService.CreateOfflineUserDataJob\].
+/// Request message for
+/// \[OfflineUserDataJobService.CreateOfflineUserDataJob][google.ads.googleads.v9.services.OfflineUserDataJobService.CreateOfflineUserDataJob\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateOfflineUserDataJobRequest {
-    ///  Required. The ID of the customer for which to create an offline user data job.
+    /// Required. The ID of the customer for which to create an offline user data job.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The offline user data job to be created.
+    /// Required. The offline user data job to be created.
     #[prost(message, optional, tag="2")]
     pub job: ::core::option::Option<super::resources::OfflineUserDataJob>,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="3")]
     pub validate_only: bool,
-    ///  If true, match rate range for the offline user data job is calculated and
-    ///  made available in the resource.
+    /// If true, match rate range for the offline user data job is calculated and
+    /// made available in the resource.
     #[prost(bool, tag="5")]
     pub enable_match_rate_range_preview: bool,
 }
-///  Response message for
-///  \[OfflineUserDataJobService.CreateOfflineUserDataJob][google.ads.googleads.v9.services.OfflineUserDataJobService.CreateOfflineUserDataJob\].
+/// Response message for
+/// \[OfflineUserDataJobService.CreateOfflineUserDataJob][google.ads.googleads.v9.services.OfflineUserDataJobService.CreateOfflineUserDataJob\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateOfflineUserDataJobResponse {
-    ///  The resource name of the OfflineUserDataJob.
+    /// The resource name of the OfflineUserDataJob.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Request message for \[OfflineUserDataJobService.GetOfflineUserDataJob][google.ads.googleads.v9.services.OfflineUserDataJobService.GetOfflineUserDataJob\].
+/// Request message for \[OfflineUserDataJobService.GetOfflineUserDataJob][google.ads.googleads.v9.services.OfflineUserDataJobService.GetOfflineUserDataJob\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetOfflineUserDataJobRequest {
-    ///  Required. The resource name of the OfflineUserDataJob to get.
+    /// Required. The resource name of the OfflineUserDataJob to get.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Request message for \[OfflineUserDataJobService.RunOfflineUserDataJob][google.ads.googleads.v9.services.OfflineUserDataJobService.RunOfflineUserDataJob\].
+/// Request message for \[OfflineUserDataJobService.RunOfflineUserDataJob][google.ads.googleads.v9.services.OfflineUserDataJobService.RunOfflineUserDataJob\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RunOfflineUserDataJobRequest {
-    ///  Required. The resource name of the OfflineUserDataJob to run.
+    /// Required. The resource name of the OfflineUserDataJob to run.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="2")]
     pub validate_only: bool,
 }
-///  Request message for
-///  \[OfflineUserDataJobService.AddOfflineUserDataJobOperations][google.ads.googleads.v9.services.OfflineUserDataJobService.AddOfflineUserDataJobOperations\].
+/// Request message for
+/// \[OfflineUserDataJobService.AddOfflineUserDataJobOperations][google.ads.googleads.v9.services.OfflineUserDataJobService.AddOfflineUserDataJobOperations\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddOfflineUserDataJobOperationsRequest {
-    ///  Required. The resource name of the OfflineUserDataJob.
+    /// Required. The resource name of the OfflineUserDataJob.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
-    ///  True to enable partial failure for the offline user data job.
+    /// True to enable partial failure for the offline user data job.
     #[prost(bool, optional, tag="4")]
     pub enable_partial_failure: ::core::option::Option<bool>,
-    ///  True to enable warnings for the offline user data job. When enabled, a
-    ///  warning will not block the OfflineUserDataJobOperation, and will also
-    ///  return warning messages about malformed field values.
+    /// True to enable warnings for the offline user data job. When enabled, a
+    /// warning will not block the OfflineUserDataJobOperation, and will also
+    /// return warning messages about malformed field values.
     #[prost(bool, optional, tag="6")]
     pub enable_warnings: ::core::option::Option<bool>,
-    ///  Required. The list of operations to be done.
+    /// Required. The list of operations to be done.
     #[prost(message, repeated, tag="3")]
     pub operations: ::prost::alloc::vec::Vec<OfflineUserDataJobOperation>,
-    ///  If true, the request is validated but not executed. Only errors are
-    ///  returned, not results.
+    /// If true, the request is validated but not executed. Only errors are
+    /// returned, not results.
     #[prost(bool, tag="5")]
     pub validate_only: bool,
 }
-///  Operation to be made for the AddOfflineUserDataJobOperationsRequest.
+/// Operation to be made for the AddOfflineUserDataJobOperationsRequest.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OfflineUserDataJobOperation {
-    ///  Operation to be made for the AddOfflineUserDataJobOperationsRequest.
+    /// Operation to be made for the AddOfflineUserDataJobOperationsRequest.
     #[prost(oneof="offline_user_data_job_operation::Operation", tags="1, 2, 3")]
     pub operation: ::core::option::Option<offline_user_data_job_operation::Operation>,
 }
 /// Nested message and enum types in `OfflineUserDataJobOperation`.
 pub mod offline_user_data_job_operation {
-    ///  Operation to be made for the AddOfflineUserDataJobOperationsRequest.
+    /// Operation to be made for the AddOfflineUserDataJobOperationsRequest.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  Add the provided data to the transaction. Data cannot be retrieved after
-        ///  being uploaded.
+        /// Add the provided data to the transaction. Data cannot be retrieved after
+        /// being uploaded.
         #[prost(message, tag="1")]
         Create(super::super::common::UserData),
-        ///  Remove the provided data from the transaction. Data cannot be retrieved
-        ///  after being uploaded.
+        /// Remove the provided data from the transaction. Data cannot be retrieved
+        /// after being uploaded.
         #[prost(message, tag="2")]
         Remove(super::super::common::UserData),
-        ///  Remove all previously provided data. This is only supported for Customer
-        ///  Match.
+        /// Remove all previously provided data. This is only supported for Customer
+        /// Match.
         #[prost(bool, tag="3")]
         RemoveAll(bool),
     }
 }
-///  Response message for
-///  \[OfflineUserDataJobService.AddOfflineUserDataJobOperations][google.ads.googleads.v9.services.OfflineUserDataJobService.AddOfflineUserDataJobOperations\].
+/// Response message for
+/// \[OfflineUserDataJobService.AddOfflineUserDataJobOperations][google.ads.googleads.v9.services.OfflineUserDataJobService.AddOfflineUserDataJobOperations\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddOfflineUserDataJobOperationsResponse {
-    ///  Errors that pertain to operation failures in the partial failure mode.
-    ///  Returned only when partial_failure = true and all errors occur inside the
-    ///  operations. If any errors occur outside the operations (e.g. auth errors),
-    ///  we return an RPC level error.
+    /// Errors that pertain to operation failures in the partial failure mode.
+    /// Returned only when partial_failure = true and all errors occur inside the
+    /// operations. If any errors occur outside the operations (e.g. auth errors),
+    /// we return an RPC level error.
     #[prost(message, optional, tag="1")]
     pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
-    ///  Non blocking errors that pertain to operation failures in the warnings
-    ///  mode. Returned only when enable_warnings = true.
+    /// Non blocking errors that pertain to operation failures in the warnings
+    /// mode. Returned only when enable_warnings = true.
     #[prost(message, optional, tag="2")]
     pub warning: ::core::option::Option<super::super::super::super::rpc::Status>,
 }
@@ -26436,11 +26436,11 @@ pub mod offline_user_data_job_service_client {
         }
     }
 }
-///  Request message for
-///  \[OperatingSystemVersionConstantService.GetOperatingSystemVersionConstant][google.ads.googleads.v9.services.OperatingSystemVersionConstantService.GetOperatingSystemVersionConstant\].
+/// Request message for
+/// \[OperatingSystemVersionConstantService.GetOperatingSystemVersionConstant][google.ads.googleads.v9.services.OperatingSystemVersionConstantService.GetOperatingSystemVersionConstant\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetOperatingSystemVersionConstantRequest {
-    ///  Required. Resource name of the OS version to fetch.
+    /// Required. Resource name of the OS version to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
@@ -26551,11 +26551,11 @@ pub mod operating_system_version_constant_service_client {
         }
     }
 }
-///  Request message for
-///  \[PaidOrganicSearchTermViewService.GetPaidOrganicSearchTermView][google.ads.googleads.v9.services.PaidOrganicSearchTermViewService.GetPaidOrganicSearchTermView\].
+/// Request message for
+/// \[PaidOrganicSearchTermViewService.GetPaidOrganicSearchTermView][google.ads.googleads.v9.services.PaidOrganicSearchTermViewService.GetPaidOrganicSearchTermView\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetPaidOrganicSearchTermViewRequest {
-    ///  Required. The resource name of the paid organic search term view to fetch.
+    /// Required. The resource name of the paid organic search term view to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
@@ -26664,10 +26664,10 @@ pub mod paid_organic_search_term_view_service_client {
         }
     }
 }
-///  Request message for \[ParentalStatusViewService.GetParentalStatusView][google.ads.googleads.v9.services.ParentalStatusViewService.GetParentalStatusView\].
+/// Request message for \[ParentalStatusViewService.GetParentalStatusView][google.ads.googleads.v9.services.ParentalStatusViewService.GetParentalStatusView\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetParentalStatusViewRequest {
-    ///  Required. The resource name of the parental status view to fetch.
+    /// Required. The resource name of the parental status view to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
@@ -26776,17 +26776,17 @@ pub mod parental_status_view_service_client {
         }
     }
 }
-///  Request message for fetching all accessible payments accounts.
+/// Request message for fetching all accessible payments accounts.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPaymentsAccountsRequest {
-    ///  Required. The ID of the customer to apply the PaymentsAccount list operation to.
+    /// Required. The ID of the customer to apply the PaymentsAccount list operation to.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
 }
-///  Response message for \[PaymentsAccountService.ListPaymentsAccounts][google.ads.googleads.v9.services.PaymentsAccountService.ListPaymentsAccounts\].
+/// Response message for \[PaymentsAccountService.ListPaymentsAccounts][google.ads.googleads.v9.services.PaymentsAccountService.ListPaymentsAccounts\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPaymentsAccountsResponse {
-    ///  The list of accessible payments accounts.
+    /// The list of accessible payments accounts.
     #[prost(message, repeated, tag="1")]
     pub payments_accounts: ::prost::alloc::vec::Vec<super::resources::PaymentsAccount>,
 }
@@ -26899,11 +26899,11 @@ pub mod payments_account_service_client {
         }
     }
 }
-///  Request message for
-///  \[ProductBiddingCategoryConstantService.GetProductBiddingCategoryConstant][google.ads.googleads.v9.services.ProductBiddingCategoryConstantService.GetProductBiddingCategoryConstant\].
+/// Request message for
+/// \[ProductBiddingCategoryConstantService.GetProductBiddingCategoryConstant][google.ads.googleads.v9.services.ProductBiddingCategoryConstantService.GetProductBiddingCategoryConstant\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetProductBiddingCategoryConstantRequest {
-    ///  Required. Resource name of the Product Bidding Category to fetch.
+    /// Required. Resource name of the Product Bidding Category to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
@@ -27014,10 +27014,10 @@ pub mod product_bidding_category_constant_service_client {
         }
     }
 }
-///  Request message for \[ProductGroupViewService.GetProductGroupView][google.ads.googleads.v9.services.ProductGroupViewService.GetProductGroupView\].
+/// Request message for \[ProductGroupViewService.GetProductGroupView][google.ads.googleads.v9.services.ProductGroupViewService.GetProductGroupView\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetProductGroupViewRequest {
-    ///  Required. The resource name of the product group view to fetch.
+    /// Required. The resource name of the product group view to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
@@ -27126,472 +27126,472 @@ pub mod product_group_view_service_client {
         }
     }
 }
-///  Request message for \[ReachPlanService.ListPlannableLocations][google.ads.googleads.v9.services.ReachPlanService.ListPlannableLocations\].
+/// Request message for \[ReachPlanService.ListPlannableLocations][google.ads.googleads.v9.services.ReachPlanService.ListPlannableLocations\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPlannableLocationsRequest {
 }
-///  The list of plannable locations.
+/// The list of plannable locations.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPlannableLocationsResponse {
-    ///  The list of locations available for planning (Countries, DMAs,
-    ///  sub-countries).
-    ///  For locations like Countries and DMAs see
-    ///  <https://developers.google.com/google-ads/api/reference/data/geotargets> for
-    ///  more information.
+    /// The list of locations available for planning (Countries, DMAs,
+    /// sub-countries).
+    /// For locations like Countries and DMAs see
+    /// <https://developers.google.com/google-ads/api/reference/data/geotargets> for
+    /// more information.
     #[prost(message, repeated, tag="1")]
     pub plannable_locations: ::prost::alloc::vec::Vec<PlannableLocation>,
 }
-///  A plannable location: a country, a DMA, a metro region, a tv region,
-///  a province.
+/// A plannable location: a country, a DMA, a metro region, a tv region,
+/// a province.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PlannableLocation {
-    ///  The location identifier.
+    /// The location identifier.
     #[prost(string, optional, tag="4")]
     pub id: ::core::option::Option<::prost::alloc::string::String>,
-    ///  The unique location name in english.
+    /// The unique location name in english.
     #[prost(string, optional, tag="5")]
     pub name: ::core::option::Option<::prost::alloc::string::String>,
-    ///  The parent country, not present if location is a country.
-    ///  If present will always be a GeoTargetConstant ID. Additional information,
-    ///  such as country name is provided by
-    ///  \[ReachPlanService.ListPlannableLocations][google.ads.googleads.v9.services.ReachPlanService.ListPlannableLocations\] or directly by accessing
-    ///  \[GeoTargetConstantService.GetGeoTargetConstant][google.ads.googleads.v9.services.GeoTargetConstantService.GetGeoTargetConstant\].
+    /// The parent country, not present if location is a country.
+    /// If present will always be a GeoTargetConstant ID. Additional information,
+    /// such as country name is provided by
+    /// \[ReachPlanService.ListPlannableLocations][google.ads.googleads.v9.services.ReachPlanService.ListPlannableLocations\] or directly by accessing
+    /// \[GeoTargetConstantService.GetGeoTargetConstant][google.ads.googleads.v9.services.GeoTargetConstantService.GetGeoTargetConstant\].
     #[prost(int64, optional, tag="6")]
     pub parent_country_id: ::core::option::Option<i64>,
-    ///  The ISO-3166-1 alpha-2 country code that is associated with the location.
+    /// The ISO-3166-1 alpha-2 country code that is associated with the location.
     #[prost(string, optional, tag="7")]
     pub country_code: ::core::option::Option<::prost::alloc::string::String>,
-    ///  The location's type. Location types correspond to target_type returned by
-    ///  \[GeoTargetConstantService.GetGeoTargetConstant][google.ads.googleads.v9.services.GeoTargetConstantService.GetGeoTargetConstant\].
+    /// The location's type. Location types correspond to target_type returned by
+    /// \[GeoTargetConstantService.GetGeoTargetConstant][google.ads.googleads.v9.services.GeoTargetConstantService.GetGeoTargetConstant\].
     #[prost(string, optional, tag="8")]
     pub location_type: ::core::option::Option<::prost::alloc::string::String>,
 }
-///  Request to list available products in a given location.
+/// Request to list available products in a given location.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPlannableProductsRequest {
-    ///  Required. The ID of the selected location for planning. To list the available
-    ///  plannable location ids use \[ReachPlanService.ListPlannableLocations][google.ads.googleads.v9.services.ReachPlanService.ListPlannableLocations\].
+    /// Required. The ID of the selected location for planning. To list the available
+    /// plannable location ids use \[ReachPlanService.ListPlannableLocations][google.ads.googleads.v9.services.ReachPlanService.ListPlannableLocations\].
     #[prost(string, tag="2")]
     pub plannable_location_id: ::prost::alloc::string::String,
 }
-///  A response with all available products.
+/// A response with all available products.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPlannableProductsResponse {
-    ///  The list of products available for planning and related targeting metadata.
+    /// The list of products available for planning and related targeting metadata.
     #[prost(message, repeated, tag="1")]
     pub product_metadata: ::prost::alloc::vec::Vec<ProductMetadata>,
 }
-///  The metadata associated with an available plannable product.
+/// The metadata associated with an available plannable product.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProductMetadata {
-    ///  The code associated with the ad product. E.g. BUMPER, TRUEVIEW_IN_STREAM
-    ///  To list the available plannable product codes use ListPlannableProducts.
+    /// The code associated with the ad product. E.g. BUMPER, TRUEVIEW_IN_STREAM
+    /// To list the available plannable product codes use ListPlannableProducts.
     #[prost(string, optional, tag="4")]
     pub plannable_product_code: ::core::option::Option<::prost::alloc::string::String>,
-    ///  The name associated with the ad product.
+    /// The name associated with the ad product.
     #[prost(string, tag="3")]
     pub plannable_product_name: ::prost::alloc::string::String,
-    ///  The allowed plannable targeting for this product.
+    /// The allowed plannable targeting for this product.
     #[prost(message, optional, tag="2")]
     pub plannable_targeting: ::core::option::Option<PlannableTargeting>,
 }
-///  The targeting for which traffic metrics will be reported.
+/// The targeting for which traffic metrics will be reported.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PlannableTargeting {
-    ///  Allowed plannable age ranges for the product for which metrics will be
-    ///  reported. Actual targeting is computed by mapping this age range onto
-    ///  standard Google common.AgeRangeInfo values.
+    /// Allowed plannable age ranges for the product for which metrics will be
+    /// reported. Actual targeting is computed by mapping this age range onto
+    /// standard Google common.AgeRangeInfo values.
     #[prost(enumeration="super::enums::reach_plan_age_range_enum::ReachPlanAgeRange", repeated, tag="1")]
     pub age_ranges: ::prost::alloc::vec::Vec<i32>,
-    ///  Targetable genders for the ad product.
+    /// Targetable genders for the ad product.
     #[prost(message, repeated, tag="2")]
     pub genders: ::prost::alloc::vec::Vec<super::common::GenderInfo>,
-    ///  Targetable devices for the ad product.
-    ///  TABLET device targeting is automatically applied to reported metrics
-    ///  when MOBILE targeting is selected for CPM_MASTHEAD,
-    ///  GOOGLE_PREFERRED_BUMPER and GOOGLE_PREFERRED_SHORT products.
+    /// Targetable devices for the ad product.
+    /// TABLET device targeting is automatically applied to reported metrics
+    /// when MOBILE targeting is selected for CPM_MASTHEAD,
+    /// GOOGLE_PREFERRED_BUMPER and GOOGLE_PREFERRED_SHORT products.
     #[prost(message, repeated, tag="3")]
     pub devices: ::prost::alloc::vec::Vec<super::common::DeviceInfo>,
-    ///  Targetable networks for the ad product.
+    /// Targetable networks for the ad product.
     #[prost(enumeration="super::enums::reach_plan_network_enum::ReachPlanNetwork", repeated, tag="4")]
     pub networks: ::prost::alloc::vec::Vec<i32>,
 }
-///  Request message for \[ReachPlanService.GenerateProductMixIdeas][google.ads.googleads.v9.services.ReachPlanService.GenerateProductMixIdeas\].
+/// Request message for \[ReachPlanService.GenerateProductMixIdeas][google.ads.googleads.v9.services.ReachPlanService.GenerateProductMixIdeas\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateProductMixIdeasRequest {
-    ///  Required. The ID of the customer.
+    /// Required. The ID of the customer.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The ID of the location, this is one of the ids returned by
-    ///  \[ReachPlanService.ListPlannableLocations][google.ads.googleads.v9.services.ReachPlanService.ListPlannableLocations\].
+    /// Required. The ID of the location, this is one of the ids returned by
+    /// \[ReachPlanService.ListPlannableLocations][google.ads.googleads.v9.services.ReachPlanService.ListPlannableLocations\].
     #[prost(string, tag="6")]
     pub plannable_location_id: ::prost::alloc::string::String,
-    ///  Required. Currency code.
-    ///  Three-character ISO 4217 currency code.
+    /// Required. Currency code.
+    /// Three-character ISO 4217 currency code.
     #[prost(string, tag="7")]
     pub currency_code: ::prost::alloc::string::String,
-    ///  Required. Total budget.
-    ///  Amount in micros. One million is equivalent to one unit.
+    /// Required. Total budget.
+    /// Amount in micros. One million is equivalent to one unit.
     #[prost(int64, tag="8")]
     pub budget_micros: i64,
-    ///  The preferences of the suggested product mix.
-    ///  An unset preference is interpreted as all possible values are allowed,
-    ///  unless explicitly specified.
+    /// The preferences of the suggested product mix.
+    /// An unset preference is interpreted as all possible values are allowed,
+    /// unless explicitly specified.
     #[prost(message, optional, tag="5")]
     pub preferences: ::core::option::Option<Preferences>,
 }
-///  Set of preferences about the planned mix.
+/// Set of preferences about the planned mix.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Preferences {
-    ///  True if ad skippable.
-    ///  If not set, default is any value.
+    /// True if ad skippable.
+    /// If not set, default is any value.
     #[prost(bool, optional, tag="6")]
     pub is_skippable: ::core::option::Option<bool>,
-    ///  True if ad start with sound.
-    ///  If not set, default is any value.
+    /// True if ad start with sound.
+    /// If not set, default is any value.
     #[prost(bool, optional, tag="7")]
     pub starts_with_sound: ::core::option::Option<bool>,
-    ///  The length of the ad.
-    ///  If not set, default is any value.
+    /// The length of the ad.
+    /// If not set, default is any value.
     #[prost(enumeration="super::enums::reach_plan_ad_length_enum::ReachPlanAdLength", tag="3")]
     pub ad_length: i32,
-    ///  True if ad will only show on the top content.
-    ///  If not set, default is false.
+    /// True if ad will only show on the top content.
+    /// If not set, default is false.
     #[prost(bool, optional, tag="8")]
     pub top_content_only: ::core::option::Option<bool>,
-    ///  True if the price guaranteed. The cost of serving the ad is agreed upfront
-    ///  and not subject to an auction.
-    ///  If not set, default is any value.
+    /// True if the price guaranteed. The cost of serving the ad is agreed upfront
+    /// and not subject to an auction.
+    /// If not set, default is any value.
     #[prost(bool, optional, tag="9")]
     pub has_guaranteed_price: ::core::option::Option<bool>,
 }
-///  The suggested product mix.
+/// The suggested product mix.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateProductMixIdeasResponse {
-    ///  A list of products (ad formats) and the associated budget allocation idea.
+    /// A list of products (ad formats) and the associated budget allocation idea.
     #[prost(message, repeated, tag="1")]
     pub product_allocation: ::prost::alloc::vec::Vec<ProductAllocation>,
 }
-///  An allocation of a part of the budget on a given product.
+/// An allocation of a part of the budget on a given product.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProductAllocation {
-    ///  Selected product for planning. The product codes returned are within the
-    ///  set of the ones returned by ListPlannableProducts when using the same
-    ///  location ID.
+    /// Selected product for planning. The product codes returned are within the
+    /// set of the ones returned by ListPlannableProducts when using the same
+    /// location ID.
     #[prost(string, optional, tag="3")]
     pub plannable_product_code: ::core::option::Option<::prost::alloc::string::String>,
-    ///  The value to be allocated for the suggested product in requested currency.
-    ///  Amount in micros. One million is equivalent to one unit.
+    /// The value to be allocated for the suggested product in requested currency.
+    /// Amount in micros. One million is equivalent to one unit.
     #[prost(int64, optional, tag="4")]
     pub budget_micros: ::core::option::Option<i64>,
 }
-///  Request message for \[ReachPlanService.GenerateReachForecast][google.ads.googleads.v9.services.ReachPlanService.GenerateReachForecast\].
+/// Request message for \[ReachPlanService.GenerateReachForecast][google.ads.googleads.v9.services.ReachPlanService.GenerateReachForecast\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateReachForecastRequest {
-    ///  Required. The ID of the customer.
+    /// Required. The ID of the customer.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  The currency code.
-    ///  Three-character ISO 4217 currency code.
+    /// The currency code.
+    /// Three-character ISO 4217 currency code.
     #[prost(string, optional, tag="9")]
     pub currency_code: ::core::option::Option<::prost::alloc::string::String>,
-    ///  Required. Campaign duration.
+    /// Required. Campaign duration.
     #[prost(message, optional, tag="3")]
     pub campaign_duration: ::core::option::Option<CampaignDuration>,
-    ///  Desired cookie frequency cap that will be applied to each planned product.
-    ///  This is equivalent to the frequency cap exposed in Google Ads when creating
-    ///  a campaign, it represents the maximum number of times an ad can be shown to
-    ///  the same user.
-    ///  If not specified no cap is applied.
+    /// Desired cookie frequency cap that will be applied to each planned product.
+    /// This is equivalent to the frequency cap exposed in Google Ads when creating
+    /// a campaign, it represents the maximum number of times an ad can be shown to
+    /// the same user.
+    /// If not specified no cap is applied.
     ///
-    ///  This field is deprecated in v4 and will eventually be removed.
-    ///  Please use cookie_frequency_cap_setting instead.
+    /// This field is deprecated in v4 and will eventually be removed.
+    /// Please use cookie_frequency_cap_setting instead.
     #[prost(int32, optional, tag="10")]
     pub cookie_frequency_cap: ::core::option::Option<i32>,
-    ///  Desired cookie frequency cap that will be applied to each planned product.
-    ///  This is equivalent to the frequency cap exposed in Google Ads when creating
-    ///  a campaign, it represents the maximum number of times an ad can be shown to
-    ///  the same user during a specified time interval.
-    ///  If not specified, a default of 0 (no cap) is applied.
+    /// Desired cookie frequency cap that will be applied to each planned product.
+    /// This is equivalent to the frequency cap exposed in Google Ads when creating
+    /// a campaign, it represents the maximum number of times an ad can be shown to
+    /// the same user during a specified time interval.
+    /// If not specified, a default of 0 (no cap) is applied.
     ///
-    ///  This field replaces the deprecated cookie_frequency_cap field.
+    /// This field replaces the deprecated cookie_frequency_cap field.
     #[prost(message, optional, tag="8")]
     pub cookie_frequency_cap_setting: ::core::option::Option<FrequencyCap>,
-    ///  Desired minimum effective frequency (the number of times a person was
-    ///  exposed to the ad) for the reported reach metrics \[1-10\].
-    ///  This won't affect the targeting, but just the reporting.
-    ///  If not specified, a default of 1 is applied.
+    /// Desired minimum effective frequency (the number of times a person was
+    /// exposed to the ad) for the reported reach metrics \[1-10\].
+    /// This won't affect the targeting, but just the reporting.
+    /// If not specified, a default of 1 is applied.
     ///
-    ///  This field cannot be combined with the effective_frequency_limit field.
+    /// This field cannot be combined with the effective_frequency_limit field.
     #[prost(int32, optional, tag="11")]
     pub min_effective_frequency: ::core::option::Option<i32>,
-    ///  The highest minimum effective frequency (the number of times a person was
-    ///  exposed to the ad) value \[1-10\] to include in
-    ///  Forecast.effective_frequency_breakdowns.
-    ///  If not specified, Forecast.effective_frequency_breakdowns will not be
-    ///  provided.
+    /// The highest minimum effective frequency (the number of times a person was
+    /// exposed to the ad) value \[1-10\] to include in
+    /// Forecast.effective_frequency_breakdowns.
+    /// If not specified, Forecast.effective_frequency_breakdowns will not be
+    /// provided.
     ///
-    ///  The effective frequency value provided here will also be used as the
-    ///  minimum effective frequency for the reported reach metrics.
+    /// The effective frequency value provided here will also be used as the
+    /// minimum effective frequency for the reported reach metrics.
     ///
-    ///  This field cannot be combined with the min_effective_frequency field.
+    /// This field cannot be combined with the min_effective_frequency field.
     #[prost(message, optional, tag="12")]
     pub effective_frequency_limit: ::core::option::Option<EffectiveFrequencyLimit>,
-    ///  The targeting to be applied to all products selected in the product mix.
+    /// The targeting to be applied to all products selected in the product mix.
     ///
-    ///  This is planned targeting: execution details might vary based on the
-    ///  advertising product, please consult an implementation specialist.
+    /// This is planned targeting: execution details might vary based on the
+    /// advertising product, please consult an implementation specialist.
     ///
-    ///  See specific metrics for details on how targeting affects them.
+    /// See specific metrics for details on how targeting affects them.
     #[prost(message, optional, tag="6")]
     pub targeting: ::core::option::Option<Targeting>,
-    ///  Required. The products to be forecast.
-    ///  The max number of allowed planned products is 15.
+    /// Required. The products to be forecast.
+    /// The max number of allowed planned products is 15.
     #[prost(message, repeated, tag="7")]
     pub planned_products: ::prost::alloc::vec::Vec<PlannedProduct>,
 }
-///  Effective frequency limit.
+/// Effective frequency limit.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EffectiveFrequencyLimit {
-    ///  The highest effective frequency value to include in
-    ///  Forecast.effective_frequency_breakdowns.
-    ///  This field supports frequencies 1-10, inclusive.
+    /// The highest effective frequency value to include in
+    /// Forecast.effective_frequency_breakdowns.
+    /// This field supports frequencies 1-10, inclusive.
     #[prost(int32, tag="1")]
     pub effective_frequency_breakdown_limit: i32,
 }
-///  A rule specifying the maximum number of times an ad can be shown to a user
-///  over a particular time period.
+/// A rule specifying the maximum number of times an ad can be shown to a user
+/// over a particular time period.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FrequencyCap {
-    ///  Required. The number of impressions, inclusive.
+    /// Required. The number of impressions, inclusive.
     #[prost(int32, tag="3")]
     pub impressions: i32,
-    ///  Required. The type of time unit.
+    /// Required. The type of time unit.
     #[prost(enumeration="super::enums::frequency_cap_time_unit_enum::FrequencyCapTimeUnit", tag="2")]
     pub time_unit: i32,
 }
-///  The targeting for which traffic metrics will be reported.
+/// The targeting for which traffic metrics will be reported.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Targeting {
-    ///  Required. The ID of the selected location. Plannable location IDs can be
-    ///  obtained from \[ReachPlanService.ListPlannableLocations][google.ads.googleads.v9.services.ReachPlanService.ListPlannableLocations\].
+    /// Required. The ID of the selected location. Plannable location IDs can be
+    /// obtained from \[ReachPlanService.ListPlannableLocations][google.ads.googleads.v9.services.ReachPlanService.ListPlannableLocations\].
     #[prost(string, optional, tag="6")]
     pub plannable_location_id: ::core::option::Option<::prost::alloc::string::String>,
-    ///  Targeted age range.
-    ///  An unset value is equivalent to targeting all ages.
+    /// Targeted age range.
+    /// An unset value is equivalent to targeting all ages.
     #[prost(enumeration="super::enums::reach_plan_age_range_enum::ReachPlanAgeRange", tag="2")]
     pub age_range: i32,
-    ///  Targeted genders.
-    ///  An unset value is equivalent to targeting MALE and FEMALE.
+    /// Targeted genders.
+    /// An unset value is equivalent to targeting MALE and FEMALE.
     #[prost(message, repeated, tag="3")]
     pub genders: ::prost::alloc::vec::Vec<super::common::GenderInfo>,
-    ///  Targeted devices.
-    ///  If not specified, targets all applicable devices. Applicable devices vary
-    ///  by product and region and can be obtained from
-    ///  \[ReachPlanService.ListPlannableProducts][google.ads.googleads.v9.services.ReachPlanService.ListPlannableProducts\].
+    /// Targeted devices.
+    /// If not specified, targets all applicable devices. Applicable devices vary
+    /// by product and region and can be obtained from
+    /// \[ReachPlanService.ListPlannableProducts][google.ads.googleads.v9.services.ReachPlanService.ListPlannableProducts\].
     #[prost(message, repeated, tag="4")]
     pub devices: ::prost::alloc::vec::Vec<super::common::DeviceInfo>,
-    ///  Targetable network for the ad product.
-    ///  If not specified, targets all applicable networks. Applicable networks vary
-    ///  by product and region and can be obtained from
-    ///  \[ReachPlanService.ListPlannableProducts][google.ads.googleads.v9.services.ReachPlanService.ListPlannableProducts\].
+    /// Targetable network for the ad product.
+    /// If not specified, targets all applicable networks. Applicable networks vary
+    /// by product and region and can be obtained from
+    /// \[ReachPlanService.ListPlannableProducts][google.ads.googleads.v9.services.ReachPlanService.ListPlannableProducts\].
     #[prost(enumeration="super::enums::reach_plan_network_enum::ReachPlanNetwork", tag="5")]
     pub network: i32,
 }
-///  The duration of a planned campaign.
+/// The duration of a planned campaign.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CampaignDuration {
-    ///  The duration value in days.
+    /// The duration value in days.
     ///
-    ///  This field cannot be combined with the date_range field.
+    /// This field cannot be combined with the date_range field.
     #[prost(int32, optional, tag="2")]
     pub duration_in_days: ::core::option::Option<i32>,
-    ///  Date range of the campaign.
-    ///  Dates are in the yyyy-mm-dd format and inclusive.
-    ///  The end date must be < 1 year in the future and the
-    ///  date range must be <= 92 days long.
+    /// Date range of the campaign.
+    /// Dates are in the yyyy-mm-dd format and inclusive.
+    /// The end date must be < 1 year in the future and the
+    /// date range must be <= 92 days long.
     ///
-    ///  This field cannot be combined with the duration_in_days field.
+    /// This field cannot be combined with the duration_in_days field.
     #[prost(message, optional, tag="3")]
     pub date_range: ::core::option::Option<super::common::DateRange>,
 }
-///  A product being planned for reach.
+/// A product being planned for reach.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PlannedProduct {
-    ///  Required. Selected product for planning.
-    ///  The code associated with the ad product. E.g. Trueview, Bumper
-    ///  To list the available plannable product codes use
-    ///  \[ReachPlanService.ListPlannableProducts][google.ads.googleads.v9.services.ReachPlanService.ListPlannableProducts\].
+    /// Required. Selected product for planning.
+    /// The code associated with the ad product. E.g. Trueview, Bumper
+    /// To list the available plannable product codes use
+    /// \[ReachPlanService.ListPlannableProducts][google.ads.googleads.v9.services.ReachPlanService.ListPlannableProducts\].
     #[prost(string, optional, tag="3")]
     pub plannable_product_code: ::core::option::Option<::prost::alloc::string::String>,
-    ///  Required. Maximum budget allocation in micros for the selected product.
-    ///  The value is specified in the selected planning currency_code.
-    ///  E.g. 1 000 000$ = 1 000 000 000 000 micros.
+    /// Required. Maximum budget allocation in micros for the selected product.
+    /// The value is specified in the selected planning currency_code.
+    /// E.g. 1 000 000$ = 1 000 000 000 000 micros.
     #[prost(int64, optional, tag="4")]
     pub budget_micros: ::core::option::Option<i64>,
 }
-///  Response message containing the generated reach curve.
+/// Response message containing the generated reach curve.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateReachForecastResponse {
-    ///  Reference on target audiences for this curve.
+    /// Reference on target audiences for this curve.
     #[prost(message, optional, tag="1")]
     pub on_target_audience_metrics: ::core::option::Option<OnTargetAudienceMetrics>,
-    ///  The generated reach curve for the planned product mix.
+    /// The generated reach curve for the planned product mix.
     #[prost(message, optional, tag="2")]
     pub reach_curve: ::core::option::Option<ReachCurve>,
 }
-///  The reach curve for the planned products.
+/// The reach curve for the planned products.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReachCurve {
-    ///  All points on the reach curve.
+    /// All points on the reach curve.
     #[prost(message, repeated, tag="1")]
     pub reach_forecasts: ::prost::alloc::vec::Vec<ReachForecast>,
 }
-///  A point on reach curve.
+/// A point on reach curve.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReachForecast {
-    ///  The cost in micros.
+    /// The cost in micros.
     #[prost(int64, tag="5")]
     pub cost_micros: i64,
-    ///  Forecasted traffic metrics for this point.
+    /// Forecasted traffic metrics for this point.
     #[prost(message, optional, tag="2")]
     pub forecast: ::core::option::Option<Forecast>,
-    ///  The forecasted allocation and traffic metrics for each planned product
-    ///  at this point on the reach curve.
+    /// The forecasted allocation and traffic metrics for each planned product
+    /// at this point on the reach curve.
     #[prost(message, repeated, tag="4")]
     pub planned_product_reach_forecasts: ::prost::alloc::vec::Vec<PlannedProductReachForecast>,
 }
-///  Forecasted traffic metrics for the planned products and targeting.
+/// Forecasted traffic metrics for the planned products and targeting.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Forecast {
-    ///  Number of unique people reached at least
-    ///  GenerateReachForecastRequest.min_effective_frequency or
-    ///  GenerateReachForecastRequest.effective_frequency_limit times that exactly
-    ///  matches the Targeting.
+    /// Number of unique people reached at least
+    /// GenerateReachForecastRequest.min_effective_frequency or
+    /// GenerateReachForecastRequest.effective_frequency_limit times that exactly
+    /// matches the Targeting.
     ///
-    ///  Note that a minimum number of unique people must be reached in order for
-    ///  data to be reported. If the minimum number is not met, the on_target_reach
-    ///  value will be rounded to 0.
+    /// Note that a minimum number of unique people must be reached in order for
+    /// data to be reported. If the minimum number is not met, the on_target_reach
+    /// value will be rounded to 0.
     #[prost(int64, optional, tag="5")]
     pub on_target_reach: ::core::option::Option<i64>,
-    ///  Total number of unique people reached at least
-    ///  GenerateReachForecastRequest.min_effective_frequency or
-    ///  GenerateReachForecastRequest.effective_frequency_limit times. This includes
-    ///  people that may fall outside the specified Targeting.
+    /// Total number of unique people reached at least
+    /// GenerateReachForecastRequest.min_effective_frequency or
+    /// GenerateReachForecastRequest.effective_frequency_limit times. This includes
+    /// people that may fall outside the specified Targeting.
     ///
-    ///  Note that a minimum number of unique people must be reached in order for
-    ///  data to be reported. If the minimum number is not met, the total_reach
-    ///  value will be rounded to 0.
+    /// Note that a minimum number of unique people must be reached in order for
+    /// data to be reported. If the minimum number is not met, the total_reach
+    /// value will be rounded to 0.
     #[prost(int64, optional, tag="6")]
     pub total_reach: ::core::option::Option<i64>,
-    ///  Number of ad impressions that exactly matches the Targeting.
+    /// Number of ad impressions that exactly matches the Targeting.
     #[prost(int64, optional, tag="7")]
     pub on_target_impressions: ::core::option::Option<i64>,
-    ///  Total number of ad impressions. This includes impressions that may fall
-    ///  outside the specified Targeting, due to insufficient information on
-    ///  signed-in users.
+    /// Total number of ad impressions. This includes impressions that may fall
+    /// outside the specified Targeting, due to insufficient information on
+    /// signed-in users.
     #[prost(int64, optional, tag="8")]
     pub total_impressions: ::core::option::Option<i64>,
-    ///  Number of times the ad's impressions were considered viewable.
-    ///  See <https://support.google.com/google-ads/answer/7029393> for
-    ///  more information about what makes an ad viewable and how
-    ///  viewability is measured.
+    /// Number of times the ad's impressions were considered viewable.
+    /// See <https://support.google.com/google-ads/answer/7029393> for
+    /// more information about what makes an ad viewable and how
+    /// viewability is measured.
     #[prost(int64, optional, tag="9")]
     pub viewable_impressions: ::core::option::Option<i64>,
-    ///  A list of effective frequency forecasts. The list is ordered starting with
-    ///  1+ and ending with the value set in
-    ///  GenerateReachForecastRequest.effective_frequency_limit. If no
-    ///  effective_frequency_limit was set, this list will be empty.
+    /// A list of effective frequency forecasts. The list is ordered starting with
+    /// 1+ and ending with the value set in
+    /// GenerateReachForecastRequest.effective_frequency_limit. If no
+    /// effective_frequency_limit was set, this list will be empty.
     #[prost(message, repeated, tag="10")]
     pub effective_frequency_breakdowns: ::prost::alloc::vec::Vec<EffectiveFrequencyBreakdown>,
 }
-///  The forecasted allocation and traffic metrics for a specific product
-///  at a point on the reach curve.
+/// The forecasted allocation and traffic metrics for a specific product
+/// at a point on the reach curve.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PlannedProductReachForecast {
-    ///  Selected product for planning. The product codes returned are within the
-    ///  set of the ones returned by ListPlannableProducts when using the same
-    ///  location ID.
+    /// Selected product for planning. The product codes returned are within the
+    /// set of the ones returned by ListPlannableProducts when using the same
+    /// location ID.
     #[prost(string, tag="1")]
     pub plannable_product_code: ::prost::alloc::string::String,
-    ///  The cost in micros. This may differ from the product's input allocation
-    ///  if one or more planned products cannot fulfill the budget because of
-    ///  limited inventory.
+    /// The cost in micros. This may differ from the product's input allocation
+    /// if one or more planned products cannot fulfill the budget because of
+    /// limited inventory.
     #[prost(int64, tag="2")]
     pub cost_micros: i64,
-    ///  Forecasted traffic metrics for this product.
+    /// Forecasted traffic metrics for this product.
     #[prost(message, optional, tag="3")]
     pub planned_product_forecast: ::core::option::Option<PlannedProductForecast>,
 }
-///  Forecasted traffic metrics for a planned product.
+/// Forecasted traffic metrics for a planned product.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PlannedProductForecast {
-    ///  Number of unique people reached that exactly matches the Targeting.
+    /// Number of unique people reached that exactly matches the Targeting.
     ///
-    ///  Note that a minimum number of unique people must be reached in order for
-    ///  data to be reported. If the minimum number is not met, the on_target_reach
-    ///  value will be rounded to 0.
+    /// Note that a minimum number of unique people must be reached in order for
+    /// data to be reported. If the minimum number is not met, the on_target_reach
+    /// value will be rounded to 0.
     #[prost(int64, tag="1")]
     pub on_target_reach: i64,
-    ///  Number of unique people reached. This includes people that may fall
-    ///  outside the specified Targeting.
+    /// Number of unique people reached. This includes people that may fall
+    /// outside the specified Targeting.
     ///
-    ///  Note that a minimum number of unique people must be reached in order for
-    ///  data to be reported. If the minimum number is not met, the total_reach
-    ///  value will be rounded to 0.
+    /// Note that a minimum number of unique people must be reached in order for
+    /// data to be reported. If the minimum number is not met, the total_reach
+    /// value will be rounded to 0.
     #[prost(int64, tag="2")]
     pub total_reach: i64,
-    ///  Number of ad impressions that exactly matches the Targeting.
+    /// Number of ad impressions that exactly matches the Targeting.
     #[prost(int64, tag="3")]
     pub on_target_impressions: i64,
-    ///  Total number of ad impressions. This includes impressions that may fall
-    ///  outside the specified Targeting, due to insufficient information on
-    ///  signed-in users.
+    /// Total number of ad impressions. This includes impressions that may fall
+    /// outside the specified Targeting, due to insufficient information on
+    /// signed-in users.
     #[prost(int64, tag="4")]
     pub total_impressions: i64,
-    ///  Number of times the ad's impressions were considered viewable.
-    ///  See <https://support.google.com/google-ads/answer/7029393> for
-    ///  more information about what makes an ad viewable and how
-    ///  viewability is measured.
+    /// Number of times the ad's impressions were considered viewable.
+    /// See <https://support.google.com/google-ads/answer/7029393> for
+    /// more information about what makes an ad viewable and how
+    /// viewability is measured.
     #[prost(int64, optional, tag="5")]
     pub viewable_impressions: ::core::option::Option<i64>,
 }
-///  Audience metrics for the planned products.
-///  These metrics consider the following targeting dimensions:
+/// Audience metrics for the planned products.
+/// These metrics consider the following targeting dimensions:
 ///
-///  - Location
-///  - PlannableAgeRange
-///  - Gender
+/// - Location
+/// - PlannableAgeRange
+/// - Gender
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OnTargetAudienceMetrics {
-    ///  Reference audience size matching the considered targeting for YouTube.
+    /// Reference audience size matching the considered targeting for YouTube.
     #[prost(int64, optional, tag="3")]
     pub youtube_audience_size: ::core::option::Option<i64>,
-    ///  Reference audience size matching the considered targeting for Census.
+    /// Reference audience size matching the considered targeting for Census.
     #[prost(int64, optional, tag="4")]
     pub census_audience_size: ::core::option::Option<i64>,
 }
-///  A breakdown of the number of unique people reached at a given effective
-///  frequency.
+/// A breakdown of the number of unique people reached at a given effective
+/// frequency.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EffectiveFrequencyBreakdown {
-    ///  The effective frequency \[1-10\].
+    /// The effective frequency \[1-10\].
     #[prost(int32, tag="1")]
     pub effective_frequency: i32,
-    ///  The number of unique people reached at least effective_frequency times that
-    ///  exactly matches the Targeting.
+    /// The number of unique people reached at least effective_frequency times that
+    /// exactly matches the Targeting.
     ///
-    ///  Note that a minimum number of unique people must be reached in order for
-    ///  data to be reported. If the minimum number is not met, the on_target_reach
-    ///  value will be rounded to 0.
+    /// Note that a minimum number of unique people must be reached in order for
+    /// data to be reported. If the minimum number is not met, the on_target_reach
+    /// value will be rounded to 0.
     #[prost(int64, tag="2")]
     pub on_target_reach: i64,
-    ///  Total number of unique people reached at least effective_frequency times.
-    ///  This includes people that may fall outside the specified Targeting.
+    /// Total number of unique people reached at least effective_frequency times.
+    /// This includes people that may fall outside the specified Targeting.
     ///
-    ///  Note that a minimum number of unique people must be reached in order for
-    ///  data to be reported. If the minimum number is not met, the total_reach
-    ///  value will be rounded to 0.
+    /// Note that a minimum number of unique people must be reached in order for
+    /// data to be reported. If the minimum number is not met, the total_reach
+    /// value will be rounded to 0.
     #[prost(int64, tag="3")]
     pub total_reach: i64,
 }
@@ -27802,238 +27802,238 @@ pub mod reach_plan_service_client {
         }
     }
 }
-///  Request message for \[RecommendationService.GetRecommendation][google.ads.googleads.v9.services.RecommendationService.GetRecommendation\].
+/// Request message for \[RecommendationService.GetRecommendation][google.ads.googleads.v9.services.RecommendationService.GetRecommendation\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetRecommendationRequest {
-    ///  Required. The resource name of the recommendation to fetch.
+    /// Required. The resource name of the recommendation to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Request message for \[RecommendationService.ApplyRecommendation][google.ads.googleads.v9.services.RecommendationService.ApplyRecommendation\].
+/// Request message for \[RecommendationService.ApplyRecommendation][google.ads.googleads.v9.services.RecommendationService.ApplyRecommendation\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ApplyRecommendationRequest {
-    ///  Required. The ID of the customer with the recommendation.
+    /// Required. The ID of the customer with the recommendation.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The list of operations to apply recommendations.
-    ///  If partial_failure=false all recommendations should be of the same type
-    ///  There is a limit of 100 operations per request.
+    /// Required. The list of operations to apply recommendations.
+    /// If partial_failure=false all recommendations should be of the same type
+    /// There is a limit of 100 operations per request.
     #[prost(message, repeated, tag="2")]
     pub operations: ::prost::alloc::vec::Vec<ApplyRecommendationOperation>,
-    ///  If true, successful operations will be carried out and invalid
-    ///  operations will return errors. If false, operations will be carried
-    ///  out as a transaction if and only if they are all valid.
-    ///  Default is false.
+    /// If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, operations will be carried
+    /// out as a transaction if and only if they are all valid.
+    /// Default is false.
     #[prost(bool, tag="3")]
     pub partial_failure: bool,
 }
-///  Information about the operation to apply a recommendation and any parameters
-///  to customize it.
+/// Information about the operation to apply a recommendation and any parameters
+/// to customize it.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ApplyRecommendationOperation {
-    ///  The resource name of the recommendation to apply.
+    /// The resource name of the recommendation to apply.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
-    ///  Parameters to use when applying the recommendation.
+    /// Parameters to use when applying the recommendation.
     #[prost(oneof="apply_recommendation_operation::ApplyParameters", tags="2, 3, 4, 5, 10, 6, 7, 8, 9, 11")]
     pub apply_parameters: ::core::option::Option<apply_recommendation_operation::ApplyParameters>,
 }
 /// Nested message and enum types in `ApplyRecommendationOperation`.
 pub mod apply_recommendation_operation {
-    ///  Parameters to use when applying a campaign budget recommendation.
+    /// Parameters to use when applying a campaign budget recommendation.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CampaignBudgetParameters {
-        ///  New budget amount to set for target budget resource. This is a required
-        ///  field.
+        /// New budget amount to set for target budget resource. This is a required
+        /// field.
         #[prost(int64, optional, tag="2")]
         pub new_budget_amount_micros: ::core::option::Option<i64>,
     }
-    ///  Parameters to use when applying a text ad recommendation.
+    /// Parameters to use when applying a text ad recommendation.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct TextAdParameters {
-        ///  New ad to add to recommended ad group. All necessary fields need to be
-        ///  set in this message. This is a required field.
+        /// New ad to add to recommended ad group. All necessary fields need to be
+        /// set in this message. This is a required field.
         #[prost(message, optional, tag="1")]
         pub ad: ::core::option::Option<super::super::resources::Ad>,
     }
-    ///  Parameters to use when applying keyword recommendation.
+    /// Parameters to use when applying keyword recommendation.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct KeywordParameters {
-        ///  The ad group resource to add keyword to. This is a required field.
+        /// The ad group resource to add keyword to. This is a required field.
         #[prost(string, optional, tag="4")]
         pub ad_group: ::core::option::Option<::prost::alloc::string::String>,
-        ///  The match type of the keyword. This is a required field.
+        /// The match type of the keyword. This is a required field.
         #[prost(enumeration="super::super::enums::keyword_match_type_enum::KeywordMatchType", tag="2")]
         pub match_type: i32,
-        ///  Optional, CPC bid to set for the keyword. If not set, keyword will use
-        ///  bid based on bidding strategy used by target ad group.
+        /// Optional, CPC bid to set for the keyword. If not set, keyword will use
+        /// bid based on bidding strategy used by target ad group.
         #[prost(int64, optional, tag="5")]
         pub cpc_bid_micros: ::core::option::Option<i64>,
     }
-    ///  Parameters to use when applying Target CPA recommendation.
+    /// Parameters to use when applying Target CPA recommendation.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct TargetCpaOptInParameters {
-        ///  Average CPA to use for Target CPA bidding strategy. This is a required
-        ///  field.
+        /// Average CPA to use for Target CPA bidding strategy. This is a required
+        /// field.
         #[prost(int64, optional, tag="3")]
         pub target_cpa_micros: ::core::option::Option<i64>,
-        ///  Optional, budget amount to set for the campaign.
+        /// Optional, budget amount to set for the campaign.
         #[prost(int64, optional, tag="4")]
         pub new_campaign_budget_amount_micros: ::core::option::Option<i64>,
     }
-    ///  Parameters to use when applying a Target ROAS opt-in recommendation.
+    /// Parameters to use when applying a Target ROAS opt-in recommendation.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct TargetRoasOptInParameters {
-        ///  Average ROAS (revenue per unit of spend) to use for Target ROAS bidding
-        ///  strategy. The value is between 0.01 and 1000.0, inclusive. This is a
-        ///  required field, unless new_campaign_budget_amount_micros is set.
+        /// Average ROAS (revenue per unit of spend) to use for Target ROAS bidding
+        /// strategy. The value is between 0.01 and 1000.0, inclusive. This is a
+        /// required field, unless new_campaign_budget_amount_micros is set.
         #[prost(double, optional, tag="1")]
         pub target_roas: ::core::option::Option<f64>,
-        ///  Optional, budget amount to set for the campaign.
+        /// Optional, budget amount to set for the campaign.
         #[prost(int64, optional, tag="2")]
         pub new_campaign_budget_amount_micros: ::core::option::Option<i64>,
     }
-    ///  Parameters to use when applying callout extension recommendation.
+    /// Parameters to use when applying callout extension recommendation.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CalloutExtensionParameters {
-        ///  Callout extensions to be added. This is a required field.
+        /// Callout extensions to be added. This is a required field.
         #[prost(message, repeated, tag="1")]
         pub callout_extensions: ::prost::alloc::vec::Vec<super::super::common::CalloutFeedItem>,
     }
-    ///  Parameters to use when applying call extension recommendation.
+    /// Parameters to use when applying call extension recommendation.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CallExtensionParameters {
-        ///  Call extensions to be added. This is a required field.
+        /// Call extensions to be added. This is a required field.
         #[prost(message, repeated, tag="1")]
         pub call_extensions: ::prost::alloc::vec::Vec<super::super::common::CallFeedItem>,
     }
-    ///  Parameters to use when applying sitelink extension recommendation.
+    /// Parameters to use when applying sitelink extension recommendation.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SitelinkExtensionParameters {
-        ///  Sitelink extensions to be added. This is a required field.
+        /// Sitelink extensions to be added. This is a required field.
         #[prost(message, repeated, tag="1")]
         pub sitelink_extensions: ::prost::alloc::vec::Vec<super::super::common::SitelinkFeedItem>,
     }
-    ///  Parameters to use when applying move unused budget recommendation.
+    /// Parameters to use when applying move unused budget recommendation.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct MoveUnusedBudgetParameters {
-        ///  Budget amount to move from excess budget to constrained budget. This is
-        ///  a required field.
+        /// Budget amount to move from excess budget to constrained budget. This is
+        /// a required field.
         #[prost(int64, optional, tag="2")]
         pub budget_micros_to_move: ::core::option::Option<i64>,
     }
-    ///  Parameters to use when applying a responsive search ad recommendation.
+    /// Parameters to use when applying a responsive search ad recommendation.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ResponsiveSearchAdParameters {
-        ///  Required. New ad to add to recommended ad group.
+        /// Required. New ad to add to recommended ad group.
         #[prost(message, optional, tag="1")]
         pub ad: ::core::option::Option<super::super::resources::Ad>,
     }
-    ///  Parameters to use when applying the recommendation.
+    /// Parameters to use when applying the recommendation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ApplyParameters {
-        ///  Optional parameters to use when applying a campaign budget
-        ///  recommendation.
+        /// Optional parameters to use when applying a campaign budget
+        /// recommendation.
         #[prost(message, tag="2")]
         CampaignBudget(CampaignBudgetParameters),
-        ///  Optional parameters to use when applying a text ad recommendation.
+        /// Optional parameters to use when applying a text ad recommendation.
         #[prost(message, tag="3")]
         TextAd(TextAdParameters),
-        ///  Optional parameters to use when applying keyword recommendation.
+        /// Optional parameters to use when applying keyword recommendation.
         #[prost(message, tag="4")]
         Keyword(KeywordParameters),
-        ///  Optional parameters to use when applying target CPA opt-in
-        ///  recommendation.
+        /// Optional parameters to use when applying target CPA opt-in
+        /// recommendation.
         #[prost(message, tag="5")]
         TargetCpaOptIn(TargetCpaOptInParameters),
-        ///  Optional parameters to use when applying target ROAS opt-in
-        ///  recommendation.
+        /// Optional parameters to use when applying target ROAS opt-in
+        /// recommendation.
         #[prost(message, tag="10")]
         TargetRoasOptIn(TargetRoasOptInParameters),
-        ///  Parameters to use when applying callout extension recommendation.
+        /// Parameters to use when applying callout extension recommendation.
         #[prost(message, tag="6")]
         CalloutExtension(CalloutExtensionParameters),
-        ///  Parameters to use when applying call extension recommendation.
+        /// Parameters to use when applying call extension recommendation.
         #[prost(message, tag="7")]
         CallExtension(CallExtensionParameters),
-        ///  Parameters to use when applying sitelink extension recommendation.
+        /// Parameters to use when applying sitelink extension recommendation.
         #[prost(message, tag="8")]
         SitelinkExtension(SitelinkExtensionParameters),
-        ///  Parameters to use when applying move unused budget recommendation.
+        /// Parameters to use when applying move unused budget recommendation.
         #[prost(message, tag="9")]
         MoveUnusedBudget(MoveUnusedBudgetParameters),
-        ///  Parameters to use when applying a responsive search ad recommendation.
+        /// Parameters to use when applying a responsive search ad recommendation.
         #[prost(message, tag="11")]
         ResponsiveSearchAd(ResponsiveSearchAdParameters),
     }
 }
-///  Response message for \[RecommendationService.ApplyRecommendation][google.ads.googleads.v9.services.RecommendationService.ApplyRecommendation\].
+/// Response message for \[RecommendationService.ApplyRecommendation][google.ads.googleads.v9.services.RecommendationService.ApplyRecommendation\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ApplyRecommendationResponse {
-    ///  Results of operations to apply recommendations.
+    /// Results of operations to apply recommendations.
     #[prost(message, repeated, tag="1")]
     pub results: ::prost::alloc::vec::Vec<ApplyRecommendationResult>,
-    ///  Errors that pertain to operation failures in the partial failure mode.
-    ///  Returned only when partial_failure = true and all errors occur inside the
-    ///  operations. If any errors occur outside the operations (e.g. auth errors)
-    ///  we return the RPC level error.
+    /// Errors that pertain to operation failures in the partial failure mode.
+    /// Returned only when partial_failure = true and all errors occur inside the
+    /// operations. If any errors occur outside the operations (e.g. auth errors)
+    /// we return the RPC level error.
     #[prost(message, optional, tag="2")]
     pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
 }
-///  The result of applying a recommendation.
+/// The result of applying a recommendation.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ApplyRecommendationResult {
-    ///  Returned for successful applies.
+    /// Returned for successful applies.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Request message for \[RecommendationService.DismissRecommendation][google.ads.googleads.v9.services.RecommendationService.DismissRecommendation\].
+/// Request message for \[RecommendationService.DismissRecommendation][google.ads.googleads.v9.services.RecommendationService.DismissRecommendation\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DismissRecommendationRequest {
-    ///  Required. The ID of the customer with the recommendation.
+    /// Required. The ID of the customer with the recommendation.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The list of operations to dismiss recommendations.
-    ///  If partial_failure=false all recommendations should be of the same type
-    ///  There is a limit of 100 operations per request.
+    /// Required. The list of operations to dismiss recommendations.
+    /// If partial_failure=false all recommendations should be of the same type
+    /// There is a limit of 100 operations per request.
     #[prost(message, repeated, tag="3")]
     pub operations: ::prost::alloc::vec::Vec<dismiss_recommendation_request::DismissRecommendationOperation>,
-    ///  If true, successful operations will be carried out and invalid
-    ///  operations will return errors. If false, operations will be carried in a
-    ///  single transaction if and only if they are all valid.
-    ///  Default is false.
+    /// If true, successful operations will be carried out and invalid
+    /// operations will return errors. If false, operations will be carried in a
+    /// single transaction if and only if they are all valid.
+    /// Default is false.
     #[prost(bool, tag="2")]
     pub partial_failure: bool,
 }
 /// Nested message and enum types in `DismissRecommendationRequest`.
 pub mod dismiss_recommendation_request {
-    ///  Operation to dismiss a single recommendation identified by resource_name.
+    /// Operation to dismiss a single recommendation identified by resource_name.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DismissRecommendationOperation {
-        ///  The resource name of the recommendation to dismiss.
+        /// The resource name of the recommendation to dismiss.
         #[prost(string, tag="1")]
         pub resource_name: ::prost::alloc::string::String,
     }
 }
-///  Response message for \[RecommendationService.DismissRecommendation][google.ads.googleads.v9.services.RecommendationService.DismissRecommendation\].
+/// Response message for \[RecommendationService.DismissRecommendation][google.ads.googleads.v9.services.RecommendationService.DismissRecommendation\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DismissRecommendationResponse {
-    ///  Results of operations to dismiss recommendations.
+    /// Results of operations to dismiss recommendations.
     #[prost(message, repeated, tag="1")]
     pub results: ::prost::alloc::vec::Vec<dismiss_recommendation_response::DismissRecommendationResult>,
-    ///  Errors that pertain to operation failures in the partial failure mode.
-    ///  Returned only when partial_failure = true and all errors occur inside the
-    ///  operations. If any errors occur outside the operations (e.g. auth errors)
-    ///  we return the RPC level error.
+    /// Errors that pertain to operation failures in the partial failure mode.
+    /// Returned only when partial_failure = true and all errors occur inside the
+    /// operations. If any errors occur outside the operations (e.g. auth errors)
+    /// we return the RPC level error.
     #[prost(message, optional, tag="2")]
     pub partial_failure_error: ::core::option::Option<super::super::super::super::rpc::Status>,
 }
 /// Nested message and enum types in `DismissRecommendationResponse`.
 pub mod dismiss_recommendation_response {
-    ///  The result of dismissing a recommendation.
+    /// The result of dismissing a recommendation.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DismissRecommendationResult {
-        ///  Returned for successful dismissals.
+        /// Returned for successful dismissals.
         #[prost(string, tag="1")]
         pub resource_name: ::prost::alloc::string::String,
     }
@@ -28206,10 +28206,10 @@ pub mod recommendation_service_client {
         }
     }
 }
-///  Request message for \[SearchTermViewService.GetSearchTermView][google.ads.googleads.v9.services.SearchTermViewService.GetSearchTermView\].
+/// Request message for \[SearchTermViewService.GetSearchTermView][google.ads.googleads.v9.services.SearchTermViewService.GetSearchTermView\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetSearchTermViewRequest {
-    ///  Required. The resource name of the search term view to fetch.
+    /// Required. The resource name of the search term view to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
@@ -28316,11 +28316,11 @@ pub mod search_term_view_service_client {
         }
     }
 }
-///  Request message for
-///  \[ShoppingPerformanceViewService.GetShoppingPerformanceView][google.ads.googleads.v9.services.ShoppingPerformanceViewService.GetShoppingPerformanceView\].
+/// Request message for
+/// \[ShoppingPerformanceViewService.GetShoppingPerformanceView][google.ads.googleads.v9.services.ShoppingPerformanceViewService.GetShoppingPerformanceView\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetShoppingPerformanceViewRequest {
-    ///  Required. The resource name of the Shopping performance view to fetch.
+    /// Required. The resource name of the Shopping performance view to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
@@ -28429,11 +28429,11 @@ pub mod shopping_performance_view_service_client {
         }
     }
 }
-///  Request message for
-///  \[SmartCampaignSearchTermViewService.GetSmartCampaignSearchTermView][google.ads.googleads.v9.services.SmartCampaignSearchTermViewService.GetSmartCampaignSearchTermView\].
+/// Request message for
+/// \[SmartCampaignSearchTermViewService.GetSmartCampaignSearchTermView][google.ads.googleads.v9.services.SmartCampaignSearchTermViewService.GetSmartCampaignSearchTermView\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetSmartCampaignSearchTermViewRequest {
-    ///  Required. The resource name of the Smart campaign search term view to fetch.
+    /// Required. The resource name of the Smart campaign search term view to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
@@ -28544,194 +28544,194 @@ pub mod smart_campaign_search_term_view_service_client {
         }
     }
 }
-///  Request message for
-///  \[SmartCampaignSuggestService.SuggestSmartCampaignBudgets][\].
+/// Request message for
+/// \[SmartCampaignSuggestService.SuggestSmartCampaignBudgets][\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SuggestSmartCampaignBudgetOptionsRequest {
-    ///  Required. The ID of the customer whose budget options are to be suggested.
+    /// Required. The ID of the customer whose budget options are to be suggested.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. For first time campaign creation use SuggestionInfo, for
-    ///  subsequent updates on BudgetOptions based on an already created campaign
-    ///  use that campaign.
+    /// Required. For first time campaign creation use SuggestionInfo, for
+    /// subsequent updates on BudgetOptions based on an already created campaign
+    /// use that campaign.
     #[prost(oneof="suggest_smart_campaign_budget_options_request::SuggestionData", tags="2, 3")]
     pub suggestion_data: ::core::option::Option<suggest_smart_campaign_budget_options_request::SuggestionData>,
 }
 /// Nested message and enum types in `SuggestSmartCampaignBudgetOptionsRequest`.
 pub mod suggest_smart_campaign_budget_options_request {
-    ///  Required. For first time campaign creation use SuggestionInfo, for
-    ///  subsequent updates on BudgetOptions based on an already created campaign
-    ///  use that campaign.
+    /// Required. For first time campaign creation use SuggestionInfo, for
+    /// subsequent updates on BudgetOptions based on an already created campaign
+    /// use that campaign.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum SuggestionData {
-        ///  Required. The resource name of the campaign to get suggestion for.
+        /// Required. The resource name of the campaign to get suggestion for.
         #[prost(string, tag="2")]
         Campaign(::prost::alloc::string::String),
-        ///  Required. Information needed to get budget options
+        /// Required. Information needed to get budget options
         #[prost(message, tag="3")]
         SuggestionInfo(super::SmartCampaignSuggestionInfo),
     }
 }
-///  Information needed to get suggestion for Smart Campaign. More information
-///  provided will help the system to derive better suggestions.
+/// Information needed to get suggestion for Smart Campaign. More information
+/// provided will help the system to derive better suggestions.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SmartCampaignSuggestionInfo {
-    ///  Optional. Landing page URL of the campaign.
+    /// Optional. Landing page URL of the campaign.
     #[prost(string, tag="1")]
     pub final_url: ::prost::alloc::string::String,
-    ///  Optional. The two letter advertising language for the Smart campaign to be
-    ///  constructed, default to 'en' if not set.
+    /// Optional. The two letter advertising language for the Smart campaign to be
+    /// constructed, default to 'en' if not set.
     #[prost(string, tag="3")]
     pub language_code: ::prost::alloc::string::String,
-    ///  Optional. The business ad schedule.
+    /// Optional. The business ad schedule.
     #[prost(message, repeated, tag="6")]
     pub ad_schedules: ::prost::alloc::vec::Vec<super::common::AdScheduleInfo>,
-    ///  Optional. Smart campaign keyword themes. This field may greatly improve suggestion
-    ///  accuracy and we recommend always setting it if possible.
+    /// Optional. Smart campaign keyword themes. This field may greatly improve suggestion
+    /// accuracy and we recommend always setting it if possible.
     #[prost(message, repeated, tag="7")]
     pub keyword_themes: ::prost::alloc::vec::Vec<super::common::KeywordThemeInfo>,
-    ///  The business settings to consider when generating suggestions.
-    ///  Settings are automatically extracted from the business when provided.
-    ///  Otherwise, these settings must be specified explicitly.
+    /// The business settings to consider when generating suggestions.
+    /// Settings are automatically extracted from the business when provided.
+    /// Otherwise, these settings must be specified explicitly.
     #[prost(oneof="smart_campaign_suggestion_info::BusinessSetting", tags="8, 2")]
     pub business_setting: ::core::option::Option<smart_campaign_suggestion_info::BusinessSetting>,
-    ///  The geo target of the campaign, either a list of locations or
-    ///  a single proximity shall be specified.
+    /// The geo target of the campaign, either a list of locations or
+    /// a single proximity shall be specified.
     #[prost(oneof="smart_campaign_suggestion_info::GeoTarget", tags="4, 5")]
     pub geo_target: ::core::option::Option<smart_campaign_suggestion_info::GeoTarget>,
 }
 /// Nested message and enum types in `SmartCampaignSuggestionInfo`.
 pub mod smart_campaign_suggestion_info {
-    ///  A list of locations.
+    /// A list of locations.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct LocationList {
-        ///  Required. Locations.
+        /// Required. Locations.
         #[prost(message, repeated, tag="1")]
         pub locations: ::prost::alloc::vec::Vec<super::super::common::LocationInfo>,
     }
-    ///  A context that describes a business.
+    /// A context that describes a business.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct BusinessContext {
-        ///  Optional. The name of the business.
+        /// Optional. The name of the business.
         #[prost(string, tag="1")]
         pub business_name: ::prost::alloc::string::String,
     }
-    ///  The business settings to consider when generating suggestions.
-    ///  Settings are automatically extracted from the business when provided.
-    ///  Otherwise, these settings must be specified explicitly.
+    /// The business settings to consider when generating suggestions.
+    /// Settings are automatically extracted from the business when provided.
+    /// Otherwise, these settings must be specified explicitly.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum BusinessSetting {
-        ///  Optional. Context describing the business to advertise.
+        /// Optional. Context describing the business to advertise.
         #[prost(message, tag="8")]
         BusinessContext(BusinessContext),
-        ///  Optional. The ID of the Business Profile location.
-        ///  The location ID can be fetched by Business Profile API with its form:
-        ///  accounts/{accountId}/locations/{locationId}. The last {locationId}
-        ///  component from the Business Profile API represents the
-        ///  business_location_id. See the [Business Profile API]
-        ///  (<https://developers.google.com/my-business/reference/rest/v4/accounts.locations>)
+        /// Optional. The ID of the Business Profile location.
+        /// The location ID can be fetched by Business Profile API with its form:
+        /// accounts/{accountId}/locations/{locationId}. The last {locationId}
+        /// component from the Business Profile API represents the
+        /// business_location_id. See the [Business Profile API]
+        /// (<https://developers.google.com/my-business/reference/rest/v4/accounts.locations>)
         #[prost(int64, tag="2")]
         BusinessLocationId(i64),
     }
-    ///  The geo target of the campaign, either a list of locations or
-    ///  a single proximity shall be specified.
+    /// The geo target of the campaign, either a list of locations or
+    /// a single proximity shall be specified.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum GeoTarget {
-        ///  Optional. The targeting geo location by locations.
+        /// Optional. The targeting geo location by locations.
         #[prost(message, tag="4")]
         LocationList(LocationList),
-        ///  Optional. The targeting geo location by proximity.
+        /// Optional. The targeting geo location by proximity.
         #[prost(message, tag="5")]
         Proximity(super::super::common::ProximityInfo),
     }
 }
-///  Response message for
-///  \[SmartCampaignSuggestService.SuggestSmartCampaignBudgets][\]. Depending on
-///  whether the system could suggest the options, either all of the options or
-///  none of them might be returned.
+/// Response message for
+/// \[SmartCampaignSuggestService.SuggestSmartCampaignBudgets][\]. Depending on
+/// whether the system could suggest the options, either all of the options or
+/// none of them might be returned.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SuggestSmartCampaignBudgetOptionsResponse {
-    ///  Optional. The lowest budget option.
+    /// Optional. The lowest budget option.
     #[prost(message, optional, tag="1")]
     pub low: ::core::option::Option<suggest_smart_campaign_budget_options_response::BudgetOption>,
-    ///  Optional. The recommended budget option.
+    /// Optional. The recommended budget option.
     #[prost(message, optional, tag="2")]
     pub recommended: ::core::option::Option<suggest_smart_campaign_budget_options_response::BudgetOption>,
-    ///  Optional. The highest budget option.
+    /// Optional. The highest budget option.
     #[prost(message, optional, tag="3")]
     pub high: ::core::option::Option<suggest_smart_campaign_budget_options_response::BudgetOption>,
 }
 /// Nested message and enum types in `SuggestSmartCampaignBudgetOptionsResponse`.
 pub mod suggest_smart_campaign_budget_options_response {
-    ///  Performance metrics for a given budget option.
+    /// Performance metrics for a given budget option.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Metrics {
-        ///  The estimated min daily clicks.
+        /// The estimated min daily clicks.
         #[prost(int64, tag="1")]
         pub min_daily_clicks: i64,
-        ///  The estimated max daily clicks.
+        /// The estimated max daily clicks.
         #[prost(int64, tag="2")]
         pub max_daily_clicks: i64,
     }
-    ///  Smart Campaign budget option.
+    /// Smart Campaign budget option.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct BudgetOption {
-        ///  The amount of the budget, in the local currency for the account.
-        ///  Amount is specified in micros, where one million is equivalent to one
-        ///  currency unit.
+        /// The amount of the budget, in the local currency for the account.
+        /// Amount is specified in micros, where one million is equivalent to one
+        /// currency unit.
         #[prost(int64, tag="1")]
         pub daily_amount_micros: i64,
-        ///  Metrics pertaining to the suggested budget, could be empty if there is
-        ///  not enough information to derive the estimates.
+        /// Metrics pertaining to the suggested budget, could be empty if there is
+        /// not enough information to derive the estimates.
         #[prost(message, optional, tag="2")]
         pub metrics: ::core::option::Option<Metrics>,
     }
 }
-///  Request message for
-///  \[SmartCampaignSuggestService.SuggestSmartCampaignAd][google.ads.googleads.v9.services.SmartCampaignSuggestService.SuggestSmartCampaignAd\].
+/// Request message for
+/// \[SmartCampaignSuggestService.SuggestSmartCampaignAd][google.ads.googleads.v9.services.SmartCampaignSuggestService.SuggestSmartCampaignAd\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SuggestSmartCampaignAdRequest {
-    ///  Required. The ID of the customer.
+    /// Required. The ID of the customer.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. Inputs used to suggest a Smart campaign ad.
-    ///  Required fields: final_url, language_code, keyword_themes.
-    ///  Optional but recommended fields to improve the quality of the suggestion:
-    ///  business_setting and geo_target.
+    /// Required. Inputs used to suggest a Smart campaign ad.
+    /// Required fields: final_url, language_code, keyword_themes.
+    /// Optional but recommended fields to improve the quality of the suggestion:
+    /// business_setting and geo_target.
     #[prost(message, optional, tag="2")]
     pub suggestion_info: ::core::option::Option<SmartCampaignSuggestionInfo>,
 }
-///  Response message for
-///  \[SmartCampaignSuggestService.SuggestSmartCampaignAd][google.ads.googleads.v9.services.SmartCampaignSuggestService.SuggestSmartCampaignAd\].
+/// Response message for
+/// \[SmartCampaignSuggestService.SuggestSmartCampaignAd][google.ads.googleads.v9.services.SmartCampaignSuggestService.SuggestSmartCampaignAd\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SuggestSmartCampaignAdResponse {
-    ///  Optional. Ad info includes 3 creative headlines and 2 creative descriptions.
+    /// Optional. Ad info includes 3 creative headlines and 2 creative descriptions.
     #[prost(message, optional, tag="1")]
     pub ad_info: ::core::option::Option<super::common::SmartCampaignAdInfo>,
 }
-///  Request message for
-///  \[SmartCampaignSuggestService.SuggestKeywordThemes][google.ads.googleads.v9.services.SmartCampaignSuggestService.SuggestKeywordThemes\].
+/// Request message for
+/// \[SmartCampaignSuggestService.SuggestKeywordThemes][google.ads.googleads.v9.services.SmartCampaignSuggestService.SuggestKeywordThemes\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SuggestKeywordThemesRequest {
-    ///  Required. The ID of the customer.
+    /// Required. The ID of the customer.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. Information to get keyword theme suggestions.
-    ///  Required fields:
-    ///  * suggestion_info.final_url
-    ///  * suggestion_info.language_code
-    ///  * suggestion_info.geo_target
+    /// Required. Information to get keyword theme suggestions.
+    /// Required fields:
+    /// * suggestion_info.final_url
+    /// * suggestion_info.language_code
+    /// * suggestion_info.geo_target
     ///
-    ///  Recommended fields:
-    ///  * suggestion_info.business_setting
+    /// Recommended fields:
+    /// * suggestion_info.business_setting
     #[prost(message, optional, tag="2")]
     pub suggestion_info: ::core::option::Option<SmartCampaignSuggestionInfo>,
 }
-///  Response message for
-///  \[SmartCampaignSuggestService.SuggestKeywordThemes][google.ads.googleads.v9.services.SmartCampaignSuggestService.SuggestKeywordThemes\].
+/// Response message for
+/// \[SmartCampaignSuggestService.SuggestKeywordThemes][google.ads.googleads.v9.services.SmartCampaignSuggestService.SuggestKeywordThemes\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SuggestKeywordThemesResponse {
-    ///  Smart campaign keyword theme suggestions.
+    /// Smart campaign keyword theme suggestions.
     #[prost(message, repeated, tag="1")]
     pub keyword_themes: ::prost::alloc::vec::Vec<super::resources::KeywordThemeConstant>,
 }
@@ -28881,24 +28881,24 @@ pub mod smart_campaign_suggest_service_client {
         }
     }
 }
-///  Request message for
-///  \[ThirdPartyAppAnalyticsLinkService.GetThirdPartyAppAnalyticsLink][google.ads.googleads.v9.services.ThirdPartyAppAnalyticsLinkService.GetThirdPartyAppAnalyticsLink\].
+/// Request message for
+/// \[ThirdPartyAppAnalyticsLinkService.GetThirdPartyAppAnalyticsLink][google.ads.googleads.v9.services.ThirdPartyAppAnalyticsLinkService.GetThirdPartyAppAnalyticsLink\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetThirdPartyAppAnalyticsLinkRequest {
-    ///  Resource name of the third party app analytics link.
+    /// Resource name of the third party app analytics link.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Request message for
-///  \[ThirdPartyAppAnalyticsLinkService.RegenerateShareableLinkId][google.ads.googleads.v9.services.ThirdPartyAppAnalyticsLinkService.RegenerateShareableLinkId\].
+/// Request message for
+/// \[ThirdPartyAppAnalyticsLinkService.RegenerateShareableLinkId][google.ads.googleads.v9.services.ThirdPartyAppAnalyticsLinkService.RegenerateShareableLinkId\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegenerateShareableLinkIdRequest {
-    ///  Resource name of the third party app analytics link.
+    /// Resource name of the third party app analytics link.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
-///  Response message for
-///  \[ThirdPartyAppAnalyticsLinkService.RegenerateShareableLinkId][google.ads.googleads.v9.services.ThirdPartyAppAnalyticsLinkService.RegenerateShareableLinkId\].
+/// Response message for
+/// \[ThirdPartyAppAnalyticsLinkService.RegenerateShareableLinkId][google.ads.googleads.v9.services.ThirdPartyAppAnalyticsLinkService.RegenerateShareableLinkId\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegenerateShareableLinkIdResponse {
 }
@@ -29040,10 +29040,10 @@ pub mod third_party_app_analytics_link_service_client {
         }
     }
 }
-///  Request message for \[TopicConstantService.GetTopicConstant][google.ads.googleads.v9.services.TopicConstantService.GetTopicConstant\].
+/// Request message for \[TopicConstantService.GetTopicConstant][google.ads.googleads.v9.services.TopicConstantService.GetTopicConstant\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetTopicConstantRequest {
-    ///  Required. Resource name of the Topic to fetch.
+    /// Required. Resource name of the Topic to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
@@ -29150,10 +29150,10 @@ pub mod topic_constant_service_client {
         }
     }
 }
-///  Request message for \[TopicViewService.GetTopicView][google.ads.googleads.v9.services.TopicViewService.GetTopicView\].
+/// Request message for \[TopicViewService.GetTopicView][google.ads.googleads.v9.services.TopicViewService.GetTopicView\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetTopicViewRequest {
-    ///  Required. The resource name of the topic view to fetch.
+    /// Required. The resource name of the topic view to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
@@ -29257,57 +29257,57 @@ pub mod topic_view_service_client {
         }
     }
 }
-///  Request message for \[UserDataService.UploadUserData][google.ads.googleads.v9.services.UserDataService.UploadUserData\]
+/// Request message for \[UserDataService.UploadUserData][google.ads.googleads.v9.services.UserDataService.UploadUserData\]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UploadUserDataRequest {
-    ///  Required. The ID of the customer for which to update the user data.
+    /// Required. The ID of the customer for which to update the user data.
     #[prost(string, tag="1")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Required. The list of operations to be done.
+    /// Required. The list of operations to be done.
     #[prost(message, repeated, tag="3")]
     pub operations: ::prost::alloc::vec::Vec<UserDataOperation>,
-    ///  Metadata of the request.
+    /// Metadata of the request.
     #[prost(oneof="upload_user_data_request::Metadata", tags="2")]
     pub metadata: ::core::option::Option<upload_user_data_request::Metadata>,
 }
 /// Nested message and enum types in `UploadUserDataRequest`.
 pub mod upload_user_data_request {
-    ///  Metadata of the request.
+    /// Metadata of the request.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Metadata {
-        ///  Metadata for data updates to a Customer Match user list.
+        /// Metadata for data updates to a Customer Match user list.
         #[prost(message, tag="2")]
         CustomerMatchUserListMetadata(super::super::common::CustomerMatchUserListMetadata),
     }
 }
-///  Operation to be made for the UploadUserDataRequest.
+/// Operation to be made for the UploadUserDataRequest.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UserDataOperation {
-    ///  Operation to be made for the UploadUserDataRequest.
+    /// Operation to be made for the UploadUserDataRequest.
     #[prost(oneof="user_data_operation::Operation", tags="1, 2")]
     pub operation: ::core::option::Option<user_data_operation::Operation>,
 }
 /// Nested message and enum types in `UserDataOperation`.
 pub mod user_data_operation {
-    ///  Operation to be made for the UploadUserDataRequest.
+    /// Operation to be made for the UploadUserDataRequest.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
-        ///  The list of user data to be appended to the user list.
+        /// The list of user data to be appended to the user list.
         #[prost(message, tag="1")]
         Create(super::super::common::UserData),
-        ///  The list of user data to be removed from the user list.
+        /// The list of user data to be removed from the user list.
         #[prost(message, tag="2")]
         Remove(super::super::common::UserData),
     }
 }
-///  Response message for \[UserDataService.UploadUserData][google.ads.googleads.v9.services.UserDataService.UploadUserData\]
+/// Response message for \[UserDataService.UploadUserData][google.ads.googleads.v9.services.UserDataService.UploadUserData\]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UploadUserDataResponse {
-    ///  The date time at which the request was received by API, formatted as
-    ///  "yyyy-mm-dd hh:mm:ss+|-hh:mm", e.g. "2019-01-01 12:32:45-08:00".
+    /// The date time at which the request was received by API, formatted as
+    /// "yyyy-mm-dd hh:mm:ss+|-hh:mm", e.g. "2019-01-01 12:32:45-08:00".
     #[prost(string, optional, tag="3")]
     pub upload_date_time: ::core::option::Option<::prost::alloc::string::String>,
-    ///  Number of upload data operations received by API.
+    /// Number of upload data operations received by API.
     #[prost(int32, optional, tag="4")]
     pub received_operations_count: ::core::option::Option<i32>,
 }
@@ -29416,10 +29416,10 @@ pub mod user_data_service_client {
         }
     }
 }
-///  Request message for \[UserInterestService.GetUserInterest][google.ads.googleads.v9.services.UserInterestService.GetUserInterest\].
+/// Request message for \[UserInterestService.GetUserInterest][google.ads.googleads.v9.services.UserInterestService.GetUserInterest\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetUserInterestRequest {
-    ///  Required. Resource name of the UserInterest to fetch.
+    /// Required. Resource name of the UserInterest to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
@@ -29526,10 +29526,10 @@ pub mod user_interest_service_client {
         }
     }
 }
-///  Request message for \[UserLocationViewService.GetUserLocationView][google.ads.googleads.v9.services.UserLocationViewService.GetUserLocationView\].
+/// Request message for \[UserLocationViewService.GetUserLocationView][google.ads.googleads.v9.services.UserLocationViewService.GetUserLocationView\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetUserLocationViewRequest {
-    ///  Required. The resource name of the user location view to fetch.
+    /// Required. The resource name of the user location view to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
@@ -29638,10 +29638,10 @@ pub mod user_location_view_service_client {
         }
     }
 }
-///  Request message for \[VideoService.GetVideo][google.ads.googleads.v9.services.VideoService.GetVideo\].
+/// Request message for \[VideoService.GetVideo][google.ads.googleads.v9.services.VideoService.GetVideo\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetVideoRequest {
-    ///  Required. The resource name of the video to fetch.
+    /// Required. The resource name of the video to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }
@@ -29745,10 +29745,10 @@ pub mod video_service_client {
         }
     }
 }
-///  Request message for \[WebpageViewService.GetWebpageView][google.ads.googleads.v9.services.WebpageViewService.GetWebpageView\].
+/// Request message for \[WebpageViewService.GetWebpageView][google.ads.googleads.v9.services.WebpageViewService.GetWebpageView\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetWebpageViewRequest {
-    ///  Required. The resource name of the webpage view to fetch.
+    /// Required. The resource name of the webpage view to fetch.
     #[prost(string, tag="1")]
     pub resource_name: ::prost::alloc::string::String,
 }

@@ -1,47 +1,47 @@
-///  Represents a Dataform Git repository.
+/// Represents a Dataform Git repository.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Repository {
-    ///  Output only. The repository's name.
+    /// Output only. The repository's name.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Optional. If set, configures this repository to be linked to a Git remote.
+    /// Optional. If set, configures this repository to be linked to a Git remote.
     #[prost(message, optional, tag="2")]
     pub git_remote_settings: ::core::option::Option<repository::GitRemoteSettings>,
 }
 /// Nested message and enum types in `Repository`.
 pub mod repository {
-    ///  Controls Git remote configuration for a repository.
+    /// Controls Git remote configuration for a repository.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct GitRemoteSettings {
-        ///  Required. The Git remote's URL.
+        /// Required. The Git remote's URL.
         #[prost(string, tag="1")]
         pub url: ::prost::alloc::string::String,
-        ///  Required. The Git remote's default branch name.
+        /// Required. The Git remote's default branch name.
         #[prost(string, tag="2")]
         pub default_branch: ::prost::alloc::string::String,
-        ///  Required. The name of the Secret Manager secret version to use as an
-        ///  authentication token for Git operations. Must be in the format
-        ///  `projects/*/secrets/*/versions/*`.
+        /// Required. The name of the Secret Manager secret version to use as an
+        /// authentication token for Git operations. Must be in the format
+        /// `projects/*/secrets/*/versions/*`.
         #[prost(string, tag="3")]
         pub authentication_token_secret_version: ::prost::alloc::string::String,
-        ///  Output only. Indicates the status of the Git access token.
+        /// Output only. Indicates the status of the Git access token.
         #[prost(enumeration="git_remote_settings::TokenStatus", tag="4")]
         pub token_status: i32,
     }
     /// Nested message and enum types in `GitRemoteSettings`.
     pub mod git_remote_settings {
-        ///  Indicates the status of a Git authentication token.
+        /// Indicates the status of a Git authentication token.
         #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
         #[repr(i32)]
         pub enum TokenStatus {
-            ///  Default value. This value is unused.
+            /// Default value. This value is unused.
             Unspecified = 0,
-            ///  The token could not be found in Secret Manager (or the Dataform
-            ///  Service Account did not have permission to access it).
+            /// The token could not be found in Secret Manager (or the Dataform
+            /// Service Account did not have permission to access it).
             NotFound = 1,
-            ///  The token could not be used to authenticate against the Git remote.
+            /// The token could not be used to authenticate against the Git remote.
             Invalid = 2,
-            ///  The token was used successfully to authenticate against the Git remote.
+            /// The token was used successfully to authenticate against the Git remote.
             Valid = 3,
         }
         impl TokenStatus {
@@ -60,263 +60,263 @@ pub mod repository {
         }
     }
 }
-///  `ListRepositories` request message.
+/// `ListRepositories` request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRepositoriesRequest {
-    ///  Required. The location in which to list repositories. Must be in the format
-    ///  `projects/*/locations/*`.
+    /// Required. The location in which to list repositories. Must be in the format
+    /// `projects/*/locations/*`.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Optional. Maximum number of repositories to return. The server may return fewer
-    ///  items than requested. If unspecified, the server will pick an appropriate
-    ///  default.
+    /// Optional. Maximum number of repositories to return. The server may return fewer
+    /// items than requested. If unspecified, the server will pick an appropriate
+    /// default.
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    ///  Optional. Page token received from a previous `ListRepositories` call.
-    ///  Provide this to retrieve the subsequent page.
+    /// Optional. Page token received from a previous `ListRepositories` call.
+    /// Provide this to retrieve the subsequent page.
     ///
-    ///  When paginating, all other parameters provided to `ListRepositories`
-    ///  must match the call that provided the page token.
+    /// When paginating, all other parameters provided to `ListRepositories`
+    /// must match the call that provided the page token.
     #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
-    ///  Optional. This field only supports ordering by `name`. If unspecified, the server
-    ///  will choose the ordering. If specified, the default order is ascending for
-    ///  the `name` field.
+    /// Optional. This field only supports ordering by `name`. If unspecified, the server
+    /// will choose the ordering. If specified, the default order is ascending for
+    /// the `name` field.
     #[prost(string, tag="4")]
     pub order_by: ::prost::alloc::string::String,
-    ///  Optional. Filter for the returned list.
+    /// Optional. Filter for the returned list.
     #[prost(string, tag="5")]
     pub filter: ::prost::alloc::string::String,
 }
-///  `ListRepositories` response message.
+/// `ListRepositories` response message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRepositoriesResponse {
-    ///  List of repositories.
+    /// List of repositories.
     #[prost(message, repeated, tag="1")]
     pub repositories: ::prost::alloc::vec::Vec<Repository>,
-    ///  A token which can be sent as `page_token` to retrieve the next page.
-    ///  If this field is omitted, there are no subsequent pages.
+    /// A token which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
-    ///  Locations which could not be reached.
+    /// Locations which could not be reached.
     #[prost(string, repeated, tag="3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-///  `GetRepository` request message.
+/// `GetRepository` request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetRepositoryRequest {
-    ///  Required. The repository's name.
+    /// Required. The repository's name.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  `CreateRepository` request message.
+/// `CreateRepository` request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateRepositoryRequest {
-    ///  Required. The location in which to create the repository. Must be in the format
-    ///  `projects/*/locations/*`.
+    /// Required. The location in which to create the repository. Must be in the format
+    /// `projects/*/locations/*`.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Required. The repository to create.
+    /// Required. The repository to create.
     #[prost(message, optional, tag="2")]
     pub repository: ::core::option::Option<Repository>,
-    ///  Required. The ID to use for the repository, which will become the final component of
-    ///  the repository's resource name.
+    /// Required. The ID to use for the repository, which will become the final component of
+    /// the repository's resource name.
     #[prost(string, tag="3")]
     pub repository_id: ::prost::alloc::string::String,
 }
-///  `UpdateRepository` request message.
+/// `UpdateRepository` request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateRepositoryRequest {
-    ///  Optional. Specifies the fields to be updated in the repository. If left unset,
-    ///  all fields will be updated.
+    /// Optional. Specifies the fields to be updated in the repository. If left unset,
+    /// all fields will be updated.
     #[prost(message, optional, tag="1")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  Required. The repository to update.
+    /// Required. The repository to update.
     #[prost(message, optional, tag="2")]
     pub repository: ::core::option::Option<Repository>,
 }
-///  `DeleteRepository` request message.
+/// `DeleteRepository` request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteRepositoryRequest {
-    ///  Required. The repository's name.
+    /// Required. The repository's name.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  If set to true, any child resources of this repository will also be
-    ///  deleted. (Otherwise, the request will only succeed if the repository has no
-    ///  child resources.)
+    /// If set to true, any child resources of this repository will also be
+    /// deleted. (Otherwise, the request will only succeed if the repository has no
+    /// child resources.)
     #[prost(bool, tag="2")]
     pub force: bool,
 }
-///  `FetchRemoteBranches` request message.
+/// `FetchRemoteBranches` request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FetchRemoteBranchesRequest {
-    ///  Required. The repository's name.
+    /// Required. The repository's name.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  `FetchRemoteBranches` response message.
+/// `FetchRemoteBranches` response message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FetchRemoteBranchesResponse {
-    ///  The remote repository's branch names.
+    /// The remote repository's branch names.
     #[prost(string, repeated, tag="1")]
     pub branches: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-///  Represents a Dataform Git workspace.
+/// Represents a Dataform Git workspace.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Workspace {
-    ///  Output only. The workspace's name.
+    /// Output only. The workspace's name.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  `ListWorkspaces` request message.
+/// `ListWorkspaces` request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListWorkspacesRequest {
-    ///  Required. The repository in which to list workspaces. Must be in the
-    ///  format `projects/*/locations/*/repositories/*`.
+    /// Required. The repository in which to list workspaces. Must be in the
+    /// format `projects/*/locations/*/repositories/*`.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Optional. Maximum number of workspaces to return. The server may return fewer
-    ///  items than requested. If unspecified, the server will pick an appropriate
-    ///  default.
+    /// Optional. Maximum number of workspaces to return. The server may return fewer
+    /// items than requested. If unspecified, the server will pick an appropriate
+    /// default.
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    ///  Optional. Page token received from a previous `ListWorkspaces` call.
-    ///  Provide this to retrieve the subsequent page.
+    /// Optional. Page token received from a previous `ListWorkspaces` call.
+    /// Provide this to retrieve the subsequent page.
     ///
-    ///  When paginating, all other parameters provided to `ListWorkspaces`
-    ///  must match the call that provided the page token.
+    /// When paginating, all other parameters provided to `ListWorkspaces`
+    /// must match the call that provided the page token.
     #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
-    ///  Optional. This field only supports ordering by `name`. If unspecified, the server
-    ///  will choose the ordering. If specified, the default order is ascending for
-    ///  the `name` field.
+    /// Optional. This field only supports ordering by `name`. If unspecified, the server
+    /// will choose the ordering. If specified, the default order is ascending for
+    /// the `name` field.
     #[prost(string, tag="4")]
     pub order_by: ::prost::alloc::string::String,
-    ///  Optional. Filter for the returned list.
+    /// Optional. Filter for the returned list.
     #[prost(string, tag="5")]
     pub filter: ::prost::alloc::string::String,
 }
-///  `ListWorkspaces` response message.
+/// `ListWorkspaces` response message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListWorkspacesResponse {
-    ///  List of workspaces.
+    /// List of workspaces.
     #[prost(message, repeated, tag="1")]
     pub workspaces: ::prost::alloc::vec::Vec<Workspace>,
-    ///  A token, which can be sent as `page_token` to retrieve the next page.
-    ///  If this field is omitted, there are no subsequent pages.
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
-    ///  Locations which could not be reached.
+    /// Locations which could not be reached.
     #[prost(string, repeated, tag="3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-///  `GetWorkspace` request message.
+/// `GetWorkspace` request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetWorkspaceRequest {
-    ///  Required. The workspace's name.
+    /// Required. The workspace's name.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  `CreateWorkspace` request message.
+/// `CreateWorkspace` request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateWorkspaceRequest {
-    ///  Required. The repository in which to create the workspace. Must be in the format
-    ///  `projects/*/locations/*/repositories/*`.
+    /// Required. The repository in which to create the workspace. Must be in the format
+    /// `projects/*/locations/*/repositories/*`.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Required. The workspace to create.
+    /// Required. The workspace to create.
     #[prost(message, optional, tag="2")]
     pub workspace: ::core::option::Option<Workspace>,
-    ///  Required. The ID to use for the workspace, which will become the final component of
-    ///  the workspace's resource name.
+    /// Required. The ID to use for the workspace, which will become the final component of
+    /// the workspace's resource name.
     #[prost(string, tag="3")]
     pub workspace_id: ::prost::alloc::string::String,
 }
-///  `DeleteWorkspace` request message.
+/// `DeleteWorkspace` request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteWorkspaceRequest {
-    ///  Required. The workspace resource's name.
+    /// Required. The workspace resource's name.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Represents the author of a Git commit.
+/// Represents the author of a Git commit.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CommitAuthor {
-    ///  Required. The commit author's name.
+    /// Required. The commit author's name.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Required. The commit author's email address.
+    /// Required. The commit author's email address.
     #[prost(string, tag="2")]
     pub email_address: ::prost::alloc::string::String,
 }
-///  `PullGitCommits` request message.
+/// `PullGitCommits` request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PullGitCommitsRequest {
-    ///  Required. The workspace's name.
+    /// Required. The workspace's name.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Optional. The name of the branch in the Git remote from which to pull commits.
-    ///  If left unset, the repository's default branch name will be used.
+    /// Optional. The name of the branch in the Git remote from which to pull commits.
+    /// If left unset, the repository's default branch name will be used.
     #[prost(string, tag="2")]
     pub remote_branch: ::prost::alloc::string::String,
-    ///  Required. The author of any merge commit which may be created as a result of merging
-    ///  fetched Git commits into this workspace.
+    /// Required. The author of any merge commit which may be created as a result of merging
+    /// fetched Git commits into this workspace.
     #[prost(message, optional, tag="3")]
     pub author: ::core::option::Option<CommitAuthor>,
 }
-///  `PushGitCommits` request message.
+/// `PushGitCommits` request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PushGitCommitsRequest {
-    ///  Required. The workspace's name.
+    /// Required. The workspace's name.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Optional. The name of the branch in the Git remote to which commits should be pushed.
-    ///  If left unset, the repository's default branch name will be used.
+    /// Optional. The name of the branch in the Git remote to which commits should be pushed.
+    /// If left unset, the repository's default branch name will be used.
     #[prost(string, tag="2")]
     pub remote_branch: ::prost::alloc::string::String,
 }
-///  `FetchFileGitStatuses` request message.
+/// `FetchFileGitStatuses` request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FetchFileGitStatusesRequest {
-    ///  Required. The workspace's name.
+    /// Required. The workspace's name.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  `FetchFileGitStatuses` response message.
+/// `FetchFileGitStatuses` response message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FetchFileGitStatusesResponse {
-    ///  A list of all files which have uncommitted Git changes. There will only be
-    ///  a single entry for any given file.
+    /// A list of all files which have uncommitted Git changes. There will only be
+    /// a single entry for any given file.
     #[prost(message, repeated, tag="1")]
     pub uncommitted_file_changes: ::prost::alloc::vec::Vec<fetch_file_git_statuses_response::UncommittedFileChange>,
 }
 /// Nested message and enum types in `FetchFileGitStatusesResponse`.
 pub mod fetch_file_git_statuses_response {
-    ///  Represents the Git state of a file with uncommitted changes.
+    /// Represents the Git state of a file with uncommitted changes.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct UncommittedFileChange {
-        ///  The file's full path including filename, relative to the workspace root.
+        /// The file's full path including filename, relative to the workspace root.
         #[prost(string, tag="1")]
         pub path: ::prost::alloc::string::String,
-        ///  Indicates the status of the file.
+        /// Indicates the status of the file.
         #[prost(enumeration="uncommitted_file_change::State", tag="2")]
         pub state: i32,
     }
     /// Nested message and enum types in `UncommittedFileChange`.
     pub mod uncommitted_file_change {
-        ///  Indicates the status of an uncommitted file change.
+        /// Indicates the status of an uncommitted file change.
         #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
         #[repr(i32)]
         pub enum State {
-            ///  Default value. This value is unused.
+            /// Default value. This value is unused.
             Unspecified = 0,
-            ///  The file has been newly added.
+            /// The file has been newly added.
             Added = 1,
-            ///  The file has been deleted.
+            /// The file has been deleted.
             Deleted = 2,
-            ///  The file has been modified.
+            /// The file has been modified.
             Modified = 3,
-            ///  The file contains merge conflicts.
+            /// The file contains merge conflicts.
             HasConflicts = 4,
         }
         impl State {
@@ -336,114 +336,114 @@ pub mod fetch_file_git_statuses_response {
         }
     }
 }
-///  `FetchGitAheadBehind` request message.
+/// `FetchGitAheadBehind` request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FetchGitAheadBehindRequest {
-    ///  Required. The workspace's name.
+    /// Required. The workspace's name.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Optional. The name of the branch in the Git remote against which this workspace
-    ///  should be compared. If left unset, the repository's default branch name
-    ///  will be used.
+    /// Optional. The name of the branch in the Git remote against which this workspace
+    /// should be compared. If left unset, the repository's default branch name
+    /// will be used.
     #[prost(string, tag="2")]
     pub remote_branch: ::prost::alloc::string::String,
 }
-///  `FetchGitAheadBehind` response message.
+/// `FetchGitAheadBehind` response message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FetchGitAheadBehindResponse {
-    ///  The number of commits in the remote branch that are not in the workspace.
+    /// The number of commits in the remote branch that are not in the workspace.
     #[prost(int32, tag="1")]
     pub commits_ahead: i32,
-    ///  The number of commits in the workspace that are not in the remote branch.
+    /// The number of commits in the workspace that are not in the remote branch.
     #[prost(int32, tag="2")]
     pub commits_behind: i32,
 }
-///  `CommitWorkspaceChanges` request message.
+/// `CommitWorkspaceChanges` request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CommitWorkspaceChangesRequest {
-    ///  Required. The workspace's name.
+    /// Required. The workspace's name.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Required. The commit's author.
+    /// Required. The commit's author.
     #[prost(message, optional, tag="4")]
     pub author: ::core::option::Option<CommitAuthor>,
-    ///  Optional. The commit's message.
+    /// Optional. The commit's message.
     #[prost(string, tag="2")]
     pub commit_message: ::prost::alloc::string::String,
-    ///  Optional. Full file paths to commit including filename, rooted at workspace root. If
-    ///  left empty, all files will be committed.
+    /// Optional. Full file paths to commit including filename, rooted at workspace root. If
+    /// left empty, all files will be committed.
     #[prost(string, repeated, tag="3")]
     pub paths: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-///  `ResetWorkspaceChanges` request message.
+/// `ResetWorkspaceChanges` request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResetWorkspaceChangesRequest {
-    ///  Required. The workspace's name.
+    /// Required. The workspace's name.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Optional. Full file paths to reset back to their committed state including filename,
-    ///  rooted at workspace root. If left empty, all files will be reset.
+    /// Optional. Full file paths to reset back to their committed state including filename,
+    /// rooted at workspace root. If left empty, all files will be reset.
     #[prost(string, repeated, tag="2")]
     pub paths: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    ///  Optional. If set to true, untracked files will be deleted.
+    /// Optional. If set to true, untracked files will be deleted.
     #[prost(bool, tag="3")]
     pub clean: bool,
 }
-///  `FetchFileDiff` request message.
+/// `FetchFileDiff` request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FetchFileDiffRequest {
-    ///  Required. The workspace's name.
+    /// Required. The workspace's name.
     #[prost(string, tag="1")]
     pub workspace: ::prost::alloc::string::String,
-    ///  Required. The file's full path including filename, relative to the workspace root.
+    /// Required. The file's full path including filename, relative to the workspace root.
     #[prost(string, tag="2")]
     pub path: ::prost::alloc::string::String,
 }
-///  `FetchFileDiff` response message.
+/// `FetchFileDiff` response message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FetchFileDiffResponse {
-    ///  The raw formatted Git diff for the file.
+    /// The raw formatted Git diff for the file.
     #[prost(string, tag="1")]
     pub formatted_diff: ::prost::alloc::string::String,
 }
-///  `QueryDirectoryContents` request message.
+/// `QueryDirectoryContents` request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryDirectoryContentsRequest {
-    ///  Required. The workspace's name.
+    /// Required. The workspace's name.
     #[prost(string, tag="1")]
     pub workspace: ::prost::alloc::string::String,
-    ///  Optional. The directory's full path including directory name, relative to the
-    ///  workspace root. If left unset, the workspace root is used.
+    /// Optional. The directory's full path including directory name, relative to the
+    /// workspace root. If left unset, the workspace root is used.
     #[prost(string, tag="2")]
     pub path: ::prost::alloc::string::String,
-    ///  Optional. Maximum number of paths to return. The server may return fewer
-    ///  items than requested. If unspecified, the server will pick an appropriate
-    ///  default.
+    /// Optional. Maximum number of paths to return. The server may return fewer
+    /// items than requested. If unspecified, the server will pick an appropriate
+    /// default.
     #[prost(int32, tag="3")]
     pub page_size: i32,
-    ///  Optional. Page token received from a previous `QueryDirectoryContents` call.
-    ///  Provide this to retrieve the subsequent page.
+    /// Optional. Page token received from a previous `QueryDirectoryContents` call.
+    /// Provide this to retrieve the subsequent page.
     ///
-    ///  When paginating, all other parameters provided to
-    ///  `QueryDirectoryContents` must match the call that provided the page
-    ///  token.
+    /// When paginating, all other parameters provided to
+    /// `QueryDirectoryContents` must match the call that provided the page
+    /// token.
     #[prost(string, tag="4")]
     pub page_token: ::prost::alloc::string::String,
 }
-///  `QueryDirectoryContents` response message.
+/// `QueryDirectoryContents` response message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryDirectoryContentsResponse {
-    ///  List of entries in the directory.
+    /// List of entries in the directory.
     #[prost(message, repeated, tag="1")]
     pub directory_entries: ::prost::alloc::vec::Vec<query_directory_contents_response::DirectoryEntry>,
-    ///  A token, which can be sent as `page_token` to retrieve the next page.
-    ///  If this field is omitted, there are no subsequent pages.
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `QueryDirectoryContentsResponse`.
 pub mod query_directory_contents_response {
-    ///  Represents a single entry in a workspace directory.
+    /// Represents a single entry in a workspace directory.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DirectoryEntry {
         #[prost(oneof="directory_entry::Entry", tags="1, 2")]
@@ -453,146 +453,146 @@ pub mod query_directory_contents_response {
     pub mod directory_entry {
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Entry {
-            ///  A file in the directory.
+            /// A file in the directory.
             #[prost(string, tag="1")]
             File(::prost::alloc::string::String),
-            ///  A child directory in the directory.
+            /// A child directory in the directory.
             #[prost(string, tag="2")]
             Directory(::prost::alloc::string::String),
         }
     }
 }
-///  `MakeDirectory` request message.
+/// `MakeDirectory` request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MakeDirectoryRequest {
-    ///  Required. The workspace's name.
+    /// Required. The workspace's name.
     #[prost(string, tag="1")]
     pub workspace: ::prost::alloc::string::String,
-    ///  Required. The directory's full path including directory name, relative to the
-    ///  workspace root.
+    /// Required. The directory's full path including directory name, relative to the
+    /// workspace root.
     #[prost(string, tag="2")]
     pub path: ::prost::alloc::string::String,
 }
-///  `MakeDirectory` response message.
+/// `MakeDirectory` response message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MakeDirectoryResponse {
 }
-///  `RemoveDirectory` request message.
+/// `RemoveDirectory` request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RemoveDirectoryRequest {
-    ///  Required. The workspace's name.
+    /// Required. The workspace's name.
     #[prost(string, tag="1")]
     pub workspace: ::prost::alloc::string::String,
-    ///  Required. The directory's full path including directory name, relative to the
-    ///  workspace root.
+    /// Required. The directory's full path including directory name, relative to the
+    /// workspace root.
     #[prost(string, tag="2")]
     pub path: ::prost::alloc::string::String,
 }
-///  `MoveDirectory` request message.
+/// `MoveDirectory` request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MoveDirectoryRequest {
-    ///  Required. The workspace's name.
+    /// Required. The workspace's name.
     #[prost(string, tag="1")]
     pub workspace: ::prost::alloc::string::String,
-    ///  Required. The directory's full path including directory name, relative to the
-    ///  workspace root.
+    /// Required. The directory's full path including directory name, relative to the
+    /// workspace root.
     #[prost(string, tag="2")]
     pub path: ::prost::alloc::string::String,
-    ///  Required. The new path for the directory including directory name, rooted at
-    ///  workspace root.
+    /// Required. The new path for the directory including directory name, rooted at
+    /// workspace root.
     #[prost(string, tag="3")]
     pub new_path: ::prost::alloc::string::String,
 }
-///  `MoveDirectory` response message.
+/// `MoveDirectory` response message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MoveDirectoryResponse {
 }
-///  `ReadFile` request message.
+/// `ReadFile` request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReadFileRequest {
-    ///  Required. The workspace's name.
+    /// Required. The workspace's name.
     #[prost(string, tag="1")]
     pub workspace: ::prost::alloc::string::String,
-    ///  Required. The file's full path including filename, relative to the workspace root.
+    /// Required. The file's full path including filename, relative to the workspace root.
     #[prost(string, tag="2")]
     pub path: ::prost::alloc::string::String,
 }
-///  `ReadFile` response message.
+/// `ReadFile` response message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReadFileResponse {
-    ///  The file's contents.
+    /// The file's contents.
     #[prost(bytes="vec", tag="1")]
     pub file_contents: ::prost::alloc::vec::Vec<u8>,
 }
-///  `RemoveFile` request message.
+/// `RemoveFile` request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RemoveFileRequest {
-    ///  Required. The workspace's name.
+    /// Required. The workspace's name.
     #[prost(string, tag="1")]
     pub workspace: ::prost::alloc::string::String,
-    ///  Required. The file's full path including filename, relative to the workspace root.
+    /// Required. The file's full path including filename, relative to the workspace root.
     #[prost(string, tag="2")]
     pub path: ::prost::alloc::string::String,
 }
-///  `MoveFile` request message.
+/// `MoveFile` request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MoveFileRequest {
-    ///  Required. The workspace's name.
+    /// Required. The workspace's name.
     #[prost(string, tag="1")]
     pub workspace: ::prost::alloc::string::String,
-    ///  Required. The file's full path including filename, relative to the workspace root.
+    /// Required. The file's full path including filename, relative to the workspace root.
     #[prost(string, tag="2")]
     pub path: ::prost::alloc::string::String,
-    ///  Required. The file's new path including filename, relative to the workspace root.
+    /// Required. The file's new path including filename, relative to the workspace root.
     #[prost(string, tag="3")]
     pub new_path: ::prost::alloc::string::String,
 }
-///  `MoveFile` response message.
+/// `MoveFile` response message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MoveFileResponse {
 }
-///  `WriteFile` request message.
+/// `WriteFile` request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WriteFileRequest {
-    ///  Required. The workspace's name.
+    /// Required. The workspace's name.
     #[prost(string, tag="1")]
     pub workspace: ::prost::alloc::string::String,
-    ///  Required. The file.
+    /// Required. The file.
     #[prost(string, tag="2")]
     pub path: ::prost::alloc::string::String,
-    ///  Required. The file's contents.
+    /// Required. The file's contents.
     #[prost(bytes="vec", tag="3")]
     pub contents: ::prost::alloc::vec::Vec<u8>,
 }
-///  `WriteFile` response message.
+/// `WriteFile` response message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WriteFileResponse {
 }
-///  `InstallNpmPackages` request message.
+/// `InstallNpmPackages` request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstallNpmPackagesRequest {
-    ///  Required. The workspace's name.
+    /// Required. The workspace's name.
     #[prost(string, tag="1")]
     pub workspace: ::prost::alloc::string::String,
 }
-///  `InstallNpmPackages` response message.
+/// `InstallNpmPackages` response message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstallNpmPackagesResponse {
 }
-///  Represents the result of compiling a Dataform project.
+/// Represents the result of compiling a Dataform project.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CompilationResult {
-    ///  Output only. The compilation result's name.
+    /// Output only. The compilation result's name.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Immutable. If set, fields of `code_compilation_overrides` override the default
-    ///  compilation settings that are specified in dataform.json.
+    /// Immutable. If set, fields of `code_compilation_overrides` override the default
+    /// compilation settings that are specified in dataform.json.
     #[prost(message, optional, tag="4")]
     pub code_compilation_config: ::core::option::Option<compilation_result::CodeCompilationConfig>,
-    ///  Output only. The version of `@dataform/core` that was used for compilation.
+    /// Output only. The version of `@dataform/core` that was used for compilation.
     #[prost(string, tag="5")]
     pub dataform_core_version: ::prost::alloc::string::String,
-    ///  Output only. Errors encountered during project compilation.
+    /// Output only. Errors encountered during project compilation.
     #[prost(message, repeated, tag="6")]
     pub compilation_errors: ::prost::alloc::vec::Vec<compilation_result::CompilationError>,
     #[prost(oneof="compilation_result::Source", tags="2, 3")]
@@ -600,180 +600,180 @@ pub struct CompilationResult {
 }
 /// Nested message and enum types in `CompilationResult`.
 pub mod compilation_result {
-    ///  Configures various aspects of Dataform code compilation.
+    /// Configures various aspects of Dataform code compilation.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CodeCompilationConfig {
-        ///  Optional. The default database (Google Cloud project ID).
+        /// Optional. The default database (Google Cloud project ID).
         #[prost(string, tag="1")]
         pub default_database: ::prost::alloc::string::String,
-        ///  Optional. The default schema (BigQuery dataset ID).
+        /// Optional. The default schema (BigQuery dataset ID).
         #[prost(string, tag="2")]
         pub default_schema: ::prost::alloc::string::String,
-        ///  Optional. The default BigQuery location to use. Defaults to "US".
-        ///  See the BigQuery docs for a full list of locations:
-        ///  <https://cloud.google.com/bigquery/docs/locations.>
+        /// Optional. The default BigQuery location to use. Defaults to "US".
+        /// See the BigQuery docs for a full list of locations:
+        /// <https://cloud.google.com/bigquery/docs/locations.>
         #[prost(string, tag="8")]
         pub default_location: ::prost::alloc::string::String,
-        ///  Optional. The default schema (BigQuery dataset ID) for assertions.
+        /// Optional. The default schema (BigQuery dataset ID) for assertions.
         #[prost(string, tag="3")]
         pub assertion_schema: ::prost::alloc::string::String,
-        ///  Optional. User-defined variables that are made available to project code during
-        ///  compilation.
+        /// Optional. User-defined variables that are made available to project code during
+        /// compilation.
         #[prost(map="string, string", tag="4")]
         pub vars: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
-        ///  Optional. The suffix that should be appended to all database (Google Cloud project
-        ///  ID) names.
+        /// Optional. The suffix that should be appended to all database (Google Cloud project
+        /// ID) names.
         #[prost(string, tag="5")]
         pub database_suffix: ::prost::alloc::string::String,
-        ///  Optional. The suffix that should be appended to all schema (BigQuery dataset ID)
-        ///  names.
+        /// Optional. The suffix that should be appended to all schema (BigQuery dataset ID)
+        /// names.
         #[prost(string, tag="6")]
         pub schema_suffix: ::prost::alloc::string::String,
-        ///  Optional. The prefix that should be prepended to all table names.
+        /// Optional. The prefix that should be prepended to all table names.
         #[prost(string, tag="7")]
         pub table_prefix: ::prost::alloc::string::String,
     }
-    ///  An error encountered when attempting to compile a Dataform project.
+    /// An error encountered when attempting to compile a Dataform project.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CompilationError {
-        ///  Output only. The error's top level message.
+        /// Output only. The error's top level message.
         #[prost(string, tag="1")]
         pub message: ::prost::alloc::string::String,
-        ///  Output only. The error's full stack trace.
+        /// Output only. The error's full stack trace.
         #[prost(string, tag="2")]
         pub stack: ::prost::alloc::string::String,
-        ///  Output only. The path of the file where this error occurred, if available, relative to
-        ///  the project root.
+        /// Output only. The path of the file where this error occurred, if available, relative to
+        /// the project root.
         #[prost(string, tag="3")]
         pub path: ::prost::alloc::string::String,
-        ///  Output only. The identifier of the action where this error occurred, if available.
+        /// Output only. The identifier of the action where this error occurred, if available.
         #[prost(message, optional, tag="4")]
         pub action_target: ::core::option::Option<super::Target>,
     }
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
-        ///  Immutable. Git commit/tag/branch name at which the repository should be compiled.
-        ///  Must exist in the remote repository.
-        ///  Examples:
-        ///  - a commit SHA: `12ade345`
-        ///  - a tag: `tag1`
-        ///  - a branch name: `branch1`
+        /// Immutable. Git commit/tag/branch name at which the repository should be compiled.
+        /// Must exist in the remote repository.
+        /// Examples:
+        /// - a commit SHA: `12ade345`
+        /// - a tag: `tag1`
+        /// - a branch name: `branch1`
         #[prost(string, tag="2")]
         GitCommitish(::prost::alloc::string::String),
-        ///  Immutable. The name of the workspace to compile. Must be in the format
-        ///  `projects/*/locations/*/repositories/*/workspaces/*`.
+        /// Immutable. The name of the workspace to compile. Must be in the format
+        /// `projects/*/locations/*/repositories/*/workspaces/*`.
         #[prost(string, tag="3")]
         Workspace(::prost::alloc::string::String),
     }
 }
-///  `ListCompilationResults` request message.
+/// `ListCompilationResults` request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCompilationResultsRequest {
-    ///  Required. The repository in which to list compilation results. Must be in the
-    ///  format `projects/*/locations/*/repositories/*`.
+    /// Required. The repository in which to list compilation results. Must be in the
+    /// format `projects/*/locations/*/repositories/*`.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Optional. Maximum number of compilation results to return. The server may return
-    ///  fewer items than requested. If unspecified, the server will pick an
-    ///  appropriate default.
+    /// Optional. Maximum number of compilation results to return. The server may return
+    /// fewer items than requested. If unspecified, the server will pick an
+    /// appropriate default.
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    ///  Optional. Page token received from a previous `ListCompilationResults` call.
-    ///  Provide this to retrieve the subsequent page.
+    /// Optional. Page token received from a previous `ListCompilationResults` call.
+    /// Provide this to retrieve the subsequent page.
     ///
-    ///  When paginating, all other parameters provided to `ListCompilationResults`
-    ///  must match the call that provided the page token.
+    /// When paginating, all other parameters provided to `ListCompilationResults`
+    /// must match the call that provided the page token.
     #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
 }
-///  `ListCompilationResults` response message.
+/// `ListCompilationResults` response message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCompilationResultsResponse {
-    ///  List of compilation results.
+    /// List of compilation results.
     #[prost(message, repeated, tag="1")]
     pub compilation_results: ::prost::alloc::vec::Vec<CompilationResult>,
-    ///  A token, which can be sent as `page_token` to retrieve the next page.
-    ///  If this field is omitted, there are no subsequent pages.
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
-    ///  Locations which could not be reached.
+    /// Locations which could not be reached.
     #[prost(string, repeated, tag="3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-///  `GetCompilationResult` request message.
+/// `GetCompilationResult` request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCompilationResultRequest {
-    ///  Required. The compilation result's name.
+    /// Required. The compilation result's name.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  `CreateCompilationResult` request message.
+/// `CreateCompilationResult` request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateCompilationResultRequest {
-    ///  Required. The repository in which to create the compilation result. Must be in the
-    ///  format `projects/*/locations/*/repositories/*`.
+    /// Required. The repository in which to create the compilation result. Must be in the
+    /// format `projects/*/locations/*/repositories/*`.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Required. The compilation result to create.
+    /// Required. The compilation result to create.
     #[prost(message, optional, tag="2")]
     pub compilation_result: ::core::option::Option<CompilationResult>,
 }
-///  Represents an action identifier. If the action writes output, the output
-///  will be written to the referenced database object.
+/// Represents an action identifier. If the action writes output, the output
+/// will be written to the referenced database object.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Target {
-    ///  The action's database (Google Cloud project ID) .
+    /// The action's database (Google Cloud project ID) .
     #[prost(string, tag="1")]
     pub database: ::prost::alloc::string::String,
-    ///  The action's schema (BigQuery dataset ID), within `database`.
+    /// The action's schema (BigQuery dataset ID), within `database`.
     #[prost(string, tag="2")]
     pub schema: ::prost::alloc::string::String,
-    ///  The action's name, within `database` and `schema`.
+    /// The action's name, within `database` and `schema`.
     #[prost(string, tag="3")]
     pub name: ::prost::alloc::string::String,
 }
-///  Describes a relation and its columns.
+/// Describes a relation and its columns.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RelationDescriptor {
-    ///  A text description of the relation.
+    /// A text description of the relation.
     #[prost(string, tag="1")]
     pub description: ::prost::alloc::string::String,
-    ///  A list of descriptions of columns within the relation.
+    /// A list of descriptions of columns within the relation.
     #[prost(message, repeated, tag="2")]
     pub columns: ::prost::alloc::vec::Vec<relation_descriptor::ColumnDescriptor>,
-    ///  A set of BigQuery labels that should be applied to the relation.
+    /// A set of BigQuery labels that should be applied to the relation.
     #[prost(map="string, string", tag="3")]
     pub bigquery_labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
 }
 /// Nested message and enum types in `RelationDescriptor`.
 pub mod relation_descriptor {
-    ///  Describes a column.
+    /// Describes a column.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ColumnDescriptor {
-        ///  The identifier for the column. Each entry in `path` represents one level
-        ///  of nesting.
+        /// The identifier for the column. Each entry in `path` represents one level
+        /// of nesting.
         #[prost(string, repeated, tag="1")]
         pub path: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-        ///  A textual description of the column.
+        /// A textual description of the column.
         #[prost(string, tag="2")]
         pub description: ::prost::alloc::string::String,
-        ///  A list of BigQuery policy tags that will be applied to the column.
+        /// A list of BigQuery policy tags that will be applied to the column.
         #[prost(string, repeated, tag="3")]
         pub bigquery_policy_tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
 }
-///  Represents a single Dataform action in a compilation result.
+/// Represents a single Dataform action in a compilation result.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CompilationResultAction {
-    ///  This action's identifier. Unique within the compilation result.
+    /// This action's identifier. Unique within the compilation result.
     #[prost(message, optional, tag="1")]
     pub target: ::core::option::Option<Target>,
-    ///  The action's identifier if the project had been compiled without any
-    ///  overrides configured. Unique within the compilation result.
+    /// The action's identifier if the project had been compiled without any
+    /// overrides configured. Unique within the compilation result.
     #[prost(message, optional, tag="2")]
     pub canonical_target: ::core::option::Option<Target>,
-    ///  The full path including filename in which this action is located, relative
-    ///  to the workspace root.
+    /// The full path including filename in which this action is located, relative
+    /// to the workspace root.
     #[prost(string, tag="3")]
     pub file_path: ::prost::alloc::string::String,
     #[prost(oneof="compilation_result_action::CompiledObject", tags="4, 5, 6, 7")]
@@ -781,102 +781,102 @@ pub struct CompilationResultAction {
 }
 /// Nested message and enum types in `CompilationResultAction`.
 pub mod compilation_result_action {
-    ///  Represents a database relation.
+    /// Represents a database relation.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Relation {
-        ///  A list of actions that this action depends on.
+        /// A list of actions that this action depends on.
         #[prost(message, repeated, tag="1")]
         pub dependency_targets: ::prost::alloc::vec::Vec<super::Target>,
-        ///  Whether this action is disabled (i.e. should not be run).
+        /// Whether this action is disabled (i.e. should not be run).
         #[prost(bool, tag="2")]
         pub disabled: bool,
-        ///  Arbitrary, user-defined tags on this action.
+        /// Arbitrary, user-defined tags on this action.
         #[prost(string, repeated, tag="3")]
         pub tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-        ///  Descriptor for the relation and its columns.
+        /// Descriptor for the relation and its columns.
         #[prost(message, optional, tag="4")]
         pub relation_descriptor: ::core::option::Option<super::RelationDescriptor>,
-        ///  The type of this relation.
+        /// The type of this relation.
         #[prost(enumeration="relation::RelationType", tag="5")]
         pub relation_type: i32,
-        ///  The SELECT query which returns rows which this relation should contain.
+        /// The SELECT query which returns rows which this relation should contain.
         #[prost(string, tag="6")]
         pub select_query: ::prost::alloc::string::String,
-        ///  SQL statements to be executed before creating the relation.
+        /// SQL statements to be executed before creating the relation.
         #[prost(string, repeated, tag="7")]
         pub pre_operations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-        ///  SQL statements to be executed after creating the relation.
+        /// SQL statements to be executed after creating the relation.
         #[prost(string, repeated, tag="8")]
         pub post_operations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-        ///  Configures `INCREMENTAL_TABLE` settings for this relation. Only set if
-        ///  `relation_type` is `INCREMENTAL_TABLE`.
+        /// Configures `INCREMENTAL_TABLE` settings for this relation. Only set if
+        /// `relation_type` is `INCREMENTAL_TABLE`.
         #[prost(message, optional, tag="9")]
         pub incremental_table_config: ::core::option::Option<relation::IncrementalTableConfig>,
-        ///  The SQL expression used to partition the relation.
+        /// The SQL expression used to partition the relation.
         #[prost(string, tag="10")]
         pub partition_expression: ::prost::alloc::string::String,
-        ///  A list of columns or SQL expressions used to cluster the table.
+        /// A list of columns or SQL expressions used to cluster the table.
         #[prost(string, repeated, tag="11")]
         pub cluster_expressions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-        ///  Sets the partition expiration in days.
+        /// Sets the partition expiration in days.
         #[prost(int32, tag="12")]
         pub partition_expiration_days: i32,
-        ///  Specifies whether queries on this table must include a predicate filter
-        ///  that filters on the partitioning column.
+        /// Specifies whether queries on this table must include a predicate filter
+        /// that filters on the partitioning column.
         #[prost(bool, tag="13")]
         pub require_partition_filter: bool,
-        ///  Additional options that will be provided as key/value pairs into the
-        ///  options clause of a create table/view statement. See
-        ///  <https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language>
-        ///  for more information on which options are supported.
+        /// Additional options that will be provided as key/value pairs into the
+        /// options clause of a create table/view statement. See
+        /// <https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language>
+        /// for more information on which options are supported.
         #[prost(map="string, string", tag="14")]
         pub additional_options: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     }
     /// Nested message and enum types in `Relation`.
     pub mod relation {
-        ///  Contains settings for relations of type `INCREMENTAL_TABLE`.
+        /// Contains settings for relations of type `INCREMENTAL_TABLE`.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct IncrementalTableConfig {
-            ///  The SELECT query which returns rows which should be inserted into the
-            ///  relation if it already exists and is not being refreshed.
+            /// The SELECT query which returns rows which should be inserted into the
+            /// relation if it already exists and is not being refreshed.
             #[prost(string, tag="1")]
             pub incremental_select_query: ::prost::alloc::string::String,
-            ///  Whether this table should be protected from being refreshed.
+            /// Whether this table should be protected from being refreshed.
             #[prost(bool, tag="2")]
             pub refresh_disabled: bool,
-            ///  A set of columns or SQL expressions used to define row uniqueness.
-            ///  If any duplicates are discovered (as defined by `unique_key_parts`),
-            ///  only the newly selected rows (as defined by `incremental_select_query`)
-            ///  will be included in the relation.
+            /// A set of columns or SQL expressions used to define row uniqueness.
+            /// If any duplicates are discovered (as defined by `unique_key_parts`),
+            /// only the newly selected rows (as defined by `incremental_select_query`)
+            /// will be included in the relation.
             #[prost(string, repeated, tag="3")]
             pub unique_key_parts: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-            ///  A SQL expression conditional used to limit the set of existing rows
-            ///  considered for a merge operation (see `unique_key_parts` for more
-            ///  information).
+            /// A SQL expression conditional used to limit the set of existing rows
+            /// considered for a merge operation (see `unique_key_parts` for more
+            /// information).
             #[prost(string, tag="4")]
             pub update_partition_filter: ::prost::alloc::string::String,
-            ///  SQL statements to be executed before inserting new rows into the
-            ///  relation.
+            /// SQL statements to be executed before inserting new rows into the
+            /// relation.
             #[prost(string, repeated, tag="5")]
             pub incremental_pre_operations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-            ///  SQL statements to be executed after inserting new rows into the
-            ///  relation.
+            /// SQL statements to be executed after inserting new rows into the
+            /// relation.
             #[prost(string, repeated, tag="6")]
             pub incremental_post_operations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         }
-        ///  Indicates the type of this relation.
+        /// Indicates the type of this relation.
         #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
         #[repr(i32)]
         pub enum RelationType {
-            ///  Default value. This value is unused.
+            /// Default value. This value is unused.
             Unspecified = 0,
-            ///  The relation is a table.
+            /// The relation is a table.
             Table = 1,
-            ///  The relation is a view.
+            /// The relation is a view.
             View = 2,
-            ///  The relation is an incrementalized table.
+            /// The relation is an incrementalized table.
             IncrementalTable = 3,
-            ///  The relation is a materialized view.
+            /// The relation is a materialized view.
             MaterializedView = 4,
         }
         impl RelationType {
@@ -895,177 +895,177 @@ pub mod compilation_result_action {
             }
         }
     }
-    ///  Represents a list of arbitrary database operations.
+    /// Represents a list of arbitrary database operations.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Operations {
-        ///  A list of actions that this action depends on.
+        /// A list of actions that this action depends on.
         #[prost(message, repeated, tag="1")]
         pub dependency_targets: ::prost::alloc::vec::Vec<super::Target>,
-        ///  Whether this action is disabled (i.e. should not be run).
+        /// Whether this action is disabled (i.e. should not be run).
         #[prost(bool, tag="2")]
         pub disabled: bool,
-        ///  Arbitrary, user-defined tags on this action.
+        /// Arbitrary, user-defined tags on this action.
         #[prost(string, repeated, tag="3")]
         pub tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-        ///  Descriptor for any output relation and its columns. Only set if
-        ///  `has_output` is true.
+        /// Descriptor for any output relation and its columns. Only set if
+        /// `has_output` is true.
         #[prost(message, optional, tag="6")]
         pub relation_descriptor: ::core::option::Option<super::RelationDescriptor>,
-        ///  A list of arbitrary SQL statements that will be executed without
-        ///  alteration.
+        /// A list of arbitrary SQL statements that will be executed without
+        /// alteration.
         #[prost(string, repeated, tag="4")]
         pub queries: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-        ///  Whether these operations produce an output relation.
+        /// Whether these operations produce an output relation.
         #[prost(bool, tag="5")]
         pub has_output: bool,
     }
-    ///  Represents an assertion upon a SQL query which is required return zero
-    ///  rows.
+    /// Represents an assertion upon a SQL query which is required return zero
+    /// rows.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Assertion {
-        ///  A list of actions that this action depends on.
+        /// A list of actions that this action depends on.
         #[prost(message, repeated, tag="1")]
         pub dependency_targets: ::prost::alloc::vec::Vec<super::Target>,
-        ///  The parent action of this assertion. Only set if this assertion was
-        ///  automatically generated.
+        /// The parent action of this assertion. Only set if this assertion was
+        /// automatically generated.
         #[prost(message, optional, tag="5")]
         pub parent_action: ::core::option::Option<super::Target>,
-        ///  Whether this action is disabled (i.e. should not be run).
+        /// Whether this action is disabled (i.e. should not be run).
         #[prost(bool, tag="2")]
         pub disabled: bool,
-        ///  Arbitrary, user-defined tags on this action.
+        /// Arbitrary, user-defined tags on this action.
         #[prost(string, repeated, tag="3")]
         pub tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-        ///  The SELECT query which must return zero rows in order for this assertion
-        ///  to succeed.
+        /// The SELECT query which must return zero rows in order for this assertion
+        /// to succeed.
         #[prost(string, tag="4")]
         pub select_query: ::prost::alloc::string::String,
-        ///  Descriptor for the assertion's automatically-generated view and its
-        ///  columns.
+        /// Descriptor for the assertion's automatically-generated view and its
+        /// columns.
         #[prost(message, optional, tag="6")]
         pub relation_descriptor: ::core::option::Option<super::RelationDescriptor>,
     }
-    ///  Represents a relation which is not managed by Dataform but which may be
-    ///  referenced by Dataform actions.
+    /// Represents a relation which is not managed by Dataform but which may be
+    /// referenced by Dataform actions.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Declaration {
-        ///  Descriptor for the relation and its columns. Used as documentation only,
-        ///  i.e. values here will result in no changes to the relation's metadata.
+        /// Descriptor for the relation and its columns. Used as documentation only,
+        /// i.e. values here will result in no changes to the relation's metadata.
         #[prost(message, optional, tag="1")]
         pub relation_descriptor: ::core::option::Option<super::RelationDescriptor>,
     }
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum CompiledObject {
-        ///  The database relation created/updated by this action.
+        /// The database relation created/updated by this action.
         #[prost(message, tag="4")]
         Relation(Relation),
-        ///  The database operations executed by this action.
+        /// The database operations executed by this action.
         #[prost(message, tag="5")]
         Operations(Operations),
-        ///  The assertion executed by this action.
+        /// The assertion executed by this action.
         #[prost(message, tag="6")]
         Assertion(Assertion),
-        ///  The declaration declared by this action.
+        /// The declaration declared by this action.
         #[prost(message, tag="7")]
         Declaration(Declaration),
     }
 }
-///  `QueryCompilationResultActions` request message.
+/// `QueryCompilationResultActions` request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryCompilationResultActionsRequest {
-    ///  Required. The compilation result's name.
+    /// Required. The compilation result's name.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Optional. Maximum number of compilation results to return. The server may return
-    ///  fewer items than requested. If unspecified, the server will pick an
-    ///  appropriate default.
+    /// Optional. Maximum number of compilation results to return. The server may return
+    /// fewer items than requested. If unspecified, the server will pick an
+    /// appropriate default.
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    ///  Optional. Page token received from a previous `QueryCompilationResultActions` call.
-    ///  Provide this to retrieve the subsequent page.
+    /// Optional. Page token received from a previous `QueryCompilationResultActions` call.
+    /// Provide this to retrieve the subsequent page.
     ///
-    ///  When paginating, all other parameters provided to
-    ///  `QueryCompilationResultActions` must match the call that provided the page
-    ///  token.
+    /// When paginating, all other parameters provided to
+    /// `QueryCompilationResultActions` must match the call that provided the page
+    /// token.
     #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
-    ///  Optional. Optional filter for the returned list. Filtering is only currently
-    ///  supported on the `file_path` field.
+    /// Optional. Optional filter for the returned list. Filtering is only currently
+    /// supported on the `file_path` field.
     #[prost(string, tag="4")]
     pub filter: ::prost::alloc::string::String,
 }
-///  `QueryCompilationResultActions` response message.
+/// `QueryCompilationResultActions` response message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryCompilationResultActionsResponse {
-    ///  List of compilation result actions.
+    /// List of compilation result actions.
     #[prost(message, repeated, tag="1")]
     pub compilation_result_actions: ::prost::alloc::vec::Vec<CompilationResultAction>,
-    ///  A token, which can be sent as `page_token` to retrieve the next page.
-    ///  If this field is omitted, there are no subsequent pages.
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-///  Represents a single invocation of a compilation result.
+/// Represents a single invocation of a compilation result.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WorkflowInvocation {
-    ///  Output only. The workflow invocation's name.
+    /// Output only. The workflow invocation's name.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Immutable. The name of the compilation result to compile. Must be in the format
-    ///  `projects/*/locations/*/repositories/*/compilationResults/*`.
+    /// Immutable. The name of the compilation result to compile. Must be in the format
+    /// `projects/*/locations/*/repositories/*/compilationResults/*`.
     #[prost(string, tag="2")]
     pub compilation_result: ::prost::alloc::string::String,
-    ///  Immutable. If left unset, a default InvocationConfig will be used.
+    /// Immutable. If left unset, a default InvocationConfig will be used.
     #[prost(message, optional, tag="3")]
     pub invocation_config: ::core::option::Option<workflow_invocation::InvocationConfig>,
-    ///  Output only. This workflow invocation's current state.
+    /// Output only. This workflow invocation's current state.
     #[prost(enumeration="workflow_invocation::State", tag="4")]
     pub state: i32,
-    ///  Output only. This workflow invocation's timing details.
+    /// Output only. This workflow invocation's timing details.
     #[prost(message, optional, tag="5")]
     pub invocation_timing: ::core::option::Option<super::super::super::r#type::Interval>,
 }
 /// Nested message and enum types in `WorkflowInvocation`.
 pub mod workflow_invocation {
-    ///  Includes various configuration options for this workflow invocation.
-    ///  If both `included_targets` and `included_tags` are unset, all actions
-    ///  will be included.
+    /// Includes various configuration options for this workflow invocation.
+    /// If both `included_targets` and `included_tags` are unset, all actions
+    /// will be included.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct InvocationConfig {
-        ///  Immutable. The set of action identifiers to include.
+        /// Immutable. The set of action identifiers to include.
         #[prost(message, repeated, tag="1")]
         pub included_targets: ::prost::alloc::vec::Vec<super::Target>,
-        ///  Immutable. The set of tags to include.
+        /// Immutable. The set of tags to include.
         #[prost(string, repeated, tag="2")]
         pub included_tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-        ///  Immutable. When set to true, transitive dependencies of included actions will be
-        ///  executed.
+        /// Immutable. When set to true, transitive dependencies of included actions will be
+        /// executed.
         #[prost(bool, tag="3")]
         pub transitive_dependencies_included: bool,
-        ///  Immutable. When set to true, transitive dependents of included actions will be
-        ///  executed.
+        /// Immutable. When set to true, transitive dependents of included actions will be
+        /// executed.
         #[prost(bool, tag="4")]
         pub transitive_dependents_included: bool,
-        ///  Immutable. When set to true, any incremental tables will be fully refreshed.
+        /// Immutable. When set to true, any incremental tables will be fully refreshed.
         #[prost(bool, tag="5")]
         pub fully_refresh_incremental_tables_enabled: bool,
     }
-    ///  Represents the current state of a workflow invocation.
+    /// Represents the current state of a workflow invocation.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum State {
-        ///  Default value. This value is unused.
+        /// Default value. This value is unused.
         Unspecified = 0,
-        ///  The workflow invocation is currently running.
+        /// The workflow invocation is currently running.
         Running = 1,
-        ///  The workflow invocation succeeded. A terminal state.
+        /// The workflow invocation succeeded. A terminal state.
         Succeeded = 2,
-        ///  The workflow invocation was cancelled. A terminal state.
+        /// The workflow invocation was cancelled. A terminal state.
         Cancelled = 3,
-        ///  The workflow invocation failed. A terminal state.
+        /// The workflow invocation failed. A terminal state.
         Failed = 4,
-        ///  The workflow invocation is being cancelled, but some actions are still
-        ///  running.
+        /// The workflow invocation is being cancelled, but some actions are still
+        /// running.
         Canceling = 5,
     }
     impl State {
@@ -1085,127 +1085,127 @@ pub mod workflow_invocation {
         }
     }
 }
-///  `ListWorkflowInvocations` request message.
+/// `ListWorkflowInvocations` request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListWorkflowInvocationsRequest {
-    ///  Required. The parent resource of the WorkflowInvocation type. Must be in the
-    ///  format `projects/*/locations/*/repositories/*`.
+    /// Required. The parent resource of the WorkflowInvocation type. Must be in the
+    /// format `projects/*/locations/*/repositories/*`.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Optional. Maximum number of workflow invocations to return. The server may return
-    ///  fewer items than requested. If unspecified, the server will pick an
-    ///  appropriate default.
+    /// Optional. Maximum number of workflow invocations to return. The server may return
+    /// fewer items than requested. If unspecified, the server will pick an
+    /// appropriate default.
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    ///  Optional. Page token received from a previous `ListWorkflowInvocations` call.
-    ///  Provide this to retrieve the subsequent page.
+    /// Optional. Page token received from a previous `ListWorkflowInvocations` call.
+    /// Provide this to retrieve the subsequent page.
     ///
-    ///  When paginating, all other parameters provided to `ListWorkflowInvocations`
-    ///  must match the call that provided the page token.
+    /// When paginating, all other parameters provided to `ListWorkflowInvocations`
+    /// must match the call that provided the page token.
     #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
 }
-///  `ListWorkflowInvocations` response message.
+/// `ListWorkflowInvocations` response message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListWorkflowInvocationsResponse {
-    ///  List of workflow invocations.
+    /// List of workflow invocations.
     #[prost(message, repeated, tag="1")]
     pub workflow_invocations: ::prost::alloc::vec::Vec<WorkflowInvocation>,
-    ///  A token, which can be sent as `page_token` to retrieve the next page.
-    ///  If this field is omitted, there are no subsequent pages.
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
-    ///  Locations which could not be reached.
+    /// Locations which could not be reached.
     #[prost(string, repeated, tag="3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-///  `GetWorkflowInvocation` request message.
+/// `GetWorkflowInvocation` request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetWorkflowInvocationRequest {
-    ///  Required. The workflow invocation resource's name.
+    /// Required. The workflow invocation resource's name.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  `CreateWorkflowInvocation` request message.
+/// `CreateWorkflowInvocation` request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateWorkflowInvocationRequest {
-    ///  Required. The repository in which to create the workflow invocation. Must be in the
-    ///  format `projects/*/locations/*/repositories/*`.
+    /// Required. The repository in which to create the workflow invocation. Must be in the
+    /// format `projects/*/locations/*/repositories/*`.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Required. The workflow invocation resource to create.
+    /// Required. The workflow invocation resource to create.
     #[prost(message, optional, tag="2")]
     pub workflow_invocation: ::core::option::Option<WorkflowInvocation>,
 }
-///  `DeleteWorkflowInvocation` request message.
+/// `DeleteWorkflowInvocation` request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteWorkflowInvocationRequest {
-    ///  Required. The workflow invocation resource's name.
+    /// Required. The workflow invocation resource's name.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  `CancelWorkflowInvocation` request message.
+/// `CancelWorkflowInvocation` request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CancelWorkflowInvocationRequest {
-    ///  Required. The workflow invocation resource's name.
+    /// Required. The workflow invocation resource's name.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Represents a single action in a workflow invocation.
+/// Represents a single action in a workflow invocation.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WorkflowInvocationAction {
-    ///  Output only. This action's identifier. Unique within the workflow invocation.
+    /// Output only. This action's identifier. Unique within the workflow invocation.
     #[prost(message, optional, tag="1")]
     pub target: ::core::option::Option<Target>,
-    ///  Output only. The action's identifier if the project had been compiled without any
-    ///  overrides configured. Unique within the compilation result.
+    /// Output only. The action's identifier if the project had been compiled without any
+    /// overrides configured. Unique within the compilation result.
     #[prost(message, optional, tag="2")]
     pub canonical_target: ::core::option::Option<Target>,
-    ///  Output only. This action's current state.
+    /// Output only. This action's current state.
     #[prost(enumeration="workflow_invocation_action::State", tag="4")]
     pub state: i32,
-    ///  Output only. If and only if action's state is FAILED a failure reason is set.
+    /// Output only. If and only if action's state is FAILED a failure reason is set.
     #[prost(string, tag="7")]
     pub failure_reason: ::prost::alloc::string::String,
-    ///  Output only. This action's timing details.
-    ///  `start_time` will be set if the action is in [RUNNING, SUCCEEDED,
-    ///  CANCELLED, FAILED] state.
-    ///  `end_time` will be set if the action is in [SUCCEEDED, CANCELLED, FAILED]
-    ///  state.
+    /// Output only. This action's timing details.
+    /// `start_time` will be set if the action is in [RUNNING, SUCCEEDED,
+    /// CANCELLED, FAILED] state.
+    /// `end_time` will be set if the action is in [SUCCEEDED, CANCELLED, FAILED]
+    /// state.
     #[prost(message, optional, tag="5")]
     pub invocation_timing: ::core::option::Option<super::super::super::r#type::Interval>,
-    ///  Output only. The workflow action's bigquery action details.
+    /// Output only. The workflow action's bigquery action details.
     #[prost(message, optional, tag="6")]
     pub bigquery_action: ::core::option::Option<workflow_invocation_action::BigQueryAction>,
 }
 /// Nested message and enum types in `WorkflowInvocationAction`.
 pub mod workflow_invocation_action {
-    ///  Represents a workflow action that will run against BigQuery.
+    /// Represents a workflow action that will run against BigQuery.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct BigQueryAction {
-        ///  Output only. The generated BigQuery SQL script that will be executed.
+        /// Output only. The generated BigQuery SQL script that will be executed.
         #[prost(string, tag="1")]
         pub sql_script: ::prost::alloc::string::String,
     }
-    ///  Represents the current state of an workflow invocation action.
+    /// Represents the current state of an workflow invocation action.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum State {
-        ///  The action has not yet been considered for invocation.
+        /// The action has not yet been considered for invocation.
         Pending = 0,
-        ///  The action is currently running.
+        /// The action is currently running.
         Running = 1,
-        ///  Execution of the action was skipped because upstream dependencies did not
-        ///  all complete successfully. A terminal state.
+        /// Execution of the action was skipped because upstream dependencies did not
+        /// all complete successfully. A terminal state.
         Skipped = 2,
-        ///  Execution of the action was disabled as per the configuration of the
-        ///  corresponding compilation result action. A terminal state.
+        /// Execution of the action was disabled as per the configuration of the
+        /// corresponding compilation result action. A terminal state.
         Disabled = 3,
-        ///  The action succeeded. A terminal state.
+        /// The action succeeded. A terminal state.
         Succeeded = 4,
-        ///  The action was cancelled. A terminal state.
+        /// The action was cancelled. A terminal state.
         Cancelled = 5,
-        ///  The action failed. A terminal state.
+        /// The action failed. A terminal state.
         Failed = 6,
     }
     impl State {
@@ -1226,34 +1226,34 @@ pub mod workflow_invocation_action {
         }
     }
 }
-///  `QueryWorkflowInvocationActions` request message.
+/// `QueryWorkflowInvocationActions` request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryWorkflowInvocationActionsRequest {
-    ///  Required. The workflow invocation's name.
+    /// Required. The workflow invocation's name.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Optional. Maximum number of workflow invocations to return. The server may return
-    ///  fewer items than requested. If unspecified, the server will pick an
-    ///  appropriate default.
+    /// Optional. Maximum number of workflow invocations to return. The server may return
+    /// fewer items than requested. If unspecified, the server will pick an
+    /// appropriate default.
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    ///  Optional. Page token received from a previous `QueryWorkflowInvocationActions` call.
-    ///  Provide this to retrieve the subsequent page.
+    /// Optional. Page token received from a previous `QueryWorkflowInvocationActions` call.
+    /// Provide this to retrieve the subsequent page.
     ///
-    ///  When paginating, all other parameters provided to
-    ///  `QueryWorkflowInvocationActions` must match the call that provided the page
-    ///  token.
+    /// When paginating, all other parameters provided to
+    /// `QueryWorkflowInvocationActions` must match the call that provided the page
+    /// token.
     #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
 }
-///  `QueryWorkflowInvocationActions` response message.
+/// `QueryWorkflowInvocationActions` response message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryWorkflowInvocationActionsResponse {
-    ///  List of workflow invocation actions.
+    /// List of workflow invocation actions.
     #[prost(message, repeated, tag="1")]
     pub workflow_invocation_actions: ::prost::alloc::vec::Vec<WorkflowInvocationAction>,
-    ///  A token, which can be sent as `page_token` to retrieve the next page.
-    ///  If this field is omitted, there are no subsequent pages.
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }

@@ -1,94 +1,94 @@
-///  Request message for the Check method.
+/// Request message for the Check method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CheckRequest {
-    ///  The service name as specified in its service configuration. For example,
-    ///  `"pubsub.googleapis.com"`.
+    /// The service name as specified in its service configuration. For example,
+    /// `"pubsub.googleapis.com"`.
     ///
-    ///  See
-    ///  \[google.api.Service\](<https://cloud.google.com/service-management/reference/rpc/google.api#google.api.Service>)
-    ///  for the definition of a service name.
+    /// See
+    /// \[google.api.Service\](<https://cloud.google.com/service-management/reference/rpc/google.api#google.api.Service>)
+    /// for the definition of a service name.
     #[prost(string, tag="1")]
     pub service_name: ::prost::alloc::string::String,
-    ///  Specifies the version of the service configuration that should be used to
-    ///  process the request. Must not be empty. Set this field to 'latest' to
-    ///  specify using the latest configuration.
+    /// Specifies the version of the service configuration that should be used to
+    /// process the request. Must not be empty. Set this field to 'latest' to
+    /// specify using the latest configuration.
     #[prost(string, tag="2")]
     pub service_config_id: ::prost::alloc::string::String,
-    ///  Describes attributes about the operation being executed by the service.
+    /// Describes attributes about the operation being executed by the service.
     #[prost(message, optional, tag="3")]
     pub attributes: ::core::option::Option<super::super::super::rpc::context::AttributeContext>,
-    ///  Describes the resources and the policies applied to each resource.
+    /// Describes the resources and the policies applied to each resource.
     #[prost(message, repeated, tag="4")]
     pub resources: ::prost::alloc::vec::Vec<ResourceInfo>,
-    ///  Optional. Contains a comma-separated list of flags.
+    /// Optional. Contains a comma-separated list of flags.
     #[prost(string, tag="5")]
     pub flags: ::prost::alloc::string::String,
 }
-///  Describes a resource referenced in the request.
+/// Describes a resource referenced in the request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResourceInfo {
-    ///  The name of the resource referenced in the request.
+    /// The name of the resource referenced in the request.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  The resource type in the format of "{service}/{kind}".
+    /// The resource type in the format of "{service}/{kind}".
     #[prost(string, tag="2")]
     pub r#type: ::prost::alloc::string::String,
-    ///  The resource permission needed for this request.
-    ///  The format must be "{service}/{plural}.{verb}".
+    /// The resource permission needed for this request.
+    /// The format must be "{service}/{plural}.{verb}".
     #[prost(string, tag="3")]
     pub permission: ::prost::alloc::string::String,
-    ///  Optional. The identifier of the container of this resource. For Google
-    ///  Cloud APIs, the resource container must be one of the following formats:
+    /// Optional. The identifier of the container of this resource. For Google
+    /// Cloud APIs, the resource container must be one of the following formats:
     ///      - `projects/<project-id or project-number>`
     ///      - `folders/<folder-id>`
     ///      - `organizations/<organization-id>`
-    ///  For the policy enforcement on the container level (VPCSC and Location
-    ///  Policy check), this field takes precedence on the container extracted from
-    ///  name when presents.
+    /// For the policy enforcement on the container level (VPCSC and Location
+    /// Policy check), this field takes precedence on the container extracted from
+    /// name when presents.
     #[prost(string, tag="4")]
     pub container: ::prost::alloc::string::String,
-    ///  Optional. The location of the resource. The value must be a valid zone,
-    ///  region or multiregion. For example: "europe-west4" or
-    ///  "northamerica-northeast1-a"
+    /// Optional. The location of the resource. The value must be a valid zone,
+    /// region or multiregion. For example: "europe-west4" or
+    /// "northamerica-northeast1-a"
     #[prost(string, tag="5")]
     pub location: ::prost::alloc::string::String,
 }
-///  Response message for the Check method.
+/// Response message for the Check method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CheckResponse {
-    ///  Operation is allowed when this field is not set. Any non-'OK' status
-    ///  indicates a denial; \[google.rpc.Status.details][google.rpc.Status.details\]
-    ///  would contain additional details about the denial.
+    /// Operation is allowed when this field is not set. Any non-'OK' status
+    /// indicates a denial; \[google.rpc.Status.details][google.rpc.Status.details\]
+    /// would contain additional details about the denial.
     #[prost(message, optional, tag="1")]
     pub status: ::core::option::Option<super::super::super::rpc::Status>,
-    ///  Returns a set of request contexts generated from the `CheckRequest`.
+    /// Returns a set of request contexts generated from the `CheckRequest`.
     #[prost(map="string, string", tag="2")]
     pub headers: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
 }
-///  Request message for the Report method.
+/// Request message for the Report method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReportRequest {
-    ///  The service name as specified in its service configuration. For example,
-    ///  `"pubsub.googleapis.com"`.
+    /// The service name as specified in its service configuration. For example,
+    /// `"pubsub.googleapis.com"`.
     ///
-    ///  See
-    ///  \[google.api.Service\](<https://cloud.google.com/service-management/reference/rpc/google.api#google.api.Service>)
-    ///  for the definition of a service name.
+    /// See
+    /// \[google.api.Service\](<https://cloud.google.com/service-management/reference/rpc/google.api#google.api.Service>)
+    /// for the definition of a service name.
     #[prost(string, tag="1")]
     pub service_name: ::prost::alloc::string::String,
-    ///  Specifies the version of the service configuration that should be used to
-    ///  process the request. Must not be empty. Set this field to 'latest' to
-    ///  specify using the latest configuration.
+    /// Specifies the version of the service configuration that should be used to
+    /// process the request. Must not be empty. Set this field to 'latest' to
+    /// specify using the latest configuration.
     #[prost(string, tag="2")]
     pub service_config_id: ::prost::alloc::string::String,
-    ///  Describes the list of operations to be reported. Each operation is
-    ///  represented as an AttributeContext, and contains all attributes around an
-    ///  API access.
+    /// Describes the list of operations to be reported. Each operation is
+    /// represented as an AttributeContext, and contains all attributes around an
+    /// API access.
     #[prost(message, repeated, tag="3")]
     pub operations: ::prost::alloc::vec::Vec<super::super::super::rpc::context::AttributeContext>,
 }
-///  Response message for the Report method.
-///  If the request contains any invalid data, the server returns an RPC error.
+/// Response message for the Report method.
+/// If the request contains any invalid data, the server returns an RPC error.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReportResponse {
 }

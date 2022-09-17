@@ -1,136 +1,136 @@
-///  A reservation is a mechanism used to guarantee slots to users.
+/// A reservation is a mechanism used to guarantee slots to users.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Reservation {
-    ///  The resource name of the reservation, e.g.,
-    ///  `projects/*/locations/*/reservations/team1-prod`.
-    ///  The reservation_id must only contain lower case alphanumeric characters or
-    ///  dashes. It must start with a letter and must not end with a dash. Its
-    ///  maximum length is 64 characters.
+    /// The resource name of the reservation, e.g.,
+    /// `projects/*/locations/*/reservations/team1-prod`.
+    /// The reservation_id must only contain lower case alphanumeric characters or
+    /// dashes. It must start with a letter and must not end with a dash. Its
+    /// maximum length is 64 characters.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Minimum slots available to this reservation. A slot is a unit of
-    ///  computational power in BigQuery, and serves as the unit of parallelism.
+    /// Minimum slots available to this reservation. A slot is a unit of
+    /// computational power in BigQuery, and serves as the unit of parallelism.
     ///
-    ///  Queries using this reservation might use more slots during runtime if
-    ///  ignore_idle_slots is set to false.
+    /// Queries using this reservation might use more slots during runtime if
+    /// ignore_idle_slots is set to false.
     ///
-    ///  If the new reservation's slot capacity exceeds the project's slot capacity
-    ///  or if total slot capacity of the new reservation and its siblings exceeds
-    ///  the project's slot capacity, the request will fail with
-    ///  `google.rpc.Code.RESOURCE_EXHAUSTED`.
+    /// If the new reservation's slot capacity exceeds the project's slot capacity
+    /// or if total slot capacity of the new reservation and its siblings exceeds
+    /// the project's slot capacity, the request will fail with
+    /// `google.rpc.Code.RESOURCE_EXHAUSTED`.
     ///
-    ///  NOTE: for reservations in US or EU multi-regions, slot capacity constraints
-    ///  are checked separately for default and auxiliary regions. See
-    ///  multi_region_auxiliary flag for more details.
+    /// NOTE: for reservations in US or EU multi-regions, slot capacity constraints
+    /// are checked separately for default and auxiliary regions. See
+    /// multi_region_auxiliary flag for more details.
     #[prost(int64, tag="2")]
     pub slot_capacity: i64,
-    ///  If false, any query or pipeline job using this reservation will use idle
-    ///  slots from other reservations within the same admin project. If true, a
-    ///  query or pipeline job using this reservation will execute with the slot
-    ///  capacity specified in the slot_capacity field at most.
+    /// If false, any query or pipeline job using this reservation will use idle
+    /// slots from other reservations within the same admin project. If true, a
+    /// query or pipeline job using this reservation will execute with the slot
+    /// capacity specified in the slot_capacity field at most.
     #[prost(bool, tag="4")]
     pub ignore_idle_slots: bool,
-    ///  Maximum number of queries that are allowed to run concurrently in this
-    ///  reservation. This is a soft limit due to asynchronous nature of the system
-    ///  and various optimizations for small queries.
-    ///  Default value is 0 which means that concurrency will be automatically set
-    ///  based on the reservation size.
+    /// Maximum number of queries that are allowed to run concurrently in this
+    /// reservation. This is a soft limit due to asynchronous nature of the system
+    /// and various optimizations for small queries.
+    /// Default value is 0 which means that concurrency will be automatically set
+    /// based on the reservation size.
     #[prost(int64, tag="16")]
     pub concurrency: i64,
-    ///  Output only. Creation time of the reservation.
+    /// Output only. Creation time of the reservation.
     #[prost(message, optional, tag="8")]
     pub creation_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Output only. Last update time of the reservation.
+    /// Output only. Last update time of the reservation.
     #[prost(message, optional, tag="9")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Applicable only for reservations located within one of the BigQuery
-    ///  multi-regions (US or EU).
+    /// Applicable only for reservations located within one of the BigQuery
+    /// multi-regions (US or EU).
     ///
-    ///  If set to true, this reservation is placed in the organization's
-    ///  secondary region which is designated for disaster recovery purposes.
-    ///  If false, this reservation is placed in the organization's default region.
+    /// If set to true, this reservation is placed in the organization's
+    /// secondary region which is designated for disaster recovery purposes.
+    /// If false, this reservation is placed in the organization's default region.
     #[prost(bool, tag="14")]
     pub multi_region_auxiliary: bool,
 }
-///  Capacity commitment is a way to purchase compute capacity for BigQuery jobs
-///  (in the form of slots) with some committed period of usage. Annual
-///  commitments renew by default. Commitments can be removed after their
-///  commitment end time passes.
+/// Capacity commitment is a way to purchase compute capacity for BigQuery jobs
+/// (in the form of slots) with some committed period of usage. Annual
+/// commitments renew by default. Commitments can be removed after their
+/// commitment end time passes.
 ///
-///  In order to remove annual commitment, its plan needs to be changed
-///  to monthly or flex first.
+/// In order to remove annual commitment, its plan needs to be changed
+/// to monthly or flex first.
 ///
-///  A capacity commitment resource exists as a child resource of the admin
-///  project.
+/// A capacity commitment resource exists as a child resource of the admin
+/// project.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CapacityCommitment {
-    ///  Output only. The resource name of the capacity commitment, e.g.,
-    ///  `projects/myproject/locations/US/capacityCommitments/123`
-    ///  The commitment_id must only contain lower case alphanumeric characters or
-    ///  dashes. It must start with a letter and must not end
-    ///  with a dash. Its maximum length is 64 characters.
+    /// Output only. The resource name of the capacity commitment, e.g.,
+    /// `projects/myproject/locations/US/capacityCommitments/123`
+    /// The commitment_id must only contain lower case alphanumeric characters or
+    /// dashes. It must start with a letter and must not end
+    /// with a dash. Its maximum length is 64 characters.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Number of slots in this commitment.
+    /// Number of slots in this commitment.
     #[prost(int64, tag="2")]
     pub slot_count: i64,
-    ///  Capacity commitment commitment plan.
+    /// Capacity commitment commitment plan.
     #[prost(enumeration="capacity_commitment::CommitmentPlan", tag="3")]
     pub plan: i32,
-    ///  Output only. State of the commitment.
+    /// Output only. State of the commitment.
     #[prost(enumeration="capacity_commitment::State", tag="4")]
     pub state: i32,
-    ///  Output only. The start of the current commitment period. It is applicable only for
-    ///  ACTIVE capacity commitments.
+    /// Output only. The start of the current commitment period. It is applicable only for
+    /// ACTIVE capacity commitments.
     #[prost(message, optional, tag="9")]
     pub commitment_start_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Output only. The end of the current commitment period. It is applicable only for ACTIVE
-    ///  capacity commitments.
+    /// Output only. The end of the current commitment period. It is applicable only for ACTIVE
+    /// capacity commitments.
     #[prost(message, optional, tag="5")]
     pub commitment_end_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Output only. For FAILED commitment plan, provides the reason of failure.
+    /// Output only. For FAILED commitment plan, provides the reason of failure.
     #[prost(message, optional, tag="7")]
     pub failure_status: ::core::option::Option<super::super::super::super::rpc::Status>,
-    ///  The plan this capacity commitment is converted to after commitment_end_time
-    ///  passes. Once the plan is changed, committed period is extended according to
-    ///  commitment plan. Only applicable for ANNUAL and TRIAL commitments.
+    /// The plan this capacity commitment is converted to after commitment_end_time
+    /// passes. Once the plan is changed, committed period is extended according to
+    /// commitment plan. Only applicable for ANNUAL and TRIAL commitments.
     #[prost(enumeration="capacity_commitment::CommitmentPlan", tag="8")]
     pub renewal_plan: i32,
-    ///  Applicable only for commitments located within one of the BigQuery
-    ///  multi-regions (US or EU).
+    /// Applicable only for commitments located within one of the BigQuery
+    /// multi-regions (US or EU).
     ///
-    ///  If set to true, this commitment is placed in the organization's
-    ///  secondary region which is designated for disaster recovery purposes.
-    ///  If false, this commitment is placed in the organization's default region.
+    /// If set to true, this commitment is placed in the organization's
+    /// secondary region which is designated for disaster recovery purposes.
+    /// If false, this commitment is placed in the organization's default region.
     #[prost(bool, tag="10")]
     pub multi_region_auxiliary: bool,
 }
 /// Nested message and enum types in `CapacityCommitment`.
 pub mod capacity_commitment {
-    ///  Commitment plan defines the current committed period. Capacity commitment
-    ///  cannot be deleted during it's committed period.
+    /// Commitment plan defines the current committed period. Capacity commitment
+    /// cannot be deleted during it's committed period.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum CommitmentPlan {
-        ///  Invalid plan value. Requests with this value will be rejected with
-        ///  error code `google.rpc.Code.INVALID_ARGUMENT`.
+        /// Invalid plan value. Requests with this value will be rejected with
+        /// error code `google.rpc.Code.INVALID_ARGUMENT`.
         Unspecified = 0,
-        ///  Flex commitments have committed period of 1 minute after becoming ACTIVE.
-        ///  After that, they are not in a committed period anymore and can be removed
-        ///  any time.
+        /// Flex commitments have committed period of 1 minute after becoming ACTIVE.
+        /// After that, they are not in a committed period anymore and can be removed
+        /// any time.
         Flex = 3,
-        ///  Trial commitments have a committed period of 182 days after becoming
-        ///  ACTIVE. After that, they are converted to a new commitment based on the
-        ///  `renewal_plan`. Default `renewal_plan` for Trial commitment is Flex so
-        ///  that it can be deleted right after committed period ends.
+        /// Trial commitments have a committed period of 182 days after becoming
+        /// ACTIVE. After that, they are converted to a new commitment based on the
+        /// `renewal_plan`. Default `renewal_plan` for Trial commitment is Flex so
+        /// that it can be deleted right after committed period ends.
         Trial = 5,
-        ///  Monthly commitments have a committed period of 30 days after becoming
-        ///  ACTIVE. After that, they are not in a committed period anymore and can be
-        ///  removed any time.
+        /// Monthly commitments have a committed period of 30 days after becoming
+        /// ACTIVE. After that, they are not in a committed period anymore and can be
+        /// removed any time.
         Monthly = 2,
-        ///  Annual commitments have a committed period of 365 days after becoming
-        ///  ACTIVE. After that they are converted to a new commitment based on the
-        ///  renewal_plan.
+        /// Annual commitments have a committed period of 365 days after becoming
+        /// ACTIVE. After that they are converted to a new commitment based on the
+        /// renewal_plan.
         Annual = 4,
     }
     impl CommitmentPlan {
@@ -148,20 +148,20 @@ pub mod capacity_commitment {
             }
         }
     }
-    ///  Capacity commitment can either become ACTIVE right away or transition
-    ///  from PENDING to ACTIVE or FAILED.
+    /// Capacity commitment can either become ACTIVE right away or transition
+    /// from PENDING to ACTIVE or FAILED.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum State {
-        ///  Invalid state value.
+        /// Invalid state value.
         Unspecified = 0,
-        ///  Capacity commitment is pending provisioning. Pending capacity commitment
-        ///  does not contribute to the project's slot_capacity.
+        /// Capacity commitment is pending provisioning. Pending capacity commitment
+        /// does not contribute to the project's slot_capacity.
         Pending = 1,
-        ///  Once slots are provisioned, capacity commitment becomes active.
-        ///  slot_count is added to the project's slot_capacity.
+        /// Once slots are provisioned, capacity commitment becomes active.
+        /// slot_count is added to the project's slot_capacity.
         Active = 2,
-        ///  Capacity commitment is failed to be activated by the backend.
+        /// Capacity commitment is failed to be activated by the backend.
         Failed = 3,
     }
     impl State {
@@ -179,223 +179,223 @@ pub mod capacity_commitment {
         }
     }
 }
-///  The request for \[ReservationService.CreateReservation][google.cloud.bigquery.reservation.v1.ReservationService.CreateReservation\].
+/// The request for \[ReservationService.CreateReservation][google.cloud.bigquery.reservation.v1.ReservationService.CreateReservation\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateReservationRequest {
-    ///  Required. Project, location. E.g.,
-    ///  `projects/myproject/locations/US`
+    /// Required. Project, location. E.g.,
+    /// `projects/myproject/locations/US`
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  The reservation ID. It must only contain lower case alphanumeric
-    ///  characters or dashes. It must start with a letter and must not end
-    ///  with a dash. Its maximum length is 64 characters.
+    /// The reservation ID. It must only contain lower case alphanumeric
+    /// characters or dashes. It must start with a letter and must not end
+    /// with a dash. Its maximum length is 64 characters.
     #[prost(string, tag="2")]
     pub reservation_id: ::prost::alloc::string::String,
-    ///  Definition of the new reservation to create.
+    /// Definition of the new reservation to create.
     #[prost(message, optional, tag="3")]
     pub reservation: ::core::option::Option<Reservation>,
 }
-///  The request for \[ReservationService.ListReservations][google.cloud.bigquery.reservation.v1.ReservationService.ListReservations\].
+/// The request for \[ReservationService.ListReservations][google.cloud.bigquery.reservation.v1.ReservationService.ListReservations\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListReservationsRequest {
-    ///  Required. The parent resource name containing project and location, e.g.:
+    /// Required. The parent resource name containing project and location, e.g.:
     ///    `projects/myproject/locations/US`
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  The maximum number of items to return per page.
+    /// The maximum number of items to return per page.
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    ///  The next_page_token value returned from a previous List request, if any.
+    /// The next_page_token value returned from a previous List request, if any.
     #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
 }
-///  The response for \[ReservationService.ListReservations][google.cloud.bigquery.reservation.v1.ReservationService.ListReservations\].
+/// The response for \[ReservationService.ListReservations][google.cloud.bigquery.reservation.v1.ReservationService.ListReservations\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListReservationsResponse {
-    ///  List of reservations visible to the user.
+    /// List of reservations visible to the user.
     #[prost(message, repeated, tag="1")]
     pub reservations: ::prost::alloc::vec::Vec<Reservation>,
-    ///  Token to retrieve the next page of results, or empty if there are no
-    ///  more results in the list.
+    /// Token to retrieve the next page of results, or empty if there are no
+    /// more results in the list.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-///  The request for \[ReservationService.GetReservation][google.cloud.bigquery.reservation.v1.ReservationService.GetReservation\].
+/// The request for \[ReservationService.GetReservation][google.cloud.bigquery.reservation.v1.ReservationService.GetReservation\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetReservationRequest {
-    ///  Required. Resource name of the reservation to retrieve. E.g.,
+    /// Required. Resource name of the reservation to retrieve. E.g.,
     ///     `projects/myproject/locations/US/reservations/team1-prod`
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  The request for \[ReservationService.DeleteReservation][google.cloud.bigquery.reservation.v1.ReservationService.DeleteReservation\].
+/// The request for \[ReservationService.DeleteReservation][google.cloud.bigquery.reservation.v1.ReservationService.DeleteReservation\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteReservationRequest {
-    ///  Required. Resource name of the reservation to retrieve. E.g.,
+    /// Required. Resource name of the reservation to retrieve. E.g.,
     ///     `projects/myproject/locations/US/reservations/team1-prod`
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  The request for \[ReservationService.UpdateReservation][google.cloud.bigquery.reservation.v1.ReservationService.UpdateReservation\].
+/// The request for \[ReservationService.UpdateReservation][google.cloud.bigquery.reservation.v1.ReservationService.UpdateReservation\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateReservationRequest {
-    ///  Content of the reservation to update.
+    /// Content of the reservation to update.
     #[prost(message, optional, tag="1")]
     pub reservation: ::core::option::Option<Reservation>,
-    ///  Standard field mask for the set of fields to be updated.
+    /// Standard field mask for the set of fields to be updated.
     #[prost(message, optional, tag="2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
-///  The request for \[ReservationService.CreateCapacityCommitment][google.cloud.bigquery.reservation.v1.ReservationService.CreateCapacityCommitment\].
+/// The request for \[ReservationService.CreateCapacityCommitment][google.cloud.bigquery.reservation.v1.ReservationService.CreateCapacityCommitment\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateCapacityCommitmentRequest {
-    ///  Required. Resource name of the parent reservation. E.g.,
+    /// Required. Resource name of the parent reservation. E.g.,
     ///     `projects/myproject/locations/US`
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Content of the capacity commitment to create.
+    /// Content of the capacity commitment to create.
     #[prost(message, optional, tag="2")]
     pub capacity_commitment: ::core::option::Option<CapacityCommitment>,
-    ///  If true, fail the request if another project in the organization has a
-    ///  capacity commitment.
+    /// If true, fail the request if another project in the organization has a
+    /// capacity commitment.
     #[prost(bool, tag="4")]
     pub enforce_single_admin_project_per_org: bool,
-    ///  The optional capacity commitment ID. Capacity commitment name will be
-    ///  generated automatically if this field is empty.
-    ///  This field must only contain lower case alphanumeric characters or dashes.
-    ///  The first and last character cannot be a dash. Max length is 64 characters.
-    ///  NOTE: this ID won't be kept if the capacity commitment is split or merged.
+    /// The optional capacity commitment ID. Capacity commitment name will be
+    /// generated automatically if this field is empty.
+    /// This field must only contain lower case alphanumeric characters or dashes.
+    /// The first and last character cannot be a dash. Max length is 64 characters.
+    /// NOTE: this ID won't be kept if the capacity commitment is split or merged.
     #[prost(string, tag="5")]
     pub capacity_commitment_id: ::prost::alloc::string::String,
 }
-///  The request for \[ReservationService.ListCapacityCommitments][google.cloud.bigquery.reservation.v1.ReservationService.ListCapacityCommitments\].
+/// The request for \[ReservationService.ListCapacityCommitments][google.cloud.bigquery.reservation.v1.ReservationService.ListCapacityCommitments\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCapacityCommitmentsRequest {
-    ///  Required. Resource name of the parent reservation. E.g.,
+    /// Required. Resource name of the parent reservation. E.g.,
     ///     `projects/myproject/locations/US`
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  The maximum number of items to return.
+    /// The maximum number of items to return.
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    ///  The next_page_token value returned from a previous List request, if any.
+    /// The next_page_token value returned from a previous List request, if any.
     #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
 }
-///  The response for \[ReservationService.ListCapacityCommitments][google.cloud.bigquery.reservation.v1.ReservationService.ListCapacityCommitments\].
+/// The response for \[ReservationService.ListCapacityCommitments][google.cloud.bigquery.reservation.v1.ReservationService.ListCapacityCommitments\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCapacityCommitmentsResponse {
-    ///  List of capacity commitments visible to the user.
+    /// List of capacity commitments visible to the user.
     #[prost(message, repeated, tag="1")]
     pub capacity_commitments: ::prost::alloc::vec::Vec<CapacityCommitment>,
-    ///  Token to retrieve the next page of results, or empty if there are no
-    ///  more results in the list.
+    /// Token to retrieve the next page of results, or empty if there are no
+    /// more results in the list.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-///  The request for \[ReservationService.GetCapacityCommitment][google.cloud.bigquery.reservation.v1.ReservationService.GetCapacityCommitment\].
+/// The request for \[ReservationService.GetCapacityCommitment][google.cloud.bigquery.reservation.v1.ReservationService.GetCapacityCommitment\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCapacityCommitmentRequest {
-    ///  Required. Resource name of the capacity commitment to retrieve. E.g.,
+    /// Required. Resource name of the capacity commitment to retrieve. E.g.,
     ///     `projects/myproject/locations/US/capacityCommitments/123`
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  The request for \[ReservationService.DeleteCapacityCommitment][google.cloud.bigquery.reservation.v1.ReservationService.DeleteCapacityCommitment\].
+/// The request for \[ReservationService.DeleteCapacityCommitment][google.cloud.bigquery.reservation.v1.ReservationService.DeleteCapacityCommitment\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteCapacityCommitmentRequest {
-    ///  Required. Resource name of the capacity commitment to delete. E.g.,
+    /// Required. Resource name of the capacity commitment to delete. E.g.,
     ///     `projects/myproject/locations/US/capacityCommitments/123`
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Can be used to force delete commitments even if assignments exist. Deleting
-    ///  commitments with assignments may cause queries to fail if they no longer
-    ///  have access to slots.
+    /// Can be used to force delete commitments even if assignments exist. Deleting
+    /// commitments with assignments may cause queries to fail if they no longer
+    /// have access to slots.
     #[prost(bool, tag="3")]
     pub force: bool,
 }
-///  The request for \[ReservationService.UpdateCapacityCommitment][google.cloud.bigquery.reservation.v1.ReservationService.UpdateCapacityCommitment\].
+/// The request for \[ReservationService.UpdateCapacityCommitment][google.cloud.bigquery.reservation.v1.ReservationService.UpdateCapacityCommitment\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateCapacityCommitmentRequest {
-    ///  Content of the capacity commitment to update.
+    /// Content of the capacity commitment to update.
     #[prost(message, optional, tag="1")]
     pub capacity_commitment: ::core::option::Option<CapacityCommitment>,
-    ///  Standard field mask for the set of fields to be updated.
+    /// Standard field mask for the set of fields to be updated.
     #[prost(message, optional, tag="2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
-///  The request for \[ReservationService.SplitCapacityCommitment][google.cloud.bigquery.reservation.v1.ReservationService.SplitCapacityCommitment\].
+/// The request for \[ReservationService.SplitCapacityCommitment][google.cloud.bigquery.reservation.v1.ReservationService.SplitCapacityCommitment\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SplitCapacityCommitmentRequest {
-    ///  Required. The resource name e.g.,:
+    /// Required. The resource name e.g.,:
     ///   `projects/myproject/locations/US/capacityCommitments/123`
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Number of slots in the capacity commitment after the split.
+    /// Number of slots in the capacity commitment after the split.
     #[prost(int64, tag="2")]
     pub slot_count: i64,
 }
-///  The response for \[ReservationService.SplitCapacityCommitment][google.cloud.bigquery.reservation.v1.ReservationService.SplitCapacityCommitment\].
+/// The response for \[ReservationService.SplitCapacityCommitment][google.cloud.bigquery.reservation.v1.ReservationService.SplitCapacityCommitment\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SplitCapacityCommitmentResponse {
-    ///  First capacity commitment, result of a split.
+    /// First capacity commitment, result of a split.
     #[prost(message, optional, tag="1")]
     pub first: ::core::option::Option<CapacityCommitment>,
-    ///  Second capacity commitment, result of a split.
+    /// Second capacity commitment, result of a split.
     #[prost(message, optional, tag="2")]
     pub second: ::core::option::Option<CapacityCommitment>,
 }
-///  The request for \[ReservationService.MergeCapacityCommitments][google.cloud.bigquery.reservation.v1.ReservationService.MergeCapacityCommitments\].
+/// The request for \[ReservationService.MergeCapacityCommitments][google.cloud.bigquery.reservation.v1.ReservationService.MergeCapacityCommitments\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MergeCapacityCommitmentsRequest {
-    ///  Parent resource that identifies admin project and location e.g.,
+    /// Parent resource that identifies admin project and location e.g.,
     ///   `projects/myproject/locations/us`
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Ids of capacity commitments to merge.
-    ///  These capacity commitments must exist under admin project and location
-    ///  specified in the parent.
-    ///  ID is the last portion of capacity commitment name e.g., 'abc' for
-    ///  projects/myproject/locations/US/capacityCommitments/abc
+    /// Ids of capacity commitments to merge.
+    /// These capacity commitments must exist under admin project and location
+    /// specified in the parent.
+    /// ID is the last portion of capacity commitment name e.g., 'abc' for
+    /// projects/myproject/locations/US/capacityCommitments/abc
     #[prost(string, repeated, tag="2")]
     pub capacity_commitment_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-///  An assignment allows a project to submit jobs
-///  of a certain type using slots from the specified reservation.
+/// An assignment allows a project to submit jobs
+/// of a certain type using slots from the specified reservation.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Assignment {
-    ///  Output only. Name of the resource. E.g.:
-    ///  `projects/myproject/locations/US/reservations/team1-prod/assignments/123`.
-    ///  The assignment_id must only contain lower case alphanumeric characters or
-    ///  dashes and the max length is 64 characters.
+    /// Output only. Name of the resource. E.g.:
+    /// `projects/myproject/locations/US/reservations/team1-prod/assignments/123`.
+    /// The assignment_id must only contain lower case alphanumeric characters or
+    /// dashes and the max length is 64 characters.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  The resource which will use the reservation. E.g.
-    ///  `projects/myproject`, `folders/123`, or `organizations/456`.
+    /// The resource which will use the reservation. E.g.
+    /// `projects/myproject`, `folders/123`, or `organizations/456`.
     #[prost(string, tag="4")]
     pub assignee: ::prost::alloc::string::String,
-    ///  Which type of jobs will use the reservation.
+    /// Which type of jobs will use the reservation.
     #[prost(enumeration="assignment::JobType", tag="3")]
     pub job_type: i32,
-    ///  Output only. State of the assignment.
+    /// Output only. State of the assignment.
     #[prost(enumeration="assignment::State", tag="6")]
     pub state: i32,
 }
 /// Nested message and enum types in `Assignment`.
 pub mod assignment {
-    ///  Types of job, which could be specified when using the reservation.
+    /// Types of job, which could be specified when using the reservation.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum JobType {
-        ///  Invalid type. Requests with this value will be rejected with
-        ///  error code `google.rpc.Code.INVALID_ARGUMENT`.
+        /// Invalid type. Requests with this value will be rejected with
+        /// error code `google.rpc.Code.INVALID_ARGUMENT`.
         Unspecified = 0,
-        ///  Pipeline (load/export) jobs from the project will use the reservation.
+        /// Pipeline (load/export) jobs from the project will use the reservation.
         Pipeline = 1,
-        ///  Query jobs from the project will use the reservation.
+        /// Query jobs from the project will use the reservation.
         Query = 2,
-        ///  BigQuery ML jobs that use services external to BigQuery for model
-        ///  training. These jobs will not utilize idle slots from other reservations.
+        /// BigQuery ML jobs that use services external to BigQuery for model
+        /// training. These jobs will not utilize idle slots from other reservations.
         MlExternal = 3,
     }
     impl JobType {
@@ -412,18 +412,18 @@ pub mod assignment {
             }
         }
     }
-    ///  Assignment will remain in PENDING state if no active capacity commitment is
-    ///  present. It will become ACTIVE when some capacity commitment becomes
-    ///  active.
+    /// Assignment will remain in PENDING state if no active capacity commitment is
+    /// present. It will become ACTIVE when some capacity commitment becomes
+    /// active.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum State {
-        ///  Invalid state value.
+        /// Invalid state value.
         Unspecified = 0,
-        ///  Queries from assignee will be executed as on-demand, if related
-        ///  assignment is pending.
+        /// Queries from assignee will be executed as on-demand, if related
+        /// assignment is pending.
         Pending = 1,
-        ///  Assignment is ready.
+        /// Assignment is ready.
         Active = 2,
     }
     impl State {
@@ -440,219 +440,219 @@ pub mod assignment {
         }
     }
 }
-///  The request for \[ReservationService.CreateAssignment][google.cloud.bigquery.reservation.v1.ReservationService.CreateAssignment\].
-///  Note: "bigquery.reservationAssignments.create" permission is required on the
-///  related assignee.
+/// The request for \[ReservationService.CreateAssignment][google.cloud.bigquery.reservation.v1.ReservationService.CreateAssignment\].
+/// Note: "bigquery.reservationAssignments.create" permission is required on the
+/// related assignee.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateAssignmentRequest {
-    ///  Required. The parent resource name of the assignment
-    ///  E.g. `projects/myproject/locations/US/reservations/team1-prod`
+    /// Required. The parent resource name of the assignment
+    /// E.g. `projects/myproject/locations/US/reservations/team1-prod`
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Assignment resource to create.
+    /// Assignment resource to create.
     #[prost(message, optional, tag="2")]
     pub assignment: ::core::option::Option<Assignment>,
-    ///  The optional assignment ID. Assignment name will be generated automatically
-    ///  if this field is empty.
-    ///  This field must only contain lower case alphanumeric characters or dashes.
-    ///  Max length is 64 characters.
+    /// The optional assignment ID. Assignment name will be generated automatically
+    /// if this field is empty.
+    /// This field must only contain lower case alphanumeric characters or dashes.
+    /// Max length is 64 characters.
     #[prost(string, tag="4")]
     pub assignment_id: ::prost::alloc::string::String,
 }
-///  The request for \[ReservationService.ListAssignments][google.cloud.bigquery.reservation.v1.ReservationService.ListAssignments\].
+/// The request for \[ReservationService.ListAssignments][google.cloud.bigquery.reservation.v1.ReservationService.ListAssignments\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAssignmentsRequest {
-    ///  Required. The parent resource name e.g.:
+    /// Required. The parent resource name e.g.:
     ///
-    ///  `projects/myproject/locations/US/reservations/team1-prod`
+    /// `projects/myproject/locations/US/reservations/team1-prod`
     ///
-    ///  Or:
+    /// Or:
     ///
-    ///  `projects/myproject/locations/US/reservations/-`
+    /// `projects/myproject/locations/US/reservations/-`
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  The maximum number of items to return per page.
+    /// The maximum number of items to return per page.
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    ///  The next_page_token value returned from a previous List request, if any.
+    /// The next_page_token value returned from a previous List request, if any.
     #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
 }
-///  The response for \[ReservationService.ListAssignments][google.cloud.bigquery.reservation.v1.ReservationService.ListAssignments\].
+/// The response for \[ReservationService.ListAssignments][google.cloud.bigquery.reservation.v1.ReservationService.ListAssignments\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAssignmentsResponse {
-    ///  List of assignments visible to the user.
+    /// List of assignments visible to the user.
     #[prost(message, repeated, tag="1")]
     pub assignments: ::prost::alloc::vec::Vec<Assignment>,
-    ///  Token to retrieve the next page of results, or empty if there are no
-    ///  more results in the list.
+    /// Token to retrieve the next page of results, or empty if there are no
+    /// more results in the list.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-///  The request for \[ReservationService.DeleteAssignment][google.cloud.bigquery.reservation.v1.ReservationService.DeleteAssignment\].
-///  Note: "bigquery.reservationAssignments.delete" permission is required on the
-///  related assignee.
+/// The request for \[ReservationService.DeleteAssignment][google.cloud.bigquery.reservation.v1.ReservationService.DeleteAssignment\].
+/// Note: "bigquery.reservationAssignments.delete" permission is required on the
+/// related assignee.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteAssignmentRequest {
-    ///  Required. Name of the resource, e.g.
+    /// Required. Name of the resource, e.g.
     ///    `projects/myproject/locations/US/reservations/team1-prod/assignments/123`
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  The request for
-///  \[ReservationService.SearchAssignments][google.cloud.bigquery.reservation.v1.ReservationService.SearchAssignments\].
-///  Note: "bigquery.reservationAssignments.search" permission is required on the
-///  related assignee.
+/// The request for
+/// \[ReservationService.SearchAssignments][google.cloud.bigquery.reservation.v1.ReservationService.SearchAssignments\].
+/// Note: "bigquery.reservationAssignments.search" permission is required on the
+/// related assignee.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchAssignmentsRequest {
-    ///  Required. The resource name of the admin project(containing project and location),
-    ///  e.g.:
+    /// Required. The resource name of the admin project(containing project and location),
+    /// e.g.:
     ///    `projects/myproject/locations/US`.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Please specify resource name as assignee in the query.
+    /// Please specify resource name as assignee in the query.
     ///
-    ///  Examples:
+    /// Examples:
     ///
-    ///  * `assignee=projects/myproject`
-    ///  * `assignee=folders/123`
-    ///  * `assignee=organizations/456`
+    /// * `assignee=projects/myproject`
+    /// * `assignee=folders/123`
+    /// * `assignee=organizations/456`
     #[prost(string, tag="2")]
     pub query: ::prost::alloc::string::String,
-    ///  The maximum number of items to return per page.
+    /// The maximum number of items to return per page.
     #[prost(int32, tag="3")]
     pub page_size: i32,
-    ///  The next_page_token value returned from a previous List request, if any.
+    /// The next_page_token value returned from a previous List request, if any.
     #[prost(string, tag="4")]
     pub page_token: ::prost::alloc::string::String,
 }
-///  The request for
-///  \[ReservationService.SearchAllAssignments][google.cloud.bigquery.reservation.v1.ReservationService.SearchAllAssignments\].
-///  Note: "bigquery.reservationAssignments.search" permission is required on the
-///  related assignee.
+/// The request for
+/// \[ReservationService.SearchAllAssignments][google.cloud.bigquery.reservation.v1.ReservationService.SearchAllAssignments\].
+/// Note: "bigquery.reservationAssignments.search" permission is required on the
+/// related assignee.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchAllAssignmentsRequest {
-    ///  Required. The resource name with location (project name could be the wildcard '-'),
-    ///  e.g.:
+    /// Required. The resource name with location (project name could be the wildcard '-'),
+    /// e.g.:
     ///    `projects/-/locations/US`.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Please specify resource name as assignee in the query.
+    /// Please specify resource name as assignee in the query.
     ///
-    ///  Examples:
+    /// Examples:
     ///
-    ///  * `assignee=projects/myproject`
-    ///  * `assignee=folders/123`
-    ///  * `assignee=organizations/456`
+    /// * `assignee=projects/myproject`
+    /// * `assignee=folders/123`
+    /// * `assignee=organizations/456`
     #[prost(string, tag="2")]
     pub query: ::prost::alloc::string::String,
-    ///  The maximum number of items to return per page.
+    /// The maximum number of items to return per page.
     #[prost(int32, tag="3")]
     pub page_size: i32,
-    ///  The next_page_token value returned from a previous List request, if any.
+    /// The next_page_token value returned from a previous List request, if any.
     #[prost(string, tag="4")]
     pub page_token: ::prost::alloc::string::String,
 }
-///  The response for \[ReservationService.SearchAssignments][google.cloud.bigquery.reservation.v1.ReservationService.SearchAssignments\].
+/// The response for \[ReservationService.SearchAssignments][google.cloud.bigquery.reservation.v1.ReservationService.SearchAssignments\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchAssignmentsResponse {
-    ///  List of assignments visible to the user.
+    /// List of assignments visible to the user.
     #[prost(message, repeated, tag="1")]
     pub assignments: ::prost::alloc::vec::Vec<Assignment>,
-    ///  Token to retrieve the next page of results, or empty if there are no
-    ///  more results in the list.
+    /// Token to retrieve the next page of results, or empty if there are no
+    /// more results in the list.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-///  The response for \[ReservationService.SearchAllAssignments][google.cloud.bigquery.reservation.v1.ReservationService.SearchAllAssignments\].
+/// The response for \[ReservationService.SearchAllAssignments][google.cloud.bigquery.reservation.v1.ReservationService.SearchAllAssignments\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchAllAssignmentsResponse {
-    ///  List of assignments visible to the user.
+    /// List of assignments visible to the user.
     #[prost(message, repeated, tag="1")]
     pub assignments: ::prost::alloc::vec::Vec<Assignment>,
-    ///  Token to retrieve the next page of results, or empty if there are no
-    ///  more results in the list.
+    /// Token to retrieve the next page of results, or empty if there are no
+    /// more results in the list.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-///  The request for
-///  \[ReservationService.MoveAssignment][google.cloud.bigquery.reservation.v1.ReservationService.MoveAssignment\].
+/// The request for
+/// \[ReservationService.MoveAssignment][google.cloud.bigquery.reservation.v1.ReservationService.MoveAssignment\].
 ///
-///  **Note**: "bigquery.reservationAssignments.create" permission is required on
-///  the destination_id.
+/// **Note**: "bigquery.reservationAssignments.create" permission is required on
+/// the destination_id.
 ///
-///  **Note**: "bigquery.reservationAssignments.create" and
-///  "bigquery.reservationAssignments.delete" permission are required on the
-///  related assignee.
+/// **Note**: "bigquery.reservationAssignments.create" and
+/// "bigquery.reservationAssignments.delete" permission are required on the
+/// related assignee.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MoveAssignmentRequest {
-    ///  Required. The resource name of the assignment,
-    ///  e.g.
-    ///  `projects/myproject/locations/US/reservations/team1-prod/assignments/123`
+    /// Required. The resource name of the assignment,
+    /// e.g.
+    /// `projects/myproject/locations/US/reservations/team1-prod/assignments/123`
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  The new reservation ID, e.g.:
+    /// The new reservation ID, e.g.:
     ///    `projects/myotherproject/locations/US/reservations/team2-prod`
     #[prost(string, tag="3")]
     pub destination_id: ::prost::alloc::string::String,
 }
-///  The request for \[ReservationService.UpdateAssignment][google.cloud.bigquery.reservation.v1.ReservationService.UpdateAssignment\].
+/// The request for \[ReservationService.UpdateAssignment][google.cloud.bigquery.reservation.v1.ReservationService.UpdateAssignment\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateAssignmentRequest {
-    ///  Content of the assignment to update.
+    /// Content of the assignment to update.
     #[prost(message, optional, tag="1")]
     pub assignment: ::core::option::Option<Assignment>,
-    ///  Standard field mask for the set of fields to be updated.
+    /// Standard field mask for the set of fields to be updated.
     #[prost(message, optional, tag="2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
-///  Fully qualified reference to BigQuery table.
-///  Internally stored as google.cloud.bi.v1.BqTableReference.
+/// Fully qualified reference to BigQuery table.
+/// Internally stored as google.cloud.bi.v1.BqTableReference.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TableReference {
-    ///  The assigned project ID of the project.
+    /// The assigned project ID of the project.
     #[prost(string, tag="1")]
     pub project_id: ::prost::alloc::string::String,
-    ///  The ID of the dataset in the above project.
+    /// The ID of the dataset in the above project.
     #[prost(string, tag="2")]
     pub dataset_id: ::prost::alloc::string::String,
-    ///  The ID of the table in the above dataset.
+    /// The ID of the table in the above dataset.
     #[prost(string, tag="3")]
     pub table_id: ::prost::alloc::string::String,
 }
-///  Represents a BI Reservation.
+/// Represents a BI Reservation.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BiReservation {
-    ///  The resource name of the singleton BI reservation.
-    ///  Reservation names have the form
-    ///  `projects/{project_id}/locations/{location_id}/biReservation`.
+    /// The resource name of the singleton BI reservation.
+    /// Reservation names have the form
+    /// `projects/{project_id}/locations/{location_id}/biReservation`.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Output only. The last update timestamp of a reservation.
+    /// Output only. The last update timestamp of a reservation.
     #[prost(message, optional, tag="3")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Size of a reservation, in bytes.
+    /// Size of a reservation, in bytes.
     #[prost(int64, tag="4")]
     pub size: i64,
-    ///  Preferred tables to use BI capacity for.
+    /// Preferred tables to use BI capacity for.
     #[prost(message, repeated, tag="5")]
     pub preferred_tables: ::prost::alloc::vec::Vec<TableReference>,
 }
-///  A request to get a singleton BI reservation.
+/// A request to get a singleton BI reservation.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetBiReservationRequest {
-    ///  Required. Name of the requested reservation, for example:
-    ///  `projects/{project_id}/locations/{location_id}/biReservation`
+    /// Required. Name of the requested reservation, for example:
+    /// `projects/{project_id}/locations/{location_id}/biReservation`
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  A request to update a BI reservation.
+/// A request to update a BI reservation.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateBiReservationRequest {
-    ///  A reservation to update.
+    /// A reservation to update.
     #[prost(message, optional, tag="1")]
     pub bi_reservation: ::core::option::Option<BiReservation>,
-    ///  A list of fields to be updated in this request.
+    /// A list of fields to be updated in this request.
     #[prost(message, optional, tag="2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }

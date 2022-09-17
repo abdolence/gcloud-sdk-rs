@@ -1,97 +1,97 @@
-///  A lake is a centralized repository for managing enterprise data across the
-///  organization distributed across many cloud projects, and stored in a variety
-///  of storage services such as Google Cloud Storage and BigQuery. The resources
-///  attached to a lake are referred to as managed resources. Data within these
-///  managed resources can be structured or unstructured. A lake provides data
-///  admins with tools to organize, secure and manage their data at scale, and
-///  provides data scientists and data engineers an integrated experience to
-///  easily search, discover, analyze and transform data and associated metadata.
+/// A lake is a centralized repository for managing enterprise data across the
+/// organization distributed across many cloud projects, and stored in a variety
+/// of storage services such as Google Cloud Storage and BigQuery. The resources
+/// attached to a lake are referred to as managed resources. Data within these
+/// managed resources can be structured or unstructured. A lake provides data
+/// admins with tools to organize, secure and manage their data at scale, and
+/// provides data scientists and data engineers an integrated experience to
+/// easily search, discover, analyze and transform data and associated metadata.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Lake {
-    ///  Output only. The relative resource name of the lake, of the form:
-    ///  `projects/{project_number}/locations/{location_id}/lakes/{lake_id}`.
+    /// Output only. The relative resource name of the lake, of the form:
+    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}`.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Optional. User friendly display name.
+    /// Optional. User friendly display name.
     #[prost(string, tag="2")]
     pub display_name: ::prost::alloc::string::String,
-    ///  Output only. System generated globally unique ID for the lake. This ID will be
-    ///  different if the lake is deleted and re-created with the same name.
+    /// Output only. System generated globally unique ID for the lake. This ID will be
+    /// different if the lake is deleted and re-created with the same name.
     #[prost(string, tag="3")]
     pub uid: ::prost::alloc::string::String,
-    ///  Output only. The time when the lake was created.
+    /// Output only. The time when the lake was created.
     #[prost(message, optional, tag="4")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Output only. The time when the lake was last updated.
+    /// Output only. The time when the lake was last updated.
     #[prost(message, optional, tag="5")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Optional. User-defined labels for the lake.
+    /// Optional. User-defined labels for the lake.
     #[prost(map="string, string", tag="6")]
     pub labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
-    ///  Optional. Description of the lake.
+    /// Optional. Description of the lake.
     #[prost(string, tag="7")]
     pub description: ::prost::alloc::string::String,
-    ///  Output only. Current state of the lake.
+    /// Output only. Current state of the lake.
     #[prost(enumeration="State", tag="8")]
     pub state: i32,
-    ///  Output only. Service account associated with this lake. This service account must be
-    ///  authorized to access or operate on resources managed by the lake.
+    /// Output only. Service account associated with this lake. This service account must be
+    /// authorized to access or operate on resources managed by the lake.
     #[prost(string, tag="9")]
     pub service_account: ::prost::alloc::string::String,
-    ///  Optional. Settings to manage lake and Dataproc Metastore service instance
-    ///  association.
+    /// Optional. Settings to manage lake and Dataproc Metastore service instance
+    /// association.
     #[prost(message, optional, tag="102")]
     pub metastore: ::core::option::Option<lake::Metastore>,
-    ///  Output only. Aggregated status of the underlying assets of the lake.
+    /// Output only. Aggregated status of the underlying assets of the lake.
     #[prost(message, optional, tag="103")]
     pub asset_status: ::core::option::Option<AssetStatus>,
-    ///  Output only. Metastore status of the lake.
+    /// Output only. Metastore status of the lake.
     #[prost(message, optional, tag="104")]
     pub metastore_status: ::core::option::Option<lake::MetastoreStatus>,
 }
 /// Nested message and enum types in `Lake`.
 pub mod lake {
-    ///  Settings to manage association of Dataproc Metastore with a lake.
+    /// Settings to manage association of Dataproc Metastore with a lake.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Metastore {
-        ///  Optional. A relative reference to the Dataproc Metastore
-        ///  (<https://cloud.google.com/dataproc-metastore/docs>) service associated
-        ///  with the lake:
-        ///  `projects/{project_id}/locations/{location_id}/services/{service_id}`
+        /// Optional. A relative reference to the Dataproc Metastore
+        /// (<https://cloud.google.com/dataproc-metastore/docs>) service associated
+        /// with the lake:
+        /// `projects/{project_id}/locations/{location_id}/services/{service_id}`
         #[prost(string, tag="1")]
         pub service: ::prost::alloc::string::String,
     }
-    ///  Status of Lake and Dataproc Metastore service instance association.
+    /// Status of Lake and Dataproc Metastore service instance association.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct MetastoreStatus {
-        ///  Current state of association.
+        /// Current state of association.
         #[prost(enumeration="metastore_status::State", tag="1")]
         pub state: i32,
-        ///  Additional information about the current status.
+        /// Additional information about the current status.
         #[prost(string, tag="2")]
         pub message: ::prost::alloc::string::String,
-        ///  Last update time of the metastore status of the lake.
+        /// Last update time of the metastore status of the lake.
         #[prost(message, optional, tag="3")]
         pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-        ///  The URI of the endpoint used to access the Metastore service.
+        /// The URI of the endpoint used to access the Metastore service.
         #[prost(string, tag="4")]
         pub endpoint: ::prost::alloc::string::String,
     }
     /// Nested message and enum types in `MetastoreStatus`.
     pub mod metastore_status {
-        ///  Current state of association.
+        /// Current state of association.
         #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
         #[repr(i32)]
         pub enum State {
-            ///  Unspecified.
+            /// Unspecified.
             Unspecified = 0,
-            ///  A Metastore service instance is not associated with the lake.
+            /// A Metastore service instance is not associated with the lake.
             None = 1,
-            ///  A Metastore service instance is attached to the lake.
+            /// A Metastore service instance is attached to the lake.
             Ready = 2,
-            ///  Attach/detach is in progress.
+            /// Attach/detach is in progress.
             Updating = 3,
-            ///  Attach/detach could not be done due to errors.
+            /// Attach/detach could not be done due to errors.
             Error = 4,
         }
         impl State {
@@ -111,87 +111,87 @@ pub mod lake {
         }
     }
 }
-///  Aggregated status of the underlying assets of a lake or zone.
+/// Aggregated status of the underlying assets of a lake or zone.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AssetStatus {
-    ///  Last update time of the status.
+    /// Last update time of the status.
     #[prost(message, optional, tag="1")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Number of active assets.
+    /// Number of active assets.
     #[prost(int32, tag="2")]
     pub active_assets: i32,
-    ///  Number of assets that are in process of updating the security policy on
-    ///  attached resources.
+    /// Number of assets that are in process of updating the security policy on
+    /// attached resources.
     #[prost(int32, tag="3")]
     pub security_policy_applying_assets: i32,
 }
-///  A zone represents a logical group of related assets within a lake. A zone can
-///  be used to map to organizational structure or represent stages of data
-///  readiness from raw to curated. It provides managing behavior that is shared
-///  or inherited by all contained assets.
+/// A zone represents a logical group of related assets within a lake. A zone can
+/// be used to map to organizational structure or represent stages of data
+/// readiness from raw to curated. It provides managing behavior that is shared
+/// or inherited by all contained assets.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Zone {
-    ///  Output only. The relative resource name of the zone, of the form:
-    ///  `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}`.
+    /// Output only. The relative resource name of the zone, of the form:
+    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}`.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Optional. User friendly display name.
+    /// Optional. User friendly display name.
     #[prost(string, tag="2")]
     pub display_name: ::prost::alloc::string::String,
-    ///  Output only. System generated globally unique ID for the zone. This ID will be
-    ///  different if the zone is deleted and re-created with the same name.
+    /// Output only. System generated globally unique ID for the zone. This ID will be
+    /// different if the zone is deleted and re-created with the same name.
     #[prost(string, tag="3")]
     pub uid: ::prost::alloc::string::String,
-    ///  Output only. The time when the zone was created.
+    /// Output only. The time when the zone was created.
     #[prost(message, optional, tag="4")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Output only. The time when the zone was last updated.
+    /// Output only. The time when the zone was last updated.
     #[prost(message, optional, tag="5")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Optional. User defined labels for the zone.
+    /// Optional. User defined labels for the zone.
     #[prost(map="string, string", tag="6")]
     pub labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
-    ///  Optional. Description of the zone.
+    /// Optional. Description of the zone.
     #[prost(string, tag="7")]
     pub description: ::prost::alloc::string::String,
-    ///  Output only. Current state of the zone.
+    /// Output only. Current state of the zone.
     #[prost(enumeration="State", tag="8")]
     pub state: i32,
-    ///  Required. Immutable. The type of the zone.
+    /// Required. Immutable. The type of the zone.
     #[prost(enumeration="zone::Type", tag="9")]
     pub r#type: i32,
-    ///  Optional. Specification of the discovery feature applied to data in this zone.
+    /// Optional. Specification of the discovery feature applied to data in this zone.
     #[prost(message, optional, tag="103")]
     pub discovery_spec: ::core::option::Option<zone::DiscoverySpec>,
-    ///  Required. Specification of the resources that are referenced by the assets within
-    ///  this zone.
+    /// Required. Specification of the resources that are referenced by the assets within
+    /// this zone.
     #[prost(message, optional, tag="104")]
     pub resource_spec: ::core::option::Option<zone::ResourceSpec>,
-    ///  Output only. Aggregated status of the underlying assets of the zone.
+    /// Output only. Aggregated status of the underlying assets of the zone.
     #[prost(message, optional, tag="105")]
     pub asset_status: ::core::option::Option<AssetStatus>,
 }
 /// Nested message and enum types in `Zone`.
 pub mod zone {
-    ///  Settings for resources attached as assets within a zone.
+    /// Settings for resources attached as assets within a zone.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ResourceSpec {
-        ///  Required. Immutable. The location type of the resources that are allowed to be attached to the
-        ///  assets within this zone.
+        /// Required. Immutable. The location type of the resources that are allowed to be attached to the
+        /// assets within this zone.
         #[prost(enumeration="resource_spec::LocationType", tag="1")]
         pub location_type: i32,
     }
     /// Nested message and enum types in `ResourceSpec`.
     pub mod resource_spec {
-        ///  Location type of the resources attached to a zone.
+        /// Location type of the resources attached to a zone.
         #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
         #[repr(i32)]
         pub enum LocationType {
-            ///  Unspecified location type.
+            /// Unspecified location type.
             Unspecified = 0,
-            ///  Resources that are associated with a single region.
+            /// Resources that are associated with a single region.
             SingleRegion = 1,
-            ///  Resources that are associated with a multi-region location.
+            /// Resources that are associated with a multi-region location.
             MultiRegion = 2,
         }
         impl LocationType {
@@ -208,96 +208,96 @@ pub mod zone {
             }
         }
     }
-    ///  Settings to manage the metadata discovery and publishing in a zone.
+    /// Settings to manage the metadata discovery and publishing in a zone.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DiscoverySpec {
-        ///  Required. Whether discovery is enabled.
+        /// Required. Whether discovery is enabled.
         #[prost(bool, tag="1")]
         pub enabled: bool,
-        ///  Optional. The list of patterns to apply for selecting data to include during
-        ///  discovery if only a subset of the data should considered. For Cloud
-        ///  Storage bucket assets, these are interpreted as glob patterns used to
-        ///  match object names. For BigQuery dataset assets, these are
-        ///  interpreted as patterns to match table names.
+        /// Optional. The list of patterns to apply for selecting data to include during
+        /// discovery if only a subset of the data should considered. For Cloud
+        /// Storage bucket assets, these are interpreted as glob patterns used to
+        /// match object names. For BigQuery dataset assets, these are
+        /// interpreted as patterns to match table names.
         #[prost(string, repeated, tag="2")]
         pub include_patterns: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-        ///  Optional. The list of patterns to apply for selecting data to exclude during
-        ///  discovery.  For Cloud Storage bucket assets, these are interpreted as
-        ///  glob patterns used to match object names. For BigQuery dataset assets,
-        ///  these are interpreted as patterns to match table names.
+        /// Optional. The list of patterns to apply for selecting data to exclude during
+        /// discovery.  For Cloud Storage bucket assets, these are interpreted as
+        /// glob patterns used to match object names. For BigQuery dataset assets,
+        /// these are interpreted as patterns to match table names.
         #[prost(string, repeated, tag="3")]
         pub exclude_patterns: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-        ///  Optional. Configuration for CSV data.
+        /// Optional. Configuration for CSV data.
         #[prost(message, optional, tag="4")]
         pub csv_options: ::core::option::Option<discovery_spec::CsvOptions>,
-        ///  Optional. Configuration for Json data.
+        /// Optional. Configuration for Json data.
         #[prost(message, optional, tag="5")]
         pub json_options: ::core::option::Option<discovery_spec::JsonOptions>,
-        ///  Determines when discovery is triggered.
+        /// Determines when discovery is triggered.
         #[prost(oneof="discovery_spec::Trigger", tags="10")]
         pub trigger: ::core::option::Option<discovery_spec::Trigger>,
     }
     /// Nested message and enum types in `DiscoverySpec`.
     pub mod discovery_spec {
-        ///  Describe CSV and similar semi-structured data formats.
+        /// Describe CSV and similar semi-structured data formats.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct CsvOptions {
-            ///  Optional. The number of rows to interpret as header rows that should be skipped
-            ///  when reading data rows.
+            /// Optional. The number of rows to interpret as header rows that should be skipped
+            /// when reading data rows.
             #[prost(int32, tag="1")]
             pub header_rows: i32,
-            ///  Optional. The delimiter being used to separate values. This defaults to ','.
+            /// Optional. The delimiter being used to separate values. This defaults to ','.
             #[prost(string, tag="2")]
             pub delimiter: ::prost::alloc::string::String,
-            ///  Optional. The character encoding of the data. The default is UTF-8.
+            /// Optional. The character encoding of the data. The default is UTF-8.
             #[prost(string, tag="3")]
             pub encoding: ::prost::alloc::string::String,
-            ///  Optional. Whether to disable the inference of data type for CSV data.
-            ///  If true, all columns will be registered as strings.
+            /// Optional. Whether to disable the inference of data type for CSV data.
+            /// If true, all columns will be registered as strings.
             #[prost(bool, tag="4")]
             pub disable_type_inference: bool,
         }
-        ///  Describe JSON data format.
+        /// Describe JSON data format.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct JsonOptions {
-            ///  Optional. The character encoding of the data. The default is UTF-8.
+            /// Optional. The character encoding of the data. The default is UTF-8.
             #[prost(string, tag="1")]
             pub encoding: ::prost::alloc::string::String,
-            ///  Optional. Whether to disable the inference of data type for Json data.
-            ///  If true, all columns will be registered as their primitive types
-            ///  (strings, number or boolean).
+            /// Optional. Whether to disable the inference of data type for Json data.
+            /// If true, all columns will be registered as their primitive types
+            /// (strings, number or boolean).
             #[prost(bool, tag="2")]
             pub disable_type_inference: bool,
         }
-        ///  Determines when discovery is triggered.
+        /// Determines when discovery is triggered.
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Trigger {
-            ///  Optional. Cron schedule (<https://en.wikipedia.org/wiki/Cron>) for running
-            ///  discovery periodically. Successive discovery runs must be scheduled at
-            ///  least 60 minutes apart.
-            ///  The default value is to run discovery every 60 minutes.
-            ///  To explicitly set a timezone to the cron tab, apply a prefix in the
-            ///  cron tab: "CRON_TZ=${IANA_TIME_ZONE}" or TZ=${IANA_TIME_ZONE}".
-            ///  The ${IANA_TIME_ZONE} may only be a valid string from IANA time zone
-            ///  database. For example, "CRON_TZ=America/New_York 1 * * * *", or
-            ///  "TZ=America/New_York 1 * * * *".
+            /// Optional. Cron schedule (<https://en.wikipedia.org/wiki/Cron>) for running
+            /// discovery periodically. Successive discovery runs must be scheduled at
+            /// least 60 minutes apart.
+            /// The default value is to run discovery every 60 minutes.
+            /// To explicitly set a timezone to the cron tab, apply a prefix in the
+            /// cron tab: "CRON_TZ=${IANA_TIME_ZONE}" or TZ=${IANA_TIME_ZONE}".
+            /// The ${IANA_TIME_ZONE} may only be a valid string from IANA time zone
+            /// database. For example, "CRON_TZ=America/New_York 1 * * * *", or
+            /// "TZ=America/New_York 1 * * * *".
             #[prost(string, tag="10")]
             Schedule(::prost::alloc::string::String),
         }
     }
-    ///  Type of zone.
+    /// Type of zone.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum Type {
-        ///  Zone type not specified.
+        /// Zone type not specified.
         Unspecified = 0,
-        ///  A zone that contains data that needs further processing before it is
-        ///  considered generally ready for consumption and analytics workloads.
+        /// A zone that contains data that needs further processing before it is
+        /// considered generally ready for consumption and analytics workloads.
         Raw = 1,
-        ///  A zone that contains data that is considered to be ready for broader
-        ///  consumption and analytics workloads. Curated structured data stored in
-        ///  Cloud Storage must conform to certain file formats (parquet, avro and
-        ///  orc) and organized in a hive-compatible directory layout.
+        /// A zone that contains data that is considered to be ready for broader
+        /// consumption and analytics workloads. Curated structured data stored in
+        /// Cloud Storage must conform to certain file formats (parquet, avro and
+        /// orc) and organized in a hive-compatible directory layout.
         Curated = 2,
     }
     impl Type {
@@ -314,118 +314,118 @@ pub mod zone {
         }
     }
 }
-///  Action represents an issue requiring administrator action for resolution.
+/// Action represents an issue requiring administrator action for resolution.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Action {
-    ///  The category of issue associated with the action.
+    /// The category of issue associated with the action.
     #[prost(enumeration="action::Category", tag="1")]
     pub category: i32,
-    ///  Detailed description of the issue requiring action.
+    /// Detailed description of the issue requiring action.
     #[prost(string, tag="2")]
     pub issue: ::prost::alloc::string::String,
-    ///  The time that the issue was detected.
+    /// The time that the issue was detected.
     #[prost(message, optional, tag="4")]
     pub detect_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Output only. The relative resource name of the action, of the form:
-    ///  `projects/{project}/locations/{location}/lakes/{lake}/actions/{action}`
-    ///  `projects/{project}/locations/{location}/lakes/{lake}/zones/{zone}/actions/{action}`
-    ///  `projects/{project}/locations/{location}/lakes/{lake}/zones/{zone}/assets/{asset}/actions/{action}`.
+    /// Output only. The relative resource name of the action, of the form:
+    /// `projects/{project}/locations/{location}/lakes/{lake}/actions/{action}`
+    /// `projects/{project}/locations/{location}/lakes/{lake}/zones/{zone}/actions/{action}`
+    /// `projects/{project}/locations/{location}/lakes/{lake}/zones/{zone}/assets/{asset}/actions/{action}`.
     #[prost(string, tag="5")]
     pub name: ::prost::alloc::string::String,
-    ///  Output only. The relative resource name of the lake, of the form:
-    ///  `projects/{project_number}/locations/{location_id}/lakes/{lake_id}`.
+    /// Output only. The relative resource name of the lake, of the form:
+    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}`.
     #[prost(string, tag="6")]
     pub lake: ::prost::alloc::string::String,
-    ///  Output only. The relative resource name of the zone, of the form:
-    ///  `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}`.
+    /// Output only. The relative resource name of the zone, of the form:
+    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}`.
     #[prost(string, tag="7")]
     pub zone: ::prost::alloc::string::String,
-    ///  Output only. The relative resource name of the asset, of the form:
-    ///  `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}/assets/{asset_id}`.
+    /// Output only. The relative resource name of the asset, of the form:
+    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}/assets/{asset_id}`.
     #[prost(string, tag="8")]
     pub asset: ::prost::alloc::string::String,
-    ///  The list of data locations associated with this action. Cloud Storage
-    ///  locations are represented as URI paths(E.g.
-    ///  `gs://bucket/table1/year=2020/month=Jan/`). BigQuery locations refer to
-    ///  resource names(E.g.
-    ///  `bigquery.googleapis.com/projects/project-id/datasets/dataset-id`).
+    /// The list of data locations associated with this action. Cloud Storage
+    /// locations are represented as URI paths(E.g.
+    /// `gs://bucket/table1/year=2020/month=Jan/`). BigQuery locations refer to
+    /// resource names(E.g.
+    /// `bigquery.googleapis.com/projects/project-id/datasets/dataset-id`).
     #[prost(string, repeated, tag="9")]
     pub data_locations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    ///  Additional details about the action based on the action category.
+    /// Additional details about the action based on the action category.
     #[prost(oneof="action::Details", tags="10, 11, 12, 13, 14, 15, 21, 22")]
     pub details: ::core::option::Option<action::Details>,
 }
 /// Nested message and enum types in `Action`.
 pub mod action {
-    ///  Action details for resource references in assets that cannot be located.
+    /// Action details for resource references in assets that cannot be located.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct MissingResource {
     }
-    ///  Action details for unauthorized resource issues raised to indicate that the
-    ///  service account associated with the lake instance is not authorized to
-    ///  access or manage the resource associated with an asset.
+    /// Action details for unauthorized resource issues raised to indicate that the
+    /// service account associated with the lake instance is not authorized to
+    /// access or manage the resource associated with an asset.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct UnauthorizedResource {
     }
-    ///  Failed to apply security policy to the managed resource(s) under a
-    ///  lake, zone or an asset. For a lake or zone resource, one or more underlying
-    ///  assets has a failure applying security policy to the associated managed
-    ///  resource.
+    /// Failed to apply security policy to the managed resource(s) under a
+    /// lake, zone or an asset. For a lake or zone resource, one or more underlying
+    /// assets has a failure applying security policy to the associated managed
+    /// resource.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct FailedSecurityPolicyApply {
-        ///  Resource name of one of the assets with failing security policy
-        ///  application. Populated for a lake or zone resource only.
+        /// Resource name of one of the assets with failing security policy
+        /// application. Populated for a lake or zone resource only.
         #[prost(string, tag="1")]
         pub asset: ::prost::alloc::string::String,
     }
-    ///  Action details for invalid or unsupported data files detected by discovery.
+    /// Action details for invalid or unsupported data files detected by discovery.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct InvalidDataFormat {
-        ///  The list of data locations sampled and used for format/schema
-        ///  inference.
+        /// The list of data locations sampled and used for format/schema
+        /// inference.
         #[prost(string, repeated, tag="1")]
         pub sampled_data_locations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-        ///  The expected data format of the entity.
+        /// The expected data format of the entity.
         #[prost(string, tag="2")]
         pub expected_format: ::prost::alloc::string::String,
-        ///  The new unexpected data format within the entity.
+        /// The new unexpected data format within the entity.
         #[prost(string, tag="3")]
         pub new_format: ::prost::alloc::string::String,
     }
-    ///  Action details for incompatible schemas detected by discovery.
+    /// Action details for incompatible schemas detected by discovery.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct IncompatibleDataSchema {
-        ///  The name of the table containing invalid data.
+        /// The name of the table containing invalid data.
         #[prost(string, tag="1")]
         pub table: ::prost::alloc::string::String,
-        ///  The existing and expected schema of the table. The schema is provided as
-        ///  a JSON formatted structure listing columns and data types.
+        /// The existing and expected schema of the table. The schema is provided as
+        /// a JSON formatted structure listing columns and data types.
         #[prost(string, tag="2")]
         pub existing_schema: ::prost::alloc::string::String,
-        ///  The new and incompatible schema within the table. The schema is provided
-        ///  as a JSON formatted structured listing columns and data types.
+        /// The new and incompatible schema within the table. The schema is provided
+        /// as a JSON formatted structured listing columns and data types.
         #[prost(string, tag="3")]
         pub new_schema: ::prost::alloc::string::String,
-        ///  The list of data locations sampled and used for format/schema
-        ///  inference.
+        /// The list of data locations sampled and used for format/schema
+        /// inference.
         #[prost(string, repeated, tag="4")]
         pub sampled_data_locations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-        ///  Whether the action relates to a schema that is incompatible or modified.
+        /// Whether the action relates to a schema that is incompatible or modified.
         #[prost(enumeration="incompatible_data_schema::SchemaChange", tag="5")]
         pub schema_change: i32,
     }
     /// Nested message and enum types in `IncompatibleDataSchema`.
     pub mod incompatible_data_schema {
-        ///  Whether the action relates to a schema that is incompatible or modified.
+        /// Whether the action relates to a schema that is incompatible or modified.
         #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
         #[repr(i32)]
         pub enum SchemaChange {
-            ///  Schema change unspecified.
+            /// Schema change unspecified.
             Unspecified = 0,
-            ///  Newly discovered schema is incompatible with existing schema.
+            /// Newly discovered schema is incompatible with existing schema.
             Incompatible = 1,
-            ///  Newly discovered schema has changed from existing schema for data in a
-            ///  curated zone.
+            /// Newly discovered schema has changed from existing schema for data in a
+            /// curated zone.
             Modified = 2,
         }
         impl SchemaChange {
@@ -442,24 +442,24 @@ pub mod action {
             }
         }
     }
-    ///  Action details for invalid or unsupported partitions detected by discovery.
+    /// Action details for invalid or unsupported partitions detected by discovery.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct InvalidDataPartition {
-        ///  The issue type of InvalidDataPartition.
+        /// The issue type of InvalidDataPartition.
         #[prost(enumeration="invalid_data_partition::PartitionStructure", tag="1")]
         pub expected_structure: i32,
     }
     /// Nested message and enum types in `InvalidDataPartition`.
     pub mod invalid_data_partition {
-        ///  The expected partition structure.
+        /// The expected partition structure.
         #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
         #[repr(i32)]
         pub enum PartitionStructure {
-            ///  PartitionStructure unspecified.
+            /// PartitionStructure unspecified.
             Unspecified = 0,
-            ///  Consistent hive-style partition definition (both raw and curated zone).
+            /// Consistent hive-style partition definition (both raw and curated zone).
             ConsistentKeys = 1,
-            ///  Hive style partition definition (curated zone only).
+            /// Hive style partition definition (curated zone only).
             HiveStyleKeys = 2,
         }
         impl PartitionStructure {
@@ -476,25 +476,25 @@ pub mod action {
             }
         }
     }
-    ///  Action details for absence of data detected by discovery.
+    /// Action details for absence of data detected by discovery.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct MissingData {
     }
-    ///  Action details for invalid data arrangement.
+    /// Action details for invalid data arrangement.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct InvalidDataOrganization {
     }
-    ///  The category of issues.
+    /// The category of issues.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum Category {
-        ///  Unspecified category.
+        /// Unspecified category.
         Unspecified = 0,
-        ///  Resource management related issues.
+        /// Resource management related issues.
         ResourceManagement = 1,
-        ///  Security policy related issues.
+        /// Security policy related issues.
         SecurityPolicy = 2,
-        ///  Data and discovery related issues.
+        /// Data and discovery related issues.
         DataDiscovery = 3,
     }
     impl Category {
@@ -511,118 +511,118 @@ pub mod action {
             }
         }
     }
-    ///  Additional details about the action based on the action category.
+    /// Additional details about the action based on the action category.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Details {
-        ///  Details for issues related to invalid or unsupported data formats.
+        /// Details for issues related to invalid or unsupported data formats.
         #[prost(message, tag="10")]
         InvalidDataFormat(InvalidDataFormat),
-        ///  Details for issues related to incompatible schemas detected within data.
+        /// Details for issues related to incompatible schemas detected within data.
         #[prost(message, tag="11")]
         IncompatibleDataSchema(IncompatibleDataSchema),
-        ///  Details for issues related to invalid or unsupported data partition
-        ///  structure.
+        /// Details for issues related to invalid or unsupported data partition
+        /// structure.
         #[prost(message, tag="12")]
         InvalidDataPartition(InvalidDataPartition),
-        ///  Details for issues related to absence of data within managed resources.
+        /// Details for issues related to absence of data within managed resources.
         #[prost(message, tag="13")]
         MissingData(MissingData),
-        ///  Details for issues related to absence of a managed resource.
+        /// Details for issues related to absence of a managed resource.
         #[prost(message, tag="14")]
         MissingResource(MissingResource),
-        ///  Details for issues related to lack of permissions to access data
-        ///  resources.
+        /// Details for issues related to lack of permissions to access data
+        /// resources.
         #[prost(message, tag="15")]
         UnauthorizedResource(UnauthorizedResource),
-        ///  Details for issues related to applying security policy.
+        /// Details for issues related to applying security policy.
         #[prost(message, tag="21")]
         FailedSecurityPolicyApply(FailedSecurityPolicyApply),
-        ///  Details for issues related to invalid data arrangement.
+        /// Details for issues related to invalid data arrangement.
         #[prost(message, tag="22")]
         InvalidDataOrganization(InvalidDataOrganization),
     }
 }
-///  An asset represents a cloud resource that is being managed within a lake as a
-///  member of a zone.
+/// An asset represents a cloud resource that is being managed within a lake as a
+/// member of a zone.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Asset {
-    ///  Output only. The relative resource name of the asset, of the form:
-    ///  `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}/assets/{asset_id}`.
+    /// Output only. The relative resource name of the asset, of the form:
+    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}/assets/{asset_id}`.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Optional. User friendly display name.
+    /// Optional. User friendly display name.
     #[prost(string, tag="2")]
     pub display_name: ::prost::alloc::string::String,
-    ///  Output only. System generated globally unique ID for the asset. This ID will be
-    ///  different if the asset is deleted and re-created with the same name.
+    /// Output only. System generated globally unique ID for the asset. This ID will be
+    /// different if the asset is deleted and re-created with the same name.
     #[prost(string, tag="3")]
     pub uid: ::prost::alloc::string::String,
-    ///  Output only. The time when the asset was created.
+    /// Output only. The time when the asset was created.
     #[prost(message, optional, tag="4")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Output only. The time when the asset was last updated.
+    /// Output only. The time when the asset was last updated.
     #[prost(message, optional, tag="5")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Optional. User defined labels for the asset.
+    /// Optional. User defined labels for the asset.
     #[prost(map="string, string", tag="6")]
     pub labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
-    ///  Optional. Description of the asset.
+    /// Optional. Description of the asset.
     #[prost(string, tag="7")]
     pub description: ::prost::alloc::string::String,
-    ///  Output only. Current state of the asset.
+    /// Output only. Current state of the asset.
     #[prost(enumeration="State", tag="8")]
     pub state: i32,
-    ///  Required. Specification of the resource that is referenced by this asset.
+    /// Required. Specification of the resource that is referenced by this asset.
     #[prost(message, optional, tag="100")]
     pub resource_spec: ::core::option::Option<asset::ResourceSpec>,
-    ///  Output only. Status of the resource referenced by this asset.
+    /// Output only. Status of the resource referenced by this asset.
     #[prost(message, optional, tag="101")]
     pub resource_status: ::core::option::Option<asset::ResourceStatus>,
-    ///  Output only. Status of the security policy applied to resource referenced by this asset.
+    /// Output only. Status of the security policy applied to resource referenced by this asset.
     #[prost(message, optional, tag="103")]
     pub security_status: ::core::option::Option<asset::SecurityStatus>,
-    ///  Optional. Specification of the discovery feature applied to data referenced by this
-    ///  asset.
-    ///  When this spec is left unset, the asset will use the spec set on the parent
-    ///  zone.
+    /// Optional. Specification of the discovery feature applied to data referenced by this
+    /// asset.
+    /// When this spec is left unset, the asset will use the spec set on the parent
+    /// zone.
     #[prost(message, optional, tag="106")]
     pub discovery_spec: ::core::option::Option<asset::DiscoverySpec>,
-    ///  Output only. Status of the discovery feature applied to data referenced by this asset.
+    /// Output only. Status of the discovery feature applied to data referenced by this asset.
     #[prost(message, optional, tag="107")]
     pub discovery_status: ::core::option::Option<asset::DiscoveryStatus>,
 }
 /// Nested message and enum types in `Asset`.
 pub mod asset {
-    ///  Security policy status of the asset. Data security policy, i.e., readers,
-    ///  writers & owners, should be specified in the lake/zone/asset IAM policy.
+    /// Security policy status of the asset. Data security policy, i.e., readers,
+    /// writers & owners, should be specified in the lake/zone/asset IAM policy.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SecurityStatus {
-        ///  The current state of the security policy applied to the attached
-        ///  resource.
+        /// The current state of the security policy applied to the attached
+        /// resource.
         #[prost(enumeration="security_status::State", tag="1")]
         pub state: i32,
-        ///  Additional information about the current state.
+        /// Additional information about the current state.
         #[prost(string, tag="2")]
         pub message: ::prost::alloc::string::String,
-        ///  Last update time of the status.
+        /// Last update time of the status.
         #[prost(message, optional, tag="3")]
         pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     }
     /// Nested message and enum types in `SecurityStatus`.
     pub mod security_status {
-        ///  The state of the security policy.
+        /// The state of the security policy.
         #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
         #[repr(i32)]
         pub enum State {
-            ///  State unspecified.
+            /// State unspecified.
             Unspecified = 0,
-            ///  Security policy has been successfully applied to the attached resource.
+            /// Security policy has been successfully applied to the attached resource.
             Ready = 1,
-            ///  Security policy is in the process of being applied to the attached
-            ///  resource.
+            /// Security policy is in the process of being applied to the attached
+            /// resource.
             Applying = 2,
-            ///  Security policy could not be applied to the attached resource due to
-            ///  errors.
+            /// Security policy could not be applied to the attached resource due to
+            /// errors.
             Error = 3,
         }
         impl State {
@@ -640,107 +640,107 @@ pub mod asset {
             }
         }
     }
-    ///  Settings to manage the metadata discovery and publishing for an asset.
+    /// Settings to manage the metadata discovery and publishing for an asset.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DiscoverySpec {
-        ///  Optional. Whether discovery is enabled.
+        /// Optional. Whether discovery is enabled.
         #[prost(bool, tag="1")]
         pub enabled: bool,
-        ///  Optional. The list of patterns to apply for selecting data to include during
-        ///  discovery if only a subset of the data should considered.  For Cloud
-        ///  Storage bucket assets, these are interpreted as glob patterns used to
-        ///  match object names. For BigQuery dataset assets, these are interpreted as
-        ///  patterns to match table names.
+        /// Optional. The list of patterns to apply for selecting data to include during
+        /// discovery if only a subset of the data should considered.  For Cloud
+        /// Storage bucket assets, these are interpreted as glob patterns used to
+        /// match object names. For BigQuery dataset assets, these are interpreted as
+        /// patterns to match table names.
         #[prost(string, repeated, tag="2")]
         pub include_patterns: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-        ///  Optional. The list of patterns to apply for selecting data to exclude during
-        ///  discovery.  For Cloud Storage bucket assets, these are interpreted as
-        ///  glob patterns used to match object names. For BigQuery dataset assets,
-        ///  these are interpreted as patterns to match table names.
+        /// Optional. The list of patterns to apply for selecting data to exclude during
+        /// discovery.  For Cloud Storage bucket assets, these are interpreted as
+        /// glob patterns used to match object names. For BigQuery dataset assets,
+        /// these are interpreted as patterns to match table names.
         #[prost(string, repeated, tag="3")]
         pub exclude_patterns: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-        ///  Optional. Configuration for CSV data.
+        /// Optional. Configuration for CSV data.
         #[prost(message, optional, tag="4")]
         pub csv_options: ::core::option::Option<discovery_spec::CsvOptions>,
-        ///  Optional. Configuration for Json data.
+        /// Optional. Configuration for Json data.
         #[prost(message, optional, tag="5")]
         pub json_options: ::core::option::Option<discovery_spec::JsonOptions>,
-        ///  Determines when discovery is triggered.
+        /// Determines when discovery is triggered.
         #[prost(oneof="discovery_spec::Trigger", tags="10")]
         pub trigger: ::core::option::Option<discovery_spec::Trigger>,
     }
     /// Nested message and enum types in `DiscoverySpec`.
     pub mod discovery_spec {
-        ///  Describe CSV and similar semi-structured data formats.
+        /// Describe CSV and similar semi-structured data formats.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct CsvOptions {
-            ///  Optional. The number of rows to interpret as header rows that should be skipped
-            ///  when reading data rows.
+            /// Optional. The number of rows to interpret as header rows that should be skipped
+            /// when reading data rows.
             #[prost(int32, tag="1")]
             pub header_rows: i32,
-            ///  Optional. The delimiter being used to separate values. This defaults to ','.
+            /// Optional. The delimiter being used to separate values. This defaults to ','.
             #[prost(string, tag="2")]
             pub delimiter: ::prost::alloc::string::String,
-            ///  Optional. The character encoding of the data. The default is UTF-8.
+            /// Optional. The character encoding of the data. The default is UTF-8.
             #[prost(string, tag="3")]
             pub encoding: ::prost::alloc::string::String,
-            ///  Optional. Whether to disable the inference of data type for CSV data.
-            ///  If true, all columns will be registered as strings.
+            /// Optional. Whether to disable the inference of data type for CSV data.
+            /// If true, all columns will be registered as strings.
             #[prost(bool, tag="4")]
             pub disable_type_inference: bool,
         }
-        ///  Describe JSON data format.
+        /// Describe JSON data format.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct JsonOptions {
-            ///  Optional. The character encoding of the data. The default is UTF-8.
+            /// Optional. The character encoding of the data. The default is UTF-8.
             #[prost(string, tag="1")]
             pub encoding: ::prost::alloc::string::String,
-            ///  Optional. Whether to disable the inference of data type for Json data.
-            ///  If true, all columns will be registered as their primitive types
-            ///  (strings, number or boolean).
+            /// Optional. Whether to disable the inference of data type for Json data.
+            /// If true, all columns will be registered as their primitive types
+            /// (strings, number or boolean).
             #[prost(bool, tag="2")]
             pub disable_type_inference: bool,
         }
-        ///  Determines when discovery is triggered.
+        /// Determines when discovery is triggered.
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Trigger {
-            ///  Optional. Cron schedule (<https://en.wikipedia.org/wiki/Cron>) for running
-            ///  discovery periodically. Successive discovery runs must be scheduled at
-            ///  least 60 minutes apart.
-            ///  The default value is to run discovery every 60 minutes.
-            ///  To explicitly set a timezone to the cron tab, apply a prefix in the
-            ///  cron tab: "CRON_TZ=${IANA_TIME_ZONE}" or TZ=${IANA_TIME_ZONE}".
-            ///  The ${IANA_TIME_ZONE} may only be a valid string from IANA time zone
-            ///  database. For example, "CRON_TZ=America/New_York 1 * * * *", or
-            ///  "TZ=America/New_York 1 * * * *".
+            /// Optional. Cron schedule (<https://en.wikipedia.org/wiki/Cron>) for running
+            /// discovery periodically. Successive discovery runs must be scheduled at
+            /// least 60 minutes apart.
+            /// The default value is to run discovery every 60 minutes.
+            /// To explicitly set a timezone to the cron tab, apply a prefix in the
+            /// cron tab: "CRON_TZ=${IANA_TIME_ZONE}" or TZ=${IANA_TIME_ZONE}".
+            /// The ${IANA_TIME_ZONE} may only be a valid string from IANA time zone
+            /// database. For example, "CRON_TZ=America/New_York 1 * * * *", or
+            /// "TZ=America/New_York 1 * * * *".
             #[prost(string, tag="10")]
             Schedule(::prost::alloc::string::String),
         }
     }
-    ///  Identifies the cloud resource that is referenced by this asset.
+    /// Identifies the cloud resource that is referenced by this asset.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ResourceSpec {
-        ///  Immutable. Relative name of the cloud resource that contains the data that is
-        ///  being managed within a lake. For example:
+        /// Immutable. Relative name of the cloud resource that contains the data that is
+        /// being managed within a lake. For example:
         ///    `projects/{project_number}/buckets/{bucket_id}`
         ///    `projects/{project_number}/datasets/{dataset_id}`
         #[prost(string, tag="1")]
         pub name: ::prost::alloc::string::String,
-        ///  Required. Immutable. Type of resource.
+        /// Required. Immutable. Type of resource.
         #[prost(enumeration="resource_spec::Type", tag="2")]
         pub r#type: i32,
     }
     /// Nested message and enum types in `ResourceSpec`.
     pub mod resource_spec {
-        ///  Type of resource.
+        /// Type of resource.
         #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
         #[repr(i32)]
         pub enum Type {
-            ///  Type not specified.
+            /// Type not specified.
             Unspecified = 0,
-            ///  Cloud Storage bucket.
+            /// Cloud Storage bucket.
             StorageBucket = 1,
-            ///  BigQuery dataset.
+            /// BigQuery dataset.
             BigqueryDataset = 2,
         }
         impl Type {
@@ -757,30 +757,30 @@ pub mod asset {
             }
         }
     }
-    ///  Status of the resource referenced by an asset.
+    /// Status of the resource referenced by an asset.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ResourceStatus {
-        ///  The current state of the managed resource.
+        /// The current state of the managed resource.
         #[prost(enumeration="resource_status::State", tag="1")]
         pub state: i32,
-        ///  Additional information about the current state.
+        /// Additional information about the current state.
         #[prost(string, tag="2")]
         pub message: ::prost::alloc::string::String,
-        ///  Last update time of the status.
+        /// Last update time of the status.
         #[prost(message, optional, tag="3")]
         pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     }
     /// Nested message and enum types in `ResourceStatus`.
     pub mod resource_status {
-        ///  The state of a resource.
+        /// The state of a resource.
         #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
         #[repr(i32)]
         pub enum State {
-            ///  State unspecified.
+            /// State unspecified.
             Unspecified = 0,
-            ///  Resource does not have any errors.
+            /// Resource does not have any errors.
             Ready = 1,
-            ///  Resource has errors.
+            /// Resource has errors.
             Error = 2,
         }
         impl State {
@@ -797,60 +797,60 @@ pub mod asset {
             }
         }
     }
-    ///  Status of discovery for an asset.
+    /// Status of discovery for an asset.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DiscoveryStatus {
-        ///  The current status of the discovery feature.
+        /// The current status of the discovery feature.
         #[prost(enumeration="discovery_status::State", tag="1")]
         pub state: i32,
-        ///  Additional information about the current state.
+        /// Additional information about the current state.
         #[prost(string, tag="2")]
         pub message: ::prost::alloc::string::String,
-        ///  Last update time of the status.
+        /// Last update time of the status.
         #[prost(message, optional, tag="3")]
         pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-        ///  The start time of the last discovery run.
+        /// The start time of the last discovery run.
         #[prost(message, optional, tag="4")]
         pub last_run_time: ::core::option::Option<::prost_types::Timestamp>,
-        ///  Data Stats of the asset reported by discovery.
+        /// Data Stats of the asset reported by discovery.
         #[prost(message, optional, tag="6")]
         pub stats: ::core::option::Option<discovery_status::Stats>,
-        ///  The duration of the last discovery run.
+        /// The duration of the last discovery run.
         #[prost(message, optional, tag="7")]
         pub last_run_duration: ::core::option::Option<::prost_types::Duration>,
     }
     /// Nested message and enum types in `DiscoveryStatus`.
     pub mod discovery_status {
-        ///  The aggregated data statistics for the asset reported by discovery.
+        /// The aggregated data statistics for the asset reported by discovery.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Stats {
-            ///  The count of data items within the referenced resource.
+            /// The count of data items within the referenced resource.
             #[prost(int64, tag="1")]
             pub data_items: i64,
-            ///  The number of stored data bytes within the referenced resource.
+            /// The number of stored data bytes within the referenced resource.
             #[prost(int64, tag="2")]
             pub data_size: i64,
-            ///  The count of table entities within the referenced resource.
+            /// The count of table entities within the referenced resource.
             #[prost(int64, tag="3")]
             pub tables: i64,
-            ///  The count of fileset entities within the referenced resource.
+            /// The count of fileset entities within the referenced resource.
             #[prost(int64, tag="4")]
             pub filesets: i64,
         }
-        ///  Current state of discovery.
+        /// Current state of discovery.
         #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
         #[repr(i32)]
         pub enum State {
-            ///  State is unspecified.
+            /// State is unspecified.
             Unspecified = 0,
-            ///  Discovery for the asset is scheduled.
+            /// Discovery for the asset is scheduled.
             Scheduled = 1,
-            ///  Discovery for the asset is running.
+            /// Discovery for the asset is running.
             InProgress = 2,
-            ///  Discovery for the asset is currently paused (e.g. due to a lack
-            ///  of available resources). It will be automatically resumed.
+            /// Discovery for the asset is currently paused (e.g. due to a lack
+            /// of available resources). It will be automatically resumed.
             Paused = 3,
-            ///  Discovery for the asset is disabled.
+            /// Discovery for the asset is disabled.
             Disabled = 5,
         }
         impl State {
@@ -870,19 +870,19 @@ pub mod asset {
         }
     }
 }
-///  State of a resource.
+/// State of a resource.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum State {
-    ///  State is not specified.
+    /// State is not specified.
     Unspecified = 0,
-    ///  Resource is active, i.e., ready to use.
+    /// Resource is active, i.e., ready to use.
     Active = 1,
-    ///  Resource is under creation.
+    /// Resource is under creation.
     Creating = 2,
-    ///  Resource is under deletion.
+    /// Resource is under deletion.
     Deleting = 3,
-    ///  Resource is active but has unresolved actions.
+    /// Resource is active but has unresolved actions.
     ActionRequired = 4,
 }
 impl State {
@@ -900,175 +900,175 @@ impl State {
         }
     }
 }
-///  Environment represents a user-visible compute infrastructure for analytics
-///  within a lake.
+/// Environment represents a user-visible compute infrastructure for analytics
+/// within a lake.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Environment {
-    ///  Output only. The relative resource name of the environment, of the form:
-    ///  projects/{project_id}/locations/{location_id}/lakes/{lake_id}/environment/{environment_id}
+    /// Output only. The relative resource name of the environment, of the form:
+    /// projects/{project_id}/locations/{location_id}/lakes/{lake_id}/environment/{environment_id}
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Optional. User friendly display name.
+    /// Optional. User friendly display name.
     #[prost(string, tag="2")]
     pub display_name: ::prost::alloc::string::String,
-    ///  Output only. System generated globally unique ID for the environment. This ID will be
-    ///  different if the environment is deleted and re-created with the same name.
+    /// Output only. System generated globally unique ID for the environment. This ID will be
+    /// different if the environment is deleted and re-created with the same name.
     #[prost(string, tag="3")]
     pub uid: ::prost::alloc::string::String,
-    ///  Output only. Environment creation time.
+    /// Output only. Environment creation time.
     #[prost(message, optional, tag="4")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Output only. The time when the environment was last updated.
+    /// Output only. The time when the environment was last updated.
     #[prost(message, optional, tag="5")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Optional. User defined labels for the environment.
+    /// Optional. User defined labels for the environment.
     #[prost(map="string, string", tag="6")]
     pub labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
-    ///  Optional. Description of the environment.
+    /// Optional. Description of the environment.
     #[prost(string, tag="7")]
     pub description: ::prost::alloc::string::String,
-    ///  Output only. Current state of the environment.
+    /// Output only. Current state of the environment.
     #[prost(enumeration="State", tag="8")]
     pub state: i32,
-    ///  Required. Infrastructure specification for the Environment.
+    /// Required. Infrastructure specification for the Environment.
     #[prost(message, optional, tag="100")]
     pub infrastructure_spec: ::core::option::Option<environment::InfrastructureSpec>,
-    ///  Optional. Configuration for sessions created for this environment.
+    /// Optional. Configuration for sessions created for this environment.
     #[prost(message, optional, tag="101")]
     pub session_spec: ::core::option::Option<environment::SessionSpec>,
-    ///  Output only. Status of sessions created for this environment.
+    /// Output only. Status of sessions created for this environment.
     #[prost(message, optional, tag="102")]
     pub session_status: ::core::option::Option<environment::SessionStatus>,
-    ///  Output only. URI Endpoints to access sessions associated with the Environment.
+    /// Output only. URI Endpoints to access sessions associated with the Environment.
     #[prost(message, optional, tag="200")]
     pub endpoints: ::core::option::Option<environment::Endpoints>,
 }
 /// Nested message and enum types in `Environment`.
 pub mod environment {
-    ///  Configuration for the underlying infrastructure used to run workloads.
+    /// Configuration for the underlying infrastructure used to run workloads.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct InfrastructureSpec {
-        ///  Hardware config
+        /// Hardware config
         #[prost(oneof="infrastructure_spec::Resources", tags="50")]
         pub resources: ::core::option::Option<infrastructure_spec::Resources>,
-        ///  Software config
+        /// Software config
         #[prost(oneof="infrastructure_spec::Runtime", tags="100")]
         pub runtime: ::core::option::Option<infrastructure_spec::Runtime>,
     }
     /// Nested message and enum types in `InfrastructureSpec`.
     pub mod infrastructure_spec {
-        ///  Compute resources associated with the analyze interactive workloads.
+        /// Compute resources associated with the analyze interactive workloads.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct ComputeResources {
-            ///  Optional. Size in GB of the disk. Default is 100 GB.
+            /// Optional. Size in GB of the disk. Default is 100 GB.
             #[prost(int32, tag="1")]
             pub disk_size_gb: i32,
-            ///  Optional. Total number of nodes in the sessions created for this environment.
+            /// Optional. Total number of nodes in the sessions created for this environment.
             #[prost(int32, tag="2")]
             pub node_count: i32,
-            ///  Optional. Max configurable nodes.
-            ///  If max_node_count > node_count, then auto-scaling is enabled.
+            /// Optional. Max configurable nodes.
+            /// If max_node_count > node_count, then auto-scaling is enabled.
             #[prost(int32, tag="3")]
             pub max_node_count: i32,
         }
-        ///  Software Runtime Configuration to run Analyze.
+        /// Software Runtime Configuration to run Analyze.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct OsImageRuntime {
-            ///  Required. Dataplex Image version.
+            /// Required. Dataplex Image version.
             #[prost(string, tag="1")]
             pub image_version: ::prost::alloc::string::String,
-            ///  Optional. List of Java jars to be included in the runtime environment.
-            ///  Valid input includes Cloud Storage URIs to Jar binaries.
-            ///  For example, gs://bucket-name/my/path/to/file.jar
+            /// Optional. List of Java jars to be included in the runtime environment.
+            /// Valid input includes Cloud Storage URIs to Jar binaries.
+            /// For example, gs://bucket-name/my/path/to/file.jar
             #[prost(string, repeated, tag="2")]
             pub java_libraries: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-            ///  Optional. A list of python packages to be installed.
-            ///  Valid formats include Cloud Storage URI to a PIP installable library.
-            ///  For example, gs://bucket-name/my/path/to/lib.tar.gz
+            /// Optional. A list of python packages to be installed.
+            /// Valid formats include Cloud Storage URI to a PIP installable library.
+            /// For example, gs://bucket-name/my/path/to/lib.tar.gz
             #[prost(string, repeated, tag="3")]
             pub python_packages: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-            ///  Optional. Spark properties to provide configuration for use in sessions created
-            ///  for this environment. The properties to set on daemon config files.
-            ///  Property keys are specified in `prefix:property` format.
-            ///  The prefix must be "spark".
+            /// Optional. Spark properties to provide configuration for use in sessions created
+            /// for this environment. The properties to set on daemon config files.
+            /// Property keys are specified in `prefix:property` format.
+            /// The prefix must be "spark".
             #[prost(map="string, string", tag="4")]
             pub properties: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
         }
-        ///  Hardware config
+        /// Hardware config
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Resources {
-            ///  Optional. Compute resources needed for analyze interactive workloads.
+            /// Optional. Compute resources needed for analyze interactive workloads.
             #[prost(message, tag="50")]
             Compute(ComputeResources),
         }
-        ///  Software config
+        /// Software config
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Runtime {
-            ///  Required. Software Runtime Configuration for analyze interactive workloads.
+            /// Required. Software Runtime Configuration for analyze interactive workloads.
             #[prost(message, tag="100")]
             OsImage(OsImageRuntime),
         }
     }
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SessionSpec {
-        ///  Optional. The idle time configuration of the session. The session will be
-        ///  auto-terminated at the end of this period.
+        /// Optional. The idle time configuration of the session. The session will be
+        /// auto-terminated at the end of this period.
         #[prost(message, optional, tag="1")]
         pub max_idle_duration: ::core::option::Option<::prost_types::Duration>,
-        ///  Optional. If True, this causes sessions to be pre-created and available for faster
-        ///  startup to enable interactive exploration use-cases. This defaults to
-        ///  False to avoid additional billed charges.
-        ///  These can only be set to True for the environment with name set to
-        ///  "default", and with default configuration.
+        /// Optional. If True, this causes sessions to be pre-created and available for faster
+        /// startup to enable interactive exploration use-cases. This defaults to
+        /// False to avoid additional billed charges.
+        /// These can only be set to True for the environment with name set to
+        /// "default", and with default configuration.
         #[prost(bool, tag="2")]
         pub enable_fast_startup: bool,
     }
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SessionStatus {
-        ///  Output only. Queries over sessions to mark whether the environment is currently
-        ///  active or not
+        /// Output only. Queries over sessions to mark whether the environment is currently
+        /// active or not
         #[prost(bool, tag="1")]
         pub active: bool,
     }
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Endpoints {
-        ///  Output only. URI to serve notebook APIs
+        /// Output only. URI to serve notebook APIs
         #[prost(string, tag="1")]
         pub notebooks: ::prost::alloc::string::String,
-        ///  Output only. URI to serve SQL APIs
+        /// Output only. URI to serve SQL APIs
         #[prost(string, tag="2")]
         pub sql: ::prost::alloc::string::String,
     }
 }
-///  Content represents a user-visible notebook or a sql script
+/// Content represents a user-visible notebook or a sql script
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Content {
-    ///  Output only. The relative resource name of the content, of the form:
-    ///  projects/{project_id}/locations/{location_id}/lakes/{lake_id}/content/{content_id}
+    /// Output only. The relative resource name of the content, of the form:
+    /// projects/{project_id}/locations/{location_id}/lakes/{lake_id}/content/{content_id}
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Output only. System generated globally unique ID for the content. This ID will be
-    ///  different if the content is deleted and re-created with the same name.
+    /// Output only. System generated globally unique ID for the content. This ID will be
+    /// different if the content is deleted and re-created with the same name.
     #[prost(string, tag="2")]
     pub uid: ::prost::alloc::string::String,
-    ///  Required. The path for the Content file, represented as directory structure.
-    ///  Unique within a lake.
-    ///  Limited to alphanumerics, hyphens, underscores, dots and slashes.
+    /// Required. The path for the Content file, represented as directory structure.
+    /// Unique within a lake.
+    /// Limited to alphanumerics, hyphens, underscores, dots and slashes.
     #[prost(string, tag="3")]
     pub path: ::prost::alloc::string::String,
-    ///  Output only. Content creation time.
+    /// Output only. Content creation time.
     #[prost(message, optional, tag="4")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Output only. The time when the content was last updated.
+    /// Output only. The time when the content was last updated.
     #[prost(message, optional, tag="5")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Optional. User defined labels for the content.
+    /// Optional. User defined labels for the content.
     #[prost(map="string, string", tag="6")]
     pub labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
-    ///  Optional. Description of the content.
+    /// Optional. Description of the content.
     #[prost(string, tag="7")]
     pub description: ::prost::alloc::string::String,
-    ///  Only returned in `GetContent` requests and not in `ListContent` request.
+    /// Only returned in `GetContent` requests and not in `ListContent` request.
     #[prost(oneof="content::Data", tags="9")]
     pub data: ::core::option::Option<content::Data>,
     #[prost(oneof="content::Content", tags="100, 101")]
@@ -1076,22 +1076,22 @@ pub struct Content {
 }
 /// Nested message and enum types in `Content`.
 pub mod content {
-    ///  Configuration for the Sql Script content.
+    /// Configuration for the Sql Script content.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SqlScript {
-        ///  Required. Query Engine to be used for the Sql Query.
+        /// Required. Query Engine to be used for the Sql Query.
         #[prost(enumeration="sql_script::QueryEngine", tag="1")]
         pub engine: i32,
     }
     /// Nested message and enum types in `SqlScript`.
     pub mod sql_script {
-        ///  Query Engine Type of the SQL Script.
+        /// Query Engine Type of the SQL Script.
         #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
         #[repr(i32)]
         pub enum QueryEngine {
-            ///  Value was unspecified.
+            /// Value was unspecified.
             Unspecified = 0,
-            ///  Spark SQL Query.
+            /// Spark SQL Query.
             Spark = 2,
         }
         impl QueryEngine {
@@ -1107,22 +1107,22 @@ pub mod content {
             }
         }
     }
-    ///  Configuration for Notebook content.
+    /// Configuration for Notebook content.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Notebook {
-        ///  Required. Kernel Type of the notebook.
+        /// Required. Kernel Type of the notebook.
         #[prost(enumeration="notebook::KernelType", tag="1")]
         pub kernel_type: i32,
     }
     /// Nested message and enum types in `Notebook`.
     pub mod notebook {
-        ///  Kernel Type of the Jupyter notebook.
+        /// Kernel Type of the Jupyter notebook.
         #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
         #[repr(i32)]
         pub enum KernelType {
-            ///  Kernel Type unspecified.
+            /// Kernel Type unspecified.
             Unspecified = 0,
-            ///  Python 3 Kernel.
+            /// Python 3 Kernel.
             Python3 = 1,
         }
         impl KernelType {
@@ -1138,142 +1138,142 @@ pub mod content {
             }
         }
     }
-    ///  Only returned in `GetContent` requests and not in `ListContent` request.
+    /// Only returned in `GetContent` requests and not in `ListContent` request.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Data {
-        ///  Required. Content data in string format.
+        /// Required. Content data in string format.
         #[prost(string, tag="9")]
         DataText(::prost::alloc::string::String),
     }
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Content {
-        ///  Sql Script related configurations.
+        /// Sql Script related configurations.
         #[prost(message, tag="100")]
         SqlScript(SqlScript),
-        ///  Notebook related configurations.
+        /// Notebook related configurations.
         #[prost(message, tag="101")]
         Notebook(Notebook),
     }
 }
-///  Represents an active analyze session running for a user.
+/// Represents an active analyze session running for a user.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Session {
-    ///  Output only. The relative resource name of the content, of the form:
-    ///  projects/{project_id}/locations/{location_id}/lakes/{lake_id}/environment/{environment_id}/sessions/{session_id}
+    /// Output only. The relative resource name of the content, of the form:
+    /// projects/{project_id}/locations/{location_id}/lakes/{lake_id}/environment/{environment_id}/sessions/{session_id}
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Output only. Email of user running the session.
+    /// Output only. Email of user running the session.
     #[prost(string, tag="2")]
     pub user_id: ::prost::alloc::string::String,
-    ///  Output only. Session start time.
+    /// Output only. Session start time.
     #[prost(message, optional, tag="3")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     #[prost(enumeration="State", tag="4")]
     pub state: i32,
 }
-///  Create content request.
+/// Create content request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateContentRequest {
-    ///  Required. The resource name of the parent lake:
-    ///  projects/{project_id}/locations/{location_id}/lakes/{lake_id}
+    /// Required. The resource name of the parent lake:
+    /// projects/{project_id}/locations/{location_id}/lakes/{lake_id}
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Required. Content resource.
+    /// Required. Content resource.
     #[prost(message, optional, tag="2")]
     pub content: ::core::option::Option<Content>,
-    ///  Optional. Only validate the request, but do not perform mutations.
-    ///  The default is false.
+    /// Optional. Only validate the request, but do not perform mutations.
+    /// The default is false.
     #[prost(bool, tag="3")]
     pub validate_only: bool,
 }
-///  Update content request.
+/// Update content request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateContentRequest {
-    ///  Required. Mask of fields to update.
+    /// Required. Mask of fields to update.
     #[prost(message, optional, tag="1")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  Required. Update description.
-    ///  Only fields specified in `update_mask` are updated.
+    /// Required. Update description.
+    /// Only fields specified in `update_mask` are updated.
     #[prost(message, optional, tag="2")]
     pub content: ::core::option::Option<Content>,
-    ///  Optional. Only validate the request, but do not perform mutations.
-    ///  The default is false.
+    /// Optional. Only validate the request, but do not perform mutations.
+    /// The default is false.
     #[prost(bool, tag="3")]
     pub validate_only: bool,
 }
-///  Delete content request.
+/// Delete content request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteContentRequest {
-    ///  Required. The resource name of the content:
-    ///  projects/{project_id}/locations/{location_id}/lakes/{lake_id}/content/{content_id}
+    /// Required. The resource name of the content:
+    /// projects/{project_id}/locations/{location_id}/lakes/{lake_id}/content/{content_id}
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  List content request. Returns the BASIC Content view.
+/// List content request. Returns the BASIC Content view.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListContentRequest {
-    ///  Required. The resource name of the parent lake:
-    ///  projects/{project_id}/locations/{location_id}/lakes/{lake_id}
+    /// Required. The resource name of the parent lake:
+    /// projects/{project_id}/locations/{location_id}/lakes/{lake_id}
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Optional. Maximum number of content to return. The service may return fewer than
-    ///  this value. If unspecified, at most 10 content will be returned. The
-    ///  maximum value is 1000; values above 1000 will be coerced to 1000.
+    /// Optional. Maximum number of content to return. The service may return fewer than
+    /// this value. If unspecified, at most 10 content will be returned. The
+    /// maximum value is 1000; values above 1000 will be coerced to 1000.
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    ///  Optional. Page token received from a previous `ListContent` call. Provide this
-    ///  to retrieve the subsequent page. When paginating, all other parameters
-    ///  provided to `ListContent` must match the call that provided the page
-    ///  token.
+    /// Optional. Page token received from a previous `ListContent` call. Provide this
+    /// to retrieve the subsequent page. When paginating, all other parameters
+    /// provided to `ListContent` must match the call that provided the page
+    /// token.
     #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
-    ///  Optional. Filter request. Filters are case-sensitive.
-    ///  The following formats are supported:
+    /// Optional. Filter request. Filters are case-sensitive.
+    /// The following formats are supported:
     ///
-    ///  labels.key1 = "value1"
-    ///  labels:key1
-    ///  type = "NOTEBOOK"
-    ///  type = "SQL_SCRIPT"
+    /// labels.key1 = "value1"
+    /// labels:key1
+    /// type = "NOTEBOOK"
+    /// type = "SQL_SCRIPT"
     ///
-    ///  These restrictions can be coinjoined with AND, OR and NOT conjunctions.
+    /// These restrictions can be coinjoined with AND, OR and NOT conjunctions.
     #[prost(string, tag="4")]
     pub filter: ::prost::alloc::string::String,
 }
-///  List content response.
+/// List content response.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListContentResponse {
-    ///  Content under the given parent lake.
+    /// Content under the given parent lake.
     #[prost(message, repeated, tag="1")]
     pub content: ::prost::alloc::vec::Vec<Content>,
-    ///  Token to retrieve the next page of results, or empty if there are no more
-    ///  results in the list.
+    /// Token to retrieve the next page of results, or empty if there are no more
+    /// results in the list.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-///  Get content request.
+/// Get content request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetContentRequest {
-    ///  Required. The resource name of the content:
-    ///  projects/{project_id}/locations/{location_id}/lakes/{lake_id}/content/{content_id}
+    /// Required. The resource name of the content:
+    /// projects/{project_id}/locations/{location_id}/lakes/{lake_id}/content/{content_id}
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Optional. Specify content view to make a partial request.
+    /// Optional. Specify content view to make a partial request.
     #[prost(enumeration="get_content_request::ContentView", tag="2")]
     pub view: i32,
 }
 /// Nested message and enum types in `GetContentRequest`.
 pub mod get_content_request {
-    ///  Specifies whether the request should return the full or the partial
-    ///  representation.
+    /// Specifies whether the request should return the full or the partial
+    /// representation.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum ContentView {
-        ///  Content view not specified. Defaults to BASIC.
-        ///  The API will default to the BASIC view.
+        /// Content view not specified. Defaults to BASIC.
+        /// The API will default to the BASIC view.
         Unspecified = 0,
-        ///  Will not return the `data_text` field.
+        /// Will not return the `data_text` field.
         Basic = 1,
-        ///  Returns the complete proto.
+        /// Returns the complete proto.
         Full = 2,
     }
     impl ContentView {
@@ -1557,100 +1557,100 @@ pub mod content_service_client {
         }
     }
 }
-///  The payload associated with Discovery data processing.
+/// The payload associated with Discovery data processing.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DiscoveryEvent {
-    ///  The log message.
+    /// The log message.
     #[prost(string, tag="1")]
     pub message: ::prost::alloc::string::String,
-    ///  The id of the associated lake.
+    /// The id of the associated lake.
     #[prost(string, tag="2")]
     pub lake_id: ::prost::alloc::string::String,
-    ///  The id of the associated zone.
+    /// The id of the associated zone.
     #[prost(string, tag="3")]
     pub zone_id: ::prost::alloc::string::String,
-    ///  The id of the associated asset.
+    /// The id of the associated asset.
     #[prost(string, tag="4")]
     pub asset_id: ::prost::alloc::string::String,
-    ///  The data location associated with the event.
+    /// The data location associated with the event.
     #[prost(string, tag="5")]
     pub data_location: ::prost::alloc::string::String,
-    ///  The type of the event being logged.
+    /// The type of the event being logged.
     #[prost(enumeration="discovery_event::EventType", tag="10")]
     pub r#type: i32,
-    ///  Additional details about the event.
+    /// Additional details about the event.
     #[prost(oneof="discovery_event::Details", tags="20, 21, 22, 23")]
     pub details: ::core::option::Option<discovery_event::Details>,
 }
 /// Nested message and enum types in `DiscoveryEvent`.
 pub mod discovery_event {
-    ///  Details about configuration events.
+    /// Details about configuration events.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ConfigDetails {
-        ///  A list of discovery configuration parameters in effect.
-        ///  The keys are the field paths within DiscoverySpec.
-        ///  Eg. includePatterns, excludePatterns, csvOptions.disableTypeInference,
-        ///  etc.
+        /// A list of discovery configuration parameters in effect.
+        /// The keys are the field paths within DiscoverySpec.
+        /// Eg. includePatterns, excludePatterns, csvOptions.disableTypeInference,
+        /// etc.
         #[prost(map="string, string", tag="1")]
         pub parameters: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     }
-    ///  Details about the entity.
+    /// Details about the entity.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct EntityDetails {
-        ///  The name of the entity resource.
-        ///  The name is the fully-qualified resource name.
+        /// The name of the entity resource.
+        /// The name is the fully-qualified resource name.
         #[prost(string, tag="1")]
         pub entity: ::prost::alloc::string::String,
-        ///  The type of the entity resource.
+        /// The type of the entity resource.
         #[prost(enumeration="EntityType", tag="2")]
         pub r#type: i32,
     }
-    ///  Details about the partition.
+    /// Details about the partition.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct PartitionDetails {
-        ///  The name to the partition resource.
-        ///  The name is the fully-qualified resource name.
+        /// The name to the partition resource.
+        /// The name is the fully-qualified resource name.
         #[prost(string, tag="1")]
         pub partition: ::prost::alloc::string::String,
-        ///  The name to the containing entity resource.
-        ///  The name is the fully-qualified resource name.
+        /// The name to the containing entity resource.
+        /// The name is the fully-qualified resource name.
         #[prost(string, tag="2")]
         pub entity: ::prost::alloc::string::String,
-        ///  The type of the containing entity resource.
+        /// The type of the containing entity resource.
         #[prost(enumeration="EntityType", tag="3")]
         pub r#type: i32,
-        ///  The locations of the data items (e.g., a Cloud Storage objects) sampled
-        ///  for metadata inference.
+        /// The locations of the data items (e.g., a Cloud Storage objects) sampled
+        /// for metadata inference.
         #[prost(string, repeated, tag="4")]
         pub sampled_data_locations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
-    ///  Details about the action.
+    /// Details about the action.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ActionDetails {
-        ///  The type of action.
-        ///  Eg. IncompatibleDataSchema, InvalidDataFormat
+        /// The type of action.
+        /// Eg. IncompatibleDataSchema, InvalidDataFormat
         #[prost(string, tag="1")]
         pub r#type: ::prost::alloc::string::String,
     }
-    ///  The type of the event.
+    /// The type of the event.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum EventType {
-        ///  An unspecified event type.
+        /// An unspecified event type.
         Unspecified = 0,
-        ///  An event representing discovery configuration in effect.
+        /// An event representing discovery configuration in effect.
         Config = 1,
-        ///  An event representing a metadata entity being created.
+        /// An event representing a metadata entity being created.
         EntityCreated = 2,
-        ///  An event representing a metadata entity being updated.
+        /// An event representing a metadata entity being updated.
         EntityUpdated = 3,
-        ///  An event representing a metadata entity being deleted.
+        /// An event representing a metadata entity being deleted.
         EntityDeleted = 4,
-        ///  An event representing a partition being created.
+        /// An event representing a partition being created.
         PartitionCreated = 5,
-        ///  An event representing a partition being updated.
+        /// An event representing a partition being updated.
         PartitionUpdated = 6,
-        ///  An event representing a partition being deleted.
+        /// An event representing a partition being deleted.
         PartitionDeleted = 7,
     }
     impl EventType {
@@ -1671,15 +1671,15 @@ pub mod discovery_event {
             }
         }
     }
-    ///  The type of the entity.
+    /// The type of the entity.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum EntityType {
-        ///  An unspecified event type.
+        /// An unspecified event type.
         Unspecified = 0,
-        ///  Entities representing structured data.
+        /// Entities representing structured data.
         Table = 1,
-        ///  Entities representing unstructured data.
+        /// Entities representing unstructured data.
         Fileset = 2,
     }
     impl EntityType {
@@ -1695,66 +1695,66 @@ pub mod discovery_event {
             }
         }
     }
-    ///  Additional details about the event.
+    /// Additional details about the event.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Details {
-        ///  Details about discovery configuration in effect.
+        /// Details about discovery configuration in effect.
         #[prost(message, tag="20")]
         Config(ConfigDetails),
-        ///  Details about the entity associated with the event.
+        /// Details about the entity associated with the event.
         #[prost(message, tag="21")]
         Entity(EntityDetails),
-        ///  Details about the partition associated with the event.
+        /// Details about the partition associated with the event.
         #[prost(message, tag="22")]
         Partition(PartitionDetails),
-        ///  Details about the action associated with the event.
+        /// Details about the action associated with the event.
         #[prost(message, tag="23")]
         Action(ActionDetails),
     }
 }
-///  The payload associated with Job logs that contains events describing jobs
-///  that have run within a Lake.
+/// The payload associated with Job logs that contains events describing jobs
+/// that have run within a Lake.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct JobEvent {
-    ///  The log message.
+    /// The log message.
     #[prost(string, tag="1")]
     pub message: ::prost::alloc::string::String,
-    ///  The unique id identifying the job.
+    /// The unique id identifying the job.
     #[prost(string, tag="2")]
     pub job_id: ::prost::alloc::string::String,
-    ///  The time when the job started running.
+    /// The time when the job started running.
     #[prost(message, optional, tag="3")]
     pub start_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  The time when the job ended running.
+    /// The time when the job ended running.
     #[prost(message, optional, tag="4")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  The job state on completion.
+    /// The job state on completion.
     #[prost(enumeration="job_event::State", tag="5")]
     pub state: i32,
-    ///  The number of retries.
+    /// The number of retries.
     #[prost(int32, tag="6")]
     pub retries: i32,
-    ///  The type of the job.
+    /// The type of the job.
     #[prost(enumeration="job_event::Type", tag="7")]
     pub r#type: i32,
-    ///  The service used to execute the job.
+    /// The service used to execute the job.
     #[prost(enumeration="job_event::Service", tag="8")]
     pub service: i32,
-    ///  The reference to the job within the service.
+    /// The reference to the job within the service.
     #[prost(string, tag="9")]
     pub service_job: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `JobEvent`.
 pub mod job_event {
-    ///  The type of the job.
+    /// The type of the job.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum Type {
-        ///  Unspecified job type.
+        /// Unspecified job type.
         Unspecified = 0,
-        ///  Spark jobs.
+        /// Spark jobs.
         Spark = 1,
-        ///  Notebook jobs.
+        /// Notebook jobs.
         Notebook = 2,
     }
     impl Type {
@@ -1770,19 +1770,19 @@ pub mod job_event {
             }
         }
     }
-    ///  The completion status of the job.
+    /// The completion status of the job.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum State {
-        ///  Unspecified job state.
+        /// Unspecified job state.
         Unspecified = 0,
-        ///  Job successfully completed.
+        /// Job successfully completed.
         Succeeded = 1,
-        ///  Job was unsuccessful.
+        /// Job was unsuccessful.
         Failed = 2,
-        ///  Job was cancelled by the user.
+        /// Job was cancelled by the user.
         Cancelled = 3,
-        ///  Job was cancelled or aborted via the service executing the job.
+        /// Job was cancelled or aborted via the service executing the job.
         Aborted = 4,
     }
     impl State {
@@ -1800,13 +1800,13 @@ pub mod job_event {
             }
         }
     }
-    ///  The service used to execute the job.
+    /// The service used to execute the job.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum Service {
-        ///  Unspecified service.
+        /// Unspecified service.
         Unspecified = 0,
-        ///  Cloud Dataproc.
+        /// Cloud Dataproc.
         Dataproc = 1,
     }
     impl Service {
@@ -1822,61 +1822,61 @@ pub mod job_event {
         }
     }
 }
-///  These messages contain information about sessions within an environment.
-///  The monitored resource is 'Environment'.
+/// These messages contain information about sessions within an environment.
+/// The monitored resource is 'Environment'.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SessionEvent {
-    ///  The log message.
+    /// The log message.
     #[prost(string, tag="1")]
     pub message: ::prost::alloc::string::String,
-    ///  The information about the user that created the session.
+    /// The information about the user that created the session.
     #[prost(string, tag="2")]
     pub user_id: ::prost::alloc::string::String,
-    ///  Unique identifier for the session.
+    /// Unique identifier for the session.
     #[prost(string, tag="3")]
     pub session_id: ::prost::alloc::string::String,
-    ///  The type of the event.
+    /// The type of the event.
     #[prost(enumeration="session_event::EventType", tag="4")]
     pub r#type: i32,
-    ///  Additional information about the Query metadata.
+    /// Additional information about the Query metadata.
     #[prost(oneof="session_event::Detail", tags="5")]
     pub detail: ::core::option::Option<session_event::Detail>,
 }
 /// Nested message and enum types in `SessionEvent`.
 pub mod session_event {
-    ///  Execution details of the query.
+    /// Execution details of the query.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct QueryDetail {
-        ///  The unique Query id identifying the query.
+        /// The unique Query id identifying the query.
         #[prost(string, tag="1")]
         pub query_id: ::prost::alloc::string::String,
-        ///  The query text executed.
+        /// The query text executed.
         #[prost(string, tag="2")]
         pub query_text: ::prost::alloc::string::String,
-        ///  Query Execution engine.
+        /// Query Execution engine.
         #[prost(enumeration="query_detail::Engine", tag="3")]
         pub engine: i32,
-        ///  Time taken for execution of the query.
+        /// Time taken for execution of the query.
         #[prost(message, optional, tag="4")]
         pub duration: ::core::option::Option<::prost_types::Duration>,
-        ///  The size of results the query produced.
+        /// The size of results the query produced.
         #[prost(int64, tag="5")]
         pub result_size_bytes: i64,
-        ///  The data processed by the query.
+        /// The data processed by the query.
         #[prost(int64, tag="6")]
         pub data_processed_bytes: i64,
     }
     /// Nested message and enum types in `QueryDetail`.
     pub mod query_detail {
-        ///  Query Execution engine.
+        /// Query Execution engine.
         #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
         #[repr(i32)]
         pub enum Engine {
-            ///  An unspecified Engine type.
+            /// An unspecified Engine type.
             Unspecified = 0,
-            ///  Spark-sql engine is specified in Query.
+            /// Spark-sql engine is specified in Query.
             SparkSql = 1,
-            ///  BigQuery engine is specified in Query.
+            /// BigQuery engine is specified in Query.
             Bigquery = 2,
         }
         impl Engine {
@@ -1893,17 +1893,17 @@ pub mod session_event {
             }
         }
     }
-    ///  The type of the event.
+    /// The type of the event.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum EventType {
-        ///  An unspecified event type.
+        /// An unspecified event type.
         Unspecified = 0,
-        ///  Event for start of a session.
+        /// Event for start of a session.
         Start = 1,
-        ///  Event for stop of a session.
+        /// Event for stop of a session.
         Stop = 2,
-        ///  Query events in the session.
+        /// Query events in the session.
         Query = 3,
     }
     impl EventType {
@@ -1920,99 +1920,99 @@ pub mod session_event {
             }
         }
     }
-    ///  Additional information about the Query metadata.
+    /// Additional information about the Query metadata.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Detail {
-        ///  The execution details of the query.
+        /// The execution details of the query.
         #[prost(message, tag="5")]
         Query(QueryDetail),
     }
 }
-///  Create a metadata entity request.
+/// Create a metadata entity request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateEntityRequest {
-    ///  Required. The resource name of the parent zone:
-    ///  `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}`.
+    /// Required. The resource name of the parent zone:
+    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}`.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Required. Entity resource.
+    /// Required. Entity resource.
     #[prost(message, optional, tag="3")]
     pub entity: ::core::option::Option<Entity>,
-    ///  Optional. Only validate the request, but do not perform mutations.
-    ///  The default is false.
+    /// Optional. Only validate the request, but do not perform mutations.
+    /// The default is false.
     #[prost(bool, tag="4")]
     pub validate_only: bool,
 }
-///  Update a metadata entity request.
-///  The exiting entity will be fully replaced by the entity in the request.
-///  The entity ID is mutable. To modify the ID, use the current entity ID in the
-///  request URL and specify the new ID in the request body.
+/// Update a metadata entity request.
+/// The exiting entity will be fully replaced by the entity in the request.
+/// The entity ID is mutable. To modify the ID, use the current entity ID in the
+/// request URL and specify the new ID in the request body.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateEntityRequest {
-    ///  Required. Update description.
+    /// Required. Update description.
     #[prost(message, optional, tag="2")]
     pub entity: ::core::option::Option<Entity>,
-    ///  Optional. Only validate the request, but do not perform mutations.
-    ///  The default is false.
+    /// Optional. Only validate the request, but do not perform mutations.
+    /// The default is false.
     #[prost(bool, tag="3")]
     pub validate_only: bool,
 }
-///  Delete a metadata entity request.
+/// Delete a metadata entity request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteEntityRequest {
-    ///  Required. The resource name of the entity:
-    ///  `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}/entities/{entity_id}`.
+    /// Required. The resource name of the entity:
+    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}/entities/{entity_id}`.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Required. The etag associated with the entity, which can be retrieved with a
-    ///  \[GetEntity][\] request.
+    /// Required. The etag associated with the entity, which can be retrieved with a
+    /// \[GetEntity][\] request.
     #[prost(string, tag="2")]
     pub etag: ::prost::alloc::string::String,
 }
-///  List metadata entities request.
+/// List metadata entities request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEntitiesRequest {
-    ///  Required. The resource name of the parent zone:
-    ///  `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}`.
+    /// Required. The resource name of the parent zone:
+    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}`.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Required. Specify the entity view to make a partial list request.
+    /// Required. Specify the entity view to make a partial list request.
     #[prost(enumeration="list_entities_request::EntityView", tag="2")]
     pub view: i32,
-    ///  Optional. Maximum number of entities to return. The service may return fewer than
-    ///  this value. If unspecified, 100 entities will be returned by default. The
-    ///  maximum value is 500; larger values will will be truncated to 500.
+    /// Optional. Maximum number of entities to return. The service may return fewer than
+    /// this value. If unspecified, 100 entities will be returned by default. The
+    /// maximum value is 500; larger values will will be truncated to 500.
     #[prost(int32, tag="3")]
     pub page_size: i32,
-    ///  Optional. Page token received from a previous `ListEntities` call. Provide
-    ///  this to retrieve the subsequent page. When paginating, all other parameters
-    ///  provided to `ListEntities` must match the call that provided the
-    ///  page token.
+    /// Optional. Page token received from a previous `ListEntities` call. Provide
+    /// this to retrieve the subsequent page. When paginating, all other parameters
+    /// provided to `ListEntities` must match the call that provided the
+    /// page token.
     #[prost(string, tag="4")]
     pub page_token: ::prost::alloc::string::String,
-    ///  Optional. The following filter parameters can be added to the URL to limit the
-    ///  entities returned by the API:
+    /// Optional. The following filter parameters can be added to the URL to limit the
+    /// entities returned by the API:
     ///
-    ///  - Entity ID: ?filter="id=entityID"
-    ///  - Asset ID: ?filter="asset=assetID"
-    ///  - Data path ?filter="data_path=gs://my-bucket"
-    ///  - Is HIVE compatible: ?filter="hive_compatible=true"
-    ///  - Is BigQuery compatible: ?filter="bigquery_compatible=true"
+    /// - Entity ID: ?filter="id=entityID"
+    /// - Asset ID: ?filter="asset=assetID"
+    /// - Data path ?filter="data_path=gs://my-bucket"
+    /// - Is HIVE compatible: ?filter="hive_compatible=true"
+    /// - Is BigQuery compatible: ?filter="bigquery_compatible=true"
     #[prost(string, tag="5")]
     pub filter: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `ListEntitiesRequest`.
 pub mod list_entities_request {
-    ///  Entity views.
+    /// Entity views.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum EntityView {
-        ///  The default unset value. Return both table and fileset entities
-        ///  if unspecified.
+        /// The default unset value. Return both table and fileset entities
+        /// if unspecified.
         Unspecified = 0,
-        ///  Only list table entities.
+        /// Only list table entities.
         Tables = 1,
-        ///  Only list fileset entities.
+        /// Only list fileset entities.
         Filesets = 2,
     }
     impl EntityView {
@@ -2029,42 +2029,42 @@ pub mod list_entities_request {
         }
     }
 }
-///  List metadata entities response.
+/// List metadata entities response.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEntitiesResponse {
-    ///  Entities in the specified parent zone.
+    /// Entities in the specified parent zone.
     #[prost(message, repeated, tag="1")]
     pub entities: ::prost::alloc::vec::Vec<Entity>,
-    ///  Token to retrieve the next page of results, or empty if there are no
-    ///  remaining results in the list.
+    /// Token to retrieve the next page of results, or empty if there are no
+    /// remaining results in the list.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-///  Get metadata entity request.
+/// Get metadata entity request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetEntityRequest {
-    ///  Required. The resource name of the entity:
-    ///  `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}/entities/{entity_id}.`
+    /// Required. The resource name of the entity:
+    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}/entities/{entity_id}.`
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Optional. Used to select the subset of entity information to return.
-    ///  Defaults to `BASIC`.
+    /// Optional. Used to select the subset of entity information to return.
+    /// Defaults to `BASIC`.
     #[prost(enumeration="get_entity_request::EntityView", tag="2")]
     pub view: i32,
 }
 /// Nested message and enum types in `GetEntityRequest`.
 pub mod get_entity_request {
-    ///  Entity views for get entity partial result.
+    /// Entity views for get entity partial result.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum EntityView {
-        ///  The API will default to the `BASIC` view.
+        /// The API will default to the `BASIC` view.
         Unspecified = 0,
-        ///  Minimal view that does not include the schema.
+        /// Minimal view that does not include the schema.
         Basic = 1,
-        ///  Include basic information and schema.
+        /// Include basic information and schema.
         Schema = 2,
-        ///  Include everything. Currently, this is the same as the SCHEMA view.
+        /// Include everything. Currently, this is the same as the SCHEMA view.
         Full = 4,
     }
     impl EntityView {
@@ -2082,203 +2082,203 @@ pub mod get_entity_request {
         }
     }
 }
-///  List metadata partitions request.
+/// List metadata partitions request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPartitionsRequest {
-    ///  Required. The resource name of the parent entity:
-    ///  `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}/entities/{entity_id}`.
+    /// Required. The resource name of the parent entity:
+    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}/entities/{entity_id}`.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Optional. Maximum number of partitions to return. The service may return fewer than
-    ///  this value. If unspecified, 100 partitions will be returned by default. The
-    ///  maximum page size is 500; larger values will will be truncated to 500.
+    /// Optional. Maximum number of partitions to return. The service may return fewer than
+    /// this value. If unspecified, 100 partitions will be returned by default. The
+    /// maximum page size is 500; larger values will will be truncated to 500.
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    ///  Optional. Page token received from a previous `ListPartitions` call. Provide
-    ///  this to retrieve the subsequent page. When paginating, all other parameters
-    ///  provided to `ListPartitions` must match the call that provided the
-    ///  page token.
+    /// Optional. Page token received from a previous `ListPartitions` call. Provide
+    /// this to retrieve the subsequent page. When paginating, all other parameters
+    /// provided to `ListPartitions` must match the call that provided the
+    /// page token.
     #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
-    ///  Optional. Filter the partitions returned to the caller using a key value pair
-    ///  expression. Supported operators and syntax:
+    /// Optional. Filter the partitions returned to the caller using a key value pair
+    /// expression. Supported operators and syntax:
     ///
-    ///  - logic operators: AND, OR
-    ///  - comparison operators: <, >, >=, <= ,=, !=
-    ///  - LIKE operators:
+    /// - logic operators: AND, OR
+    /// - comparison operators: <, >, >=, <= ,=, !=
+    /// - LIKE operators:
     ///    - The right hand of a LIKE operator supports "." and
     ///      "*" for wildcard searches, for example "value1 LIKE ".*oo.*"
-    ///  - parenthetical grouping: ( )
+    /// - parenthetical grouping: ( )
     ///
-    ///  Sample filter expression: `?filter="key1 < value1 OR key2 > value2"
+    /// Sample filter expression: `?filter="key1 < value1 OR key2 > value2"
     ///
-    ///  **Notes:**
+    /// **Notes:**
     ///
-    ///  - Keys to the left of operators are case insensitive.
-    ///  - Partition results are sorted first by creation time, then by
+    /// - Keys to the left of operators are case insensitive.
+    /// - Partition results are sorted first by creation time, then by
     ///    lexicographic order.
-    ///  - Up to 20 key value filter pairs are allowed, but due to performance
+    /// - Up to 20 key value filter pairs are allowed, but due to performance
     ///    considerations, only the first 10 will be used as a filter.
     #[prost(string, tag="4")]
     pub filter: ::prost::alloc::string::String,
 }
-///  Create metadata partition request.
+/// Create metadata partition request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreatePartitionRequest {
-    ///  Required. The resource name of the parent zone:
-    ///  `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}/entities/{entity_id}`.
+    /// Required. The resource name of the parent zone:
+    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}/entities/{entity_id}`.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Required. Partition resource.
+    /// Required. Partition resource.
     #[prost(message, optional, tag="3")]
     pub partition: ::core::option::Option<Partition>,
-    ///  Optional. Only validate the request, but do not perform mutations.
-    ///  The default is false.
+    /// Optional. Only validate the request, but do not perform mutations.
+    /// The default is false.
     #[prost(bool, tag="4")]
     pub validate_only: bool,
 }
-///  Delete metadata partition request.
+/// Delete metadata partition request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeletePartitionRequest {
-    ///  Required. The resource name of the partition.
-    ///  format:
-    ///  `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}/entities/{entity_id}/partitions/{partition_value_path}`.
-    ///  The {partition_value_path} segment consists of an ordered sequence of
-    ///  partition values separated by "/". All values must be provided.
+    /// Required. The resource name of the partition.
+    /// format:
+    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}/entities/{entity_id}/partitions/{partition_value_path}`.
+    /// The {partition_value_path} segment consists of an ordered sequence of
+    /// partition values separated by "/". All values must be provided.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Optional. The etag associated with the partition.
+    /// Optional. The etag associated with the partition.
     #[deprecated]
     #[prost(string, tag="2")]
     pub etag: ::prost::alloc::string::String,
 }
-///  List metadata partitions response.
+/// List metadata partitions response.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPartitionsResponse {
-    ///  Partitions under the specified parent entity.
+    /// Partitions under the specified parent entity.
     #[prost(message, repeated, tag="1")]
     pub partitions: ::prost::alloc::vec::Vec<Partition>,
-    ///  Token to retrieve the next page of results, or empty if there are no
-    ///  remaining results in the list.
+    /// Token to retrieve the next page of results, or empty if there are no
+    /// remaining results in the list.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-///  Get metadata partition request.
+/// Get metadata partition request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetPartitionRequest {
-    ///  Required. The resource name of the partition:
-    ///  `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}/entities/{entity_id}/partitions/{partition_value_path}`.
-    ///  The {partition_value_path} segment consists of an ordered sequence of
-    ///  partition values separated by "/". All values must be provided.
+    /// Required. The resource name of the partition:
+    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}/entities/{entity_id}/partitions/{partition_value_path}`.
+    /// The {partition_value_path} segment consists of an ordered sequence of
+    /// partition values separated by "/". All values must be provided.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Represents tables and fileset metadata contained within a zone.
+/// Represents tables and fileset metadata contained within a zone.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Entity {
-    ///  Output only. The resource name of the entity, of the form:
-    ///  `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}/entities/{id}`.
+    /// Output only. The resource name of the entity, of the form:
+    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}/entities/{id}`.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Optional. Display name must be shorter than or equal to 256 characters.
+    /// Optional. Display name must be shorter than or equal to 256 characters.
     #[prost(string, tag="2")]
     pub display_name: ::prost::alloc::string::String,
-    ///  Optional. User friendly longer description text. Must be shorter than or equal to
-    ///  1024 characters.
+    /// Optional. User friendly longer description text. Must be shorter than or equal to
+    /// 1024 characters.
     #[prost(string, tag="3")]
     pub description: ::prost::alloc::string::String,
-    ///  Output only. The time when the entity was created.
+    /// Output only. The time when the entity was created.
     #[prost(message, optional, tag="5")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Output only. The time when the entity was last updated.
+    /// Output only. The time when the entity was last updated.
     #[prost(message, optional, tag="6")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Required. A user-provided entity ID. It is mutable, and will be used as the
-    ///  published table name. Specifying a new ID in an update entity
-    ///  request will override the existing value.
-    ///  The ID must contain only letters (a-z, A-Z), numbers (0-9), and
-    ///  underscores. Must begin with a letter and consist of 256 or fewer
-    ///  characters.
+    /// Required. A user-provided entity ID. It is mutable, and will be used as the
+    /// published table name. Specifying a new ID in an update entity
+    /// request will override the existing value.
+    /// The ID must contain only letters (a-z, A-Z), numbers (0-9), and
+    /// underscores. Must begin with a letter and consist of 256 or fewer
+    /// characters.
     #[prost(string, tag="7")]
     pub id: ::prost::alloc::string::String,
-    ///  Optional. The etag associated with the entity, which can be retrieved with a
-    ///  \[GetEntity][\] request. Required for update and delete requests.
+    /// Optional. The etag associated with the entity, which can be retrieved with a
+    /// \[GetEntity][\] request. Required for update and delete requests.
     #[prost(string, tag="8")]
     pub etag: ::prost::alloc::string::String,
-    ///  Required. Immutable. The type of entity.
+    /// Required. Immutable. The type of entity.
     #[prost(enumeration="entity::Type", tag="10")]
     pub r#type: i32,
-    ///  Required. Immutable. The ID of the asset associated with the storage location containing the
-    ///  entity data. The entity must be with in the same zone with the asset.
+    /// Required. Immutable. The ID of the asset associated with the storage location containing the
+    /// entity data. The entity must be with in the same zone with the asset.
     #[prost(string, tag="11")]
     pub asset: ::prost::alloc::string::String,
-    ///  Required. Immutable. The storage path of the entity data.
-    ///  For Cloud Storage data, this is the fully-qualified path to the entity,
-    ///  such as `gs://bucket/path/to/data`. For BigQuery data, this is the name of
-    ///  the table resource, such as
-    ///  `projects/project_id/datasets/dataset_id/tables/table_id`.
+    /// Required. Immutable. The storage path of the entity data.
+    /// For Cloud Storage data, this is the fully-qualified path to the entity,
+    /// such as `gs://bucket/path/to/data`. For BigQuery data, this is the name of
+    /// the table resource, such as
+    /// `projects/project_id/datasets/dataset_id/tables/table_id`.
     #[prost(string, tag="12")]
     pub data_path: ::prost::alloc::string::String,
-    ///  Optional. The set of items within the data path constituting the data in the entity,
-    ///  represented as a glob path.
-    ///  Example: `gs://bucket/path/to/data/**/*.csv`.
+    /// Optional. The set of items within the data path constituting the data in the entity,
+    /// represented as a glob path.
+    /// Example: `gs://bucket/path/to/data/**/*.csv`.
     #[prost(string, tag="13")]
     pub data_path_pattern: ::prost::alloc::string::String,
-    ///  Output only. The name of the associated Data Catalog entry.
+    /// Output only. The name of the associated Data Catalog entry.
     #[prost(string, tag="14")]
     pub catalog_entry: ::prost::alloc::string::String,
-    ///  Required. Immutable. Identifies the storage system of the entity data.
+    /// Required. Immutable. Identifies the storage system of the entity data.
     #[prost(enumeration="StorageSystem", tag="15")]
     pub system: i32,
-    ///  Required. Identifies the storage format of the entity data.
-    ///  It does not apply to entities with data stored in BigQuery.
+    /// Required. Identifies the storage format of the entity data.
+    /// It does not apply to entities with data stored in BigQuery.
     #[prost(message, optional, tag="16")]
     pub format: ::core::option::Option<StorageFormat>,
-    ///  Output only. Metadata stores that the entity is compatible with.
+    /// Output only. Metadata stores that the entity is compatible with.
     #[prost(message, optional, tag="19")]
     pub compatibility: ::core::option::Option<entity::CompatibilityStatus>,
-    ///  Required. The description of the data structure and layout.
-    ///  The schema is not included in list responses. It is only included in
-    ///  `SCHEMA` and `FULL` entity views of a `GetEntity` response.
+    /// Required. The description of the data structure and layout.
+    /// The schema is not included in list responses. It is only included in
+    /// `SCHEMA` and `FULL` entity views of a `GetEntity` response.
     #[prost(message, optional, tag="50")]
     pub schema: ::core::option::Option<Schema>,
 }
 /// Nested message and enum types in `Entity`.
 pub mod entity {
-    ///  Provides compatibility information for various metadata stores.
+    /// Provides compatibility information for various metadata stores.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CompatibilityStatus {
-        ///  Output only. Whether this entity is compatible with Hive Metastore.
+        /// Output only. Whether this entity is compatible with Hive Metastore.
         #[prost(message, optional, tag="1")]
         pub hive_metastore: ::core::option::Option<compatibility_status::Compatibility>,
-        ///  Output only. Whether this entity is compatible with BigQuery.
+        /// Output only. Whether this entity is compatible with BigQuery.
         #[prost(message, optional, tag="2")]
         pub bigquery: ::core::option::Option<compatibility_status::Compatibility>,
     }
     /// Nested message and enum types in `CompatibilityStatus`.
     pub mod compatibility_status {
-        ///  Provides compatibility information for a specific metadata store.
+        /// Provides compatibility information for a specific metadata store.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Compatibility {
-            ///  Output only. Whether the entity is compatible and can be represented in the metadata
-            ///  store.
+            /// Output only. Whether the entity is compatible and can be represented in the metadata
+            /// store.
             #[prost(bool, tag="1")]
             pub compatible: bool,
-            ///  Output only. Provides additional detail if the entity is incompatible with the
-            ///  metadata store.
+            /// Output only. Provides additional detail if the entity is incompatible with the
+            /// metadata store.
             #[prost(string, tag="2")]
             pub reason: ::prost::alloc::string::String,
         }
     }
-    ///  The type of entity.
+    /// The type of entity.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum Type {
-        ///  Type unspecified.
+        /// Type unspecified.
         Unspecified = 0,
-        ///  Structured and semi-structured data.
+        /// Structured and semi-structured data.
         Table = 1,
-        ///  Unstructured data.
+        /// Unstructured data.
         Fileset = 2,
     }
     impl Type {
@@ -2295,135 +2295,135 @@ pub mod entity {
         }
     }
 }
-///  Represents partition metadata contained within entity instances.
+/// Represents partition metadata contained within entity instances.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Partition {
-    ///  Output only. Partition values used in the HTTP URL must be
-    ///  double encoded. For example, `url_encode(url_encode(value))` can be used
-    ///  to encode "US:CA/CA#Sunnyvale so that the request URL ends
-    ///  with "/partitions/US%253ACA/CA%2523Sunnyvale".
-    ///  The name field in the response retains the encoded format.
+    /// Output only. Partition values used in the HTTP URL must be
+    /// double encoded. For example, `url_encode(url_encode(value))` can be used
+    /// to encode "US:CA/CA#Sunnyvale so that the request URL ends
+    /// with "/partitions/US%253ACA/CA%2523Sunnyvale".
+    /// The name field in the response retains the encoded format.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Required. Immutable. The set of values representing the partition, which correspond to the
-    ///  partition schema defined in the parent entity.
+    /// Required. Immutable. The set of values representing the partition, which correspond to the
+    /// partition schema defined in the parent entity.
     #[prost(string, repeated, tag="2")]
     pub values: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    ///  Required. Immutable. The location of the entity data within the partition, for example,
-    ///  `gs://bucket/path/to/entity/key1=value1/key2=value2`.
-    ///  Or `projects/<project_id>/datasets/<dataset_id>/tables/<table_id>`
+    /// Required. Immutable. The location of the entity data within the partition, for example,
+    /// `gs://bucket/path/to/entity/key1=value1/key2=value2`.
+    /// Or `projects/<project_id>/datasets/<dataset_id>/tables/<table_id>`
     #[prost(string, tag="3")]
     pub location: ::prost::alloc::string::String,
-    ///  Optional. The etag for this partition.
+    /// Optional. The etag for this partition.
     #[deprecated]
     #[prost(string, tag="4")]
     pub etag: ::prost::alloc::string::String,
 }
-///  Schema information describing the structure and layout of the data.
+/// Schema information describing the structure and layout of the data.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Schema {
-    ///  Required. Set to `true` if user-managed or `false` if managed by Dataplex. The
-    ///  default is `false` (managed by Dataplex).
+    /// Required. Set to `true` if user-managed or `false` if managed by Dataplex. The
+    /// default is `false` (managed by Dataplex).
     ///
-    ///  - Set to `false`to enable Dataplex discovery to update the schema.
+    /// - Set to `false`to enable Dataplex discovery to update the schema.
     ///    including new data discovery, schema inference, and schema evolution.
     ///    Users retain the ability to input and edit the schema. Dataplex
     ///    treats schema input by the user as though produced
     ///    by a previous Dataplex discovery operation, and it will
     ///    evolve the schema and take action based on that treatment.
     ///
-    ///  - Set to `true` to fully manage the entity
+    /// - Set to `true` to fully manage the entity
     ///    schema. This setting guarantees that Dataplex will not
     ///    change schema fields.
     #[prost(bool, tag="1")]
     pub user_managed: bool,
-    ///  Optional. The sequence of fields describing data in table entities.
-    ///  **Note:** BigQuery SchemaFields are immutable.
+    /// Optional. The sequence of fields describing data in table entities.
+    /// **Note:** BigQuery SchemaFields are immutable.
     #[prost(message, repeated, tag="2")]
     pub fields: ::prost::alloc::vec::Vec<schema::SchemaField>,
-    ///  Optional. The sequence of fields describing the partition structure in entities.
-    ///  If this field is empty, there are no partitions within the data.
+    /// Optional. The sequence of fields describing the partition structure in entities.
+    /// If this field is empty, there are no partitions within the data.
     #[prost(message, repeated, tag="3")]
     pub partition_fields: ::prost::alloc::vec::Vec<schema::PartitionField>,
-    ///  Optional. The structure of paths containing partition data within the entity.
+    /// Optional. The structure of paths containing partition data within the entity.
     #[prost(enumeration="schema::PartitionStyle", tag="4")]
     pub partition_style: i32,
 }
 /// Nested message and enum types in `Schema`.
 pub mod schema {
-    ///  Represents a column field within a table schema.
+    /// Represents a column field within a table schema.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SchemaField {
-        ///  Required. The name of the field. Must contain only letters, numbers and
-        ///  underscores, with a maximum length of 767 characters,
-        ///  and must begin with a letter or underscore.
+        /// Required. The name of the field. Must contain only letters, numbers and
+        /// underscores, with a maximum length of 767 characters,
+        /// and must begin with a letter or underscore.
         #[prost(string, tag="1")]
         pub name: ::prost::alloc::string::String,
-        ///  Optional. User friendly field description. Must be less than or equal to 1024
-        ///  characters.
+        /// Optional. User friendly field description. Must be less than or equal to 1024
+        /// characters.
         #[prost(string, tag="2")]
         pub description: ::prost::alloc::string::String,
-        ///  Required. The type of field.
+        /// Required. The type of field.
         #[prost(enumeration="Type", tag="3")]
         pub r#type: i32,
-        ///  Required. Additional field semantics.
+        /// Required. Additional field semantics.
         #[prost(enumeration="Mode", tag="4")]
         pub mode: i32,
-        ///  Optional. Any nested field for complex types.
+        /// Optional. Any nested field for complex types.
         #[prost(message, repeated, tag="10")]
         pub fields: ::prost::alloc::vec::Vec<SchemaField>,
     }
-    ///  Represents a key field within the entity's partition structure. You could
-    ///  have up to 20 partition fields, but only the first 10 partitions have the
-    ///  filtering ability due to performance consideration. **Note:**
-    ///  Partition fields are immutable.
+    /// Represents a key field within the entity's partition structure. You could
+    /// have up to 20 partition fields, but only the first 10 partitions have the
+    /// filtering ability due to performance consideration. **Note:**
+    /// Partition fields are immutable.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct PartitionField {
-        ///  Required. Partition field name must consist of letters, numbers, and underscores
-        ///  only, with a maximum of length of 256 characters,
-        ///  and must begin with a letter or underscore..
+        /// Required. Partition field name must consist of letters, numbers, and underscores
+        /// only, with a maximum of length of 256 characters,
+        /// and must begin with a letter or underscore..
         #[prost(string, tag="1")]
         pub name: ::prost::alloc::string::String,
-        ///  Required. Immutable. The type of field.
+        /// Required. Immutable. The type of field.
         #[prost(enumeration="Type", tag="2")]
         pub r#type: i32,
     }
-    ///  Type information for fields in schemas and partition schemas.
+    /// Type information for fields in schemas and partition schemas.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum Type {
-        ///  SchemaType unspecified.
+        /// SchemaType unspecified.
         Unspecified = 0,
-        ///  Boolean field.
+        /// Boolean field.
         Boolean = 1,
-        ///  Single byte numeric field.
+        /// Single byte numeric field.
         Byte = 2,
-        ///  16-bit numeric field.
+        /// 16-bit numeric field.
         Int16 = 3,
-        ///  32-bit numeric field.
+        /// 32-bit numeric field.
         Int32 = 4,
-        ///  64-bit numeric field.
+        /// 64-bit numeric field.
         Int64 = 5,
-        ///  Floating point numeric field.
+        /// Floating point numeric field.
         Float = 6,
-        ///  Double precision numeric field.
+        /// Double precision numeric field.
         Double = 7,
-        ///  Real value numeric field.
+        /// Real value numeric field.
         Decimal = 8,
-        ///  Sequence of characters field.
+        /// Sequence of characters field.
         String = 9,
-        ///  Sequence of bytes field.
+        /// Sequence of bytes field.
         Binary = 10,
-        ///  Date and time field.
+        /// Date and time field.
         Timestamp = 11,
-        ///  Date field.
+        /// Date field.
         Date = 12,
-        ///  Time field.
+        /// Time field.
         Time = 13,
-        ///  Structured field. Nested fields that define the structure of the map.
-        ///  If all nested fields are nullable, this field represents a union.
+        /// Structured field. Nested fields that define the structure of the map.
+        /// If all nested fields are nullable, this field represents a union.
         Record = 14,
-        ///  Null field that does not have values.
+        /// Null field that does not have values.
         Null = 100,
     }
     impl Type {
@@ -2452,17 +2452,17 @@ pub mod schema {
             }
         }
     }
-    ///  Additional qualifiers to define field semantics.
+    /// Additional qualifiers to define field semantics.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum Mode {
-        ///  Mode unspecified.
+        /// Mode unspecified.
         Unspecified = 0,
-        ///  The field has required semantics.
+        /// The field has required semantics.
         Required = 1,
-        ///  The field has optional semantics, and may be null.
+        /// The field has optional semantics, and may be null.
         Nullable = 2,
-        ///  The field has repeated (0 or more) semantics, and is a list of values.
+        /// The field has repeated (0 or more) semantics, and is a list of values.
         Repeated = 3,
     }
     impl Mode {
@@ -2479,15 +2479,15 @@ pub mod schema {
             }
         }
     }
-    ///  The structure of paths within the entity, which represent partitions.
+    /// The structure of paths within the entity, which represent partitions.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum PartitionStyle {
-        ///  PartitionStyle unspecified
+        /// PartitionStyle unspecified
         Unspecified = 0,
-        ///  Partitions are hive-compatible.
-        ///  Examples: `gs://bucket/path/to/table/dt=2019-10-31/lang=en`,
-        ///  `gs://bucket/path/to/table/dt=2019-10-31/lang=en/late`.
+        /// Partitions are hive-compatible.
+        /// Examples: `gs://bucket/path/to/table/dt=2019-10-31/lang=en`,
+        /// `gs://bucket/path/to/table/dt=2019-10-31/lang=en/late`.
         HiveCompatible = 1,
     }
     impl PartitionStyle {
@@ -2503,96 +2503,96 @@ pub mod schema {
         }
     }
 }
-///  Describes the format of the data within its storage location.
+/// Describes the format of the data within its storage location.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StorageFormat {
-    ///  Output only. The data format associated with the stored data, which represents
-    ///  content type values. The value is inferred from mime type.
+    /// Output only. The data format associated with the stored data, which represents
+    /// content type values. The value is inferred from mime type.
     #[prost(enumeration="storage_format::Format", tag="1")]
     pub format: i32,
-    ///  Optional. The compression type associated with the stored data.
-    ///  If unspecified, the data is uncompressed.
+    /// Optional. The compression type associated with the stored data.
+    /// If unspecified, the data is uncompressed.
     #[prost(enumeration="storage_format::CompressionFormat", tag="2")]
     pub compression_format: i32,
-    ///  Required. The mime type descriptor for the data. Must match the pattern
-    ///  {type}/{subtype}. Supported values:
+    /// Required. The mime type descriptor for the data. Must match the pattern
+    /// {type}/{subtype}. Supported values:
     ///
-    ///  - application/x-parquet
-    ///  - application/x-avro
-    ///  - application/x-orc
-    ///  - application/x-tfrecord
-    ///  - application/json
-    ///  - application/{subtypes}
-    ///  - text/csv
-    ///  - text/<subtypes>
-    ///  - image/{image subtype}
-    ///  - video/{video subtype}
-    ///  - audio/{audio subtype}
+    /// - application/x-parquet
+    /// - application/x-avro
+    /// - application/x-orc
+    /// - application/x-tfrecord
+    /// - application/json
+    /// - application/{subtypes}
+    /// - text/csv
+    /// - text/<subtypes>
+    /// - image/{image subtype}
+    /// - video/{video subtype}
+    /// - audio/{audio subtype}
     #[prost(string, tag="3")]
     pub mime_type: ::prost::alloc::string::String,
-    ///  Additional format-specific options.
+    /// Additional format-specific options.
     #[prost(oneof="storage_format::Options", tags="10, 11")]
     pub options: ::core::option::Option<storage_format::Options>,
 }
 /// Nested message and enum types in `StorageFormat`.
 pub mod storage_format {
-    ///  Describes CSV and similar semi-structured data formats.
+    /// Describes CSV and similar semi-structured data formats.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CsvOptions {
-        ///  Optional. The character encoding of the data. Accepts "US-ASCII", "UTF-8", and
-        ///  "ISO-8859-1". Defaults to UTF-8 if unspecified.
+        /// Optional. The character encoding of the data. Accepts "US-ASCII", "UTF-8", and
+        /// "ISO-8859-1". Defaults to UTF-8 if unspecified.
         #[prost(string, tag="1")]
         pub encoding: ::prost::alloc::string::String,
-        ///  Optional. The number of rows to interpret as header rows that should be skipped
-        ///  when reading data rows. Defaults to 0.
+        /// Optional. The number of rows to interpret as header rows that should be skipped
+        /// when reading data rows. Defaults to 0.
         #[prost(int32, tag="2")]
         pub header_rows: i32,
-        ///  Optional. The delimiter used to separate values. Defaults to ','.
+        /// Optional. The delimiter used to separate values. Defaults to ','.
         #[prost(string, tag="3")]
         pub delimiter: ::prost::alloc::string::String,
-        ///  Optional. The character used to quote column values. Accepts '"'
-        ///  (double quotation mark) or ''' (single quotation mark). Defaults to
-        ///  '"' (double quotation mark) if unspecified.
+        /// Optional. The character used to quote column values. Accepts '"'
+        /// (double quotation mark) or ''' (single quotation mark). Defaults to
+        /// '"' (double quotation mark) if unspecified.
         #[prost(string, tag="4")]
         pub quote: ::prost::alloc::string::String,
     }
-    ///  Describes JSON data format.
+    /// Describes JSON data format.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct JsonOptions {
-        ///  Optional. The character encoding of the data. Accepts "US-ASCII", "UTF-8" and
-        ///  "ISO-8859-1". Defaults to UTF-8 if not specified.
+        /// Optional. The character encoding of the data. Accepts "US-ASCII", "UTF-8" and
+        /// "ISO-8859-1". Defaults to UTF-8 if not specified.
         #[prost(string, tag="1")]
         pub encoding: ::prost::alloc::string::String,
     }
-    ///  The specific file format of the data.
+    /// The specific file format of the data.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum Format {
-        ///  Format unspecified.
+        /// Format unspecified.
         Unspecified = 0,
-        ///  Parquet-formatted structured data.
+        /// Parquet-formatted structured data.
         Parquet = 1,
-        ///  Avro-formatted structured data.
+        /// Avro-formatted structured data.
         Avro = 2,
-        ///  Orc-formatted structured data.
+        /// Orc-formatted structured data.
         Orc = 3,
-        ///  Csv-formatted semi-structured data.
+        /// Csv-formatted semi-structured data.
         Csv = 100,
-        ///  Json-formatted semi-structured data.
+        /// Json-formatted semi-structured data.
         Json = 101,
-        ///  Image data formats (such as jpg and png).
+        /// Image data formats (such as jpg and png).
         Image = 200,
-        ///  Audio data formats (such as mp3, and wav).
+        /// Audio data formats (such as mp3, and wav).
         Audio = 201,
-        ///  Video data formats (such as mp4 and mpg).
+        /// Video data formats (such as mp4 and mpg).
         Video = 202,
-        ///  Textual data formats (such as txt and xml).
+        /// Textual data formats (such as txt and xml).
         Text = 203,
-        ///  TensorFlow record format.
+        /// TensorFlow record format.
         Tfrecord = 204,
-        ///  Data that doesn't match a specific format.
+        /// Data that doesn't match a specific format.
         Other = 1000,
-        ///  Data of an unknown format.
+        /// Data of an unknown format.
         Unknown = 1001,
     }
     impl Format {
@@ -2618,15 +2618,15 @@ pub mod storage_format {
             }
         }
     }
-    ///  The specific compressed file format of the data.
+    /// The specific compressed file format of the data.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum CompressionFormat {
-        ///  CompressionFormat unspecified. Implies uncompressed data.
+        /// CompressionFormat unspecified. Implies uncompressed data.
         Unspecified = 0,
-        ///  GZip compressed set of files.
+        /// GZip compressed set of files.
         Gzip = 2,
-        ///  BZip2 compressed set of files.
+        /// BZip2 compressed set of files.
         Bzip2 = 3,
     }
     impl CompressionFormat {
@@ -2642,26 +2642,26 @@ pub mod storage_format {
             }
         }
     }
-    ///  Additional format-specific options.
+    /// Additional format-specific options.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Options {
-        ///  Optional. Additional information about CSV formatted data.
+        /// Optional. Additional information about CSV formatted data.
         #[prost(message, tag="10")]
         Csv(CsvOptions),
-        ///  Optional. Additional information about CSV formatted data.
+        /// Optional. Additional information about CSV formatted data.
         #[prost(message, tag="11")]
         Json(JsonOptions),
     }
 }
-///  Identifies the cloud system that manages the data storage.
+/// Identifies the cloud system that manages the data storage.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum StorageSystem {
-    ///  Storage system unspecified.
+    /// Storage system unspecified.
     Unspecified = 0,
-    ///  The entity data is contained within a Cloud Storage bucket.
+    /// The entity data is contained within a Cloud Storage bucket.
     CloudStorage = 1,
-    ///  The entity data is contained within a BigQuery dataset.
+    /// The entity data is contained within a BigQuery dataset.
     Bigquery = 2,
 }
 impl StorageSystem {
@@ -2930,186 +2930,186 @@ pub mod metadata_service_client {
         }
     }
 }
-///  A task represents a user-visible job.
+/// A task represents a user-visible job.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Task {
-    ///  Output only. The relative resource name of the task, of the form:
-    ///  projects/{project_number}/locations/{location_id}/lakes/{lake_id}/
-    ///  tasks/{task_id}.
+    /// Output only. The relative resource name of the task, of the form:
+    /// projects/{project_number}/locations/{location_id}/lakes/{lake_id}/
+    /// tasks/{task_id}.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Output only. System generated globally unique ID for the task. This ID will be
-    ///  different if the task is deleted and re-created with the same name.
+    /// Output only. System generated globally unique ID for the task. This ID will be
+    /// different if the task is deleted and re-created with the same name.
     #[prost(string, tag="2")]
     pub uid: ::prost::alloc::string::String,
-    ///  Output only. The time when the task was created.
+    /// Output only. The time when the task was created.
     #[prost(message, optional, tag="3")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Output only. The time when the task was last updated.
+    /// Output only. The time when the task was last updated.
     #[prost(message, optional, tag="4")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Optional. Description of the task.
+    /// Optional. Description of the task.
     #[prost(string, tag="5")]
     pub description: ::prost::alloc::string::String,
-    ///  Optional. User friendly display name.
+    /// Optional. User friendly display name.
     #[prost(string, tag="6")]
     pub display_name: ::prost::alloc::string::String,
-    ///  Output only. Current state of the task.
+    /// Output only. Current state of the task.
     #[prost(enumeration="State", tag="7")]
     pub state: i32,
-    ///  Optional. User-defined labels for the task.
+    /// Optional. User-defined labels for the task.
     #[prost(map="string, string", tag="8")]
     pub labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
-    ///  Required. Spec related to how often and when a task should be triggered.
+    /// Required. Spec related to how often and when a task should be triggered.
     #[prost(message, optional, tag="100")]
     pub trigger_spec: ::core::option::Option<task::TriggerSpec>,
-    ///  Required. Spec related to how a task is executed.
+    /// Required. Spec related to how a task is executed.
     #[prost(message, optional, tag="101")]
     pub execution_spec: ::core::option::Option<task::ExecutionSpec>,
-    ///  Output only. Status of the latest task executions.
+    /// Output only. Status of the latest task executions.
     #[prost(message, optional, tag="201")]
     pub execution_status: ::core::option::Option<task::ExecutionStatus>,
-    ///  Task template specific user-specified config.
+    /// Task template specific user-specified config.
     #[prost(oneof="task::Config", tags="300")]
     pub config: ::core::option::Option<task::Config>,
 }
 /// Nested message and enum types in `Task`.
 pub mod task {
-    ///  Configuration for the underlying infrastructure used to run workloads.
+    /// Configuration for the underlying infrastructure used to run workloads.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct InfrastructureSpec {
-        ///  Hardware config.
+        /// Hardware config.
         #[prost(oneof="infrastructure_spec::Resources", tags="52")]
         pub resources: ::core::option::Option<infrastructure_spec::Resources>,
-        ///  Software config.
+        /// Software config.
         #[prost(oneof="infrastructure_spec::Runtime", tags="101")]
         pub runtime: ::core::option::Option<infrastructure_spec::Runtime>,
-        ///  Networking config.
+        /// Networking config.
         #[prost(oneof="infrastructure_spec::Network", tags="150")]
         pub network: ::core::option::Option<infrastructure_spec::Network>,
     }
     /// Nested message and enum types in `InfrastructureSpec`.
     pub mod infrastructure_spec {
-        ///  Batch compute resources associated with the task.
+        /// Batch compute resources associated with the task.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct BatchComputeResources {
-            ///  Optional. Total number of job executors.
-            ///  Executor Count should be between 2 and 100. \[Default=2\]
+            /// Optional. Total number of job executors.
+            /// Executor Count should be between 2 and 100. \[Default=2\]
             #[prost(int32, tag="1")]
             pub executors_count: i32,
-            ///  Optional. Max configurable executors.
-            ///  If max_executors_count > executors_count, then auto-scaling is enabled.
-            ///  Max Executor Count should be between 2 and 1000. \[Default=1000\]
+            /// Optional. Max configurable executors.
+            /// If max_executors_count > executors_count, then auto-scaling is enabled.
+            /// Max Executor Count should be between 2 and 1000. \[Default=1000\]
             #[prost(int32, tag="2")]
             pub max_executors_count: i32,
         }
-        ///  Container Image Runtime Configuration used with Batch execution.
+        /// Container Image Runtime Configuration used with Batch execution.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct ContainerImageRuntime {
-            ///  Optional. Container image to use.
+            /// Optional. Container image to use.
             #[prost(string, tag="1")]
             pub image: ::prost::alloc::string::String,
-            ///  Optional. A list of Java JARS to add to the classpath.
-            ///  Valid input includes Cloud Storage URIs to Jar binaries.
-            ///  For example, gs://bucket-name/my/path/to/file.jar
+            /// Optional. A list of Java JARS to add to the classpath.
+            /// Valid input includes Cloud Storage URIs to Jar binaries.
+            /// For example, gs://bucket-name/my/path/to/file.jar
             #[prost(string, repeated, tag="2")]
             pub java_jars: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-            ///  Optional. A list of python packages to be installed.
-            ///  Valid formats include Cloud Storage URI to a PIP installable library.
-            ///  For example, gs://bucket-name/my/path/to/lib.tar.gz
+            /// Optional. A list of python packages to be installed.
+            /// Valid formats include Cloud Storage URI to a PIP installable library.
+            /// For example, gs://bucket-name/my/path/to/lib.tar.gz
             #[prost(string, repeated, tag="3")]
             pub python_packages: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-            ///  Optional. Override to common configuration of open source components installed on
-            ///  the Dataproc cluster.
-            ///  The properties to set on daemon config files.
-            ///  Property keys are specified in `prefix:property` format, for example
-            ///  `core:hadoop.tmp.dir`.
-            ///  For more information, see [Cluster
-            ///  properties](<https://cloud.google.com/dataproc/docs/concepts/cluster-properties>).
+            /// Optional. Override to common configuration of open source components installed on
+            /// the Dataproc cluster.
+            /// The properties to set on daemon config files.
+            /// Property keys are specified in `prefix:property` format, for example
+            /// `core:hadoop.tmp.dir`.
+            /// For more information, see [Cluster
+            /// properties](<https://cloud.google.com/dataproc/docs/concepts/cluster-properties>).
             #[prost(map="string, string", tag="4")]
             pub properties: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
         }
-        ///  Cloud VPC Network used to run the infrastructure.
+        /// Cloud VPC Network used to run the infrastructure.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct VpcNetwork {
-            ///  Optional. List of network tags to apply to the job.
+            /// Optional. List of network tags to apply to the job.
             #[prost(string, repeated, tag="3")]
             pub network_tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-            ///  The Cloud VPC network identifier.
+            /// The Cloud VPC network identifier.
             #[prost(oneof="vpc_network::NetworkName", tags="1, 2")]
             pub network_name: ::core::option::Option<vpc_network::NetworkName>,
         }
         /// Nested message and enum types in `VpcNetwork`.
         pub mod vpc_network {
-            ///  The Cloud VPC network identifier.
+            /// The Cloud VPC network identifier.
             #[derive(Clone, PartialEq, ::prost::Oneof)]
             pub enum NetworkName {
-                ///  Optional. The Cloud VPC network in which the job is run. By default, the Cloud
-                ///  VPC network named Default within the project is used.
+                /// Optional. The Cloud VPC network in which the job is run. By default, the Cloud
+                /// VPC network named Default within the project is used.
                 #[prost(string, tag="1")]
                 Network(::prost::alloc::string::String),
-                ///  Optional. The Cloud VPC sub-network in which the job is run.
+                /// Optional. The Cloud VPC sub-network in which the job is run.
                 #[prost(string, tag="2")]
                 SubNetwork(::prost::alloc::string::String),
             }
         }
-        ///  Hardware config.
+        /// Hardware config.
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Resources {
-            ///  Compute resources needed for a Task when using Dataproc Serverless.
+            /// Compute resources needed for a Task when using Dataproc Serverless.
             #[prost(message, tag="52")]
             Batch(BatchComputeResources),
         }
-        ///  Software config.
+        /// Software config.
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Runtime {
-            ///  Container Image Runtime Configuration.
+            /// Container Image Runtime Configuration.
             #[prost(message, tag="101")]
             ContainerImage(ContainerImageRuntime),
         }
-        ///  Networking config.
+        /// Networking config.
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Network {
-            ///  Vpc network.
+            /// Vpc network.
             #[prost(message, tag="150")]
             VpcNetwork(VpcNetwork),
         }
     }
-    ///  Task scheduling and trigger settings.
+    /// Task scheduling and trigger settings.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct TriggerSpec {
-        ///  Required. Immutable. Trigger type of the user-specified Task.
+        /// Required. Immutable. Trigger type of the user-specified Task.
         #[prost(enumeration="trigger_spec::Type", tag="5")]
         pub r#type: i32,
-        ///  Optional. The first run of the task will be after this time.
-        ///  If not specified, the task will run shortly after being submitted if
-        ///  ON_DEMAND and based on the schedule if RECURRING.
+        /// Optional. The first run of the task will be after this time.
+        /// If not specified, the task will run shortly after being submitted if
+        /// ON_DEMAND and based on the schedule if RECURRING.
         #[prost(message, optional, tag="6")]
         pub start_time: ::core::option::Option<::prost_types::Timestamp>,
-        ///  Optional. Prevent the task from executing.
-        ///  This does not cancel already running tasks. It is intended to temporarily
-        ///  disable RECURRING tasks.
+        /// Optional. Prevent the task from executing.
+        /// This does not cancel already running tasks. It is intended to temporarily
+        /// disable RECURRING tasks.
         #[prost(bool, tag="4")]
         pub disabled: bool,
-        ///  Optional. Number of retry attempts before aborting.
-        ///  Set to zero to never attempt to retry a failed task.
+        /// Optional. Number of retry attempts before aborting.
+        /// Set to zero to never attempt to retry a failed task.
         #[prost(int32, tag="7")]
         pub max_retries: i32,
-        ///  Trigger only applies for RECURRING tasks.
+        /// Trigger only applies for RECURRING tasks.
         #[prost(oneof="trigger_spec::Trigger", tags="100")]
         pub trigger: ::core::option::Option<trigger_spec::Trigger>,
     }
     /// Nested message and enum types in `TriggerSpec`.
     pub mod trigger_spec {
-        ///  Determines how often and when the job will run.
+        /// Determines how often and when the job will run.
         #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
         #[repr(i32)]
         pub enum Type {
-            ///  Unspecified trigger type.
+            /// Unspecified trigger type.
             Unspecified = 0,
-            ///  The task runs one-time shortly after Task Creation.
+            /// The task runs one-time shortly after Task Creation.
             OnDemand = 1,
-            ///  The task is scheduled to run periodically.
+            /// The task is scheduled to run periodically.
             Recurring = 2,
         }
         impl Type {
@@ -3125,162 +3125,162 @@ pub mod task {
                 }
             }
         }
-        ///  Trigger only applies for RECURRING tasks.
+        /// Trigger only applies for RECURRING tasks.
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Trigger {
-            ///  Optional. Cron schedule (<https://en.wikipedia.org/wiki/Cron>) for running
-            ///  tasks periodically.
-            ///  To explicitly set a timezone to the cron tab, apply a prefix in the
-            ///  cron tab: "CRON_TZ=${IANA_TIME_ZONE}" or "TZ=${IANA_TIME_ZONE}".
-            ///  The ${IANA_TIME_ZONE} may only be a valid string from IANA time zone
-            ///  database. For example, "CRON_TZ=America/New_York 1 * * * *", or
-            ///  "TZ=America/New_York 1 * * * *".
-            ///  This field is required for RECURRING tasks.
+            /// Optional. Cron schedule (<https://en.wikipedia.org/wiki/Cron>) for running
+            /// tasks periodically.
+            /// To explicitly set a timezone to the cron tab, apply a prefix in the
+            /// cron tab: "CRON_TZ=${IANA_TIME_ZONE}" or "TZ=${IANA_TIME_ZONE}".
+            /// The ${IANA_TIME_ZONE} may only be a valid string from IANA time zone
+            /// database. For example, "CRON_TZ=America/New_York 1 * * * *", or
+            /// "TZ=America/New_York 1 * * * *".
+            /// This field is required for RECURRING tasks.
             #[prost(string, tag="100")]
             Schedule(::prost::alloc::string::String),
         }
     }
-    ///  Execution related settings, like retry and service_account.
+    /// Execution related settings, like retry and service_account.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ExecutionSpec {
-        ///  Optional. The arguments to pass to the task.
-        ///  The args can use placeholders of the format ${placeholder} as
-        ///  part of key/value string. These will be interpolated before passing the
-        ///  args to the driver. Currently supported placeholders:
-        ///  - ${task_id}
-        ///  - ${job_time}
-        ///  To pass positional args, set the key as TASK_ARGS. The value should be a
-        ///  comma-separated string of all the positional arguments. To use a
-        ///  delimiter other than comma, refer to
-        ///  <https://cloud.google.com/sdk/gcloud/reference/topic/escaping.> In case of
-        ///  other keys being present in the args, then TASK_ARGS will be passed as
-        ///  the last argument.
+        /// Optional. The arguments to pass to the task.
+        /// The args can use placeholders of the format ${placeholder} as
+        /// part of key/value string. These will be interpolated before passing the
+        /// args to the driver. Currently supported placeholders:
+        /// - ${task_id}
+        /// - ${job_time}
+        /// To pass positional args, set the key as TASK_ARGS. The value should be a
+        /// comma-separated string of all the positional arguments. To use a
+        /// delimiter other than comma, refer to
+        /// <https://cloud.google.com/sdk/gcloud/reference/topic/escaping.> In case of
+        /// other keys being present in the args, then TASK_ARGS will be passed as
+        /// the last argument.
         #[prost(map="string, string", tag="4")]
         pub args: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
-        ///  Required. Service account to use to execute a task.
-        ///  If not provided, the default Compute service account for the project is
-        ///  used.
+        /// Required. Service account to use to execute a task.
+        /// If not provided, the default Compute service account for the project is
+        /// used.
         #[prost(string, tag="5")]
         pub service_account: ::prost::alloc::string::String,
-        ///  Optional. The project in which jobs are run. By default, the project containing the
-        ///  Lake is used. If a project is provided, the
-        ///  \[ExecutionSpec.service_account][google.cloud.dataplex.v1.Task.ExecutionSpec.service_account\] must belong to this project.
+        /// Optional. The project in which jobs are run. By default, the project containing the
+        /// Lake is used. If a project is provided, the
+        /// \[ExecutionSpec.service_account][google.cloud.dataplex.v1.Task.ExecutionSpec.service_account\] must belong to this project.
         #[prost(string, tag="7")]
         pub project: ::prost::alloc::string::String,
-        ///  Optional. The maximum duration after which the job execution is expired.
+        /// Optional. The maximum duration after which the job execution is expired.
         #[prost(message, optional, tag="8")]
         pub max_job_execution_lifetime: ::core::option::Option<::prost_types::Duration>,
-        ///  Optional. The Cloud KMS key to use for encryption, of the form:
-        ///  `projects/{project_number}/locations/{location_id}/keyRings/{key-ring-name}/cryptoKeys/{key-name}`.
+        /// Optional. The Cloud KMS key to use for encryption, of the form:
+        /// `projects/{project_number}/locations/{location_id}/keyRings/{key-ring-name}/cryptoKeys/{key-name}`.
         #[prost(string, tag="9")]
         pub kms_key: ::prost::alloc::string::String,
     }
-    ///  User-specified config for running a Spark task.
+    /// User-specified config for running a Spark task.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SparkTaskConfig {
-        ///  Optional. Cloud Storage URIs of files to be placed in the working directory of each
-        ///  executor.
+        /// Optional. Cloud Storage URIs of files to be placed in the working directory of each
+        /// executor.
         #[prost(string, repeated, tag="3")]
         pub file_uris: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-        ///  Optional. Cloud Storage URIs of archives to be extracted into the working directory
-        ///  of each executor. Supported file types: .jar, .tar, .tar.gz, .tgz, and
-        ///  .zip.
+        /// Optional. Cloud Storage URIs of archives to be extracted into the working directory
+        /// of each executor. Supported file types: .jar, .tar, .tar.gz, .tgz, and
+        /// .zip.
         #[prost(string, repeated, tag="4")]
         pub archive_uris: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-        ///  Optional. Infrastructure specification for the execution.
+        /// Optional. Infrastructure specification for the execution.
         #[prost(message, optional, tag="6")]
         pub infrastructure_spec: ::core::option::Option<InfrastructureSpec>,
-        ///  Required. The specification of the main method to call to drive the
-        ///  job. Specify either the jar file that contains the main class or the
-        ///  main class name.
+        /// Required. The specification of the main method to call to drive the
+        /// job. Specify either the jar file that contains the main class or the
+        /// main class name.
         #[prost(oneof="spark_task_config::Driver", tags="100, 101, 102, 104, 105")]
         pub driver: ::core::option::Option<spark_task_config::Driver>,
     }
     /// Nested message and enum types in `SparkTaskConfig`.
     pub mod spark_task_config {
-        ///  Required. The specification of the main method to call to drive the
-        ///  job. Specify either the jar file that contains the main class or the
-        ///  main class name.
+        /// Required. The specification of the main method to call to drive the
+        /// job. Specify either the jar file that contains the main class or the
+        /// main class name.
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Driver {
-            ///  The Cloud Storage URI of the jar file that contains the main class.
-            ///  The execution args are passed in as a sequence of named process
-            ///  arguments (`--key=value`).
+            /// The Cloud Storage URI of the jar file that contains the main class.
+            /// The execution args are passed in as a sequence of named process
+            /// arguments (`--key=value`).
             #[prost(string, tag="100")]
             MainJarFileUri(::prost::alloc::string::String),
-            ///  The name of the driver's main class. The jar file that contains the
-            ///  class must be in the default CLASSPATH or specified in
-            ///  `jar_file_uris`.
-            ///  The execution args are passed in as a sequence of named process
-            ///  arguments (`--key=value`).
+            /// The name of the driver's main class. The jar file that contains the
+            /// class must be in the default CLASSPATH or specified in
+            /// `jar_file_uris`.
+            /// The execution args are passed in as a sequence of named process
+            /// arguments (`--key=value`).
             #[prost(string, tag="101")]
             MainClass(::prost::alloc::string::String),
-            ///  The Gcloud Storage URI of the main Python file to use as the driver.
-            ///  Must be a .py file. The execution args are passed in as a sequence of
-            ///  named process arguments (`--key=value`).
+            /// The Gcloud Storage URI of the main Python file to use as the driver.
+            /// Must be a .py file. The execution args are passed in as a sequence of
+            /// named process arguments (`--key=value`).
             #[prost(string, tag="102")]
             PythonScriptFile(::prost::alloc::string::String),
-            ///  A reference to a query file. This can be the Cloud Storage URI of the
-            ///  query file or it can the path to a SqlScript Content. The execution
-            ///  args are used to declare a set of script variables
-            ///  (`set key="value";`).
+            /// A reference to a query file. This can be the Cloud Storage URI of the
+            /// query file or it can the path to a SqlScript Content. The execution
+            /// args are used to declare a set of script variables
+            /// (`set key="value";`).
             #[prost(string, tag="104")]
             SqlScriptFile(::prost::alloc::string::String),
-            ///  The query text.
-            ///  The execution args are used to declare a set of script variables
-            ///  (`set key="value";`).
+            /// The query text.
+            /// The execution args are used to declare a set of script variables
+            /// (`set key="value";`).
             #[prost(string, tag="105")]
             SqlScript(::prost::alloc::string::String),
         }
     }
-    ///  Status of the task execution (e.g. Jobs).
+    /// Status of the task execution (e.g. Jobs).
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ExecutionStatus {
-        ///  Output only. Last update time of the status.
+        /// Output only. Last update time of the status.
         #[prost(message, optional, tag="3")]
         pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-        ///  Output only. latest job execution
+        /// Output only. latest job execution
         #[prost(message, optional, tag="9")]
         pub latest_job: ::core::option::Option<super::Job>,
     }
-    ///  Task template specific user-specified config.
+    /// Task template specific user-specified config.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Config {
-        ///  Config related to running custom Spark tasks.
+        /// Config related to running custom Spark tasks.
         #[prost(message, tag="300")]
         Spark(SparkTaskConfig),
     }
 }
-///  A job represents an instance of a task.
+/// A job represents an instance of a task.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Job {
-    ///  Output only. The relative resource name of the job, of the form:
-    ///  `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/tasks/{task_id}/jobs/{job_id}`.
+    /// Output only. The relative resource name of the job, of the form:
+    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/tasks/{task_id}/jobs/{job_id}`.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Output only. System generated globally unique ID for the job.
+    /// Output only. System generated globally unique ID for the job.
     #[prost(string, tag="2")]
     pub uid: ::prost::alloc::string::String,
-    ///  Output only. The time when the job was started.
+    /// Output only. The time when the job was started.
     #[prost(message, optional, tag="3")]
     pub start_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Output only. The time when the job ended.
+    /// Output only. The time when the job ended.
     #[prost(message, optional, tag="4")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Output only. Execution state for the job.
+    /// Output only. Execution state for the job.
     #[prost(enumeration="job::State", tag="5")]
     pub state: i32,
-    ///  Output only. The number of times the job has been retried (excluding the
-    ///  initial attempt).
+    /// Output only. The number of times the job has been retried (excluding the
+    /// initial attempt).
     #[prost(uint32, tag="6")]
     pub retry_count: u32,
-    ///  Output only. The underlying service running a job.
+    /// Output only. The underlying service running a job.
     #[prost(enumeration="job::Service", tag="7")]
     pub service: i32,
-    ///  Output only. The full resource name for the job run under a particular service.
+    /// Output only. The full resource name for the job run under a particular service.
     #[prost(string, tag="8")]
     pub service_job: ::prost::alloc::string::String,
-    ///  Output only. Additional information about the current state.
+    /// Output only. Additional information about the current state.
     #[prost(string, tag="9")]
     pub message: ::prost::alloc::string::String,
 }
@@ -3289,9 +3289,9 @@ pub mod job {
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum Service {
-        ///  Service used to run the job is unspecified.
+        /// Service used to run the job is unspecified.
         Unspecified = 0,
-        ///  Dataproc service is used to run this job.
+        /// Dataproc service is used to run this job.
         Dataproc = 1,
     }
     impl Service {
@@ -3309,19 +3309,19 @@ pub mod job {
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum State {
-        ///  The job state is unknown.
+        /// The job state is unknown.
         Unspecified = 0,
-        ///  The job is running.
+        /// The job is running.
         Running = 1,
-        ///  The job is cancelling.
+        /// The job is cancelling.
         Cancelling = 2,
-        ///  The job cancellation was successful.
+        /// The job cancellation was successful.
         Cancelled = 3,
-        ///  The job completed successfully.
+        /// The job completed successfully.
         Succeeded = 4,
-        ///  The job is no longer running due to an error.
+        /// The job is no longer running due to an error.
         Failed = 5,
-        ///  The job was cancelled outside of Dataplex.
+        /// The job was cancelled outside of Dataplex.
         Aborted = 6,
     }
     impl State {
@@ -3342,643 +3342,643 @@ pub mod job {
         }
     }
 }
-///  Create lake request.
+/// Create lake request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateLakeRequest {
-    ///  Required. The resource name of the lake location, of the form:
-    ///  projects/{project_number}/locations/{location_id}
-    ///  where `location_id` refers to a GCP region.
+    /// Required. The resource name of the lake location, of the form:
+    /// projects/{project_number}/locations/{location_id}
+    /// where `location_id` refers to a GCP region.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Required. Lake identifier.
-    ///  This ID will be used to generate names such as database and dataset names
-    ///  when publishing metadata to Hive Metastore and BigQuery.
-    ///  * Must contain only lowercase letters, numbers and hyphens.
-    ///  * Must start with a letter.
-    ///  * Must end with a number or a letter.
-    ///  * Must be between 1-63 characters.
-    ///  * Must be unique within the customer project / location.
+    /// Required. Lake identifier.
+    /// This ID will be used to generate names such as database and dataset names
+    /// when publishing metadata to Hive Metastore and BigQuery.
+    /// * Must contain only lowercase letters, numbers and hyphens.
+    /// * Must start with a letter.
+    /// * Must end with a number or a letter.
+    /// * Must be between 1-63 characters.
+    /// * Must be unique within the customer project / location.
     #[prost(string, tag="2")]
     pub lake_id: ::prost::alloc::string::String,
-    ///  Required. Lake resource
+    /// Required. Lake resource
     #[prost(message, optional, tag="3")]
     pub lake: ::core::option::Option<Lake>,
-    ///  Optional. Only validate the request, but do not perform mutations.
-    ///  The default is false.
+    /// Optional. Only validate the request, but do not perform mutations.
+    /// The default is false.
     #[prost(bool, tag="4")]
     pub validate_only: bool,
 }
-///  Update lake request.
+/// Update lake request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateLakeRequest {
-    ///  Required. Mask of fields to update.
+    /// Required. Mask of fields to update.
     #[prost(message, optional, tag="1")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  Required. Update description.
-    ///  Only fields specified in `update_mask` are updated.
+    /// Required. Update description.
+    /// Only fields specified in `update_mask` are updated.
     #[prost(message, optional, tag="2")]
     pub lake: ::core::option::Option<Lake>,
-    ///  Optional. Only validate the request, but do not perform mutations.
-    ///  The default is false.
+    /// Optional. Only validate the request, but do not perform mutations.
+    /// The default is false.
     #[prost(bool, tag="3")]
     pub validate_only: bool,
 }
-///  Delete lake request.
+/// Delete lake request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteLakeRequest {
-    ///  Required. The resource name of the lake:
-    ///  `projects/{project_number}/locations/{location_id}/lakes/{lake_id}`.
+    /// Required. The resource name of the lake:
+    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}`.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  List lakes request.
+/// List lakes request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListLakesRequest {
-    ///  Required. The resource name of the lake location, of the form:
-    ///  `projects/{project_number}/locations/{location_id}`
-    ///  where `location_id` refers to a GCP region.
+    /// Required. The resource name of the lake location, of the form:
+    /// `projects/{project_number}/locations/{location_id}`
+    /// where `location_id` refers to a GCP region.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Optional. Maximum number of Lakes to return. The service may return fewer than this
-    ///  value. If unspecified, at most 10 lakes will be returned. The maximum
-    ///  value is 1000; values above 1000 will be coerced to 1000.
+    /// Optional. Maximum number of Lakes to return. The service may return fewer than this
+    /// value. If unspecified, at most 10 lakes will be returned. The maximum
+    /// value is 1000; values above 1000 will be coerced to 1000.
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    ///  Optional. Page token received from a previous `ListLakes` call. Provide this to
-    ///  retrieve the subsequent page. When paginating, all other parameters
-    ///  provided to `ListLakes` must match the call that provided the page token.
+    /// Optional. Page token received from a previous `ListLakes` call. Provide this to
+    /// retrieve the subsequent page. When paginating, all other parameters
+    /// provided to `ListLakes` must match the call that provided the page token.
     #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
-    ///  Optional. Filter request.
+    /// Optional. Filter request.
     #[prost(string, tag="4")]
     pub filter: ::prost::alloc::string::String,
-    ///  Optional. Order by fields for the result.
+    /// Optional. Order by fields for the result.
     #[prost(string, tag="5")]
     pub order_by: ::prost::alloc::string::String,
 }
-///  List lakes response.
+/// List lakes response.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListLakesResponse {
-    ///  Lakes under the given parent location.
+    /// Lakes under the given parent location.
     #[prost(message, repeated, tag="1")]
     pub lakes: ::prost::alloc::vec::Vec<Lake>,
-    ///  Token to retrieve the next page of results, or empty if there are no more
-    ///  results in the list.
+    /// Token to retrieve the next page of results, or empty if there are no more
+    /// results in the list.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
-    ///  Locations that could not be reached.
+    /// Locations that could not be reached.
     #[prost(string, repeated, tag="3")]
     pub unreachable_locations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-///  List lake actions request.
+/// List lake actions request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListLakeActionsRequest {
-    ///  Required. The resource name of the parent lake:
-    ///  `projects/{project_number}/locations/{location_id}/lakes/{lake_id}`.
+    /// Required. The resource name of the parent lake:
+    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}`.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Optional. Maximum number of actions to return. The service may return fewer than this
-    ///  value. If unspecified, at most 10 actions will be returned. The maximum
-    ///  value is 1000; values above 1000 will be coerced to 1000.
+    /// Optional. Maximum number of actions to return. The service may return fewer than this
+    /// value. If unspecified, at most 10 actions will be returned. The maximum
+    /// value is 1000; values above 1000 will be coerced to 1000.
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    ///  Optional. Page token received from a previous `ListLakeActions` call. Provide this to
-    ///  retrieve the subsequent page. When paginating, all other parameters
-    ///  provided to `ListLakeActions` must match the call that provided the page
-    ///  token.
+    /// Optional. Page token received from a previous `ListLakeActions` call. Provide this to
+    /// retrieve the subsequent page. When paginating, all other parameters
+    /// provided to `ListLakeActions` must match the call that provided the page
+    /// token.
     #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
 }
-///  List actions response.
+/// List actions response.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListActionsResponse {
-    ///  Actions under the given parent lake/zone/asset.
+    /// Actions under the given parent lake/zone/asset.
     #[prost(message, repeated, tag="1")]
     pub actions: ::prost::alloc::vec::Vec<Action>,
-    ///  Token to retrieve the next page of results, or empty if there are no more
-    ///  results in the list.
+    /// Token to retrieve the next page of results, or empty if there are no more
+    /// results in the list.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-///  Get lake request.
+/// Get lake request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetLakeRequest {
-    ///  Required. The resource name of the lake:
-    ///  `projects/{project_number}/locations/{location_id}/lakes/{lake_id}`.
+    /// Required. The resource name of the lake:
+    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}`.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Create zone request.
+/// Create zone request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateZoneRequest {
-    ///  Required. The resource name of the parent lake:
-    ///  `projects/{project_number}/locations/{location_id}/lakes/{lake_id}`.
+    /// Required. The resource name of the parent lake:
+    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}`.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Required. Zone identifier.
-    ///  This ID will be used to generate names such as database and dataset names
-    ///  when publishing metadata to Hive Metastore and BigQuery.
-    ///  * Must contain only lowercase letters, numbers and hyphens.
-    ///  * Must start with a letter.
-    ///  * Must end with a number or a letter.
-    ///  * Must be between 1-63 characters.
-    ///  * Must be unique across all lakes from all locations in a project.
-    ///  * Must not be one of the reserved IDs (i.e. "default", "global-temp")
+    /// Required. Zone identifier.
+    /// This ID will be used to generate names such as database and dataset names
+    /// when publishing metadata to Hive Metastore and BigQuery.
+    /// * Must contain only lowercase letters, numbers and hyphens.
+    /// * Must start with a letter.
+    /// * Must end with a number or a letter.
+    /// * Must be between 1-63 characters.
+    /// * Must be unique across all lakes from all locations in a project.
+    /// * Must not be one of the reserved IDs (i.e. "default", "global-temp")
     #[prost(string, tag="2")]
     pub zone_id: ::prost::alloc::string::String,
-    ///  Required. Zone resource.
+    /// Required. Zone resource.
     #[prost(message, optional, tag="3")]
     pub zone: ::core::option::Option<Zone>,
-    ///  Optional. Only validate the request, but do not perform mutations.
-    ///  The default is false.
+    /// Optional. Only validate the request, but do not perform mutations.
+    /// The default is false.
     #[prost(bool, tag="4")]
     pub validate_only: bool,
 }
-///  Update zone request.
+/// Update zone request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateZoneRequest {
-    ///  Required. Mask of fields to update.
+    /// Required. Mask of fields to update.
     #[prost(message, optional, tag="1")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  Required. Update description.
-    ///  Only fields specified in `update_mask` are updated.
+    /// Required. Update description.
+    /// Only fields specified in `update_mask` are updated.
     #[prost(message, optional, tag="2")]
     pub zone: ::core::option::Option<Zone>,
-    ///  Optional. Only validate the request, but do not perform mutations.
-    ///  The default is false.
+    /// Optional. Only validate the request, but do not perform mutations.
+    /// The default is false.
     #[prost(bool, tag="3")]
     pub validate_only: bool,
 }
-///  Delete zone request.
+/// Delete zone request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteZoneRequest {
-    ///  Required. The resource name of the zone:
-    ///  `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}`.
+    /// Required. The resource name of the zone:
+    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}`.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  List zones request.
+/// List zones request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListZonesRequest {
-    ///  Required. The resource name of the parent lake:
-    ///  `projects/{project_number}/locations/{location_id}/lakes/{lake_id}`.
+    /// Required. The resource name of the parent lake:
+    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}`.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Optional. Maximum number of zones to return. The service may return fewer than this
-    ///  value. If unspecified, at most 10 zones will be returned. The maximum
-    ///  value is 1000; values above 1000 will be coerced to 1000.
+    /// Optional. Maximum number of zones to return. The service may return fewer than this
+    /// value. If unspecified, at most 10 zones will be returned. The maximum
+    /// value is 1000; values above 1000 will be coerced to 1000.
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    ///  Optional. Page token received from a previous `ListZones` call. Provide this to
-    ///  retrieve the subsequent page. When paginating, all other parameters
-    ///  provided to `ListZones` must match the call that provided the page token.
+    /// Optional. Page token received from a previous `ListZones` call. Provide this to
+    /// retrieve the subsequent page. When paginating, all other parameters
+    /// provided to `ListZones` must match the call that provided the page token.
     #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
-    ///  Optional. Filter request.
+    /// Optional. Filter request.
     #[prost(string, tag="4")]
     pub filter: ::prost::alloc::string::String,
-    ///  Optional. Order by fields for the result.
+    /// Optional. Order by fields for the result.
     #[prost(string, tag="5")]
     pub order_by: ::prost::alloc::string::String,
 }
-///  List zones response.
+/// List zones response.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListZonesResponse {
-    ///  Zones under the given parent lake.
+    /// Zones under the given parent lake.
     #[prost(message, repeated, tag="1")]
     pub zones: ::prost::alloc::vec::Vec<Zone>,
-    ///  Token to retrieve the next page of results, or empty if there are no more
-    ///  results in the list.
+    /// Token to retrieve the next page of results, or empty if there are no more
+    /// results in the list.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-///  List zone actions request.
+/// List zone actions request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListZoneActionsRequest {
-    ///  Required. The resource name of the parent zone:
-    ///  `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}`.
+    /// Required. The resource name of the parent zone:
+    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}`.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Optional. Maximum number of actions to return. The service may return fewer than this
-    ///  value. If unspecified, at most 10 actions will be returned. The maximum
-    ///  value is 1000; values above 1000 will be coerced to 1000.
+    /// Optional. Maximum number of actions to return. The service may return fewer than this
+    /// value. If unspecified, at most 10 actions will be returned. The maximum
+    /// value is 1000; values above 1000 will be coerced to 1000.
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    ///  Optional. Page token received from a previous `ListZoneActions` call. Provide this to
-    ///  retrieve the subsequent page. When paginating, all other parameters
-    ///  provided to `ListZoneActions` must match the call that provided the page
-    ///  token.
+    /// Optional. Page token received from a previous `ListZoneActions` call. Provide this to
+    /// retrieve the subsequent page. When paginating, all other parameters
+    /// provided to `ListZoneActions` must match the call that provided the page
+    /// token.
     #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
 }
-///  Get zone request.
+/// Get zone request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetZoneRequest {
-    ///  Required. The resource name of the zone:
-    ///  `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}`.
+    /// Required. The resource name of the zone:
+    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}`.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Create asset request.
+/// Create asset request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateAssetRequest {
-    ///  Required. The resource name of the parent zone:
-    ///  `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}`.
+    /// Required. The resource name of the parent zone:
+    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}`.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Required. Asset identifier.
-    ///  This ID will be used to generate names such as table names when publishing
-    ///  metadata to Hive Metastore and BigQuery.
-    ///  * Must contain only lowercase letters, numbers and hyphens.
-    ///  * Must start with a letter.
-    ///  * Must end with a number or a letter.
-    ///  * Must be between 1-63 characters.
-    ///  * Must be unique within the zone.
+    /// Required. Asset identifier.
+    /// This ID will be used to generate names such as table names when publishing
+    /// metadata to Hive Metastore and BigQuery.
+    /// * Must contain only lowercase letters, numbers and hyphens.
+    /// * Must start with a letter.
+    /// * Must end with a number or a letter.
+    /// * Must be between 1-63 characters.
+    /// * Must be unique within the zone.
     #[prost(string, tag="2")]
     pub asset_id: ::prost::alloc::string::String,
-    ///  Required. Asset resource.
+    /// Required. Asset resource.
     #[prost(message, optional, tag="3")]
     pub asset: ::core::option::Option<Asset>,
-    ///  Optional. Only validate the request, but do not perform mutations.
-    ///  The default is false.
+    /// Optional. Only validate the request, but do not perform mutations.
+    /// The default is false.
     #[prost(bool, tag="4")]
     pub validate_only: bool,
 }
-///  Update asset request.
+/// Update asset request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateAssetRequest {
-    ///  Required. Mask of fields to update.
+    /// Required. Mask of fields to update.
     #[prost(message, optional, tag="1")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  Required. Update description.
-    ///  Only fields specified in `update_mask` are updated.
+    /// Required. Update description.
+    /// Only fields specified in `update_mask` are updated.
     #[prost(message, optional, tag="2")]
     pub asset: ::core::option::Option<Asset>,
-    ///  Optional. Only validate the request, but do not perform mutations.
-    ///  The default is false.
+    /// Optional. Only validate the request, but do not perform mutations.
+    /// The default is false.
     #[prost(bool, tag="3")]
     pub validate_only: bool,
 }
-///  Delete asset request.
+/// Delete asset request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteAssetRequest {
-    ///  Required. The resource name of the asset:
-    ///  `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}/assets/{asset_id}`.
+    /// Required. The resource name of the asset:
+    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}/assets/{asset_id}`.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  List assets request.
+/// List assets request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAssetsRequest {
-    ///  Required. The resource name of the parent zone:
-    ///  `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}`.
+    /// Required. The resource name of the parent zone:
+    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}`.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Optional. Maximum number of asset to return. The service may return fewer than
-    ///  this value. If unspecified, at most 10 assets will be returned. The
-    ///  maximum value is 1000; values above 1000 will be coerced to 1000.
+    /// Optional. Maximum number of asset to return. The service may return fewer than
+    /// this value. If unspecified, at most 10 assets will be returned. The
+    /// maximum value is 1000; values above 1000 will be coerced to 1000.
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    ///  Optional. Page token received from a previous `ListAssets` call. Provide this to
-    ///  retrieve the subsequent page. When paginating, all other parameters
-    ///  provided to `ListAssets` must match the call that provided the page
-    ///  token.
+    /// Optional. Page token received from a previous `ListAssets` call. Provide this to
+    /// retrieve the subsequent page. When paginating, all other parameters
+    /// provided to `ListAssets` must match the call that provided the page
+    /// token.
     #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
-    ///  Optional. Filter request.
+    /// Optional. Filter request.
     #[prost(string, tag="4")]
     pub filter: ::prost::alloc::string::String,
-    ///  Optional. Order by fields for the result.
+    /// Optional. Order by fields for the result.
     #[prost(string, tag="5")]
     pub order_by: ::prost::alloc::string::String,
 }
-///  List assets response.
+/// List assets response.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAssetsResponse {
-    ///  Asset under the given parent zone.
+    /// Asset under the given parent zone.
     #[prost(message, repeated, tag="1")]
     pub assets: ::prost::alloc::vec::Vec<Asset>,
-    ///  Token to retrieve the next page of results, or empty if there are no more
-    ///  results in the list.
+    /// Token to retrieve the next page of results, or empty if there are no more
+    /// results in the list.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-///  List asset actions request.
+/// List asset actions request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAssetActionsRequest {
-    ///  Required. The resource name of the parent asset:
-    ///  `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}/assets/{asset_id}`.
+    /// Required. The resource name of the parent asset:
+    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}/assets/{asset_id}`.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Optional. Maximum number of actions to return. The service may return fewer than this
-    ///  value. If unspecified, at most 10 actions will be returned. The maximum
-    ///  value is 1000; values above 1000 will be coerced to 1000.
+    /// Optional. Maximum number of actions to return. The service may return fewer than this
+    /// value. If unspecified, at most 10 actions will be returned. The maximum
+    /// value is 1000; values above 1000 will be coerced to 1000.
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    ///  Optional. Page token received from a previous `ListAssetActions` call. Provide this
-    ///  to retrieve the subsequent page. When paginating, all other parameters
-    ///  provided to `ListAssetActions` must match the call that provided the page
-    ///  token.
+    /// Optional. Page token received from a previous `ListAssetActions` call. Provide this
+    /// to retrieve the subsequent page. When paginating, all other parameters
+    /// provided to `ListAssetActions` must match the call that provided the page
+    /// token.
     #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
 }
-///  Get asset request.
+/// Get asset request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAssetRequest {
-    ///  Required. The resource name of the asset:
-    ///  `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}/assets/{asset_id}`.
+    /// Required. The resource name of the asset:
+    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}/assets/{asset_id}`.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Represents the metadata of a long-running operation.
+/// Represents the metadata of a long-running operation.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationMetadata {
-    ///  Output only. The time the operation was created.
+    /// Output only. The time the operation was created.
     #[prost(message, optional, tag="1")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Output only. The time the operation finished running.
+    /// Output only. The time the operation finished running.
     #[prost(message, optional, tag="2")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Output only. Server-defined resource path for the target of the operation.
+    /// Output only. Server-defined resource path for the target of the operation.
     #[prost(string, tag="3")]
     pub target: ::prost::alloc::string::String,
-    ///  Output only. Name of the verb executed by the operation.
+    /// Output only. Name of the verb executed by the operation.
     #[prost(string, tag="4")]
     pub verb: ::prost::alloc::string::String,
-    ///  Output only. Human-readable status of the operation, if any.
+    /// Output only. Human-readable status of the operation, if any.
     #[prost(string, tag="5")]
     pub status_message: ::prost::alloc::string::String,
-    ///  Output only. Identifies whether the user has requested cancellation
-    ///  of the operation. Operations that have successfully been cancelled
-    ///  have \[Operation.error][\] value with a \[google.rpc.Status.code][google.rpc.Status.code\] of 1,
-    ///  corresponding to `Code.CANCELLED`.
+    /// Output only. Identifies whether the user has requested cancellation
+    /// of the operation. Operations that have successfully been cancelled
+    /// have \[Operation.error][\] value with a \[google.rpc.Status.code][google.rpc.Status.code\] of 1,
+    /// corresponding to `Code.CANCELLED`.
     #[prost(bool, tag="6")]
     pub requested_cancellation: bool,
-    ///  Output only. API version used to start the operation.
+    /// Output only. API version used to start the operation.
     #[prost(string, tag="7")]
     pub api_version: ::prost::alloc::string::String,
 }
-///  Create task request.
+/// Create task request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateTaskRequest {
-    ///  Required. The resource name of the parent lake:
-    ///  `projects/{project_number}/locations/{location_id}/lakes/{lake_id}`.
+    /// Required. The resource name of the parent lake:
+    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}`.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Required. Task identifier.
+    /// Required. Task identifier.
     #[prost(string, tag="2")]
     pub task_id: ::prost::alloc::string::String,
-    ///  Required. Task resource.
+    /// Required. Task resource.
     #[prost(message, optional, tag="3")]
     pub task: ::core::option::Option<Task>,
-    ///  Optional. Only validate the request, but do not perform mutations.
-    ///  The default is false.
+    /// Optional. Only validate the request, but do not perform mutations.
+    /// The default is false.
     #[prost(bool, tag="4")]
     pub validate_only: bool,
 }
-///  Update task request.
+/// Update task request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateTaskRequest {
-    ///  Required. Mask of fields to update.
+    /// Required. Mask of fields to update.
     #[prost(message, optional, tag="1")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  Required. Update description.
-    ///  Only fields specified in `update_mask` are updated.
+    /// Required. Update description.
+    /// Only fields specified in `update_mask` are updated.
     #[prost(message, optional, tag="2")]
     pub task: ::core::option::Option<Task>,
-    ///  Optional. Only validate the request, but do not perform mutations.
-    ///  The default is false.
+    /// Optional. Only validate the request, but do not perform mutations.
+    /// The default is false.
     #[prost(bool, tag="3")]
     pub validate_only: bool,
 }
-///  Delete task request.
+/// Delete task request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteTaskRequest {
-    ///  Required. The resource name of the task:
-    ///  `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/task/{task_id}`.
+    /// Required. The resource name of the task:
+    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/task/{task_id}`.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  List tasks request.
+/// List tasks request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTasksRequest {
-    ///  Required. The resource name of the parent lake:
-    ///  `projects/{project_number}/locations/{location_id}/lakes/{lake_id}`.
+    /// Required. The resource name of the parent lake:
+    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}`.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Optional. Maximum number of tasks to return. The service may return fewer than this
-    ///  value. If unspecified, at most 10 tasks will be returned. The maximum
-    ///  value is 1000; values above 1000 will be coerced to 1000.
+    /// Optional. Maximum number of tasks to return. The service may return fewer than this
+    /// value. If unspecified, at most 10 tasks will be returned. The maximum
+    /// value is 1000; values above 1000 will be coerced to 1000.
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    ///  Optional. Page token received from a previous `ListZones` call. Provide this to
-    ///  retrieve the subsequent page. When paginating, all other parameters
-    ///  provided to `ListZones` must match the call that provided the page token.
+    /// Optional. Page token received from a previous `ListZones` call. Provide this to
+    /// retrieve the subsequent page. When paginating, all other parameters
+    /// provided to `ListZones` must match the call that provided the page token.
     #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
-    ///  Optional. Filter request.
+    /// Optional. Filter request.
     #[prost(string, tag="4")]
     pub filter: ::prost::alloc::string::String,
-    ///  Optional. Order by fields for the result.
+    /// Optional. Order by fields for the result.
     #[prost(string, tag="5")]
     pub order_by: ::prost::alloc::string::String,
 }
-///  List tasks response.
+/// List tasks response.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTasksResponse {
-    ///  Tasks under the given parent lake.
+    /// Tasks under the given parent lake.
     #[prost(message, repeated, tag="1")]
     pub tasks: ::prost::alloc::vec::Vec<Task>,
-    ///  Token to retrieve the next page of results, or empty if there are no more
-    ///  results in the list.
+    /// Token to retrieve the next page of results, or empty if there are no more
+    /// results in the list.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
-    ///  Locations that could not be reached.
+    /// Locations that could not be reached.
     #[prost(string, repeated, tag="3")]
     pub unreachable_locations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-///  Get task request.
+/// Get task request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetTaskRequest {
-    ///  Required. The resource name of the task:
-    ///  `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/tasks/{tasks_id}`.
+    /// Required. The resource name of the task:
+    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/tasks/{tasks_id}`.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Get job request.
+/// Get job request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetJobRequest {
-    ///  Required. The resource name of the job:
-    ///  `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/tasks/{task_id}/jobs/{job_id}`.
+    /// Required. The resource name of the job:
+    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/tasks/{task_id}/jobs/{job_id}`.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  List jobs request.
+/// List jobs request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListJobsRequest {
-    ///  Required. The resource name of the parent environment:
-    ///  `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/tasks/{task_id}`.
+    /// Required. The resource name of the parent environment:
+    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/tasks/{task_id}`.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Optional. Maximum number of jobs to return. The service may return fewer than
-    ///  this value. If unspecified, at most 10 jobs will be returned. The
-    ///  maximum value is 1000; values above 1000 will be coerced to 1000.
+    /// Optional. Maximum number of jobs to return. The service may return fewer than
+    /// this value. If unspecified, at most 10 jobs will be returned. The
+    /// maximum value is 1000; values above 1000 will be coerced to 1000.
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    ///  Optional. Page token received from a previous `ListJobs` call. Provide this to
-    ///  retrieve the subsequent page. When paginating, all other parameters
-    ///  provided to `ListJobs` must match the call that provided the page
-    ///  token.
+    /// Optional. Page token received from a previous `ListJobs` call. Provide this to
+    /// retrieve the subsequent page. When paginating, all other parameters
+    /// provided to `ListJobs` must match the call that provided the page
+    /// token.
     #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
 }
-///  List jobs response.
+/// List jobs response.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListJobsResponse {
-    ///  Jobs under a given task.
+    /// Jobs under a given task.
     #[prost(message, repeated, tag="1")]
     pub jobs: ::prost::alloc::vec::Vec<Job>,
-    ///  Token to retrieve the next page of results, or empty if there are no more
-    ///  results in the list.
+    /// Token to retrieve the next page of results, or empty if there are no more
+    /// results in the list.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-///  Cancel task jobs.
+/// Cancel task jobs.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CancelJobRequest {
-    ///  Required. The resource name of the job:
-    ///  `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/task/{task_id}/job/{job_id}`.
+    /// Required. The resource name of the job:
+    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/task/{task_id}/job/{job_id}`.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Create environment request.
+/// Create environment request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateEnvironmentRequest {
-    ///  Required. The resource name of the parent lake:
-    ///  `projects/{project_id}/locations/{location_id}/lakes/{lake_id}`.
+    /// Required. The resource name of the parent lake:
+    /// `projects/{project_id}/locations/{location_id}/lakes/{lake_id}`.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Required. Environment identifier.
-    ///  * Must contain only lowercase letters, numbers and hyphens.
-    ///  * Must start with a letter.
-    ///  * Must be between 1-63 characters.
-    ///  * Must end with a number or a letter.
-    ///  * Must be unique within the lake.
+    /// Required. Environment identifier.
+    /// * Must contain only lowercase letters, numbers and hyphens.
+    /// * Must start with a letter.
+    /// * Must be between 1-63 characters.
+    /// * Must end with a number or a letter.
+    /// * Must be unique within the lake.
     #[prost(string, tag="2")]
     pub environment_id: ::prost::alloc::string::String,
-    ///  Required. Environment resource.
+    /// Required. Environment resource.
     #[prost(message, optional, tag="3")]
     pub environment: ::core::option::Option<Environment>,
-    ///  Optional. Only validate the request, but do not perform mutations.
-    ///  The default is false.
+    /// Optional. Only validate the request, but do not perform mutations.
+    /// The default is false.
     #[prost(bool, tag="4")]
     pub validate_only: bool,
 }
-///  Update environment request.
+/// Update environment request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateEnvironmentRequest {
-    ///  Required. Mask of fields to update.
+    /// Required. Mask of fields to update.
     #[prost(message, optional, tag="1")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  Required. Update description.
-    ///  Only fields specified in `update_mask` are updated.
+    /// Required. Update description.
+    /// Only fields specified in `update_mask` are updated.
     #[prost(message, optional, tag="2")]
     pub environment: ::core::option::Option<Environment>,
-    ///  Optional. Only validate the request, but do not perform mutations.
-    ///  The default is false.
+    /// Optional. Only validate the request, but do not perform mutations.
+    /// The default is false.
     #[prost(bool, tag="3")]
     pub validate_only: bool,
 }
-///  Delete environment request.
+/// Delete environment request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteEnvironmentRequest {
-    ///  Required. The resource name of the environment:
-    ///  `projects/{project_id}/locations/{location_id}/lakes/{lake_id}/environments/{environment_id}`.
+    /// Required. The resource name of the environment:
+    /// `projects/{project_id}/locations/{location_id}/lakes/{lake_id}/environments/{environment_id}`.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  List environments request.
+/// List environments request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEnvironmentsRequest {
-    ///  Required. The resource name of the parent lake:
-    ///  `projects/{project_id}/locations/{location_id}/lakes/{lake_id}`.
+    /// Required. The resource name of the parent lake:
+    /// `projects/{project_id}/locations/{location_id}/lakes/{lake_id}`.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Optional. Maximum number of environments to return. The service may return fewer than
-    ///  this value. If unspecified, at most 10 environments will be returned. The
-    ///  maximum value is 1000; values above 1000 will be coerced to 1000.
+    /// Optional. Maximum number of environments to return. The service may return fewer than
+    /// this value. If unspecified, at most 10 environments will be returned. The
+    /// maximum value is 1000; values above 1000 will be coerced to 1000.
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    ///  Optional. Page token received from a previous `ListEnvironments` call. Provide this
-    ///  to retrieve the subsequent page. When paginating, all other parameters
-    ///  provided to `ListEnvironments` must match the call that provided the page
-    ///  token.
+    /// Optional. Page token received from a previous `ListEnvironments` call. Provide this
+    /// to retrieve the subsequent page. When paginating, all other parameters
+    /// provided to `ListEnvironments` must match the call that provided the page
+    /// token.
     #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
-    ///  Optional. Filter request.
+    /// Optional. Filter request.
     #[prost(string, tag="4")]
     pub filter: ::prost::alloc::string::String,
-    ///  Optional. Order by fields for the result.
+    /// Optional. Order by fields for the result.
     #[prost(string, tag="5")]
     pub order_by: ::prost::alloc::string::String,
 }
-///  List environments response.
+/// List environments response.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEnvironmentsResponse {
-    ///  Environments under the given parent lake.
+    /// Environments under the given parent lake.
     #[prost(message, repeated, tag="1")]
     pub environments: ::prost::alloc::vec::Vec<Environment>,
-    ///  Token to retrieve the next page of results, or empty if there are no more
-    ///  results in the list.
+    /// Token to retrieve the next page of results, or empty if there are no more
+    /// results in the list.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-///  Get environment request.
+/// Get environment request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetEnvironmentRequest {
-    ///  Required. The resource name of the environment:
-    ///  `projects/{project_id}/locations/{location_id}/lakes/{lake_id}/environments/{environment_id}`.
+    /// Required. The resource name of the environment:
+    /// `projects/{project_id}/locations/{location_id}/lakes/{lake_id}/environments/{environment_id}`.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  List sessions request.
+/// List sessions request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSessionsRequest {
-    ///  Required. The resource name of the parent environment:
-    ///  `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/environment/{environment_id}`.
+    /// Required. The resource name of the parent environment:
+    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/environment/{environment_id}`.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Optional. Maximum number of sessions to return. The service may return fewer than
-    ///  this value. If unspecified, at most 10 sessions will be returned. The
-    ///  maximum value is 1000; values above 1000 will be coerced to 1000.
+    /// Optional. Maximum number of sessions to return. The service may return fewer than
+    /// this value. If unspecified, at most 10 sessions will be returned. The
+    /// maximum value is 1000; values above 1000 will be coerced to 1000.
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    ///  Optional. Page token received from a previous `ListSessions` call. Provide this to
-    ///  retrieve the subsequent page. When paginating, all other parameters
-    ///  provided to `ListSessions` must match the call that provided the page
-    ///  token.
+    /// Optional. Page token received from a previous `ListSessions` call. Provide this to
+    /// retrieve the subsequent page. When paginating, all other parameters
+    /// provided to `ListSessions` must match the call that provided the page
+    /// token.
     #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
-    ///  Optional. Filter request. The following `mode` filter is supported to return only the
-    ///  sessions belonging to the requester when the mode is USER and return
-    ///  sessions of all the users when the mode is ADMIN. When no filter is sent
-    ///  default to USER mode.
-    ///  NOTE: When the mode is ADMIN, the requester should have
-    ///  `dataplex.environments.listAllSessions` permission to list all sessions,
-    ///  in absence of the permission, the request fails.
+    /// Optional. Filter request. The following `mode` filter is supported to return only the
+    /// sessions belonging to the requester when the mode is USER and return
+    /// sessions of all the users when the mode is ADMIN. When no filter is sent
+    /// default to USER mode.
+    /// NOTE: When the mode is ADMIN, the requester should have
+    /// `dataplex.environments.listAllSessions` permission to list all sessions,
+    /// in absence of the permission, the request fails.
     ///
-    ///  mode = ADMIN | USER
+    /// mode = ADMIN | USER
     #[prost(string, tag="4")]
     pub filter: ::prost::alloc::string::String,
 }
-///  List sessions response.
+/// List sessions response.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSessionsResponse {
-    ///  Sessions under a given environment.
+    /// Sessions under a given environment.
     #[prost(message, repeated, tag="1")]
     pub sessions: ::prost::alloc::vec::Vec<Session>,
-    ///  Token to retrieve the next page of results, or empty if there are no more
-    ///  results in the list.
+    /// Token to retrieve the next page of results, or empty if there are no more
+    /// results in the list.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }

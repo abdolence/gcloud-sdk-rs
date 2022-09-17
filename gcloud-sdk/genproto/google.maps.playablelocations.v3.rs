@@ -1,45 +1,45 @@
-///  A report submitted by a player about a playable location that is considered
-///  inappropriate for use in the game.
+/// A report submitted by a player about a playable location that is considered
+/// inappropriate for use in the game.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PlayerReport {
-    ///  Required. The name of the playable location.
+    /// Required. The name of the playable location.
     #[prost(string, tag="1")]
     pub location_name: ::prost::alloc::string::String,
-    ///  Required. One or more reasons why this playable location is considered bad.
+    /// Required. One or more reasons why this playable location is considered bad.
     #[prost(enumeration="player_report::BadLocationReason", repeated, packed="false", tag="2")]
     pub reasons: ::prost::alloc::vec::Vec<i32>,
-    ///  Required. A free-form description detailing why the playable location is
-    ///  considered bad.
+    /// Required. A free-form description detailing why the playable location is
+    /// considered bad.
     #[prost(string, tag="3")]
     pub reason_details: ::prost::alloc::string::String,
-    ///  Language code (in BCP-47 format) indicating the language of the freeform
-    ///  description provided in `reason_details`. Examples are "en", "en-US" or
-    ///  "ja-Latn". For more information, see
-    ///  <http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.>
+    /// Language code (in BCP-47 format) indicating the language of the freeform
+    /// description provided in `reason_details`. Examples are "en", "en-US" or
+    /// "ja-Latn". For more information, see
+    /// <http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.>
     #[prost(string, tag="4")]
     pub language_code: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `PlayerReport`.
 pub mod player_report {
-    ///  The reason why the playable location is considered bad.
+    /// The reason why the playable location is considered bad.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum BadLocationReason {
-        ///  Unspecified reason. Do not use.
+        /// Unspecified reason. Do not use.
         Unspecified = 0,
-        ///  The reason isn't one of the reasons in this enumeration.
+        /// The reason isn't one of the reasons in this enumeration.
         Other = 1,
-        ///  The playable location isn't accessible to pedestrians. For example, if
-        ///  it's in the middle of a highway.
+        /// The playable location isn't accessible to pedestrians. For example, if
+        /// it's in the middle of a highway.
         NotPedestrianAccessible = 2,
-        ///  The playable location isn't open to the public. For example, a private
-        ///  office building.
+        /// The playable location isn't open to the public. For example, a private
+        /// office building.
         NotOpenToPublic = 4,
-        ///  The playable location is permanently closed. For example, when a business
-        ///  has been shut down.
+        /// The playable location is permanently closed. For example, when a business
+        /// has been shut down.
         PermanentlyClosed = 5,
-        ///  The playable location is temporarily inaccessible. For example, when a
-        ///  business has closed for renovations.
+        /// The playable location is temporarily inaccessible. For example, when a
+        /// business has closed for renovations.
         TemporarilyInaccessible = 6,
     }
     impl BadLocationReason {
@@ -59,39 +59,39 @@ pub mod player_report {
         }
     }
 }
-///  Encapsulates impression event details.
+/// Encapsulates impression event details.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Impression {
-    ///  Required. The name of the playable location.
+    /// Required. The name of the playable location.
     #[prost(string, tag="1")]
     pub location_name: ::prost::alloc::string::String,
-    ///  Required. The type of impression event.
+    /// Required. The type of impression event.
     #[prost(enumeration="impression::ImpressionType", tag="2")]
     pub impression_type: i32,
-    ///  An arbitrary, developer-defined type identifier for each type of game
-    ///  object used in your game.
+    /// An arbitrary, developer-defined type identifier for each type of game
+    /// object used in your game.
     ///
-    ///  Since players interact with differ types of game objects in different ways,
-    ///  this field allows you to segregate impression data by type for analysis.
+    /// Since players interact with differ types of game objects in different ways,
+    /// this field allows you to segregate impression data by type for analysis.
     ///
-    ///  You should assign a unique `game_object_type` ID to represent a distinct
-    ///  type of game object in your game.
+    /// You should assign a unique `game_object_type` ID to represent a distinct
+    /// type of game object in your game.
     ///
-    ///  For example, 1=monster location, 2=powerup location.
+    /// For example, 1=monster location, 2=powerup location.
     #[prost(int32, tag="4")]
     pub game_object_type: i32,
 }
 /// Nested message and enum types in `Impression`.
 pub mod impression {
-    ///  The type of impression event.
+    /// The type of impression event.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum ImpressionType {
-        ///  Unspecified type. Do not use.
+        /// Unspecified type. Do not use.
         Unspecified = 0,
-        ///  The playable location was presented to a player.
+        /// The playable location was presented to a player.
         Presented = 1,
-        ///  A player interacted with the playable location.
+        /// A player interacted with the playable location.
         Interacted = 2,
     }
     impl ImpressionType {
@@ -109,113 +109,113 @@ pub mod impression {
     }
 }
 ///
-///  Life of a query:
+/// Life of a query:
 ///
-///  - When a game starts in a new location, your game server issues a
-///  \[SamplePlayableLocations][google.maps.playablelocations.v3.PlayableLocations.SamplePlayableLocations\]
-///  request. The request specifies the S2 cell, and contains one or more
-///  "criteria" for filtering:
+/// - When a game starts in a new location, your game server issues a
+/// \[SamplePlayableLocations][google.maps.playablelocations.v3.PlayableLocations.SamplePlayableLocations\]
+/// request. The request specifies the S2 cell, and contains one or more
+/// "criteria" for filtering:
 ///
-///  - Criterion 0: i locations for long-lived bases, or level 0 monsters, or...
-///  - Criterion 1: j locations for short-lived bases, or level 1 monsters, ...
-///  - Criterion 2: k locations for random objects.
-///  - etc (up to 5 criterion may be specified).
+/// - Criterion 0: i locations for long-lived bases, or level 0 monsters, or...
+/// - Criterion 1: j locations for short-lived bases, or level 1 monsters, ...
+/// - Criterion 2: k locations for random objects.
+/// - etc (up to 5 criterion may be specified).
 ///
-///  `PlayableLocationList` will then contain mutually
-///  exclusive lists of `PlayableLocation` objects that satisfy each of
-///  the criteria. Think of it as a collection of real-world locations that you
-///  can then associate with your game state.
+/// `PlayableLocationList` will then contain mutually
+/// exclusive lists of `PlayableLocation` objects that satisfy each of
+/// the criteria. Think of it as a collection of real-world locations that you
+/// can then associate with your game state.
 ///
-///  Note: These points are impermanent in nature. E.g, parks can close, and
-///  places can be removed.
+/// Note: These points are impermanent in nature. E.g, parks can close, and
+/// places can be removed.
 ///
-///  The response specifies how long you can expect the playable locations to
-///  last. Once they expire, you should query the `samplePlayableLocations` API
-///  again to get a fresh view of the real world.
+/// The response specifies how long you can expect the playable locations to
+/// last. Once they expire, you should query the `samplePlayableLocations` API
+/// again to get a fresh view of the real world.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SamplePlayableLocationsRequest {
-    ///  Required. Specifies the area to search within for playable locations.
+    /// Required. Specifies the area to search within for playable locations.
     #[prost(message, optional, tag="1")]
     pub area_filter: ::core::option::Option<sample::AreaFilter>,
-    ///  Required. Specifies one or more (up to 5) criteria for filtering the
-    ///  returned playable locations.
+    /// Required. Specifies one or more (up to 5) criteria for filtering the
+    /// returned playable locations.
     #[prost(message, repeated, tag="2")]
     pub criteria: ::prost::alloc::vec::Vec<sample::Criterion>,
 }
 ///
-///  Response for the
-///  \[SamplePlayableLocations][google.maps.playablelocations.v3.PlayableLocations.SamplePlayableLocations\]
-///  method.
+/// Response for the
+/// \[SamplePlayableLocations][google.maps.playablelocations.v3.PlayableLocations.SamplePlayableLocations\]
+/// method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SamplePlayableLocationsResponse {
-    ///  Each PlayableLocation object corresponds to a game_object_type specified
-    ///  in the request.
+    /// Each PlayableLocation object corresponds to a game_object_type specified
+    /// in the request.
     #[prost(map="int32, message", tag="1")]
     pub locations_per_game_object_type: ::std::collections::HashMap<i32, sample::PlayableLocationList>,
-    ///  Required. Specifies the "time-to-live" for the set of playable locations.
-    ///  You can use this value to determine how long to cache the set of playable
-    ///  locations. After this length of time, your back-end game server should
-    ///  issue a new
-    ///  \[SamplePlayableLocations][google.maps.playablelocations.v3.PlayableLocations.SamplePlayableLocations\]
-    ///  request to get a fresh set of playable locations (because for example, they
-    ///  might have been removed, a park might have closed for the day, a
-    ///  business might have closed permanently).
+    /// Required. Specifies the "time-to-live" for the set of playable locations.
+    /// You can use this value to determine how long to cache the set of playable
+    /// locations. After this length of time, your back-end game server should
+    /// issue a new
+    /// \[SamplePlayableLocations][google.maps.playablelocations.v3.PlayableLocations.SamplePlayableLocations\]
+    /// request to get a fresh set of playable locations (because for example, they
+    /// might have been removed, a park might have closed for the day, a
+    /// business might have closed permanently).
     #[prost(message, optional, tag="9")]
     pub ttl: ::core::option::Option<::prost_types::Duration>,
 }
-///  A request for logging your player's bad location reports.
+/// A request for logging your player's bad location reports.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LogPlayerReportsRequest {
-    ///  Required. Player reports. The maximum number of player reports that you can
-    ///  log at once is 50.
+    /// Required. Player reports. The maximum number of player reports that you can
+    /// log at once is 50.
     #[prost(message, repeated, tag="1")]
     pub player_reports: ::prost::alloc::vec::Vec<PlayerReport>,
-    ///  Required. A string that uniquely identifies the log player reports request.
-    ///  This allows you to detect duplicate requests. We recommend that you use
-    ///  UUIDs for this value. The value must not exceed 50 characters.
+    /// Required. A string that uniquely identifies the log player reports request.
+    /// This allows you to detect duplicate requests. We recommend that you use
+    /// UUIDs for this value. The value must not exceed 50 characters.
     ///
-    ///  You should reuse the `request_id` only when retrying a request in the case
-    ///  of a failure. In that case, the request must be identical to the one that
-    ///  failed.
+    /// You should reuse the `request_id` only when retrying a request in the case
+    /// of a failure. In that case, the request must be identical to the one that
+    /// failed.
     #[prost(string, tag="2")]
     pub request_id: ::prost::alloc::string::String,
-    ///  Required. Information about the client device (for example, device model
-    ///  and operating system).
+    /// Required. Information about the client device (for example, device model
+    /// and operating system).
     #[prost(message, optional, tag="3")]
     pub client_info: ::core::option::Option<super::super::unity::ClientInfo>,
 }
-///  A response for the
-///  \[LogPlayerReports][google.maps.playablelocations.v3.PlayableLocations.LogPlayerReports\]
-///  method.
+/// A response for the
+/// \[LogPlayerReports][google.maps.playablelocations.v3.PlayableLocations.LogPlayerReports\]
+/// method.
 ///
-///  This method returns no data upon success.
+/// This method returns no data upon success.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LogPlayerReportsResponse {
 }
-///  A request for logging impressions.
+/// A request for logging impressions.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LogImpressionsRequest {
-    ///  Required. Impression event details. The maximum number of impression
-    ///  reports that you can log at once is 50.
+    /// Required. Impression event details. The maximum number of impression
+    /// reports that you can log at once is 50.
     #[prost(message, repeated, tag="1")]
     pub impressions: ::prost::alloc::vec::Vec<Impression>,
-    ///  Required. A string that uniquely identifies the log impressions request.
-    ///  This allows you to detect duplicate requests. We recommend that you use
-    ///  UUIDs for this value. The value must not exceed 50 characters.
+    /// Required. A string that uniquely identifies the log impressions request.
+    /// This allows you to detect duplicate requests. We recommend that you use
+    /// UUIDs for this value. The value must not exceed 50 characters.
     ///
-    ///  You should reuse the `request_id` only when retrying a request in case of
-    ///  failure. In this case, the request must be identical to the one that
-    ///  failed.
+    /// You should reuse the `request_id` only when retrying a request in case of
+    /// failure. In this case, the request must be identical to the one that
+    /// failed.
     #[prost(string, tag="2")]
     pub request_id: ::prost::alloc::string::String,
-    ///  Required. Information about the client device. For example, device model
-    ///  and operating system.
+    /// Required. Information about the client device. For example, device model
+    /// and operating system.
     #[prost(message, optional, tag="3")]
     pub client_info: ::core::option::Option<super::super::unity::ClientInfo>,
 }
-///  A response for the
-///  \[LogImpressions][google.maps.playablelocations.v3.PlayableLocations.LogImpressions\]
-///  method. This method returns no data upon success.
+/// A response for the
+/// \[LogImpressions][google.maps.playablelocations.v3.PlayableLocations.LogImpressions\]
+/// method. This method returns no data upon success.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LogImpressionsResponse {
 }

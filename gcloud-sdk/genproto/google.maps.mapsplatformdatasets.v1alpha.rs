@@ -1,39 +1,39 @@
-///  The details about the data source when it is a local file.
+/// The details about the data source when it is a local file.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LocalFileSource {
-    ///  The file name and extension of the uploaded file.
+    /// The file name and extension of the uploaded file.
     #[prost(string, tag="1")]
     pub filename: ::prost::alloc::string::String,
-    ///  The format of the file that is being uploaded.
+    /// The format of the file that is being uploaded.
     #[prost(enumeration="FileFormat", tag="2")]
     pub file_format: i32,
 }
-///  The details about the data source when it is in Google Cloud Storage.
+/// The details about the data source when it is in Google Cloud Storage.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GcsSource {
-    ///  Source data URI. For example, `gs://my_bucket/my_object`.
+    /// Source data URI. For example, `gs://my_bucket/my_object`.
     #[prost(string, tag="1")]
     pub input_uri: ::prost::alloc::string::String,
-    ///  The file format of the Google Cloud Storage object. This is used mainly for
-    ///  validation.
+    /// The file format of the Google Cloud Storage object. This is used mainly for
+    /// validation.
     #[prost(enumeration="FileFormat", tag="2")]
     pub file_format: i32,
 }
-///  The format of the file being uploaded.
+/// The format of the file being uploaded.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum FileFormat {
-    ///  Unspecified file format.
+    /// Unspecified file format.
     Unspecified = 0,
-    ///  GeoJson file.
+    /// GeoJson file.
     Geojson = 1,
-    ///  KML file.
+    /// KML file.
     Kml = 2,
-    ///  CSV file.
+    /// CSV file.
     Csv = 3,
-    ///  Protobuf file.
+    /// Protobuf file.
     Proto = 4,
-    ///  KMZ file.
+    /// KMZ file.
     Kmz = 5,
 }
 impl FileFormat {
@@ -52,71 +52,71 @@ impl FileFormat {
         }
     }
 }
-///  A representation of a maps platform dataset.
+/// A representation of a maps platform dataset.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Dataset {
-    ///  Resource name,
-    ///  projects/{project}/datasets/{dataset_id}
+    /// Resource name,
+    /// projects/{project}/datasets/{dataset_id}
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Human readable name, shown in the console UI. Set by customer.
+    /// Human readable name, shown in the console UI. Set by customer.
     #[prost(string, tag="2")]
     pub display_name: ::prost::alloc::string::String,
-    ///  A description of this dataset; set by the customer.
+    /// A description of this dataset; set by the customer.
     #[prost(string, tag="3")]
     pub description: ::prost::alloc::string::String,
-    ///  The version of the dataset.
+    /// The version of the dataset.
     #[prost(string, tag="4")]
     pub version_id: ::prost::alloc::string::String,
-    ///  Specified use case(s) for this dataset.
+    /// Specified use case(s) for this dataset.
     #[prost(enumeration="Usage", repeated, tag="5")]
     pub usage: ::prost::alloc::vec::Vec<i32>,
-    ///  The status of the import of the latest dataset version.
+    /// The status of the import of the latest dataset version.
     #[prost(enumeration="State", tag="12")]
     pub status: i32,
-    ///  Output only. Time when the dataset was first created.
+    /// Output only. Time when the dataset was first created.
     #[prost(message, optional, tag="8")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Output only. Time when the dataset metadata was last updated.
+    /// Output only. Time when the dataset metadata was last updated.
     #[prost(message, optional, tag="9")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Output only. Time when this version of dataset was created. (It happened when importing
-    ///  data to the dataset)
+    /// Output only. Time when this version of dataset was created. (It happened when importing
+    /// data to the dataset)
     #[prost(message, optional, tag="10")]
     pub version_create_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Output only. The description for this version of dataset. It is provided when importing
-    ///  data to the dataset.
+    /// Output only. The description for this version of dataset. It is provided when importing
+    /// data to the dataset.
     #[prost(string, tag="11")]
     pub version_description: ::prost::alloc::string::String,
-    ///  Details about the source of the data for the dataset.
+    /// Details about the source of the data for the dataset.
     #[prost(oneof="dataset::DataSource", tags="6, 7")]
     pub data_source: ::core::option::Option<dataset::DataSource>,
 }
 /// Nested message and enum types in `Dataset`.
 pub mod dataset {
-    ///  Details about the source of the data for the dataset.
+    /// Details about the source of the data for the dataset.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum DataSource {
-        ///  A local file source for the dataset for a single upload.
+        /// A local file source for the dataset for a single upload.
         #[prost(message, tag="6")]
         LocalFileSource(super::LocalFileSource),
-        ///  A Google Cloud Storage file source for the dataset for a single upload.
+        /// A Google Cloud Storage file source for the dataset for a single upload.
         #[prost(message, tag="7")]
         GcsSource(super::GcsSource),
     }
 }
-///  Usage specifies where the data is intended to be used to inform how to
-///  process the data.
+/// Usage specifies where the data is intended to be used to inform how to
+/// process the data.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum Usage {
-    ///  The usage of this dataset is not set.
+    /// The usage of this dataset is not set.
     Unspecified = 0,
-    ///  This dataset will be used for data driven styling.
+    /// This dataset will be used for data driven styling.
     DataDrivenStyling = 1,
-    ///  This dataset will be used for area affordances in routing.
+    /// This dataset will be used for area affordances in routing.
     AreaAffordances = 2,
-    ///  This dataset will be used for assisted driving in routing.
+    /// This dataset will be used for assisted driving in routing.
     AssistedDriving = 3,
 }
 impl Usage {
@@ -133,17 +133,17 @@ impl Usage {
         }
     }
 }
-///  State specifies the status of the import of the latest dataset version.
+/// State specifies the status of the import of the latest dataset version.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum State {
-    ///  The state of this dataset is not set.
+    /// The state of this dataset is not set.
     Unspecified = 0,
-    ///  The dataset version is getting imported.
+    /// The dataset version is getting imported.
     Importing = 1,
-    ///  The dataset version succeeded in getting imported.
+    /// The dataset version succeeded in getting imported.
     ImportSucceeded = 2,
-    ///  The dataset version failed to get imported.
+    /// The dataset version failed to get imported.
     ImportFailed = 3,
 }
 impl State {
@@ -160,120 +160,120 @@ impl State {
         }
     }
 }
-///  Request to create a maps dataset.
+/// Request to create a maps dataset.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateDatasetRequest {
-    ///  Required. Parent project that will own the dataset.
-    ///  Format: projects/{$project_number}
+    /// Required. Parent project that will own the dataset.
+    /// Format: projects/{$project_number}
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Required. The dataset version to create.
+    /// Required. The dataset version to create.
     #[prost(message, optional, tag="2")]
     pub dataset: ::core::option::Option<Dataset>,
 }
-///  Request to update the metadata fields of the dataset.
+/// Request to update the metadata fields of the dataset.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateDatasetMetadataRequest {
-    ///  Required. The dataset to update. The dataset's name is used to identify the dataset
-    ///  to be updated. The name has the format:
-    ///  projects/{project}/datasets/{dataset_id}
+    /// Required. The dataset to update. The dataset's name is used to identify the dataset
+    /// to be updated. The name has the format:
+    /// projects/{project}/datasets/{dataset_id}
     #[prost(message, optional, tag="1")]
     pub dataset: ::core::option::Option<Dataset>,
-    ///  The list of fields to be updated. Support the value "*" for full
-    ///  replacement.
+    /// The list of fields to be updated. Support the value "*" for full
+    /// replacement.
     #[prost(message, optional, tag="2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
-///  Request to get the specified dataset.
+/// Request to get the specified dataset.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetDatasetRequest {
-    ///  Required. Resource name. Can also fetch a specified version
-    ///  projects/{project}/datasets/{dataset_id}
-    ///  projects/{project}/datasets/{dataset_id}@{version-id}
+    /// Required. Resource name. Can also fetch a specified version
+    /// projects/{project}/datasets/{dataset_id}
+    /// projects/{project}/datasets/{dataset_id}@{version-id}
     ///
-    ///  In order to retrieve a previous version of the dataset, also provide
-    ///  the version ID.
-    ///  Example: projects/123/datasets/assisted-driving-preferences@c7cfa2a8
+    /// In order to retrieve a previous version of the dataset, also provide
+    /// the version ID.
+    /// Example: projects/123/datasets/assisted-driving-preferences@c7cfa2a8
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  If specified, will fetch the dataset details of the version published for
-    ///  the specified use case rather than the latest, if one exists. If a
-    ///  published version does not exist, will default to getting the dataset
-    ///  details of the latest version.
+    /// If specified, will fetch the dataset details of the version published for
+    /// the specified use case rather than the latest, if one exists. If a
+    /// published version does not exist, will default to getting the dataset
+    /// details of the latest version.
     #[prost(enumeration="Usage", tag="2")]
     pub published_usage: i32,
 }
-///  Request to list of all versions of the dataset.
+/// Request to list of all versions of the dataset.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDatasetVersionsRequest {
-    ///  Required. The name of the dataset to list all the versions for.
+    /// Required. The name of the dataset to list all the versions for.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  The maximum number of versions to return per page.
-    ///  If unspecified (or zero), at most 1000 versions will be returned.
-    ///  The maximum value is 1000; values above 1000 will be coerced to 1000.
+    /// The maximum number of versions to return per page.
+    /// If unspecified (or zero), at most 1000 versions will be returned.
+    /// The maximum value is 1000; values above 1000 will be coerced to 1000.
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    ///  The page token, received from a previous GetDatasetVersions call.
-    ///  Provide this to retrieve the subsequent page.
+    /// The page token, received from a previous GetDatasetVersions call.
+    /// Provide this to retrieve the subsequent page.
     #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
 }
-///  Response with list of all versions of the dataset.
+/// Response with list of all versions of the dataset.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDatasetVersionsResponse {
-    ///  All the versions of the dataset.
+    /// All the versions of the dataset.
     #[prost(message, repeated, tag="1")]
     pub datasets: ::prost::alloc::vec::Vec<Dataset>,
-    ///  A token that can be sent as `page_token` to retrieve the next page.
-    ///  If this field is omitted, there are no subsequent pages.
+    /// A token that can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-///  Request to list datasets for the project.
+/// Request to list datasets for the project.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDatasetsRequest {
-    ///  Required. The name of the project to list all the datasets for.
+    /// Required. The name of the project to list all the datasets for.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  The maximum number of versions to return per page.
-    ///  If unspecified (or zero), at most 1000 datasets will be returned.
-    ///  The maximum value is 1000; values above 1000 will be coerced to 1000.
+    /// The maximum number of versions to return per page.
+    /// If unspecified (or zero), at most 1000 datasets will be returned.
+    /// The maximum value is 1000; values above 1000 will be coerced to 1000.
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    ///  The page token, received from a previous GetDatasetVersions call.
-    ///  Provide this to retrieve the subsequent page.
+    /// The page token, received from a previous GetDatasetVersions call.
+    /// Provide this to retrieve the subsequent page.
     #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
 }
-///  Response to list datasets for the project.
+/// Response to list datasets for the project.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDatasetsResponse {
-    ///  All the datasets for the project.
+    /// All the datasets for the project.
     #[prost(message, repeated, tag="1")]
     pub datasets: ::prost::alloc::vec::Vec<Dataset>,
-    ///  A token that can be sent as `page_token` to retrieve the next page.
-    ///  If this field is omitted, there are no subsequent pages.
+    /// A token that can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-///  Request to delete a dataset.
+/// Request to delete a dataset.
 ///
-///  The dataset to be deleted.
+/// The dataset to be deleted.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteDatasetRequest {
-    ///  Required. Format: projects/${project}/datasets/{dataset_id}
+    /// Required. Format: projects/${project}/datasets/{dataset_id}
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  If set to true, any dataset version for this dataset will also be deleted.
-    ///  (Otherwise, the request will only work if the dataset has no versions.)
+    /// If set to true, any dataset version for this dataset will also be deleted.
+    /// (Otherwise, the request will only work if the dataset has no versions.)
     #[prost(bool, tag="2")]
     pub force: bool,
 }
-///  Request to delete a version of a dataset.
+/// Request to delete a version of a dataset.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteDatasetVersionRequest {
-    ///  Required. Format: projects/${project}/datasets/{dataset_id}@{version-id}
+    /// Required. Format: projects/${project}/datasets/{dataset_id}@{version-id}
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }

@@ -1,71 +1,71 @@
-///  A scan configuration specifies whether Cloud components in a project have a
-///  particular type of analysis being run. For example, it can configure whether
-///  vulnerability scanning is being done on Docker images or not.
+/// A scan configuration specifies whether Cloud components in a project have a
+/// particular type of analysis being run. For example, it can configure whether
+/// vulnerability scanning is being done on Docker images or not.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ScanConfig {
-    ///  Output only. The name of the scan configuration in the form of
-    ///  `projects/\[PROJECT_ID]/scanConfigs/[SCAN_CONFIG_ID\]`.
+    /// Output only. The name of the scan configuration in the form of
+    /// `projects/\[PROJECT_ID]/scanConfigs/[SCAN_CONFIG_ID\]`.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Output only. A human-readable description of what the scan configuration
-    ///  does.
+    /// Output only. A human-readable description of what the scan configuration
+    /// does.
     #[prost(string, tag="2")]
     pub description: ::prost::alloc::string::String,
-    ///  Whether the scan is enabled.
+    /// Whether the scan is enabled.
     #[prost(bool, tag="3")]
     pub enabled: bool,
-    ///  Output only. The time this scan config was created.
+    /// Output only. The time this scan config was created.
     #[prost(message, optional, tag="4")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Output only. The time this scan config was last updated.
+    /// Output only. The time this scan config was last updated.
     #[prost(message, optional, tag="5")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
 }
-///  Request to get a scan configuration.
+/// Request to get a scan configuration.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetScanConfigRequest {
-    ///  Required. The name of the scan configuration in the form of
-    ///  `projects/\[PROJECT_ID]/scanConfigs/[SCAN_CONFIG_ID\]`.
+    /// Required. The name of the scan configuration in the form of
+    /// `projects/\[PROJECT_ID]/scanConfigs/[SCAN_CONFIG_ID\]`.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Request to list scan configurations.
+/// Request to list scan configurations.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListScanConfigsRequest {
-    ///  Required. The name of the project to list scan configurations for in the form of
-    ///  `projects/\[PROJECT_ID\]`.
+    /// Required. The name of the project to list scan configurations for in the form of
+    /// `projects/\[PROJECT_ID\]`.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Required. The filter expression.
+    /// Required. The filter expression.
     #[prost(string, tag="2")]
     pub filter: ::prost::alloc::string::String,
-    ///  The number of scan configs to return in the list.
+    /// The number of scan configs to return in the list.
     #[prost(int32, tag="3")]
     pub page_size: i32,
-    ///  Token to provide to skip to a particular spot in the list.
+    /// Token to provide to skip to a particular spot in the list.
     #[prost(string, tag="4")]
     pub page_token: ::prost::alloc::string::String,
 }
-///  Response for listing scan configurations.
+/// Response for listing scan configurations.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListScanConfigsResponse {
-    ///  The scan configurations requested.
+    /// The scan configurations requested.
     #[prost(message, repeated, tag="1")]
     pub scan_configs: ::prost::alloc::vec::Vec<ScanConfig>,
-    ///  The next pagination token in the list response. It should be used as
-    ///  `page_token` for the following request. An empty value means no more
-    ///  results.
+    /// The next pagination token in the list response. It should be used as
+    /// `page_token` for the following request. An empty value means no more
+    /// results.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-///  A request to update a scan configuration.
+/// A request to update a scan configuration.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateScanConfigRequest {
-    ///  Required. The name of the scan configuration in the form of
-    ///  `projects/\[PROJECT_ID]/scanConfigs/[SCAN_CONFIG_ID\]`.
+    /// Required. The name of the scan configuration in the form of
+    /// `projects/\[PROJECT_ID]/scanConfigs/[SCAN_CONFIG_ID\]`.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Required. The updated scan configuration.
+    /// Required. The updated scan configuration.
     #[prost(message, optional, tag="2")]
     pub scan_config: ::core::option::Option<ScanConfig>,
 }

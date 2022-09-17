@@ -1,24 +1,24 @@
-///  AppConnectorInstanceConfig defines the instance config of a AppConnector.
+/// AppConnectorInstanceConfig defines the instance config of a AppConnector.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AppConnectorInstanceConfig {
-    ///  Required. A monotonically increasing number generated and maintained
-    ///  by the API provider. Every time a config changes in the backend, the
-    ///  sequenceNumber should be bumped up to reflect the change.
+    /// Required. A monotonically increasing number generated and maintained
+    /// by the API provider. Every time a config changes in the backend, the
+    /// sequenceNumber should be bumped up to reflect the change.
     #[prost(int64, tag="1")]
     pub sequence_number: i64,
-    ///  The SLM instance agent configuration.
+    /// The SLM instance agent configuration.
     #[prost(message, optional, tag="2")]
     pub instance_config: ::core::option::Option<::prost_types::Any>,
-    ///  NotificationConfig defines the notification mechanism that the remote
-    ///  instance should subscribe to in order to receive notification.
+    /// NotificationConfig defines the notification mechanism that the remote
+    /// instance should subscribe to in order to receive notification.
     #[prost(message, optional, tag="3")]
     pub notification_config: ::core::option::Option<NotificationConfig>,
-    ///  ImageConfig defines the GCR images to run for the remote agent's control
-    ///  plane.
+    /// ImageConfig defines the GCR images to run for the remote agent's control
+    /// plane.
     #[prost(message, optional, tag="4")]
     pub image_config: ::core::option::Option<ImageConfig>,
 }
-///  NotificationConfig defines the mechanisms to notify instance agent.
+/// NotificationConfig defines the mechanisms to notify instance agent.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NotificationConfig {
     #[prost(oneof="notification_config::Config", tags="1")]
@@ -26,35 +26,35 @@ pub struct NotificationConfig {
 }
 /// Nested message and enum types in `NotificationConfig`.
 pub mod notification_config {
-    ///  The configuration for Pub/Sub messaging for the AppConnector.
+    /// The configuration for Pub/Sub messaging for the AppConnector.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CloudPubSubNotificationConfig {
-        ///  The Pub/Sub subscription the AppConnector uses to receive notifications.
+        /// The Pub/Sub subscription the AppConnector uses to receive notifications.
         #[prost(string, tag="1")]
         pub pubsub_subscription: ::prost::alloc::string::String,
     }
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Config {
-        ///  Cloud Pub/Sub Configuration to receive notifications.
+        /// Cloud Pub/Sub Configuration to receive notifications.
         #[prost(message, tag="1")]
         PubsubNotification(CloudPubSubNotificationConfig),
     }
 }
-///  ImageConfig defines the control plane images to run.
+/// ImageConfig defines the control plane images to run.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImageConfig {
-    ///  The initial image the remote agent will attempt to run for the control
-    ///  plane.
+    /// The initial image the remote agent will attempt to run for the control
+    /// plane.
     #[prost(string, tag="1")]
     pub target_image: ::prost::alloc::string::String,
-    ///  The stable image that the remote agent will fallback to if the target image
-    ///  fails.
+    /// The stable image that the remote agent will fallback to if the target image
+    /// fails.
     #[prost(string, tag="2")]
     pub stable_image: ::prost::alloc::string::String,
 }
-///  ResourceInfo represents the information/status of an app connector resource.
-///  Such as:
-///  - remote_agent
+/// ResourceInfo represents the information/status of an app connector resource.
+/// Such as:
+/// - remote_agent
 ///    - container
 ///      - runtime
 ///      - appgateway
@@ -64,37 +64,37 @@ pub struct ImageConfig {
 ///        - logagent
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResourceInfo {
-    ///  Required. Unique Id for the resource.
+    /// Required. Unique Id for the resource.
     #[prost(string, tag="1")]
     pub id: ::prost::alloc::string::String,
-    ///  Overall health status. Overall status is derived based on the status of
-    ///  each sub level resources.
+    /// Overall health status. Overall status is derived based on the status of
+    /// each sub level resources.
     #[prost(enumeration="HealthStatus", tag="2")]
     pub status: i32,
-    ///  Specific details for the resource. This is for internal use only.
+    /// Specific details for the resource. This is for internal use only.
     #[prost(message, optional, tag="3")]
     pub resource: ::core::option::Option<::prost_types::Any>,
-    ///  The timestamp to collect the info. It is suggested to be set by
-    ///  the topmost level resource only.
+    /// The timestamp to collect the info. It is suggested to be set by
+    /// the topmost level resource only.
     #[prost(message, optional, tag="4")]
     pub time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  List of Info for the sub level resources.
+    /// List of Info for the sub level resources.
     #[prost(message, repeated, tag="5")]
     pub sub: ::prost::alloc::vec::Vec<ResourceInfo>,
 }
-///  HealthStatus represents the health status.
+/// HealthStatus represents the health status.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum HealthStatus {
-    ///  Health status is unknown: not initialized or failed to retrieve.
+    /// Health status is unknown: not initialized or failed to retrieve.
     Unspecified = 0,
-    ///  The resource is healthy.
+    /// The resource is healthy.
     Healthy = 1,
-    ///  The resource is unhealthy.
+    /// The resource is unhealthy.
     Unhealthy = 2,
-    ///  The resource is unresponsive.
+    /// The resource is unresponsive.
     Unresponsive = 3,
-    ///  Some sub-resources are UNHEALTHY.
+    /// Some sub-resources are UNHEALTHY.
     Degraded = 4,
 }
 impl HealthStatus {
@@ -112,226 +112,226 @@ impl HealthStatus {
         }
     }
 }
-///  Request message for BeyondCorp.ListAppConnectors.
+/// Request message for BeyondCorp.ListAppConnectors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAppConnectorsRequest {
-    ///  Required. The resource name of the AppConnector location using the form:
-    ///  `projects/{project_id}/locations/{location_id}`
+    /// Required. The resource name of the AppConnector location using the form:
+    /// `projects/{project_id}/locations/{location_id}`
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Optional. The maximum number of items to return.
-    ///  If not specified, a default value of 50 will be used by the service.
-    ///  Regardless of the page_size value, the response may include a partial list
-    ///  and a caller should only rely on response's
-    ///  \[next_page_token][BeyondCorp.ListAppConnectorsResponse.next_page_token\] to
-    ///  determine if there are more instances left to be queried.
+    /// Optional. The maximum number of items to return.
+    /// If not specified, a default value of 50 will be used by the service.
+    /// Regardless of the page_size value, the response may include a partial list
+    /// and a caller should only rely on response's
+    /// \[next_page_token][BeyondCorp.ListAppConnectorsResponse.next_page_token\] to
+    /// determine if there are more instances left to be queried.
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    ///  Optional. The next_page_token value returned from a previous
-    ///  ListAppConnectorsRequest, if any.
+    /// Optional. The next_page_token value returned from a previous
+    /// ListAppConnectorsRequest, if any.
     #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
-    ///  Optional. A filter specifying constraints of a list operation.
+    /// Optional. A filter specifying constraints of a list operation.
     #[prost(string, tag="4")]
     pub filter: ::prost::alloc::string::String,
-    ///  Optional. Specifies the ordering of results. See
-    ///  [Sorting
-    ///  order](<https://cloud.google.com/apis/design/design_patterns#sorting_order>)
-    ///  for more information.
+    /// Optional. Specifies the ordering of results. See
+    /// [Sorting
+    /// order](<https://cloud.google.com/apis/design/design_patterns#sorting_order>)
+    /// for more information.
     #[prost(string, tag="5")]
     pub order_by: ::prost::alloc::string::String,
 }
-///  Response message for BeyondCorp.ListAppConnectors.
+/// Response message for BeyondCorp.ListAppConnectors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAppConnectorsResponse {
-    ///  A list of BeyondCorp AppConnectors in the project.
+    /// A list of BeyondCorp AppConnectors in the project.
     #[prost(message, repeated, tag="1")]
     pub app_connectors: ::prost::alloc::vec::Vec<AppConnector>,
-    ///  A token to retrieve the next page of results, or empty if there are no more
-    ///  results in the list.
+    /// A token to retrieve the next page of results, or empty if there are no more
+    /// results in the list.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
-    ///  A list of locations that could not be reached.
+    /// A list of locations that could not be reached.
     #[prost(string, repeated, tag="3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-///  Request message for BeyondCorp.GetAppConnector.
+/// Request message for BeyondCorp.GetAppConnector.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAppConnectorRequest {
-    ///  Required. BeyondCorp AppConnector name using the form:
-    ///  `projects/{project_id}/locations/{location_id}/appConnectors/{app_connector_id}`
+    /// Required. BeyondCorp AppConnector name using the form:
+    /// `projects/{project_id}/locations/{location_id}/appConnectors/{app_connector_id}`
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Request message for BeyondCorp.CreateAppConnector.
+/// Request message for BeyondCorp.CreateAppConnector.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateAppConnectorRequest {
-    ///  Required. The resource project name of the AppConnector location using the
-    ///  form: `projects/{project_id}/locations/{location_id}`
+    /// Required. The resource project name of the AppConnector location using the
+    /// form: `projects/{project_id}/locations/{location_id}`
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Optional. User-settable AppConnector resource ID.
+    /// Optional. User-settable AppConnector resource ID.
     ///
     ///   * Must start with a letter.
     ///   * Must contain between 4-63 characters from `/\[a-z][0-9\]-/`.
     ///   * Must end with a number or a letter.
     #[prost(string, tag="2")]
     pub app_connector_id: ::prost::alloc::string::String,
-    ///  Required. A BeyondCorp AppConnector resource.
+    /// Required. A BeyondCorp AppConnector resource.
     #[prost(message, optional, tag="3")]
     pub app_connector: ::core::option::Option<AppConnector>,
-    ///  Optional. An optional request ID to identify requests. Specify a unique
-    ///  request ID so that if you must retry your request, the server will know to
-    ///  ignore the request if it has already been completed. The server will
-    ///  guarantee that for at least 60 minutes since the first request.
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID so that if you must retry your request, the server will know to
+    /// ignore the request if it has already been completed. The server will
+    /// guarantee that for at least 60 minutes since the first request.
     ///
-    ///  For example, consider a situation where you make an initial request and t
-    ///  he request times out. If you make the request again with the same request
-    ///  ID, the server can check if original operation with the same request ID
-    ///  was received, and if so, will ignore the second request. This prevents
-    ///  clients from accidentally creating duplicate commitments.
+    /// For example, consider a situation where you make an initial request and t
+    /// he request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
     ///
-    ///  The request ID must be a valid UUID with the exception that zero UUID is
-    ///  not supported (00000000-0000-0000-0000-000000000000).
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
     #[prost(string, tag="4")]
     pub request_id: ::prost::alloc::string::String,
-    ///  Optional. If set, validates request by executing a dry-run which would not
-    ///  alter the resource in any way.
+    /// Optional. If set, validates request by executing a dry-run which would not
+    /// alter the resource in any way.
     #[prost(bool, tag="5")]
     pub validate_only: bool,
 }
-///  Request message for BeyondCorp.UpdateAppConnector.
+/// Request message for BeyondCorp.UpdateAppConnector.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateAppConnectorRequest {
-    ///  Required. Mask of fields to update. At least one path must be supplied in
-    ///  this field. The elements of the repeated paths field may only include these
-    ///  fields from \[BeyondCorp.AppConnector\]:
-    ///  * `labels`
-    ///  * `display_name`
+    /// Required. Mask of fields to update. At least one path must be supplied in
+    /// this field. The elements of the repeated paths field may only include these
+    /// fields from \[BeyondCorp.AppConnector\]:
+    /// * `labels`
+    /// * `display_name`
     #[prost(message, optional, tag="1")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  Required. AppConnector message with updated fields. Only supported fields
-    ///  specified in update_mask are updated.
+    /// Required. AppConnector message with updated fields. Only supported fields
+    /// specified in update_mask are updated.
     #[prost(message, optional, tag="2")]
     pub app_connector: ::core::option::Option<AppConnector>,
-    ///  Optional. An optional request ID to identify requests. Specify a unique
-    ///  request ID so that if you must retry your request, the server will know to
-    ///  ignore the request if it has already been completed. The server will
-    ///  guarantee that for at least 60 minutes since the first request.
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID so that if you must retry your request, the server will know to
+    /// ignore the request if it has already been completed. The server will
+    /// guarantee that for at least 60 minutes since the first request.
     ///
-    ///  For example, consider a situation where you make an initial request and t
-    ///  he request times out. If you make the request again with the same request
-    ///  ID, the server can check if original operation with the same request ID
-    ///  was received, and if so, will ignore the second request. This prevents
-    ///  clients from accidentally creating duplicate commitments.
+    /// For example, consider a situation where you make an initial request and t
+    /// he request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
     ///
-    ///  The request ID must be a valid UUID with the exception that zero UUID is
-    ///  not supported (00000000-0000-0000-0000-000000000000).
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
     #[prost(string, tag="3")]
     pub request_id: ::prost::alloc::string::String,
-    ///  Optional. If set, validates request by executing a dry-run which would not
-    ///  alter the resource in any way.
+    /// Optional. If set, validates request by executing a dry-run which would not
+    /// alter the resource in any way.
     #[prost(bool, tag="4")]
     pub validate_only: bool,
 }
-///  Request message for BeyondCorp.DeleteAppConnector.
+/// Request message for BeyondCorp.DeleteAppConnector.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteAppConnectorRequest {
-    ///  Required. BeyondCorp AppConnector name using the form:
-    ///  `projects/{project_id}/locations/{location_id}/appConnectors/{app_connector_id}`
+    /// Required. BeyondCorp AppConnector name using the form:
+    /// `projects/{project_id}/locations/{location_id}/appConnectors/{app_connector_id}`
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Optional. An optional request ID to identify requests. Specify a unique
-    ///  request ID so that if you must retry your request, the server will know to
-    ///  ignore the request if it has already been completed. The server will
-    ///  guarantee that for at least 60 minutes after the first request.
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID so that if you must retry your request, the server will know to
+    /// ignore the request if it has already been completed. The server will
+    /// guarantee that for at least 60 minutes after the first request.
     ///
-    ///  For example, consider a situation where you make an initial request and t
-    ///  he request times out. If you make the request again with the same request
-    ///  ID, the server can check if original operation with the same request ID
-    ///  was received, and if so, will ignore the second request. This prevents
-    ///  clients from accidentally creating duplicate commitments.
+    /// For example, consider a situation where you make an initial request and t
+    /// he request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
     ///
-    ///  The request ID must be a valid UUID with the exception that zero UUID is
-    ///  not supported (00000000-0000-0000-0000-000000000000).
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
     #[prost(string, tag="2")]
     pub request_id: ::prost::alloc::string::String,
-    ///  Optional. If set, validates request by executing a dry-run which would not
-    ///  alter the resource in any way.
+    /// Optional. If set, validates request by executing a dry-run which would not
+    /// alter the resource in any way.
     #[prost(bool, tag="3")]
     pub validate_only: bool,
 }
-///  Request report the connector status.
+/// Request report the connector status.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReportStatusRequest {
-    ///  Required. BeyondCorp Connector name using the form:
-    ///  `projects/{project_id}/locations/{location_id}/connectors/{connector}`
+    /// Required. BeyondCorp Connector name using the form:
+    /// `projects/{project_id}/locations/{location_id}/connectors/{connector}`
     #[prost(string, tag="1")]
     pub app_connector: ::prost::alloc::string::String,
-    ///  Required. Resource info of the connector.
+    /// Required. Resource info of the connector.
     #[prost(message, optional, tag="2")]
     pub resource_info: ::core::option::Option<ResourceInfo>,
-    ///  Optional. An optional request ID to identify requests. Specify a unique
-    ///  request ID so that if you must retry your request, the server will know to
-    ///  ignore the request if it has already been completed. The server will
-    ///  guarantee that for at least 60 minutes since the first request.
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID so that if you must retry your request, the server will know to
+    /// ignore the request if it has already been completed. The server will
+    /// guarantee that for at least 60 minutes since the first request.
     ///
-    ///  For example, consider a situation where you make an initial request and t
-    ///  he request times out. If you make the request again with the same request
-    ///  ID, the server can check if original operation with the same request ID
-    ///  was received, and if so, will ignore the second request. This prevents
-    ///  clients from accidentally creating duplicate commitments.
+    /// For example, consider a situation where you make an initial request and t
+    /// he request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
     ///
-    ///  The request ID must be a valid UUID with the exception that zero UUID is
-    ///  not supported (00000000-0000-0000-0000-000000000000).
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
     #[prost(string, tag="3")]
     pub request_id: ::prost::alloc::string::String,
-    ///  Optional. If set, validates request by executing a dry-run which would not
-    ///  alter the resource in any way.
+    /// Optional. If set, validates request by executing a dry-run which would not
+    /// alter the resource in any way.
     #[prost(bool, tag="4")]
     pub validate_only: bool,
 }
-///  A BeyondCorp connector resource that represents an application facing
-///  component deployed proximal to and with direct access to the application
-///  instances. It is used to establish connectivity between the remote enterprise
-///  environment and GCP. It initiates connections to the applications and can
-///  proxy the data from users over the connection.
+/// A BeyondCorp connector resource that represents an application facing
+/// component deployed proximal to and with direct access to the application
+/// instances. It is used to establish connectivity between the remote enterprise
+/// environment and GCP. It initiates connections to the applications and can
+/// proxy the data from users over the connection.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AppConnector {
-    ///  Required. Unique resource name of the AppConnector.
-    ///  The name is ignored when creating a AppConnector.
+    /// Required. Unique resource name of the AppConnector.
+    /// The name is ignored when creating a AppConnector.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Output only. Timestamp when the resource was created.
+    /// Output only. Timestamp when the resource was created.
     #[prost(message, optional, tag="2")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Output only. Timestamp when the resource was last modified.
+    /// Output only. Timestamp when the resource was last modified.
     #[prost(message, optional, tag="3")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Optional. Resource labels to represent user provided metadata.
+    /// Optional. Resource labels to represent user provided metadata.
     #[prost(map="string, string", tag="4")]
     pub labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
-    ///  Optional. An arbitrary user-provided name for the AppConnector. Cannot
-    ///  exceed 64 characters.
+    /// Optional. An arbitrary user-provided name for the AppConnector. Cannot
+    /// exceed 64 characters.
     #[prost(string, tag="5")]
     pub display_name: ::prost::alloc::string::String,
-    ///  Output only. A unique identifier for the instance generated by the
-    ///  system.
+    /// Output only. A unique identifier for the instance generated by the
+    /// system.
     #[prost(string, tag="6")]
     pub uid: ::prost::alloc::string::String,
-    ///  Output only. The current state of the AppConnector.
+    /// Output only. The current state of the AppConnector.
     #[prost(enumeration="app_connector::State", tag="7")]
     pub state: i32,
-    ///  Required. Principal information about the Identity of the AppConnector.
+    /// Required. Principal information about the Identity of the AppConnector.
     #[prost(message, optional, tag="8")]
     pub principal_info: ::core::option::Option<app_connector::PrincipalInfo>,
-    ///  Optional. Resource info of the connector.
+    /// Optional. Resource info of the connector.
     #[prost(message, optional, tag="11")]
     pub resource_info: ::core::option::Option<ResourceInfo>,
 }
 /// Nested message and enum types in `AppConnector`.
 pub mod app_connector {
-    ///  PrincipalInfo represents an Identity oneof.
+    /// PrincipalInfo represents an Identity oneof.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct PrincipalInfo {
         #[prost(oneof="principal_info::Type", tags="1")]
@@ -339,36 +339,36 @@ pub mod app_connector {
     }
     /// Nested message and enum types in `PrincipalInfo`.
     pub mod principal_info {
-        ///  ServiceAccount represents a GCP service account.
+        /// ServiceAccount represents a GCP service account.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct ServiceAccount {
-            ///  Email address of the service account.
+            /// Email address of the service account.
             #[prost(string, tag="1")]
             pub email: ::prost::alloc::string::String,
         }
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Type {
-            ///  A GCP service account.
+            /// A GCP service account.
             #[prost(message, tag="1")]
             ServiceAccount(ServiceAccount),
         }
     }
-    ///  Represents the different states of a AppConnector.
+    /// Represents the different states of a AppConnector.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum State {
-        ///  Default value. This value is unused.
+        /// Default value. This value is unused.
         Unspecified = 0,
-        ///  AppConnector is being created.
+        /// AppConnector is being created.
         Creating = 1,
-        ///  AppConnector has been created.
+        /// AppConnector has been created.
         Created = 2,
-        ///  AppConnector's configuration is being updated.
+        /// AppConnector's configuration is being updated.
         Updating = 3,
-        ///  AppConnector is being deleted.
+        /// AppConnector is being deleted.
         Deleting = 4,
-        ///  AppConnector is down and may be restored in the future.
-        ///  This happens when CCFE sends ProjectState = OFF.
+        /// AppConnector is down and may be restored in the future.
+        /// This happens when CCFE sends ProjectState = OFF.
         Down = 5,
     }
     impl State {
@@ -388,32 +388,32 @@ pub mod app_connector {
         }
     }
 }
-///  Represents the metadata of the long-running operation.
+/// Represents the metadata of the long-running operation.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AppConnectorOperationMetadata {
-    ///  Output only. The time the operation was created.
+    /// Output only. The time the operation was created.
     #[prost(message, optional, tag="1")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Output only. The time the operation finished running.
+    /// Output only. The time the operation finished running.
     #[prost(message, optional, tag="2")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Output only. Server-defined resource path for the target of the operation.
+    /// Output only. Server-defined resource path for the target of the operation.
     #[prost(string, tag="3")]
     pub target: ::prost::alloc::string::String,
-    ///  Output only. Name of the verb executed by the operation.
+    /// Output only. Name of the verb executed by the operation.
     #[prost(string, tag="4")]
     pub verb: ::prost::alloc::string::String,
-    ///  Output only. Human-readable status of the operation, if any.
+    /// Output only. Human-readable status of the operation, if any.
     #[prost(string, tag="5")]
     pub status_message: ::prost::alloc::string::String,
-    ///  Output only. Identifies whether the user has requested cancellation
-    ///  of the operation. Operations that have successfully been cancelled
-    ///  have \[Operation.error][\] value with a
-    ///  \[google.rpc.Status.code][google.rpc.Status.code\] of 1, corresponding to
-    ///  `Code.CANCELLED`.
+    /// Output only. Identifies whether the user has requested cancellation
+    /// of the operation. Operations that have successfully been cancelled
+    /// have \[Operation.error][\] value with a
+    /// \[google.rpc.Status.code][google.rpc.Status.code\] of 1, corresponding to
+    /// `Code.CANCELLED`.
     #[prost(bool, tag="6")]
     pub requested_cancellation: bool,
-    ///  Output only. API version used to start the operation.
+    /// Output only. API version used to start the operation.
     #[prost(string, tag="7")]
     pub api_version: ::prost::alloc::string::String,
 }

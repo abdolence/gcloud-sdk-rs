@@ -1,51 +1,51 @@
-///  An API that can be served by one or more Gateways.
+/// An API that can be served by one or more Gateways.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Api {
-    ///  Output only. Resource name of the API.
-    ///  Format: projects/{project}/locations/global/apis/{api}
+    /// Output only. Resource name of the API.
+    /// Format: projects/{project}/locations/global/apis/{api}
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Output only. Created time.
+    /// Output only. Created time.
     #[prost(message, optional, tag="2")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Output only. Updated time.
+    /// Output only. Updated time.
     #[prost(message, optional, tag="3")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Optional. Resource labels to represent user-provided metadata.
-    ///  Refer to cloud documentation on labels for more details.
-    ///  <https://cloud.google.com/compute/docs/labeling-resources>
+    /// Optional. Resource labels to represent user-provided metadata.
+    /// Refer to cloud documentation on labels for more details.
+    /// <https://cloud.google.com/compute/docs/labeling-resources>
     #[prost(map="string, string", tag="4")]
     pub labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
-    ///  Optional. Display name.
+    /// Optional. Display name.
     #[prost(string, tag="5")]
     pub display_name: ::prost::alloc::string::String,
-    ///  Optional. Immutable. The name of a Google Managed Service (
-    ///  <https://cloud.google.com/service-infrastructure/docs/glossary#managed>). If
-    ///  not specified, a new Service will automatically be created in the same
-    ///  project as this API.
+    /// Optional. Immutable. The name of a Google Managed Service (
+    /// <https://cloud.google.com/service-infrastructure/docs/glossary#managed>). If
+    /// not specified, a new Service will automatically be created in the same
+    /// project as this API.
     #[prost(string, tag="7")]
     pub managed_service: ::prost::alloc::string::String,
-    ///  Output only. State of the API.
+    /// Output only. State of the API.
     #[prost(enumeration="api::State", tag="12")]
     pub state: i32,
 }
 /// Nested message and enum types in `Api`.
 pub mod api {
-    ///  All the possible API states.
+    /// All the possible API states.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum State {
-        ///  API does not have a state yet.
+        /// API does not have a state yet.
         Unspecified = 0,
-        ///  API is being created.
+        /// API is being created.
         Creating = 1,
-        ///  API is active.
+        /// API is active.
         Active = 2,
-        ///  API creation failed.
+        /// API creation failed.
         Failed = 3,
-        ///  API is being deleted.
+        /// API is being deleted.
         Deleting = 4,
-        ///  API is being updated.
+        /// API is being updated.
         Updating = 5,
     }
     impl State {
@@ -65,124 +65,124 @@ pub mod api {
         }
     }
 }
-///  An API Configuration is a combination of settings for both the Managed
-///  Service and Gateways serving this API Config.
+/// An API Configuration is a combination of settings for both the Managed
+/// Service and Gateways serving this API Config.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ApiConfig {
-    ///  Output only. Resource name of the API Config.
-    ///  Format: projects/{project}/locations/global/apis/{api}/configs/{api_config}
+    /// Output only. Resource name of the API Config.
+    /// Format: projects/{project}/locations/global/apis/{api}/configs/{api_config}
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Output only. Created time.
+    /// Output only. Created time.
     #[prost(message, optional, tag="2")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Output only. Updated time.
+    /// Output only. Updated time.
     #[prost(message, optional, tag="3")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Optional. Resource labels to represent user-provided metadata.
-    ///  Refer to cloud documentation on labels for more details.
-    ///  <https://cloud.google.com/compute/docs/labeling-resources>
+    /// Optional. Resource labels to represent user-provided metadata.
+    /// Refer to cloud documentation on labels for more details.
+    /// <https://cloud.google.com/compute/docs/labeling-resources>
     #[prost(map="string, string", tag="4")]
     pub labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
-    ///  Optional. Display name.
+    /// Optional. Display name.
     #[prost(string, tag="5")]
     pub display_name: ::prost::alloc::string::String,
-    ///  Immutable. The Google Cloud IAM Service Account that Gateways serving this config
-    ///  should use to authenticate to other services. This may either be the
-    ///  Service Account's email
-    ///  (`{ACCOUNT_ID}@{PROJECT}.iam.gserviceaccount.com`) or its full resource
-    ///  name (`projects/{PROJECT}/accounts/{UNIQUE_ID}`). This is most often used
-    ///  when the service is a GCP resource such as a Cloud Run Service or an
-    ///  IAP-secured service.
+    /// Immutable. The Google Cloud IAM Service Account that Gateways serving this config
+    /// should use to authenticate to other services. This may either be the
+    /// Service Account's email
+    /// (`{ACCOUNT_ID}@{PROJECT}.iam.gserviceaccount.com`) or its full resource
+    /// name (`projects/{PROJECT}/accounts/{UNIQUE_ID}`). This is most often used
+    /// when the service is a GCP resource such as a Cloud Run Service or an
+    /// IAP-secured service.
     #[prost(string, tag="14")]
     pub gateway_service_account: ::prost::alloc::string::String,
-    ///  Output only. The ID of the associated Service Config (
-    ///  <https://cloud.google.com/service-infrastructure/docs/glossary#config>).
+    /// Output only. The ID of the associated Service Config (
+    /// <https://cloud.google.com/service-infrastructure/docs/glossary#config>).
     #[prost(string, tag="12")]
     pub service_config_id: ::prost::alloc::string::String,
-    ///  Output only. State of the API Config.
+    /// Output only. State of the API Config.
     #[prost(enumeration="api_config::State", tag="8")]
     pub state: i32,
-    ///  Optional. OpenAPI specification documents. If specified, grpc_services and
-    ///  managed_service_configs must not be included.
+    /// Optional. OpenAPI specification documents. If specified, grpc_services and
+    /// managed_service_configs must not be included.
     #[prost(message, repeated, tag="9")]
     pub openapi_documents: ::prost::alloc::vec::Vec<api_config::OpenApiDocument>,
-    ///  Optional. gRPC service definition files. If specified, openapi_documents must
-    ///  not be included.
+    /// Optional. gRPC service definition files. If specified, openapi_documents must
+    /// not be included.
     #[prost(message, repeated, tag="10")]
     pub grpc_services: ::prost::alloc::vec::Vec<api_config::GrpcServiceDefinition>,
-    ///  Optional. Service Configuration files. At least one must be included when using gRPC
-    ///  service definitions. See
-    ///  <https://cloud.google.com/endpoints/docs/grpc/grpc-service-config#service_configuration_overview>
-    ///  for the expected file contents.
+    /// Optional. Service Configuration files. At least one must be included when using gRPC
+    /// service definitions. See
+    /// <https://cloud.google.com/endpoints/docs/grpc/grpc-service-config#service_configuration_overview>
+    /// for the expected file contents.
     ///
-    ///  If multiple files are specified, the files are merged with the following
-    ///  rules:
-    ///  * All singular scalar fields are merged using "last one wins" semantics in
-    ///  the order of the files uploaded.
-    ///  * Repeated fields are concatenated.
-    ///  * Singular embedded messages are merged using these rules for nested
-    ///  fields.
+    /// If multiple files are specified, the files are merged with the following
+    /// rules:
+    /// * All singular scalar fields are merged using "last one wins" semantics in
+    /// the order of the files uploaded.
+    /// * Repeated fields are concatenated.
+    /// * Singular embedded messages are merged using these rules for nested
+    /// fields.
     #[prost(message, repeated, tag="11")]
     pub managed_service_configs: ::prost::alloc::vec::Vec<api_config::File>,
 }
 /// Nested message and enum types in `ApiConfig`.
 pub mod api_config {
-    ///  A lightweight description of a file.
+    /// A lightweight description of a file.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct File {
-        ///  The file path (full or relative path). This is typically the path of the
-        ///  file when it is uploaded.
+        /// The file path (full or relative path). This is typically the path of the
+        /// file when it is uploaded.
         #[prost(string, tag="1")]
         pub path: ::prost::alloc::string::String,
-        ///  The bytes that constitute the file.
+        /// The bytes that constitute the file.
         #[prost(bytes="vec", tag="2")]
         pub contents: ::prost::alloc::vec::Vec<u8>,
     }
-    ///  An OpenAPI Specification Document describing an API.
+    /// An OpenAPI Specification Document describing an API.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct OpenApiDocument {
-        ///  The OpenAPI Specification document file.
+        /// The OpenAPI Specification document file.
         #[prost(message, optional, tag="1")]
         pub document: ::core::option::Option<File>,
     }
-    ///  A gRPC service definition.
+    /// A gRPC service definition.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct GrpcServiceDefinition {
-        ///  Input only. File descriptor set, generated by protoc.
+        /// Input only. File descriptor set, generated by protoc.
         ///
-        ///  To generate, use protoc with imports and source info included.
-        ///  For an example test.proto file, the following command would put the value
-        ///  in a new file named out.pb.
+        /// To generate, use protoc with imports and source info included.
+        /// For an example test.proto file, the following command would put the value
+        /// in a new file named out.pb.
         ///
-        ///  $ protoc --include_imports --include_source_info test.proto -o out.pb
+        /// $ protoc --include_imports --include_source_info test.proto -o out.pb
         #[prost(message, optional, tag="1")]
         pub file_descriptor_set: ::core::option::Option<File>,
-        ///  Optional. Uncompiled proto files associated with the descriptor set, used for
-        ///  display purposes (server-side compilation is not supported). These
-        ///  should match the inputs to 'protoc' command used to generate
-        ///  file_descriptor_set.
+        /// Optional. Uncompiled proto files associated with the descriptor set, used for
+        /// display purposes (server-side compilation is not supported). These
+        /// should match the inputs to 'protoc' command used to generate
+        /// file_descriptor_set.
         #[prost(message, repeated, tag="2")]
         pub source: ::prost::alloc::vec::Vec<File>,
     }
-    ///  All the possible API Config states.
+    /// All the possible API Config states.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum State {
-        ///  API Config does not have a state yet.
+        /// API Config does not have a state yet.
         Unspecified = 0,
-        ///  API Config is being created and deployed to the API Controller.
+        /// API Config is being created and deployed to the API Controller.
         Creating = 1,
-        ///  API Config is ready for use by Gateways.
+        /// API Config is ready for use by Gateways.
         Active = 2,
-        ///  API Config creation failed.
+        /// API Config creation failed.
         Failed = 3,
-        ///  API Config is being deleted.
+        /// API Config is being deleted.
         Deleting = 4,
-        ///  API Config is being updated.
+        /// API Config is being updated.
         Updating = 5,
-        ///  API Config settings are being activated in downstream systems.
-        ///  API Configs in this state cannot be used by Gateways.
+        /// API Config settings are being activated in downstream systems.
+        /// API Configs in this state cannot be used by Gateways.
         Activating = 6,
     }
     impl State {
@@ -203,58 +203,58 @@ pub mod api_config {
         }
     }
 }
-///  A Gateway is an API-aware HTTP proxy. It performs API-Method and/or
-///  API-Consumer specific actions based on an API Config such as authentication,
-///  policy enforcement, and backend selection.
+/// A Gateway is an API-aware HTTP proxy. It performs API-Method and/or
+/// API-Consumer specific actions based on an API Config such as authentication,
+/// policy enforcement, and backend selection.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Gateway {
-    ///  Output only. Resource name of the Gateway.
-    ///  Format: projects/{project}/locations/{location}/gateways/{gateway}
+    /// Output only. Resource name of the Gateway.
+    /// Format: projects/{project}/locations/{location}/gateways/{gateway}
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Output only. Created time.
+    /// Output only. Created time.
     #[prost(message, optional, tag="2")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Output only. Updated time.
+    /// Output only. Updated time.
     #[prost(message, optional, tag="3")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Optional. Resource labels to represent user-provided metadata.
-    ///  Refer to cloud documentation on labels for more details.
-    ///  <https://cloud.google.com/compute/docs/labeling-resources>
+    /// Optional. Resource labels to represent user-provided metadata.
+    /// Refer to cloud documentation on labels for more details.
+    /// <https://cloud.google.com/compute/docs/labeling-resources>
     #[prost(map="string, string", tag="4")]
     pub labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
-    ///  Optional. Display name.
+    /// Optional. Display name.
     #[prost(string, tag="5")]
     pub display_name: ::prost::alloc::string::String,
-    ///  Required. Resource name of the API Config for this Gateway.
-    ///  Format: projects/{project}/locations/global/apis/{api}/configs/{apiConfig}
+    /// Required. Resource name of the API Config for this Gateway.
+    /// Format: projects/{project}/locations/global/apis/{api}/configs/{apiConfig}
     #[prost(string, tag="6")]
     pub api_config: ::prost::alloc::string::String,
-    ///  Output only. The current state of the Gateway.
+    /// Output only. The current state of the Gateway.
     #[prost(enumeration="gateway::State", tag="7")]
     pub state: i32,
-    ///  Output only. The default API Gateway host name of the form
-    ///  `{gateway_id}-{hash}.{region_code}.gateway.dev`.
+    /// Output only. The default API Gateway host name of the form
+    /// `{gateway_id}-{hash}.{region_code}.gateway.dev`.
     #[prost(string, tag="9")]
     pub default_hostname: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `Gateway`.
 pub mod gateway {
-    ///  All the possible Gateway states.
+    /// All the possible Gateway states.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum State {
-        ///  Gateway does not have a state yet.
+        /// Gateway does not have a state yet.
         Unspecified = 0,
-        ///  Gateway is being created.
+        /// Gateway is being created.
         Creating = 1,
-        ///  Gateway is running and ready for requests.
+        /// Gateway is running and ready for requests.
         Active = 2,
-        ///  Gateway creation failed.
+        /// Gateway creation failed.
         Failed = 3,
-        ///  Gateway is being deleted.
+        /// Gateway is being deleted.
         Deleting = 4,
-        ///  Gateway is being updated.
+        /// Gateway is being updated.
         Updating = 5,
     }
     impl State {
@@ -274,217 +274,217 @@ pub mod gateway {
         }
     }
 }
-///  Request message for ApiGatewayService.ListGateways
+/// Request message for ApiGatewayService.ListGateways
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListGatewaysRequest {
-    ///  Required. Parent resource of the Gateway, of the form:
-    ///  `projects/*/locations/*`
+    /// Required. Parent resource of the Gateway, of the form:
+    /// `projects/*/locations/*`
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Page size.
+    /// Page size.
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    ///  Page token.
+    /// Page token.
     #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
-    ///  Filter.
+    /// Filter.
     #[prost(string, tag="4")]
     pub filter: ::prost::alloc::string::String,
-    ///  Order by parameters.
+    /// Order by parameters.
     #[prost(string, tag="5")]
     pub order_by: ::prost::alloc::string::String,
 }
-///  Response message for ApiGatewayService.ListGateways
+/// Response message for ApiGatewayService.ListGateways
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListGatewaysResponse {
-    ///  Gateways.
+    /// Gateways.
     #[prost(message, repeated, tag="1")]
     pub gateways: ::prost::alloc::vec::Vec<Gateway>,
-    ///  Next page token.
+    /// Next page token.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
-    ///  Locations that could not be reached.
+    /// Locations that could not be reached.
     #[prost(string, repeated, tag="3")]
     pub unreachable_locations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-///  Request message for ApiGatewayService.GetGateway
+/// Request message for ApiGatewayService.GetGateway
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetGatewayRequest {
-    ///  Required. Resource name of the form:
-    ///  `projects/*/locations/*/gateways/*`
+    /// Required. Resource name of the form:
+    /// `projects/*/locations/*/gateways/*`
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Request message for ApiGatewayService.CreateGateway
+/// Request message for ApiGatewayService.CreateGateway
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateGatewayRequest {
-    ///  Required. Parent resource of the Gateway, of the form:
-    ///  `projects/*/locations/*`
+    /// Required. Parent resource of the Gateway, of the form:
+    /// `projects/*/locations/*`
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Required. Identifier to assign to the Gateway. Must be unique within scope of
-    ///  the parent resource.
+    /// Required. Identifier to assign to the Gateway. Must be unique within scope of
+    /// the parent resource.
     #[prost(string, tag="2")]
     pub gateway_id: ::prost::alloc::string::String,
-    ///  Required. Gateway resource.
+    /// Required. Gateway resource.
     #[prost(message, optional, tag="3")]
     pub gateway: ::core::option::Option<Gateway>,
 }
-///  Request message for ApiGatewayService.UpdateGateway
+/// Request message for ApiGatewayService.UpdateGateway
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateGatewayRequest {
-    ///  Field mask is used to specify the fields to be overwritten in the
-    ///  Gateway resource by the update.
-    ///  The fields specified in the update_mask are relative to the resource, not
-    ///  the full request. A field will be overwritten if it is in the mask. If the
-    ///  user does not provide a mask then all fields will be overwritten.
+    /// Field mask is used to specify the fields to be overwritten in the
+    /// Gateway resource by the update.
+    /// The fields specified in the update_mask are relative to the resource, not
+    /// the full request. A field will be overwritten if it is in the mask. If the
+    /// user does not provide a mask then all fields will be overwritten.
     #[prost(message, optional, tag="1")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  Required. Gateway resource.
+    /// Required. Gateway resource.
     #[prost(message, optional, tag="2")]
     pub gateway: ::core::option::Option<Gateway>,
 }
-///  Request message for ApiGatewayService.DeleteGateway
+/// Request message for ApiGatewayService.DeleteGateway
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteGatewayRequest {
-    ///  Required. Resource name of the form:
-    ///  `projects/*/locations/*/gateways/*`
+    /// Required. Resource name of the form:
+    /// `projects/*/locations/*/gateways/*`
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Request message for ApiGatewayService.ListApis
+/// Request message for ApiGatewayService.ListApis
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListApisRequest {
-    ///  Required. Parent resource of the API, of the form:
-    ///  `projects/*/locations/global`
+    /// Required. Parent resource of the API, of the form:
+    /// `projects/*/locations/global`
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Page size.
+    /// Page size.
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    ///  Page token.
+    /// Page token.
     #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
-    ///  Filter.
+    /// Filter.
     #[prost(string, tag="4")]
     pub filter: ::prost::alloc::string::String,
-    ///  Order by parameters.
+    /// Order by parameters.
     #[prost(string, tag="5")]
     pub order_by: ::prost::alloc::string::String,
 }
-///  Response message for ApiGatewayService.ListApis
+/// Response message for ApiGatewayService.ListApis
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListApisResponse {
-    ///  APIs.
+    /// APIs.
     #[prost(message, repeated, tag="1")]
     pub apis: ::prost::alloc::vec::Vec<Api>,
-    ///  Next page token.
+    /// Next page token.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
-    ///  Locations that could not be reached.
+    /// Locations that could not be reached.
     #[prost(string, repeated, tag="3")]
     pub unreachable_locations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-///  Request message for ApiGatewayService.GetApi
+/// Request message for ApiGatewayService.GetApi
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetApiRequest {
-    ///  Required. Resource name of the form:
-    ///  `projects/*/locations/global/apis/*`
+    /// Required. Resource name of the form:
+    /// `projects/*/locations/global/apis/*`
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Request message for ApiGatewayService.CreateApi
+/// Request message for ApiGatewayService.CreateApi
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateApiRequest {
-    ///  Required. Parent resource of the API, of the form:
-    ///  `projects/*/locations/global`
+    /// Required. Parent resource of the API, of the form:
+    /// `projects/*/locations/global`
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Required. Identifier to assign to the API. Must be unique within scope of
-    ///  the parent resource.
+    /// Required. Identifier to assign to the API. Must be unique within scope of
+    /// the parent resource.
     #[prost(string, tag="2")]
     pub api_id: ::prost::alloc::string::String,
-    ///  Required. API resource.
+    /// Required. API resource.
     #[prost(message, optional, tag="3")]
     pub api: ::core::option::Option<Api>,
 }
-///  Request message for ApiGatewayService.UpdateApi
+/// Request message for ApiGatewayService.UpdateApi
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateApiRequest {
-    ///  Field mask is used to specify the fields to be overwritten in the
-    ///  Api resource by the update.
-    ///  The fields specified in the update_mask are relative to the resource, not
-    ///  the full request. A field will be overwritten if it is in the mask. If the
-    ///  user does not provide a mask then all fields will be overwritten.
+    /// Field mask is used to specify the fields to be overwritten in the
+    /// Api resource by the update.
+    /// The fields specified in the update_mask are relative to the resource, not
+    /// the full request. A field will be overwritten if it is in the mask. If the
+    /// user does not provide a mask then all fields will be overwritten.
     #[prost(message, optional, tag="1")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  Required. API resource.
+    /// Required. API resource.
     #[prost(message, optional, tag="2")]
     pub api: ::core::option::Option<Api>,
 }
-///  Request message for ApiGatewayService.DeleteApi
+/// Request message for ApiGatewayService.DeleteApi
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteApiRequest {
-    ///  Required. Resource name of the form:
-    ///  `projects/*/locations/global/apis/*`
+    /// Required. Resource name of the form:
+    /// `projects/*/locations/global/apis/*`
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Request message for ApiGatewayService.ListApiConfigs
+/// Request message for ApiGatewayService.ListApiConfigs
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListApiConfigsRequest {
-    ///  Required. Parent resource of the API Config, of the form:
-    ///  `projects/*/locations/global/apis/*`
+    /// Required. Parent resource of the API Config, of the form:
+    /// `projects/*/locations/global/apis/*`
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Page size.
+    /// Page size.
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    ///  Page token.
+    /// Page token.
     #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
-    ///  Filter.
+    /// Filter.
     #[prost(string, tag="4")]
     pub filter: ::prost::alloc::string::String,
-    ///  Order by parameters.
+    /// Order by parameters.
     #[prost(string, tag="5")]
     pub order_by: ::prost::alloc::string::String,
 }
-///  Response message for ApiGatewayService.ListApiConfigs
+/// Response message for ApiGatewayService.ListApiConfigs
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListApiConfigsResponse {
-    ///  API Configs.
+    /// API Configs.
     #[prost(message, repeated, tag="1")]
     pub api_configs: ::prost::alloc::vec::Vec<ApiConfig>,
-    ///  Next page token.
+    /// Next page token.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
-    ///  Locations that could not be reached.
+    /// Locations that could not be reached.
     #[prost(string, repeated, tag="3")]
     pub unreachable_locations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-///  Request message for ApiGatewayService.GetApiConfig
+/// Request message for ApiGatewayService.GetApiConfig
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetApiConfigRequest {
-    ///  Required. Resource name of the form:
-    ///  `projects/*/locations/global/apis/*/configs/*`
+    /// Required. Resource name of the form:
+    /// `projects/*/locations/global/apis/*/configs/*`
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Specifies which fields of the API Config are returned in the response.
-    ///  Defaults to `BASIC` view.
+    /// Specifies which fields of the API Config are returned in the response.
+    /// Defaults to `BASIC` view.
     #[prost(enumeration="get_api_config_request::ConfigView", tag="3")]
     pub view: i32,
 }
 /// Nested message and enum types in `GetApiConfigRequest`.
 pub mod get_api_config_request {
-    ///  Enum to control which fields should be included in the response.
+    /// Enum to control which fields should be included in the response.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum ConfigView {
         Unspecified = 0,
-        ///  Do not include configuration source files.
+        /// Do not include configuration source files.
         Basic = 1,
-        ///  Include configuration source files.
+        /// Include configuration source files.
         Full = 2,
     }
     impl ConfigView {
@@ -501,83 +501,83 @@ pub mod get_api_config_request {
         }
     }
 }
-///  Request message for ApiGatewayService.CreateApiConfig
+/// Request message for ApiGatewayService.CreateApiConfig
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateApiConfigRequest {
-    ///  Required. Parent resource of the API Config, of the form:
-    ///  `projects/*/locations/global/apis/*`
+    /// Required. Parent resource of the API Config, of the form:
+    /// `projects/*/locations/global/apis/*`
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Required. Identifier to assign to the API Config. Must be unique within scope of
-    ///  the parent resource.
+    /// Required. Identifier to assign to the API Config. Must be unique within scope of
+    /// the parent resource.
     #[prost(string, tag="2")]
     pub api_config_id: ::prost::alloc::string::String,
-    ///  Required. API resource.
+    /// Required. API resource.
     #[prost(message, optional, tag="3")]
     pub api_config: ::core::option::Option<ApiConfig>,
 }
-///  Request message for ApiGatewayService.UpdateApiConfig
+/// Request message for ApiGatewayService.UpdateApiConfig
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateApiConfigRequest {
-    ///  Field mask is used to specify the fields to be overwritten in the
-    ///  ApiConfig resource by the update.
-    ///  The fields specified in the update_mask are relative to the resource, not
-    ///  the full request. A field will be overwritten if it is in the mask. If the
-    ///  user does not provide a mask then all fields will be overwritten.
+    /// Field mask is used to specify the fields to be overwritten in the
+    /// ApiConfig resource by the update.
+    /// The fields specified in the update_mask are relative to the resource, not
+    /// the full request. A field will be overwritten if it is in the mask. If the
+    /// user does not provide a mask then all fields will be overwritten.
     #[prost(message, optional, tag="1")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  Required. API Config resource.
+    /// Required. API Config resource.
     #[prost(message, optional, tag="2")]
     pub api_config: ::core::option::Option<ApiConfig>,
 }
-///  Request message for ApiGatewayService.DeleteApiConfig
+/// Request message for ApiGatewayService.DeleteApiConfig
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteApiConfigRequest {
-    ///  Required. Resource name of the form:
-    ///  `projects/*/locations/global/apis/*/configs/*`
+    /// Required. Resource name of the form:
+    /// `projects/*/locations/global/apis/*/configs/*`
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Represents the metadata of the long-running operation.
+/// Represents the metadata of the long-running operation.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationMetadata {
-    ///  Output only. The time the operation was created.
+    /// Output only. The time the operation was created.
     #[prost(message, optional, tag="1")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Output only. The time the operation finished running.
+    /// Output only. The time the operation finished running.
     #[prost(message, optional, tag="2")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Output only. Server-defined resource path for the target of the operation.
+    /// Output only. Server-defined resource path for the target of the operation.
     #[prost(string, tag="3")]
     pub target: ::prost::alloc::string::String,
-    ///  Output only. Name of the verb executed by the operation.
+    /// Output only. Name of the verb executed by the operation.
     #[prost(string, tag="4")]
     pub verb: ::prost::alloc::string::String,
-    ///  Output only. Human-readable status of the operation, if any.
+    /// Output only. Human-readable status of the operation, if any.
     #[prost(string, tag="5")]
     pub status_message: ::prost::alloc::string::String,
-    ///  Output only. Identifies whether the user has requested cancellation
-    ///  of the operation. Operations that have successfully been cancelled
-    ///  have \[Operation.error][\] value with a \[google.rpc.Status.code][google.rpc.Status.code\] of 1,
-    ///  corresponding to `Code.CANCELLED`.
+    /// Output only. Identifies whether the user has requested cancellation
+    /// of the operation. Operations that have successfully been cancelled
+    /// have \[Operation.error][\] value with a \[google.rpc.Status.code][google.rpc.Status.code\] of 1,
+    /// corresponding to `Code.CANCELLED`.
     #[prost(bool, tag="6")]
     pub requested_cancellation: bool,
-    ///  Output only. API version used to start the operation.
+    /// Output only. API version used to start the operation.
     #[prost(string, tag="7")]
     pub api_version: ::prost::alloc::string::String,
-    ///  Output only. Diagnostics generated during processing of configuration source files.
+    /// Output only. Diagnostics generated during processing of configuration source files.
     #[prost(message, repeated, tag="8")]
     pub diagnostics: ::prost::alloc::vec::Vec<operation_metadata::Diagnostic>,
 }
 /// Nested message and enum types in `OperationMetadata`.
 pub mod operation_metadata {
-    ///  Diagnostic information from configuration processing.
+    /// Diagnostic information from configuration processing.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Diagnostic {
-        ///  Location of the diagnostic.
+        /// Location of the diagnostic.
         #[prost(string, tag="1")]
         pub location: ::prost::alloc::string::String,
-        ///  The diagnostic message.
+        /// The diagnostic message.
         #[prost(string, tag="2")]
         pub message: ::prost::alloc::string::String,
     }

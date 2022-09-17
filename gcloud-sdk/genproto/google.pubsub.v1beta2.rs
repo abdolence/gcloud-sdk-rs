@@ -1,299 +1,299 @@
-///  A topic resource.
+/// A topic resource.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Topic {
-    ///  Name of the topic.
+    /// Name of the topic.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  A message data and its attributes.
+/// A message data and its attributes.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PubsubMessage {
-    ///  The message payload. For JSON requests, the value of this field must be
-    ///  base64-encoded.
+    /// The message payload. For JSON requests, the value of this field must be
+    /// base64-encoded.
     #[prost(bytes="vec", tag="1")]
     pub data: ::prost::alloc::vec::Vec<u8>,
-    ///  Optional attributes for this message.
+    /// Optional attributes for this message.
     #[prost(map="string, string", tag="2")]
     pub attributes: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
-    ///  ID of this message assigned by the server at publication time. Guaranteed
-    ///  to be unique within the topic. This value may be read by a subscriber
-    ///  that receives a PubsubMessage via a Pull call or a push delivery. It must
-    ///  not be populated by a publisher in a Publish call.
+    /// ID of this message assigned by the server at publication time. Guaranteed
+    /// to be unique within the topic. This value may be read by a subscriber
+    /// that receives a PubsubMessage via a Pull call or a push delivery. It must
+    /// not be populated by a publisher in a Publish call.
     #[prost(string, tag="3")]
     pub message_id: ::prost::alloc::string::String,
 }
-///  Request for the GetTopic method.
+/// Request for the GetTopic method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetTopicRequest {
-    ///  The name of the topic to get.
+    /// The name of the topic to get.
     #[prost(string, tag="1")]
     pub topic: ::prost::alloc::string::String,
 }
-///  Request for the Publish method.
+/// Request for the Publish method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PublishRequest {
-    ///  The messages in the request will be published on this topic.
+    /// The messages in the request will be published on this topic.
     #[prost(string, tag="1")]
     pub topic: ::prost::alloc::string::String,
-    ///  The messages to publish.
+    /// The messages to publish.
     #[prost(message, repeated, tag="2")]
     pub messages: ::prost::alloc::vec::Vec<PubsubMessage>,
 }
-///  Response for the Publish method.
+/// Response for the Publish method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PublishResponse {
-    ///  The server-assigned ID of each published message, in the same order as
-    ///  the messages in the request. IDs are guaranteed to be unique within
-    ///  the topic.
+    /// The server-assigned ID of each published message, in the same order as
+    /// the messages in the request. IDs are guaranteed to be unique within
+    /// the topic.
     #[prost(string, repeated, tag="1")]
     pub message_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-///  Request for the ListTopics method.
+/// Request for the ListTopics method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTopicsRequest {
-    ///  The name of the cloud project that topics belong to.
+    /// The name of the cloud project that topics belong to.
     #[prost(string, tag="1")]
     pub project: ::prost::alloc::string::String,
-    ///  Maximum number of topics to return.
+    /// Maximum number of topics to return.
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    ///  The value returned by the last ListTopicsResponse; indicates that this is
-    ///  a continuation of a prior ListTopics call, and that the system should
-    ///  return the next page of data.
+    /// The value returned by the last ListTopicsResponse; indicates that this is
+    /// a continuation of a prior ListTopics call, and that the system should
+    /// return the next page of data.
     #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
 }
-///  Response for the ListTopics method.
+/// Response for the ListTopics method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTopicsResponse {
-    ///  The resulting topics.
+    /// The resulting topics.
     #[prost(message, repeated, tag="1")]
     pub topics: ::prost::alloc::vec::Vec<Topic>,
-    ///  If not empty, indicates that there may be more topics that match the
-    ///  request; this value should be passed in a new ListTopicsRequest.
+    /// If not empty, indicates that there may be more topics that match the
+    /// request; this value should be passed in a new ListTopicsRequest.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-///  Request for the ListTopicSubscriptions method.
+/// Request for the ListTopicSubscriptions method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTopicSubscriptionsRequest {
-    ///  The name of the topic that subscriptions are attached to.
+    /// The name of the topic that subscriptions are attached to.
     #[prost(string, tag="1")]
     pub topic: ::prost::alloc::string::String,
-    ///  Maximum number of subscription names to return.
+    /// Maximum number of subscription names to return.
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    ///  The value returned by the last ListTopicSubscriptionsResponse; indicates
-    ///  that this is a continuation of a prior ListTopicSubscriptions call, and
-    ///  that the system should return the next page of data.
+    /// The value returned by the last ListTopicSubscriptionsResponse; indicates
+    /// that this is a continuation of a prior ListTopicSubscriptions call, and
+    /// that the system should return the next page of data.
     #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
 }
-///  Response for the ListTopicSubscriptions method.
+/// Response for the ListTopicSubscriptions method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTopicSubscriptionsResponse {
-    ///  The names of the subscriptions that match the request.
+    /// The names of the subscriptions that match the request.
     #[prost(string, repeated, tag="1")]
     pub subscriptions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    ///  If not empty, indicates that there may be more subscriptions that match
-    ///  the request; this value should be passed in a new
-    ///  ListTopicSubscriptionsRequest to get more subscriptions.
+    /// If not empty, indicates that there may be more subscriptions that match
+    /// the request; this value should be passed in a new
+    /// ListTopicSubscriptionsRequest to get more subscriptions.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-///  Request for the DeleteTopic method.
+/// Request for the DeleteTopic method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteTopicRequest {
-    ///  Name of the topic to delete.
+    /// Name of the topic to delete.
     #[prost(string, tag="1")]
     pub topic: ::prost::alloc::string::String,
 }
-///  A subscription resource.
+/// A subscription resource.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Subscription {
-    ///  Name of the subscription.
+    /// Name of the subscription.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  The name of the topic from which this subscription is receiving messages.
-    ///  This will be present if and only if the subscription has not been detached
-    ///  from its topic.
+    /// The name of the topic from which this subscription is receiving messages.
+    /// This will be present if and only if the subscription has not been detached
+    /// from its topic.
     #[prost(string, tag="2")]
     pub topic: ::prost::alloc::string::String,
-    ///  If push delivery is used with this subscription, this field is
-    ///  used to configure it. An empty pushConfig signifies that the subscriber
-    ///  will pull and ack messages using API methods.
+    /// If push delivery is used with this subscription, this field is
+    /// used to configure it. An empty pushConfig signifies that the subscriber
+    /// will pull and ack messages using API methods.
     #[prost(message, optional, tag="4")]
     pub push_config: ::core::option::Option<PushConfig>,
-    ///  This value is the maximum time after a subscriber receives a message
-    ///  before the subscriber should acknowledge the message. After message
-    ///  delivery but before the ack deadline expires and before the message is
-    ///  acknowledged, it is an outstanding message and will not be delivered
-    ///  again during that time (on a best-effort basis).
+    /// This value is the maximum time after a subscriber receives a message
+    /// before the subscriber should acknowledge the message. After message
+    /// delivery but before the ack deadline expires and before the message is
+    /// acknowledged, it is an outstanding message and will not be delivered
+    /// again during that time (on a best-effort basis).
     ///
-    ///  For pull delivery this value
-    ///  is used as the initial value for the ack deadline. It may be overridden
-    ///  for a specific message by calling ModifyAckDeadline.
+    /// For pull delivery this value
+    /// is used as the initial value for the ack deadline. It may be overridden
+    /// for a specific message by calling ModifyAckDeadline.
     ///
-    ///  For push delivery, this value is also used to set the request timeout for
-    ///  the call to the push endpoint.
+    /// For push delivery, this value is also used to set the request timeout for
+    /// the call to the push endpoint.
     ///
-    ///  If the subscriber never acknowledges the message, the Pub/Sub
-    ///  system will eventually redeliver the message.
+    /// If the subscriber never acknowledges the message, the Pub/Sub
+    /// system will eventually redeliver the message.
     #[prost(int32, tag="5")]
     pub ack_deadline_seconds: i32,
 }
-///  Configuration for a push delivery endpoint.
+/// Configuration for a push delivery endpoint.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PushConfig {
-    ///  A URL locating the endpoint to which messages should be pushed.
-    ///  For example, a Webhook endpoint might use "<https://example.com/push".>
+    /// A URL locating the endpoint to which messages should be pushed.
+    /// For example, a Webhook endpoint might use "<https://example.com/push".>
     #[prost(string, tag="1")]
     pub push_endpoint: ::prost::alloc::string::String,
-    ///  Endpoint configuration attributes.
+    /// Endpoint configuration attributes.
     ///
-    ///  Every endpoint has a set of API supported attributes that can be used to
-    ///  control different aspects of the message delivery.
+    /// Every endpoint has a set of API supported attributes that can be used to
+    /// control different aspects of the message delivery.
     ///
-    ///  The currently supported attribute is `x-goog-version`, which you can
-    ///  use to change the format of the push message. This attribute
-    ///  indicates the version of the data expected by the endpoint. This
-    ///  controls the shape of the envelope (i.e. its fields and metadata).
-    ///  The endpoint version is based on the version of the Pub/Sub
-    ///  API.
+    /// The currently supported attribute is `x-goog-version`, which you can
+    /// use to change the format of the push message. This attribute
+    /// indicates the version of the data expected by the endpoint. This
+    /// controls the shape of the envelope (i.e. its fields and metadata).
+    /// The endpoint version is based on the version of the Pub/Sub
+    /// API.
     ///
-    ///  If not present during the CreateSubscription call, it will default to
-    ///  the version of the API used to make such call. If not present during a
-    ///  ModifyPushConfig call, its value will not be changed. GetSubscription
-    ///  calls will always return a valid version, even if the subscription was
-    ///  created without this attribute.
+    /// If not present during the CreateSubscription call, it will default to
+    /// the version of the API used to make such call. If not present during a
+    /// ModifyPushConfig call, its value will not be changed. GetSubscription
+    /// calls will always return a valid version, even if the subscription was
+    /// created without this attribute.
     ///
-    ///  The possible values for this attribute are:
+    /// The possible values for this attribute are:
     ///
-    ///  * `v1beta1`: uses the push format defined in the v1beta1 Pub/Sub API.
-    ///  * `v1beta2`: uses the push format defined in the v1beta2 Pub/Sub API.
+    /// * `v1beta1`: uses the push format defined in the v1beta1 Pub/Sub API.
+    /// * `v1beta2`: uses the push format defined in the v1beta2 Pub/Sub API.
     ///
     #[prost(map="string, string", tag="2")]
     pub attributes: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
 }
-///  A message and its corresponding acknowledgment ID.
+/// A message and its corresponding acknowledgment ID.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReceivedMessage {
-    ///  This ID can be used to acknowledge the received message.
+    /// This ID can be used to acknowledge the received message.
     #[prost(string, tag="1")]
     pub ack_id: ::prost::alloc::string::String,
-    ///  The message.
+    /// The message.
     #[prost(message, optional, tag="2")]
     pub message: ::core::option::Option<PubsubMessage>,
 }
-///  Request for the GetSubscription method.
+/// Request for the GetSubscription method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetSubscriptionRequest {
-    ///  The name of the subscription to get.
+    /// The name of the subscription to get.
     #[prost(string, tag="1")]
     pub subscription: ::prost::alloc::string::String,
 }
-///  Request for the ListSubscriptions method.
+/// Request for the ListSubscriptions method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSubscriptionsRequest {
-    ///  The name of the cloud project that subscriptions belong to.
+    /// The name of the cloud project that subscriptions belong to.
     #[prost(string, tag="1")]
     pub project: ::prost::alloc::string::String,
-    ///  Maximum number of subscriptions to return.
+    /// Maximum number of subscriptions to return.
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    ///  The value returned by the last ListSubscriptionsResponse; indicates that
-    ///  this is a continuation of a prior ListSubscriptions call, and that the
-    ///  system should return the next page of data.
+    /// The value returned by the last ListSubscriptionsResponse; indicates that
+    /// this is a continuation of a prior ListSubscriptions call, and that the
+    /// system should return the next page of data.
     #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
 }
-///  Response for the ListSubscriptions method.
+/// Response for the ListSubscriptions method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSubscriptionsResponse {
-    ///  The subscriptions that match the request.
+    /// The subscriptions that match the request.
     #[prost(message, repeated, tag="1")]
     pub subscriptions: ::prost::alloc::vec::Vec<Subscription>,
-    ///  If not empty, indicates that there may be more subscriptions that match
-    ///  the request; this value should be passed in a new ListSubscriptionsRequest
-    ///  to get more subscriptions.
+    /// If not empty, indicates that there may be more subscriptions that match
+    /// the request; this value should be passed in a new ListSubscriptionsRequest
+    /// to get more subscriptions.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-///  Request for the DeleteSubscription method.
+/// Request for the DeleteSubscription method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteSubscriptionRequest {
-    ///  The subscription to delete.
+    /// The subscription to delete.
     #[prost(string, tag="1")]
     pub subscription: ::prost::alloc::string::String,
 }
-///  Request for the ModifyPushConfig method.
+/// Request for the ModifyPushConfig method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ModifyPushConfigRequest {
-    ///  The name of the subscription.
+    /// The name of the subscription.
     #[prost(string, tag="1")]
     pub subscription: ::prost::alloc::string::String,
-    ///  The push configuration for future deliveries.
+    /// The push configuration for future deliveries.
     ///
-    ///  An empty pushConfig indicates that the Pub/Sub system should
-    ///  stop pushing messages from the given subscription and allow
-    ///  messages to be pulled and acknowledged - effectively pausing
-    ///  the subscription if Pull is not called.
+    /// An empty pushConfig indicates that the Pub/Sub system should
+    /// stop pushing messages from the given subscription and allow
+    /// messages to be pulled and acknowledged - effectively pausing
+    /// the subscription if Pull is not called.
     #[prost(message, optional, tag="2")]
     pub push_config: ::core::option::Option<PushConfig>,
 }
-///  Request for the Pull method.
+/// Request for the Pull method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PullRequest {
-    ///  The subscription from which messages should be pulled.
+    /// The subscription from which messages should be pulled.
     #[prost(string, tag="1")]
     pub subscription: ::prost::alloc::string::String,
-    ///  If this is specified as true the system will respond immediately even if
-    ///  it is not able to return a message in the Pull response. Otherwise the
-    ///  system is allowed to wait until at least one message is available rather
-    ///  than returning no messages. The client may cancel the request if it does
-    ///  not wish to wait any longer for the response.
+    /// If this is specified as true the system will respond immediately even if
+    /// it is not able to return a message in the Pull response. Otherwise the
+    /// system is allowed to wait until at least one message is available rather
+    /// than returning no messages. The client may cancel the request if it does
+    /// not wish to wait any longer for the response.
     #[prost(bool, tag="2")]
     pub return_immediately: bool,
-    ///  The maximum number of messages returned for this request. The Pub/Sub
-    ///  system may return fewer than the number specified.
+    /// The maximum number of messages returned for this request. The Pub/Sub
+    /// system may return fewer than the number specified.
     #[prost(int32, tag="3")]
     pub max_messages: i32,
 }
-///  Response for the Pull method.
+/// Response for the Pull method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PullResponse {
-    ///  Received Pub/Sub messages. The Pub/Sub system will return zero messages if
-    ///  there are no more available in the backlog. The Pub/Sub system may return
-    ///  fewer than the maxMessages requested even if there are more messages
-    ///  available in the backlog.
+    /// Received Pub/Sub messages. The Pub/Sub system will return zero messages if
+    /// there are no more available in the backlog. The Pub/Sub system may return
+    /// fewer than the maxMessages requested even if there are more messages
+    /// available in the backlog.
     #[prost(message, repeated, tag="1")]
     pub received_messages: ::prost::alloc::vec::Vec<ReceivedMessage>,
 }
-///  Request for the ModifyAckDeadline method.
+/// Request for the ModifyAckDeadline method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ModifyAckDeadlineRequest {
-    ///  The name of the subscription.
+    /// The name of the subscription.
     #[prost(string, tag="1")]
     pub subscription: ::prost::alloc::string::String,
-    ///  The acknowledgment ID.
+    /// The acknowledgment ID.
     #[prost(string, tag="2")]
     pub ack_id: ::prost::alloc::string::String,
-    ///  The new ack deadline with respect to the time this request was sent to the
-    ///  Pub/Sub system. Must be >= 0. For example, if the value is 10, the new ack
-    ///  deadline will expire 10 seconds after the ModifyAckDeadline call was made.
-    ///  Specifying zero may immediately make the message available for another pull
-    ///  request.
+    /// The new ack deadline with respect to the time this request was sent to the
+    /// Pub/Sub system. Must be >= 0. For example, if the value is 10, the new ack
+    /// deadline will expire 10 seconds after the ModifyAckDeadline call was made.
+    /// Specifying zero may immediately make the message available for another pull
+    /// request.
     #[prost(int32, tag="3")]
     pub ack_deadline_seconds: i32,
 }
-///  Request for the Acknowledge method.
+/// Request for the Acknowledge method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AcknowledgeRequest {
-    ///  The subscription whose message is being acknowledged.
+    /// The subscription whose message is being acknowledged.
     #[prost(string, tag="1")]
     pub subscription: ::prost::alloc::string::String,
-    ///  The acknowledgment ID for the messages being acknowledged that was returned
-    ///  by the Pub/Sub system in the Pull response. Must not be empty.
+    /// The acknowledgment ID for the messages being acknowledged that was returned
+    /// by the Pub/Sub system in the Pull response. Must not be empty.
     #[prost(string, repeated, tag="2")]
     pub ack_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }

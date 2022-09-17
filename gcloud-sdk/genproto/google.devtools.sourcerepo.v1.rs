@@ -1,97 +1,97 @@
-///  A repository (or repo) is a Git repository storing versioned source content.
+/// A repository (or repo) is a Git repository storing versioned source content.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Repo {
-    ///  Resource name of the repository, of the form
-    ///  `projects/<project>/repos/<repo>`.  The repo name may contain slashes.
-    ///  eg, `projects/myproject/repos/name/with/slash`
+    /// Resource name of the repository, of the form
+    /// `projects/<project>/repos/<repo>`.  The repo name may contain slashes.
+    /// eg, `projects/myproject/repos/name/with/slash`
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  The disk usage of the repo, in bytes. Read-only field. Size is only
-    ///  returned by GetRepo.
+    /// The disk usage of the repo, in bytes. Read-only field. Size is only
+    /// returned by GetRepo.
     #[prost(int64, tag="2")]
     pub size: i64,
-    ///  URL to clone the repository from Google Cloud Source Repositories.
-    ///  Read-only field.
+    /// URL to clone the repository from Google Cloud Source Repositories.
+    /// Read-only field.
     #[prost(string, tag="3")]
     pub url: ::prost::alloc::string::String,
-    ///  How this repository mirrors a repository managed by another service.
-    ///  Read-only field.
+    /// How this repository mirrors a repository managed by another service.
+    /// Read-only field.
     #[prost(message, optional, tag="4")]
     pub mirror_config: ::core::option::Option<MirrorConfig>,
 }
-///  Configuration to automatically mirror a repository from another
-///  hosting service, for example GitHub or BitBucket.
+/// Configuration to automatically mirror a repository from another
+/// hosting service, for example GitHub or BitBucket.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MirrorConfig {
-    ///  URL of the main repository at the other hosting service.
+    /// URL of the main repository at the other hosting service.
     #[prost(string, tag="1")]
     pub url: ::prost::alloc::string::String,
-    ///  ID of the webhook listening to updates to trigger mirroring.
-    ///  Removing this webhook from the other hosting service will stop
-    ///  Google Cloud Source Repositories from receiving notifications,
-    ///  and thereby disabling mirroring.
+    /// ID of the webhook listening to updates to trigger mirroring.
+    /// Removing this webhook from the other hosting service will stop
+    /// Google Cloud Source Repositories from receiving notifications,
+    /// and thereby disabling mirroring.
     #[prost(string, tag="2")]
     pub webhook_id: ::prost::alloc::string::String,
-    ///  ID of the SSH deploy key at the other hosting service.
-    ///  Removing this key from the other service would deauthorize
-    ///  Google Cloud Source Repositories from mirroring.
+    /// ID of the SSH deploy key at the other hosting service.
+    /// Removing this key from the other service would deauthorize
+    /// Google Cloud Source Repositories from mirroring.
     #[prost(string, tag="3")]
     pub deploy_key_id: ::prost::alloc::string::String,
 }
-///  Request for GetRepo.
+/// Request for GetRepo.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetRepoRequest {
-    ///  The name of the requested repository. Values are of the form
-    ///  `projects/<project>/repos/<repo>`.
+    /// The name of the requested repository. Values are of the form
+    /// `projects/<project>/repos/<repo>`.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Request for ListRepos.
+/// Request for ListRepos.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListReposRequest {
-    ///  The project ID whose repos should be listed. Values are of the form
-    ///  `projects/<project>`.
+    /// The project ID whose repos should be listed. Values are of the form
+    /// `projects/<project>`.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Maximum number of repositories to return; between 1 and 500.
-    ///  If not set or zero, defaults to 100 at the server.
+    /// Maximum number of repositories to return; between 1 and 500.
+    /// If not set or zero, defaults to 100 at the server.
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    ///  Resume listing repositories where a prior ListReposResponse
-    ///  left off. This is an opaque token that must be obtained from
-    ///  a recent, prior ListReposResponse's next_page_token field.
+    /// Resume listing repositories where a prior ListReposResponse
+    /// left off. This is an opaque token that must be obtained from
+    /// a recent, prior ListReposResponse's next_page_token field.
     #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
 }
-///  Response for ListRepos.  The size is not set in the returned repositories.
+/// Response for ListRepos.  The size is not set in the returned repositories.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListReposResponse {
-    ///  The listed repos.
+    /// The listed repos.
     #[prost(message, repeated, tag="1")]
     pub repos: ::prost::alloc::vec::Vec<Repo>,
-    ///  If non-empty, additional repositories exist within the project. These
-    ///  can be retrieved by including this value in the next ListReposRequest's
-    ///  page_token field.
+    /// If non-empty, additional repositories exist within the project. These
+    /// can be retrieved by including this value in the next ListReposRequest's
+    /// page_token field.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-///  Request for CreateRepo
+/// Request for CreateRepo
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateRepoRequest {
-    ///  The project in which to create the repo. Values are of the form
-    ///  `projects/<project>`.
+    /// The project in which to create the repo. Values are of the form
+    /// `projects/<project>`.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  The repo to create.  Only name should be set; setting other fields
-    ///  is an error.  The project in the name should match the parent field.
+    /// The repo to create.  Only name should be set; setting other fields
+    /// is an error.  The project in the name should match the parent field.
     #[prost(message, optional, tag="2")]
     pub repo: ::core::option::Option<Repo>,
 }
-///  Request for DeleteRepo.
+/// Request for DeleteRepo.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteRepoRequest {
-    ///  The name of the repo to delete. Values are of the form
-    ///  `projects/<project>/repos/<repo>`.
+    /// The name of the repo to delete. Values are of the form
+    /// `projects/<project>/repos/<repo>`.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }

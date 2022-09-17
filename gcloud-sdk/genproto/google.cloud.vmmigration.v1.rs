@@ -1,130 +1,130 @@
-///  ReplicationCycle contains information about the current replication cycle
-///  status.
+/// ReplicationCycle contains information about the current replication cycle
+/// status.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReplicationCycle {
-    ///  The time the replication cycle has started.
+    /// The time the replication cycle has started.
     #[prost(message, optional, tag="1")]
     pub start_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  The current progress in percentage of this cycle.
+    /// The current progress in percentage of this cycle.
     #[prost(int32, tag="5")]
     pub progress_percent: i32,
 }
-///  ReplicationSync contain information about the last replica sync to the cloud.
+/// ReplicationSync contain information about the last replica sync to the cloud.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReplicationSync {
-    ///  The most updated snapshot created time in the source that finished
-    ///  replication.
+    /// The most updated snapshot created time in the source that finished
+    /// replication.
     #[prost(message, optional, tag="1")]
     pub last_sync_time: ::core::option::Option<::prost_types::Timestamp>,
 }
-///  MigratingVm describes the VM that will be migrated from a Source environment
-///  and its replication state.
+/// MigratingVm describes the VM that will be migrated from a Source environment
+/// and its replication state.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MigratingVm {
-    ///  Output only. The identifier of the MigratingVm.
+    /// Output only. The identifier of the MigratingVm.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  The unique ID of the VM in the source.
-    ///  The VM's name in vSphere can be changed, so this is not the VM's name but
-    ///  rather its moRef id. This id is of the form vm-<num>.
+    /// The unique ID of the VM in the source.
+    /// The VM's name in vSphere can be changed, so this is not the VM's name but
+    /// rather its moRef id. This id is of the form vm-<num>.
     #[prost(string, tag="2")]
     pub source_vm_id: ::prost::alloc::string::String,
-    ///  The display name attached to the MigratingVm by the user.
+    /// The display name attached to the MigratingVm by the user.
     #[prost(string, tag="18")]
     pub display_name: ::prost::alloc::string::String,
-    ///  The description attached to the migrating VM by the user.
+    /// The description attached to the migrating VM by the user.
     #[prost(string, tag="3")]
     pub description: ::prost::alloc::string::String,
-    ///  The replication schedule policy.
+    /// The replication schedule policy.
     #[prost(message, optional, tag="8")]
     pub policy: ::core::option::Option<SchedulePolicy>,
-    ///  Output only. The time the migrating VM was created (this refers to this
-    ///  resource and not to the time it was installed in the source).
+    /// Output only. The time the migrating VM was created (this refers to this
+    /// resource and not to the time it was installed in the source).
     #[prost(message, optional, tag="9")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Output only. The last time the migrating VM resource was updated.
+    /// Output only. The last time the migrating VM resource was updated.
     #[prost(message, optional, tag="10")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Output only. The most updated snapshot created time in the source that
-    ///  finished replication.
+    /// Output only. The most updated snapshot created time in the source that
+    /// finished replication.
     #[prost(message, optional, tag="11")]
     pub last_sync: ::core::option::Option<ReplicationSync>,
-    ///  Output only. State of the MigratingVm.
+    /// Output only. State of the MigratingVm.
     #[prost(enumeration="migrating_vm::State", tag="23")]
     pub state: i32,
-    ///  Output only. The last time the migrating VM state was updated.
+    /// Output only. The last time the migrating VM state was updated.
     #[prost(message, optional, tag="22")]
     pub state_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Output only. The percentage progress of the current running replication
-    ///  cycle.
+    /// Output only. The percentage progress of the current running replication
+    /// cycle.
     #[prost(message, optional, tag="13")]
     pub current_sync_info: ::core::option::Option<ReplicationCycle>,
-    ///  Output only. The group this migrating vm is included in, if any. The group
-    ///  is represented by the full path of the appropriate
-    ///  \[Group][google.cloud.vmmigration.v1.Group\] resource.
+    /// Output only. The group this migrating vm is included in, if any. The group
+    /// is represented by the full path of the appropriate
+    /// \[Group][google.cloud.vmmigration.v1.Group\] resource.
     #[prost(string, tag="15")]
     pub group: ::prost::alloc::string::String,
-    ///  The labels of the migrating VM.
+    /// The labels of the migrating VM.
     #[prost(map="string, string", tag="16")]
     pub labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
-    ///  Output only. The recent [clone jobs]\[google.cloud.vmmigration.v1.CloneJob\]
-    ///  performed on the migrating VM. This field holds the vm's last completed
-    ///  clone job and the vm's running clone job, if one exists.
-    ///  Note: To have this field populated you need to explicitly request it via
-    ///  the "view" parameter of the Get/List request.
+    /// Output only. The recent [clone jobs]\[google.cloud.vmmigration.v1.CloneJob\]
+    /// performed on the migrating VM. This field holds the vm's last completed
+    /// clone job and the vm's running clone job, if one exists.
+    /// Note: To have this field populated you need to explicitly request it via
+    /// the "view" parameter of the Get/List request.
     #[prost(message, repeated, tag="17")]
     pub recent_clone_jobs: ::prost::alloc::vec::Vec<CloneJob>,
-    ///  Output only. Provides details on the state of the Migrating VM in case of
-    ///  an error in replication.
+    /// Output only. Provides details on the state of the Migrating VM in case of
+    /// an error in replication.
     #[prost(message, optional, tag="19")]
     pub error: ::core::option::Option<super::super::super::rpc::Status>,
-    ///  Output only. The recent cutover jobs performed on the migrating VM.
-    ///  This field holds the vm's last completed cutover job and the vm's
-    ///  running cutover job, if one exists.
-    ///  Note: To have this field populated you need to explicitly request it via
-    ///  the "view" parameter of the Get/List request.
+    /// Output only. The recent cutover jobs performed on the migrating VM.
+    /// This field holds the vm's last completed cutover job and the vm's
+    /// running cutover job, if one exists.
+    /// Note: To have this field populated you need to explicitly request it via
+    /// the "view" parameter of the Get/List request.
     #[prost(message, repeated, tag="20")]
     pub recent_cutover_jobs: ::prost::alloc::vec::Vec<CutoverJob>,
-    ///  The default configuration of the target VM that will be created in GCP as a
-    ///  result of the migration.
+    /// The default configuration of the target VM that will be created in GCP as a
+    /// result of the migration.
     #[prost(oneof="migrating_vm::TargetVmDefaults", tags="26")]
     pub target_vm_defaults: ::core::option::Option<migrating_vm::TargetVmDefaults>,
 }
 /// Nested message and enum types in `MigratingVm`.
 pub mod migrating_vm {
-    ///  The possible values of the state/health of source VM.
+    /// The possible values of the state/health of source VM.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum State {
-        ///  The state was not sampled by the health checks yet.
+        /// The state was not sampled by the health checks yet.
         Unspecified = 0,
-        ///  The VM in the source is being verified.
+        /// The VM in the source is being verified.
         Pending = 1,
-        ///  The source VM was verified, and it's ready to start replication.
+        /// The source VM was verified, and it's ready to start replication.
         Ready = 2,
-        ///  Migration is going through the first sync cycle.
+        /// Migration is going through the first sync cycle.
         FirstSync = 3,
-        ///  The replication is active, and it's running or scheduled to run.
+        /// The replication is active, and it's running or scheduled to run.
         Active = 4,
-        ///  The source VM is being turned off, and a final replication is currently
-        ///  running.
+        /// The source VM is being turned off, and a final replication is currently
+        /// running.
         CuttingOver = 7,
-        ///  The source VM was stopped and replicated. The replication is currently
-        ///  paused.
+        /// The source VM was stopped and replicated. The replication is currently
+        /// paused.
         Cutover = 8,
-        ///  A cutover job is active and replication cycle is running the final sync.
+        /// A cutover job is active and replication cycle is running the final sync.
         FinalSync = 9,
-        ///  The replication was paused by the user and no cycles are scheduled to
-        ///  run.
+        /// The replication was paused by the user and no cycles are scheduled to
+        /// run.
         Paused = 10,
-        ///  The migrating VM is being finalized and migration resources are being
-        ///  removed.
+        /// The migrating VM is being finalized and migration resources are being
+        /// removed.
         Finalizing = 11,
-        ///  The replication process is done. The migrating VM is finalized and no
-        ///  longer consumes billable resources.
+        /// The replication process is done. The migrating VM is finalized and no
+        /// longer consumes billable resources.
         Finalized = 12,
-        ///  The replication process encountered an unrecoverable error and was
-        ///  aborted.
+        /// The replication process encountered an unrecoverable error and was
+        /// aborted.
         Error = 13,
     }
     impl State {
@@ -149,73 +149,73 @@ pub mod migrating_vm {
             }
         }
     }
-    ///  The default configuration of the target VM that will be created in GCP as a
-    ///  result of the migration.
+    /// The default configuration of the target VM that will be created in GCP as a
+    /// result of the migration.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum TargetVmDefaults {
-        ///  Details of the target VM in Compute Engine.
+        /// Details of the target VM in Compute Engine.
         #[prost(message, tag="26")]
         ComputeEngineTargetDefaults(super::ComputeEngineTargetDefaults),
     }
 }
-///  CloneJob describes the process of creating a clone of a
-///  \[MigratingVM][google.cloud.vmmigration.v1.MigratingVm\] to the
-///  requested target based on the latest successful uploaded snapshots.
-///  While the migration cycles of a MigratingVm take place, it is possible to
-///  verify the uploaded VM can be started in the cloud, by creating a clone. The
-///  clone can be created without any downtime, and it is created using the latest
-///  snapshots which are already in the cloud. The cloneJob is only responsible
-///  for its work, not its products, which means once it is finished, it will
-///  never touch the instance it created. It will only delete it in case of the
-///  CloneJob being cancelled or upon failure to clone.
+/// CloneJob describes the process of creating a clone of a
+/// \[MigratingVM][google.cloud.vmmigration.v1.MigratingVm\] to the
+/// requested target based on the latest successful uploaded snapshots.
+/// While the migration cycles of a MigratingVm take place, it is possible to
+/// verify the uploaded VM can be started in the cloud, by creating a clone. The
+/// clone can be created without any downtime, and it is created using the latest
+/// snapshots which are already in the cloud. The cloneJob is only responsible
+/// for its work, not its products, which means once it is finished, it will
+/// never touch the instance it created. It will only delete it in case of the
+/// CloneJob being cancelled or upon failure to clone.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CloneJob {
-    ///  Output only. The time the clone job was created (as an API call, not when
-    ///  it was actually created in the target).
+    /// Output only. The time the clone job was created (as an API call, not when
+    /// it was actually created in the target).
     #[prost(message, optional, tag="1")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Output only. The time the clone job was ended.
+    /// Output only. The time the clone job was ended.
     #[prost(message, optional, tag="22")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Output only. The name of the clone.
+    /// Output only. The name of the clone.
     #[prost(string, tag="3")]
     pub name: ::prost::alloc::string::String,
-    ///  Output only. State of the clone job.
+    /// Output only. State of the clone job.
     #[prost(enumeration="clone_job::State", tag="12")]
     pub state: i32,
-    ///  Output only. The time the state was last updated.
+    /// Output only. The time the state was last updated.
     #[prost(message, optional, tag="14")]
     pub state_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Output only. Provides details for the errors that led to the Clone Job's
-    ///  state.
+    /// Output only. Provides details for the errors that led to the Clone Job's
+    /// state.
     #[prost(message, optional, tag="17")]
     pub error: ::core::option::Option<super::super::super::rpc::Status>,
-    ///  Details of the VM to create as the target of this clone job.
+    /// Details of the VM to create as the target of this clone job.
     #[prost(oneof="clone_job::TargetVmDetails", tags="20")]
     pub target_vm_details: ::core::option::Option<clone_job::TargetVmDetails>,
 }
 /// Nested message and enum types in `CloneJob`.
 pub mod clone_job {
-    ///  Possible states of the clone job.
+    /// Possible states of the clone job.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum State {
-        ///  The state is unknown. This is used for API compatibility only and is not
-        ///  used by the system.
+        /// The state is unknown. This is used for API compatibility only and is not
+        /// used by the system.
         Unspecified = 0,
-        ///  The clone job has not yet started.
+        /// The clone job has not yet started.
         Pending = 1,
-        ///  The clone job is active and running.
+        /// The clone job is active and running.
         Active = 2,
-        ///  The clone job finished with errors.
+        /// The clone job finished with errors.
         Failed = 3,
-        ///  The clone job finished successfully.
+        /// The clone job finished successfully.
         Succeeded = 4,
-        ///  The clone job was cancelled.
+        /// The clone job was cancelled.
         Cancelled = 5,
-        ///  The clone job is being cancelled.
+        /// The clone job is being cancelled.
         Cancelling = 6,
-        ///  OS adaptation is running as part of the clone job to generate license.
+        /// OS adaptation is running as part of the clone job to generate license.
         AdaptingOs = 7,
     }
     impl State {
@@ -236,72 +236,72 @@ pub mod clone_job {
             }
         }
     }
-    ///  Details of the VM to create as the target of this clone job.
+    /// Details of the VM to create as the target of this clone job.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum TargetVmDetails {
-        ///  Output only. Details of the target VM in Compute Engine.
+        /// Output only. Details of the target VM in Compute Engine.
         #[prost(message, tag="20")]
         ComputeEngineTargetDetails(super::ComputeEngineTargetDetails),
     }
 }
-///  CutoverJob message describes a cutover of a migrating VM. The CutoverJob is
-///  the operation of shutting down the VM, creating a snapshot and
-///  clonning the VM using the replicated snapshot.
+/// CutoverJob message describes a cutover of a migrating VM. The CutoverJob is
+/// the operation of shutting down the VM, creating a snapshot and
+/// clonning the VM using the replicated snapshot.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CutoverJob {
-    ///  Output only. The time the cutover job was created (as an API call, not when
-    ///  it was actually created in the target).
+    /// Output only. The time the cutover job was created (as an API call, not when
+    /// it was actually created in the target).
     #[prost(message, optional, tag="1")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Output only. The time the cutover job had finished.
+    /// Output only. The time the cutover job had finished.
     #[prost(message, optional, tag="16")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Output only. The name of the cutover job.
+    /// Output only. The name of the cutover job.
     #[prost(string, tag="3")]
     pub name: ::prost::alloc::string::String,
-    ///  Output only. State of the cutover job.
+    /// Output only. State of the cutover job.
     #[prost(enumeration="cutover_job::State", tag="5")]
     pub state: i32,
-    ///  Output only. The time the state was last updated.
+    /// Output only. The time the state was last updated.
     #[prost(message, optional, tag="6")]
     pub state_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Output only. The current progress in percentage of the cutover job.
+    /// Output only. The current progress in percentage of the cutover job.
     #[prost(int32, tag="13")]
     pub progress_percent: i32,
-    ///  Output only. Provides details for the errors that led to the Cutover Job's
-    ///  state.
+    /// Output only. Provides details for the errors that led to the Cutover Job's
+    /// state.
     #[prost(message, optional, tag="9")]
     pub error: ::core::option::Option<super::super::super::rpc::Status>,
-    ///  Output only. A message providing possible extra details about the current
-    ///  state.
+    /// Output only. A message providing possible extra details about the current
+    /// state.
     #[prost(string, tag="10")]
     pub state_message: ::prost::alloc::string::String,
-    ///  Details of the VM to create as the target of this cutover job.
+    /// Details of the VM to create as the target of this cutover job.
     #[prost(oneof="cutover_job::TargetVmDetails", tags="14")]
     pub target_vm_details: ::core::option::Option<cutover_job::TargetVmDetails>,
 }
 /// Nested message and enum types in `CutoverJob`.
 pub mod cutover_job {
-    ///  Possible states of the cutover job.
+    /// Possible states of the cutover job.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum State {
-        ///  The state is unknown. This is used for API compatibility only and is not
-        ///  used by the system.
+        /// The state is unknown. This is used for API compatibility only and is not
+        /// used by the system.
         Unspecified = 0,
-        ///  The cutover job has not yet started.
+        /// The cutover job has not yet started.
         Pending = 1,
-        ///  The cutover job finished with errors.
+        /// The cutover job finished with errors.
         Failed = 2,
-        ///  The cutover job finished successfully.
+        /// The cutover job finished successfully.
         Succeeded = 3,
-        ///  The cutover job was cancelled.
+        /// The cutover job was cancelled.
         Cancelled = 4,
-        ///  The cutover job is being cancelled.
+        /// The cutover job is being cancelled.
         Cancelling = 5,
-        ///  The cutover job is active and running.
+        /// The cutover job is active and running.
         Active = 6,
-        ///  OS adaptation is running as part of the cutover job to generate license.
+        /// OS adaptation is running as part of the cutover job to generate license.
         AdaptingOs = 7,
     }
     impl State {
@@ -322,117 +322,117 @@ pub mod cutover_job {
             }
         }
     }
-    ///  Details of the VM to create as the target of this cutover job.
+    /// Details of the VM to create as the target of this cutover job.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum TargetVmDetails {
-        ///  Output only. Details of the target VM in Compute Engine.
+        /// Output only. Details of the target VM in Compute Engine.
         #[prost(message, tag="14")]
         ComputeEngineTargetDetails(super::ComputeEngineTargetDetails),
     }
 }
-///  Request message for 'CreateCloneJob' request.
+/// Request message for 'CreateCloneJob' request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateCloneJobRequest {
-    ///  Required. The Clone's parent.
+    /// Required. The Clone's parent.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Required. The clone job identifier.
+    /// Required. The clone job identifier.
     #[prost(string, tag="2")]
     pub clone_job_id: ::prost::alloc::string::String,
-    ///  Required. The clone request body.
+    /// Required. The clone request body.
     #[prost(message, optional, tag="3")]
     pub clone_job: ::core::option::Option<CloneJob>,
-    ///  A request ID to identify requests. Specify a unique request ID
-    ///  so that if you must retry your request, the server will know to ignore
-    ///  the request if it has already been completed. The server will guarantee
-    ///  that for at least 60 minutes since the first request.
+    /// A request ID to identify requests. Specify a unique request ID
+    /// so that if you must retry your request, the server will know to ignore
+    /// the request if it has already been completed. The server will guarantee
+    /// that for at least 60 minutes since the first request.
     ///
-    ///  For example, consider a situation where you make an initial request and t
-    ///  he request times out. If you make the request again with the same request
-    ///  ID, the server can check if original operation with the same request ID
-    ///  was received, and if so, will ignore the second request. This prevents
-    ///  clients from accidentally creating duplicate commitments.
+    /// For example, consider a situation where you make an initial request and t
+    /// he request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
     ///
-    ///  The request ID must be a valid UUID with the exception that zero UUID is
-    ///  not supported (00000000-0000-0000-0000-000000000000).
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
     #[prost(string, tag="4")]
     pub request_id: ::prost::alloc::string::String,
 }
-///  Request message for 'CancelCloneJob' request.
+/// Request message for 'CancelCloneJob' request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CancelCloneJobRequest {
-    ///  Required. The clone job id
+    /// Required. The clone job id
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Response message for 'CancelCloneJob' request.
+/// Response message for 'CancelCloneJob' request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CancelCloneJobResponse {
 }
-///  Request message for 'ListCloneJobsRequest' request.
+/// Request message for 'ListCloneJobsRequest' request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCloneJobsRequest {
-    ///  Required. The parent, which owns this collection of source VMs.
+    /// Required. The parent, which owns this collection of source VMs.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Optional. The maximum number of clone jobs to return. The service may
-    ///  return fewer than this value. If unspecified, at most 500 clone jobs will
-    ///  be returned. The maximum value is 1000; values above 1000 will be coerced
-    ///  to 1000.
+    /// Optional. The maximum number of clone jobs to return. The service may
+    /// return fewer than this value. If unspecified, at most 500 clone jobs will
+    /// be returned. The maximum value is 1000; values above 1000 will be coerced
+    /// to 1000.
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    ///  Required. A page token, received from a previous `ListCloneJobs` call.
-    ///  Provide this to retrieve the subsequent page.
+    /// Required. A page token, received from a previous `ListCloneJobs` call.
+    /// Provide this to retrieve the subsequent page.
     ///
-    ///  When paginating, all other parameters provided to `ListCloneJobs` must
-    ///  match the call that provided the page token.
+    /// When paginating, all other parameters provided to `ListCloneJobs` must
+    /// match the call that provided the page token.
     #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
-    ///  Optional. The filter request.
+    /// Optional. The filter request.
     #[prost(string, tag="4")]
     pub filter: ::prost::alloc::string::String,
-    ///  Optional. the order by fields for the result.
+    /// Optional. the order by fields for the result.
     #[prost(string, tag="5")]
     pub order_by: ::prost::alloc::string::String,
 }
-///  Response message for 'ListCloneJobs' request.
+/// Response message for 'ListCloneJobs' request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCloneJobsResponse {
-    ///  Output only. The list of clone jobs response.
+    /// Output only. The list of clone jobs response.
     #[prost(message, repeated, tag="1")]
     pub clone_jobs: ::prost::alloc::vec::Vec<CloneJob>,
-    ///  Output only. A token, which can be sent as `page_token` to retrieve the
-    ///  next page. If this field is omitted, there are no subsequent pages.
+    /// Output only. A token, which can be sent as `page_token` to retrieve the
+    /// next page. If this field is omitted, there are no subsequent pages.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
-    ///  Output only. Locations that could not be reached.
+    /// Output only. Locations that could not be reached.
     #[prost(string, repeated, tag="3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-///  Request message for 'GetCloneJob' request.
+/// Request message for 'GetCloneJob' request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCloneJobRequest {
-    ///  Required. The name of the CloneJob.
+    /// Required. The name of the CloneJob.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Source message describes a specific vm migration Source resource. It contains
-///  the source environment information.
+/// Source message describes a specific vm migration Source resource. It contains
+/// the source environment information.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Source {
-    ///  Output only. The Source name.
+    /// Output only. The Source name.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Output only. The create time timestamp.
+    /// Output only. The create time timestamp.
     #[prost(message, optional, tag="2")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Output only. The update time timestamp.
+    /// Output only. The update time timestamp.
     #[prost(message, optional, tag="3")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  The labels of the source.
+    /// The labels of the source.
     #[prost(map="string, string", tag="4")]
     pub labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
-    ///  User-provided description of the source.
+    /// User-provided description of the source.
     #[prost(string, tag="6")]
     pub description: ::prost::alloc::string::String,
     #[prost(oneof="source::SourceDetails", tags="10")]
@@ -442,107 +442,107 @@ pub struct Source {
 pub mod source {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum SourceDetails {
-        ///  Vmware type source details.
+        /// Vmware type source details.
         #[prost(message, tag="10")]
         Vmware(super::VmwareSourceDetails),
     }
 }
-///  VmwareSourceDetails message describes a specific source details for the
-///  vmware source type.
+/// VmwareSourceDetails message describes a specific source details for the
+/// vmware source type.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VmwareSourceDetails {
-    ///  The credentials username.
+    /// The credentials username.
     #[prost(string, tag="1")]
     pub username: ::prost::alloc::string::String,
-    ///  Input only. The credentials password. This is write only and can not be
-    ///  read in a GET operation.
+    /// Input only. The credentials password. This is write only and can not be
+    /// read in a GET operation.
     #[prost(string, tag="2")]
     pub password: ::prost::alloc::string::String,
-    ///  The ip address of the vcenter this Source represents.
+    /// The ip address of the vcenter this Source represents.
     #[prost(string, tag="3")]
     pub vcenter_ip: ::prost::alloc::string::String,
-    ///  The thumbprint representing the certificate for the vcenter.
+    /// The thumbprint representing the certificate for the vcenter.
     #[prost(string, tag="4")]
     pub thumbprint: ::prost::alloc::string::String,
 }
-///  DatacenterConnector message describes a connector between the Source and GCP,
-///  which is installed on a vmware datacenter (an OVA vm installed by the user)
-///  to connect the Datacenter to GCP and support vm migration data transfer.
+/// DatacenterConnector message describes a connector between the Source and GCP,
+/// which is installed on a vmware datacenter (an OVA vm installed by the user)
+/// to connect the Datacenter to GCP and support vm migration data transfer.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DatacenterConnector {
-    ///  Output only. The time the connector was created (as an API call, not when
-    ///  it was actually installed).
+    /// Output only. The time the connector was created (as an API call, not when
+    /// it was actually installed).
     #[prost(message, optional, tag="1")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Output only. The last time the connector was updated with an API call.
+    /// Output only. The last time the connector was updated with an API call.
     #[prost(message, optional, tag="2")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Output only. The connector's name.
+    /// Output only. The connector's name.
     #[prost(string, tag="3")]
     pub name: ::prost::alloc::string::String,
-    ///  Immutable. A unique key for this connector. This key is internal to the OVA
-    ///  connector and is supplied with its creation during the registration process
-    ///  and can not be modified.
+    /// Immutable. A unique key for this connector. This key is internal to the OVA
+    /// connector and is supplied with its creation during the registration process
+    /// and can not be modified.
     #[prost(string, tag="12")]
     pub registration_id: ::prost::alloc::string::String,
-    ///  The service account to use in the connector when communicating with the
-    ///  cloud.
+    /// The service account to use in the connector when communicating with the
+    /// cloud.
     #[prost(string, tag="5")]
     pub service_account: ::prost::alloc::string::String,
-    ///  The version running in the DatacenterConnector. This is supplied by the OVA
-    ///  connector during the registration process and can not be modified.
+    /// The version running in the DatacenterConnector. This is supplied by the OVA
+    /// connector during the registration process and can not be modified.
     #[prost(string, tag="6")]
     pub version: ::prost::alloc::string::String,
-    ///  Output only. The communication channel between the datacenter connector and
-    ///  GCP.
+    /// Output only. The communication channel between the datacenter connector and
+    /// GCP.
     #[prost(string, tag="10")]
     pub bucket: ::prost::alloc::string::String,
-    ///  Output only. State of the DatacenterConnector, as determined by the health
-    ///  checks.
+    /// Output only. State of the DatacenterConnector, as determined by the health
+    /// checks.
     #[prost(enumeration="datacenter_connector::State", tag="7")]
     pub state: i32,
-    ///  Output only. The time the state was last set.
+    /// Output only. The time the state was last set.
     #[prost(message, optional, tag="8")]
     pub state_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Output only. Provides details on the state of the Datacenter Connector in
-    ///  case of an error.
+    /// Output only. Provides details on the state of the Datacenter Connector in
+    /// case of an error.
     #[prost(message, optional, tag="11")]
     pub error: ::core::option::Option<super::super::super::rpc::Status>,
-    ///  Output only. Appliance OVA version.
-    ///  This is the OVA which is manually installed by the user and contains the
-    ///  infrastructure for the automatically updatable components on the appliance.
+    /// Output only. Appliance OVA version.
+    /// This is the OVA which is manually installed by the user and contains the
+    /// infrastructure for the automatically updatable components on the appliance.
     #[prost(string, tag="13")]
     pub appliance_infrastructure_version: ::prost::alloc::string::String,
-    ///  Output only. Appliance last installed update bundle version.
-    ///  This is the version of the automatically updatable components on the
-    ///  appliance.
+    /// Output only. Appliance last installed update bundle version.
+    /// This is the version of the automatically updatable components on the
+    /// appliance.
     #[prost(string, tag="14")]
     pub appliance_software_version: ::prost::alloc::string::String,
-    ///  Output only. The available versions for updating this appliance.
+    /// Output only. The available versions for updating this appliance.
     #[prost(message, optional, tag="15")]
     pub available_versions: ::core::option::Option<AvailableUpdates>,
-    ///  Output only. The status of the current / last upgradeAppliance operation.
+    /// Output only. The status of the current / last upgradeAppliance operation.
     #[prost(message, optional, tag="16")]
     pub upgrade_status: ::core::option::Option<UpgradeStatus>,
 }
 /// Nested message and enum types in `DatacenterConnector`.
 pub mod datacenter_connector {
-    ///  The possible values of the state.
+    /// The possible values of the state.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum State {
-        ///  The state is unknown. This is used for API compatibility only and is not
-        ///  used by the system.
+        /// The state is unknown. This is used for API compatibility only and is not
+        /// used by the system.
         Unspecified = 0,
-        ///  The state was not sampled by the health checks yet.
+        /// The state was not sampled by the health checks yet.
         Pending = 1,
-        ///  The source was sampled by health checks and is not available.
+        /// The source was sampled by health checks and is not available.
         Offline = 2,
-        ///  The source is available but might not be usable yet due to unvalidated
-        ///  credentials or another reason. The credentials referred to are the ones
-        ///  to the Source. The error message will contain further details.
+        /// The source is available but might not be usable yet due to unvalidated
+        /// credentials or another reason. The credentials referred to are the ones
+        /// to the Source. The error message will contain further details.
         Failed = 3,
-        ///  The source exists and its credentials were verified.
+        /// The source exists and its credentials were verified.
         Active = 4,
     }
     impl State {
@@ -561,38 +561,38 @@ pub mod datacenter_connector {
         }
     }
 }
-///  UpgradeStatus contains information about upgradeAppliance operation.
+/// UpgradeStatus contains information about upgradeAppliance operation.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpgradeStatus {
-    ///  The version to upgrade to.
+    /// The version to upgrade to.
     #[prost(string, tag="1")]
     pub version: ::prost::alloc::string::String,
-    ///  The state of the upgradeAppliance operation.
+    /// The state of the upgradeAppliance operation.
     #[prost(enumeration="upgrade_status::State", tag="2")]
     pub state: i32,
-    ///  Provides details on the state of the upgrade operation in case of an error.
+    /// Provides details on the state of the upgrade operation in case of an error.
     #[prost(message, optional, tag="3")]
     pub error: ::core::option::Option<super::super::super::rpc::Status>,
-    ///  The time the operation was started.
+    /// The time the operation was started.
     #[prost(message, optional, tag="4")]
     pub start_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  The version from which we upgraded.
+    /// The version from which we upgraded.
     #[prost(string, tag="5")]
     pub previous_version: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `UpgradeStatus`.
 pub mod upgrade_status {
-    ///  The possible values of the state.
+    /// The possible values of the state.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum State {
-        ///  The state was not sampled by the health checks yet.
+        /// The state was not sampled by the health checks yet.
         Unspecified = 0,
-        ///  The upgrade has started.
+        /// The upgrade has started.
         Running = 1,
-        ///  The upgrade failed.
+        /// The upgrade failed.
         Failed = 2,
-        ///  The upgrade finished successfully.
+        /// The upgrade finished successfully.
         Succeeded = 3,
     }
     impl State {
@@ -610,230 +610,230 @@ pub mod upgrade_status {
         }
     }
 }
-///  Holds informatiom about the available versions for upgrade.
+/// Holds informatiom about the available versions for upgrade.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AvailableUpdates {
-    ///  The newest deployable version of the appliance.
-    ///  The current appliance can't be updated into this version, and the owner
-    ///  must manually deploy this OVA to a new appliance.
+    /// The newest deployable version of the appliance.
+    /// The current appliance can't be updated into this version, and the owner
+    /// must manually deploy this OVA to a new appliance.
     #[prost(message, optional, tag="1")]
     pub new_deployable_appliance: ::core::option::Option<ApplianceVersion>,
-    ///  The latest version for in place update.
-    ///  The current appliance can be updated to this version using the API or m4c
-    ///  CLI.
+    /// The latest version for in place update.
+    /// The current appliance can be updated to this version using the API or m4c
+    /// CLI.
     #[prost(message, optional, tag="2")]
     pub in_place_update: ::core::option::Option<ApplianceVersion>,
 }
-///  Describes an appliance version.
+/// Describes an appliance version.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ApplianceVersion {
-    ///  The appliance version.
+    /// The appliance version.
     #[prost(string, tag="1")]
     pub version: ::prost::alloc::string::String,
-    ///  A link for downloading the version.
+    /// A link for downloading the version.
     #[prost(string, tag="2")]
     pub uri: ::prost::alloc::string::String,
-    ///  Determine whether it's critical to upgrade the appliance to this version.
+    /// Determine whether it's critical to upgrade the appliance to this version.
     #[prost(bool, tag="3")]
     pub critical: bool,
-    ///  Link to a page that contains the version release notes.
+    /// Link to a page that contains the version release notes.
     #[prost(string, tag="4")]
     pub release_notes_uri: ::prost::alloc::string::String,
 }
-///  Request message for 'ListSources' request.
+/// Request message for 'ListSources' request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSourcesRequest {
-    ///  Required. The parent, which owns this collection of sources.
+    /// Required. The parent, which owns this collection of sources.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Optional. The maximum number of sources to return. The service may return
-    ///  fewer than this value. If unspecified, at most 500 sources will be
-    ///  returned. The maximum value is 1000; values above 1000 will be coerced to
-    ///  1000.
+    /// Optional. The maximum number of sources to return. The service may return
+    /// fewer than this value. If unspecified, at most 500 sources will be
+    /// returned. The maximum value is 1000; values above 1000 will be coerced to
+    /// 1000.
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    ///  Required. A page token, received from a previous `ListSources` call.
-    ///  Provide this to retrieve the subsequent page.
+    /// Required. A page token, received from a previous `ListSources` call.
+    /// Provide this to retrieve the subsequent page.
     ///
-    ///  When paginating, all other parameters provided to `ListSources` must
-    ///  match the call that provided the page token.
+    /// When paginating, all other parameters provided to `ListSources` must
+    /// match the call that provided the page token.
     #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
-    ///  Optional. The filter request.
+    /// Optional. The filter request.
     #[prost(string, tag="4")]
     pub filter: ::prost::alloc::string::String,
-    ///  Optional. the order by fields for the result.
+    /// Optional. the order by fields for the result.
     #[prost(string, tag="5")]
     pub order_by: ::prost::alloc::string::String,
 }
-///  Response message for 'ListSources' request.
+/// Response message for 'ListSources' request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSourcesResponse {
-    ///  Output only. The list of sources response.
+    /// Output only. The list of sources response.
     #[prost(message, repeated, tag="1")]
     pub sources: ::prost::alloc::vec::Vec<Source>,
-    ///  Output only. A token, which can be sent as `page_token` to retrieve the
-    ///  next page. If this field is omitted, there are no subsequent pages.
+    /// Output only. A token, which can be sent as `page_token` to retrieve the
+    /// next page. If this field is omitted, there are no subsequent pages.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
-    ///  Output only. Locations that could not be reached.
+    /// Output only. Locations that could not be reached.
     #[prost(string, repeated, tag="3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-///  Request message for 'GetSource' request.
+/// Request message for 'GetSource' request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetSourceRequest {
-    ///  Required. The Source name.
+    /// Required. The Source name.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Request message for 'CreateSource' request.
+/// Request message for 'CreateSource' request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateSourceRequest {
-    ///  Required. The Source's parent.
+    /// Required. The Source's parent.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Required. The source identifier.
+    /// Required. The source identifier.
     #[prost(string, tag="2")]
     pub source_id: ::prost::alloc::string::String,
-    ///  Required. The create request body.
+    /// Required. The create request body.
     #[prost(message, optional, tag="3")]
     pub source: ::core::option::Option<Source>,
-    ///  A request ID to identify requests. Specify a unique request ID
-    ///  so that if you must retry your request, the server will know to ignore
-    ///  the request if it has already been completed. The server will guarantee
-    ///  that for at least 60 minutes since the first request.
+    /// A request ID to identify requests. Specify a unique request ID
+    /// so that if you must retry your request, the server will know to ignore
+    /// the request if it has already been completed. The server will guarantee
+    /// that for at least 60 minutes since the first request.
     ///
-    ///  For example, consider a situation where you make an initial request and t
-    ///  he request times out. If you make the request again with the same request
-    ///  ID, the server can check if original operation with the same request ID
-    ///  was received, and if so, will ignore the second request. This prevents
-    ///  clients from accidentally creating duplicate commitments.
+    /// For example, consider a situation where you make an initial request and t
+    /// he request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
     ///
-    ///  The request ID must be a valid UUID with the exception that zero UUID is
-    ///  not supported (00000000-0000-0000-0000-000000000000).
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
     #[prost(string, tag="4")]
     pub request_id: ::prost::alloc::string::String,
 }
-///  Update message for 'UpdateSources' request.
+/// Update message for 'UpdateSources' request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateSourceRequest {
-    ///  Field mask is used to specify the fields to be overwritten in the
-    ///  Source resource by the update.
-    ///  The fields specified in the update_mask are relative to the resource, not
-    ///  the full request. A field will be overwritten if it is in the mask. If the
-    ///  user does not provide a mask then all fields will be overwritten.
+    /// Field mask is used to specify the fields to be overwritten in the
+    /// Source resource by the update.
+    /// The fields specified in the update_mask are relative to the resource, not
+    /// the full request. A field will be overwritten if it is in the mask. If the
+    /// user does not provide a mask then all fields will be overwritten.
     #[prost(message, optional, tag="1")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  Required. The update request body.
+    /// Required. The update request body.
     #[prost(message, optional, tag="2")]
     pub source: ::core::option::Option<Source>,
-    ///  A request ID to identify requests. Specify a unique request ID
-    ///  so that if you must retry your request, the server will know to ignore
-    ///  the request if it has already been completed. The server will guarantee
-    ///  that for at least 60 minutes since the first request.
+    /// A request ID to identify requests. Specify a unique request ID
+    /// so that if you must retry your request, the server will know to ignore
+    /// the request if it has already been completed. The server will guarantee
+    /// that for at least 60 minutes since the first request.
     ///
-    ///  For example, consider a situation where you make an initial request and t
-    ///  he request times out. If you make the request again with the same request
-    ///  ID, the server can check if original operation with the same request ID
-    ///  was received, and if so, will ignore the second request. This prevents
-    ///  clients from accidentally creating duplicate commitments.
+    /// For example, consider a situation where you make an initial request and t
+    /// he request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
     ///
-    ///  The request ID must be a valid UUID with the exception that zero UUID is
-    ///  not supported (00000000-0000-0000-0000-000000000000).
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
     #[prost(string, tag="3")]
     pub request_id: ::prost::alloc::string::String,
 }
-///  Request message for 'DeleteSource' request.
+/// Request message for 'DeleteSource' request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteSourceRequest {
-    ///  Required. The Source name.
+    /// Required. The Source name.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Optional. A request ID to identify requests. Specify a unique request ID
-    ///  so that if you must retry your request, the server will know to ignore
-    ///  the request if it has already been completed. The server will guarantee
-    ///  that for at least 60 minutes after the first request.
+    /// Optional. A request ID to identify requests. Specify a unique request ID
+    /// so that if you must retry your request, the server will know to ignore
+    /// the request if it has already been completed. The server will guarantee
+    /// that for at least 60 minutes after the first request.
     ///
-    ///  For example, consider a situation where you make an initial request and t
-    ///  he request times out. If you make the request again with the same request
-    ///  ID, the server can check if original operation with the same request ID
-    ///  was received, and if so, will ignore the second request. This prevents
-    ///  clients from accidentally creating duplicate commitments.
+    /// For example, consider a situation where you make an initial request and t
+    /// he request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
     ///
-    ///  The request ID must be a valid UUID with the exception that zero UUID is
-    ///  not supported (00000000-0000-0000-0000-000000000000).
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
     #[prost(string, tag="2")]
     pub request_id: ::prost::alloc::string::String,
 }
-///  Request message for
-///  \[fetchInventory][google.cloud.vmmigration.v1.VmMigration.FetchInventory\].
+/// Request message for
+/// \[fetchInventory][google.cloud.vmmigration.v1.VmMigration.FetchInventory\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FetchInventoryRequest {
-    ///  Required. The name of the Source.
+    /// Required. The name of the Source.
     #[prost(string, tag="1")]
     pub source: ::prost::alloc::string::String,
-    ///  If this flag is set to true, the source will be queried instead of using
-    ///  cached results. Using this flag will make the call slower.
+    /// If this flag is set to true, the source will be queried instead of using
+    /// cached results. Using this flag will make the call slower.
     #[prost(bool, tag="2")]
     pub force_refresh: bool,
 }
-///  VmwareVmDetails describes a VM in vCenter.
+/// VmwareVmDetails describes a VM in vCenter.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VmwareVmDetails {
-    ///  The VM's id in the source (note that this is not the MigratingVm's id).
-    ///  This is the moref id of the VM.
+    /// The VM's id in the source (note that this is not the MigratingVm's id).
+    /// This is the moref id of the VM.
     #[prost(string, tag="1")]
     pub vm_id: ::prost::alloc::string::String,
-    ///  The id of the vCenter's datacenter this VM is contained in.
+    /// The id of the vCenter's datacenter this VM is contained in.
     #[prost(string, tag="2")]
     pub datacenter_id: ::prost::alloc::string::String,
-    ///  The descriptive name of the vCenter's datacenter this VM is contained in.
+    /// The descriptive name of the vCenter's datacenter this VM is contained in.
     #[prost(string, tag="3")]
     pub datacenter_description: ::prost::alloc::string::String,
-    ///  The unique identifier of the VM in vCenter.
+    /// The unique identifier of the VM in vCenter.
     #[prost(string, tag="4")]
     pub uuid: ::prost::alloc::string::String,
-    ///  The display name of the VM. Note that this is not necessarily unique.
+    /// The display name of the VM. Note that this is not necessarily unique.
     #[prost(string, tag="5")]
     pub display_name: ::prost::alloc::string::String,
-    ///  The power state of the VM at the moment list was taken.
+    /// The power state of the VM at the moment list was taken.
     #[prost(enumeration="vmware_vm_details::PowerState", tag="6")]
     pub power_state: i32,
-    ///  The number of cpus in the VM.
+    /// The number of cpus in the VM.
     #[prost(int32, tag="7")]
     pub cpu_count: i32,
-    ///  The size of the memory of the VM in MB.
+    /// The size of the memory of the VM in MB.
     #[prost(int32, tag="8")]
     pub memory_mb: i32,
-    ///  The number of disks the VM has.
+    /// The number of disks the VM has.
     #[prost(int32, tag="9")]
     pub disk_count: i32,
-    ///  The total size of the storage allocated to the VM in MB.
+    /// The total size of the storage allocated to the VM in MB.
     #[prost(int64, tag="12")]
     pub committed_storage_mb: i64,
-    ///  The VM's OS. See for example
-    ///  <https://vdc-repo.vmware.com/vmwb-repository/dcr-public/da47f910-60ac-438b-8b9b-6122f4d14524/16b7274a-bf8b-4b4c-a05e-746f2aa93c8c/doc/vim.vm.GuestOsDescriptor.GuestOsIdentifier.html>
-    ///  for types of strings this might hold.
+    /// The VM's OS. See for example
+    /// <https://vdc-repo.vmware.com/vmwb-repository/dcr-public/da47f910-60ac-438b-8b9b-6122f4d14524/16b7274a-bf8b-4b4c-a05e-746f2aa93c8c/doc/vim.vm.GuestOsDescriptor.GuestOsIdentifier.html>
+    /// for types of strings this might hold.
     #[prost(string, tag="11")]
     pub guest_description: ::prost::alloc::string::String,
-    ///  Output only. The VM Boot Option.
+    /// Output only. The VM Boot Option.
     #[prost(enumeration="vmware_vm_details::BootOption", tag="13")]
     pub boot_option: i32,
 }
 /// Nested message and enum types in `VmwareVmDetails`.
 pub mod vmware_vm_details {
-    ///  Possible values for the power state of the VM.
+    /// Possible values for the power state of the VM.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum PowerState {
-        ///  Power state is not specified.
+        /// Power state is not specified.
         Unspecified = 0,
-        ///  The VM is turned ON.
+        /// The VM is turned ON.
         On = 1,
-        ///  The VM is turned OFF.
+        /// The VM is turned OFF.
         Off = 2,
-        ///  The VM is suspended. This is similar to hibernation or sleep mode.
+        /// The VM is suspended. This is similar to hibernation or sleep mode.
         Suspended = 3,
     }
     impl PowerState {
@@ -850,15 +850,15 @@ pub mod vmware_vm_details {
             }
         }
     }
-    ///  Possible values for vm boot option.
+    /// Possible values for vm boot option.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum BootOption {
-        ///  The boot option is unknown.
+        /// The boot option is unknown.
         Unspecified = 0,
-        ///  The boot option is EFI.
+        /// The boot option is EFI.
         Efi = 1,
-        ///  The boot option is BIOS.
+        /// The boot option is BIOS.
         Bios = 2,
     }
     impl BootOption {
@@ -875,19 +875,19 @@ pub mod vmware_vm_details {
         }
     }
 }
-///  VmwareVmsDetails describes VMs in vCenter.
+/// VmwareVmsDetails describes VMs in vCenter.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VmwareVmsDetails {
-    ///  The details of the vmware VMs.
+    /// The details of the vmware VMs.
     #[prost(message, repeated, tag="1")]
     pub details: ::prost::alloc::vec::Vec<VmwareVmDetails>,
 }
-///  Response message for
-///  \[fetchInventory][google.cloud.vmmigration.v1.VmMigration.FetchInventory\].
+/// Response message for
+/// \[fetchInventory][google.cloud.vmmigration.v1.VmMigration.FetchInventory\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FetchInventoryResponse {
-    ///  Output only. The timestamp when the source was last queried (if the result
-    ///  is from the cache).
+    /// Output only. The timestamp when the source was last queried (if the result
+    /// is from the cache).
     #[prost(message, optional, tag="2")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     #[prost(oneof="fetch_inventory_response::SourceVms", tags="1")]
@@ -897,67 +897,67 @@ pub struct FetchInventoryResponse {
 pub mod fetch_inventory_response {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum SourceVms {
-        ///  The description of the VMs in a Source of type Vmware.
+        /// The description of the VMs in a Source of type Vmware.
         #[prost(message, tag="1")]
         VmwareVms(super::VmwareVmsDetails),
     }
 }
-///  Utilization report details the utilization (CPU, memory, etc.) of selected
-///  source VMs.
+/// Utilization report details the utilization (CPU, memory, etc.) of selected
+/// source VMs.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UtilizationReport {
-    ///  Output only. The report unique name.
+    /// Output only. The report unique name.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  The report display name, as assigned by the user.
+    /// The report display name, as assigned by the user.
     #[prost(string, tag="2")]
     pub display_name: ::prost::alloc::string::String,
-    ///  Output only. Current state of the report.
+    /// Output only. Current state of the report.
     #[prost(enumeration="utilization_report::State", tag="3")]
     pub state: i32,
-    ///  Output only. The time the state was last set.
+    /// Output only. The time the state was last set.
     #[prost(message, optional, tag="4")]
     pub state_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Output only. Provides details on the state of the report in case of an
-    ///  error.
+    /// Output only. Provides details on the state of the report in case of an
+    /// error.
     #[prost(message, optional, tag="5")]
     pub error: ::core::option::Option<super::super::super::rpc::Status>,
-    ///  Output only. The time the report was created (this refers to the time of
-    ///  the request, not the time the report creation completed).
+    /// Output only. The time the report was created (this refers to the time of
+    /// the request, not the time the report creation completed).
     #[prost(message, optional, tag="6")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Time frame of the report.
+    /// Time frame of the report.
     #[prost(enumeration="utilization_report::TimeFrame", tag="7")]
     pub time_frame: i32,
-    ///  Output only. The point in time when the time frame ends. Notice that the
-    ///  time frame is counted backwards. For instance if the "frame_end_time" value
-    ///  is 2021/01/20 and the time frame is WEEK then the report covers the week
-    ///  between 2021/01/20 and 2021/01/14.
+    /// Output only. The point in time when the time frame ends. Notice that the
+    /// time frame is counted backwards. For instance if the "frame_end_time" value
+    /// is 2021/01/20 and the time frame is WEEK then the report covers the week
+    /// between 2021/01/20 and 2021/01/14.
     #[prost(message, optional, tag="8")]
     pub frame_end_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Output only. Total number of VMs included in the report.
+    /// Output only. Total number of VMs included in the report.
     #[prost(int32, tag="9")]
     pub vm_count: i32,
-    ///  List of utilization information per VM.
-    ///  When sent as part of the request, the "vm_id" field is used in order to
-    ///  specify which VMs to include in the report. In that case all other fields
-    ///  are ignored.
+    /// List of utilization information per VM.
+    /// When sent as part of the request, the "vm_id" field is used in order to
+    /// specify which VMs to include in the report. In that case all other fields
+    /// are ignored.
     #[prost(message, repeated, tag="10")]
     pub vms: ::prost::alloc::vec::Vec<VmUtilizationInfo>,
 }
 /// Nested message and enum types in `UtilizationReport`.
 pub mod utilization_report {
-    ///  Utilization report state.
+    /// Utilization report state.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum State {
-        ///  The state is unknown. This value is not in use.
+        /// The state is unknown. This value is not in use.
         Unspecified = 0,
-        ///  The report is in the making.
+        /// The report is in the making.
         Creating = 1,
-        ///  Report creation completed successfully.
+        /// Report creation completed successfully.
         Succeeded = 2,
-        ///  Report creation failed.
+        /// Report creation failed.
         Failed = 3,
     }
     impl State {
@@ -974,17 +974,17 @@ pub mod utilization_report {
             }
         }
     }
-    ///  Report time frame options.
+    /// Report time frame options.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum TimeFrame {
-        ///  The time frame was not specified and will default to WEEK.
+        /// The time frame was not specified and will default to WEEK.
         Unspecified = 0,
-        ///  One week.
+        /// One week.
         Week = 1,
-        ///  One month.
+        /// One month.
         Month = 2,
-        ///  One year.
+        /// One year.
         Year = 3,
     }
     impl TimeFrame {
@@ -1002,13 +1002,13 @@ pub mod utilization_report {
         }
     }
 }
-///  Utilization information of a single VM.
+/// Utilization information of a single VM.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VmUtilizationInfo {
-    ///  The VM's ID in the source.
+    /// The VM's ID in the source.
     #[prost(string, tag="3")]
     pub vm_id: ::prost::alloc::string::String,
-    ///  Utilization metrics for this VM.
+    /// Utilization metrics for this VM.
     #[prost(message, optional, tag="2")]
     pub utilization: ::core::option::Option<VmUtilizationMetrics>,
     #[prost(oneof="vm_utilization_info::VmDetails", tags="1")]
@@ -1018,440 +1018,440 @@ pub struct VmUtilizationInfo {
 pub mod vm_utilization_info {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum VmDetails {
-        ///  The description of the VM in a Source of type Vmware.
+        /// The description of the VM in a Source of type Vmware.
         #[prost(message, tag="1")]
         VmwareVmDetails(super::VmwareVmDetails),
     }
 }
-///  Utilization metrics values for a single VM.
+/// Utilization metrics values for a single VM.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VmUtilizationMetrics {
-    ///  Max CPU usage, percent.
+    /// Max CPU usage, percent.
     #[prost(int32, tag="9")]
     pub cpu_max_percent: i32,
-    ///  Average CPU usage, percent.
+    /// Average CPU usage, percent.
     #[prost(int32, tag="10")]
     pub cpu_average_percent: i32,
-    ///  Max memory usage, percent.
+    /// Max memory usage, percent.
     #[prost(int32, tag="11")]
     pub memory_max_percent: i32,
-    ///  Average memory usage, percent.
+    /// Average memory usage, percent.
     #[prost(int32, tag="12")]
     pub memory_average_percent: i32,
-    ///  Max disk IO rate, in kilobytes per second.
+    /// Max disk IO rate, in kilobytes per second.
     #[prost(int64, tag="13")]
     pub disk_io_rate_max_kbps: i64,
-    ///  Average disk IO rate, in kilobytes per second.
+    /// Average disk IO rate, in kilobytes per second.
     #[prost(int64, tag="14")]
     pub disk_io_rate_average_kbps: i64,
-    ///  Max network throughput (combined transmit-rates and receive-rates), in
-    ///  kilobytes per second.
+    /// Max network throughput (combined transmit-rates and receive-rates), in
+    /// kilobytes per second.
     #[prost(int64, tag="15")]
     pub network_throughput_max_kbps: i64,
-    ///  Average network throughput (combined transmit-rates and receive-rates), in
-    ///  kilobytes per second.
+    /// Average network throughput (combined transmit-rates and receive-rates), in
+    /// kilobytes per second.
     #[prost(int64, tag="16")]
     pub network_throughput_average_kbps: i64,
 }
-///  Request message for 'ListUtilizationReports' request.
+/// Request message for 'ListUtilizationReports' request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListUtilizationReportsRequest {
-    ///  Required. The Utilization Reports parent.
+    /// Required. The Utilization Reports parent.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Optional. The level of details of each report.
-    ///  Defaults to BASIC.
+    /// Optional. The level of details of each report.
+    /// Defaults to BASIC.
     #[prost(enumeration="UtilizationReportView", tag="2")]
     pub view: i32,
-    ///  Optional. The maximum number of reports to return. The service may return
-    ///  fewer than this value. If unspecified, at most 500 reports will be
-    ///  returned. The maximum value is 1000; values above 1000 will be coerced to
-    ///  1000.
+    /// Optional. The maximum number of reports to return. The service may return
+    /// fewer than this value. If unspecified, at most 500 reports will be
+    /// returned. The maximum value is 1000; values above 1000 will be coerced to
+    /// 1000.
     #[prost(int32, tag="3")]
     pub page_size: i32,
-    ///  Required. A page token, received from a previous `ListUtilizationReports`
-    ///  call. Provide this to retrieve the subsequent page.
+    /// Required. A page token, received from a previous `ListUtilizationReports`
+    /// call. Provide this to retrieve the subsequent page.
     ///
-    ///  When paginating, all other parameters provided to `ListUtilizationReports`
-    ///  must match the call that provided the page token.
+    /// When paginating, all other parameters provided to `ListUtilizationReports`
+    /// must match the call that provided the page token.
     #[prost(string, tag="4")]
     pub page_token: ::prost::alloc::string::String,
-    ///  Optional. The filter request.
+    /// Optional. The filter request.
     #[prost(string, tag="5")]
     pub filter: ::prost::alloc::string::String,
-    ///  Optional. the order by fields for the result.
+    /// Optional. the order by fields for the result.
     #[prost(string, tag="6")]
     pub order_by: ::prost::alloc::string::String,
 }
-///  Response message for 'ListUtilizationReports' request.
+/// Response message for 'ListUtilizationReports' request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListUtilizationReportsResponse {
-    ///  Output only. The list of reports.
+    /// Output only. The list of reports.
     #[prost(message, repeated, tag="1")]
     pub utilization_reports: ::prost::alloc::vec::Vec<UtilizationReport>,
-    ///  Output only. A token, which can be sent as `page_token` to retrieve the
-    ///  next page. If this field is omitted, there are no subsequent pages.
+    /// Output only. A token, which can be sent as `page_token` to retrieve the
+    /// next page. If this field is omitted, there are no subsequent pages.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
-    ///  Output only. Locations that could not be reached.
+    /// Output only. Locations that could not be reached.
     #[prost(string, repeated, tag="3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-///  Request message for 'GetUtilizationReport' request.
+/// Request message for 'GetUtilizationReport' request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetUtilizationReportRequest {
-    ///  Required. The Utilization Report name.
+    /// Required. The Utilization Report name.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Optional. The level of details of the report.
-    ///  Defaults to FULL
+    /// Optional. The level of details of the report.
+    /// Defaults to FULL
     #[prost(enumeration="UtilizationReportView", tag="2")]
     pub view: i32,
 }
-///  Request message for 'CreateUtilizationReport' request.
+/// Request message for 'CreateUtilizationReport' request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateUtilizationReportRequest {
-    ///  Required. The Utilization Report's parent.
+    /// Required. The Utilization Report's parent.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Required. The report to create.
+    /// Required. The report to create.
     #[prost(message, optional, tag="2")]
     pub utilization_report: ::core::option::Option<UtilizationReport>,
-    ///  Required. The ID to use for the report, which will become the final
-    ///  component of the reports's resource name.
+    /// Required. The ID to use for the report, which will become the final
+    /// component of the reports's resource name.
     ///
-    ///  This value maximum length is 63 characters, and valid characters
-    ///  are /\[a-z][0-9\]-/. It must start with an english letter and must not
-    ///  end with a hyphen.
+    /// This value maximum length is 63 characters, and valid characters
+    /// are /\[a-z][0-9\]-/. It must start with an english letter and must not
+    /// end with a hyphen.
     #[prost(string, tag="3")]
     pub utilization_report_id: ::prost::alloc::string::String,
-    ///  A request ID to identify requests. Specify a unique request ID
-    ///  so that if you must retry your request, the server will know to ignore
-    ///  the request if it has already been completed. The server will guarantee
-    ///  that for at least 60 minutes since the first request.
+    /// A request ID to identify requests. Specify a unique request ID
+    /// so that if you must retry your request, the server will know to ignore
+    /// the request if it has already been completed. The server will guarantee
+    /// that for at least 60 minutes since the first request.
     ///
-    ///  For example, consider a situation where you make an initial request and t
-    ///  he request times out. If you make the request again with the same request
-    ///  ID, the server can check if original operation with the same request ID
-    ///  was received, and if so, will ignore the second request. This prevents
-    ///  clients from accidentally creating duplicate commitments.
+    /// For example, consider a situation where you make an initial request and t
+    /// he request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
     ///
-    ///  The request ID must be a valid UUID with the exception that zero UUID is
-    ///  not supported (00000000-0000-0000-0000-000000000000).
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
     #[prost(string, tag="4")]
     pub request_id: ::prost::alloc::string::String,
 }
-///  Request message for 'DeleteUtilizationReport' request.
+/// Request message for 'DeleteUtilizationReport' request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteUtilizationReportRequest {
-    ///  Required. The Utilization Report name.
+    /// Required. The Utilization Report name.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Optional. A request ID to identify requests. Specify a unique request ID
-    ///  so that if you must retry your request, the server will know to ignore
-    ///  the request if it has already been completed. The server will guarantee
-    ///  that for at least 60 minutes after the first request.
+    /// Optional. A request ID to identify requests. Specify a unique request ID
+    /// so that if you must retry your request, the server will know to ignore
+    /// the request if it has already been completed. The server will guarantee
+    /// that for at least 60 minutes after the first request.
     ///
-    ///  For example, consider a situation where you make an initial request and t
-    ///  he request times out. If you make the request again with the same request
-    ///  ID, the server can check if original operation with the same request ID
-    ///  was received, and if so, will ignore the second request. This prevents
-    ///  clients from accidentally creating duplicate commitments.
+    /// For example, consider a situation where you make an initial request and t
+    /// he request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
     ///
-    ///  The request ID must be a valid UUID with the exception that zero UUID is
-    ///  not supported (00000000-0000-0000-0000-000000000000).
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
     #[prost(string, tag="2")]
     pub request_id: ::prost::alloc::string::String,
 }
-///  Response message for 'ListDatacenterConnectors' request.
+/// Response message for 'ListDatacenterConnectors' request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDatacenterConnectorsResponse {
-    ///  Output only. The list of sources response.
+    /// Output only. The list of sources response.
     #[prost(message, repeated, tag="1")]
     pub datacenter_connectors: ::prost::alloc::vec::Vec<DatacenterConnector>,
-    ///  Output only. A token, which can be sent as `page_token` to retrieve the
-    ///  next page. If this field is omitted, there are no subsequent pages.
+    /// Output only. A token, which can be sent as `page_token` to retrieve the
+    /// next page. If this field is omitted, there are no subsequent pages.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
-    ///  Output only. Locations that could not be reached.
+    /// Output only. Locations that could not be reached.
     #[prost(string, repeated, tag="3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-///  Request message for 'GetDatacenterConnector' request.
+/// Request message for 'GetDatacenterConnector' request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetDatacenterConnectorRequest {
-    ///  Required. The name of the DatacenterConnector.
+    /// Required. The name of the DatacenterConnector.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Request message for 'CreateDatacenterConnector' request.
+/// Request message for 'CreateDatacenterConnector' request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateDatacenterConnectorRequest {
-    ///  Required. The DatacenterConnector's parent.
-    ///  Required. The Source in where the new DatacenterConnector will be created.
-    ///  For example:
-    ///  `projects/my-project/locations/us-central1/sources/my-source`
+    /// Required. The DatacenterConnector's parent.
+    /// Required. The Source in where the new DatacenterConnector will be created.
+    /// For example:
+    /// `projects/my-project/locations/us-central1/sources/my-source`
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Required. The datacenterConnector identifier.
+    /// Required. The datacenterConnector identifier.
     #[prost(string, tag="2")]
     pub datacenter_connector_id: ::prost::alloc::string::String,
-    ///  Required. The create request body.
+    /// Required. The create request body.
     #[prost(message, optional, tag="3")]
     pub datacenter_connector: ::core::option::Option<DatacenterConnector>,
-    ///  A request ID to identify requests. Specify a unique request ID
-    ///  so that if you must retry your request, the server will know to ignore
-    ///  the request if it has already been completed. The server will guarantee
-    ///  that for at least 60 minutes since the first request.
+    /// A request ID to identify requests. Specify a unique request ID
+    /// so that if you must retry your request, the server will know to ignore
+    /// the request if it has already been completed. The server will guarantee
+    /// that for at least 60 minutes since the first request.
     ///
-    ///  For example, consider a situation where you make an initial request and t
-    ///  he request times out. If you make the request again with the same request
-    ///  ID, the server can check if original operation with the same request ID
-    ///  was received, and if so, will ignore the second request. This prevents
-    ///  clients from accidentally creating duplicate commitments.
+    /// For example, consider a situation where you make an initial request and t
+    /// he request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
     ///
-    ///  The request ID must be a valid UUID with the exception that zero UUID is
-    ///  not supported (00000000-0000-0000-0000-000000000000).
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
     #[prost(string, tag="4")]
     pub request_id: ::prost::alloc::string::String,
 }
-///  Request message for 'DeleteDatacenterConnector' request.
+/// Request message for 'DeleteDatacenterConnector' request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteDatacenterConnectorRequest {
-    ///  Required. The DatacenterConnector name.
+    /// Required. The DatacenterConnector name.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  A request ID to identify requests. Specify a unique request ID
-    ///  so that if you must retry your request, the server will know to ignore
-    ///  the request if it has already been completed. The server will guarantee
-    ///  that for at least 60 minutes after the first request.
+    /// A request ID to identify requests. Specify a unique request ID
+    /// so that if you must retry your request, the server will know to ignore
+    /// the request if it has already been completed. The server will guarantee
+    /// that for at least 60 minutes after the first request.
     ///
-    ///  For example, consider a situation where you make an initial request and t
-    ///  he request times out. If you make the request again with the same request
-    ///  ID, the server can check if original operation with the same request ID
-    ///  was received, and if so, will ignore the second request. This prevents
-    ///  clients from accidentally creating duplicate commitments.
+    /// For example, consider a situation where you make an initial request and t
+    /// he request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
     ///
-    ///  The request ID must be a valid UUID with the exception that zero UUID is
-    ///  not supported (00000000-0000-0000-0000-000000000000).
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
     #[prost(string, tag="2")]
     pub request_id: ::prost::alloc::string::String,
 }
-///  Request message for 'UpgradeAppliance' request.
+/// Request message for 'UpgradeAppliance' request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpgradeApplianceRequest {
-    ///  Required. The DatacenterConnector name.
+    /// Required. The DatacenterConnector name.
     #[prost(string, tag="1")]
     pub datacenter_connector: ::prost::alloc::string::String,
-    ///  A request ID to identify requests. Specify a unique request ID
-    ///  so that if you must retry your request, the server will know to ignore
-    ///  the request if it has already been completed. The server will guarantee
-    ///  that for at least 60 minutes after the first request.
+    /// A request ID to identify requests. Specify a unique request ID
+    /// so that if you must retry your request, the server will know to ignore
+    /// the request if it has already been completed. The server will guarantee
+    /// that for at least 60 minutes after the first request.
     ///
-    ///  For example, consider a situation where you make an initial request and t
-    ///  he request times out. If you make the request again with the same request
-    ///  ID, the server can check if original operation with the same request ID
-    ///  was received, and if so, will ignore the second request. This prevents
-    ///  clients from accidentally creating duplicate commitments.
+    /// For example, consider a situation where you make an initial request and t
+    /// he request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
     ///
-    ///  The request ID must be a valid UUID with the exception that zero UUID is
-    ///  not supported (00000000-0000-0000-0000-000000000000).
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
     #[prost(string, tag="2")]
     pub request_id: ::prost::alloc::string::String,
 }
-///  Response message for 'UpgradeAppliance' request.
+/// Response message for 'UpgradeAppliance' request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpgradeApplianceResponse {
 }
-///  Request message for 'ListDatacenterConnectors' request.
+/// Request message for 'ListDatacenterConnectors' request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDatacenterConnectorsRequest {
-    ///  Required. The parent, which owns this collection of connectors.
+    /// Required. The parent, which owns this collection of connectors.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Optional. The maximum number of connectors to return. The service may
-    ///  return fewer than this value. If unspecified, at most 500 sources will be
-    ///  returned. The maximum value is 1000; values above 1000 will be coerced to
-    ///  1000.
+    /// Optional. The maximum number of connectors to return. The service may
+    /// return fewer than this value. If unspecified, at most 500 sources will be
+    /// returned. The maximum value is 1000; values above 1000 will be coerced to
+    /// 1000.
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    ///  Required. A page token, received from a previous `ListDatacenterConnectors`
-    ///  call. Provide this to retrieve the subsequent page.
+    /// Required. A page token, received from a previous `ListDatacenterConnectors`
+    /// call. Provide this to retrieve the subsequent page.
     ///
-    ///  When paginating, all other parameters provided to
-    ///  `ListDatacenterConnectors` must match the call that provided the page
-    ///  token.
+    /// When paginating, all other parameters provided to
+    /// `ListDatacenterConnectors` must match the call that provided the page
+    /// token.
     #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
-    ///  Optional. The filter request.
+    /// Optional. The filter request.
     #[prost(string, tag="4")]
     pub filter: ::prost::alloc::string::String,
-    ///  Optional. the order by fields for the result.
+    /// Optional. the order by fields for the result.
     #[prost(string, tag="5")]
     pub order_by: ::prost::alloc::string::String,
 }
-///  ComputeEngineTargetDefaults is a collection of details for creating a VM in a
-///  target Compute Engine project.
+/// ComputeEngineTargetDefaults is a collection of details for creating a VM in a
+/// target Compute Engine project.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ComputeEngineTargetDefaults {
-    ///  The name of the VM to create.
+    /// The name of the VM to create.
     #[prost(string, tag="1")]
     pub vm_name: ::prost::alloc::string::String,
-    ///  The full path of the resource of type TargetProject which represents the
-    ///  Compute Engine project in which to create this VM.
+    /// The full path of the resource of type TargetProject which represents the
+    /// Compute Engine project in which to create this VM.
     #[prost(string, tag="2")]
     pub target_project: ::prost::alloc::string::String,
-    ///  The zone in which to create the VM.
+    /// The zone in which to create the VM.
     #[prost(string, tag="3")]
     pub zone: ::prost::alloc::string::String,
-    ///  The machine type series to create the VM with.
+    /// The machine type series to create the VM with.
     #[prost(string, tag="4")]
     pub machine_type_series: ::prost::alloc::string::String,
-    ///  The machine type to create the VM with.
+    /// The machine type to create the VM with.
     #[prost(string, tag="5")]
     pub machine_type: ::prost::alloc::string::String,
-    ///  A map of network tags to associate with the VM.
+    /// A map of network tags to associate with the VM.
     #[prost(string, repeated, tag="6")]
     pub network_tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    ///  List of NICs connected to this VM.
+    /// List of NICs connected to this VM.
     #[prost(message, repeated, tag="7")]
     pub network_interfaces: ::prost::alloc::vec::Vec<NetworkInterface>,
-    ///  The service account to associate the VM with.
+    /// The service account to associate the VM with.
     #[prost(string, tag="8")]
     pub service_account: ::prost::alloc::string::String,
-    ///  The disk type to use in the VM.
+    /// The disk type to use in the VM.
     #[prost(enumeration="ComputeEngineDiskType", tag="9")]
     pub disk_type: i32,
-    ///  A map of labels to associate with the VM.
+    /// A map of labels to associate with the VM.
     #[prost(map="string, string", tag="10")]
     pub labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
-    ///  The license type to use in OS adaptation.
+    /// The license type to use in OS adaptation.
     #[prost(enumeration="ComputeEngineLicenseType", tag="11")]
     pub license_type: i32,
-    ///  Output only. The OS license returned from the adaptation module report.
+    /// Output only. The OS license returned from the adaptation module report.
     #[prost(message, optional, tag="12")]
     pub applied_license: ::core::option::Option<AppliedLicense>,
-    ///  Compute instance scheduling information (if empty default is used).
+    /// Compute instance scheduling information (if empty default is used).
     #[prost(message, optional, tag="13")]
     pub compute_scheduling: ::core::option::Option<ComputeScheduling>,
-    ///  Defines whether the instance has Secure Boot enabled.
-    ///  This can be set to true only if the vm boot option is EFI.
+    /// Defines whether the instance has Secure Boot enabled.
+    /// This can be set to true only if the vm boot option is EFI.
     #[prost(bool, tag="14")]
     pub secure_boot: bool,
-    ///  Output only. The VM Boot Option, as set in the source vm.
+    /// Output only. The VM Boot Option, as set in the source vm.
     #[prost(enumeration="ComputeEngineBootOption", tag="15")]
     pub boot_option: i32,
-    ///  The metadata key/value pairs to assign to the VM.
+    /// The metadata key/value pairs to assign to the VM.
     #[prost(map="string, string", tag="16")]
     pub metadata: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
-    ///  Additional licenses to assign to the VM.
+    /// Additional licenses to assign to the VM.
     #[prost(string, repeated, tag="17")]
     pub additional_licenses: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    ///  The hostname to assign to the VM.
+    /// The hostname to assign to the VM.
     #[prost(string, tag="18")]
     pub hostname: ::prost::alloc::string::String,
 }
-///  ComputeEngineTargetDetails is a collection of details for creating a VM in a
-///  target Compute Engine project.
+/// ComputeEngineTargetDetails is a collection of details for creating a VM in a
+/// target Compute Engine project.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ComputeEngineTargetDetails {
-    ///  The name of the VM to create.
+    /// The name of the VM to create.
     #[prost(string, tag="1")]
     pub vm_name: ::prost::alloc::string::String,
-    ///  The GCP target project ID or project name.
+    /// The GCP target project ID or project name.
     #[prost(string, tag="2")]
     pub project: ::prost::alloc::string::String,
-    ///  The zone in which to create the VM.
+    /// The zone in which to create the VM.
     #[prost(string, tag="3")]
     pub zone: ::prost::alloc::string::String,
-    ///  The machine type series to create the VM with.
+    /// The machine type series to create the VM with.
     #[prost(string, tag="4")]
     pub machine_type_series: ::prost::alloc::string::String,
-    ///  The machine type to create the VM with.
+    /// The machine type to create the VM with.
     #[prost(string, tag="5")]
     pub machine_type: ::prost::alloc::string::String,
-    ///  A map of network tags to associate with the VM.
+    /// A map of network tags to associate with the VM.
     #[prost(string, repeated, tag="6")]
     pub network_tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    ///  List of NICs connected to this VM.
+    /// List of NICs connected to this VM.
     #[prost(message, repeated, tag="7")]
     pub network_interfaces: ::prost::alloc::vec::Vec<NetworkInterface>,
-    ///  The service account to associate the VM with.
+    /// The service account to associate the VM with.
     #[prost(string, tag="8")]
     pub service_account: ::prost::alloc::string::String,
-    ///  The disk type to use in the VM.
+    /// The disk type to use in the VM.
     #[prost(enumeration="ComputeEngineDiskType", tag="9")]
     pub disk_type: i32,
-    ///  A map of labels to associate with the VM.
+    /// A map of labels to associate with the VM.
     #[prost(map="string, string", tag="10")]
     pub labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
-    ///  The license type to use in OS adaptation.
+    /// The license type to use in OS adaptation.
     #[prost(enumeration="ComputeEngineLicenseType", tag="11")]
     pub license_type: i32,
-    ///  The OS license returned from the adaptation module report.
+    /// The OS license returned from the adaptation module report.
     #[prost(message, optional, tag="12")]
     pub applied_license: ::core::option::Option<AppliedLicense>,
-    ///  Compute instance scheduling information (if empty default is used).
+    /// Compute instance scheduling information (if empty default is used).
     #[prost(message, optional, tag="13")]
     pub compute_scheduling: ::core::option::Option<ComputeScheduling>,
-    ///  Defines whether the instance has Secure Boot enabled.
-    ///  This can be set to true only if the vm boot option is EFI.
+    /// Defines whether the instance has Secure Boot enabled.
+    /// This can be set to true only if the vm boot option is EFI.
     #[prost(bool, tag="14")]
     pub secure_boot: bool,
-    ///  The VM Boot Option, as set in the source vm.
+    /// The VM Boot Option, as set in the source vm.
     #[prost(enumeration="ComputeEngineBootOption", tag="15")]
     pub boot_option: i32,
-    ///  The metadata key/value pairs to assign to the VM.
+    /// The metadata key/value pairs to assign to the VM.
     #[prost(map="string, string", tag="16")]
     pub metadata: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
-    ///  Additional licenses to assign to the VM.
+    /// Additional licenses to assign to the VM.
     #[prost(string, repeated, tag="17")]
     pub additional_licenses: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    ///  The hostname to assign to the VM.
+    /// The hostname to assign to the VM.
     #[prost(string, tag="18")]
     pub hostname: ::prost::alloc::string::String,
 }
-///  NetworkInterface represents a NIC of a VM.
+/// NetworkInterface represents a NIC of a VM.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NetworkInterface {
-    ///  The network to connect the NIC to.
+    /// The network to connect the NIC to.
     #[prost(string, tag="1")]
     pub network: ::prost::alloc::string::String,
-    ///  The subnetwork to connect the NIC to.
+    /// The subnetwork to connect the NIC to.
     #[prost(string, tag="2")]
     pub subnetwork: ::prost::alloc::string::String,
-    ///  The internal IP to define in the NIC.
-    ///  The formats accepted are: `ephemeral` \ ipv4 address \ a named address
-    ///  resource full path.
+    /// The internal IP to define in the NIC.
+    /// The formats accepted are: `ephemeral` \ ipv4 address \ a named address
+    /// resource full path.
     #[prost(string, tag="3")]
     pub internal_ip: ::prost::alloc::string::String,
-    ///  The external IP to define in the NIC.
+    /// The external IP to define in the NIC.
     #[prost(string, tag="4")]
     pub external_ip: ::prost::alloc::string::String,
 }
-///  AppliedLicense holds the license data returned by adaptation module report.
+/// AppliedLicense holds the license data returned by adaptation module report.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AppliedLicense {
-    ///  The license type that was used in OS adaptation.
+    /// The license type that was used in OS adaptation.
     #[prost(enumeration="applied_license::Type", tag="1")]
     pub r#type: i32,
-    ///  The OS license returned from the adaptation module's report.
+    /// The OS license returned from the adaptation module's report.
     #[prost(string, tag="2")]
     pub os_license: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `AppliedLicense`.
 pub mod applied_license {
-    ///  License types used in OS adaptation.
+    /// License types used in OS adaptation.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum Type {
-        ///  Unspecified license for the OS.
+        /// Unspecified license for the OS.
         Unspecified = 0,
-        ///  No license available for the OS.
+        /// No license available for the OS.
         None = 1,
-        ///  The license type is Pay As You Go license type.
+        /// The license type is Pay As You Go license type.
         Payg = 2,
-        ///  The license type is is Bring Your Own License type.
+        /// The license type is is Bring Your Own License type.
         Byol = 3,
     }
     impl Type {
@@ -1469,34 +1469,34 @@ pub mod applied_license {
         }
     }
 }
-///  Node Affinity: the configuration of desired nodes onto which this Instance
-///  could be scheduled. Based on
-///  <https://cloud.google.com/compute/docs/reference/rest/v1/instances/setScheduling>
+/// Node Affinity: the configuration of desired nodes onto which this Instance
+/// could be scheduled. Based on
+/// <https://cloud.google.com/compute/docs/reference/rest/v1/instances/setScheduling>
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SchedulingNodeAffinity {
-    ///  The label key of Node resource to reference.
+    /// The label key of Node resource to reference.
     #[prost(string, tag="1")]
     pub key: ::prost::alloc::string::String,
-    ///  The operator to use for the node resources specified in the `values`
-    ///  parameter.
+    /// The operator to use for the node resources specified in the `values`
+    /// parameter.
     #[prost(enumeration="scheduling_node_affinity::Operator", tag="2")]
     pub operator: i32,
-    ///  Corresponds to the label values of Node resource.
+    /// Corresponds to the label values of Node resource.
     #[prost(string, repeated, tag="3")]
     pub values: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Nested message and enum types in `SchedulingNodeAffinity`.
 pub mod scheduling_node_affinity {
-    ///  Possible types of node selection operators. Valid operators are IN for
-    ///  affinity and NOT_IN for anti-affinity.
+    /// Possible types of node selection operators. Valid operators are IN for
+    /// affinity and NOT_IN for anti-affinity.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum Operator {
-        ///  An unknown, unexpected behavior.
+        /// An unknown, unexpected behavior.
         Unspecified = 0,
-        ///  The node resource group should be in these resources affinity.
+        /// The node resource group should be in these resources affinity.
         In = 1,
-        ///  The node resource group should not be in these resources affinity.
+        /// The node resource group should not be in these resources affinity.
         NotIn = 2,
     }
     impl Operator {
@@ -1513,29 +1513,29 @@ pub mod scheduling_node_affinity {
         }
     }
 }
-///  Scheduling information for VM on maintenance/restart behaviour and
-///  node allocation in sole tenant nodes.
+/// Scheduling information for VM on maintenance/restart behaviour and
+/// node allocation in sole tenant nodes.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ComputeScheduling {
-    ///  How the instance should behave when the host machine undergoes
-    ///  maintenance that may temporarily impact instance performance.
+    /// How the instance should behave when the host machine undergoes
+    /// maintenance that may temporarily impact instance performance.
     #[prost(enumeration="compute_scheduling::OnHostMaintenance", tag="1")]
     pub on_host_maintenance: i32,
-    ///  Whether the Instance should be automatically restarted whenever it is
-    ///  terminated by Compute Engine (not terminated by user).
-    ///  This configuration is identical to `automaticRestart` field in Compute
-    ///  Engine create instance under scheduling.
-    ///  It was changed to an enum (instead of a boolean) to match the default
-    ///  value in Compute Engine which is automatic restart.
+    /// Whether the Instance should be automatically restarted whenever it is
+    /// terminated by Compute Engine (not terminated by user).
+    /// This configuration is identical to `automaticRestart` field in Compute
+    /// Engine create instance under scheduling.
+    /// It was changed to an enum (instead of a boolean) to match the default
+    /// value in Compute Engine which is automatic restart.
     #[prost(enumeration="compute_scheduling::RestartType", tag="5")]
     pub restart_type: i32,
-    ///  A set of node affinity and anti-affinity configurations for sole tenant
-    ///  nodes.
+    /// A set of node affinity and anti-affinity configurations for sole tenant
+    /// nodes.
     #[prost(message, repeated, tag="3")]
     pub node_affinities: ::prost::alloc::vec::Vec<SchedulingNodeAffinity>,
-    ///  The minimum number of virtual CPUs this instance will consume when
-    ///  running on a sole-tenant node. Ignored if no node_affinites are
-    ///  configured.
+    /// The minimum number of virtual CPUs this instance will consume when
+    /// running on a sole-tenant node. Ignored if no node_affinites are
+    /// configured.
     #[prost(int32, tag="4")]
     pub min_node_cpus: i32,
 }
@@ -1544,11 +1544,11 @@ pub mod compute_scheduling {
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum OnHostMaintenance {
-        ///  An unknown, unexpected behavior.
+        /// An unknown, unexpected behavior.
         Unspecified = 0,
-        ///  Terminate the instance when the host machine undergoes maintenance.
+        /// Terminate the instance when the host machine undergoes maintenance.
         Terminate = 1,
-        ///  Migrate the instance when the host machine undergoes maintenance.
+        /// Migrate the instance when the host machine undergoes maintenance.
         Migrate = 2,
     }
     impl OnHostMaintenance {
@@ -1564,18 +1564,18 @@ pub mod compute_scheduling {
             }
         }
     }
-    ///  Defines whether the Instance should be automatically restarted whenever
-    ///  it is terminated by Compute Engine (not terminated by user).
+    /// Defines whether the Instance should be automatically restarted whenever
+    /// it is terminated by Compute Engine (not terminated by user).
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum RestartType {
-        ///  Unspecified behavior. This will use the default.
+        /// Unspecified behavior. This will use the default.
         Unspecified = 0,
-        ///  The Instance should be automatically restarted whenever it is
-        ///  terminated by Compute Engine.
+        /// The Instance should be automatically restarted whenever it is
+        /// terminated by Compute Engine.
         AutomaticRestart = 1,
-        ///  The Instance isn't automatically restarted whenever it is
-        ///  terminated by Compute Engine.
+        /// The Instance isn't automatically restarted whenever it is
+        /// terminated by Compute Engine.
         NoAutomaticRestart = 2,
     }
     impl RestartType {
@@ -1592,664 +1592,664 @@ pub mod compute_scheduling {
         }
     }
 }
-///  A policy for scheduling replications.
+/// A policy for scheduling replications.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SchedulePolicy {
-    ///  The idle duration between replication stages.
+    /// The idle duration between replication stages.
     #[prost(message, optional, tag="1")]
     pub idle_duration: ::core::option::Option<::prost_types::Duration>,
-    ///  A flag to indicate whether to skip OS adaptation during the replication
-    ///  sync. OS adaptation is a process where the VM's operating system undergoes
-    ///  changes and adaptations to fully function on Compute Engine.
+    /// A flag to indicate whether to skip OS adaptation during the replication
+    /// sync. OS adaptation is a process where the VM's operating system undergoes
+    /// changes and adaptations to fully function on Compute Engine.
     #[prost(bool, tag="2")]
     pub skip_os_adaptation: bool,
 }
-///  Request message for 'CreateMigratingVm' request.
+/// Request message for 'CreateMigratingVm' request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateMigratingVmRequest {
-    ///  Required. The MigratingVm's parent.
+    /// Required. The MigratingVm's parent.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Required. The migratingVm identifier.
+    /// Required. The migratingVm identifier.
     #[prost(string, tag="2")]
     pub migrating_vm_id: ::prost::alloc::string::String,
-    ///  Required. The create request body.
+    /// Required. The create request body.
     #[prost(message, optional, tag="3")]
     pub migrating_vm: ::core::option::Option<MigratingVm>,
-    ///  A request ID to identify requests. Specify a unique request ID
-    ///  so that if you must retry your request, the server will know to ignore
-    ///  the request if it has already been completed. The server will guarantee
-    ///  that for at least 60 minutes since the first request.
+    /// A request ID to identify requests. Specify a unique request ID
+    /// so that if you must retry your request, the server will know to ignore
+    /// the request if it has already been completed. The server will guarantee
+    /// that for at least 60 minutes since the first request.
     ///
-    ///  For example, consider a situation where you make an initial request and t
-    ///  he request times out. If you make the request again with the same request
-    ///  ID, the server can check if original operation with the same request ID
-    ///  was received, and if so, will ignore the second request. This prevents
-    ///  clients from accidentally creating duplicate commitments.
+    /// For example, consider a situation where you make an initial request and t
+    /// he request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
     ///
-    ///  The request ID must be a valid UUID with the exception that zero UUID is
-    ///  not supported (00000000-0000-0000-0000-000000000000).
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
     #[prost(string, tag="4")]
     pub request_id: ::prost::alloc::string::String,
 }
-///  Request message for 'LisMigratingVmsRequest' request.
+/// Request message for 'LisMigratingVmsRequest' request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListMigratingVmsRequest {
-    ///  Required. The parent, which owns this collection of MigratingVms.
+    /// Required. The parent, which owns this collection of MigratingVms.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Optional. The maximum number of migrating VMs to return. The service may
-    ///  return fewer than this value. If unspecified, at most 500 migrating VMs
-    ///  will be returned. The maximum value is 1000; values above 1000 will be
-    ///  coerced to 1000.
+    /// Optional. The maximum number of migrating VMs to return. The service may
+    /// return fewer than this value. If unspecified, at most 500 migrating VMs
+    /// will be returned. The maximum value is 1000; values above 1000 will be
+    /// coerced to 1000.
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    ///  Required. A page token, received from a previous `ListMigratingVms` call.
-    ///  Provide this to retrieve the subsequent page.
+    /// Required. A page token, received from a previous `ListMigratingVms` call.
+    /// Provide this to retrieve the subsequent page.
     ///
-    ///  When paginating, all other parameters provided to `ListMigratingVms`
-    ///  must match the call that provided the page token.
+    /// When paginating, all other parameters provided to `ListMigratingVms`
+    /// must match the call that provided the page token.
     #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
-    ///  Optional. The filter request.
+    /// Optional. The filter request.
     #[prost(string, tag="4")]
     pub filter: ::prost::alloc::string::String,
-    ///  Optional. the order by fields for the result.
+    /// Optional. the order by fields for the result.
     #[prost(string, tag="5")]
     pub order_by: ::prost::alloc::string::String,
-    ///  Optional. The level of details of each migrating VM.
+    /// Optional. The level of details of each migrating VM.
     #[prost(enumeration="MigratingVmView", tag="6")]
     pub view: i32,
 }
-///  Response message for 'ListMigratingVms' request.
+/// Response message for 'ListMigratingVms' request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListMigratingVmsResponse {
-    ///  Output only. The list of Migrating VMs response.
+    /// Output only. The list of Migrating VMs response.
     #[prost(message, repeated, tag="1")]
     pub migrating_vms: ::prost::alloc::vec::Vec<MigratingVm>,
-    ///  Output only. A token, which can be sent as `page_token` to retrieve the
-    ///  next page. If this field is omitted, there are no subsequent pages.
+    /// Output only. A token, which can be sent as `page_token` to retrieve the
+    /// next page. If this field is omitted, there are no subsequent pages.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
-    ///  Output only. Locations that could not be reached.
+    /// Output only. Locations that could not be reached.
     #[prost(string, repeated, tag="3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-///  Request message for 'GetMigratingVm' request.
+/// Request message for 'GetMigratingVm' request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetMigratingVmRequest {
-    ///  Required. The name of the MigratingVm.
+    /// Required. The name of the MigratingVm.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Optional. The level of details of the migrating VM.
+    /// Optional. The level of details of the migrating VM.
     #[prost(enumeration="MigratingVmView", tag="2")]
     pub view: i32,
 }
-///  Request message for 'UpdateMigratingVm' request.
+/// Request message for 'UpdateMigratingVm' request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateMigratingVmRequest {
-    ///  Field mask is used to specify the fields to be overwritten in the
-    ///  MigratingVm resource by the update.
-    ///  The fields specified in the update_mask are relative to the resource, not
-    ///  the full request. A field will be overwritten if it is in the mask. If the
-    ///  user does not provide a mask then all fields will be overwritten.
+    /// Field mask is used to specify the fields to be overwritten in the
+    /// MigratingVm resource by the update.
+    /// The fields specified in the update_mask are relative to the resource, not
+    /// the full request. A field will be overwritten if it is in the mask. If the
+    /// user does not provide a mask then all fields will be overwritten.
     #[prost(message, optional, tag="1")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  Required. The update request body.
+    /// Required. The update request body.
     #[prost(message, optional, tag="2")]
     pub migrating_vm: ::core::option::Option<MigratingVm>,
-    ///  A request ID to identify requests. Specify a unique request ID
-    ///  so that if you must retry your request, the server will know to ignore
-    ///  the request if it has already been completed. The server will guarantee
-    ///  that for at least 60 minutes since the first request.
+    /// A request ID to identify requests. Specify a unique request ID
+    /// so that if you must retry your request, the server will know to ignore
+    /// the request if it has already been completed. The server will guarantee
+    /// that for at least 60 minutes since the first request.
     ///
-    ///  For example, consider a situation where you make an initial request and t
-    ///  he request times out. If you make the request again with the same request
-    ///  ID, the server can check if original operation with the same request ID
-    ///  was received, and if so, will ignore the second request. This prevents
-    ///  clients from accidentally creating duplicate commitments.
+    /// For example, consider a situation where you make an initial request and t
+    /// he request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
     ///
-    ///  The request ID must be a valid UUID with the exception that zero UUID is
-    ///  not supported (00000000-0000-0000-0000-000000000000).
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
     #[prost(string, tag="3")]
     pub request_id: ::prost::alloc::string::String,
 }
-///  Request message for 'DeleteMigratingVm' request.
+/// Request message for 'DeleteMigratingVm' request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteMigratingVmRequest {
-    ///  Required. The name of the MigratingVm.
+    /// Required. The name of the MigratingVm.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Request message for 'StartMigrationRequest' request.
+/// Request message for 'StartMigrationRequest' request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StartMigrationRequest {
-    ///  Required. The name of the MigratingVm.
+    /// Required. The name of the MigratingVm.
     #[prost(string, tag="1")]
     pub migrating_vm: ::prost::alloc::string::String,
 }
-///  Response message for 'StartMigration' request.
+/// Response message for 'StartMigration' request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StartMigrationResponse {
 }
-///  Request message for 'PauseMigration' request.
+/// Request message for 'PauseMigration' request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PauseMigrationRequest {
-    ///  Required. The name of the MigratingVm.
+    /// Required. The name of the MigratingVm.
     #[prost(string, tag="1")]
     pub migrating_vm: ::prost::alloc::string::String,
 }
-///  Response message for 'PauseMigration' request.
+/// Response message for 'PauseMigration' request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PauseMigrationResponse {
 }
-///  Request message for 'ResumeMigration' request.
+/// Request message for 'ResumeMigration' request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResumeMigrationRequest {
-    ///  Required. The name of the MigratingVm.
+    /// Required. The name of the MigratingVm.
     #[prost(string, tag="1")]
     pub migrating_vm: ::prost::alloc::string::String,
 }
-///  Response message for 'ResumeMigration' request.
+/// Response message for 'ResumeMigration' request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResumeMigrationResponse {
 }
-///  Request message for 'FinalizeMigration' request.
+/// Request message for 'FinalizeMigration' request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FinalizeMigrationRequest {
-    ///  Required. The name of the MigratingVm.
+    /// Required. The name of the MigratingVm.
     #[prost(string, tag="1")]
     pub migrating_vm: ::prost::alloc::string::String,
 }
-///  Response message for 'FinalizeMigration' request.
+/// Response message for 'FinalizeMigration' request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FinalizeMigrationResponse {
 }
-///  TargetProject message represents a target Compute Engine project for a
-///  migration or a clone.
+/// TargetProject message represents a target Compute Engine project for a
+/// migration or a clone.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetProject {
-    ///  Output only. The name of the target project.
+    /// Output only. The name of the target project.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  The target project ID (number) or project name.
+    /// The target project ID (number) or project name.
     #[prost(string, tag="2")]
     pub project: ::prost::alloc::string::String,
-    ///  The target project's description.
+    /// The target project's description.
     #[prost(string, tag="3")]
     pub description: ::prost::alloc::string::String,
-    ///  Output only. The time this target project resource was created (not related
-    ///  to when the Compute Engine project it points to was created).
+    /// Output only. The time this target project resource was created (not related
+    /// to when the Compute Engine project it points to was created).
     #[prost(message, optional, tag="4")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Output only. The last time the target project resource was updated.
+    /// Output only. The last time the target project resource was updated.
     #[prost(message, optional, tag="5")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
 }
-///  Request message for 'GetTargetProject' call.
+/// Request message for 'GetTargetProject' call.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetTargetProjectRequest {
-    ///  Required. The TargetProject name.
+    /// Required. The TargetProject name.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Request message for 'ListTargetProjects' call.
+/// Request message for 'ListTargetProjects' call.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTargetProjectsRequest {
-    ///  Required. The parent, which owns this collection of targets.
+    /// Required. The parent, which owns this collection of targets.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Optional. The maximum number of targets to return. The service may return
-    ///  fewer than this value. If unspecified, at most 500 targets will be
-    ///  returned. The maximum value is 1000; values above 1000 will be coerced to
-    ///  1000.
+    /// Optional. The maximum number of targets to return. The service may return
+    /// fewer than this value. If unspecified, at most 500 targets will be
+    /// returned. The maximum value is 1000; values above 1000 will be coerced to
+    /// 1000.
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    ///  Required. A page token, received from a previous `ListTargets` call.
-    ///  Provide this to retrieve the subsequent page.
+    /// Required. A page token, received from a previous `ListTargets` call.
+    /// Provide this to retrieve the subsequent page.
     ///
-    ///  When paginating, all other parameters provided to `ListTargets` must
-    ///  match the call that provided the page token.
+    /// When paginating, all other parameters provided to `ListTargets` must
+    /// match the call that provided the page token.
     #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
-    ///  Optional. The filter request.
+    /// Optional. The filter request.
     #[prost(string, tag="4")]
     pub filter: ::prost::alloc::string::String,
-    ///  Optional. the order by fields for the result.
+    /// Optional. the order by fields for the result.
     #[prost(string, tag="5")]
     pub order_by: ::prost::alloc::string::String,
 }
-///  Response message for 'ListTargetProjects' call.
+/// Response message for 'ListTargetProjects' call.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTargetProjectsResponse {
-    ///  Output only. The list of target response.
+    /// Output only. The list of target response.
     #[prost(message, repeated, tag="1")]
     pub target_projects: ::prost::alloc::vec::Vec<TargetProject>,
-    ///  Output only. A token, which can be sent as `page_token` to retrieve the
-    ///  next page. If this field is omitted, there are no subsequent pages.
+    /// Output only. A token, which can be sent as `page_token` to retrieve the
+    /// next page. If this field is omitted, there are no subsequent pages.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
-    ///  Output only. Locations that could not be reached.
+    /// Output only. Locations that could not be reached.
     #[prost(string, repeated, tag="3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-///  Request message for 'CreateTargetProject' request.
+/// Request message for 'CreateTargetProject' request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateTargetProjectRequest {
-    ///  Required. The TargetProject's parent.
+    /// Required. The TargetProject's parent.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Required. The target_project identifier.
+    /// Required. The target_project identifier.
     #[prost(string, tag="2")]
     pub target_project_id: ::prost::alloc::string::String,
-    ///  Required. The create request body.
+    /// Required. The create request body.
     #[prost(message, optional, tag="3")]
     pub target_project: ::core::option::Option<TargetProject>,
-    ///  A request ID to identify requests. Specify a unique request ID
-    ///  so that if you must retry your request, the server will know to ignore
-    ///  the request if it has already been completed. The server will guarantee
-    ///  that for at least 60 minutes since the first request.
+    /// A request ID to identify requests. Specify a unique request ID
+    /// so that if you must retry your request, the server will know to ignore
+    /// the request if it has already been completed. The server will guarantee
+    /// that for at least 60 minutes since the first request.
     ///
-    ///  For example, consider a situation where you make an initial request and t
-    ///  he request times out. If you make the request again with the same request
-    ///  ID, the server can check if original operation with the same request ID
-    ///  was received, and if so, will ignore the second request. This prevents
-    ///  clients from accidentally creating duplicate commitments.
+    /// For example, consider a situation where you make an initial request and t
+    /// he request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
     ///
-    ///  The request ID must be a valid UUID with the exception that zero UUID is
-    ///  not supported (00000000-0000-0000-0000-000000000000).
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
     #[prost(string, tag="4")]
     pub request_id: ::prost::alloc::string::String,
 }
-///  Update message for 'UpdateTargetProject' request.
+/// Update message for 'UpdateTargetProject' request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateTargetProjectRequest {
-    ///  Field mask is used to specify the fields to be overwritten in the
-    ///  TargetProject resource by the update.
-    ///  The fields specified in the update_mask are relative to the resource, not
-    ///  the full request. A field will be overwritten if it is in the mask. If the
-    ///  user does not provide a mask then all fields will be overwritten.
+    /// Field mask is used to specify the fields to be overwritten in the
+    /// TargetProject resource by the update.
+    /// The fields specified in the update_mask are relative to the resource, not
+    /// the full request. A field will be overwritten if it is in the mask. If the
+    /// user does not provide a mask then all fields will be overwritten.
     #[prost(message, optional, tag="1")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  Required. The update request body.
+    /// Required. The update request body.
     #[prost(message, optional, tag="2")]
     pub target_project: ::core::option::Option<TargetProject>,
-    ///  A request ID to identify requests. Specify a unique request ID
-    ///  so that if you must retry your request, the server will know to ignore
-    ///  the request if it has already been completed. The server will guarantee
-    ///  that for at least 60 minutes since the first request.
+    /// A request ID to identify requests. Specify a unique request ID
+    /// so that if you must retry your request, the server will know to ignore
+    /// the request if it has already been completed. The server will guarantee
+    /// that for at least 60 minutes since the first request.
     ///
-    ///  For example, consider a situation where you make an initial request and t
-    ///  he request times out. If you make the request again with the same request
-    ///  ID, the server can check if original operation with the same request ID
-    ///  was received, and if so, will ignore the second request. This prevents
-    ///  clients from accidentally creating duplicate commitments.
+    /// For example, consider a situation where you make an initial request and t
+    /// he request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
     ///
-    ///  The request ID must be a valid UUID with the exception that zero UUID is
-    ///  not supported (00000000-0000-0000-0000-000000000000).
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
     #[prost(string, tag="3")]
     pub request_id: ::prost::alloc::string::String,
 }
-///  Request message for 'DeleteTargetProject' request.
+/// Request message for 'DeleteTargetProject' request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteTargetProjectRequest {
-    ///  Required. The TargetProject name.
+    /// Required. The TargetProject name.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Optional. A request ID to identify requests. Specify a unique request ID
-    ///  so that if you must retry your request, the server will know to ignore
-    ///  the request if it has already been completed. The server will guarantee
-    ///  that for at least 60 minutes after the first request.
+    /// Optional. A request ID to identify requests. Specify a unique request ID
+    /// so that if you must retry your request, the server will know to ignore
+    /// the request if it has already been completed. The server will guarantee
+    /// that for at least 60 minutes after the first request.
     ///
-    ///  For example, consider a situation where you make an initial request and t
-    ///  he request times out. If you make the request again with the same request
-    ///  ID, the server can check if original operation with the same request ID
-    ///  was received, and if so, will ignore the second request. This prevents
-    ///  clients from accidentally creating duplicate commitments.
+    /// For example, consider a situation where you make an initial request and t
+    /// he request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
     ///
-    ///  The request ID must be a valid UUID with the exception that zero UUID is
-    ///  not supported (00000000-0000-0000-0000-000000000000).
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
     #[prost(string, tag="2")]
     pub request_id: ::prost::alloc::string::String,
 }
-///  Describes message for 'Group' resource. The Group is a collections of several
-///  MigratingVms.
+/// Describes message for 'Group' resource. The Group is a collections of several
+/// MigratingVms.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Group {
-    ///  Output only. The Group name.
+    /// Output only. The Group name.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Output only. The create time timestamp.
+    /// Output only. The create time timestamp.
     #[prost(message, optional, tag="2")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Output only. The update time timestamp.
+    /// Output only. The update time timestamp.
     #[prost(message, optional, tag="3")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  User-provided description of the group.
+    /// User-provided description of the group.
     #[prost(string, tag="4")]
     pub description: ::prost::alloc::string::String,
-    ///  Display name is a user defined name for this group which can be updated.
+    /// Display name is a user defined name for this group which can be updated.
     #[prost(string, tag="5")]
     pub display_name: ::prost::alloc::string::String,
 }
-///  Request message for 'ListGroups' request.
+/// Request message for 'ListGroups' request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListGroupsRequest {
-    ///  Required. The parent, which owns this collection of groups.
+    /// Required. The parent, which owns this collection of groups.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Optional. The maximum number of groups to return. The service may return
-    ///  fewer than this value. If unspecified, at most 500 groups will be
-    ///  returned. The maximum value is 1000; values above 1000 will be coerced to
-    ///  1000.
+    /// Optional. The maximum number of groups to return. The service may return
+    /// fewer than this value. If unspecified, at most 500 groups will be
+    /// returned. The maximum value is 1000; values above 1000 will be coerced to
+    /// 1000.
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    ///  Required. A page token, received from a previous `ListGroups` call.
-    ///  Provide this to retrieve the subsequent page.
+    /// Required. A page token, received from a previous `ListGroups` call.
+    /// Provide this to retrieve the subsequent page.
     ///
-    ///  When paginating, all other parameters provided to `ListGroups` must
-    ///  match the call that provided the page token.
+    /// When paginating, all other parameters provided to `ListGroups` must
+    /// match the call that provided the page token.
     #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
-    ///  Optional. The filter request.
+    /// Optional. The filter request.
     #[prost(string, tag="4")]
     pub filter: ::prost::alloc::string::String,
-    ///  Optional. the order by fields for the result.
+    /// Optional. the order by fields for the result.
     #[prost(string, tag="5")]
     pub order_by: ::prost::alloc::string::String,
 }
-///  Response message for 'ListGroups' request.
+/// Response message for 'ListGroups' request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListGroupsResponse {
-    ///  Output only. The list of groups response.
+    /// Output only. The list of groups response.
     #[prost(message, repeated, tag="1")]
     pub groups: ::prost::alloc::vec::Vec<Group>,
-    ///  Output only. A token, which can be sent as `page_token` to retrieve the
-    ///  next page. If this field is omitted, there are no subsequent pages.
+    /// Output only. A token, which can be sent as `page_token` to retrieve the
+    /// next page. If this field is omitted, there are no subsequent pages.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
-    ///  Output only. Locations that could not be reached.
+    /// Output only. Locations that could not be reached.
     #[prost(string, repeated, tag="3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-///  Request message for 'GetGroup' request.
+/// Request message for 'GetGroup' request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetGroupRequest {
-    ///  Required. The group name.
+    /// Required. The group name.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Request message for 'CreateGroup' request.
+/// Request message for 'CreateGroup' request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateGroupRequest {
-    ///  Required. The Group's parent.
+    /// Required. The Group's parent.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Required. The group identifier.
+    /// Required. The group identifier.
     #[prost(string, tag="2")]
     pub group_id: ::prost::alloc::string::String,
-    ///  Required. The create request body.
+    /// Required. The create request body.
     #[prost(message, optional, tag="3")]
     pub group: ::core::option::Option<Group>,
-    ///  A request ID to identify requests. Specify a unique request ID
-    ///  so that if you must retry your request, the server will know to ignore
-    ///  the request if it has already been completed. The server will guarantee
-    ///  that for at least 60 minutes since the first request.
+    /// A request ID to identify requests. Specify a unique request ID
+    /// so that if you must retry your request, the server will know to ignore
+    /// the request if it has already been completed. The server will guarantee
+    /// that for at least 60 minutes since the first request.
     ///
-    ///  For example, consider a situation where you make an initial request and t
-    ///  he request times out. If you make the request again with the same request
-    ///  ID, the server can check if original operation with the same request ID
-    ///  was received, and if so, will ignore the second request. This prevents
-    ///  clients from accidentally creating duplicate commitments.
+    /// For example, consider a situation where you make an initial request and t
+    /// he request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
     ///
-    ///  The request ID must be a valid UUID with the exception that zero UUID is
-    ///  not supported (00000000-0000-0000-0000-000000000000).
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
     #[prost(string, tag="4")]
     pub request_id: ::prost::alloc::string::String,
 }
-///  Update message for 'UpdateGroups' request.
+/// Update message for 'UpdateGroups' request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateGroupRequest {
-    ///  Field mask is used to specify the fields to be overwritten in the
-    ///  Group resource by the update.
-    ///  The fields specified in the update_mask are relative to the resource, not
-    ///  the full request. A field will be overwritten if it is in the mask. If the
-    ///  user does not provide a mask then all fields will be overwritten.
+    /// Field mask is used to specify the fields to be overwritten in the
+    /// Group resource by the update.
+    /// The fields specified in the update_mask are relative to the resource, not
+    /// the full request. A field will be overwritten if it is in the mask. If the
+    /// user does not provide a mask then all fields will be overwritten.
     #[prost(message, optional, tag="1")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  Required. The update request body.
+    /// Required. The update request body.
     #[prost(message, optional, tag="2")]
     pub group: ::core::option::Option<Group>,
-    ///  A request ID to identify requests. Specify a unique request ID
-    ///  so that if you must retry your request, the server will know to ignore
-    ///  the request if it has already been completed. The server will guarantee
-    ///  that for at least 60 minutes since the first request.
+    /// A request ID to identify requests. Specify a unique request ID
+    /// so that if you must retry your request, the server will know to ignore
+    /// the request if it has already been completed. The server will guarantee
+    /// that for at least 60 minutes since the first request.
     ///
-    ///  For example, consider a situation where you make an initial request and t
-    ///  he request times out. If you make the request again with the same request
-    ///  ID, the server can check if original operation with the same request ID
-    ///  was received, and if so, will ignore the second request. This prevents
-    ///  clients from accidentally creating duplicate commitments.
+    /// For example, consider a situation where you make an initial request and t
+    /// he request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
     ///
-    ///  The request ID must be a valid UUID with the exception that zero UUID is
-    ///  not supported (00000000-0000-0000-0000-000000000000).
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
     #[prost(string, tag="3")]
     pub request_id: ::prost::alloc::string::String,
 }
-///  Request message for 'DeleteGroup' request.
+/// Request message for 'DeleteGroup' request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteGroupRequest {
-    ///  Required. The Group name.
+    /// Required. The Group name.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Optional. A request ID to identify requests. Specify a unique request ID
-    ///  so that if you must retry your request, the server will know to ignore
-    ///  the request if it has already been completed. The server will guarantee
-    ///  that for at least 60 minutes after the first request.
+    /// Optional. A request ID to identify requests. Specify a unique request ID
+    /// so that if you must retry your request, the server will know to ignore
+    /// the request if it has already been completed. The server will guarantee
+    /// that for at least 60 minutes after the first request.
     ///
-    ///  For example, consider a situation where you make an initial request and t
-    ///  he request times out. If you make the request again with the same request
-    ///  ID, the server can check if original operation with the same request ID
-    ///  was received, and if so, will ignore the second request. This prevents
-    ///  clients from accidentally creating duplicate commitments.
+    /// For example, consider a situation where you make an initial request and t
+    /// he request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
     ///
-    ///  The request ID must be a valid UUID with the exception that zero UUID is
-    ///  not supported (00000000-0000-0000-0000-000000000000).
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
     #[prost(string, tag="2")]
     pub request_id: ::prost::alloc::string::String,
 }
-///  Request message for 'AddGroupMigration' request.
+/// Request message for 'AddGroupMigration' request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddGroupMigrationRequest {
-    ///  Required. The full path name of the Group to add to.
+    /// Required. The full path name of the Group to add to.
     #[prost(string, tag="1")]
     pub group: ::prost::alloc::string::String,
-    ///  The full path name of the MigratingVm to add.
+    /// The full path name of the MigratingVm to add.
     #[prost(string, tag="2")]
     pub migrating_vm: ::prost::alloc::string::String,
 }
-///  Response message for 'AddGroupMigration' request.
+/// Response message for 'AddGroupMigration' request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddGroupMigrationResponse {
 }
-///  Request message for 'RemoveMigration' request.
+/// Request message for 'RemoveMigration' request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RemoveGroupMigrationRequest {
-    ///  Required. The name of the Group.
+    /// Required. The name of the Group.
     #[prost(string, tag="1")]
     pub group: ::prost::alloc::string::String,
-    ///  The MigratingVm to remove.
+    /// The MigratingVm to remove.
     #[prost(string, tag="2")]
     pub migrating_vm: ::prost::alloc::string::String,
 }
-///  Response message for 'RemoveMigration' request.
+/// Response message for 'RemoveMigration' request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RemoveGroupMigrationResponse {
 }
-///  Request message for 'CreateCutoverJob' request.
+/// Request message for 'CreateCutoverJob' request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateCutoverJobRequest {
-    ///  Required. The Cutover's parent.
+    /// Required. The Cutover's parent.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Required. The cutover job identifier.
+    /// Required. The cutover job identifier.
     #[prost(string, tag="2")]
     pub cutover_job_id: ::prost::alloc::string::String,
-    ///  Required. The cutover request body.
+    /// Required. The cutover request body.
     #[prost(message, optional, tag="3")]
     pub cutover_job: ::core::option::Option<CutoverJob>,
-    ///  A request ID to identify requests. Specify a unique request ID
-    ///  so that if you must retry your request, the server will know to ignore
-    ///  the request if it has already been completed. The server will guarantee
-    ///  that for at least 60 minutes since the first request.
+    /// A request ID to identify requests. Specify a unique request ID
+    /// so that if you must retry your request, the server will know to ignore
+    /// the request if it has already been completed. The server will guarantee
+    /// that for at least 60 minutes since the first request.
     ///
-    ///  For example, consider a situation where you make an initial request and t
-    ///  he request times out. If you make the request again with the same request
-    ///  ID, the server can check if original operation with the same request ID
-    ///  was received, and if so, will ignore the second request. This prevents
-    ///  clients from accidentally creating duplicate commitments.
+    /// For example, consider a situation where you make an initial request and t
+    /// he request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
     ///
-    ///  The request ID must be a valid UUID with the exception that zero UUID is
-    ///  not supported (00000000-0000-0000-0000-000000000000).
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
     #[prost(string, tag="4")]
     pub request_id: ::prost::alloc::string::String,
 }
-///  Request message for 'CancelCutoverJob' request.
+/// Request message for 'CancelCutoverJob' request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CancelCutoverJobRequest {
-    ///  Required. The cutover job id
+    /// Required. The cutover job id
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Response message for 'CancelCutoverJob' request.
+/// Response message for 'CancelCutoverJob' request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CancelCutoverJobResponse {
 }
-///  Request message for 'ListCutoverJobsRequest' request.
+/// Request message for 'ListCutoverJobsRequest' request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCutoverJobsRequest {
-    ///  Required. The parent, which owns this collection of migrating VMs.
+    /// Required. The parent, which owns this collection of migrating VMs.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Optional. The maximum number of cutover jobs to return. The service may
-    ///  return fewer than this value. If unspecified, at most 500 cutover jobs will
-    ///  be returned. The maximum value is 1000; values above 1000 will be coerced
-    ///  to 1000.
+    /// Optional. The maximum number of cutover jobs to return. The service may
+    /// return fewer than this value. If unspecified, at most 500 cutover jobs will
+    /// be returned. The maximum value is 1000; values above 1000 will be coerced
+    /// to 1000.
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    ///  Required. A page token, received from a previous `ListCutoverJobs` call.
-    ///  Provide this to retrieve the subsequent page.
+    /// Required. A page token, received from a previous `ListCutoverJobs` call.
+    /// Provide this to retrieve the subsequent page.
     ///
-    ///  When paginating, all other parameters provided to `ListCutoverJobs` must
-    ///  match the call that provided the page token.
+    /// When paginating, all other parameters provided to `ListCutoverJobs` must
+    /// match the call that provided the page token.
     #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
-    ///  Optional. The filter request.
+    /// Optional. The filter request.
     #[prost(string, tag="4")]
     pub filter: ::prost::alloc::string::String,
-    ///  Optional. the order by fields for the result.
+    /// Optional. the order by fields for the result.
     #[prost(string, tag="5")]
     pub order_by: ::prost::alloc::string::String,
 }
-///  Response message for 'ListCutoverJobs' request.
+/// Response message for 'ListCutoverJobs' request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCutoverJobsResponse {
-    ///  Output only. The list of cutover jobs response.
+    /// Output only. The list of cutover jobs response.
     #[prost(message, repeated, tag="1")]
     pub cutover_jobs: ::prost::alloc::vec::Vec<CutoverJob>,
-    ///  Output only. A token, which can be sent as `page_token` to retrieve the
-    ///  next page. If this field is omitted, there are no subsequent pages.
+    /// Output only. A token, which can be sent as `page_token` to retrieve the
+    /// next page. If this field is omitted, there are no subsequent pages.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
-    ///  Output only. Locations that could not be reached.
+    /// Output only. Locations that could not be reached.
     #[prost(string, repeated, tag="3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-///  Request message for 'GetCutoverJob' request.
+/// Request message for 'GetCutoverJob' request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCutoverJobRequest {
-    ///  Required. The name of the CutoverJob.
+    /// Required. The name of the CutoverJob.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Represents the metadata of the long-running operation.
+/// Represents the metadata of the long-running operation.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationMetadata {
-    ///  Output only. The time the operation was created.
+    /// Output only. The time the operation was created.
     #[prost(message, optional, tag="1")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Output only. The time the operation finished running.
+    /// Output only. The time the operation finished running.
     #[prost(message, optional, tag="2")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Output only. Server-defined resource path for the target of the operation.
+    /// Output only. Server-defined resource path for the target of the operation.
     #[prost(string, tag="3")]
     pub target: ::prost::alloc::string::String,
-    ///  Output only. Name of the verb executed by the operation.
+    /// Output only. Name of the verb executed by the operation.
     #[prost(string, tag="4")]
     pub verb: ::prost::alloc::string::String,
-    ///  Output only. Human-readable status of the operation, if any.
+    /// Output only. Human-readable status of the operation, if any.
     #[prost(string, tag="5")]
     pub status_message: ::prost::alloc::string::String,
-    ///  Output only. Identifies whether the user has requested cancellation
-    ///  of the operation. Operations that have successfully been cancelled
-    ///  have \[Operation.error][\] value with a
-    ///  \[google.rpc.Status.code][google.rpc.Status.code\] of 1, corresponding to
-    ///  `Code.CANCELLED`.
+    /// Output only. Identifies whether the user has requested cancellation
+    /// of the operation. Operations that have successfully been cancelled
+    /// have \[Operation.error][\] value with a
+    /// \[google.rpc.Status.code][google.rpc.Status.code\] of 1, corresponding to
+    /// `Code.CANCELLED`.
     #[prost(bool, tag="6")]
     pub requested_cancellation: bool,
-    ///  Output only. API version used to start the operation.
+    /// Output only. API version used to start the operation.
     #[prost(string, tag="7")]
     pub api_version: ::prost::alloc::string::String,
 }
-///  Represents migration resource error information that can be used with
-///  google.rpc.Status message. MigrationError is used to present the user with
-///  error information in migration operations.
+/// Represents migration resource error information that can be used with
+/// google.rpc.Status message. MigrationError is used to present the user with
+/// error information in migration operations.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MigrationError {
-    ///  Output only. The error code.
+    /// Output only. The error code.
     #[prost(enumeration="migration_error::ErrorCode", tag="1")]
     pub code: i32,
-    ///  Output only. The localized error message.
+    /// Output only. The localized error message.
     #[prost(message, optional, tag="2")]
     pub error_message: ::core::option::Option<super::super::super::rpc::LocalizedMessage>,
-    ///  Output only. Suggested action for solving the error.
+    /// Output only. Suggested action for solving the error.
     #[prost(message, optional, tag="3")]
     pub action_item: ::core::option::Option<super::super::super::rpc::LocalizedMessage>,
-    ///  Output only. URL(s) pointing to additional information on handling the
-    ///  current error.
+    /// Output only. URL(s) pointing to additional information on handling the
+    /// current error.
     #[prost(message, repeated, tag="4")]
     pub help_links: ::prost::alloc::vec::Vec<super::super::super::rpc::help::Link>,
-    ///  Output only. The time the error occurred.
+    /// Output only. The time the error occurred.
     #[prost(message, optional, tag="5")]
     pub error_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Nested message and enum types in `MigrationError`.
 pub mod migration_error {
-    ///  Represents resource error codes.
+    /// Represents resource error codes.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum ErrorCode {
-        ///  Default value. This value is not used.
+        /// Default value. This value is not used.
         Unspecified = 0,
-        ///  Migrate for Compute encountered an unknown error.
+        /// Migrate for Compute encountered an unknown error.
         UnknownError = 1,
-        ///  Migrate for Compute encountered an error while validating replication
-        ///  source health.
+        /// Migrate for Compute encountered an error while validating replication
+        /// source health.
         SourceValidationError = 2,
-        ///  Migrate for Compute encountered an error during source data operation.
+        /// Migrate for Compute encountered an error during source data operation.
         SourceReplicationError = 3,
-        ///  Migrate for Compute encountered an error during target data operation.
+        /// Migrate for Compute encountered an error during target data operation.
         TargetReplicationError = 4,
-        ///  Migrate for Compute encountered an error during OS adaptation.
+        /// Migrate for Compute encountered an error during OS adaptation.
         OsAdaptationError = 5,
-        ///  Migrate for Compute encountered an error in clone operation.
+        /// Migrate for Compute encountered an error in clone operation.
         CloneError = 6,
-        ///  Migrate for Compute encountered an error in cutover operation.
+        /// Migrate for Compute encountered an error in cutover operation.
         CutoverError = 7,
-        ///  Migrate for Compute encountered an error during utilization report
-        ///  creation.
+        /// Migrate for Compute encountered an error during utilization report
+        /// creation.
         UtilizationReportError = 8,
-        ///  Migrate for Compute encountered an error during appliance upgrade.
+        /// Migrate for Compute encountered an error during appliance upgrade.
         ApplianceUpgradeError = 9,
     }
     impl ErrorCode {
@@ -2273,18 +2273,18 @@ pub mod migration_error {
         }
     }
 }
-///  Controls the level of details of a Utilization Report.
+/// Controls the level of details of a Utilization Report.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum UtilizationReportView {
-    ///  The default / unset value.
-    ///  The API will default to FULL on single report request and BASIC for
-    ///  multiple reports request.
+    /// The default / unset value.
+    /// The API will default to FULL on single report request and BASIC for
+    /// multiple reports request.
     Unspecified = 0,
-    ///  Get the report metadata, without the list of VMs and their utilization
-    ///  info.
+    /// Get the report metadata, without the list of VMs and their utilization
+    /// info.
     Basic = 1,
-    ///  Include everything.
+    /// Include everything.
     Full = 2,
 }
 impl UtilizationReportView {
@@ -2300,17 +2300,17 @@ impl UtilizationReportView {
         }
     }
 }
-///  Controls the level of details of a Migrating VM.
+/// Controls the level of details of a Migrating VM.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum MigratingVmView {
-    ///  View is unspecified. The API will fallback to the default value.
+    /// View is unspecified. The API will fallback to the default value.
     Unspecified = 0,
-    ///  Get the migrating VM basic details.
-    ///  The basic details do not include the recent clone jobs and recent cutover
-    ///  jobs lists.
+    /// Get the migrating VM basic details.
+    /// The basic details do not include the recent clone jobs and recent cutover
+    /// jobs lists.
     Basic = 1,
-    ///  Include everything.
+    /// Include everything.
     Full = 2,
 }
 impl MigratingVmView {
@@ -2326,18 +2326,18 @@ impl MigratingVmView {
         }
     }
 }
-///  Types of disks supported for Compute Engine VM.
+/// Types of disks supported for Compute Engine VM.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum ComputeEngineDiskType {
-    ///  An unspecified disk type. Will be used as STANDARD.
+    /// An unspecified disk type. Will be used as STANDARD.
     Unspecified = 0,
-    ///  A Standard disk type.
+    /// A Standard disk type.
     Standard = 1,
-    ///  SSD hard disk type.
+    /// SSD hard disk type.
     Ssd = 2,
-    ///  An alternative to SSD persistent disks that balance performance and
-    ///  cost.
+    /// An alternative to SSD persistent disks that balance performance and
+    /// cost.
     Balanced = 3,
 }
 impl ComputeEngineDiskType {
@@ -2354,15 +2354,15 @@ impl ComputeEngineDiskType {
         }
     }
 }
-///  Types of licenses used in OS adaptation.
+/// Types of licenses used in OS adaptation.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum ComputeEngineLicenseType {
-    ///  The license type is the default for the OS.
+    /// The license type is the default for the OS.
     Default = 0,
-    ///  The license type is Pay As You Go license type.
+    /// The license type is Pay As You Go license type.
     Payg = 1,
-    ///  The license type is Bring Your Own License type.
+    /// The license type is Bring Your Own License type.
     Byol = 2,
 }
 impl ComputeEngineLicenseType {
@@ -2378,15 +2378,15 @@ impl ComputeEngineLicenseType {
         }
     }
 }
-///  Possible values for vm boot option.
+/// Possible values for vm boot option.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum ComputeEngineBootOption {
-    ///  The boot option is unknown.
+    /// The boot option is unknown.
     Unspecified = 0,
-    ///  The boot option is EFI.
+    /// The boot option is EFI.
     Efi = 1,
-    ///  The boot option is BIOS.
+    /// The boot option is BIOS.
     Bios = 2,
 }
 impl ComputeEngineBootOption {

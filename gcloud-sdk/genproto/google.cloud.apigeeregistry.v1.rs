@@ -1,117 +1,117 @@
-///  Request message for CreateInstance.
+/// Request message for CreateInstance.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateInstanceRequest {
-    ///  Required. Parent resource of the Instance, of the form: `projects/*/locations/*`
+    /// Required. Parent resource of the Instance, of the form: `projects/*/locations/*`
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Required. Identifier to assign to the Instance. Must be unique within scope of the
-    ///  parent resource.
+    /// Required. Identifier to assign to the Instance. Must be unique within scope of the
+    /// parent resource.
     #[prost(string, tag="2")]
     pub instance_id: ::prost::alloc::string::String,
-    ///  Required. The Instance.
+    /// Required. The Instance.
     #[prost(message, optional, tag="3")]
     pub instance: ::core::option::Option<Instance>,
 }
-///  Request message for DeleteInstance.
+/// Request message for DeleteInstance.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteInstanceRequest {
-    ///  Required. The name of the Instance to delete.
-    ///  Format: `projects/*/locations/*/instances/*`.
+    /// Required. The name of the Instance to delete.
+    /// Format: `projects/*/locations/*/instances/*`.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Request message for GetInstance.
+/// Request message for GetInstance.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetInstanceRequest {
-    ///  Required. The name of the Instance to retrieve.
-    ///  Format: `projects/*/locations/*/instances/*`.
+    /// Required. The name of the Instance to retrieve.
+    /// Format: `projects/*/locations/*/instances/*`.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Represents the metadata of the long-running operation.
+/// Represents the metadata of the long-running operation.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationMetadata {
-    ///  The time the operation was created.
+    /// The time the operation was created.
     #[prost(message, optional, tag="1")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  The time the operation finished running.
+    /// The time the operation finished running.
     #[prost(message, optional, tag="2")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Server-defined resource path for the target of the operation.
+    /// Server-defined resource path for the target of the operation.
     #[prost(string, tag="3")]
     pub target: ::prost::alloc::string::String,
-    ///  Name of the verb executed by the operation.
+    /// Name of the verb executed by the operation.
     #[prost(string, tag="4")]
     pub verb: ::prost::alloc::string::String,
-    ///  Human-readable status of the operation, if any.
+    /// Human-readable status of the operation, if any.
     #[prost(string, tag="5")]
     pub status_message: ::prost::alloc::string::String,
-    ///  Identifies whether the user has requested cancellation
-    ///  of the operation. Operations that have successfully been cancelled
-    ///  have \[Operation.error][\] value with a \[google.rpc.Status.code][google.rpc.Status.code\] of 1,
-    ///  corresponding to `Code.CANCELLED`.
+    /// Identifies whether the user has requested cancellation
+    /// of the operation. Operations that have successfully been cancelled
+    /// have \[Operation.error][\] value with a \[google.rpc.Status.code][google.rpc.Status.code\] of 1,
+    /// corresponding to `Code.CANCELLED`.
     #[prost(bool, tag="6")]
     pub cancellation_requested: bool,
-    ///  API version used to start the operation.
+    /// API version used to start the operation.
     #[prost(string, tag="7")]
     pub api_version: ::prost::alloc::string::String,
 }
-///  An Instance represents the instance resources of the Registry.
-///  Currently, only one instance is allowed for each project.
+/// An Instance represents the instance resources of the Registry.
+/// Currently, only one instance is allowed for each project.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Instance {
-    ///  Format: `projects/*/locations/*/instance`.
-    ///  Currently only `locations/global` is supported.
+    /// Format: `projects/*/locations/*/instance`.
+    /// Currently only `locations/global` is supported.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Output only. Creation timestamp.
+    /// Output only. Creation timestamp.
     #[prost(message, optional, tag="2")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Output only. Last update timestamp.
+    /// Output only. Last update timestamp.
     #[prost(message, optional, tag="3")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Output only. The current state of the Instance.
+    /// Output only. The current state of the Instance.
     #[prost(enumeration="instance::State", tag="4")]
     pub state: i32,
-    ///  Output only. Extra information of Instance.State if the state is `FAILED`.
+    /// Output only. Extra information of Instance.State if the state is `FAILED`.
     #[prost(string, tag="5")]
     pub state_message: ::prost::alloc::string::String,
-    ///  Required. Config of the Instance.
+    /// Required. Config of the Instance.
     #[prost(message, optional, tag="6")]
     pub config: ::core::option::Option<instance::Config>,
 }
 /// Nested message and enum types in `Instance`.
 pub mod instance {
-    ///  Available configurations to provision an Instance.
+    /// Available configurations to provision an Instance.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Config {
-        ///  Output only. The GCP location where the Instance resides.
+        /// Output only. The GCP location where the Instance resides.
         #[prost(string, tag="1")]
         pub location: ::prost::alloc::string::String,
-        ///  Required. The Customer Managed Encryption Key (CMEK) used for data encryption.
-        ///  The CMEK name should follow the format of
-        ///  `projects/(\[^/]+)/locations/([^/]+)/keyRings/([^/]+)/cryptoKeys/([^/\]+)`,
-        ///  where the `location` must match InstanceConfig.location.
+        /// Required. The Customer Managed Encryption Key (CMEK) used for data encryption.
+        /// The CMEK name should follow the format of
+        /// `projects/(\[^/]+)/locations/([^/]+)/keyRings/([^/]+)/cryptoKeys/([^/\]+)`,
+        /// where the `location` must match InstanceConfig.location.
         #[prost(string, tag="2")]
         pub cmek_key_name: ::prost::alloc::string::String,
     }
-    ///  State of the Instance.
+    /// State of the Instance.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum State {
-        ///  The default value. This value is used if the state is omitted.
+        /// The default value. This value is used if the state is omitted.
         Unspecified = 0,
-        ///  The Instance has not been initialized or has been deleted.
+        /// The Instance has not been initialized or has been deleted.
         Inactive = 1,
-        ///  The Instance is being created.
+        /// The Instance is being created.
         Creating = 2,
-        ///  The Instance has been created and is ready for use.
+        /// The Instance has been created and is ready for use.
         Active = 3,
-        ///  The Instance is being updated.
+        /// The Instance is being updated.
         Updating = 4,
-        ///  The Instance is being deleted.
+        /// The Instance is being deleted.
         Deleting = 5,
-        ///  The Instance encountered an error during a state change.
+        /// The Instance encountered an error during a state change.
         Failed = 6,
     }
     impl State {
@@ -271,904 +271,904 @@ pub mod provisioning_client {
         }
     }
 }
-///  A top-level description of an API.
-///  Produced by producers and are commitments to provide services.
+/// A top-level description of an API.
+/// Produced by producers and are commitments to provide services.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Api {
-    ///  Resource name.
+    /// Resource name.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Human-meaningful name.
+    /// Human-meaningful name.
     #[prost(string, tag="2")]
     pub display_name: ::prost::alloc::string::String,
-    ///  A detailed description.
+    /// A detailed description.
     #[prost(string, tag="3")]
     pub description: ::prost::alloc::string::String,
-    ///  Output only. Creation timestamp.
+    /// Output only. Creation timestamp.
     #[prost(message, optional, tag="4")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Output only. Last update timestamp.
+    /// Output only. Last update timestamp.
     #[prost(message, optional, tag="5")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  A user-definable description of the availability of this service.
-    ///  Format: free-form, but we expect single words that describe availability,
-    ///  e.g., "NONE", "TESTING", "PREVIEW", "GENERAL", "DEPRECATED", "SHUTDOWN".
+    /// A user-definable description of the availability of this service.
+    /// Format: free-form, but we expect single words that describe availability,
+    /// e.g., "NONE", "TESTING", "PREVIEW", "GENERAL", "DEPRECATED", "SHUTDOWN".
     #[prost(string, tag="6")]
     pub availability: ::prost::alloc::string::String,
-    ///  The recommended version of the API.
-    ///  Format: `apis/{api}/versions/{version}`
+    /// The recommended version of the API.
+    /// Format: `apis/{api}/versions/{version}`
     #[prost(string, tag="7")]
     pub recommended_version: ::prost::alloc::string::String,
-    ///  The recommended deployment of the API.
-    ///  Format: `apis/{api}/deployments/{deployment}`
+    /// The recommended deployment of the API.
+    /// Format: `apis/{api}/deployments/{deployment}`
     #[prost(string, tag="8")]
     pub recommended_deployment: ::prost::alloc::string::String,
-    ///  Labels attach identifying metadata to resources. Identifying metadata can
-    ///  be used to filter list operations.
+    /// Labels attach identifying metadata to resources. Identifying metadata can
+    /// be used to filter list operations.
     ///
-    ///  Label keys and values can be no longer than 64 characters
-    ///  (Unicode codepoints), can only contain lowercase letters, numeric
-    ///  characters, underscores, and dashes. International characters are allowed.
-    ///  No more than 64 user labels can be associated with one resource (System
-    ///  labels are excluded).
+    /// Label keys and values can be no longer than 64 characters
+    /// (Unicode codepoints), can only contain lowercase letters, numeric
+    /// characters, underscores, and dashes. International characters are allowed.
+    /// No more than 64 user labels can be associated with one resource (System
+    /// labels are excluded).
     ///
-    ///  See <https://goo.gl/xmQnxf> for more information and examples of labels.
-    ///  System reserved label keys are prefixed with
-    ///  `apigeeregistry.googleapis.com/` and cannot be changed.
+    /// See <https://goo.gl/xmQnxf> for more information and examples of labels.
+    /// System reserved label keys are prefixed with
+    /// `apigeeregistry.googleapis.com/` and cannot be changed.
     #[prost(map="string, string", tag="9")]
     pub labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
-    ///  Annotations attach non-identifying metadata to resources.
+    /// Annotations attach non-identifying metadata to resources.
     ///
-    ///  Annotation keys and values are less restricted than those of labels, but
-    ///  should be generally used for small values of broad interest. Larger, topic-
-    ///  specific metadata should be stored in Artifacts.
+    /// Annotation keys and values are less restricted than those of labels, but
+    /// should be generally used for small values of broad interest. Larger, topic-
+    /// specific metadata should be stored in Artifacts.
     #[prost(map="string, string", tag="10")]
     pub annotations: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
 }
-///  Describes a particular version of an API.
-///  ApiVersions are what consumers actually use.
+/// Describes a particular version of an API.
+/// ApiVersions are what consumers actually use.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ApiVersion {
-    ///  Resource name.
+    /// Resource name.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Human-meaningful name.
+    /// Human-meaningful name.
     #[prost(string, tag="2")]
     pub display_name: ::prost::alloc::string::String,
-    ///  A detailed description.
+    /// A detailed description.
     #[prost(string, tag="3")]
     pub description: ::prost::alloc::string::String,
-    ///  Output only. Creation timestamp.
+    /// Output only. Creation timestamp.
     #[prost(message, optional, tag="4")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Output only. Last update timestamp.
+    /// Output only. Last update timestamp.
     #[prost(message, optional, tag="5")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  A user-definable description of the lifecycle phase of this API version.
-    ///  Format: free-form, but we expect single words that describe API maturity,
-    ///  e.g., "CONCEPT", "DESIGN", "DEVELOPMENT", "STAGING", "PRODUCTION",
-    ///  "DEPRECATED", "RETIRED".
+    /// A user-definable description of the lifecycle phase of this API version.
+    /// Format: free-form, but we expect single words that describe API maturity,
+    /// e.g., "CONCEPT", "DESIGN", "DEVELOPMENT", "STAGING", "PRODUCTION",
+    /// "DEPRECATED", "RETIRED".
     #[prost(string, tag="6")]
     pub state: ::prost::alloc::string::String,
-    ///  Labels attach identifying metadata to resources. Identifying metadata can
-    ///  be used to filter list operations.
+    /// Labels attach identifying metadata to resources. Identifying metadata can
+    /// be used to filter list operations.
     ///
-    ///  Label keys and values can be no longer than 64 characters
-    ///  (Unicode codepoints), can only contain lowercase letters, numeric
-    ///  characters, underscores and dashes. International characters are allowed.
-    ///  No more than 64 user labels can be associated with one resource (System
-    ///  labels are excluded).
+    /// Label keys and values can be no longer than 64 characters
+    /// (Unicode codepoints), can only contain lowercase letters, numeric
+    /// characters, underscores and dashes. International characters are allowed.
+    /// No more than 64 user labels can be associated with one resource (System
+    /// labels are excluded).
     ///
-    ///  See <https://goo.gl/xmQnxf> for more information and examples of labels.
-    ///  System reserved label keys are prefixed with
-    ///  `apigeeregistry.googleapis.com/` and cannot be changed.
+    /// See <https://goo.gl/xmQnxf> for more information and examples of labels.
+    /// System reserved label keys are prefixed with
+    /// `apigeeregistry.googleapis.com/` and cannot be changed.
     #[prost(map="string, string", tag="7")]
     pub labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
-    ///  Annotations attach non-identifying metadata to resources.
+    /// Annotations attach non-identifying metadata to resources.
     ///
-    ///  Annotation keys and values are less restricted than those of labels, but
-    ///  should be generally used for small values of broad interest. Larger, topic-
-    ///  specific metadata should be stored in Artifacts.
+    /// Annotation keys and values are less restricted than those of labels, but
+    /// should be generally used for small values of broad interest. Larger, topic-
+    /// specific metadata should be stored in Artifacts.
     #[prost(map="string, string", tag="8")]
     pub annotations: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
 }
-///  Describes a version of an API in a structured way.
-///  ApiSpecs provide formal descriptions that consumers can use to use a version.
-///  ApiSpec resources are intended to be fully-resolved descriptions of an
-///  ApiVersion. When specs consist of multiple files, these should be bundled
-///  together (e.g., in a zip archive) and stored as a unit. Multiple specs can
-///  exist to provide representations in different API description formats.
-///  Synchronization of these representations would be provided by tooling and
-///  background services.
+/// Describes a version of an API in a structured way.
+/// ApiSpecs provide formal descriptions that consumers can use to use a version.
+/// ApiSpec resources are intended to be fully-resolved descriptions of an
+/// ApiVersion. When specs consist of multiple files, these should be bundled
+/// together (e.g., in a zip archive) and stored as a unit. Multiple specs can
+/// exist to provide representations in different API description formats.
+/// Synchronization of these representations would be provided by tooling and
+/// background services.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ApiSpec {
-    ///  Resource name.
+    /// Resource name.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  A possibly-hierarchical name used to refer to the spec from other specs.
+    /// A possibly-hierarchical name used to refer to the spec from other specs.
     #[prost(string, tag="2")]
     pub filename: ::prost::alloc::string::String,
-    ///  A detailed description.
+    /// A detailed description.
     #[prost(string, tag="3")]
     pub description: ::prost::alloc::string::String,
-    ///  Output only. Immutable. The revision ID of the spec.
-    ///  A new revision is committed whenever the spec contents are changed.
-    ///  The format is an 8-character hexadecimal string.
+    /// Output only. Immutable. The revision ID of the spec.
+    /// A new revision is committed whenever the spec contents are changed.
+    /// The format is an 8-character hexadecimal string.
     #[prost(string, tag="4")]
     pub revision_id: ::prost::alloc::string::String,
-    ///  Output only. Creation timestamp; when the spec resource was created.
+    /// Output only. Creation timestamp; when the spec resource was created.
     #[prost(message, optional, tag="5")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Output only. Revision creation timestamp; when the represented revision was created.
+    /// Output only. Revision creation timestamp; when the represented revision was created.
     #[prost(message, optional, tag="6")]
     pub revision_create_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Output only. Last update timestamp: when the represented revision was last modified.
+    /// Output only. Last update timestamp: when the represented revision was last modified.
     #[prost(message, optional, tag="7")]
     pub revision_update_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  A style (format) descriptor for this spec that is specified as a Media Type
-    ///  (<https://en.wikipedia.org/wiki/Media_type>). Possible values include
-    ///  `application/vnd.apigee.proto`, `application/vnd.apigee.openapi`, and
-    ///  `application/vnd.apigee.graphql`, with possible suffixes representing
-    ///  compression types. These hypothetical names are defined in the vendor tree
-    ///  defined in RFC6838 (<https://tools.ietf.org/html/rfc6838>) and are not final.
-    ///  Content types can specify compression. Currently only GZip compression is
-    ///  supported (indicated with "+gzip").
+    /// A style (format) descriptor for this spec that is specified as a Media Type
+    /// (<https://en.wikipedia.org/wiki/Media_type>). Possible values include
+    /// `application/vnd.apigee.proto`, `application/vnd.apigee.openapi`, and
+    /// `application/vnd.apigee.graphql`, with possible suffixes representing
+    /// compression types. These hypothetical names are defined in the vendor tree
+    /// defined in RFC6838 (<https://tools.ietf.org/html/rfc6838>) and are not final.
+    /// Content types can specify compression. Currently only GZip compression is
+    /// supported (indicated with "+gzip").
     #[prost(string, tag="8")]
     pub mime_type: ::prost::alloc::string::String,
-    ///  Output only. The size of the spec file in bytes. If the spec is gzipped, this is the
-    ///  size of the uncompressed spec.
+    /// Output only. The size of the spec file in bytes. If the spec is gzipped, this is the
+    /// size of the uncompressed spec.
     #[prost(int32, tag="9")]
     pub size_bytes: i32,
-    ///  Output only. A SHA-256 hash of the spec's contents. If the spec is gzipped, this is
-    ///  the hash of the uncompressed spec.
+    /// Output only. A SHA-256 hash of the spec's contents. If the spec is gzipped, this is
+    /// the hash of the uncompressed spec.
     #[prost(string, tag="10")]
     pub hash: ::prost::alloc::string::String,
-    ///  The original source URI of the spec (if one exists).
-    ///  This is an external location that can be used for reference purposes
-    ///  but which may not be authoritative since this external resource may
-    ///  change after the spec is retrieved.
+    /// The original source URI of the spec (if one exists).
+    /// This is an external location that can be used for reference purposes
+    /// but which may not be authoritative since this external resource may
+    /// change after the spec is retrieved.
     #[prost(string, tag="11")]
     pub source_uri: ::prost::alloc::string::String,
-    ///  Input only. The contents of the spec.
-    ///  Provided by API callers when specs are created or updated.
-    ///  To access the contents of a spec, use GetApiSpecContents.
+    /// Input only. The contents of the spec.
+    /// Provided by API callers when specs are created or updated.
+    /// To access the contents of a spec, use GetApiSpecContents.
     #[prost(bytes="vec", tag="12")]
     pub contents: ::prost::alloc::vec::Vec<u8>,
-    ///  Labels attach identifying metadata to resources. Identifying metadata can
-    ///  be used to filter list operations.
+    /// Labels attach identifying metadata to resources. Identifying metadata can
+    /// be used to filter list operations.
     ///
-    ///  Label keys and values can be no longer than 64 characters
-    ///  (Unicode codepoints), can only contain lowercase letters, numeric
-    ///  characters, underscores and dashes. International characters are allowed.
-    ///  No more than 64 user labels can be associated with one resource (System
-    ///  labels are excluded).
+    /// Label keys and values can be no longer than 64 characters
+    /// (Unicode codepoints), can only contain lowercase letters, numeric
+    /// characters, underscores and dashes. International characters are allowed.
+    /// No more than 64 user labels can be associated with one resource (System
+    /// labels are excluded).
     ///
-    ///  See <https://goo.gl/xmQnxf> for more information and examples of labels.
-    ///  System reserved label keys are prefixed with
-    ///  `apigeeregistry.googleapis.com/` and cannot be changed.
+    /// See <https://goo.gl/xmQnxf> for more information and examples of labels.
+    /// System reserved label keys are prefixed with
+    /// `apigeeregistry.googleapis.com/` and cannot be changed.
     #[prost(map="string, string", tag="14")]
     pub labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
-    ///  Annotations attach non-identifying metadata to resources.
+    /// Annotations attach non-identifying metadata to resources.
     ///
-    ///  Annotation keys and values are less restricted than those of labels, but
-    ///  should be generally used for small values of broad interest. Larger, topic-
-    ///  specific metadata should be stored in Artifacts.
+    /// Annotation keys and values are less restricted than those of labels, but
+    /// should be generally used for small values of broad interest. Larger, topic-
+    /// specific metadata should be stored in Artifacts.
     #[prost(map="string, string", tag="15")]
     pub annotations: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
 }
-///  Describes a service running at particular address that
-///  provides a particular version of an API. ApiDeployments have revisions which
-///  correspond to different configurations of a single deployment in time.
-///  Revision identifiers should be updated whenever the served API spec or
-///  endpoint address changes.
+/// Describes a service running at particular address that
+/// provides a particular version of an API. ApiDeployments have revisions which
+/// correspond to different configurations of a single deployment in time.
+/// Revision identifiers should be updated whenever the served API spec or
+/// endpoint address changes.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ApiDeployment {
-    ///  Resource name.
+    /// Resource name.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Human-meaningful name.
+    /// Human-meaningful name.
     #[prost(string, tag="2")]
     pub display_name: ::prost::alloc::string::String,
-    ///  A detailed description.
+    /// A detailed description.
     #[prost(string, tag="3")]
     pub description: ::prost::alloc::string::String,
-    ///  Output only. Immutable. The revision ID of the deployment.
-    ///  A new revision is committed whenever the deployment contents are changed.
-    ///  The format is an 8-character hexadecimal string.
+    /// Output only. Immutable. The revision ID of the deployment.
+    /// A new revision is committed whenever the deployment contents are changed.
+    /// The format is an 8-character hexadecimal string.
     #[prost(string, tag="4")]
     pub revision_id: ::prost::alloc::string::String,
-    ///  Output only. Creation timestamp; when the deployment resource was created.
+    /// Output only. Creation timestamp; when the deployment resource was created.
     #[prost(message, optional, tag="5")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Output only. Revision creation timestamp; when the represented revision was created.
+    /// Output only. Revision creation timestamp; when the represented revision was created.
     #[prost(message, optional, tag="6")]
     pub revision_create_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Output only. Last update timestamp: when the represented revision was last modified.
+    /// Output only. Last update timestamp: when the represented revision was last modified.
     #[prost(message, optional, tag="7")]
     pub revision_update_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  The full resource name (including revision ID) of the spec of the API being
-    ///  served by the deployment. Changes to this value will update the revision.
-    ///  Format: `apis/{api}/deployments/{deployment}`
+    /// The full resource name (including revision ID) of the spec of the API being
+    /// served by the deployment. Changes to this value will update the revision.
+    /// Format: `apis/{api}/deployments/{deployment}`
     #[prost(string, tag="8")]
     pub api_spec_revision: ::prost::alloc::string::String,
-    ///  The address where the deployment is serving. Changes to this value will
-    ///  update the revision.
+    /// The address where the deployment is serving. Changes to this value will
+    /// update the revision.
     #[prost(string, tag="9")]
     pub endpoint_uri: ::prost::alloc::string::String,
-    ///  The address of the external channel of the API (e.g., the Developer
-    ///  Portal). Changes to this value will not affect the revision.
+    /// The address of the external channel of the API (e.g., the Developer
+    /// Portal). Changes to this value will not affect the revision.
     #[prost(string, tag="10")]
     pub external_channel_uri: ::prost::alloc::string::String,
-    ///  Text briefly identifying the intended audience of the API. Changes to this
-    ///  value will not affect the revision.
+    /// Text briefly identifying the intended audience of the API. Changes to this
+    /// value will not affect the revision.
     #[prost(string, tag="11")]
     pub intended_audience: ::prost::alloc::string::String,
-    ///  Text briefly describing how to access the endpoint. Changes to this value
-    ///  will not affect the revision.
+    /// Text briefly describing how to access the endpoint. Changes to this value
+    /// will not affect the revision.
     #[prost(string, tag="12")]
     pub access_guidance: ::prost::alloc::string::String,
-    ///  Labels attach identifying metadata to resources. Identifying metadata can
-    ///  be used to filter list operations.
+    /// Labels attach identifying metadata to resources. Identifying metadata can
+    /// be used to filter list operations.
     ///
-    ///  Label keys and values can be no longer than 64 characters
-    ///  (Unicode codepoints), can only contain lowercase letters, numeric
-    ///  characters, underscores and dashes. International characters are allowed.
-    ///  No more than 64 user labels can be associated with one resource (System
-    ///  labels are excluded).
+    /// Label keys and values can be no longer than 64 characters
+    /// (Unicode codepoints), can only contain lowercase letters, numeric
+    /// characters, underscores and dashes. International characters are allowed.
+    /// No more than 64 user labels can be associated with one resource (System
+    /// labels are excluded).
     ///
-    ///  See <https://goo.gl/xmQnxf> for more information and examples of labels.
-    ///  System reserved label keys are prefixed with
-    ///  `apigeeregistry.googleapis.com/` and cannot be changed.
+    /// See <https://goo.gl/xmQnxf> for more information and examples of labels.
+    /// System reserved label keys are prefixed with
+    /// `apigeeregistry.googleapis.com/` and cannot be changed.
     #[prost(map="string, string", tag="14")]
     pub labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
-    ///  Annotations attach non-identifying metadata to resources.
+    /// Annotations attach non-identifying metadata to resources.
     ///
-    ///  Annotation keys and values are less restricted than those of labels, but
-    ///  should be generally used for small values of broad interest. Larger, topic-
-    ///  specific metadata should be stored in Artifacts.
+    /// Annotation keys and values are less restricted than those of labels, but
+    /// should be generally used for small values of broad interest. Larger, topic-
+    /// specific metadata should be stored in Artifacts.
     #[prost(map="string, string", tag="15")]
     pub annotations: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
 }
-///  Artifacts of resources. Artifacts are unique (single-value) per resource
-///  and are used to store metadata that is too large or numerous to be stored
-///  directly on the resource. Since artifacts are stored separately from parent
-///  resources, they should generally be used for metadata that is needed
-///  infrequently, i.e., not for display in primary views of the resource but
-///  perhaps displayed or downloaded upon request. The `ListArtifacts` method
-///  allows artifacts to be quickly enumerated and checked for presence without
-///  downloading their (potentially-large) contents.
+/// Artifacts of resources. Artifacts are unique (single-value) per resource
+/// and are used to store metadata that is too large or numerous to be stored
+/// directly on the resource. Since artifacts are stored separately from parent
+/// resources, they should generally be used for metadata that is needed
+/// infrequently, i.e., not for display in primary views of the resource but
+/// perhaps displayed or downloaded upon request. The `ListArtifacts` method
+/// allows artifacts to be quickly enumerated and checked for presence without
+/// downloading their (potentially-large) contents.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Artifact {
-    ///  Resource name.
+    /// Resource name.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Output only. Creation timestamp.
+    /// Output only. Creation timestamp.
     #[prost(message, optional, tag="2")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Output only. Last update timestamp.
+    /// Output only. Last update timestamp.
     #[prost(message, optional, tag="3")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  A content type specifier for the artifact.
-    ///  Content type specifiers are Media Types
-    ///  (<https://en.wikipedia.org/wiki/Media_type>) with a possible "schema"
-    ///  parameter that specifies a schema for the stored information.
-    ///  Content types can specify compression. Currently only GZip compression is
-    ///  supported (indicated with "+gzip").
+    /// A content type specifier for the artifact.
+    /// Content type specifiers are Media Types
+    /// (<https://en.wikipedia.org/wiki/Media_type>) with a possible "schema"
+    /// parameter that specifies a schema for the stored information.
+    /// Content types can specify compression. Currently only GZip compression is
+    /// supported (indicated with "+gzip").
     #[prost(string, tag="4")]
     pub mime_type: ::prost::alloc::string::String,
-    ///  Output only. The size of the artifact in bytes. If the artifact is gzipped, this is
-    ///  the size of the uncompressed artifact.
+    /// Output only. The size of the artifact in bytes. If the artifact is gzipped, this is
+    /// the size of the uncompressed artifact.
     #[prost(int32, tag="5")]
     pub size_bytes: i32,
-    ///  Output only. A SHA-256 hash of the artifact's contents. If the artifact is gzipped,
-    ///  this is the hash of the uncompressed artifact.
+    /// Output only. A SHA-256 hash of the artifact's contents. If the artifact is gzipped,
+    /// this is the hash of the uncompressed artifact.
     #[prost(string, tag="6")]
     pub hash: ::prost::alloc::string::String,
-    ///  Input only. The contents of the artifact.
-    ///  Provided by API callers when artifacts are created or replaced.
-    ///  To access the contents of an artifact, use GetArtifactContents.
+    /// Input only. The contents of the artifact.
+    /// Provided by API callers when artifacts are created or replaced.
+    /// To access the contents of an artifact, use GetArtifactContents.
     #[prost(bytes="vec", tag="7")]
     pub contents: ::prost::alloc::vec::Vec<u8>,
 }
-///  Request message for ListApis.
+/// Request message for ListApis.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListApisRequest {
-    ///  Required. The parent, which owns this collection of APIs.
-    ///  Format: `projects/*/locations/*`
+    /// Required. The parent, which owns this collection of APIs.
+    /// Format: `projects/*/locations/*`
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  The maximum number of APIs to return.
-    ///  The service may return fewer than this value.
-    ///  If unspecified, at most 50 values will be returned.
-    ///  The maximum is 1000; values above 1000 will be coerced to 1000.
+    /// The maximum number of APIs to return.
+    /// The service may return fewer than this value.
+    /// If unspecified, at most 50 values will be returned.
+    /// The maximum is 1000; values above 1000 will be coerced to 1000.
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    ///  A page token, received from a previous `ListApis` call.
-    ///  Provide this to retrieve the subsequent page.
+    /// A page token, received from a previous `ListApis` call.
+    /// Provide this to retrieve the subsequent page.
     ///
-    ///  When paginating, all other parameters provided to `ListApis` must match
-    ///  the call that provided the page token.
+    /// When paginating, all other parameters provided to `ListApis` must match
+    /// the call that provided the page token.
     #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
-    ///  An expression that can be used to filter the list. Filters use the Common
-    ///  Expression Language and can refer to all message fields.
+    /// An expression that can be used to filter the list. Filters use the Common
+    /// Expression Language and can refer to all message fields.
     #[prost(string, tag="4")]
     pub filter: ::prost::alloc::string::String,
 }
-///  Response message for ListApis.
+/// Response message for ListApis.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListApisResponse {
-    ///  The APIs from the specified publisher.
+    /// The APIs from the specified publisher.
     #[prost(message, repeated, tag="1")]
     pub apis: ::prost::alloc::vec::Vec<Api>,
-    ///  A token, which can be sent as `page_token` to retrieve the next page.
-    ///  If this field is omitted, there are no subsequent pages.
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-///  Request message for GetApi.
+/// Request message for GetApi.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetApiRequest {
-    ///  Required. The name of the API to retrieve.
-    ///  Format: `projects/*/locations/*/apis/*`
+    /// Required. The name of the API to retrieve.
+    /// Format: `projects/*/locations/*/apis/*`
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Request message for CreateApi.
+/// Request message for CreateApi.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateApiRequest {
-    ///  Required. The parent, which owns this collection of APIs.
-    ///  Format: `projects/*/locations/*`
+    /// Required. The parent, which owns this collection of APIs.
+    /// Format: `projects/*/locations/*`
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Required. The API to create.
+    /// Required. The API to create.
     #[prost(message, optional, tag="2")]
     pub api: ::core::option::Option<Api>,
-    ///  Required. The ID to use for the API, which will become the final component of
-    ///  the API's resource name.
+    /// Required. The ID to use for the API, which will become the final component of
+    /// the API's resource name.
     ///
-    ///  This value should be 4-63 characters, and valid characters
-    ///  are /\[a-z][0-9\]-/.
+    /// This value should be 4-63 characters, and valid characters
+    /// are /\[a-z][0-9\]-/.
     ///
-    ///  Following AIP-162, IDs must not have the form of a UUID.
+    /// Following AIP-162, IDs must not have the form of a UUID.
     #[prost(string, tag="3")]
     pub api_id: ::prost::alloc::string::String,
 }
-///  Request message for UpdateApi.
+/// Request message for UpdateApi.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateApiRequest {
-    ///  Required. The API to update.
+    /// Required. The API to update.
     ///
-    ///  The `name` field is used to identify the API to update.
-    ///  Format: `projects/*/locations/*/apis/*`
+    /// The `name` field is used to identify the API to update.
+    /// Format: `projects/*/locations/*/apis/*`
     #[prost(message, optional, tag="1")]
     pub api: ::core::option::Option<Api>,
-    ///  The list of fields to be updated. If omitted, all fields are updated that
-    ///  are set in the request message (fields set to default values are ignored).
-    ///  If an asterisk "*" is specified, all fields are updated, including fields
-    ///  that are unspecified/default in the request.
+    /// The list of fields to be updated. If omitted, all fields are updated that
+    /// are set in the request message (fields set to default values are ignored).
+    /// If an asterisk "*" is specified, all fields are updated, including fields
+    /// that are unspecified/default in the request.
     #[prost(message, optional, tag="2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  If set to true, and the API is not found, a new API will be created.
-    ///  In this situation, `update_mask` is ignored.
+    /// If set to true, and the API is not found, a new API will be created.
+    /// In this situation, `update_mask` is ignored.
     #[prost(bool, tag="3")]
     pub allow_missing: bool,
 }
-///  Request message for DeleteApi.
+/// Request message for DeleteApi.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteApiRequest {
-    ///  Required. The name of the API to delete.
-    ///  Format: `projects/*/locations/*/apis/*`
+    /// Required. The name of the API to delete.
+    /// Format: `projects/*/locations/*/apis/*`
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  If set to true, any child resources will also be deleted.
-    ///  (Otherwise, the request will only work if there are no child resources.)
+    /// If set to true, any child resources will also be deleted.
+    /// (Otherwise, the request will only work if there are no child resources.)
     #[prost(bool, tag="2")]
     pub force: bool,
 }
-///  Request message for ListApiVersions.
+/// Request message for ListApiVersions.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListApiVersionsRequest {
-    ///  Required. The parent, which owns this collection of versions.
-    ///  Format: `projects/*/locations/*/apis/*`
+    /// Required. The parent, which owns this collection of versions.
+    /// Format: `projects/*/locations/*/apis/*`
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  The maximum number of versions to return.
-    ///  The service may return fewer than this value.
-    ///  If unspecified, at most 50 values will be returned.
-    ///  The maximum is 1000; values above 1000 will be coerced to 1000.
+    /// The maximum number of versions to return.
+    /// The service may return fewer than this value.
+    /// If unspecified, at most 50 values will be returned.
+    /// The maximum is 1000; values above 1000 will be coerced to 1000.
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    ///  A page token, received from a previous `ListApiVersions` call.
-    ///  Provide this to retrieve the subsequent page.
+    /// A page token, received from a previous `ListApiVersions` call.
+    /// Provide this to retrieve the subsequent page.
     ///
-    ///  When paginating, all other parameters provided to `ListApiVersions` must
-    ///  match the call that provided the page token.
+    /// When paginating, all other parameters provided to `ListApiVersions` must
+    /// match the call that provided the page token.
     #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
-    ///  An expression that can be used to filter the list. Filters use the Common
-    ///  Expression Language and can refer to all message fields.
+    /// An expression that can be used to filter the list. Filters use the Common
+    /// Expression Language and can refer to all message fields.
     #[prost(string, tag="4")]
     pub filter: ::prost::alloc::string::String,
 }
-///  Response message for ListApiVersions.
+/// Response message for ListApiVersions.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListApiVersionsResponse {
-    ///  The versions from the specified publisher.
+    /// The versions from the specified publisher.
     #[prost(message, repeated, tag="1")]
     pub api_versions: ::prost::alloc::vec::Vec<ApiVersion>,
-    ///  A token, which can be sent as `page_token` to retrieve the next page.
-    ///  If this field is omitted, there are no subsequent pages.
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-///  Request message for GetApiVersion.
+/// Request message for GetApiVersion.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetApiVersionRequest {
-    ///  Required. The name of the version to retrieve.
-    ///  Format: `projects/*/locations/*/apis/*/versions/*`
+    /// Required. The name of the version to retrieve.
+    /// Format: `projects/*/locations/*/apis/*/versions/*`
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Request message for CreateApiVersion.
+/// Request message for CreateApiVersion.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateApiVersionRequest {
-    ///  Required. The parent, which owns this collection of versions.
-    ///  Format: `projects/*/locations/*/apis/*`
+    /// Required. The parent, which owns this collection of versions.
+    /// Format: `projects/*/locations/*/apis/*`
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Required. The version to create.
+    /// Required. The version to create.
     #[prost(message, optional, tag="2")]
     pub api_version: ::core::option::Option<ApiVersion>,
-    ///  Required. The ID to use for the version, which will become the final component of
-    ///  the version's resource name.
+    /// Required. The ID to use for the version, which will become the final component of
+    /// the version's resource name.
     ///
-    ///  This value should be 1-63 characters, and valid characters
-    ///  are /\[a-z][0-9\]-/.
+    /// This value should be 1-63 characters, and valid characters
+    /// are /\[a-z][0-9\]-/.
     ///
-    ///  Following AIP-162, IDs must not have the form of a UUID.
+    /// Following AIP-162, IDs must not have the form of a UUID.
     #[prost(string, tag="3")]
     pub api_version_id: ::prost::alloc::string::String,
 }
-///  Request message for UpdateApiVersion.
+/// Request message for UpdateApiVersion.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateApiVersionRequest {
-    ///  Required. The version to update.
+    /// Required. The version to update.
     ///
-    ///  The `name` field is used to identify the version to update.
-    ///  Format: `projects/*/locations/*/apis/*/versions/*`
+    /// The `name` field is used to identify the version to update.
+    /// Format: `projects/*/locations/*/apis/*/versions/*`
     #[prost(message, optional, tag="1")]
     pub api_version: ::core::option::Option<ApiVersion>,
-    ///  The list of fields to be updated. If omitted, all fields are updated that
-    ///  are set in the request message (fields set to default values are ignored).
-    ///  If an asterisk "*" is specified, all fields are updated, including fields
-    ///  that are unspecified/default in the request.
+    /// The list of fields to be updated. If omitted, all fields are updated that
+    /// are set in the request message (fields set to default values are ignored).
+    /// If an asterisk "*" is specified, all fields are updated, including fields
+    /// that are unspecified/default in the request.
     #[prost(message, optional, tag="2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  If set to true, and the version is not found, a new version will be
-    ///  created. In this situation, `update_mask` is ignored.
+    /// If set to true, and the version is not found, a new version will be
+    /// created. In this situation, `update_mask` is ignored.
     #[prost(bool, tag="3")]
     pub allow_missing: bool,
 }
-///  Request message for DeleteApiVersion.
+/// Request message for DeleteApiVersion.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteApiVersionRequest {
-    ///  Required. The name of the version to delete.
-    ///  Format: `projects/*/locations/*/apis/*/versions/*`
+    /// Required. The name of the version to delete.
+    /// Format: `projects/*/locations/*/apis/*/versions/*`
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  If set to true, any child resources will also be deleted.
-    ///  (Otherwise, the request will only work if there are no child resources.)
+    /// If set to true, any child resources will also be deleted.
+    /// (Otherwise, the request will only work if there are no child resources.)
     #[prost(bool, tag="2")]
     pub force: bool,
 }
-///  Request message for ListApiSpecs.
+/// Request message for ListApiSpecs.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListApiSpecsRequest {
-    ///  Required. The parent, which owns this collection of specs.
-    ///  Format: `projects/*/locations/*/apis/*/versions/*`
+    /// Required. The parent, which owns this collection of specs.
+    /// Format: `projects/*/locations/*/apis/*/versions/*`
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  The maximum number of specs to return.
-    ///  The service may return fewer than this value.
-    ///  If unspecified, at most 50 values will be returned.
-    ///  The maximum is 1000; values above 1000 will be coerced to 1000.
+    /// The maximum number of specs to return.
+    /// The service may return fewer than this value.
+    /// If unspecified, at most 50 values will be returned.
+    /// The maximum is 1000; values above 1000 will be coerced to 1000.
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    ///  A page token, received from a previous `ListApiSpecs` call.
-    ///  Provide this to retrieve the subsequent page.
+    /// A page token, received from a previous `ListApiSpecs` call.
+    /// Provide this to retrieve the subsequent page.
     ///
-    ///  When paginating, all other parameters provided to `ListApiSpecs` must match
-    ///  the call that provided the page token.
+    /// When paginating, all other parameters provided to `ListApiSpecs` must match
+    /// the call that provided the page token.
     #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
-    ///  An expression that can be used to filter the list. Filters use the Common
-    ///  Expression Language and can refer to all message fields except contents.
+    /// An expression that can be used to filter the list. Filters use the Common
+    /// Expression Language and can refer to all message fields except contents.
     #[prost(string, tag="4")]
     pub filter: ::prost::alloc::string::String,
 }
-///  Response message for ListApiSpecs.
+/// Response message for ListApiSpecs.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListApiSpecsResponse {
-    ///  The specs from the specified publisher.
+    /// The specs from the specified publisher.
     #[prost(message, repeated, tag="1")]
     pub api_specs: ::prost::alloc::vec::Vec<ApiSpec>,
-    ///  A token, which can be sent as `page_token` to retrieve the next page.
-    ///  If this field is omitted, there are no subsequent pages.
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-///  Request message for GetApiSpec.
+/// Request message for GetApiSpec.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetApiSpecRequest {
-    ///  Required. The name of the spec to retrieve.
-    ///  Format: `projects/*/locations/*/apis/*/versions/*/specs/*`
+    /// Required. The name of the spec to retrieve.
+    /// Format: `projects/*/locations/*/apis/*/versions/*/specs/*`
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Request message for GetApiSpecContents.
+/// Request message for GetApiSpecContents.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetApiSpecContentsRequest {
-    ///  Required. The name of the spec whose contents should be retrieved.
-    ///  Format: `projects/*/locations/*/apis/*/versions/*/specs/*`
+    /// Required. The name of the spec whose contents should be retrieved.
+    /// Format: `projects/*/locations/*/apis/*/versions/*/specs/*`
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Request message for CreateApiSpec.
+/// Request message for CreateApiSpec.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateApiSpecRequest {
-    ///  Required. The parent, which owns this collection of specs.
-    ///  Format: `projects/*/locations/*/apis/*/versions/*`
+    /// Required. The parent, which owns this collection of specs.
+    /// Format: `projects/*/locations/*/apis/*/versions/*`
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Required. The spec to create.
+    /// Required. The spec to create.
     #[prost(message, optional, tag="2")]
     pub api_spec: ::core::option::Option<ApiSpec>,
-    ///  Required. The ID to use for the spec, which will become the final component of
-    ///  the spec's resource name.
+    /// Required. The ID to use for the spec, which will become the final component of
+    /// the spec's resource name.
     ///
-    ///  This value should be 4-63 characters, and valid characters
-    ///  are /\[a-z][0-9\]-/.
+    /// This value should be 4-63 characters, and valid characters
+    /// are /\[a-z][0-9\]-/.
     ///
-    ///  Following AIP-162, IDs must not have the form of a UUID.
+    /// Following AIP-162, IDs must not have the form of a UUID.
     #[prost(string, tag="3")]
     pub api_spec_id: ::prost::alloc::string::String,
 }
-///  Request message for UpdateApiSpec.
+/// Request message for UpdateApiSpec.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateApiSpecRequest {
-    ///  Required. The spec to update.
+    /// Required. The spec to update.
     ///
-    ///  The `name` field is used to identify the spec to update.
-    ///  Format: `projects/*/locations/*/apis/*/versions/*/specs/*`
+    /// The `name` field is used to identify the spec to update.
+    /// Format: `projects/*/locations/*/apis/*/versions/*/specs/*`
     #[prost(message, optional, tag="1")]
     pub api_spec: ::core::option::Option<ApiSpec>,
-    ///  The list of fields to be updated. If omitted, all fields are updated that
-    ///  are set in the request message (fields set to default values are ignored).
-    ///  If an asterisk "*" is specified, all fields are updated, including fields
-    ///  that are unspecified/default in the request.
+    /// The list of fields to be updated. If omitted, all fields are updated that
+    /// are set in the request message (fields set to default values are ignored).
+    /// If an asterisk "*" is specified, all fields are updated, including fields
+    /// that are unspecified/default in the request.
     #[prost(message, optional, tag="2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  If set to true, and the spec is not found, a new spec will be created.
-    ///  In this situation, `update_mask` is ignored.
+    /// If set to true, and the spec is not found, a new spec will be created.
+    /// In this situation, `update_mask` is ignored.
     #[prost(bool, tag="3")]
     pub allow_missing: bool,
 }
-///  Request message for DeleteApiSpec.
+/// Request message for DeleteApiSpec.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteApiSpecRequest {
-    ///  Required. The name of the spec to delete.
-    ///  Format: `projects/*/locations/*/apis/*/versions/*/specs/*`
+    /// Required. The name of the spec to delete.
+    /// Format: `projects/*/locations/*/apis/*/versions/*/specs/*`
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  If set to true, any child resources will also be deleted.
-    ///  (Otherwise, the request will only work if there are no child resources.)
+    /// If set to true, any child resources will also be deleted.
+    /// (Otherwise, the request will only work if there are no child resources.)
     #[prost(bool, tag="2")]
     pub force: bool,
 }
-///  Request message for TagApiSpecRevision.
+/// Request message for TagApiSpecRevision.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TagApiSpecRevisionRequest {
-    ///  Required. The name of the spec to be tagged, including the revision ID.
+    /// Required. The name of the spec to be tagged, including the revision ID.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Required. The tag to apply.
-    ///  The tag should be at most 40 characters, and match `\[a-z][a-z0-9-\]{3,39}`.
+    /// Required. The tag to apply.
+    /// The tag should be at most 40 characters, and match `\[a-z][a-z0-9-\]{3,39}`.
     #[prost(string, tag="2")]
     pub tag: ::prost::alloc::string::String,
 }
-///  Request message for ListApiSpecRevisions.
+/// Request message for ListApiSpecRevisions.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListApiSpecRevisionsRequest {
-    ///  Required. The name of the spec to list revisions for.
+    /// Required. The name of the spec to list revisions for.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  The maximum number of revisions to return per page.
+    /// The maximum number of revisions to return per page.
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    ///  The page token, received from a previous ListApiSpecRevisions call.
-    ///  Provide this to retrieve the subsequent page.
+    /// The page token, received from a previous ListApiSpecRevisions call.
+    /// Provide this to retrieve the subsequent page.
     #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
 }
-///  Response message for ListApiSpecRevisionsResponse.
+/// Response message for ListApiSpecRevisionsResponse.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListApiSpecRevisionsResponse {
-    ///  The revisions of the spec.
+    /// The revisions of the spec.
     #[prost(message, repeated, tag="1")]
     pub api_specs: ::prost::alloc::vec::Vec<ApiSpec>,
-    ///  A token that can be sent as `page_token` to retrieve the next page.
-    ///  If this field is omitted, there are no subsequent pages.
+    /// A token that can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-///  Request message for RollbackApiSpec.
+/// Request message for RollbackApiSpec.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RollbackApiSpecRequest {
-    ///  Required. The spec being rolled back.
+    /// Required. The spec being rolled back.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Required. The revision ID to roll back to.
-    ///  It must be a revision of the same spec.
+    /// Required. The revision ID to roll back to.
+    /// It must be a revision of the same spec.
     ///
     ///    Example: `c7cfa2a8`
     #[prost(string, tag="2")]
     pub revision_id: ::prost::alloc::string::String,
 }
-///  Request message for DeleteApiSpecRevision.
+/// Request message for DeleteApiSpecRevision.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteApiSpecRevisionRequest {
-    ///  Required. The name of the spec revision to be deleted,
-    ///  with a revision ID explicitly included.
+    /// Required. The name of the spec revision to be deleted,
+    /// with a revision ID explicitly included.
     ///
-    ///  Example:
-    ///  `projects/sample/locations/global/apis/petstore/versions/1.0.0/specs/openapi.yaml@c7cfa2a8`
+    /// Example:
+    /// `projects/sample/locations/global/apis/petstore/versions/1.0.0/specs/openapi.yaml@c7cfa2a8`
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Request message for ListApiDeployments.
+/// Request message for ListApiDeployments.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListApiDeploymentsRequest {
-    ///  Required. The parent, which owns this collection of deployments.
-    ///  Format: `projects/*/locations/*/apis/*`
+    /// Required. The parent, which owns this collection of deployments.
+    /// Format: `projects/*/locations/*/apis/*`
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  The maximum number of deployments to return.
-    ///  The service may return fewer than this value.
-    ///  If unspecified, at most 50 values will be returned.
-    ///  The maximum is 1000; values above 1000 will be coerced to 1000.
+    /// The maximum number of deployments to return.
+    /// The service may return fewer than this value.
+    /// If unspecified, at most 50 values will be returned.
+    /// The maximum is 1000; values above 1000 will be coerced to 1000.
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    ///  A page token, received from a previous `ListApiDeployments` call.
-    ///  Provide this to retrieve the subsequent page.
+    /// A page token, received from a previous `ListApiDeployments` call.
+    /// Provide this to retrieve the subsequent page.
     ///
-    ///  When paginating, all other parameters provided to `ListApiDeployments` must
-    ///  match the call that provided the page token.
+    /// When paginating, all other parameters provided to `ListApiDeployments` must
+    /// match the call that provided the page token.
     #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
-    ///  An expression that can be used to filter the list. Filters use the Common
-    ///  Expression Language and can refer to all message fields.
+    /// An expression that can be used to filter the list. Filters use the Common
+    /// Expression Language and can refer to all message fields.
     #[prost(string, tag="4")]
     pub filter: ::prost::alloc::string::String,
 }
-///  Response message for ListApiDeployments.
+/// Response message for ListApiDeployments.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListApiDeploymentsResponse {
-    ///  The deployments from the specified publisher.
+    /// The deployments from the specified publisher.
     #[prost(message, repeated, tag="1")]
     pub api_deployments: ::prost::alloc::vec::Vec<ApiDeployment>,
-    ///  A token, which can be sent as `page_token` to retrieve the next page.
-    ///  If this field is omitted, there are no subsequent pages.
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-///  Request message for GetApiDeployment.
+/// Request message for GetApiDeployment.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetApiDeploymentRequest {
-    ///  Required. The name of the deployment to retrieve.
-    ///  Format: `projects/*/locations/*/apis/*/deployments/*`
+    /// Required. The name of the deployment to retrieve.
+    /// Format: `projects/*/locations/*/apis/*/deployments/*`
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Request message for CreateApiDeployment.
+/// Request message for CreateApiDeployment.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateApiDeploymentRequest {
-    ///  Required. The parent, which owns this collection of deployments.
-    ///  Format: `projects/*/locations/*/apis/*`
+    /// Required. The parent, which owns this collection of deployments.
+    /// Format: `projects/*/locations/*/apis/*`
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Required. The deployment to create.
+    /// Required. The deployment to create.
     #[prost(message, optional, tag="2")]
     pub api_deployment: ::core::option::Option<ApiDeployment>,
-    ///  Required. The ID to use for the deployment, which will become the final component of
-    ///  the deployment's resource name.
+    /// Required. The ID to use for the deployment, which will become the final component of
+    /// the deployment's resource name.
     ///
-    ///  This value should be 4-63 characters, and valid characters
-    ///  are /\[a-z][0-9\]-/.
+    /// This value should be 4-63 characters, and valid characters
+    /// are /\[a-z][0-9\]-/.
     ///
-    ///  Following AIP-162, IDs must not have the form of a UUID.
+    /// Following AIP-162, IDs must not have the form of a UUID.
     #[prost(string, tag="3")]
     pub api_deployment_id: ::prost::alloc::string::String,
 }
-///  Request message for UpdateApiDeployment.
+/// Request message for UpdateApiDeployment.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateApiDeploymentRequest {
-    ///  Required. The deployment to update.
+    /// Required. The deployment to update.
     ///
-    ///  The `name` field is used to identify the deployment to update.
-    ///  Format: `projects/*/locations/*/apis/*/deployments/*`
+    /// The `name` field is used to identify the deployment to update.
+    /// Format: `projects/*/locations/*/apis/*/deployments/*`
     #[prost(message, optional, tag="1")]
     pub api_deployment: ::core::option::Option<ApiDeployment>,
-    ///  The list of fields to be updated. If omitted, all fields are updated that
-    ///  are set in the request message (fields set to default values are ignored).
-    ///  If an asterisk "*" is specified, all fields are updated, including fields
-    ///  that are unspecified/default in the request.
+    /// The list of fields to be updated. If omitted, all fields are updated that
+    /// are set in the request message (fields set to default values are ignored).
+    /// If an asterisk "*" is specified, all fields are updated, including fields
+    /// that are unspecified/default in the request.
     #[prost(message, optional, tag="2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  If set to true, and the deployment is not found, a new deployment will be
-    ///  created. In this situation, `update_mask` is ignored.
+    /// If set to true, and the deployment is not found, a new deployment will be
+    /// created. In this situation, `update_mask` is ignored.
     #[prost(bool, tag="3")]
     pub allow_missing: bool,
 }
-///  Request message for DeleteApiDeployment.
+/// Request message for DeleteApiDeployment.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteApiDeploymentRequest {
-    ///  Required. The name of the deployment to delete.
-    ///  Format: `projects/*/locations/*/apis/*/deployments/*`
+    /// Required. The name of the deployment to delete.
+    /// Format: `projects/*/locations/*/apis/*/deployments/*`
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  If set to true, any child resources will also be deleted.
-    ///  (Otherwise, the request will only work if there are no child resources.)
+    /// If set to true, any child resources will also be deleted.
+    /// (Otherwise, the request will only work if there are no child resources.)
     #[prost(bool, tag="2")]
     pub force: bool,
 }
-///  Request message for TagApiDeploymentRevision.
+/// Request message for TagApiDeploymentRevision.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TagApiDeploymentRevisionRequest {
-    ///  Required. The name of the deployment to be tagged, including the revision ID.
+    /// Required. The name of the deployment to be tagged, including the revision ID.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Required. The tag to apply.
-    ///  The tag should be at most 40 characters, and match `\[a-z][a-z0-9-\]{3,39}`.
+    /// Required. The tag to apply.
+    /// The tag should be at most 40 characters, and match `\[a-z][a-z0-9-\]{3,39}`.
     #[prost(string, tag="2")]
     pub tag: ::prost::alloc::string::String,
 }
-///  Request message for ListApiDeploymentRevisions.
+/// Request message for ListApiDeploymentRevisions.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListApiDeploymentRevisionsRequest {
-    ///  Required. The name of the deployment to list revisions for.
+    /// Required. The name of the deployment to list revisions for.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  The maximum number of revisions to return per page.
+    /// The maximum number of revisions to return per page.
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    ///  The page token, received from a previous ListApiDeploymentRevisions call.
-    ///  Provide this to retrieve the subsequent page.
+    /// The page token, received from a previous ListApiDeploymentRevisions call.
+    /// Provide this to retrieve the subsequent page.
     #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
 }
-///  Response message for ListApiDeploymentRevisionsResponse.
+/// Response message for ListApiDeploymentRevisionsResponse.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListApiDeploymentRevisionsResponse {
-    ///  The revisions of the deployment.
+    /// The revisions of the deployment.
     #[prost(message, repeated, tag="1")]
     pub api_deployments: ::prost::alloc::vec::Vec<ApiDeployment>,
-    ///  A token that can be sent as `page_token` to retrieve the next page.
-    ///  If this field is omitted, there are no subsequent pages.
+    /// A token that can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-///  Request message for RollbackApiDeployment.
+/// Request message for RollbackApiDeployment.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RollbackApiDeploymentRequest {
-    ///  Required. The deployment being rolled back.
+    /// Required. The deployment being rolled back.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Required. The revision ID to roll back to.
-    ///  It must be a revision of the same deployment.
+    /// Required. The revision ID to roll back to.
+    /// It must be a revision of the same deployment.
     ///
     ///    Example: `c7cfa2a8`
     #[prost(string, tag="2")]
     pub revision_id: ::prost::alloc::string::String,
 }
-///  Request message for DeleteApiDeploymentRevision.
+/// Request message for DeleteApiDeploymentRevision.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteApiDeploymentRevisionRequest {
-    ///  Required. The name of the deployment revision to be deleted,
-    ///  with a revision ID explicitly included.
+    /// Required. The name of the deployment revision to be deleted,
+    /// with a revision ID explicitly included.
     ///
-    ///  Example:
-    ///  `projects/sample/locations/global/apis/petstore/deployments/prod@c7cfa2a8`
+    /// Example:
+    /// `projects/sample/locations/global/apis/petstore/deployments/prod@c7cfa2a8`
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Request message for ListArtifacts.
+/// Request message for ListArtifacts.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListArtifactsRequest {
-    ///  Required. The parent, which owns this collection of artifacts.
-    ///  Format: `{parent}`
+    /// Required. The parent, which owns this collection of artifacts.
+    /// Format: `{parent}`
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  The maximum number of artifacts to return.
-    ///  The service may return fewer than this value.
-    ///  If unspecified, at most 50 values will be returned.
-    ///  The maximum is 1000; values above 1000 will be coerced to 1000.
+    /// The maximum number of artifacts to return.
+    /// The service may return fewer than this value.
+    /// If unspecified, at most 50 values will be returned.
+    /// The maximum is 1000; values above 1000 will be coerced to 1000.
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    ///  A page token, received from a previous `ListArtifacts` call.
-    ///  Provide this to retrieve the subsequent page.
+    /// A page token, received from a previous `ListArtifacts` call.
+    /// Provide this to retrieve the subsequent page.
     ///
-    ///  When paginating, all other parameters provided to `ListArtifacts` must
-    ///  match the call that provided the page token.
+    /// When paginating, all other parameters provided to `ListArtifacts` must
+    /// match the call that provided the page token.
     #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
-    ///  An expression that can be used to filter the list. Filters use the Common
-    ///  Expression Language and can refer to all message fields except contents.
+    /// An expression that can be used to filter the list. Filters use the Common
+    /// Expression Language and can refer to all message fields except contents.
     #[prost(string, tag="4")]
     pub filter: ::prost::alloc::string::String,
 }
-///  Response message for ListArtifacts.
+/// Response message for ListArtifacts.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListArtifactsResponse {
-    ///  The artifacts from the specified publisher.
+    /// The artifacts from the specified publisher.
     #[prost(message, repeated, tag="1")]
     pub artifacts: ::prost::alloc::vec::Vec<Artifact>,
-    ///  A token, which can be sent as `page_token` to retrieve the next page.
-    ///  If this field is omitted, there are no subsequent pages.
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-///  Request message for GetArtifact.
+/// Request message for GetArtifact.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetArtifactRequest {
-    ///  Required. The name of the artifact to retrieve.
-    ///  Format: `{parent}/artifacts/*`
+    /// Required. The name of the artifact to retrieve.
+    /// Format: `{parent}/artifacts/*`
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Request message for GetArtifactContents.
+/// Request message for GetArtifactContents.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetArtifactContentsRequest {
-    ///  Required. The name of the artifact whose contents should be retrieved.
-    ///  Format: `{parent}/artifacts/*`
+    /// Required. The name of the artifact whose contents should be retrieved.
+    /// Format: `{parent}/artifacts/*`
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Request message for CreateArtifact.
+/// Request message for CreateArtifact.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateArtifactRequest {
-    ///  Required. The parent, which owns this collection of artifacts.
-    ///  Format: `{parent}`
+    /// Required. The parent, which owns this collection of artifacts.
+    /// Format: `{parent}`
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Required. The artifact to create.
+    /// Required. The artifact to create.
     #[prost(message, optional, tag="2")]
     pub artifact: ::core::option::Option<Artifact>,
-    ///  Required. The ID to use for the artifact, which will become the final component of
-    ///  the artifact's resource name.
+    /// Required. The ID to use for the artifact, which will become the final component of
+    /// the artifact's resource name.
     ///
-    ///  This value should be 4-63 characters, and valid characters
-    ///  are /\[a-z][0-9\]-/.
+    /// This value should be 4-63 characters, and valid characters
+    /// are /\[a-z][0-9\]-/.
     ///
-    ///  Following AIP-162, IDs must not have the form of a UUID.
+    /// Following AIP-162, IDs must not have the form of a UUID.
     #[prost(string, tag="3")]
     pub artifact_id: ::prost::alloc::string::String,
 }
-///  Request message for ReplaceArtifact.
+/// Request message for ReplaceArtifact.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReplaceArtifactRequest {
-    ///  Required. The artifact to replace.
+    /// Required. The artifact to replace.
     ///
-    ///  The `name` field is used to identify the artifact to replace.
-    ///  Format: `{parent}/artifacts/*`
+    /// The `name` field is used to identify the artifact to replace.
+    /// Format: `{parent}/artifacts/*`
     #[prost(message, optional, tag="1")]
     pub artifact: ::core::option::Option<Artifact>,
 }
-///  Request message for DeleteArtifact.
+/// Request message for DeleteArtifact.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteArtifactRequest {
-    ///  Required. The name of the artifact to delete.
-    ///  Format: `{parent}/artifacts/*`
+    /// Required. The name of the artifact to delete.
+    /// Format: `{parent}/artifacts/*`
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
