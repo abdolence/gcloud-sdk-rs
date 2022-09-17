@@ -19,7 +19,6 @@ jobs:
           profile: minimal
           toolchain: stable
           components: rustfmt, clippy
-      - run: git submodule update --init --recursive --recommend-shallow --depth 1
       - run: cargo install cargo-release
       - run: bash .github/workflows/autorelease/autorelease.sh
         env:
