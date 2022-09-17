@@ -18,8 +18,8 @@ CURRENT_DATE=$(date '+%Y-%m-%d')
 if [[ PROTOS_CHANGED -eq 1 ]]; then
   echo "Found changes in Google APIs to release"
   cd gcloud-sdk || exit
-  git commit -m "Google APIs updated at ${CURRENT_DATE}"
-  cargo release --package gcloud-sdk patch --no-dev-version --token $CARGO_REGISTRY_TOKEN
+  git commit -m "Google APIs updated at ${CURRENT_DATE}" --author="Abdulla Abdurakhmanov <me@abdolence.dev>"
+  cargo release --package gcloud-sdk patch --no-dev-version --token $CARGO_REGISTRY_TOKEN --dry-run
   git push origin master
   cd ..
 else
