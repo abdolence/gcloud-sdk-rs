@@ -18,11 +18,13 @@ CURRENT_DATE=$(date '+%Y-%m-%d')
 if [[ PROTOS_CHANGED -eq 1 ]]; then
   echo "Found changes in Google APIs to release"
   cd gcloud-sdk || exit
+  git checkout -b update-protos-${CURRENT_DATE}
   git config user.name "GitHub Actions"
   git config user.email "<>"
   git commit -m "Google APIs updated at ${CURRENT_DATE}"
   #cargo release --package gcloud-sdk patch --no-dev-version --token $CARGO_REGISTRY_TOKEN --dry-run
-  git push origin master
+  git push origin update-protos-${CURRENT_DATE}
+  gh pr create --title "Google APIs updated at ${CURRENT_DATE}" --fill
   cd ..
 else
   echo "No changes are found in protos to release"
