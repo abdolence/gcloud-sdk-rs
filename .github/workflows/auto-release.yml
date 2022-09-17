@@ -1,0 +1,17 @@
+name: security audit
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '5 4 * * 1'
+jobs:
+  security_audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+          components: rustfmt, clippy
+      - run: cargo install cargo-release
+      - run: bash .workflows/autorelease/autorelease.sh
