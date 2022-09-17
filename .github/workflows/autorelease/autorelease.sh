@@ -1,7 +1,7 @@
 #!/bin/bash
 
-if [[ -z "${GH_PUSH_TOKEN}" ]]; then
-  echo "Env GH_PUSH_TOKEN must be specified"
+if [[ -z "${CARGO_REGISTRY_TOKEN}" ]]; then
+  echo "Env CARGO_REGISTRY_TOKEN must be specified"
   exit 1
 fi
 
@@ -19,7 +19,8 @@ if [[ PROTOS_CHANGED -eq 1 ]]; then
   echo "Found changes in Google APIs to release"
   cd gcloud-sdk || exit
   git commit -m "Google APIs updated at ${CURRENT_DATE}"
-  cargo release --package gcloud-sdk patch --no-dev-version --token $GH_PUSH_TOKEN
+  cargo release --package gcloud-sdk patch --no-dev-version --token $CARGO_REGISTRY_TOKEN
+  git push origin master
   cd ..
 else
   echo "No changes are found in protos to release"
