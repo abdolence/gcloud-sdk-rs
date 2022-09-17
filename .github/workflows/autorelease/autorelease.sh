@@ -5,9 +5,7 @@ if [[ -z "${CARGO_REGISTRY_TOKEN}" ]]; then
   exit 1
 fi
 
-git submodule add https://github.com/googleapis/googleapis gcloud-protos-generator/proto/googleapis
-git submodule foreach git pull origin master
-
+git submodule update --init --recursive --recommend-shallow --depth 1
 cargo protosgen
 git add gcloud-sdk/genproto/*
 
