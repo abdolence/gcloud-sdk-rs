@@ -20,7 +20,7 @@ if [[ PROTOS_CHANGED -eq 1 ]]; then
   cd gcloud-sdk || exit
   git commit -m "Google APIs updated at ${CURRENT_DATE}" --author="Abdulla Abdurakhmanov <me@abdolence.dev>"
   #cargo release --package gcloud-sdk patch --no-dev-version --token $CARGO_REGISTRY_TOKEN --dry-run
-  #git push origin master
+  git push origin master
   cd ..
 else
   echo "No changes are found in protos to release"
