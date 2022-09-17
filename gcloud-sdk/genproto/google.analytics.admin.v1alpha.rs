@@ -1,140 +1,140 @@
-///  Dimensions are attributes of your data. For example, the dimension
-///  `userEmail` indicates the email of the user that accessed reporting data.
-///  Dimension values in report responses are strings.
+/// Dimensions are attributes of your data. For example, the dimension
+/// `userEmail` indicates the email of the user that accessed reporting data.
+/// Dimension values in report responses are strings.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AccessDimension {
-    ///  The API name of the dimension. See [Data Access
-    ///  Schema](<https://developers.google.com/analytics/devguides/config/admin/v1/access-api-schema>)
-    ///  for the list of dimensions supported in this API.
+    /// The API name of the dimension. See [Data Access
+    /// Schema](<https://developers.google.com/analytics/devguides/config/admin/v1/access-api-schema>)
+    /// for the list of dimensions supported in this API.
     ///
-    ///  Dimensions are referenced by name in `dimensionFilter` and `orderBys`.
+    /// Dimensions are referenced by name in `dimensionFilter` and `orderBys`.
     #[prost(string, tag="1")]
     pub dimension_name: ::prost::alloc::string::String,
 }
-///  The quantitative measurements of a report. For example, the metric
-///  `accessCount` is the total number of data access records.
+/// The quantitative measurements of a report. For example, the metric
+/// `accessCount` is the total number of data access records.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AccessMetric {
-    ///  The API name of the metric. See [Data Access
-    ///  Schema](<https://developers.google.com/analytics/devguides/config/admin/v1/access-api-schema>)
-    ///  for the list of metrics supported in this API.
+    /// The API name of the metric. See [Data Access
+    /// Schema](<https://developers.google.com/analytics/devguides/config/admin/v1/access-api-schema>)
+    /// for the list of metrics supported in this API.
     ///
-    ///  Metrics are referenced by name in `metricFilter` & `orderBys`.
+    /// Metrics are referenced by name in `metricFilter` & `orderBys`.
     #[prost(string, tag="1")]
     pub metric_name: ::prost::alloc::string::String,
 }
-///  A contiguous range of days: startDate, startDate + 1, ..., endDate.
+/// A contiguous range of days: startDate, startDate + 1, ..., endDate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AccessDateRange {
-    ///  The inclusive start date for the query in the format `YYYY-MM-DD`. Cannot
-    ///  be after `endDate`. The format `NdaysAgo`, `yesterday`, or `today` is also
-    ///  accepted, and in that case, the date is inferred based on the current time
-    ///  in the request's time zone.
+    /// The inclusive start date for the query in the format `YYYY-MM-DD`. Cannot
+    /// be after `endDate`. The format `NdaysAgo`, `yesterday`, or `today` is also
+    /// accepted, and in that case, the date is inferred based on the current time
+    /// in the request's time zone.
     #[prost(string, tag="1")]
     pub start_date: ::prost::alloc::string::String,
-    ///  The inclusive end date for the query in the format `YYYY-MM-DD`. Cannot
-    ///  be before `startDate`. The format `NdaysAgo`, `yesterday`, or `today` is
-    ///  also accepted, and in that case, the date is inferred based on the current
-    ///  time in the request's time zone.
+    /// The inclusive end date for the query in the format `YYYY-MM-DD`. Cannot
+    /// be before `startDate`. The format `NdaysAgo`, `yesterday`, or `today` is
+    /// also accepted, and in that case, the date is inferred based on the current
+    /// time in the request's time zone.
     #[prost(string, tag="2")]
     pub end_date: ::prost::alloc::string::String,
 }
-///  Expresses dimension or metric filters. The fields in the same expression need
-///  to be either all dimensions or all metrics.
+/// Expresses dimension or metric filters. The fields in the same expression need
+/// to be either all dimensions or all metrics.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AccessFilterExpression {
-    ///  Specify one type of filter expression for `FilterExpression`.
+    /// Specify one type of filter expression for `FilterExpression`.
     #[prost(oneof="access_filter_expression::OneExpression", tags="1, 2, 3, 4")]
     pub one_expression: ::core::option::Option<access_filter_expression::OneExpression>,
 }
 /// Nested message and enum types in `AccessFilterExpression`.
 pub mod access_filter_expression {
-    ///  Specify one type of filter expression for `FilterExpression`.
+    /// Specify one type of filter expression for `FilterExpression`.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum OneExpression {
-        ///  Each of the FilterExpressions in the and_group has an AND relationship.
+        /// Each of the FilterExpressions in the and_group has an AND relationship.
         #[prost(message, tag="1")]
         AndGroup(super::AccessFilterExpressionList),
-        ///  Each of the FilterExpressions in the or_group has an OR relationship.
+        /// Each of the FilterExpressions in the or_group has an OR relationship.
         #[prost(message, tag="2")]
         OrGroup(super::AccessFilterExpressionList),
-        ///  The FilterExpression is NOT of not_expression.
+        /// The FilterExpression is NOT of not_expression.
         #[prost(message, tag="3")]
         NotExpression(::prost::alloc::boxed::Box<super::AccessFilterExpression>),
-        ///  A primitive filter. In the same FilterExpression, all of the filter's
-        ///  field names need to be either all dimensions or all metrics.
+        /// A primitive filter. In the same FilterExpression, all of the filter's
+        /// field names need to be either all dimensions or all metrics.
         #[prost(message, tag="4")]
         AccessFilter(super::AccessFilter),
     }
 }
-///  A list of filter expressions.
+/// A list of filter expressions.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AccessFilterExpressionList {
-    ///  A list of filter expressions.
+    /// A list of filter expressions.
     #[prost(message, repeated, tag="1")]
     pub expressions: ::prost::alloc::vec::Vec<AccessFilterExpression>,
 }
-///  An expression to filter dimension or metric values.
+/// An expression to filter dimension or metric values.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AccessFilter {
-    ///  The dimension name or metric name.
+    /// The dimension name or metric name.
     #[prost(string, tag="1")]
     pub field_name: ::prost::alloc::string::String,
-    ///  Specify one type of filter for `Filter`.
+    /// Specify one type of filter for `Filter`.
     #[prost(oneof="access_filter::OneFilter", tags="2, 3, 4, 5")]
     pub one_filter: ::core::option::Option<access_filter::OneFilter>,
 }
 /// Nested message and enum types in `AccessFilter`.
 pub mod access_filter {
-    ///  Specify one type of filter for `Filter`.
+    /// Specify one type of filter for `Filter`.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum OneFilter {
-        ///  Strings related filter.
+        /// Strings related filter.
         #[prost(message, tag="2")]
         StringFilter(super::AccessStringFilter),
-        ///  A filter for in list values.
+        /// A filter for in list values.
         #[prost(message, tag="3")]
         InListFilter(super::AccessInListFilter),
-        ///  A filter for numeric or date values.
+        /// A filter for numeric or date values.
         #[prost(message, tag="4")]
         NumericFilter(super::AccessNumericFilter),
-        ///  A filter for two values.
+        /// A filter for two values.
         #[prost(message, tag="5")]
         BetweenFilter(super::AccessBetweenFilter),
     }
 }
-///  The filter for strings.
+/// The filter for strings.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AccessStringFilter {
-    ///  The match type for this filter.
+    /// The match type for this filter.
     #[prost(enumeration="access_string_filter::MatchType", tag="1")]
     pub match_type: i32,
-    ///  The string value used for the matching.
+    /// The string value used for the matching.
     #[prost(string, tag="2")]
     pub value: ::prost::alloc::string::String,
-    ///  If true, the string value is case sensitive.
+    /// If true, the string value is case sensitive.
     #[prost(bool, tag="3")]
     pub case_sensitive: bool,
 }
 /// Nested message and enum types in `AccessStringFilter`.
 pub mod access_string_filter {
-    ///  The match type of a string filter.
+    /// The match type of a string filter.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum MatchType {
-        ///  Unspecified
+        /// Unspecified
         Unspecified = 0,
-        ///  Exact match of the string value.
+        /// Exact match of the string value.
         Exact = 1,
-        ///  Begins with the string value.
+        /// Begins with the string value.
         BeginsWith = 2,
-        ///  Ends with the string value.
+        /// Ends with the string value.
         EndsWith = 3,
-        ///  Contains the string value.
+        /// Contains the string value.
         Contains = 4,
-        ///  Full match for the regular expression with the string value.
+        /// Full match for the regular expression with the string value.
         FullRegexp = 5,
-        ///  Partial match for the regular expression with the string value.
+        /// Partial match for the regular expression with the string value.
         PartialRegexp = 6,
     }
     impl MatchType {
@@ -155,43 +155,43 @@ pub mod access_string_filter {
         }
     }
 }
-///  The result needs to be in a list of string values.
+/// The result needs to be in a list of string values.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AccessInListFilter {
-    ///  The list of string values. Must be non-empty.
+    /// The list of string values. Must be non-empty.
     #[prost(string, repeated, tag="1")]
     pub values: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    ///  If true, the string value is case sensitive.
+    /// If true, the string value is case sensitive.
     #[prost(bool, tag="2")]
     pub case_sensitive: bool,
 }
-///  Filters for numeric or date values.
+/// Filters for numeric or date values.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AccessNumericFilter {
-    ///  The operation type for this filter.
+    /// The operation type for this filter.
     #[prost(enumeration="access_numeric_filter::Operation", tag="1")]
     pub operation: i32,
-    ///  A numeric value or a date value.
+    /// A numeric value or a date value.
     #[prost(message, optional, tag="2")]
     pub value: ::core::option::Option<NumericValue>,
 }
 /// Nested message and enum types in `AccessNumericFilter`.
 pub mod access_numeric_filter {
-    ///  The operation applied to a numeric filter.
+    /// The operation applied to a numeric filter.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum Operation {
-        ///  Unspecified.
+        /// Unspecified.
         Unspecified = 0,
-        ///  Equal
+        /// Equal
         Equal = 1,
-        ///  Less than
+        /// Less than
         LessThan = 2,
-        ///  Less than or equal
+        /// Less than or equal
         LessThanOrEqual = 3,
-        ///  Greater than
+        /// Greater than
         GreaterThan = 4,
-        ///  Greater than or equal
+        /// Greater than or equal
         GreaterThanOrEqual = 5,
     }
     impl Operation {
@@ -211,86 +211,86 @@ pub mod access_numeric_filter {
         }
     }
 }
-///  To express that the result needs to be between two numbers (inclusive).
+/// To express that the result needs to be between two numbers (inclusive).
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AccessBetweenFilter {
-    ///  Begins with this number.
+    /// Begins with this number.
     #[prost(message, optional, tag="1")]
     pub from_value: ::core::option::Option<NumericValue>,
-    ///  Ends with this number.
+    /// Ends with this number.
     #[prost(message, optional, tag="2")]
     pub to_value: ::core::option::Option<NumericValue>,
 }
-///  To represent a number.
+/// To represent a number.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NumericValue {
-    ///  One of a numeric value
+    /// One of a numeric value
     #[prost(oneof="numeric_value::OneValue", tags="1, 2")]
     pub one_value: ::core::option::Option<numeric_value::OneValue>,
 }
 /// Nested message and enum types in `NumericValue`.
 pub mod numeric_value {
-    ///  One of a numeric value
+    /// One of a numeric value
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum OneValue {
-        ///  Integer value
+        /// Integer value
         #[prost(int64, tag="1")]
         Int64Value(i64),
-        ///  Double value
+        /// Double value
         #[prost(double, tag="2")]
         DoubleValue(f64),
     }
 }
-///  Order bys define how rows will be sorted in the response. For example,
-///  ordering rows by descending access count is one ordering, and ordering rows
-///  by the country string is a different ordering.
+/// Order bys define how rows will be sorted in the response. For example,
+/// ordering rows by descending access count is one ordering, and ordering rows
+/// by the country string is a different ordering.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AccessOrderBy {
-    ///  If true, sorts by descending order. If false or unspecified, sorts in
-    ///  ascending order.
+    /// If true, sorts by descending order. If false or unspecified, sorts in
+    /// ascending order.
     #[prost(bool, tag="3")]
     pub desc: bool,
-    ///  Specify one type of order by for `OrderBy`.
+    /// Specify one type of order by for `OrderBy`.
     #[prost(oneof="access_order_by::OneOrderBy", tags="1, 2")]
     pub one_order_by: ::core::option::Option<access_order_by::OneOrderBy>,
 }
 /// Nested message and enum types in `AccessOrderBy`.
 pub mod access_order_by {
-    ///  Sorts by metric values.
+    /// Sorts by metric values.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct MetricOrderBy {
-        ///  A metric name in the request to order by.
+        /// A metric name in the request to order by.
         #[prost(string, tag="1")]
         pub metric_name: ::prost::alloc::string::String,
     }
-    ///  Sorts by dimension values.
+    /// Sorts by dimension values.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DimensionOrderBy {
-        ///  A dimension name in the request to order by.
+        /// A dimension name in the request to order by.
         #[prost(string, tag="1")]
         pub dimension_name: ::prost::alloc::string::String,
-        ///  Controls the rule for dimension value ordering.
+        /// Controls the rule for dimension value ordering.
         #[prost(enumeration="dimension_order_by::OrderType", tag="2")]
         pub order_type: i32,
     }
     /// Nested message and enum types in `DimensionOrderBy`.
     pub mod dimension_order_by {
-        ///  Rule to order the string dimension values by.
+        /// Rule to order the string dimension values by.
         #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
         #[repr(i32)]
         pub enum OrderType {
-            ///  Unspecified.
+            /// Unspecified.
             Unspecified = 0,
-            ///  Alphanumeric sort by Unicode code point. For example, "2" < "A" < "X" <
-            ///  "b" < "z".
+            /// Alphanumeric sort by Unicode code point. For example, "2" < "A" < "X" <
+            /// "b" < "z".
             Alphanumeric = 1,
-            ///  Case insensitive alphanumeric sort by lower case Unicode code point.
-            ///  For example, "2" < "A" < "b" < "X" < "z".
+            /// Case insensitive alphanumeric sort by lower case Unicode code point.
+            /// For example, "2" < "A" < "b" < "X" < "z".
             CaseInsensitiveAlphanumeric = 2,
-            ///  Dimension values are converted to numbers before sorting. For example
-            ///  in NUMERIC sort, "25" < "100", and in `ALPHANUMERIC` sort, "100" <
-            ///  "25". Non-numeric dimension values all have equal ordering value below
-            ///  all numeric values.
+            /// Dimension values are converted to numbers before sorting. For example
+            /// in NUMERIC sort, "25" < "100", and in `ALPHANUMERIC` sort, "100" <
+            /// "25". Non-numeric dimension values all have equal ordering value below
+            /// all numeric values.
             Numeric = 3,
         }
         impl OrderType {
@@ -308,162 +308,162 @@ pub mod access_order_by {
             }
         }
     }
-    ///  Specify one type of order by for `OrderBy`.
+    /// Specify one type of order by for `OrderBy`.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum OneOrderBy {
-        ///  Sorts results by a metric's values.
+        /// Sorts results by a metric's values.
         #[prost(message, tag="1")]
         Metric(MetricOrderBy),
-        ///  Sorts results by a dimension's values.
+        /// Sorts results by a dimension's values.
         #[prost(message, tag="2")]
         Dimension(DimensionOrderBy),
     }
 }
-///  Describes a dimension column in the report. Dimensions requested in a report
-///  produce column entries within rows and DimensionHeaders. However, dimensions
-///  used exclusively within filters or expressions do not produce columns in a
-///  report; correspondingly, those dimensions do not produce headers.
+/// Describes a dimension column in the report. Dimensions requested in a report
+/// produce column entries within rows and DimensionHeaders. However, dimensions
+/// used exclusively within filters or expressions do not produce columns in a
+/// report; correspondingly, those dimensions do not produce headers.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AccessDimensionHeader {
-    ///  The dimension's name; for example 'userEmail'.
+    /// The dimension's name; for example 'userEmail'.
     #[prost(string, tag="1")]
     pub dimension_name: ::prost::alloc::string::String,
 }
-///  Describes a metric column in the report. Visible metrics requested in a
-///  report produce column entries within rows and MetricHeaders. However,
-///  metrics used exclusively within filters or expressions do not produce columns
-///  in a report; correspondingly, those metrics do not produce headers.
+/// Describes a metric column in the report. Visible metrics requested in a
+/// report produce column entries within rows and MetricHeaders. However,
+/// metrics used exclusively within filters or expressions do not produce columns
+/// in a report; correspondingly, those metrics do not produce headers.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AccessMetricHeader {
-    ///  The metric's name; for example 'accessCount'.
+    /// The metric's name; for example 'accessCount'.
     #[prost(string, tag="1")]
     pub metric_name: ::prost::alloc::string::String,
 }
-///  Access report data for each row.
+/// Access report data for each row.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AccessRow {
-    ///  List of dimension values. These values are in the same order as specified
-    ///  in the request.
+    /// List of dimension values. These values are in the same order as specified
+    /// in the request.
     #[prost(message, repeated, tag="1")]
     pub dimension_values: ::prost::alloc::vec::Vec<AccessDimensionValue>,
-    ///  List of metric values. These values are in the same order as specified
-    ///  in the request.
+    /// List of metric values. These values are in the same order as specified
+    /// in the request.
     #[prost(message, repeated, tag="2")]
     pub metric_values: ::prost::alloc::vec::Vec<AccessMetricValue>,
 }
-///  The value of a dimension.
+/// The value of a dimension.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AccessDimensionValue {
-    ///  The dimension value. For example, this value may be 'France' for the
-    ///  'country' dimension.
+    /// The dimension value. For example, this value may be 'France' for the
+    /// 'country' dimension.
     #[prost(string, tag="1")]
     pub value: ::prost::alloc::string::String,
 }
-///  The value of a metric.
+/// The value of a metric.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AccessMetricValue {
-    ///  The measurement value. For example, this value may be '13'.
+    /// The measurement value. For example, this value may be '13'.
     #[prost(string, tag="1")]
     pub value: ::prost::alloc::string::String,
 }
-///  Current state of all quotas for this Analytics property. If any quota for a
-///  property is exhausted, all requests to that property will return Resource
-///  Exhausted errors.
+/// Current state of all quotas for this Analytics property. If any quota for a
+/// property is exhausted, all requests to that property will return Resource
+/// Exhausted errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AccessQuota {
-    ///  Properties can use 250,000 tokens per day. Most requests consume fewer than
-    ///  10 tokens.
+    /// Properties can use 250,000 tokens per day. Most requests consume fewer than
+    /// 10 tokens.
     #[prost(message, optional, tag="1")]
     pub tokens_per_day: ::core::option::Option<AccessQuotaStatus>,
-    ///  Properties can use 50,000 tokens per hour. An API request consumes a single
-    ///  number of tokens, and that number is deducted from both the hourly and
-    ///  daily quotas.
+    /// Properties can use 50,000 tokens per hour. An API request consumes a single
+    /// number of tokens, and that number is deducted from both the hourly and
+    /// daily quotas.
     #[prost(message, optional, tag="2")]
     pub tokens_per_hour: ::core::option::Option<AccessQuotaStatus>,
-    ///  Properties can use up to 50 concurrent requests.
+    /// Properties can use up to 50 concurrent requests.
     #[prost(message, optional, tag="3")]
     pub concurrent_requests: ::core::option::Option<AccessQuotaStatus>,
-    ///  Properties and cloud project pairs can have up to 50 server errors per
-    ///  hour.
+    /// Properties and cloud project pairs can have up to 50 server errors per
+    /// hour.
     #[prost(message, optional, tag="4")]
     pub server_errors_per_project_per_hour: ::core::option::Option<AccessQuotaStatus>,
 }
-///  Current state for a particular quota group.
+/// Current state for a particular quota group.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AccessQuotaStatus {
-    ///  Quota consumed by this request.
+    /// Quota consumed by this request.
     #[prost(int32, tag="1")]
     pub consumed: i32,
-    ///  Quota remaining after this request.
+    /// Quota remaining after this request.
     #[prost(int32, tag="2")]
     pub remaining: i32,
 }
-///  A specific filter for a single dimension or metric.
+/// A specific filter for a single dimension or metric.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AudienceDimensionOrMetricFilter {
-    ///  Required. Immutable. The dimension name or metric name to filter.
+    /// Required. Immutable. The dimension name or metric name to filter.
     #[prost(string, tag="1")]
     pub field_name: ::prost::alloc::string::String,
-    ///  Optional. Indicates whether this filter needs dynamic evaluation or not. If set to
-    ///  true, users join the Audience if they ever met the condition (static
-    ///  evaluation). If unset or set to false, user evaluation for an Audience is
-    ///  dynamic; users are added to an Audience when they meet the conditions and
-    ///  then removed when they no longer meet them.
+    /// Optional. Indicates whether this filter needs dynamic evaluation or not. If set to
+    /// true, users join the Audience if they ever met the condition (static
+    /// evaluation). If unset or set to false, user evaluation for an Audience is
+    /// dynamic; users are added to an Audience when they meet the conditions and
+    /// then removed when they no longer meet them.
     ///
-    ///  This can only be set when Audience scope is ACROSS_ALL_SESSIONS.
+    /// This can only be set when Audience scope is ACROSS_ALL_SESSIONS.
     #[prost(bool, tag="6")]
     pub at_any_point_in_time: bool,
-    ///  Optional. If set, specifies the time window for which to evaluate data in number of
-    ///  days. If not set, then audience data is evaluated against lifetime data
-    ///  (i.e., infinite time window).
+    /// Optional. If set, specifies the time window for which to evaluate data in number of
+    /// days. If not set, then audience data is evaluated against lifetime data
+    /// (i.e., infinite time window).
     ///
-    ///  For example, if set to 1 day, only the current day's data is evaluated. The
-    ///  reference point is the current day when at_any_point_in_time is unset or
-    ///  false.
+    /// For example, if set to 1 day, only the current day's data is evaluated. The
+    /// reference point is the current day when at_any_point_in_time is unset or
+    /// false.
     ///
-    ///  It can only be set when Audience scope is ACROSS_ALL_SESSIONS and cannot be
-    ///  greater than 60 days.
+    /// It can only be set when Audience scope is ACROSS_ALL_SESSIONS and cannot be
+    /// greater than 60 days.
     #[prost(int32, tag="7")]
     pub in_any_n_day_period: i32,
-    ///  One of the above filters.
+    /// One of the above filters.
     #[prost(oneof="audience_dimension_or_metric_filter::OneFilter", tags="2, 3, 4, 5")]
     pub one_filter: ::core::option::Option<audience_dimension_or_metric_filter::OneFilter>,
 }
 /// Nested message and enum types in `AudienceDimensionOrMetricFilter`.
 pub mod audience_dimension_or_metric_filter {
-    ///  A filter for a string-type dimension that matches a particular pattern.
+    /// A filter for a string-type dimension that matches a particular pattern.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct StringFilter {
-        ///  Required. The match type for the string filter.
+        /// Required. The match type for the string filter.
         #[prost(enumeration="string_filter::MatchType", tag="1")]
         pub match_type: i32,
-        ///  Required. The string value to be matched against.
+        /// Required. The string value to be matched against.
         #[prost(string, tag="2")]
         pub value: ::prost::alloc::string::String,
-        ///  Optional. If true, the match is case-sensitive. If false, the match is
-        ///  case-insensitive.
+        /// Optional. If true, the match is case-sensitive. If false, the match is
+        /// case-insensitive.
         #[prost(bool, tag="3")]
         pub case_sensitive: bool,
     }
     /// Nested message and enum types in `StringFilter`.
     pub mod string_filter {
-        ///  The match type for the string filter.
+        /// The match type for the string filter.
         #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
         #[repr(i32)]
         pub enum MatchType {
-            ///  Unspecified
+            /// Unspecified
             Unspecified = 0,
-            ///  Exact match of the string value.
+            /// Exact match of the string value.
             Exact = 1,
-            ///  Begins with the string value.
+            /// Begins with the string value.
             BeginsWith = 2,
-            ///  Ends with the string value.
+            /// Ends with the string value.
             EndsWith = 3,
-            ///  Contains the string value.
+            /// Contains the string value.
             Contains = 4,
-            ///  Full regular expression matches with the string value.
+            /// Full regular expression matches with the string value.
             FullRegexp = 5,
-            ///  Partial regular expression matches with the string value.
+            /// Partial regular expression matches with the string value.
             PartialRegexp = 6,
         }
         impl MatchType {
@@ -484,64 +484,64 @@ pub mod audience_dimension_or_metric_filter {
             }
         }
     }
-    ///  A filter for a string dimension that matches a particular list of options.
+    /// A filter for a string dimension that matches a particular list of options.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct InListFilter {
-        ///  Required. The list of possible string values to match against. Must be non-empty.
+        /// Required. The list of possible string values to match against. Must be non-empty.
         #[prost(string, repeated, tag="1")]
         pub values: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-        ///  Optional. If true, the match is case-sensitive. If false, the match is
-        ///  case-insensitive.
+        /// Optional. If true, the match is case-sensitive. If false, the match is
+        /// case-insensitive.
         #[prost(bool, tag="2")]
         pub case_sensitive: bool,
     }
-    ///  To represent a number.
+    /// To represent a number.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct NumericValue {
-        ///  One of a numeric value.
+        /// One of a numeric value.
         #[prost(oneof="numeric_value::OneValue", tags="1, 2")]
         pub one_value: ::core::option::Option<numeric_value::OneValue>,
     }
     /// Nested message and enum types in `NumericValue`.
     pub mod numeric_value {
-        ///  One of a numeric value.
+        /// One of a numeric value.
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum OneValue {
-            ///  Integer value.
+            /// Integer value.
             #[prost(int64, tag="1")]
             Int64Value(i64),
-            ///  Double value.
+            /// Double value.
             #[prost(double, tag="2")]
             DoubleValue(f64),
         }
     }
-    ///  A filter for numeric or date values on a dimension or metric.
+    /// A filter for numeric or date values on a dimension or metric.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct NumericFilter {
-        ///  Required. The operation applied to a numeric filter.
+        /// Required. The operation applied to a numeric filter.
         #[prost(enumeration="numeric_filter::Operation", tag="1")]
         pub operation: i32,
-        ///  Required. The numeric or date value to match against.
+        /// Required. The numeric or date value to match against.
         #[prost(message, optional, tag="2")]
         pub value: ::core::option::Option<NumericValue>,
     }
     /// Nested message and enum types in `NumericFilter`.
     pub mod numeric_filter {
-        ///  The operation applied to a numeric filter.
+        /// The operation applied to a numeric filter.
         #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
         #[repr(i32)]
         pub enum Operation {
-            ///  Unspecified.
+            /// Unspecified.
             Unspecified = 0,
-            ///  Equal.
+            /// Equal.
             Equal = 1,
-            ///  Less than.
+            /// Less than.
             LessThan = 2,
-            ///  Less than or equal.
+            /// Less than or equal.
             LessThanOrEqual = 3,
-            ///  Greater than.
+            /// Greater than.
             GreaterThan = 4,
-            ///  Greater than or equal.
+            /// Greater than or equal.
             GreaterThanOrEqual = 5,
         }
         impl Operation {
@@ -561,158 +561,158 @@ pub mod audience_dimension_or_metric_filter {
             }
         }
     }
-    ///  A filter for numeric or date values between certain values on a dimension
-    ///  or metric.
+    /// A filter for numeric or date values between certain values on a dimension
+    /// or metric.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct BetweenFilter {
-        ///  Required. Begins with this number, inclusive.
+        /// Required. Begins with this number, inclusive.
         #[prost(message, optional, tag="1")]
         pub from_value: ::core::option::Option<NumericValue>,
-        ///  Required. Ends with this number, inclusive.
+        /// Required. Ends with this number, inclusive.
         #[prost(message, optional, tag="2")]
         pub to_value: ::core::option::Option<NumericValue>,
     }
-    ///  One of the above filters.
+    /// One of the above filters.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum OneFilter {
-        ///  A filter for a string-type dimension that matches a particular pattern.
+        /// A filter for a string-type dimension that matches a particular pattern.
         #[prost(message, tag="2")]
         StringFilter(StringFilter),
-        ///  A filter for a string dimension that matches a particular list of
-        ///  options.
+        /// A filter for a string dimension that matches a particular list of
+        /// options.
         #[prost(message, tag="3")]
         InListFilter(InListFilter),
-        ///  A filter for numeric or date values on a dimension or metric.
+        /// A filter for numeric or date values on a dimension or metric.
         #[prost(message, tag="4")]
         NumericFilter(NumericFilter),
-        ///  A filter for numeric or date values between certain values on a dimension
-        ///  or metric.
+        /// A filter for numeric or date values between certain values on a dimension
+        /// or metric.
         #[prost(message, tag="5")]
         BetweenFilter(BetweenFilter),
     }
 }
-///  A filter that matches events of a single event name. If an event parameter
-///  is specified, only the subset of events that match both the single event name
-///  and the parameter filter expressions match this event filter.
+/// A filter that matches events of a single event name. If an event parameter
+/// is specified, only the subset of events that match both the single event name
+/// and the parameter filter expressions match this event filter.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AudienceEventFilter {
-    ///  Required. Immutable. The name of the event to match against.
+    /// Required. Immutable. The name of the event to match against.
     #[prost(string, tag="1")]
     pub event_name: ::prost::alloc::string::String,
-    ///  Optional. If specified, this filter matches events that match both the single
-    ///  event name and the parameter filter expressions. AudienceEventFilter
-    ///  inside the parameter filter expression cannot be set (i.e., nested
-    ///  event filters are not supported). This should be a single and_group of
-    ///  dimension_or_metric_filter or not_expression; ANDs of ORs are not
-    ///  supported. Also, if it includes a filter for "eventCount", only that one
-    ///  will be considered; all the other filters will be ignored.
+    /// Optional. If specified, this filter matches events that match both the single
+    /// event name and the parameter filter expressions. AudienceEventFilter
+    /// inside the parameter filter expression cannot be set (i.e., nested
+    /// event filters are not supported). This should be a single and_group of
+    /// dimension_or_metric_filter or not_expression; ANDs of ORs are not
+    /// supported. Also, if it includes a filter for "eventCount", only that one
+    /// will be considered; all the other filters will be ignored.
     #[prost(message, optional, boxed, tag="2")]
     pub event_parameter_filter_expression: ::core::option::Option<::prost::alloc::boxed::Box<AudienceFilterExpression>>,
 }
-///  A logical expression of Audience dimension, metric, or event filters.
+/// A logical expression of Audience dimension, metric, or event filters.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AudienceFilterExpression {
-    ///  The expression applied to a filter.
+    /// The expression applied to a filter.
     #[prost(oneof="audience_filter_expression::Expr", tags="1, 2, 3, 4, 5")]
     pub expr: ::core::option::Option<audience_filter_expression::Expr>,
 }
 /// Nested message and enum types in `AudienceFilterExpression`.
 pub mod audience_filter_expression {
-    ///  The expression applied to a filter.
+    /// The expression applied to a filter.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Expr {
-        ///  A list of expressions to be AND’ed together. It can only contain
-        ///  AudienceFilterExpressions with or_group. This must be set for the top
-        ///  level AudienceFilterExpression.
+        /// A list of expressions to be AND’ed together. It can only contain
+        /// AudienceFilterExpressions with or_group. This must be set for the top
+        /// level AudienceFilterExpression.
         #[prost(message, tag="1")]
         AndGroup(super::AudienceFilterExpressionList),
-        ///  A list of expressions to OR’ed together. It cannot contain
-        ///  AudienceFilterExpressions with and_group or or_group.
+        /// A list of expressions to OR’ed together. It cannot contain
+        /// AudienceFilterExpressions with and_group or or_group.
         #[prost(message, tag="2")]
         OrGroup(super::AudienceFilterExpressionList),
-        ///  A filter expression to be NOT'ed (i.e., inverted, complemented). It
-        ///  can only include a dimension_or_metric_filter. This cannot be set on the
-        ///  top level AudienceFilterExpression.
+        /// A filter expression to be NOT'ed (i.e., inverted, complemented). It
+        /// can only include a dimension_or_metric_filter. This cannot be set on the
+        /// top level AudienceFilterExpression.
         #[prost(message, tag="3")]
         NotExpression(::prost::alloc::boxed::Box<super::AudienceFilterExpression>),
-        ///  A filter on a single dimension or metric. This cannot be set on the top
-        ///  level AudienceFilterExpression.
+        /// A filter on a single dimension or metric. This cannot be set on the top
+        /// level AudienceFilterExpression.
         #[prost(message, tag="4")]
         DimensionOrMetricFilter(super::AudienceDimensionOrMetricFilter),
-        ///  Creates a filter that matches a specific event. This cannot be set on the
-        ///  top level AudienceFilterExpression.
+        /// Creates a filter that matches a specific event. This cannot be set on the
+        /// top level AudienceFilterExpression.
         #[prost(message, tag="5")]
         EventFilter(::prost::alloc::boxed::Box<super::AudienceEventFilter>),
     }
 }
-///  A list of Audience filter expressions.
+/// A list of Audience filter expressions.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AudienceFilterExpressionList {
-    ///  A list of Audience filter expressions.
+    /// A list of Audience filter expressions.
     #[prost(message, repeated, tag="1")]
     pub filter_expressions: ::prost::alloc::vec::Vec<AudienceFilterExpression>,
 }
-///  Defines a simple filter that a user must satisfy to be a member of the
-///  Audience.
+/// Defines a simple filter that a user must satisfy to be a member of the
+/// Audience.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AudienceSimpleFilter {
-    ///  Required. Immutable. Specifies the scope for this filter.
+    /// Required. Immutable. Specifies the scope for this filter.
     #[prost(enumeration="AudienceFilterScope", tag="1")]
     pub scope: i32,
-    ///  Required. Immutable. A logical expression of Audience dimension, metric, or event filters.
+    /// Required. Immutable. A logical expression of Audience dimension, metric, or event filters.
     #[prost(message, optional, tag="2")]
     pub filter_expression: ::core::option::Option<AudienceFilterExpression>,
 }
-///  Defines filters that must occur in a specific order for the user to be a
-///  member of the Audience.
+/// Defines filters that must occur in a specific order for the user to be a
+/// member of the Audience.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AudienceSequenceFilter {
-    ///  Required. Immutable. Specifies the scope for this filter.
+    /// Required. Immutable. Specifies the scope for this filter.
     #[prost(enumeration="AudienceFilterScope", tag="1")]
     pub scope: i32,
-    ///  Optional. Defines the time period in which the whole sequence must occur.
+    /// Optional. Defines the time period in which the whole sequence must occur.
     #[prost(message, optional, tag="2")]
     pub sequence_maximum_duration: ::core::option::Option<::prost_types::Duration>,
-    ///  Required. An ordered sequence of steps. A user must complete each step in order to
-    ///  join the sequence filter.
+    /// Required. An ordered sequence of steps. A user must complete each step in order to
+    /// join the sequence filter.
     #[prost(message, repeated, tag="3")]
     pub sequence_steps: ::prost::alloc::vec::Vec<audience_sequence_filter::AudienceSequenceStep>,
 }
 /// Nested message and enum types in `AudienceSequenceFilter`.
 pub mod audience_sequence_filter {
-    ///  A condition that must occur in the specified step order for this user
-    ///  to match the sequence.
+    /// A condition that must occur in the specified step order for this user
+    /// to match the sequence.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AudienceSequenceStep {
-        ///  Required. Immutable. Specifies the scope for this step.
+        /// Required. Immutable. Specifies the scope for this step.
         #[prost(enumeration="super::AudienceFilterScope", tag="1")]
         pub scope: i32,
-        ///  Optional. If true, the event satisfying this step must be the very next event
-        ///  after the event satisfying the last step. If unset or false, this
-        ///  step indirectly follows the prior step; for example, there may be
-        ///  events between the prior step and this step. It is ignored for the
-        ///  first step.
+        /// Optional. If true, the event satisfying this step must be the very next event
+        /// after the event satisfying the last step. If unset or false, this
+        /// step indirectly follows the prior step; for example, there may be
+        /// events between the prior step and this step. It is ignored for the
+        /// first step.
         #[prost(bool, tag="2")]
         pub immediately_follows: bool,
-        ///  Optional. When set, this step must be satisfied within the constraint_duration of
-        ///  the previous step (i.e., t\[i\] - t\[i-1\] <= constraint_duration). If not
-        ///  set, there is no duration requirement (the duration is effectively
-        ///  unlimited). It is ignored for the first step.
+        /// Optional. When set, this step must be satisfied within the constraint_duration of
+        /// the previous step (i.e., t\[i\] - t\[i-1\] <= constraint_duration). If not
+        /// set, there is no duration requirement (the duration is effectively
+        /// unlimited). It is ignored for the first step.
         #[prost(message, optional, tag="3")]
         pub constraint_duration: ::core::option::Option<::prost_types::Duration>,
-        ///  Required. Immutable. A logical expression of Audience dimension, metric, or event filters in
-        ///  each step.
+        /// Required. Immutable. A logical expression of Audience dimension, metric, or event filters in
+        /// each step.
         #[prost(message, optional, tag="4")]
         pub filter_expression: ::core::option::Option<super::AudienceFilterExpression>,
     }
 }
-///  A clause for defining either a simple or sequence filter. A filter can be
-///  inclusive (i.e., users satisfying the filter clause are included in the
-///  Audience) or exclusive (i.e., users satisfying the filter clause are
-///  excluded from the Audience).
+/// A clause for defining either a simple or sequence filter. A filter can be
+/// inclusive (i.e., users satisfying the filter clause are included in the
+/// Audience) or exclusive (i.e., users satisfying the filter clause are
+/// excluded from the Audience).
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AudienceFilterClause {
-    ///  Required. Specifies whether this is an include or exclude filter clause.
+    /// Required. Specifies whether this is an include or exclude filter clause.
     #[prost(enumeration="audience_filter_clause::AudienceClauseType", tag="1")]
     pub clause_type: i32,
     #[prost(oneof="audience_filter_clause::Filter", tags="2, 3")]
@@ -720,15 +720,15 @@ pub struct AudienceFilterClause {
 }
 /// Nested message and enum types in `AudienceFilterClause`.
 pub mod audience_filter_clause {
-    ///  Specifies whether this is an include or exclude filter clause.
+    /// Specifies whether this is an include or exclude filter clause.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum AudienceClauseType {
-        ///  Unspecified clause type.
+        /// Unspecified clause type.
         Unspecified = 0,
-        ///  Users will be included in the Audience if the filter clause is met.
+        /// Users will be included in the Audience if the filter clause is met.
         Include = 1,
-        ///  Users will be excluded from the Audience if the filter clause is met.
+        /// Users will be excluded from the Audience if the filter clause is met.
         Exclude = 2,
     }
     impl AudienceClauseType {
@@ -746,37 +746,37 @@ pub mod audience_filter_clause {
     }
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Filter {
-        ///  A simple filter that a user must satisfy to be a member of the Audience.
+        /// A simple filter that a user must satisfy to be a member of the Audience.
         #[prost(message, tag="2")]
         SimpleFilter(super::AudienceSimpleFilter),
-        ///  Filters that must occur in a specific order for the user to be a member
-        ///  of the Audience.
+        /// Filters that must occur in a specific order for the user to be a member
+        /// of the Audience.
         #[prost(message, tag="3")]
         SequenceFilter(super::AudienceSequenceFilter),
     }
 }
-///  Specifies an event to log when a user joins the Audience.
+/// Specifies an event to log when a user joins the Audience.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AudienceEventTrigger {
-    ///  Required. The event name that will be logged.
+    /// Required. The event name that will be logged.
     #[prost(string, tag="1")]
     pub event_name: ::prost::alloc::string::String,
-    ///  Required. When to log the event.
+    /// Required. When to log the event.
     #[prost(enumeration="audience_event_trigger::LogCondition", tag="2")]
     pub log_condition: i32,
 }
 /// Nested message and enum types in `AudienceEventTrigger`.
 pub mod audience_event_trigger {
-    ///  Determines when to log the event.
+    /// Determines when to log the event.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum LogCondition {
-        ///  Log condition is not specified.
+        /// Log condition is not specified.
         Unspecified = 0,
-        ///  The event should be logged only when a user is joined.
+        /// The event should be logged only when a user is joined.
         AudienceJoined = 1,
-        ///  The event should be logged whenever the Audience condition is met, even
-        ///  if the user is already a member of the Audience.
+        /// The event should be logged whenever the Audience condition is met, even
+        /// if the user is already a member of the Audience.
         AudienceMembershipRenewed = 2,
     }
     impl LogCondition {
@@ -793,54 +793,54 @@ pub mod audience_event_trigger {
         }
     }
 }
-///  A resource message representing a GA4 Audience.
+/// A resource message representing a GA4 Audience.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Audience {
-    ///  Output only. The resource name for this Audience resource.
-    ///  Format: properties/{propertyId}/audiences/{audienceId}
+    /// Output only. The resource name for this Audience resource.
+    /// Format: properties/{propertyId}/audiences/{audienceId}
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Required. The display name of the Audience.
+    /// Required. The display name of the Audience.
     #[prost(string, tag="2")]
     pub display_name: ::prost::alloc::string::String,
-    ///  Required. The description of the Audience.
+    /// Required. The description of the Audience.
     #[prost(string, tag="3")]
     pub description: ::prost::alloc::string::String,
-    ///  Required. Immutable. The duration a user should stay in an Audience. It cannot be set to more
-    ///  than 540 days.
+    /// Required. Immutable. The duration a user should stay in an Audience. It cannot be set to more
+    /// than 540 days.
     #[prost(int32, tag="4")]
     pub membership_duration_days: i32,
-    ///  Output only. It is automatically set by GA to false if this is an NPA Audience and is
-    ///  excluded from ads personalization.
+    /// Output only. It is automatically set by GA to false if this is an NPA Audience and is
+    /// excluded from ads personalization.
     #[prost(bool, tag="5")]
     pub ads_personalization_enabled: bool,
-    ///  Optional. Specifies an event to log when a user joins the Audience. If not set, no
-    ///  event is logged when a user joins the Audience.
+    /// Optional. Specifies an event to log when a user joins the Audience. If not set, no
+    /// event is logged when a user joins the Audience.
     #[prost(message, optional, tag="6")]
     pub event_trigger: ::core::option::Option<AudienceEventTrigger>,
-    ///  Immutable. Specifies how long an exclusion lasts for users that meet the exclusion
-    ///  filter. It is applied to all EXCLUDE filter clauses and is ignored when
-    ///  there is no EXCLUDE filter clause in the Audience.
+    /// Immutable. Specifies how long an exclusion lasts for users that meet the exclusion
+    /// filter. It is applied to all EXCLUDE filter clauses and is ignored when
+    /// there is no EXCLUDE filter clause in the Audience.
     #[prost(enumeration="audience::AudienceExclusionDurationMode", tag="7")]
     pub exclusion_duration_mode: i32,
-    ///  Required. Immutable. null Filter clauses that define the Audience. All clauses will be AND’ed
-    ///  together.
+    /// Required. Immutable. null Filter clauses that define the Audience. All clauses will be AND’ed
+    /// together.
     #[prost(message, repeated, tag="8")]
     pub filter_clauses: ::prost::alloc::vec::Vec<AudienceFilterClause>,
 }
 /// Nested message and enum types in `Audience`.
 pub mod audience {
-    ///  Specifies how long an exclusion lasts for users that meet the exclusion
-    ///  filter.
+    /// Specifies how long an exclusion lasts for users that meet the exclusion
+    /// filter.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum AudienceExclusionDurationMode {
-        ///  Not specified.
+        /// Not specified.
         Unspecified = 0,
-        ///  Exclude users from the Audience during periods when they meet the
-        ///  filter clause.
+        /// Exclude users from the Audience during periods when they meet the
+        /// filter clause.
         ExcludeTemporarily = 1,
-        ///  Exclude users from the Audience if they've ever met the filter clause.
+        /// Exclude users from the Audience if they've ever met the filter clause.
         ExcludePermanently = 2,
     }
     impl AudienceExclusionDurationMode {
@@ -857,20 +857,20 @@ pub mod audience {
         }
     }
 }
-///  Specifies how to evaluate users for joining an Audience.
+/// Specifies how to evaluate users for joining an Audience.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum AudienceFilterScope {
-    ///  Scope is not specified.
+    /// Scope is not specified.
     Unspecified = 0,
-    ///  User joins the Audience if the filter condition is met within one
-    ///  event.
+    /// User joins the Audience if the filter condition is met within one
+    /// event.
     WithinSameEvent = 1,
-    ///  User joins the Audience if the filter condition is met within one
-    ///  session.
+    /// User joins the Audience if the filter condition is met within one
+    /// session.
     WithinSameSession = 2,
-    ///  User joins the Audience if the filter condition is met by any event
-    ///  across any session.
+    /// User joins the Audience if the filter condition is met by any event
+    /// across any session.
     AcrossAllSessions = 3,
 }
 impl AudienceFilterScope {
@@ -887,185 +887,185 @@ impl AudienceFilterScope {
         }
     }
 }
-///  A resource message representing a Google Analytics account.
+/// A resource message representing a Google Analytics account.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Account {
-    ///  Output only. Resource name of this account.
-    ///  Format: accounts/{account}
-    ///  Example: "accounts/100"
+    /// Output only. Resource name of this account.
+    /// Format: accounts/{account}
+    /// Example: "accounts/100"
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Output only. Time when this account was originally created.
+    /// Output only. Time when this account was originally created.
     #[prost(message, optional, tag="2")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Output only. Time when account payload fields were last updated.
+    /// Output only. Time when account payload fields were last updated.
     #[prost(message, optional, tag="3")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Required. Human-readable display name for this account.
+    /// Required. Human-readable display name for this account.
     #[prost(string, tag="4")]
     pub display_name: ::prost::alloc::string::String,
-    ///  Country of business. Must be a Unicode CLDR region code.
+    /// Country of business. Must be a Unicode CLDR region code.
     #[prost(string, tag="5")]
     pub region_code: ::prost::alloc::string::String,
-    ///  Output only. Indicates whether this Account is soft-deleted or not. Deleted
-    ///  accounts are excluded from List results unless specifically requested.
+    /// Output only. Indicates whether this Account is soft-deleted or not. Deleted
+    /// accounts are excluded from List results unless specifically requested.
     #[prost(bool, tag="6")]
     pub deleted: bool,
 }
-///  A resource message representing a Google Analytics GA4 property.
+/// A resource message representing a Google Analytics GA4 property.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Property {
-    ///  Output only. Resource name of this property.
-    ///  Format: properties/{property_id}
-    ///  Example: "properties/1000"
+    /// Output only. Resource name of this property.
+    /// Format: properties/{property_id}
+    /// Example: "properties/1000"
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Immutable. The property type for this Property resource. When creating a property, if
-    ///  the type is "PROPERTY_TYPE_UNSPECIFIED", then "ORDINARY_PROPERTY" will be
-    ///  implied. "SUBPROPERTY" and "ROLLUP_PROPERTY" types cannot yet be created
-    ///  via Google Analytics Admin API.
+    /// Immutable. The property type for this Property resource. When creating a property, if
+    /// the type is "PROPERTY_TYPE_UNSPECIFIED", then "ORDINARY_PROPERTY" will be
+    /// implied. "SUBPROPERTY" and "ROLLUP_PROPERTY" types cannot yet be created
+    /// via Google Analytics Admin API.
     #[prost(enumeration="PropertyType", tag="14")]
     pub property_type: i32,
-    ///  Output only. Time when the entity was originally created.
+    /// Output only. Time when the entity was originally created.
     #[prost(message, optional, tag="3")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Output only. Time when entity payload fields were last updated.
+    /// Output only. Time when entity payload fields were last updated.
     #[prost(message, optional, tag="4")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Immutable. Resource name of this property's logical parent.
+    /// Immutable. Resource name of this property's logical parent.
     ///
-    ///  Note: The Property-Moving UI can be used to change the parent.
-    ///  Format: accounts/{account}, properties/{property}
-    ///  Example: "accounts/100", "properties/101"
+    /// Note: The Property-Moving UI can be used to change the parent.
+    /// Format: accounts/{account}, properties/{property}
+    /// Example: "accounts/100", "properties/101"
     #[prost(string, tag="2")]
     pub parent: ::prost::alloc::string::String,
-    ///  Required. Human-readable display name for this property.
+    /// Required. Human-readable display name for this property.
     ///
-    ///  The max allowed display name length is 100 UTF-16 code units.
+    /// The max allowed display name length is 100 UTF-16 code units.
     #[prost(string, tag="5")]
     pub display_name: ::prost::alloc::string::String,
-    ///  Industry associated with this property
-    ///  Example: AUTOMOTIVE, FOOD_AND_DRINK
+    /// Industry associated with this property
+    /// Example: AUTOMOTIVE, FOOD_AND_DRINK
     #[prost(enumeration="IndustryCategory", tag="6")]
     pub industry_category: i32,
-    ///  Required. Reporting Time Zone, used as the day boundary for reports, regardless of
-    ///  where the data originates. If the time zone honors DST, Analytics will
-    ///  automatically adjust for the changes.
+    /// Required. Reporting Time Zone, used as the day boundary for reports, regardless of
+    /// where the data originates. If the time zone honors DST, Analytics will
+    /// automatically adjust for the changes.
     ///
-    ///  NOTE: Changing the time zone only affects data going forward, and is not
-    ///  applied retroactively.
+    /// NOTE: Changing the time zone only affects data going forward, and is not
+    /// applied retroactively.
     ///
-    ///  Format: <https://www.iana.org/time-zones>
-    ///  Example: "America/Los_Angeles"
+    /// Format: <https://www.iana.org/time-zones>
+    /// Example: "America/Los_Angeles"
     #[prost(string, tag="7")]
     pub time_zone: ::prost::alloc::string::String,
-    ///  The currency type used in reports involving monetary values.
+    /// The currency type used in reports involving monetary values.
     ///
     ///
-    ///  Format: <https://en.wikipedia.org/wiki/ISO_4217>
-    ///  Examples: "USD", "EUR", "JPY"
+    /// Format: <https://en.wikipedia.org/wiki/ISO_4217>
+    /// Examples: "USD", "EUR", "JPY"
     #[prost(string, tag="8")]
     pub currency_code: ::prost::alloc::string::String,
-    ///  Output only. The Google Analytics service level that applies to this property.
+    /// Output only. The Google Analytics service level that applies to this property.
     #[prost(enumeration="ServiceLevel", tag="10")]
     pub service_level: i32,
-    ///  Output only. If set, the time at which this property was trashed. If not set, then this
-    ///  property is not currently in the trash can.
+    /// Output only. If set, the time at which this property was trashed. If not set, then this
+    /// property is not currently in the trash can.
     #[prost(message, optional, tag="11")]
     pub delete_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Output only. If set, the time at which this trashed property will be permanently
-    ///  deleted. If not set, then this property is not currently in the trash can
-    ///  and is not slated to be deleted.
+    /// Output only. If set, the time at which this trashed property will be permanently
+    /// deleted. If not set, then this property is not currently in the trash can
+    /// and is not slated to be deleted.
     #[prost(message, optional, tag="12")]
     pub expire_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Immutable. The resource name of the parent account
-    ///  Format: accounts/{account_id}
-    ///  Example: "accounts/123"
+    /// Immutable. The resource name of the parent account
+    /// Format: accounts/{account_id}
+    /// Example: "accounts/123"
     #[prost(string, tag="13")]
     pub account: ::prost::alloc::string::String,
 }
-///  A resource message representing a data stream.
+/// A resource message representing a data stream.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataStream {
-    ///  Output only. Resource name of this Data Stream.
-    ///  Format: properties/{property_id}/dataStreams/{stream_id}
-    ///  Example: "properties/1000/dataStreams/2000"
+    /// Output only. Resource name of this Data Stream.
+    /// Format: properties/{property_id}/dataStreams/{stream_id}
+    /// Example: "properties/1000/dataStreams/2000"
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Required. Immutable. The type of this DataStream resource.
+    /// Required. Immutable. The type of this DataStream resource.
     #[prost(enumeration="data_stream::DataStreamType", tag="2")]
     pub r#type: i32,
-    ///  Human-readable display name for the Data Stream.
+    /// Human-readable display name for the Data Stream.
     ///
-    ///  Required for web data streams.
+    /// Required for web data streams.
     ///
-    ///  The max allowed display name length is 255 UTF-16 code units.
+    /// The max allowed display name length is 255 UTF-16 code units.
     #[prost(string, tag="3")]
     pub display_name: ::prost::alloc::string::String,
-    ///  Output only. Time when this stream was originally created.
+    /// Output only. Time when this stream was originally created.
     #[prost(message, optional, tag="4")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Output only. Time when stream payload fields were last updated.
+    /// Output only. Time when stream payload fields were last updated.
     #[prost(message, optional, tag="5")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Data for specific data stream types. The message that will be
-    ///  set corresponds to the type of this stream.
+    /// Data for specific data stream types. The message that will be
+    /// set corresponds to the type of this stream.
     #[prost(oneof="data_stream::StreamData", tags="6, 7, 8")]
     pub stream_data: ::core::option::Option<data_stream::StreamData>,
 }
 /// Nested message and enum types in `DataStream`.
 pub mod data_stream {
-    ///  Data specific to web streams.
+    /// Data specific to web streams.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct WebStreamData {
-        ///  Output only. Analytics "Measurement ID", without the "G-" prefix.
-        ///  Example: "G-1A2BCD345E" would just be "1A2BCD345E"
+        /// Output only. Analytics "Measurement ID", without the "G-" prefix.
+        /// Example: "G-1A2BCD345E" would just be "1A2BCD345E"
         #[prost(string, tag="1")]
         pub measurement_id: ::prost::alloc::string::String,
-        ///  Output only. ID of the corresponding web app in Firebase, if any.
-        ///  This ID can change if the web app is deleted and recreated.
+        /// Output only. ID of the corresponding web app in Firebase, if any.
+        /// This ID can change if the web app is deleted and recreated.
         #[prost(string, tag="2")]
         pub firebase_app_id: ::prost::alloc::string::String,
-        ///  Immutable. Domain name of the web app being measured, or empty.
-        ///  Example: "<http://www.google.com",> "<https://www.google.com">
+        /// Immutable. Domain name of the web app being measured, or empty.
+        /// Example: "<http://www.google.com",> "<https://www.google.com">
         #[prost(string, tag="3")]
         pub default_uri: ::prost::alloc::string::String,
     }
-    ///  Data specific to Android app streams.
+    /// Data specific to Android app streams.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AndroidAppStreamData {
-        ///  Output only. ID of the corresponding Android app in Firebase, if any.
-        ///  This ID can change if the Android app is deleted and recreated.
+        /// Output only. ID of the corresponding Android app in Firebase, if any.
+        /// This ID can change if the Android app is deleted and recreated.
         #[prost(string, tag="1")]
         pub firebase_app_id: ::prost::alloc::string::String,
-        ///  Immutable. The package name for the app being measured.
-        ///  Example: "com.example.myandroidapp"
+        /// Immutable. The package name for the app being measured.
+        /// Example: "com.example.myandroidapp"
         #[prost(string, tag="2")]
         pub package_name: ::prost::alloc::string::String,
     }
-    ///  Data specific to iOS app streams.
+    /// Data specific to iOS app streams.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct IosAppStreamData {
-        ///  Output only. ID of the corresponding iOS app in Firebase, if any.
-        ///  This ID can change if the iOS app is deleted and recreated.
+        /// Output only. ID of the corresponding iOS app in Firebase, if any.
+        /// This ID can change if the iOS app is deleted and recreated.
         #[prost(string, tag="1")]
         pub firebase_app_id: ::prost::alloc::string::String,
-        ///  Required. Immutable. The Apple App Store Bundle ID for the app
-        ///  Example: "com.example.myiosapp"
+        /// Required. Immutable. The Apple App Store Bundle ID for the app
+        /// Example: "com.example.myiosapp"
         #[prost(string, tag="2")]
         pub bundle_id: ::prost::alloc::string::String,
     }
-    ///  The type of the data stream.
+    /// The type of the data stream.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum DataStreamType {
-        ///  Type unknown or not specified.
+        /// Type unknown or not specified.
         Unspecified = 0,
-        ///  Web data stream.
+        /// Web data stream.
         WebDataStream = 1,
-        ///  Android app data stream.
+        /// Android app data stream.
         AndroidAppDataStream = 2,
-        ///  iOS app data stream.
+        /// iOS app data stream.
         IosAppDataStream = 3,
     }
     impl DataStreamType {
@@ -1082,281 +1082,281 @@ pub mod data_stream {
             }
         }
     }
-    ///  Data for specific data stream types. The message that will be
-    ///  set corresponds to the type of this stream.
+    /// Data for specific data stream types. The message that will be
+    /// set corresponds to the type of this stream.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum StreamData {
-        ///  Data specific to web streams. Must be populated if type is
-        ///  WEB_DATA_STREAM.
+        /// Data specific to web streams. Must be populated if type is
+        /// WEB_DATA_STREAM.
         #[prost(message, tag="6")]
         WebStreamData(WebStreamData),
-        ///  Data specific to Android app streams. Must be populated if type is
-        ///  ANDROID_APP_DATA_STREAM.
+        /// Data specific to Android app streams. Must be populated if type is
+        /// ANDROID_APP_DATA_STREAM.
         #[prost(message, tag="7")]
         AndroidAppStreamData(AndroidAppStreamData),
-        ///  Data specific to iOS app streams. Must be populated if type is
-        ///  IOS_APP_DATA_STREAM.
+        /// Data specific to iOS app streams. Must be populated if type is
+        /// IOS_APP_DATA_STREAM.
         #[prost(message, tag="8")]
         IosAppStreamData(IosAppStreamData),
     }
 }
-///  A resource message representing a user's permissions on an Account or
-///  Property resource.
+/// A resource message representing a user's permissions on an Account or
+/// Property resource.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UserLink {
-    ///  Output only. Example format: properties/1234/userLinks/5678
+    /// Output only. Example format: properties/1234/userLinks/5678
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Immutable. Email address of the user to link
+    /// Immutable. Email address of the user to link
     #[prost(string, tag="2")]
     pub email_address: ::prost::alloc::string::String,
-    ///  Roles directly assigned to this user for this account or property.
+    /// Roles directly assigned to this user for this account or property.
     ///
-    ///  Valid values:
-    ///  predefinedRoles/viewer
-    ///  predefinedRoles/analyst
-    ///  predefinedRoles/editor
-    ///  predefinedRoles/admin
-    ///  predefinedRoles/no-cost-data
-    ///  predefinedRoles/no-revenue-data
+    /// Valid values:
+    /// predefinedRoles/viewer
+    /// predefinedRoles/analyst
+    /// predefinedRoles/editor
+    /// predefinedRoles/admin
+    /// predefinedRoles/no-cost-data
+    /// predefinedRoles/no-revenue-data
     ///
-    ///  Excludes roles that are inherited from a higher-level entity, group,
-    ///  or organization admin role.
+    /// Excludes roles that are inherited from a higher-level entity, group,
+    /// or organization admin role.
     ///
-    ///  A UserLink that is updated to have an empty list of direct_roles will be
-    ///  deleted.
+    /// A UserLink that is updated to have an empty list of direct_roles will be
+    /// deleted.
     #[prost(string, repeated, tag="3")]
     pub direct_roles: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-///  Read-only resource used to summarize a principal's effective roles.
+/// Read-only resource used to summarize a principal's effective roles.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AuditUserLink {
-    ///  Example format: properties/1234/userLinks/5678
+    /// Example format: properties/1234/userLinks/5678
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Email address of the linked user
+    /// Email address of the linked user
     #[prost(string, tag="2")]
     pub email_address: ::prost::alloc::string::String,
-    ///  Roles directly assigned to this user for this entity.
+    /// Roles directly assigned to this user for this entity.
     ///
-    ///  Format: predefinedRoles/viewer
+    /// Format: predefinedRoles/viewer
     ///
-    ///  Excludes roles that are inherited from an account (if this is for a
-    ///  property), group, or organization admin role.
+    /// Excludes roles that are inherited from an account (if this is for a
+    /// property), group, or organization admin role.
     #[prost(string, repeated, tag="3")]
     pub direct_roles: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    ///  Union of all permissions a user has at this account or property (includes
-    ///  direct permissions, group-inherited permissions, etc.).
+    /// Union of all permissions a user has at this account or property (includes
+    /// direct permissions, group-inherited permissions, etc.).
     ///
-    ///  Format: predefinedRoles/viewer
+    /// Format: predefinedRoles/viewer
     #[prost(string, repeated, tag="4")]
     pub effective_roles: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-///  A link between a GA4 property and a Firebase project.
+/// A link between a GA4 property and a Firebase project.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FirebaseLink {
-    ///  Output only. Example format: properties/1234/firebaseLinks/5678
+    /// Output only. Example format: properties/1234/firebaseLinks/5678
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Immutable. Firebase project resource name. When creating a FirebaseLink, you may
-    ///  provide this resource name using either a project number or project ID.
-    ///  Once this resource has been created, returned FirebaseLinks will always
-    ///  have a project_name that contains a project number.
+    /// Immutable. Firebase project resource name. When creating a FirebaseLink, you may
+    /// provide this resource name using either a project number or project ID.
+    /// Once this resource has been created, returned FirebaseLinks will always
+    /// have a project_name that contains a project number.
     ///
-    ///  Format: 'projects/{project number}'
-    ///  Example: 'projects/1234'
+    /// Format: 'projects/{project number}'
+    /// Example: 'projects/1234'
     #[prost(string, tag="2")]
     pub project: ::prost::alloc::string::String,
-    ///  Output only. Time when this FirebaseLink was originally created.
+    /// Output only. Time when this FirebaseLink was originally created.
     #[prost(message, optional, tag="3")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
 }
-///  Read-only resource with the tag for sending data from a website to a
-///  DataStream. Only present for web DataStream resources.
+/// Read-only resource with the tag for sending data from a website to a
+/// DataStream. Only present for web DataStream resources.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GlobalSiteTag {
-    ///  Output only. Resource name for this GlobalSiteTag resource.
-    ///  Format: properties/{property_id}/dataStreams/{stream_id}/globalSiteTag
-    ///  Example: "properties/123/dataStreams/456/globalSiteTag"
+    /// Output only. Resource name for this GlobalSiteTag resource.
+    /// Format: properties/{property_id}/dataStreams/{stream_id}/globalSiteTag
+    /// Example: "properties/123/dataStreams/456/globalSiteTag"
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Immutable. JavaScript code snippet to be pasted as the first item into the head tag of
-    ///  every webpage to measure.
+    /// Immutable. JavaScript code snippet to be pasted as the first item into the head tag of
+    /// every webpage to measure.
     #[prost(string, tag="2")]
     pub snippet: ::prost::alloc::string::String,
 }
-///  A link between a GA4 property and a Google Ads account.
+/// A link between a GA4 property and a Google Ads account.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GoogleAdsLink {
-    ///  Output only. Format: properties/{propertyId}/googleAdsLinks/{googleAdsLinkId}
+    /// Output only. Format: properties/{propertyId}/googleAdsLinks/{googleAdsLinkId}
     ///
-    ///  Note: googleAdsLinkId is not the Google Ads customer ID.
+    /// Note: googleAdsLinkId is not the Google Ads customer ID.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Immutable. Google Ads customer ID.
+    /// Immutable. Google Ads customer ID.
     #[prost(string, tag="3")]
     pub customer_id: ::prost::alloc::string::String,
-    ///  Output only. If true, this link is for a Google Ads manager account.
+    /// Output only. If true, this link is for a Google Ads manager account.
     #[prost(bool, tag="4")]
     pub can_manage_clients: bool,
-    ///  Enable personalized advertising features with this integration.
-    ///  Automatically publish my Google Analytics audience lists and Google
-    ///  Analytics remarketing events/parameters to the linked Google Ads account.
-    ///  If this field is not set on create/update, it will be defaulted to true.
+    /// Enable personalized advertising features with this integration.
+    /// Automatically publish my Google Analytics audience lists and Google
+    /// Analytics remarketing events/parameters to the linked Google Ads account.
+    /// If this field is not set on create/update, it will be defaulted to true.
     #[prost(message, optional, tag="5")]
     pub ads_personalization_enabled: ::core::option::Option<bool>,
-    ///  Output only. Time when this link was originally created.
+    /// Output only. Time when this link was originally created.
     #[prost(message, optional, tag="7")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Output only. Time when this link was last updated.
+    /// Output only. Time when this link was last updated.
     #[prost(message, optional, tag="8")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Output only. Email address of the user that created the link.
-    ///  An empty string will be returned if the email address can't be retrieved.
+    /// Output only. Email address of the user that created the link.
+    /// An empty string will be returned if the email address can't be retrieved.
     #[prost(string, tag="9")]
     pub creator_email_address: ::prost::alloc::string::String,
 }
-///  A resource message representing data sharing settings of a Google Analytics
-///  account.
+/// A resource message representing data sharing settings of a Google Analytics
+/// account.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataSharingSettings {
-    ///  Output only. Resource name.
-    ///  Format: accounts/{account}/dataSharingSettings
-    ///  Example: "accounts/1000/dataSharingSettings"
+    /// Output only. Resource name.
+    /// Format: accounts/{account}/dataSharingSettings
+    /// Example: "accounts/1000/dataSharingSettings"
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Allows Google support to access the data in order to help troubleshoot
-    ///  issues.
+    /// Allows Google support to access the data in order to help troubleshoot
+    /// issues.
     #[prost(bool, tag="2")]
     pub sharing_with_google_support_enabled: bool,
-    ///  Allows Google sales teams that are assigned to the customer to access the
-    ///  data in order to suggest configuration changes to improve results.
-    ///  Sales team restrictions still apply when enabled.
+    /// Allows Google sales teams that are assigned to the customer to access the
+    /// data in order to suggest configuration changes to improve results.
+    /// Sales team restrictions still apply when enabled.
     #[prost(bool, tag="3")]
     pub sharing_with_google_assigned_sales_enabled: bool,
-    ///  Allows any of Google sales to access the data in order to suggest
-    ///  configuration changes to improve results.
+    /// Allows any of Google sales to access the data in order to suggest
+    /// configuration changes to improve results.
     #[prost(bool, tag="4")]
     pub sharing_with_google_any_sales_enabled: bool,
-    ///  Allows Google to use the data to improve other Google products or services.
+    /// Allows Google to use the data to improve other Google products or services.
     #[prost(bool, tag="5")]
     pub sharing_with_google_products_enabled: bool,
-    ///  Allows Google to share the data anonymously in aggregate form with others.
+    /// Allows Google to share the data anonymously in aggregate form with others.
     #[prost(bool, tag="6")]
     pub sharing_with_others_enabled: bool,
 }
-///  A virtual resource representing an overview of an account and
-///  all its child GA4 properties.
+/// A virtual resource representing an overview of an account and
+/// all its child GA4 properties.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AccountSummary {
-    ///  Resource name for this account summary.
-    ///  Format: accountSummaries/{account_id}
-    ///  Example: "accountSummaries/1000"
+    /// Resource name for this account summary.
+    /// Format: accountSummaries/{account_id}
+    /// Example: "accountSummaries/1000"
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Resource name of account referred to by this account summary
-    ///  Format: accounts/{account_id}
-    ///  Example: "accounts/1000"
+    /// Resource name of account referred to by this account summary
+    /// Format: accounts/{account_id}
+    /// Example: "accounts/1000"
     #[prost(string, tag="2")]
     pub account: ::prost::alloc::string::String,
-    ///  Display name for the account referred to in this account summary.
+    /// Display name for the account referred to in this account summary.
     #[prost(string, tag="3")]
     pub display_name: ::prost::alloc::string::String,
-    ///  List of summaries for child accounts of this account.
+    /// List of summaries for child accounts of this account.
     #[prost(message, repeated, tag="4")]
     pub property_summaries: ::prost::alloc::vec::Vec<PropertySummary>,
 }
-///  A virtual resource representing metadata for a GA4 property.
+/// A virtual resource representing metadata for a GA4 property.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PropertySummary {
-    ///  Resource name of property referred to by this property summary
-    ///  Format: properties/{property_id}
-    ///  Example: "properties/1000"
+    /// Resource name of property referred to by this property summary
+    /// Format: properties/{property_id}
+    /// Example: "properties/1000"
     #[prost(string, tag="1")]
     pub property: ::prost::alloc::string::String,
-    ///  Display name for the property referred to in this property summary.
+    /// Display name for the property referred to in this property summary.
     #[prost(string, tag="2")]
     pub display_name: ::prost::alloc::string::String,
-    ///  The property's property type.
+    /// The property's property type.
     #[prost(enumeration="PropertyType", tag="3")]
     pub property_type: i32,
-    ///  Resource name of this property's logical parent.
+    /// Resource name of this property's logical parent.
     ///
-    ///  Note: The Property-Moving UI can be used to change the parent.
-    ///  Format: accounts/{account}, properties/{property}
-    ///  Example: "accounts/100", "properties/200"
+    /// Note: The Property-Moving UI can be used to change the parent.
+    /// Format: accounts/{account}, properties/{property}
+    /// Example: "accounts/100", "properties/200"
     #[prost(string, tag="4")]
     pub parent: ::prost::alloc::string::String,
 }
-///  A secret value used for sending hits to Measurement Protocol.
+/// A secret value used for sending hits to Measurement Protocol.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MeasurementProtocolSecret {
-    ///  Output only. Resource name of this secret. This secret may be a child of any type of
-    ///  stream.
-    ///  Format:
-    ///  properties/{property}/dataStreams/{dataStream}/measurementProtocolSecrets/{measurementProtocolSecret}
+    /// Output only. Resource name of this secret. This secret may be a child of any type of
+    /// stream.
+    /// Format:
+    /// properties/{property}/dataStreams/{dataStream}/measurementProtocolSecrets/{measurementProtocolSecret}
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Required. Human-readable display name for this secret.
+    /// Required. Human-readable display name for this secret.
     #[prost(string, tag="2")]
     pub display_name: ::prost::alloc::string::String,
-    ///  Output only. The measurement protocol secret value. Pass this value to the api_secret
-    ///  field of the Measurement Protocol API when sending hits to this
-    ///  secret's parent property.
+    /// Output only. The measurement protocol secret value. Pass this value to the api_secret
+    /// field of the Measurement Protocol API when sending hits to this
+    /// secret's parent property.
     #[prost(string, tag="3")]
     pub secret_value: ::prost::alloc::string::String,
 }
-///  A set of changes within a Google Analytics account or its child properties
-///  that resulted from the same cause. Common causes would be updates made in the
-///  Google Analytics UI, changes from customer support, or automatic Google
-///  Analytics system changes.
+/// A set of changes within a Google Analytics account or its child properties
+/// that resulted from the same cause. Common causes would be updates made in the
+/// Google Analytics UI, changes from customer support, or automatic Google
+/// Analytics system changes.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ChangeHistoryEvent {
-    ///  ID of this change history event. This ID is unique across Google Analytics.
+    /// ID of this change history event. This ID is unique across Google Analytics.
     #[prost(string, tag="1")]
     pub id: ::prost::alloc::string::String,
-    ///  Time when change was made.
+    /// Time when change was made.
     #[prost(message, optional, tag="2")]
     pub change_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  The type of actor that made this change.
+    /// The type of actor that made this change.
     #[prost(enumeration="ActorType", tag="3")]
     pub actor_type: i32,
-    ///  Email address of the Google account that made the change. This will be a
-    ///  valid email address if the actor field is set to USER, and empty otherwise.
-    ///  Google accounts that have been deleted will cause an error.
+    /// Email address of the Google account that made the change. This will be a
+    /// valid email address if the actor field is set to USER, and empty otherwise.
+    /// Google accounts that have been deleted will cause an error.
     #[prost(string, tag="4")]
     pub user_actor_email: ::prost::alloc::string::String,
-    ///  If true, then the list of changes returned was filtered, and does not
-    ///  represent all changes that occurred in this event.
+    /// If true, then the list of changes returned was filtered, and does not
+    /// represent all changes that occurred in this event.
     #[prost(bool, tag="5")]
     pub changes_filtered: bool,
-    ///  A list of changes made in this change history event that fit the filters
-    ///  specified in SearchChangeHistoryEventsRequest.
+    /// A list of changes made in this change history event that fit the filters
+    /// specified in SearchChangeHistoryEventsRequest.
     #[prost(message, repeated, tag="6")]
     pub changes: ::prost::alloc::vec::Vec<ChangeHistoryChange>,
 }
-///  A description of a change to a single Google Analytics resource.
+/// A description of a change to a single Google Analytics resource.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ChangeHistoryChange {
-    ///  Resource name of the resource whose changes are described by this entry.
+    /// Resource name of the resource whose changes are described by this entry.
     #[prost(string, tag="1")]
     pub resource: ::prost::alloc::string::String,
-    ///  The type of action that changed this resource.
+    /// The type of action that changed this resource.
     #[prost(enumeration="ActionType", tag="2")]
     pub action: i32,
-    ///  Resource contents from before the change was made. If this resource was
-    ///  created in this change, this field will be missing.
+    /// Resource contents from before the change was made. If this resource was
+    /// created in this change, this field will be missing.
     #[prost(message, optional, tag="3")]
     pub resource_before_change: ::core::option::Option<change_history_change::ChangeHistoryResource>,
-    ///  Resource contents from after the change was made. If this resource was
-    ///  deleted in this change, this field will be missing.
+    /// Resource contents from after the change was made. If this resource was
+    /// deleted in this change, this field will be missing.
     #[prost(message, optional, tag="4")]
     pub resource_after_change: ::core::option::Option<change_history_change::ChangeHistoryResource>,
 }
 /// Nested message and enum types in `ChangeHistoryChange`.
 pub mod change_history_change {
-    ///  A snapshot of a resource as before or after the result of a change in
-    ///  change history.
+    /// A snapshot of a resource as before or after the result of a change in
+    /// change history.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ChangeHistoryResource {
         #[prost(oneof="change_history_resource::Resource", tags="1, 2, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 18, 20")]
@@ -1366,236 +1366,236 @@ pub mod change_history_change {
     pub mod change_history_resource {
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Resource {
-            ///  A snapshot of an Account resource in change history.
+            /// A snapshot of an Account resource in change history.
             #[prost(message, tag="1")]
             Account(super::super::Account),
-            ///  A snapshot of a Property resource in change history.
+            /// A snapshot of a Property resource in change history.
             #[prost(message, tag="2")]
             Property(super::super::Property),
-            ///  A snapshot of a FirebaseLink resource in change history.
+            /// A snapshot of a FirebaseLink resource in change history.
             #[prost(message, tag="6")]
             FirebaseLink(super::super::FirebaseLink),
-            ///  A snapshot of a GoogleAdsLink resource in change history.
+            /// A snapshot of a GoogleAdsLink resource in change history.
             #[prost(message, tag="7")]
             GoogleAdsLink(super::super::GoogleAdsLink),
-            ///  A snapshot of a GoogleSignalsSettings resource in change history.
+            /// A snapshot of a GoogleSignalsSettings resource in change history.
             #[prost(message, tag="8")]
             GoogleSignalsSettings(super::super::GoogleSignalsSettings),
-            ///  A snapshot of a DisplayVideo360AdvertiserLink resource in change
-            ///  history.
+            /// A snapshot of a DisplayVideo360AdvertiserLink resource in change
+            /// history.
             #[prost(message, tag="9")]
             DisplayVideo360AdvertiserLink(super::super::DisplayVideo360AdvertiserLink),
-            ///  A snapshot of a DisplayVideo360AdvertiserLinkProposal resource in
-            ///  change history.
+            /// A snapshot of a DisplayVideo360AdvertiserLinkProposal resource in
+            /// change history.
             #[prost(message, tag="10")]
             DisplayVideo360AdvertiserLinkProposal(super::super::DisplayVideo360AdvertiserLinkProposal),
-            ///  A snapshot of a ConversionEvent resource in change history.
+            /// A snapshot of a ConversionEvent resource in change history.
             #[prost(message, tag="11")]
             ConversionEvent(super::super::ConversionEvent),
-            ///  A snapshot of a MeasurementProtocolSecret resource in change history.
+            /// A snapshot of a MeasurementProtocolSecret resource in change history.
             #[prost(message, tag="12")]
             MeasurementProtocolSecret(super::super::MeasurementProtocolSecret),
-            ///  A snapshot of a CustomDimension resource in change history.
+            /// A snapshot of a CustomDimension resource in change history.
             #[prost(message, tag="13")]
             CustomDimension(super::super::CustomDimension),
-            ///  A snapshot of a CustomMetric resource in change history.
+            /// A snapshot of a CustomMetric resource in change history.
             #[prost(message, tag="14")]
             CustomMetric(super::super::CustomMetric),
-            ///  A snapshot of a data retention settings resource in change history.
+            /// A snapshot of a data retention settings resource in change history.
             #[prost(message, tag="15")]
             DataRetentionSettings(super::super::DataRetentionSettings),
-            ///  A snapshot of a DataStream resource in change history.
+            /// A snapshot of a DataStream resource in change history.
             #[prost(message, tag="18")]
             DataStream(super::super::DataStream),
-            ///  A snapshot of AttributionSettings resource in change history.
+            /// A snapshot of AttributionSettings resource in change history.
             #[prost(message, tag="20")]
             AttributionSettings(super::super::AttributionSettings),
         }
     }
 }
-///  A link between a GA4 property and a Display & Video 360 advertiser.
+/// A link between a GA4 property and a Display & Video 360 advertiser.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DisplayVideo360AdvertiserLink {
-    ///  Output only. The resource name for this DisplayVideo360AdvertiserLink resource.
-    ///  Format: properties/{propertyId}/displayVideo360AdvertiserLinks/{linkId}
+    /// Output only. The resource name for this DisplayVideo360AdvertiserLink resource.
+    /// Format: properties/{propertyId}/displayVideo360AdvertiserLinks/{linkId}
     ///
-    ///  Note: linkId is not the Display & Video 360 Advertiser ID
+    /// Note: linkId is not the Display & Video 360 Advertiser ID
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Immutable. The Display & Video 360 Advertiser's advertiser ID.
+    /// Immutable. The Display & Video 360 Advertiser's advertiser ID.
     #[prost(string, tag="2")]
     pub advertiser_id: ::prost::alloc::string::String,
-    ///  Output only. The display name of the Display & Video 360 Advertiser.
+    /// Output only. The display name of the Display & Video 360 Advertiser.
     #[prost(string, tag="3")]
     pub advertiser_display_name: ::prost::alloc::string::String,
-    ///  Enables personalized advertising features with this integration.
-    ///  If this field is not set on create/update, it will be defaulted to true.
+    /// Enables personalized advertising features with this integration.
+    /// If this field is not set on create/update, it will be defaulted to true.
     #[prost(message, optional, tag="4")]
     pub ads_personalization_enabled: ::core::option::Option<bool>,
-    ///  Immutable. Enables the import of campaign data from Display & Video 360 into the GA4
-    ///  property. After link creation, this can only be updated from the Display &
-    ///  Video 360 product.
-    ///  If this field is not set on create, it will be defaulted to true.
+    /// Immutable. Enables the import of campaign data from Display & Video 360 into the GA4
+    /// property. After link creation, this can only be updated from the Display &
+    /// Video 360 product.
+    /// If this field is not set on create, it will be defaulted to true.
     #[prost(message, optional, tag="5")]
     pub campaign_data_sharing_enabled: ::core::option::Option<bool>,
-    ///  Immutable. Enables the import of cost data from Display & Video 360 into the GA4
-    ///  property. This can only be enabled if campaign_data_sharing_enabled is
-    ///  enabled. After link creation, this can only be updated from the Display &
-    ///  Video 360 product.
-    ///  If this field is not set on create, it will be defaulted to true.
+    /// Immutable. Enables the import of cost data from Display & Video 360 into the GA4
+    /// property. This can only be enabled if campaign_data_sharing_enabled is
+    /// enabled. After link creation, this can only be updated from the Display &
+    /// Video 360 product.
+    /// If this field is not set on create, it will be defaulted to true.
     #[prost(message, optional, tag="6")]
     pub cost_data_sharing_enabled: ::core::option::Option<bool>,
 }
-///  A proposal for a link between a GA4 property and a Display & Video 360
-///  advertiser.
+/// A proposal for a link between a GA4 property and a Display & Video 360
+/// advertiser.
 ///
-///  A proposal is converted to a DisplayVideo360AdvertiserLink once approved.
-///  Google Analytics admins approve inbound proposals while Display & Video 360
-///  admins approve outbound proposals.
+/// A proposal is converted to a DisplayVideo360AdvertiserLink once approved.
+/// Google Analytics admins approve inbound proposals while Display & Video 360
+/// admins approve outbound proposals.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DisplayVideo360AdvertiserLinkProposal {
-    ///  Output only. The resource name for this DisplayVideo360AdvertiserLinkProposal resource.
-    ///  Format:
-    ///  properties/{propertyId}/displayVideo360AdvertiserLinkProposals/{proposalId}
+    /// Output only. The resource name for this DisplayVideo360AdvertiserLinkProposal resource.
+    /// Format:
+    /// properties/{propertyId}/displayVideo360AdvertiserLinkProposals/{proposalId}
     ///
-    ///  Note: proposalId is not the Display & Video 360 Advertiser ID
+    /// Note: proposalId is not the Display & Video 360 Advertiser ID
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Immutable. The Display & Video 360 Advertiser's advertiser ID.
+    /// Immutable. The Display & Video 360 Advertiser's advertiser ID.
     #[prost(string, tag="2")]
     pub advertiser_id: ::prost::alloc::string::String,
-    ///  Output only. The status information for this link proposal.
+    /// Output only. The status information for this link proposal.
     #[prost(message, optional, tag="3")]
     pub link_proposal_status_details: ::core::option::Option<LinkProposalStatusDetails>,
-    ///  Output only. The display name of the Display & Video Advertiser.
-    ///  Only populated for proposals that originated from Display & Video 360.
+    /// Output only. The display name of the Display & Video Advertiser.
+    /// Only populated for proposals that originated from Display & Video 360.
     #[prost(string, tag="4")]
     pub advertiser_display_name: ::prost::alloc::string::String,
-    ///  Input only. On a proposal being sent to Display & Video 360, this field must be set to
-    ///  the email address of an admin on the target advertiser. This is used to
-    ///  verify that the Google Analytics admin is aware of at least one admin on
-    ///  the Display & Video 360 Advertiser. This does not restrict approval of the
-    ///  proposal to a single user. Any admin on the Display & Video 360 Advertiser
-    ///  may approve the proposal.
+    /// Input only. On a proposal being sent to Display & Video 360, this field must be set to
+    /// the email address of an admin on the target advertiser. This is used to
+    /// verify that the Google Analytics admin is aware of at least one admin on
+    /// the Display & Video 360 Advertiser. This does not restrict approval of the
+    /// proposal to a single user. Any admin on the Display & Video 360 Advertiser
+    /// may approve the proposal.
     #[prost(string, tag="5")]
     pub validation_email: ::prost::alloc::string::String,
-    ///  Immutable. Enables personalized advertising features with this integration.
-    ///  If this field is not set on create, it will be defaulted to true.
+    /// Immutable. Enables personalized advertising features with this integration.
+    /// If this field is not set on create, it will be defaulted to true.
     #[prost(message, optional, tag="6")]
     pub ads_personalization_enabled: ::core::option::Option<bool>,
-    ///  Immutable. Enables the import of campaign data from Display & Video 360.
-    ///  If this field is not set on create, it will be defaulted to true.
+    /// Immutable. Enables the import of campaign data from Display & Video 360.
+    /// If this field is not set on create, it will be defaulted to true.
     #[prost(message, optional, tag="7")]
     pub campaign_data_sharing_enabled: ::core::option::Option<bool>,
-    ///  Immutable. Enables the import of cost data from Display & Video 360.
-    ///  This can only be enabled if campaign_data_sharing_enabled is enabled.
-    ///  If this field is not set on create, it will be defaulted to true.
+    /// Immutable. Enables the import of cost data from Display & Video 360.
+    /// This can only be enabled if campaign_data_sharing_enabled is enabled.
+    /// If this field is not set on create, it will be defaulted to true.
     #[prost(message, optional, tag="8")]
     pub cost_data_sharing_enabled: ::core::option::Option<bool>,
 }
-///  Status information for a link proposal.
+/// Status information for a link proposal.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LinkProposalStatusDetails {
-    ///  Output only. The source of this proposal.
+    /// Output only. The source of this proposal.
     #[prost(enumeration="LinkProposalInitiatingProduct", tag="1")]
     pub link_proposal_initiating_product: i32,
-    ///  Output only. The email address of the user that proposed this linkage.
+    /// Output only. The email address of the user that proposed this linkage.
     #[prost(string, tag="2")]
     pub requestor_email: ::prost::alloc::string::String,
-    ///  Output only. The state of this proposal.
+    /// Output only. The state of this proposal.
     #[prost(enumeration="LinkProposalState", tag="3")]
     pub link_proposal_state: i32,
 }
-///  A conversion event in a Google Analytics property.
+/// A conversion event in a Google Analytics property.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConversionEvent {
-    ///  Output only. Resource name of this conversion event.
-    ///  Format: properties/{property}/conversionEvents/{conversion_event}
+    /// Output only. Resource name of this conversion event.
+    /// Format: properties/{property}/conversionEvents/{conversion_event}
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Immutable. The event name for this conversion event.
-    ///  Examples: 'click', 'purchase'
+    /// Immutable. The event name for this conversion event.
+    /// Examples: 'click', 'purchase'
     #[prost(string, tag="2")]
     pub event_name: ::prost::alloc::string::String,
-    ///  Output only. Time when this conversion event was created in the property.
+    /// Output only. Time when this conversion event was created in the property.
     #[prost(message, optional, tag="3")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Output only. If set, this event can currently be deleted via DeleteConversionEvent.
+    /// Output only. If set, this event can currently be deleted via DeleteConversionEvent.
     #[prost(bool, tag="4")]
     pub deletable: bool,
-    ///  Output only. If set to true, this conversion event refers to a custom event.  If set to
-    ///  false, this conversion event refers to a default event in GA. Default
-    ///  events typically have special meaning in GA. Default events are usually
-    ///  created for you by the GA system, but in some cases can be created by
-    ///  property admins. Custom events count towards the maximum number of
-    ///  custom conversion events that may be created per property.
+    /// Output only. If set to true, this conversion event refers to a custom event.  If set to
+    /// false, this conversion event refers to a default event in GA. Default
+    /// events typically have special meaning in GA. Default events are usually
+    /// created for you by the GA system, but in some cases can be created by
+    /// property admins. Custom events count towards the maximum number of
+    /// custom conversion events that may be created per property.
     #[prost(bool, tag="5")]
     pub custom: bool,
 }
-///  Settings values for Google Signals.  This is a singleton resource.
+/// Settings values for Google Signals.  This is a singleton resource.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GoogleSignalsSettings {
-    ///  Output only. Resource name of this setting.
-    ///  Format: properties/{property_id}/googleSignalsSettings
-    ///  Example: "properties/1000/googleSignalsSettings"
+    /// Output only. Resource name of this setting.
+    /// Format: properties/{property_id}/googleSignalsSettings
+    /// Example: "properties/1000/googleSignalsSettings"
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Status of this setting.
+    /// Status of this setting.
     #[prost(enumeration="GoogleSignalsState", tag="3")]
     pub state: i32,
-    ///  Output only. Terms of Service acceptance.
+    /// Output only. Terms of Service acceptance.
     #[prost(enumeration="GoogleSignalsConsent", tag="4")]
     pub consent: i32,
 }
-///  A definition for a CustomDimension.
+/// A definition for a CustomDimension.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomDimension {
-    ///  Output only. Resource name for this CustomDimension resource.
-    ///  Format: properties/{property}/customDimensions/{customDimension}
+    /// Output only. Resource name for this CustomDimension resource.
+    /// Format: properties/{property}/customDimensions/{customDimension}
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Required. Immutable. Tagging parameter name for this custom dimension.
+    /// Required. Immutable. Tagging parameter name for this custom dimension.
     ///
-    ///  If this is a user-scoped dimension, then this is the user property name.
-    ///  If this is an event-scoped dimension, then this is the event parameter
-    ///  name.
+    /// If this is a user-scoped dimension, then this is the user property name.
+    /// If this is an event-scoped dimension, then this is the event parameter
+    /// name.
     ///
-    ///  May only contain alphanumeric and underscore characters, starting with a
-    ///  letter. Max length of 24 characters for user-scoped dimensions, 40
-    ///  characters for event-scoped dimensions.
+    /// May only contain alphanumeric and underscore characters, starting with a
+    /// letter. Max length of 24 characters for user-scoped dimensions, 40
+    /// characters for event-scoped dimensions.
     #[prost(string, tag="2")]
     pub parameter_name: ::prost::alloc::string::String,
-    ///  Required. Display name for this custom dimension as shown in the Analytics UI.
-    ///  Max length of 82 characters, alphanumeric plus space and underscore
-    ///  starting with a letter. Legacy system-generated display names may contain
-    ///  square brackets, but updates to this field will never permit square
-    ///  brackets.
+    /// Required. Display name for this custom dimension as shown in the Analytics UI.
+    /// Max length of 82 characters, alphanumeric plus space and underscore
+    /// starting with a letter. Legacy system-generated display names may contain
+    /// square brackets, but updates to this field will never permit square
+    /// brackets.
     #[prost(string, tag="3")]
     pub display_name: ::prost::alloc::string::String,
-    ///  Optional. Description for this custom dimension. Max length of 150 characters.
+    /// Optional. Description for this custom dimension. Max length of 150 characters.
     #[prost(string, tag="4")]
     pub description: ::prost::alloc::string::String,
-    ///  Required. Immutable. The scope of this dimension.
+    /// Required. Immutable. The scope of this dimension.
     #[prost(enumeration="custom_dimension::DimensionScope", tag="5")]
     pub scope: i32,
-    ///  Optional. If set to true, sets this dimension as NPA and excludes it from ads
-    ///  personalization.
+    /// Optional. If set to true, sets this dimension as NPA and excludes it from ads
+    /// personalization.
     ///
-    ///  This is currently only supported by user-scoped custom dimensions.
+    /// This is currently only supported by user-scoped custom dimensions.
     #[prost(bool, tag="6")]
     pub disallow_ads_personalization: bool,
 }
 /// Nested message and enum types in `CustomDimension`.
 pub mod custom_dimension {
-    ///  Valid values for the scope of this dimension.
+    /// Valid values for the scope of this dimension.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum DimensionScope {
-        ///  Scope unknown or not specified.
+        /// Scope unknown or not specified.
         Unspecified = 0,
-        ///  Dimension scoped to an event.
+        /// Dimension scoped to an event.
         Event = 1,
-        ///  Dimension scoped to a user.
+        /// Dimension scoped to a user.
         User = 2,
     }
     impl DimensionScope {
@@ -1612,75 +1612,75 @@ pub mod custom_dimension {
         }
     }
 }
-///  A definition for a custom metric.
+/// A definition for a custom metric.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomMetric {
-    ///  Output only. Resource name for this CustomMetric resource.
-    ///  Format: properties/{property}/customMetrics/{customMetric}
+    /// Output only. Resource name for this CustomMetric resource.
+    /// Format: properties/{property}/customMetrics/{customMetric}
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Required. Immutable. Tagging name for this custom metric.
+    /// Required. Immutable. Tagging name for this custom metric.
     ///
-    ///  If this is an event-scoped metric, then this is the event parameter
-    ///  name.
+    /// If this is an event-scoped metric, then this is the event parameter
+    /// name.
     ///
-    ///  May only contain alphanumeric and underscore charactes, starting with a
-    ///  letter. Max length of 40 characters for event-scoped metrics.
+    /// May only contain alphanumeric and underscore charactes, starting with a
+    /// letter. Max length of 40 characters for event-scoped metrics.
     #[prost(string, tag="2")]
     pub parameter_name: ::prost::alloc::string::String,
-    ///  Required. Display name for this custom metric as shown in the Analytics UI.
-    ///  Max length of 82 characters, alphanumeric plus space and underscore
-    ///  starting with a letter. Legacy system-generated display names may contain
-    ///  square brackets, but updates to this field will never permit square
-    ///  brackets.
+    /// Required. Display name for this custom metric as shown in the Analytics UI.
+    /// Max length of 82 characters, alphanumeric plus space and underscore
+    /// starting with a letter. Legacy system-generated display names may contain
+    /// square brackets, but updates to this field will never permit square
+    /// brackets.
     #[prost(string, tag="3")]
     pub display_name: ::prost::alloc::string::String,
-    ///  Optional. Description for this custom dimension.
-    ///  Max length of 150 characters.
+    /// Optional. Description for this custom dimension.
+    /// Max length of 150 characters.
     #[prost(string, tag="4")]
     pub description: ::prost::alloc::string::String,
-    ///  Required. The type for the custom metric's value.
+    /// Required. The type for the custom metric's value.
     #[prost(enumeration="custom_metric::MeasurementUnit", tag="5")]
     pub measurement_unit: i32,
-    ///  Required. Immutable. The scope of this custom metric.
+    /// Required. Immutable. The scope of this custom metric.
     #[prost(enumeration="custom_metric::MetricScope", tag="6")]
     pub scope: i32,
-    ///  Optional. Types of restricted data that this metric may contain. Required for metrics
-    ///  with CURRENCY measurement unit. Must be empty for metrics with a
-    ///  non-CURRENCY measurement unit.
+    /// Optional. Types of restricted data that this metric may contain. Required for metrics
+    /// with CURRENCY measurement unit. Must be empty for metrics with a
+    /// non-CURRENCY measurement unit.
     #[prost(enumeration="custom_metric::RestrictedMetricType", repeated, packed="false", tag="8")]
     pub restricted_metric_type: ::prost::alloc::vec::Vec<i32>,
 }
 /// Nested message and enum types in `CustomMetric`.
 pub mod custom_metric {
-    ///  Possible types of representing the custom metric's value.
+    /// Possible types of representing the custom metric's value.
     ///
-    ///  Currency representation may change in the future, requiring a breaking API
-    ///  change.
+    /// Currency representation may change in the future, requiring a breaking API
+    /// change.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum MeasurementUnit {
-        ///  MeasurementUnit unspecified or missing.
+        /// MeasurementUnit unspecified or missing.
         Unspecified = 0,
-        ///  This metric uses default units.
+        /// This metric uses default units.
         Standard = 1,
-        ///  This metric measures a currency.
+        /// This metric measures a currency.
         Currency = 2,
-        ///  This metric measures feet.
+        /// This metric measures feet.
         Feet = 3,
-        ///  This metric measures meters.
+        /// This metric measures meters.
         Meters = 4,
-        ///  This metric measures kilometers.
+        /// This metric measures kilometers.
         Kilometers = 5,
-        ///  This metric measures miles.
+        /// This metric measures miles.
         Miles = 6,
-        ///  This metric measures milliseconds.
+        /// This metric measures milliseconds.
         Milliseconds = 7,
-        ///  This metric measures seconds.
+        /// This metric measures seconds.
         Seconds = 8,
-        ///  This metric measures minutes.
+        /// This metric measures minutes.
         Minutes = 9,
-        ///  This metric measures hours.
+        /// This metric measures hours.
         Hours = 10,
     }
     impl MeasurementUnit {
@@ -1704,13 +1704,13 @@ pub mod custom_metric {
             }
         }
     }
-    ///  The scope of this metric.
+    /// The scope of this metric.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum MetricScope {
-        ///  Scope unknown or not specified.
+        /// Scope unknown or not specified.
         Unspecified = 0,
-        ///  Metric scoped to an event.
+        /// Metric scoped to an event.
         Event = 1,
     }
     impl MetricScope {
@@ -1725,16 +1725,16 @@ pub mod custom_metric {
             }
         }
     }
-    ///  Labels that mark the data in this custom metric as data that should be
-    ///  restricted to specific users.
+    /// Labels that mark the data in this custom metric as data that should be
+    /// restricted to specific users.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum RestrictedMetricType {
-        ///  Type unknown or unspecified.
+        /// Type unknown or unspecified.
         Unspecified = 0,
-        ///  Metric reports cost data.
+        /// Metric reports cost data.
         CostData = 1,
-        ///  Metric reports revenue data.
+        /// Metric reports revenue data.
         RevenueData = 2,
     }
     impl RestrictedMetricType {
@@ -1751,41 +1751,41 @@ pub mod custom_metric {
         }
     }
 }
-///  Settings values for data retention. This is a singleton resource.
+/// Settings values for data retention. This is a singleton resource.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataRetentionSettings {
-    ///  Output only. Resource name for this DataRetentionSetting resource.
-    ///  Format: properties/{property}/dataRetentionSettings
+    /// Output only. Resource name for this DataRetentionSetting resource.
+    /// Format: properties/{property}/dataRetentionSettings
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  The length of time that event-level data is retained.
+    /// The length of time that event-level data is retained.
     #[prost(enumeration="data_retention_settings::RetentionDuration", tag="2")]
     pub event_data_retention: i32,
-    ///  If true, reset the retention period for the user identifier with every
-    ///  event from that user.
+    /// If true, reset the retention period for the user identifier with every
+    /// event from that user.
     #[prost(bool, tag="3")]
     pub reset_user_data_on_new_activity: bool,
 }
 /// Nested message and enum types in `DataRetentionSettings`.
 pub mod data_retention_settings {
-    ///  Valid values for the data retention duration.
+    /// Valid values for the data retention duration.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum RetentionDuration {
-        ///  Data retention time duration is not specified.
+        /// Data retention time duration is not specified.
         Unspecified = 0,
-        ///  The data retention time duration is 2 months.
+        /// The data retention time duration is 2 months.
         TwoMonths = 1,
-        ///  The data retention time duration is 14 months.
+        /// The data retention time duration is 14 months.
         FourteenMonths = 3,
-        ///  The data retention time duration is 26 months.
-        ///  Available to 360 properties only.
+        /// The data retention time duration is 26 months.
+        /// Available to 360 properties only.
         TwentySixMonths = 4,
-        ///  The data retention time duration is 38 months.
-        ///  Available to 360 properties only.
+        /// The data retention time duration is 38 months.
+        /// Available to 360 properties only.
         ThirtyEightMonths = 5,
-        ///  The data retention time duration is 50 months.
-        ///  Available to 360 properties only.
+        /// The data retention time duration is 50 months.
+        /// Available to 360 properties only.
         FiftyMonths = 6,
     }
     impl RetentionDuration {
@@ -1805,45 +1805,45 @@ pub mod data_retention_settings {
         }
     }
 }
-///  The attribution settings used for a given property. This is a singleton
-///  resource.
+/// The attribution settings used for a given property. This is a singleton
+/// resource.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AttributionSettings {
-    ///  Output only. Resource name of this attribution settings resource.
-    ///  Format: properties/{property_id}/attributionSettings
-    ///  Example: "properties/1000/attributionSettings"
+    /// Output only. Resource name of this attribution settings resource.
+    /// Format: properties/{property_id}/attributionSettings
+    /// Example: "properties/1000/attributionSettings"
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Required. The lookback window configuration for acquisition conversion events.
-    ///  The default window size is 30 days.
+    /// Required. The lookback window configuration for acquisition conversion events.
+    /// The default window size is 30 days.
     #[prost(enumeration="attribution_settings::AcquisitionConversionEventLookbackWindow", tag="2")]
     pub acquisition_conversion_event_lookback_window: i32,
-    ///  Required. The lookback window for all other, non-acquisition conversion events.
-    ///  The default window size is 90 days.
+    /// Required. The lookback window for all other, non-acquisition conversion events.
+    /// The default window size is 90 days.
     #[prost(enumeration="attribution_settings::OtherConversionEventLookbackWindow", tag="3")]
     pub other_conversion_event_lookback_window: i32,
-    ///  Required. The reporting attribution model used to calculate conversion credit in this
-    ///  property's reports.
+    /// Required. The reporting attribution model used to calculate conversion credit in this
+    /// property's reports.
     ///
-    ///  Changing the attribution model will apply to both historical and future
-    ///  data. These changes will be reflected in reports with conversion and
-    ///  revenue data. User and session data will be unaffected.
+    /// Changing the attribution model will apply to both historical and future
+    /// data. These changes will be reflected in reports with conversion and
+    /// revenue data. User and session data will be unaffected.
     #[prost(enumeration="attribution_settings::ReportingAttributionModel", tag="4")]
     pub reporting_attribution_model: i32,
 }
 /// Nested message and enum types in `AttributionSettings`.
 pub mod attribution_settings {
-    ///  How far back in time events should be considered for inclusion in a
-    ///  converting path which leads to the first install of an app or the first
-    ///  visit to a site.
+    /// How far back in time events should be considered for inclusion in a
+    /// converting path which leads to the first install of an app or the first
+    /// visit to a site.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum AcquisitionConversionEventLookbackWindow {
-        ///  Lookback window size unspecified.
+        /// Lookback window size unspecified.
         Unspecified = 0,
-        ///  7-day lookback window.
+        /// 7-day lookback window.
         AcquisitionConversionEventLookbackWindow7Days = 1,
-        ///  30-day lookback window.
+        /// 30-day lookback window.
         AcquisitionConversionEventLookbackWindow30Days = 2,
     }
     impl AcquisitionConversionEventLookbackWindow {
@@ -1859,19 +1859,19 @@ pub mod attribution_settings {
             }
         }
     }
-    ///  How far back in time events should be considered for inclusion in a
-    ///  converting path for all conversions other than first app install/first site
-    ///  visit.
+    /// How far back in time events should be considered for inclusion in a
+    /// converting path for all conversions other than first app install/first site
+    /// visit.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum OtherConversionEventLookbackWindow {
-        ///  Lookback window size unspecified.
+        /// Lookback window size unspecified.
         Unspecified = 0,
-        ///  30-day lookback window.
+        /// 30-day lookback window.
         OtherConversionEventLookbackWindow30Days = 1,
-        ///  60-day lookback window.
+        /// 60-day lookback window.
         OtherConversionEventLookbackWindow60Days = 2,
-        ///  90-day lookback window.
+        /// 90-day lookback window.
         OtherConversionEventLookbackWindow90Days = 3,
     }
     impl OtherConversionEventLookbackWindow {
@@ -1888,36 +1888,36 @@ pub mod attribution_settings {
             }
         }
     }
-    ///  The reporting attribution model used to calculate conversion credit in this
-    ///  property's reports.
+    /// The reporting attribution model used to calculate conversion credit in this
+    /// property's reports.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum ReportingAttributionModel {
-        ///  Reporting attribution model unspecified.
+        /// Reporting attribution model unspecified.
         Unspecified = 0,
-        ///  Data-driven attribution distributes credit for the conversion based on
-        ///  data for each conversion event. Each Data-driven model is specific to
-        ///  each advertiser and each conversion event.
+        /// Data-driven attribution distributes credit for the conversion based on
+        /// data for each conversion event. Each Data-driven model is specific to
+        /// each advertiser and each conversion event.
         CrossChannelDataDriven = 1,
-        ///  Ignores direct traffic and attributes 100% of the conversion value to the
-        ///  last channel that the customer clicked through (or engaged view through
-        ///  for YouTube) before converting.
+        /// Ignores direct traffic and attributes 100% of the conversion value to the
+        /// last channel that the customer clicked through (or engaged view through
+        /// for YouTube) before converting.
         CrossChannelLastClick = 2,
-        ///  Gives all credit for the conversion to the first channel that a customer
-        ///  clicked (or engaged view through for YouTube) before converting.
+        /// Gives all credit for the conversion to the first channel that a customer
+        /// clicked (or engaged view through for YouTube) before converting.
         CrossChannelFirstClick = 3,
-        ///  Distributes the credit for the conversion equally across all the channels
-        ///  a customer clicked (or engaged view through for YouTube) before
-        ///  converting.
+        /// Distributes the credit for the conversion equally across all the channels
+        /// a customer clicked (or engaged view through for YouTube) before
+        /// converting.
         CrossChannelLinear = 4,
-        ///  Attributes 40% credit to the first and last interaction, and the
-        ///  remaining 20% credit is distributed evenly to the middle interactions.
+        /// Attributes 40% credit to the first and last interaction, and the
+        /// remaining 20% credit is distributed evenly to the middle interactions.
         CrossChannelPositionBased = 5,
-        ///  Gives more credit to the touchpoints that happened closer in time to
-        ///  the conversion.
+        /// Gives more credit to the touchpoints that happened closer in time to
+        /// the conversion.
         CrossChannelTimeDecay = 6,
-        ///  Attributes 100% of the conversion value to the last Google Ads channel
-        ///  that the customer clicked through before converting.
+        /// Attributes 100% of the conversion value to the last Google Ads channel
+        /// that the customer clicked through before converting.
         AdsPreferredLastClick = 7,
     }
     impl ReportingAttributionModel {
@@ -1939,63 +1939,63 @@ pub mod attribution_settings {
         }
     }
 }
-///  The category selected for this property, used for industry benchmarking.
+/// The category selected for this property, used for industry benchmarking.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum IndustryCategory {
-    ///  Industry category unspecified
+    /// Industry category unspecified
     Unspecified = 0,
-    ///  Automotive
+    /// Automotive
     Automotive = 1,
-    ///  Business and industrial markets
+    /// Business and industrial markets
     BusinessAndIndustrialMarkets = 2,
-    ///  Finance
+    /// Finance
     Finance = 3,
-    ///  Healthcare
+    /// Healthcare
     Healthcare = 4,
-    ///  Technology
+    /// Technology
     Technology = 5,
-    ///  Travel
+    /// Travel
     Travel = 6,
-    ///  Other
+    /// Other
     Other = 7,
-    ///  Arts and entertainment
+    /// Arts and entertainment
     ArtsAndEntertainment = 8,
-    ///  Beauty and fitness
+    /// Beauty and fitness
     BeautyAndFitness = 9,
-    ///  Books and literature
+    /// Books and literature
     BooksAndLiterature = 10,
-    ///  Food and drink
+    /// Food and drink
     FoodAndDrink = 11,
-    ///  Games
+    /// Games
     Games = 12,
-    ///  Hobbies and leisure
+    /// Hobbies and leisure
     HobbiesAndLeisure = 13,
-    ///  Home and garden
+    /// Home and garden
     HomeAndGarden = 14,
-    ///  Internet and telecom
+    /// Internet and telecom
     InternetAndTelecom = 15,
-    ///  Law and government
+    /// Law and government
     LawAndGovernment = 16,
-    ///  News
+    /// News
     News = 17,
-    ///  Online communities
+    /// Online communities
     OnlineCommunities = 18,
-    ///  People and society
+    /// People and society
     PeopleAndSociety = 19,
-    ///  Pets and animals
+    /// Pets and animals
     PetsAndAnimals = 20,
-    ///  Real estate
+    /// Real estate
     RealEstate = 21,
-    ///  Reference
+    /// Reference
     Reference = 22,
-    ///  Science
+    /// Science
     Science = 23,
-    ///  Sports
+    /// Sports
     Sports = 24,
-    ///  Jobs and education
+    /// Jobs and education
     JobsAndEducation = 25,
-    ///  Shopping
+    /// Shopping
     Shopping = 26,
 }
 impl IndustryCategory {
@@ -2035,15 +2035,15 @@ impl IndustryCategory {
         }
     }
 }
-///  Various levels of service for Google Analytics.
+/// Various levels of service for Google Analytics.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum ServiceLevel {
-    ///  Service level not specified or invalid.
+    /// Service level not specified or invalid.
     Unspecified = 0,
-    ///  The standard version of Google Analytics.
+    /// The standard version of Google Analytics.
     GoogleAnalyticsStandard = 1,
-    ///  The paid, premium version of Google Analytics.
+    /// The paid, premium version of Google Analytics.
     GoogleAnalytics360 = 2,
 }
 impl ServiceLevel {
@@ -2059,18 +2059,18 @@ impl ServiceLevel {
         }
     }
 }
-///  Different kinds of actors that can make changes to Google Analytics
-///  resources.
+/// Different kinds of actors that can make changes to Google Analytics
+/// resources.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum ActorType {
-    ///  Unknown or unspecified actor type.
+    /// Unknown or unspecified actor type.
     Unspecified = 0,
-    ///  Changes made by the user specified in actor_email.
+    /// Changes made by the user specified in actor_email.
     User = 1,
-    ///  Changes made by the Google Analytics system.
+    /// Changes made by the Google Analytics system.
     System = 2,
-    ///  Changes made by Google Analytics support team staff.
+    /// Changes made by Google Analytics support team staff.
     Support = 3,
 }
 impl ActorType {
@@ -2087,17 +2087,17 @@ impl ActorType {
         }
     }
 }
-///  Types of actions that may change a resource.
+/// Types of actions that may change a resource.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum ActionType {
-    ///  Action type unknown or not specified.
+    /// Action type unknown or not specified.
     Unspecified = 0,
-    ///  Resource was created in this change.
+    /// Resource was created in this change.
     Created = 1,
-    ///  Resource was updated in this change.
+    /// Resource was updated in this change.
     Updated = 2,
-    ///  Resource was deleted in this change.
+    /// Resource was deleted in this change.
     Deleted = 3,
 }
 impl ActionType {
@@ -2114,41 +2114,41 @@ impl ActionType {
         }
     }
 }
-///  Types of resources whose changes may be returned from change history.
+/// Types of resources whose changes may be returned from change history.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum ChangeHistoryResourceType {
-    ///  Resource type unknown or not specified.
+    /// Resource type unknown or not specified.
     Unspecified = 0,
-    ///  Account resource
+    /// Account resource
     Account = 1,
-    ///  Property resource
+    /// Property resource
     Property = 2,
-    ///  FirebaseLink resource
+    /// FirebaseLink resource
     FirebaseLink = 6,
-    ///  GoogleAdsLink resource
+    /// GoogleAdsLink resource
     GoogleAdsLink = 7,
-    ///  GoogleSignalsSettings resource
+    /// GoogleSignalsSettings resource
     GoogleSignalsSettings = 8,
-    ///  ConversionEvent resource
+    /// ConversionEvent resource
     ConversionEvent = 9,
-    ///  MeasurementProtocolSecret resource
+    /// MeasurementProtocolSecret resource
     MeasurementProtocolSecret = 10,
-    ///  CustomDimension resource
+    /// CustomDimension resource
     CustomDimension = 11,
-    ///  CustomMetric resource
+    /// CustomMetric resource
     CustomMetric = 12,
-    ///  DataRetentionSettings resource
+    /// DataRetentionSettings resource
     DataRetentionSettings = 13,
-    ///  DisplayVideo360AdvertiserLink resource
+    /// DisplayVideo360AdvertiserLink resource
     DisplayVideo360AdvertiserLink = 14,
-    ///  DisplayVideo360AdvertiserLinkProposal resource
+    /// DisplayVideo360AdvertiserLinkProposal resource
     DisplayVideo360AdvertiserLinkProposal = 15,
-    ///  SearchAds360Link resource
+    /// SearchAds360Link resource
     SearchAds360Link = 16,
-    ///  DataStream resource
+    /// DataStream resource
     DataStream = 18,
-    ///  AttributionSettings resource
+    /// AttributionSettings resource
     AttributionSettings = 20,
 }
 impl ChangeHistoryResourceType {
@@ -2177,17 +2177,17 @@ impl ChangeHistoryResourceType {
         }
     }
 }
-///  Status of the Google Signals settings (i.e., whether this feature has been
-///  enabled for the property).
+/// Status of the Google Signals settings (i.e., whether this feature has been
+/// enabled for the property).
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum GoogleSignalsState {
-    ///  Google Signals status defaults to GOOGLE_SIGNALS_STATE_UNSPECIFIED to
-    ///  represent that the user has not made an explicit choice.
+    /// Google Signals status defaults to GOOGLE_SIGNALS_STATE_UNSPECIFIED to
+    /// represent that the user has not made an explicit choice.
     Unspecified = 0,
-    ///  Google Signals is enabled.
+    /// Google Signals is enabled.
     GoogleSignalsEnabled = 1,
-    ///  Google Signals is disabled.
+    /// Google Signals is disabled.
     GoogleSignalsDisabled = 2,
 }
 impl GoogleSignalsState {
@@ -2203,18 +2203,18 @@ impl GoogleSignalsState {
         }
     }
 }
-///  Consent field of the Google Signals settings (i.e., whether the user has
-///  consented to the Google Signals terms of service.)
+/// Consent field of the Google Signals settings (i.e., whether the user has
+/// consented to the Google Signals terms of service.)
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum GoogleSignalsConsent {
-    ///  Google Signals consent value defaults to
-    ///  GOOGLE_SIGNALS_CONSENT_UNSPECIFIED.  This will be treated as
-    ///  GOOGLE_SIGNALS_CONSENT_NOT_CONSENTED.
+    /// Google Signals consent value defaults to
+    /// GOOGLE_SIGNALS_CONSENT_UNSPECIFIED.  This will be treated as
+    /// GOOGLE_SIGNALS_CONSENT_NOT_CONSENTED.
     Unspecified = 0,
-    ///  Terms of service have been accepted
+    /// Terms of service have been accepted
     Consented = 2,
-    ///  Terms of service have not been accepted
+    /// Terms of service have not been accepted
     NotConsented = 1,
 }
 impl GoogleSignalsConsent {
@@ -2230,16 +2230,16 @@ impl GoogleSignalsConsent {
         }
     }
 }
-///  An indication of which product the user initiated a link proposal from.
+/// An indication of which product the user initiated a link proposal from.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum LinkProposalInitiatingProduct {
-    ///  Unspecified product.
+    /// Unspecified product.
     Unspecified = 0,
-    ///  This proposal was created by a user from Google Analytics.
+    /// This proposal was created by a user from Google Analytics.
     GoogleAnalytics = 1,
-    ///  This proposal was created by a user from a linked product (not Google
-    ///  Analytics).
+    /// This proposal was created by a user from a linked product (not Google
+    /// Analytics).
     LinkedProduct = 2,
 }
 impl LinkProposalInitiatingProduct {
@@ -2255,31 +2255,31 @@ impl LinkProposalInitiatingProduct {
         }
     }
 }
-///  The state of a link proposal resource.
+/// The state of a link proposal resource.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum LinkProposalState {
-    ///  Unspecified state
+    /// Unspecified state
     Unspecified = 0,
-    ///  This proposal is awaiting review from a Google Analytics user. This
-    ///  proposal will automatically expire after some time.
+    /// This proposal is awaiting review from a Google Analytics user. This
+    /// proposal will automatically expire after some time.
     AwaitingReviewFromGoogleAnalytics = 1,
-    ///  This proposal is awaiting review from a user of a linked product. This
-    ///  proposal will automatically expire after some time.
+    /// This proposal is awaiting review from a user of a linked product. This
+    /// proposal will automatically expire after some time.
     AwaitingReviewFromLinkedProduct = 2,
-    ///  This proposal has been withdrawn by an admin on the initiating product.
-    ///  This proposal will be automatically deleted after some time.
+    /// This proposal has been withdrawn by an admin on the initiating product.
+    /// This proposal will be automatically deleted after some time.
     Withdrawn = 3,
-    ///  This proposal has been declined by an admin on the receiving product. This
-    ///  proposal will be automatically deleted after some time.
+    /// This proposal has been declined by an admin on the receiving product. This
+    /// proposal will be automatically deleted after some time.
     Declined = 4,
-    ///  This proposal expired due to lack of response from an admin on the
-    ///  receiving product. This proposal will be automatically deleted after some
-    ///  time.
+    /// This proposal expired due to lack of response from an admin on the
+    /// receiving product. This proposal will be automatically deleted after some
+    /// time.
     Expired = 5,
-    ///  This proposal has become obsolete because a link was directly created to
-    ///  the same external product resource that this proposal specifies. This
-    ///  proposal will be automatically deleted after some time.
+    /// This proposal has become obsolete because a link was directly created to
+    /// the same external product resource that this proposal specifies. This
+    /// proposal will be automatically deleted after some time.
     Obsolete = 6,
 }
 impl LinkProposalState {
@@ -2299,17 +2299,17 @@ impl LinkProposalState {
         }
     }
 }
-///  Types of Property resources.
+/// Types of Property resources.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum PropertyType {
-    ///  Unknown or unspecified property type
+    /// Unknown or unspecified property type
     Unspecified = 0,
-    ///  Ordinary GA4 property
+    /// Ordinary GA4 property
     Ordinary = 1,
-    ///  GA4 subproperty
+    /// GA4 subproperty
     Subproperty = 2,
-    ///  GA4 rollup property
+    /// GA4 rollup property
     Rollup = 3,
 }
 impl PropertyType {
@@ -2326,1311 +2326,1311 @@ impl PropertyType {
         }
     }
 }
-///  The request for a Data Access Record Report.
+/// The request for a Data Access Record Report.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RunAccessReportRequest {
-    ///  The Data Access Report is requested for this property.
-    ///  For example if "123" is your GA4 property ID, then entity should be
-    ///  "properties/123".
+    /// The Data Access Report is requested for this property.
+    /// For example if "123" is your GA4 property ID, then entity should be
+    /// "properties/123".
     #[prost(string, tag="1")]
     pub entity: ::prost::alloc::string::String,
-    ///  The dimensions requested and displayed in the response. Requests are
-    ///  allowed up to 9 dimensions.
+    /// The dimensions requested and displayed in the response. Requests are
+    /// allowed up to 9 dimensions.
     #[prost(message, repeated, tag="2")]
     pub dimensions: ::prost::alloc::vec::Vec<AccessDimension>,
-    ///  The metrics requested and displayed in the response. Requests are allowed
-    ///  up to 10 metrics.
+    /// The metrics requested and displayed in the response. Requests are allowed
+    /// up to 10 metrics.
     #[prost(message, repeated, tag="3")]
     pub metrics: ::prost::alloc::vec::Vec<AccessMetric>,
-    ///  Date ranges of access records to read. If multiple date ranges are
-    ///  requested, each response row will contain a zero based date range index. If
-    ///  two date ranges overlap, the access records for the overlapping days is
-    ///  included in the response rows for both date ranges. Requests are allowed up
-    ///  to 2 date ranges.
+    /// Date ranges of access records to read. If multiple date ranges are
+    /// requested, each response row will contain a zero based date range index. If
+    /// two date ranges overlap, the access records for the overlapping days is
+    /// included in the response rows for both date ranges. Requests are allowed up
+    /// to 2 date ranges.
     #[prost(message, repeated, tag="4")]
     pub date_ranges: ::prost::alloc::vec::Vec<AccessDateRange>,
-    ///  Dimension filters allow you to restrict report response to specific
-    ///  dimension values which match the filter. For example, filtering on access
-    ///  records of a single user. To learn more, see [Fundamentals of Dimension
-    ///  Filters](<https://developers.google.com/analytics/devguides/reporting/data/v1/basics#dimension_filters>)
-    ///  for examples. Metrics cannot be used in this filter.
+    /// Dimension filters allow you to restrict report response to specific
+    /// dimension values which match the filter. For example, filtering on access
+    /// records of a single user. To learn more, see [Fundamentals of Dimension
+    /// Filters](<https://developers.google.com/analytics/devguides/reporting/data/v1/basics#dimension_filters>)
+    /// for examples. Metrics cannot be used in this filter.
     #[prost(message, optional, tag="5")]
     pub dimension_filter: ::core::option::Option<AccessFilterExpression>,
-    ///  Metric filters allow you to restrict report response to specific metric
-    ///  values which match the filter. Metric filters are applied after aggregating
-    ///  the report's rows, similar to SQL having-clause. Dimensions cannot be used
-    ///  in this filter.
+    /// Metric filters allow you to restrict report response to specific metric
+    /// values which match the filter. Metric filters are applied after aggregating
+    /// the report's rows, similar to SQL having-clause. Dimensions cannot be used
+    /// in this filter.
     #[prost(message, optional, tag="6")]
     pub metric_filter: ::core::option::Option<AccessFilterExpression>,
-    ///  The row count of the start row. The first row is counted as row 0. If
-    ///  offset is unspecified, it is treated as 0. If offset is zero, then this
-    ///  method will return the first page of results with `limit` entries.
+    /// The row count of the start row. The first row is counted as row 0. If
+    /// offset is unspecified, it is treated as 0. If offset is zero, then this
+    /// method will return the first page of results with `limit` entries.
     ///
-    ///  To learn more about this pagination parameter, see
-    ///  \[Pagination\](<https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination>).
+    /// To learn more about this pagination parameter, see
+    /// \[Pagination\](<https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination>).
     #[prost(int64, tag="7")]
     pub offset: i64,
-    ///  The number of rows to return. If unspecified, 10,000 rows are returned. The
-    ///  API returns a maximum of 100,000 rows per request, no matter how many you
-    ///  ask for. `limit` must be positive.
+    /// The number of rows to return. If unspecified, 10,000 rows are returned. The
+    /// API returns a maximum of 100,000 rows per request, no matter how many you
+    /// ask for. `limit` must be positive.
     ///
-    ///  The API may return fewer rows than the requested `limit`, if there aren't
-    ///  as many remaining rows as the `limit`. For instance, there are fewer than
-    ///  300 possible values for the dimension `country`, so when reporting on only
-    ///  `country`, you can't get more than 300 rows, even if you set `limit` to a
-    ///  higher value.
+    /// The API may return fewer rows than the requested `limit`, if there aren't
+    /// as many remaining rows as the `limit`. For instance, there are fewer than
+    /// 300 possible values for the dimension `country`, so when reporting on only
+    /// `country`, you can't get more than 300 rows, even if you set `limit` to a
+    /// higher value.
     ///
-    ///  To learn more about this pagination parameter, see
-    ///  \[Pagination\](<https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination>).
+    /// To learn more about this pagination parameter, see
+    /// \[Pagination\](<https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination>).
     #[prost(int64, tag="8")]
     pub limit: i64,
-    ///  This request's time zone if specified. If unspecified, the property's time
-    ///  zone is used. The request's time zone is used to interpret the start & end
-    ///  dates of the report.
+    /// This request's time zone if specified. If unspecified, the property's time
+    /// zone is used. The request's time zone is used to interpret the start & end
+    /// dates of the report.
     ///
-    ///  Formatted as strings from the IANA Time Zone database
-    ///  (<https://www.iana.org/time-zones>); for example "America/New_York" or
-    ///  "Asia/Tokyo".
+    /// Formatted as strings from the IANA Time Zone database
+    /// (<https://www.iana.org/time-zones>); for example "America/New_York" or
+    /// "Asia/Tokyo".
     #[prost(string, tag="9")]
     pub time_zone: ::prost::alloc::string::String,
-    ///  Specifies how rows are ordered in the response.
+    /// Specifies how rows are ordered in the response.
     #[prost(message, repeated, tag="10")]
     pub order_bys: ::prost::alloc::vec::Vec<AccessOrderBy>,
-    ///  Toggles whether to return the current state of this Analytics Property's
-    ///  quota. Quota is returned in \[AccessQuota\](#AccessQuota).
+    /// Toggles whether to return the current state of this Analytics Property's
+    /// quota. Quota is returned in \[AccessQuota\](#AccessQuota).
     #[prost(bool, tag="11")]
     pub return_entity_quota: bool,
 }
-///  The customized Data Access Record Report response.
+/// The customized Data Access Record Report response.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RunAccessReportResponse {
-    ///  The header for a column in the report that corresponds to a specific
-    ///  dimension. The number of DimensionHeaders and ordering of DimensionHeaders
-    ///  matches the dimensions present in rows.
+    /// The header for a column in the report that corresponds to a specific
+    /// dimension. The number of DimensionHeaders and ordering of DimensionHeaders
+    /// matches the dimensions present in rows.
     #[prost(message, repeated, tag="1")]
     pub dimension_headers: ::prost::alloc::vec::Vec<AccessDimensionHeader>,
-    ///  The header for a column in the report that corresponds to a specific
-    ///  metric. The number of MetricHeaders and ordering of MetricHeaders matches
-    ///  the metrics present in rows.
+    /// The header for a column in the report that corresponds to a specific
+    /// metric. The number of MetricHeaders and ordering of MetricHeaders matches
+    /// the metrics present in rows.
     #[prost(message, repeated, tag="2")]
     pub metric_headers: ::prost::alloc::vec::Vec<AccessMetricHeader>,
-    ///  Rows of dimension value combinations and metric values in the report.
+    /// Rows of dimension value combinations and metric values in the report.
     #[prost(message, repeated, tag="3")]
     pub rows: ::prost::alloc::vec::Vec<AccessRow>,
-    ///  The total number of rows in the query result. `rowCount` is independent of
-    ///  the number of rows returned in the response, the `limit` request
-    ///  parameter, and the `offset` request parameter. For example if a query
-    ///  returns 175 rows and includes `limit` of 50 in the API request, the
-    ///  response will contain `rowCount` of 175 but only 50 rows.
+    /// The total number of rows in the query result. `rowCount` is independent of
+    /// the number of rows returned in the response, the `limit` request
+    /// parameter, and the `offset` request parameter. For example if a query
+    /// returns 175 rows and includes `limit` of 50 in the API request, the
+    /// response will contain `rowCount` of 175 but only 50 rows.
     ///
-    ///  To learn more about this pagination parameter, see
-    ///  \[Pagination\](<https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination>).
+    /// To learn more about this pagination parameter, see
+    /// \[Pagination\](<https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination>).
     #[prost(int32, tag="4")]
     pub row_count: i32,
-    ///  The quota state for this Analytics property including this request.
+    /// The quota state for this Analytics property including this request.
     #[prost(message, optional, tag="5")]
     pub quota: ::core::option::Option<AccessQuota>,
 }
-///  Request message for GetAccount RPC.
+/// Request message for GetAccount RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAccountRequest {
-    ///  Required. The name of the account to lookup.
-    ///  Format: accounts/{account}
-    ///  Example: "accounts/100"
+    /// Required. The name of the account to lookup.
+    /// Format: accounts/{account}
+    /// Example: "accounts/100"
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Request message for ListAccounts RPC.
+/// Request message for ListAccounts RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAccountsRequest {
-    ///  The maximum number of resources to return. The service may return
-    ///  fewer than this value, even if there are additional pages.
-    ///  If unspecified, at most 50 resources will be returned.
-    ///  The maximum value is 200; (higher values will be coerced to the maximum)
+    /// The maximum number of resources to return. The service may return
+    /// fewer than this value, even if there are additional pages.
+    /// If unspecified, at most 50 resources will be returned.
+    /// The maximum value is 200; (higher values will be coerced to the maximum)
     #[prost(int32, tag="1")]
     pub page_size: i32,
-    ///  A page token, received from a previous `ListAccounts` call.
-    ///  Provide this to retrieve the subsequent page.
-    ///  When paginating, all other parameters provided to `ListAccounts` must
-    ///  match the call that provided the page token.
+    /// A page token, received from a previous `ListAccounts` call.
+    /// Provide this to retrieve the subsequent page.
+    /// When paginating, all other parameters provided to `ListAccounts` must
+    /// match the call that provided the page token.
     #[prost(string, tag="2")]
     pub page_token: ::prost::alloc::string::String,
-    ///  Whether to include soft-deleted (ie: "trashed") Accounts in the
-    ///  results. Accounts can be inspected to determine whether they are deleted or
-    ///  not.
+    /// Whether to include soft-deleted (ie: "trashed") Accounts in the
+    /// results. Accounts can be inspected to determine whether they are deleted or
+    /// not.
     #[prost(bool, tag="3")]
     pub show_deleted: bool,
 }
-///  Request message for ListAccounts RPC.
+/// Request message for ListAccounts RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAccountsResponse {
-    ///  Results that were accessible to the caller.
+    /// Results that were accessible to the caller.
     #[prost(message, repeated, tag="1")]
     pub accounts: ::prost::alloc::vec::Vec<Account>,
-    ///  A token, which can be sent as `page_token` to retrieve the next page.
-    ///  If this field is omitted, there are no subsequent pages.
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-///  Request message for DeleteAccount RPC.
+/// Request message for DeleteAccount RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteAccountRequest {
-    ///  Required. The name of the Account to soft-delete.
-    ///  Format: accounts/{account}
-    ///  Example: "accounts/100"
+    /// Required. The name of the Account to soft-delete.
+    /// Format: accounts/{account}
+    /// Example: "accounts/100"
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Request message for UpdateAccount RPC.
+/// Request message for UpdateAccount RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateAccountRequest {
-    ///  Required. The account to update.
-    ///  The account's `name` field is used to identify the account.
+    /// Required. The account to update.
+    /// The account's `name` field is used to identify the account.
     #[prost(message, optional, tag="1")]
     pub account: ::core::option::Option<Account>,
-    ///  Required. The list of fields to be updated. Field names must be in snake case
-    ///  (e.g., "field_to_update"). Omitted fields will not be updated. To replace
-    ///  the entire entity, use one path with the string "*" to match all fields.
+    /// Required. The list of fields to be updated. Field names must be in snake case
+    /// (e.g., "field_to_update"). Omitted fields will not be updated. To replace
+    /// the entire entity, use one path with the string "*" to match all fields.
     #[prost(message, optional, tag="2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
-///  Request message for ProvisionAccountTicket RPC.
+/// Request message for ProvisionAccountTicket RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProvisionAccountTicketRequest {
-    ///  The account to create.
+    /// The account to create.
     #[prost(message, optional, tag="1")]
     pub account: ::core::option::Option<Account>,
-    ///  Redirect URI where the user will be sent after accepting Terms of Service.
-    ///  Must be configured in Developers Console as a Redirect URI
+    /// Redirect URI where the user will be sent after accepting Terms of Service.
+    /// Must be configured in Developers Console as a Redirect URI
     #[prost(string, tag="2")]
     pub redirect_uri: ::prost::alloc::string::String,
 }
-///  Response message for ProvisionAccountTicket RPC.
+/// Response message for ProvisionAccountTicket RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProvisionAccountTicketResponse {
-    ///  The param to be passed in the ToS link.
+    /// The param to be passed in the ToS link.
     #[prost(string, tag="1")]
     pub account_ticket_id: ::prost::alloc::string::String,
 }
-///  Request message for GetProperty RPC.
+/// Request message for GetProperty RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetPropertyRequest {
-    ///  Required. The name of the property to lookup.
-    ///  Format: properties/{property_id}
-    ///  Example: "properties/1000"
+    /// Required. The name of the property to lookup.
+    /// Format: properties/{property_id}
+    /// Example: "properties/1000"
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Request message for ListProperties RPC.
+/// Request message for ListProperties RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPropertiesRequest {
-    ///  Required. An expression for filtering the results of the request.
-    ///  Fields eligible for filtering are:
-    ///  `parent:`(The resource name of the parent account/property) or
-    ///  `ancestor:`(The resource name of the parent account) or
-    ///  `firebase_project:`(The id or number of the linked firebase project).
-    ///  Some examples of filters:
+    /// Required. An expression for filtering the results of the request.
+    /// Fields eligible for filtering are:
+    /// `parent:`(The resource name of the parent account/property) or
+    /// `ancestor:`(The resource name of the parent account) or
+    /// `firebase_project:`(The id or number of the linked firebase project).
+    /// Some examples of filters:
     ///
-    ///  ```
-    ///  | Filter                      | Description                               |
-    ///  |-----------------------------|-------------------------------------------|
-    ///  | parent:accounts/123         | The account with account id: 123.       |
-    ///  | parent:properties/123       | The property with property id: 123.       |
-    ///  | ancestor:accounts/123       | The account with account id: 123.         |
-    ///  | firebase_project:project-id | The firebase project with id: project-id. |
-    ///  | firebase_project:123        | The firebase project with number: 123.    |
-    ///  ```
+    /// ```
+    /// | Filter                      | Description                               |
+    /// |-----------------------------|-------------------------------------------|
+    /// | parent:accounts/123         | The account with account id: 123.       |
+    /// | parent:properties/123       | The property with property id: 123.       |
+    /// | ancestor:accounts/123       | The account with account id: 123.         |
+    /// | firebase_project:project-id | The firebase project with id: project-id. |
+    /// | firebase_project:123        | The firebase project with number: 123.    |
+    /// ```
     #[prost(string, tag="1")]
     pub filter: ::prost::alloc::string::String,
-    ///  The maximum number of resources to return. The service may return
-    ///  fewer than this value, even if there are additional pages.
-    ///  If unspecified, at most 50 resources will be returned.
-    ///  The maximum value is 200; (higher values will be coerced to the maximum)
+    /// The maximum number of resources to return. The service may return
+    /// fewer than this value, even if there are additional pages.
+    /// If unspecified, at most 50 resources will be returned.
+    /// The maximum value is 200; (higher values will be coerced to the maximum)
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    ///  A page token, received from a previous `ListProperties` call.
-    ///  Provide this to retrieve the subsequent page.
-    ///  When paginating, all other parameters provided to `ListProperties` must
-    ///  match the call that provided the page token.
+    /// A page token, received from a previous `ListProperties` call.
+    /// Provide this to retrieve the subsequent page.
+    /// When paginating, all other parameters provided to `ListProperties` must
+    /// match the call that provided the page token.
     #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
-    ///  Whether to include soft-deleted (ie: "trashed") Properties in the
-    ///  results. Properties can be inspected to determine whether they are deleted
-    ///  or not.
+    /// Whether to include soft-deleted (ie: "trashed") Properties in the
+    /// results. Properties can be inspected to determine whether they are deleted
+    /// or not.
     #[prost(bool, tag="4")]
     pub show_deleted: bool,
 }
-///  Response message for ListProperties RPC.
+/// Response message for ListProperties RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPropertiesResponse {
-    ///  Results that matched the filter criteria and were accessible to the caller.
+    /// Results that matched the filter criteria and were accessible to the caller.
     #[prost(message, repeated, tag="1")]
     pub properties: ::prost::alloc::vec::Vec<Property>,
-    ///  A token, which can be sent as `page_token` to retrieve the next page.
-    ///  If this field is omitted, there are no subsequent pages.
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-///  Request message for UpdateProperty RPC.
+/// Request message for UpdateProperty RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdatePropertyRequest {
-    ///  Required. The property to update.
-    ///  The property's `name` field is used to identify the property to be
-    ///  updated.
+    /// Required. The property to update.
+    /// The property's `name` field is used to identify the property to be
+    /// updated.
     #[prost(message, optional, tag="1")]
     pub property: ::core::option::Option<Property>,
-    ///  Required. The list of fields to be updated. Field names must be in snake case
-    ///  (e.g., "field_to_update"). Omitted fields will not be updated. To replace
-    ///  the entire entity, use one path with the string "*" to match all fields.
+    /// Required. The list of fields to be updated. Field names must be in snake case
+    /// (e.g., "field_to_update"). Omitted fields will not be updated. To replace
+    /// the entire entity, use one path with the string "*" to match all fields.
     #[prost(message, optional, tag="2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
-///  Request message for CreateProperty RPC.
+/// Request message for CreateProperty RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreatePropertyRequest {
-    ///  Required. The property to create.
-    ///  Note: the supplied property must specify its parent.
+    /// Required. The property to create.
+    /// Note: the supplied property must specify its parent.
     #[prost(message, optional, tag="1")]
     pub property: ::core::option::Option<Property>,
 }
-///  Request message for DeleteProperty RPC.
+/// Request message for DeleteProperty RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeletePropertyRequest {
-    ///  Required. The name of the Property to soft-delete.
-    ///  Format: properties/{property_id}
-    ///  Example: "properties/1000"
+    /// Required. The name of the Property to soft-delete.
+    /// Format: properties/{property_id}
+    /// Example: "properties/1000"
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Request message for GetUserLink RPC.
+/// Request message for GetUserLink RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetUserLinkRequest {
-    ///  Required. Example format: accounts/1234/userLinks/5678
+    /// Required. Example format: accounts/1234/userLinks/5678
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Request message for BatchGetUserLinks RPC.
+/// Request message for BatchGetUserLinks RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchGetUserLinksRequest {
-    ///  Required. The account or property that all user links in the request are
-    ///  for. The parent of all provided values for the 'names' field must match
-    ///  this field.
-    ///  Example format: accounts/1234
+    /// Required. The account or property that all user links in the request are
+    /// for. The parent of all provided values for the 'names' field must match
+    /// this field.
+    /// Example format: accounts/1234
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Required. The names of the user links to retrieve.
-    ///  A maximum of 1000 user links can be retrieved in a batch.
-    ///  Format: accounts/{accountId}/userLinks/{userLinkId}
+    /// Required. The names of the user links to retrieve.
+    /// A maximum of 1000 user links can be retrieved in a batch.
+    /// Format: accounts/{accountId}/userLinks/{userLinkId}
     #[prost(string, repeated, tag="2")]
     pub names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-///  Response message for BatchGetUserLinks RPC.
+/// Response message for BatchGetUserLinks RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchGetUserLinksResponse {
-    ///  The requested user links.
+    /// The requested user links.
     #[prost(message, repeated, tag="1")]
     pub user_links: ::prost::alloc::vec::Vec<UserLink>,
 }
-///  Request message for ListUserLinks RPC.
+/// Request message for ListUserLinks RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListUserLinksRequest {
-    ///  Required. Example format: accounts/1234
+    /// Required. Example format: accounts/1234
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  The maximum number of user links to return.
-    ///  The service may return fewer than this value.
-    ///  If unspecified, at most 200 user links will be returned.
-    ///  The maximum value is 500; values above 500 will be coerced to 500.
+    /// The maximum number of user links to return.
+    /// The service may return fewer than this value.
+    /// If unspecified, at most 200 user links will be returned.
+    /// The maximum value is 500; values above 500 will be coerced to 500.
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    ///  A page token, received from a previous `ListUserLinks` call.
-    ///  Provide this to retrieve the subsequent page.
-    ///  When paginating, all other parameters provided to `ListUserLinks` must
-    ///  match the call that provided the page token.
+    /// A page token, received from a previous `ListUserLinks` call.
+    /// Provide this to retrieve the subsequent page.
+    /// When paginating, all other parameters provided to `ListUserLinks` must
+    /// match the call that provided the page token.
     #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
 }
-///  Response message for ListUserLinks RPC.
+/// Response message for ListUserLinks RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListUserLinksResponse {
-    ///  List of UserLinks. These will be ordered stably, but in an arbitrary order.
+    /// List of UserLinks. These will be ordered stably, but in an arbitrary order.
     #[prost(message, repeated, tag="1")]
     pub user_links: ::prost::alloc::vec::Vec<UserLink>,
-    ///  A token, which can be sent as `page_token` to retrieve the next page.
-    ///  If this field is omitted, there are no subsequent pages.
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-///  Request message for AuditUserLinks RPC.
+/// Request message for AuditUserLinks RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AuditUserLinksRequest {
-    ///  Required. Example format: accounts/1234
+    /// Required. Example format: accounts/1234
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  The maximum number of user links to return.
-    ///  The service may return fewer than this value.
-    ///  If unspecified, at most 1000 user links will be returned.
-    ///  The maximum value is 5000; values above 5000 will be coerced to 5000.
+    /// The maximum number of user links to return.
+    /// The service may return fewer than this value.
+    /// If unspecified, at most 1000 user links will be returned.
+    /// The maximum value is 5000; values above 5000 will be coerced to 5000.
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    ///  A page token, received from a previous `AuditUserLinks` call.
-    ///  Provide this to retrieve the subsequent page.
-    ///  When paginating, all other parameters provided to `AuditUserLinks` must
-    ///  match the call that provided the page token.
+    /// A page token, received from a previous `AuditUserLinks` call.
+    /// Provide this to retrieve the subsequent page.
+    /// When paginating, all other parameters provided to `AuditUserLinks` must
+    /// match the call that provided the page token.
     #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
 }
-///  Response message for AuditUserLinks RPC.
+/// Response message for AuditUserLinks RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AuditUserLinksResponse {
-    ///  List of AuditUserLinks. These will be ordered stably, but in an arbitrary
-    ///  order.
+    /// List of AuditUserLinks. These will be ordered stably, but in an arbitrary
+    /// order.
     #[prost(message, repeated, tag="1")]
     pub user_links: ::prost::alloc::vec::Vec<AuditUserLink>,
-    ///  A token, which can be sent as `page_token` to retrieve the next page.
-    ///  If this field is omitted, there are no subsequent pages.
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-///  Request message for CreateUserLink RPC.
+/// Request message for CreateUserLink RPC.
 ///
-///  Users can have multiple email addresses associated with their Google
-///  account, and one of these email addresses is the "primary" email address.
-///  Any of the email addresses associated with a Google account may be used
-///  for a new UserLink, but the returned UserLink will always contain the
-///  "primary" email address. As a result, the input and output email address
-///  for this request may differ.
+/// Users can have multiple email addresses associated with their Google
+/// account, and one of these email addresses is the "primary" email address.
+/// Any of the email addresses associated with a Google account may be used
+/// for a new UserLink, but the returned UserLink will always contain the
+/// "primary" email address. As a result, the input and output email address
+/// for this request may differ.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateUserLinkRequest {
-    ///  Required. Example format: accounts/1234
+    /// Required. Example format: accounts/1234
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Optional. If set, then email the new user notifying them that they've been granted
-    ///  permissions to the resource.
+    /// Optional. If set, then email the new user notifying them that they've been granted
+    /// permissions to the resource.
     #[prost(bool, tag="2")]
     pub notify_new_user: bool,
-    ///  Required. The user link to create.
+    /// Required. The user link to create.
     #[prost(message, optional, tag="3")]
     pub user_link: ::core::option::Option<UserLink>,
 }
-///  Request message for BatchCreateUserLinks RPC.
+/// Request message for BatchCreateUserLinks RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchCreateUserLinksRequest {
-    ///  Required. The account or property that all user links in the request are for.
-    ///  This field is required. The parent field in the CreateUserLinkRequest
-    ///  messages must either be empty or match this field.
-    ///  Example format: accounts/1234
+    /// Required. The account or property that all user links in the request are for.
+    /// This field is required. The parent field in the CreateUserLinkRequest
+    /// messages must either be empty or match this field.
+    /// Example format: accounts/1234
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Optional. If set, then email the new users notifying them that they've been granted
-    ///  permissions to the resource. Regardless of whether this is set or not,
-    ///  notify_new_user field inside each individual request is ignored.
+    /// Optional. If set, then email the new users notifying them that they've been granted
+    /// permissions to the resource. Regardless of whether this is set or not,
+    /// notify_new_user field inside each individual request is ignored.
     #[prost(bool, tag="2")]
     pub notify_new_users: bool,
-    ///  Required. The requests specifying the user links to create.
-    ///  A maximum of 1000 user links can be created in a batch.
+    /// Required. The requests specifying the user links to create.
+    /// A maximum of 1000 user links can be created in a batch.
     #[prost(message, repeated, tag="3")]
     pub requests: ::prost::alloc::vec::Vec<CreateUserLinkRequest>,
 }
-///  Response message for BatchCreateUserLinks RPC.
+/// Response message for BatchCreateUserLinks RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchCreateUserLinksResponse {
-    ///  The user links created.
+    /// The user links created.
     #[prost(message, repeated, tag="1")]
     pub user_links: ::prost::alloc::vec::Vec<UserLink>,
 }
-///  Request message for UpdateUserLink RPC.
+/// Request message for UpdateUserLink RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateUserLinkRequest {
-    ///  Required. The user link to update.
+    /// Required. The user link to update.
     #[prost(message, optional, tag="1")]
     pub user_link: ::core::option::Option<UserLink>,
 }
-///  Request message for BatchUpdateUserLinks RPC.
+/// Request message for BatchUpdateUserLinks RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchUpdateUserLinksRequest {
-    ///  Required. The account or property that all user links in the request are
-    ///  for. The parent field in the UpdateUserLinkRequest messages must either be
-    ///  empty or match this field.
-    ///  Example format: accounts/1234
+    /// Required. The account or property that all user links in the request are
+    /// for. The parent field in the UpdateUserLinkRequest messages must either be
+    /// empty or match this field.
+    /// Example format: accounts/1234
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Required. The requests specifying the user links to update.
-    ///  A maximum of 1000 user links can be updated in a batch.
+    /// Required. The requests specifying the user links to update.
+    /// A maximum of 1000 user links can be updated in a batch.
     #[prost(message, repeated, tag="2")]
     pub requests: ::prost::alloc::vec::Vec<UpdateUserLinkRequest>,
 }
-///  Response message for BatchUpdateUserLinks RPC.
+/// Response message for BatchUpdateUserLinks RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchUpdateUserLinksResponse {
-    ///  The user links updated.
+    /// The user links updated.
     #[prost(message, repeated, tag="1")]
     pub user_links: ::prost::alloc::vec::Vec<UserLink>,
 }
-///  Request message for DeleteUserLink RPC.
+/// Request message for DeleteUserLink RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteUserLinkRequest {
-    ///  Required. Example format: accounts/1234/userLinks/5678
+    /// Required. Example format: accounts/1234/userLinks/5678
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Request message for BatchDeleteUserLinks RPC.
+/// Request message for BatchDeleteUserLinks RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchDeleteUserLinksRequest {
-    ///  Required. The account or property that all user links in the request are
-    ///  for. The parent of all values for user link names to delete must match this
-    ///  field.
-    ///  Example format: accounts/1234
+    /// Required. The account or property that all user links in the request are
+    /// for. The parent of all values for user link names to delete must match this
+    /// field.
+    /// Example format: accounts/1234
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Required. The requests specifying the user links to update.
-    ///  A maximum of 1000 user links can be updated in a batch.
+    /// Required. The requests specifying the user links to update.
+    /// A maximum of 1000 user links can be updated in a batch.
     #[prost(message, repeated, tag="2")]
     pub requests: ::prost::alloc::vec::Vec<DeleteUserLinkRequest>,
 }
-///  Request message for CreateFirebaseLink RPC
+/// Request message for CreateFirebaseLink RPC
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateFirebaseLinkRequest {
-    ///  Required. Format: properties/{property_id}
-    ///  Example: properties/1234
+    /// Required. Format: properties/{property_id}
+    /// Example: properties/1234
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Required. The Firebase link to create.
+    /// Required. The Firebase link to create.
     #[prost(message, optional, tag="2")]
     pub firebase_link: ::core::option::Option<FirebaseLink>,
 }
-///  Request message for DeleteFirebaseLink RPC
+/// Request message for DeleteFirebaseLink RPC
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteFirebaseLinkRequest {
-    ///  Required. Format: properties/{property_id}/firebaseLinks/{firebase_link_id}
-    ///  Example: properties/1234/firebaseLinks/5678
+    /// Required. Format: properties/{property_id}/firebaseLinks/{firebase_link_id}
+    /// Example: properties/1234/firebaseLinks/5678
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Request message for ListFirebaseLinks RPC
+/// Request message for ListFirebaseLinks RPC
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFirebaseLinksRequest {
-    ///  Required. Format: properties/{property_id}
-    ///  Example: properties/1234
+    /// Required. Format: properties/{property_id}
+    /// Example: properties/1234
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  The maximum number of resources to return. The service may return
-    ///  fewer than this value, even if there are additional pages.
-    ///  If unspecified, at most 50 resources will be returned.
-    ///  The maximum value is 200; (higher values will be coerced to the maximum)
+    /// The maximum number of resources to return. The service may return
+    /// fewer than this value, even if there are additional pages.
+    /// If unspecified, at most 50 resources will be returned.
+    /// The maximum value is 200; (higher values will be coerced to the maximum)
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    ///  A page token, received from a previous `ListFirebaseLinks` call.
-    ///  Provide this to retrieve the subsequent page.
-    ///  When paginating, all other parameters provided to `ListProperties` must
-    ///  match the call that provided the page token.
+    /// A page token, received from a previous `ListFirebaseLinks` call.
+    /// Provide this to retrieve the subsequent page.
+    /// When paginating, all other parameters provided to `ListProperties` must
+    /// match the call that provided the page token.
     #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
 }
-///  Response message for ListFirebaseLinks RPC
+/// Response message for ListFirebaseLinks RPC
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFirebaseLinksResponse {
-    ///  List of FirebaseLinks. This will have at most one value.
+    /// List of FirebaseLinks. This will have at most one value.
     #[prost(message, repeated, tag="1")]
     pub firebase_links: ::prost::alloc::vec::Vec<FirebaseLink>,
-    ///  A token, which can be sent as `page_token` to retrieve the next page.
-    ///  If this field is omitted, there are no subsequent pages.
-    ///  Currently, Google Analytics supports only one FirebaseLink per property,
-    ///  so this will never be populated.
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    /// Currently, Google Analytics supports only one FirebaseLink per property,
+    /// so this will never be populated.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-///  Request message for GetGlobalSiteTag RPC.
+/// Request message for GetGlobalSiteTag RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetGlobalSiteTagRequest {
-    ///  Required. The name of the site tag to lookup.
-    ///  Note that site tags are singletons and do not have unique IDs.
-    ///  Format: properties/{property_id}/dataStreams/{stream_id}/globalSiteTag
-    ///  Example: "properties/123/dataStreams/456/globalSiteTag"
+    /// Required. The name of the site tag to lookup.
+    /// Note that site tags are singletons and do not have unique IDs.
+    /// Format: properties/{property_id}/dataStreams/{stream_id}/globalSiteTag
+    /// Example: "properties/123/dataStreams/456/globalSiteTag"
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Request message for CreateGoogleAdsLink RPC
+/// Request message for CreateGoogleAdsLink RPC
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateGoogleAdsLinkRequest {
-    ///  Required. Example format: properties/1234
+    /// Required. Example format: properties/1234
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Required. The GoogleAdsLink to create.
+    /// Required. The GoogleAdsLink to create.
     #[prost(message, optional, tag="2")]
     pub google_ads_link: ::core::option::Option<GoogleAdsLink>,
 }
-///  Request message for UpdateGoogleAdsLink RPC
+/// Request message for UpdateGoogleAdsLink RPC
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateGoogleAdsLinkRequest {
-    ///  The GoogleAdsLink to update
+    /// The GoogleAdsLink to update
     #[prost(message, optional, tag="1")]
     pub google_ads_link: ::core::option::Option<GoogleAdsLink>,
-    ///  Required. The list of fields to be updated. Field names must be in snake case
-    ///  (e.g., "field_to_update"). Omitted fields will not be updated. To replace
-    ///  the entire entity, use one path with the string "*" to match all fields.
+    /// Required. The list of fields to be updated. Field names must be in snake case
+    /// (e.g., "field_to_update"). Omitted fields will not be updated. To replace
+    /// the entire entity, use one path with the string "*" to match all fields.
     #[prost(message, optional, tag="2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
-///  Request message for DeleteGoogleAdsLink RPC.
+/// Request message for DeleteGoogleAdsLink RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteGoogleAdsLinkRequest {
-    ///  Required. Example format: properties/1234/googleAdsLinks/5678
+    /// Required. Example format: properties/1234/googleAdsLinks/5678
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Request message for ListGoogleAdsLinks RPC.
+/// Request message for ListGoogleAdsLinks RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListGoogleAdsLinksRequest {
-    ///  Required. Example format: properties/1234
+    /// Required. Example format: properties/1234
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  The maximum number of resources to return.
-    ///  If unspecified, at most 50 resources will be returned.
-    ///  The maximum value is 200 (higher values will be coerced to the maximum).
+    /// The maximum number of resources to return.
+    /// If unspecified, at most 50 resources will be returned.
+    /// The maximum value is 200 (higher values will be coerced to the maximum).
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    ///  A page token, received from a previous `ListGoogleAdsLinks` call.
-    ///  Provide this to retrieve the subsequent page.
+    /// A page token, received from a previous `ListGoogleAdsLinks` call.
+    /// Provide this to retrieve the subsequent page.
     ///
-    ///  When paginating, all other parameters provided to `ListGoogleAdsLinks` must
-    ///  match the call that provided the page token.
+    /// When paginating, all other parameters provided to `ListGoogleAdsLinks` must
+    /// match the call that provided the page token.
     #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
 }
-///  Response message for ListGoogleAdsLinks RPC.
+/// Response message for ListGoogleAdsLinks RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListGoogleAdsLinksResponse {
-    ///  List of GoogleAdsLinks.
+    /// List of GoogleAdsLinks.
     #[prost(message, repeated, tag="1")]
     pub google_ads_links: ::prost::alloc::vec::Vec<GoogleAdsLink>,
-    ///  A token, which can be sent as `page_token` to retrieve the next page.
-    ///  If this field is omitted, there are no subsequent pages.
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-///  Request message for GetDataSharingSettings RPC.
+/// Request message for GetDataSharingSettings RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetDataSharingSettingsRequest {
-    ///  Required. The name of the settings to lookup.
-    ///  Format: accounts/{account}/dataSharingSettings
-    ///  Example: "accounts/1000/dataSharingSettings"
+    /// Required. The name of the settings to lookup.
+    /// Format: accounts/{account}/dataSharingSettings
+    /// Example: "accounts/1000/dataSharingSettings"
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Request message for ListAccountSummaries RPC.
+/// Request message for ListAccountSummaries RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAccountSummariesRequest {
-    ///  The maximum number of AccountSummary resources to return. The service may
-    ///  return fewer than this value, even if there are additional pages.
-    ///  If unspecified, at most 50 resources will be returned.
-    ///  The maximum value is 200; (higher values will be coerced to the maximum)
+    /// The maximum number of AccountSummary resources to return. The service may
+    /// return fewer than this value, even if there are additional pages.
+    /// If unspecified, at most 50 resources will be returned.
+    /// The maximum value is 200; (higher values will be coerced to the maximum)
     #[prost(int32, tag="1")]
     pub page_size: i32,
-    ///  A page token, received from a previous `ListAccountSummaries` call.
-    ///  Provide this to retrieve the subsequent page.
-    ///  When paginating, all other parameters provided to `ListAccountSummaries`
-    ///  must match the call that provided the page token.
+    /// A page token, received from a previous `ListAccountSummaries` call.
+    /// Provide this to retrieve the subsequent page.
+    /// When paginating, all other parameters provided to `ListAccountSummaries`
+    /// must match the call that provided the page token.
     #[prost(string, tag="2")]
     pub page_token: ::prost::alloc::string::String,
 }
-///  Response message for ListAccountSummaries RPC.
+/// Response message for ListAccountSummaries RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAccountSummariesResponse {
-    ///  Account summaries of all accounts the caller has access to.
+    /// Account summaries of all accounts the caller has access to.
     #[prost(message, repeated, tag="1")]
     pub account_summaries: ::prost::alloc::vec::Vec<AccountSummary>,
-    ///  A token, which can be sent as `page_token` to retrieve the next page.
-    ///  If this field is omitted, there are no subsequent pages.
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-///  Request message for AcknowledgeUserDataCollection RPC.
+/// Request message for AcknowledgeUserDataCollection RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AcknowledgeUserDataCollectionRequest {
-    ///  Required. The property for which to acknowledge user data collection.
+    /// Required. The property for which to acknowledge user data collection.
     #[prost(string, tag="1")]
     pub property: ::prost::alloc::string::String,
-    ///  Required. An acknowledgement that the caller of this method understands the terms
-    ///  of user data collection.
+    /// Required. An acknowledgement that the caller of this method understands the terms
+    /// of user data collection.
     ///
-    ///  This field must contain the exact value:
-    ///  "I acknowledge that I have the necessary privacy disclosures and rights
-    ///  from my end users for the collection and processing of their data,
-    ///  including the association of such data with the visitation information
-    ///  Google Analytics collects from my site and/or app property."
+    /// This field must contain the exact value:
+    /// "I acknowledge that I have the necessary privacy disclosures and rights
+    /// from my end users for the collection and processing of their data,
+    /// including the association of such data with the visitation information
+    /// Google Analytics collects from my site and/or app property."
     #[prost(string, tag="2")]
     pub acknowledgement: ::prost::alloc::string::String,
 }
-///  Response message for AcknowledgeUserDataCollection RPC.
+/// Response message for AcknowledgeUserDataCollection RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AcknowledgeUserDataCollectionResponse {
 }
-///  Request message for SearchChangeHistoryEvents RPC.
+/// Request message for SearchChangeHistoryEvents RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchChangeHistoryEventsRequest {
-    ///  Required. The account resource for which to return change history resources.
+    /// Required. The account resource for which to return change history resources.
     #[prost(string, tag="1")]
     pub account: ::prost::alloc::string::String,
-    ///  Optional. Resource name for a child property. If set, only return changes
-    ///  made to this property or its child resources.
+    /// Optional. Resource name for a child property. If set, only return changes
+    /// made to this property or its child resources.
     #[prost(string, tag="2")]
     pub property: ::prost::alloc::string::String,
-    ///  Optional. If set, only return changes if they are for a resource that matches at
-    ///  least one of these types.
+    /// Optional. If set, only return changes if they are for a resource that matches at
+    /// least one of these types.
     #[prost(enumeration="ChangeHistoryResourceType", repeated, packed="false", tag="3")]
     pub resource_type: ::prost::alloc::vec::Vec<i32>,
-    ///  Optional. If set, only return changes that match one or more of these types of
-    ///  actions.
+    /// Optional. If set, only return changes that match one or more of these types of
+    /// actions.
     #[prost(enumeration="ActionType", repeated, packed="false", tag="4")]
     pub action: ::prost::alloc::vec::Vec<i32>,
-    ///  Optional. If set, only return changes if they are made by a user in this list.
+    /// Optional. If set, only return changes if they are made by a user in this list.
     #[prost(string, repeated, tag="5")]
     pub actor_email: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    ///  Optional. If set, only return changes made after this time (inclusive).
+    /// Optional. If set, only return changes made after this time (inclusive).
     #[prost(message, optional, tag="6")]
     pub earliest_change_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Optional. If set, only return changes made before this time (inclusive).
+    /// Optional. If set, only return changes made before this time (inclusive).
     #[prost(message, optional, tag="7")]
     pub latest_change_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Optional. The maximum number of ChangeHistoryEvent items to return.
-    ///  The service may return fewer than this value, even if there are additional
-    ///  pages. If unspecified, at most 50 items will be returned.
-    ///  The maximum value is 200 (higher values will be coerced to the maximum).
+    /// Optional. The maximum number of ChangeHistoryEvent items to return.
+    /// The service may return fewer than this value, even if there are additional
+    /// pages. If unspecified, at most 50 items will be returned.
+    /// The maximum value is 200 (higher values will be coerced to the maximum).
     #[prost(int32, tag="8")]
     pub page_size: i32,
-    ///  Optional. A page token, received from a previous `SearchChangeHistoryEvents` call.
-    ///  Provide this to retrieve the subsequent page. When paginating, all other
-    ///  parameters provided to `SearchChangeHistoryEvents` must match the call that
-    ///  provided the page token.
+    /// Optional. A page token, received from a previous `SearchChangeHistoryEvents` call.
+    /// Provide this to retrieve the subsequent page. When paginating, all other
+    /// parameters provided to `SearchChangeHistoryEvents` must match the call that
+    /// provided the page token.
     #[prost(string, tag="9")]
     pub page_token: ::prost::alloc::string::String,
 }
-///  Response message for SearchAccounts RPC.
+/// Response message for SearchAccounts RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchChangeHistoryEventsResponse {
-    ///  Results that were accessible to the caller.
+    /// Results that were accessible to the caller.
     #[prost(message, repeated, tag="1")]
     pub change_history_events: ::prost::alloc::vec::Vec<ChangeHistoryEvent>,
-    ///  A token, which can be sent as `page_token` to retrieve the next page.
-    ///  If this field is omitted, there are no subsequent pages.
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-///  Request message for GetMeasurementProtocolSecret RPC.
+/// Request message for GetMeasurementProtocolSecret RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetMeasurementProtocolSecretRequest {
-    ///  Required. The name of the measurement protocol secret to lookup.
-    ///  Format:
-    ///  properties/{property}/dataStreams/{dataStream}/measurementProtocolSecrets/{measurementProtocolSecret}
+    /// Required. The name of the measurement protocol secret to lookup.
+    /// Format:
+    /// properties/{property}/dataStreams/{dataStream}/measurementProtocolSecrets/{measurementProtocolSecret}
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Request message for CreateMeasurementProtocolSecret RPC
+/// Request message for CreateMeasurementProtocolSecret RPC
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateMeasurementProtocolSecretRequest {
-    ///  Required. The parent resource where this secret will be created.
-    ///  Format: properties/{property}/dataStreams/{dataStream}
+    /// Required. The parent resource where this secret will be created.
+    /// Format: properties/{property}/dataStreams/{dataStream}
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Required. The measurement protocol secret to create.
+    /// Required. The measurement protocol secret to create.
     #[prost(message, optional, tag="2")]
     pub measurement_protocol_secret: ::core::option::Option<MeasurementProtocolSecret>,
 }
-///  Request message for DeleteMeasurementProtocolSecret RPC
+/// Request message for DeleteMeasurementProtocolSecret RPC
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteMeasurementProtocolSecretRequest {
-    ///  Required. The name of the MeasurementProtocolSecret to delete.
-    ///  Format:
-    ///  properties/{property}/dataStreams/{dataStream}/measurementProtocolSecrets/{measurementProtocolSecret}
+    /// Required. The name of the MeasurementProtocolSecret to delete.
+    /// Format:
+    /// properties/{property}/dataStreams/{dataStream}/measurementProtocolSecrets/{measurementProtocolSecret}
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Request message for UpdateMeasurementProtocolSecret RPC
+/// Request message for UpdateMeasurementProtocolSecret RPC
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateMeasurementProtocolSecretRequest {
-    ///  Required. The measurement protocol secret to update.
+    /// Required. The measurement protocol secret to update.
     #[prost(message, optional, tag="1")]
     pub measurement_protocol_secret: ::core::option::Option<MeasurementProtocolSecret>,
-    ///  The list of fields to be updated. Omitted fields will not be updated.
+    /// The list of fields to be updated. Omitted fields will not be updated.
     #[prost(message, optional, tag="2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
-///  Request message for ListMeasurementProtocolSecret RPC
+/// Request message for ListMeasurementProtocolSecret RPC
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListMeasurementProtocolSecretsRequest {
-    ///  Required. The resource name of the parent stream.
-    ///  Format:
-    ///  properties/{property}/dataStreams/{dataStream}/measurementProtocolSecrets
+    /// Required. The resource name of the parent stream.
+    /// Format:
+    /// properties/{property}/dataStreams/{dataStream}/measurementProtocolSecrets
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  The maximum number of resources to return.
-    ///  If unspecified, at most 10 resources will be returned.
-    ///  The maximum value is 10. Higher values will be coerced to the maximum.
+    /// The maximum number of resources to return.
+    /// If unspecified, at most 10 resources will be returned.
+    /// The maximum value is 10. Higher values will be coerced to the maximum.
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    ///  A page token, received from a previous `ListMeasurementProtocolSecrets`
-    ///  call. Provide this to retrieve the subsequent page. When paginating, all
-    ///  other parameters provided to `ListMeasurementProtocolSecrets` must match
-    ///  the call that provided the page token.
+    /// A page token, received from a previous `ListMeasurementProtocolSecrets`
+    /// call. Provide this to retrieve the subsequent page. When paginating, all
+    /// other parameters provided to `ListMeasurementProtocolSecrets` must match
+    /// the call that provided the page token.
     #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
 }
-///  Response message for ListMeasurementProtocolSecret RPC
+/// Response message for ListMeasurementProtocolSecret RPC
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListMeasurementProtocolSecretsResponse {
-    ///  A list of secrets for the parent stream specified in the request.
+    /// A list of secrets for the parent stream specified in the request.
     #[prost(message, repeated, tag="1")]
     pub measurement_protocol_secrets: ::prost::alloc::vec::Vec<MeasurementProtocolSecret>,
-    ///  A token, which can be sent as `page_token` to retrieve the next page.
-    ///  If this field is omitted, there are no subsequent pages.
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-///  Request message for GetGoogleSignalsSettings RPC
+/// Request message for GetGoogleSignalsSettings RPC
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetGoogleSignalsSettingsRequest {
-    ///  Required. The name of the google signals settings to retrieve.
-    ///  Format: properties/{property}/googleSignalsSettings
+    /// Required. The name of the google signals settings to retrieve.
+    /// Format: properties/{property}/googleSignalsSettings
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Request message for UpdateGoogleSignalsSettings RPC
+/// Request message for UpdateGoogleSignalsSettings RPC
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateGoogleSignalsSettingsRequest {
-    ///  Required. The settings to update.
-    ///  The `name` field is used to identify the settings to be updated.
+    /// Required. The settings to update.
+    /// The `name` field is used to identify the settings to be updated.
     #[prost(message, optional, tag="1")]
     pub google_signals_settings: ::core::option::Option<GoogleSignalsSettings>,
-    ///  Required. The list of fields to be updated. Field names must be in snake case
-    ///  (e.g., "field_to_update"). Omitted fields will not be updated. To replace
-    ///  the entire entity, use one path with the string "*" to match all fields.
+    /// Required. The list of fields to be updated. Field names must be in snake case
+    /// (e.g., "field_to_update"). Omitted fields will not be updated. To replace
+    /// the entire entity, use one path with the string "*" to match all fields.
     #[prost(message, optional, tag="2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
-///  Request message for CreateConversionEvent RPC
+/// Request message for CreateConversionEvent RPC
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateConversionEventRequest {
-    ///  Required. The conversion event to create.
+    /// Required. The conversion event to create.
     #[prost(message, optional, tag="1")]
     pub conversion_event: ::core::option::Option<ConversionEvent>,
-    ///  Required. The resource name of the parent property where this conversion event will
-    ///  be created. Format: properties/123
+    /// Required. The resource name of the parent property where this conversion event will
+    /// be created. Format: properties/123
     #[prost(string, tag="2")]
     pub parent: ::prost::alloc::string::String,
 }
-///  Request message for GetConversionEvent RPC
+/// Request message for GetConversionEvent RPC
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetConversionEventRequest {
-    ///  Required. The resource name of the conversion event to retrieve.
-    ///  Format: properties/{property}/conversionEvents/{conversion_event}
-    ///  Example: "properties/123/conversionEvents/456"
+    /// Required. The resource name of the conversion event to retrieve.
+    /// Format: properties/{property}/conversionEvents/{conversion_event}
+    /// Example: "properties/123/conversionEvents/456"
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Request message for DeleteConversionEvent RPC
+/// Request message for DeleteConversionEvent RPC
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteConversionEventRequest {
-    ///  Required. The resource name of the conversion event to delete.
-    ///  Format: properties/{property}/conversionEvents/{conversion_event}
-    ///  Example: "properties/123/conversionEvents/456"
+    /// Required. The resource name of the conversion event to delete.
+    /// Format: properties/{property}/conversionEvents/{conversion_event}
+    /// Example: "properties/123/conversionEvents/456"
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Request message for ListConversionEvents RPC
+/// Request message for ListConversionEvents RPC
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListConversionEventsRequest {
-    ///  Required. The resource name of the parent property.
-    ///  Example: 'properties/123'
+    /// Required. The resource name of the parent property.
+    /// Example: 'properties/123'
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  The maximum number of resources to return.
-    ///  If unspecified, at most 50 resources will be returned.
-    ///  The maximum value is 200; (higher values will be coerced to the maximum)
+    /// The maximum number of resources to return.
+    /// If unspecified, at most 50 resources will be returned.
+    /// The maximum value is 200; (higher values will be coerced to the maximum)
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    ///  A page token, received from a previous `ListConversionEvents` call.
-    ///  Provide this to retrieve the subsequent page.
-    ///  When paginating, all other parameters provided to `ListConversionEvents`
-    ///  must match the call that provided the page token.
+    /// A page token, received from a previous `ListConversionEvents` call.
+    /// Provide this to retrieve the subsequent page.
+    /// When paginating, all other parameters provided to `ListConversionEvents`
+    /// must match the call that provided the page token.
     #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
 }
-///  Response message for ListConversionEvents RPC.
+/// Response message for ListConversionEvents RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListConversionEventsResponse {
-    ///  The requested conversion events
+    /// The requested conversion events
     #[prost(message, repeated, tag="1")]
     pub conversion_events: ::prost::alloc::vec::Vec<ConversionEvent>,
-    ///  A token, which can be sent as `page_token` to retrieve the next page.
-    ///  If this field is omitted, there are no subsequent pages.
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-///  Request message for GetDisplayVideo360AdvertiserLink RPC.
+/// Request message for GetDisplayVideo360AdvertiserLink RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetDisplayVideo360AdvertiserLinkRequest {
-    ///  Required. The name of the DisplayVideo360AdvertiserLink to get.
-    ///  Example format: properties/1234/displayVideo360AdvertiserLink/5678
+    /// Required. The name of the DisplayVideo360AdvertiserLink to get.
+    /// Example format: properties/1234/displayVideo360AdvertiserLink/5678
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Request message for ListDisplayVideo360AdvertiserLinks RPC.
+/// Request message for ListDisplayVideo360AdvertiserLinks RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDisplayVideo360AdvertiserLinksRequest {
-    ///  Required. Example format: properties/1234
+    /// Required. Example format: properties/1234
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  The maximum number of resources to return.
-    ///  If unspecified, at most 50 resources will be returned.
-    ///  The maximum value is 200 (higher values will be coerced to the maximum).
+    /// The maximum number of resources to return.
+    /// If unspecified, at most 50 resources will be returned.
+    /// The maximum value is 200 (higher values will be coerced to the maximum).
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    ///  A page token, received from a previous `ListDisplayVideo360AdvertiserLinks`
-    ///  call. Provide this to retrieve the subsequent page.
+    /// A page token, received from a previous `ListDisplayVideo360AdvertiserLinks`
+    /// call. Provide this to retrieve the subsequent page.
     ///
-    ///  When paginating, all other parameters provided to
-    ///  `ListDisplayVideo360AdvertiserLinks` must match the call that provided the
-    ///  page token.
+    /// When paginating, all other parameters provided to
+    /// `ListDisplayVideo360AdvertiserLinks` must match the call that provided the
+    /// page token.
     #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
 }
-///  Response message for ListDisplayVideo360AdvertiserLinks RPC.
+/// Response message for ListDisplayVideo360AdvertiserLinks RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDisplayVideo360AdvertiserLinksResponse {
-    ///  List of DisplayVideo360AdvertiserLinks.
+    /// List of DisplayVideo360AdvertiserLinks.
     #[prost(message, repeated, tag="1")]
     pub display_video_360_advertiser_links: ::prost::alloc::vec::Vec<DisplayVideo360AdvertiserLink>,
-    ///  A token, which can be sent as `page_token` to retrieve the next page.
-    ///  If this field is omitted, there are no subsequent pages.
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-///  Request message for CreateDisplayVideo360AdvertiserLink RPC.
+/// Request message for CreateDisplayVideo360AdvertiserLink RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateDisplayVideo360AdvertiserLinkRequest {
-    ///  Required. Example format: properties/1234
+    /// Required. Example format: properties/1234
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Required. The DisplayVideo360AdvertiserLink to create.
+    /// Required. The DisplayVideo360AdvertiserLink to create.
     #[prost(message, optional, tag="2")]
     pub display_video_360_advertiser_link: ::core::option::Option<DisplayVideo360AdvertiserLink>,
 }
-///  Request message for DeleteDisplayVideo360AdvertiserLink RPC.
+/// Request message for DeleteDisplayVideo360AdvertiserLink RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteDisplayVideo360AdvertiserLinkRequest {
-    ///  Required. The name of the DisplayVideo360AdvertiserLink to delete.
-    ///  Example format: properties/1234/displayVideo360AdvertiserLinks/5678
+    /// Required. The name of the DisplayVideo360AdvertiserLink to delete.
+    /// Example format: properties/1234/displayVideo360AdvertiserLinks/5678
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Request message for UpdateDisplayVideo360AdvertiserLink RPC.
+/// Request message for UpdateDisplayVideo360AdvertiserLink RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateDisplayVideo360AdvertiserLinkRequest {
-    ///  The DisplayVideo360AdvertiserLink to update
+    /// The DisplayVideo360AdvertiserLink to update
     #[prost(message, optional, tag="1")]
     pub display_video_360_advertiser_link: ::core::option::Option<DisplayVideo360AdvertiserLink>,
-    ///  Required. The list of fields to be updated. Omitted fields will not be updated.
-    ///  To replace the entire entity, use one path with the string "*" to match
-    ///  all fields.
+    /// Required. The list of fields to be updated. Omitted fields will not be updated.
+    /// To replace the entire entity, use one path with the string "*" to match
+    /// all fields.
     #[prost(message, optional, tag="2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
-///  Request message for GetDisplayVideo360AdvertiserLinkProposal RPC.
+/// Request message for GetDisplayVideo360AdvertiserLinkProposal RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetDisplayVideo360AdvertiserLinkProposalRequest {
-    ///  Required. The name of the DisplayVideo360AdvertiserLinkProposal to get.
-    ///  Example format: properties/1234/displayVideo360AdvertiserLinkProposals/5678
+    /// Required. The name of the DisplayVideo360AdvertiserLinkProposal to get.
+    /// Example format: properties/1234/displayVideo360AdvertiserLinkProposals/5678
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Request message for ListDisplayVideo360AdvertiserLinkProposals RPC.
+/// Request message for ListDisplayVideo360AdvertiserLinkProposals RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDisplayVideo360AdvertiserLinkProposalsRequest {
-    ///  Required. Example format: properties/1234
+    /// Required. Example format: properties/1234
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  The maximum number of resources to return.
-    ///  If unspecified, at most 50 resources will be returned.
-    ///  The maximum value is 200 (higher values will be coerced to the maximum).
+    /// The maximum number of resources to return.
+    /// If unspecified, at most 50 resources will be returned.
+    /// The maximum value is 200 (higher values will be coerced to the maximum).
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    ///  A page token, received from a previous
-    ///  `ListDisplayVideo360AdvertiserLinkProposals` call. Provide this to retrieve
-    ///  the subsequent page.
+    /// A page token, received from a previous
+    /// `ListDisplayVideo360AdvertiserLinkProposals` call. Provide this to retrieve
+    /// the subsequent page.
     ///
-    ///  When paginating, all other parameters provided to
-    ///  `ListDisplayVideo360AdvertiserLinkProposals` must match the call that
-    ///  provided the page token.
+    /// When paginating, all other parameters provided to
+    /// `ListDisplayVideo360AdvertiserLinkProposals` must match the call that
+    /// provided the page token.
     #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
 }
-///  Response message for ListDisplayVideo360AdvertiserLinkProposals RPC.
+/// Response message for ListDisplayVideo360AdvertiserLinkProposals RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDisplayVideo360AdvertiserLinkProposalsResponse {
-    ///  List of DisplayVideo360AdvertiserLinkProposals.
+    /// List of DisplayVideo360AdvertiserLinkProposals.
     #[prost(message, repeated, tag="1")]
     pub display_video_360_advertiser_link_proposals: ::prost::alloc::vec::Vec<DisplayVideo360AdvertiserLinkProposal>,
-    ///  A token, which can be sent as `page_token` to retrieve the next page.
-    ///  If this field is omitted, there are no subsequent pages.
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-///  Request message for CreateDisplayVideo360AdvertiserLinkProposal RPC.
+/// Request message for CreateDisplayVideo360AdvertiserLinkProposal RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateDisplayVideo360AdvertiserLinkProposalRequest {
-    ///  Required. Example format: properties/1234
+    /// Required. Example format: properties/1234
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Required. The DisplayVideo360AdvertiserLinkProposal to create.
+    /// Required. The DisplayVideo360AdvertiserLinkProposal to create.
     #[prost(message, optional, tag="2")]
     pub display_video_360_advertiser_link_proposal: ::core::option::Option<DisplayVideo360AdvertiserLinkProposal>,
 }
-///  Request message for DeleteDisplayVideo360AdvertiserLinkProposal RPC.
+/// Request message for DeleteDisplayVideo360AdvertiserLinkProposal RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteDisplayVideo360AdvertiserLinkProposalRequest {
-    ///  Required. The name of the DisplayVideo360AdvertiserLinkProposal to delete.
-    ///  Example format: properties/1234/displayVideo360AdvertiserLinkProposals/5678
+    /// Required. The name of the DisplayVideo360AdvertiserLinkProposal to delete.
+    /// Example format: properties/1234/displayVideo360AdvertiserLinkProposals/5678
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Request message for ApproveDisplayVideo360AdvertiserLinkProposal RPC.
+/// Request message for ApproveDisplayVideo360AdvertiserLinkProposal RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ApproveDisplayVideo360AdvertiserLinkProposalRequest {
-    ///  Required. The name of the DisplayVideo360AdvertiserLinkProposal to approve.
-    ///  Example format: properties/1234/displayVideo360AdvertiserLinkProposals/5678
+    /// Required. The name of the DisplayVideo360AdvertiserLinkProposal to approve.
+    /// Example format: properties/1234/displayVideo360AdvertiserLinkProposals/5678
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Response message for ApproveDisplayVideo360AdvertiserLinkProposal RPC.
+/// Response message for ApproveDisplayVideo360AdvertiserLinkProposal RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ApproveDisplayVideo360AdvertiserLinkProposalResponse {
-    ///  The DisplayVideo360AdvertiserLink created as a result of approving the
-    ///  proposal.
+    /// The DisplayVideo360AdvertiserLink created as a result of approving the
+    /// proposal.
     #[prost(message, optional, tag="1")]
     pub display_video_360_advertiser_link: ::core::option::Option<DisplayVideo360AdvertiserLink>,
 }
-///  Request message for CancelDisplayVideo360AdvertiserLinkProposal RPC.
+/// Request message for CancelDisplayVideo360AdvertiserLinkProposal RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CancelDisplayVideo360AdvertiserLinkProposalRequest {
-    ///  Required. The name of the DisplayVideo360AdvertiserLinkProposal to cancel.
-    ///  Example format: properties/1234/displayVideo360AdvertiserLinkProposals/5678
+    /// Required. The name of the DisplayVideo360AdvertiserLinkProposal to cancel.
+    /// Example format: properties/1234/displayVideo360AdvertiserLinkProposals/5678
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Request message for CreateCustomDimension RPC.
+/// Request message for CreateCustomDimension RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateCustomDimensionRequest {
-    ///  Required. Example format: properties/1234
+    /// Required. Example format: properties/1234
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Required. The CustomDimension to create.
+    /// Required. The CustomDimension to create.
     #[prost(message, optional, tag="2")]
     pub custom_dimension: ::core::option::Option<CustomDimension>,
 }
-///  Request message for UpdateCustomDimension RPC.
+/// Request message for UpdateCustomDimension RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateCustomDimensionRequest {
-    ///  The CustomDimension to update
+    /// The CustomDimension to update
     #[prost(message, optional, tag="1")]
     pub custom_dimension: ::core::option::Option<CustomDimension>,
-    ///  Required. The list of fields to be updated. Omitted fields will not be updated.
-    ///  To replace the entire entity, use one path with the string "*" to match
-    ///  all fields.
+    /// Required. The list of fields to be updated. Omitted fields will not be updated.
+    /// To replace the entire entity, use one path with the string "*" to match
+    /// all fields.
     #[prost(message, optional, tag="2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
-///  Request message for ListCustomDimensions RPC.
+/// Request message for ListCustomDimensions RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCustomDimensionsRequest {
-    ///  Required. Example format: properties/1234
+    /// Required. Example format: properties/1234
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  The maximum number of resources to return.
-    ///  If unspecified, at most 50 resources will be returned.
-    ///  The maximum value is 200 (higher values will be coerced to the maximum).
+    /// The maximum number of resources to return.
+    /// If unspecified, at most 50 resources will be returned.
+    /// The maximum value is 200 (higher values will be coerced to the maximum).
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    ///  A page token, received from a previous `ListCustomDimensions` call.
-    ///  Provide this to retrieve the subsequent page.
+    /// A page token, received from a previous `ListCustomDimensions` call.
+    /// Provide this to retrieve the subsequent page.
     ///
-    ///  When paginating, all other parameters provided to `ListCustomDimensions`
-    ///  must match the call that provided the page token.
+    /// When paginating, all other parameters provided to `ListCustomDimensions`
+    /// must match the call that provided the page token.
     #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
 }
-///  Response message for ListCustomDimensions RPC.
+/// Response message for ListCustomDimensions RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCustomDimensionsResponse {
-    ///  List of CustomDimensions.
+    /// List of CustomDimensions.
     #[prost(message, repeated, tag="1")]
     pub custom_dimensions: ::prost::alloc::vec::Vec<CustomDimension>,
-    ///  A token, which can be sent as `page_token` to retrieve the next page.
-    ///  If this field is omitted, there are no subsequent pages.
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-///  Request message for ArchiveCustomDimension RPC.
+/// Request message for ArchiveCustomDimension RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ArchiveCustomDimensionRequest {
-    ///  Required. The name of the CustomDimension to archive.
-    ///  Example format: properties/1234/customDimensions/5678
+    /// Required. The name of the CustomDimension to archive.
+    /// Example format: properties/1234/customDimensions/5678
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Request message for GetCustomDimension RPC.
+/// Request message for GetCustomDimension RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCustomDimensionRequest {
-    ///  Required. The name of the CustomDimension to get.
-    ///  Example format: properties/1234/customDimensions/5678
+    /// Required. The name of the CustomDimension to get.
+    /// Example format: properties/1234/customDimensions/5678
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Request message for CreateCustomMetric RPC.
+/// Request message for CreateCustomMetric RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateCustomMetricRequest {
-    ///  Required. Example format: properties/1234
+    /// Required. Example format: properties/1234
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Required. The CustomMetric to create.
+    /// Required. The CustomMetric to create.
     #[prost(message, optional, tag="2")]
     pub custom_metric: ::core::option::Option<CustomMetric>,
 }
-///  Request message for UpdateCustomMetric RPC.
+/// Request message for UpdateCustomMetric RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateCustomMetricRequest {
-    ///  The CustomMetric to update
+    /// The CustomMetric to update
     #[prost(message, optional, tag="1")]
     pub custom_metric: ::core::option::Option<CustomMetric>,
-    ///  Required. The list of fields to be updated. Omitted fields will not be updated.
-    ///  To replace the entire entity, use one path with the string "*" to match
-    ///  all fields.
+    /// Required. The list of fields to be updated. Omitted fields will not be updated.
+    /// To replace the entire entity, use one path with the string "*" to match
+    /// all fields.
     #[prost(message, optional, tag="2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
-///  Request message for ListCustomMetrics RPC.
+/// Request message for ListCustomMetrics RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCustomMetricsRequest {
-    ///  Required. Example format: properties/1234
+    /// Required. Example format: properties/1234
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  The maximum number of resources to return.
-    ///  If unspecified, at most 50 resources will be returned.
-    ///  The maximum value is 200 (higher values will be coerced to the maximum).
+    /// The maximum number of resources to return.
+    /// If unspecified, at most 50 resources will be returned.
+    /// The maximum value is 200 (higher values will be coerced to the maximum).
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    ///  A page token, received from a previous `ListCustomMetrics` call.
-    ///  Provide this to retrieve the subsequent page.
+    /// A page token, received from a previous `ListCustomMetrics` call.
+    /// Provide this to retrieve the subsequent page.
     ///
-    ///  When paginating, all other parameters provided to `ListCustomMetrics` must
-    ///  match the call that provided the page token.
+    /// When paginating, all other parameters provided to `ListCustomMetrics` must
+    /// match the call that provided the page token.
     #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
 }
-///  Response message for ListCustomMetrics RPC.
+/// Response message for ListCustomMetrics RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCustomMetricsResponse {
-    ///  List of CustomMetrics.
+    /// List of CustomMetrics.
     #[prost(message, repeated, tag="1")]
     pub custom_metrics: ::prost::alloc::vec::Vec<CustomMetric>,
-    ///  A token, which can be sent as `page_token` to retrieve the next page.
-    ///  If this field is omitted, there are no subsequent pages.
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-///  Request message for ArchiveCustomMetric RPC.
+/// Request message for ArchiveCustomMetric RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ArchiveCustomMetricRequest {
-    ///  Required. The name of the CustomMetric to archive.
-    ///  Example format: properties/1234/customMetrics/5678
+    /// Required. The name of the CustomMetric to archive.
+    /// Example format: properties/1234/customMetrics/5678
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Request message for GetCustomMetric RPC.
+/// Request message for GetCustomMetric RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCustomMetricRequest {
-    ///  Required. The name of the CustomMetric to get.
-    ///  Example format: properties/1234/customMetrics/5678
+    /// Required. The name of the CustomMetric to get.
+    /// Example format: properties/1234/customMetrics/5678
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Request message for GetDataRetentionSettings RPC.
+/// Request message for GetDataRetentionSettings RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetDataRetentionSettingsRequest {
-    ///  Required. The name of the settings to lookup.
-    ///  Format:
-    ///  properties/{property}/dataRetentionSettings
-    ///  Example: "properties/1000/dataRetentionSettings"
+    /// Required. The name of the settings to lookup.
+    /// Format:
+    /// properties/{property}/dataRetentionSettings
+    /// Example: "properties/1000/dataRetentionSettings"
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Request message for UpdateDataRetentionSettings RPC.
+/// Request message for UpdateDataRetentionSettings RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateDataRetentionSettingsRequest {
-    ///  Required. The settings to update.
-    ///  The `name` field is used to identify the settings to be updated.
+    /// Required. The settings to update.
+    /// The `name` field is used to identify the settings to be updated.
     #[prost(message, optional, tag="1")]
     pub data_retention_settings: ::core::option::Option<DataRetentionSettings>,
-    ///  Required. The list of fields to be updated. Field names must be in snake case
-    ///  (e.g., "field_to_update"). Omitted fields will not be updated. To replace
-    ///  the entire entity, use one path with the string "*" to match all fields.
+    /// Required. The list of fields to be updated. Field names must be in snake case
+    /// (e.g., "field_to_update"). Omitted fields will not be updated. To replace
+    /// the entire entity, use one path with the string "*" to match all fields.
     #[prost(message, optional, tag="2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
-///  Request message for CreateDataStream RPC.
+/// Request message for CreateDataStream RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateDataStreamRequest {
-    ///  Required. Example format: properties/1234
+    /// Required. Example format: properties/1234
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Required. The DataStream to create.
+    /// Required. The DataStream to create.
     #[prost(message, optional, tag="2")]
     pub data_stream: ::core::option::Option<DataStream>,
 }
-///  Request message for DeleteDataStream RPC.
+/// Request message for DeleteDataStream RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteDataStreamRequest {
-    ///  Required. The name of the DataStream to delete.
-    ///  Example format: properties/1234/dataStreams/5678
+    /// Required. The name of the DataStream to delete.
+    /// Example format: properties/1234/dataStreams/5678
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Request message for UpdateDataStream RPC.
+/// Request message for UpdateDataStream RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateDataStreamRequest {
-    ///  The DataStream to update
+    /// The DataStream to update
     #[prost(message, optional, tag="1")]
     pub data_stream: ::core::option::Option<DataStream>,
-    ///  Required. The list of fields to be updated. Omitted fields will not be updated.
-    ///  To replace the entire entity, use one path with the string "*" to match
-    ///  all fields.
+    /// Required. The list of fields to be updated. Omitted fields will not be updated.
+    /// To replace the entire entity, use one path with the string "*" to match
+    /// all fields.
     #[prost(message, optional, tag="2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
-///  Request message for ListDataStreams RPC.
+/// Request message for ListDataStreams RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDataStreamsRequest {
-    ///  Required. Example format: properties/1234
+    /// Required. Example format: properties/1234
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  The maximum number of resources to return.
-    ///  If unspecified, at most 50 resources will be returned.
-    ///  The maximum value is 200 (higher values will be coerced to the maximum).
+    /// The maximum number of resources to return.
+    /// If unspecified, at most 50 resources will be returned.
+    /// The maximum value is 200 (higher values will be coerced to the maximum).
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    ///  A page token, received from a previous `ListDataStreams` call.
-    ///  Provide this to retrieve the subsequent page.
+    /// A page token, received from a previous `ListDataStreams` call.
+    /// Provide this to retrieve the subsequent page.
     ///
-    ///  When paginating, all other parameters provided to `ListDataStreams` must
-    ///  match the call that provided the page token.
+    /// When paginating, all other parameters provided to `ListDataStreams` must
+    /// match the call that provided the page token.
     #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
 }
-///  Response message for ListDataStreams RPC.
+/// Response message for ListDataStreams RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDataStreamsResponse {
-    ///  List of DataStreams.
+    /// List of DataStreams.
     #[prost(message, repeated, tag="1")]
     pub data_streams: ::prost::alloc::vec::Vec<DataStream>,
-    ///  A token, which can be sent as `page_token` to retrieve the next page.
-    ///  If this field is omitted, there are no subsequent pages.
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-///  Request message for GetDataStream RPC.
+/// Request message for GetDataStream RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetDataStreamRequest {
-    ///  Required. The name of the DataStream to get.
-    ///  Example format: properties/1234/dataStreams/5678
+    /// Required. The name of the DataStream to get.
+    /// Example format: properties/1234/dataStreams/5678
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Request message for GetAudience RPC.
+/// Request message for GetAudience RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAudienceRequest {
-    ///  Required. The name of the Audience to get.
-    ///  Example format: properties/1234/audiences/5678
+    /// Required. The name of the Audience to get.
+    /// Example format: properties/1234/audiences/5678
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Request message for ListAudiences RPC.
+/// Request message for ListAudiences RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAudiencesRequest {
-    ///  Required. Example format: properties/1234
+    /// Required. Example format: properties/1234
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  The maximum number of resources to return.
-    ///  If unspecified, at most 50 resources will be returned.
-    ///  The maximum value is 200 (higher values will be coerced to the maximum).
+    /// The maximum number of resources to return.
+    /// If unspecified, at most 50 resources will be returned.
+    /// The maximum value is 200 (higher values will be coerced to the maximum).
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    ///  A page token, received from a previous `ListAudiences` call. Provide this
-    ///  to retrieve the subsequent page.
+    /// A page token, received from a previous `ListAudiences` call. Provide this
+    /// to retrieve the subsequent page.
     ///
-    ///  When paginating, all other parameters provided to `ListAudiences` must
-    ///  match the call that provided the page token.
+    /// When paginating, all other parameters provided to `ListAudiences` must
+    /// match the call that provided the page token.
     #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
 }
-///  Response message for ListAudiences RPC.
+/// Response message for ListAudiences RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAudiencesResponse {
-    ///  List of Audiences.
+    /// List of Audiences.
     #[prost(message, repeated, tag="1")]
     pub audiences: ::prost::alloc::vec::Vec<Audience>,
-    ///  A token, which can be sent as `page_token` to retrieve the next page.
-    ///  If this field is omitted, there are no subsequent pages.
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-///  Request message for CreateAudience RPC.
+/// Request message for CreateAudience RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateAudienceRequest {
-    ///  Required. Example format: properties/1234
+    /// Required. Example format: properties/1234
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Required. The audience to create.
+    /// Required. The audience to create.
     #[prost(message, optional, tag="2")]
     pub audience: ::core::option::Option<Audience>,
 }
-///  Request message for UpdateAudience RPC.
+/// Request message for UpdateAudience RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateAudienceRequest {
-    ///  Required. The audience to update.
-    ///  The audience's `name` field is used to identify the audience to be updated.
+    /// Required. The audience to update.
+    /// The audience's `name` field is used to identify the audience to be updated.
     #[prost(message, optional, tag="1")]
     pub audience: ::core::option::Option<Audience>,
-    ///  Required. The list of fields to be updated. Field names must be in snake case
-    ///  (e.g., "field_to_update"). Omitted fields will not be updated. To replace
-    ///  the entire entity, use one path with the string "*" to match all fields.
+    /// Required. The list of fields to be updated. Field names must be in snake case
+    /// (e.g., "field_to_update"). Omitted fields will not be updated. To replace
+    /// the entire entity, use one path with the string "*" to match all fields.
     #[prost(message, optional, tag="2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
-///  Request message for ArchiveAudience RPC.
+/// Request message for ArchiveAudience RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ArchiveAudienceRequest {
-    ///  Required. Example format: properties/1234/audiences/5678
+    /// Required. Example format: properties/1234/audiences/5678
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Request message for GetAttributionSettings RPC.
+/// Request message for GetAttributionSettings RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAttributionSettingsRequest {
-    ///  Required. The name of the attribution settings to retrieve.
-    ///  Format: properties/{property}/attributionSettings
+    /// Required. The name of the attribution settings to retrieve.
+    /// Format: properties/{property}/attributionSettings
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Request message for UpdateAttributionSettings RPC
+/// Request message for UpdateAttributionSettings RPC
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateAttributionSettingsRequest {
-    ///  Required. The attribution settings to update.
-    ///  The `name` field is used to identify the settings to be updated.
+    /// Required. The attribution settings to update.
+    /// The `name` field is used to identify the settings to be updated.
     #[prost(message, optional, tag="1")]
     pub attribution_settings: ::core::option::Option<AttributionSettings>,
-    ///  Required. The list of fields to be updated. Field names must be in snake case
-    ///  (e.g., "field_to_update"). Omitted fields will not be updated. To replace
-    ///  the entire entity, use one path with the string "*" to match all fields.
+    /// Required. The list of fields to be updated. Field names must be in snake case
+    /// (e.g., "field_to_update"). Omitted fields will not be updated. To replace
+    /// the entire entity, use one path with the string "*" to match all fields.
     #[prost(message, optional, tag="2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }

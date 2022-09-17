@@ -1,86 +1,86 @@
-///  The user profile information used for logging in to a virtual machine on
-///  Google Compute Engine.
+/// The user profile information used for logging in to a virtual machine on
+/// Google Compute Engine.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LoginProfile {
-    ///  A unique user ID for identifying the user.
+    /// A unique user ID for identifying the user.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  The list of POSIX accounts associated with the Directory API user.
+    /// The list of POSIX accounts associated with the Directory API user.
     #[prost(message, repeated, tag="2")]
     pub posix_accounts: ::prost::alloc::vec::Vec<super::common::PosixAccount>,
-    ///  A map from SSH public key fingerprint to the associated key object.
+    /// A map from SSH public key fingerprint to the associated key object.
     #[prost(map="string, message", tag="3")]
     pub ssh_public_keys: ::std::collections::HashMap<::prost::alloc::string::String, super::common::SshPublicKey>,
-    ///  Indicates if the user is suspended.
+    /// Indicates if the user is suspended.
     #[prost(bool, tag="4")]
     pub suspended: bool,
 }
-///  A request message for deleting a POSIX account entry.
+/// A request message for deleting a POSIX account entry.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeletePosixAccountRequest {
-    ///  A reference to the POSIX account to update. POSIX accounts are identified
-    ///  by the project ID they are associated with. A reference to the POSIX
-    ///  account is in format `users/{user}/projects/{project}`.
+    /// A reference to the POSIX account to update. POSIX accounts are identified
+    /// by the project ID they are associated with. A reference to the POSIX
+    /// account is in format `users/{user}/projects/{project}`.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  A request message for deleting an SSH public key.
+/// A request message for deleting an SSH public key.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteSshPublicKeyRequest {
-    ///  The fingerprint of the public key to update. Public keys are identified by
-    ///  their SHA-256 fingerprint. The fingerprint of the public key is in format
-    ///  `users/{user}/sshPublicKeys/{fingerprint}`.
+    /// The fingerprint of the public key to update. Public keys are identified by
+    /// their SHA-256 fingerprint. The fingerprint of the public key is in format
+    /// `users/{user}/sshPublicKeys/{fingerprint}`.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  A request message for retrieving the login profile information for a user.
+/// A request message for retrieving the login profile information for a user.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetLoginProfileRequest {
-    ///  The unique ID for the user in format `users/{user}`.
+    /// The unique ID for the user in format `users/{user}`.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  A request message for retrieving an SSH public key.
+/// A request message for retrieving an SSH public key.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetSshPublicKeyRequest {
-    ///  The fingerprint of the public key to retrieve. Public keys are identified
-    ///  by their SHA-256 fingerprint. The fingerprint of the public key is in
-    ///  format `users/{user}/sshPublicKeys/{fingerprint}`.
+    /// The fingerprint of the public key to retrieve. Public keys are identified
+    /// by their SHA-256 fingerprint. The fingerprint of the public key is in
+    /// format `users/{user}/sshPublicKeys/{fingerprint}`.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  A request message for importing an SSH public key.
+/// A request message for importing an SSH public key.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportSshPublicKeyRequest {
-    ///  The unique ID for the user in format `users/{user}`.
+    /// The unique ID for the user in format `users/{user}`.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  The SSH public key and expiration time.
+    /// The SSH public key and expiration time.
     #[prost(message, optional, tag="2")]
     pub ssh_public_key: ::core::option::Option<super::common::SshPublicKey>,
-    ///  The project ID of the Google Cloud Platform project.
+    /// The project ID of the Google Cloud Platform project.
     #[prost(string, tag="3")]
     pub project_id: ::prost::alloc::string::String,
 }
-///  A response message for importing an SSH public key.
+/// A response message for importing an SSH public key.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportSshPublicKeyResponse {
-    ///  The login profile information for the user.
+    /// The login profile information for the user.
     #[prost(message, optional, tag="1")]
     pub login_profile: ::core::option::Option<LoginProfile>,
 }
-///  A request message for updating an SSH public key.
+/// A request message for updating an SSH public key.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateSshPublicKeyRequest {
-    ///  The fingerprint of the public key to update. Public keys are identified by
-    ///  their SHA-256 fingerprint. The fingerprint of the public key is in format
-    ///  `users/{user}/sshPublicKeys/{fingerprint}`.
+    /// The fingerprint of the public key to update. Public keys are identified by
+    /// their SHA-256 fingerprint. The fingerprint of the public key is in format
+    /// `users/{user}/sshPublicKeys/{fingerprint}`.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  The SSH public key and expiration time.
+    /// The SSH public key and expiration time.
     #[prost(message, optional, tag="2")]
     pub ssh_public_key: ::core::option::Option<super::common::SshPublicKey>,
-    ///  Mask to control which fields get updated. Updates all if not present.
+    /// Mask to control which fields get updated. Updates all if not present.
     #[prost(message, optional, tag="3")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }

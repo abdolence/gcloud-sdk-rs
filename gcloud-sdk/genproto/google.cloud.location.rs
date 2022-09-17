@@ -1,57 +1,57 @@
-///  The request message for \[Locations.ListLocations][google.cloud.location.Locations.ListLocations\].
+/// The request message for \[Locations.ListLocations][google.cloud.location.Locations.ListLocations\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListLocationsRequest {
-    ///  The resource that owns the locations collection, if applicable.
+    /// The resource that owns the locations collection, if applicable.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  The standard list filter.
+    /// The standard list filter.
     #[prost(string, tag="2")]
     pub filter: ::prost::alloc::string::String,
-    ///  The standard list page size.
+    /// The standard list page size.
     #[prost(int32, tag="3")]
     pub page_size: i32,
-    ///  The standard list page token.
+    /// The standard list page token.
     #[prost(string, tag="4")]
     pub page_token: ::prost::alloc::string::String,
 }
-///  The response message for \[Locations.ListLocations][google.cloud.location.Locations.ListLocations\].
+/// The response message for \[Locations.ListLocations][google.cloud.location.Locations.ListLocations\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListLocationsResponse {
-    ///  A list of locations that matches the specified filter in the request.
+    /// A list of locations that matches the specified filter in the request.
     #[prost(message, repeated, tag="1")]
     pub locations: ::prost::alloc::vec::Vec<Location>,
-    ///  The standard List next-page token.
+    /// The standard List next-page token.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-///  The request message for \[Locations.GetLocation][google.cloud.location.Locations.GetLocation\].
+/// The request message for \[Locations.GetLocation][google.cloud.location.Locations.GetLocation\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetLocationRequest {
-    ///  Resource name for the location.
+    /// Resource name for the location.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  A resource that represents Google Cloud Platform location.
+/// A resource that represents Google Cloud Platform location.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Location {
-    ///  Resource name for the location, which may vary between implementations.
-    ///  For example: `"projects/example-project/locations/us-east1"`
+    /// Resource name for the location, which may vary between implementations.
+    /// For example: `"projects/example-project/locations/us-east1"`
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  The canonical id for this location. For example: `"us-east1"`.
+    /// The canonical id for this location. For example: `"us-east1"`.
     #[prost(string, tag="4")]
     pub location_id: ::prost::alloc::string::String,
-    ///  The friendly name for this location, typically a nearby city name.
-    ///  For example, "Tokyo".
+    /// The friendly name for this location, typically a nearby city name.
+    /// For example, "Tokyo".
     #[prost(string, tag="5")]
     pub display_name: ::prost::alloc::string::String,
-    ///  Cross-service attributes for the location. For example
+    /// Cross-service attributes for the location. For example
     ///
     ///      {"cloud.googleapis.com/region": "us-east1"}
     #[prost(map="string, string", tag="2")]
     pub labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
-    ///  Service-specific metadata. For example the available capacity at the given
-    ///  location.
+    /// Service-specific metadata. For example the available capacity at the given
+    /// location.
     #[prost(message, optional, tag="3")]
     pub metadata: ::core::option::Option<::prost_types::Any>,
 }

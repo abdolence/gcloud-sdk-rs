@@ -1,30 +1,30 @@
-///  The request message for the PublishChannelConnectionEvents method.
+/// The request message for the PublishChannelConnectionEvents method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PublishChannelConnectionEventsRequest {
-    ///  The channel_connection that the events are published from. For example:
-    ///  `projects/{partner_project_id}/locations/{location}/channelConnections/{channel_connection_id}`.
+    /// The channel_connection that the events are published from. For example:
+    /// `projects/{partner_project_id}/locations/{location}/channelConnections/{channel_connection_id}`.
     #[prost(string, tag="1")]
     pub channel_connection: ::prost::alloc::string::String,
-    ///  The CloudEvents v1.0 events to publish. No other types are allowed.
+    /// The CloudEvents v1.0 events to publish. No other types are allowed.
     #[prost(message, repeated, tag="2")]
     pub events: ::prost::alloc::vec::Vec<::prost_types::Any>,
 }
-///  The response message for the PublishChannelConnectionEvents method.
+/// The response message for the PublishChannelConnectionEvents method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PublishChannelConnectionEventsResponse {
 }
-///  The request message for the PublishEvents method.
+/// The request message for the PublishEvents method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PublishEventsRequest {
-    ///  The full name of the channel to publish to. For example:
-    ///  `projects/{project}/locations/{location}/channels/{channel-id}`.
+    /// The full name of the channel to publish to. For example:
+    /// `projects/{project}/locations/{location}/channels/{channel-id}`.
     #[prost(string, tag="1")]
     pub channel: ::prost::alloc::string::String,
-    ///  The CloudEvents v1.0 events to publish. No other types are allowed.
+    /// The CloudEvents v1.0 events to publish. No other types are allowed.
     #[prost(message, repeated, tag="2")]
     pub events: ::prost::alloc::vec::Vec<::prost_types::Any>,
 }
-///  The response message for the PublishEvents method.
+/// The response message for the PublishEvents method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PublishEventsResponse {
 }

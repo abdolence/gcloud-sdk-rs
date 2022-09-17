@@ -1,14 +1,14 @@
-///  The message used by the client to register interest in an entity.
+/// The message used by the client to register interest in an entity.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Request {
-    ///  The `target` value **must** be a valid URL path pointing to an entity
-    ///  to watch. Note that the service name **must** be
-    ///  removed from the target field (e.g., the target field must say
-    ///  "/foo/bar", not "myservice.googleapis.com/foo/bar"). A client is
-    ///  also allowed to pass system-specific parameters in the URL that
-    ///  are only obeyed by some implementations. Some parameters will be
-    ///  implementation-specific. However, some have predefined meaning
-    ///  and are listed here:
+    /// The `target` value **must** be a valid URL path pointing to an entity
+    /// to watch. Note that the service name **must** be
+    /// removed from the target field (e.g., the target field must say
+    /// "/foo/bar", not "myservice.googleapis.com/foo/bar"). A client is
+    /// also allowed to pass system-specific parameters in the URL that
+    /// are only obeyed by some implementations. Some parameters will be
+    /// implementation-specific. However, some have predefined meaning
+    /// and are listed here:
     ///
     ///   * recursive = true|false \[default=false\]
     ///     If set to true, indicates that the client wants to watch all elements
@@ -20,30 +20,30 @@ pub struct Request {
     ///     watching. When watching such an entity, a client must not set recursive
     ///     to true. Otherwise, it will receive an `UNIMPLEMENTED` error.
     ///
-    ///  Normal URL encoding must be used inside `target`.  For example, if a query
-    ///  parameter name or value, or the non-query parameter portion of `target`
-    ///  contains a special character, it must be %-encoded.  We recommend that
-    ///  clients and servers use their runtime's URL library to produce and consume
-    ///  target values.
+    /// Normal URL encoding must be used inside `target`.  For example, if a query
+    /// parameter name or value, or the non-query parameter portion of `target`
+    /// contains a special character, it must be %-encoded.  We recommend that
+    /// clients and servers use their runtime's URL library to produce and consume
+    /// target values.
     #[prost(string, tag="1")]
     pub target: ::prost::alloc::string::String,
-    ///  The `resume_marker` specifies how much of the existing underlying state is
-    ///  delivered to the client when the watch request is received by the
-    ///  system. The client can set this marker in one of the following ways to get
-    ///  different semantics:
+    /// The `resume_marker` specifies how much of the existing underlying state is
+    /// delivered to the client when the watch request is received by the
+    /// system. The client can set this marker in one of the following ways to get
+    /// different semantics:
     ///
-    ///  *   Parameter is not specified or has the value "".
+    /// *   Parameter is not specified or has the value "".
     ///      Semantics: Fetch initial state.
     ///      The client wants the entity's initial state to be delivered. See the
     ///      description in "Initial State".
     ///
-    ///  *   Parameter is set to the string "now" (UTF-8 encoding).
+    /// *   Parameter is set to the string "now" (UTF-8 encoding).
     ///      Semantics: Fetch new changes only.
     ///      The client just wants to get the changes received by the system after
     ///      the watch point. The system may deliver changes from before the watch
     ///      point as well.
     ///
-    ///  *   Parameter is set to a value received in an earlier
+    /// *   Parameter is set to a value received in an earlier
     ///      `Change.resume_marker` field while watching the same entity.
     ///      Semantics: Resume from a specific point.
     ///      The client wants to receive the changes from a specific point; this
@@ -53,64 +53,64 @@ pub struct Request {
     ///      if it is too far behind in the stream), it can raise the
     ///      `FAILED_PRECONDITION` error.
     ///
-    ///  An implementation MUST support an unspecified parameter and the
-    ///  empty string "" marker (initial state fetching) and the "now" marker.
-    ///  It need not support resuming from a specific point.
+    /// An implementation MUST support an unspecified parameter and the
+    /// empty string "" marker (initial state fetching) and the "now" marker.
+    /// It need not support resuming from a specific point.
     #[prost(bytes="vec", tag="2")]
     pub resume_marker: ::prost::alloc::vec::Vec<u8>,
 }
-///  A batch of Change messages.
+/// A batch of Change messages.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ChangeBatch {
-    ///  A list of Change messages.
+    /// A list of Change messages.
     #[prost(message, repeated, tag="1")]
     pub changes: ::prost::alloc::vec::Vec<Change>,
 }
-///  A Change indicates the most recent state of an element.
+/// A Change indicates the most recent state of an element.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Change {
-    ///  Name of the element, interpreted relative to the entity's actual
-    ///  name. "" refers to the entity itself. The element name is a valid
-    ///  UTF-8 string.
+    /// Name of the element, interpreted relative to the entity's actual
+    /// name. "" refers to the entity itself. The element name is a valid
+    /// UTF-8 string.
     #[prost(string, tag="1")]
     pub element: ::prost::alloc::string::String,
-    ///  The state of the `element`.
+    /// The state of the `element`.
     #[prost(enumeration="change::State", tag="2")]
     pub state: i32,
-    ///  The actual change data. This field is present only when `state() == EXISTS`
-    ///  or `state() == ERROR`. Please see
-    ///  \[google.protobuf.Any][google.protobuf.Any\] about how to use the Any type.
+    /// The actual change data. This field is present only when `state() == EXISTS`
+    /// or `state() == ERROR`. Please see
+    /// \[google.protobuf.Any][google.protobuf.Any\] about how to use the Any type.
     #[prost(message, optional, tag="6")]
     pub data: ::core::option::Option<::prost_types::Any>,
-    ///  If present, provides a compact representation of all the messages that have
-    ///  been received by the caller for the given entity, e.g., it could be a
-    ///  sequence number or a multi-part timestamp/version vector. This marker can
-    ///  be provided in the Request message, allowing the caller to resume the
-    ///  stream watching at a specific point without fetching the initial state.
+    /// If present, provides a compact representation of all the messages that have
+    /// been received by the caller for the given entity, e.g., it could be a
+    /// sequence number or a multi-part timestamp/version vector. This marker can
+    /// be provided in the Request message, allowing the caller to resume the
+    /// stream watching at a specific point without fetching the initial state.
     #[prost(bytes="vec", tag="4")]
     pub resume_marker: ::prost::alloc::vec::Vec<u8>,
-    ///  If true, this Change is followed by more Changes that are in the same group
-    ///  as this Change.
+    /// If true, this Change is followed by more Changes that are in the same group
+    /// as this Change.
     #[prost(bool, tag="5")]
     pub continued: bool,
 }
 /// Nested message and enum types in `Change`.
 pub mod change {
-    ///  A reported value can be in one of the following states:
+    /// A reported value can be in one of the following states:
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum State {
-        ///  The element exists and its full value is included in data.
+        /// The element exists and its full value is included in data.
         Exists = 0,
-        ///  The element does not exist.
+        /// The element does not exist.
         DoesNotExist = 1,
-        ///  Element may or may not exist. Used only for initial state delivery when
-        ///  the client is not interested in fetching the initial state. See the
-        ///  "Initial State" section above.
+        /// Element may or may not exist. Used only for initial state delivery when
+        /// the client is not interested in fetching the initial state. See the
+        /// "Initial State" section above.
         InitialStateSkipped = 2,
-        ///  The element may exist, but some error has occurred. More information is
-        ///  available in the data field - the value is a serialized Status
-        ///  proto (from \[google.rpc.Status][\])
+        /// The element may exist, but some error has occurred. More information is
+        /// available in the data field - the value is a serialized Status
+        /// proto (from \[google.rpc.Status][\])
         Error = 3,
     }
     impl State {

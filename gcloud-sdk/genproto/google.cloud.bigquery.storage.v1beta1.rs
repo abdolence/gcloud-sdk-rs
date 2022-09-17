@@ -1,51 +1,51 @@
-///  Arrow schema.
+/// Arrow schema.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ArrowSchema {
-    ///  IPC serialized Arrow schema.
+    /// IPC serialized Arrow schema.
     #[prost(bytes="vec", tag="1")]
     pub serialized_schema: ::prost::alloc::vec::Vec<u8>,
 }
-///  Arrow RecordBatch.
+/// Arrow RecordBatch.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ArrowRecordBatch {
-    ///  IPC serialized Arrow RecordBatch.
+    /// IPC serialized Arrow RecordBatch.
     #[prost(bytes="vec", tag="1")]
     pub serialized_record_batch: ::prost::alloc::vec::Vec<u8>,
-    ///  The count of rows in the returning block.
+    /// The count of rows in the returning block.
     #[prost(int64, tag="2")]
     pub row_count: i64,
 }
-///  Avro schema.
+/// Avro schema.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AvroSchema {
-    ///  Json serialized schema, as described at
-    ///  <https://avro.apache.org/docs/1.8.1/spec.html>
+    /// Json serialized schema, as described at
+    /// <https://avro.apache.org/docs/1.8.1/spec.html>
     #[prost(string, tag="1")]
     pub schema: ::prost::alloc::string::String,
 }
-///  Avro rows.
+/// Avro rows.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AvroRows {
-    ///  Binary serialized rows in a block.
+    /// Binary serialized rows in a block.
     #[prost(bytes="vec", tag="1")]
     pub serialized_binary_rows: ::prost::alloc::vec::Vec<u8>,
-    ///  The count of rows in the returning block.
+    /// The count of rows in the returning block.
     #[prost(int64, tag="2")]
     pub row_count: i64,
 }
-///  Options dictating how we read a table.
+/// Options dictating how we read a table.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TableReadOptions {
-    ///  Optional. Names of the fields in the table that should be read. If empty,
-    ///  all fields will be read. If the specified field is a nested field, all the
-    ///  sub-fields in the field will be selected. The output field order is
-    ///  unrelated to the order of fields in selected_fields.
+    /// Optional. Names of the fields in the table that should be read. If empty,
+    /// all fields will be read. If the specified field is a nested field, all the
+    /// sub-fields in the field will be selected. The output field order is
+    /// unrelated to the order of fields in selected_fields.
     #[prost(string, repeated, tag="1")]
     pub selected_fields: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    ///  Optional. SQL text filtering statement, similar to a WHERE clause in
-    ///  a query. Aggregates are not supported.
+    /// Optional. SQL text filtering statement, similar to a WHERE clause in
+    /// a query. Aggregates are not supported.
     ///
-    ///  Examples: "int_field > 5"
+    /// Examples: "int_field > 5"
     ///            "date_field = CAST('2014-9-27' as DATE)"
     ///            "nullable_field is not NULL"
     ///            "st_equals(geo_field, st_geofromtext("POINT(2, 2)"))"
@@ -53,288 +53,288 @@ pub struct TableReadOptions {
     #[prost(string, tag="2")]
     pub row_restriction: ::prost::alloc::string::String,
 }
-///  Table reference that includes just the 3 strings needed to identify a table.
+/// Table reference that includes just the 3 strings needed to identify a table.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TableReference {
-    ///  The assigned project ID of the project.
+    /// The assigned project ID of the project.
     #[prost(string, tag="1")]
     pub project_id: ::prost::alloc::string::String,
-    ///  The ID of the dataset in the above project.
+    /// The ID of the dataset in the above project.
     #[prost(string, tag="2")]
     pub dataset_id: ::prost::alloc::string::String,
-    ///  The ID of the table in the above dataset.
+    /// The ID of the table in the above dataset.
     #[prost(string, tag="3")]
     pub table_id: ::prost::alloc::string::String,
 }
-///  All fields in this message optional.
+/// All fields in this message optional.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TableModifiers {
-    ///  The snapshot time of the table. If not set, interpreted as now.
+    /// The snapshot time of the table. If not set, interpreted as now.
     #[prost(message, optional, tag="1")]
     pub snapshot_time: ::core::option::Option<::prost_types::Timestamp>,
 }
-///  Information about a single data stream within a read session.
+/// Information about a single data stream within a read session.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Stream {
-    ///  Name of the stream, in the form
-    ///  `projects/{project_id}/locations/{location}/streams/{stream_id}`.
+    /// Name of the stream, in the form
+    /// `projects/{project_id}/locations/{location}/streams/{stream_id}`.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Expresses a point within a given stream using an offset position.
+/// Expresses a point within a given stream using an offset position.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StreamPosition {
-    ///  Identifier for a given Stream.
+    /// Identifier for a given Stream.
     #[prost(message, optional, tag="1")]
     pub stream: ::core::option::Option<Stream>,
-    ///  Position in the stream.
+    /// Position in the stream.
     #[prost(int64, tag="2")]
     pub offset: i64,
 }
-///  Information returned from a `CreateReadSession` request.
+/// Information returned from a `CreateReadSession` request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReadSession {
-    ///  Unique identifier for the session, in the form
-    ///  `projects/{project_id}/locations/{location}/sessions/{session_id}`.
+    /// Unique identifier for the session, in the form
+    /// `projects/{project_id}/locations/{location}/sessions/{session_id}`.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Time at which the session becomes invalid. After this time, subsequent
-    ///  requests to read this Session will return errors.
+    /// Time at which the session becomes invalid. After this time, subsequent
+    /// requests to read this Session will return errors.
     #[prost(message, optional, tag="2")]
     pub expire_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Streams associated with this session.
+    /// Streams associated with this session.
     #[prost(message, repeated, tag="4")]
     pub streams: ::prost::alloc::vec::Vec<Stream>,
-    ///  Table that this ReadSession is reading from.
+    /// Table that this ReadSession is reading from.
     #[prost(message, optional, tag="7")]
     pub table_reference: ::core::option::Option<TableReference>,
-    ///  Any modifiers which are applied when reading from the specified table.
+    /// Any modifiers which are applied when reading from the specified table.
     #[prost(message, optional, tag="8")]
     pub table_modifiers: ::core::option::Option<TableModifiers>,
-    ///  The strategy to use for distributing data among the streams.
+    /// The strategy to use for distributing data among the streams.
     #[prost(enumeration="ShardingStrategy", tag="9")]
     pub sharding_strategy: i32,
-    ///  The schema for the read. If read_options.selected_fields is set, the
-    ///  schema may be different from the table schema as it will only contain
-    ///  the selected fields.
+    /// The schema for the read. If read_options.selected_fields is set, the
+    /// schema may be different from the table schema as it will only contain
+    /// the selected fields.
     #[prost(oneof="read_session::Schema", tags="5, 6")]
     pub schema: ::core::option::Option<read_session::Schema>,
 }
 /// Nested message and enum types in `ReadSession`.
 pub mod read_session {
-    ///  The schema for the read. If read_options.selected_fields is set, the
-    ///  schema may be different from the table schema as it will only contain
-    ///  the selected fields.
+    /// The schema for the read. If read_options.selected_fields is set, the
+    /// schema may be different from the table schema as it will only contain
+    /// the selected fields.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Schema {
-        ///  Avro schema.
+        /// Avro schema.
         #[prost(message, tag="5")]
         AvroSchema(super::AvroSchema),
-        ///  Arrow schema.
+        /// Arrow schema.
         #[prost(message, tag="6")]
         ArrowSchema(super::ArrowSchema),
     }
 }
-///  Creates a new read session, which may include additional options such as
-///  requested parallelism, projection filters and constraints.
+/// Creates a new read session, which may include additional options such as
+/// requested parallelism, projection filters and constraints.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateReadSessionRequest {
-    ///  Required. Reference to the table to read.
+    /// Required. Reference to the table to read.
     #[prost(message, optional, tag="1")]
     pub table_reference: ::core::option::Option<TableReference>,
-    ///  Required. String of the form `projects/{project_id}` indicating the
-    ///  project this ReadSession is associated with. This is the project that will
-    ///  be billed for usage.
+    /// Required. String of the form `projects/{project_id}` indicating the
+    /// project this ReadSession is associated with. This is the project that will
+    /// be billed for usage.
     #[prost(string, tag="6")]
     pub parent: ::prost::alloc::string::String,
-    ///  Any modifiers to the Table (e.g. snapshot timestamp).
+    /// Any modifiers to the Table (e.g. snapshot timestamp).
     #[prost(message, optional, tag="2")]
     pub table_modifiers: ::core::option::Option<TableModifiers>,
-    ///  Initial number of streams. If unset or 0, we will
-    ///  provide a value of streams so as to produce reasonable throughput. Must be
-    ///  non-negative. The number of streams may be lower than the requested number,
-    ///  depending on the amount parallelism that is reasonable for the table and
-    ///  the maximum amount of parallelism allowed by the system.
+    /// Initial number of streams. If unset or 0, we will
+    /// provide a value of streams so as to produce reasonable throughput. Must be
+    /// non-negative. The number of streams may be lower than the requested number,
+    /// depending on the amount parallelism that is reasonable for the table and
+    /// the maximum amount of parallelism allowed by the system.
     ///
-    ///  Streams must be read starting from offset 0.
+    /// Streams must be read starting from offset 0.
     #[prost(int32, tag="3")]
     pub requested_streams: i32,
-    ///  Read options for this session (e.g. column selection, filters).
+    /// Read options for this session (e.g. column selection, filters).
     #[prost(message, optional, tag="4")]
     pub read_options: ::core::option::Option<TableReadOptions>,
-    ///  Data output format. Currently default to Avro.
+    /// Data output format. Currently default to Avro.
     #[prost(enumeration="DataFormat", tag="5")]
     pub format: i32,
-    ///  The strategy to use for distributing data among multiple streams. Currently
-    ///  defaults to liquid sharding.
+    /// The strategy to use for distributing data among multiple streams. Currently
+    /// defaults to liquid sharding.
     #[prost(enumeration="ShardingStrategy", tag="7")]
     pub sharding_strategy: i32,
 }
-///  Requesting row data via `ReadRows` must provide Stream position information.
+/// Requesting row data via `ReadRows` must provide Stream position information.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReadRowsRequest {
-    ///  Required. Identifier of the position in the stream to start reading from.
-    ///  The offset requested must be less than the last row read from ReadRows.
-    ///  Requesting a larger offset is undefined.
+    /// Required. Identifier of the position in the stream to start reading from.
+    /// The offset requested must be less than the last row read from ReadRows.
+    /// Requesting a larger offset is undefined.
     #[prost(message, optional, tag="1")]
     pub read_position: ::core::option::Option<StreamPosition>,
 }
-///  Progress information for a given Stream.
+/// Progress information for a given Stream.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StreamStatus {
-    ///  Number of estimated rows in the current stream. May change over time as
-    ///  different readers in the stream progress at rates which are relatively fast
-    ///  or slow.
+    /// Number of estimated rows in the current stream. May change over time as
+    /// different readers in the stream progress at rates which are relatively fast
+    /// or slow.
     #[prost(int64, tag="1")]
     pub estimated_row_count: i64,
-    ///  A value in the range [0.0, 1.0] that represents the fraction of rows
-    ///  assigned to this stream that have been processed by the server. In the
-    ///  presence of read filters, the server may process more rows than it returns,
-    ///  so this value reflects progress through the pre-filtering rows.
+    /// A value in the range [0.0, 1.0] that represents the fraction of rows
+    /// assigned to this stream that have been processed by the server. In the
+    /// presence of read filters, the server may process more rows than it returns,
+    /// so this value reflects progress through the pre-filtering rows.
     ///
-    ///  This value is only populated for sessions created through the BALANCED
-    ///  sharding strategy.
+    /// This value is only populated for sessions created through the BALANCED
+    /// sharding strategy.
     #[prost(float, tag="2")]
     pub fraction_consumed: f32,
-    ///  Represents the progress of the current stream.
+    /// Represents the progress of the current stream.
     #[prost(message, optional, tag="4")]
     pub progress: ::core::option::Option<Progress>,
-    ///  Whether this stream can be split. For sessions that use the LIQUID sharding
-    ///  strategy, this value is always false. For BALANCED sessions, this value is
-    ///  false when enough data have been read such that no more splits are possible
-    ///  at that point or beyond. For small tables or streams that are the result of
-    ///  a chain of splits, this value may never be true.
+    /// Whether this stream can be split. For sessions that use the LIQUID sharding
+    /// strategy, this value is always false. For BALANCED sessions, this value is
+    /// false when enough data have been read such that no more splits are possible
+    /// at that point or beyond. For small tables or streams that are the result of
+    /// a chain of splits, this value may never be true.
     #[prost(bool, tag="3")]
     pub is_splittable: bool,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Progress {
-    ///  The fraction of rows assigned to the stream that have been processed by the
-    ///  server so far, not including the rows in the current response message.
+    /// The fraction of rows assigned to the stream that have been processed by the
+    /// server so far, not including the rows in the current response message.
     ///
-    ///  This value, along with `at_response_end`, can be used to interpolate the
-    ///  progress made as the rows in the message are being processed using the
-    ///  following formula: `at_response_start + (at_response_end -
-    ///  at_response_start) * rows_processed_from_response / rows_in_response`.
+    /// This value, along with `at_response_end`, can be used to interpolate the
+    /// progress made as the rows in the message are being processed using the
+    /// following formula: `at_response_start + (at_response_end -
+    /// at_response_start) * rows_processed_from_response / rows_in_response`.
     ///
-    ///  Note that if a filter is provided, the `at_response_end` value of the
-    ///  previous response may not necessarily be equal to the `at_response_start`
-    ///  value of the current response.
+    /// Note that if a filter is provided, the `at_response_end` value of the
+    /// previous response may not necessarily be equal to the `at_response_start`
+    /// value of the current response.
     #[prost(float, tag="1")]
     pub at_response_start: f32,
-    ///  Similar to `at_response_start`, except that this value includes the rows in
-    ///  the current response.
+    /// Similar to `at_response_start`, except that this value includes the rows in
+    /// the current response.
     #[prost(float, tag="2")]
     pub at_response_end: f32,
 }
-///  Information on if the current connection is being throttled.
+/// Information on if the current connection is being throttled.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ThrottleStatus {
-    ///  How much this connection is being throttled.
-    ///  0 is no throttling, 100 is completely throttled.
+    /// How much this connection is being throttled.
+    /// 0 is no throttling, 100 is completely throttled.
     #[prost(int32, tag="1")]
     pub throttle_percent: i32,
 }
-///  Response from calling `ReadRows` may include row data, progress and
-///  throttling information.
+/// Response from calling `ReadRows` may include row data, progress and
+/// throttling information.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReadRowsResponse {
-    ///  Number of serialized rows in the rows block. This value is recorded here,
-    ///  in addition to the row_count values in the output-specific messages in
-    ///  `rows`, so that code which needs to record progress through the stream can
-    ///  do so in an output format-independent way.
+    /// Number of serialized rows in the rows block. This value is recorded here,
+    /// in addition to the row_count values in the output-specific messages in
+    /// `rows`, so that code which needs to record progress through the stream can
+    /// do so in an output format-independent way.
     #[prost(int64, tag="6")]
     pub row_count: i64,
-    ///  Estimated stream statistics.
+    /// Estimated stream statistics.
     #[prost(message, optional, tag="2")]
     pub status: ::core::option::Option<StreamStatus>,
-    ///  Throttling status. If unset, the latest response still describes
-    ///  the current throttling status.
+    /// Throttling status. If unset, the latest response still describes
+    /// the current throttling status.
     #[prost(message, optional, tag="5")]
     pub throttle_status: ::core::option::Option<ThrottleStatus>,
-    ///  Row data is returned in format specified during session creation.
+    /// Row data is returned in format specified during session creation.
     #[prost(oneof="read_rows_response::Rows", tags="3, 4")]
     pub rows: ::core::option::Option<read_rows_response::Rows>,
 }
 /// Nested message and enum types in `ReadRowsResponse`.
 pub mod read_rows_response {
-    ///  Row data is returned in format specified during session creation.
+    /// Row data is returned in format specified during session creation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Rows {
-        ///  Serialized row data in AVRO format.
+        /// Serialized row data in AVRO format.
         #[prost(message, tag="3")]
         AvroRows(super::AvroRows),
-        ///  Serialized row data in Arrow RecordBatch format.
+        /// Serialized row data in Arrow RecordBatch format.
         #[prost(message, tag="4")]
         ArrowRecordBatch(super::ArrowRecordBatch),
     }
 }
-///  Information needed to request additional streams for an established read
-///  session.
+/// Information needed to request additional streams for an established read
+/// session.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchCreateReadSessionStreamsRequest {
-    ///  Required. Must be a non-expired session obtained from a call to
-    ///  CreateReadSession. Only the name field needs to be set.
+    /// Required. Must be a non-expired session obtained from a call to
+    /// CreateReadSession. Only the name field needs to be set.
     #[prost(message, optional, tag="1")]
     pub session: ::core::option::Option<ReadSession>,
-    ///  Required. Number of new streams requested. Must be positive.
-    ///  Number of added streams may be less than this, see CreateReadSessionRequest
-    ///  for more information.
+    /// Required. Number of new streams requested. Must be positive.
+    /// Number of added streams may be less than this, see CreateReadSessionRequest
+    /// for more information.
     #[prost(int32, tag="2")]
     pub requested_streams: i32,
 }
-///  The response from `BatchCreateReadSessionStreams` returns the stream
-///  identifiers for the newly created streams.
+/// The response from `BatchCreateReadSessionStreams` returns the stream
+/// identifiers for the newly created streams.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchCreateReadSessionStreamsResponse {
-    ///  Newly added streams.
+    /// Newly added streams.
     #[prost(message, repeated, tag="1")]
     pub streams: ::prost::alloc::vec::Vec<Stream>,
 }
-///  Request information for invoking `FinalizeStream`.
+/// Request information for invoking `FinalizeStream`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FinalizeStreamRequest {
-    ///  Required. Stream to finalize.
+    /// Required. Stream to finalize.
     #[prost(message, optional, tag="2")]
     pub stream: ::core::option::Option<Stream>,
 }
-///  Request information for `SplitReadStream`.
+/// Request information for `SplitReadStream`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SplitReadStreamRequest {
-    ///  Required. Stream to split.
+    /// Required. Stream to split.
     #[prost(message, optional, tag="1")]
     pub original_stream: ::core::option::Option<Stream>,
-    ///  A value in the range (0.0, 1.0) that specifies the fractional point at
-    ///  which the original stream should be split. The actual split point is
-    ///  evaluated on pre-filtered rows, so if a filter is provided, then there is
-    ///  no guarantee that the division of the rows between the new child streams
-    ///  will be proportional to this fractional value. Additionally, because the
-    ///  server-side unit for assigning data is collections of rows, this fraction
-    ///  will always map to to a data storage boundary on the server side.
+    /// A value in the range (0.0, 1.0) that specifies the fractional point at
+    /// which the original stream should be split. The actual split point is
+    /// evaluated on pre-filtered rows, so if a filter is provided, then there is
+    /// no guarantee that the division of the rows between the new child streams
+    /// will be proportional to this fractional value. Additionally, because the
+    /// server-side unit for assigning data is collections of rows, this fraction
+    /// will always map to to a data storage boundary on the server side.
     #[prost(float, tag="2")]
     pub fraction: f32,
 }
-///  Response from `SplitReadStream`.
+/// Response from `SplitReadStream`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SplitReadStreamResponse {
-    ///  Primary stream, which contains the beginning portion of
-    ///  |original_stream|. An empty value indicates that the original stream can no
-    ///  longer be split.
+    /// Primary stream, which contains the beginning portion of
+    /// |original_stream|. An empty value indicates that the original stream can no
+    /// longer be split.
     #[prost(message, optional, tag="1")]
     pub primary_stream: ::core::option::Option<Stream>,
-    ///  Remainder stream, which contains the tail of |original_stream|. An empty
-    ///  value indicates that the original stream can no longer be split.
+    /// Remainder stream, which contains the tail of |original_stream|. An empty
+    /// value indicates that the original stream can no longer be split.
     #[prost(message, optional, tag="2")]
     pub remainder_stream: ::core::option::Option<Stream>,
 }
-///  Data format for input or output data.
+/// Data format for input or output data.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum DataFormat {
-    ///  Data format is unspecified.
+    /// Data format is unspecified.
     Unspecified = 0,
-    ///  Avro is a standard open source row based file format.
-    ///  See <https://avro.apache.org/> for more details.
+    /// Avro is a standard open source row based file format.
+    /// See <https://avro.apache.org/> for more details.
     Avro = 1,
     Arrow = 3,
 }
@@ -351,23 +351,23 @@ impl DataFormat {
         }
     }
 }
-///  Strategy for distributing data among multiple streams in a read session.
+/// Strategy for distributing data among multiple streams in a read session.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum ShardingStrategy {
-    ///  Same as LIQUID.
+    /// Same as LIQUID.
     Unspecified = 0,
-    ///  Assigns data to each stream based on the client's read rate. The faster the
-    ///  client reads from a stream, the more data is assigned to the stream. In
-    ///  this strategy, it's possible to read all data from a single stream even if
-    ///  there are other streams present.
+    /// Assigns data to each stream based on the client's read rate. The faster the
+    /// client reads from a stream, the more data is assigned to the stream. In
+    /// this strategy, it's possible to read all data from a single stream even if
+    /// there are other streams present.
     Liquid = 1,
-    ///  Assigns data to each stream such that roughly the same number of rows can
-    ///  be read from each stream. Because the server-side unit for assigning data
-    ///  is collections of rows, the API does not guarantee that each stream will
-    ///  return the same number or rows. Additionally, the limits are enforced based
-    ///  on the number of pre-filtering rows, so some filters can lead to lopsided
-    ///  assignments.
+    /// Assigns data to each stream such that roughly the same number of rows can
+    /// be read from each stream. Because the server-side unit for assigning data
+    /// is collections of rows, the API does not guarantee that each stream will
+    /// return the same number or rows. Additionally, the limits are enforced based
+    /// on the number of pre-filtering rows, so some filters can lead to lopsided
+    /// assignments.
     Balanced = 2,
 }
 impl ShardingStrategy {

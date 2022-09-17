@@ -1,187 +1,187 @@
-///  A data exchange is a container that lets you share data. Along with the
-///  descriptive information about the data exchange, it contains listings that
-///  reference shared datasets.
+/// A data exchange is a container that lets you share data. Along with the
+/// descriptive information about the data exchange, it contains listings that
+/// reference shared datasets.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataExchange {
-    ///  Output only. The resource name of the data exchange.
-    ///  e.g. `projects/myproject/locations/US/dataExchanges/123`.
+    /// Output only. The resource name of the data exchange.
+    /// e.g. `projects/myproject/locations/US/dataExchanges/123`.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Required. Human-readable display name of the data exchange. The display name must
-    ///  contain only Unicode letters, numbers (0-9), underscores (_), dashes (-),
-    ///  spaces ( ), ampersands (&) and must not start or end with spaces.
-    ///  Default value is an empty string.
-    ///  Max length: 63 bytes.
+    /// Required. Human-readable display name of the data exchange. The display name must
+    /// contain only Unicode letters, numbers (0-9), underscores (_), dashes (-),
+    /// spaces ( ), ampersands (&) and must not start or end with spaces.
+    /// Default value is an empty string.
+    /// Max length: 63 bytes.
     #[prost(string, tag="2")]
     pub display_name: ::prost::alloc::string::String,
-    ///  Optional. Description of the data exchange. The description must not contain Unicode
-    ///  non-characters as well as C0 and C1 control codes except tabs (HT),
-    ///  new lines (LF), carriage returns (CR), and page breaks (FF).
-    ///  Default value is an empty string.
-    ///  Max length: 2000 bytes.
+    /// Optional. Description of the data exchange. The description must not contain Unicode
+    /// non-characters as well as C0 and C1 control codes except tabs (HT),
+    /// new lines (LF), carriage returns (CR), and page breaks (FF).
+    /// Default value is an empty string.
+    /// Max length: 2000 bytes.
     #[prost(string, tag="3")]
     pub description: ::prost::alloc::string::String,
-    ///  Optional. Email or URL of the primary point of contact of the data exchange.
-    ///  Max Length: 1000 bytes.
+    /// Optional. Email or URL of the primary point of contact of the data exchange.
+    /// Max Length: 1000 bytes.
     #[prost(string, tag="4")]
     pub primary_contact: ::prost::alloc::string::String,
-    ///  Optional. Documentation describing the data exchange.
+    /// Optional. Documentation describing the data exchange.
     #[prost(string, tag="5")]
     pub documentation: ::prost::alloc::string::String,
-    ///  Output only. Number of listings contained in the data exchange.
+    /// Output only. Number of listings contained in the data exchange.
     #[prost(int32, tag="6")]
     pub listing_count: i32,
-    ///  Optional. Base64 encoded image representing the data exchange. Max Size: 3.0MiB
-    ///  Expected image dimensions are 512x512 pixels, however the API only
-    ///  performs validation on size of the encoded data.
-    ///  Note: For byte fields, the content of the fields are base64-encoded (which
-    ///  increases the size of the data by 33-36%) when using JSON on the wire.
+    /// Optional. Base64 encoded image representing the data exchange. Max Size: 3.0MiB
+    /// Expected image dimensions are 512x512 pixels, however the API only
+    /// performs validation on size of the encoded data.
+    /// Note: For byte fields, the content of the fields are base64-encoded (which
+    /// increases the size of the data by 33-36%) when using JSON on the wire.
     #[prost(bytes="vec", tag="7")]
     pub icon: ::prost::alloc::vec::Vec<u8>,
 }
-///  Contains details of the data provider.
+/// Contains details of the data provider.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataProvider {
-    ///  Optional. Name of the data provider.
+    /// Optional. Name of the data provider.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Optional. Email or URL of the data provider.
-    ///  Max Length: 1000 bytes.
+    /// Optional. Email or URL of the data provider.
+    /// Max Length: 1000 bytes.
     #[prost(string, tag="2")]
     pub primary_contact: ::prost::alloc::string::String,
 }
-///  Contains details of the listing publisher.
+/// Contains details of the listing publisher.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Publisher {
-    ///  Optional. Name of the listing publisher.
+    /// Optional. Name of the listing publisher.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Optional. Email or URL of the listing publisher.
-    ///  Max Length: 1000 bytes.
+    /// Optional. Email or URL of the listing publisher.
+    /// Max Length: 1000 bytes.
     #[prost(string, tag="2")]
     pub primary_contact: ::prost::alloc::string::String,
 }
-///  Contains the reference that identifies a destination bigquery dataset.
+/// Contains the reference that identifies a destination bigquery dataset.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DestinationDatasetReference {
-    ///  Required. A unique ID for this dataset, without the project name. The ID
-    ///  must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_).
-    ///  The maximum length is 1,024 characters.
+    /// Required. A unique ID for this dataset, without the project name. The ID
+    /// must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_).
+    /// The maximum length is 1,024 characters.
     #[prost(string, tag="1")]
     pub dataset_id: ::prost::alloc::string::String,
-    ///  Required. The ID of the project containing this dataset.
+    /// Required. The ID of the project containing this dataset.
     #[prost(string, tag="2")]
     pub project_id: ::prost::alloc::string::String,
 }
-///  Defines the destination bigquery dataset.
+/// Defines the destination bigquery dataset.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DestinationDataset {
-    ///  Required. A reference that identifies the destination dataset.
+    /// Required. A reference that identifies the destination dataset.
     #[prost(message, optional, tag="1")]
     pub dataset_reference: ::core::option::Option<DestinationDatasetReference>,
-    ///  Optional. A descriptive name for the dataset.
+    /// Optional. A descriptive name for the dataset.
     #[prost(message, optional, tag="2")]
     pub friendly_name: ::core::option::Option<::prost::alloc::string::String>,
-    ///  Optional. A user-friendly description of the dataset.
+    /// Optional. A user-friendly description of the dataset.
     #[prost(message, optional, tag="3")]
     pub description: ::core::option::Option<::prost::alloc::string::String>,
-    ///  Optional. The labels associated with this dataset. You can use these
-    ///  to organize and group your datasets.
-    ///  You can set this property when inserting or updating a dataset.
-    ///  See <https://cloud.google.com/resource-manager/docs/creating-managing-labels>
-    ///  for more information.
+    /// Optional. The labels associated with this dataset. You can use these
+    /// to organize and group your datasets.
+    /// You can set this property when inserting or updating a dataset.
+    /// See <https://cloud.google.com/resource-manager/docs/creating-managing-labels>
+    /// for more information.
     #[prost(map="string, string", tag="4")]
     pub labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
-    ///  Required. The geographic location where the dataset should reside. See
-    ///  <https://cloud.google.com/bigquery/docs/locations> for supported
-    ///  locations.
+    /// Required. The geographic location where the dataset should reside. See
+    /// <https://cloud.google.com/bigquery/docs/locations> for supported
+    /// locations.
     #[prost(string, tag="5")]
     pub location: ::prost::alloc::string::String,
 }
-///  A listing is what gets published into a data exchange that a subscriber can
-///  subscribe to. It contains a reference to the data source along with
-///  descriptive information that will help subscribers find and subscribe the
-///  data.
+/// A listing is what gets published into a data exchange that a subscriber can
+/// subscribe to. It contains a reference to the data source along with
+/// descriptive information that will help subscribers find and subscribe the
+/// data.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Listing {
-    ///  Output only. The resource name of the listing.
-    ///  e.g. `projects/myproject/locations/US/dataExchanges/123/listings/456`
+    /// Output only. The resource name of the listing.
+    /// e.g. `projects/myproject/locations/US/dataExchanges/123/listings/456`
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Required. Human-readable display name of the listing. The display name must contain
-    ///  only Unicode letters, numbers (0-9), underscores (_), dashes (-), spaces
-    ///  ( ), ampersands (&) and can't start or end with spaces.
-    ///  Default value is an empty string.
-    ///  Max length: 63 bytes.
+    /// Required. Human-readable display name of the listing. The display name must contain
+    /// only Unicode letters, numbers (0-9), underscores (_), dashes (-), spaces
+    /// ( ), ampersands (&) and can't start or end with spaces.
+    /// Default value is an empty string.
+    /// Max length: 63 bytes.
     #[prost(string, tag="2")]
     pub display_name: ::prost::alloc::string::String,
-    ///  Optional. Short description of the listing. The description must not contain
-    ///  Unicode non-characters and C0 and C1 control codes except tabs (HT),
-    ///  new lines (LF), carriage returns (CR), and page breaks (FF).
-    ///  Default value is an empty string.
-    ///  Max length: 2000 bytes.
+    /// Optional. Short description of the listing. The description must not contain
+    /// Unicode non-characters and C0 and C1 control codes except tabs (HT),
+    /// new lines (LF), carriage returns (CR), and page breaks (FF).
+    /// Default value is an empty string.
+    /// Max length: 2000 bytes.
     #[prost(string, tag="3")]
     pub description: ::prost::alloc::string::String,
-    ///  Optional. Email or URL of the primary point of contact of the listing.
-    ///  Max Length: 1000 bytes.
+    /// Optional. Email or URL of the primary point of contact of the listing.
+    /// Max Length: 1000 bytes.
     #[prost(string, tag="4")]
     pub primary_contact: ::prost::alloc::string::String,
-    ///  Optional. Documentation describing the listing.
+    /// Optional. Documentation describing the listing.
     #[prost(string, tag="5")]
     pub documentation: ::prost::alloc::string::String,
-    ///  Output only. Current state of the listing.
+    /// Output only. Current state of the listing.
     #[prost(enumeration="listing::State", tag="7")]
     pub state: i32,
-    ///  Optional. Base64 encoded image representing the listing. Max Size: 3.0MiB
-    ///  Expected image dimensions are 512x512 pixels, however the API only
-    ///  performs validation on size of the encoded data.
-    ///  Note: For byte fields, the contents of the field are base64-encoded (which
-    ///  increases the size of the data by 33-36%) when using JSON on the wire.
+    /// Optional. Base64 encoded image representing the listing. Max Size: 3.0MiB
+    /// Expected image dimensions are 512x512 pixels, however the API only
+    /// performs validation on size of the encoded data.
+    /// Note: For byte fields, the contents of the field are base64-encoded (which
+    /// increases the size of the data by 33-36%) when using JSON on the wire.
     #[prost(bytes="vec", tag="8")]
     pub icon: ::prost::alloc::vec::Vec<u8>,
-    ///  Optional. Details of the data provider who owns the source data.
+    /// Optional. Details of the data provider who owns the source data.
     #[prost(message, optional, tag="9")]
     pub data_provider: ::core::option::Option<DataProvider>,
-    ///  Optional. Categories of the listing. Up to two categories are allowed.
+    /// Optional. Categories of the listing. Up to two categories are allowed.
     #[prost(enumeration="listing::Category", repeated, packed="false", tag="10")]
     pub categories: ::prost::alloc::vec::Vec<i32>,
-    ///  Optional. Details of the publisher who owns the listing and who can share
-    ///  the source data.
+    /// Optional. Details of the publisher who owns the listing and who can share
+    /// the source data.
     #[prost(message, optional, tag="11")]
     pub publisher: ::core::option::Option<Publisher>,
-    ///  Optional. Email or URL of the request access of the listing.
-    ///  Subscribers can use this reference to request access.
-    ///  Max Length: 1000 bytes.
+    /// Optional. Email or URL of the request access of the listing.
+    /// Subscribers can use this reference to request access.
+    /// Max Length: 1000 bytes.
     #[prost(string, tag="12")]
     pub request_access: ::prost::alloc::string::String,
-    ///  Listing source.
+    /// Listing source.
     #[prost(oneof="listing::Source", tags="6")]
     pub source: ::core::option::Option<listing::Source>,
 }
 /// Nested message and enum types in `Listing`.
 pub mod listing {
-    ///  A reference to a shared dataset. It is an existing BigQuery dataset with a
-    ///  collection of objects such as tables and views that you want to share
-    ///  with subscribers.
-    ///  When subscriber's subscribe to a listing, Analytics Hub creates a linked
-    ///  dataset in
-    ///  the subscriber's project. A Linked dataset is an opaque, read-only BigQuery
-    ///  dataset that serves as a _symbolic link_ to a shared dataset.
+    /// A reference to a shared dataset. It is an existing BigQuery dataset with a
+    /// collection of objects such as tables and views that you want to share
+    /// with subscribers.
+    /// When subscriber's subscribe to a listing, Analytics Hub creates a linked
+    /// dataset in
+    /// the subscriber's project. A Linked dataset is an opaque, read-only BigQuery
+    /// dataset that serves as a _symbolic link_ to a shared dataset.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct BigQueryDatasetSource {
-        ///  Resource name of the dataset source for this listing.
-        ///  e.g. `projects/myproject/datasets/123`
+        /// Resource name of the dataset source for this listing.
+        /// e.g. `projects/myproject/datasets/123`
         #[prost(string, tag="1")]
         pub dataset: ::prost::alloc::string::String,
     }
-    ///  State of the listing.
+    /// State of the listing.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum State {
-        ///  Default value. This value is unused.
+        /// Default value. This value is unused.
         Unspecified = 0,
-        ///  Subscribable state. Users with dataexchange.listings.subscribe permission
-        ///  can subscribe to this listing.
+        /// Subscribable state. Users with dataexchange.listings.subscribe permission
+        /// can subscribe to this listing.
         Active = 1,
     }
     impl State {
@@ -196,7 +196,7 @@ pub mod listing {
             }
         }
     }
-    ///  Listing categories.
+    /// Listing categories.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum Category {
@@ -251,208 +251,208 @@ pub mod listing {
             }
         }
     }
-    ///  Listing source.
+    /// Listing source.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
-        ///  Required. Shared dataset i.e. BigQuery dataset source.
+        /// Required. Shared dataset i.e. BigQuery dataset source.
         #[prost(message, tag="6")]
         BigqueryDataset(BigQueryDatasetSource),
     }
 }
-///  Message for requesting the list of data exchanges.
+/// Message for requesting the list of data exchanges.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDataExchangesRequest {
-    ///  Required. The parent resource path of the data exchanges.
-    ///  e.g. `projects/myproject/locations/US`.
+    /// Required. The parent resource path of the data exchanges.
+    /// e.g. `projects/myproject/locations/US`.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  The maximum number of results to return in a single response page. Leverage
-    ///  the page tokens to iterate through the entire collection.
+    /// The maximum number of results to return in a single response page. Leverage
+    /// the page tokens to iterate through the entire collection.
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    ///  Page token, returned by a previous call, to request the next page of
-    ///  results.
+    /// Page token, returned by a previous call, to request the next page of
+    /// results.
     #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
 }
-///  Message for response to the list of data exchanges.
+/// Message for response to the list of data exchanges.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDataExchangesResponse {
-    ///  The list of data exchanges.
+    /// The list of data exchanges.
     #[prost(message, repeated, tag="1")]
     pub data_exchanges: ::prost::alloc::vec::Vec<DataExchange>,
-    ///  A token to request the next page of results.
+    /// A token to request the next page of results.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-///  Message for requesting the list of data exchanges from projects in an
-///  organization and location.
+/// Message for requesting the list of data exchanges from projects in an
+/// organization and location.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListOrgDataExchangesRequest {
-    ///  Required. The organization resource path of the projects containing DataExchanges.
-    ///  e.g. `organizations/myorg/locations/US`.
+    /// Required. The organization resource path of the projects containing DataExchanges.
+    /// e.g. `organizations/myorg/locations/US`.
     #[prost(string, tag="1")]
     pub organization: ::prost::alloc::string::String,
-    ///  The maximum number of results to return in a single response page. Leverage
-    ///  the page tokens to iterate through the entire collection.
+    /// The maximum number of results to return in a single response page. Leverage
+    /// the page tokens to iterate through the entire collection.
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    ///  Page token, returned by a previous call, to request the next page of
-    ///  results.
+    /// Page token, returned by a previous call, to request the next page of
+    /// results.
     #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
 }
-///  Message for response to listing data exchanges in an organization and
-///  location.
+/// Message for response to listing data exchanges in an organization and
+/// location.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListOrgDataExchangesResponse {
-    ///  The list of data exchanges.
+    /// The list of data exchanges.
     #[prost(message, repeated, tag="1")]
     pub data_exchanges: ::prost::alloc::vec::Vec<DataExchange>,
-    ///  A token to request the next page of results.
+    /// A token to request the next page of results.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-///  Message for getting a data exchange.
+/// Message for getting a data exchange.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetDataExchangeRequest {
-    ///  Required. The resource name of the data exchange.
-    ///  e.g. `projects/myproject/locations/US/dataExchanges/123`.
+    /// Required. The resource name of the data exchange.
+    /// e.g. `projects/myproject/locations/US/dataExchanges/123`.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Message for creating a data exchange.
+/// Message for creating a data exchange.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateDataExchangeRequest {
-    ///  Required. The parent resource path of the data exchange.
-    ///  e.g. `projects/myproject/locations/US`.
+    /// Required. The parent resource path of the data exchange.
+    /// e.g. `projects/myproject/locations/US`.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Required. The ID of the data exchange.
-    ///  Must contain only Unicode letters, numbers (0-9), underscores (_).
-    ///  Should not use characters that require URL-escaping, or characters
-    ///  outside of ASCII, spaces.
-    ///  Max length: 100 bytes.
+    /// Required. The ID of the data exchange.
+    /// Must contain only Unicode letters, numbers (0-9), underscores (_).
+    /// Should not use characters that require URL-escaping, or characters
+    /// outside of ASCII, spaces.
+    /// Max length: 100 bytes.
     #[prost(string, tag="2")]
     pub data_exchange_id: ::prost::alloc::string::String,
-    ///  Required. The data exchange to create.
+    /// Required. The data exchange to create.
     #[prost(message, optional, tag="3")]
     pub data_exchange: ::core::option::Option<DataExchange>,
 }
-///  Message for updating a data exchange.
+/// Message for updating a data exchange.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateDataExchangeRequest {
-    ///  Required. Field mask specifies the fields to update in the data exchange
-    ///  resource. The fields specified in the
-    ///  `updateMask` are relative to the resource and are not a full request.
+    /// Required. Field mask specifies the fields to update in the data exchange
+    /// resource. The fields specified in the
+    /// `updateMask` are relative to the resource and are not a full request.
     #[prost(message, optional, tag="1")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  Required. The data exchange to update.
+    /// Required. The data exchange to update.
     #[prost(message, optional, tag="2")]
     pub data_exchange: ::core::option::Option<DataExchange>,
 }
-///  Message for deleting a data exchange.
+/// Message for deleting a data exchange.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteDataExchangeRequest {
-    ///  Required. The full name of the data exchange resource that you want to delete.
-    ///  For example, `projects/myproject/locations/US/dataExchanges/123`.
+    /// Required. The full name of the data exchange resource that you want to delete.
+    /// For example, `projects/myproject/locations/US/dataExchanges/123`.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Message for requesting the list of listings.
+/// Message for requesting the list of listings.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListListingsRequest {
-    ///  Required. The parent resource path of the listing.
-    ///  e.g. `projects/myproject/locations/US/dataExchanges/123`.
+    /// Required. The parent resource path of the listing.
+    /// e.g. `projects/myproject/locations/US/dataExchanges/123`.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  The maximum number of results to return in a single response page. Leverage
-    ///  the page tokens to iterate through the entire collection.
+    /// The maximum number of results to return in a single response page. Leverage
+    /// the page tokens to iterate through the entire collection.
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    ///  Page token, returned by a previous call, to request the next page of
-    ///  results.
+    /// Page token, returned by a previous call, to request the next page of
+    /// results.
     #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
 }
-///  Message for response to the list of Listings.
+/// Message for response to the list of Listings.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListListingsResponse {
-    ///  The list of Listing.
+    /// The list of Listing.
     #[prost(message, repeated, tag="1")]
     pub listings: ::prost::alloc::vec::Vec<Listing>,
-    ///  A token to request the next page of results.
+    /// A token to request the next page of results.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-///  Message for getting a listing.
+/// Message for getting a listing.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetListingRequest {
-    ///  Required. The resource name of the listing.
-    ///  e.g. `projects/myproject/locations/US/dataExchanges/123/listings/456`.
+    /// Required. The resource name of the listing.
+    /// e.g. `projects/myproject/locations/US/dataExchanges/123/listings/456`.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Message for creating a listing.
+/// Message for creating a listing.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateListingRequest {
-    ///  Required. The parent resource path of the listing.
-    ///  e.g. `projects/myproject/locations/US/dataExchanges/123`.
+    /// Required. The parent resource path of the listing.
+    /// e.g. `projects/myproject/locations/US/dataExchanges/123`.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Required. The ID of the listing to create.
-    ///  Must contain only Unicode letters, numbers (0-9), underscores (_).
-    ///  Should not use characters that require URL-escaping, or characters
-    ///  outside of ASCII, spaces.
-    ///  Max length: 100 bytes.
+    /// Required. The ID of the listing to create.
+    /// Must contain only Unicode letters, numbers (0-9), underscores (_).
+    /// Should not use characters that require URL-escaping, or characters
+    /// outside of ASCII, spaces.
+    /// Max length: 100 bytes.
     #[prost(string, tag="2")]
     pub listing_id: ::prost::alloc::string::String,
-    ///  Required. The listing to create.
+    /// Required. The listing to create.
     #[prost(message, optional, tag="3")]
     pub listing: ::core::option::Option<Listing>,
 }
-///  Message for updating a Listing.
+/// Message for updating a Listing.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateListingRequest {
-    ///  Required. Field mask specifies the fields to update in the listing resource. The
-    ///  fields specified in the `updateMask` are relative to the resource and are
-    ///  not a full request.
+    /// Required. Field mask specifies the fields to update in the listing resource. The
+    /// fields specified in the `updateMask` are relative to the resource and are
+    /// not a full request.
     #[prost(message, optional, tag="1")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-    ///  Required. The listing to update.
+    /// Required. The listing to update.
     #[prost(message, optional, tag="2")]
     pub listing: ::core::option::Option<Listing>,
 }
-///  Message for deleting a listing.
+/// Message for deleting a listing.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteListingRequest {
-    ///  Required. Resource name of the listing to delete.
-    ///  e.g. `projects/myproject/locations/US/dataExchanges/123/listings/456`.
+    /// Required. Resource name of the listing to delete.
+    /// e.g. `projects/myproject/locations/US/dataExchanges/123/listings/456`.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Message for subscribing to a listing.
+/// Message for subscribing to a listing.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SubscribeListingRequest {
-    ///  Required. Resource name of the listing that you want to subscribe to.
-    ///  e.g. `projects/myproject/locations/US/dataExchanges/123/listings/456`.
+    /// Required. Resource name of the listing that you want to subscribe to.
+    /// e.g. `projects/myproject/locations/US/dataExchanges/123/listings/456`.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Resulting destination of the listing that you subscribed to.
+    /// Resulting destination of the listing that you subscribed to.
     #[prost(oneof="subscribe_listing_request::Destination", tags="3")]
     pub destination: ::core::option::Option<subscribe_listing_request::Destination>,
 }
 /// Nested message and enum types in `SubscribeListingRequest`.
 pub mod subscribe_listing_request {
-    ///  Resulting destination of the listing that you subscribed to.
+    /// Resulting destination of the listing that you subscribed to.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Destination {
-        ///  BigQuery destination dataset to create for the subscriber.
+        /// BigQuery destination dataset to create for the subscriber.
         #[prost(message, tag="3")]
         DestinationDataset(super::DestinationDataset),
     }
 }
-///  Message for response when you subscribe to a listing.
+/// Message for response when you subscribe to a listing.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SubscribeListingResponse {
 }

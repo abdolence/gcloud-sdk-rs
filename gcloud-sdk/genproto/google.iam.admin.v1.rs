@@ -1,173 +1,173 @@
-///  Audit log information specific to Cloud IAM admin APIs. This message is
-///  serialized as an `Any` type in the `ServiceData` message of an
-///  `AuditLog` message.
+/// Audit log information specific to Cloud IAM admin APIs. This message is
+/// serialized as an `Any` type in the `ServiceData` message of an
+/// `AuditLog` message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AuditData {
-    ///  The permission_delta when when creating or updating a Role.
+    /// The permission_delta when when creating or updating a Role.
     #[prost(message, optional, tag="1")]
     pub permission_delta: ::core::option::Option<audit_data::PermissionDelta>,
 }
 /// Nested message and enum types in `AuditData`.
 pub mod audit_data {
-    ///  A PermissionDelta message to record the added_permissions and
-    ///  removed_permissions inside a role.
+    /// A PermissionDelta message to record the added_permissions and
+    /// removed_permissions inside a role.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct PermissionDelta {
-        ///  Added permissions.
+        /// Added permissions.
         #[prost(string, repeated, tag="1")]
         pub added_permissions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-        ///  Removed permissions.
+        /// Removed permissions.
         #[prost(string, repeated, tag="2")]
         pub removed_permissions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
 }
-///  An IAM service account.
+/// An IAM service account.
 ///
-///  A service account is an account for an application or a virtual machine (VM)
-///  instance, not a person. You can use a service account to call Google APIs. To
-///  learn more, read the [overview of service
-///  accounts](<https://cloud.google.com/iam/help/service-accounts/overview>).
+/// A service account is an account for an application or a virtual machine (VM)
+/// instance, not a person. You can use a service account to call Google APIs. To
+/// learn more, read the [overview of service
+/// accounts](<https://cloud.google.com/iam/help/service-accounts/overview>).
 ///
-///  When you create a service account, you specify the project ID that owns the
-///  service account, as well as a name that must be unique within the project.
-///  IAM uses these values to create an email address that identifies the service
-///  account.
+/// When you create a service account, you specify the project ID that owns the
+/// service account, as well as a name that must be unique within the project.
+/// IAM uses these values to create an email address that identifies the service
+/// account.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ServiceAccount {
-    ///  The resource name of the service account.
+    /// The resource name of the service account.
     ///
-    ///  Use one of the following formats:
+    /// Use one of the following formats:
     ///
-    ///  * `projects/{PROJECT_ID}/serviceAccounts/{EMAIL_ADDRESS}`
-    ///  * `projects/{PROJECT_ID}/serviceAccounts/{UNIQUE_ID}`
+    /// * `projects/{PROJECT_ID}/serviceAccounts/{EMAIL_ADDRESS}`
+    /// * `projects/{PROJECT_ID}/serviceAccounts/{UNIQUE_ID}`
     ///
-    ///  As an alternative, you can use the `-` wildcard character instead of the
-    ///  project ID:
+    /// As an alternative, you can use the `-` wildcard character instead of the
+    /// project ID:
     ///
-    ///  * `projects/-/serviceAccounts/{EMAIL_ADDRESS}`
-    ///  * `projects/-/serviceAccounts/{UNIQUE_ID}`
+    /// * `projects/-/serviceAccounts/{EMAIL_ADDRESS}`
+    /// * `projects/-/serviceAccounts/{UNIQUE_ID}`
     ///
-    ///  When possible, avoid using the `-` wildcard character, because it can cause
-    ///  response messages to contain misleading error codes. For example, if you
-    ///  try to get the service account
-    ///  `projects/-/serviceAccounts/fake@example.com`, which does not exist, the
-    ///  response contains an HTTP `403 Forbidden` error instead of a `404 Not
-    ///  Found` error.
+    /// When possible, avoid using the `-` wildcard character, because it can cause
+    /// response messages to contain misleading error codes. For example, if you
+    /// try to get the service account
+    /// `projects/-/serviceAccounts/fake@example.com`, which does not exist, the
+    /// response contains an HTTP `403 Forbidden` error instead of a `404 Not
+    /// Found` error.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Output only. The ID of the project that owns the service account.
+    /// Output only. The ID of the project that owns the service account.
     #[prost(string, tag="2")]
     pub project_id: ::prost::alloc::string::String,
-    ///  Output only. The unique, stable numeric ID for the service account.
+    /// Output only. The unique, stable numeric ID for the service account.
     ///
-    ///  Each service account retains its unique ID even if you delete the service
-    ///  account. For example, if you delete a service account, then create a new
-    ///  service account with the same name, the new service account has a different
-    ///  unique ID than the deleted service account.
+    /// Each service account retains its unique ID even if you delete the service
+    /// account. For example, if you delete a service account, then create a new
+    /// service account with the same name, the new service account has a different
+    /// unique ID than the deleted service account.
     #[prost(string, tag="4")]
     pub unique_id: ::prost::alloc::string::String,
-    ///  Output only. The email address of the service account.
+    /// Output only. The email address of the service account.
     #[prost(string, tag="5")]
     pub email: ::prost::alloc::string::String,
-    ///  Optional. A user-specified, human-readable name for the service account. The maximum
-    ///  length is 100 UTF-8 bytes.
+    /// Optional. A user-specified, human-readable name for the service account. The maximum
+    /// length is 100 UTF-8 bytes.
     #[prost(string, tag="6")]
     pub display_name: ::prost::alloc::string::String,
-    ///  Deprecated. Do not use.
+    /// Deprecated. Do not use.
     #[deprecated]
     #[prost(bytes="vec", tag="7")]
     pub etag: ::prost::alloc::vec::Vec<u8>,
-    ///  Optional. A user-specified, human-readable description of the service account. The
-    ///  maximum length is 256 UTF-8 bytes.
+    /// Optional. A user-specified, human-readable description of the service account. The
+    /// maximum length is 256 UTF-8 bytes.
     #[prost(string, tag="8")]
     pub description: ::prost::alloc::string::String,
-    ///  Output only. The OAuth 2.0 client ID for the service account.
+    /// Output only. The OAuth 2.0 client ID for the service account.
     #[prost(string, tag="9")]
     pub oauth2_client_id: ::prost::alloc::string::String,
-    ///  Output only. Whether the service account is disabled.
+    /// Output only. Whether the service account is disabled.
     #[prost(bool, tag="11")]
     pub disabled: bool,
 }
-///  The service account create request.
+/// The service account create request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateServiceAccountRequest {
-    ///  Required. The resource name of the project associated with the service
-    ///  accounts, such as `projects/my-project-123`.
+    /// Required. The resource name of the project associated with the service
+    /// accounts, such as `projects/my-project-123`.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Required. The account id that is used to generate the service account
-    ///  email address and a stable unique id. It is unique within a project,
-    ///  must be 6-30 characters long, and match the regular expression
-    ///  `\[a-z]([-a-z0-9]*[a-z0-9\])` to comply with RFC1035.
+    /// Required. The account id that is used to generate the service account
+    /// email address and a stable unique id. It is unique within a project,
+    /// must be 6-30 characters long, and match the regular expression
+    /// `\[a-z]([-a-z0-9]*[a-z0-9\])` to comply with RFC1035.
     #[prost(string, tag="2")]
     pub account_id: ::prost::alloc::string::String,
-    ///  The \[ServiceAccount][google.iam.admin.v1.ServiceAccount\] resource to
-    ///  create. Currently, only the following values are user assignable:
-    ///  `display_name` and `description`.
+    /// The \[ServiceAccount][google.iam.admin.v1.ServiceAccount\] resource to
+    /// create. Currently, only the following values are user assignable:
+    /// `display_name` and `description`.
     #[prost(message, optional, tag="3")]
     pub service_account: ::core::option::Option<ServiceAccount>,
 }
-///  The service account list request.
+/// The service account list request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListServiceAccountsRequest {
-    ///  Required. The resource name of the project associated with the service
-    ///  accounts, such as `projects/my-project-123`.
+    /// Required. The resource name of the project associated with the service
+    /// accounts, such as `projects/my-project-123`.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Optional limit on the number of service accounts to include in the
-    ///  response. Further accounts can subsequently be obtained by including the
-    ///  \[ListServiceAccountsResponse.next_page_token][google.iam.admin.v1.ListServiceAccountsResponse.next_page_token\]
-    ///  in a subsequent request.
+    /// Optional limit on the number of service accounts to include in the
+    /// response. Further accounts can subsequently be obtained by including the
+    /// \[ListServiceAccountsResponse.next_page_token][google.iam.admin.v1.ListServiceAccountsResponse.next_page_token\]
+    /// in a subsequent request.
     ///
-    ///  The default is 20, and the maximum is 100.
+    /// The default is 20, and the maximum is 100.
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    ///  Optional pagination token returned in an earlier
-    ///  \[ListServiceAccountsResponse.next_page_token][google.iam.admin.v1.ListServiceAccountsResponse.next_page_token\].
+    /// Optional pagination token returned in an earlier
+    /// \[ListServiceAccountsResponse.next_page_token][google.iam.admin.v1.ListServiceAccountsResponse.next_page_token\].
     #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
 }
-///  The service account list response.
+/// The service account list response.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListServiceAccountsResponse {
-    ///  The list of matching service accounts.
+    /// The list of matching service accounts.
     #[prost(message, repeated, tag="1")]
     pub accounts: ::prost::alloc::vec::Vec<ServiceAccount>,
-    ///  To retrieve the next page of results, set
-    ///  \[ListServiceAccountsRequest.page_token][google.iam.admin.v1.ListServiceAccountsRequest.page_token\]
-    ///  to this value.
+    /// To retrieve the next page of results, set
+    /// \[ListServiceAccountsRequest.page_token][google.iam.admin.v1.ListServiceAccountsRequest.page_token\]
+    /// to this value.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-///  The service account get request.
+/// The service account get request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetServiceAccountRequest {
-    ///  Required. The resource name of the service account in the following format:
-    ///  `projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT}`.
-    ///  Using `-` as a wildcard for the `PROJECT_ID` will infer the project from
-    ///  the account. The `ACCOUNT` value can be the `email` address or the
-    ///  `unique_id` of the service account.
+    /// Required. The resource name of the service account in the following format:
+    /// `projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT}`.
+    /// Using `-` as a wildcard for the `PROJECT_ID` will infer the project from
+    /// the account. The `ACCOUNT` value can be the `email` address or the
+    /// `unique_id` of the service account.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  The service account delete request.
+/// The service account delete request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteServiceAccountRequest {
-    ///  Required. The resource name of the service account in the following format:
-    ///  `projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT}`.
-    ///  Using `-` as a wildcard for the `PROJECT_ID` will infer the project from
-    ///  the account. The `ACCOUNT` value can be the `email` address or the
-    ///  `unique_id` of the service account.
+    /// Required. The resource name of the service account in the following format:
+    /// `projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT}`.
+    /// Using `-` as a wildcard for the `PROJECT_ID` will infer the project from
+    /// the account. The `ACCOUNT` value can be the `email` address or the
+    /// `unique_id` of the service account.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  The service account patch request.
+/// The service account patch request.
 ///
-///  You can patch only the `display_name` and `description` fields. You must use
-///  the `update_mask` field to specify which of these fields you want to patch.
+/// You can patch only the `display_name` and `description` fields. You must use
+/// the `update_mask` field to specify which of these fields you want to patch.
 ///
-///  Only the fields specified in the request are guaranteed to be returned in
-///  the response. Other fields may be empty in the response.
+/// Only the fields specified in the request are guaranteed to be returned in
+/// the response. Other fields may be empty in the response.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchServiceAccountRequest {
     #[prost(message, optional, tag="1")]
@@ -175,74 +175,74 @@ pub struct PatchServiceAccountRequest {
     #[prost(message, optional, tag="2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
-///  The service account undelete request.
+/// The service account undelete request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UndeleteServiceAccountRequest {
-    ///  The resource name of the service account in the following format:
-    ///  `projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT_UNIQUE_ID}`.
-    ///  Using `-` as a wildcard for the `PROJECT_ID` will infer the project from
-    ///  the account.
+    /// The resource name of the service account in the following format:
+    /// `projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT_UNIQUE_ID}`.
+    /// Using `-` as a wildcard for the `PROJECT_ID` will infer the project from
+    /// the account.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UndeleteServiceAccountResponse {
-    ///  Metadata for the restored service account.
+    /// Metadata for the restored service account.
     #[prost(message, optional, tag="1")]
     pub restored_account: ::core::option::Option<ServiceAccount>,
 }
-///  The service account enable request.
+/// The service account enable request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EnableServiceAccountRequest {
-    ///  The resource name of the service account in the following format:
-    ///  `projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT}`.
-    ///  Using `-` as a wildcard for the `PROJECT_ID` will infer the project from
-    ///  the account. The `ACCOUNT` value can be the `email` address or the
-    ///  `unique_id` of the service account.
+    /// The resource name of the service account in the following format:
+    /// `projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT}`.
+    /// Using `-` as a wildcard for the `PROJECT_ID` will infer the project from
+    /// the account. The `ACCOUNT` value can be the `email` address or the
+    /// `unique_id` of the service account.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  The service account disable request.
+/// The service account disable request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DisableServiceAccountRequest {
-    ///  The resource name of the service account in the following format:
-    ///  `projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT}`.
-    ///  Using `-` as a wildcard for the `PROJECT_ID` will infer the project from
-    ///  the account. The `ACCOUNT` value can be the `email` address or the
-    ///  `unique_id` of the service account.
+    /// The resource name of the service account in the following format:
+    /// `projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT}`.
+    /// Using `-` as a wildcard for the `PROJECT_ID` will infer the project from
+    /// the account. The `ACCOUNT` value can be the `email` address or the
+    /// `unique_id` of the service account.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  The service account keys list request.
+/// The service account keys list request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListServiceAccountKeysRequest {
-    ///  Required. The resource name of the service account in the following format:
-    ///  `projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT}`.
+    /// Required. The resource name of the service account in the following format:
+    /// `projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT}`.
     ///
-    ///  Using `-` as a wildcard for the `PROJECT_ID`, will infer the project from
-    ///  the account. The `ACCOUNT` value can be the `email` address or the
-    ///  `unique_id` of the service account.
+    /// Using `-` as a wildcard for the `PROJECT_ID`, will infer the project from
+    /// the account. The `ACCOUNT` value can be the `email` address or the
+    /// `unique_id` of the service account.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Filters the types of keys the user wants to include in the list
-    ///  response. Duplicate key types are not allowed. If no key type
-    ///  is provided, all keys are returned.
+    /// Filters the types of keys the user wants to include in the list
+    /// response. Duplicate key types are not allowed. If no key type
+    /// is provided, all keys are returned.
     #[prost(enumeration="list_service_account_keys_request::KeyType", repeated, tag="2")]
     pub key_types: ::prost::alloc::vec::Vec<i32>,
 }
 /// Nested message and enum types in `ListServiceAccountKeysRequest`.
 pub mod list_service_account_keys_request {
-    ///  `KeyType` filters to selectively retrieve certain varieties
-    ///  of keys.
+    /// `KeyType` filters to selectively retrieve certain varieties
+    /// of keys.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum KeyType {
-        ///  Unspecified key type. The presence of this in the
-        ///  message will immediately result in an error.
+        /// Unspecified key type. The presence of this in the
+        /// message will immediately result in an error.
         Unspecified = 0,
-        ///  User-managed keys (managed and rotated by the user).
+        /// User-managed keys (managed and rotated by the user).
         UserManaged = 1,
-        ///  System-managed keys (managed and rotated by Google).
+        /// System-managed keys (managed and rotated by Google).
         SystemManaged = 2,
     }
     impl KeyType {
@@ -259,330 +259,330 @@ pub mod list_service_account_keys_request {
         }
     }
 }
-///  The service account keys list response.
+/// The service account keys list response.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListServiceAccountKeysResponse {
-    ///  The public keys for the service account.
+    /// The public keys for the service account.
     #[prost(message, repeated, tag="1")]
     pub keys: ::prost::alloc::vec::Vec<ServiceAccountKey>,
 }
-///  The service account key get by id request.
+/// The service account key get by id request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetServiceAccountKeyRequest {
-    ///  Required. The resource name of the service account key in the following format:
-    ///  `projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT}/keys/{key}`.
+    /// Required. The resource name of the service account key in the following format:
+    /// `projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT}/keys/{key}`.
     ///
-    ///  Using `-` as a wildcard for the `PROJECT_ID` will infer the project from
-    ///  the account. The `ACCOUNT` value can be the `email` address or the
-    ///  `unique_id` of the service account.
+    /// Using `-` as a wildcard for the `PROJECT_ID` will infer the project from
+    /// the account. The `ACCOUNT` value can be the `email` address or the
+    /// `unique_id` of the service account.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Optional. The output format of the public key. The default is `TYPE_NONE`, which
-    ///  means that the public key is not returned.
+    /// Optional. The output format of the public key. The default is `TYPE_NONE`, which
+    /// means that the public key is not returned.
     #[prost(enumeration="ServiceAccountPublicKeyType", tag="2")]
     pub public_key_type: i32,
 }
-///  Represents a service account key.
+/// Represents a service account key.
 ///
-///  A service account has two sets of key-pairs: user-managed, and
-///  system-managed.
+/// A service account has two sets of key-pairs: user-managed, and
+/// system-managed.
 ///
-///  User-managed key-pairs can be created and deleted by users.  Users are
-///  responsible for rotating these keys periodically to ensure security of
-///  their service accounts.  Users retain the private key of these key-pairs,
-///  and Google retains ONLY the public key.
+/// User-managed key-pairs can be created and deleted by users.  Users are
+/// responsible for rotating these keys periodically to ensure security of
+/// their service accounts.  Users retain the private key of these key-pairs,
+/// and Google retains ONLY the public key.
 ///
-///  System-managed keys are automatically rotated by Google, and are used for
-///  signing for a maximum of two weeks. The rotation process is probabilistic,
-///  and usage of the new key will gradually ramp up and down over the key's
-///  lifetime.
+/// System-managed keys are automatically rotated by Google, and are used for
+/// signing for a maximum of two weeks. The rotation process is probabilistic,
+/// and usage of the new key will gradually ramp up and down over the key's
+/// lifetime.
 ///
-///  If you cache the public key set for a service account, we recommend that you
-///  update the cache every 15 minutes. User-managed keys can be added and removed
-///  at any time, so it is important to update the cache frequently. For
-///  Google-managed keys, Google will publish a key at least 6 hours before it is
-///  first used for signing and will keep publishing it for at least 6 hours after
-///  it was last used for signing.
+/// If you cache the public key set for a service account, we recommend that you
+/// update the cache every 15 minutes. User-managed keys can be added and removed
+/// at any time, so it is important to update the cache frequently. For
+/// Google-managed keys, Google will publish a key at least 6 hours before it is
+/// first used for signing and will keep publishing it for at least 6 hours after
+/// it was last used for signing.
 ///
-///  Public keys for all service accounts are also published at the OAuth2
-///  Service Account API.
+/// Public keys for all service accounts are also published at the OAuth2
+/// Service Account API.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ServiceAccountKey {
-    ///  The resource name of the service account key in the following format
-    ///  `projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT}/keys/{key}`.
+    /// The resource name of the service account key in the following format
+    /// `projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT}/keys/{key}`.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  The output format for the private key.
-    ///  Only provided in `CreateServiceAccountKey` responses, not
-    ///  in `GetServiceAccountKey` or `ListServiceAccountKey` responses.
+    /// The output format for the private key.
+    /// Only provided in `CreateServiceAccountKey` responses, not
+    /// in `GetServiceAccountKey` or `ListServiceAccountKey` responses.
     ///
-    ///  Google never exposes system-managed private keys, and never retains
-    ///  user-managed private keys.
+    /// Google never exposes system-managed private keys, and never retains
+    /// user-managed private keys.
     #[prost(enumeration="ServiceAccountPrivateKeyType", tag="2")]
     pub private_key_type: i32,
-    ///  Specifies the algorithm (and possibly key size) for the key.
+    /// Specifies the algorithm (and possibly key size) for the key.
     #[prost(enumeration="ServiceAccountKeyAlgorithm", tag="8")]
     pub key_algorithm: i32,
-    ///  The private key data. Only provided in `CreateServiceAccountKey`
-    ///  responses. Make sure to keep the private key data secure because it
-    ///  allows for the assertion of the service account identity.
-    ///  When base64 decoded, the private key data can be used to authenticate with
-    ///  Google API client libraries and with
-    ///  <a href="/sdk/gcloud/reference/auth/activate-service-account">gcloud
-    ///  auth activate-service-account</a>.
+    /// The private key data. Only provided in `CreateServiceAccountKey`
+    /// responses. Make sure to keep the private key data secure because it
+    /// allows for the assertion of the service account identity.
+    /// When base64 decoded, the private key data can be used to authenticate with
+    /// Google API client libraries and with
+    /// <a href="/sdk/gcloud/reference/auth/activate-service-account">gcloud
+    /// auth activate-service-account</a>.
     #[prost(bytes="vec", tag="3")]
     pub private_key_data: ::prost::alloc::vec::Vec<u8>,
-    ///  The public key data. Only provided in `GetServiceAccountKey` responses.
+    /// The public key data. Only provided in `GetServiceAccountKey` responses.
     #[prost(bytes="vec", tag="7")]
     pub public_key_data: ::prost::alloc::vec::Vec<u8>,
-    ///  The key can be used after this timestamp.
+    /// The key can be used after this timestamp.
     #[prost(message, optional, tag="4")]
     pub valid_after_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  The key can be used before this timestamp.
-    ///  For system-managed key pairs, this timestamp is the end time for the
-    ///  private key signing operation. The public key could still be used
-    ///  for verification for a few hours after this time.
+    /// The key can be used before this timestamp.
+    /// For system-managed key pairs, this timestamp is the end time for the
+    /// private key signing operation. The public key could still be used
+    /// for verification for a few hours after this time.
     #[prost(message, optional, tag="5")]
     pub valid_before_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  The key origin.
+    /// The key origin.
     #[prost(enumeration="ServiceAccountKeyOrigin", tag="9")]
     pub key_origin: i32,
-    ///  The key type.
+    /// The key type.
     #[prost(enumeration="list_service_account_keys_request::KeyType", tag="10")]
     pub key_type: i32,
-    ///  The key status.
+    /// The key status.
     #[prost(bool, tag="11")]
     pub disabled: bool,
 }
-///  The service account key create request.
+/// The service account key create request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateServiceAccountKeyRequest {
-    ///  Required. The resource name of the service account in the following format:
-    ///  `projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT}`.
-    ///  Using `-` as a wildcard for the `PROJECT_ID` will infer the project from
-    ///  the account. The `ACCOUNT` value can be the `email` address or the
-    ///  `unique_id` of the service account.
+    /// Required. The resource name of the service account in the following format:
+    /// `projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT}`.
+    /// Using `-` as a wildcard for the `PROJECT_ID` will infer the project from
+    /// the account. The `ACCOUNT` value can be the `email` address or the
+    /// `unique_id` of the service account.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  The output format of the private key. The default value is
-    ///  `TYPE_GOOGLE_CREDENTIALS_FILE`, which is the Google Credentials File
-    ///  format.
+    /// The output format of the private key. The default value is
+    /// `TYPE_GOOGLE_CREDENTIALS_FILE`, which is the Google Credentials File
+    /// format.
     #[prost(enumeration="ServiceAccountPrivateKeyType", tag="2")]
     pub private_key_type: i32,
-    ///  Which type of key and algorithm to use for the key.
-    ///  The default is currently a 2K RSA key.  However this may change in the
-    ///  future.
+    /// Which type of key and algorithm to use for the key.
+    /// The default is currently a 2K RSA key.  However this may change in the
+    /// future.
     #[prost(enumeration="ServiceAccountKeyAlgorithm", tag="3")]
     pub key_algorithm: i32,
 }
-///  The service account key upload request.
+/// The service account key upload request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UploadServiceAccountKeyRequest {
-    ///  The resource name of the service account in the following format:
-    ///  `projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT}`.
-    ///  Using `-` as a wildcard for the `PROJECT_ID` will infer the project from
-    ///  the account. The `ACCOUNT` value can be the `email` address or the
-    ///  `unique_id` of the service account.
+    /// The resource name of the service account in the following format:
+    /// `projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT}`.
+    /// Using `-` as a wildcard for the `PROJECT_ID` will infer the project from
+    /// the account. The `ACCOUNT` value can be the `email` address or the
+    /// `unique_id` of the service account.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  The public key to associate with the service account. Must be an RSA public
-    ///  key that is wrapped in an X.509 v3 certificate. Include the first line,
-    ///  `-----BEGIN CERTIFICATE-----`, and the last line,
-    ///  `-----END CERTIFICATE-----`.
+    /// The public key to associate with the service account. Must be an RSA public
+    /// key that is wrapped in an X.509 v3 certificate. Include the first line,
+    /// `-----BEGIN CERTIFICATE-----`, and the last line,
+    /// `-----END CERTIFICATE-----`.
     #[prost(bytes="vec", tag="2")]
     pub public_key_data: ::prost::alloc::vec::Vec<u8>,
 }
-///  The service account key delete request.
+/// The service account key delete request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteServiceAccountKeyRequest {
-    ///  Required. The resource name of the service account key in the following format:
-    ///  `projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT}/keys/{key}`.
-    ///  Using `-` as a wildcard for the `PROJECT_ID` will infer the project from
-    ///  the account. The `ACCOUNT` value can be the `email` address or the
-    ///  `unique_id` of the service account.
+    /// Required. The resource name of the service account key in the following format:
+    /// `projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT}/keys/{key}`.
+    /// Using `-` as a wildcard for the `PROJECT_ID` will infer the project from
+    /// the account. The `ACCOUNT` value can be the `email` address or the
+    /// `unique_id` of the service account.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  The service account key disable request.
+/// The service account key disable request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DisableServiceAccountKeyRequest {
-    ///  Required. The resource name of the service account key in the following format:
-    ///  `projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT}/keys/{key}`.
+    /// Required. The resource name of the service account key in the following format:
+    /// `projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT}/keys/{key}`.
     ///
-    ///  Using `-` as a wildcard for the `PROJECT_ID` will infer the project from
-    ///  the account. The `ACCOUNT` value can be the `email` address or the
-    ///  `unique_id` of the service account.
+    /// Using `-` as a wildcard for the `PROJECT_ID` will infer the project from
+    /// the account. The `ACCOUNT` value can be the `email` address or the
+    /// `unique_id` of the service account.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  The service account key enable request.
+/// The service account key enable request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EnableServiceAccountKeyRequest {
-    ///  Required. The resource name of the service account key in the following format:
-    ///  `projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT}/keys/{key}`.
+    /// Required. The resource name of the service account key in the following format:
+    /// `projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT}/keys/{key}`.
     ///
-    ///  Using `-` as a wildcard for the `PROJECT_ID` will infer the project from
-    ///  the account. The `ACCOUNT` value can be the `email` address or the
-    ///  `unique_id` of the service account.
+    /// Using `-` as a wildcard for the `PROJECT_ID` will infer the project from
+    /// the account. The `ACCOUNT` value can be the `email` address or the
+    /// `unique_id` of the service account.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Deprecated. [Migrate to Service Account Credentials
-///  API](<https://cloud.google.com/iam/help/credentials/migrate-api>).
+/// Deprecated. [Migrate to Service Account Credentials
+/// API](<https://cloud.google.com/iam/help/credentials/migrate-api>).
 ///
-///  The service account sign blob request.
+/// The service account sign blob request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SignBlobRequest {
-    ///  Required. Deprecated. [Migrate to Service Account Credentials
-    ///  API](<https://cloud.google.com/iam/help/credentials/migrate-api>).
+    /// Required. Deprecated. [Migrate to Service Account Credentials
+    /// API](<https://cloud.google.com/iam/help/credentials/migrate-api>).
     ///
-    ///  The resource name of the service account in the following format:
-    ///  `projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT}`.
-    ///  Using `-` as a wildcard for the `PROJECT_ID` will infer the project from
-    ///  the account. The `ACCOUNT` value can be the `email` address or the
-    ///  `unique_id` of the service account.
+    /// The resource name of the service account in the following format:
+    /// `projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT}`.
+    /// Using `-` as a wildcard for the `PROJECT_ID` will infer the project from
+    /// the account. The `ACCOUNT` value can be the `email` address or the
+    /// `unique_id` of the service account.
     #[deprecated]
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Required. Deprecated. [Migrate to Service Account Credentials
-    ///  API](<https://cloud.google.com/iam/help/credentials/migrate-api>).
+    /// Required. Deprecated. [Migrate to Service Account Credentials
+    /// API](<https://cloud.google.com/iam/help/credentials/migrate-api>).
     ///
-    ///  The bytes to sign.
+    /// The bytes to sign.
     #[deprecated]
     #[prost(bytes="vec", tag="2")]
     pub bytes_to_sign: ::prost::alloc::vec::Vec<u8>,
 }
-///  Deprecated. [Migrate to Service Account Credentials
-///  API](<https://cloud.google.com/iam/help/credentials/migrate-api>).
+/// Deprecated. [Migrate to Service Account Credentials
+/// API](<https://cloud.google.com/iam/help/credentials/migrate-api>).
 ///
-///  The service account sign blob response.
+/// The service account sign blob response.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SignBlobResponse {
-    ///  Deprecated. [Migrate to Service Account Credentials
-    ///  API](<https://cloud.google.com/iam/help/credentials/migrate-api>).
+    /// Deprecated. [Migrate to Service Account Credentials
+    /// API](<https://cloud.google.com/iam/help/credentials/migrate-api>).
     ///
-    ///  The id of the key used to sign the blob.
+    /// The id of the key used to sign the blob.
     #[deprecated]
     #[prost(string, tag="1")]
     pub key_id: ::prost::alloc::string::String,
-    ///  Deprecated. [Migrate to Service Account Credentials
-    ///  API](<https://cloud.google.com/iam/help/credentials/migrate-api>).
+    /// Deprecated. [Migrate to Service Account Credentials
+    /// API](<https://cloud.google.com/iam/help/credentials/migrate-api>).
     ///
-    ///  The signed blob.
+    /// The signed blob.
     #[deprecated]
     #[prost(bytes="vec", tag="2")]
     pub signature: ::prost::alloc::vec::Vec<u8>,
 }
-///  Deprecated. [Migrate to Service Account Credentials
-///  API](<https://cloud.google.com/iam/help/credentials/migrate-api>).
+/// Deprecated. [Migrate to Service Account Credentials
+/// API](<https://cloud.google.com/iam/help/credentials/migrate-api>).
 ///
-///  The service account sign JWT request.
+/// The service account sign JWT request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SignJwtRequest {
-    ///  Required. Deprecated. [Migrate to Service Account Credentials
-    ///  API](<https://cloud.google.com/iam/help/credentials/migrate-api>).
+    /// Required. Deprecated. [Migrate to Service Account Credentials
+    /// API](<https://cloud.google.com/iam/help/credentials/migrate-api>).
     ///
-    ///  The resource name of the service account in the following format:
-    ///  `projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT}`.
-    ///  Using `-` as a wildcard for the `PROJECT_ID` will infer the project from
-    ///  the account. The `ACCOUNT` value can be the `email` address or the
-    ///  `unique_id` of the service account.
+    /// The resource name of the service account in the following format:
+    /// `projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT}`.
+    /// Using `-` as a wildcard for the `PROJECT_ID` will infer the project from
+    /// the account. The `ACCOUNT` value can be the `email` address or the
+    /// `unique_id` of the service account.
     #[deprecated]
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Required. Deprecated. [Migrate to Service Account Credentials
-    ///  API](<https://cloud.google.com/iam/help/credentials/migrate-api>).
+    /// Required. Deprecated. [Migrate to Service Account Credentials
+    /// API](<https://cloud.google.com/iam/help/credentials/migrate-api>).
     ///
-    ///  The JWT payload to sign. Must be a serialized JSON object that contains a
-    ///  JWT Claims Set. For example: `{"sub": "user@example.com", "iat": 313435}`
+    /// The JWT payload to sign. Must be a serialized JSON object that contains a
+    /// JWT Claims Set. For example: `{"sub": "user@example.com", "iat": 313435}`
     ///
-    ///  If the JWT Claims Set contains an expiration time (`exp`) claim, it must be
-    ///  an integer timestamp that is not in the past and no more than 12 hours in
-    ///  the future.
+    /// If the JWT Claims Set contains an expiration time (`exp`) claim, it must be
+    /// an integer timestamp that is not in the past and no more than 12 hours in
+    /// the future.
     ///
-    ///  If the JWT Claims Set does not contain an expiration time (`exp`) claim,
-    ///  this claim is added automatically, with a timestamp that is 1 hour in the
-    ///  future.
+    /// If the JWT Claims Set does not contain an expiration time (`exp`) claim,
+    /// this claim is added automatically, with a timestamp that is 1 hour in the
+    /// future.
     #[deprecated]
     #[prost(string, tag="2")]
     pub payload: ::prost::alloc::string::String,
 }
-///  Deprecated. [Migrate to Service Account Credentials
-///  API](<https://cloud.google.com/iam/help/credentials/migrate-api>).
+/// Deprecated. [Migrate to Service Account Credentials
+/// API](<https://cloud.google.com/iam/help/credentials/migrate-api>).
 ///
-///  The service account sign JWT response.
+/// The service account sign JWT response.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SignJwtResponse {
-    ///  Deprecated. [Migrate to Service Account Credentials
-    ///  API](<https://cloud.google.com/iam/help/credentials/migrate-api>).
+    /// Deprecated. [Migrate to Service Account Credentials
+    /// API](<https://cloud.google.com/iam/help/credentials/migrate-api>).
     ///
-    ///  The id of the key used to sign the JWT.
+    /// The id of the key used to sign the JWT.
     #[deprecated]
     #[prost(string, tag="1")]
     pub key_id: ::prost::alloc::string::String,
-    ///  Deprecated. [Migrate to Service Account Credentials
-    ///  API](<https://cloud.google.com/iam/help/credentials/migrate-api>).
+    /// Deprecated. [Migrate to Service Account Credentials
+    /// API](<https://cloud.google.com/iam/help/credentials/migrate-api>).
     ///
-    ///  The signed JWT.
+    /// The signed JWT.
     #[deprecated]
     #[prost(string, tag="2")]
     pub signed_jwt: ::prost::alloc::string::String,
 }
-///  A role in the Identity and Access Management API.
+/// A role in the Identity and Access Management API.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Role {
-    ///  The name of the role.
+    /// The name of the role.
     ///
-    ///  When Role is used in CreateRole, the role name must not be set.
+    /// When Role is used in CreateRole, the role name must not be set.
     ///
-    ///  When Role is used in output and other input such as UpdateRole, the role
-    ///  name is the complete path, e.g., roles/logging.viewer for predefined roles
-    ///  and organizations/{ORGANIZATION_ID}/roles/logging.viewer for custom roles.
+    /// When Role is used in output and other input such as UpdateRole, the role
+    /// name is the complete path, e.g., roles/logging.viewer for predefined roles
+    /// and organizations/{ORGANIZATION_ID}/roles/logging.viewer for custom roles.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Optional. A human-readable title for the role.  Typically this
-    ///  is limited to 100 UTF-8 bytes.
+    /// Optional. A human-readable title for the role.  Typically this
+    /// is limited to 100 UTF-8 bytes.
     #[prost(string, tag="2")]
     pub title: ::prost::alloc::string::String,
-    ///  Optional. A human-readable description for the role.
+    /// Optional. A human-readable description for the role.
     #[prost(string, tag="3")]
     pub description: ::prost::alloc::string::String,
-    ///  The names of the permissions this role grants when bound in an IAM policy.
+    /// The names of the permissions this role grants when bound in an IAM policy.
     #[prost(string, repeated, tag="7")]
     pub included_permissions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    ///  The current launch stage of the role. If the `ALPHA` launch stage has been
-    ///  selected for a role, the `stage` field will not be included in the
-    ///  returned definition for the role.
+    /// The current launch stage of the role. If the `ALPHA` launch stage has been
+    /// selected for a role, the `stage` field will not be included in the
+    /// returned definition for the role.
     #[prost(enumeration="role::RoleLaunchStage", tag="8")]
     pub stage: i32,
-    ///  Used to perform a consistent read-modify-write.
+    /// Used to perform a consistent read-modify-write.
     #[prost(bytes="vec", tag="9")]
     pub etag: ::prost::alloc::vec::Vec<u8>,
-    ///  The current deleted state of the role. This field is read only.
-    ///  It will be ignored in calls to CreateRole and UpdateRole.
+    /// The current deleted state of the role. This field is read only.
+    /// It will be ignored in calls to CreateRole and UpdateRole.
     #[prost(bool, tag="11")]
     pub deleted: bool,
 }
 /// Nested message and enum types in `Role`.
 pub mod role {
-    ///  A stage representing a role's lifecycle phase.
+    /// A stage representing a role's lifecycle phase.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum RoleLaunchStage {
-        ///  The user has indicated this role is currently in an Alpha phase. If this
-        ///  launch stage is selected, the `stage` field will not be included when
-        ///  requesting the definition for a given role.
+        /// The user has indicated this role is currently in an Alpha phase. If this
+        /// launch stage is selected, the `stage` field will not be included when
+        /// requesting the definition for a given role.
         Alpha = 0,
-        ///  The user has indicated this role is currently in a Beta phase.
+        /// The user has indicated this role is currently in a Beta phase.
         Beta = 1,
-        ///  The user has indicated this role is generally available.
+        /// The user has indicated this role is generally available.
         Ga = 2,
-        ///  The user has indicated this role is being deprecated.
+        /// The user has indicated this role is being deprecated.
         Deprecated = 4,
-        ///  This role is disabled and will not contribute permissions to any
-        ///  principals it is granted to in policies.
+        /// This role is disabled and will not contribute permissions to any
+        /// principals it is granted to in policies.
         Disabled = 5,
-        ///  The user has indicated this role is currently in an EAP phase.
+        /// The user has indicated this role is currently in an EAP phase.
         Eap = 6,
     }
     impl RoleLaunchStage {
@@ -602,321 +602,321 @@ pub mod role {
         }
     }
 }
-///  The grantable role query request.
+/// The grantable role query request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryGrantableRolesRequest {
-    ///  Required. The full resource name to query from the list of grantable roles.
+    /// Required. The full resource name to query from the list of grantable roles.
     ///
-    ///  The name follows the Google Cloud Platform resource format.
-    ///  For example, a Cloud Platform project with id `my-project` will be named
-    ///  `//cloudresourcemanager.googleapis.com/projects/my-project`.
+    /// The name follows the Google Cloud Platform resource format.
+    /// For example, a Cloud Platform project with id `my-project` will be named
+    /// `//cloudresourcemanager.googleapis.com/projects/my-project`.
     #[prost(string, tag="1")]
     pub full_resource_name: ::prost::alloc::string::String,
     #[prost(enumeration="RoleView", tag="2")]
     pub view: i32,
-    ///  Optional limit on the number of roles to include in the response.
+    /// Optional limit on the number of roles to include in the response.
     ///
-    ///  The default is 300, and the maximum is 1,000.
+    /// The default is 300, and the maximum is 1,000.
     #[prost(int32, tag="3")]
     pub page_size: i32,
-    ///  Optional pagination token returned in an earlier
-    ///  QueryGrantableRolesResponse.
+    /// Optional pagination token returned in an earlier
+    /// QueryGrantableRolesResponse.
     #[prost(string, tag="4")]
     pub page_token: ::prost::alloc::string::String,
 }
-///  The grantable role query response.
+/// The grantable role query response.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryGrantableRolesResponse {
-    ///  The list of matching roles.
+    /// The list of matching roles.
     #[prost(message, repeated, tag="1")]
     pub roles: ::prost::alloc::vec::Vec<Role>,
-    ///  To retrieve the next page of results, set
-    ///  `QueryGrantableRolesRequest.page_token` to this value.
+    /// To retrieve the next page of results, set
+    /// `QueryGrantableRolesRequest.page_token` to this value.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-///  The request to get all roles defined under a resource.
+/// The request to get all roles defined under a resource.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRolesRequest {
-    ///  The `parent` parameter's value depends on the target resource for the
-    ///  request, namely
-    ///  \[`roles`\](<https://cloud.google.com/iam/reference/rest/v1/roles>),
-    ///  \[`projects`\](<https://cloud.google.com/iam/reference/rest/v1/projects.roles>),
-    ///  or
-    ///  \[`organizations`\](<https://cloud.google.com/iam/reference/rest/v1/organizations.roles>).
-    ///  Each resource type's `parent` value format is described below:
+    /// The `parent` parameter's value depends on the target resource for the
+    /// request, namely
+    /// \[`roles`\](<https://cloud.google.com/iam/reference/rest/v1/roles>),
+    /// \[`projects`\](<https://cloud.google.com/iam/reference/rest/v1/projects.roles>),
+    /// or
+    /// \[`organizations`\](<https://cloud.google.com/iam/reference/rest/v1/organizations.roles>).
+    /// Each resource type's `parent` value format is described below:
     ///
-    ///  * \[`roles.list()`\](<https://cloud.google.com/iam/reference/rest/v1/roles/list>): An empty string.
+    /// * \[`roles.list()`\](<https://cloud.google.com/iam/reference/rest/v1/roles/list>): An empty string.
     ///    This method doesn't require a resource; it simply returns all
     ///    [predefined
     ///    roles](<https://cloud.google.com/iam/docs/understanding-roles#predefined_roles>)
     ///    in Cloud IAM. Example request URL: `<https://iam.googleapis.com/v1/roles`>
     ///
-    ///  * \[`projects.roles.list()`\](<https://cloud.google.com/iam/reference/rest/v1/projects.roles/list>):
+    /// * \[`projects.roles.list()`\](<https://cloud.google.com/iam/reference/rest/v1/projects.roles/list>):
     ///    `projects/{PROJECT_ID}`. This method lists all project-level
     ///    [custom
     ///    roles](<https://cloud.google.com/iam/docs/understanding-custom-roles>).
     ///    Example request URL:
     ///    `<https://iam.googleapis.com/v1/projects/{PROJECT_ID}/roles`>
     ///
-    ///  * \[`organizations.roles.list()`\](<https://cloud.google.com/iam/reference/rest/v1/organizations.roles/list>):
+    /// * \[`organizations.roles.list()`\](<https://cloud.google.com/iam/reference/rest/v1/organizations.roles/list>):
     ///    `organizations/{ORGANIZATION_ID}`. This method lists all
     ///    organization-level [custom
     ///    roles](<https://cloud.google.com/iam/docs/understanding-custom-roles>).
     ///    Example request URL:
     ///    `<https://iam.googleapis.com/v1/organizations/{ORGANIZATION_ID}/roles`>
     ///
-    ///  Note: Wildcard (*) values are invalid; you must specify a complete project
-    ///  ID or organization ID.
+    /// Note: Wildcard (*) values are invalid; you must specify a complete project
+    /// ID or organization ID.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Optional limit on the number of roles to include in the response.
+    /// Optional limit on the number of roles to include in the response.
     ///
-    ///  The default is 300, and the maximum is 1,000.
+    /// The default is 300, and the maximum is 1,000.
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    ///  Optional pagination token returned in an earlier ListRolesResponse.
+    /// Optional pagination token returned in an earlier ListRolesResponse.
     #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
-    ///  Optional view for the returned Role objects. When `FULL` is specified,
-    ///  the `includedPermissions` field is returned, which includes a list of all
-    ///  permissions in the role. The default value is `BASIC`, which does not
-    ///  return the `includedPermissions` field.
+    /// Optional view for the returned Role objects. When `FULL` is specified,
+    /// the `includedPermissions` field is returned, which includes a list of all
+    /// permissions in the role. The default value is `BASIC`, which does not
+    /// return the `includedPermissions` field.
     #[prost(enumeration="RoleView", tag="4")]
     pub view: i32,
-    ///  Include Roles that have been deleted.
+    /// Include Roles that have been deleted.
     #[prost(bool, tag="6")]
     pub show_deleted: bool,
 }
-///  The response containing the roles defined under a resource.
+/// The response containing the roles defined under a resource.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRolesResponse {
-    ///  The Roles defined on this resource.
+    /// The Roles defined on this resource.
     #[prost(message, repeated, tag="1")]
     pub roles: ::prost::alloc::vec::Vec<Role>,
-    ///  To retrieve the next page of results, set
-    ///  `ListRolesRequest.page_token` to this value.
+    /// To retrieve the next page of results, set
+    /// `ListRolesRequest.page_token` to this value.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-///  The request to get the definition of an existing role.
+/// The request to get the definition of an existing role.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetRoleRequest {
-    ///  The `name` parameter's value depends on the target resource for the
-    ///  request, namely
-    ///  \[`roles`\](<https://cloud.google.com/iam/reference/rest/v1/roles>),
-    ///  \[`projects`\](<https://cloud.google.com/iam/reference/rest/v1/projects.roles>),
-    ///  or
-    ///  \[`organizations`\](<https://cloud.google.com/iam/reference/rest/v1/organizations.roles>).
-    ///  Each resource type's `name` value format is described below:
+    /// The `name` parameter's value depends on the target resource for the
+    /// request, namely
+    /// \[`roles`\](<https://cloud.google.com/iam/reference/rest/v1/roles>),
+    /// \[`projects`\](<https://cloud.google.com/iam/reference/rest/v1/projects.roles>),
+    /// or
+    /// \[`organizations`\](<https://cloud.google.com/iam/reference/rest/v1/organizations.roles>).
+    /// Each resource type's `name` value format is described below:
     ///
-    ///  * \[`roles.get()`\](<https://cloud.google.com/iam/reference/rest/v1/roles/get>): `roles/{ROLE_NAME}`.
+    /// * \[`roles.get()`\](<https://cloud.google.com/iam/reference/rest/v1/roles/get>): `roles/{ROLE_NAME}`.
     ///    This method returns results from all
     ///    [predefined
     ///    roles](<https://cloud.google.com/iam/docs/understanding-roles#predefined_roles>)
     ///    in Cloud IAM. Example request URL:
     ///    `<https://iam.googleapis.com/v1/roles/{ROLE_NAME}`>
     ///
-    ///  * \[`projects.roles.get()`\](<https://cloud.google.com/iam/reference/rest/v1/projects.roles/get>):
+    /// * \[`projects.roles.get()`\](<https://cloud.google.com/iam/reference/rest/v1/projects.roles/get>):
     ///    `projects/{PROJECT_ID}/roles/{CUSTOM_ROLE_ID}`. This method returns only
     ///    [custom
     ///    roles](<https://cloud.google.com/iam/docs/understanding-custom-roles>) that
     ///    have been created at the project level. Example request URL:
     ///    `<https://iam.googleapis.com/v1/projects/{PROJECT_ID}/roles/{CUSTOM_ROLE_ID}`>
     ///
-    ///  * \[`organizations.roles.get()`\](<https://cloud.google.com/iam/reference/rest/v1/organizations.roles/get>):
+    /// * \[`organizations.roles.get()`\](<https://cloud.google.com/iam/reference/rest/v1/organizations.roles/get>):
     ///    `organizations/{ORGANIZATION_ID}/roles/{CUSTOM_ROLE_ID}`. This method
     ///    returns only [custom
     ///    roles](<https://cloud.google.com/iam/docs/understanding-custom-roles>) that
     ///    have been created at the organization level. Example request URL:
     ///    `<https://iam.googleapis.com/v1/organizations/{ORGANIZATION_ID}/roles/{CUSTOM_ROLE_ID}`>
     ///
-    ///  Note: Wildcard (*) values are invalid; you must specify a complete project
-    ///  ID or organization ID.
+    /// Note: Wildcard (*) values are invalid; you must specify a complete project
+    /// ID or organization ID.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  The request to create a new role.
+/// The request to create a new role.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateRoleRequest {
-    ///  The `parent` parameter's value depends on the target resource for the
-    ///  request, namely
-    ///  \[`projects`\](<https://cloud.google.com/iam/reference/rest/v1/projects.roles>)
-    ///  or
-    ///  \[`organizations`\](<https://cloud.google.com/iam/reference/rest/v1/organizations.roles>).
-    ///  Each resource type's `parent` value format is described below:
+    /// The `parent` parameter's value depends on the target resource for the
+    /// request, namely
+    /// \[`projects`\](<https://cloud.google.com/iam/reference/rest/v1/projects.roles>)
+    /// or
+    /// \[`organizations`\](<https://cloud.google.com/iam/reference/rest/v1/organizations.roles>).
+    /// Each resource type's `parent` value format is described below:
     ///
-    ///  * \[`projects.roles.create()`\](<https://cloud.google.com/iam/reference/rest/v1/projects.roles/create>):
+    /// * \[`projects.roles.create()`\](<https://cloud.google.com/iam/reference/rest/v1/projects.roles/create>):
     ///    `projects/{PROJECT_ID}`. This method creates project-level
     ///    [custom
     ///    roles](<https://cloud.google.com/iam/docs/understanding-custom-roles>).
     ///    Example request URL:
     ///    `<https://iam.googleapis.com/v1/projects/{PROJECT_ID}/roles`>
     ///
-    ///  * \[`organizations.roles.create()`\](<https://cloud.google.com/iam/reference/rest/v1/organizations.roles/create>):
+    /// * \[`organizations.roles.create()`\](<https://cloud.google.com/iam/reference/rest/v1/organizations.roles/create>):
     ///    `organizations/{ORGANIZATION_ID}`. This method creates organization-level
     ///    [custom
     ///    roles](<https://cloud.google.com/iam/docs/understanding-custom-roles>).
     ///    Example request URL:
     ///    `<https://iam.googleapis.com/v1/organizations/{ORGANIZATION_ID}/roles`>
     ///
-    ///  Note: Wildcard (*) values are invalid; you must specify a complete project
-    ///  ID or organization ID.
+    /// Note: Wildcard (*) values are invalid; you must specify a complete project
+    /// ID or organization ID.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  The role ID to use for this role.
+    /// The role ID to use for this role.
     ///
-    ///  A role ID may contain alphanumeric characters, underscores (`_`), and
-    ///  periods (`.`). It must contain a minimum of 3 characters and a maximum of
-    ///  64 characters.
+    /// A role ID may contain alphanumeric characters, underscores (`_`), and
+    /// periods (`.`). It must contain a minimum of 3 characters and a maximum of
+    /// 64 characters.
     #[prost(string, tag="2")]
     pub role_id: ::prost::alloc::string::String,
-    ///  The Role resource to create.
+    /// The Role resource to create.
     #[prost(message, optional, tag="3")]
     pub role: ::core::option::Option<Role>,
 }
-///  The request to update a role.
+/// The request to update a role.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateRoleRequest {
-    ///  The `name` parameter's value depends on the target resource for the
-    ///  request, namely
-    ///  \[`projects`\](<https://cloud.google.com/iam/reference/rest/v1/projects.roles>)
-    ///  or
-    ///  \[`organizations`\](<https://cloud.google.com/iam/reference/rest/v1/organizations.roles>).
-    ///  Each resource type's `name` value format is described below:
+    /// The `name` parameter's value depends on the target resource for the
+    /// request, namely
+    /// \[`projects`\](<https://cloud.google.com/iam/reference/rest/v1/projects.roles>)
+    /// or
+    /// \[`organizations`\](<https://cloud.google.com/iam/reference/rest/v1/organizations.roles>).
+    /// Each resource type's `name` value format is described below:
     ///
-    ///  * \[`projects.roles.patch()`\](<https://cloud.google.com/iam/reference/rest/v1/projects.roles/patch>):
+    /// * \[`projects.roles.patch()`\](<https://cloud.google.com/iam/reference/rest/v1/projects.roles/patch>):
     ///    `projects/{PROJECT_ID}/roles/{CUSTOM_ROLE_ID}`. This method updates only
     ///    [custom
     ///    roles](<https://cloud.google.com/iam/docs/understanding-custom-roles>) that
     ///    have been created at the project level. Example request URL:
     ///    `<https://iam.googleapis.com/v1/projects/{PROJECT_ID}/roles/{CUSTOM_ROLE_ID}`>
     ///
-    ///  * \[`organizations.roles.patch()`\](<https://cloud.google.com/iam/reference/rest/v1/organizations.roles/patch>):
+    /// * \[`organizations.roles.patch()`\](<https://cloud.google.com/iam/reference/rest/v1/organizations.roles/patch>):
     ///    `organizations/{ORGANIZATION_ID}/roles/{CUSTOM_ROLE_ID}`. This method
     ///    updates only [custom
     ///    roles](<https://cloud.google.com/iam/docs/understanding-custom-roles>) that
     ///    have been created at the organization level. Example request URL:
     ///    `<https://iam.googleapis.com/v1/organizations/{ORGANIZATION_ID}/roles/{CUSTOM_ROLE_ID}`>
     ///
-    ///  Note: Wildcard (*) values are invalid; you must specify a complete project
-    ///  ID or organization ID.
+    /// Note: Wildcard (*) values are invalid; you must specify a complete project
+    /// ID or organization ID.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  The updated role.
+    /// The updated role.
     #[prost(message, optional, tag="2")]
     pub role: ::core::option::Option<Role>,
-    ///  A mask describing which fields in the Role have changed.
+    /// A mask describing which fields in the Role have changed.
     #[prost(message, optional, tag="3")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
-///  The request to delete an existing role.
+/// The request to delete an existing role.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteRoleRequest {
-    ///  The `name` parameter's value depends on the target resource for the
-    ///  request, namely
-    ///  \[`projects`\](<https://cloud.google.com/iam/reference/rest/v1/projects.roles>)
-    ///  or
-    ///  \[`organizations`\](<https://cloud.google.com/iam/reference/rest/v1/organizations.roles>).
-    ///  Each resource type's `name` value format is described below:
+    /// The `name` parameter's value depends on the target resource for the
+    /// request, namely
+    /// \[`projects`\](<https://cloud.google.com/iam/reference/rest/v1/projects.roles>)
+    /// or
+    /// \[`organizations`\](<https://cloud.google.com/iam/reference/rest/v1/organizations.roles>).
+    /// Each resource type's `name` value format is described below:
     ///
-    ///  * \[`projects.roles.delete()`\](<https://cloud.google.com/iam/reference/rest/v1/projects.roles/delete>):
+    /// * \[`projects.roles.delete()`\](<https://cloud.google.com/iam/reference/rest/v1/projects.roles/delete>):
     ///    `projects/{PROJECT_ID}/roles/{CUSTOM_ROLE_ID}`. This method deletes only
     ///    [custom
     ///    roles](<https://cloud.google.com/iam/docs/understanding-custom-roles>) that
     ///    have been created at the project level. Example request URL:
     ///    `<https://iam.googleapis.com/v1/projects/{PROJECT_ID}/roles/{CUSTOM_ROLE_ID}`>
     ///
-    ///  * \[`organizations.roles.delete()`\](<https://cloud.google.com/iam/reference/rest/v1/organizations.roles/delete>):
+    /// * \[`organizations.roles.delete()`\](<https://cloud.google.com/iam/reference/rest/v1/organizations.roles/delete>):
     ///    `organizations/{ORGANIZATION_ID}/roles/{CUSTOM_ROLE_ID}`. This method
     ///    deletes only [custom
     ///    roles](<https://cloud.google.com/iam/docs/understanding-custom-roles>) that
     ///    have been created at the organization level. Example request URL:
     ///    `<https://iam.googleapis.com/v1/organizations/{ORGANIZATION_ID}/roles/{CUSTOM_ROLE_ID}`>
     ///
-    ///  Note: Wildcard (*) values are invalid; you must specify a complete project
-    ///  ID or organization ID.
+    /// Note: Wildcard (*) values are invalid; you must specify a complete project
+    /// ID or organization ID.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Used to perform a consistent read-modify-write.
+    /// Used to perform a consistent read-modify-write.
     #[prost(bytes="vec", tag="2")]
     pub etag: ::prost::alloc::vec::Vec<u8>,
 }
-///  The request to undelete an existing role.
+/// The request to undelete an existing role.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UndeleteRoleRequest {
-    ///  The `name` parameter's value depends on the target resource for the
-    ///  request, namely
-    ///  \[`projects`\](<https://cloud.google.com/iam/reference/rest/v1/projects.roles>)
-    ///  or
-    ///  \[`organizations`\](<https://cloud.google.com/iam/reference/rest/v1/organizations.roles>).
-    ///  Each resource type's `name` value format is described below:
+    /// The `name` parameter's value depends on the target resource for the
+    /// request, namely
+    /// \[`projects`\](<https://cloud.google.com/iam/reference/rest/v1/projects.roles>)
+    /// or
+    /// \[`organizations`\](<https://cloud.google.com/iam/reference/rest/v1/organizations.roles>).
+    /// Each resource type's `name` value format is described below:
     ///
-    ///  * \[`projects.roles.undelete()`\](<https://cloud.google.com/iam/reference/rest/v1/projects.roles/undelete>):
+    /// * \[`projects.roles.undelete()`\](<https://cloud.google.com/iam/reference/rest/v1/projects.roles/undelete>):
     ///    `projects/{PROJECT_ID}/roles/{CUSTOM_ROLE_ID}`. This method undeletes
     ///    only [custom
     ///    roles](<https://cloud.google.com/iam/docs/understanding-custom-roles>) that
     ///    have been created at the project level. Example request URL:
     ///    `<https://iam.googleapis.com/v1/projects/{PROJECT_ID}/roles/{CUSTOM_ROLE_ID}`>
     ///
-    ///  * \[`organizations.roles.undelete()`\](<https://cloud.google.com/iam/reference/rest/v1/organizations.roles/undelete>):
+    /// * \[`organizations.roles.undelete()`\](<https://cloud.google.com/iam/reference/rest/v1/organizations.roles/undelete>):
     ///    `organizations/{ORGANIZATION_ID}/roles/{CUSTOM_ROLE_ID}`. This method
     ///    undeletes only [custom
     ///    roles](<https://cloud.google.com/iam/docs/understanding-custom-roles>) that
     ///    have been created at the organization level. Example request URL:
     ///    `<https://iam.googleapis.com/v1/organizations/{ORGANIZATION_ID}/roles/{CUSTOM_ROLE_ID}`>
     ///
-    ///  Note: Wildcard (*) values are invalid; you must specify a complete project
-    ///  ID or organization ID.
+    /// Note: Wildcard (*) values are invalid; you must specify a complete project
+    /// ID or organization ID.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Used to perform a consistent read-modify-write.
+    /// Used to perform a consistent read-modify-write.
     #[prost(bytes="vec", tag="2")]
     pub etag: ::prost::alloc::vec::Vec<u8>,
 }
-///  A permission which can be included by a role.
+/// A permission which can be included by a role.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Permission {
-    ///  The name of this Permission.
+    /// The name of this Permission.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  The title of this Permission.
+    /// The title of this Permission.
     #[prost(string, tag="2")]
     pub title: ::prost::alloc::string::String,
-    ///  A brief description of what this Permission is used for.
-    ///  This permission can ONLY be used in predefined roles.
+    /// A brief description of what this Permission is used for.
+    /// This permission can ONLY be used in predefined roles.
     #[prost(string, tag="3")]
     pub description: ::prost::alloc::string::String,
     #[deprecated]
     #[prost(bool, tag="4")]
     pub only_in_predefined_roles: bool,
-    ///  The current launch stage of the permission.
+    /// The current launch stage of the permission.
     #[prost(enumeration="permission::PermissionLaunchStage", tag="5")]
     pub stage: i32,
-    ///  The current custom role support level.
+    /// The current custom role support level.
     #[prost(enumeration="permission::CustomRolesSupportLevel", tag="6")]
     pub custom_roles_support_level: i32,
-    ///  The service API associated with the permission is not enabled.
+    /// The service API associated with the permission is not enabled.
     #[prost(bool, tag="7")]
     pub api_disabled: bool,
-    ///  The preferred name for this permission. If present, then this permission is
-    ///  an alias of, and equivalent to, the listed primary_permission.
+    /// The preferred name for this permission. If present, then this permission is
+    /// an alias of, and equivalent to, the listed primary_permission.
     #[prost(string, tag="8")]
     pub primary_permission: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `Permission`.
 pub mod permission {
-    ///  A stage representing a permission's lifecycle phase.
+    /// A stage representing a permission's lifecycle phase.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum PermissionLaunchStage {
-        ///  The permission is currently in an alpha phase.
+        /// The permission is currently in an alpha phase.
         Alpha = 0,
-        ///  The permission is currently in a beta phase.
+        /// The permission is currently in a beta phase.
         Beta = 1,
-        ///  The permission is generally available.
+        /// The permission is generally available.
         Ga = 2,
-        ///  The permission is being deprecated.
+        /// The permission is being deprecated.
         Deprecated = 3,
     }
     impl PermissionLaunchStage {
@@ -933,15 +933,15 @@ pub mod permission {
             }
         }
     }
-    ///  The state of the permission with regards to custom roles.
+    /// The state of the permission with regards to custom roles.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum CustomRolesSupportLevel {
-        ///  Default state. Permission is fully supported for custom role use.
+        /// Default state. Permission is fully supported for custom role use.
         Supported = 0,
-        ///  Permission is being tested to check custom role compatibility.
+        /// Permission is being tested to check custom role compatibility.
         Testing = 1,
-        ///  Permission is not supported for custom role use.
+        /// Permission is not supported for custom role use.
         NotSupported = 2,
     }
     impl CustomRolesSupportLevel {
@@ -958,138 +958,138 @@ pub mod permission {
         }
     }
 }
-///  A request to get permissions which can be tested on a resource.
+/// A request to get permissions which can be tested on a resource.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryTestablePermissionsRequest {
-    ///  Required. The full resource name to query from the list of testable
-    ///  permissions.
+    /// Required. The full resource name to query from the list of testable
+    /// permissions.
     ///
-    ///  The name follows the Google Cloud Platform resource format.
-    ///  For example, a Cloud Platform project with id `my-project` will be named
-    ///  `//cloudresourcemanager.googleapis.com/projects/my-project`.
+    /// The name follows the Google Cloud Platform resource format.
+    /// For example, a Cloud Platform project with id `my-project` will be named
+    /// `//cloudresourcemanager.googleapis.com/projects/my-project`.
     #[prost(string, tag="1")]
     pub full_resource_name: ::prost::alloc::string::String,
-    ///  Optional limit on the number of permissions to include in the response.
+    /// Optional limit on the number of permissions to include in the response.
     ///
-    ///  The default is 100, and the maximum is 1,000.
+    /// The default is 100, and the maximum is 1,000.
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    ///  Optional pagination token returned in an earlier
-    ///  QueryTestablePermissionsRequest.
+    /// Optional pagination token returned in an earlier
+    /// QueryTestablePermissionsRequest.
     #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
 }
-///  The response containing permissions which can be tested on a resource.
+/// The response containing permissions which can be tested on a resource.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryTestablePermissionsResponse {
-    ///  The Permissions testable on the requested resource.
+    /// The Permissions testable on the requested resource.
     #[prost(message, repeated, tag="1")]
     pub permissions: ::prost::alloc::vec::Vec<Permission>,
-    ///  To retrieve the next page of results, set
-    ///  `QueryTestableRolesRequest.page_token` to this value.
+    /// To retrieve the next page of results, set
+    /// `QueryTestableRolesRequest.page_token` to this value.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-///  A request to get the list of auditable services for a resource.
+/// A request to get the list of auditable services for a resource.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryAuditableServicesRequest {
-    ///  Required. The full resource name to query from the list of auditable
-    ///  services.
+    /// Required. The full resource name to query from the list of auditable
+    /// services.
     ///
-    ///  The name follows the Google Cloud Platform resource format.
-    ///  For example, a Cloud Platform project with id `my-project` will be named
-    ///  `//cloudresourcemanager.googleapis.com/projects/my-project`.
+    /// The name follows the Google Cloud Platform resource format.
+    /// For example, a Cloud Platform project with id `my-project` will be named
+    /// `//cloudresourcemanager.googleapis.com/projects/my-project`.
     #[prost(string, tag="1")]
     pub full_resource_name: ::prost::alloc::string::String,
 }
-///  A response containing a list of auditable services for a resource.
+/// A response containing a list of auditable services for a resource.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryAuditableServicesResponse {
-    ///  The auditable services for a resource.
+    /// The auditable services for a resource.
     #[prost(message, repeated, tag="1")]
     pub services: ::prost::alloc::vec::Vec<query_auditable_services_response::AuditableService>,
 }
 /// Nested message and enum types in `QueryAuditableServicesResponse`.
 pub mod query_auditable_services_response {
-    ///  Contains information about an auditable service.
+    /// Contains information about an auditable service.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AuditableService {
-        ///  Public name of the service.
-        ///  For example, the service name for Cloud IAM is 'iam.googleapis.com'.
+        /// Public name of the service.
+        /// For example, the service name for Cloud IAM is 'iam.googleapis.com'.
         #[prost(string, tag="1")]
         pub name: ::prost::alloc::string::String,
     }
 }
-///  The request to lint a Cloud IAM policy object.
+/// The request to lint a Cloud IAM policy object.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LintPolicyRequest {
-    ///  The full resource name of the policy this lint request is about.
+    /// The full resource name of the policy this lint request is about.
     ///
-    ///  The name follows the Google Cloud Platform (GCP) resource format.
-    ///  For example, a GCP project with ID `my-project` will be named
-    ///  `//cloudresourcemanager.googleapis.com/projects/my-project`.
+    /// The name follows the Google Cloud Platform (GCP) resource format.
+    /// For example, a GCP project with ID `my-project` will be named
+    /// `//cloudresourcemanager.googleapis.com/projects/my-project`.
     ///
-    ///  The resource name is not used to read the policy instance from the Cloud
-    ///  IAM database. The candidate policy for lint has to be provided in the same
-    ///  request object.
+    /// The resource name is not used to read the policy instance from the Cloud
+    /// IAM database. The candidate policy for lint has to be provided in the same
+    /// request object.
     #[prost(string, tag="1")]
     pub full_resource_name: ::prost::alloc::string::String,
-    ///  Required. The Cloud IAM object to be linted.
+    /// Required. The Cloud IAM object to be linted.
     #[prost(oneof="lint_policy_request::LintObject", tags="5")]
     pub lint_object: ::core::option::Option<lint_policy_request::LintObject>,
 }
 /// Nested message and enum types in `LintPolicyRequest`.
 pub mod lint_policy_request {
-    ///  Required. The Cloud IAM object to be linted.
+    /// Required. The Cloud IAM object to be linted.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum LintObject {
-        ///  \[google.iam.v1.Binding.condition\] \[google.iam.v1.Binding.condition\] object to be linted.
+        /// \[google.iam.v1.Binding.condition\] \[google.iam.v1.Binding.condition\] object to be linted.
         #[prost(message, tag="5")]
         Condition(super::super::super::super::r#type::Expr),
     }
 }
-///  Structured response of a single validation unit.
+/// Structured response of a single validation unit.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LintResult {
-    ///  The validation unit level.
+    /// The validation unit level.
     #[prost(enumeration="lint_result::Level", tag="1")]
     pub level: i32,
-    ///  The validation unit name, for instance
-    ///  "lintValidationUnits/ConditionComplexityCheck".
+    /// The validation unit name, for instance
+    /// "lintValidationUnits/ConditionComplexityCheck".
     #[prost(string, tag="2")]
     pub validation_unit_name: ::prost::alloc::string::String,
-    ///  The validation unit severity.
+    /// The validation unit severity.
     #[prost(enumeration="lint_result::Severity", tag="3")]
     pub severity: i32,
-    ///  The name of the field for which this lint result is about.
+    /// The name of the field for which this lint result is about.
     ///
-    ///  For nested messages `field_name` consists of names of the embedded fields
-    ///  separated by period character. The top-level qualifier is the input object
-    ///  to lint in the request. For example, the `field_name` value
-    ///  `condition.expression` identifies a lint result for the `expression` field
-    ///  of the provided condition.
+    /// For nested messages `field_name` consists of names of the embedded fields
+    /// separated by period character. The top-level qualifier is the input object
+    /// to lint in the request. For example, the `field_name` value
+    /// `condition.expression` identifies a lint result for the `expression` field
+    /// of the provided condition.
     #[prost(string, tag="5")]
     pub field_name: ::prost::alloc::string::String,
-    ///  0-based character position of problematic construct within the object
-    ///  identified by `field_name`. Currently, this is populated only for condition
-    ///  expression.
+    /// 0-based character position of problematic construct within the object
+    /// identified by `field_name`. Currently, this is populated only for condition
+    /// expression.
     #[prost(int32, tag="6")]
     pub location_offset: i32,
-    ///  Human readable debug message associated with the issue.
+    /// Human readable debug message associated with the issue.
     #[prost(string, tag="7")]
     pub debug_message: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `LintResult`.
 pub mod lint_result {
-    ///  Possible Level values of a validation unit corresponding to its domain
-    ///  of discourse.
+    /// Possible Level values of a validation unit corresponding to its domain
+    /// of discourse.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum Level {
-        ///  Level is unspecified.
+        /// Level is unspecified.
         Unspecified = 0,
-        ///  A validation unit which operates on an individual condition within a
-        ///  binding.
+        /// A validation unit which operates on an individual condition within a
+        /// binding.
         Condition = 3,
     }
     impl Level {
@@ -1104,36 +1104,36 @@ pub mod lint_result {
             }
         }
     }
-    ///  Possible Severity values of an issued result.
+    /// Possible Severity values of an issued result.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum Severity {
-        ///  Severity is unspecified.
+        /// Severity is unspecified.
         Unspecified = 0,
-        ///  A validation unit returns an error only for critical issues. If an
-        ///  attempt is made to set the problematic policy without rectifying the
-        ///  critical issue, it causes the `setPolicy` operation to fail.
+        /// A validation unit returns an error only for critical issues. If an
+        /// attempt is made to set the problematic policy without rectifying the
+        /// critical issue, it causes the `setPolicy` operation to fail.
         Error = 1,
-        ///  Any issue which is severe enough but does not cause an error.
-        ///  For example, suspicious constructs in the input object will not
-        ///  necessarily fail `setPolicy`, but there is a high likelihood that they
-        ///  won't behave as expected during policy evaluation in `checkPolicy`.
-        ///  This includes the following common scenarios:
+        /// Any issue which is severe enough but does not cause an error.
+        /// For example, suspicious constructs in the input object will not
+        /// necessarily fail `setPolicy`, but there is a high likelihood that they
+        /// won't behave as expected during policy evaluation in `checkPolicy`.
+        /// This includes the following common scenarios:
         ///
-        ///  - Unsatisfiable condition: Expired timestamp in date/time condition.
-        ///  - Ineffective condition: Condition on a <principal, role> pair which is
+        /// - Unsatisfiable condition: Expired timestamp in date/time condition.
+        /// - Ineffective condition: Condition on a <principal, role> pair which is
         ///    granted unconditionally in another binding of the same policy.
         Warning = 2,
-        ///  Reserved for the issues that are not severe as `ERROR`/`WARNING`, but
-        ///  need special handling. For instance, messages about skipped validation
-        ///  units are issued as `NOTICE`.
+        /// Reserved for the issues that are not severe as `ERROR`/`WARNING`, but
+        /// need special handling. For instance, messages about skipped validation
+        /// units are issued as `NOTICE`.
         Notice = 3,
-        ///  Any informative statement which is not severe enough to raise
-        ///  `ERROR`/`WARNING`/`NOTICE`, like auto-correction recommendations on the
-        ///  input content. Note that current version of the linter does not utilize
-        ///  `INFO`.
+        /// Any informative statement which is not severe enough to raise
+        /// `ERROR`/`WARNING`/`NOTICE`, like auto-correction recommendations on the
+        /// input content. Note that current version of the linter does not utilize
+        /// `INFO`.
         Info = 4,
-        ///  Deprecated severity level.
+        /// Deprecated severity level.
         Deprecated = 5,
     }
     impl Severity {
@@ -1153,23 +1153,23 @@ pub mod lint_result {
         }
     }
 }
-///  The response of a lint operation. An empty response indicates
-///  the operation was able to fully execute and no lint issue was found.
+/// The response of a lint operation. An empty response indicates
+/// the operation was able to fully execute and no lint issue was found.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LintPolicyResponse {
-    ///  List of lint results sorted by `severity` in descending order.
+    /// List of lint results sorted by `severity` in descending order.
     #[prost(message, repeated, tag="1")]
     pub lint_results: ::prost::alloc::vec::Vec<LintResult>,
 }
-///  Supported key algorithms.
+/// Supported key algorithms.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum ServiceAccountKeyAlgorithm {
-    ///  An unspecified key algorithm.
+    /// An unspecified key algorithm.
     KeyAlgUnspecified = 0,
-    ///  1k RSA Key.
+    /// 1k RSA Key.
     KeyAlgRsa1024 = 1,
-    ///  2k RSA Key.
+    /// 2k RSA Key.
     KeyAlgRsa2048 = 2,
 }
 impl ServiceAccountKeyAlgorithm {
@@ -1185,17 +1185,17 @@ impl ServiceAccountKeyAlgorithm {
         }
     }
 }
-///  Supported private key output formats.
+/// Supported private key output formats.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum ServiceAccountPrivateKeyType {
-    ///  Unspecified. Equivalent to `TYPE_GOOGLE_CREDENTIALS_FILE`.
+    /// Unspecified. Equivalent to `TYPE_GOOGLE_CREDENTIALS_FILE`.
     TypeUnspecified = 0,
-    ///  PKCS12 format.
-    ///  The password for the PKCS12 file is `notasecret`.
-    ///  For more information, see <https://tools.ietf.org/html/rfc7292.>
+    /// PKCS12 format.
+    /// The password for the PKCS12 file is `notasecret`.
+    /// For more information, see <https://tools.ietf.org/html/rfc7292.>
     TypePkcs12File = 1,
-    ///  Google Credentials File format.
+    /// Google Credentials File format.
     TypeGoogleCredentialsFile = 2,
 }
 impl ServiceAccountPrivateKeyType {
@@ -1211,15 +1211,15 @@ impl ServiceAccountPrivateKeyType {
         }
     }
 }
-///  Supported public key output formats.
+/// Supported public key output formats.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum ServiceAccountPublicKeyType {
-    ///  Do not return the public key.
+    /// Do not return the public key.
     TypeNone = 0,
-    ///  X509 PEM format.
+    /// X509 PEM format.
     TypeX509PemFile = 1,
-    ///  Raw public key.
+    /// Raw public key.
     TypeRawPublicKey = 2,
 }
 impl ServiceAccountPublicKeyType {
@@ -1235,15 +1235,15 @@ impl ServiceAccountPublicKeyType {
         }
     }
 }
-///  Service Account Key Origin.
+/// Service Account Key Origin.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum ServiceAccountKeyOrigin {
-    ///  Unspecified key origin.
+    /// Unspecified key origin.
     OriginUnspecified = 0,
-    ///  Key is provided by user.
+    /// Key is provided by user.
     UserProvided = 1,
-    ///  Key is provided by Google.
+    /// Key is provided by Google.
     GoogleProvided = 2,
 }
 impl ServiceAccountKeyOrigin {
@@ -1259,14 +1259,14 @@ impl ServiceAccountKeyOrigin {
         }
     }
 }
-///  A view for Role objects.
+/// A view for Role objects.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum RoleView {
-    ///  Omits the `included_permissions` field.
-    ///  This is the default value.
+    /// Omits the `included_permissions` field.
+    /// This is the default value.
     Basic = 0,
-    ///  Returns all fields.
+    /// Returns all fields.
     Full = 1,
 }
 impl RoleView {

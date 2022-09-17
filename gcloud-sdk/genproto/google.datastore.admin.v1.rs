@@ -1,47 +1,47 @@
-///  Datastore composite index definition.
+/// Datastore composite index definition.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Index {
-    ///  Output only. Project ID.
+    /// Output only. Project ID.
     #[prost(string, tag="1")]
     pub project_id: ::prost::alloc::string::String,
-    ///  Output only. The resource ID of the index.
+    /// Output only. The resource ID of the index.
     #[prost(string, tag="3")]
     pub index_id: ::prost::alloc::string::String,
-    ///  Required. The entity kind to which this index applies.
+    /// Required. The entity kind to which this index applies.
     #[prost(string, tag="4")]
     pub kind: ::prost::alloc::string::String,
-    ///  Required. The index's ancestor mode.  Must not be ANCESTOR_MODE_UNSPECIFIED.
+    /// Required. The index's ancestor mode.  Must not be ANCESTOR_MODE_UNSPECIFIED.
     #[prost(enumeration="index::AncestorMode", tag="5")]
     pub ancestor: i32,
-    ///  Required. An ordered sequence of property names and their index attributes.
+    /// Required. An ordered sequence of property names and their index attributes.
     #[prost(message, repeated, tag="6")]
     pub properties: ::prost::alloc::vec::Vec<index::IndexedProperty>,
-    ///  Output only. The state of the index.
+    /// Output only. The state of the index.
     #[prost(enumeration="index::State", tag="7")]
     pub state: i32,
 }
 /// Nested message and enum types in `Index`.
 pub mod index {
-    ///  A property of an index.
+    /// A property of an index.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct IndexedProperty {
-        ///  Required. The property name to index.
+        /// Required. The property name to index.
         #[prost(string, tag="1")]
         pub name: ::prost::alloc::string::String,
-        ///  Required. The indexed property's direction.  Must not be DIRECTION_UNSPECIFIED.
+        /// Required. The indexed property's direction.  Must not be DIRECTION_UNSPECIFIED.
         #[prost(enumeration="Direction", tag="2")]
         pub direction: i32,
     }
-    ///  For an ordered index, specifies whether each of the entity's ancestors
-    ///  will be included.
+    /// For an ordered index, specifies whether each of the entity's ancestors
+    /// will be included.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum AncestorMode {
-        ///  The ancestor mode is unspecified.
+        /// The ancestor mode is unspecified.
         Unspecified = 0,
-        ///  Do not include the entity's ancestors in the index.
+        /// Do not include the entity's ancestors in the index.
         None = 1,
-        ///  Include all the entity's ancestors in the index.
+        /// Include all the entity's ancestors in the index.
         AllAncestors = 2,
     }
     impl AncestorMode {
@@ -57,17 +57,17 @@ pub mod index {
             }
         }
     }
-    ///  The direction determines how a property is indexed.
+    /// The direction determines how a property is indexed.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum Direction {
-        ///  The direction is unspecified.
+        /// The direction is unspecified.
         Unspecified = 0,
-        ///  The property's values are indexed so as to support sequencing in
-        ///  ascending order and also query by <, >, <=, >=, and =.
+        /// The property's values are indexed so as to support sequencing in
+        /// ascending order and also query by <, >, <=, >=, and =.
         Ascending = 1,
-        ///  The property's values are indexed so as to support sequencing in
-        ///  descending order and also query by <, >, <=, >=, and =.
+        /// The property's values are indexed so as to support sequencing in
+        /// descending order and also query by <, >, <=, >=, and =.
         Descending = 2,
     }
     impl Direction {
@@ -83,32 +83,32 @@ pub mod index {
             }
         }
     }
-    ///  The possible set of states of an index.
+    /// The possible set of states of an index.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum State {
-        ///  The state is unspecified.
+        /// The state is unspecified.
         Unspecified = 0,
-        ///  The index is being created, and cannot be used by queries.
-        ///  There is an active long-running operation for the index.
-        ///  The index is updated when writing an entity.
-        ///  Some index data may exist.
+        /// The index is being created, and cannot be used by queries.
+        /// There is an active long-running operation for the index.
+        /// The index is updated when writing an entity.
+        /// Some index data may exist.
         Creating = 1,
-        ///  The index is ready to be used.
-        ///  The index is updated when writing an entity.
-        ///  The index is fully populated from all stored entities it applies to.
+        /// The index is ready to be used.
+        /// The index is updated when writing an entity.
+        /// The index is fully populated from all stored entities it applies to.
         Ready = 2,
-        ///  The index is being deleted, and cannot be used by queries.
-        ///  There is an active long-running operation for the index.
-        ///  The index is not updated when writing an entity.
-        ///  Some index data may exist.
+        /// The index is being deleted, and cannot be used by queries.
+        /// There is an active long-running operation for the index.
+        /// The index is not updated when writing an entity.
+        /// Some index data may exist.
         Deleting = 3,
-        ///  The index was being created or deleted, but something went wrong.
-        ///  The index cannot by used by queries.
-        ///  There is no active long-running operation for the index,
-        ///  and the most recently finished long-running operation failed.
-        ///  The index is not updated when writing an entity.
-        ///  Some index data may exist.
+        /// The index was being created or deleted, but something went wrong.
+        /// The index cannot by used by queries.
+        /// There is no active long-running operation for the index,
+        /// and the most recently finished long-running operation failed.
+        /// The index is not updated when writing an entity.
+        /// Some index data may exist.
         Error = 4,
     }
     impl State {
@@ -127,58 +127,58 @@ pub mod index {
         }
     }
 }
-///  An event signifying a change in state of a [migration from Cloud Datastore to
-///  Cloud Firestore in Datastore
-///  mode](<https://cloud.google.com/datastore/docs/upgrade-to-firestore>).
+/// An event signifying a change in state of a [migration from Cloud Datastore to
+/// Cloud Firestore in Datastore
+/// mode](<https://cloud.google.com/datastore/docs/upgrade-to-firestore>).
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MigrationStateEvent {
-    ///  The new state of the migration.
+    /// The new state of the migration.
     #[prost(enumeration="MigrationState", tag="1")]
     pub state: i32,
 }
-///  An event signifying the start of a new step in a [migration from Cloud
-///  Datastore to Cloud Firestore in Datastore
-///  mode](<https://cloud.google.com/datastore/docs/upgrade-to-firestore>).
+/// An event signifying the start of a new step in a [migration from Cloud
+/// Datastore to Cloud Firestore in Datastore
+/// mode](<https://cloud.google.com/datastore/docs/upgrade-to-firestore>).
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MigrationProgressEvent {
-    ///  The step that is starting.
+    /// The step that is starting.
     ///
-    ///  An event with step set to `START` indicates that the migration
-    ///  has been reverted back to the initial pre-migration state.
+    /// An event with step set to `START` indicates that the migration
+    /// has been reverted back to the initial pre-migration state.
     #[prost(enumeration="MigrationStep", tag="1")]
     pub step: i32,
-    ///  Details about this step.
+    /// Details about this step.
     #[prost(oneof="migration_progress_event::StepDetails", tags="2, 3")]
     pub step_details: ::core::option::Option<migration_progress_event::StepDetails>,
 }
 /// Nested message and enum types in `MigrationProgressEvent`.
 pub mod migration_progress_event {
-    ///  Details for the `PREPARE` step.
+    /// Details for the `PREPARE` step.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct PrepareStepDetails {
-        ///  The concurrency mode this database will use when it reaches the
-        ///  `REDIRECT_WRITES` step.
+        /// The concurrency mode this database will use when it reaches the
+        /// `REDIRECT_WRITES` step.
         #[prost(enumeration="ConcurrencyMode", tag="1")]
         pub concurrency_mode: i32,
     }
-    ///  Details for the `REDIRECT_WRITES` step.
+    /// Details for the `REDIRECT_WRITES` step.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct RedirectWritesStepDetails {
-        ///  Ths concurrency mode for this database.
+        /// Ths concurrency mode for this database.
         #[prost(enumeration="ConcurrencyMode", tag="1")]
         pub concurrency_mode: i32,
     }
-    ///  Concurrency modes for transactions in Cloud Firestore.
+    /// Concurrency modes for transactions in Cloud Firestore.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum ConcurrencyMode {
-        ///  Unspecified.
+        /// Unspecified.
         Unspecified = 0,
-        ///  Pessimistic concurrency.
+        /// Pessimistic concurrency.
         Pessimistic = 1,
-        ///  Optimistic concurrency.
+        /// Optimistic concurrency.
         Optimistic = 2,
-        ///  Optimistic concurrency with entity groups.
+        /// Optimistic concurrency with entity groups.
         OptimisticWithEntityGroups = 3,
     }
     impl ConcurrencyMode {
@@ -195,28 +195,28 @@ pub mod migration_progress_event {
             }
         }
     }
-    ///  Details about this step.
+    /// Details about this step.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum StepDetails {
-        ///  Details for the `PREPARE` step.
+        /// Details for the `PREPARE` step.
         #[prost(message, tag="2")]
         PrepareStepDetails(PrepareStepDetails),
-        ///  Details for the `REDIRECT_WRITES` step.
+        /// Details for the `REDIRECT_WRITES` step.
         #[prost(message, tag="3")]
         RedirectWritesStepDetails(RedirectWritesStepDetails),
     }
 }
-///  States for a migration.
+/// States for a migration.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum MigrationState {
-    ///  Unspecified.
+    /// Unspecified.
     Unspecified = 0,
-    ///  The migration is running.
+    /// The migration is running.
     Running = 1,
-    ///  The migration is paused.
+    /// The migration is paused.
     Paused = 2,
-    ///  The migration is complete.
+    /// The migration is complete.
     Complete = 3,
 }
 impl MigrationState {
@@ -233,26 +233,26 @@ impl MigrationState {
         }
     }
 }
-///  Steps in a migration.
+/// Steps in a migration.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum MigrationStep {
-    ///  Unspecified.
+    /// Unspecified.
     Unspecified = 0,
-    ///  Pre-migration: the database is prepared for migration.
+    /// Pre-migration: the database is prepared for migration.
     Prepare = 6,
-    ///  Start of migration.
+    /// Start of migration.
     Start = 1,
-    ///  Writes are applied synchronously to at least one replica.
+    /// Writes are applied synchronously to at least one replica.
     ApplyWritesSynchronously = 7,
-    ///  Data is copied to Cloud Firestore and then verified to match the data in
-    ///  Cloud Datastore.
+    /// Data is copied to Cloud Firestore and then verified to match the data in
+    /// Cloud Datastore.
     CopyAndVerify = 2,
-    ///  Eventually-consistent reads are redirected to Cloud Firestore.
+    /// Eventually-consistent reads are redirected to Cloud Firestore.
     RedirectEventuallyConsistentReads = 3,
-    ///  Strongly-consistent reads are redirected to Cloud Firestore.
+    /// Strongly-consistent reads are redirected to Cloud Firestore.
     RedirectStronglyConsistentReads = 4,
-    ///  Writes are redirected to Cloud Firestore.
+    /// Writes are redirected to Cloud Firestore.
     RedirectWrites = 5,
 }
 impl MigrationStep {
@@ -273,50 +273,50 @@ impl MigrationStep {
         }
     }
 }
-///  Metadata common to all Datastore Admin operations.
+/// Metadata common to all Datastore Admin operations.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CommonMetadata {
-    ///  The time that work began on the operation.
+    /// The time that work began on the operation.
     #[prost(message, optional, tag="1")]
     pub start_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  The time the operation ended, either successfully or otherwise.
+    /// The time the operation ended, either successfully or otherwise.
     #[prost(message, optional, tag="2")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  The type of the operation. Can be used as a filter in
-    ///  ListOperationsRequest.
+    /// The type of the operation. Can be used as a filter in
+    /// ListOperationsRequest.
     #[prost(enumeration="OperationType", tag="3")]
     pub operation_type: i32,
-    ///  The client-assigned labels which were provided when the operation was
-    ///  created. May also include additional labels.
+    /// The client-assigned labels which were provided when the operation was
+    /// created. May also include additional labels.
     #[prost(map="string, string", tag="4")]
     pub labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
-    ///  The current state of the Operation.
+    /// The current state of the Operation.
     #[prost(enumeration="common_metadata::State", tag="5")]
     pub state: i32,
 }
 /// Nested message and enum types in `CommonMetadata`.
 pub mod common_metadata {
-    ///  The various possible states for an ongoing Operation.
+    /// The various possible states for an ongoing Operation.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum State {
-        ///  Unspecified.
+        /// Unspecified.
         Unspecified = 0,
-        ///  Request is being prepared for processing.
+        /// Request is being prepared for processing.
         Initializing = 1,
-        ///  Request is actively being processed.
+        /// Request is actively being processed.
         Processing = 2,
-        ///  Request is in the process of being cancelled after user called
-        ///  google.longrunning.Operations.CancelOperation on the operation.
+        /// Request is in the process of being cancelled after user called
+        /// google.longrunning.Operations.CancelOperation on the operation.
         Cancelling = 3,
-        ///  Request has been processed and is in its finalization stage.
+        /// Request has been processed and is in its finalization stage.
         Finalizing = 4,
-        ///  Request has completed successfully.
+        /// Request has completed successfully.
         Successful = 5,
-        ///  Request has finished being processed, but encountered an error.
+        /// Request has finished being processed, but encountered an error.
         Failed = 6,
-        ///  Request has finished being cancelled after user called
-        ///  google.longrunning.Operations.CancelOperation.
+        /// Request has finished being cancelled after user called
+        /// google.longrunning.Operations.CancelOperation.
         Cancelled = 7,
     }
     impl State {
@@ -338,278 +338,278 @@ pub mod common_metadata {
         }
     }
 }
-///  Measures the progress of a particular metric.
+/// Measures the progress of a particular metric.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Progress {
-    ///  The amount of work that has been completed. Note that this may be greater
-    ///  than work_estimated.
+    /// The amount of work that has been completed. Note that this may be greater
+    /// than work_estimated.
     #[prost(int64, tag="1")]
     pub work_completed: i64,
-    ///  An estimate of how much work needs to be performed. May be zero if the
-    ///  work estimate is unavailable.
+    /// An estimate of how much work needs to be performed. May be zero if the
+    /// work estimate is unavailable.
     #[prost(int64, tag="2")]
     pub work_estimated: i64,
 }
-///  The request for
-///  \[google.datastore.admin.v1.DatastoreAdmin.ExportEntities][google.datastore.admin.v1.DatastoreAdmin.ExportEntities\].
+/// The request for
+/// \[google.datastore.admin.v1.DatastoreAdmin.ExportEntities][google.datastore.admin.v1.DatastoreAdmin.ExportEntities\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportEntitiesRequest {
-    ///  Required. Project ID against which to make the request.
+    /// Required. Project ID against which to make the request.
     #[prost(string, tag="1")]
     pub project_id: ::prost::alloc::string::String,
-    ///  Client-assigned labels.
+    /// Client-assigned labels.
     #[prost(map="string, string", tag="2")]
     pub labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
-    ///  Description of what data from the project is included in the export.
+    /// Description of what data from the project is included in the export.
     #[prost(message, optional, tag="3")]
     pub entity_filter: ::core::option::Option<EntityFilter>,
-    ///  Required. Location for the export metadata and data files.
+    /// Required. Location for the export metadata and data files.
     ///
-    ///  The full resource URL of the external storage location. Currently, only
-    ///  Google Cloud Storage is supported. So output_url_prefix should be of the
-    ///  form: `gs://BUCKET_NAME\[/NAMESPACE_PATH\]`, where `BUCKET_NAME` is the
-    ///  name of the Cloud Storage bucket and `NAMESPACE_PATH` is an optional Cloud
-    ///  Storage namespace path (this is not a Cloud Datastore namespace). For more
-    ///  information about Cloud Storage namespace paths, see
-    ///  [Object name
-    ///  considerations](<https://cloud.google.com/storage/docs/naming#object-considerations>).
+    /// The full resource URL of the external storage location. Currently, only
+    /// Google Cloud Storage is supported. So output_url_prefix should be of the
+    /// form: `gs://BUCKET_NAME\[/NAMESPACE_PATH\]`, where `BUCKET_NAME` is the
+    /// name of the Cloud Storage bucket and `NAMESPACE_PATH` is an optional Cloud
+    /// Storage namespace path (this is not a Cloud Datastore namespace). For more
+    /// information about Cloud Storage namespace paths, see
+    /// [Object name
+    /// considerations](<https://cloud.google.com/storage/docs/naming#object-considerations>).
     ///
-    ///  The resulting files will be nested deeper than the specified URL prefix.
-    ///  The final output URL will be provided in the
-    ///  \[google.datastore.admin.v1.ExportEntitiesResponse.output_url][google.datastore.admin.v1.ExportEntitiesResponse.output_url\] field. That
-    ///  value should be used for subsequent ImportEntities operations.
+    /// The resulting files will be nested deeper than the specified URL prefix.
+    /// The final output URL will be provided in the
+    /// \[google.datastore.admin.v1.ExportEntitiesResponse.output_url][google.datastore.admin.v1.ExportEntitiesResponse.output_url\] field. That
+    /// value should be used for subsequent ImportEntities operations.
     ///
-    ///  By nesting the data files deeper, the same Cloud Storage bucket can be used
-    ///  in multiple ExportEntities operations without conflict.
+    /// By nesting the data files deeper, the same Cloud Storage bucket can be used
+    /// in multiple ExportEntities operations without conflict.
     #[prost(string, tag="4")]
     pub output_url_prefix: ::prost::alloc::string::String,
 }
-///  The request for
-///  \[google.datastore.admin.v1.DatastoreAdmin.ImportEntities][google.datastore.admin.v1.DatastoreAdmin.ImportEntities\].
+/// The request for
+/// \[google.datastore.admin.v1.DatastoreAdmin.ImportEntities][google.datastore.admin.v1.DatastoreAdmin.ImportEntities\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportEntitiesRequest {
-    ///  Required. Project ID against which to make the request.
+    /// Required. Project ID against which to make the request.
     #[prost(string, tag="1")]
     pub project_id: ::prost::alloc::string::String,
-    ///  Client-assigned labels.
+    /// Client-assigned labels.
     #[prost(map="string, string", tag="2")]
     pub labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
-    ///  Required. The full resource URL of the external storage location. Currently, only
-    ///  Google Cloud Storage is supported. So input_url should be of the form:
-    ///  `gs://BUCKET_NAME\[/NAMESPACE_PATH\]/OVERALL_EXPORT_METADATA_FILE`, where
-    ///  `BUCKET_NAME` is the name of the Cloud Storage bucket, `NAMESPACE_PATH` is
-    ///  an optional Cloud Storage namespace path (this is not a Cloud Datastore
-    ///  namespace), and `OVERALL_EXPORT_METADATA_FILE` is the metadata file written
-    ///  by the ExportEntities operation. For more information about Cloud Storage
-    ///  namespace paths, see
-    ///  [Object name
-    ///  considerations](<https://cloud.google.com/storage/docs/naming#object-considerations>).
+    /// Required. The full resource URL of the external storage location. Currently, only
+    /// Google Cloud Storage is supported. So input_url should be of the form:
+    /// `gs://BUCKET_NAME\[/NAMESPACE_PATH\]/OVERALL_EXPORT_METADATA_FILE`, where
+    /// `BUCKET_NAME` is the name of the Cloud Storage bucket, `NAMESPACE_PATH` is
+    /// an optional Cloud Storage namespace path (this is not a Cloud Datastore
+    /// namespace), and `OVERALL_EXPORT_METADATA_FILE` is the metadata file written
+    /// by the ExportEntities operation. For more information about Cloud Storage
+    /// namespace paths, see
+    /// [Object name
+    /// considerations](<https://cloud.google.com/storage/docs/naming#object-considerations>).
     ///
-    ///  For more information, see
-    ///  \[google.datastore.admin.v1.ExportEntitiesResponse.output_url][google.datastore.admin.v1.ExportEntitiesResponse.output_url\].
+    /// For more information, see
+    /// \[google.datastore.admin.v1.ExportEntitiesResponse.output_url][google.datastore.admin.v1.ExportEntitiesResponse.output_url\].
     #[prost(string, tag="3")]
     pub input_url: ::prost::alloc::string::String,
-    ///  Optionally specify which kinds/namespaces are to be imported. If provided,
-    ///  the list must be a subset of the EntityFilter used in creating the export,
-    ///  otherwise a FAILED_PRECONDITION error will be returned. If no filter is
-    ///  specified then all entities from the export are imported.
+    /// Optionally specify which kinds/namespaces are to be imported. If provided,
+    /// the list must be a subset of the EntityFilter used in creating the export,
+    /// otherwise a FAILED_PRECONDITION error will be returned. If no filter is
+    /// specified then all entities from the export are imported.
     #[prost(message, optional, tag="4")]
     pub entity_filter: ::core::option::Option<EntityFilter>,
 }
-///  The response for
-///  \[google.datastore.admin.v1.DatastoreAdmin.ExportEntities][google.datastore.admin.v1.DatastoreAdmin.ExportEntities\].
+/// The response for
+/// \[google.datastore.admin.v1.DatastoreAdmin.ExportEntities][google.datastore.admin.v1.DatastoreAdmin.ExportEntities\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportEntitiesResponse {
-    ///  Location of the output metadata file. This can be used to begin an import
-    ///  into Cloud Datastore (this project or another project). See
-    ///  \[google.datastore.admin.v1.ImportEntitiesRequest.input_url][google.datastore.admin.v1.ImportEntitiesRequest.input_url\].
-    ///  Only present if the operation completed successfully.
+    /// Location of the output metadata file. This can be used to begin an import
+    /// into Cloud Datastore (this project or another project). See
+    /// \[google.datastore.admin.v1.ImportEntitiesRequest.input_url][google.datastore.admin.v1.ImportEntitiesRequest.input_url\].
+    /// Only present if the operation completed successfully.
     #[prost(string, tag="1")]
     pub output_url: ::prost::alloc::string::String,
 }
-///  Metadata for ExportEntities operations.
+/// Metadata for ExportEntities operations.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportEntitiesMetadata {
-    ///  Metadata common to all Datastore Admin operations.
+    /// Metadata common to all Datastore Admin operations.
     #[prost(message, optional, tag="1")]
     pub common: ::core::option::Option<CommonMetadata>,
-    ///  An estimate of the number of entities processed.
+    /// An estimate of the number of entities processed.
     #[prost(message, optional, tag="2")]
     pub progress_entities: ::core::option::Option<Progress>,
-    ///  An estimate of the number of bytes processed.
+    /// An estimate of the number of bytes processed.
     #[prost(message, optional, tag="3")]
     pub progress_bytes: ::core::option::Option<Progress>,
-    ///  Description of which entities are being exported.
+    /// Description of which entities are being exported.
     #[prost(message, optional, tag="4")]
     pub entity_filter: ::core::option::Option<EntityFilter>,
-    ///  Location for the export metadata and data files. This will be the same
-    ///  value as the
-    ///  \[google.datastore.admin.v1.ExportEntitiesRequest.output_url_prefix][google.datastore.admin.v1.ExportEntitiesRequest.output_url_prefix\]
-    ///  field. The final output location is provided in
-    ///  \[google.datastore.admin.v1.ExportEntitiesResponse.output_url][google.datastore.admin.v1.ExportEntitiesResponse.output_url\].
+    /// Location for the export metadata and data files. This will be the same
+    /// value as the
+    /// \[google.datastore.admin.v1.ExportEntitiesRequest.output_url_prefix][google.datastore.admin.v1.ExportEntitiesRequest.output_url_prefix\]
+    /// field. The final output location is provided in
+    /// \[google.datastore.admin.v1.ExportEntitiesResponse.output_url][google.datastore.admin.v1.ExportEntitiesResponse.output_url\].
     #[prost(string, tag="5")]
     pub output_url_prefix: ::prost::alloc::string::String,
 }
-///  Metadata for ImportEntities operations.
+/// Metadata for ImportEntities operations.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportEntitiesMetadata {
-    ///  Metadata common to all Datastore Admin operations.
+    /// Metadata common to all Datastore Admin operations.
     #[prost(message, optional, tag="1")]
     pub common: ::core::option::Option<CommonMetadata>,
-    ///  An estimate of the number of entities processed.
+    /// An estimate of the number of entities processed.
     #[prost(message, optional, tag="2")]
     pub progress_entities: ::core::option::Option<Progress>,
-    ///  An estimate of the number of bytes processed.
+    /// An estimate of the number of bytes processed.
     #[prost(message, optional, tag="3")]
     pub progress_bytes: ::core::option::Option<Progress>,
-    ///  Description of which entities are being imported.
+    /// Description of which entities are being imported.
     #[prost(message, optional, tag="4")]
     pub entity_filter: ::core::option::Option<EntityFilter>,
-    ///  The location of the import metadata file. This will be the same value as
-    ///  the \[google.datastore.admin.v1.ExportEntitiesResponse.output_url][google.datastore.admin.v1.ExportEntitiesResponse.output_url\] field.
+    /// The location of the import metadata file. This will be the same value as
+    /// the \[google.datastore.admin.v1.ExportEntitiesResponse.output_url][google.datastore.admin.v1.ExportEntitiesResponse.output_url\] field.
     #[prost(string, tag="5")]
     pub input_url: ::prost::alloc::string::String,
 }
-///  Identifies a subset of entities in a project. This is specified as
-///  combinations of kinds and namespaces (either or both of which may be all, as
-///  described in the following examples).
-///  Example usage:
+/// Identifies a subset of entities in a project. This is specified as
+/// combinations of kinds and namespaces (either or both of which may be all, as
+/// described in the following examples).
+/// Example usage:
 ///
-///  Entire project:
+/// Entire project:
 ///    kinds=[], namespace_ids=[]
 ///
-///  Kinds Foo and Bar in all namespaces:
+/// Kinds Foo and Bar in all namespaces:
 ///    kinds=['Foo', 'Bar'], namespace_ids=[]
 ///
-///  Kinds Foo and Bar only in the default namespace:
+/// Kinds Foo and Bar only in the default namespace:
 ///    kinds=['Foo', 'Bar'], namespace_ids=\[''\]
 ///
-///  Kinds Foo and Bar in both the default and Baz namespaces:
+/// Kinds Foo and Bar in both the default and Baz namespaces:
 ///    kinds=['Foo', 'Bar'], namespace_ids=['', 'Baz']
 ///
-///  The entire Baz namespace:
+/// The entire Baz namespace:
 ///    kinds=[], namespace_ids=\['Baz'\]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EntityFilter {
-    ///  If empty, then this represents all kinds.
+    /// If empty, then this represents all kinds.
     #[prost(string, repeated, tag="1")]
     pub kinds: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    ///  An empty list represents all namespaces. This is the preferred
-    ///  usage for projects that don't use namespaces.
+    /// An empty list represents all namespaces. This is the preferred
+    /// usage for projects that don't use namespaces.
     ///
-    ///  An empty string element represents the default namespace. This should be
-    ///  used if the project has data in non-default namespaces, but doesn't want to
-    ///  include them.
-    ///  Each namespace in this list must be unique.
+    /// An empty string element represents the default namespace. This should be
+    /// used if the project has data in non-default namespaces, but doesn't want to
+    /// include them.
+    /// Each namespace in this list must be unique.
     #[prost(string, repeated, tag="2")]
     pub namespace_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-///  The request for
-///  \[google.datastore.admin.v1.DatastoreAdmin.CreateIndex][google.datastore.admin.v1.DatastoreAdmin.CreateIndex\].
+/// The request for
+/// \[google.datastore.admin.v1.DatastoreAdmin.CreateIndex][google.datastore.admin.v1.DatastoreAdmin.CreateIndex\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateIndexRequest {
-    ///  Project ID against which to make the request.
+    /// Project ID against which to make the request.
     #[prost(string, tag="1")]
     pub project_id: ::prost::alloc::string::String,
-    ///  The index to create. The name and state fields are output only and will be
-    ///  ignored. Single property indexes cannot be created or deleted.
+    /// The index to create. The name and state fields are output only and will be
+    /// ignored. Single property indexes cannot be created or deleted.
     #[prost(message, optional, tag="3")]
     pub index: ::core::option::Option<Index>,
 }
-///  The request for
-///  \[google.datastore.admin.v1.DatastoreAdmin.DeleteIndex][google.datastore.admin.v1.DatastoreAdmin.DeleteIndex\].
+/// The request for
+/// \[google.datastore.admin.v1.DatastoreAdmin.DeleteIndex][google.datastore.admin.v1.DatastoreAdmin.DeleteIndex\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteIndexRequest {
-    ///  Project ID against which to make the request.
+    /// Project ID against which to make the request.
     #[prost(string, tag="1")]
     pub project_id: ::prost::alloc::string::String,
-    ///  The resource ID of the index to delete.
+    /// The resource ID of the index to delete.
     #[prost(string, tag="3")]
     pub index_id: ::prost::alloc::string::String,
 }
-///  The request for \[google.datastore.admin.v1.DatastoreAdmin.GetIndex][google.datastore.admin.v1.DatastoreAdmin.GetIndex\].
+/// The request for \[google.datastore.admin.v1.DatastoreAdmin.GetIndex][google.datastore.admin.v1.DatastoreAdmin.GetIndex\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetIndexRequest {
-    ///  Project ID against which to make the request.
+    /// Project ID against which to make the request.
     #[prost(string, tag="1")]
     pub project_id: ::prost::alloc::string::String,
-    ///  The resource ID of the index to get.
+    /// The resource ID of the index to get.
     #[prost(string, tag="3")]
     pub index_id: ::prost::alloc::string::String,
 }
-///  The request for
-///  \[google.datastore.admin.v1.DatastoreAdmin.ListIndexes][google.datastore.admin.v1.DatastoreAdmin.ListIndexes\].
+/// The request for
+/// \[google.datastore.admin.v1.DatastoreAdmin.ListIndexes][google.datastore.admin.v1.DatastoreAdmin.ListIndexes\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListIndexesRequest {
-    ///  Project ID against which to make the request.
+    /// Project ID against which to make the request.
     #[prost(string, tag="1")]
     pub project_id: ::prost::alloc::string::String,
     #[prost(string, tag="3")]
     pub filter: ::prost::alloc::string::String,
-    ///  The maximum number of items to return.  If zero, then all results will be
-    ///  returned.
+    /// The maximum number of items to return.  If zero, then all results will be
+    /// returned.
     #[prost(int32, tag="4")]
     pub page_size: i32,
-    ///  The next_page_token value returned from a previous List request, if any.
+    /// The next_page_token value returned from a previous List request, if any.
     #[prost(string, tag="5")]
     pub page_token: ::prost::alloc::string::String,
 }
-///  The response for
-///  \[google.datastore.admin.v1.DatastoreAdmin.ListIndexes][google.datastore.admin.v1.DatastoreAdmin.ListIndexes\].
+/// The response for
+/// \[google.datastore.admin.v1.DatastoreAdmin.ListIndexes][google.datastore.admin.v1.DatastoreAdmin.ListIndexes\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListIndexesResponse {
-    ///  The indexes.
+    /// The indexes.
     #[prost(message, repeated, tag="1")]
     pub indexes: ::prost::alloc::vec::Vec<Index>,
-    ///  The standard List next-page token.
+    /// The standard List next-page token.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-///  Metadata for Index operations.
+/// Metadata for Index operations.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IndexOperationMetadata {
-    ///  Metadata common to all Datastore Admin operations.
+    /// Metadata common to all Datastore Admin operations.
     #[prost(message, optional, tag="1")]
     pub common: ::core::option::Option<CommonMetadata>,
-    ///  An estimate of the number of entities processed.
+    /// An estimate of the number of entities processed.
     #[prost(message, optional, tag="2")]
     pub progress_entities: ::core::option::Option<Progress>,
-    ///  The index resource ID that this operation is acting on.
+    /// The index resource ID that this operation is acting on.
     #[prost(string, tag="3")]
     pub index_id: ::prost::alloc::string::String,
 }
-///  Metadata for Datastore to Firestore migration operations.
+/// Metadata for Datastore to Firestore migration operations.
 ///
-///  The DatastoreFirestoreMigration operation is not started by the end-user via
-///  an explicit "creation" method. This is an intentional deviation from the LRO
-///  design pattern.
+/// The DatastoreFirestoreMigration operation is not started by the end-user via
+/// an explicit "creation" method. This is an intentional deviation from the LRO
+/// design pattern.
 ///
-///  This singleton resource can be accessed at:
-///  "projects/{project_id}/operations/datastore-firestore-migration"
+/// This singleton resource can be accessed at:
+/// "projects/{project_id}/operations/datastore-firestore-migration"
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DatastoreFirestoreMigrationMetadata {
-    ///  The current state of migration from Cloud Datastore to Cloud Firestore in
-    ///  Datastore mode.
+    /// The current state of migration from Cloud Datastore to Cloud Firestore in
+    /// Datastore mode.
     #[prost(enumeration="MigrationState", tag="1")]
     pub migration_state: i32,
-    ///  The current step of migration from Cloud Datastore to Cloud Firestore in
-    ///  Datastore mode.
+    /// The current step of migration from Cloud Datastore to Cloud Firestore in
+    /// Datastore mode.
     #[prost(enumeration="MigrationStep", tag="2")]
     pub migration_step: i32,
 }
-///  Operation types.
+/// Operation types.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum OperationType {
-    ///  Unspecified.
+    /// Unspecified.
     Unspecified = 0,
-    ///  ExportEntities.
+    /// ExportEntities.
     ExportEntities = 1,
-    ///  ImportEntities.
+    /// ImportEntities.
     ImportEntities = 2,
-    ///  CreateIndex.
+    /// CreateIndex.
     CreateIndex = 3,
-    ///  DeleteIndex.
+    /// DeleteIndex.
     DeleteIndex = 4,
 }
 impl OperationType {

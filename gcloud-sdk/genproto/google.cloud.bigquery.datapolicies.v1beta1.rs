@@ -1,111 +1,111 @@
-///  Request message for the CreateDataPolicy method.
+/// Request message for the CreateDataPolicy method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateDataPolicyRequest {
-    ///  Required. Resource name of the project that the data policy will belong to. The
-    ///  format is `projects/{project_number}/locations/{location_id}`.
+    /// Required. Resource name of the project that the data policy will belong to. The
+    /// format is `projects/{project_number}/locations/{location_id}`.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Required. The data policy to create. The `name` field does not need to be
-    ///  provided for the data policy creation.
+    /// Required. The data policy to create. The `name` field does not need to be
+    /// provided for the data policy creation.
     #[prost(message, optional, tag="2")]
     pub data_policy: ::core::option::Option<DataPolicy>,
 }
-///  Response message for the UpdateDataPolicy method.
+/// Response message for the UpdateDataPolicy method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateDataPolicyRequest {
-    ///  Required. Update the data policy's metadata.
+    /// Required. Update the data policy's metadata.
     ///
-    ///  The target data policy is determined by the `name` field.
-    ///  Other fields are updated to the specified values based on the field masks.
+    /// The target data policy is determined by the `name` field.
+    /// Other fields are updated to the specified values based on the field masks.
     #[prost(message, optional, tag="1")]
     pub data_policy: ::core::option::Option<DataPolicy>,
-    ///  The update mask applies to the resource. For the `FieldMask` definition,
-    ///  see
-    ///  <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask>
-    ///  If not set, defaults to all of the fields that are allowed to update.
+    /// The update mask applies to the resource. For the `FieldMask` definition,
+    /// see
+    /// <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask>
+    /// If not set, defaults to all of the fields that are allowed to update.
     ///
-    ///  Updates to the `name` and `dataPolicyId` fields are not allowed.
+    /// Updates to the `name` and `dataPolicyId` fields are not allowed.
     #[prost(message, optional, tag="2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
-///  Request message for the DeleteDataPolicy method.
+/// Request message for the DeleteDataPolicy method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteDataPolicyRequest {
-    ///  Required. Resource name of the data policy to delete. Format is
-    ///  `projects/{project_number}/locations/{location_id}/dataPolicies/{data_policy_id}`.
+    /// Required. Resource name of the data policy to delete. Format is
+    /// `projects/{project_number}/locations/{location_id}/dataPolicies/{data_policy_id}`.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Request message for the GetDataPolicy method.
+/// Request message for the GetDataPolicy method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetDataPolicyRequest {
-    ///  Required. Resource name of the requested data policy. Format is
-    ///  `projects/{project_number}/locations/{location_id}/dataPolicies/{data_policy_id}`.
+    /// Required. Resource name of the requested data policy. Format is
+    /// `projects/{project_number}/locations/{location_id}/dataPolicies/{data_policy_id}`.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Request message for the ListDataPolicies method.
+/// Request message for the ListDataPolicies method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDataPoliciesRequest {
-    ///  Required. Resource name of the project for which to list data policies. Format is
-    ///  `projects/{project_number}/locations/{location_id}`.
+    /// Required. Resource name of the project for which to list data policies. Format is
+    /// `projects/{project_number}/locations/{location_id}`.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  The maximum number of data policies to return. Must be a value between 1
-    ///  and 1000.
-    ///  If not set, defaults to 50.
+    /// The maximum number of data policies to return. Must be a value between 1
+    /// and 1000.
+    /// If not set, defaults to 50.
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    ///  The `nextPageToken` value returned from a previous list request, if any. If
-    ///  not set, defaults to an empty string.
+    /// The `nextPageToken` value returned from a previous list request, if any. If
+    /// not set, defaults to an empty string.
     #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
 }
-///  Response message for the ListDataPolicies method.
+/// Response message for the ListDataPolicies method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDataPoliciesResponse {
-    ///  Data policies that belong to the requested project.
+    /// Data policies that belong to the requested project.
     #[prost(message, repeated, tag="1")]
     pub data_policies: ::prost::alloc::vec::Vec<DataPolicy>,
-    ///  Token used to retrieve the next page of results, or empty if there are no
-    ///  more results.
+    /// Token used to retrieve the next page of results, or empty if there are no
+    /// more results.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-///  Represents the label-policy binding.
+/// Represents the label-policy binding.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataPolicy {
-    ///  Output only. Resource name of this data policy, in the format of
-    ///  `projects/{project_number}/locations/{location_id}/dataPolicies/{data_policy_id}`.
+    /// Output only. Resource name of this data policy, in the format of
+    /// `projects/{project_number}/locations/{location_id}/dataPolicies/{data_policy_id}`.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Type of data policy.
+    /// Type of data policy.
     #[prost(enumeration="data_policy::DataPolicyType", tag="2")]
     pub data_policy_type: i32,
-    ///  User-assigned (human readable) ID of the data policy that needs to be
-    ///  unique within a project. Used as {data_policy_id} in part of the resource
-    ///  name.
+    /// User-assigned (human readable) ID of the data policy that needs to be
+    /// unique within a project. Used as {data_policy_id} in part of the resource
+    /// name.
     #[prost(string, tag="3")]
     pub data_policy_id: ::prost::alloc::string::String,
-    ///  Label that is bound to this data policy.
+    /// Label that is bound to this data policy.
     #[prost(oneof="data_policy::MatchingLabel", tags="4")]
     pub matching_label: ::core::option::Option<data_policy::MatchingLabel>,
-    ///  The policy that is bound to this data policy.
+    /// The policy that is bound to this data policy.
     #[prost(oneof="data_policy::Policy", tags="5")]
     pub policy: ::core::option::Option<data_policy::Policy>,
 }
 /// Nested message and enum types in `DataPolicy`.
 pub mod data_policy {
-    ///  A list of supported data policy types.
+    /// A list of supported data policy types.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum DataPolicyType {
-        ///  Default value for the data policy type. This should not be used.
+        /// Default value for the data policy type. This should not be used.
         Unspecified = 0,
-        ///  Used to create a data policy for column-level security, without data
-        ///  masking.
+        /// Used to create a data policy for column-level security, without data
+        /// masking.
         ColumnLevelSecurityPolicy = 3,
-        ///  Used to create a data policy for data masking.
+        /// Used to create a data policy for data masking.
         DataMaskingPolicy = 2,
     }
     impl DataPolicyType {
@@ -121,61 +121,61 @@ pub mod data_policy {
             }
         }
     }
-    ///  Label that is bound to this data policy.
+    /// Label that is bound to this data policy.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum MatchingLabel {
-        ///  Policy tag resource name, in the format of
-        ///  `projects/{project_number}/locations/{location_id}/taxonomies/{taxonomy_id}/policyTags/{policyTag_id}`.
+        /// Policy tag resource name, in the format of
+        /// `projects/{project_number}/locations/{location_id}/taxonomies/{taxonomy_id}/policyTags/{policyTag_id}`.
         #[prost(string, tag="4")]
         PolicyTag(::prost::alloc::string::String),
     }
-    ///  The policy that is bound to this data policy.
+    /// The policy that is bound to this data policy.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Policy {
-        ///  The data masking policy that specifies the data masking rule to use.
+        /// The data masking policy that specifies the data masking rule to use.
         #[prost(message, tag="5")]
         DataMaskingPolicy(super::DataMaskingPolicy),
     }
 }
-///  The data masking policy that is used to specify data masking rule.
+/// The data masking policy that is used to specify data masking rule.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataMaskingPolicy {
-    ///  A masking expression to bind to the data masking rule.
+    /// A masking expression to bind to the data masking rule.
     #[prost(oneof="data_masking_policy::MaskingExpression", tags="1")]
     pub masking_expression: ::core::option::Option<data_masking_policy::MaskingExpression>,
 }
 /// Nested message and enum types in `DataMaskingPolicy`.
 pub mod data_masking_policy {
-    ///  The available masking rules. Learn more here:
-    ///  <https://cloud.google.com/bigquery/docs/column-data-masking-intro#masking_options.>
+    /// The available masking rules. Learn more here:
+    /// <https://cloud.google.com/bigquery/docs/column-data-masking-intro#masking_options.>
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum PredefinedExpression {
-        ///  Default, unspecified predefined expression. No masking will take place
-        ///  since no expression is specified.
+        /// Default, unspecified predefined expression. No masking will take place
+        /// since no expression is specified.
         Unspecified = 0,
-        ///  Masking expression to replace data with SHA-256 hash.
+        /// Masking expression to replace data with SHA-256 hash.
         Sha256 = 3,
-        ///  Masking expression to replace data with NULLs.
+        /// Masking expression to replace data with NULLs.
         AlwaysNull = 5,
-        ///  Masking expression to replace data with their default masking values.
-        ///  The default masking values for each type listed as below:
+        /// Masking expression to replace data with their default masking values.
+        /// The default masking values for each type listed as below:
         ///
-        ///  * STRING: ""
-        ///  * BYTES: b''
-        ///  * INTEGER: 0
-        ///  * FLOAT: 0.0
-        ///  * NUMERIC: 0
-        ///  * BOOLEAN: FALSE
-        ///  * TIMESTAMP: 0001-01-01 00:00:00 UTC
-        ///  * DATE: 0001-01-01
-        ///  * TIME: 00:00:00
-        ///  * DATETIME: 0001-01-01T00:00:00
-        ///  * GEOGRAPHY: POINT(0 0)
-        ///  * BIGNUMERIC: 0
-        ///  * ARRAY: []
-        ///  * STRUCT: NOT_APPLICABLE
-        ///  * JSON: NULL
+        /// * STRING: ""
+        /// * BYTES: b''
+        /// * INTEGER: 0
+        /// * FLOAT: 0.0
+        /// * NUMERIC: 0
+        /// * BOOLEAN: FALSE
+        /// * TIMESTAMP: 0001-01-01 00:00:00 UTC
+        /// * DATE: 0001-01-01
+        /// * TIME: 00:00:00
+        /// * DATETIME: 0001-01-01T00:00:00
+        /// * GEOGRAPHY: POINT(0 0)
+        /// * BIGNUMERIC: 0
+        /// * ARRAY: []
+        /// * STRUCT: NOT_APPLICABLE
+        /// * JSON: NULL
         DefaultMaskingValue = 7,
     }
     impl PredefinedExpression {
@@ -192,10 +192,10 @@ pub mod data_masking_policy {
             }
         }
     }
-    ///  A masking expression to bind to the data masking rule.
+    /// A masking expression to bind to the data masking rule.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum MaskingExpression {
-        ///  A predefined masking expression.
+        /// A predefined masking expression.
         #[prost(enumeration="PredefinedExpression", tag="1")]
         PredefinedExpression(i32),
     }

@@ -1,32 +1,32 @@
-///  A field of an index.
+/// A field of an index.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IndexField {
-    ///  The path of the field. Must match the field path specification described
-    ///  by \[google.firestore.v1beta1.Document.fields][fields\].
-    ///  Special field path `__name__` may be used by itself or at the end of a
-    ///  path. `__type__` may be used only at the end of path.
+    /// The path of the field. Must match the field path specification described
+    /// by \[google.firestore.v1beta1.Document.fields][fields\].
+    /// Special field path `__name__` may be used by itself or at the end of a
+    /// path. `__type__` may be used only at the end of path.
     #[prost(string, tag="1")]
     pub field_path: ::prost::alloc::string::String,
-    ///  The field's mode.
+    /// The field's mode.
     #[prost(enumeration="index_field::Mode", tag="2")]
     pub mode: i32,
 }
 /// Nested message and enum types in `IndexField`.
 pub mod index_field {
-    ///  The mode determines how a field is indexed.
+    /// The mode determines how a field is indexed.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum Mode {
-        ///  The mode is unspecified.
+        /// The mode is unspecified.
         Unspecified = 0,
-        ///  The field's values are indexed so as to support sequencing in
-        ///  ascending order and also query by <, >, <=, >=, and =.
+        /// The field's values are indexed so as to support sequencing in
+        /// ascending order and also query by <, >, <=, >=, and =.
         Ascending = 2,
-        ///  The field's values are indexed so as to support sequencing in
-        ///  descending order and also query by <, >, <=, >=, and =.
+        /// The field's values are indexed so as to support sequencing in
+        /// descending order and also query by <, >, <=, >=, and =.
         Descending = 3,
-        ///  The field's array values are indexed so as to support membership using
-        ///  ARRAY_CONTAINS queries.
+        /// The field's array values are indexed so as to support membership using
+        /// ARRAY_CONTAINS queries.
         ArrayContains = 4,
     }
     impl Mode {
@@ -44,49 +44,49 @@ pub mod index_field {
         }
     }
 }
-///  An index definition.
+/// An index definition.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Index {
-    ///  The resource name of the index.
-    ///  Output only.
+    /// The resource name of the index.
+    /// Output only.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  The collection ID to which this index applies. Required.
+    /// The collection ID to which this index applies. Required.
     #[prost(string, tag="2")]
     pub collection_id: ::prost::alloc::string::String,
-    ///  The fields to index.
+    /// The fields to index.
     #[prost(message, repeated, tag="3")]
     pub fields: ::prost::alloc::vec::Vec<IndexField>,
-    ///  The state of the index.
-    ///  Output only.
+    /// The state of the index.
+    /// Output only.
     #[prost(enumeration="index::State", tag="6")]
     pub state: i32,
 }
 /// Nested message and enum types in `Index`.
 pub mod index {
-    ///  The state of an index. During index creation, an index will be in the
-    ///  `CREATING` state. If the index is created successfully, it will transition
-    ///  to the `READY` state. If the index is not able to be created, it will
-    ///  transition to the `ERROR` state.
+    /// The state of an index. During index creation, an index will be in the
+    /// `CREATING` state. If the index is created successfully, it will transition
+    /// to the `READY` state. If the index is not able to be created, it will
+    /// transition to the `ERROR` state.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum State {
-        ///  The state is unspecified.
+        /// The state is unspecified.
         Unspecified = 0,
-        ///  The index is being created.
-        ///  There is an active long-running operation for the index.
-        ///  The index is updated when writing a document.
-        ///  Some index data may exist.
+        /// The index is being created.
+        /// There is an active long-running operation for the index.
+        /// The index is updated when writing a document.
+        /// Some index data may exist.
         Creating = 3,
-        ///  The index is ready to be used.
-        ///  The index is updated when writing a document.
-        ///  The index is fully populated from all stored documents it applies to.
+        /// The index is ready to be used.
+        /// The index is updated when writing a document.
+        /// The index is fully populated from all stored documents it applies to.
         Ready = 2,
-        ///  The index was being created, but something went wrong.
-        ///  There is no active long-running operation for the index,
-        ///  and the most recently finished long-running operation failed.
-        ///  The index is not updated when writing a document.
-        ///  Some index data may exist.
+        /// The index was being created, but something went wrong.
+        /// There is no active long-running operation for the index,
+        /// and the most recently finished long-running operation failed.
+        /// The index is not updated when writing a document.
+        /// Some index data may exist.
         Error = 5,
     }
     impl State {
@@ -104,42 +104,42 @@ pub mod index {
         }
     }
 }
-///  Metadata for index operations. This metadata populates
-///  the metadata field of \[google.longrunning.Operation][google.longrunning.Operation\].
+/// Metadata for index operations. This metadata populates
+/// the metadata field of \[google.longrunning.Operation][google.longrunning.Operation\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IndexOperationMetadata {
-    ///  The time that work began on the operation.
+    /// The time that work began on the operation.
     #[prost(message, optional, tag="1")]
     pub start_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  The time the operation ended, either successfully or otherwise. Unset if
-    ///  the operation is still active.
+    /// The time the operation ended, either successfully or otherwise. Unset if
+    /// the operation is still active.
     #[prost(message, optional, tag="2")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  The index resource that this operation is acting on. For example:
-    ///  `projects/{project_id}/databases/{database_id}/indexes/{index_id}`
+    /// The index resource that this operation is acting on. For example:
+    /// `projects/{project_id}/databases/{database_id}/indexes/{index_id}`
     #[prost(string, tag="3")]
     pub index: ::prost::alloc::string::String,
-    ///  The type of index operation.
+    /// The type of index operation.
     #[prost(enumeration="index_operation_metadata::OperationType", tag="4")]
     pub operation_type: i32,
-    ///  True if the \[google.longrunning.Operation\] was cancelled. If the
-    ///  cancellation is in progress, cancelled will be true but
-    ///  \[google.longrunning.Operation.done][google.longrunning.Operation.done\] will be false.
+    /// True if the \[google.longrunning.Operation\] was cancelled. If the
+    /// cancellation is in progress, cancelled will be true but
+    /// \[google.longrunning.Operation.done][google.longrunning.Operation.done\] will be false.
     #[prost(bool, tag="5")]
     pub cancelled: bool,
-    ///  Progress of the existing operation, measured in number of documents.
+    /// Progress of the existing operation, measured in number of documents.
     #[prost(message, optional, tag="6")]
     pub document_progress: ::core::option::Option<Progress>,
 }
 /// Nested message and enum types in `IndexOperationMetadata`.
 pub mod index_operation_metadata {
-    ///  The type of index operation.
+    /// The type of index operation.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum OperationType {
-        ///  Unspecified. Never set by server.
+        /// Unspecified. Never set by server.
         Unspecified = 0,
-        ///  The operation is creating the index. Initiated by a `CreateIndex` call.
+        /// The operation is creating the index. Initiated by a `CreateIndex` call.
         CreatingIndex = 1,
     }
     impl OperationType {
@@ -155,194 +155,194 @@ pub mod index_operation_metadata {
         }
     }
 }
-///  Measures the progress of a particular metric.
+/// Measures the progress of a particular metric.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Progress {
-    ///  An estimate of how much work has been completed. Note that this may be
-    ///  greater than `work_estimated`.
+    /// An estimate of how much work has been completed. Note that this may be
+    /// greater than `work_estimated`.
     #[prost(int64, tag="1")]
     pub work_completed: i64,
-    ///  An estimate of how much work needs to be performed. Zero if the
-    ///  work estimate is unavailable. May change as work progresses.
+    /// An estimate of how much work needs to be performed. Zero if the
+    /// work estimate is unavailable. May change as work progresses.
     #[prost(int64, tag="2")]
     pub work_estimated: i64,
 }
-///  The request for \[FirestoreAdmin.CreateIndex][google.firestore.admin.v1beta1.FirestoreAdmin.CreateIndex\].
+/// The request for \[FirestoreAdmin.CreateIndex][google.firestore.admin.v1beta1.FirestoreAdmin.CreateIndex\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateIndexRequest {
-    ///  The name of the database this index will apply to. For example:
-    ///  `projects/{project_id}/databases/{database_id}`
+    /// The name of the database this index will apply to. For example:
+    /// `projects/{project_id}/databases/{database_id}`
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  The index to create. The name and state fields are output only and will be
-    ///  ignored. Certain single field indexes cannot be created or deleted.
+    /// The index to create. The name and state fields are output only and will be
+    /// ignored. Certain single field indexes cannot be created or deleted.
     #[prost(message, optional, tag="2")]
     pub index: ::core::option::Option<Index>,
 }
-///  The request for \[FirestoreAdmin.GetIndex][google.firestore.admin.v1beta1.FirestoreAdmin.GetIndex\].
+/// The request for \[FirestoreAdmin.GetIndex][google.firestore.admin.v1beta1.FirestoreAdmin.GetIndex\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetIndexRequest {
-    ///  The name of the index. For example:
-    ///  `projects/{project_id}/databases/{database_id}/indexes/{index_id}`
+    /// The name of the index. For example:
+    /// `projects/{project_id}/databases/{database_id}/indexes/{index_id}`
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  The request for \[FirestoreAdmin.ListIndexes][google.firestore.admin.v1beta1.FirestoreAdmin.ListIndexes\].
+/// The request for \[FirestoreAdmin.ListIndexes][google.firestore.admin.v1beta1.FirestoreAdmin.ListIndexes\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListIndexesRequest {
-    ///  The database name. For example:
-    ///  `projects/{project_id}/databases/{database_id}`
+    /// The database name. For example:
+    /// `projects/{project_id}/databases/{database_id}`
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     #[prost(string, tag="2")]
     pub filter: ::prost::alloc::string::String,
-    ///  The standard List page size.
+    /// The standard List page size.
     #[prost(int32, tag="3")]
     pub page_size: i32,
-    ///  The standard List page token.
+    /// The standard List page token.
     #[prost(string, tag="4")]
     pub page_token: ::prost::alloc::string::String,
 }
-///  The request for \[FirestoreAdmin.DeleteIndex][google.firestore.admin.v1beta1.FirestoreAdmin.DeleteIndex\].
+/// The request for \[FirestoreAdmin.DeleteIndex][google.firestore.admin.v1beta1.FirestoreAdmin.DeleteIndex\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteIndexRequest {
-    ///  The index name. For example:
-    ///  `projects/{project_id}/databases/{database_id}/indexes/{index_id}`
+    /// The index name. For example:
+    /// `projects/{project_id}/databases/{database_id}/indexes/{index_id}`
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  The response for \[FirestoreAdmin.ListIndexes][google.firestore.admin.v1beta1.FirestoreAdmin.ListIndexes\].
+/// The response for \[FirestoreAdmin.ListIndexes][google.firestore.admin.v1beta1.FirestoreAdmin.ListIndexes\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListIndexesResponse {
-    ///  The indexes.
+    /// The indexes.
     #[prost(message, repeated, tag="1")]
     pub indexes: ::prost::alloc::vec::Vec<Index>,
-    ///  The standard List next-page token.
+    /// The standard List next-page token.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-///  The request for \[FirestoreAdmin.ExportDocuments][google.firestore.admin.v1beta1.FirestoreAdmin.ExportDocuments\].
+/// The request for \[FirestoreAdmin.ExportDocuments][google.firestore.admin.v1beta1.FirestoreAdmin.ExportDocuments\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportDocumentsRequest {
-    ///  Database to export. Should be of the form:
-    ///  `projects/{project_id}/databases/{database_id}`.
+    /// Database to export. Should be of the form:
+    /// `projects/{project_id}/databases/{database_id}`.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Which collection ids to export. Unspecified means all collections.
+    /// Which collection ids to export. Unspecified means all collections.
     #[prost(string, repeated, tag="3")]
     pub collection_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    ///  The output URI. Currently only supports Google Cloud Storage URIs of the
-    ///  form: `gs://BUCKET_NAME\[/NAMESPACE_PATH\]`, where `BUCKET_NAME` is the name
-    ///  of the Google Cloud Storage bucket and `NAMESPACE_PATH` is an optional
-    ///  Google Cloud Storage namespace path. When
-    ///  choosing a name, be sure to consider Google Cloud Storage naming
-    ///  guidelines: <https://cloud.google.com/storage/docs/naming.>
-    ///  If the URI is a bucket (without a namespace path), a prefix will be
-    ///  generated based on the start time.
+    /// The output URI. Currently only supports Google Cloud Storage URIs of the
+    /// form: `gs://BUCKET_NAME\[/NAMESPACE_PATH\]`, where `BUCKET_NAME` is the name
+    /// of the Google Cloud Storage bucket and `NAMESPACE_PATH` is an optional
+    /// Google Cloud Storage namespace path. When
+    /// choosing a name, be sure to consider Google Cloud Storage naming
+    /// guidelines: <https://cloud.google.com/storage/docs/naming.>
+    /// If the URI is a bucket (without a namespace path), a prefix will be
+    /// generated based on the start time.
     #[prost(string, tag="4")]
     pub output_uri_prefix: ::prost::alloc::string::String,
 }
-///  The request for \[FirestoreAdmin.ImportDocuments][google.firestore.admin.v1beta1.FirestoreAdmin.ImportDocuments\].
+/// The request for \[FirestoreAdmin.ImportDocuments][google.firestore.admin.v1beta1.FirestoreAdmin.ImportDocuments\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportDocumentsRequest {
-    ///  Database to import into. Should be of the form:
-    ///  `projects/{project_id}/databases/{database_id}`.
+    /// Database to import into. Should be of the form:
+    /// `projects/{project_id}/databases/{database_id}`.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Which collection ids to import. Unspecified means all collections included
-    ///  in the import.
+    /// Which collection ids to import. Unspecified means all collections included
+    /// in the import.
     #[prost(string, repeated, tag="3")]
     pub collection_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    ///  Location of the exported files.
-    ///  This must match the output_uri_prefix of an ExportDocumentsResponse from
-    ///  an export that has completed successfully.
-    ///  See:
-    ///  \[google.firestore.admin.v1beta1.ExportDocumentsResponse.output_uri_prefix][google.firestore.admin.v1beta1.ExportDocumentsResponse.output_uri_prefix\].
+    /// Location of the exported files.
+    /// This must match the output_uri_prefix of an ExportDocumentsResponse from
+    /// an export that has completed successfully.
+    /// See:
+    /// \[google.firestore.admin.v1beta1.ExportDocumentsResponse.output_uri_prefix][google.firestore.admin.v1beta1.ExportDocumentsResponse.output_uri_prefix\].
     #[prost(string, tag="4")]
     pub input_uri_prefix: ::prost::alloc::string::String,
 }
-///  Returned in the \[google.longrunning.Operation][google.longrunning.Operation\] response field.
+/// Returned in the \[google.longrunning.Operation][google.longrunning.Operation\] response field.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportDocumentsResponse {
-    ///  Location of the output files. This can be used to begin an import
-    ///  into Cloud Firestore (this project or another project) after the operation
-    ///  completes successfully.
+    /// Location of the output files. This can be used to begin an import
+    /// into Cloud Firestore (this project or another project) after the operation
+    /// completes successfully.
     #[prost(string, tag="1")]
     pub output_uri_prefix: ::prost::alloc::string::String,
 }
-///  Metadata for ExportDocuments operations.
+/// Metadata for ExportDocuments operations.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportDocumentsMetadata {
-    ///  The time that work began on the operation.
+    /// The time that work began on the operation.
     #[prost(message, optional, tag="1")]
     pub start_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  The time the operation ended, either successfully or otherwise. Unset if
-    ///  the operation is still active.
+    /// The time the operation ended, either successfully or otherwise. Unset if
+    /// the operation is still active.
     #[prost(message, optional, tag="2")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  The state of the export operation.
+    /// The state of the export operation.
     #[prost(enumeration="OperationState", tag="3")]
     pub operation_state: i32,
-    ///  An estimate of the number of documents processed.
+    /// An estimate of the number of documents processed.
     #[prost(message, optional, tag="4")]
     pub progress_documents: ::core::option::Option<Progress>,
-    ///  An estimate of the number of bytes processed.
+    /// An estimate of the number of bytes processed.
     #[prost(message, optional, tag="5")]
     pub progress_bytes: ::core::option::Option<Progress>,
-    ///  Which collection ids are being exported.
+    /// Which collection ids are being exported.
     #[prost(string, repeated, tag="6")]
     pub collection_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    ///  Where the entities are being exported to.
+    /// Where the entities are being exported to.
     #[prost(string, tag="7")]
     pub output_uri_prefix: ::prost::alloc::string::String,
 }
-///  Metadata for ImportDocuments operations.
+/// Metadata for ImportDocuments operations.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportDocumentsMetadata {
-    ///  The time that work began on the operation.
+    /// The time that work began on the operation.
     #[prost(message, optional, tag="1")]
     pub start_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  The time the operation ended, either successfully or otherwise. Unset if
-    ///  the operation is still active.
+    /// The time the operation ended, either successfully or otherwise. Unset if
+    /// the operation is still active.
     #[prost(message, optional, tag="2")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  The state of the import operation.
+    /// The state of the import operation.
     #[prost(enumeration="OperationState", tag="3")]
     pub operation_state: i32,
-    ///  An estimate of the number of documents processed.
+    /// An estimate of the number of documents processed.
     #[prost(message, optional, tag="4")]
     pub progress_documents: ::core::option::Option<Progress>,
-    ///  An estimate of the number of bytes processed.
+    /// An estimate of the number of bytes processed.
     #[prost(message, optional, tag="5")]
     pub progress_bytes: ::core::option::Option<Progress>,
-    ///  Which collection ids are being imported.
+    /// Which collection ids are being imported.
     #[prost(string, repeated, tag="6")]
     pub collection_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    ///  The location of the documents being imported.
+    /// The location of the documents being imported.
     #[prost(string, tag="7")]
     pub input_uri_prefix: ::prost::alloc::string::String,
 }
-///  The various possible states for an ongoing Operation.
+/// The various possible states for an ongoing Operation.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum OperationState {
-    ///  Unspecified.
+    /// Unspecified.
     StateUnspecified = 0,
-    ///  Request is being prepared for processing.
+    /// Request is being prepared for processing.
     Initializing = 1,
-    ///  Request is actively being processed.
+    /// Request is actively being processed.
     Processing = 2,
-    ///  Request is in the process of being cancelled after user called
-    ///  google.longrunning.Operations.CancelOperation on the operation.
+    /// Request is in the process of being cancelled after user called
+    /// google.longrunning.Operations.CancelOperation on the operation.
     Cancelling = 3,
-    ///  Request has been processed and is in its finalization stage.
+    /// Request has been processed and is in its finalization stage.
     Finalizing = 4,
-    ///  Request has completed successfully.
+    /// Request has completed successfully.
     Successful = 5,
-    ///  Request has finished being processed, but encountered an error.
+    /// Request has finished being processed, but encountered an error.
     Failed = 6,
-    ///  Request has finished being cancelled after user called
-    ///  google.longrunning.Operations.CancelOperation.
+    /// Request has finished being cancelled after user called
+    /// google.longrunning.Operations.CancelOperation.
     Cancelled = 7,
 }
 impl OperationState {
@@ -629,7 +629,7 @@ pub mod firestore_admin_client {
         }
     }
 }
-///  The metadata message for \[google.cloud.location.Location.metadata][google.cloud.location.Location.metadata\].
+/// The metadata message for \[google.cloud.location.Location.metadata][google.cloud.location.Location.metadata\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LocationMetadata {
 }

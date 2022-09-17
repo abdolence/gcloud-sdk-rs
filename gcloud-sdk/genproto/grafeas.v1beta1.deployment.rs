@@ -1,56 +1,56 @@
-///  An artifact that can be deployed in some runtime.
+/// An artifact that can be deployed in some runtime.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Deployable {
-    ///  Required. Resource URI for the artifact being deployed.
+    /// Required. Resource URI for the artifact being deployed.
     #[prost(string, repeated, tag="1")]
     pub resource_uri: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-///  Details of a deployment occurrence.
+/// Details of a deployment occurrence.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Details {
-    ///  Required. Deployment history for the resource.
+    /// Required. Deployment history for the resource.
     #[prost(message, optional, tag="1")]
     pub deployment: ::core::option::Option<Deployment>,
 }
-///  The period during which some deployable was active in a runtime.
+/// The period during which some deployable was active in a runtime.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Deployment {
-    ///  Identity of the user that triggered this deployment.
+    /// Identity of the user that triggered this deployment.
     #[prost(string, tag="1")]
     pub user_email: ::prost::alloc::string::String,
-    ///  Required. Beginning of the lifetime of this deployment.
+    /// Required. Beginning of the lifetime of this deployment.
     #[prost(message, optional, tag="2")]
     pub deploy_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  End of the lifetime of this deployment.
+    /// End of the lifetime of this deployment.
     #[prost(message, optional, tag="3")]
     pub undeploy_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Configuration used to create this deployment.
+    /// Configuration used to create this deployment.
     #[prost(string, tag="4")]
     pub config: ::prost::alloc::string::String,
-    ///  Address of the runtime element hosting this deployment.
+    /// Address of the runtime element hosting this deployment.
     #[prost(string, tag="5")]
     pub address: ::prost::alloc::string::String,
-    ///  Output only. Resource URI for the artifact being deployed taken from
-    ///  the deployable field with the same name.
+    /// Output only. Resource URI for the artifact being deployed taken from
+    /// the deployable field with the same name.
     #[prost(string, repeated, tag="6")]
     pub resource_uri: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    ///  Platform hosting this deployment.
+    /// Platform hosting this deployment.
     #[prost(enumeration="deployment::Platform", tag="7")]
     pub platform: i32,
 }
 /// Nested message and enum types in `Deployment`.
 pub mod deployment {
-    ///  Types of platforms.
+    /// Types of platforms.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum Platform {
-        ///  Unknown.
+        /// Unknown.
         Unspecified = 0,
-        ///  Google Container Engine.
+        /// Google Container Engine.
         Gke = 1,
-        ///  Google App Engine: Flexible Environment.
+        /// Google App Engine: Flexible Environment.
         Flex = 2,
-        ///  Custom user-defined platform.
+        /// Custom user-defined platform.
         Custom = 3,
     }
     impl Platform {

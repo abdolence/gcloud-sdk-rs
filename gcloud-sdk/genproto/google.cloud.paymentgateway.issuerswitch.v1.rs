@@ -1,63 +1,63 @@
-///  A reference to uniquely identify an account according to India's UPI
-///  standards.
+/// A reference to uniquely identify an account according to India's UPI
+/// standards.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AccountReference {
-    ///  IFSC code of a bank's branch.
+    /// IFSC code of a bank's branch.
     #[prost(string, tag="1")]
     pub ifsc_code: ::prost::alloc::string::String,
-    ///  Type of account. Examples include SAVINGS, CURRENT, etc.
+    /// Type of account. Examples include SAVINGS, CURRENT, etc.
     #[prost(string, tag="2")]
     pub account_type: ::prost::alloc::string::String,
-    ///  Unique number for an account in a bank and branch.
+    /// Unique number for an account in a bank and branch.
     #[prost(string, tag="3")]
     pub account_number: ::prost::alloc::string::String,
 }
-///  A participant in a payment settlement transaction processed by the issuer
-///  switch. The participant could either be the payer or the payee in the
-///  transaction.
+/// A participant in a payment settlement transaction processed by the issuer
+/// switch. The participant could either be the payer or the payee in the
+/// transaction.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SettlementParticipant {
-    ///  The participant information.
+    /// The participant information.
     #[prost(message, optional, tag="1")]
     pub participant: ::core::option::Option<Participant>,
-    ///  Unique identification of an account according to India's UPI standards.
+    /// Unique identification of an account according to India's UPI standards.
     #[prost(message, optional, tag="2")]
     pub account: ::core::option::Option<AccountReference>,
-    ///  Information about a merchant who is a participant in the payment. This
-    ///  field will be specified only if the participant is a merchant.
+    /// Information about a merchant who is a participant in the payment. This
+    /// field will be specified only if the participant is a merchant.
     #[prost(message, optional, tag="3")]
     pub merchant_info: ::core::option::Option<MerchantInfo>,
-    ///  Output only. The mobile number of the participant.
+    /// Output only. The mobile number of the participant.
     #[prost(string, tag="4")]
     pub mobile: ::prost::alloc::string::String,
-    ///  Output only. The device id of the participant.
+    /// Output only. The device id of the participant.
     #[prost(string, tag="5")]
     pub device_id: ::prost::alloc::string::String,
 }
-///  A participant in a transaction processed by the issuer switch.
+/// A participant in a transaction processed by the issuer switch.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Participant {
-    ///  The virtual payment address (VPA) of the participant.
+    /// The virtual payment address (VPA) of the participant.
     #[prost(string, tag="1")]
     pub virtual_payment_address: ::prost::alloc::string::String,
-    ///  The persona of the participant.
+    /// The persona of the participant.
     #[prost(enumeration="participant::Persona", tag="2")]
     pub persona: i32,
-    ///  The name of the participant.
+    /// The name of the participant.
     #[prost(string, tag="3")]
     pub user: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `Participant`.
 pub mod participant {
-    ///  The type of the participant.
+    /// The type of the participant.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum Persona {
-        ///  Unspecified persona.
+        /// Unspecified persona.
         Unspecified = 0,
-        ///  Participant is an entity.
+        /// Participant is an entity.
         Entity = 1,
-        ///  Participant is a person.
+        /// Participant is a person.
         Person = 2,
     }
     impl Persona {
@@ -74,73 +74,73 @@ pub mod participant {
         }
     }
 }
-///  A merchant entity participating in a payment settlement transaction.
+/// A merchant entity participating in a payment settlement transaction.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MerchantInfo {
-    ///  A unique identifier for the merchant.
+    /// A unique identifier for the merchant.
     #[prost(string, tag="1")]
     pub id: ::prost::alloc::string::String,
-    ///  The name of the merchant who is a party in the payment. Includes multiple
-    ///  possible names for the merchant.
+    /// The name of the merchant who is a party in the payment. Includes multiple
+    /// possible names for the merchant.
     #[prost(message, optional, tag="2")]
     pub merchant: ::core::option::Option<MerchantName>,
-    ///  Additional information about the merchant.
+    /// Additional information about the merchant.
     #[prost(message, optional, tag="3")]
     pub additional_info: ::core::option::Option<MerchantAdditionalInfo>,
 }
-///  The name of a merchant who is a participant in a payment settlement
-///  transaction. Includes multiple possible names for the merchant.
+/// The name of a merchant who is a participant in a payment settlement
+/// transaction. Includes multiple possible names for the merchant.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MerchantName {
-    ///  The brand name of the merchant.
+    /// The brand name of the merchant.
     #[prost(string, tag="1")]
     pub brand: ::prost::alloc::string::String,
-    ///  The merchant's legal name.
+    /// The merchant's legal name.
     #[prost(string, tag="2")]
     pub legal: ::prost::alloc::string::String,
-    ///  The franchise name under which the merchant operates.
+    /// The franchise name under which the merchant operates.
     #[prost(string, tag="3")]
     pub franchise: ::prost::alloc::string::String,
 }
-///  Additional merchant information specific to India's UPI requirements.
+/// Additional merchant information specific to India's UPI requirements.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MerchantAdditionalInfo {
-    ///  Merchant Category Code (MCC) as specified by UPI. This is a four-digit
-    ///  number listed in ISO 18245 for retail financial services.
+    /// Merchant Category Code (MCC) as specified by UPI. This is a four-digit
+    /// number listed in ISO 18245 for retail financial services.
     #[prost(string, tag="1")]
     pub category_code: ::prost::alloc::string::String,
-    ///  A unique identifier for the merchant store where the payment settlement
-    ///  transaction occurred.
+    /// A unique identifier for the merchant store where the payment settlement
+    /// transaction occurred.
     #[prost(string, tag="2")]
     pub store_id: ::prost::alloc::string::String,
-    ///  A unique identifier for the POS terminal in the store where the payment
-    ///  settlement transaction occurred.
+    /// A unique identifier for the POS terminal in the store where the payment
+    /// settlement transaction occurred.
     #[prost(string, tag="3")]
     pub terminal_id: ::prost::alloc::string::String,
-    ///  Indicates the type of merchant.
+    /// Indicates the type of merchant.
     #[prost(enumeration="merchant_additional_info::Type", tag="4")]
     pub r#type: i32,
-    ///  Indicates the genre of the merchant.
+    /// Indicates the genre of the merchant.
     #[prost(enumeration="merchant_additional_info::Genre", tag="5")]
     pub genre: i32,
-    ///  Indicates the merchant's onboarding type.
+    /// Indicates the merchant's onboarding type.
     #[prost(enumeration="merchant_additional_info::OnboardingType", tag="6")]
     pub onboarding_type: i32,
-    ///  Indicates the merchant's owner type.
+    /// Indicates the merchant's owner type.
     #[prost(enumeration="merchant_additional_info::OwnershipType", tag="7")]
     pub ownership_type: i32,
 }
 /// Nested message and enum types in `MerchantAdditionalInfo`.
 pub mod merchant_additional_info {
-    ///  Indicates the merchant's type as a small or large merchant.
+    /// Indicates the merchant's type as a small or large merchant.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum Type {
-        ///  Unspecified merchant type.
+        /// Unspecified merchant type.
         Unspecified = 0,
-        ///  Large merchant.
+        /// Large merchant.
         Large = 1,
-        ///  Small merchant.
+        /// Small merchant.
         Small = 2,
     }
     impl Type {
@@ -156,15 +156,15 @@ pub mod merchant_additional_info {
             }
         }
     }
-    ///  Indicates whether the merchant is an online or offline merchant.
+    /// Indicates whether the merchant is an online or offline merchant.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum Genre {
-        ///  Unspecified merchant genre.
+        /// Unspecified merchant genre.
         Unspecified = 0,
-        ///  Offline merchant
+        /// Offline merchant
         Offline = 1,
-        ///  Online merchant.
+        /// Online merchant.
         Online = 2,
     }
     impl Genre {
@@ -180,20 +180,20 @@ pub mod merchant_additional_info {
             }
         }
     }
-    ///  Indicates whether the merchant has been onboarded by a bank or an
-    ///  aggregator.
+    /// Indicates whether the merchant has been onboarded by a bank or an
+    /// aggregator.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum OnboardingType {
-        ///  Unspecified merchant onboarding type.
+        /// Unspecified merchant onboarding type.
         Unspecified = 0,
-        ///  Onboarded by aggreagator.
+        /// Onboarded by aggreagator.
         Aggregator = 1,
-        ///  Onboarded by bank.
+        /// Onboarded by bank.
         Bank = 2,
-        ///  Onboarded by the UPI network.
+        /// Onboarded by the UPI network.
         Network = 3,
-        ///  Onboarded by the TPAP.
+        /// Onboarded by the TPAP.
         Tpap = 4,
     }
     impl OnboardingType {
@@ -211,21 +211,21 @@ pub mod merchant_additional_info {
             }
         }
     }
-    ///  Indicates the ownership type of the merchant.
+    /// Indicates the ownership type of the merchant.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum OwnershipType {
-        ///  Unspecified merchant ownership type.
+        /// Unspecified merchant ownership type.
         Unspecified = 0,
-        ///  Properietary ownership.
+        /// Properietary ownership.
         Proprietary = 1,
-        ///  Partnership ownership.
+        /// Partnership ownership.
         Partnership = 2,
-        ///  Public ownership.
+        /// Public ownership.
         Public = 3,
-        ///  Private ownership.
+        /// Private ownership.
         Private = 4,
-        ///  Other ownership model.
+        /// Other ownership model.
         Others = 5,
     }
     impl OwnershipType {
@@ -245,44 +245,44 @@ pub mod merchant_additional_info {
         }
     }
 }
-///  The API type for a transaction. Every transaction processed by the issuer
-///  switch will be one of these API types.
+/// The API type for a transaction. Every transaction processed by the issuer
+/// switch will be one of these API types.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum ApiType {
-    ///  Unspecified API type.
+    /// Unspecified API type.
     Unspecified = 0,
-    ///  Balance API. Maps to UPI's `BalEnq` API. This is a metadata
-    ///  transaction API.
+    /// Balance API. Maps to UPI's `BalEnq` API. This is a metadata
+    /// transaction API.
     Balance = 1,
-    ///  Check transaction status API. Maps to UPI's `ChkTxn` API. This is a
-    ///  metadata transaction API.
+    /// Check transaction status API. Maps to UPI's `ChkTxn` API. This is a
+    /// metadata transaction API.
     CheckStatus = 2,
-    ///  Complain API. Maps to UPI's `Complaint` API. This is a metadata transaction
-    ///  API.
+    /// Complain API. Maps to UPI's `Complaint` API. This is a metadata transaction
+    /// API.
     Complaint = 3,
-    ///  Heart beat API. Maps to UPI's `Hbt` API. This is a metadata transaction
-    ///  API.
+    /// Heart beat API. Maps to UPI's `Hbt` API. This is a metadata transaction
+    /// API.
     HeartBeat = 4,
-    ///  Initiate registration API. Maps to UPI's `Otp` API. This is a metadata
-    ///  transaction API.
+    /// Initiate registration API. Maps to UPI's `Otp` API. This is a metadata
+    /// transaction API.
     InitiateRegistration = 5,
-    ///  List accounts API. Maps to UPI's `ListAccount` API. This is a metadata
-    ///  transaction API.
+    /// List accounts API. Maps to UPI's `ListAccount` API. This is a metadata
+    /// transaction API.
     ListAccounts = 6,
-    ///  Mandate API. Maps to UPI's `Mandate` API. This is a metadata transaction
-    ///  API.
+    /// Mandate API. Maps to UPI's `Mandate` API. This is a metadata transaction
+    /// API.
     Mandate = 7,
-    ///  Payment settlement API. Maps to UPI's `Pay` API. This is a financial
-    ///  transaction API.
+    /// Payment settlement API. Maps to UPI's `Pay` API. This is a financial
+    /// transaction API.
     SettlePayment = 8,
-    ///  Update credentials API. Maps to UPI's `SetCre` API. This is a metadata
-    ///  transaction API.
+    /// Update credentials API. Maps to UPI's `SetCre` API. This is a metadata
+    /// transaction API.
     UpdateCredentials = 9,
-    ///  Validate registration API. Maps to UPI's `RegMob` API. This is a metadata
-    ///  transaction API.
+    /// Validate registration API. Maps to UPI's `RegMob` API. This is a metadata
+    /// transaction API.
     ValidateRegistration = 10,
-    ///  Voucher confirmation API. Maps to UPI's `VoucherConfirmation` API.
+    /// Voucher confirmation API. Maps to UPI's `VoucherConfirmation` API.
     VoucherConfirmation = 11,
 }
 impl ApiType {
@@ -307,76 +307,76 @@ impl ApiType {
         }
     }
 }
-///  The type of a transaction. Every transaction processed by the issuer switch
-///  will be one of these transaction types. Transaction types are associated with
-///  a particular API type. This associated is documented with each value.
+/// The type of a transaction. Every transaction processed by the issuer switch
+/// will be one of these transaction types. Transaction types are associated with
+/// a particular API type. This associated is documented with each value.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum TransactionType {
-    ///  Unspecified transaction type.
+    /// Unspecified transaction type.
     Unspecified = 0,
-    ///  Autoupdate transaction type. This is associated with the `CHECK_STATUS`
-    ///  API type. Maps to UPI's `AUTOUPDATE` type.
+    /// Autoupdate transaction type. This is associated with the `CHECK_STATUS`
+    /// API type. Maps to UPI's `AUTOUPDATE` type.
     Autoupdate = 1,
-    ///  Balance check transaction type. This is associated with the
-    ///  `BALANCE_ENQUIRY` API type. Maps to UPI's `BalChk` type.
+    /// Balance check transaction type. This is associated with the
+    /// `BALANCE_ENQUIRY` API type. Maps to UPI's `BalChk` type.
     BalanceCheck = 3,
-    ///  Balance enquiry transaction type. This is associated with the
-    ///  `BALANCE_ENQUIRY` API type. Maps to UPI's `BalEnq` type.
+    /// Balance enquiry transaction type. This is associated with the
+    /// `BALANCE_ENQUIRY` API type. Maps to UPI's `BalEnq` type.
     BalanceEnquiry = 4,
-    ///  Check status transaction type. This is associated with the `COMPLAINT` API
-    ///  type. Maps to UPI's `CHECKSTATUS` type.
+    /// Check status transaction type. This is associated with the `COMPLAINT` API
+    /// type. Maps to UPI's `CHECKSTATUS` type.
     CheckStatus = 5,
-    ///  Check transaction type. This is associated with the `CHECK_STATUS` API
-    ///  type. Maps to UPI's `ChkTxn` type.
+    /// Check transaction type. This is associated with the `CHECK_STATUS` API
+    /// type. Maps to UPI's `ChkTxn` type.
     CheckTransaction = 6,
-    ///  Complaint transaction type. This is associated with the `COMPLAINT` API
-    ///  type. Maps to UPI's `COMPLAINT` type.
+    /// Complaint transaction type. This is associated with the `COMPLAINT` API
+    /// type. Maps to UPI's `COMPLAINT` type.
     Complaint = 7,
-    ///  Create transaction type. This is associated with the `MANDATE` API type.
-    ///  Maps to UPI's `CREATE` type.
+    /// Create transaction type. This is associated with the `MANDATE` API type.
+    /// Maps to UPI's `CREATE` type.
     Create = 8,
-    ///  Credit transaction type. This is associated with the `SETTLE_PAYMENT` API
-    ///  type. Maps to UPI's `CREDIT` type.
+    /// Credit transaction type. This is associated with the `SETTLE_PAYMENT` API
+    /// type. Maps to UPI's `CREDIT` type.
     Credit = 9,
-    ///  Debit transaction type. This is associated with the `SETTLE_PAYMENT` API
-    ///  type. Maps to UPI's `DEBIT` type.
+    /// Debit transaction type. This is associated with the `SETTLE_PAYMENT` API
+    /// type. Maps to UPI's `DEBIT` type.
     Debit = 10,
-    ///  Dispute transaction type. This is associated with the `COMPLAINT` API
-    ///  type. Maps to UPI's `DISPUTE` type.
+    /// Dispute transaction type. This is associated with the `COMPLAINT` API
+    /// type. Maps to UPI's `DISPUTE` type.
     Dispute = 11,
-    ///  Heart beat transaction type. This is associated with `HEART_BEAT` API type.
-    ///  Maps to UPI's `Hbt` type.
+    /// Heart beat transaction type. This is associated with `HEART_BEAT` API type.
+    /// Maps to UPI's `Hbt` type.
     HeartBeat = 12,
-    ///  List accounts transaction type. This is associated with `LIST_ACCOUNTS` API
-    ///  type. Maps to UPI's `ListAccount` type.
+    /// List accounts transaction type. This is associated with `LIST_ACCOUNTS` API
+    /// type. Maps to UPI's `ListAccount` type.
     ListAccounts = 13,
-    ///  OTP transaction type. This is associated with the `INITIATE_REGISTRATION`
-    ///  API type. Maps to UPI's `Otp` type.
+    /// OTP transaction type. This is associated with the `INITIATE_REGISTRATION`
+    /// API type. Maps to UPI's `Otp` type.
     Otp = 14,
-    ///  Register mobile transaction type. This is associated with the
-    ///  `VALIDATE_REGISTRATION` API type. Maps to UPI's `RegMob` type.
+    /// Register mobile transaction type. This is associated with the
+    /// `VALIDATE_REGISTRATION` API type. Maps to UPI's `RegMob` type.
     RegisterMobile = 15,
-    ///  Refund transaction type. This is associated with the `COMPLAINT` API
-    ///  type. Maps to UPI's `REFUND` type.
+    /// Refund transaction type. This is associated with the `COMPLAINT` API
+    /// type. Maps to UPI's `REFUND` type.
     Refund = 16,
-    ///  Reversal transaction type. This is associated with the `SETTLE_PAYMENT` and
-    ///  `COMPLAINT` API types. Maps to UPI's `REVERSAL` type.
+    /// Reversal transaction type. This is associated with the `SETTLE_PAYMENT` and
+    /// `COMPLAINT` API types. Maps to UPI's `REVERSAL` type.
     Reversal = 17,
-    ///  Revoke transaction type. This is associated with the `MANDATE` API type.
-    ///  Maps to UPI's `REVOKE` type.
+    /// Revoke transaction type. This is associated with the `MANDATE` API type.
+    /// Maps to UPI's `REVOKE` type.
     Revoke = 18,
-    ///  Status update transaction type. This is associated with the `COMPLAINT` API
-    ///  type. Maps to UPI's `STATUSUPDATE` type.
+    /// Status update transaction type. This is associated with the `COMPLAINT` API
+    /// type. Maps to UPI's `STATUSUPDATE` type.
     StatusUpdate = 19,
-    ///  Update transaction type. This is associated with the `MANDATE` API type.
-    ///  Maps to UPI's `UPDATE` type.
+    /// Update transaction type. This is associated with the `MANDATE` API type.
+    /// Maps to UPI's `UPDATE` type.
     Update = 20,
-    ///  Update credentials transaction type. This is associated with
-    ///  `UPDATE_CREDENTIALS` API type. Maps to UPI's `SetCre` type.
+    /// Update credentials transaction type. This is associated with
+    /// `UPDATE_CREDENTIALS` API type. Maps to UPI's `SetCre` type.
     UpdateCredentials = 21,
-    ///  Redeem transaction type. This is associated with the `VOUCHER_CONFIRMATION`
-    ///  API type. Maps to UPI's `REDEEM` type.
+    /// Redeem transaction type. This is associated with the `VOUCHER_CONFIRMATION`
+    /// API type. Maps to UPI's `REDEEM` type.
     Redeem = 22,
 }
 impl TransactionType {
@@ -411,213 +411,213 @@ impl TransactionType {
         }
     }
 }
-///  A complaint processed by the issuer switch.
+/// A complaint processed by the issuer switch.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Complaint {
-    ///  The name of the complaint. This uniquely identifies the complaint.
-    ///  Format of name is
-    ///  projects/{project_id}/complaints/{complaint_id}.
+    /// The name of the complaint. This uniquely identifies the complaint.
+    /// Format of name is
+    /// projects/{project_id}/complaints/{complaint_id}.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  The reason for raising the complaint. This maps adjustment flag
-    ///  and reason code for the complaint to `reqAdjFlag` and `reqAdjCode` in
-    ///  complaint request respectively while raising a complaint.
+    /// The reason for raising the complaint. This maps adjustment flag
+    /// and reason code for the complaint to `reqAdjFlag` and `reqAdjCode` in
+    /// complaint request respectively while raising a complaint.
     #[prost(message, optional, tag="2")]
     pub raise_complaint_adjustment: ::core::option::Option<RaiseComplaintAdjustment>,
-    ///  Required. Details required for raising / resolving a complaint.
+    /// Required. Details required for raising / resolving a complaint.
     #[prost(message, optional, tag="4")]
     pub details: ::core::option::Option<CaseDetails>,
-    ///  Output only. Response to the raised / resolved complaint.
+    /// Output only. Response to the raised / resolved complaint.
     #[prost(message, optional, tag="5")]
     pub response: ::core::option::Option<CaseResponse>,
-    ///  The reason for resolving the complaint. It provides adjustment values while
-    ///  resolving and for already resolved complaints. This maps adjustment flag
-    ///  and reason code for the complaint to `reqAdjFlag` and `reqAdjCode` in
-    ///  complaint request respectively when a complete resolution is done via
-    ///  Resolve Complaint API otherwise maps to `respAdjFlag` and `respAdjCode` in
-    ///  complaint response respectively when a complaint request from UPI is
-    ///  directly resolved by issuer switch.
+    /// The reason for resolving the complaint. It provides adjustment values while
+    /// resolving and for already resolved complaints. This maps adjustment flag
+    /// and reason code for the complaint to `reqAdjFlag` and `reqAdjCode` in
+    /// complaint request respectively when a complete resolution is done via
+    /// Resolve Complaint API otherwise maps to `respAdjFlag` and `respAdjCode` in
+    /// complaint response respectively when a complaint request from UPI is
+    /// directly resolved by issuer switch.
     #[prost(message, optional, tag="6")]
     pub resolve_complaint_adjustment: ::core::option::Option<ResolveComplaintAdjustment>,
 }
-///  Request for the `CreateComplaint` method.
+/// Request for the `CreateComplaint` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateComplaintRequest {
-    ///  Required. The parent resource for the complaint. The format is
-    ///  `projects/{project}`.
+    /// Required. The parent resource for the complaint. The format is
+    /// `projects/{project}`.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Required. The complaint to be raised.
+    /// Required. The complaint to be raised.
     #[prost(message, optional, tag="2")]
     pub complaint: ::core::option::Option<Complaint>,
 }
-///  Request for the `ResolveComplaint` method.
+/// Request for the `ResolveComplaint` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResolveComplaintRequest {
-    ///  Required. The complaint to be resolved.
+    /// Required. The complaint to be resolved.
     #[prost(message, optional, tag="1")]
     pub complaint: ::core::option::Option<Complaint>,
 }
-///  A dispute processed by the issuer switch.
+/// A dispute processed by the issuer switch.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Dispute {
-    ///  The name of the dispute. This uniquely identifies the dispute.
-    ///  Format of name is
-    ///  projects/{project_id}/disputes/{dispute_id}.
+    /// The name of the dispute. This uniquely identifies the dispute.
+    /// Format of name is
+    /// projects/{project_id}/disputes/{dispute_id}.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  The reason for raising the dispute. This maps adjustment flag
-    ///  and reason code for the dispute to `reqAdjFlag` and `reqAdjCode` in
-    ///  complaint request respectively while raising a dispute.
+    /// The reason for raising the dispute. This maps adjustment flag
+    /// and reason code for the dispute to `reqAdjFlag` and `reqAdjCode` in
+    /// complaint request respectively while raising a dispute.
     #[prost(message, optional, tag="2")]
     pub raise_dispute_adjustment: ::core::option::Option<RaiseDisputeAdjustment>,
-    ///  Required. Details required for raising/resolving dispute.
+    /// Required. Details required for raising/resolving dispute.
     #[prost(message, optional, tag="4")]
     pub details: ::core::option::Option<CaseDetails>,
-    ///  Output only. Response to the raised/resolved dispute.
+    /// Output only. Response to the raised/resolved dispute.
     #[prost(message, optional, tag="5")]
     pub response: ::core::option::Option<CaseResponse>,
-    ///  The reason for resolving the dispute. It provides adjustment values while
-    ///  resolving and for already resolved disputes. This maps adjustment flag
-    ///  and reason code for the dispute to `reqAdjFlag` and `reqAdjCode` in
-    ///  dispute request respectively while resolving a dispute.
+    /// The reason for resolving the dispute. It provides adjustment values while
+    /// resolving and for already resolved disputes. This maps adjustment flag
+    /// and reason code for the dispute to `reqAdjFlag` and `reqAdjCode` in
+    /// dispute request respectively while resolving a dispute.
     #[prost(message, optional, tag="6")]
     pub resolve_dispute_adjustment: ::core::option::Option<ResolveDisputeAdjustment>,
 }
-///  Request for the `CreateDispute` method.
+/// Request for the `CreateDispute` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateDisputeRequest {
-    ///  Required. The parent resource for the dispute. The format is
-    ///  `projects/{project}`.
+    /// Required. The parent resource for the dispute. The format is
+    /// `projects/{project}`.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Required. The dispute to be raised.
+    /// Required. The dispute to be raised.
     #[prost(message, optional, tag="2")]
     pub dispute: ::core::option::Option<Dispute>,
 }
-///  Request for the `ResolveDispute` method.
+/// Request for the `ResolveDispute` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResolveDisputeRequest {
-    ///  Required. The dispute to be resolved.
+    /// Required. The dispute to be resolved.
     #[prost(message, optional, tag="1")]
     pub dispute: ::core::option::Option<Dispute>,
 }
-///  Details of original transaction.
+/// Details of original transaction.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OriginalTransaction {
-    ///  Required. Uniquely identifies the original transaction. This maps to the `Txn.Id`
-    ///  value of the original transaction in India's UPI system.
+    /// Required. Uniquely identifies the original transaction. This maps to the `Txn.Id`
+    /// value of the original transaction in India's UPI system.
     #[prost(string, tag="1")]
     pub transaction_id: ::prost::alloc::string::String,
-    ///  Required. Retrieval Reference Number (RRN) of the original transaction.
+    /// Required. Retrieval Reference Number (RRN) of the original transaction.
     #[prost(string, tag="2")]
     pub retrieval_reference_number: ::prost::alloc::string::String,
-    ///  Timestamp of the original transaction request.
+    /// Timestamp of the original transaction request.
     #[prost(message, optional, tag="3")]
     pub request_time: ::core::option::Option<::prost_types::Timestamp>,
 }
-///  Details of the complaint or dispute.
+/// Details of the complaint or dispute.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CaseDetails {
-    ///  Required. Details of original transaction.
+    /// Required. Details of original transaction.
     #[prost(message, optional, tag="1")]
     pub original_transaction: ::core::option::Option<OriginalTransaction>,
-    ///  Required. Initiator of the complaint / dispute.
+    /// Required. Initiator of the complaint / dispute.
     #[prost(enumeration="TransactionSubType", tag="2")]
     pub transaction_sub_type: i32,
-    ///  Required. The adjustment amount in URCS for the complaint / dispute. This
-    ///  maps to `reqAdjAmount` in complaint request.
+    /// Required. The adjustment amount in URCS for the complaint / dispute. This
+    /// maps to `reqAdjAmount` in complaint request.
     #[prost(message, optional, tag="3")]
     pub amount: ::core::option::Option<super::super::super::super::r#type::Money>,
-    ///  The original response code which has been updated in the complaint
-    ///  Response. This should map to settlement response code currently available
-    ///  in URCS system.
+    /// The original response code which has been updated in the complaint
+    /// Response. This should map to settlement response code currently available
+    /// in URCS system.
     #[prost(string, tag="4")]
     pub original_settlement_response_code: ::prost::alloc::string::String,
-    ///  Required. Set to true if the complaint / dispute belongs to current settlement cycle,
-    ///  false otherwise.
+    /// Required. Set to true if the complaint / dispute belongs to current settlement cycle,
+    /// false otherwise.
     #[prost(bool, tag="5")]
     pub current_cycle: bool,
 }
-///  Response to the complaint or dispute.
+/// Response to the complaint or dispute.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CaseResponse {
-    ///  Complaint Reference Number(CRN) sent by UPI as a reference against the
-    ///  generated complaint / dispute.
+    /// Complaint Reference Number(CRN) sent by UPI as a reference against the
+    /// generated complaint / dispute.
     #[prost(string, tag="1")]
     pub complaint_reference_number: ::prost::alloc::string::String,
-    ///  The adjustment amount of the response. This maps to `adjAmt` in
-    ///  complaint response.
+    /// The adjustment amount of the response. This maps to `adjAmt` in
+    /// complaint response.
     #[prost(message, optional, tag="2")]
     pub amount: ::core::option::Option<super::super::super::super::r#type::Money>,
-    ///  The adjustment flag in response to the complaint. This maps adjustment flag
-    ///  in URCS for the complaint transaction to `Resp.Ref.adjFlag` in complaint
-    ///  response.
+    /// The adjustment flag in response to the complaint. This maps adjustment flag
+    /// in URCS for the complaint transaction to `Resp.Ref.adjFlag` in complaint
+    /// response.
     #[prost(string, tag="3")]
     pub adjustment_flag: ::prost::alloc::string::String,
-    ///  The adjustment code in response to the complaint. This maps reason code in
-    ///  URCS for the complaint transaction to `Resp.Ref.adjCode` in complaint
-    ///  response.
+    /// The adjustment code in response to the complaint. This maps reason code in
+    /// URCS for the complaint transaction to `Resp.Ref.adjCode` in complaint
+    /// response.
     #[prost(string, tag="4")]
     pub adjustment_code: ::prost::alloc::string::String,
-    ///  It defines the Adjustment Reference ID which has been updated in the
-    ///  complaint response. This maps to `adjRefID` in complaint response.
+    /// It defines the Adjustment Reference ID which has been updated in the
+    /// complaint response. This maps to `adjRefID` in complaint response.
     #[prost(string, tag="5")]
     pub adjustment_reference_id: ::prost::alloc::string::String,
-    ///  Adjustment Remarks. This maps to `adjRemarks` in complaint response.
+    /// Adjustment Remarks. This maps to `adjRemarks` in complaint response.
     #[prost(string, tag="6")]
     pub adjustment_remarks: ::prost::alloc::string::String,
-    ///  The Approval Reference Number. This maps to `approvalNum` in complaint
-    ///  response.
+    /// The Approval Reference Number. This maps to `approvalNum` in complaint
+    /// response.
     #[prost(string, tag="7")]
     pub approval_number: ::prost::alloc::string::String,
-    ///  Process Status of the transaction. This maps to `procStatus` in complaint
-    ///  response.
+    /// Process Status of the transaction. This maps to `procStatus` in complaint
+    /// response.
     #[prost(string, tag="8")]
     pub process_status: ::prost::alloc::string::String,
-    ///  The adjustment timestamp when bank performs the adjustment for the received
-    ///  complaint request. This maps to `adjTs` in complaint response.
+    /// The adjustment timestamp when bank performs the adjustment for the received
+    /// complaint request. This maps to `adjTs` in complaint response.
     #[prost(message, optional, tag="9")]
     pub adjustment_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  The details of the participant of the original financial transaction.
+    /// The details of the participant of the original financial transaction.
     #[prost(oneof="case_response::Participant", tags="10, 11")]
     pub participant: ::core::option::Option<case_response::Participant>,
 }
 /// Nested message and enum types in `CaseResponse`.
 pub mod case_response {
-    ///  The details of the participant of the original financial transaction.
+    /// The details of the participant of the original financial transaction.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Participant {
-        ///  The payer in the original financial transaction.
+        /// The payer in the original financial transaction.
         #[prost(message, tag="10")]
         Payer(super::SettlementParticipant),
-        ///  The payee in the original financial transaction.
+        /// The payee in the original financial transaction.
         #[prost(message, tag="11")]
         Payee(super::SettlementParticipant),
     }
 }
-///  The adjusment flag and reason code for raising complaint.
+/// The adjusment flag and reason code for raising complaint.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RaiseComplaintAdjustment {
-    ///  Required. The adjustment flag in URCS for the complaint transaction. This maps to
-    ///  `reqAdjFlag` in complaint request and `respAdjFlag` in complaint response.
+    /// Required. The adjustment flag in URCS for the complaint transaction. This maps to
+    /// `reqAdjFlag` in complaint request and `respAdjFlag` in complaint response.
     #[prost(enumeration="raise_complaint_adjustment::AdjustmentFlag", tag="1")]
     pub adjustment_flag: i32,
-    ///  Required. The adjustment code in URCS for the complaint transaction. This maps to
-    ///  `reqAdjCode` in complaint request.
+    /// Required. The adjustment code in URCS for the complaint transaction. This maps to
+    /// `reqAdjCode` in complaint request.
     #[prost(enumeration="raise_complaint_adjustment::ReasonCode", tag="2")]
     pub adjustment_code: i32,
 }
 /// Nested message and enum types in `RaiseComplaintAdjustment`.
 pub mod raise_complaint_adjustment {
-    ///  The adjusment flag for raising complaint.
+    /// The adjusment flag for raising complaint.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum AdjustmentFlag {
-        ///  Unspecified adjustment flag.
+        /// Unspecified adjustment flag.
         Unspecified = 0,
-        ///  Complaint Raise. This flag maps to the `PBRB` adjustment flag as defined
-        ///  in NPCI's `UDIR` specification.
+        /// Complaint Raise. This flag maps to the `PBRB` adjustment flag as defined
+        /// in NPCI's `UDIR` specification.
         Raise = 1,
     }
     impl AdjustmentFlag {
@@ -632,38 +632,38 @@ pub mod raise_complaint_adjustment {
             }
         }
     }
-    ///  The reason for raising complaint.
+    /// The reason for raising complaint.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum ReasonCode {
-        ///  Unspecified reason code.
+        /// Unspecified reason code.
         Unspecified = 0,
-        ///  Customer account has not yet reversed for a declined pay transaction.
-        ///  This reason code maps to the `U005` reason code as defined in NPCI's
-        ///  `UDIR` specification.
+        /// Customer account has not yet reversed for a declined pay transaction.
+        /// This reason code maps to the `U005` reason code as defined in NPCI's
+        /// `UDIR` specification.
         CustomerAccountNotReversed = 1,
-        ///  Goods / services are not provided for approved transaction.
-        ///  This reason code maps to the `U008` reason code as defined in NPCI's
-        ///  `UDIR` specification.
+        /// Goods / services are not provided for approved transaction.
+        /// This reason code maps to the `U008` reason code as defined in NPCI's
+        /// `UDIR` specification.
         GoodsServicesNotProvided = 2,
-        ///  Customer account not credited back for declined transaction. This
-        ///  reason code maps to the `U009` reason code as defined in NPCI's `UDIR`
-        ///  specification.
+        /// Customer account not credited back for declined transaction. This
+        /// reason code maps to the `U009` reason code as defined in NPCI's `UDIR`
+        /// specification.
         CustomerAccountNotCreditedBack = 3,
-        ///  Beneficiary account is not credited for successful pay transaction. This
-        ///  reason code maps to the `U010` reason code as defined in NPCI's `UDIR`
-        ///  specification.
+        /// Beneficiary account is not credited for successful pay transaction. This
+        /// reason code maps to the `U010` reason code as defined in NPCI's `UDIR`
+        /// specification.
         BeneficiaryAccountNotCredited = 4,
-        ///  Credit not processed for cancelled or returned goods and services.
-        ///  This reason code maps to the `U021` reason code as defined in NPCI's
-        ///  `UDIR` specification.
+        /// Credit not processed for cancelled or returned goods and services.
+        /// This reason code maps to the `U021` reason code as defined in NPCI's
+        /// `UDIR` specification.
         GoodsServicesCreditNotProcessed = 5,
-        ///  Account debited but transaction confirmation not received at merchant
-        ///  location. This reason code maps to the `U022` reason code as defined in
-        ///  NPCI's `UDIR` specification.
+        /// Account debited but transaction confirmation not received at merchant
+        /// location. This reason code maps to the `U022` reason code as defined in
+        /// NPCI's `UDIR` specification.
         MerchantNotReceivedConfirmation = 6,
-        ///  Paid by alternate means / Duplicate payment. This reason code maps to the
-        ///  `U023` reason code as defined in NPCI's `UDIR` specification.
+        /// Paid by alternate means / Duplicate payment. This reason code maps to the
+        /// `U023` reason code as defined in NPCI's `UDIR` specification.
         PaidByAlternateMeans = 7,
     }
     impl ReasonCode {
@@ -685,37 +685,37 @@ pub mod raise_complaint_adjustment {
         }
     }
 }
-///  The adjusment flag and reason code for resolving the complaint.
+/// The adjusment flag and reason code for resolving the complaint.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResolveComplaintAdjustment {
-    ///  Required. The adjustment flag in URCS for the complaint transaction. This maps to
-    ///  `reqAdjFlag` in complaint request and `respAdjFlag` in complaint response.
+    /// Required. The adjustment flag in URCS for the complaint transaction. This maps to
+    /// `reqAdjFlag` in complaint request and `respAdjFlag` in complaint response.
     #[prost(enumeration="resolve_complaint_adjustment::AdjustmentFlag", tag="1")]
     pub adjustment_flag: i32,
-    ///  Required. The adjustment code in URCS for the complaint transaction. This maps to
-    ///  `reqAdjCode` in complaint request.
+    /// Required. The adjustment code in URCS for the complaint transaction. This maps to
+    /// `reqAdjCode` in complaint request.
     #[prost(enumeration="resolve_complaint_adjustment::ReasonCode", tag="2")]
     pub adjustment_code: i32,
 }
 /// Nested message and enum types in `ResolveComplaintAdjustment`.
 pub mod resolve_complaint_adjustment {
-    ///  The adjusment flag for resolving the complaint.
+    /// The adjusment flag for resolving the complaint.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum AdjustmentFlag {
-        ///  Unspecified adjustment flag.
+        /// Unspecified adjustment flag.
         Unspecified = 0,
-        ///  Debit Reversal Confirmation. This flag maps to the `DRC` adjustment flag
-        ///  as defined in NPCI's `UDIR` specification.
+        /// Debit Reversal Confirmation. This flag maps to the `DRC` adjustment flag
+        /// as defined in NPCI's `UDIR` specification.
         DebitReversalConfirmation = 1,
-        ///  Return. This flag maps to the `RET` adjustment flag as defined in NPCI's
-        ///  `UDIR` specification.
+        /// Return. This flag maps to the `RET` adjustment flag as defined in NPCI's
+        /// `UDIR` specification.
         Return = 2,
-        ///  Refund Reversal Confirmation. This flag maps to the `RRC` adjustment
-        ///  flag as defined in NPCI's `UDIR` specification.
+        /// Refund Reversal Confirmation. This flag maps to the `RRC` adjustment
+        /// flag as defined in NPCI's `UDIR` specification.
         RefundReversalConfirmation = 3,
-        ///  Transaction Credit Confirmation. This flag maps to the `TCC` adjustment
-        ///  flag as defined in NPCI's `UDIR` specification.
+        /// Transaction Credit Confirmation. This flag maps to the `TCC` adjustment
+        /// flag as defined in NPCI's `UDIR` specification.
         TransactionCreditConfirmation = 4,
     }
     impl AdjustmentFlag {
@@ -733,56 +733,56 @@ pub mod resolve_complaint_adjustment {
             }
         }
     }
-    ///  The complaint resolution reason code.
+    /// The complaint resolution reason code.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum ReasonCode {
-        ///  Unspecified reason code.
+        /// Unspecified reason code.
         Unspecified = 0,
-        ///  Customer account has been reversed online for DRC dispute or beneficiary
-        ///  account has been credited online for TCC dispute. This reason code maps
-        ///  to the `102` reason code as defined in NPCI's `UDIR` specification.
+        /// Customer account has been reversed online for DRC dispute or beneficiary
+        /// account has been credited online for TCC dispute. This reason code maps
+        /// to the `102` reason code as defined in NPCI's `UDIR` specification.
         ComplaintResolvedOnline = 1,
-        ///  Customer account has been reversed now or manually post reconciliation
-        ///  for DRC dispute or beneficiary account has been credited now or manually
-        ///  post reconciliation for TCC dispute. This reason code maps to the `103`
-        ///  reason code as defined in NPCI's `UDIR` specification.
+        /// Customer account has been reversed now or manually post reconciliation
+        /// for DRC dispute or beneficiary account has been credited now or manually
+        /// post reconciliation for TCC dispute. This reason code maps to the `103`
+        /// reason code as defined in NPCI's `UDIR` specification.
         ComplaintResolvedNowOrManually = 2,
-        ///  Online decline response failed. This reason code maps to the
-        ///  `104` reason code as defined in NPCI's `UDIR` specification.
+        /// Online decline response failed. This reason code maps to the
+        /// `104` reason code as defined in NPCI's `UDIR` specification.
         OriginalTransactionNotDone = 3,
-        ///  Account closed. This reason code maps to the `114` reason code for
-        ///  RET dispute as defined in NPCI's `UDIR` specification.
+        /// Account closed. This reason code maps to the `114` reason code for
+        /// RET dispute as defined in NPCI's `UDIR` specification.
         RetAccountClosed = 4,
-        ///  Account does not exist. This reason code maps to the `115` reason code
-        ///  for RET dispute as defined in NPCI's `UDIR` specification.
+        /// Account does not exist. This reason code maps to the `115` reason code
+        /// for RET dispute as defined in NPCI's `UDIR` specification.
         RetAccountDoesNotExist = 5,
-        ///  Party instructions. This reason code maps to the `116` reason code for
-        ///  RET dispute as defined in NPCI's `UDIR` specification.
+        /// Party instructions. This reason code maps to the `116` reason code for
+        /// RET dispute as defined in NPCI's `UDIR` specification.
         RetPartyInstructions = 6,
-        ///  NRI account. This reason code maps to the `117` reason code for RET
-        ///  dispute as defined in NPCI's `UDIR` specification.
+        /// NRI account. This reason code maps to the `117` reason code for RET
+        /// dispute as defined in NPCI's `UDIR` specification.
         RetNriAccount = 7,
-        ///  Credit freezed. This reason code maps to the `118` reason code for RET
-        ///  dispute as defined in NPCI's `UDIR` specification.
+        /// Credit freezed. This reason code maps to the `118` reason code for RET
+        /// dispute as defined in NPCI's `UDIR` specification.
         RetCreditFreezed = 8,
-        ///  Invalid beneficiary details. This reason code maps to the `119` reason
-        ///  code for RET dispute as defined in NPCI's `UDIR` specification.
+        /// Invalid beneficiary details. This reason code maps to the `119` reason
+        /// code for RET dispute as defined in NPCI's `UDIR` specification.
         RetInvalidBeneficiaryDetails = 9,
-        ///  Any other reason. This reason code maps to the `120` reason code for RET
-        ///  dispute as defined in NPCI's `UDIR` specification.
+        /// Any other reason. This reason code maps to the `120` reason code for RET
+        /// dispute as defined in NPCI's `UDIR` specification.
         RetAnyOtherReason = 10,
-        ///  Beneficiary bank unable to credit their customer account.
-        ///  This reason code maps to the `1094` reason code for RET dispute as
-        ///  defined in NPCI's `UDIR` specification.
+        /// Beneficiary bank unable to credit their customer account.
+        /// This reason code maps to the `1094` reason code for RET dispute as
+        /// defined in NPCI's `UDIR` specification.
         RetBeneficiaryCannotCredit = 11,
-        ///  Account debited but transaction confirmation not received at merchant
-        ///  location. This reason code maps to the `1065` reason code for Credit
-        ///  adjustment and RET dispute as defined in NPCI's `UDIR` specification.
+        /// Account debited but transaction confirmation not received at merchant
+        /// location. This reason code maps to the `1065` reason code for Credit
+        /// adjustment and RET dispute as defined in NPCI's `UDIR` specification.
         RetMerchantNotReceivedConfirmation = 12,
-        ///  Customer account has been credited. This reason code maps to the `501`
-        ///  reason code for Refund reversal confirmation dispute as defined in NPCI's
-        ///  `UDIR` specification.
+        /// Customer account has been credited. This reason code maps to the `501`
+        /// reason code for Refund reversal confirmation dispute as defined in NPCI's
+        /// `UDIR` specification.
         RrcCustomerAccountCredited = 13,
     }
     impl ReasonCode {
@@ -810,49 +810,49 @@ pub mod resolve_complaint_adjustment {
         }
     }
 }
-///  The adjusment flag and reason code for raising dispute.
+/// The adjusment flag and reason code for raising dispute.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RaiseDisputeAdjustment {
-    ///  Required. The adjustment flag in URCS for the complaint transaction. This maps to
-    ///  `reqAdjFlag` in dispute request and `respAdjFlag` in dispute response.
+    /// Required. The adjustment flag in URCS for the complaint transaction. This maps to
+    /// `reqAdjFlag` in dispute request and `respAdjFlag` in dispute response.
     #[prost(enumeration="raise_dispute_adjustment::AdjustmentFlag", tag="1")]
     pub adjustment_flag: i32,
-    ///  Required. The adjustment code in URCS for the complaint transaction. This maps to
-    ///  `reqAdjCode` in dispute request.
+    /// Required. The adjustment code in URCS for the complaint transaction. This maps to
+    /// `reqAdjCode` in dispute request.
     #[prost(enumeration="raise_dispute_adjustment::ReasonCode", tag="2")]
     pub adjustment_code: i32,
 }
 /// Nested message and enum types in `RaiseDisputeAdjustment`.
 pub mod raise_dispute_adjustment {
-    ///  The adjusment flag for raising dispute.
+    /// The adjusment flag for raising dispute.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum AdjustmentFlag {
-        ///  Unspecified adjustment flag.
+        /// Unspecified adjustment flag.
         Unspecified = 0,
-        ///  Chargeback Raise. This flag maps to the `B` adjustment flag as
-        ///  defined in NPCI's `UDIR` specification.
+        /// Chargeback Raise. This flag maps to the `B` adjustment flag as
+        /// defined in NPCI's `UDIR` specification.
         ChargebackRaise = 1,
-        ///  Fraud Chargeback Raise. This flag maps to the `FC` adjustment flag
-        ///  as defined in NPCI's `UDIR` specification.
+        /// Fraud Chargeback Raise. This flag maps to the `FC` adjustment flag
+        /// as defined in NPCI's `UDIR` specification.
         FraudChargebackRaise = 2,
-        ///  Wrong Credit Chargeback Raise. This flag maps to the `WC` adjustment
-        ///  flag as defined in NPCI's `UDIR` specification.
+        /// Wrong Credit Chargeback Raise. This flag maps to the `WC` adjustment
+        /// flag as defined in NPCI's `UDIR` specification.
         WrongCreditChargebackRaise = 3,
-        ///  Deferred Chargeback Raise. This flag maps to the `FB` adjustment flag
-        ///  as defined in NPCI's `UDIR` specification.
+        /// Deferred Chargeback Raise. This flag maps to the `FB` adjustment flag
+        /// as defined in NPCI's `UDIR` specification.
         DeferredChargebackRaise = 4,
-        ///  Pre-Arbitration Raise. This flag maps to the `P` adjustment flag as
-        ///  defined in NPCI's `UDIR` specification.
+        /// Pre-Arbitration Raise. This flag maps to the `P` adjustment flag as
+        /// defined in NPCI's `UDIR` specification.
         PreArbitrationRaise = 5,
-        ///  Deferred Pre-Arbitration Raise. This flag maps to the `FP` adjustment
-        ///  flag as defined in NPCI's `UDIR` specification.
+        /// Deferred Pre-Arbitration Raise. This flag maps to the `FP` adjustment
+        /// flag as defined in NPCI's `UDIR` specification.
         DeferredPreArbitrationRaise = 6,
-        ///  Arbitration Raise. This flag maps to the `AR` adjustment flag as
-        ///  defined in NPCI's `UDIR` specification.
+        /// Arbitration Raise. This flag maps to the `AR` adjustment flag as
+        /// defined in NPCI's `UDIR` specification.
         ArbitrationRaise = 7,
-        ///  Deferred Arbitration Raise. This flag maps to the `FAR` adjustment flag
-        ///  as defined in NPCI's `UDIR` specification.
+        /// Deferred Arbitration Raise. This flag maps to the `FAR` adjustment flag
+        /// as defined in NPCI's `UDIR` specification.
         DeferredArbitrationRaise = 8,
     }
     impl AdjustmentFlag {
@@ -874,74 +874,74 @@ pub mod raise_dispute_adjustment {
             }
         }
     }
-    ///  The reason for raising dispute.
+    /// The reason for raising dispute.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum ReasonCode {
-        ///  Unspecified reason code.
+        /// Unspecified reason code.
         Unspecified = 0,
-        ///  Remitter account is debited but beneficiary account is not credited.
-        ///  This reason code maps to the `108` reason code as defined in
-        ///  NPCI's `UDIR` specification.
+        /// Remitter account is debited but beneficiary account is not credited.
+        /// This reason code maps to the `108` reason code as defined in
+        /// NPCI's `UDIR` specification.
         ChargebackRaiseRemitterDebitedBeneficiaryNotCredited = 1,
-        ///  Remitter bank customer still disputes that beneficiary account is not
-        ///  credited. This reason code maps to the `109` reason code as defined in
-        ///  NPCI's `UDIR` specification.
+        /// Remitter bank customer still disputes that beneficiary account is not
+        /// credited. This reason code maps to the `109` reason code as defined in
+        /// NPCI's `UDIR` specification.
         PreArbitrationRaiseBeneficiaryNotCredited = 2,
-        ///  TCC has been raised but customer still complaining that beneficiary
-        ///  account is not credited. This reason code maps to the `121` reason code
-        ///  as defined in NPCI's `UDIR` specification.
+        /// TCC has been raised but customer still complaining that beneficiary
+        /// account is not credited. This reason code maps to the `121` reason code
+        /// as defined in NPCI's `UDIR` specification.
         DeferredChargebackRaiseBeneficiaryNotCredited = 3,
-        ///  Customer is still complaining for not crediting the beneficiary
-        ///  customer account. This reason code maps to the `124` reason code as
-        ///  defined in NPCI's `UDIR` specification.
+        /// Customer is still complaining for not crediting the beneficiary
+        /// customer account. This reason code maps to the `124` reason code as
+        /// defined in NPCI's `UDIR` specification.
         DeferredPreArbitrationRaiseBeneficiaryNotCredited = 4,
-        ///  Customer is complaining even after raising Deferred Chargeback and
-        ///  Pre-Arbitration on Deferred Chargeback where both have been rejected by
-        ///  beneficiary bank. This reason code maps to the `127` reason code as
-        ///  defined in NPCI's `UDIR` specification.
+        /// Customer is complaining even after raising Deferred Chargeback and
+        /// Pre-Arbitration on Deferred Chargeback where both have been rejected by
+        /// beneficiary bank. This reason code maps to the `127` reason code as
+        /// defined in NPCI's `UDIR` specification.
         DeferredArbitrationRaiseDeferredChargebackPreArbitrationRejected = 5,
-        ///  Chargeback on fraudulent transaction. This reason code maps to the `128`
-        ///  reason code as defined in NPCI's `UDIR` specification.
+        /// Chargeback on fraudulent transaction. This reason code maps to the `128`
+        /// reason code as defined in NPCI's `UDIR` specification.
         ChargebackOnFraud = 6,
-        ///  Credit not processed for cancelled or returned goods and services. This
-        ///  reason code maps to the `1061` reason code as defined in NPCI's `UDIR`
-        ///  specification.
+        /// Credit not processed for cancelled or returned goods and services. This
+        /// reason code maps to the `1061` reason code as defined in NPCI's `UDIR`
+        /// specification.
         GoodsServicesCreditNotProcessed = 7,
-        ///  Goods and services not as described / defective. This reason code maps to
-        ///  the `1062` reason code as defined in NPCI's `UDIR` specification.
+        /// Goods and services not as described / defective. This reason code maps to
+        /// the `1062` reason code as defined in NPCI's `UDIR` specification.
         GoodsServicesDefective = 8,
-        ///  Paid by alternate means. This reason code maps to the `1063` reason code
-        ///  as defined in NPCI's `UDIR` specification.
+        /// Paid by alternate means. This reason code maps to the `1063` reason code
+        /// as defined in NPCI's `UDIR` specification.
         PaidByAlternateMeans = 9,
-        ///  Goods or services not provided / not received. This reason code maps to
-        ///  the `1064` reason code as defined in NPCI's `UDIR` specification.
+        /// Goods or services not provided / not received. This reason code maps to
+        /// the `1064` reason code as defined in NPCI's `UDIR` specification.
         GoodsServicesNotReceived = 10,
-        ///  Account debited but transaction confirmation not received at merchant
-        ///  location. This reason code maps to the `1065` reason code for chargeback
-        ///  raise and deferred chargeback raise as defined in NPCI's `UDIR`
-        ///  specification.
+        /// Account debited but transaction confirmation not received at merchant
+        /// location. This reason code maps to the `1065` reason code for chargeback
+        /// raise and deferred chargeback raise as defined in NPCI's `UDIR`
+        /// specification.
         MerchantNotReceivedConfirmation = 11,
-        ///  Transaction not steeled within the specified timeframes. This reason code
-        ///  maps to the `1081` reason code as defined in NPCI's `UDIR` specification.
+        /// Transaction not steeled within the specified timeframes. This reason code
+        /// maps to the `1081` reason code as defined in NPCI's `UDIR` specification.
         TransactionNotSteeled = 12,
-        ///  Duplicate / Multiple transaction. This reason code maps to the `1084`
-        ///  reason code as defined in NPCI's `UDIR` specification.
+        /// Duplicate / Multiple transaction. This reason code maps to the `1084`
+        /// reason code as defined in NPCI's `UDIR` specification.
         DuplicateTransaction = 13,
-        ///  Card holder was charged more than the transaction amount.
-        ///  This reason code maps to the `1085` reason code for Chargeback raise
-        ///  dispute as defined in NPCI's `UDIR` specification.
+        /// Card holder was charged more than the transaction amount.
+        /// This reason code maps to the `1085` reason code for Chargeback raise
+        /// dispute as defined in NPCI's `UDIR` specification.
         ChargebackCardHolderChargedMore = 14,
-        ///  Customer is still claiming that services are not delivered. This reason
-        ///  code maps to the `1097` reason code as defined in NPCI's `UDIR`
-        ///  specification.
+        /// Customer is still claiming that services are not delivered. This reason
+        /// code maps to the `1097` reason code as defined in NPCI's `UDIR`
+        /// specification.
         CustomerClaimingGoodsServicesNotDelivered = 15,
-        ///  Both the parties denied to agree. This reason code maps to the `1100`
-        ///  reason code as defined in NPCI's `UDIR` specification.
+        /// Both the parties denied to agree. This reason code maps to the `1100`
+        /// reason code as defined in NPCI's `UDIR` specification.
         PartiesDenied = 16,
-        ///  Customer transferred funds to the unintended beneficiary account. This
-        ///  reason code maps to the `WC1` reason code as defined in NPCI's `UDIR`
-        ///  specification.
+        /// Customer transferred funds to the unintended beneficiary account. This
+        /// reason code maps to the `WC1` reason code as defined in NPCI's `UDIR`
+        /// specification.
         FundsTransferredToUnintendedBeneficiary = 17,
     }
     impl ReasonCode {
@@ -973,79 +973,79 @@ pub mod raise_dispute_adjustment {
         }
     }
 }
-///  The adjusment flag and reason code for resolving the dispute.
+/// The adjusment flag and reason code for resolving the dispute.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResolveDisputeAdjustment {
-    ///  Required. The adjustment flag in URCS for the complaint transaction. This maps to
-    ///  `reqAdjFlag` in dispute request and `respAdjFlag` in dispute response.
+    /// Required. The adjustment flag in URCS for the complaint transaction. This maps to
+    /// `reqAdjFlag` in dispute request and `respAdjFlag` in dispute response.
     #[prost(enumeration="resolve_dispute_adjustment::AdjustmentFlag", tag="1")]
     pub adjustment_flag: i32,
-    ///  Required. The adjustment code in URCS for the complaint transaction. This maps to
-    ///  `reqAdjCode` in dispute request.
+    /// Required. The adjustment code in URCS for the complaint transaction. This maps to
+    /// `reqAdjCode` in dispute request.
     #[prost(enumeration="resolve_dispute_adjustment::ReasonCode", tag="2")]
     pub adjustment_code: i32,
 }
 /// Nested message and enum types in `ResolveDisputeAdjustment`.
 pub mod resolve_dispute_adjustment {
-    ///  The adjusment flag for resolving the dispute.
+    /// The adjusment flag for resolving the dispute.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum AdjustmentFlag {
-        ///  Unspecified adjustment flag.
+        /// Unspecified adjustment flag.
         Unspecified = 0,
-        ///  Re-presentment Raise. This flag maps to the `R` adjustment flag as
-        ///  defined in NPCI's `UDIR` specification.
+        /// Re-presentment Raise. This flag maps to the `R` adjustment flag as
+        /// defined in NPCI's `UDIR` specification.
         RePresentmentRaise = 1,
-        ///  Deferred Re-presentment Raise. This flag maps to the `FR` adjustment
-        ///  flag as defined in NPCI's `UDIR` specification.
+        /// Deferred Re-presentment Raise. This flag maps to the `FR` adjustment
+        /// flag as defined in NPCI's `UDIR` specification.
         DeferredRePresentmentRaise = 2,
-        ///  Chargeback Acceptance. This flag maps to the `A` adjustment flag as
-        ///  defined in NPCI's `UDIR` specification.
+        /// Chargeback Acceptance. This flag maps to the `A` adjustment flag as
+        /// defined in NPCI's `UDIR` specification.
         ChargebackAcceptance = 3,
-        ///  Deferred Chargeback Acceptance. This flag maps to the `FA` adjustment
-        ///  flag as defined in NPCI's `UDIR` specification.
+        /// Deferred Chargeback Acceptance. This flag maps to the `FA` adjustment
+        /// flag as defined in NPCI's `UDIR` specification.
         DeferredChargebackAcceptance = 4,
-        ///  Pre-Arbitration Acceptance. This flag maps to the `AP` adjustment flag as
-        ///  defined in NPCI's `UDIR` specification.
+        /// Pre-Arbitration Acceptance. This flag maps to the `AP` adjustment flag as
+        /// defined in NPCI's `UDIR` specification.
         PreArbitrationAcceptance = 5,
-        ///  Deferred Pre-Arbitration Acceptance. This flag maps to the `FAP`
-        ///  adjustment flag as defined in NPCI's `UDIR` specification.
+        /// Deferred Pre-Arbitration Acceptance. This flag maps to the `FAP`
+        /// adjustment flag as defined in NPCI's `UDIR` specification.
         DeferredPreArbitrationAcceptance = 6,
-        ///  Pre-Arbitration Declined. This flag maps to the `PR` adjustment flag as
-        ///  defined in NPCI's `UDIR` specification.
+        /// Pre-Arbitration Declined. This flag maps to the `PR` adjustment flag as
+        /// defined in NPCI's `UDIR` specification.
         PreArbitrationDeclined = 7,
-        ///  Deferred Pre-Arbitration Declined. This flag maps to the `FPR` adjustment
-        ///  flag as defined in NPCI's `UDIR` specification.
+        /// Deferred Pre-Arbitration Declined. This flag maps to the `FPR` adjustment
+        /// flag as defined in NPCI's `UDIR` specification.
         DeferredPreArbitrationDeclined = 8,
-        ///  Arbitration Acceptance. This flag maps to the `ACA` adjustment flag as
-        ///  defined in NPCI's `UDIR` specification.
+        /// Arbitration Acceptance. This flag maps to the `ACA` adjustment flag as
+        /// defined in NPCI's `UDIR` specification.
         ArbitrationAcceptance = 9,
-        ///  Arbitration Continuation. This flag maps to the `ACC` adjustment flag as
-        ///  defined in NPCI's `UDIR` specification.
+        /// Arbitration Continuation. This flag maps to the `ACC` adjustment flag as
+        /// defined in NPCI's `UDIR` specification.
         ArbitrationContinuation = 10,
-        ///  Arbitration Withdrawn. This flag maps to the `ACW` adjustment flag as
-        ///  defined in NPCI's `UDIR` specification.
+        /// Arbitration Withdrawn. This flag maps to the `ACW` adjustment flag as
+        /// defined in NPCI's `UDIR` specification.
         ArbitrationWithdrawn = 11,
-        ///  Arbitration Verdict. This flag maps to the `ACV` adjustment flag as
-        ///  defined in NPCI's `UDIR` specification.
+        /// Arbitration Verdict. This flag maps to the `ACV` adjustment flag as
+        /// defined in NPCI's `UDIR` specification.
         ArbitrationVerdict = 12,
-        ///  Credit Adjustment. This flag maps to the `C` adjustment flag as
-        ///  defined in NPCI's `UDIR` specification.
+        /// Credit Adjustment. This flag maps to the `C` adjustment flag as
+        /// defined in NPCI's `UDIR` specification.
         CreditAdjustment = 13,
-        ///  Fraud Chargeback Representment. This flag maps to the `FCR` adjustment
-        ///  flag as defined in NPCI's `UDIR` specification.
+        /// Fraud Chargeback Representment. This flag maps to the `FCR` adjustment
+        /// flag as defined in NPCI's `UDIR` specification.
         FraudChargebackRepresentment = 14,
-        ///  Fraud Chargeback Accept. This flag maps to the `FCA` adjustment flag
-        ///  as defined in NPCI's `UDIR` specification.
+        /// Fraud Chargeback Accept. This flag maps to the `FCA` adjustment flag
+        /// as defined in NPCI's `UDIR` specification.
         FraudChargebackAccept = 15,
-        ///  Wrong Credit Representment. This flag maps to the `WR` adjustment
-        ///  flag as defined in NPCI's `UDIR` specification.
+        /// Wrong Credit Representment. This flag maps to the `WR` adjustment
+        /// flag as defined in NPCI's `UDIR` specification.
         WrongCreditRepresentment = 16,
-        ///  Wrong Credit Chargeback Acceptance. This flag maps to the `WA` adjustment
-        ///  flag as defined in NPCI's `UDIR` specification.
+        /// Wrong Credit Chargeback Acceptance. This flag maps to the `WA` adjustment
+        /// flag as defined in NPCI's `UDIR` specification.
         WrongCreditChargebackAcceptance = 17,
-        ///  Manual Adjustment. This flag maps to the `MA` adjustment flag as defined
-        ///  in NPCI's `UDIR` specification.
+        /// Manual Adjustment. This flag maps to the `MA` adjustment flag as defined
+        /// in NPCI's `UDIR` specification.
         ManualAdjustment = 18,
     }
     impl AdjustmentFlag {
@@ -1077,150 +1077,150 @@ pub mod resolve_dispute_adjustment {
             }
         }
     }
-    ///  The dispute resolution reason code.
+    /// The dispute resolution reason code.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum ReasonCode {
-        ///  Unspecified reason code.
+        /// Unspecified reason code.
         Unspecified = 0,
-        ///  Beneficiary bank unable to credit their customer account for Chargeback
-        ///  Acceptance dispute or duplicate processing for Pre Arbitration Acceptance
-        ///  dispute. This reason code maps to the `111` reason code as defined in
-        ///  NPCI's `UDIR` specification.
+        /// Beneficiary bank unable to credit their customer account for Chargeback
+        /// Acceptance dispute or duplicate processing for Pre Arbitration Acceptance
+        /// dispute. This reason code maps to the `111` reason code as defined in
+        /// NPCI's `UDIR` specification.
         ChargebackBeneficiaryCannotCreditOrPreArbitrationDuplicateProcess = 1,
-        ///  Beneficiary account has been credited online. This reason code maps to
-        ///  the `112` reason code for Pre-arbitration declined dispute as defined in
-        ///  NPCI's `UDIR` specification.
+        /// Beneficiary account has been credited online. This reason code maps to
+        /// the `112` reason code for Pre-arbitration declined dispute as defined in
+        /// NPCI's `UDIR` specification.
         PreArbitrationDeclinedBeneficiaryCreditedOnline = 3,
-        ///  Beneficiary account has been credited manually post reconciliation. This
-        ///  reason code maps to the `113` reason code for Pre-arbitration declined
-        ///  dispute as defined in NPCI's `UDIR` specification.
+        /// Beneficiary account has been credited manually post reconciliation. This
+        /// reason code maps to the `113` reason code for Pre-arbitration declined
+        /// dispute as defined in NPCI's `UDIR` specification.
         PreArbitrationDeclinedBeneficiaryCreditedManually = 4,
-        ///  Customer account is not credited, TCC raised inadvertently. This reason
-        ///  code maps to the `122` reason code as defined in NPCI's `UDIR`
-        ///  specification.
+        /// Customer account is not credited, TCC raised inadvertently. This reason
+        /// code maps to the `122` reason code as defined in NPCI's `UDIR`
+        /// specification.
         DeferredChargebackAcceptanceAccountNotCreditedTccRaised = 5,
-        ///  Customer account is credited successfully and TCC raised accordingly.
-        ///  This reason code maps to the `123` reason code as defined in NPCI's
-        ///  `UDIR` specification.
+        /// Customer account is credited successfully and TCC raised accordingly.
+        /// This reason code maps to the `123` reason code as defined in NPCI's
+        /// `UDIR` specification.
         DeferredRePresentmentRaiseAccountCreditedTccRaised = 6,
-        ///  Customer account is not credited, TCC and Re-Presentment raised
-        ///  inadvertently. This reason code maps to the `125` reason code as defined
-        ///  in NPCI's `UDIR` specification.
+        /// Customer account is not credited, TCC and Re-Presentment raised
+        /// inadvertently. This reason code maps to the `125` reason code as defined
+        /// in NPCI's `UDIR` specification.
         DeferredPreArbitrationAcceptanceAccountNotCredited = 7,
-        ///  Customer account is credited successfully and TCC and Re-Presentment
-        ///  raised accordingly. This reason code maps to the `126` reason code as
-        ///  defined in NPCI's `UDIR` specification.
+        /// Customer account is credited successfully and TCC and Re-Presentment
+        /// raised accordingly. This reason code maps to the `126` reason code as
+        /// defined in NPCI's `UDIR` specification.
         DeferredPreArbitrationDeclinedAccountCredited = 8,
-        ///  Amount has been recovered successfully from the fraudulent customer
-        ///  account. This reason code maps to the `129` reason code as defined
-        ///  in NPCI's `UDIR` specification.
+        /// Amount has been recovered successfully from the fraudulent customer
+        /// account. This reason code maps to the `129` reason code as defined
+        /// in NPCI's `UDIR` specification.
         FraudChargebackAcceptAmountRecoveredFromFraudulentAccount = 9,
-        ///  Lien marked however, customer account is not having sufficient balance to
-        ///  debit. This reason code maps to the `130` reason code for
-        ///  Fraud chargeback representment dispute as defined in NPCI's `UDIR`
-        ///  specification.
+        /// Lien marked however, customer account is not having sufficient balance to
+        /// debit. This reason code maps to the `130` reason code for
+        /// Fraud chargeback representment dispute as defined in NPCI's `UDIR`
+        /// specification.
         FraudChargebackRepresentmentLienMarkedInsufficientBalance = 10,
-        ///  FIR Copy not provided for the disputed transaction. This reason code maps
-        ///  to the `131` reason code as defined in NPCI's `UDIR` specification.
+        /// FIR Copy not provided for the disputed transaction. This reason code maps
+        /// to the `131` reason code as defined in NPCI's `UDIR` specification.
         FraudChargebackRepresentmentFirNotProvided = 11,
-        ///  Other reason for Fraud chargeback representment dispute. This reason code
-        ///  maps to the `132` reason code as defined in NPCI's `UDIR` specification.
+        /// Other reason for Fraud chargeback representment dispute. This reason code
+        /// maps to the `132` reason code as defined in NPCI's `UDIR` specification.
         FraudChargebackRepresentmentReasonOthers = 12,
-        ///  Beneficiary account credited online. This reason code maps to the `208`
-        ///  reason code for Re-presentment raise dispute as defined in NPCI's `UDIR`
-        ///  specification.
+        /// Beneficiary account credited online. This reason code maps to the `208`
+        /// reason code for Re-presentment raise dispute as defined in NPCI's `UDIR`
+        /// specification.
         RePresentmentRaiseBeneficiaryCreditedOnline = 13,
-        ///  Beneficiary account credited manually post reconciliation. This reason
-        ///  code maps to the `209` reason code for Re-presentment raise dispute as
-        ///  defined in NPCI's `UDIR` specification.
+        /// Beneficiary account credited manually post reconciliation. This reason
+        /// code maps to the `209` reason code for Re-presentment raise dispute as
+        /// defined in NPCI's `UDIR` specification.
         RePresentmentRaiseBeneficiaryCreditedManually = 14,
-        ///  Credit not processed for cancelled or returned goods and services. This
-        ///  reason code maps to the `1061` reason code as defined in NPCI's `UDIR`
-        ///  specification.
+        /// Credit not processed for cancelled or returned goods and services. This
+        /// reason code maps to the `1061` reason code as defined in NPCI's `UDIR`
+        /// specification.
         CreditAdjustmentGoodsServicesCreditNotProcessed = 15,
-        ///  Goods and Services not as described / defective. This reason code maps to
-        ///  the `1062` reason code as defined in NPCI's `UDIR` specification.
+        /// Goods and Services not as described / defective. This reason code maps to
+        /// the `1062` reason code as defined in NPCI's `UDIR` specification.
         CreditAdjustmentGoodsServicesDefective = 16,
-        ///  Paid by alternate means. This reason code maps to the `1063` reason code
-        ///  as defined in NPCI's `UDIR` specification.
+        /// Paid by alternate means. This reason code maps to the `1063` reason code
+        /// as defined in NPCI's `UDIR` specification.
         CreditAdjustmentPaidByAlternateMeans = 17,
-        ///  Goods or Services Not Provided / Not Received. This reason code maps to
-        ///  the `1064` reason code as defined in NPCI's `UDIR` specification.
+        /// Goods or Services Not Provided / Not Received. This reason code maps to
+        /// the `1064` reason code as defined in NPCI's `UDIR` specification.
         CreditAdjustmentGoodsServicesNotReceived = 18,
-        ///  Account debited but transaction confirmation not received at merchant
-        ///  location. This reason code maps to the `1065` reason code for Credit
-        ///  adjustment as defined in NPCI's `UDIR` specification.
+        /// Account debited but transaction confirmation not received at merchant
+        /// location. This reason code maps to the `1065` reason code for Credit
+        /// adjustment as defined in NPCI's `UDIR` specification.
         CreditAdjustmentMerchantNotReceivedConfirmation = 19,
-        ///  Duplicate /Multiple Transaction. This reason code maps to the `1084`
-        ///  reason code as defined in NPCI's `UDIR` specification.
+        /// Duplicate /Multiple Transaction. This reason code maps to the `1084`
+        /// reason code as defined in NPCI's `UDIR` specification.
         CreditAdjustmentDuplicateTransaction = 20,
-        ///  Other reason for Credit adjustment. This reason code maps to the `1090`
-        ///  reason code as defined in NPCI's `UDIR` specification.
+        /// Other reason for Credit adjustment. This reason code maps to the `1090`
+        /// reason code as defined in NPCI's `UDIR` specification.
         CreditAdjustmentReasonOthers = 21,
-        ///  Non Matching account number. This reason code maps to the `1091`
-        ///  reason code as defined in NPCI's `UDIR` specification.
+        /// Non Matching account number. This reason code maps to the `1091`
+        /// reason code as defined in NPCI's `UDIR` specification.
         CreditAdjustmentNonMatchingAccountNumber = 22,
-        ///  Card holder was charged more than the transaction amount.
-        ///  This reason code maps to the `1092` reason code as defined in NPCI's
-        ///  `UDIR` specification.
+        /// Card holder was charged more than the transaction amount.
+        /// This reason code maps to the `1092` reason code as defined in NPCI's
+        /// `UDIR` specification.
         CreditAdjustmentCardHolderChargedMore = 23,
-        ///  Credit not Processed. This reason code maps to the `1093` reason code as
-        ///  defined in NPCI's `UDIR` specification.
+        /// Credit not Processed. This reason code maps to the `1093` reason code as
+        /// defined in NPCI's `UDIR` specification.
         CreditAdjustmentCreditNotProcessed = 24,
-        ///  Beneficiary bank unable to credit their customer account. This reason
-        ///  code maps to the `1094` reason code for Credit Adjustment dispute as
-        ///  defined in NPCI's `UDIR` specification.
+        /// Beneficiary bank unable to credit their customer account. This reason
+        /// code maps to the `1094` reason code for Credit Adjustment dispute as
+        /// defined in NPCI's `UDIR` specification.
         CreditAdjustmentBeneficiaryCannotCredit = 25,
-        ///  Merchant was unable to provide the service. This reason code maps to the
-        ///  `1095` reason code as defined in NPCI's `UDIR` specification.
+        /// Merchant was unable to provide the service. This reason code maps to the
+        /// `1095` reason code as defined in NPCI's `UDIR` specification.
         ChargebackAcceptanceMerchantCannotProvideService = 26,
-        ///  Services/Goods provided see the supporting document. This reason code
-        ///  maps to the `1096` reason code as defined in NPCI's `UDIR` specification.
+        /// Services/Goods provided see the supporting document. This reason code
+        /// maps to the `1096` reason code as defined in NPCI's `UDIR` specification.
         RePresentmentRaiseGoodsServicesProvided = 27,
-        ///  Services provided later see supporting documents. This reason code maps
-        ///  to the `1098` reason code as defined in NPCI's `UDIR` specification.
+        /// Services provided later see supporting documents. This reason code maps
+        /// to the `1098` reason code as defined in NPCI's `UDIR` specification.
         PreArbitrationDeclinedServicesProvidedLater = 28,
-        ///  Services not provided by the merchant. This reason code maps to the
-        ///  `1099` reason code as defined in NPCI's `UDIR` specification.
+        /// Services not provided by the merchant. This reason code maps to the
+        /// `1099` reason code as defined in NPCI's `UDIR` specification.
         PreArbitrationAcceptanceServicesNotProvidedByMerchant = 29,
-        ///  Illegible Fulfilment. This reason code maps to the `1101` reason code for
-        ///  arbitration acceptance dispute as defined in NPCI's `UDIR` specification.
+        /// Illegible Fulfilment. This reason code maps to the `1101` reason code for
+        /// arbitration acceptance dispute as defined in NPCI's `UDIR` specification.
         ArbitrationAcceptanceIllegibleFulfilment = 30,
-        ///  Customer has still not received the service. This reason code maps to the
-        ///  `1102` reason code as defined in NPCI's `UDIR` specification.
+        /// Customer has still not received the service. This reason code maps to the
+        /// `1102` reason code as defined in NPCI's `UDIR` specification.
         ArbitrationContinuationCustomerStillNotReceivedService = 31,
-        ///  Customer has received the service later. This reason code maps to the
-        ///  `1103` reason code as defined in NPCI's `UDIR` specification.
+        /// Customer has received the service later. This reason code maps to the
+        /// `1103` reason code as defined in NPCI's `UDIR` specification.
         ArbitrationWithdrawnCustomerReceivedServiceLater = 32,
-        ///  Panel will give the verdict. This reason code maps to the `1104` reason
-        ///  code as defined in NPCI's `UDIR` specification.
+        /// Panel will give the verdict. This reason code maps to the `1104` reason
+        /// code as defined in NPCI's `UDIR` specification.
         ArbitrationVerdictPanelVerdict = 33,
-        ///  Manual adjustment. This reason code maps to the `2001` reason code as
-        ///  defined in NPCI's `UDIR` specification.
+        /// Manual adjustment. This reason code maps to the `2001` reason code as
+        /// defined in NPCI's `UDIR` specification.
         ManualAdjustmentReason = 34,
-        ///  Attributing to the Customer. This reason code maps to the `AC` reason
-        ///  code as defined in NPCI's `UDIR` specification.
+        /// Attributing to the Customer. This reason code maps to the `AC` reason
+        /// code as defined in NPCI's `UDIR` specification.
         AttributingCustomer = 35,
-        ///  Attributing to the Technical issue at bank/aggregator/merchant. This
-        ///  reason code maps to the `AT` reason code as defined in NPCI's `UDIR`
-        ///  specification.
+        /// Attributing to the Technical issue at bank/aggregator/merchant. This
+        /// reason code maps to the `AT` reason code as defined in NPCI's `UDIR`
+        /// specification.
         AttributingTechnicalIssue = 36,
-        ///  Amount has been recovered successfully from the unintended customer
-        ///  account. This reason code maps to the `WC2` reason code as defined in
-        ///  NPCI's `UDIR` specification.
+        /// Amount has been recovered successfully from the unintended customer
+        /// account. This reason code maps to the `WC2` reason code as defined in
+        /// NPCI's `UDIR` specification.
         WrongCreditChargebackAcceptanceAmountRecovered = 37,
-        ///  Lien marked however customer account is not having sufficient balance to
-        ///  debit the customer account. This reason code maps to the `WC3` reason
-        ///  code for Wrong credit representment dispute as defined in NPCI's `UDIR`
-        ///  specification.
+        /// Lien marked however customer account is not having sufficient balance to
+        /// debit the customer account. This reason code maps to the `WC3` reason
+        /// code for Wrong credit representment dispute as defined in NPCI's `UDIR`
+        /// specification.
         WrongCreditRepresentmentLienMarkedInsufficientBalance = 38,
-        ///  Customer is not accessible for obtaining debit confirmation. This reason
-        ///  code maps to the `WC4` reason code as defined in NPCI's `UDIR`
-        ///  specification.
+        /// Customer is not accessible for obtaining debit confirmation. This reason
+        /// code maps to the `WC4` reason code as defined in NPCI's `UDIR`
+        /// specification.
         WrongCreditRepresentmentCustomerInaccessible = 39,
-        ///  Other reason for Wrong credit representment. This reason code maps to the
-        ///  `WC5` reason code as defined in NPCI's `UDIR` specification.
+        /// Other reason for Wrong credit representment. This reason code maps to the
+        /// `WC5` reason code as defined in NPCI's `UDIR` specification.
         WrongCreditRepresentmentReasonOthers = 40,
     }
     impl ReasonCode {
@@ -1274,31 +1274,31 @@ pub mod resolve_dispute_adjustment {
         }
     }
 }
-///  Metadata for CreateComplaint.
+/// Metadata for CreateComplaint.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateComplaintMetadata {
 }
-///  Metadata for ResolveComplaint.
+/// Metadata for ResolveComplaint.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResolveComplaintMetadata {
 }
-///  Metadata for CreateDispute.
+/// Metadata for CreateDispute.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateDisputeMetadata {
 }
-///  Metadata for ResolveDispute.
+/// Metadata for ResolveDispute.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResolveDisputeMetadata {
 }
-///  The subtype of the complaint or dispute.
+/// The subtype of the complaint or dispute.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum TransactionSubType {
-    ///  Unspecified transaction subtype.
+    /// Unspecified transaction subtype.
     Unspecified = 0,
-    ///  Beneficiary transaction subtype.
+    /// Beneficiary transaction subtype.
     Beneficiary = 1,
-    ///  Remitter transaction subtype.
+    /// Remitter transaction subtype.
     Remitter = 2,
 }
 impl TransactionSubType {
@@ -1496,53 +1496,53 @@ pub mod issuer_switch_resolutions_client {
         }
     }
 }
-///  A rule that is executed by the issuer switch while processing an
-///  API transaction.
+/// A rule that is executed by the issuer switch while processing an
+/// API transaction.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Rule {
-    ///  The unique identifier for this resource.
-    ///  Format: projects/{project}/rules/{rule}
+    /// The unique identifier for this resource.
+    /// Format: projects/{project}/rules/{rule}
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  The description of the rule.
+    /// The description of the rule.
     #[prost(string, tag="2")]
     pub rule_description: ::prost::alloc::string::String,
-    ///  The API Type for which this rule gets executed. A value of
-    ///  `API_TYPE_UNSPECIFIED` indicates that the rule is executed for all API
-    ///  transactions.
+    /// The API Type for which this rule gets executed. A value of
+    /// `API_TYPE_UNSPECIFIED` indicates that the rule is executed for all API
+    /// transactions.
     #[prost(enumeration="ApiType", tag="3")]
     pub api_type: i32,
-    ///  The transaction type for which this rule gets executed. A value of
-    ///  `TRANSACTION_TYPE_UNSPECIFIED` indicates that the rule is executed for
-    ///  all transaction types.
+    /// The transaction type for which this rule gets executed. A value of
+    /// `TRANSACTION_TYPE_UNSPECIFIED` indicates that the rule is executed for
+    /// all transaction types.
     #[prost(enumeration="TransactionType", tag="4")]
     pub transaction_type: i32,
 }
-///  The metadata associated with a rule. This defines data that are used by the
-///  rule during execution.
+/// The metadata associated with a rule. This defines data that are used by the
+/// rule during execution.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RuleMetadata {
-    ///  The unique identifier for this resource.
-    ///  Format: projects/{project}/rules/{rule}/metadata/{metadata}
+    /// The unique identifier for this resource.
+    /// Format: projects/{project}/rules/{rule}/metadata/{metadata}
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  The description of the rule metadata.
+    /// The description of the rule metadata.
     #[prost(string, tag="2")]
     pub description: ::prost::alloc::string::String,
-    ///  Type of rule metadata.
+    /// Type of rule metadata.
     #[prost(enumeration="rule_metadata::Type", tag="3")]
     pub r#type: i32,
 }
 /// Nested message and enum types in `RuleMetadata`.
 pub mod rule_metadata {
-    ///  The type of metadata.
+    /// The type of metadata.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum Type {
-        ///  Unspecified type.
+        /// Unspecified type.
         Unspecified = 0,
-        ///  List type. Indicates that the metadata contains a list of values which
-        ///  the rule requires for execution.
+        /// List type. Indicates that the metadata contains a list of values which
+        /// the rule requires for execution.
         List = 1,
     }
     impl Type {
@@ -1558,205 +1558,205 @@ pub mod rule_metadata {
         }
     }
 }
-///  Represent a single value in a rule's metadata.
+/// Represent a single value in a rule's metadata.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RuleMetadataValue {
-    ///  Output only. The unique identifier for this resource.
-    ///  Format: projects/{project}/rules/{rule}/metadata/{metadata}/values/{value}
+    /// Output only. The unique identifier for this resource.
+    /// Format: projects/{project}/rules/{rule}/metadata/{metadata}/values/{value}
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  The value of the resource which could be of type string or
-    ///  AccountReference. The metadata values for rules
-    ///  BlockedPayeeAccountReqPayDebitRule, BlockedPayerAccountReqPayDebitRule,
-    ///  BlockedPayeeAccountReqPayCreditRule and BlockedPayerAccountReqPayCreditRule
-    ///  should be of type AccountReference. For all other rules, metadata values
-    ///  should be of type string.
+    /// The value of the resource which could be of type string or
+    /// AccountReference. The metadata values for rules
+    /// BlockedPayeeAccountReqPayDebitRule, BlockedPayerAccountReqPayDebitRule,
+    /// BlockedPayeeAccountReqPayCreditRule and BlockedPayerAccountReqPayCreditRule
+    /// should be of type AccountReference. For all other rules, metadata values
+    /// should be of type string.
     ///
-    ///  The length of the `value` field depends on the type of
-    ///  the value being used for the rule metadata. The following are the minimum
-    ///  and maximum lengths for the different types of values.
+    /// The length of the `value` field depends on the type of
+    /// the value being used for the rule metadata. The following are the minimum
+    /// and maximum lengths for the different types of values.
     ///
-    ///  Value Type | Minimum Length | Maximum Length |
-    ///  -------- | -------- | -------- |
-    ///  Bank account IFSC   | 11   | 11   |
-    ///  Bank account number   | 1   | 255  |
-    ///  Device identifier   | 1   | 255   |
-    ///  Mobile number   | 12   | 12  |
-    ///  Virtual private address (VPA)   | 3   | 255   |
+    /// Value Type | Minimum Length | Maximum Length |
+    /// -------- | -------- | -------- |
+    /// Bank account IFSC   | 11   | 11   |
+    /// Bank account number   | 1   | 255  |
+    /// Device identifier   | 1   | 255   |
+    /// Mobile number   | 12   | 12  |
+    /// Virtual private address (VPA)   | 3   | 255   |
     #[prost(oneof="rule_metadata_value::Value", tags="2, 3")]
     pub value: ::core::option::Option<rule_metadata_value::Value>,
 }
 /// Nested message and enum types in `RuleMetadataValue`.
 pub mod rule_metadata_value {
-    ///  The value of the resource which could be of type string or
-    ///  AccountReference. The metadata values for rules
-    ///  BlockedPayeeAccountReqPayDebitRule, BlockedPayerAccountReqPayDebitRule,
-    ///  BlockedPayeeAccountReqPayCreditRule and BlockedPayerAccountReqPayCreditRule
-    ///  should be of type AccountReference. For all other rules, metadata values
-    ///  should be of type string.
+    /// The value of the resource which could be of type string or
+    /// AccountReference. The metadata values for rules
+    /// BlockedPayeeAccountReqPayDebitRule, BlockedPayerAccountReqPayDebitRule,
+    /// BlockedPayeeAccountReqPayCreditRule and BlockedPayerAccountReqPayCreditRule
+    /// should be of type AccountReference. For all other rules, metadata values
+    /// should be of type string.
     ///
-    ///  The length of the `value` field depends on the type of
-    ///  the value being used for the rule metadata. The following are the minimum
-    ///  and maximum lengths for the different types of values.
+    /// The length of the `value` field depends on the type of
+    /// the value being used for the rule metadata. The following are the minimum
+    /// and maximum lengths for the different types of values.
     ///
-    ///  Value Type | Minimum Length | Maximum Length |
-    ///  -------- | -------- | -------- |
-    ///  Bank account IFSC   | 11   | 11   |
-    ///  Bank account number   | 1   | 255  |
-    ///  Device identifier   | 1   | 255   |
-    ///  Mobile number   | 12   | 12  |
-    ///  Virtual private address (VPA)   | 3   | 255   |
+    /// Value Type | Minimum Length | Maximum Length |
+    /// -------- | -------- | -------- |
+    /// Bank account IFSC   | 11   | 11   |
+    /// Bank account number   | 1   | 255  |
+    /// Device identifier   | 1   | 255   |
+    /// Mobile number   | 12   | 12  |
+    /// Virtual private address (VPA)   | 3   | 255   |
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Value {
-        ///  The value for string metadata.
+        /// The value for string metadata.
         #[prost(string, tag="2")]
         Id(::prost::alloc::string::String),
-        ///  The value for account reference metadata.
+        /// The value for account reference metadata.
         #[prost(message, tag="3")]
         AccountReference(super::AccountReference),
     }
 }
-///  Request body for the `ListRules` method.
+/// Request body for the `ListRules` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRulesRequest {
-    ///  Required. The parent resource must have the format of `projects/{project}`.
+    /// Required. The parent resource must have the format of `projects/{project}`.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  The maximum number of rules to return. The service may return fewer
-    ///  than this value. If unspecified or if the specified value is less than 50,
-    ///  at most 50 rules will be returned. The maximum value is 1000; values above
-    ///  1000 will be coerced to 1000.
+    /// The maximum number of rules to return. The service may return fewer
+    /// than this value. If unspecified or if the specified value is less than 50,
+    /// at most 50 rules will be returned. The maximum value is 1000; values above
+    /// 1000 will be coerced to 1000.
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    ///  A page token, received from a previous `ListRulesRequest` call.
-    ///  Specify this parameter to retrieve the next page of rules.
+    /// A page token, received from a previous `ListRulesRequest` call.
+    /// Specify this parameter to retrieve the next page of rules.
     #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
 }
-///  Response body for the `ListRules` method.
+/// Response body for the `ListRules` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRulesResponse {
-    ///  List of rules satisfying the specified filter criteria.
+    /// List of rules satisfying the specified filter criteria.
     #[prost(message, repeated, tag="1")]
     pub rules: ::prost::alloc::vec::Vec<Rule>,
-    ///  Pass this token in a subsequent `ListRulesRequest` call to continue to list
-    ///  results. If all results have been returned, this field is an empty string
-    ///  or not present in the response.
+    /// Pass this token in a subsequent `ListRulesRequest` call to continue to list
+    /// results. If all results have been returned, this field is an empty string
+    /// or not present in the response.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
-    ///  Total number of rules matching request criteria across all pages.
+    /// Total number of rules matching request criteria across all pages.
     #[prost(int64, tag="3")]
     pub total_size: i64,
 }
-///  Request body for the `ListRuleMetadata` method.
+/// Request body for the `ListRuleMetadata` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRuleMetadataRequest {
-    ///  Required. The parent resource. The format is `projects/{project}/rules/{rule}`.
+    /// Required. The parent resource. The format is `projects/{project}/rules/{rule}`.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  The maximum number of rule metadata to return. The service may return fewer
-    ///  than this value. If unspecified or if the specified value is less than 50,
-    ///  at most 50 rule metadata will be returned. The maximum value is 1000;
-    ///  values above 1000 will be coerced to 1000.
+    /// The maximum number of rule metadata to return. The service may return fewer
+    /// than this value. If unspecified or if the specified value is less than 50,
+    /// at most 50 rule metadata will be returned. The maximum value is 1000;
+    /// values above 1000 will be coerced to 1000.
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    ///  A page token, received from a previous `ListRuleMetadataRequest` call.
-    ///  Specify this parameter to retrieve the next page of rule metadata.
+    /// A page token, received from a previous `ListRuleMetadataRequest` call.
+    /// Specify this parameter to retrieve the next page of rule metadata.
     #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
 }
-///  Response body for the `ListRuleMetadata` method.
+/// Response body for the `ListRuleMetadata` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRuleMetadataResponse {
-    ///  List of rule metadata associated with the rule.
+    /// List of rule metadata associated with the rule.
     #[prost(message, repeated, tag="1")]
     pub rule_metadata: ::prost::alloc::vec::Vec<RuleMetadata>,
-    ///  Pass this token in a subsequent `ListRuleMetadataRequest` call to continue
-    ///  to list results. If all results have been returned, this field is an empty
-    ///  string or not present in the response.
+    /// Pass this token in a subsequent `ListRuleMetadataRequest` call to continue
+    /// to list results. If all results have been returned, this field is an empty
+    /// string or not present in the response.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
-    ///  Total number of rule metadata matching request criteria across all pages.
+    /// Total number of rule metadata matching request criteria across all pages.
     #[prost(int64, tag="3")]
     pub total_size: i64,
 }
-///  Request body for the `ListRuleMetadataValues` method.
+/// Request body for the `ListRuleMetadataValues` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRuleMetadataValuesRequest {
-    ///  Required. The parent resource. The format is
-    ///  `projects/{project}/rules/{rule}/metadata/{metadata}`.
+    /// Required. The parent resource. The format is
+    /// `projects/{project}/rules/{rule}/metadata/{metadata}`.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  The maximum number of metadata values to return. The service may return
-    ///  fewer than this value. If unspecified or if the specified value is less
-    ///  than 1, at most 50 rule metadata values will be returned. The maximum
-    ///  value is 1000; values above 1000 will be coerced to 1000.
+    /// The maximum number of metadata values to return. The service may return
+    /// fewer than this value. If unspecified or if the specified value is less
+    /// than 1, at most 50 rule metadata values will be returned. The maximum
+    /// value is 1000; values above 1000 will be coerced to 1000.
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    ///  A page token received from a previous `ListRuleMetadataValuesRequest`
-    ///  call. Specify this parameter to retrieve the next page of rule metadata
-    ///  values.
+    /// A page token received from a previous `ListRuleMetadataValuesRequest`
+    /// call. Specify this parameter to retrieve the next page of rule metadata
+    /// values.
     #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
 }
-///  Response body for ListRuleMetadataValues. Contains a List of values for a
-///  given rule metadata resource.
+/// Response body for ListRuleMetadataValues. Contains a List of values for a
+/// given rule metadata resource.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRuleMetadataValuesResponse {
-    ///  List of values for a given rule metadata resource identifier.
+    /// List of values for a given rule metadata resource identifier.
     #[prost(message, repeated, tag="1")]
     pub rule_metadata_values: ::prost::alloc::vec::Vec<RuleMetadataValue>,
-    ///  Pass this token in a subsequent `ListRuleMetadataValuesRequest` call to
-    ///  continue to list results. If all results have been returned, this field is
-    ///  an empty string or not present in the response.
+    /// Pass this token in a subsequent `ListRuleMetadataValuesRequest` call to
+    /// continue to list results. If all results have been returned, this field is
+    /// an empty string or not present in the response.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-///  Request body for the `BatchCreateRuleMetadataValues` method.
+/// Request body for the `BatchCreateRuleMetadataValues` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchCreateRuleMetadataValuesRequest {
-    ///  The parent resource shared by all ruleMetadataValue being created. The
-    ///  format is `projects/{project}/rules/{rule}/metadata/{metadata}`. The
-    ///  \[CreateRuleMetadataValueRequest.parent][google.cloud.paymentgateway.issuerswitch.v1.CreateRuleMetadataValueRequest.parent\] field in the
-    ///  \[CreateRuleMetadataValueRequest][google.cloud.paymentgateway.issuerswitch.v1.CreateRuleMetadataValueRequest\] messages contained in this request must
-    ///  match this field.
+    /// The parent resource shared by all ruleMetadataValue being created. The
+    /// format is `projects/{project}/rules/{rule}/metadata/{metadata}`. The
+    /// \[CreateRuleMetadataValueRequest.parent][google.cloud.paymentgateway.issuerswitch.v1.CreateRuleMetadataValueRequest.parent\] field in the
+    /// \[CreateRuleMetadataValueRequest][google.cloud.paymentgateway.issuerswitch.v1.CreateRuleMetadataValueRequest\] messages contained in this request must
+    /// match this field.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Required. The request message specifying the resources to create.
-    ///  A maximum of 1000 RuleMetadataValues can be created in a batch.
+    /// Required. The request message specifying the resources to create.
+    /// A maximum of 1000 RuleMetadataValues can be created in a batch.
     #[prost(message, repeated, tag="2")]
     pub requests: ::prost::alloc::vec::Vec<CreateRuleMetadataValueRequest>,
 }
-///  Response body for the `BatchCreateRuleMetadataValues` method.
+/// Response body for the `BatchCreateRuleMetadataValues` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchCreateRuleMetadataValuesResponse {
-    ///  List of RuleMetadataValue created.
+    /// List of RuleMetadataValue created.
     #[prost(message, repeated, tag="1")]
     pub rule_metadata_value: ::prost::alloc::vec::Vec<RuleMetadataValue>,
 }
-///  Request for creating a single `RuleMetadataValue`.
+/// Request for creating a single `RuleMetadataValue`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateRuleMetadataValueRequest {
-    ///  Required. The parent resource where this RuleMetadataValue will be created. The
-    ///  format is `projects/{project}/rules/{rule}/metadata/{metadata}`.
+    /// Required. The parent resource where this RuleMetadataValue will be created. The
+    /// format is `projects/{project}/rules/{rule}/metadata/{metadata}`.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Required. The rule metadata value to create or add to a list.
+    /// Required. The rule metadata value to create or add to a list.
     #[prost(message, optional, tag="2")]
     pub rule_metadata_value: ::core::option::Option<RuleMetadataValue>,
 }
-///  Request body for the `BatchDeleteRuleMetadataValues` method.
+/// Request body for the `BatchDeleteRuleMetadataValues` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchDeleteRuleMetadataValuesRequest {
-    ///  The parent resource shared by all RuleMetadataValues being deleted. The
-    ///  format is `projects/{project}/rules/{rule}/metadata/{metadata}`. If this is
-    ///  set, the parent of all of the RuleMetadataValues specified in the
-    ///  list of names must match this field.
+    /// The parent resource shared by all RuleMetadataValues being deleted. The
+    /// format is `projects/{project}/rules/{rule}/metadata/{metadata}`. If this is
+    /// set, the parent of all of the RuleMetadataValues specified in the
+    /// list of names must match this field.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Required. The names of the rule metadata values to delete.
-    ///  A maximum of 1000 RuleMetadataValue can be deleted in a batch.
-    ///  Format: projects/{project}/rules/{rule}/metadata/{metadata}/values/{value}
+    /// Required. The names of the rule metadata values to delete.
+    /// A maximum of 1000 RuleMetadataValue can be deleted in a batch.
+    /// Format: projects/{project}/rules/{rule}/metadata/{metadata}/values/{value}
     #[prost(string, repeated, tag="2")]
     pub names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
@@ -1941,58 +1941,58 @@ pub mod issuer_switch_rules_client {
         }
     }
 }
-///  Information about a transaction processed by the issuer switch.
-///  The fields in this type are common across both financial and metadata
-///  transactions.
+/// Information about a transaction processed by the issuer switch.
+/// The fields in this type are common across both financial and metadata
+/// transactions.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TransactionInfo {
-    ///  Output only. An identifier that is mandatorily present in every transaction processed
-    ///  via UPI. This maps to UPI's transaction ID.
+    /// Output only. An identifier that is mandatorily present in every transaction processed
+    /// via UPI. This maps to UPI's transaction ID.
     #[prost(string, tag="1")]
     pub id: ::prost::alloc::string::String,
-    ///  Output only. The API type of the transaction.
+    /// Output only. The API type of the transaction.
     #[prost(enumeration="ApiType", tag="2")]
     pub api_type: i32,
-    ///  Output only. The transaction type.
+    /// Output only. The transaction type.
     #[prost(enumeration="TransactionType", tag="3")]
     pub transaction_type: i32,
-    ///  Output only. The transaction sub-type.
+    /// Output only. The transaction sub-type.
     #[prost(enumeration="transaction_info::TransactionSubType", tag="4")]
     pub transaction_sub_type: i32,
-    ///  Output only. The transaction's state.
+    /// Output only. The transaction's state.
     #[prost(enumeration="transaction_info::State", tag="5")]
     pub state: i32,
-    ///  Output only. Error code of the failed transaction.
+    /// Output only. Error code of the failed transaction.
     #[prost(string, tag="6")]
     pub error_code: ::prost::alloc::string::String,
-    ///  Output only. Error description for the failed transaction.
+    /// Output only. Error description for the failed transaction.
     #[prost(string, tag="7")]
     pub error_message: ::prost::alloc::string::String,
-    ///  Output only. The time at which the transaction resource was created by the
-    ///  issuer switch.
+    /// Output only. The time at which the transaction resource was created by the
+    /// issuer switch.
     #[prost(message, optional, tag="8")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Output only. List of Request IDs (colon separated) used when
-    ///  invoking the Bank Adapter APIs for fulfilling a transaction request.
+    /// Output only. List of Request IDs (colon separated) used when
+    /// invoking the Bank Adapter APIs for fulfilling a transaction request.
     #[prost(string, tag="9")]
     pub bank_adapter_request_ids: ::prost::alloc::string::String,
-    ///  Output only. Error code as per the UPI specification. The issuer switch maps the
-    ///  ErrorCode to an appropriate error code that complies with the UPI
-    ///  specification.
+    /// Output only. Error code as per the UPI specification. The issuer switch maps the
+    /// ErrorCode to an appropriate error code that complies with the UPI
+    /// specification.
     #[prost(string, tag="10")]
     pub upi_error_code: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `TransactionInfo`.
 pub mod transaction_info {
-    ///  Specifies the current state of the transaction.
+    /// Specifies the current state of the transaction.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum State {
-        ///  Unspecicifed state.
+        /// Unspecicifed state.
         Unspecified = 0,
-        ///  The transaction has successfully completed.
+        /// The transaction has successfully completed.
         Succeeded = 1,
-        ///  The transaction has failed.
+        /// The transaction has failed.
         Failed = 2,
     }
     impl State {
@@ -2008,32 +2008,32 @@ pub mod transaction_info {
             }
         }
     }
-    ///  The sub-type of a transaction. This value is used only for certain API type
-    ///  and transaction type combinations.
+    /// The sub-type of a transaction. This value is used only for certain API type
+    /// and transaction type combinations.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum TransactionSubType {
-        ///  Unspecified transaction sub-type.
+        /// Unspecified transaction sub-type.
         Unspecified = 0,
-        ///  Collect sub type. This is used in a `SETTLE_PAYMENT` API type
-        ///  transaction, with transaction type as either `CREDIT` or `DEBIT` when the
-        ///  payment was initiated by a collect request.
+        /// Collect sub type. This is used in a `SETTLE_PAYMENT` API type
+        /// transaction, with transaction type as either `CREDIT` or `DEBIT` when the
+        /// payment was initiated by a collect request.
         Collect = 1,
-        ///  Debit sub type. This is used in a `SETTLE_PAYMENT` API type transaction,
-        ///  with transaction type as `REVERSAL` when the original payment was a
-        ///  debit request.
+        /// Debit sub type. This is used in a `SETTLE_PAYMENT` API type transaction,
+        /// with transaction type as `REVERSAL` when the original payment was a
+        /// debit request.
         Debit = 2,
-        ///  Pay sub type. This is used in a `SETTLE_PAYMENT` API type transaction,
-        ///  with transaction type as either `CREDIT` or `DEBIT` when the payment was
-        ///  initiated by a pay request.
+        /// Pay sub type. This is used in a `SETTLE_PAYMENT` API type transaction,
+        /// with transaction type as either `CREDIT` or `DEBIT` when the payment was
+        /// initiated by a pay request.
         Pay = 3,
-        ///  Beneficiary subtype. This is used in a `COMPLAINT` API type transaction,
-        ///  when the complaint / dispute request is initiated / received by the
-        ///  beneficiary bank.
+        /// Beneficiary subtype. This is used in a `COMPLAINT` API type transaction,
+        /// when the complaint / dispute request is initiated / received by the
+        /// beneficiary bank.
         Beneficiary = 4,
-        ///  Remitter subtype. This is used in a `COMPLAINT` API type transaction,
-        ///  when the complaint / dispute request is initiated / received by the
-        ///  remitter bank.
+        /// Remitter subtype. This is used in a `COMPLAINT` API type transaction,
+        /// when the complaint / dispute request is initiated / received by the
+        /// remitter bank.
         Remitter = 5,
     }
     impl TransactionSubType {
@@ -2053,147 +2053,147 @@ pub mod transaction_info {
         }
     }
 }
-///  A metadata API transaction processed by the issuer switch. This
-///  includes UPI APIs such as List Accounts, Balance Enquiry, etc.
+/// A metadata API transaction processed by the issuer switch. This
+/// includes UPI APIs such as List Accounts, Balance Enquiry, etc.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MetadataTransaction {
-    ///  The name of the metadata transaction. This uniquely identifies the
-    ///  transaction. Format of name is
-    ///  projects/{project_id}/metadataTransaction/{metadata_transaction_id}.
+    /// The name of the metadata transaction. This uniquely identifies the
+    /// transaction. Format of name is
+    /// projects/{project_id}/metadataTransaction/{metadata_transaction_id}.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Information about the transaction.
+    /// Information about the transaction.
     #[prost(message, optional, tag="2")]
     pub info: ::core::option::Option<TransactionInfo>,
-    ///  Output only. Virtual Payment Address (VPA) which originated the request.
+    /// Output only. Virtual Payment Address (VPA) which originated the request.
     #[prost(string, tag="3")]
     pub origin_vpa: ::prost::alloc::string::String,
 }
-///  A financial API transaction processed by the issuer switch. In UPI, this maps
-///  to the Pay API.
+/// A financial API transaction processed by the issuer switch. In UPI, this maps
+/// to the Pay API.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FinancialTransaction {
-    ///  The name of the financial transaction. This uniquely identifies the
-    ///  transaction. Format of name is
-    ///  projects/{project_id}/financialTransactions/{financial_transaction_id}.
+    /// The name of the financial transaction. This uniquely identifies the
+    /// transaction. Format of name is
+    /// projects/{project_id}/financialTransactions/{financial_transaction_id}.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Information about the transaction.
+    /// Information about the transaction.
     #[prost(message, optional, tag="2")]
     pub info: ::core::option::Option<TransactionInfo>,
-    ///  Output only. A 12 digit numeric code associated with the request. It could contain
-    ///  leading 0s. In UPI, this is also known as as the customer reference or the
-    ///  UPI transaction ID.
+    /// Output only. A 12 digit numeric code associated with the request. It could contain
+    /// leading 0s. In UPI, this is also known as as the customer reference or the
+    /// UPI transaction ID.
     #[prost(string, tag="3")]
     pub retrieval_reference_number: ::prost::alloc::string::String,
-    ///  Output only. The payer in the transaction.
+    /// Output only. The payer in the transaction.
     #[prost(message, optional, tag="4")]
     pub payer: ::core::option::Option<SettlementParticipant>,
-    ///  Output only. The payee in the transaction.
+    /// Output only. The payee in the transaction.
     #[prost(message, optional, tag="5")]
     pub payee: ::core::option::Option<SettlementParticipant>,
-    ///  Output only. The amount for payment settlement in the transaction.
+    /// Output only. The amount for payment settlement in the transaction.
     #[prost(message, optional, tag="6")]
     pub amount: ::core::option::Option<super::super::super::super::r#type::Money>,
 }
-///  A mandate processed by the issuer switch. In UPI, this maps to the Mandate
-///  API.
+/// A mandate processed by the issuer switch. In UPI, this maps to the Mandate
+/// API.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MandateTransaction {
-    ///  The name of the mandate transaction. This uniquely identifies the
-    ///  transaction. Format of name is
-    ///  projects/{project_id}/mandateTransactions/{mandate_transaction_id}.
+    /// The name of the mandate transaction. This uniquely identifies the
+    /// transaction. Format of name is
+    /// projects/{project_id}/mandateTransactions/{mandate_transaction_id}.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Information about the transaction.
+    /// Information about the transaction.
     #[prost(message, optional, tag="2")]
     pub transaction_info: ::core::option::Option<TransactionInfo>,
-    ///  Output only. This maps to Unique Mandate Number (UMN) in UPI specification.
+    /// Output only. This maps to Unique Mandate Number (UMN) in UPI specification.
     #[prost(string, tag="3")]
     pub unique_mandate_number: ::prost::alloc::string::String,
-    ///  Output only. The virtual payment address (VPA) of the payer.
+    /// Output only. The virtual payment address (VPA) of the payer.
     #[prost(string, tag="4")]
     pub payer_vpa: ::prost::alloc::string::String,
-    ///  Output only. The virtual payment address (VPA) of the payee.
+    /// Output only. The virtual payment address (VPA) of the payee.
     #[prost(string, tag="5")]
     pub payee_vpa: ::prost::alloc::string::String,
-    ///  Output only. A unique identifier for merchant.
+    /// Output only. A unique identifier for merchant.
     #[prost(string, tag="6")]
     pub payee_merchant_id: ::prost::alloc::string::String,
-    ///  Output only. The mobile number of the payer consisting of total twelve digits where
-    ///  first two digits of country code (for eg. 91 for India) and then ten
-    ///  digits mobile number. For eg. 911234567890
+    /// Output only. The mobile number of the payer consisting of total twelve digits where
+    /// first two digits of country code (for eg. 91 for India) and then ten
+    /// digits mobile number. For eg. 911234567890
     #[prost(string, tag="7")]
     pub payer_mobile_number: ::prost::alloc::string::String,
-    ///  Output only. The mobile number of the payer consisting of total twelve digits where
-    ///  first two digits of country code (for eg. 91 for India) and then ten
-    ///  digits mobile number. For eg. 911234567890
+    /// Output only. The mobile number of the payer consisting of total twelve digits where
+    /// first two digits of country code (for eg. 91 for India) and then ten
+    /// digits mobile number. For eg. 911234567890
     #[prost(string, tag="8")]
     pub payee_mobile_number: ::prost::alloc::string::String,
-    ///  Output only. The type of recurrence pattern of the mandate.
+    /// Output only. The type of recurrence pattern of the mandate.
     #[prost(enumeration="mandate_transaction::RecurrencePatternType", tag="9")]
     pub recurrence_pattern: i32,
-    ///  Output only. The type of recurrence rule of the mandate.
+    /// Output only. The type of recurrence rule of the mandate.
     #[prost(enumeration="mandate_transaction::RecurrenceRuleType", tag="10")]
     pub recurrence_rule_type: i32,
-    ///  Output only. The recurrence rule value of the mandate. This is a value from 1 to 31.
+    /// Output only. The recurrence rule value of the mandate. This is a value from 1 to 31.
     #[prost(int32, tag="11")]
     pub recurrence_rule_value: i32,
-    ///  Output only. The start date of the mandate.
+    /// Output only. The start date of the mandate.
     #[prost(message, optional, tag="12")]
     pub start_date: ::core::option::Option<super::super::super::super::r#type::Date>,
-    ///  Output only. The end date of the mandate.
+    /// Output only. The end date of the mandate.
     #[prost(message, optional, tag="13")]
     pub end_date: ::core::option::Option<super::super::super::super::r#type::Date>,
-    ///  Output only. If true, this specifies mandate can be revoked.
+    /// Output only. If true, this specifies mandate can be revoked.
     #[prost(bool, tag="14")]
     pub revokable: bool,
-    ///  Output only. The amount of the mandate.
+    /// Output only. The amount of the mandate.
     #[prost(double, tag="15")]
     pub amount: f64,
-    ///  Output only. The amount rule type of the mandate.
+    /// Output only. The amount rule type of the mandate.
     #[prost(enumeration="mandate_transaction::AmountRuleType", tag="16")]
     pub amount_rule: i32,
-    ///  Output only. The Block funds reference generated by the bank, this will be available
-    ///  only when Recurrence is ONETIME.
+    /// Output only. The Block funds reference generated by the bank, this will be available
+    /// only when Recurrence is ONETIME.
     #[prost(string, tag="17")]
     pub approval_reference: ::prost::alloc::string::String,
-    ///  Output only. If true, this specifies the mandate transaction requested funds to be
-    ///  blocked.
+    /// Output only. If true, this specifies the mandate transaction requested funds to be
+    /// blocked.
     #[prost(bool, tag="18")]
     pub block_funds: bool,
-    ///  Output only. The last time at which the mandate resource was modified by the issuer
-    ///  switch.
+    /// Output only. The last time at which the mandate resource was modified by the issuer
+    /// switch.
     #[prost(message, optional, tag="19")]
     pub last_update_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Nested message and enum types in `MandateTransaction`.
 pub mod mandate_transaction {
-    ///  RecurrencePatternType specifies the recurrence pattern type of the mandate.
+    /// RecurrencePatternType specifies the recurrence pattern type of the mandate.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum RecurrencePatternType {
-        ///  Unspecified recurrence pattern.
+        /// Unspecified recurrence pattern.
         Unspecified = 0,
-        ///  As presented recurrence pattern.
+        /// As presented recurrence pattern.
         AsPresented = 1,
-        ///  Bi monthly recurrence pattern.
+        /// Bi monthly recurrence pattern.
         Bimonthly = 2,
-        ///  Daily recurrence pattern.
+        /// Daily recurrence pattern.
         Daily = 3,
-        ///  Bi weekly recurrence pattern.
+        /// Bi weekly recurrence pattern.
         Fortnightly = 4,
-        ///  Half yearly recurrence pattern.
+        /// Half yearly recurrence pattern.
         HalfYearly = 5,
-        ///  Monthly recurrence pattern.
+        /// Monthly recurrence pattern.
         Monthly = 6,
-        ///  One time recurrence pattern.
+        /// One time recurrence pattern.
         OneTime = 7,
-        ///  Quarterly recurrence pattern.
+        /// Quarterly recurrence pattern.
         Quarterly = 8,
-        ///  Weekly recurrence pattern.
+        /// Weekly recurrence pattern.
         Weekly = 9,
-        ///  Yearly recurrence pattern.
+        /// Yearly recurrence pattern.
         Yearly = 10,
     }
     impl RecurrencePatternType {
@@ -2217,17 +2217,17 @@ pub mod mandate_transaction {
             }
         }
     }
-    ///  RecurrenceRuleType specifies the recurrence rule type of mandate.
+    /// RecurrenceRuleType specifies the recurrence rule type of mandate.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum RecurrenceRuleType {
-        ///  Unspecified recurrence rule type.
+        /// Unspecified recurrence rule type.
         Unspecified = 0,
-        ///  After recurrence rule type.
+        /// After recurrence rule type.
         After = 1,
-        ///  Before recurrence rule type.
+        /// Before recurrence rule type.
         Before = 2,
-        ///  On recurrence rule type.
+        /// On recurrence rule type.
         On = 3,
     }
     impl RecurrenceRuleType {
@@ -2244,18 +2244,18 @@ pub mod mandate_transaction {
             }
         }
     }
-    ///  AmountRuleType specifies the type of rule associated with the mandate
-    ///  amount.
+    /// AmountRuleType specifies the type of rule associated with the mandate
+    /// amount.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum AmountRuleType {
-        ///  Unspecified amount rule.
+        /// Unspecified amount rule.
         Unspecified = 0,
-        ///  Exact amount rule. Amount specified is the exact amount for which
-        ///  mandate could be granted.
+        /// Exact amount rule. Amount specified is the exact amount for which
+        /// mandate could be granted.
         Exact = 1,
-        ///  Max amount rule. Amount specified is the maximum amount for which
-        ///  mandate could be granted.
+        /// Max amount rule. Amount specified is the maximum amount for which
+        /// mandate could be granted.
         Max = 2,
     }
     impl AmountRuleType {
@@ -2272,70 +2272,70 @@ pub mod mandate_transaction {
         }
     }
 }
-///  A complaint API transaction processed by the issuer switch. In
-///  UPI, this maps to the Complaint API.
+/// A complaint API transaction processed by the issuer switch. In
+/// UPI, this maps to the Complaint API.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ComplaintTransaction {
-    ///  The name of the complaint transaction. This uniquely identifies the
-    ///  transaction. Format of name is
-    ///  projects/{project_id}/complaintTransactions/{complaint_transaction_id}.
+    /// The name of the complaint transaction. This uniquely identifies the
+    /// transaction. Format of name is
+    /// projects/{project_id}/complaintTransactions/{complaint_transaction_id}.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Information about the transaction.
+    /// Information about the transaction.
     #[prost(message, optional, tag="2")]
     pub info: ::core::option::Option<TransactionInfo>,
-    ///  Information about the complaint transaction. It can be one of Complaint or
-    ///  Dispute.
+    /// Information about the complaint transaction. It can be one of Complaint or
+    /// Dispute.
     #[prost(oneof="complaint_transaction::Case", tags="3, 4")]
     pub case: ::core::option::Option<complaint_transaction::Case>,
 }
 /// Nested message and enum types in `ComplaintTransaction`.
 pub mod complaint_transaction {
-    ///  Information about the complaint transaction. It can be one of Complaint or
-    ///  Dispute.
+    /// Information about the complaint transaction. It can be one of Complaint or
+    /// Dispute.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Case {
-        ///  Output only. Information about the complaint transaction when it is of type complaint.
+        /// Output only. Information about the complaint transaction when it is of type complaint.
         #[prost(message, tag="3")]
         Complaint(super::Complaint),
-        ///  Output only. Information about the complaint transaction when it is of type dispute.
+        /// Output only. Information about the complaint transaction when it is of type dispute.
         #[prost(message, tag="4")]
         Dispute(super::Dispute),
     }
 }
-///  Request for the `ListMetadataTransactions` method. Callers can request for
-///  transactions to be filtered by the given filter criteria and specified
-///  pagination parameters.
+/// Request for the `ListMetadataTransactions` method. Callers can request for
+/// transactions to be filtered by the given filter criteria and specified
+/// pagination parameters.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListMetadataTransactionsRequest {
-    ///  Required. The parent resource. The format is `projects/{project}`.
+    /// Required. The parent resource. The format is `projects/{project}`.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  The maximum number of transactions to return. The service may return fewer
-    ///  than this value. If unspecified or if the specified value is less than 1,
-    ///  at most 50 transactions will be returned. The maximum value is 1000; values
-    ///  above 1000 will be coerced to 1000. While paginating, you can specify a new
-    ///  page size parameter for each page of transactions to be listed.
+    /// The maximum number of transactions to return. The service may return fewer
+    /// than this value. If unspecified or if the specified value is less than 1,
+    /// at most 50 transactions will be returned. The maximum value is 1000; values
+    /// above 1000 will be coerced to 1000. While paginating, you can specify a new
+    /// page size parameter for each page of transactions to be listed.
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    ///  A page token, received from a previous `ListMetadataTransactions` call.
-    ///  Specify this parameter to retrieve the next page of transactions.
+    /// A page token, received from a previous `ListMetadataTransactions` call.
+    /// Specify this parameter to retrieve the next page of transactions.
     ///
-    ///  When paginating, you must specify only the `page_token` parameter. The
-    ///  filter that was specified in the initial call to the
-    ///  `ListMetadataTransactions` method that returned the page token will be
-    ///  reused for all further calls where the page token parameter is specified.
+    /// When paginating, you must specify only the `page_token` parameter. The
+    /// filter that was specified in the initial call to the
+    /// `ListMetadataTransactions` method that returned the page token will be
+    /// reused for all further calls where the page token parameter is specified.
     #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
-    ///  An expression that filters the list of metadata transactions.
+    /// An expression that filters the list of metadata transactions.
     ///
-    ///  A filter expression consists of a field name, a comparison
-    ///  operator, and a value for filtering. The value must be a string, a
-    ///  number, or a boolean. The comparison operator must be one of: `<`, `>` or
-    ///  `=`. Filters are not case sensitive.
+    /// A filter expression consists of a field name, a comparison
+    /// operator, and a value for filtering. The value must be a string, a
+    /// number, or a boolean. The comparison operator must be one of: `<`, `>` or
+    /// `=`. Filters are not case sensitive.
     ///
-    ///  The following fields in the `MetadataTransaction` are eligible for
-    ///  filtering:
+    /// The following fields in the `MetadataTransaction` are eligible for
+    /// filtering:
     ///
     ///    * `apiType` - The API type of the metadata transaction. Must be one of
     ///    \[ApiType][google.cloud.paymentgateway.issuerswitch.v1.ApiType\] values. Allowed comparison operators: `=`.
@@ -2359,11 +2359,11 @@ pub struct ListMetadataTransactionsRequest {
     ///    Adapter API for fulfilling a transaction request. Allowed comparison
     ///    operators: `=`.
     ///
-    ///  You can combine multiple expressions by enclosing each expression in
-    ///  parentheses. Expressions are combined with AND logic. No other logical
-    ///  operators are supported.
+    /// You can combine multiple expressions by enclosing each expression in
+    /// parentheses. Expressions are combined with AND logic. No other logical
+    /// operators are supported.
     ///
-    ///  Here are a few examples:
+    /// Here are a few examples:
     ///
     ///    * `apiType = LIST_ACCOUNTS` -  - The API type is _LIST_ACCOUNTS_.
     ///    * `state = SUCCEEDED` - The transaction's state is _SUCCEEDED_.
@@ -2373,39 +2373,39 @@ pub struct ListMetadataTransactionsRequest {
     #[prost(string, tag="4")]
     pub filter: ::prost::alloc::string::String,
 }
-///  Request for the `ListFinancialTransactions` method. Callers can request for
-///  transactions to be filtered by the given filter criteria and specified
-///  pagination parameters.
+/// Request for the `ListFinancialTransactions` method. Callers can request for
+/// transactions to be filtered by the given filter criteria and specified
+/// pagination parameters.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFinancialTransactionsRequest {
-    ///  Required. The parent resource. The format is `projects/{project}`.
+    /// Required. The parent resource. The format is `projects/{project}`.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  The maximum number of transactions to return. The service may return fewer
-    ///  than this value. If unspecified or if the specified value is less than 1,
-    ///  at most 50 transactions will be returned. The maximum value is 1000; values
-    ///  above 1000 will be coerced to 1000. While paginating, you can specify a new
-    ///  page size parameter for each page of transactions to be listed.
+    /// The maximum number of transactions to return. The service may return fewer
+    /// than this value. If unspecified or if the specified value is less than 1,
+    /// at most 50 transactions will be returned. The maximum value is 1000; values
+    /// above 1000 will be coerced to 1000. While paginating, you can specify a new
+    /// page size parameter for each page of transactions to be listed.
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    ///  A page token, received from a previous `ListFinancialTransactions` call.
-    ///  Specify this parameter to retrieve the next page of transactions.
+    /// A page token, received from a previous `ListFinancialTransactions` call.
+    /// Specify this parameter to retrieve the next page of transactions.
     ///
-    ///  When paginating, you must specify only the `page_token` parameter. The
-    ///  filter that was specified in the initial call to the
-    ///  `ListFinancialTransactions` method that returned the page token will be
-    ///  reused for all further calls where the page token parameter is specified.
+    /// When paginating, you must specify only the `page_token` parameter. The
+    /// filter that was specified in the initial call to the
+    /// `ListFinancialTransactions` method that returned the page token will be
+    /// reused for all further calls where the page token parameter is specified.
     #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
-    ///  An expression that filters the list of financial transactions.
+    /// An expression that filters the list of financial transactions.
     ///
-    ///  A filter expression consists of a field name, a comparison operator, and
-    ///  a value for filtering. The value must be a string, a number, or a
-    ///  boolean. The comparison operator must be one of: `<`, `>`, or `=`.
-    ///  Filters are not case sensitive.
+    /// A filter expression consists of a field name, a comparison operator, and
+    /// a value for filtering. The value must be a string, a number, or a
+    /// boolean. The comparison operator must be one of: `<`, `>`, or `=`.
+    /// Filters are not case sensitive.
     ///
-    ///  The following fields in the `FinancialTransaction` are eligible for
-    ///  filtering:
+    /// The following fields in the `FinancialTransaction` are eligible for
+    /// filtering:
     ///
     ///    * `transactionType` - The transaction type of the financial
     ///    transaction. Must be one of \[TransactionType][google.cloud.paymentgateway.issuerswitch.v1.TransactionType\] values. For financial
@@ -2438,11 +2438,11 @@ pub struct ListFinancialTransactionsRequest {
     ///    Adapter API for fulfilling a transaction request. Allowed comparison
     ///    operators: `=`.
     ///
-    ///  You can combine multiple expressions by enclosing each expression in
-    ///  parentheses. Expressions are combined with AND logic. No other logical
-    ///  operators are supported.
+    /// You can combine multiple expressions by enclosing each expression in
+    /// parentheses. Expressions are combined with AND logic. No other logical
+    /// operators are supported.
     ///
-    ///  Here are a few examples:
+    /// Here are a few examples:
     ///
     ///    * `transactionType = CREDIT` - The transaction type is _CREDIT_.
     ///    * `state = SUCCEEDED` - The transaction's state is _SUCCEEDED_.
@@ -2457,39 +2457,39 @@ pub struct ListFinancialTransactionsRequest {
     #[prost(string, tag="4")]
     pub filter: ::prost::alloc::string::String,
 }
-///  Request for the `ListMandateTransactions` method. Callers can request for
-///  transactions to be filtered by the given filter criteria and specified
-///  pagination parameters.
+/// Request for the `ListMandateTransactions` method. Callers can request for
+/// transactions to be filtered by the given filter criteria and specified
+/// pagination parameters.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListMandateTransactionsRequest {
-    ///  Required. The parent resource. The format is `projects/{project}`.
+    /// Required. The parent resource. The format is `projects/{project}`.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  The maximum number of transactions to return. The service may return fewer
-    ///  than this value. If unspecified or if the specified value is less than 1,
-    ///  at most 50 transactions will be returned. The maximum value is 1000; values
-    ///  above 1000 will be coerced to 1000. While paginating, you can specify a new
-    ///  page size parameter for each page of transactions to be listed.
+    /// The maximum number of transactions to return. The service may return fewer
+    /// than this value. If unspecified or if the specified value is less than 1,
+    /// at most 50 transactions will be returned. The maximum value is 1000; values
+    /// above 1000 will be coerced to 1000. While paginating, you can specify a new
+    /// page size parameter for each page of transactions to be listed.
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    ///  A page token, received from a previous `ListMandateTransactions` call.
-    ///  Specify this parameter to retrieve the next page of transactions.
+    /// A page token, received from a previous `ListMandateTransactions` call.
+    /// Specify this parameter to retrieve the next page of transactions.
     ///
-    ///  When paginating, you must specify only the `page_token` parameter. The
-    ///  filter that was specified in the initial call to the
-    ///  `ListMandateTransactions` method that returned the page token will be
-    ///  reused for all further calls where the page token parameter is specified.
+    /// When paginating, you must specify only the `page_token` parameter. The
+    /// filter that was specified in the initial call to the
+    /// `ListMandateTransactions` method that returned the page token will be
+    /// reused for all further calls where the page token parameter is specified.
     #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
-    ///  An expression that filters the list of mandate transactions.
+    /// An expression that filters the list of mandate transactions.
     ///
-    ///  A filter expression consists of a field name, a comparison operator, and
-    ///  a value for filtering. The value must be a string, a number, or a
-    ///  boolean. The comparison operator must be one of: `<`, `>`, or `=`.
-    ///  Filters are not case sensitive.
+    /// A filter expression consists of a field name, a comparison operator, and
+    /// a value for filtering. The value must be a string, a number, or a
+    /// boolean. The comparison operator must be one of: `<`, `>`, or `=`.
+    /// Filters are not case sensitive.
     ///
-    ///  The following fields in the `Mandate` are eligible for
-    ///  filtering:
+    /// The following fields in the `Mandate` are eligible for
+    /// filtering:
     ///
     ///    * `uniqueMandateNumber` - UPI Unique Mandate Number (UMN). Allowed
     ///    comparison operators: `=`.
@@ -2529,11 +2529,11 @@ pub struct ListMandateTransactionsRequest {
     ///    * `bankAdapterRequestID` - Request ID used when invoking the Bank
     ///    Adapter API for fulfilling a transaction request. Allowed comparison
     ///    operators: `=`.
-    ///  You can combine multiple expressions by enclosing each expression in
-    ///  parentheses. Expressions are combined with AND logic. No other logical
-    ///  operators are supported.
+    /// You can combine multiple expressions by enclosing each expression in
+    /// parentheses. Expressions are combined with AND logic. No other logical
+    /// operators are supported.
     ///
-    ///  Here are a few examples:
+    /// Here are a few examples:
     ///    * `recurrencePattern = MONTHLY` - The recurrence pattern type is
     ///    monthly.
     ///    * `state = SUCCEEDED` - The transaction's state is _SUCCEEDED_.
@@ -2551,39 +2551,39 @@ pub struct ListMandateTransactionsRequest {
     #[prost(string, tag="4")]
     pub filter: ::prost::alloc::string::String,
 }
-///  Request for the `ListComplaintTransactions` method. Callers can request for
-///  transactions to be filtered by the given filter criteria and specified
-///  pagination parameters.
+/// Request for the `ListComplaintTransactions` method. Callers can request for
+/// transactions to be filtered by the given filter criteria and specified
+/// pagination parameters.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListComplaintTransactionsRequest {
-    ///  Required. The parent resource. The format is `projects/{project}`.
+    /// Required. The parent resource. The format is `projects/{project}`.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  The maximum number of transactions to return. The service may return fewer
-    ///  than this value. If unspecified or if the specified value is less than 1,
-    ///  at most 50 transactions will be returned. The maximum value is 1000; values
-    ///  above 1000 will be coerced to 1000. While paginating, you can specify a new
-    ///  page size parameter for each page of transactions to be listed.
+    /// The maximum number of transactions to return. The service may return fewer
+    /// than this value. If unspecified or if the specified value is less than 1,
+    /// at most 50 transactions will be returned. The maximum value is 1000; values
+    /// above 1000 will be coerced to 1000. While paginating, you can specify a new
+    /// page size parameter for each page of transactions to be listed.
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    ///  A page token, received from a previous `ListComplaintTransactions` call.
-    ///  Specify this parameter to retrieve the next page of transactions.
+    /// A page token, received from a previous `ListComplaintTransactions` call.
+    /// Specify this parameter to retrieve the next page of transactions.
     ///
-    ///  When paginating, you must specify only the `page_token` parameter. The
-    ///  filter that was specified in the initial call to the
-    ///  `ListComplaintTransactions` method that returned the page token will be
-    ///  reused for all further calls where the page token parameter is specified.
+    /// When paginating, you must specify only the `page_token` parameter. The
+    /// filter that was specified in the initial call to the
+    /// `ListComplaintTransactions` method that returned the page token will be
+    /// reused for all further calls where the page token parameter is specified.
     #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
-    ///  An expression that filters the list of complaint transactions.
+    /// An expression that filters the list of complaint transactions.
     ///
-    ///  A filter expression consists of a field name, a comparison operator, and
-    ///  a value for filtering. The value must be a string, a number, or a
-    ///  boolean. The comparison operator must be one of: `<`, `>`, or `=`.
-    ///  Filters are not case sensitive.
+    /// A filter expression consists of a field name, a comparison operator, and
+    /// a value for filtering. The value must be a string, a number, or a
+    /// boolean. The comparison operator must be one of: `<`, `>`, or `=`.
+    /// Filters are not case sensitive.
     ///
-    ///  The following fields in the `Complaint` are eligible for
-    ///  filtering:
+    /// The following fields in the `Complaint` are eligible for
+    /// filtering:
     ///
     ///    * `transactionID` - The transaction ID of the complaint transaction.
     ///    Allowed comparison operators: `=`.
@@ -2606,11 +2606,11 @@ pub struct ListComplaintTransactionsRequest {
     ///    * `errorCode` - Use this filter to list complaint transactions which
     ///    have failed a particular error code. Allowed comparison
     ///    operators: `=`.
-    ///  You can combine multiple expressions by enclosing each expression in
-    ///  parentheses. Expressions are combined with AND logic. No other logical
-    ///  operators are supported.
+    /// You can combine multiple expressions by enclosing each expression in
+    /// parentheses. Expressions are combined with AND logic. No other logical
+    /// operators are supported.
     ///
-    ///  Here are a few examples:
+    /// Here are a few examples:
     ///
     ///    * `state = SUCCEEDED` - The transaction's state is _SUCCEEDED_.
     ///    * (createTime < "2021-08-15T14:50:00Z")`
@@ -2621,203 +2621,203 @@ pub struct ListComplaintTransactionsRequest {
     #[prost(string, tag="4")]
     pub filter: ::prost::alloc::string::String,
 }
-///  Response for the `ListMetadataTransactions` method.
+/// Response for the `ListMetadataTransactions` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListMetadataTransactionsResponse {
-    ///  List of non financial metadata transactions satisfying the filtered
-    ///  request.
+    /// List of non financial metadata transactions satisfying the filtered
+    /// request.
     #[prost(message, repeated, tag="1")]
     pub metadata_transactions: ::prost::alloc::vec::Vec<MetadataTransaction>,
-    ///  Pass this token in the ListMetadataTransactionsRequest to continue to list
-    ///  results. If all results have been returned, this field is an empty string
-    ///  or not present in the response.
+    /// Pass this token in the ListMetadataTransactionsRequest to continue to list
+    /// results. If all results have been returned, this field is an empty string
+    /// or not present in the response.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-///  Response for the `ListFinancialTransactions` method.
+/// Response for the `ListFinancialTransactions` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFinancialTransactionsResponse {
-    ///  List of financial transactions satisfying the filtered request.
+    /// List of financial transactions satisfying the filtered request.
     #[prost(message, repeated, tag="1")]
     pub financial_transactions: ::prost::alloc::vec::Vec<FinancialTransaction>,
-    ///  Pass this token in the ListFinancialTransactionsRequest to continue to list
-    ///  results. If all results have been returned, this field is an empty string
-    ///  or not present in the response.
+    /// Pass this token in the ListFinancialTransactionsRequest to continue to list
+    /// results. If all results have been returned, this field is an empty string
+    /// or not present in the response.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-///  Response for the `ListMandateTransactionsResponse` method.
+/// Response for the `ListMandateTransactionsResponse` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListMandateTransactionsResponse {
-    ///  List of mandate transactions satisfying the filtered request.
+    /// List of mandate transactions satisfying the filtered request.
     #[prost(message, repeated, tag="1")]
     pub mandate_transactions: ::prost::alloc::vec::Vec<MandateTransaction>,
-    ///  Pass this token in the ListMandateTransactionsRequest to continue to list
-    ///  results. If all results have been returned, this field is an empty string
-    ///  or not present in the response.
+    /// Pass this token in the ListMandateTransactionsRequest to continue to list
+    /// results. If all results have been returned, this field is an empty string
+    /// or not present in the response.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-///  Response for the `ListComplaintTransactionsResponse` method.
+/// Response for the `ListComplaintTransactionsResponse` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListComplaintTransactionsResponse {
-    ///  List of complaint transactions satisfying the filtered request.
+    /// List of complaint transactions satisfying the filtered request.
     #[prost(message, repeated, tag="1")]
     pub complaint_transactions: ::prost::alloc::vec::Vec<ComplaintTransaction>,
-    ///  Pass this token in the ListComplaintTransactionsRequest to continue to list
-    ///  results. If all results have been returned, this field is an empty string
-    ///  or not present in the response.
+    /// Pass this token in the ListComplaintTransactionsRequest to continue to list
+    /// results. If all results have been returned, this field is an empty string
+    /// or not present in the response.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-///  Request for the `ExportFinancialTransactions` method.
+/// Request for the `ExportFinancialTransactions` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportFinancialTransactionsRequest {
-    ///  Required. The parent resource for the transactions. The format is
-    ///  `projects/{project}`.
+    /// Required. The parent resource for the transactions. The format is
+    /// `projects/{project}`.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Transaction type for the financial transaction API. The possible values for
-    ///  transaction type are
+    /// Transaction type for the financial transaction API. The possible values for
+    /// transaction type are
     ///
-    ///  * TRANSACTION_TYPE_CREDIT
-    ///  * TRANSACTION_TYPE_DEBIT
-    ///  * TRANSACTION_TYPE_REVERSAL
+    /// * TRANSACTION_TYPE_CREDIT
+    /// * TRANSACTION_TYPE_DEBIT
+    /// * TRANSACTION_TYPE_REVERSAL
     ///
-    ///  If no transaction type is specified, records of all the above transaction
-    ///  types will be exported.
+    /// If no transaction type is specified, records of all the above transaction
+    /// types will be exported.
     #[prost(enumeration="TransactionType", tag="2")]
     pub transaction_type: i32,
-    ///  The start time for the query.
+    /// The start time for the query.
     #[prost(message, optional, tag="3")]
     pub start_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  The end time for the query.
+    /// The end time for the query.
     #[prost(message, optional, tag="4")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
 }
-///  Request for the `ExportMetadataTransactions` method.
+/// Request for the `ExportMetadataTransactions` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportMetadataTransactionsRequest {
-    ///  Required. The parent resource for the transactions. The format is
-    ///  `projects/{project}`.
+    /// Required. The parent resource for the transactions. The format is
+    /// `projects/{project}`.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  API type of the metadata transaction API. The possible values for API type
-    ///  are
+    /// API type of the metadata transaction API. The possible values for API type
+    /// are
     ///
-    ///  * BALANCE
-    ///  * CHECK_STATUS
-    ///  * HEART_BEAT
-    ///  * INITIATE_REGISTRATION
-    ///  * LIST_ACCOUNTS
-    ///  * UPDATE_CREDENTIALS
-    ///  * VALIDATE_REGISTRATION
+    /// * BALANCE
+    /// * CHECK_STATUS
+    /// * HEART_BEAT
+    /// * INITIATE_REGISTRATION
+    /// * LIST_ACCOUNTS
+    /// * UPDATE_CREDENTIALS
+    /// * VALIDATE_REGISTRATION
     ///
-    ///  If no API type is specified, records of all the above API types will be
-    ///  exported.
+    /// If no API type is specified, records of all the above API types will be
+    /// exported.
     #[prost(enumeration="ApiType", tag="2")]
     pub api_type: i32,
-    ///  The start time for the query.
+    /// The start time for the query.
     #[prost(message, optional, tag="3")]
     pub start_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  The end time for the query.
+    /// The end time for the query.
     #[prost(message, optional, tag="4")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
 }
-///  Request for the `ExportMandateTransactions` method.
+/// Request for the `ExportMandateTransactions` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportMandateTransactionsRequest {
-    ///  Required. The parent resource for the transactions. The format is
-    ///  `projects/{project}`.
+    /// Required. The parent resource for the transactions. The format is
+    /// `projects/{project}`.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Transaction type for the mandate transaction API.  The possible values for
-    ///  transaction type are
+    /// Transaction type for the mandate transaction API.  The possible values for
+    /// transaction type are
     ///
-    ///  * TRANSACTION_TYPE_CREATE
-    ///  * TRANSACTION_TYPE_REVOKE
-    ///  * TRANSACTION_TYPE_UPDATE
+    /// * TRANSACTION_TYPE_CREATE
+    /// * TRANSACTION_TYPE_REVOKE
+    /// * TRANSACTION_TYPE_UPDATE
     ///
-    ///  If no transaction type is specified, records of all the above transaction
-    ///  types will be exported.
+    /// If no transaction type is specified, records of all the above transaction
+    /// types will be exported.
     #[prost(enumeration="TransactionType", tag="2")]
     pub transaction_type: i32,
-    ///  The start time for the query.
+    /// The start time for the query.
     #[prost(message, optional, tag="3")]
     pub start_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  The end time for the query.
+    /// The end time for the query.
     #[prost(message, optional, tag="4")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
 }
-///  Request for the `ExportComplaintTransactions` method.
+/// Request for the `ExportComplaintTransactions` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportComplaintTransactionsRequest {
-    ///  Required. The parent resource for the transactions. The format is
-    ///  `projects/{project}`.
+    /// Required. The parent resource for the transactions. The format is
+    /// `projects/{project}`.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Transaction type for the complaint transaction API. The possible values for
-    ///  transaction type are
+    /// Transaction type for the complaint transaction API. The possible values for
+    /// transaction type are
     ///
-    ///  * TRANSACTION_TYPE_CHECK_STATUS
-    ///  * TRANSACTION_TYPE_COMPLAINT
-    ///  * TRANSACTION_TYPE_DISPUTE
-    ///  * TRANSACTION_TYPE_REFUND
-    ///  * TRANSACTION_TYPE_REVERSAL
-    ///  * TRANSACTION_TYPE_STATUS_UPDATE
+    /// * TRANSACTION_TYPE_CHECK_STATUS
+    /// * TRANSACTION_TYPE_COMPLAINT
+    /// * TRANSACTION_TYPE_DISPUTE
+    /// * TRANSACTION_TYPE_REFUND
+    /// * TRANSACTION_TYPE_REVERSAL
+    /// * TRANSACTION_TYPE_STATUS_UPDATE
     ///
-    ///  If no transaction type is specified, records of all the above transaction
-    ///  types will be exported.
+    /// If no transaction type is specified, records of all the above transaction
+    /// types will be exported.
     #[prost(enumeration="TransactionType", tag="2")]
     pub transaction_type: i32,
-    ///  The start time for the query.
+    /// The start time for the query.
     #[prost(message, optional, tag="3")]
     pub start_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  The end time for the query.
+    /// The end time for the query.
     #[prost(message, optional, tag="4")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
 }
-///  Response for the `ExportFinancialTransactions` method.
+/// Response for the `ExportFinancialTransactions` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportFinancialTransactionsResponse {
-    ///  URI of the exported file.
+    /// URI of the exported file.
     #[prost(string, tag="1")]
     pub target_uri: ::prost::alloc::string::String,
 }
-///  Response for the `ExportMetadataTransactions` method.
+/// Response for the `ExportMetadataTransactions` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportMetadataTransactionsResponse {
-    ///  URI of the exported file.
+    /// URI of the exported file.
     #[prost(string, tag="1")]
     pub target_uri: ::prost::alloc::string::String,
 }
-///  Response for the `ExportMandateTransactions` method.
+/// Response for the `ExportMandateTransactions` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportMandateTransactionsResponse {
-    ///  URI of the exported file.
+    /// URI of the exported file.
     #[prost(string, tag="1")]
     pub target_uri: ::prost::alloc::string::String,
 }
-///  Response for the `ExportComplaintTransactions` method.
+/// Response for the `ExportComplaintTransactions` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportComplaintTransactionsResponse {
-    ///  URI of the exported file.
+    /// URI of the exported file.
     #[prost(string, tag="1")]
     pub target_uri: ::prost::alloc::string::String,
 }
-///  Metadata for ExportFinancialTransactions.
+/// Metadata for ExportFinancialTransactions.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportFinancialTransactionsMetadata {
 }
-///  Metadata for ExportMandateTransactions.
+/// Metadata for ExportMandateTransactions.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportMandateTransactionsMetadata {
 }
-///  Metadata for ExportMetadataTransactions.
+/// Metadata for ExportMetadataTransactions.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportMetadataTransactionsMetadata {
 }
-///  Metadata for ExportComplaintTransactions.
+/// Metadata for ExportComplaintTransactions.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportComplaintTransactionsMetadata {
 }

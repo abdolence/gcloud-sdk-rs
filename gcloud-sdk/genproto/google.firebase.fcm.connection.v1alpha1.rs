@@ -1,64 +1,64 @@
-///  Request sent to FCM from the connected client.
+/// Request sent to FCM from the connected client.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpstreamRequest {
-    ///  The type of request the client is making to FCM.
+    /// The type of request the client is making to FCM.
     #[prost(oneof="upstream_request::RequestType", tags="1")]
     pub request_type: ::core::option::Option<upstream_request::RequestType>,
 }
 /// Nested message and enum types in `UpstreamRequest`.
 pub mod upstream_request {
-    ///  The type of request the client is making to FCM.
+    /// The type of request the client is making to FCM.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum RequestType {
-        ///  Message acknowledgement.
+        /// Message acknowledgement.
         #[prost(message, tag="1")]
         Ack(super::Ack),
     }
 }
-///  Response sent to the connected client from FCM.
+/// Response sent to the connected client from FCM.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DownstreamResponse {
-    ///  The type of response FCM is sending to the client.
+    /// The type of response FCM is sending to the client.
     #[prost(oneof="downstream_response::ResponseType", tags="1")]
     pub response_type: ::core::option::Option<downstream_response::ResponseType>,
 }
 /// Nested message and enum types in `DownstreamResponse`.
 pub mod downstream_response {
-    ///  The type of response FCM is sending to the client.
+    /// The type of response FCM is sending to the client.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ResponseType {
-        ///  Message sent to FCM via the [Send
-        ///  API](<https://firebase.google.com/docs/cloud-messaging/send-message>)
-        ///  targeting this client.
+        /// Message sent to FCM via the [Send
+        /// API](<https://firebase.google.com/docs/cloud-messaging/send-message>)
+        /// targeting this client.
         #[prost(message, tag="1")]
         Message(super::Message),
     }
 }
-///  Acknowledgement to indicate a client successfully received an FCM message.
+/// Acknowledgement to indicate a client successfully received an FCM message.
 ///
-///  If a message is not acked, FCM will continously resend the message until
-///  it expires. Duplicate delivery in this case is working as intended.
+/// If a message is not acked, FCM will continously resend the message until
+/// it expires. Duplicate delivery in this case is working as intended.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Ack {
-    ///  Id of message being acknowledged
+    /// Id of message being acknowledged
     #[prost(string, tag="1")]
     pub message_id: ::prost::alloc::string::String,
 }
-///  Message created through the [Send
-///  API](<https://firebase.google.com/docs/reference/fcm/rest/v1/projects.messages#resource-message>).
+/// Message created through the [Send
+/// API](<https://firebase.google.com/docs/reference/fcm/rest/v1/projects.messages#resource-message>).
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Message {
-    ///  The identifier of the message. Used to ack the message.
+    /// The identifier of the message. Used to ack the message.
     #[prost(string, tag="1")]
     pub message_id: ::prost::alloc::string::String,
-    ///  Time the message was received in FCM.
+    /// Time the message was received in FCM.
     #[prost(message, optional, tag="2")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Expiry time of the message. Currently it is always 4 weeks.
+    /// Expiry time of the message. Currently it is always 4 weeks.
     #[prost(message, optional, tag="3")]
     pub expire_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  The arbitrary payload set in the [Send
-    ///  API](<https://firebase.google.com/docs/reference/fcm/rest/v1/projects.messages#resource-message>).
+    /// The arbitrary payload set in the [Send
+    /// API](<https://firebase.google.com/docs/reference/fcm/rest/v1/projects.messages#resource-message>).
     #[prost(map="string, string", tag="4")]
     pub data: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
 }

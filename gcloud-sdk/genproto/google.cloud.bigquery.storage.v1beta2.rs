@@ -1,40 +1,40 @@
-///  Arrow schema as specified in
-///  <https://arrow.apache.org/docs/python/api/datatypes.html>
-///  and serialized to bytes using IPC:
-///  <https://arrow.apache.org/docs/format/Columnar.html#serialization-and-interprocess-communication-ipc>
+/// Arrow schema as specified in
+/// <https://arrow.apache.org/docs/python/api/datatypes.html>
+/// and serialized to bytes using IPC:
+/// <https://arrow.apache.org/docs/format/Columnar.html#serialization-and-interprocess-communication-ipc>
 ///
-///  See code samples on how this message can be deserialized.
+/// See code samples on how this message can be deserialized.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ArrowSchema {
-    ///  IPC serialized Arrow schema.
+    /// IPC serialized Arrow schema.
     #[prost(bytes="vec", tag="1")]
     pub serialized_schema: ::prost::alloc::vec::Vec<u8>,
 }
-///  Arrow RecordBatch.
+/// Arrow RecordBatch.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ArrowRecordBatch {
-    ///  IPC-serialized Arrow RecordBatch.
+    /// IPC-serialized Arrow RecordBatch.
     #[prost(bytes="vec", tag="1")]
     pub serialized_record_batch: ::prost::alloc::vec::Vec<u8>,
 }
-///  Contains options specific to Arrow Serialization.
+/// Contains options specific to Arrow Serialization.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ArrowSerializationOptions {
-    ///  The Arrow IPC format to use.
+    /// The Arrow IPC format to use.
     #[prost(enumeration="arrow_serialization_options::Format", tag="1")]
     pub format: i32,
 }
 /// Nested message and enum types in `ArrowSerializationOptions`.
 pub mod arrow_serialization_options {
-    ///  The IPC format to use when serializing Arrow streams.
+    /// The IPC format to use when serializing Arrow streams.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum Format {
-        ///  If unspecied the IPC format as of 0.15 release will be used.
+        /// If unspecied the IPC format as of 0.15 release will be used.
         Unspecified = 0,
-        ///  Use the legacy IPC message format as of Apache Arrow Release 0.14.
+        /// Use the legacy IPC message format as of Apache Arrow Release 0.14.
         Arrow014 = 1,
-        ///  Use the message format as of Apache Arrow Release 0.15.
+        /// Use the message format as of Apache Arrow Release 0.15.
         Arrow015 = 2,
     }
     impl Format {
@@ -51,64 +51,64 @@ pub mod arrow_serialization_options {
         }
     }
 }
-///  Avro schema.
+/// Avro schema.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AvroSchema {
-    ///  Json serialized schema, as described at
-    ///  <https://avro.apache.org/docs/1.8.1/spec.html.>
+    /// Json serialized schema, as described at
+    /// <https://avro.apache.org/docs/1.8.1/spec.html.>
     #[prost(string, tag="1")]
     pub schema: ::prost::alloc::string::String,
 }
-///  Avro rows.
+/// Avro rows.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AvroRows {
-    ///  Binary serialized rows in a block.
+    /// Binary serialized rows in a block.
     #[prost(bytes="vec", tag="1")]
     pub serialized_binary_rows: ::prost::alloc::vec::Vec<u8>,
 }
-///  ProtoSchema describes the schema of the serialized protocol buffer data rows.
+/// ProtoSchema describes the schema of the serialized protocol buffer data rows.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProtoSchema {
-    ///  Descriptor for input message. The descriptor has to be self contained,
-    ///  including all the nested types, excepted for proto buffer well known types
-    ///  (<https://developers.google.com/protocol-buffers/docs/reference/google.protobuf>).
+    /// Descriptor for input message. The descriptor has to be self contained,
+    /// including all the nested types, excepted for proto buffer well known types
+    /// (<https://developers.google.com/protocol-buffers/docs/reference/google.protobuf>).
     #[prost(message, optional, tag="1")]
     pub proto_descriptor: ::core::option::Option<::prost_types::DescriptorProto>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProtoRows {
-    ///  A sequence of rows serialized as a Protocol Buffer.
+    /// A sequence of rows serialized as a Protocol Buffer.
     ///
-    ///  See <https://developers.google.com/protocol-buffers/docs/overview> for more
-    ///  information on deserializing this field.
+    /// See <https://developers.google.com/protocol-buffers/docs/overview> for more
+    /// information on deserializing this field.
     #[prost(bytes="vec", repeated, tag="1")]
     pub serialized_rows: ::prost::alloc::vec::Vec<::prost::alloc::vec::Vec<u8>>,
 }
-///  Schema of a table
+/// Schema of a table
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TableSchema {
-    ///  Describes the fields in a table.
+    /// Describes the fields in a table.
     #[prost(message, repeated, tag="1")]
     pub fields: ::prost::alloc::vec::Vec<TableFieldSchema>,
 }
-///  A field in TableSchema
+/// A field in TableSchema
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TableFieldSchema {
-    ///  Required. The field name. The name must contain only letters (a-z, A-Z),
-    ///  numbers (0-9), or underscores (_), and must start with a letter or
-    ///  underscore. The maximum length is 128 characters.
+    /// Required. The field name. The name must contain only letters (a-z, A-Z),
+    /// numbers (0-9), or underscores (_), and must start with a letter or
+    /// underscore. The maximum length is 128 characters.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Required. The field data type.
+    /// Required. The field data type.
     #[prost(enumeration="table_field_schema::Type", tag="2")]
     pub r#type: i32,
-    ///  Optional. The field mode. The default value is NULLABLE.
+    /// Optional. The field mode. The default value is NULLABLE.
     #[prost(enumeration="table_field_schema::Mode", tag="3")]
     pub mode: i32,
-    ///  Optional. Describes the nested schema fields if the type property is set to STRUCT.
+    /// Optional. Describes the nested schema fields if the type property is set to STRUCT.
     #[prost(message, repeated, tag="4")]
     pub fields: ::prost::alloc::vec::Vec<TableFieldSchema>,
-    ///  Optional. The field description. The maximum length is 1,024 characters.
+    /// Optional. The field description. The maximum length is 1,024 characters.
     #[prost(string, tag="6")]
     pub description: ::prost::alloc::string::String,
 }
@@ -117,37 +117,37 @@ pub mod table_field_schema {
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum Type {
-        ///  Illegal value
+        /// Illegal value
         Unspecified = 0,
-        ///  64K, UTF8
+        /// 64K, UTF8
         String = 1,
-        ///  64-bit signed
+        /// 64-bit signed
         Int64 = 2,
-        ///  64-bit IEEE floating point
+        /// 64-bit IEEE floating point
         Double = 3,
-        ///  Aggregate type
+        /// Aggregate type
         Struct = 4,
-        ///  64K, Binary
+        /// 64K, Binary
         Bytes = 5,
-        ///  2-valued
+        /// 2-valued
         Bool = 6,
-        ///  64-bit signed usec since UTC epoch
+        /// 64-bit signed usec since UTC epoch
         Timestamp = 7,
-        ///  Civil date - Year, Month, Day
+        /// Civil date - Year, Month, Day
         Date = 8,
-        ///  Civil time - Hour, Minute, Second, Microseconds
+        /// Civil time - Hour, Minute, Second, Microseconds
         Time = 9,
-        ///  Combination of civil date and civil time
+        /// Combination of civil date and civil time
         Datetime = 10,
-        ///  Geography object
+        /// Geography object
         Geography = 11,
-        ///  Numeric value
+        /// Numeric value
         Numeric = 12,
-        ///  BigNumeric value
+        /// BigNumeric value
         Bignumeric = 13,
-        ///  Interval
+        /// Interval
         Interval = 14,
-        ///  JSON, String
+        /// JSON, String
         Json = 15,
     }
     impl Type {
@@ -179,7 +179,7 @@ pub mod table_field_schema {
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum Mode {
-        ///  Illegal value
+        /// Illegal value
         Unspecified = 0,
         Nullable = 1,
         Required = 2,
@@ -200,143 +200,143 @@ pub mod table_field_schema {
         }
     }
 }
-///  Information about the ReadSession.
+/// Information about the ReadSession.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReadSession {
-    ///  Output only. Unique identifier for the session, in the form
-    ///  `projects/{project_id}/locations/{location}/sessions/{session_id}`.
+    /// Output only. Unique identifier for the session, in the form
+    /// `projects/{project_id}/locations/{location}/sessions/{session_id}`.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Output only. Time at which the session becomes invalid. After this time, subsequent
-    ///  requests to read this Session will return errors. The expire_time is
-    ///  automatically assigned and currently cannot be specified or updated.
+    /// Output only. Time at which the session becomes invalid. After this time, subsequent
+    /// requests to read this Session will return errors. The expire_time is
+    /// automatically assigned and currently cannot be specified or updated.
     #[prost(message, optional, tag="2")]
     pub expire_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Immutable. Data format of the output data.
+    /// Immutable. Data format of the output data.
     #[prost(enumeration="DataFormat", tag="3")]
     pub data_format: i32,
-    ///  Immutable. Table that this ReadSession is reading from, in the form
-    ///  `projects/{project_id}/datasets/{dataset_id}/tables/{table_id}
+    /// Immutable. Table that this ReadSession is reading from, in the form
+    /// `projects/{project_id}/datasets/{dataset_id}/tables/{table_id}
     #[prost(string, tag="6")]
     pub table: ::prost::alloc::string::String,
-    ///  Optional. Any modifiers which are applied when reading from the specified table.
+    /// Optional. Any modifiers which are applied when reading from the specified table.
     #[prost(message, optional, tag="7")]
     pub table_modifiers: ::core::option::Option<read_session::TableModifiers>,
-    ///  Optional. Read options for this session (e.g. column selection, filters).
+    /// Optional. Read options for this session (e.g. column selection, filters).
     #[prost(message, optional, tag="8")]
     pub read_options: ::core::option::Option<read_session::TableReadOptions>,
-    ///  Output only. A list of streams created with the session.
+    /// Output only. A list of streams created with the session.
     ///
-    ///  At least one stream is created with the session. In the future, larger
-    ///  request_stream_count values *may* result in this list being unpopulated,
-    ///  in that case, the user will need to use a List method to get the streams
-    ///  instead, which is not yet available.
+    /// At least one stream is created with the session. In the future, larger
+    /// request_stream_count values *may* result in this list being unpopulated,
+    /// in that case, the user will need to use a List method to get the streams
+    /// instead, which is not yet available.
     #[prost(message, repeated, tag="10")]
     pub streams: ::prost::alloc::vec::Vec<ReadStream>,
-    ///  The schema for the read. If read_options.selected_fields is set, the
-    ///  schema may be different from the table schema as it will only contain
-    ///  the selected fields.
+    /// The schema for the read. If read_options.selected_fields is set, the
+    /// schema may be different from the table schema as it will only contain
+    /// the selected fields.
     #[prost(oneof="read_session::Schema", tags="4, 5")]
     pub schema: ::core::option::Option<read_session::Schema>,
 }
 /// Nested message and enum types in `ReadSession`.
 pub mod read_session {
-    ///  Additional attributes when reading a table.
+    /// Additional attributes when reading a table.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct TableModifiers {
-        ///  The snapshot time of the table. If not set, interpreted as now.
+        /// The snapshot time of the table. If not set, interpreted as now.
         #[prost(message, optional, tag="1")]
         pub snapshot_time: ::core::option::Option<::prost_types::Timestamp>,
     }
-    ///  Options dictating how we read a table.
+    /// Options dictating how we read a table.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct TableReadOptions {
-        ///  Names of the fields in the table that should be read. If empty, all
-        ///  fields will be read. If the specified field is a nested field, all
-        ///  the sub-fields in the field will be selected. The output field order is
-        ///  unrelated to the order of fields in selected_fields.
+        /// Names of the fields in the table that should be read. If empty, all
+        /// fields will be read. If the specified field is a nested field, all
+        /// the sub-fields in the field will be selected. The output field order is
+        /// unrelated to the order of fields in selected_fields.
         #[prost(string, repeated, tag="1")]
         pub selected_fields: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-        ///  SQL text filtering statement, similar to a WHERE clause in a query.
-        ///  Aggregates are not supported.
+        /// SQL text filtering statement, similar to a WHERE clause in a query.
+        /// Aggregates are not supported.
         ///
-        ///  Examples: "int_field > 5"
+        /// Examples: "int_field > 5"
         ///            "date_field = CAST('2014-9-27' as DATE)"
         ///            "nullable_field is not NULL"
         ///            "st_equals(geo_field, st_geofromtext("POINT(2, 2)"))"
         ///            "numeric_field BETWEEN 1.0 AND 5.0"
         ///
-        ///  Restricted to a maximum length for 1 MB.
+        /// Restricted to a maximum length for 1 MB.
         #[prost(string, tag="2")]
         pub row_restriction: ::prost::alloc::string::String,
-        ///  Optional. Options specific to the Apache Arrow output format.
+        /// Optional. Options specific to the Apache Arrow output format.
         #[prost(message, optional, tag="3")]
         pub arrow_serialization_options: ::core::option::Option<super::ArrowSerializationOptions>,
     }
-    ///  The schema for the read. If read_options.selected_fields is set, the
-    ///  schema may be different from the table schema as it will only contain
-    ///  the selected fields.
+    /// The schema for the read. If read_options.selected_fields is set, the
+    /// schema may be different from the table schema as it will only contain
+    /// the selected fields.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Schema {
-        ///  Output only. Avro schema.
+        /// Output only. Avro schema.
         #[prost(message, tag="4")]
         AvroSchema(super::AvroSchema),
-        ///  Output only. Arrow schema.
+        /// Output only. Arrow schema.
         #[prost(message, tag="5")]
         ArrowSchema(super::ArrowSchema),
     }
 }
-///  Information about a single stream that gets data out of the storage system.
-///  Most of the information about `ReadStream` instances is aggregated, making
-///  `ReadStream` lightweight.
+/// Information about a single stream that gets data out of the storage system.
+/// Most of the information about `ReadStream` instances is aggregated, making
+/// `ReadStream` lightweight.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReadStream {
-    ///  Output only. Name of the stream, in the form
-    ///  `projects/{project_id}/locations/{location}/sessions/{session_id}/streams/{stream_id}`.
+    /// Output only. Name of the stream, in the form
+    /// `projects/{project_id}/locations/{location}/sessions/{session_id}/streams/{stream_id}`.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Information about a single stream that gets data inside the storage system.
+/// Information about a single stream that gets data inside the storage system.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WriteStream {
-    ///  Output only. Name of the stream, in the form
-    ///  `projects/{project}/datasets/{dataset}/tables/{table}/streams/{stream}`.
+    /// Output only. Name of the stream, in the form
+    /// `projects/{project}/datasets/{dataset}/tables/{table}/streams/{stream}`.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  Immutable. Type of the stream.
+    /// Immutable. Type of the stream.
     #[prost(enumeration="write_stream::Type", tag="2")]
     pub r#type: i32,
-    ///  Output only. Create time of the stream. For the _default stream, this is the
-    ///  creation_time of the table.
+    /// Output only. Create time of the stream. For the _default stream, this is the
+    /// creation_time of the table.
     #[prost(message, optional, tag="3")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Output only. Commit time of the stream.
-    ///  If a stream is of `COMMITTED` type, then it will have a commit_time same as
-    ///  `create_time`. If the stream is of `PENDING` type, commit_time being empty
-    ///  means it is not committed.
+    /// Output only. Commit time of the stream.
+    /// If a stream is of `COMMITTED` type, then it will have a commit_time same as
+    /// `create_time`. If the stream is of `PENDING` type, commit_time being empty
+    /// means it is not committed.
     #[prost(message, optional, tag="4")]
     pub commit_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Output only. The schema of the destination table. It is only returned in
-    ///  `CreateWriteStream` response. Caller should generate data that's
-    ///  compatible with this schema to send in initial `AppendRowsRequest`.
-    ///  The table schema could go out of date during the life time of the stream.
+    /// Output only. The schema of the destination table. It is only returned in
+    /// `CreateWriteStream` response. Caller should generate data that's
+    /// compatible with this schema to send in initial `AppendRowsRequest`.
+    /// The table schema could go out of date during the life time of the stream.
     #[prost(message, optional, tag="5")]
     pub table_schema: ::core::option::Option<TableSchema>,
 }
 /// Nested message and enum types in `WriteStream`.
 pub mod write_stream {
-    ///  Type enum of the stream.
+    /// Type enum of the stream.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum Type {
-        ///  Unknown type.
+        /// Unknown type.
         Unspecified = 0,
-        ///  Data will commit automatically and appear as soon as the write is
-        ///  acknowledged.
+        /// Data will commit automatically and appear as soon as the write is
+        /// acknowledged.
         Committed = 1,
-        ///  Data is invisible until the stream is committed.
+        /// Data is invisible until the stream is committed.
         Pending = 2,
-        ///  Data is only visible up to the offset to which it was flushed.
+        /// Data is only visible up to the offset to which it was flushed.
         Buffered = 3,
     }
     impl Type {
@@ -354,16 +354,16 @@ pub mod write_stream {
         }
     }
 }
-///  Data format for input or output data.
+/// Data format for input or output data.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum DataFormat {
     Unspecified = 0,
-    ///  Avro is a standard open source row based file format.
-    ///  See <https://avro.apache.org/> for more details.
+    /// Avro is a standard open source row based file format.
+    /// See <https://avro.apache.org/> for more details.
     Avro = 1,
-    ///  Arrow is a standard open source column-based message format.
-    ///  See <https://arrow.apache.org/> for more details.
+    /// Arrow is a standard open source column-based message format.
+    /// See <https://arrow.apache.org/> for more details.
     Arrow = 2,
 }
 impl DataFormat {
@@ -379,51 +379,51 @@ impl DataFormat {
         }
     }
 }
-///  Request message for `CreateReadSession`.
+/// Request message for `CreateReadSession`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateReadSessionRequest {
-    ///  Required. The request project that owns the session, in the form of
-    ///  `projects/{project_id}`.
+    /// Required. The request project that owns the session, in the form of
+    /// `projects/{project_id}`.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Required. Session to be created.
+    /// Required. Session to be created.
     #[prost(message, optional, tag="2")]
     pub read_session: ::core::option::Option<ReadSession>,
-    ///  Max initial number of streams. If unset or zero, the server will
-    ///  provide a value of streams so as to produce reasonable throughput. Must be
-    ///  non-negative. The number of streams may be lower than the requested number,
-    ///  depending on the amount parallelism that is reasonable for the table. Error
-    ///  will be returned if the max count is greater than the current system
-    ///  max limit of 1,000.
+    /// Max initial number of streams. If unset or zero, the server will
+    /// provide a value of streams so as to produce reasonable throughput. Must be
+    /// non-negative. The number of streams may be lower than the requested number,
+    /// depending on the amount parallelism that is reasonable for the table. Error
+    /// will be returned if the max count is greater than the current system
+    /// max limit of 1,000.
     ///
-    ///  Streams must be read starting from offset 0.
+    /// Streams must be read starting from offset 0.
     #[prost(int32, tag="3")]
     pub max_stream_count: i32,
 }
-///  Request message for `ReadRows`.
+/// Request message for `ReadRows`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReadRowsRequest {
-    ///  Required. Stream to read rows from.
+    /// Required. Stream to read rows from.
     #[prost(string, tag="1")]
     pub read_stream: ::prost::alloc::string::String,
-    ///  The offset requested must be less than the last row read from Read.
-    ///  Requesting a larger offset is undefined. If not specified, start reading
-    ///  from offset zero.
+    /// The offset requested must be less than the last row read from Read.
+    /// Requesting a larger offset is undefined. If not specified, start reading
+    /// from offset zero.
     #[prost(int64, tag="2")]
     pub offset: i64,
 }
-///  Information on if the current connection is being throttled.
+/// Information on if the current connection is being throttled.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ThrottleState {
-    ///  How much this connection is being throttled. Zero means no throttling,
-    ///  100 means fully throttled.
+    /// How much this connection is being throttled. Zero means no throttling,
+    /// 100 means fully throttled.
     #[prost(int32, tag="1")]
     pub throttle_percent: i32,
 }
-///  Estimated stream statistics for a given Stream.
+/// Estimated stream statistics for a given Stream.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StreamStats {
-    ///  Represents the progress of the current stream.
+    /// Represents the progress of the current stream.
     #[prost(message, optional, tag="2")]
     pub progress: ::core::option::Option<stream_stats::Progress>,
 }
@@ -431,173 +431,173 @@ pub struct StreamStats {
 pub mod stream_stats {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Progress {
-        ///  The fraction of rows assigned to the stream that have been processed by
-        ///  the server so far, not including the rows in the current response
-        ///  message.
+        /// The fraction of rows assigned to the stream that have been processed by
+        /// the server so far, not including the rows in the current response
+        /// message.
         ///
-        ///  This value, along with `at_response_end`, can be used to interpolate
-        ///  the progress made as the rows in the message are being processed using
-        ///  the following formula: `at_response_start + (at_response_end -
-        ///  at_response_start) * rows_processed_from_response / rows_in_response`.
+        /// This value, along with `at_response_end`, can be used to interpolate
+        /// the progress made as the rows in the message are being processed using
+        /// the following formula: `at_response_start + (at_response_end -
+        /// at_response_start) * rows_processed_from_response / rows_in_response`.
         ///
-        ///  Note that if a filter is provided, the `at_response_end` value of the
-        ///  previous response may not necessarily be equal to the
-        ///  `at_response_start` value of the current response.
+        /// Note that if a filter is provided, the `at_response_end` value of the
+        /// previous response may not necessarily be equal to the
+        /// `at_response_start` value of the current response.
         #[prost(double, tag="1")]
         pub at_response_start: f64,
-        ///  Similar to `at_response_start`, except that this value includes the
-        ///  rows in the current response.
+        /// Similar to `at_response_start`, except that this value includes the
+        /// rows in the current response.
         #[prost(double, tag="2")]
         pub at_response_end: f64,
     }
 }
-///  Response from calling `ReadRows` may include row data, progress and
-///  throttling information.
+/// Response from calling `ReadRows` may include row data, progress and
+/// throttling information.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReadRowsResponse {
-    ///  Number of serialized rows in the rows block.
+    /// Number of serialized rows in the rows block.
     #[prost(int64, tag="6")]
     pub row_count: i64,
-    ///  Statistics for the stream.
+    /// Statistics for the stream.
     #[prost(message, optional, tag="2")]
     pub stats: ::core::option::Option<StreamStats>,
-    ///  Throttling state. If unset, the latest response still describes
-    ///  the current throttling status.
+    /// Throttling state. If unset, the latest response still describes
+    /// the current throttling status.
     #[prost(message, optional, tag="5")]
     pub throttle_state: ::core::option::Option<ThrottleState>,
-    ///  Row data is returned in format specified during session creation.
+    /// Row data is returned in format specified during session creation.
     #[prost(oneof="read_rows_response::Rows", tags="3, 4")]
     pub rows: ::core::option::Option<read_rows_response::Rows>,
-    ///  The schema for the read. If read_options.selected_fields is set, the
-    ///  schema may be different from the table schema as it will only contain
-    ///  the selected fields. This schema is equivelant to the one returned by
-    ///  CreateSession. This field is only populated in the first ReadRowsResponse
-    ///  RPC.
+    /// The schema for the read. If read_options.selected_fields is set, the
+    /// schema may be different from the table schema as it will only contain
+    /// the selected fields. This schema is equivelant to the one returned by
+    /// CreateSession. This field is only populated in the first ReadRowsResponse
+    /// RPC.
     #[prost(oneof="read_rows_response::Schema", tags="7, 8")]
     pub schema: ::core::option::Option<read_rows_response::Schema>,
 }
 /// Nested message and enum types in `ReadRowsResponse`.
 pub mod read_rows_response {
-    ///  Row data is returned in format specified during session creation.
+    /// Row data is returned in format specified during session creation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Rows {
-        ///  Serialized row data in AVRO format.
+        /// Serialized row data in AVRO format.
         #[prost(message, tag="3")]
         AvroRows(super::AvroRows),
-        ///  Serialized row data in Arrow RecordBatch format.
+        /// Serialized row data in Arrow RecordBatch format.
         #[prost(message, tag="4")]
         ArrowRecordBatch(super::ArrowRecordBatch),
     }
-    ///  The schema for the read. If read_options.selected_fields is set, the
-    ///  schema may be different from the table schema as it will only contain
-    ///  the selected fields. This schema is equivelant to the one returned by
-    ///  CreateSession. This field is only populated in the first ReadRowsResponse
-    ///  RPC.
+    /// The schema for the read. If read_options.selected_fields is set, the
+    /// schema may be different from the table schema as it will only contain
+    /// the selected fields. This schema is equivelant to the one returned by
+    /// CreateSession. This field is only populated in the first ReadRowsResponse
+    /// RPC.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Schema {
-        ///  Output only. Avro schema.
+        /// Output only. Avro schema.
         #[prost(message, tag="7")]
         AvroSchema(super::AvroSchema),
-        ///  Output only. Arrow schema.
+        /// Output only. Arrow schema.
         #[prost(message, tag="8")]
         ArrowSchema(super::ArrowSchema),
     }
 }
-///  Request message for `SplitReadStream`.
+/// Request message for `SplitReadStream`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SplitReadStreamRequest {
-    ///  Required. Name of the stream to split.
+    /// Required. Name of the stream to split.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    ///  A value in the range (0.0, 1.0) that specifies the fractional point at
-    ///  which the original stream should be split. The actual split point is
-    ///  evaluated on pre-filtered rows, so if a filter is provided, then there is
-    ///  no guarantee that the division of the rows between the new child streams
-    ///  will be proportional to this fractional value. Additionally, because the
-    ///  server-side unit for assigning data is collections of rows, this fraction
-    ///  will always map to a data storage boundary on the server side.
+    /// A value in the range (0.0, 1.0) that specifies the fractional point at
+    /// which the original stream should be split. The actual split point is
+    /// evaluated on pre-filtered rows, so if a filter is provided, then there is
+    /// no guarantee that the division of the rows between the new child streams
+    /// will be proportional to this fractional value. Additionally, because the
+    /// server-side unit for assigning data is collections of rows, this fraction
+    /// will always map to a data storage boundary on the server side.
     #[prost(double, tag="2")]
     pub fraction: f64,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SplitReadStreamResponse {
-    ///  Primary stream, which contains the beginning portion of
-    ///  |original_stream|. An empty value indicates that the original stream can no
-    ///  longer be split.
+    /// Primary stream, which contains the beginning portion of
+    /// |original_stream|. An empty value indicates that the original stream can no
+    /// longer be split.
     #[prost(message, optional, tag="1")]
     pub primary_stream: ::core::option::Option<ReadStream>,
-    ///  Remainder stream, which contains the tail of |original_stream|. An empty
-    ///  value indicates that the original stream can no longer be split.
+    /// Remainder stream, which contains the tail of |original_stream|. An empty
+    /// value indicates that the original stream can no longer be split.
     #[prost(message, optional, tag="2")]
     pub remainder_stream: ::core::option::Option<ReadStream>,
 }
-///  Request message for `CreateWriteStream`.
+/// Request message for `CreateWriteStream`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateWriteStreamRequest {
-    ///  Required. Reference to the table to which the stream belongs, in the format
-    ///  of `projects/{project}/datasets/{dataset}/tables/{table}`.
+    /// Required. Reference to the table to which the stream belongs, in the format
+    /// of `projects/{project}/datasets/{dataset}/tables/{table}`.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Required. Stream to be created.
+    /// Required. Stream to be created.
     #[prost(message, optional, tag="2")]
     pub write_stream: ::core::option::Option<WriteStream>,
 }
-///  Request message for `AppendRows`.
+/// Request message for `AppendRows`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AppendRowsRequest {
-    ///  Required. The stream that is the target of the append operation. This value must be
-    ///  specified for the initial request. If subsequent requests specify the
-    ///  stream name, it must equal to the value provided in the first request.
-    ///  To write to the _default stream, populate this field with a string in the
-    ///  format `projects/{project}/datasets/{dataset}/tables/{table}/_default`.
+    /// Required. The stream that is the target of the append operation. This value must be
+    /// specified for the initial request. If subsequent requests specify the
+    /// stream name, it must equal to the value provided in the first request.
+    /// To write to the _default stream, populate this field with a string in the
+    /// format `projects/{project}/datasets/{dataset}/tables/{table}/_default`.
     #[prost(string, tag="1")]
     pub write_stream: ::prost::alloc::string::String,
-    ///  If present, the write is only performed if the next append offset is same
-    ///  as the provided value. If not present, the write is performed at the
-    ///  current end of stream. Specifying a value for this field is not allowed
-    ///  when calling AppendRows for the '_default' stream.
+    /// If present, the write is only performed if the next append offset is same
+    /// as the provided value. If not present, the write is performed at the
+    /// current end of stream. Specifying a value for this field is not allowed
+    /// when calling AppendRows for the '_default' stream.
     #[prost(message, optional, tag="2")]
     pub offset: ::core::option::Option<i64>,
-    ///  Id set by client to annotate its identity. Only initial request setting is
-    ///  respected.
+    /// Id set by client to annotate its identity. Only initial request setting is
+    /// respected.
     #[prost(string, tag="6")]
     pub trace_id: ::prost::alloc::string::String,
-    ///  Input rows. The `writer_schema` field must be specified at the initial
-    ///  request and currently, it will be ignored if specified in following
-    ///  requests. Following requests must have data in the same format as the
-    ///  initial request.
+    /// Input rows. The `writer_schema` field must be specified at the initial
+    /// request and currently, it will be ignored if specified in following
+    /// requests. Following requests must have data in the same format as the
+    /// initial request.
     #[prost(oneof="append_rows_request::Rows", tags="4")]
     pub rows: ::core::option::Option<append_rows_request::Rows>,
 }
 /// Nested message and enum types in `AppendRowsRequest`.
 pub mod append_rows_request {
-    ///  Proto schema and data.
+    /// Proto schema and data.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ProtoData {
-        ///  Proto schema used to serialize the data.
+        /// Proto schema used to serialize the data.
         #[prost(message, optional, tag="1")]
         pub writer_schema: ::core::option::Option<super::ProtoSchema>,
-        ///  Serialized row data in protobuf message format.
+        /// Serialized row data in protobuf message format.
         #[prost(message, optional, tag="2")]
         pub rows: ::core::option::Option<super::ProtoRows>,
     }
-    ///  Input rows. The `writer_schema` field must be specified at the initial
-    ///  request and currently, it will be ignored if specified in following
-    ///  requests. Following requests must have data in the same format as the
-    ///  initial request.
+    /// Input rows. The `writer_schema` field must be specified at the initial
+    /// request and currently, it will be ignored if specified in following
+    /// requests. Following requests must have data in the same format as the
+    /// initial request.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Rows {
-        ///  Rows in proto format.
+        /// Rows in proto format.
         #[prost(message, tag="4")]
         ProtoRows(ProtoData),
     }
 }
-///  Response message for `AppendRows`.
+/// Response message for `AppendRows`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AppendRowsResponse {
-    ///  If backend detects a schema update, pass it to user so that user can
-    ///  use it to input new type of message. It will be empty when no schema
-    ///  updates have occurred.
+    /// If backend detects a schema update, pass it to user so that user can
+    /// use it to input new type of message. It will be empty when no schema
+    /// updates have occurred.
     #[prost(message, optional, tag="3")]
     pub updated_schema: ::core::option::Option<TableSchema>,
     #[prost(oneof="append_rows_response::Response", tags="1, 2")]
@@ -605,149 +605,149 @@ pub struct AppendRowsResponse {
 }
 /// Nested message and enum types in `AppendRowsResponse`.
 pub mod append_rows_response {
-    ///  AppendResult is returned for successful append requests.
+    /// AppendResult is returned for successful append requests.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AppendResult {
-        ///  The row offset at which the last append occurred. The offset will not be
-        ///  set if appending using default streams.
+        /// The row offset at which the last append occurred. The offset will not be
+        /// set if appending using default streams.
         #[prost(message, optional, tag="1")]
         pub offset: ::core::option::Option<i64>,
     }
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Response {
-        ///  Result if the append is successful.
+        /// Result if the append is successful.
         #[prost(message, tag="1")]
         AppendResult(AppendResult),
-        ///  Error returned when problems were encountered.  If present,
-        ///  it indicates rows were not accepted into the system.
-        ///  Users can retry or continue with other append requests within the
-        ///  same connection.
+        /// Error returned when problems were encountered.  If present,
+        /// it indicates rows were not accepted into the system.
+        /// Users can retry or continue with other append requests within the
+        /// same connection.
         ///
-        ///  Additional information about error signalling:
+        /// Additional information about error signalling:
         ///
-        ///  ALREADY_EXISTS: Happens when an append specified an offset, and the
-        ///  backend already has received data at this offset.  Typically encountered
-        ///  in retry scenarios, and can be ignored.
+        /// ALREADY_EXISTS: Happens when an append specified an offset, and the
+        /// backend already has received data at this offset.  Typically encountered
+        /// in retry scenarios, and can be ignored.
         ///
-        ///  OUT_OF_RANGE: Returned when the specified offset in the stream is beyond
-        ///  the current end of the stream.
+        /// OUT_OF_RANGE: Returned when the specified offset in the stream is beyond
+        /// the current end of the stream.
         ///
-        ///  INVALID_ARGUMENT: Indicates a malformed request or data.
+        /// INVALID_ARGUMENT: Indicates a malformed request or data.
         ///
-        ///  ABORTED: Request processing is aborted because of prior failures.  The
-        ///  request can be retried if previous failure is addressed.
+        /// ABORTED: Request processing is aborted because of prior failures.  The
+        /// request can be retried if previous failure is addressed.
         ///
-        ///  INTERNAL: Indicates server side error(s) that can be retried.
+        /// INTERNAL: Indicates server side error(s) that can be retried.
         #[prost(message, tag="2")]
         Error(super::super::super::super::super::rpc::Status),
     }
 }
-///  Request message for `GetWriteStreamRequest`.
+/// Request message for `GetWriteStreamRequest`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetWriteStreamRequest {
-    ///  Required. Name of the stream to get, in the form of
-    ///  `projects/{project}/datasets/{dataset}/tables/{table}/streams/{stream}`.
+    /// Required. Name of the stream to get, in the form of
+    /// `projects/{project}/datasets/{dataset}/tables/{table}/streams/{stream}`.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Request message for `BatchCommitWriteStreams`.
+/// Request message for `BatchCommitWriteStreams`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchCommitWriteStreamsRequest {
-    ///  Required. Parent table that all the streams should belong to, in the form of
-    ///  `projects/{project}/datasets/{dataset}/tables/{table}`.
+    /// Required. Parent table that all the streams should belong to, in the form of
+    /// `projects/{project}/datasets/{dataset}/tables/{table}`.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Required. The group of streams that will be committed atomically.
+    /// Required. The group of streams that will be committed atomically.
     #[prost(string, repeated, tag="2")]
     pub write_streams: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-///  Response message for `BatchCommitWriteStreams`.
+/// Response message for `BatchCommitWriteStreams`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchCommitWriteStreamsResponse {
-    ///  The time at which streams were committed in microseconds granularity.
-    ///  This field will only exist when there are no stream errors.
-    ///  **Note** if this field is not set, it means the commit was not successful.
+    /// The time at which streams were committed in microseconds granularity.
+    /// This field will only exist when there are no stream errors.
+    /// **Note** if this field is not set, it means the commit was not successful.
     #[prost(message, optional, tag="1")]
     pub commit_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Stream level error if commit failed. Only streams with error will be in
-    ///  the list.
-    ///  If empty, there is no error and all streams are committed successfully.
-    ///  If non empty, certain streams have errors and ZERO stream is committed due
-    ///  to atomicity guarantee.
+    /// Stream level error if commit failed. Only streams with error will be in
+    /// the list.
+    /// If empty, there is no error and all streams are committed successfully.
+    /// If non empty, certain streams have errors and ZERO stream is committed due
+    /// to atomicity guarantee.
     #[prost(message, repeated, tag="2")]
     pub stream_errors: ::prost::alloc::vec::Vec<StorageError>,
 }
-///  Request message for invoking `FinalizeWriteStream`.
+/// Request message for invoking `FinalizeWriteStream`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FinalizeWriteStreamRequest {
-    ///  Required. Name of the stream to finalize, in the form of
-    ///  `projects/{project}/datasets/{dataset}/tables/{table}/streams/{stream}`.
+    /// Required. Name of the stream to finalize, in the form of
+    /// `projects/{project}/datasets/{dataset}/tables/{table}/streams/{stream}`.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Response message for `FinalizeWriteStream`.
+/// Response message for `FinalizeWriteStream`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FinalizeWriteStreamResponse {
-    ///  Number of rows in the finalized stream.
+    /// Number of rows in the finalized stream.
     #[prost(int64, tag="1")]
     pub row_count: i64,
 }
-///  Request message for `FlushRows`.
+/// Request message for `FlushRows`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FlushRowsRequest {
-    ///  Required. The stream that is the target of the flush operation.
+    /// Required. The stream that is the target of the flush operation.
     #[prost(string, tag="1")]
     pub write_stream: ::prost::alloc::string::String,
-    ///  Ending offset of the flush operation. Rows before this offset(including
-    ///  this offset) will be flushed.
+    /// Ending offset of the flush operation. Rows before this offset(including
+    /// this offset) will be flushed.
     #[prost(message, optional, tag="2")]
     pub offset: ::core::option::Option<i64>,
 }
-///  Respond message for `FlushRows`.
+/// Respond message for `FlushRows`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FlushRowsResponse {
-    ///  The rows before this offset (including this offset) are flushed.
+    /// The rows before this offset (including this offset) are flushed.
     #[prost(int64, tag="1")]
     pub offset: i64,
 }
-///  Structured custom BigQuery Storage error message. The error can be attached
-///  as error details in the returned rpc Status. In particular, the use of error
-///  codes allows more structured error handling, and reduces the need to evaluate
-///  unstructured error text strings.
+/// Structured custom BigQuery Storage error message. The error can be attached
+/// as error details in the returned rpc Status. In particular, the use of error
+/// codes allows more structured error handling, and reduces the need to evaluate
+/// unstructured error text strings.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StorageError {
-    ///  BigQuery Storage specific error code.
+    /// BigQuery Storage specific error code.
     #[prost(enumeration="storage_error::StorageErrorCode", tag="1")]
     pub code: i32,
-    ///  Name of the failed entity.
+    /// Name of the failed entity.
     #[prost(string, tag="2")]
     pub entity: ::prost::alloc::string::String,
-    ///  Message that describes the error.
+    /// Message that describes the error.
     #[prost(string, tag="3")]
     pub error_message: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `StorageError`.
 pub mod storage_error {
-    ///  Error code for `StorageError`.
+    /// Error code for `StorageError`.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum StorageErrorCode {
-        ///  Default error.
+        /// Default error.
         Unspecified = 0,
-        ///  Table is not found in the system.
+        /// Table is not found in the system.
         TableNotFound = 1,
-        ///  Stream is already committed.
+        /// Stream is already committed.
         StreamAlreadyCommitted = 2,
-        ///  Stream is not found.
+        /// Stream is not found.
         StreamNotFound = 3,
-        ///  Invalid Stream type.
-        ///  For example, you try to commit a stream that is not pending.
+        /// Invalid Stream type.
+        /// For example, you try to commit a stream that is not pending.
         InvalidStreamType = 4,
-        ///  Invalid Stream state.
-        ///  For example, you try to commit a stream that is not finalized or is
-        ///  garbaged.
+        /// Invalid Stream state.
+        /// For example, you try to commit a stream that is not finalized or is
+        /// garbaged.
         InvalidStreamState = 5,
-        ///  Stream is finalized.
+        /// Stream is finalized.
         StreamFinalized = 6,
     }
     impl StorageErrorCode {
