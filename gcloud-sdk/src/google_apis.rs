@@ -471,6 +471,7 @@ pub mod google {
                 feature = "google-cloud-shell-v1",
                 feature = "google-cloud-speech-v1",
                 feature = "google-cloud-speech-v1p1beta1",
+                feature = "google-cloud-speech-v2",
                 feature = "google-cloud-sql-v1",
                 feature = "google-cloud-sql-v1beta4",
                 feature = "google-cloud-support-common",
@@ -2156,6 +2157,10 @@ pub mod google {
                 #[cfg(any(feature = "google-cloud-speech-v1p1beta1"))]
                 include_proto!("google.cloud.speech.v1p1beta1");
             }
+            pub mod v2 {
+                #[cfg(any(feature = "google-cloud-speech-v2"))]
+                include_proto!("google.cloud.speech.v2");
+            }
         }
         pub mod sql {
             pub mod v1 {
@@ -2874,6 +2879,7 @@ pub mod google {
                 feature = "google-cloud-shell-v1",
                 feature = "google-cloud-speech-v1",
                 feature = "google-cloud-speech-v1p1beta1",
+                feature = "google-cloud-speech-v2",
                 feature = "google-cloud-talent-v4",
                 feature = "google-cloud-talent-v4beta1",
                 feature = "google-cloud-tpu-v1",
@@ -3334,6 +3340,7 @@ pub mod google {
                 feature = "google-cloud-shell-v1",
                 feature = "google-cloud-speech-v1",
                 feature = "google-cloud-speech-v1p1beta1",
+                feature = "google-cloud-speech-v2",
                 feature = "google-cloud-talent-v4",
                 feature = "google-cloud-talent-v4beta1",
                 feature = "google-cloud-tasks-v2",
