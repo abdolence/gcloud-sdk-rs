@@ -1,5 +1,7 @@
 #!/bin/bash
 
+export PATH="./bin:/opt/hostedtoolcache/protoc/3.20.2/x64/bin:$PATH"
+
 if [[ -z "${CARGO_REGISTRY_TOKEN}" ]]; then
   echo "Env CARGO_REGISTRY_TOKEN must be specified"
   exit 1
