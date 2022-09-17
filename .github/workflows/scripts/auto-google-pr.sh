@@ -1,10 +1,5 @@
 #!/bin/bash
 
-if [[ -z "${CARGO_REGISTRY_TOKEN}" ]]; then
-  echo "Env CARGO_REGISTRY_TOKEN must be specified"
-  exit 1
-fi
-
 git submodule update --init --recursive --recommend-shallow --depth 1
 cargo protosgen
 git add gcloud-sdk/genproto/*
@@ -22,7 +17,6 @@ if [[ PROTOS_CHANGED -eq 1 ]]; then
   git config user.name "GitHub Actions"
   git config user.email "<>"
   git commit -m "Google APIs updated at ${CURRENT_DATE}"
-  #cargo release --package gcloud-sdk patch --no-dev-version --token $CARGO_REGISTRY_TOKEN --dry-run
   git push origin update-protos-${CURRENT_DATE}
   gh pr create --title "Google APIs updated at ${CURRENT_DATE}" --fill
   cd ..

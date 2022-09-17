@@ -1,10 +1,10 @@
-name: auto update google apis
+name: auto create pr google apis
 on:
   workflow_dispatch:
   schedule:
     - cron: '5 4 * * 1'
 jobs:
-  auto_release:
+  auto_pr:
     permissions:
       contents: write
       pull-requests: write
@@ -21,7 +21,6 @@ jobs:
           toolchain: stable
           components: rustfmt, clippy
       - run: cargo install cargo-release
-      - run: bash .github/workflows/autorelease/autorelease.sh
+      - run: bash .github/workflows/scripts/auto-google-pr.sh
         env:
-          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
