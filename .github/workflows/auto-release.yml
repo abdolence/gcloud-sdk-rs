@@ -8,9 +8,6 @@ jobs:
     permissions:
       contents: write
     runs-on: ubuntu-latest
-    env:
-      CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: Install Protoc
         uses: arduino/setup-protoc@v1
@@ -24,3 +21,6 @@ jobs:
           components: rustfmt, clippy
       - run: cargo install cargo-release
       - run: bash .github/workflows/autorelease/autorelease.sh
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
