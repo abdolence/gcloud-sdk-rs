@@ -34,7 +34,14 @@ pub async fn create_source(
         TokenSourceType::Json(json) => Ok(from_json(json.as_bytes(), &token_scopes)?.into()),
         TokenSourceType::File(path) => Ok(from_file(path, &token_scopes)?.into()),
         TokenSourceType::MetadataServer => {
-            if let Some(src) = from_metadata(&token_scopes).await? {
+            if let Some(src) = from_metadata(&token_scopes, "default".to_string()).await? {
+                Ok(src.into())
+            } else {
+                Err(crate::error::ErrorKind::TokenSource.into())
+            }
+        }
+        TokenSourceType::MetadataServerWithAccount(account) => {
+            if let Some(src) = from_metadata(&token_scopes, account).await? {
                 Ok(src.into())
             } else {
                 Err(crate::error::ErrorKind::TokenSource.into())
@@ -58,7 +65,7 @@ pub async fn find_default(token_scopes: &[String]) -> crate::error::Result<BoxSo
         debug!("Creating token based on standard config files such as application_default_credentials.json");
         return Ok(src.into());
     }
-    if let Some(src) = from_metadata(token_scopes).await? {
+    if let Some(src) = from_metadata(token_scopes, "default".to_string()).await? {
         debug!("Creating token based on metadata server");
         return Ok(src.into());
     }
@@ -84,11 +91,8 @@ pub struct Token {
 
 impl Token {
     pub async fn generate() -> crate::error::Result<Token> {
-        let token_source: BoxSource = create_source(
-            TokenSourceType::Default,
-            vec!["https://www.googleapis.com/auth/cloud-platform".into()],
-        )
-        .await?;
+        let token_source: BoxSource =
+            create_source(TokenSourceType::Default, crate::GCP_DEFAULT_SCOPES.clone()).await?;
         token_source.token().await
     }
 
@@ -193,4 +197,5 @@ pub enum TokenSourceType {
     Json(String),
     File(PathBuf),
     MetadataServer,
+    MetadataServerWithAccount(String),
 }

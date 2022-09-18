@@ -10,17 +10,17 @@ use crate::token_source::{BoxSource, Source, Token, TokenResponse};
 
 #[derive(Debug)]
 pub struct Metadata {
-    account: &'static str,
+    account: String,
     scopes: Vec<String>,
     gcemeta_client: gcemeta::Client<hyper::client::connect::HttpConnector, hyper::Body>,
 }
 
 impl Metadata {
     pub fn new(scopes: impl Into<Vec<String>>) -> Self {
-        Self::with_account(scopes, "default")
+        Self::with_account(scopes, "default".to_string())
     }
 
-    pub fn with_account(scopes: impl Into<Vec<String>>, account: &'static str) -> Self {
+    pub fn with_account(scopes: impl Into<Vec<String>>, account: String) -> Self {
         Self {
             account,
             scopes: scopes.into(),
@@ -63,11 +63,14 @@ impl Source for Metadata {
     }
 }
 
-pub async fn from_metadata(scopes: &[String]) -> crate::error::Result<Option<Metadata>> {
+pub async fn from_metadata(
+    scopes: &[String],
+    account: String,
+) -> crate::error::Result<Option<Metadata>> {
     let gcemeta_client = gcemeta::Client::new();
 
     if gcemeta_client.on_gce().await? {
-        Ok(Some(Metadata::new(scopes)))
+        Ok(Some(Metadata::with_account(scopes, account)))
     } else {
         Ok(None)
     }
@@ -82,7 +85,7 @@ mod test {
         let m = Metadata::new(Vec::new());
         assert_eq!(m.uri_suffix(), "instance/service-accounts/default/token?");
 
-        let m = Metadata::new(vec!["https://www.googleapis.com/auth/cloud-platform".into()]);
+        let m = Metadata::new(crate::GCP_DEFAULT_SCOPES.clone());
 
         assert_eq!(
             m.uri_suffix(),

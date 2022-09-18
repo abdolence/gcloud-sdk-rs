@@ -3,6 +3,7 @@ use std::time::Duration;
 
 use crate::token_source::auth_token_generator::GoogleAuthTokenGenerator;
 use async_trait::async_trait;
+use once_cell::sync::Lazy;
 use tonic::transport::Channel;
 use tower::ServiceBuilder;
 use tracing::*;
@@ -104,7 +105,7 @@ where
             builder_fn,
             google_api_url,
             cloud_resource_prefix_meta,
-            vec!["https://www.googleapis.com/auth/cloud-platform".into()],
+            GCP_DEFAULT_SCOPES.clone(),
         )
         .await
     }
@@ -115,6 +116,23 @@ where
         cloud_resource_prefix_meta: Option<String>,
         token_scopes: Vec<String>,
     ) -> crate::error::Result<Self> {
+        Self::from_function_with_token_source(
+            builder_fn,
+            google_api_url,
+            cloud_resource_prefix_meta,
+            token_scopes,
+            TokenSourceType::Default,
+        )
+        .await
+    }
+
+    pub async fn from_function_with_token_source(
+        builder_fn: fn(GoogleAuthMiddlewareService<Channel>) -> C,
+        google_api_url: &'static str,
+        cloud_resource_prefix_meta: Option<String>,
+        token_scopes: Vec<String>,
+        token_source_type: TokenSourceType,
+    ) -> crate::error::Result<Self> {
         let builder: GoogleApiClientBuilderFunction<C> =
             GoogleApiClientBuilderFunction { f: builder_fn };
 
@@ -122,7 +140,7 @@ where
             builder,
             google_api_url,
             cloud_resource_prefix_meta,
-            TokenSourceType::Default,
+            token_source_type,
             token_scopes,
         )
         .await
@@ -143,9 +161,8 @@ impl GoogleEnvironment {
             debug!("Detected GCP Project ID using environment variables");
             for_env
         } else {
-            let metadata_server = crate::token_source::metadata::Metadata::new(vec![
-                "https://www.googleapis.com/auth/cloud-platform".into(),
-            ]);
+            let metadata_server =
+                crate::token_source::metadata::Metadata::new(GCP_DEFAULT_SCOPES.clone());
             let metadata_result = metadata_server.detect_google_project_id().await;
             if metadata_result.is_some() {
                 debug!("Detected GCP Project ID using GKE metadata server");
@@ -197,3 +214,6 @@ impl GoogleEnvironment {
             .await?)
     }
 }
+
+pub static GCP_DEFAULT_SCOPES: Lazy<Vec<String>> =
+    Lazy::new(|| vec!["https://www.googleapis.com/auth/cloud-platform".into()]);
