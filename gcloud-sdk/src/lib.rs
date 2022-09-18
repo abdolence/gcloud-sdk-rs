@@ -13,9 +13,10 @@
 //!            Some(cloud_resource_prefix.clone()),
 //!        )
 //!        .await?;
+//!
 //! ```
 //!
-//! Complete example available at: https://github.com/abdolence/gcloud-sdk-rs/tree/master/src/examples
+//! Examples available on [github](https://github.com/abdolence/gcloud-sdk-rs/tree/master/src/examples).
 //!
 
 mod apis;
