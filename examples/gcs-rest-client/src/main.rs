@@ -6,7 +6,6 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .finish();
     tracing::subscriber::set_global_default(subscriber)?;
 
-
     // Detect Google project ID using environment variables PROJECT_ID/GCP_PROJECT_ID
     // or GKE metadata server when the app runs inside GKE
     let google_project_id = gcloud_sdk::GoogleEnvironment::detect_google_project_id().await
@@ -23,7 +22,6 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     ).await?;
 
     println!("{:?}", response);
-
 
     Ok(())
 }
