@@ -11,7 +11,7 @@ This library generated from [Google API](https://github.com/googleapis/googleapi
 This is NOT OFFICIAL Google Cloud SDK (and it doesn't exist for Rust at the time this page updated).
 
 ## Overview
-This library contains all the code generated from the Google API.
+This library contains all the code generated from the Google API for gRPC and REST APIs.
 
 When using each product API, you must explicitly include it in your build using a feature flag.
 For example, if you want to use [Cloud Pub/Sub](https://cloud.google.com/pubsub), write `features = ["google-pubsub-v1"]` to Cargo.toml.
@@ -24,7 +24,7 @@ In addition, multiple features can be specified.
 
 The list of available features can be found [here](./gcloud-sdk/Cargo.toml#L22-L390).
 
-## Example
+## Example for gRPC
 
 ```rust
     // The library handles getting token from environment automatically
@@ -56,6 +56,20 @@ prost = "0.11"
 prost-types = "0.11"
 ```
 
+## Example for REST API
+
+```rust
+let google_rest_client = gcloud_sdk::GoogleRestApi::new().await?;
+
+let response = gcloud_sdk::google_rest_apis::storage::buckets_api::storage_buckets_list(
+    &google_rest_client.create_google_storage_config().await?,
+    gcloud_sdk::google_rest_apis::storage::buckets_api::StoragePeriodBucketsPeriodListParams {
+        project: google_project_id,
+        ..Default::default()
+    }
+).await?;
+```
+
 ## Google authentication
 
 Default Scope is `https://www.googleapis.com/auth/cloud-platform`.
@@ -80,9 +94,10 @@ So to work for local development you need to use `gcloud auth application-defaul
 The library based on a fork of [mechiru/googapis](https://github.com/mechiru/googapis) and [mechiru/gouth](https://github.com/mechiru/gouth) libraries and also adds additional functionality not available originally:
 
 - Google API client management and Tower-based middleware layer to simplify development to provide an async client implementation that hides complexity working with tokens and TLS.
+- Google REST APIs support additionally to gRPC.
 - Improved observability with tracing and measuring execution time of endpoints. 
-- Uses synchronisation primitives (such as Mutex) from tokio everywhere and has direct dependencies to tokio runtime..
-- Security-related protocol extensions for Google Secret Manager and KMS
+- Uses synchronisation primitives (such as Mutex) from tokio everywhere and has direct dependencies to tokio runtime.
+- Security-related protocol extensions for Google Secret Manager and KMS.
 
 ### Why not to contribute back?
 - Different goals from googapis.

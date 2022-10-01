@@ -76,6 +76,12 @@ pub async fn find_default(token_scopes: &[String]) -> crate::error::Result<BoxSo
 #[derive(PartialEq, Eq, Hash, Serialize, Deserialize, Clone)]
 pub struct TokenValue(String);
 
+impl TokenValue {
+    pub fn sensitive_value(&self) -> &String {
+        &self.0
+    }
+}
+
 impl Debug for TokenValue {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "TokenValue(len:{})", self.0.len())

@@ -54,7 +54,8 @@ impl GoogleAuthTokenGenerator {
                             let new_token = self.token_source.token().await?;
                             *write_token = Some(new_token.clone());
                             debug!(
-                                "Created a new Google OAuth token. Expiring: {}. Source: {:?}",
+                                "Created a new Google OAuth token. Type: {}. Expiring: {}. Source: {:?}",
+                                new_token.type_,
                                 new_token.expiry, self.token_source_type
                             );
                             new_token

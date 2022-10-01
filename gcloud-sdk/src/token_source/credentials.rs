@@ -7,8 +7,6 @@ use async_trait::async_trait;
 
 use crate::token_source::{BoxSource, Source, Token};
 
-const USER_AGENT: &str = concat!("gcloud-sdk-rs/v", env!("CARGO_PKG_VERSION"));
-
 #[derive(Debug, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
 #[serde(untagged)]
 pub enum Credentials {
@@ -100,7 +98,7 @@ pub fn from_file(path: impl AsRef<Path>, scopes: &[String]) -> crate::error::Res
 
 #[inline]
 fn httpc_post(url: &str) -> attohttpc::RequestBuilder {
-    attohttpc::post(url).header_append(attohttpc::header::USER_AGENT, USER_AGENT)
+    attohttpc::post(url).header_append(attohttpc::header::USER_AGENT, crate::GCLOUD_SDK_USER_AGENT)
 }
 
 mod jwt {
