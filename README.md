@@ -13,7 +13,7 @@ This library contains all the code generated from the Google API for gRPC and RE
 
 ## How models are generated:
 - gRPC: generated from [Google API](https://github.com/googleapis/googleapis) using [tonic-build](https://github.com/hyperium/tonic/tree/master/tonic-build).
-- REST (only for the APIs not available to use through gRPC): generate from [Google OpenAPI spec](https://github.com/APIs-guru/openapi-directory/tree/main/APIs/googleapis.com) using [OpenAPI generator]( https://openapi-generator.tech).
+- REST (only for the APIs not available to use through gRPC): generated from [Google OpenAPI spec](https://github.com/APIs-guru/openapi-directory/tree/main/APIs/googleapis.com) using [OpenAPI generator]( https://openapi-generator.tech).
 
 ## Features
 When using each product API, you must explicitly include it in your build using a feature flag.
