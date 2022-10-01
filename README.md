@@ -5,14 +5,17 @@
 ![security audit](https://github.com/abdolence/gcloud-sdk-rs/workflows/security%20audit/badge.svg)
 ![unsafe](https://img.shields.io/badge/unsafe-forbidden-success.svg)
 
-This library generated from [Google API](https://github.com/googleapis/googleapis) using [tonic-build](https://github.com/hyperium/tonic/tree/master/tonic-build).
-
 ## Disclaimer
 This is NOT OFFICIAL Google Cloud SDK (and it doesn't exist for Rust at the time this page updated).
 
-## Overview
+# Overview
 This library contains all the code generated from the Google API for gRPC and REST APIs.
 
+## How models are generated:
+- gRPC: generated from [Google API](https://github.com/googleapis/googleapis) using [tonic-build](https://github.com/hyperium/tonic/tree/master/tonic-build).
+- REST: generate from [Google OpenAPI spec](https://github.com/APIs-guru/openapi-directory/tree/main/APIs/googleapis.com) using [OpenAPI generator]( https://openapi-generator.tech).
+
+## Features
 When using each product API, you must explicitly include it in your build using a feature flag.
 For example, if you want to use [Cloud Pub/Sub](https://cloud.google.com/pubsub), write `features = ["google-pubsub-v1"]` to Cargo.toml.
 
