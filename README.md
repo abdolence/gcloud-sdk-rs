@@ -64,13 +64,14 @@ prost-types = "0.11"
 ```rust
 let google_rest_client = gcloud_sdk::GoogleRestApi::new().await?;
 
-let response = gcloud_sdk::google_rest_apis::storage::buckets_api::storage_buckets_list(
-    &google_rest_client.create_google_storage_config().await?,
-    gcloud_sdk::google_rest_apis::storage::buckets_api::StoragePeriodBucketsPeriodListParams {
+let response = gcloud_sdk::google_rest_apis::storage_v1::buckets_api::storage_buckets_list(
+    &google_rest_client.create_google_storage_v1_config().await?,
+    gcloud_sdk::google_rest_apis::storage_v1::buckets_api::StoragePeriodBucketsPeriodListParams {
         project: google_project_id,
         ..Default::default()
     }
 ).await?;
+
 ```
 
 ## Google authentication
