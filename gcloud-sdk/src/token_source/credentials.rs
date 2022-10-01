@@ -36,8 +36,8 @@ impl Source for Credentials {
     async fn token(&self) -> crate::error::Result<Token> {
         use Credentials::*;
         match self {
-            ServiceAccount(sa) => jwt::token(sa),
-            User(user) => oauth2::token(user),
+            ServiceAccount(sa) => jwt::token(sa).await,
+            User(user) => oauth2::token(user).await,
         }
     }
 }
@@ -97,8 +97,10 @@ pub fn from_file(path: impl AsRef<Path>, scopes: &[String]) -> crate::error::Res
 }
 
 #[inline]
-fn httpc_post(url: &str) -> attohttpc::RequestBuilder {
-    attohttpc::post(url).header_append(attohttpc::header::USER_AGENT, crate::GCLOUD_SDK_USER_AGENT)
+fn httpc_post(url: &str) -> reqwest::RequestBuilder {
+    reqwest::Client::new()
+        .post(url)
+        .header(reqwest::header::USER_AGENT, crate::GCLOUD_SDK_USER_AGENT)
 }
 
 mod jwt {
@@ -144,7 +146,7 @@ mod jwt {
 
     const DEFAULT_EXPIRE: u64 = 60 * 60;
 
-    pub fn token(sa: &ServiceAccount) -> crate::error::Result<Token> {
+    pub async fn token(sa: &ServiceAccount) -> crate::error::Result<Token> {
         let iat = issued_at();
         let claims = Claims {
             iss: &sa.client_email,
@@ -157,15 +159,13 @@ mod jwt {
         let key = EncodingKey::from_rsa_pem(sa.private_key.as_bytes())?;
         let assertion = &encode(&header, &claims, &key)?;
 
-        let mut req = httpc_post(&sa.token_uri)
-            .form(&Payload {
-                grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
-                assertion,
-            })?
-            .prepare();
-        let resp = req.send()?;
-        if resp.is_success() {
-            let resp = TokenResponse::try_from(resp.text()?.as_ref())?;
+        let req = httpc_post(&sa.token_uri).form(&Payload {
+            grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
+            assertion,
+        });
+        let resp = req.send().await?;
+        if resp.status().is_success() {
+            let resp = resp.json::<TokenResponse>().await?;
             Token::try_from(resp)
         } else {
             Err(crate::error::ErrorKind::HttpStatus(resp.status()).into())
@@ -193,24 +193,22 @@ mod oauth2 {
     const TOKEN_URL: &str = "https://oauth2.googleapis.com/token";
     const GRANT_TYPE: &str = "refresh_token";
 
-    pub fn token(user: &User) -> crate::error::Result<Token> {
-        fetch_token(TOKEN_URL, user)
+    pub async fn token(user: &User) -> crate::error::Result<Token> {
+        fetch_token(TOKEN_URL, user).await
     }
 
-    pub(super) fn fetch_token(url: &str, user: &User) -> crate::error::Result<Token> {
-        let mut req = httpc_post(url)
-            .form(&Payload {
-                client_id: &user.client_id,
-                client_secret: &user.client_secret,
-                grant_type: GRANT_TYPE,
-                // The reflesh token is not included in the response from google's server,
-                // so it always uses the specified refresh token from the file.
-                refresh_token: &user.refresh_token,
-            })?
-            .prepare();
-        let resp = req.send()?;
-        if resp.is_success() {
-            let resp = TokenResponse::try_from(resp.text()?.as_ref())?;
+    pub(super) async fn fetch_token(url: &str, user: &User) -> crate::error::Result<Token> {
+        let req = httpc_post(url).form(&Payload {
+            client_id: &user.client_id,
+            client_secret: &user.client_secret,
+            grant_type: GRANT_TYPE,
+            // The reflesh token is not included in the response from google's server,
+            // so it always uses the specified refresh token from the file.
+            refresh_token: &user.refresh_token,
+        });
+        let resp = req.send().await?;
+        if resp.status().is_success() {
+            let resp = resp.json::<TokenResponse>().await?;
             Token::try_from(resp)
         } else {
             Err(crate::error::ErrorKind::HttpStatus(resp.status()).into())

@@ -4,9 +4,9 @@ use std::{convert::From, fmt};
 #[derive(Debug)]
 pub enum ErrorKind {
     /// Errors that can possibly occur while accessing an HTTP server.
-    Http(attohttpc::Error),
+    Http(reqwest::Error),
     /// Http status code that is not 2xx when getting token.
-    HttpStatus(attohttpc::StatusCode),
+    HttpStatus(reqwest::StatusCode),
     /// GCE metadata service error.
     Metadata(gcemeta::Error),
     TonicMetadata(tonic::metadata::errors::InvalidMetadataValue),
@@ -67,8 +67,8 @@ impl fmt::Display for Error {
 
 impl std::error::Error for Error {}
 
-impl From<attohttpc::Error> for Error {
-    fn from(e: attohttpc::Error) -> Self {
+impl From<reqwest::Error> for Error {
+    fn from(e: reqwest::Error) -> Self {
         ErrorKind::Http(e).into()
     }
 }

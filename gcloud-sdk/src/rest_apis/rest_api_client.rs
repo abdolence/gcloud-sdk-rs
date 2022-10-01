@@ -1,5 +1,6 @@
 use crate::{GoogleAuthTokenGenerator, TokenSourceType, GCP_DEFAULT_SCOPES};
 use async_trait::async_trait;
+use hyper::Uri;
 use std::sync::Arc;
 
 #[derive(Clone)]
@@ -33,4 +34,25 @@ impl GoogleRestApi {
         let token = self.token_generator.create_token().await?;
         Ok(request.header(reqwest::header::AUTHORIZATION, token.header_value()))
     }
+}
+
+pub fn create_hyper_uri_with_params<'p, PT, TS>(url_str: &str, params: &'p PT) -> Uri
+where
+    PT: std::iter::IntoIterator<Item = (&'p str, Option<&'p TS>)> + Clone,
+    TS: std::string::ToString + 'p,
+{
+    let url_query_params: Vec<(String, String)> = params
+        .clone()
+        .into_iter()
+        .map(|(k, vo)| vo.map(|v| (k.to_string(), v.to_string())))
+        .flatten()
+        .collect();
+
+    let url: url::Url = url::Url::parse_with_params(url_str, url_query_params)
+        .unwrap()
+        .as_str()
+        .parse()
+        .unwrap();
+
+    url.as_str().parse().unwrap()
 }
