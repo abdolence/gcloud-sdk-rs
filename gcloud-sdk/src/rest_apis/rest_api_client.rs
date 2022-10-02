@@ -49,7 +49,6 @@ impl GoogleRestApi {
         self.with_google_token(self.client.request(Method::GET, url))
             .await
     }
-
     pub async fn post<U: IntoUrl>(&self, url: U) -> crate::error::Result<RequestBuilder> {
         self.with_google_token(self.client.request(Method::POST, url))
             .await
