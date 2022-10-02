@@ -1,10 +1,10 @@
 [package]
 name = "gcloud-sdk"
 version = "0.19.2-alpha.0"
-authors = ["mechiru <u9053u6d41@gmail.com>", "Abdulla Abdurakhmanov <me@abdolence.dev>"]
+authors = ["Abdulla Abdurakhmanov <me@abdolence.dev>","mechiru <u9053u6d41@gmail.com>"]
 edition = "2021"
 license = "MIT OR Apache-2.0"
-description = "This library provides generated from proto Google APIs and simple to use APIs client hiding complexity of GCP authentication and secure networking based on Tonic middleware."
+description = "Async Google gRPC/REST APIs and the client implementation hiding complexity of GCP authentication based on Tonic middleware and Reqwest."
 repository = "https://github.com/abdolence/gcloud-sdk-rs"
 documentation = "https://docs.rs/gcloud-sdk"
 categories = ["api-bindings"]
