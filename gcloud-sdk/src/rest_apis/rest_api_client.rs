@@ -1,6 +1,7 @@
 use crate::{GoogleAuthTokenGenerator, TokenSourceType, GCP_DEFAULT_SCOPES};
 use async_trait::async_trait;
 use hyper::Uri;
+use reqwest::{IntoUrl, Method, Request, RequestBuilder};
 use std::sync::Arc;
 
 #[derive(Clone)]
@@ -18,21 +19,56 @@ impl GoogleRestApi {
         token_source_type: TokenSourceType,
         token_scopes: Vec<String>,
     ) -> crate::error::Result<Self> {
+        Self::with_client_token_source(reqwest::Client::new(), token_source_type, token_scopes)
+            .await
+    }
+
+    pub async fn with_client_token_source(
+        client: reqwest::Client,
+        token_source_type: TokenSourceType,
+        token_scopes: Vec<String>,
+    ) -> crate::error::Result<Self> {
         let token_generator =
             GoogleAuthTokenGenerator::new(token_source_type, token_scopes).await?;
 
         Ok(Self {
-            client: reqwest::Client::new(),
+            client,
             token_generator: Arc::new(token_generator),
         })
     }
 
     pub async fn with_google_token<'a>(
         &self,
-        request: reqwest::RequestBuilder,
-    ) -> crate::error::Result<reqwest::RequestBuilder> {
+        request: RequestBuilder,
+    ) -> crate::error::Result<RequestBuilder> {
         let token = self.token_generator.create_token().await?;
         Ok(request.header(reqwest::header::AUTHORIZATION, token.header_value()))
+    }
+
+    pub async fn get<U: IntoUrl>(&self, url: U) -> crate::error::Result<RequestBuilder> {
+        self.with_google_token(self.client.request(Method::GET, url))
+            .await
+    }
+
+    pub async fn post<U: IntoUrl>(&self, url: U) -> crate::error::Result<RequestBuilder> {
+        self.with_google_token(self.client.request(Method::POST, url))
+            .await
+    }
+    pub async fn put<U: IntoUrl>(&self, url: U) -> crate::error::Result<RequestBuilder> {
+        self.with_google_token(self.client.request(Method::PUT, url))
+            .await
+    }
+    pub async fn patch<U: IntoUrl>(&self, url: U) -> crate::error::Result<RequestBuilder> {
+        self.with_google_token(self.client.request(Method::PATCH, url))
+            .await
+    }
+    pub async fn delete<U: IntoUrl>(&self, url: U) -> crate::error::Result<RequestBuilder> {
+        self.with_google_token(self.client.request(Method::DELETE, url))
+            .await
+    }
+    pub async fn head<U: IntoUrl>(&self, url: U) -> crate::error::Result<RequestBuilder> {
+        self.with_google_token(self.client.request(Method::HEAD, url))
+            .await
     }
 }
 

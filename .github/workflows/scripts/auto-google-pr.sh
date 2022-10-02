@@ -5,8 +5,10 @@ cargo protosgen
 git add gcloud-sdk/genproto/*
 
 git update-index --refresh
-git diff-index --quiet HEAD gcloud-sdk/genproto
+#git diff-index --quiet HEAD gcloud-sdk/genproto
 PROTOS_CHANGED=$?
+echo "PROTOS_CHANGED: ${PROTOS_CHANGED}"
+PROTOS_CHANGED=1
 
 CURRENT_DATE=$(date '+%Y-%m-%d')
 
