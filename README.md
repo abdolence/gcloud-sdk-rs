@@ -5,14 +5,17 @@
 ![security audit](https://github.com/abdolence/gcloud-sdk-rs/workflows/security%20audit/badge.svg)
 ![unsafe](https://img.shields.io/badge/unsafe-forbidden-success.svg)
 
-This library generated from [Google API](https://github.com/googleapis/googleapis) using [tonic-build](https://github.com/hyperium/tonic/tree/master/tonic-build).
-
 ## Disclaimer
 This is NOT OFFICIAL Google Cloud SDK (and it doesn't exist for Rust at the time this page updated).
 
-## Overview
+# Overview
 This library contains all the code generated from the Google API for gRPC and REST APIs.
 
+## How models are generated:
+- gRPC: generated from [Google API](https://github.com/googleapis/googleapis) using [tonic-build](https://github.com/hyperium/tonic/tree/master/tonic-build).
+- REST (only for the APIs not available to use through gRPC): generated from [Google OpenAPI spec](https://github.com/APIs-guru/openapi-directory/tree/main/APIs/googleapis.com) using [OpenAPI generator]( https://openapi-generator.tech).
+
+## Features
 When using each product API, you must explicitly include it in your build using a feature flag.
 For example, if you want to use [Cloud Pub/Sub](https://cloud.google.com/pubsub), write `features = ["google-pubsub-v1"]` to Cargo.toml.
 
@@ -50,7 +53,7 @@ More complete examples are located [here](examples).
 Cargo.toml:
 ```toml
 [dependencies]
-gcloud-sdk = { version = "0.18", features = ["google-firestore-v1"] }
+gcloud-sdk = { version = "0.19", features = ["google-firestore-v1"] }
 tonic = { version = "0.8", features = ["tls"] }
 prost = "0.11"
 prost-types = "0.11"
@@ -61,13 +64,14 @@ prost-types = "0.11"
 ```rust
 let google_rest_client = gcloud_sdk::GoogleRestApi::new().await?;
 
-let response = gcloud_sdk::google_rest_apis::storage::buckets_api::storage_buckets_list(
-    &google_rest_client.create_google_storage_config().await?,
-    gcloud_sdk::google_rest_apis::storage::buckets_api::StoragePeriodBucketsPeriodListParams {
+let response = gcloud_sdk::google_rest_apis::storage_v1::buckets_api::storage_buckets_list(
+    &google_rest_client.create_google_storage_v1_config().await?,
+    gcloud_sdk::google_rest_apis::storage_v1::buckets_api::StoragePeriodBucketsPeriodListParams {
         project: google_project_id,
         ..Default::default()
     }
 ).await?;
+
 ```
 
 ## Google authentication
