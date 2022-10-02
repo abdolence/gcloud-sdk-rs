@@ -20,7 +20,7 @@ jobs:
           profile: minimal
           toolchain: stable
           components: rustfmt, clippy
-      - run: cargo install cargo-release
+      #- run: cargo install cargo-release
       - run: bash .github/workflows/scripts/auto-google-pr.sh
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
