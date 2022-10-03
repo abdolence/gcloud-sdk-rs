@@ -1,9 +1,11 @@
-# gcloud-sdk for Rust
+# Google Cloud SDK for Rust
 
 [![Latest Version](https://img.shields.io/crates/v/gcloud-sdk.svg)](https://crates.io/crates/gcloud-sdk)
 ![tests and formatting](https://github.com/abdolence/gcloud-sdk-rs/workflows/tests%20&amp;%20formatting/badge.svg)
 ![security audit](https://github.com/abdolence/gcloud-sdk-rs/workflows/security%20audit/badge.svg)
 ![unsafe](https://img.shields.io/badge/unsafe-forbidden-success.svg)
+
+Async Google gRPC/REST APIs and the client implementation hiding complexity of GCP authentication based on Tonic middleware and Reqwest.
 
 ## Disclaimer
 This is NOT OFFICIAL Google Cloud SDK (and it doesn't exist for Rust at the time this page updated).
@@ -11,9 +13,9 @@ This is NOT OFFICIAL Google Cloud SDK (and it doesn't exist for Rust at the time
 # Overview
 This library contains all the code generated from the Google API for gRPC and REST APIs.
 
-## How models are generated:
-- gRPC: generated from [Google API](https://github.com/googleapis/googleapis) using [tonic-build](https://github.com/hyperium/tonic/tree/master/tonic-build).
-- REST (only for the APIs not available to use through gRPC): generated from [Google OpenAPI spec](https://github.com/APIs-guru/openapi-directory/tree/main/APIs/googleapis.com) using [OpenAPI generator]( https://openapi-generator.tech).
+## How API/models are generated:
+- gRPC APIs: generated from [Google API](https://github.com/googleapis/googleapis) using [tonic-build](https://github.com/hyperium/tonic/tree/master/tonic-build).
+- REST APIs (only for the APIs not available to use through gRPC): generated from [Google OpenAPI spec](https://github.com/APIs-guru/openapi-directory/tree/main/APIs/googleapis.com) using [OpenAPI generator]( https://openapi-generator.tech).
 
 ## Features
 When using each product API, you must explicitly include it in your build using a feature flag.
@@ -94,24 +96,9 @@ The latter obtains user access credentials via a web flow and puts them in the w
 This command is useful when you are developing code that would normally use a service account but need to run the code in a local development environment where it's easier to provide user credentials.
 So to work for local development you need to use `gcloud auth application-default login`.
 
-## Fork-based
-The library based on a fork of [mechiru/googapis](https://github.com/mechiru/googapis) and [mechiru/gouth](https://github.com/mechiru/gouth) libraries and also adds additional functionality not available originally:
-
-- Google API client management and Tower-based middleware layer to simplify development to provide an async client implementation that hides complexity working with tokens and TLS.
-- Google REST APIs support additionally to gRPC.
-- Improved observability with tracing and measuring execution time of endpoints. 
-- Uses synchronisation primitives (such as Mutex) from tokio everywhere and has direct dependencies to tokio runtime.
-- Security-related protocol extensions for Google Secret Manager and KMS.
-
-### Why not to contribute back?
-- Different goals from googapis.
-    * This fork focuses on simplicity and provided authentication capabilities natively.
-    * Provides a high level facade API for Google API client.
-- Different development cycles - the original development was updated less frequently than it was needed.
-
 ## High-level APIs
 Sometimes using proto generated APIs are tedious and cumbersome, so you may need to introduce facade APIs on top of them:
-* [firestore-rs](https://github.com/abdolence/firestore-rs) - to work with Firestore;
+* [firestore](https://github.com/abdolence/firestore-rs) - to work with Firestore;
 * [secret-vault](https://github.com/abdolence/secret-vault-rs) - to read secrets from Google Secret Manager;
 * [kms-aead](https://github.com/abdolence/kms-aead-rs) - envelope encryption using Google KMS and Ring AEAD.
 * [opentelemetry-gcloud-trace](https://github.com/abdolence/opentelemetry-gcloud-trace-rs) - Google Cloud Trace support for OpenTelemetry project.
@@ -121,5 +108,13 @@ Licensed under either of [Apache License, Version 2.0](./LICENSE-APACHE)
 or [MIT license](./LICENSE-MIT) at your option.
 
 ## Authors
-- [mechiru](https://github.com/mechiru) - the original project
-- Abdulla Abdurakhmanov - updated for recent deps, the transparent client implementation, security extensions for Google KMS and Secret Manager API.
+- Abdulla Abdurakhmanov
+- [mechiru](https://github.com/mechiru) - the original project (gRPC proto generator and token sources implementation)
+
+The library was started as a fork of [mechiru/googapis](https://github.com/mechiru/googapis) and [mechiru/gouth](https://github.com/mechiru/gouth) libraries, but now includes much more:
+
+- Google API client/tokens management and Tower-based middleware layer to simplify development to provide an async client implementation that hides complexity working with tokens and TLS.
+- Google REST APIs support additionally to gRPC.
+- Improved observability with tracing and measuring execution time of endpoints.
+- Uses synchronisation primitives (such as Mutex) from tokio everywhere and has direct dependencies to tokio runtime.
+- Security-related protocol extensions for Google Secret Manager and KMS.
