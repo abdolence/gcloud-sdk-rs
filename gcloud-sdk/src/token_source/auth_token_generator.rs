@@ -41,7 +41,8 @@ impl GoogleAuthTokenGenerator {
         let now = Utc::now();
 
         match existing_token {
-            Some(token) if token.expiry.gt(&now) => Ok(token),
+            // Give a bit more time for network call
+            Some(token) if token.expiry.gt(&now.add(chrono::Duration::seconds(15))) => Ok(token),
             _ => {
                 let new_token = {
                     let mut write_token = self.cached_token.write().await;
