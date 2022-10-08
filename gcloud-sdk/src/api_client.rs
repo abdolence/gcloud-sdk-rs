@@ -153,6 +153,7 @@ pub type GoogleApi<C> = GoogleApiClient<GoogleApiClientBuilderFunction<C>, C>;
 pub struct GoogleEnvironment;
 
 impl GoogleEnvironment {
+
     pub async fn detect_google_project_id() -> Option<String> {
         let for_env = std::env::var("PROJECT_ID")
             .ok()
@@ -166,10 +167,32 @@ impl GoogleEnvironment {
             let metadata_result = metadata_server.detect_google_project_id().await;
             if metadata_result.is_some() {
                 debug!("Detected GCP Project ID using GKE metadata server");
+                metadata_result
             } else {
-                debug!("No GCP Project ID detected in this environment. Please specify it explicitly using environment variables: `PROJECT_ID` or `GCP_PROJECT_ID`");
+                let local_creds: Option<crate::token_source::credentials::Credentials> =
+                if let Some(Some(src)) = crate::token_source::from_env_var(&GCP_DEFAULT_SCOPES).ok() {
+                    Some(src)
+                }
+                else if let Some(Some(src)) = crate::token_source::from_well_known_file(&GCP_DEFAULT_SCOPES).ok() {
+                    Some(src)
+                } else { None };
+
+                let local_quota_project_id =
+                local_creds.and_then(|creds| {
+                    match creds {
+                        crate::token_source::credentials::Credentials::ServiceAccount(sa) => sa.quota_project_id,
+                        crate::token_source::credentials::Credentials::User(user) => user.quota_project_id
+                    }
+                });
+
+                if local_quota_project_id.is_some() {
+                    debug!("Detected default project id from local defined quota_project_id");
+                }
+                else {
+                    debug!("No GCP Project ID detected in this environment. Please specify it explicitly using environment variables: `PROJECT_ID` or `GCP_PROJECT_ID`");
+                }
+                local_quota_project_id
             }
-            metadata_result
         }
     }
 

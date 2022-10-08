@@ -16,19 +16,21 @@ pub enum Credentials {
 
 #[derive(Debug, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
 pub struct ServiceAccount {
-    client_email: String,
+    pub client_email: String,
     private_key_id: String,
     private_key: String,
     token_uri: String,
     #[serde(skip)]
-    scopes: Vec<String>,
+    pub scopes: Vec<String>,
+    pub quota_project_id: Option<String>
 }
 
 #[derive(Debug, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
 pub struct User {
     client_secret: String,
-    client_id: String,
+    pub client_id: String,
     refresh_token: String,
+    pub quota_project_id: Option<String>
 }
 
 #[async_trait]

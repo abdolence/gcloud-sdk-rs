@@ -7,12 +7,12 @@ use async_trait::async_trait;
 use chrono::prelude::*;
 
 pub mod auth_token_generator;
-mod credentials;
+pub mod credentials;
 pub mod metadata;
 
 use serde::{Deserialize, Serialize};
 
-use credentials::{from_env_var, from_well_known_file};
+pub use credentials::{from_env_var, from_well_known_file};
 use metadata::from_metadata;
 
 pub use credentials::{from_file, from_json};
