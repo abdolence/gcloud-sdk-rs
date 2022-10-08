@@ -22,7 +22,7 @@ pub struct ServiceAccount {
     token_uri: String,
     #[serde(skip)]
     pub scopes: Vec<String>,
-    pub quota_project_id: Option<String>
+    pub quota_project_id: Option<String>,
 }
 
 #[derive(Debug, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
@@ -30,7 +30,7 @@ pub struct User {
     client_secret: String,
     pub client_id: String,
     refresh_token: String,
-    pub quota_project_id: Option<String>
+    pub quota_project_id: Option<String>,
 }
 
 #[async_trait]
