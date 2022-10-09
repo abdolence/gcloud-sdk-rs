@@ -1,3 +1,7 @@
+#![allow(dead_code)]
+
+use gcloud_sdk::GoogleRestApi;
+
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Debug logging
@@ -19,6 +23,26 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
             project: google_project_id,
             ..Default::default()
         }
+    ).await?;
+
+    println!("{:?}", response);
+
+    Ok(())
+}
+
+
+// Upload to GCS has a slightly different API that OpenAPI doesn't support, so there is an extension method in this library to support this
+async fn test_upload(bucket: &str, filename: &str, google_rest_client: &GoogleRestApi) -> Result<(), Box<dyn std::error::Error>> {
+
+    let response = gcloud_sdk::google_rest_apis::storage_v1::objects_api::storage_objects_insert_ext_bytes(
+        &google_rest_client.create_google_storage_v1_config().await?,
+        gcloud_sdk::google_rest_apis::storage_v1::objects_api::StoragePeriodObjectsPeriodInsertParams {
+            bucket: bucket.to_string(),
+            name: Some(filename.to_string()),
+            ..Default::default()
+        },
+        None,
+        "Hello".as_bytes().to_vec()
     ).await?;
 
     println!("{:?}", response);

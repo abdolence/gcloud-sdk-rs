@@ -5,6 +5,10 @@ pub type BoxStreamWithSync<'a, T> =
     std::pin::Pin<Box<dyn futures::Stream<Item = T> + Send + 'a + Sync>>;
 
 impl GoogleRestApi {
+    #[deprecated(
+        since = "0.19.4",
+        note = "please use `gcloud_sdk::google_rest_apis::storage_v1::objects_api::storage_objects_insert_ext_stream` instead"
+    )]
     pub async fn google_storage_v1_upload_stream_bytes<T: ToString>(
         &self,
         bucket_name: String,

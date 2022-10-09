@@ -48,6 +48,15 @@ do
     cp -r "$TEMP_OUTPUT/$API_NAME/src/apis" "$GLOBAL_OUTPUT_DIR/$API_NAME/"
     cp -r "$TEMP_OUTPUT/$API_NAME/src/models" "$GLOBAL_OUTPUT_DIR/$API_NAME/"
 
+    if [ -d "${API_DIR_NAME_PATH}/ext/apis" ]
+    then
+      for EXT_API_FILE in "${API_DIR_NAME_PATH}"/ext/apis/*.rs
+      do
+        EXT_API_FILE_BASE=$( basename -- "$EXT_API_FILE"; );
+        cat "$EXT_API_FILE" >> "$GLOBAL_OUTPUT_DIR/$API_NAME/apis/$EXT_API_FILE_BASE"
+      done
+    fi
+
     cp "$TEMPLATES_DIR/api-mod.rs" "$GLOBAL_OUTPUT_DIR/$API_NAME/mod.rs"
 
     cat > "$GLOBAL_OUTPUT_DIR/$API_NAME/rest_client_factory.rs" <<EOF
