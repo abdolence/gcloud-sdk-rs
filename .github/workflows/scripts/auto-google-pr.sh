@@ -1,5 +1,6 @@
 #!/bin/bash
 
+git submodule foreach git pull origin master
 git submodule update --init --recursive --recommend-shallow --depth 1
 cargo protosgen
 git add gcloud-sdk/genproto/*
