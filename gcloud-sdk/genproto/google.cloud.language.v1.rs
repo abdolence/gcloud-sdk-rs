@@ -1,4 +1,3 @@
-///
 /// Represents the input to API methods.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Document {
@@ -137,40 +136,49 @@ pub mod entity {
         ConsumerGood = 6,
         /// Other types of entities
         Other = 7,
-        /// Phone number<br><br>
+        /// Phone number
+        ///
         /// The metadata lists the phone number, formatted according to local
-        /// convention, plus whichever additional elements appear in the text:<ul>
-        /// <li><code>number</code> &ndash; the actual number, broken down into
-        /// sections as per local convention</li> <li><code>national_prefix</code>
-        /// &ndash; country code, if detected</li> <li><code>area_code</code> &ndash;
-        /// region or area code, if detected</li> <li><code>extension</code> &ndash;
-        /// phone extension (to be dialed after connection), if detected</li></ul>
+        /// convention, plus whichever additional elements appear in the text:
+        ///
+        /// * `number` - the actual number, broken down into sections as per local
+        /// convention
+        /// * `national_prefix` - country code, if detected
+        /// * `area_code` - region or area code, if detected
+        /// * `extension` - phone extension (to be dialed after connection), if
+        /// detected
         PhoneNumber = 9,
-        /// Address<br><br>
+        /// Address
+        ///
         /// The metadata identifies the street number and locality plus whichever
-        /// additional elements appear in the text:<ul>
-        /// <li><code>street_number</code> &ndash; street number</li>
-        /// <li><code>locality</code> &ndash; city or town</li>
-        /// <li><code>street_name</code> &ndash; street/route name, if detected</li>
-        /// <li><code>postal_code</code> &ndash; postal code, if detected</li>
-        /// <li><code>country</code> &ndash; country, if detected</li>
-        /// <li><code>broad_region</code> &ndash; administrative area, such as the
-        /// state, if detected</li> <li><code>narrow_region</code> &ndash; smaller
-        /// administrative area, such as county, if detected</li>
-        /// <li><code>sublocality</code> &ndash; used in Asian addresses to demark a
-        /// district within a city, if detected</li></ul>
+        /// additional elements appear in the text:
+        ///
+        /// * `street_number` - street number
+        /// * `locality` - city or town
+        /// * `street_name` - street/route name, if detected
+        /// * `postal_code` - postal code, if detected
+        /// * `country` - country, if detected<
+        /// * `broad_region` - administrative area, such as the state, if detected
+        /// * `narrow_region` - smaller administrative area, such as county, if
+        /// detected
+        /// * `sublocality` - used in Asian addresses to demark a district within a
+        /// city, if detected
         Address = 10,
-        /// Date<br><br>
-        /// The metadata identifies the components of the date:<ul>
-        /// <li><code>year</code> &ndash; four digit year, if detected</li>
-        /// <li><code>month</code> &ndash; two digit month number, if detected</li>
-        /// <li><code>day</code> &ndash; two digit day number, if detected</li></ul>
+        /// Date
+        ///
+        /// The metadata identifies the components of the date:
+        ///
+        /// * `year` - four digit year, if detected
+        /// * `month` - two digit month number, if detected
+        /// * `day` - two digit day number, if detected
         Date = 11,
-        /// Number<br><br>
+        /// Number
+        ///
         /// The metadata is the number itself.
         Number = 12,
-        /// Price<br><br>
-        /// The metadata identifies the <code>value</code> and <code>currency</code>.
+        /// Price
+        ///
+        /// The metadata identifies the `value` and `currency`.
         Price = 13,
     }
     impl Type {
@@ -1055,10 +1063,72 @@ pub struct ClassificationCategory {
     #[prost(float, tag="2")]
     pub confidence: f32,
 }
+/// Model options available for classification requests.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ClassificationModelOptions {
+    /// If this field is not set, then the `v1_model` will be used by default.
+    #[prost(oneof="classification_model_options::ModelType", tags="1, 2")]
+    pub model_type: ::core::option::Option<classification_model_options::ModelType>,
+}
+/// Nested message and enum types in `ClassificationModelOptions`.
+pub mod classification_model_options {
+    /// Options for the V1 model.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct V1Model {
+    }
+    /// Options for the V2 model.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct V2Model {
+        /// The content categories used for classification.
+        #[prost(enumeration="v2_model::ContentCategoriesVersion", tag="1")]
+        pub content_categories_version: i32,
+    }
+    /// Nested message and enum types in `V2Model`.
+    pub mod v2_model {
+        /// The content categories used for classification.
+        #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+        #[repr(i32)]
+        pub enum ContentCategoriesVersion {
+            /// If `ContentCategoriesVersion` is not specified, this option will
+            /// default to `V1`.
+            Unspecified = 0,
+            /// Legacy content categories of our initial launch in 2017.
+            V1 = 1,
+            /// Updated content categories in 2022.
+            V2 = 2,
+        }
+        impl ContentCategoriesVersion {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    ContentCategoriesVersion::Unspecified => "CONTENT_CATEGORIES_VERSION_UNSPECIFIED",
+                    ContentCategoriesVersion::V1 => "V1",
+                    ContentCategoriesVersion::V2 => "V2",
+                }
+            }
+        }
+    }
+    /// If this field is not set, then the `v1_model` will be used by default.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum ModelType {
+        /// Setting this field will use the V1 model and V1 content categories
+        /// version. The V1 model is a legacy model; support for this will be
+        /// discontinued in the future.
+        #[prost(message, tag="1")]
+        V1Model(V1Model),
+        /// Setting this field will use the V2 model with the appropriate content
+        /// categories version. The V2 model is a better performing model.
+        #[prost(message, tag="2")]
+        V2Model(V2Model),
+    }
+}
 /// The sentiment analysis request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnalyzeSentimentRequest {
-    /// Input document.
+    /// Required. Input document.
     #[prost(message, optional, tag="1")]
     pub document: ::core::option::Option<Document>,
     /// The encoding type used by the API to calculate sentence offsets.
@@ -1083,7 +1153,7 @@ pub struct AnalyzeSentimentResponse {
 /// The entity-level sentiment analysis request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnalyzeEntitySentimentRequest {
-    /// Input document.
+    /// Required. Input document.
     #[prost(message, optional, tag="1")]
     pub document: ::core::option::Option<Document>,
     /// The encoding type used by the API to calculate offsets.
@@ -1105,7 +1175,7 @@ pub struct AnalyzeEntitySentimentResponse {
 /// The entity analysis request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnalyzeEntitiesRequest {
-    /// Input document.
+    /// Required. Input document.
     #[prost(message, optional, tag="1")]
     pub document: ::core::option::Option<Document>,
     /// The encoding type used by the API to calculate offsets.
@@ -1127,7 +1197,7 @@ pub struct AnalyzeEntitiesResponse {
 /// The syntax analysis request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnalyzeSyntaxRequest {
-    /// Input document.
+    /// Required. Input document.
     #[prost(message, optional, tag="1")]
     pub document: ::core::option::Option<Document>,
     /// The encoding type used by the API to calculate offsets.
@@ -1152,9 +1222,13 @@ pub struct AnalyzeSyntaxResponse {
 /// The document classification request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ClassifyTextRequest {
-    /// Input document.
+    /// Required. Input document.
     #[prost(message, optional, tag="1")]
     pub document: ::core::option::Option<Document>,
+    /// Model options to use for classification. Defaults to v1 options if not
+    /// specified.
+    #[prost(message, optional, tag="3")]
+    pub classification_model_options: ::core::option::Option<ClassificationModelOptions>,
 }
 /// The document classification response message.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1167,10 +1241,10 @@ pub struct ClassifyTextResponse {
 /// analysis types (sentiment, entities, and syntax) in one call.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnnotateTextRequest {
-    /// Input document.
+    /// Required. Input document.
     #[prost(message, optional, tag="1")]
     pub document: ::core::option::Option<Document>,
-    /// The enabled features.
+    /// Required. The enabled features.
     #[prost(message, optional, tag="2")]
     pub features: ::core::option::Option<annotate_text_request::Features>,
     /// The encoding type used by the API to calculate offsets.
@@ -1198,6 +1272,10 @@ pub mod annotate_text_request {
         /// Classify the full document into categories.
         #[prost(bool, tag="6")]
         pub classify_text: bool,
+        /// The model options to use for classification. Defaults to v1 options
+        /// if not specified. Only used if `classify_text` is set to true.
+        #[prost(message, optional, tag="10")]
+        pub classification_model_options: ::core::option::Option<super::ClassificationModelOptions>,
     }
 }
 /// The text annotations response message.

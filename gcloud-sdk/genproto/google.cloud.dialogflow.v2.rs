@@ -6551,6 +6551,11 @@ pub struct ImportConversationDataOperationResponse {
 /// Metadata for \[ConversationDatasets][CreateConversationDataset\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateConversationDatasetOperationMetadata {
+    /// The resource name of the conversation dataset that will be created. Format:
+    /// `projects/<Project ID>/locations/<Location
+    /// ID>/conversationDatasets/<Conversation Dataset Id>`
+    #[prost(string, tag="1")]
+    pub conversation_dataset: ::prost::alloc::string::String,
 }
 /// Metadata for \[ConversationDatasets][DeleteConversationDataset\].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -8209,11 +8214,11 @@ pub mod suggestion_feature {
     pub enum Type {
         /// Unspecified feature type.
         Unspecified = 0,
-        /// Run article suggestion model.
+        /// Run article suggestion model for chat.
         ArticleSuggestion = 1,
-        /// Run FAQ model.
+        /// Run FAQ model for chat.
         Faq = 2,
-        /// Run smart reply model.
+        /// Run smart reply model for chat.
         SmartReply = 3,
     }
     impl Type {

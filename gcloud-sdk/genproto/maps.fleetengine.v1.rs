@@ -382,6 +382,8 @@ pub enum LocationSensor {
     RoadSnappedLocationProvider = 4,
     /// The fused location provider in Google Play services.
     FusedLocationProvider = 100,
+    /// The location provider on Apple operating systems.
+    CoreLocation = 200,
 }
 impl LocationSensor {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -396,6 +398,7 @@ impl LocationSensor {
             LocationSensor::Passive => "PASSIVE",
             LocationSensor::RoadSnappedLocationProvider => "ROAD_SNAPPED_LOCATION_PROVIDER",
             LocationSensor::FusedLocationProvider => "FUSED_LOCATION_PROVIDER",
+            LocationSensor::CoreLocation => "CORE_LOCATION",
         }
     }
 }
@@ -1860,9 +1863,9 @@ pub struct SearchVehiclesRequest {
     /// ```
     ///
     /// Restricts the search to only those vehicles with the specified attributes.
-    /// This field is a conjunction/AND operation. Your app can specify up to 100
-    /// attributes; however, the combined key:value string length cannot exceed
-    /// 1024 characters.
+    /// This field is a conjunction/AND operation. A max of 50 required_attributes
+    /// is allowed. This matches the maximum number of attributes allowed on a
+    /// vehicle.
     #[prost(message, repeated, tag="12")]
     pub required_attributes: ::prost::alloc::vec::Vec<VehicleAttribute>,
     /// Restricts the search to only those vehicles with at least one of
@@ -2056,9 +2059,9 @@ pub struct ListVehiclesRequest {
     /// ```
     ///
     /// Restrict the response to vehicles with the specified attributes. This field
-    /// is a conjunction/AND operation. Your app can specify up to 100 attributes;
-    /// however, the combined key:value string length cannot exceed 1024
-    /// characters.
+    /// is a conjunction/AND operation. A max of 50 required_attributes is allowed.
+    /// This matches the maximum number of attributes allowed on a vehicle. Each
+    /// repeated string should be of the format "key:value".
     #[prost(string, repeated, tag="10")]
     pub required_attributes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Restrict the response to vehicles with at least one
@@ -2066,8 +2069,8 @@ pub struct ListVehiclesRequest {
     /// Within each list, a vehicle must match at least one of the attributes.
     /// This field is an inclusive disjunction/OR operation in each
     /// `VehicleAttributeList` and a conjunction/AND operation across the
-    /// collection of `VehicleAttributeList`. Format:
-    /// key1:value1|key2:value2|key3:value3...
+    /// collection of `VehicleAttributeList`. Each repeated string should be of the
+    /// format "key1:value1|key2:value2|key3:value3".
     #[prost(string, repeated, tag="13")]
     pub required_one_of_attributes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// `required_one_of_attribute_sets` provides additional functionality.
@@ -2090,8 +2093,8 @@ pub struct ListVehiclesRequest {
     /// `VehicleAttributeList`. Within each list, a vehicle must match all of the
     /// attributes. This field is a conjunction/AND operation in each
     /// `VehicleAttributeList` and inclusive disjunction/OR operation across the
-    /// collection of `VehicleAttributeList`. Format:
-    /// key1:value1|key2:value2|key3:value3...
+    /// collection of `VehicleAttributeList`. Each repeated string should be of the
+    /// format "key1:value1|key2:value2|key3:value3".
     #[prost(string, repeated, tag="15")]
     pub required_one_of_attribute_sets: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Restrict the response to vehicles that have this vehicle state.

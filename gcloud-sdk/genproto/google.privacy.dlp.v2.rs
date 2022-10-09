@@ -5837,8 +5837,8 @@ pub struct InfoTypeSummary {
     /// The infoType.
     #[prost(message, optional, tag="1")]
     pub info_type: ::core::option::Option<InfoType>,
-    /// Approximate percentage of non-null rows that contained data detected by
-    /// this infotype.
+    /// Not populated for predicted infotypes.
+    #[deprecated]
     #[prost(int32, tag="2")]
     pub estimated_prevalence: i32,
 }

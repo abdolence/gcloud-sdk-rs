@@ -1385,6 +1385,27 @@ pub mod cvss {
         }
     }
 }
+/// CVSS Version.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum CvssVersion {
+    Unspecified = 0,
+    CvssVersion2 = 1,
+    CvssVersion3 = 2,
+}
+impl CvssVersion {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            CvssVersion::Unspecified => "CVSS_VERSION_UNSPECIFIED",
+            CvssVersion::CvssVersion2 => "CVSS_VERSION_2",
+            CvssVersion::CvssVersion3 => "CVSS_VERSION_3",
+        }
+    }
+}
 /// An artifact that can be deployed in some runtime.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeploymentNote {
@@ -1467,6 +1488,12 @@ pub struct DiscoveryOccurrence {
     /// The status of discovery for the resource.
     #[prost(enumeration="discovery_occurrence::AnalysisStatus", tag="2")]
     pub analysis_status: i32,
+    #[prost(message, optional, tag="7")]
+    pub analysis_completed: ::core::option::Option<discovery_occurrence::AnalysisCompleted>,
+    /// Indicates any errors encountered during analysis of a resource. There
+    /// could be 0 or more of these errors.
+    #[prost(message, repeated, tag="8")]
+    pub analysis_error: ::prost::alloc::vec::Vec<super::super::google::rpc::Status>,
     /// When an error is encountered this will contain a LocalizedMessage under
     /// details to show to the user. The LocalizedMessage is output only and
     /// populated by the API.
@@ -1484,6 +1511,13 @@ pub struct DiscoveryOccurrence {
 }
 /// Nested message and enum types in `DiscoveryOccurrence`.
 pub mod discovery_occurrence {
+    /// Indicates which analysis completed successfully. Multiple types of
+    /// analysis can be performed on a single resource.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct AnalysisCompleted {
+        #[prost(string, repeated, tag="1")]
+        pub analysis_type: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    }
     /// Whether the resource is continuously analyzed.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
@@ -1524,7 +1558,7 @@ pub mod discovery_occurrence {
         /// Analysis has finished unsuccessfully, the analysis itself is in a bad
         /// state.
         FinishedFailed = 4,
-        /// The resource is known not to be supported
+        /// The resource is known not to be supported.
         FinishedUnsupported = 5,
     }
     impl AnalysisStatus {
@@ -1993,6 +2027,9 @@ pub struct VulnerabilityNote {
     /// security tracker.
     #[prost(message, optional, tag="6")]
     pub source_update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// CVSS version used to populate cvss_score and severity.
+    #[prost(enumeration="CvssVersion", tag="7")]
+    pub cvss_version: i32,
 }
 /// Nested message and enum types in `VulnerabilityNote`.
 pub mod vulnerability_note {
@@ -2146,6 +2183,9 @@ pub struct VulnerabilityOccurrence {
     /// available.
     #[prost(bool, tag="9")]
     pub fix_available: bool,
+    /// Output only. CVSS version used to populate cvss_score and severity.
+    #[prost(enumeration="CvssVersion", tag="11")]
+    pub cvss_version: i32,
 }
 /// Nested message and enum types in `VulnerabilityOccurrence`.
 pub mod vulnerability_occurrence {

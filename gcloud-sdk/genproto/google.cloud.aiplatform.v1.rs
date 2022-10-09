@@ -1788,6 +1788,10 @@ pub struct Model {
     /// Model and all sub-resources of this Model will be secured by this key.
     #[prost(message, optional, tag="24")]
     pub encryption_spec: ::core::option::Option<EncryptionSpec>,
+    /// Output only. Source of a model. It can either be automl training pipeline, custom
+    /// training pipeline, BigQuery ML, or existing Vertex AI Model.
+    #[prost(message, optional, tag="38")]
+    pub model_source_info: ::core::option::Option<ModelSourceInfo>,
 }
 /// Nested message and enum types in `Model`.
 pub mod model {
@@ -2145,6 +2149,43 @@ pub struct Port {
     #[prost(int32, tag="3")]
     pub container_port: i32,
 }
+/// Detail description of the source information of the model.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ModelSourceInfo {
+    /// Type of the model source.
+    #[prost(enumeration="model_source_info::ModelSourceType", tag="1")]
+    pub source_type: i32,
+}
+/// Nested message and enum types in `ModelSourceInfo`.
+pub mod model_source_info {
+    /// Source of the model.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum ModelSourceType {
+        /// Should not be used.
+        Unspecified = 0,
+        /// The Model is uploaded by automl training pipeline.
+        Automl = 1,
+        /// The Model is uploaded by user or custom training pipeline.
+        Custom = 2,
+        /// The Model is registered and sync'ed from BigQuery ML.
+        Bqml = 3,
+    }
+    impl ModelSourceType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                ModelSourceType::Unspecified => "MODEL_SOURCE_TYPE_UNSPECIFIED",
+                ModelSourceType::Automl => "AUTOML",
+                ModelSourceType::Custom => "CUSTOM",
+                ModelSourceType::Bqml => "BQML",
+            }
+        }
+    }
+}
 /// Contains model information necessary to perform batch prediction without
 /// requiring a full model import.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2173,7 +2214,7 @@ pub struct BatchPredictionJob {
     /// Required. The user-defined name of this BatchPredictionJob.
     #[prost(string, tag="2")]
     pub display_name: ::prost::alloc::string::String,
-    /// The name of the Model resoure that produces the predictions via this job,
+    /// The name of the Model resource that produces the predictions via this job,
     /// must share the same ancestor Location.
     /// Starting this job has no impact on any existing deployments of the Model
     /// and their resources.
@@ -2557,7 +2598,6 @@ pub struct CustomJob {
     pub web_access_uris: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
 }
 /// Represents the spec of a CustomJob.
-/// Next Id: 15
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomJobSpec {
     /// Required. The spec of the worker pools including machine type and Docker image.
@@ -5666,6 +5706,10 @@ pub struct ImportFeatureValuesResponse {
     /// * Not being parsable (applicable for CSV sources).
     #[prost(int64, tag="6")]
     pub invalid_row_count: i64,
+    /// The number rows that weren't ingested due to having feature timestamps
+    /// outside the retention boundary.
+    #[prost(int64, tag="4")]
+    pub timestamp_outside_retention_rows_count: i64,
 }
 /// Request message for \[FeaturestoreService.BatchReadFeatureValues][google.cloud.aiplatform.v1.FeaturestoreService.BatchReadFeatureValues\].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -6318,6 +6362,10 @@ pub struct ImportFeatureValuesOperationMetadata {
     /// * Not being parsable (applicable for CSV sources).
     #[prost(int64, tag="6")]
     pub invalid_row_count: i64,
+    /// The number rows that weren't ingested due to having timestamps outside the
+    /// retention boundary.
+    #[prost(int64, tag="7")]
+    pub timestamp_outside_retention_rows_count: i64,
 }
 /// Details of operations that exports Features values.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -9454,6 +9502,9 @@ pub struct ListCustomJobsRequest {
     ///    * `state` supports `=`, `!=` comparisons.
     ///    * `create_time` supports `=`, `!=`,`<`, `<=`,`>`, `>=` comparisons.
     ///      `create_time` must be in RFC 3339 format.
+    ///    * `labels` supports general map functions that is:
+    ///      `labels.key=value` - key:value equality
+    ///      `labels.key:* - key existence
     ///
     /// Some examples of using the filter are:
     ///
@@ -9461,6 +9512,8 @@ pub struct ListCustomJobsRequest {
     ///    * `state!="JOB_STATE_FAILED" OR display_name="my_job"`
     ///    * `NOT display_name="my_job"`
     ///    * `create_time>"2021-05-18T00:00:00Z"`
+    ///    * `labels.keyA=valueA`
+    ///    * `labels.keyB:*`
     #[prost(string, tag="2")]
     pub filter: ::prost::alloc::string::String,
     /// The standard list page size.
@@ -9540,6 +9593,9 @@ pub struct ListDataLabelingJobsRequest {
     ///    * `state` supports `=`, `!=` comparisons.
     ///    * `create_time` supports `=`, `!=`,`<`, `<=`,`>`, `>=` comparisons.
     ///      `create_time` must be in RFC 3339 format.
+    ///    * `labels` supports general map functions that is:
+    ///      `labels.key=value` - key:value equality
+    ///      `labels.key:* - key existence
     ///
     /// Some examples of using the filter are:
     ///
@@ -9547,6 +9603,8 @@ pub struct ListDataLabelingJobsRequest {
     ///    * `state!="JOB_STATE_FAILED" OR display_name="my_job"`
     ///    * `NOT display_name="my_job"`
     ///    * `create_time>"2021-05-18T00:00:00Z"`
+    ///    * `labels.keyA=valueA`
+    ///    * `labels.keyB:*`
     #[prost(string, tag="2")]
     pub filter: ::prost::alloc::string::String,
     /// The standard list page size.
@@ -9631,6 +9689,9 @@ pub struct ListHyperparameterTuningJobsRequest {
     ///    * `state` supports `=`, `!=` comparisons.
     ///    * `create_time` supports `=`, `!=`,`<`, `<=`,`>`, `>=` comparisons.
     ///      `create_time` must be in RFC 3339 format.
+    ///    * `labels` supports general map functions that is:
+    ///      `labels.key=value` - key:value equality
+    ///      `labels.key:* - key existence
     ///
     /// Some examples of using the filter are:
     ///
@@ -9638,6 +9699,8 @@ pub struct ListHyperparameterTuningJobsRequest {
     ///    * `state!="JOB_STATE_FAILED" OR display_name="my_job"`
     ///    * `NOT display_name="my_job"`
     ///    * `create_time>"2021-05-18T00:00:00Z"`
+    ///    * `labels.keyA=valueA`
+    ///    * `labels.keyB:*`
     #[prost(string, tag="2")]
     pub filter: ::prost::alloc::string::String,
     /// The standard list page size.
@@ -9720,6 +9783,9 @@ pub struct ListBatchPredictionJobsRequest {
     ///    * `state` supports `=`, `!=` comparisons.
     ///    * `create_time` supports `=`, `!=`,`<`, `<=`,`>`, `>=` comparisons.
     ///      `create_time` must be in RFC 3339 format.
+    ///    * `labels` supports general map functions that is:
+    ///      `labels.key=value` - key:value equality
+    ///      `labels.key:* - key existence
     ///
     /// Some examples of using the filter are:
     ///
@@ -9727,6 +9793,8 @@ pub struct ListBatchPredictionJobsRequest {
     ///    * `state!="JOB_STATE_FAILED" OR display_name="my_job"`
     ///    * `NOT display_name="my_job"`
     ///    * `create_time>"2021-05-18T00:00:00Z"`
+    ///    * `labels.keyA=valueA`
+    ///    * `labels.keyB:*`
     #[prost(string, tag="2")]
     pub filter: ::prost::alloc::string::String,
     /// The standard list page size.
@@ -9882,6 +9950,9 @@ pub struct ListModelDeploymentMonitoringJobsRequest {
     ///    * `state` supports `=`, `!=` comparisons.
     ///    * `create_time` supports `=`, `!=`,`<`, `<=`,`>`, `>=` comparisons.
     ///      `create_time` must be in RFC 3339 format.
+    ///    * `labels` supports general map functions that is:
+    ///      `labels.key=value` - key:value equality
+    ///      `labels.key:* - key existence
     ///
     /// Some examples of using the filter are:
     ///
@@ -9889,6 +9960,8 @@ pub struct ListModelDeploymentMonitoringJobsRequest {
     ///    * `state!="JOB_STATE_FAILED" OR display_name="my_job"`
     ///    * `NOT display_name="my_job"`
     ///    * `create_time>"2021-05-18T00:00:00Z"`
+    ///    * `labels.keyA=valueA`
+    ///    * `labels.keyB:*`
     #[prost(string, tag="2")]
     pub filter: ::prost::alloc::string::String,
     /// The standard list page size.
@@ -10996,6 +11069,14 @@ pub struct ListArtifactsRequest {
     /// For example: `display_name = "test" AND metadata.field1.bool_value = true`.
     #[prost(string, tag="4")]
     pub filter: ::prost::alloc::string::String,
+    /// How the list of messages is ordered. Specify the values to order by and an
+    /// ordering operation. The default sorting order is ascending. To specify
+    /// descending order for a field, users append a " desc" suffix; for example:
+    /// "foo desc, bar".
+    /// Subfields are specified with a `.` character, such as foo.bar.
+    /// see <https://google.aip.dev/132#ordering> for more details.
+    #[prost(string, tag="5")]
+    pub order_by: ::prost::alloc::string::String,
 }
 /// Response message for \[MetadataService.ListArtifacts][google.cloud.aiplatform.v1.MetadataService.ListArtifacts\].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -11164,6 +11245,14 @@ pub struct ListContextsRequest {
     /// For example: `display_name = "test" AND metadata.field1.bool_value = true`.
     #[prost(string, tag="4")]
     pub filter: ::prost::alloc::string::String,
+    /// How the list of messages is ordered. Specify the values to order by and an
+    /// ordering operation. The default sorting order is ascending. To specify
+    /// descending order for a field, users append a " desc" suffix; for example:
+    /// "foo desc, bar".
+    /// Subfields are specified with a `.` character, such as foo.bar.
+    /// see <https://google.aip.dev/132#ordering> for more details.
+    #[prost(string, tag="5")]
+    pub order_by: ::prost::alloc::string::String,
 }
 /// Response message for \[MetadataService.ListContexts][google.cloud.aiplatform.v1.MetadataService.ListContexts\].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -11296,6 +11385,24 @@ pub struct AddContextChildrenRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddContextChildrenResponse {
 }
+/// Request message for
+/// \[MetadataService.DeleteContextChildrenRequest][\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RemoveContextChildrenRequest {
+    /// Required. The resource name of the parent Context.
+    ///
+    /// Format:
+    /// `projects/{project}/locations/{location}/metadataStores/{metadatastore}/contexts/{context}`
+    #[prost(string, tag="1")]
+    pub context: ::prost::alloc::string::String,
+    /// The resource names of the child Contexts.
+    #[prost(string, repeated, tag="2")]
+    pub child_contexts: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Response message for \[MetadataService.RemoveContextChildren][google.cloud.aiplatform.v1.MetadataService.RemoveContextChildren\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RemoveContextChildrenResponse {
+}
 /// Request message for \[MetadataService.QueryContextLineageSubgraph][google.cloud.aiplatform.v1.MetadataService.QueryContextLineageSubgraph\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryContextLineageSubgraphRequest {
@@ -11390,6 +11497,14 @@ pub struct ListExecutionsRequest {
     /// For example: `display_name = "test" AND metadata.field1.bool_value = true`.
     #[prost(string, tag="4")]
     pub filter: ::prost::alloc::string::String,
+    /// How the list of messages is ordered. Specify the values to order by and an
+    /// ordering operation. The default sorting order is ascending. To specify
+    /// descending order for a field, users append a " desc" suffix; for example:
+    /// "foo desc, bar".
+    /// Subfields are specified with a `.` character, such as foo.bar.
+    /// see <https://google.aip.dev/132#ordering> for more details.
+    #[prost(string, tag="5")]
+    pub order_by: ::prost::alloc::string::String,
 }
 /// Response message for \[MetadataService.ListExecutions][google.cloud.aiplatform.v1.MetadataService.ListExecutions\].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -12073,6 +12188,31 @@ pub mod metadata_service_client {
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.aiplatform.v1.MetadataService/AddContextChildren",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Remove a set of children contexts from a parent Context. If any of the
+        /// child Contexts were NOT added to the parent Context, they are
+        /// simply skipped.
+        pub async fn remove_context_children(
+            &mut self,
+            request: impl tonic::IntoRequest<super::RemoveContextChildrenRequest>,
+        ) -> Result<
+            tonic::Response<super::RemoveContextChildrenResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.MetadataService/RemoveContextChildren",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
@@ -14663,6 +14803,9 @@ pub struct ListTrainingPipelinesRequest {
     ///    * `training_task_definition` `=`, `!=` comparisons, and `:` wildcard.
     ///    * `create_time` supports `=`, `!=`,`<`, `<=`,`>`, `>=` comparisons.
     ///      `create_time` must be in RFC 3339 format.
+    ///    * `labels` supports general map functions that is:
+    ///      `labels.key=value` - key:value equality
+    ///      `labels.key:* - key existence
     ///
     /// Some examples of using the filter are:
     ///

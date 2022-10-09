@@ -15,9 +15,7 @@ pub struct DeliveryPipeline {
     #[prost(string, tag="3")]
     pub description: ::prost::alloc::string::String,
     /// User annotations. These attributes can only be set and used by the
-    /// user, and not by Google Cloud Deploy. See
-    /// <https://google.aip.dev/128#annotations> for more details such as format and
-    /// size limitations.
+    /// user, and not by Google Cloud Deploy.
     #[prost(map="string, string", tag="4")]
     pub annotations: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// Labels are attributes that can be set and used by both the
@@ -48,6 +46,10 @@ pub struct DeliveryPipeline {
     /// client has an up-to-date value before proceeding.
     #[prost(string, tag="10")]
     pub etag: ::prost::alloc::string::String,
+    /// When suspended, no new releases or rollouts can be created,
+    /// but in-progress ones will complete.
+    #[prost(bool, tag="12")]
+    pub suspended: bool,
     /// The ordering configuration of the `DeliveryPipeline`.
     #[prost(oneof="delivery_pipeline::Pipeline", tags="8")]
     pub pipeline: ::core::option::Option<delivery_pipeline::Pipeline>,
@@ -86,6 +88,34 @@ pub struct Stage {
     /// `Target`.
     #[prost(string, repeated, tag="2")]
     pub profiles: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. The strategy to use for a `Rollout` to this stage.
+    #[prost(message, optional, tag="5")]
+    pub strategy: ::core::option::Option<Strategy>,
+}
+/// Strategy contains deployment strategy information.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Strategy {
+    /// Deployment strategy details.
+    #[prost(oneof="strategy::DeploymentStrategy", tags="1")]
+    pub deployment_strategy: ::core::option::Option<strategy::DeploymentStrategy>,
+}
+/// Nested message and enum types in `Strategy`.
+pub mod strategy {
+    /// Deployment strategy details.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum DeploymentStrategy {
+        /// Standard deployment strategy executes a single deploy and allows
+        /// verifying the deployment.
+        #[prost(message, tag="1")]
+        Standard(super::Standard),
+    }
+}
+/// Standard represents the standard deployment strategy.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Standard {
+    /// Whether to verify a deployment.
+    #[prost(bool, tag="1")]
+    pub verify: bool,
 }
 /// PipelineReadyCondition contains information around the status of the
 /// Pipeline.
@@ -351,7 +381,7 @@ pub struct Target {
     pub execution_configs: ::prost::alloc::vec::Vec<ExecutionConfig>,
     /// Destination to which the Skaffold configuration is applied during a
     /// rollout.
-    #[prost(oneof="target::DeploymentTarget", tags="15, 17")]
+    #[prost(oneof="target::DeploymentTarget", tags="15, 17, 18")]
     pub deployment_target: ::core::option::Option<target::DeploymentTarget>,
 }
 /// Nested message and enum types in `Target`.
@@ -366,6 +396,9 @@ pub mod target {
         /// Information specifying an Anthos Cluster.
         #[prost(message, tag="17")]
         AnthosCluster(super::AnthosCluster),
+        /// Information specifying a Cloud Run deployment target.
+        #[prost(message, tag="18")]
+        Run(super::CloudRunLocation),
     }
 }
 /// Configuration of the environment to use when calling Skaffold.
@@ -391,6 +424,11 @@ pub struct ExecutionConfig {
     /// If unspecified, a default bucket located in the same region will be used.
     #[prost(string, tag="6")]
     pub artifact_storage: ::prost::alloc::string::String,
+    /// Optional. Execution timeout for a Cloud Build Execution. This must be between 10m and
+    /// 24h in seconds format.
+    /// If unspecified, a default timeout of 1h is used.
+    #[prost(message, optional, tag="7")]
+    pub execution_timeout: ::core::option::Option<::prost_types::Duration>,
     /// Details of the environment.
     #[prost(oneof="execution_config::ExecutionEnvironment", tags="2, 3")]
     pub execution_environment: ::core::option::Option<execution_config::ExecutionEnvironment>,
@@ -407,6 +445,8 @@ pub mod execution_config {
         Render = 1,
         /// Use for deploying and deployment hooks.
         Deploy = 2,
+        /// Use for deployment verification.
+        Verify = 3,
     }
     impl ExecutionEnvironmentUsage {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -418,6 +458,7 @@ pub mod execution_config {
                 ExecutionEnvironmentUsage::Unspecified => "EXECUTION_ENVIRONMENT_USAGE_UNSPECIFIED",
                 ExecutionEnvironmentUsage::Render => "RENDER",
                 ExecutionEnvironmentUsage::Deploy => "DEPLOY",
+                ExecutionEnvironmentUsage::Verify => "VERIFY",
             }
         }
     }
@@ -492,6 +533,14 @@ pub struct AnthosCluster {
     /// `projects/{project}/locations/{location}/memberships/{membership_name}`.
     #[prost(string, tag="1")]
     pub membership: ::prost::alloc::string::String,
+}
+/// Information specifying where to deploy a Cloud Run Service.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CloudRunLocation {
+    /// Required. The location for the Cloud Run Service. Format must be
+    /// `projects/{project}/locations/{location}`.
+    #[prost(string, tag="1")]
+    pub location: ::prost::alloc::string::String,
 }
 /// The request object for `ListTargets`.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -686,6 +735,9 @@ pub struct Release {
     /// Both keys and values are additionally constrained to be <= 128 bytes.
     #[prost(map="string, string", tag="5")]
     pub labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    /// Output only. Indicates whether this is an abandoned release.
+    #[prost(bool, tag="23")]
+    pub abandoned: bool,
     /// Output only. Time at which the `Release` was created.
     #[prost(message, optional, tag="6")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
@@ -750,6 +802,9 @@ pub mod release {
         /// render in progress.
         #[prost(enumeration="target_render::FailureCause", tag="4")]
         pub failure_cause: i32,
+        /// Output only. Additional information about the render failure, if available.
+        #[prost(string, tag="5")]
+        pub failure_message: ::prost::alloc::string::String,
     }
     /// Nested message and enum types in `TargetRender`.
     pub mod target_render {
@@ -787,7 +842,7 @@ pub mod release {
             /// No reason for failure is specified.
             Unspecified = 0,
             /// Cloud Build is not available, either because it is not enabled or
-            /// because Cloud Deploy has insufficient permissions. See [required
+            /// because Google Cloud Deploy has insufficient permissions. See [required
             /// permission](/deploy/docs/cloud-deploy-service-account#required_permissions).
             CloudBuildUnavailable = 1,
             /// The render operation did not complete successfully; check Cloud Build
@@ -1014,7 +1069,7 @@ pub struct Rollout {
     /// Output only. Current state of the `Rollout`.
     #[prost(enumeration="rollout::State", tag="13")]
     pub state: i32,
-    /// Output only. Reason the build failed. Empty if the build succeeded.
+    /// Output only. Additional information about the rollout failure, if available.
     #[prost(string, tag="14")]
     pub failure_reason: ::prost::alloc::string::String,
     /// Output only. The resource name of the Cloud Build `Build` object that is used to deploy
@@ -1027,10 +1082,16 @@ pub struct Rollout {
     /// client has an up-to-date value before proceeding.
     #[prost(string, tag="16")]
     pub etag: ::prost::alloc::string::String,
-    /// Output only. The reason this deploy failed. This will always be unspecified while the
-    /// deploy in progress.
+    /// Output only. The reason this rollout failed. This will always be unspecified while the
+    /// rollout is in progress.
     #[prost(enumeration="rollout::FailureCause", tag="19")]
     pub deploy_failure_cause: i32,
+    /// Output only. The phases that represent the workflows of this `Rollout`.
+    #[prost(message, repeated, tag="23")]
+    pub phases: ::prost::alloc::vec::Vec<Phase>,
+    /// Output only. Metadata contains information about the rollout.
+    #[prost(message, optional, tag="24")]
+    pub metadata: ::core::option::Option<Metadata>,
 }
 /// Nested message and enum types in `Rollout`.
 pub mod rollout {
@@ -1104,7 +1165,7 @@ pub mod rollout {
             }
         }
     }
-    /// Well-known deployment failures.
+    /// Well-known rollout failures.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum FailureCause {
@@ -1121,6 +1182,10 @@ pub mod rollout {
         DeadlineExceeded = 3,
         /// Release is in a failed state.
         ReleaseFailed = 4,
+        /// Release is abandoned.
+        ReleaseAbandoned = 5,
+        /// No skaffold verify configuration was found.
+        VerificationConfigNotFound = 6,
     }
     impl FailureCause {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -1134,9 +1199,181 @@ pub mod rollout {
                 FailureCause::ExecutionFailed => "EXECUTION_FAILED",
                 FailureCause::DeadlineExceeded => "DEADLINE_EXCEEDED",
                 FailureCause::ReleaseFailed => "RELEASE_FAILED",
+                FailureCause::ReleaseAbandoned => "RELEASE_ABANDONED",
+                FailureCause::VerificationConfigNotFound => "VERIFICATION_CONFIG_NOT_FOUND",
             }
         }
     }
+}
+/// Metadata includes information associated with a `Rollout`.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Metadata {
+    /// Output only. The name of the Cloud Run Service that is associated with a `Rollout`.
+    #[prost(message, optional, tag="1")]
+    pub cloud_run: ::core::option::Option<CloudRunMetadata>,
+}
+/// DeployJobRunMetadata surfaces information associated with a `DeployJobRun` to
+/// the user.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeployJobRunMetadata {
+    /// Output only. The name of the Cloud Run Service that is associated with a `DeployJobRun`.
+    #[prost(message, optional, tag="1")]
+    pub cloud_run: ::core::option::Option<CloudRunMetadata>,
+}
+/// CloudRunMetadata contains information from a Cloud Run deployment.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CloudRunMetadata {
+    /// Output only. The name of the Cloud Run Service that is associated with a `Rollout`.
+    /// Format is projects/{project}/locations/{location}/services/{service}.
+    #[prost(string, tag="1")]
+    pub service: ::prost::alloc::string::String,
+    /// Output only. The Cloud Run Service urls that are associated with a `Rollout`.
+    #[prost(string, repeated, tag="2")]
+    pub service_urls: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Output only. The Cloud Run Revision id associated with a `Rollout`.
+    #[prost(string, tag="3")]
+    pub revision: ::prost::alloc::string::String,
+}
+/// Phase represents a collection of jobs that are logically grouped together
+/// for a `Rollout`.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Phase {
+    /// Output only. The ID of the Phase.
+    #[prost(string, tag="1")]
+    pub id: ::prost::alloc::string::String,
+    /// Output only. Current state of the Phase.
+    #[prost(enumeration="phase::State", tag="3")]
+    pub state: i32,
+    /// The job composition of this Phase.
+    #[prost(oneof="phase::Jobs", tags="4")]
+    pub jobs: ::core::option::Option<phase::Jobs>,
+}
+/// Nested message and enum types in `Phase`.
+pub mod phase {
+    /// Valid states of a Phase.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum State {
+        /// The Phase has an unspecified state.
+        Unspecified = 0,
+        /// The Phase is waiting for an earlier Phase(s) to complete.
+        Pending = 1,
+        /// The Phase is in progress.
+        InProgress = 2,
+        /// The Phase has succeeded.
+        Succeeded = 3,
+        /// The Phase has failed.
+        Failed = 4,
+        /// The Phase was aborted.
+        Aborted = 5,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                State::Unspecified => "STATE_UNSPECIFIED",
+                State::Pending => "PENDING",
+                State::InProgress => "IN_PROGRESS",
+                State::Succeeded => "SUCCEEDED",
+                State::Failed => "FAILED",
+                State::Aborted => "ABORTED",
+            }
+        }
+    }
+    /// The job composition of this Phase.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Jobs {
+        /// Output only. Deployment job composition.
+        #[prost(message, tag="4")]
+        DeploymentJobs(super::DeploymentJobs),
+    }
+}
+/// Deployment job composition.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeploymentJobs {
+    /// Output only. The deploy Job. This is the first job run in the phase.
+    #[prost(message, optional, tag="1")]
+    pub deploy_job: ::core::option::Option<Job>,
+    /// Output only. The verify Job. Runs after a deploy if the deploy succeeds.
+    #[prost(message, optional, tag="2")]
+    pub verify_job: ::core::option::Option<Job>,
+}
+/// Job represents an operation for a `Rollout`.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Job {
+    /// Output only. The ID of the Job.
+    #[prost(string, tag="1")]
+    pub id: ::prost::alloc::string::String,
+    /// Output only. The current state of the Job.
+    #[prost(enumeration="job::State", tag="2")]
+    pub state: i32,
+    /// Output only. The name of the `JobRun` responsible for the most recent invocation of this
+    /// Job.
+    #[prost(string, tag="3")]
+    pub job_run: ::prost::alloc::string::String,
+    /// The type of Job.
+    #[prost(oneof="job::JobType", tags="4, 5")]
+    pub job_type: ::core::option::Option<job::JobType>,
+}
+/// Nested message and enum types in `Job`.
+pub mod job {
+    /// Valid states of a Job.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum State {
+        /// The Job has an unspecified state.
+        Unspecified = 0,
+        /// The Job is waiting for an earlier Phase(s) or Job(s) to complete.
+        Pending = 1,
+        /// The Job is disabled.
+        Disabled = 2,
+        /// The Job is in progress.
+        InProgress = 3,
+        /// The Job succeeded.
+        Succeeded = 4,
+        /// The Job failed.
+        Failed = 5,
+        /// The Job was aborted.
+        Aborted = 6,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                State::Unspecified => "STATE_UNSPECIFIED",
+                State::Pending => "PENDING",
+                State::Disabled => "DISABLED",
+                State::InProgress => "IN_PROGRESS",
+                State::Succeeded => "SUCCEEDED",
+                State::Failed => "FAILED",
+                State::Aborted => "ABORTED",
+            }
+        }
+    }
+    /// The type of Job.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum JobType {
+        /// Output only. A deploy Job.
+        #[prost(message, tag="4")]
+        DeployJob(super::DeployJob),
+        /// Output only. A verify Job.
+        #[prost(message, tag="5")]
+        VerifyJob(super::VerifyJob),
+    }
+}
+/// A deploy Job.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeployJob {
+}
+/// A verify Job.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct VerifyJob {
 }
 /// ListRolloutsRequest is the request object used by `ListRollouts`.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1263,6 +1500,275 @@ pub struct ApproveRolloutRequest {
 /// The response object from `ApproveRollout`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ApproveRolloutResponse {
+}
+/// RetryJobRequest is the request object used by `RetryJob`.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RetryJobRequest {
+    /// Required. Name of the Rollout. Format is
+    /// projects/{project}/locations/{location}/deliveryPipelines/{deliveryPipeline}/
+    /// releases/{release}/rollouts/{rollout}.
+    #[prost(string, tag="1")]
+    pub rollout: ::prost::alloc::string::String,
+    /// Required. The phase ID the Job to retry belongs to.
+    #[prost(string, tag="2")]
+    pub phase_id: ::prost::alloc::string::String,
+    /// Required. The job ID for the Job to retry.
+    #[prost(string, tag="3")]
+    pub job_id: ::prost::alloc::string::String,
+}
+/// The response object from 'RetryJob'.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RetryJobResponse {
+}
+/// The request object used by `AbandonRelease`.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AbandonReleaseRequest {
+    /// Required. Name of the Release. Format is
+    /// projects/{project}/locations/{location}/deliveryPipelines/{deliveryPipeline}/
+    /// releases/{release}.
+    #[prost(string, tag="1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// The response object for `AbandonRelease`.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AbandonReleaseResponse {
+}
+/// A `JobRun` resource in the Google Cloud Deploy API.
+///
+/// A `JobRun` contains information of a single `Rollout` job evaluation.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct JobRun {
+    /// Optional. Name of the `JobRun`. Format is projects/{project}/locations/{location}/
+    /// deliveryPipelines/{deliveryPipeline}/releases/{releases}/rollouts/
+    /// {rollouts}/jobRuns/{uuid}.
+    #[prost(string, tag="1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. Unique identifier of the `JobRun`.
+    #[prost(string, tag="2")]
+    pub uid: ::prost::alloc::string::String,
+    /// Output only. ID of the `Rollout` phase this `JobRun` belongs in.
+    #[prost(string, tag="3")]
+    pub phase_id: ::prost::alloc::string::String,
+    /// Output only. ID of the `Rollout` job this `JobRun` corresponds to.
+    #[prost(string, tag="4")]
+    pub job_id: ::prost::alloc::string::String,
+    /// Output only. Time at which the `JobRun` was created.
+    #[prost(message, optional, tag="5")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Time at which the `JobRun` was started.
+    #[prost(message, optional, tag="6")]
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Time at which the `JobRun` ended.
+    #[prost(message, optional, tag="7")]
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The current state of the `JobRun`.
+    #[prost(enumeration="job_run::State", tag="8")]
+    pub state: i32,
+    /// Output only. This checksum is computed by the server based on the value of other
+    /// fields, and may be sent on update and delete requests to ensure the
+    /// client has an up-to-date value before proceeding.
+    #[prost(string, tag="11")]
+    pub etag: ::prost::alloc::string::String,
+    /// The `JobRun` type and the information for that type.
+    #[prost(oneof="job_run::JobRun", tags="9, 10")]
+    pub job_run: ::core::option::Option<job_run::JobRun>,
+}
+/// Nested message and enum types in `JobRun`.
+pub mod job_run {
+    /// Valid states of a `JobRun`.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum State {
+        /// The `JobRun` has an unspecified state.
+        Unspecified = 0,
+        /// The `JobRun` is in progress.
+        InProgress = 1,
+        /// The `JobRun` has succeeded.
+        Succeeded = 2,
+        /// The `JobRun` has failed.
+        Failed = 3,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                State::Unspecified => "STATE_UNSPECIFIED",
+                State::InProgress => "IN_PROGRESS",
+                State::Succeeded => "SUCCEEDED",
+                State::Failed => "FAILED",
+            }
+        }
+    }
+    /// The `JobRun` type and the information for that type.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum JobRun {
+        /// Output only. Information specific to a deploy `JobRun`.
+        #[prost(message, tag="9")]
+        DeployJobRun(super::DeployJobRun),
+        /// Output only. Information specific to a verify `JobRun`.
+        #[prost(message, tag="10")]
+        VerifyJobRun(super::VerifyJobRun),
+    }
+}
+/// DeployJobRun contains information specific to a deploy `JobRun`.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeployJobRun {
+    /// Output only. The resource name of the Cloud Build `Build` object that is used to deploy.
+    /// Format is projects/{project}/locations/{location}/builds/{build}.
+    #[prost(string, tag="1")]
+    pub build: ::prost::alloc::string::String,
+    /// Output only. The reason the deploy failed. This will always be unspecified while the
+    /// deploy is in progress or if it succeeded.
+    #[prost(enumeration="deploy_job_run::FailureCause", tag="2")]
+    pub failure_cause: i32,
+    /// Output only. Additional information about the deploy failure, if available.
+    #[prost(string, tag="3")]
+    pub failure_message: ::prost::alloc::string::String,
+    /// Output only. Metadata containing information about the deploy job run.
+    #[prost(message, optional, tag="4")]
+    pub metadata: ::core::option::Option<DeployJobRunMetadata>,
+}
+/// Nested message and enum types in `DeployJobRun`.
+pub mod deploy_job_run {
+    /// Well-known deploy failures.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum FailureCause {
+        /// No reason for failure is specified.
+        Unspecified = 0,
+        /// Cloud Build is not available, either because it is not enabled or because
+        /// Google Cloud Deploy has insufficient permissions. See [Required
+        /// permission](/deploy/docs/cloud-deploy-service-account#required_permissions).
+        CloudBuildUnavailable = 1,
+        /// The deploy operation did not complete successfully; check Cloud Build
+        /// logs.
+        ExecutionFailed = 2,
+        /// The deploy build did not complete within the alloted time.
+        DeadlineExceeded = 3,
+    }
+    impl FailureCause {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                FailureCause::Unspecified => "FAILURE_CAUSE_UNSPECIFIED",
+                FailureCause::CloudBuildUnavailable => "CLOUD_BUILD_UNAVAILABLE",
+                FailureCause::ExecutionFailed => "EXECUTION_FAILED",
+                FailureCause::DeadlineExceeded => "DEADLINE_EXCEEDED",
+            }
+        }
+    }
+}
+/// VerifyJobRun contains information specific to a verify `JobRun`.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct VerifyJobRun {
+    /// Output only. The resource name of the Cloud Build `Build` object that is used to verify.
+    /// Format is projects/{project}/locations/{location}/builds/{build}.
+    #[prost(string, tag="1")]
+    pub build: ::prost::alloc::string::String,
+    /// Output only. URI of a directory containing the verify artifacts. This contains the
+    /// Skaffold event log.
+    #[prost(string, tag="2")]
+    pub artifact_uri: ::prost::alloc::string::String,
+    /// Output only. File path of the Skaffold event log relative to the artifact URI.
+    #[prost(string, tag="3")]
+    pub event_log_path: ::prost::alloc::string::String,
+    /// Output only. The reason the verify failed. This will always be unspecified while the
+    /// verify is in progress or if it succeeded.
+    #[prost(enumeration="verify_job_run::FailureCause", tag="4")]
+    pub failure_cause: i32,
+    /// Output only. Additional information about the verify failure, if available.
+    #[prost(string, tag="5")]
+    pub failure_message: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `VerifyJobRun`.
+pub mod verify_job_run {
+    /// Well-known verify failures.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum FailureCause {
+        /// No reason for failure is specified.
+        Unspecified = 0,
+        /// Cloud Build is not available, either because it is not enabled or because
+        /// Google Cloud Deploy has insufficient permissions. See [required
+        /// permission](/deploy/docs/cloud-deploy-service-account#required_permissions).
+        CloudBuildUnavailable = 1,
+        /// The verify operation did not complete successfully; check Cloud Build
+        /// logs.
+        ExecutionFailed = 2,
+        /// The verify build did not complete within the alloted time.
+        DeadlineExceeded = 3,
+        /// No Skaffold verify configuration was found.
+        VerificationConfigNotFound = 4,
+    }
+    impl FailureCause {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                FailureCause::Unspecified => "FAILURE_CAUSE_UNSPECIFIED",
+                FailureCause::CloudBuildUnavailable => "CLOUD_BUILD_UNAVAILABLE",
+                FailureCause::ExecutionFailed => "EXECUTION_FAILED",
+                FailureCause::DeadlineExceeded => "DEADLINE_EXCEEDED",
+                FailureCause::VerificationConfigNotFound => "VERIFICATION_CONFIG_NOT_FOUND",
+            }
+        }
+    }
+}
+/// ListJobRunsRequest is the request object used by `ListJobRuns`.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListJobRunsRequest {
+    /// Required. The `Rollout` which owns this collection of `JobRun` objects.
+    #[prost(string, tag="1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of `JobRun` objects to return. The service may return
+    /// fewer than this value. If unspecified, at most 50 `JobRun` objects will be
+    /// returned. The maximum value is 1000; values above 1000 will be set to 1000.
+    #[prost(int32, tag="2")]
+    pub page_size: i32,
+    /// Optional. A page token, received from a previous `ListJobRuns` call. Provide this
+    /// to retrieve the subsequent page.
+    ///
+    /// When paginating, all other provided parameters match the call that provided
+    /// the page token.
+    #[prost(string, tag="3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. Filter results to be returned. See <https://google.aip.dev/160> for more
+    /// details.
+    #[prost(string, tag="4")]
+    pub filter: ::prost::alloc::string::String,
+    /// Optional. Field to sort by. See <https://google.aip.dev/132#ordering> for more details.
+    #[prost(string, tag="5")]
+    pub order_by: ::prost::alloc::string::String,
+}
+/// ListJobRunsResponse is the response object returned by `ListJobRuns`.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListJobRunsResponse {
+    /// The `JobRun` objects.
+    #[prost(message, repeated, tag="1")]
+    pub job_runs: ::prost::alloc::vec::Vec<JobRun>,
+    /// A token, which can be sent as `page_token` to retrieve the next page. If
+    /// this field is omitted, there are no subsequent pages.
+    #[prost(string, tag="2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Locations that could not be reached
+    #[prost(string, repeated, tag="3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// GetJobRunRequest is the request object used by `GetJobRun`.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetJobRunRequest {
+    /// Required. Name of the `JobRun`. Format must be
+    /// projects/{project_id}/locations/{location_name}/deliveryPipelines/{pipeline_name}/releases/{release_name}/rollouts/{rollout_name}/jobRuns/{job_run_name}.
+    #[prost(string, tag="1")]
+    pub name: ::prost::alloc::string::String,
 }
 /// Service-wide configuration.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1650,6 +2156,26 @@ pub mod cloud_deploy_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
+        /// Abandons a Release in the Delivery Pipeline.
+        pub async fn abandon_release(
+            &mut self,
+            request: impl tonic::IntoRequest<super::AbandonReleaseRequest>,
+        ) -> Result<tonic::Response<super::AbandonReleaseResponse>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.deploy.v1.CloudDeploy/AbandonRelease",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
         /// Approves a Rollout.
         pub async fn approve_rollout(
             &mut self,
@@ -1733,6 +2259,66 @@ pub mod cloud_deploy_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
+        /// Retries the specified Job in a Rollout.
+        pub async fn retry_job(
+            &mut self,
+            request: impl tonic::IntoRequest<super::RetryJobRequest>,
+        ) -> Result<tonic::Response<super::RetryJobResponse>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.deploy.v1.CloudDeploy/RetryJob",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Lists JobRuns in a given project and location.
+        pub async fn list_job_runs(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListJobRunsRequest>,
+        ) -> Result<tonic::Response<super::ListJobRunsResponse>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.deploy.v1.CloudDeploy/ListJobRuns",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Gets details of a single JobRun.
+        pub async fn get_job_run(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetJobRunRequest>,
+        ) -> Result<tonic::Response<super::JobRun>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.deploy.v1.CloudDeploy/GetJobRun",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
         /// Gets the configuration for a location.
         pub async fn get_config(
             &mut self,
@@ -1792,6 +2378,33 @@ pub struct DeliveryPipelineNotificationEvent {
     pub delivery_pipeline: ::prost::alloc::string::String,
     /// Type of this notification, e.g. for a Pub/Sub failure.
     #[prost(enumeration="Type", tag="3")]
+    pub r#type: i32,
+}
+/// Payload proto for "clouddeploy.googleapis.com/jobrun_notification"
+/// Platform Log event that describes the failure to send JobRun resource update
+/// Pub/Sub notification.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct JobRunNotificationEvent {
+    /// Debug message for when a notification fails to send.
+    #[prost(string, tag="1")]
+    pub message: ::prost::alloc::string::String,
+    /// The name of the `JobRun`.
+    #[prost(string, tag="2")]
+    pub job_run: ::prost::alloc::string::String,
+    /// Unique identifier of the `DeliveryPipeline`.
+    #[prost(string, tag="3")]
+    pub pipeline_uid: ::prost::alloc::string::String,
+    /// Unique identifier of the `Release`.
+    #[prost(string, tag="4")]
+    pub release_uid: ::prost::alloc::string::String,
+    /// Unique identifier of the `Rollout`.
+    #[prost(string, tag="5")]
+    pub rollout_uid: ::prost::alloc::string::String,
+    /// ID of the `Target`.
+    #[prost(string, tag="6")]
+    pub target_id: ::prost::alloc::string::String,
+    /// Type of this notification, e.g. for a Pub/Sub failure.
+    #[prost(enumeration="Type", tag="7")]
     pub r#type: i32,
 }
 /// Payload proto for "clouddeploy.googleapis.com/release_notification"

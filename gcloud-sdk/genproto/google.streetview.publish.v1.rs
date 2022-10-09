@@ -71,6 +71,9 @@ pub struct Pose {
     /// NaN indicates an unmeasured quantity.
     #[prost(double, tag="5")]
     pub roll: f64,
+    /// Time of the GPS record since UTC epoch.
+    #[prost(message, optional, tag="6")]
+    pub gps_record_timestamp_unix_epoch: ::core::option::Option<::prost_types::Timestamp>,
     /// Level (the floor in a building) used to configure vertical navigation.
     #[prost(message, optional, tag="7")]
     pub level: ::core::option::Option<Level>,
@@ -82,6 +85,41 @@ pub struct Pose {
     /// estimations.
     #[prost(float, tag="9")]
     pub accuracy_meters: f32,
+}
+/// IMU data from the device sensors.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Imu {
+    /// The accelerometer measurements in meters/sec^2 with increasing timestamps
+    /// from devices.
+    #[prost(message, repeated, tag="1")]
+    pub accel_mpsps: ::prost::alloc::vec::Vec<imu::Measurement3d>,
+    /// The gyroscope measurements in radians/sec with increasing timestamps from
+    /// devices.
+    #[prost(message, repeated, tag="2")]
+    pub gyro_rps: ::prost::alloc::vec::Vec<imu::Measurement3d>,
+    /// The magnetometer measurements of the magnetic field in microtesla (uT) with
+    /// increasing timestamps from devices.
+    #[prost(message, repeated, tag="3")]
+    pub mag_ut: ::prost::alloc::vec::Vec<imu::Measurement3d>,
+}
+/// Nested message and enum types in `Imu`.
+pub mod imu {
+    /// A Generic 3d measurement sample.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Measurement3d {
+        /// The timestamp of the IMU measurement.
+        #[prost(message, optional, tag="1")]
+        pub capture_time: ::core::option::Option<::prost_types::Timestamp>,
+        /// The sensor measurement in the x axis.
+        #[prost(float, tag="2")]
+        pub x: f32,
+        /// The sensor measurement in the y axis.
+        #[prost(float, tag="3")]
+        pub y: f32,
+        /// The sensor measurement in the z axis.
+        #[prost(float, tag="4")]
+        pub z: f32,
+    }
 }
 /// Place metadata for an entity.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -227,6 +265,316 @@ pub mod photo {
         }
     }
 }
+/// A sequence of 360 photos along with metadata.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PhotoSequence {
+    /// Output only. Unique identifier for the photo sequence.
+    /// This also acts as a long running operation ID if uploading is performed
+    /// asynchronously.
+    #[prost(string, tag="1")]
+    pub id: ::prost::alloc::string::String,
+    /// Output only. Photos with increasing timestamps.
+    #[prost(message, repeated, tag="2")]
+    pub photos: ::prost::alloc::vec::Vec<Photo>,
+    /// Input only. Required when creating photo sequence. The resource name
+    /// where the bytes of the photo sequence (in the form of video) are uploaded.
+    #[prost(message, optional, tag="3")]
+    pub upload_reference: ::core::option::Option<UploadRef>,
+    /// Optional. Absolute time when the photo sequence starts to be captured.
+    /// If the photo sequence is a video, this is the start time of the video.
+    /// If this field is populated in input, it overrides the capture time in the
+    /// video or XDM file.
+    #[prost(message, optional, tag="4")]
+    pub capture_time_override: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The time this photo sequence was created in uSV Store service.
+    #[prost(message, optional, tag="18")]
+    pub upload_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Input only. Raw GPS measurements with increasing timestamps from the device that
+    /// aren't time synced with each photo.
+    /// These raw measurements will be used to infer the pose of each frame.
+    /// Required in input when InputType is VIDEO and raw GPS measurements are not
+    /// in Camera Motion Metadata Track (CAMM).
+    /// User can indicate which takes precedence using gps_source if raw GPS
+    /// measurements are provided in both raw_gps_timeline and
+    /// Camera Motion Metadata Track (CAMM).
+    #[prost(message, repeated, tag="7")]
+    pub raw_gps_timeline: ::prost::alloc::vec::Vec<Pose>,
+    /// Input only. If both raw_gps_timeline and
+    /// the Camera Motion Metadata Track (CAMM) contain GPS measurements,
+    /// indicate which takes precedence.
+    #[prost(enumeration="photo_sequence::GpsSource", tag="8")]
+    pub gps_source: i32,
+    /// Input only. Three axis IMU data for the collection.
+    /// If this data is too large to put in the request, then it should be put in
+    /// the CAMM track for the video. This data always takes precedence over the
+    /// equivalent CAMM data, if it exists.
+    #[prost(message, optional, tag="11")]
+    pub imu: ::core::option::Option<Imu>,
+    /// Output only. The processing state of this sequence.
+    #[prost(enumeration="ProcessingState", tag="12")]
+    pub processing_state: i32,
+    /// Output only. If this sequence has processing_state = FAILED, this will contain the
+    /// reason why it failed. If the processing_state is any other value, this
+    /// field will be unset.
+    #[prost(enumeration="ProcessingFailureReason", tag="13")]
+    pub failure_reason: i32,
+    /// Output only. If this sequence has `failure_reason` set, this may contain additional
+    /// details about the failure.
+    #[prost(message, optional, tag="23")]
+    pub failure_details: ::core::option::Option<ProcessingFailureDetails>,
+    /// Output only. The computed distance of the photo sequence in meters.
+    #[prost(double, tag="16")]
+    pub distance_meters: f64,
+    /// Output only. A rectangular box that encapsulates every image in this photo sequence.
+    #[prost(message, optional, tag="20")]
+    pub sequence_bounds: ::core::option::Option<LatLngBounds>,
+    /// Output only. The total number of views that all the published images in this
+    /// PhotoSequence have received.
+    #[prost(int64, tag="21")]
+    pub view_count: i64,
+    /// Output only. The filename of the upload. Does not include the directory path. Only
+    /// available if the sequence was uploaded on a platform that provides the
+    /// filename.
+    #[prost(string, tag="22")]
+    pub filename: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `PhotoSequence`.
+pub mod photo_sequence {
+    /// Primary source of GPS measurements.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum GpsSource {
+        /// GPS in raw_gps_timeline takes precedence if it exists.
+        PhotoSequence = 0,
+        /// GPS in Camera Motion Metadata Track (CAMM) takes precedence if it exists.
+        CameraMotionMetadataTrack = 1,
+    }
+    impl GpsSource {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                GpsSource::PhotoSequence => "PHOTO_SEQUENCE",
+                GpsSource::CameraMotionMetadataTrack => "CAMERA_MOTION_METADATA_TRACK",
+            }
+        }
+    }
+}
+/// A rectangle in geographical coordinates.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct LatLngBounds {
+    /// The southwest corner of these bounds.
+    #[prost(message, optional, tag="1")]
+    pub southwest: ::core::option::Option<super::super::super::r#type::LatLng>,
+    /// The northeast corner of these bounds.
+    #[prost(message, optional, tag="2")]
+    pub northeast: ::core::option::Option<super::super::super::r#type::LatLng>,
+}
+/// Additional details to accompany the ProcessingFailureReason enum.
+/// This message is always expected to be used in conjunction with
+/// ProcessingFailureReason, and the oneof value set in this message should match
+/// the FailureReason.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ProcessingFailureDetails {
+    /// Only one set of details will be set, and must match the corresponding enum
+    /// in ProcessingFailureReason.
+    #[prost(oneof="processing_failure_details::Details", tags="1, 2, 3, 4")]
+    pub details: ::core::option::Option<processing_failure_details::Details>,
+}
+/// Nested message and enum types in `ProcessingFailureDetails`.
+pub mod processing_failure_details {
+    /// Only one set of details will be set, and must match the corresponding enum
+    /// in ProcessingFailureReason.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Details {
+        /// See InsufficientGpsFailureDetails.
+        #[prost(message, tag="1")]
+        InsufficientGpsDetails(super::InsufficientGpsFailureDetails),
+        /// See GpsDataGapFailureDetails.
+        #[prost(message, tag="2")]
+        GpsDataGapDetails(super::GpsDataGapFailureDetails),
+        /// See ImuDataGapFailureDetails.
+        #[prost(message, tag="3")]
+        ImuDataGapDetails(super::ImuDataGapFailureDetails),
+        /// See NotOutdoorsFailureDetails.
+        #[prost(message, tag="4")]
+        NotOutdoorsDetails(super::NotOutdoorsFailureDetails),
+    }
+}
+/// Details related to ProcessingFailureReason#INSUFFICIENT_GPS.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct InsufficientGpsFailureDetails {
+    /// The number of GPS points that were found in the video.
+    #[prost(int32, optional, tag="1")]
+    pub gps_points_found: ::core::option::Option<i32>,
+}
+/// Details related to ProcessingFailureReason#GPS_DATA_GAP.
+/// If there are multiple GPS data gaps, only the one with the largest duration
+/// is reported here.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GpsDataGapFailureDetails {
+    /// The duration of the gap in GPS data that was found.
+    #[prost(message, optional, tag="1")]
+    pub gap_duration: ::core::option::Option<::prost_types::Duration>,
+    /// Relative time (from the start of the video stream) when the gap started.
+    #[prost(message, optional, tag="2")]
+    pub gap_start_time: ::core::option::Option<::prost_types::Duration>,
+}
+/// Details related to ProcessingFailureReason#IMU_DATA_GAP.
+/// If there are multiple IMU data gaps, only the one with the largest duration
+/// is reported here.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ImuDataGapFailureDetails {
+    /// The duration of the gap in IMU data that was found.
+    #[prost(message, optional, tag="1")]
+    pub gap_duration: ::core::option::Option<::prost_types::Duration>,
+    /// Relative time (from the start of the video stream) when the gap started.
+    #[prost(message, optional, tag="2")]
+    pub gap_start_time: ::core::option::Option<::prost_types::Duration>,
+}
+/// Details related to ProcessingFailureReason#NOT_OUTDOORS.
+/// If there are multiple indoor frames found, the first frame is recorded here.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct NotOutdoorsFailureDetails {
+    /// Relative time (from the start of the video stream) when an indoor frame was
+    /// found.
+    #[prost(message, optional, tag="1")]
+    pub start_time: ::core::option::Option<::prost_types::Duration>,
+}
+/// The processing state of the sequence. The states move as follows:
+///
+/// ```
+///       +-------------------------+
+///       |                         |
+///   +---v---+  +----------+  +----+----+
+///   |PENDING+-->PROCESSING+-->PROCESSED|
+///   +---+---+  +----+-----+  +----+----+
+///       |           |             |
+///       |        +--v---+         |
+///       +-------->FAILED<---------+
+///                +------+
+/// ```
+///
+/// The sequence may move to FAILED from any state. Additionally, a processed
+/// sequence may be re-processed at any time.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum ProcessingState {
+    /// The state is unspecified, this is the default value.
+    Unspecified = 0,
+    /// The sequence has not yet started processing.
+    Pending = 1,
+    /// The sequence is currently in processing.
+    Processing = 2,
+    /// The sequence has finished processing including refining position.
+    Processed = 3,
+    /// The sequence failed processing. See FailureReason for more details.
+    Failed = 4,
+}
+impl ProcessingState {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            ProcessingState::Unspecified => "PROCESSING_STATE_UNSPECIFIED",
+            ProcessingState::Pending => "PENDING",
+            ProcessingState::Processing => "PROCESSING",
+            ProcessingState::Processed => "PROCESSED",
+            ProcessingState::Failed => "FAILED",
+        }
+    }
+}
+/// The possible reasons this \[PhotoSequence\]
+/// \[google.streetview.publish.v1.PhotoSequence\] failed to process.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum ProcessingFailureReason {
+    /// The failure reason is unspecified, this is the default value.
+    Unspecified = 0,
+    /// Video frame's resolution is too small.
+    LowResolution = 1,
+    /// This video has been uploaded before.
+    Duplicate = 2,
+    /// Too few GPS points.
+    InsufficientGps = 3,
+    /// No overlap between the time frame of GPS track and the time frame of
+    /// video.
+    NoOverlapGps = 4,
+    /// GPS is invalid (e.x. all GPS points are at (0,0))
+    InvalidGps = 5,
+    /// The sequence of photos could not be accurately located in the world.
+    FailedToRefinePositions = 6,
+    /// The sequence was taken down for policy reasons.
+    Takedown = 7,
+    /// The video file was corrupt or could not be decoded.
+    CorruptVideo = 8,
+    /// A permanent failure in the underlying system occurred.
+    Internal = 9,
+    /// The video format is invalid or unsupported.
+    InvalidVideoFormat = 10,
+    /// Invalid image aspect ratio found.
+    InvalidVideoDimensions = 11,
+    /// Invalid capture time. Timestamps were from the future.
+    InvalidCaptureTime = 12,
+    /// GPS data contains a gap greater than 5 seconds in duration.
+    GpsDataGap = 13,
+    /// GPS data is too erratic to be processed.
+    JumpyGps = 14,
+    /// IMU (Accelerometer, Gyroscope, etc.) data are not valid. They may be
+    /// missing required fields (x, y, z or time), may not be formatted correctly,
+    /// or any other issue that prevents our systems from parsing it.
+    InvalidImu = 15,
+    /// Too few IMU points.
+    InsufficientImu = 21,
+    /// Insufficient overlap in the time frame between GPS, IMU, and other time
+    /// series data.
+    InsufficientOverlapTimeSeries = 22,
+    /// IMU (Accelerometer, Gyroscope, etc.) data contain gaps greater than 0.1
+    /// seconds in duration.
+    ImuDataGap = 16,
+    /// The camera is not supported.
+    UnsupportedCamera = 17,
+    /// Some frames were indoors, which is unsupported.
+    NotOutdoors = 18,
+    /// Not enough video frames.
+    InsufficientVideoFrames = 19,
+}
+impl ProcessingFailureReason {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            ProcessingFailureReason::Unspecified => "PROCESSING_FAILURE_REASON_UNSPECIFIED",
+            ProcessingFailureReason::LowResolution => "LOW_RESOLUTION",
+            ProcessingFailureReason::Duplicate => "DUPLICATE",
+            ProcessingFailureReason::InsufficientGps => "INSUFFICIENT_GPS",
+            ProcessingFailureReason::NoOverlapGps => "NO_OVERLAP_GPS",
+            ProcessingFailureReason::InvalidGps => "INVALID_GPS",
+            ProcessingFailureReason::FailedToRefinePositions => "FAILED_TO_REFINE_POSITIONS",
+            ProcessingFailureReason::Takedown => "TAKEDOWN",
+            ProcessingFailureReason::CorruptVideo => "CORRUPT_VIDEO",
+            ProcessingFailureReason::Internal => "INTERNAL",
+            ProcessingFailureReason::InvalidVideoFormat => "INVALID_VIDEO_FORMAT",
+            ProcessingFailureReason::InvalidVideoDimensions => "INVALID_VIDEO_DIMENSIONS",
+            ProcessingFailureReason::InvalidCaptureTime => "INVALID_CAPTURE_TIME",
+            ProcessingFailureReason::GpsDataGap => "GPS_DATA_GAP",
+            ProcessingFailureReason::JumpyGps => "JUMPY_GPS",
+            ProcessingFailureReason::InvalidImu => "INVALID_IMU",
+            ProcessingFailureReason::InsufficientImu => "INSUFFICIENT_IMU",
+            ProcessingFailureReason::InsufficientOverlapTimeSeries => "INSUFFICIENT_OVERLAP_TIME_SERIES",
+            ProcessingFailureReason::ImuDataGap => "IMU_DATA_GAP",
+            ProcessingFailureReason::UnsupportedCamera => "UNSUPPORTED_CAMERA",
+            ProcessingFailureReason::NotOutdoors => "NOT_OUTDOORS",
+            ProcessingFailureReason::InsufficientVideoFrames => "INSUFFICIENT_VIDEO_FRAMES",
+        }
+    }
+}
 /// Request to create a \[Photo][google.streetview.publish.v1.Photo\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreatePhotoRequest {
@@ -351,7 +699,9 @@ pub struct ListPhotosRequest {
     pub page_token: ::prost::alloc::string::String,
     /// Optional. The filter expression. For example: `placeId=ChIJj61dQgK6j4AR4GeTYWZsKWw`.
     ///
-    /// The filters supported at the moment are: `placeId`.
+    /// The filters supported are: `placeId`, `min_latitude`, `max_latitude`,
+    /// `min_longitude`, and `max_longitude`. See <https://google.aip.dev/160> for
+    /// more information.
     #[prost(string, tag="4")]
     pub filter: ::prost::alloc::string::String,
     /// Optional. The BCP-47 language code, such as "en-US" or "sr-Latn". For more
@@ -448,6 +798,86 @@ pub struct BatchDeletePhotosRequest {
     #[prost(string, repeated, tag="1")]
     pub photo_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+/// Request to create a
+/// \[PhotoSequence][google.streetview.publish.v1.PhotoSequence\] from a video.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreatePhotoSequenceRequest {
+    /// Required. \[PhotoSequence][google.streetview.publish.v1.PhotoSequence\] to
+    /// create.
+    #[prost(message, optional, tag="1")]
+    pub photo_sequence: ::core::option::Option<PhotoSequence>,
+    /// Required. The input form of
+    /// \[PhotoSequence][google.streetview.publish.v1.PhotoSequence\].
+    #[prost(enumeration="create_photo_sequence_request::InputType", tag="2")]
+    pub input_type: i32,
+}
+/// Nested message and enum types in `CreatePhotoSequenceRequest`.
+pub mod create_photo_sequence_request {
+    /// Input forms of \[PhotoSequence][google.streetview.publish.v1.PhotoSequence\].
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum InputType {
+        /// Not specified. Server will return \[google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT\].
+        Unspecified = 0,
+        /// 360 Video.
+        Video = 1,
+        /// Extensible Device Metadata, <http://www.xdm.org>
+        Xdm = 2,
+    }
+    impl InputType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                InputType::Unspecified => "INPUT_TYPE_UNSPECIFIED",
+                InputType::Video => "VIDEO",
+                InputType::Xdm => "XDM",
+            }
+        }
+    }
+}
+/// Request to get a \[PhotoSequence][google.streetview.publish.v1.PhotoSequence\].
+///
+/// By default
+///
+/// * does not return the download URL for the
+/// \[PhotoSequence][google.streetview.publish.v1.PhotoSequence\].
+///
+/// Parameters:
+///
+/// * `view` controls if the download URL for the
+/// \[PhotoSequence][google.streetview.publish.v1.PhotoSequence\] is
+///    returned.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetPhotoSequenceRequest {
+    /// Required. ID of the photo sequence.
+    #[prost(string, tag="1")]
+    pub sequence_id: ::prost::alloc::string::String,
+    /// Specifies if a download URL for the photo sequence should be returned in
+    /// `download_url` of individual photos in the
+    /// \[PhotoSequence][google.streetview.publish.v1.PhotoSequence\] response.
+    /// > Note: Currently not implemented.
+    #[deprecated]
+    #[prost(enumeration="PhotoView", tag="2")]
+    pub view: i32,
+    /// Optional. The filter expression. For example: `published_status=PUBLISHED`.
+    ///
+    /// The filters supported are: `published_status`.  See
+    /// <https://google.aip.dev/160> for more information.
+    #[prost(string, tag="3")]
+    pub filter: ::prost::alloc::string::String,
+}
+/// Request to delete a
+/// \[PhotoSequence][google.streetview.publish.v1.PhotoSequence\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeletePhotoSequenceRequest {
+    /// Required. ID of the
+    /// \[PhotoSequence][google.streetview.publish.v1.PhotoSequence\].
+    #[prost(string, tag="1")]
+    pub sequence_id: ::prost::alloc::string::String,
+}
 /// Response to batch delete of one or more
 /// \[Photos][google.streetview.publish.v1.Photo\].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -456,6 +886,71 @@ pub struct BatchDeletePhotosResponse {
     /// \[Photo][google.streetview.publish.v1.Photo\] in the batch request.
     #[prost(message, repeated, tag="1")]
     pub status: ::prost::alloc::vec::Vec<super::super::super::rpc::Status>,
+}
+/// Request to list all photo sequences that belong to the user sending the
+/// request.
+///
+/// Parameters:
+///
+/// * `pageSize` determines the maximum number of photo sequences to return.
+/// * `pageToken` is the next page token value returned from a previous
+/// \[ListPhotoSequences][google.streetview.publish.v1.StreetViewPublishService.ListPhotoSequences\]
+///    request, if any.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListPhotoSequencesRequest {
+    /// Optional. The maximum number of photo sequences to return.
+    /// `pageSize` must be non-negative. If `pageSize` is zero or is not
+    /// provided, the default page size of 100 is used.
+    /// The number of photo sequences returned in the response may be less than
+    /// `pageSize` if the number of matches is less than `pageSize`.
+    /// This is currently unimplemented but is in process.
+    #[prost(int32, tag="1")]
+    pub page_size: i32,
+    /// Optional. The
+    /// \[nextPageToken][google.streetview.publish.v1.ListPhotosResponse.next_page_token\]
+    /// value returned from a previous
+    /// \[ListPhotoSequences][google.streetview.publish.v1.StreetViewPublishService.ListPhotoSequences\]
+    /// request, if any.
+    #[prost(string, tag="2")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. The filter expression. For example: `imagery_type=SPHERICAL`.
+    ///
+    /// The filters supported are: `imagery_type`, `processing_state`,
+    /// `min_latitude`, `max_latitude`, `min_longitude`, `max_longitude`, and
+    /// `filename_query`. See <https://google.aip.dev/160> for more information.
+    /// Filename queries should sent as a Phrase in order to support multple words
+    /// and special characters by adding escaped quotes. Ex:
+    /// filename_query="example of a phrase.mp4"
+    #[prost(string, tag="4")]
+    pub filter: ::prost::alloc::string::String,
+}
+/// Response to list all photo sequences that belong to a user.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListPhotoSequencesResponse {
+    /// List of photo sequences via \[Operation][google.longrunning.Operation\]
+    /// interface.
+    ///
+    /// The maximum number of items returned is based on the
+    /// \[pageSize][google.streetview.publish.v1.ListPhotoSequencesRequest.page_size\]
+    /// field in the request.
+    ///
+    /// Each item in the list can have three possible states,
+    ///
+    /// * `Operation.done` = false, if the processing of
+    ///    \[PhotoSequence][google.streetview.publish.v1.PhotoSequence\] is not
+    ///    finished yet.
+    /// * `Operation.done` = true and `Operation.error` is populated, if there was
+    ///    an error in processing.
+    /// * `Operation.done` = true and `Operation.response` contains a
+    ///    \[PhotoSequence][google.streetview.publish.v1.PhotoSequence\] message,
+    ///    In each sequence, only
+    ///    \[Id][google.streetview.publish.v1.PhotoSequence.id\] is populated.
+    #[prost(message, repeated, tag="1")]
+    pub photo_sequences: ::prost::alloc::vec::Vec<super::super::super::longrunning::Operation>,
+    /// Token to retrieve the next page of results, or empty if there are no more
+    /// results in the list.
+    #[prost(string, tag="2")]
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Specifies which view of the \[Photo][google.streetview.publish.v1.Photo\]
 /// to include in the response.
@@ -864,6 +1359,167 @@ pub mod street_view_publish_service_client {
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.streetview.publish.v1.StreetViewPublishService/BatchDeletePhotos",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Creates an upload session to start uploading photo sequence data.
+        /// The upload URL of the returned
+        /// [UploadRef][google.streetview.publish.v1.UploadRef] is used to upload the
+        /// data for the `photoSequence`.
+        ///
+        /// After the upload is complete, the
+        /// [UploadRef][google.streetview.publish.v1.UploadRef] is used with
+        /// [CreatePhotoSequence][google.streetview.publish.v1.StreetViewPublishService.CreatePhotoSequence]
+        /// to create the [PhotoSequence][google.streetview.publish.v1.PhotoSequence]
+        /// object entry.
+        pub async fn start_photo_sequence_upload(
+            &mut self,
+            request: impl tonic::IntoRequest<()>,
+        ) -> Result<tonic::Response<super::UploadRef>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.streetview.publish.v1.StreetViewPublishService/StartPhotoSequenceUpload",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// After the client finishes uploading the
+        /// [PhotoSequence][google.streetview.publish.v1.PhotoSequence] with the
+        /// returned [UploadRef][google.streetview.publish.v1.UploadRef],
+        /// [CreatePhotoSequence][google.streetview.publish.v1.StreetViewPublishService.CreatePhotoSequence]
+        /// extracts a sequence of 360 photos from a video or Extensible Device
+        /// Metadata (XDM, http://www.xdm.org/) to be published to Street View on
+        /// Google Maps.
+        ///
+        /// `CreatePhotoSequence` returns an [Operation][google.longrunning.Operation],
+        /// with the [PhotoSequence][google.streetview.publish.v1.PhotoSequence] Id set
+        /// in the `Operation.name` field.
+        ///
+        /// This method returns the following error codes:
+        ///
+        /// * [google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT] if the request is malformed.
+        /// * [google.rpc.Code.NOT_FOUND][google.rpc.Code.NOT_FOUND] if the upload reference does not exist.
+        pub async fn create_photo_sequence(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreatePhotoSequenceRequest>,
+        ) -> Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.streetview.publish.v1.StreetViewPublishService/CreatePhotoSequence",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Gets the metadata of the specified
+        /// [PhotoSequence][google.streetview.publish.v1.PhotoSequence] via the
+        /// [Operation][google.longrunning.Operation] interface.
+        ///
+        /// This method returns the following three types of responses:
+        ///
+        /// * `Operation.done` = false, if the processing of
+        ///   [PhotoSequence][google.streetview.publish.v1.PhotoSequence] is not
+        ///   finished yet.
+        /// * `Operation.done` = true and `Operation.error` is populated, if there was
+        ///   an error in processing.
+        /// * `Operation.done` = true and `Operation.response` is poulated, which
+        ///   contains a [PhotoSequence][google.streetview.publish.v1.PhotoSequence]
+        ///   message.
+        ///
+        /// This method returns the following error codes:
+        ///
+        /// * [google.rpc.Code.PERMISSION_DENIED][google.rpc.Code.PERMISSION_DENIED] if the requesting user did not
+        /// create the requested
+        /// [PhotoSequence][google.streetview.publish.v1.PhotoSequence].
+        /// * [google.rpc.Code.NOT_FOUND][google.rpc.Code.NOT_FOUND] if the requested
+        /// [PhotoSequence][google.streetview.publish.v1.PhotoSequence] does not exist.
+        pub async fn get_photo_sequence(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetPhotoSequenceRequest>,
+        ) -> Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.streetview.publish.v1.StreetViewPublishService/GetPhotoSequence",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Lists all the [PhotoSequences][google.streetview.publish.v1.PhotoSequence]
+        /// that belong to the user, in descending CreatePhotoSequence timestamp order.
+        pub async fn list_photo_sequences(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListPhotoSequencesRequest>,
+        ) -> Result<tonic::Response<super::ListPhotoSequencesResponse>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.streetview.publish.v1.StreetViewPublishService/ListPhotoSequences",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Deletes a [PhotoSequence][google.streetview.publish.v1.PhotoSequence] and
+        /// its metadata.
+        ///
+        /// This method returns the following error codes:
+        ///
+        /// * [google.rpc.Code.PERMISSION_DENIED][google.rpc.Code.PERMISSION_DENIED] if the requesting user did not
+        /// create the requested photo sequence.
+        /// * [google.rpc.Code.NOT_FOUND][google.rpc.Code.NOT_FOUND] if the photo sequence ID does not exist.
+        /// * [google.rpc.Code.FAILED_PRECONDITION][google.rpc.Code.FAILED_PRECONDITION] if the photo sequence ID is not
+        /// yet finished processing.
+        pub async fn delete_photo_sequence(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeletePhotoSequenceRequest>,
+        ) -> Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.streetview.publish.v1.StreetViewPublishService/DeletePhotoSequence",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }

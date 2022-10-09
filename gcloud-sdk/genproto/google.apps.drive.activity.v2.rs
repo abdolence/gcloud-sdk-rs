@@ -1,33 +1,3 @@
-/// Information about time ranges.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct TimeRange {
-    /// The start of the time range.
-    #[prost(message, optional, tag="1")]
-    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// The end of the time range.
-    #[prost(message, optional, tag="2")]
-    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
-}
-/// Information about a group.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct Group {
-    /// The email address of the group.
-    #[prost(string, tag="1")]
-    pub email: ::prost::alloc::string::String,
-    /// The title of the group.
-    #[prost(string, tag="2")]
-    pub title: ::prost::alloc::string::String,
-}
-/// Information about a domain.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct Domain {
-    /// The name of the domain, e.g. `google.com`.
-    #[prost(string, tag="1")]
-    pub name: ::prost::alloc::string::String,
-    /// An opaque string used to identify this domain.
-    #[prost(string, tag="3")]
-    pub legacy_id: ::prost::alloc::string::String,
-}
 /// The actor of a Drive activity.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Actor {
@@ -150,6 +120,36 @@ pub mod system_event {
 /// Empty message representing an administrator.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Administrator {
+}
+/// Information about time ranges.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TimeRange {
+    /// The start of the time range.
+    #[prost(message, optional, tag="1")]
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The end of the time range.
+    #[prost(message, optional, tag="2")]
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Information about a group.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Group {
+    /// The email address of the group.
+    #[prost(string, tag="1")]
+    pub email: ::prost::alloc::string::String,
+    /// The title of the group.
+    #[prost(string, tag="2")]
+    pub title: ::prost::alloc::string::String,
+}
+/// Information about a domain.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Domain {
+    /// The name of the domain, e.g. `google.com`.
+    #[prost(string, tag="1")]
+    pub name: ::prost::alloc::string::String,
+    /// An opaque string used to identify this domain.
+    #[prost(string, tag="3")]
+    pub legacy_id: ::prost::alloc::string::String,
 }
 /// Information about the target of activity.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -495,7 +495,7 @@ pub mod action {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ActionDetail {
     /// Data describing the type and additional information of an action.
-    #[prost(oneof="action_detail::ActionDetail", tags="1, 2, 3, 4, 5, 6, 7, 8, 9, 12, 13")]
+    #[prost(oneof="action_detail::ActionDetail", tags="1, 2, 3, 4, 5, 6, 7, 8, 9, 12, 13, 19")]
     pub action_detail: ::core::option::Option<action_detail::ActionDetail>,
 }
 /// Nested message and enum types in `ActionDetail`.
@@ -536,6 +536,9 @@ pub mod action_detail {
         /// Settings were changed.
         #[prost(message, tag="13")]
         SettingsChange(super::SettingsChange),
+        /// Label was changed.
+        #[prost(message, tag="19")]
+        AppliedLabelChange(super::AppliedLabelChange),
     }
 }
 /// An object was created.
@@ -1086,6 +1089,189 @@ pub mod settings_change {
         }
     }
 }
+/// Label changes that were made on the Target.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AppliedLabelChange {
+    /// Changes that were made to the Label on the Target.
+    #[prost(message, repeated, tag="1")]
+    pub changes: ::prost::alloc::vec::Vec<applied_label_change::AppliedLabelChangeDetail>,
+}
+/// Nested message and enum types in `AppliedLabelChange`.
+pub mod applied_label_change {
+    /// A change made to a Label on the Target.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct AppliedLabelChangeDetail {
+        /// The Label name representing the Label that changed.
+        /// This name always contains the revision of the Label that was used
+        /// when this Action occurred. The format is
+        /// `labels/id@revision`.
+        #[prost(string, tag="1")]
+        pub label: ::prost::alloc::string::String,
+        /// The types of changes made to the Label on the Target.
+        #[prost(enumeration="applied_label_change_detail::Type", repeated, tag="2")]
+        pub types: ::prost::alloc::vec::Vec<i32>,
+        /// The human-readable title of the label that changed.
+        #[prost(string, tag="3")]
+        pub title: ::prost::alloc::string::String,
+        /// Field Changes. Only present if `types` contains
+        /// `LABEL_FIELD_VALUE_CHANGED`.
+        #[prost(message, repeated, tag="4")]
+        pub field_changes: ::prost::alloc::vec::Vec<applied_label_change_detail::FieldValueChange>,
+    }
+    /// Nested message and enum types in `AppliedLabelChangeDetail`.
+    pub mod applied_label_change_detail {
+        /// Change to a Field value.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct FieldValueChange {
+            /// The ID of this field. Field IDs are unique within a Label.
+            #[prost(string, optional, tag="1")]
+            pub field_id: ::core::option::Option<::prost::alloc::string::String>,
+            /// The value that was previously set on the field. If not present,
+            /// the field was newly set. At least one of {old_value|new_value} is
+            /// always set.
+            #[prost(message, optional, tag="2")]
+            pub old_value: ::core::option::Option<field_value_change::FieldValue>,
+            /// The value that is now set on the field. If not present, the field was
+            /// cleared. At least one of {old_value|new_value} is always set.
+            #[prost(message, optional, tag="3")]
+            pub new_value: ::core::option::Option<field_value_change::FieldValue>,
+            /// The human-readable display name for this field.
+            #[prost(string, optional, tag="4")]
+            pub display_name: ::core::option::Option<::prost::alloc::string::String>,
+        }
+        /// Nested message and enum types in `FieldValueChange`.
+        pub mod field_value_change {
+            /// Contains a value of a Field.
+            #[derive(Clone, PartialEq, ::prost::Message)]
+            pub struct FieldValue {
+                /// Field values for all Field types.
+                #[prost(oneof="field_value::Value", tags="1, 3, 4, 5, 6, 7, 8, 9")]
+                pub value: ::core::option::Option<field_value::Value>,
+            }
+            /// Nested message and enum types in `FieldValue`.
+            pub mod field_value {
+                /// Wrapper for Text Field value.
+                #[derive(Clone, PartialEq, ::prost::Message)]
+                pub struct Text {
+                    /// Value of Text Field.
+                    #[prost(string, optional, tag="1")]
+                    pub value: ::core::option::Option<::prost::alloc::string::String>,
+                }
+                /// Wrapper for Text List Field value.
+                #[derive(Clone, PartialEq, ::prost::Message)]
+                pub struct TextList {
+                    /// Text values.
+                    #[prost(message, repeated, tag="1")]
+                    pub values: ::prost::alloc::vec::Vec<Text>,
+                }
+                /// Wrapper for Selection Field value as combined value/display_name
+                /// pair for selected choice.
+                #[derive(Clone, PartialEq, ::prost::Message)]
+                pub struct Selection {
+                    /// Selection value as Field Choice ID.
+                    #[prost(string, optional, tag="1")]
+                    pub value: ::core::option::Option<::prost::alloc::string::String>,
+                    /// Selection value as human-readable display string.
+                    #[prost(string, optional, tag="2")]
+                    pub display_name: ::core::option::Option<::prost::alloc::string::String>,
+                }
+                /// Wrapper for SelectionList Field value.
+                #[derive(Clone, PartialEq, ::prost::Message)]
+                pub struct SelectionList {
+                    /// Selection values.
+                    #[prost(message, repeated, tag="1")]
+                    pub values: ::prost::alloc::vec::Vec<Selection>,
+                }
+                /// Wrapper for Integer Field value.
+                #[derive(Clone, PartialEq, ::prost::Message)]
+                pub struct Integer {
+                    /// Integer value.
+                    #[prost(int64, optional, tag="1")]
+                    pub value: ::core::option::Option<i64>,
+                }
+                /// Wrapper for User Field value.
+                #[derive(Clone, PartialEq, ::prost::Message)]
+                pub struct SingleUser {
+                    /// User value as email.
+                    #[prost(string, optional, tag="1")]
+                    pub value: ::core::option::Option<::prost::alloc::string::String>,
+                }
+                /// Wrapper for UserList Field value.
+                #[derive(Clone, PartialEq, ::prost::Message)]
+                pub struct UserList {
+                    /// User values.
+                    #[prost(message, repeated, tag="1")]
+                    pub values: ::prost::alloc::vec::Vec<SingleUser>,
+                }
+                /// Wrapper for Date Field value.
+                #[derive(Clone, PartialEq, ::prost::Message)]
+                pub struct Date {
+                    /// Date value.
+                    #[prost(message, optional, tag="1")]
+                    pub value: ::core::option::Option<::prost_types::Timestamp>,
+                }
+                /// Field values for all Field types.
+                #[derive(Clone, PartialEq, ::prost::Oneof)]
+                pub enum Value {
+                    /// Text Field value.
+                    #[prost(message, tag="1")]
+                    Text(Text),
+                    /// Text List Field value.
+                    #[prost(message, tag="3")]
+                    TextList(TextList),
+                    /// Selection Field value.
+                    #[prost(message, tag="4")]
+                    Selection(Selection),
+                    /// Selection List Field value.
+                    #[prost(message, tag="5")]
+                    SelectionList(SelectionList),
+                    /// Integer Field value.
+                    #[prost(message, tag="6")]
+                    Integer(Integer),
+                    /// User Field value.
+                    #[prost(message, tag="7")]
+                    User(SingleUser),
+                    /// User List Field value.
+                    #[prost(message, tag="8")]
+                    UserList(UserList),
+                    /// Date Field value.
+                    #[prost(message, tag="9")]
+                    Date(Date),
+                }
+            }
+        }
+        /// The type of Label change
+        #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+        #[repr(i32)]
+        pub enum Type {
+            /// The type of change to this Label is not available.
+            Unspecified = 0,
+            /// The identified Label was added to the Target.
+            LabelAdded = 1,
+            /// The identified Label was removed from the Target.
+            LabelRemoved = 2,
+            /// Field values were changed on the Target.
+            LabelFieldValueChanged = 3,
+            /// The Label was applied as a side-effect of Drive item creation.
+            LabelAppliedByItemCreate = 4,
+        }
+        impl Type {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Type::Unspecified => "TYPE_UNSPECIFIED",
+                    Type::LabelAdded => "LABEL_ADDED",
+                    Type::LabelRemoved => "LABEL_REMOVED",
+                    Type::LabelFieldValueChanged => "LABEL_FIELD_VALUE_CHANGED",
+                    Type::LabelAppliedByItemCreate => "LABEL_APPLIED_BY_ITEM_CREATE",
+                }
+            }
+        }
+    }
+}
 /// The request message for querying Drive activity.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryDriveActivityRequest {
@@ -1124,6 +1310,7 @@ pub struct QueryDriveActivityRequest {
     ///        - `detail.action_detail_case: RENAME`
     ///        - `detail.action_detail_case:(CREATE EDIT)`
     ///        - `-detail.action_detail_case:MOVE`
+    ///
     #[prost(string, tag="8")]
     pub filter: ::prost::alloc::string::String,
     /// The primary criteria in the query. The default is

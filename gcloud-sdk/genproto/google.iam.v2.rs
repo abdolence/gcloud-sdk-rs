@@ -99,12 +99,11 @@ pub struct Policy {
     /// Responses always contain the numeric ID.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    /// Immutable. The globally unique ID of the `Policy`. Assigned automatically
-    /// when the `Policy` is created.
+    /// Immutable. The globally unique ID of the `Policy`. Assigned automatically when the
+    /// `Policy` is created.
     #[prost(string, tag="2")]
     pub uid: ::prost::alloc::string::String,
-    /// Output only. The kind of the `Policy`. Always contains the value
-    /// `DenyPolicy`.
+    /// Output only. The kind of the `Policy`. Always contains the value `DenyPolicy`.
     #[prost(string, tag="3")]
     pub kind: ::prost::alloc::string::String,
     /// A user-specified description of the `Policy`. This value can be up to 63
@@ -129,16 +128,15 @@ pub struct Policy {
     /// Output only. The time when the `Policy` was last updated.
     #[prost(message, optional, tag="8")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. The time when the `Policy` was deleted. Empty if the policy is
-    /// not deleted.
+    /// Output only. The time when the `Policy` was deleted. Empty if the policy is not deleted.
     #[prost(message, optional, tag="9")]
     pub delete_time: ::core::option::Option<::prost_types::Timestamp>,
     /// A list of rules that specify the behavior of the `Policy`. All of the rules
     /// should be of the `kind` specified in the `Policy`.
     #[prost(message, repeated, tag="10")]
     pub rules: ::prost::alloc::vec::Vec<PolicyRule>,
-    /// Immutable. Specifies that this policy is managed by an authority and can
-    /// only be modified by that authority. Usage is restricted.
+    /// Immutable. Specifies that this policy is managed by an authority and can only be
+    /// modified by that authority. Usage is restricted.
     #[prost(string, tag="11")]
     pub managing_authority: ::prost::alloc::string::String,
 }
@@ -164,8 +162,9 @@ pub mod policy_rule {
 /// Request message for `ListPolicies`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPoliciesRequest {
-    /// Required. The resource that the policy is attached to, along with the kind
-    /// of policy to list. Format: `policies/{attachment_point}/denypolicies`
+    /// Required. The resource that the policy is attached to, along with the kind of policy
+    /// to list. Format:
+    /// `policies/{attachment_point}/denypolicies`
     ///
     ///
     /// The attachment point is identified by its URL-encoded full resource name,
@@ -181,9 +180,8 @@ pub struct ListPoliciesRequest {
     /// the value 1000.
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    /// A page token received in a
-    /// \[ListPoliciesResponse][google.iam.v2.ListPoliciesResponse\]. Provide this
-    /// token to retrieve the next page.
+    /// A page token received in a \[ListPoliciesResponse][google.iam.v2.ListPoliciesResponse\]. Provide this token to
+    /// retrieve the next page.
     #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
 }
@@ -193,8 +191,7 @@ pub struct ListPoliciesResponse {
     /// Metadata for the policies that are attached to the resource.
     #[prost(message, repeated, tag="1")]
     pub policies: ::prost::alloc::vec::Vec<Policy>,
-    /// A page token that you can use in a
-    /// \[ListPoliciesRequest][google.iam.v2.ListPoliciesRequest\] to retrieve the
+    /// A page token that you can use in a \[ListPoliciesRequest][google.iam.v2.ListPoliciesRequest\] to retrieve the
     /// next page. If this field is omitted, there are no additional pages.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
@@ -218,8 +215,8 @@ pub struct GetPolicyRequest {
 /// Request message for `CreatePolicy`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreatePolicyRequest {
-    /// Required. The resource that the policy is attached to, along with the kind
-    /// of policy to create. Format: `policies/{attachment_point}/denypolicies`
+    /// Required. The resource that the policy is attached to, along with the kind of policy
+    /// to create. Format: `policies/{attachment_point}/denypolicies`
     ///
     ///
     /// The attachment point is identified by its URL-encoded full resource name,
@@ -267,79 +264,14 @@ pub struct DeletePolicyRequest {
     /// name. For projects, you can use the alphanumeric or the numeric ID.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    /// Optional. The expected `etag` of the policy to delete. If the value does
-    /// not match the value that is stored in IAM, the request fails with a `409`
-    /// error code and `ABORTED` status.
+    /// Optional. The expected `etag` of the policy to delete. If the value does not match
+    /// the value that is stored in IAM, the request fails with a `409` error code
+    /// and `ABORTED` status.
     ///
     /// If you omit this field, the policy is deleted regardless of its current
     /// `etag`.
     #[prost(string, tag="2")]
     pub etag: ::prost::alloc::string::String,
-}
-/// `ListApplicablePoliciesRequest` represents the Request message for the
-/// `ListApplicablePolicies` method. It provides the input for a filterable query
-/// of Policies that apply to a certain GCP Resource, specified by the field
-/// `attachment_point`, found on this message.
-/// Example:
-/// ```
-/// {
-///     attachment_point:
-///     'cloudresourcemanager.googleapis.com%2Forganizations%2F212345678901'
-///     filter: 'kind:denyPolicies'
-/// }
-/// ```
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListApplicablePoliciesRequest {
-    /// Required. The Cloud resource at which the applicable policies are to be
-    /// retrieved. Format: `{attachment-point}` Use the URL-encoded full resource
-    /// name, which means that the forward-slash character, `/`, must be written as
-    /// `%2F`. For example,
-    /// `cloudresourcemanager.googleapis.com%2Fprojects%2Fmy-project`.
-    #[prost(string, tag="1")]
-    pub attachment_point: ::prost::alloc::string::String,
-    /// Filtering currently only supports the kind of policies to return, and
-    /// must be in the format “kind:\[policyKind1\] OR kind:\[policyKind2\]”.  New
-    /// policy kinds may be added in the future without notice.
-    ///
-    /// Example value: “kind:denyPolicies”
-    #[prost(string, tag="2")]
-    pub filter: ::prost::alloc::string::String,
-    /// If present, then retrieve the batch of results following the results from
-    /// the preceding call to this method.  `page_token` must be the value of
-    /// `next_page_token`
-    /// \[ListApplicablePoliciesResponse.next_page_token][google.iam.v2.ListApplicablePoliciesResponse.next_page_token\]
-    /// from the previous response.  The values of other method parameters should
-    /// be identical to those in the previous call.
-    #[prost(string, tag="3")]
-    pub page_token: ::prost::alloc::string::String,
-    /// Limit on the number of policies to include in the response.
-    /// Further policies can subsequently be obtained by including the
-    /// \[ListApplicablePoliciesResponse.next_page_token][google.iam.admin.v1.ListApplicablePoliciesResponse.next_page_token\]
-    /// in a subsequent request.
-    /// The minimum is 25, and the maximum is 100.
-    #[prost(int32, tag="4")]
-    pub page_size: i32,
-}
-/// Response message for \[ListApplicablePolicies][\] method.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListApplicablePoliciesResponse {
-    /// Ordered list starting from the resource on which this API was called
-    /// then proceeding up the hierarchy. Policies for the same attachment point
-    /// will be grouped, but no further ordering is guaranteed.
-    #[prost(message, repeated, tag="1")]
-    pub policies: ::prost::alloc::vec::Vec<Policy>,
-    /// A list of resources that the caller does not have permission to retrieve.
-    /// List or Get can be used to get detailed error messages.
-    /// Get: `policies/{attachment-point}/denypolicies/{policy-id}`
-    /// List: `policies/{attachment-point}/denypolicies`
-    #[prost(string, repeated, tag="2")]
-    pub inaccessible: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// A page token that can be used in a
-    /// \[ListApplicablePoliciesRequest][google.iam.v2.ListApplicablePoliciesRequest\]
-    /// to retrieve the next page. If this field is blank, there are no additional
-    /// pages.
-    #[prost(string, tag="3")]
-    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Metadata for long-running `Policy` operations.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -491,8 +423,7 @@ pub mod policies_client {
         ///
         /// To update a policy, you should use a read-modify-write loop:
         ///
-        /// 1. Use [GetPolicy][google.iam.v2.Policies.GetPolicy] to read the current
-        /// version of the policy.
+        /// 1. Use [GetPolicy][google.iam.v2.Policies.GetPolicy] to read the current version of the policy.
         /// 2. Modify the policy as needed.
         /// 3. Use `UpdatePolicy` to write the updated policy.
         ///
@@ -539,38 +470,6 @@ pub mod policies_client {
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.iam.v2.Policies/DeletePolicy",
-            );
-            self.inner.unary(request.into_request(), path, codec).await
-        }
-        /// Retrieves all the policies that are attached to the specified resource,
-        /// or anywhere in the ancestry of the resource. For example, for a project
-        /// this endpoint would return all the `denyPolicy` kind policies attached to
-        /// the project, its parent folder (if any), and its parent organization (if
-        /// any).
-        /// The endpoint requires the same permissions that it would take to call
-        /// `ListPolicies` or `GetPolicy`.
-        ///
-        /// The main reason to use this endpoint is as a policy admin to debug access
-        /// issues for a resource.
-        pub async fn list_applicable_policies(
-            &mut self,
-            request: impl tonic::IntoRequest<super::ListApplicablePoliciesRequest>,
-        ) -> Result<
-            tonic::Response<super::ListApplicablePoliciesResponse>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.iam.v2.Policies/ListApplicablePolicies",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }

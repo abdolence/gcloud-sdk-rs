@@ -5770,12 +5770,14 @@ pub mod suggestion_feature {
     pub enum Type {
         /// Unspecified feature type.
         Unspecified = 0,
-        /// Run article suggestion model.
+        /// Run article suggestion model for chat.
         ArticleSuggestion = 1,
         /// Run FAQ model.
         Faq = 2,
-        /// Run smart reply model.
+        /// Run smart reply model for chat.
         SmartReply = 3,
+        /// Run conversation summarization model for chat.
+        ConversationSummarization = 8,
     }
     impl Type {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -5788,6 +5790,7 @@ pub mod suggestion_feature {
                 Type::ArticleSuggestion => "ARTICLE_SUGGESTION",
                 Type::Faq => "FAQ",
                 Type::SmartReply => "SMART_REPLY",
+                Type::ConversationSummarization => "CONVERSATION_SUMMARIZATION",
             }
         }
     }
@@ -7799,6 +7802,67 @@ pub struct ListMessagesResponse {
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
+/// The request message for \[Conversations.SuggestConversationSummary][google.cloud.dialogflow.v2beta1.Conversations.SuggestConversationSummary\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SuggestConversationSummaryRequest {
+    /// Required. The conversation to fetch suggestion for.
+    /// Format: `projects/<Project ID>/locations/<Location
+    /// ID>/conversations/<Conversation ID>`.
+    #[prost(string, tag="1")]
+    pub conversation: ::prost::alloc::string::String,
+    /// The name of the latest conversation message used as context for
+    /// compiling suggestion. If empty, the latest message of the conversation will
+    /// be used.
+    ///
+    /// Format: `projects/<Project ID>/locations/<Location
+    /// ID>/conversations/<Conversation ID>/messages/<Message ID>`.
+    #[prost(string, tag="3")]
+    pub latest_message: ::prost::alloc::string::String,
+    /// Max number of messages prior to and including
+    /// \[latest_message\] to use as context when compiling the
+    /// suggestion. By default 500 and at most 1000.
+    #[prost(int32, tag="4")]
+    pub context_size: i32,
+}
+/// The response message for \[Conversations.SuggestConversationSummary][google.cloud.dialogflow.v2beta1.Conversations.SuggestConversationSummary\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SuggestConversationSummaryResponse {
+    /// Generated summary.
+    #[prost(message, optional, tag="1")]
+    pub summary: ::core::option::Option<suggest_conversation_summary_response::Summary>,
+    /// The name of the latest conversation message used as context for
+    /// compiling suggestion.
+    ///
+    /// Format: `projects/<Project ID>/locations/<Location
+    /// ID>/conversations/<Conversation ID>/messages/<Message ID>`.
+    #[prost(string, tag="2")]
+    pub latest_message: ::prost::alloc::string::String,
+    /// Number of messages prior to and including
+    /// \[last_conversation_message][\] used to compile the suggestion. It may be
+    /// smaller than the \[SuggestSummaryRequest.context_size][\] field in the
+    /// request if there weren't that many messages in the conversation.
+    #[prost(int32, tag="3")]
+    pub context_size: i32,
+}
+/// Nested message and enum types in `SuggestConversationSummaryResponse`.
+pub mod suggest_conversation_summary_response {
+    /// Generated summary for a conversation.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Summary {
+        /// The summary content that is concatenated into one string.
+        #[prost(string, tag="1")]
+        pub text: ::prost::alloc::string::String,
+        /// The summary content that is divided into sections. The key is the
+        /// section's name and the value is the section's content. There is no
+        /// specific format for the key or value.
+        #[prost(map="string, string", tag="4")]
+        pub text_sections: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+        /// The name of the answer record. Format:
+        /// "projects/<Project ID>/answerRecords/<Answer Record ID>"
+        #[prost(string, tag="3")]
+        pub answer_record: ::prost::alloc::string::String,
+    }
+}
 /// Generated client implementations.
 pub mod conversations_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
@@ -8009,6 +8073,31 @@ pub mod conversations_client {
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dialogflow.v2beta1.Conversations/ListMessages",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Suggest summary for a conversation based on specific historical messages.
+        /// The range of the messages to be used for summary can be specified in the
+        /// request.
+        pub async fn suggest_conversation_summary(
+            &mut self,
+            request: impl tonic::IntoRequest<super::SuggestConversationSummaryRequest>,
+        ) -> Result<
+            tonic::Response<super::SuggestConversationSummaryResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dialogflow.v2beta1.Conversations/SuggestConversationSummary",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
