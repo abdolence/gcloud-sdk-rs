@@ -128,6 +128,8 @@ pub enum DeliveryVehicleLocationSensor {
     RoadSnappedLocationProvider = 4,
     /// The fused location provider in Google Play services.
     FusedLocationProvider = 100,
+    /// The location provider on Apple operating systems.
+    CoreLocation = 200,
 }
 impl DeliveryVehicleLocationSensor {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -142,6 +144,7 @@ impl DeliveryVehicleLocationSensor {
             DeliveryVehicleLocationSensor::Passive => "PASSIVE",
             DeliveryVehicleLocationSensor::RoadSnappedLocationProvider => "ROAD_SNAPPED_LOCATION_PROVIDER",
             DeliveryVehicleLocationSensor::FusedLocationProvider => "FUSED_LOCATION_PROVIDER",
+            DeliveryVehicleLocationSensor::CoreLocation => "CORE_LOCATION",
         }
     }
 }
@@ -266,8 +269,8 @@ pub struct DeliveryVehicle {
     /// Vehicle's most recently reported location.
     #[prost(message, repeated, tag="8")]
     pub remaining_vehicle_journey_segments: ::prost::alloc::vec::Vec<VehicleJourneySegment>,
-    /// A list of custom Delivery Vehicle attributes. Each attribute must have a
-    /// unique key.
+    /// A list of custom Delivery Vehicle attributes. A Delivery Vehicle can have
+    /// at most 50 attributes, and each attribute must have a unique key.
     #[prost(message, repeated, tag="9")]
     pub attributes: ::prost::alloc::vec::Vec<DeliveryVehicleAttribute>,
 }

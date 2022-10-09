@@ -9164,10 +9164,11 @@ pub mod security_settings {
     /// Settings for exporting audio.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AudioExportSettings {
-        /// Cloud Storage bucket to export audio record to. You need to grant
-        /// `service-<Conversation Project
-        /// Number>@gcp-sa-dialogflow.iam.gserviceaccount.com` the `Storage Object
-        /// Admin` role in this bucket.
+        /// Cloud Storage bucket to export audio record to.
+        /// Setting this field would grant the Storage Object Creator role to
+        /// the Dialogflow Service Agent.
+        /// API caller that tries to modify this field should have the permission of
+        /// storage.buckets.setIamPolicy.
         #[prost(string, tag="1")]
         pub gcs_bucket: ::prost::alloc::string::String,
         /// Filename pattern for exported audio.

@@ -621,6 +621,9 @@ pub struct AddonsConfig {
     /// Configuration for the GCP Filestore CSI driver.
     #[prost(message, optional, tag="14")]
     pub gcp_filestore_csi_driver_config: ::core::option::Option<GcpFilestoreCsiDriverConfig>,
+    /// Configuration for the Backup for GKE agent addon.
+    #[prost(message, optional, tag="16")]
+    pub gke_backup_agent_config: ::core::option::Option<GkeBackupAgentConfig>,
 }
 /// Configuration options for the HTTP (L7) load balancing controller addon,
 /// which makes it easy to set up HTTP load balancers for services in a cluster.
@@ -770,6 +773,13 @@ pub struct GcePersistentDiskCsiDriverConfig {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GcpFilestoreCsiDriverConfig {
     /// Whether the GCP Filestore CSI driver is enabled for this cluster.
+    #[prost(bool, tag="1")]
+    pub enabled: bool,
+}
+/// Configuration for the Backup for GKE Agent.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GkeBackupAgentConfig {
+    /// Whether the Backup for GKE agent is enabled for this cluster.
     #[prost(bool, tag="1")]
     pub enabled: bool,
 }
@@ -1012,6 +1022,12 @@ pub struct IpAllocationPolicy {
     /// then the server picks the default IP allocation mode
     #[prost(bool, tag="15")]
     pub use_routes: bool,
+    /// The IP stack type of the cluster
+    #[prost(enumeration="StackType", tag="16")]
+    pub stack_type: i32,
+    /// The ipv6 access type (internal or external) when create_subnetwork is true
+    #[prost(enumeration="IPv6AccessType", tag="17")]
+    pub ipv6_access_type: i32,
 }
 /// A Google Kubernetes Engine cluster.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1200,6 +1216,9 @@ pub struct Cluster {
     /// pods.
     #[prost(message, optional, tag="67")]
     pub mesh_certificates: ::core::option::Option<MeshCertificates>,
+    /// Configuration for the fine-grained cost management feature.
+    #[prost(message, optional, tag="45")]
+    pub cost_management_config: ::core::option::Option<CostManagementConfig>,
     /// Notification configuration of the cluster.
     #[prost(message, optional, tag="49")]
     pub notification_config: ::core::option::Option<NotificationConfig>,
@@ -1460,6 +1479,9 @@ pub struct ClusterUpdate {
     /// Configuration for Shielded Nodes.
     #[prost(message, optional, tag="48")]
     pub desired_shielded_nodes: ::core::option::Option<ShieldedNodes>,
+    /// The desired configuration for the fine-grained cost management feature.
+    #[prost(message, optional, tag="49")]
+    pub desired_cost_management_config: ::core::option::Option<CostManagementConfig>,
     /// DNSConfig contains clusterDNS config for this cluster.
     #[prost(message, optional, tag="53")]
     pub desired_dns_config: ::core::option::Option<DnsConfig>,
@@ -3907,6 +3929,13 @@ pub mod release_channel {
         }
     }
 }
+/// Configuration for fine-grained cost management feature.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CostManagementConfig {
+    /// Whether the feature is enabled or not.
+    #[prost(bool, tag="1")]
+    pub enabled: bool,
+}
 /// IntraNodeVisibilityConfig contains the desired config of the intra-node
 /// visibility on this cluster.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4650,6 +4679,54 @@ impl NodePoolUpdateStrategy {
             NodePoolUpdateStrategy::Unspecified => "NODE_POOL_UPDATE_STRATEGY_UNSPECIFIED",
             NodePoolUpdateStrategy::BlueGreen => "BLUE_GREEN",
             NodePoolUpdateStrategy::Surge => "SURGE",
+        }
+    }
+}
+/// Possible values for IP stack type
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum StackType {
+    /// Default value, will be defaulted as IPV4 only
+    Unspecified = 0,
+    /// Cluster is IPV4 only
+    Ipv4 = 1,
+    /// Cluster can use both IPv4 and IPv6
+    Ipv4Ipv6 = 2,
+}
+impl StackType {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            StackType::Unspecified => "STACK_TYPE_UNSPECIFIED",
+            StackType::Ipv4 => "IPV4",
+            StackType::Ipv4Ipv6 => "IPV4_IPV6",
+        }
+    }
+}
+/// Possible values for IPv6 access type
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum IPv6AccessType {
+    /// Default value, will be defaulted as type external.
+    Ipv6AccessTypeUnspecified = 0,
+    /// Access type internal (all v6 addresses are internal IPs)
+    Internal = 1,
+    /// Access type external (all v6 addresses are external IPs)
+    External = 2,
+}
+impl IPv6AccessType {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            IPv6AccessType::Ipv6AccessTypeUnspecified => "IPV6_ACCESS_TYPE_UNSPECIFIED",
+            IPv6AccessType::Internal => "INTERNAL",
+            IPv6AccessType::External => "EXTERNAL",
         }
     }
 }

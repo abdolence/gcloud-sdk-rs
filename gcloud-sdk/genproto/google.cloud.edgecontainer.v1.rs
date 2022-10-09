@@ -36,13 +36,6 @@ pub struct Cluster {
     /// Optional. Cluster-wide maintenance policy configuration.
     #[prost(message, optional, tag="12")]
     pub maintenance_policy: ::core::option::Option<MaintenancePolicy>,
-    /// Output only. The control plane release version
-    #[prost(string, tag="13")]
-    pub control_plane_version: ::prost::alloc::string::String,
-    /// Output only. The lowest release version among all worker nodes. This field can be empty
-    /// if the cluster does not have any worker nodes.
-    #[prost(string, tag="14")]
-    pub node_version: ::prost::alloc::string::String,
 }
 /// Cluster-wide networking configuration.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -126,9 +119,6 @@ pub struct NodePool {
     /// support.
     #[prost(message, optional, tag="9")]
     pub local_disk_encryption: ::core::option::Option<node_pool::LocalDiskEncryption>,
-    /// Output only. The lowest release version among all worker nodes.
-    #[prost(string, tag="10")]
-    pub node_version: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `NodePool`.
 pub mod node_pool {
@@ -183,9 +173,10 @@ pub struct Machine {
     /// The Google Distributed Cloud Edge zone of this machine.
     #[prost(string, tag="6")]
     pub zone: ::prost::alloc::string::String,
-    /// Output only. The software version of the machine.
-    #[prost(string, tag="7")]
-    pub version: ::prost::alloc::string::String,
+    /// Output only. Whether the machine is disabled. If disabled, the machine is unable to
+    /// enter service.
+    #[prost(bool, tag="8")]
+    pub disabled: bool,
 }
 /// A VPN connection .
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -218,7 +209,7 @@ pub struct VpnConnection {
     /// The network ID of VPC to connect to.
     #[prost(string, tag="8")]
     pub vpc: ::prost::alloc::string::String,
-    /// Project detail of the VPC network. Required if VPC is in a different
+    /// Optional. Project detail of the VPC network. Required if VPC is in a different
     /// project than the cluster project.
     #[prost(message, optional, tag="11")]
     pub vpc_project: ::core::option::Option<vpn_connection::VpcProject>,
@@ -239,11 +230,12 @@ pub mod vpn_connection {
         /// the cluster project.
         #[prost(string, tag="1")]
         pub project_id: ::prost::alloc::string::String,
-        /// The service account in the VPC project configured by user. It is used to
+        /// Optional. The service account in the VPC project configured by user. It is used to
         /// create/delete Cloud Router and Cloud HA VPNs for VPN connection. If this
         /// SA is changed during/after a VPN connection is created, you need to
-        /// remove the Cloud Router and Cloud VPN resources in |project_id|. Must be
-        /// set if |project_id| is set.
+        /// remove the Cloud Router and Cloud VPN resources in |project_id|.
+        /// It is in the form of
+        /// service-{project_number}@gcp-sa-edgecontainer.iam.gserviceaccount.com.
         #[prost(string, tag="2")]
         pub service_account: ::prost::alloc::string::String,
     }

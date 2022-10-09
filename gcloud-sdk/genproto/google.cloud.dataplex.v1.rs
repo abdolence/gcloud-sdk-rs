@@ -1829,7 +1829,8 @@ pub struct SessionEvent {
     /// The log message.
     #[prost(string, tag="1")]
     pub message: ::prost::alloc::string::String,
-    /// The information about the user that created the session.
+    /// The information about the user that created the session. It will be the
+    /// email address of the user.
     #[prost(string, tag="2")]
     pub user_id: ::prost::alloc::string::String,
     /// Unique identifier for the session.
@@ -1838,6 +1839,16 @@ pub struct SessionEvent {
     /// The type of the event.
     #[prost(enumeration="session_event::EventType", tag="4")]
     pub r#type: i32,
+    /// The status of the event.
+    #[prost(bool, tag="6")]
+    pub event_succeeded: bool,
+    /// If the session is associated with an Environment with fast startup enabled,
+    /// and was pre-created before being assigned to a user.
+    #[prost(bool, tag="7")]
+    pub fast_startup_enabled: bool,
+    /// The idle duration of a warm pooled session before it is assigned to user.
+    #[prost(message, optional, tag="8")]
+    pub unassigned_duration: ::core::option::Option<::prost_types::Duration>,
     /// Additional information about the Query metadata.
     #[prost(oneof="session_event::Detail", tags="5")]
     pub detail: ::core::option::Option<session_event::Detail>,
@@ -1899,12 +1910,15 @@ pub mod session_event {
     pub enum EventType {
         /// An unspecified event type.
         Unspecified = 0,
-        /// Event for start of a session.
+        /// Event when the session is assigned to a user.
         Start = 1,
         /// Event for stop of a session.
         Stop = 2,
         /// Query events in the session.
         Query = 3,
+        /// Event for creation of a cluster. It is not yet assigned to a user.
+        /// This comes before START in the sequence
+        Create = 4,
     }
     impl EventType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -1917,6 +1931,7 @@ pub mod session_event {
                 EventType::Start => "START",
                 EventType::Stop => "STOP",
                 EventType::Query => "QUERY",
+                EventType::Create => "CREATE",
             }
         }
     }
@@ -2970,7 +2985,7 @@ pub struct Task {
     #[prost(message, optional, tag="201")]
     pub execution_status: ::core::option::Option<task::ExecutionStatus>,
     /// Task template specific user-specified config.
-    #[prost(oneof="task::Config", tags="300")]
+    #[prost(oneof="task::Config", tags="300, 302")]
     pub config: ::core::option::Option<task::Config>,
 }
 /// Nested message and enum types in `Task`.
@@ -3233,6 +3248,28 @@ pub mod task {
             SqlScript(::prost::alloc::string::String),
         }
     }
+    /// Config for running scheduled notebooks.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct NotebookTaskConfig {
+        /// Required. Path to input notebook. This can be the Cloud Storage URI of the notebook
+        /// file or the path to a Notebook Content. The execution args are accessible
+        /// as environment variables
+        /// (`TASK_key=value`).
+        #[prost(string, tag="4")]
+        pub notebook: ::prost::alloc::string::String,
+        /// Optional. Infrastructure specification for the execution.
+        #[prost(message, optional, tag="3")]
+        pub infrastructure_spec: ::core::option::Option<InfrastructureSpec>,
+        /// Optional. Cloud Storage URIs of files to be placed in the working directory of each
+        /// executor.
+        #[prost(string, repeated, tag="5")]
+        pub file_uris: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+        /// Optional. Cloud Storage URIs of archives to be extracted into the working directory
+        /// of each executor. Supported file types: .jar, .tar, .tar.gz, .tgz, and
+        /// .zip.
+        #[prost(string, repeated, tag="6")]
+        pub archive_uris: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    }
     /// Status of the task execution (e.g. Jobs).
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ExecutionStatus {
@@ -3249,6 +3286,9 @@ pub mod task {
         /// Config related to running custom Spark tasks.
         #[prost(message, tag="300")]
         Spark(SparkTaskConfig),
+        /// Config related to running scheduled Notebooks.
+        #[prost(message, tag="302")]
+        Notebook(NotebookTaskConfig),
     }
 }
 /// A job represents an instance of a task.

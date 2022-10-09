@@ -121,8 +121,15 @@ pub mod expr {
             #[prost(int64, tag="1")]
             pub id: i64,
             /// Required. The value assigned to the key.
+            ///
+            /// If the optional_entry field is true, the expression must resolve to an
+            /// optional-typed value. If the optional value is present, the key will be
+            /// set; however, if the optional value is absent, the key will be unset.
             #[prost(message, optional, tag="4")]
             pub value: ::core::option::Option<super::super::Expr>,
+            /// Whether the key-value pair is optional.
+            #[prost(bool, tag="5")]
+            pub optional_entry: bool,
             /// The `Entry` key kinds.
             #[prost(oneof="entry::KeyKind", tags="2, 3")]
             pub key_kind: ::core::option::Option<entry::KeyKind>,
@@ -570,9 +577,11 @@ pub struct Decl {
     /// Declarations are organized in containers and this represents the full path
     /// to the declaration in its container, as in `google.api.expr.Decl`.
     ///
-    /// Declarations used as \[FunctionDecl.Overload][google.api.expr.v1alpha1.Decl.FunctionDecl.Overload\] parameters may or may not
-    /// have a name depending on whether the overload is function declaration or a
-    /// function definition containing a result \[Expr][google.api.expr.v1alpha1.Expr\].
+    /// Declarations used as
+    /// \[FunctionDecl.Overload][google.api.expr.v1alpha1.Decl.FunctionDecl.Overload\]
+    /// parameters may or may not have a name depending on whether the overload is
+    /// function declaration or a function definition containing a result
+    /// \[Expr][google.api.expr.v1alpha1.Expr\].
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The declaration kind.
@@ -614,8 +623,8 @@ pub mod decl {
     /// Nested message and enum types in `FunctionDecl`.
     pub mod function_decl {
         /// An overload indicates a function's parameter types and return type, and
-        /// may optionally include a function body described in terms of \[Expr][google.api.expr.v1alpha1.Expr\]
-        /// values.
+        /// may optionally include a function body described in terms of
+        /// \[Expr][google.api.expr.v1alpha1.Expr\] values.
         ///
         /// Functions overloads are declared in either a function or method
         /// call-style. For methods, the `params\[0\]` is the expected type of the
@@ -628,11 +637,13 @@ pub mod decl {
             /// Required. Globally unique overload name of the function which reflects
             /// the function name and argument types.
             ///
-            /// This will be used by a \[Reference][google.api.expr.v1alpha1.Reference\] to indicate the `overload_id` that
-            /// was resolved for the function `name`.
+            /// This will be used by a \[Reference][google.api.expr.v1alpha1.Reference\]
+            /// to indicate the `overload_id` that was resolved for the function
+            /// `name`.
             #[prost(string, tag="1")]
             pub overload_id: ::prost::alloc::string::String,
-            /// List of function parameter \[Type][google.api.expr.v1alpha1.Type\] values.
+            /// List of function parameter \[Type][google.api.expr.v1alpha1.Type\]
+            /// values.
             ///
             /// Param types are disjoint after generic type parameters have been
             /// replaced with the type `DYN`. Since the `DYN` type is compatible with
@@ -690,7 +701,8 @@ pub struct Reference {
     /// presented candidates must happen at runtime because of dynamic types. The
     /// type checker attempts to narrow down this list as much as possible.
     ///
-    /// Empty if this is not a reference to a \[Decl.FunctionDecl][google.api.expr.v1alpha1.Decl.FunctionDecl\].
+    /// Empty if this is not a reference to a
+    /// \[Decl.FunctionDecl][google.api.expr.v1alpha1.Decl.FunctionDecl\].
     #[prost(string, repeated, tag="3")]
     pub overload_id: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// For references to constants, this may contain the value of the

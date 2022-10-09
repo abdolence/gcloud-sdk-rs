@@ -38,7 +38,7 @@ pub struct CreateBucketRequest {
     /// Required. The project to which this bucket will belong.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    /// Required. Properties of the new bucket being inserted.
+    /// Properties of the new bucket being inserted.
     /// The project and name of the bucket are specified in the parent and
     /// bucket_id fields, respectively. Populating those fields in `bucket` will
     /// result in an error.
@@ -103,7 +103,7 @@ pub struct LockBucketRetentionPolicyRequest {
     /// Required. Name of a bucket.
     #[prost(string, tag="1")]
     pub bucket: ::prost::alloc::string::String,
-    /// Makes the operation conditional on whether bucket's current metageneration
+    /// Required. Makes the operation conditional on whether bucket's current metageneration
     /// matches the given value. Must be positive.
     #[prost(int64, tag="2")]
     pub if_metageneration_match: i64,
@@ -111,7 +111,7 @@ pub struct LockBucketRetentionPolicyRequest {
 /// Request for UpdateBucket method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateBucketRequest {
-    /// The bucket to update.
+    /// Required. The bucket to update.
     /// The bucket's `name` field will be used to identify the bucket.
     #[prost(message, optional, tag="1")]
     pub bucket: ::core::option::Option<Bucket>,
@@ -133,7 +133,7 @@ pub struct UpdateBucketRequest {
     /// "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
     #[prost(string, tag="9")]
     pub predefined_default_object_acl: ::prost::alloc::string::String,
-    /// List of fields to be updated.
+    /// Required. List of fields to be updated.
     ///
     /// To specify ALL fields, equivalent to the JSON API's "update" function,
     /// specify a single field with the value `*`. Note: not recommended. If a new
@@ -319,10 +319,10 @@ pub struct CancelResumableWriteResponse {
 /// Request message for ReadObject.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReadObjectRequest {
-    /// The name of the bucket containing the object to read.
+    /// Required. The name of the bucket containing the object to read.
     #[prost(string, tag="1")]
     pub bucket: ::prost::alloc::string::String,
-    /// The name of the object to read.
+    /// Required. The name of the object to read.
     #[prost(string, tag="2")]
     pub object: ::prost::alloc::string::String,
     /// If present, selects a specific revision of this object (as opposed
@@ -448,7 +448,7 @@ pub struct ReadObjectResponse {
 /// Describes an attempt to insert an object, possibly over multiple requests.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WriteObjectSpec {
-    /// Destination object, including its name and its metadata.
+    /// Required. Destination object, including its name and its metadata.
     #[prost(message, optional, tag="1")]
     pub resource: ::core::option::Option<Object>,
     /// Apply a predefined set of access controls to this object.
@@ -676,7 +676,7 @@ pub mod query_write_status_response {
 /// common_object_request_params.customer_encryption field.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RewriteObjectRequest {
-    /// Immutable. The name of the destination object.
+    /// Required. Immutable. The name of the destination object.
     /// See the
     /// [Naming Guidelines](<https://cloud.google.com/storage/docs/naming-objects>).
     /// Example: `test.txt`
@@ -685,7 +685,7 @@ pub struct RewriteObjectRequest {
     /// (bucket, object, generation).
     #[prost(string, tag="24")]
     pub destination_name: ::prost::alloc::string::String,
-    /// Immutable. The name of the bucket containing the destination object.
+    /// Required. Immutable. The name of the bucket containing the destination object.
     #[prost(string, tag="25")]
     pub destination_bucket: ::prost::alloc::string::String,
     /// The name of the Cloud KMS key that will be used to encrypt the destination
@@ -816,7 +816,7 @@ pub struct RewriteResponse {
 /// Request message StartResumableWrite.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StartResumableWriteRequest {
-    /// The destination bucket, object, and metadata, as well as any preconditions.
+    /// Required. The destination bucket, object, and metadata, as well as any preconditions.
     #[prost(message, optional, tag="1")]
     pub write_object_spec: ::core::option::Option<WriteObjectSpec>,
     /// A set of parameters common to Storage API requests concerning an object.
@@ -834,7 +834,7 @@ pub struct StartResumableWriteResponse {
 /// Request message for UpdateObject.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateObjectRequest {
-    /// The object to update.
+    /// Required. The object to update.
     /// The object's bucket and name fields are used to identify the object to
     /// update. If present, the object's generation field selects a specific
     /// revision of this object whose metadata should be updated. Otherwise,
@@ -865,7 +865,7 @@ pub struct UpdateObjectRequest {
     /// "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
     #[prost(string, tag="10")]
     pub predefined_acl: ::prost::alloc::string::String,
-    /// List of fields to be updated.
+    /// Required. List of fields to be updated.
     ///
     /// To specify ALL fields, equivalent to the JSON API's "update" function,
     /// specify a single field with the value `*`. Note: not recommended. If a new
@@ -944,16 +944,16 @@ pub struct ListHmacKeysRequest {
     /// <projectIdentifier> can be the project ID or project number.
     #[prost(string, tag="1")]
     pub project: ::prost::alloc::string::String,
-    /// Optional. The maximum number of keys to return.
+    /// The maximum number of keys to return.
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    /// Optional. A previously returned token from ListHmacKeysResponse to get the next page.
+    /// A previously returned token from ListHmacKeysResponse to get the next page.
     #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
-    /// Optional. If set, filters to only return HMAC keys for specified service account.
+    /// If set, filters to only return HMAC keys for specified service account.
     #[prost(string, tag="4")]
     pub service_account_email: ::prost::alloc::string::String,
-    /// Optional. If set, return deleted keys that have not yet been wiped out.
+    /// If set, return deleted keys that have not yet been wiped out.
     #[prost(bool, tag="5")]
     pub show_deleted_keys: bool,
 }
@@ -1225,8 +1225,8 @@ pub struct Bucket {
     /// Reserved for future use.
     #[prost(bool, tag="25")]
     pub satisfies_pzs: bool,
-    /// Configuration that, if present, specifies the data placement for a Custom
-    /// Dual Region.
+    /// Configuration that, if present, specifies the data placement for a
+    /// \[<https://cloud.google.com/storage/docs/use-dual-regions\][Dual> Region].
     #[prost(message, optional, tag="26")]
     pub custom_placement_config: ::core::option::Option<bucket::CustomPlacementConfig>,
     /// The bucket's Autoclass configuration. If there is no configuration, the
@@ -1427,8 +1427,8 @@ pub mod bucket {
         /// duration must be greater than zero and less than 100 years. Note that
         /// enforcement of retention periods less than a day is not guaranteed. Such
         /// periods should only be used for testing purposes.
-        #[prost(int64, tag="3")]
-        pub retention_period: i64,
+        #[prost(int64, optional, tag="3")]
+        pub retention_period: ::core::option::Option<i64>,
     }
     /// Properties of a bucket related to versioning.
     /// For more on Cloud Storage versioning, see
@@ -1496,7 +1496,8 @@ pub struct BucketAccessControl {
     /// * `group-{groupid}`
     /// * `group-{email}`
     /// * `domain-{domain}`
-    /// * `project-{team-projectid}`
+    /// * `project-{team}-{projectnumber}`
+    /// * `project-{team}-{projectid}`
     /// * `allUsers`
     /// * `allAuthenticatedUsers`
     /// Examples:
@@ -1505,8 +1506,14 @@ pub struct BucketAccessControl {
     /// `group-example@googlegroups.com`
     /// * All members of the Google Apps for Business domain `example.com` would be
     /// `domain-example.com`
+    /// For project entities, `project-{team}-{projectnumber}` format will be
+    /// returned on response.
     #[prost(string, tag="3")]
     pub entity: ::prost::alloc::string::String,
+    /// Output only. The alternative entity format, if exists. For project entities,
+    /// `project-{team}-{projectid}` format will be returned on response.
+    #[prost(string, tag="9")]
+    pub entity_alt: ::prost::alloc::string::String,
     /// The ID for the entity, if any.
     #[prost(string, tag="4")]
     pub entity_id: ::prost::alloc::string::String,
@@ -1607,15 +1614,15 @@ pub struct Notification {
     /// only be performed if the etag matches that of the Notification.
     #[prost(string, tag="7")]
     pub etag: ::prost::alloc::string::String,
-    /// Optional. If present, only send notifications about listed event types. If empty,
+    /// If present, only send notifications about listed event types. If empty,
     /// sent notifications for all event types.
     #[prost(string, repeated, tag="3")]
     pub event_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// Optional. An optional list of additional attributes to attach to each Pub/Sub
+    /// A list of additional attributes to attach to each Pub/Sub
     /// message published for this notification subscription.
     #[prost(map="string, string", tag="4")]
     pub custom_attributes: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
-    /// Optional. If present, only apply this notification config to object names that
+    /// If present, only apply this notification config to object names that
     /// begin with this prefix.
     #[prost(string, tag="5")]
     pub object_name_prefix: ::prost::alloc::string::String,
@@ -1807,7 +1814,8 @@ pub struct ObjectAccessControl {
     /// * `group-{groupid}`
     /// * `group-{email}`
     /// * `domain-{domain}`
-    /// * `project-{team-projectid}`
+    /// * `project-{team}-{projectnumber}`
+    /// * `project-{team}-{projectid}`
     /// * `allUsers`
     /// * `allAuthenticatedUsers`
     /// Examples:
@@ -1816,8 +1824,14 @@ pub struct ObjectAccessControl {
     /// `group-example@googlegroups.com`.
     /// * All members of the Google Apps for Business domain `example.com` would be
     /// `domain-example.com`.
+    /// For project entities, `project-{team}-{projectnumber}` format will be
+    /// returned on response.
     #[prost(string, tag="3")]
     pub entity: ::prost::alloc::string::String,
+    /// Output only. The alternative entity format, if exists. For project entities,
+    /// `project-{team}-{projectid}` format will be returned on response.
+    #[prost(string, tag="9")]
+    pub entity_alt: ::prost::alloc::string::String,
     /// The ID for the entity, if any.
     #[prost(string, tag="4")]
     pub entity_id: ::prost::alloc::string::String,

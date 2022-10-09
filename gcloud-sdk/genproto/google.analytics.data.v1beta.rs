@@ -31,8 +31,8 @@ pub struct MinuteRange {
     ///
     /// If unspecified, `startMinutesAgo` is defaulted to 29. Standard Analytics
     /// properties can request up to the last 30 minutes of event data
-    /// (`startMinutesAgo <= 29`), and Google Analytics 360 properties can request
-    /// up to the last 60 minutes of event data (`startMinutesAgo <= 59`).
+    /// (`startMinutesAgo <= 29`), and 360 Analytics properties can request up to
+    /// the last 60 minutes of event data (`startMinutesAgo <= 59`).
     #[prost(int32, optional, tag="1")]
     pub start_minutes_ago: ::core::option::Option<i32>,
     /// The inclusive end minute for the query as a number of minutes before now.
@@ -42,8 +42,8 @@ pub struct MinuteRange {
     ///
     /// If unspecified, `endMinutesAgo` is defaulted to 0. Standard Analytics
     /// properties can request any minute in the last 30 minutes of event data
-    /// (`endMinutesAgo <= 29`), and Google Analytics 360 properties can request
-    /// any minute in the last 60 minutes of event data (`endMinutesAgo <= 59`).
+    /// (`endMinutesAgo <= 29`), and 360 Analytics properties can request any
+    /// minute in the last 60 minutes of event data (`endMinutesAgo <= 59`).
     #[prost(int32, optional, tag="2")]
     pub end_minutes_ago: ::core::option::Option<i32>,
     /// Assigns a name to this minute range. The dimension `dateRange` is valued to
@@ -55,7 +55,7 @@ pub struct MinuteRange {
 }
 /// Dimensions are attributes of your data. For example, the dimension city
 /// indicates the city from which an event originates. Dimension values in report
-/// responses are strings; for example, city could be "Paris" or "New York".
+/// responses are strings; for example, the city could be "Paris" or "New York".
 /// Requests are allowed up to 9 dimensions.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Dimension {
@@ -159,9 +159,8 @@ pub struct Metric {
     #[prost(bool, tag="3")]
     pub invisible: bool,
 }
-/// To express dimension or metric filters.
-/// The fields in the same FilterExpression need to be either all dimensions or
-/// all metrics.
+/// To express dimension or metric filters. The fields in the same
+/// FilterExpression need to be either all dimensions or all metrics.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FilterExpression {
     /// Specify one type of filter expression for `FilterExpression`.
@@ -182,9 +181,8 @@ pub mod filter_expression {
         /// The FilterExpression is NOT of not_expression.
         #[prost(message, tag="3")]
         NotExpression(::prost::alloc::boxed::Box<super::FilterExpression>),
-        /// A primitive filter.
-        /// All fields in filter in same FilterExpression needs to be either all
-        /// dimensions or metrics.
+        /// A primitive filter. In the same FilterExpression, all of the filter's
+        /// field names need to be either all dimensions or all metrics.
         #[prost(message, tag="4")]
         Filter(super::Filter),
     }
@@ -199,8 +197,12 @@ pub struct FilterExpressionList {
 /// An expression to filter dimension or metric values.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Filter {
-    /// The dimension name or metric name. Must be a name defined in dimensions
-    /// or metrics.
+    /// The dimension name or metric name.
+    ///
+    /// In most methods, dimensions & metrics can be used for the first time in
+    /// this field. However in a RunPivotReportRequest, this field must be
+    /// additionally specified by name in the RunPivotReportRequest's dimensions or
+    /// metrics.
     #[prost(string, tag="1")]
     pub field_name: ::prost::alloc::string::String,
     /// Specify one type of filter for `Filter`.
@@ -238,9 +240,9 @@ pub mod filter {
             EndsWith = 3,
             /// Contains the string value.
             Contains = 4,
-            /// Full regular expression match with the string value.
+            /// Full match for the regular expression with the string value.
             FullRegexp = 5,
-            /// Partial regular expression match with the string value.
+            /// Partial match for the regular expression with the string value.
             PartialRegexp = 6,
         }
         impl MatchType {
@@ -345,7 +347,9 @@ pub mod filter {
         BetweenFilter(BetweenFilter),
     }
 }
-/// The sort options.
+/// Order bys define how rows will be sorted in the response. For example,
+/// ordering rows by descending event count is one ordering, and ordering rows by
+/// the event name string is a different ordering.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OrderBy {
     /// If true, sorts by descending order.
@@ -678,6 +682,16 @@ pub struct ResponseMetaData {
     /// If empty reason is specified, the report is empty for this reason.
     #[prost(string, optional, tag="7")]
     pub empty_reason: ::core::option::Option<::prost::alloc::string::String>,
+    /// If `subjectToThresholding` is true, this report is subject to thresholding
+    /// and only returns data that meets the minimum aggregation thresholds. It is
+    /// possible for a request to be subject to thresholding thresholding and no
+    /// data is absent from the report, and this happens when all data is above the
+    /// thresholds. To learn more, see [Data
+    /// thresholds](<https://support.google.com/analytics/answer/9383630>) and [About
+    /// Demographics and
+    /// Interests](<https://support.google.com/analytics/answer/2799357>).
+    #[prost(bool, optional, tag="8")]
+    pub subject_to_thresholding: ::core::option::Option<bool>,
 }
 /// Nested message and enum types in `ResponseMetaData`.
 pub mod response_meta_data {
@@ -863,8 +877,8 @@ pub struct PropertyQuota {
     pub tokens_per_day: ::core::option::Option<QuotaStatus>,
     /// Standard Analytics Properties can use up to 5,000 tokens per hour;
     /// Analytics 360 Properties can use 50,000 tokens per hour. An API request
-    /// consumes a single number of tokens, and that number is deducted from both
-    /// the hourly and daily quotas.
+    /// consumes a single number of tokens, and that number is deducted from all of
+    /// the hourly, daily, and per project hourly quotas.
     #[prost(message, optional, tag="2")]
     pub tokens_per_hour: ::core::option::Option<QuotaStatus>,
     /// Standard Analytics Properties can send up to 10 concurrent requests;
@@ -882,6 +896,14 @@ pub struct PropertyQuota {
     /// thresholded dimensions.
     #[prost(message, optional, tag="5")]
     pub potentially_thresholded_requests_per_hour: ::core::option::Option<QuotaStatus>,
+    /// Analytics Properties can use up to 25% of their tokens per project per
+    /// hour. This amounts to standard Analytics Properties can use up to 1,250
+    /// tokens per project per hour, and Analytics 360 Properties can use 12,500
+    /// tokens per project per hour. An API request consumes a single number of
+    /// tokens, and that number is deducted from all of the hourly, daily, and per
+    /// project hourly quotas.
+    #[prost(message, optional, tag="6")]
+    pub tokens_per_project_per_hour: ::core::option::Option<QuotaStatus>,
 }
 /// Current state for a particular quota group.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1252,8 +1274,8 @@ pub struct RunReportRequest {
     /// for examples. Metrics cannot be used in this filter.
     #[prost(message, optional, tag="5")]
     pub dimension_filter: ::core::option::Option<FilterExpression>,
-    /// The filter clause of metrics. Applied at post aggregation phase, similar to
-    /// SQL having-clause. Dimensions cannot be used in this filter.
+    /// The filter clause of metrics. Applied after aggregating the report's rows,
+    /// similar to SQL having-clause. Dimensions cannot be used in this filter.
     #[prost(message, optional, tag="6")]
     pub metric_filter: ::core::option::Option<FilterExpression>,
     /// The row count of the start row. The first row is counted as row 0.
@@ -1579,13 +1601,11 @@ pub struct RunRealtimeReportRequest {
     /// The metrics requested and displayed.
     #[prost(message, repeated, tag="3")]
     pub metrics: ::prost::alloc::vec::Vec<Metric>,
-    /// The filter clause of dimensions. Dimensions must be requested to be used in
-    /// this filter. Metrics cannot be used in this filter.
+    /// The filter clause of dimensions. Metrics cannot be used in this filter.
     #[prost(message, optional, tag="4")]
     pub dimension_filter: ::core::option::Option<FilterExpression>,
     /// The filter clause of metrics. Applied at post aggregation phase, similar to
-    /// SQL having-clause. Metrics must be requested to be used in this filter.
-    /// Dimensions cannot be used in this filter.
+    /// SQL having-clause. Dimensions cannot be used in this filter.
     #[prost(message, optional, tag="5")]
     pub metric_filter: ::core::option::Option<FilterExpression>,
     /// The number of rows to return. If unspecified, 10,000 rows are returned. The
@@ -1734,6 +1754,10 @@ pub mod beta_analytics_data_client {
         /// measurements of user activity on your property, such as active users or
         /// event count. Dimensions break down metrics across some common criteria,
         /// such as country or event name.
+        ///
+        /// For a guide to constructing requests & understanding responses, see
+        /// [Creating a
+        /// Report](https://developers.google.com/analytics/devguides/reporting/data/v1/basics).
         pub async fn run_report(
             &mut self,
             request: impl tonic::IntoRequest<super::RunReportRequest>,
@@ -1851,9 +1875,15 @@ pub mod beta_analytics_data_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        /// The Google Analytics Realtime API returns a customized report of realtime
-        /// event data for your property. These reports show events and usage from the
-        /// last 30 minutes.
+        /// Returns a customized report of realtime event data for your property.
+        /// Events appear in realtime reports seconds after they have been sent to
+        /// the Google Analytics. Realtime reports show events and usage data for the
+        /// periods of time ranging from the present moment to 30 minutes ago (up to
+        /// 60 minutes for Google Analytics 360 properties).
+        ///
+        /// For a guide to constructing realtime requests & understanding responses,
+        /// see [Creating a Realtime
+        /// Report](https://developers.google.com/analytics/devguides/reporting/data/v1/realtime-basics).
         pub async fn run_realtime_report(
             &mut self,
             request: impl tonic::IntoRequest<super::RunRealtimeReportRequest>,

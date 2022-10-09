@@ -1,8 +1,166 @@
+/// Request for the `ListCertificateIssuanceConfigs` method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListCertificateIssuanceConfigsRequest {
+    /// Required. The project and location from which the certificate should be
+    /// listed, specified in the format `projects/*/locations/*`.
+    #[prost(string, tag="1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Maximum number of certificate configs to return per call.
+    #[prost(int32, tag="2")]
+    pub page_size: i32,
+    /// The value returned by the last `ListCertificateIssuanceConfigsResponse`.
+    /// Indicates that this is a continuation of a prior
+    /// `ListCertificateIssuanceConfigs` call, and that the system should return
+    /// the next page of data.
+    #[prost(string, tag="3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Filter expression to restrict the Certificates Configs returned.
+    #[prost(string, tag="4")]
+    pub filter: ::prost::alloc::string::String,
+    /// A list of Certificate Config field names used to specify the order of the
+    /// returned results. The default sorting order is ascending. To specify
+    /// descending order for a field, add a suffix " desc".
+    #[prost(string, tag="5")]
+    pub order_by: ::prost::alloc::string::String,
+}
+/// Response for the `ListCertificateIssuanceConfigs` method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListCertificateIssuanceConfigsResponse {
+    /// A list of certificate configs for the parent resource.
+    #[prost(message, repeated, tag="1")]
+    pub certificate_issuance_configs: ::prost::alloc::vec::Vec<CertificateIssuanceConfig>,
+    /// If there might be more results than those appearing in this response, then
+    /// `next_page_token` is included. To get the next set of results, call this
+    /// method again using the value of `next_page_token` as `page_token`.
+    #[prost(string, tag="2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Locations that could not be reached.
+    #[prost(string, repeated, tag="3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Request for the `GetCertificateIssuanceConfig` method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetCertificateIssuanceConfigRequest {
+    /// Required. A name of the certificate issuance config to describe. Must be in
+    /// the format `projects/*/locations/*/certificateIssuanceConfigs/*`.
+    #[prost(string, tag="1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request for the `CreateCertificateIssuanceConfig` method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateCertificateIssuanceConfigRequest {
+    /// Required. The parent resource of the certificate issuance config. Must be
+    /// in the format `projects/*/locations/*`.
+    #[prost(string, tag="1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. A user-provided name of the certificate config.
+    #[prost(string, tag="2")]
+    pub certificate_issuance_config_id: ::prost::alloc::string::String,
+    /// Required. A definition of the certificate issuance config to create.
+    #[prost(message, optional, tag="3")]
+    pub certificate_issuance_config: ::core::option::Option<CertificateIssuanceConfig>,
+}
+/// Request for the `DeleteCertificateIssuanceConfig` method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteCertificateIssuanceConfigRequest {
+    /// Required. A name of the certificate issuance config to delete. Must be in
+    /// the format `projects/*/locations/*/certificateIssuanceConfigs/*`.
+    #[prost(string, tag="1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// CertificateIssuanceConfig specifies how to issue and manage a certificate.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CertificateIssuanceConfig {
+    /// A user-defined name of the certificate issuance config.
+    /// CertificateIssuanceConfig names must be unique globally and match pattern
+    /// `projects/*/locations/*/certificateIssuanceConfigs/*`.
+    #[prost(string, tag="1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. The creation timestamp of a CertificateIssuanceConfig.
+    #[prost(message, optional, tag="2")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The last update timestamp of a CertificateIssuanceConfig.
+    #[prost(message, optional, tag="3")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Set of labels associated with a CertificateIssuanceConfig.
+    #[prost(map="string, string", tag="4")]
+    pub labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    /// One or more paragraphs of text description of a CertificateIssuanceConfig.
+    #[prost(string, tag="5")]
+    pub description: ::prost::alloc::string::String,
+    /// Required. The CA that issues the workload certificate. It includes the CA
+    /// address, type, authentication to CA service, etc.
+    #[prost(message, optional, tag="6")]
+    pub certificate_authority_config: ::core::option::Option<certificate_issuance_config::CertificateAuthorityConfig>,
+    /// Required. Workload certificate lifetime requested.
+    #[prost(message, optional, tag="7")]
+    pub lifetime: ::core::option::Option<::prost_types::Duration>,
+    /// Required. Specifies the percentage of elapsed time of the certificate
+    /// lifetime to wait before renewing the certificate. Must be a number between
+    /// 1-99, inclusive.
+    #[prost(int32, tag="8")]
+    pub rotation_window_percentage: i32,
+    /// Required. The key algorithm to use when generating the private key.
+    #[prost(enumeration="certificate_issuance_config::KeyAlgorithm", tag="9")]
+    pub key_algorithm: i32,
+}
+/// Nested message and enum types in `CertificateIssuanceConfig`.
+pub mod certificate_issuance_config {
+    /// The CA that issues the workload certificate. It includes CA address, type,
+    /// authentication to CA service, etc.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct CertificateAuthorityConfig {
+        #[prost(oneof="certificate_authority_config::Kind", tags="1")]
+        pub kind: ::core::option::Option<certificate_authority_config::Kind>,
+    }
+    /// Nested message and enum types in `CertificateAuthorityConfig`.
+    pub mod certificate_authority_config {
+        /// Contains information required to contact CA service.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct CertificateAuthorityServiceConfig {
+            /// Required. A CA pool resource used to issue a certificate.
+            /// The CA pool string has a relative resource path following the form
+            /// "projects/{project}/locations/{location}/caPools/{ca_pool}".
+            #[prost(string, tag="1")]
+            pub ca_pool: ::prost::alloc::string::String,
+        }
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum Kind {
+            /// Defines a CertificateAuthorityServiceConfig.
+            #[prost(message, tag="1")]
+            CertificateAuthorityServiceConfig(CertificateAuthorityServiceConfig),
+        }
+    }
+    /// The type of keypair to generate.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum KeyAlgorithm {
+        /// Unspecified key algorithm.
+        Unspecified = 0,
+        /// Specifies RSA with a 2048-bit modulus.
+        Rsa2048 = 1,
+        /// Specifies ECDSA with curve P256.
+        EcdsaP256 = 4,
+    }
+    impl KeyAlgorithm {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                KeyAlgorithm::Unspecified => "KEY_ALGORITHM_UNSPECIFIED",
+                KeyAlgorithm::Rsa2048 => "RSA_2048",
+                KeyAlgorithm::EcdsaP256 => "ECDSA_P256",
+            }
+        }
+    }
+}
 /// Request for the `ListCertificates` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCertificatesRequest {
-    /// Required. The project and location from which the certificate should be listed,
-    /// specified in the format `projects/*/locations/*`.
+    /// Required. The project and location from which the certificate should be
+    /// listed, specified in the format `projects/*/locations/*`.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     /// Maximum number of certificates to return per call.
@@ -65,8 +223,8 @@ pub struct UpdateCertificateRequest {
     /// Required. A definition of the certificate to update.
     #[prost(message, optional, tag="1")]
     pub certificate: ::core::option::Option<Certificate>,
-    /// Required. The update mask applies to the resource. For the `FieldMask` definition,
-    /// see
+    /// Required. The update mask applies to the resource. For the `FieldMask`
+    /// definition, see
     /// <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask.>
     #[prost(message, optional, tag="2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
@@ -82,8 +240,8 @@ pub struct DeleteCertificateRequest {
 /// Request for the `ListCertificateMaps` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCertificateMapsRequest {
-    /// Required. The project and location from which the certificate maps should be listed,
-    /// specified in the format `projects/*/locations/*`.
+    /// Required. The project and location from which the certificate maps should
+    /// be listed, specified in the format `projects/*/locations/*`.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     /// Maximum number of certificate maps to return per call.
@@ -146,8 +304,8 @@ pub struct UpdateCertificateMapRequest {
     /// Required. A definition of the certificate map to update.
     #[prost(message, optional, tag="1")]
     pub certificate_map: ::core::option::Option<CertificateMap>,
-    /// Required. The update mask applies to the resource. For the `FieldMask` definition,
-    /// see
+    /// Required. The update mask applies to the resource. For the `FieldMask`
+    /// definition, see
     /// <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask.>
     #[prost(message, optional, tag="2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
@@ -163,8 +321,8 @@ pub struct DeleteCertificateMapRequest {
 /// Request for the `ListCertificateMapEntries` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCertificateMapEntriesRequest {
-    /// Required. The project, location and certificate map from which the certificate map
-    /// entries should be listed, specified in the format
+    /// Required. The project, location and certificate map from which the
+    /// certificate map entries should be listed, specified in the format
     /// `projects/*/locations/*/certificateMaps/*`.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
@@ -232,8 +390,8 @@ pub struct UpdateCertificateMapEntryRequest {
     /// Required. A definition of the certificate map entry to create map entry.
     #[prost(message, optional, tag="1")]
     pub certificate_map_entry: ::core::option::Option<CertificateMapEntry>,
-    /// Required. The update mask applies to the resource. For the `FieldMask` definition,
-    /// see
+    /// Required. The update mask applies to the resource. For the `FieldMask`
+    /// definition, see
     /// <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask.>
     #[prost(message, optional, tag="2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
@@ -241,16 +399,16 @@ pub struct UpdateCertificateMapEntryRequest {
 /// Request for the `DeleteCertificateMapEntry` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteCertificateMapEntryRequest {
-    /// Required. A name of the certificate map entry to delete. Must be in the format
-    /// `projects/*/locations/*/certificateMaps/*/certificateMapEntries/*`.
+    /// Required. A name of the certificate map entry to delete. Must be in the
+    /// format `projects/*/locations/*/certificateMaps/*/certificateMapEntries/*`.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request for the `ListDnsAuthorizations` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDnsAuthorizationsRequest {
-    /// Required. The project and location from which the dns authorizations should be
-    /// listed, specified in the format `projects/*/locations/*`.
+    /// Required. The project and location from which the dns authorizations should
+    /// be listed, specified in the format `projects/*/locations/*`.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     /// Maximum number of dns authorizations to return per call.
@@ -288,16 +446,16 @@ pub struct ListDnsAuthorizationsResponse {
 /// Request for the `GetDnsAuthorization` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetDnsAuthorizationRequest {
-    /// Required. A name of the dns authorization to describe. Must be in the format
-    /// `projects/*/locations/*/dnsAuthorizations/*`.
+    /// Required. A name of the dns authorization to describe. Must be in the
+    /// format `projects/*/locations/*/dnsAuthorizations/*`.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request for the `CreateDnsAuthorization` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateDnsAuthorizationRequest {
-    /// Required. The parent resource of the dns authorization. Must be in the format
-    /// `projects/*/locations/*`.
+    /// Required. The parent resource of the dns authorization. Must be in the
+    /// format `projects/*/locations/*`.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. A user-provided name of the dns authorization.
@@ -313,8 +471,8 @@ pub struct UpdateDnsAuthorizationRequest {
     /// Required. A definition of the dns authorization to update.
     #[prost(message, optional, tag="1")]
     pub dns_authorization: ::core::option::Option<DnsAuthorization>,
-    /// Required. The update mask applies to the resource. For the `FieldMask` definition,
-    /// see
+    /// Required. The update mask applies to the resource. For the `FieldMask`
+    /// definition, see
     /// <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask.>
     #[prost(message, optional, tag="2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
@@ -347,8 +505,9 @@ pub struct OperationMetadata {
     pub status_message: ::prost::alloc::string::String,
     /// Identifies whether the user has requested cancellation
     /// of the operation. Operations that have successfully been cancelled
-    /// have \[Operation.error][\] value with a \[google.rpc.Status.code][google.rpc.Status.code\] of 1,
-    /// corresponding to `Code.CANCELLED`.
+    /// have \[Operation.error][\] value with a
+    /// \[google.rpc.Status.code][google.rpc.Status.code\] of 1, corresponding to
+    /// `Code.CANCELLED`.
     #[prost(bool, tag="6")]
     pub requested_cancellation: bool,
     /// API version used to start the operation.
@@ -374,10 +533,10 @@ pub struct Certificate {
     /// Set of labels associated with a Certificate.
     #[prost(map="string, string", tag="4")]
     pub labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
-    /// Output only. The list of Subject Alternative Names of dnsName type defined in the
-    /// certificate (see RFC 5280 4.2.1.6).
-    /// Managed certificates that haven't been provisioned yet have this field
-    /// populated with a value of the managed.domains field.
+    /// Output only. The list of Subject Alternative Names of dnsName type defined
+    /// in the certificate (see RFC 5280 4.2.1.6). Managed certificates that
+    /// haven't been provisioned yet have this field populated with a value of the
+    /// managed.domains field.
     #[prost(string, repeated, tag="6")]
     pub san_dnsnames: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Output only. The PEM-encoded certificate chain.
@@ -412,21 +571,33 @@ pub mod certificate {
     /// automatically, for as long as it's authorized to do so.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ManagedCertificate {
-        /// Immutable. The domains for which a managed SSL certificate will be generated.
-        /// Wildcard domains are only supported with DNS challenge resolution.
+        /// Immutable. The domains for which a managed SSL certificate will be
+        /// generated. Wildcard domains are only supported with DNS challenge
+        /// resolution.
         #[prost(string, repeated, tag="1")]
         pub domains: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-        /// Immutable. Authorizations that will be used for performing domain authorization.
+        /// Immutable. Authorizations that will be used for performing domain
+        /// authorization.
         #[prost(string, repeated, tag="2")]
         pub dns_authorizations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+        /// The resource name for a
+        /// \[CertificateIssuanceConfig][google.cloud.certificatemanager.v1.CertificateIssuanceConfig\]
+        /// used to configure private PKI certificates in the format
+        /// `projects/*/locations/*/certificateIssuanceConfigs/*`.
+        /// If this field is not set, the certificates will instead be publicly
+        /// signed as documented at
+        /// <https://cloud.google.com/load-balancing/docs/ssl-certificates/google-managed-certs#caa.>
+        #[prost(string, tag="6")]
+        pub issuance_config: ::prost::alloc::string::String,
         /// Output only. State of the managed certificate resource.
         #[prost(enumeration="managed_certificate::State", tag="4")]
         pub state: i32,
-        /// Information about issues with provisioning a Managed Certificate.
+        /// Output only. Information about issues with provisioning a Managed
+        /// Certificate.
         #[prost(message, optional, tag="3")]
         pub provisioning_issue: ::core::option::Option<managed_certificate::ProvisioningIssue>,
-        /// Output only. Detailed state of the latest authorization attempt for each domain
-        /// specified for managed certificate resource.
+        /// Output only. Detailed state of the latest authorization attempt for each
+        /// domain specified for managed certificate resource.
         #[prost(message, repeated, tag="5")]
         pub authorization_attempt_info: ::prost::alloc::vec::Vec<managed_certificate::AuthorizationAttemptInfo>,
     }
@@ -435,12 +606,12 @@ pub mod certificate {
         /// Information about issues with provisioning a Managed Certificate.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct ProvisioningIssue {
-            /// Reason for provisioning failures.
+            /// Output only. Reason for provisioning failures.
             #[prost(enumeration="provisioning_issue::Reason", tag="1")]
             pub reason: i32,
-            /// Human readable explanation about the issue. Provided to help address
-            /// the configuration issues.
-            /// Not guaranteed to be stable. For programmatic access use Reason enum.
+            /// Output only. Human readable explanation about the issue. Provided to
+            /// help address the configuration issues. Not guaranteed to be stable. For
+            /// programmatic access use Reason enum.
             #[prost(string, tag="2")]
             pub details: ::prost::alloc::string::String,
         }
@@ -480,15 +651,16 @@ pub mod certificate {
             /// Domain name of the authorization attempt.
             #[prost(string, tag="1")]
             pub domain: ::prost::alloc::string::String,
-            /// State of the domain for managed certificate issuance.
+            /// Output only. State of the domain for managed certificate issuance.
             #[prost(enumeration="authorization_attempt_info::State", tag="2")]
             pub state: i32,
-            /// Output only. Reason for failure of the authorization attempt for the domain.
+            /// Output only. Reason for failure of the authorization attempt for the
+            /// domain.
             #[prost(enumeration="authorization_attempt_info::FailureReason", tag="3")]
             pub failure_reason: i32,
-            /// Human readable explanation for reaching the state. Provided to help
-            /// address the configuration issues.
-            /// Not guaranteed to be stable. For programmatic access use Reason enum.
+            /// Output only. Human readable explanation for reaching the state.
+            /// Provided to help address the configuration issues. Not guaranteed to be
+            /// stable. For programmatic access use FailureReason enum.
             #[prost(string, tag="4")]
             pub details: ::prost::alloc::string::String,
         }
@@ -637,6 +809,8 @@ pub struct CertificateMap {
     #[prost(map="string, string", tag="3")]
     pub labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// Output only. A list of GCLB targets which use this Certificate Map.
+    /// A Target Proxy is only present on this list if it's attached to a
+    /// Forwarding Rule.
     #[prost(message, repeated, tag="4")]
     pub gclb_targets: ::prost::alloc::vec::Vec<certificate_map::GclbTarget>,
 }
@@ -645,7 +819,7 @@ pub mod certificate_map {
     /// Describes a Target Proxy which uses this Certificate Map.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct GclbTarget {
-        /// IP configurations for this Target Proxy where the
+        /// Output only. IP configurations for this Target Proxy where the
         /// Certificate Map is serving.
         #[prost(message, repeated, tag="2")]
         pub ip_configs: ::prost::alloc::vec::Vec<gclb_target::IpConfig>,
@@ -658,21 +832,23 @@ pub mod certificate_map {
         /// Defines IP configuration where this Certificate Map is serving.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct IpConfig {
-            /// An external IP address.
+            /// Output only. An external IP address.
             #[prost(string, tag="1")]
             pub ip_address: ::prost::alloc::string::String,
-            /// Ports.
-            #[prost(uint32, repeated, tag="3")]
+            /// Output only. Ports.
+            #[prost(uint32, repeated, packed="false", tag="3")]
             pub ports: ::prost::alloc::vec::Vec<u32>,
         }
         /// A Target Proxy to which this map is attached to.
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum TargetProxy {
-            /// This field returns the resource name in the following format:
+            /// Output only. This field returns the resource name in the following
+            /// format:
             /// `//compute.googleapis.com/projects/*/global/targetHttpsProxies/*`.
             #[prost(string, tag="1")]
             TargetHttpsProxy(::prost::alloc::string::String),
-            /// This field returns the resource name in the following format:
+            /// Output only. This field returns the resource name in the following
+            /// format:
             /// `//compute.googleapis.com/projects/*/global/targetSslProxies/*`.
             #[prost(string, tag="3")]
             TargetSslProxy(::prost::alloc::string::String),
@@ -768,12 +944,14 @@ pub struct DnsAuthorization {
     /// One or more paragraphs of text description of a DnsAuthorization.
     #[prost(string, tag="5")]
     pub description: ::prost::alloc::string::String,
-    /// Required. Immutable. A domain which is being authorized. A DnsAuthorization resource covers a
-    /// single domain and its wildcard, e.g. authorization for `example.com` can
-    /// be used to issue certificates for `example.com` and `*.example.com`.
+    /// Required. Immutable. A domain which is being authorized. A DnsAuthorization
+    /// resource covers a single domain and its wildcard, e.g. authorization for
+    /// `example.com` can be used to issue certificates for `example.com` and
+    /// `*.example.com`.
     #[prost(string, tag="6")]
     pub domain: ::prost::alloc::string::String,
-    /// Output only. DNS Resource Record that needs to be added to DNS configuration.
+    /// Output only. DNS Resource Record that needs to be added to DNS
+    /// configuration.
     #[prost(message, optional, tag="10")]
     pub dns_resource_record: ::core::option::Option<dns_authorization::DnsResourceRecord>,
 }
@@ -1357,6 +1535,101 @@ pub mod certificate_manager_client {
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.certificatemanager.v1.CertificateManager/DeleteDnsAuthorization",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Lists CertificateIssuanceConfigs in a given project and location.
+        pub async fn list_certificate_issuance_configs(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::ListCertificateIssuanceConfigsRequest,
+            >,
+        ) -> Result<
+            tonic::Response<super::ListCertificateIssuanceConfigsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.certificatemanager.v1.CertificateManager/ListCertificateIssuanceConfigs",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Gets details of a single CertificateIssuanceConfig.
+        pub async fn get_certificate_issuance_config(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetCertificateIssuanceConfigRequest>,
+        ) -> Result<tonic::Response<super::CertificateIssuanceConfig>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.certificatemanager.v1.CertificateManager/GetCertificateIssuanceConfig",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Creates a new CertificateIssuanceConfig in a given project and location.
+        pub async fn create_certificate_issuance_config(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::CreateCertificateIssuanceConfigRequest,
+            >,
+        ) -> Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.certificatemanager.v1.CertificateManager/CreateCertificateIssuanceConfig",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Deletes a single CertificateIssuanceConfig.
+        pub async fn delete_certificate_issuance_config(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::DeleteCertificateIssuanceConfigRequest,
+            >,
+        ) -> Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.certificatemanager.v1.CertificateManager/DeleteCertificateIssuanceConfig",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }

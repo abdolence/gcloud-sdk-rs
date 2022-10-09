@@ -1713,6 +1713,36 @@ pub struct ProtectConfig {
     /// configurations.
     #[prost(message, optional, tag="1")]
     pub workload_config: ::core::option::Option<WorkloadConfig>,
+    /// Sets which mode to use for Protect workload vulnerability scanning feature.
+    #[prost(enumeration="protect_config::WorkloadVulnerabilityMode", optional, tag="2")]
+    pub workload_vulnerability_mode: ::core::option::Option<i32>,
+}
+/// Nested message and enum types in `ProtectConfig`.
+pub mod protect_config {
+    /// WorkloadVulnerabilityMode defines mode to perform vulnerability scanning.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum WorkloadVulnerabilityMode {
+        /// Default value not specified.
+        Unspecified = 0,
+        /// Disables Workload Vulnerability Scanning feature on the cluster.
+        Disabled = 1,
+        /// Applies basic vulnerability scanning settings for cluster workloads.
+        Basic = 2,
+    }
+    impl WorkloadVulnerabilityMode {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                WorkloadVulnerabilityMode::Unspecified => "WORKLOAD_VULNERABILITY_MODE_UNSPECIFIED",
+                WorkloadVulnerabilityMode::Disabled => "DISABLED",
+                WorkloadVulnerabilityMode::Basic => "BASIC",
+            }
+        }
+    }
 }
 /// Subset of Nodepool message that has defaults.
 #[derive(Clone, PartialEq, ::prost::Message)]

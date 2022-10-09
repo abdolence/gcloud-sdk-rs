@@ -316,6 +316,110 @@ pub struct Query {
     #[prost(message, optional, tag="12")]
     pub limit: ::core::option::Option<i32>,
 }
+/// Datastore query for running an aggregation over a \[Query][google.datastore.v1.Query\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AggregationQuery {
+    /// Optional. Series of aggregations to apply over the results of the `nested_query`.
+    ///
+    /// Requires:
+    ///
+    /// * A minimum of one and maximum of five aggregations per query.
+    #[prost(message, repeated, tag="3")]
+    pub aggregations: ::prost::alloc::vec::Vec<aggregation_query::Aggregation>,
+    /// The base query to aggregate over.
+    #[prost(oneof="aggregation_query::QueryType", tags="1")]
+    pub query_type: ::core::option::Option<aggregation_query::QueryType>,
+}
+/// Nested message and enum types in `AggregationQuery`.
+pub mod aggregation_query {
+    /// Defines a aggregation that produces a single result.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Aggregation {
+        /// Optional. Optional name of the property to store the result of the aggregation.
+        ///
+        /// If not provided, Datastore will pick a default name following the format
+        /// `property_<incremental_id++>`. For example:
+        ///
+        /// ```
+        /// AGGREGATE
+        ///    COUNT_UP_TO(1) AS count_up_to_1,
+        ///    COUNT_UP_TO(2),
+        ///    COUNT_UP_TO(3) AS count_up_to_3,
+        ///    COUNT_UP_TO(4)
+        /// OVER (
+        ///    ...
+        /// );
+        /// ```
+        ///
+        /// becomes:
+        ///
+        /// ```
+        /// AGGREGATE
+        ///    COUNT_UP_TO(1) AS count_up_to_1,
+        ///    COUNT_UP_TO(2) AS property_1,
+        ///    COUNT_UP_TO(3) AS count_up_to_3,
+        ///    COUNT_UP_TO(4) AS property_2
+        /// OVER (
+        ///    ...
+        /// );
+        /// ```
+        ///
+        /// Requires:
+        ///
+        /// * Must be unique across all aggregation aliases.
+        /// * Conform to [entity property name]\[google.datastore.v1.Entity.properties\] limitations.
+        #[prost(string, tag="7")]
+        pub alias: ::prost::alloc::string::String,
+        /// The type of aggregation to perform, required.
+        #[prost(oneof="aggregation::Operator", tags="1")]
+        pub operator: ::core::option::Option<aggregation::Operator>,
+    }
+    /// Nested message and enum types in `Aggregation`.
+    pub mod aggregation {
+        /// Count of entities that match the query.
+        ///
+        /// The `COUNT(*)` aggregation function operates on the entire entity
+        /// so it does not require a field reference.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct Count {
+            /// Optional. Optional constraint on the maximum number of entities to count.
+            ///
+            /// This provides a way to set an upper bound on the number of entities
+            /// to scan, limiting latency and cost.
+            ///
+            /// Unspecified is interpreted as no bound.
+            ///
+            /// If a zero value is provided, a count result of zero should always be
+            /// expected.
+            ///
+            /// High-Level Example:
+            ///
+            /// ```
+            /// AGGREGATE COUNT_UP_TO(1000) OVER ( SELECT * FROM k );
+            /// ```
+            ///
+            /// Requires:
+            ///
+            /// * Must be non-negative when present.
+            #[prost(message, optional, tag="1")]
+            pub up_to: ::core::option::Option<i64>,
+        }
+        /// The type of aggregation to perform, required.
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum Operator {
+            /// Count aggregator.
+            #[prost(message, tag="1")]
+            Count(Count),
+        }
+    }
+    /// The base query to aggregate over.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum QueryType {
+        /// Nested query for aggregation
+        #[prost(message, tag="1")]
+        NestedQuery(super::Query),
+    }
+}
 /// A representation of a kind.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KindExpression {
@@ -660,6 +764,40 @@ pub mod query_result_batch {
         }
     }
 }
+/// The result of a single bucket from a Datastore aggregation query.
+///
+/// The keys of `aggregate_properties` are the same for all results in an
+/// aggregation query, unlike entity queries which can have different fields
+/// present for each result.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AggregationResult {
+    /// The result of the aggregation functions, ex: `COUNT(*) AS total_entities`.
+    ///
+    /// The key is the \[alias][google.datastore.v1.AggregationQuery.Aggregation.alias\]
+    /// assigned to the aggregation function on input and the size of this map
+    /// equals the number of aggregation functions in the query.
+    #[prost(map="string, message", tag="2")]
+    pub aggregate_properties: ::std::collections::HashMap<::prost::alloc::string::String, Value>,
+}
+/// A batch of aggregation results produced by an aggregation query.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AggregationResultBatch {
+    /// The aggregation results for this batch.
+    #[prost(message, repeated, tag="1")]
+    pub aggregation_results: ::prost::alloc::vec::Vec<AggregationResult>,
+    /// The state of the query after the current batch.
+    /// Only COUNT(*) aggregations are supported in the initial launch. Therefore,
+    /// expected result type is limited to `NO_MORE_RESULTS`.
+    #[prost(enumeration="query_result_batch::MoreResultsType", tag="2")]
+    pub more_results: i32,
+    /// Read timestamp this batch was returned from.
+    ///
+    /// In a single transaction, subsequent query result batches for the same query
+    /// can have a greater timestamp. Each batch's read timestamp
+    /// is valid for all preceding batches.
+    #[prost(message, optional, tag="3")]
+    pub read_time: ::core::option::Option<::prost_types::Timestamp>,
+}
 /// The request for \[Datastore.Lookup][google.datastore.v1.Datastore.Lookup\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LookupRequest {
@@ -748,6 +886,54 @@ pub struct RunQueryResponse {
     /// The parsed form of the `GqlQuery` from the request, if it was set.
     #[prost(message, optional, tag="2")]
     pub query: ::core::option::Option<Query>,
+}
+/// The request for \[Datastore.RunAggregationQuery][google.datastore.v1.Datastore.RunAggregationQuery\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RunAggregationQueryRequest {
+    /// Required. The ID of the project against which to make the request.
+    #[prost(string, tag="8")]
+    pub project_id: ::prost::alloc::string::String,
+    /// The ID of the database against which to make the request.
+    ///
+    /// '(default)' is not allowed; please use empty string '' to refer the default
+    /// database.
+    #[prost(string, tag="9")]
+    pub database_id: ::prost::alloc::string::String,
+    /// Entities are partitioned into subsets, identified by a partition ID.
+    /// Queries are scoped to a single partition.
+    /// This partition ID is normalized with the standard default context
+    /// partition ID.
+    #[prost(message, optional, tag="2")]
+    pub partition_id: ::core::option::Option<PartitionId>,
+    /// The options for this query.
+    #[prost(message, optional, tag="1")]
+    pub read_options: ::core::option::Option<ReadOptions>,
+    /// The type of query.
+    #[prost(oneof="run_aggregation_query_request::QueryType", tags="3, 7")]
+    pub query_type: ::core::option::Option<run_aggregation_query_request::QueryType>,
+}
+/// Nested message and enum types in `RunAggregationQueryRequest`.
+pub mod run_aggregation_query_request {
+    /// The type of query.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum QueryType {
+        /// The query to run.
+        #[prost(message, tag="3")]
+        AggregationQuery(super::AggregationQuery),
+        /// The GQL query to run. This query must be an aggregation query.
+        #[prost(message, tag="7")]
+        GqlQuery(super::GqlQuery),
+    }
+}
+/// The response for \[Datastore.RunAggregationQuery][google.datastore.v1.Datastore.RunAggregationQuery\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RunAggregationQueryResponse {
+    /// A batch of aggregation results. Always present.
+    #[prost(message, optional, tag="1")]
+    pub batch: ::core::option::Option<AggregationResultBatch>,
+    /// The parsed form of the `GqlQuery` from the request, if it was set.
+    #[prost(message, optional, tag="2")]
+    pub query: ::core::option::Option<AggregationQuery>,
 }
 /// The request for \[Datastore.BeginTransaction][google.datastore.v1.Datastore.BeginTransaction\].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1240,6 +1426,26 @@ pub mod datastore_client {
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.datastore.v1.Datastore/RunQuery",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Runs an aggregation query.
+        pub async fn run_aggregation_query(
+            &mut self,
+            request: impl tonic::IntoRequest<super::RunAggregationQueryRequest>,
+        ) -> Result<tonic::Response<super::RunAggregationQueryResponse>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.datastore.v1.Datastore/RunAggregationQuery",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
