@@ -44,7 +44,7 @@ pub struct DeleteWorkloadRequest {
 /// Request for fetching a workload.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetWorkloadRequest {
-    /// Required. The resource name of the Workload to fetch. This is the workloads's
+    /// Required. The resource name of the Workload to fetch. This is the workload's
     /// relative path in the API, formatted as
     /// "organizations/{organization_id}/locations/{location_id}/workloads/{workload_id}".
     /// For example,
@@ -82,7 +82,7 @@ pub struct ListWorkloadsResponse {
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-/// An Workload object for managing highly regulated workloads of cloud
+/// A Workload object for managing highly regulated workloads of cloud
 /// customers.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Workload {
@@ -224,6 +224,9 @@ pub mod workload {
         }
     }
     /// Settings specific to the Key Management Service.
+    /// This message is deprecated.
+    /// In order to create a Keyring, callers should specify,
+    /// ENCRYPTION_KEYS_PROJECT or KEYRING in ResourceSettings.resource_type field.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct KmsSettings {
         /// Required. Input only. Immutable. The time at which the Key Management Service will automatically create a
@@ -247,7 +250,7 @@ pub mod workload {
         #[prost(string, tag="1")]
         pub resource_id: ::prost::alloc::string::String,
         /// Indicates the type of resource. This field should be specified to
-        /// correspond the id to the right project type (CONSUMER_PROJECT or
+        /// correspond the id to the right resource type (CONSUMER_FOLDER or
         /// ENCRYPTION_KEYS_PROJECT)
         #[prost(enumeration="resource_info::ResourceType", tag="2")]
         pub resource_type: i32,
@@ -353,7 +356,11 @@ pub mod workload {
         CaRegionsAndSupport = 9,
         /// International Traffic in Arms Regulations
         Itar = 10,
-        /// Assured Workloads for Partners;
+        /// Assured Workloads for Australia Regions and Support controls
+        /// Available for public preview consumption.
+        /// Don't create production workloads.
+        AuRegionsAndUsSupport = 11,
+        /// Assured Workloads for Partners
         AssuredWorkloadsForPartners = 12,
     }
     impl ComplianceRegime {
@@ -374,6 +381,7 @@ pub mod workload {
                 ComplianceRegime::EuRegionsAndSupport => "EU_REGIONS_AND_SUPPORT",
                 ComplianceRegime::CaRegionsAndSupport => "CA_REGIONS_AND_SUPPORT",
                 ComplianceRegime::Itar => "ITAR",
+                ComplianceRegime::AuRegionsAndUsSupport => "AU_REGIONS_AND_US_SUPPORT",
                 ComplianceRegime::AssuredWorkloadsForPartners => "ASSURED_WORKLOADS_FOR_PARTNERS",
             }
         }
@@ -406,9 +414,9 @@ pub mod workload {
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum Partner {
-        /// Unknown compliance regime.
+        /// Unknown partner regime/controls.
         Unspecified = 0,
-        /// S3NS regime
+        /// S3NS regime/controls.
         LocalControlsByS3ns = 1,
     }
     impl Partner {
@@ -502,12 +510,14 @@ pub struct AcknowledgeViolationRequest {
     /// Required. Business justification explaining the need for violation acknowledgement
     #[prost(string, tag="2")]
     pub comment: ::prost::alloc::string::String,
-    /// Optional. Name of the OrgPolicy which was modified with non-compliant change and
+    /// Optional. This field is deprecated and will be removed in future version of the API.
+    /// Name of the OrgPolicy which was modified with non-compliant change and
     /// resulted in this violation.
     /// Format:
     /// projects/{project_number}/policies/{constraint_name}
     /// folders/{folder_id}/policies/{constraint_name}
     /// organizations/{organization_id}/policies/{constraint_name}
+    #[deprecated]
     #[prost(string, tag="3")]
     pub non_compliant_org_policy: ::prost::alloc::string::String,
 }
@@ -622,6 +632,11 @@ pub struct Violation {
     /// This will be absent when acknowledged field is marked as false.
     #[prost(message, optional, tag="15")]
     pub acknowledgement_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Immutable. Audit Log link to find business justification provided for violation
+    /// exception. Format:
+    /// <https://console.cloud.google.com/logs/query;query={logName}{protoPayload.resourceName}{protoPayload.methodName}{timeRange}{organization}>
+    #[prost(string, tag="16")]
+    pub exception_audit_log_link: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `Violation`.
 pub mod violation {

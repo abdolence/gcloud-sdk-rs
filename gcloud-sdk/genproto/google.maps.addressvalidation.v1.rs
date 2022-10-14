@@ -11,14 +11,17 @@ pub struct Address {
     /// The individual address components of the formatted and corrected address,
     /// along with validation information. This provides information on the
     /// validation status of the individual components.
+    ///
+    /// Address components are not ordered in a particular way. DO NOT make any
+    /// assumptions on the ordering of the address components in the list.
     #[prost(message, repeated, tag="4")]
     pub address_components: ::prost::alloc::vec::Vec<AddressComponent>,
     /// The types of components that were expected to be present in a correctly
     /// formatted mailing address but were not found in the input AND could
     /// not be inferred. Components of this type are not present in
     /// `formatted_address`, `postal_address`, or `address_components`. An
-    /// example might be `[‘street_number’, ‘route’]` for an input like
-    /// “Boulder, Colorado, 80301, USA.” The list of possible types can be found
+    /// example might be `['street_number', 'route']` for an input like
+    /// "Boulder, Colorado, 80301, USA." The list of possible types can be found
     /// \[here\](<https://developers.google.com/maps/documentation/geocoding/overview#Types>).
     #[prost(string, repeated, tag="5")]
     pub missing_component_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
@@ -160,9 +163,7 @@ pub struct Geocode {
     #[prost(string, tag="6")]
     pub place_id: ::prost::alloc::string::String,
     /// The type(s) of place that the input geocoded to. For example,
-    /// `['locality', 'political']`. The full list of types
-    /// can be
-    /// found
+    /// `['locality', 'political']`. The full list of types can be found
     /// \[here\](<https://developers.google.com/maps/documentation/geocoding/overview#Types>).
     #[prost(string, repeated, tag="7")]
     pub place_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
@@ -182,11 +183,16 @@ pub struct PlusCode {
     #[prost(string, tag="2")]
     pub compound_code: ::prost::alloc::string::String,
 }
-/// The metadata for the address
+/// The metadata for the address.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddressMetadata {
     /// Indicates that this address is a high-rise building.
     /// If unset, indicates that the value is unknown.
+    ///
+    /// DEPRECATED: Please use
+    /// \[`address_record_type`\](google.maps.addressvalidation.v1.ValidationResult.usps_data.address_record_type)
+    /// instead. This field will be removed with the GA release.
+    #[deprecated]
     #[prost(bool, optional, tag="1")]
     pub highrise: ::core::option::Option<bool>,
     /// Indicates that this is the address of a business.
@@ -197,8 +203,11 @@ pub struct AddressMetadata {
     /// If unset, indicates that the value is unknown.
     #[prost(bool, optional, tag="3")]
     pub po_box: ::core::option::Option<bool>,
-    /// Indicates that the address is of a multi_family building.
+    /// Indicates that the address is of a multi-family building.
     /// If unset, indicates that the value is unknown.
+    ///
+    /// DEPRECATED: this field will be removed with the GA release.
+    #[deprecated]
     #[prost(bool, optional, tag="4")]
     pub multi_family: ::core::option::Option<bool>,
     /// Indicates that this is the address of a residence.
@@ -306,6 +315,19 @@ pub struct UspsData {
     /// * `N`: The address is active
     #[prost(string, tag="8")]
     pub dpv_no_stat: ::prost::alloc::string::String,
+    /// The carrier route code.
+    /// A four character code--a one letter prefix and a three digit route
+    /// designator.
+    ///
+    /// Prefixes:
+    ///
+    /// * `C`: Carrier route (or city route)
+    /// * `R`: Rural route
+    /// * `H`: Highway Contract Route
+    /// * `B`: Post Office Box Section
+    /// * `G`: General delivery unit
+    #[prost(string, tag="9")]
+    pub carrier_route: ::prost::alloc::string::String,
     /// Carrier route rate sort indicator.
     #[prost(string, tag="10")]
     pub carrier_route_indicator: ::prost::alloc::string::String,
@@ -375,12 +397,16 @@ pub struct UspsData {
     /// exists.
     #[prost(bool, tag="26")]
     pub default_address: bool,
-    /// Error message for USPS data retrieval. If this field is populated, other
-    /// USPS data response fields - with the possible exception of
-    /// carrier_route - are not populated. Otherwise, fields with data are
-    /// populated.
+    /// Error message for USPS data retrieval. This is populated when USPS
+    /// processing is suspended because of the detection of artificially created
+    /// addresses.
+    ///
+    /// The USPS data fields may not be populated when this error is present.
     #[prost(string, tag="27")]
     pub error_message: ::prost::alloc::string::String,
+    /// Indicator that the request has been CASS processed.
+    #[prost(bool, tag="28")]
+    pub cass_processed: bool,
 }
 /// The request for validating an address.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -394,10 +420,10 @@ pub struct ValidateAddressRequest {
     /// Supported regions can be found in the
     /// \[FAQ\](<https://developers.google.com/maps/documentation/address-validation/faq#which_regions_are_currently_supported>).
     ///
-    /// The \[language_code][google.type.PostalAddress.language_code\] value for the
-    /// given address is not yet used. The validated address result will be
-    /// populated based on the preferred language for the given address, as
-    /// identified by the system.
+    /// The \[language_code][google.type.PostalAddress.language_code\] value in the
+    /// input address is reserved for future uses and is ignored today. The
+    /// validated address result will be populated based on the preferred language
+    /// for the given address, as identified by the system.
     ///
     /// The Address Validation API ignores the values in
     /// \[recipients][google.type.PostalAddress.recipients\] and
@@ -426,9 +452,6 @@ pub struct ValidateAddressRequest {
     /// at least two \[google.type.PostalAddress.address_lines\] where the first line
     /// contains the street number and name and the second line contains the city,
     /// state, and zip code.
-    ///
-    /// Warning: though this option will enable the USPS CASS compatible mode, the
-    /// Address Validation API is not yet officially CASS certified.
     #[prost(bool, tag="3")]
     pub enable_usps_cass: bool,
 }
@@ -519,8 +542,8 @@ pub struct ValidationResult {
     /// Other information relevant to deliverability.
     #[prost(message, optional, tag="4")]
     pub metadata: ::core::option::Option<AddressMetadata>,
-    /// Extra deliverability flags provided by USPS. Only provided for US
-    /// addresses.
+    /// Extra deliverability flags provided by USPS. Only provided in region `US`
+    /// and `PR`.
     #[prost(message, optional, tag="5")]
     pub usps_data: ::core::option::Option<UspsData>,
 }
