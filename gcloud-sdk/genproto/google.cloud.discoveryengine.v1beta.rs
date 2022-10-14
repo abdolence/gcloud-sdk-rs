@@ -508,7 +508,7 @@ pub mod document_info {
 /// Detailed panel information associated with a user event.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PanelInfo {
-    /// The panel ID.
+    /// Required. The panel ID.
     #[prost(string, tag="2")]
     pub panel_id: ::prost::alloc::string::String,
     /// The display name of the panel.
@@ -651,7 +651,7 @@ pub struct ImportUserEventsRequest {
     /// The desired location of errors incurred during the Import. Cannot be set
     /// for inline user event imports.
     #[prost(message, optional, tag="5")]
-    pub errors_config: ::core::option::Option<ImportErrorConfig>,
+    pub error_config: ::core::option::Option<ImportErrorConfig>,
     /// The desired input source of the user event data.
     #[prost(oneof="import_user_events_request::Source", tags="2, 3, 4")]
     pub source: ::core::option::Option<import_user_events_request::Source>,
@@ -690,7 +690,7 @@ pub struct ImportUserEventsResponse {
     /// Echoes the destination for the complete errors if this field was set in
     /// the request.
     #[prost(message, optional, tag="2")]
-    pub errors_config: ::core::option::Option<ImportErrorConfig>,
+    pub error_config: ::core::option::Option<ImportErrorConfig>,
     /// Count of user events imported with complete existing Documents.
     #[prost(int64, tag="3")]
     pub joined_events_count: i64,
@@ -745,7 +745,7 @@ pub struct ImportDocumentsRequest {
     pub parent: ::prost::alloc::string::String,
     /// The desired location of errors incurred during the Import.
     #[prost(message, optional, tag="5")]
-    pub errors_config: ::core::option::Option<ImportErrorConfig>,
+    pub error_config: ::core::option::Option<ImportErrorConfig>,
     /// The mode of reconciliation between existing documents and the documents to
     /// be imported. Defaults to
     /// \[ReconciliationMode.INCREMENTAL][google.cloud.discoveryengine.v1beta.ImportDocumentsRequest.ReconciliationMode.INCREMENTAL\].
@@ -817,7 +817,7 @@ pub struct ImportDocumentsResponse {
     pub error_samples: ::prost::alloc::vec::Vec<super::super::super::rpc::Status>,
     /// Echoes the destination for the complete errors in the request if set.
     #[prost(message, optional, tag="2")]
-    pub errors_config: ::core::option::Option<ImportErrorConfig>,
+    pub error_config: ::core::option::Option<ImportErrorConfig>,
 }
 /// Request message for
 /// \[DocumentService.GetDocument][google.cloud.discoveryengine.v1beta.DocumentService.GetDocument\]

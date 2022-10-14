@@ -1200,6 +1200,18 @@ pub struct ResultSetMetadata {
     /// information about the new transaction is yielded here.
     #[prost(message, optional, tag="2")]
     pub transaction: ::core::option::Option<Transaction>,
+    /// A SQL query can be parameterized. In PLAN mode, these parameters can be
+    /// undeclared. This indicates the field names and types for those undeclared
+    /// parameters in the SQL query. For example, a SQL query like `"SELECT * FROM
+    /// Users where UserId = @userId and UserName = @userName "` could return a
+    /// `undeclared_parameters` value like:
+    ///
+    ///      "fields": [
+    ///        { "name": "UserId", "type": { "code": "INT64" } },
+    ///        { "name": "UserName", "type": { "code": "STRING" } },
+    ///      ]
+    #[prost(message, optional, tag="3")]
+    pub undeclared_parameters: ::core::option::Option<StructType>,
 }
 /// Additional statistics about a \[ResultSet][google.spanner.v1.ResultSet\] or \[PartialResultSet][google.spanner.v1.PartialResultSet\].
 #[derive(Clone, PartialEq, ::prost::Message)]
