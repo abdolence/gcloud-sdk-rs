@@ -188,6 +188,9 @@ impl GoogleEnvironment {
                     crate::token_source::credentials::Credentials::User(user) => {
                         user.quota_project_id
                     }
+                    crate::token_source::credentials::Credentials::ExternalAccount(
+                        external_account,
+                    ) => external_account.quota_project_id,
                 });
 
                 if local_quota_project_id.is_some() {
