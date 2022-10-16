@@ -1,0 +1,31 @@
+name: Check Gcloud
+on:
+  push:
+    branches:
+      - 'master'
+env:
+  GCP_PROJECT: latestbit
+  GCP_PROJECT_ID: 288860578009
+jobs:
+  check-gcloud-keyless:
+    name: Checking keyless integration with GCloud
+    runs-on: ubuntu-20.04
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Authenticate to Google Cloud development
+        id: auth
+        uses: google-github-actions/auth@v0
+        with:
+          workload_identity_provider: 'projects/${{ env.GCP_PROJECT_ID }}/locations/global/workloadIdentityPools/lb-github-identity-pool/providers/lb-github-identity-provider'
+          service_account: 'lb-github-service-account@${{ env.GCP_PROJECT }}.iam.gserviceaccount.com'
+          create_credentials_file: true
+          access_token_lifetime: '240s'
+      - name: 'Set up Cloud SDK'
+        uses: google-github-actions/setup-gcloud@v0
+      - name: Run test example
+        run: |
+          cargo run --bin simple-api-client-example
