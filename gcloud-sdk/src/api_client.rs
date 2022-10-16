@@ -154,9 +154,10 @@ pub struct GoogleEnvironment;
 
 impl GoogleEnvironment {
     pub async fn detect_google_project_id() -> Option<String> {
-        let for_env = std::env::var("PROJECT_ID")
+        let for_env = std::env::var("GCP_PROJECT_ID")
             .ok()
-            .or_else(|| std::env::var("GCP_PROJECT_ID").ok());
+            .or_else(|| std::env::var("GCP_PROJECT").ok())
+            .or_else(|| std::env::var("PROJECT_ID").ok());
         if for_env.is_some() {
             debug!("Detected GCP Project ID using environment variables");
             for_env
@@ -196,7 +197,7 @@ impl GoogleEnvironment {
                 if local_quota_project_id.is_some() {
                     debug!("Detected default project id from local defined quota_project_id");
                 } else {
-                    debug!("No GCP Project ID detected in this environment. Please specify it explicitly using environment variables: `PROJECT_ID` or `GCP_PROJECT_ID`");
+                    debug!("No GCP Project ID detected in this environment. Please specify it explicitly using environment variables: `PROJECT_ID`,`GCP_PROJECT_ID`, or `GCP_PROJECT`");
                 }
                 local_quota_project_id
             }
