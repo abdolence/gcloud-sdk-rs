@@ -1,8 +1,7 @@
 name: Check Gcloud
 on:
+  workflow_dispatch:
   push:
-    branches:
-      - 'master'
 env:
   GCP_PROJECT: latestbit
   GCP_PROJECT_ID: 288860578009
