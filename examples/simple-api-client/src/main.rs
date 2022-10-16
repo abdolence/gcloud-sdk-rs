@@ -32,6 +32,10 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
             log_name: log_name.clone(),
             entries: vec![LogEntry {
                 log_name: log_name.clone(),
+                resource: Some(gcloud_sdk::google::api::MonitoredResource {
+                    r#type: "gce_instance".to_string(),
+                    ..Default::default()
+                }),
                 payload: Some(log_entry::Payload::TextPayload(
                     "Test log message".to_string(),
                 )),

@@ -8,12 +8,19 @@ use tracing::*;
 #[serde(untagged)]
 pub enum ExternalCredentialSource {
     UrlBased(ExternalCredentialUrl),
+    FileBased(ExternalCredentialFile),
 }
 
 #[derive(Debug, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
 pub struct ExternalCredentialUrl {
     url: String,
     headers: Option<HashMap<String, SecretValue>>,
+    format: Option<ExternalCredentialUrlFormat>,
+}
+
+#[derive(Debug, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
+pub struct ExternalCredentialFile {
+    file: String,
     format: Option<ExternalCredentialUrlFormat>,
 }
 
@@ -38,6 +45,7 @@ pub async fn subject_token(
         ExternalCredentialSource::UrlBased(ref url_creds) => {
             subject_token_url(client, url_creds).await
         }
+        ExternalCredentialSource::FileBased(ref url_creds) => subject_token_file(url_creds).await,
     }
 }
 
@@ -73,7 +81,15 @@ pub async fn subject_token_url(
                     if let Some(subject_json_value) =
                         json_object.get(&json_settings.subject_token_field_name)
                     {
-                        Ok(subject_json_value.to_string().into())
+                        if let Some(subject_json_value_str) = subject_json_value.as_str() {
+                            Ok(subject_json_value_str.into())
+                        } else {
+                            Err(crate::error::ErrorKind::ExternalCredsSourceError(format!(
+                                "External subject JSON field must have string type: {}",
+                                &json_settings.subject_token_field_name
+                            ))
+                            .into())
+                        }
                     } else {
                         Err(crate::error::ErrorKind::ExternalCredsSourceError(format!(
                             "External subject JSON format doesn't contain required field: {}",
@@ -95,5 +111,62 @@ pub async fn subject_token_url(
             &url_creds.url, status, err_body
         );
         Err(crate::error::ErrorKind::ExternalCredsSourceError(err_text).into())
+    }
+}
+
+pub async fn subject_token_file(
+    url_creds: &ExternalCredentialFile,
+) -> crate::error::Result<SecretValue> {
+    debug!(
+        "Using external credentials file source {}. Format: {:?}",
+        &url_creds.file, &url_creds.format
+    );
+    let file_content: String = std::fs::read_to_string(url_creds.file.as_str()).map_err(|e| {
+        crate::error::ErrorKind::ExternalCredsSourceError(format!(
+            "External file is not readable: {}",
+            e
+        ))
+    })?;
+
+    if let Some(format) = &url_creds.format {
+        match format {
+            ExternalCredentialUrlFormat::Json(json_settings) => {
+                let json: serde_json::Value =
+                    serde_json::from_str(file_content.as_str()).map_err(|e| {
+                        crate::error::ErrorKind::ExternalCredsSourceError(format!(
+                            "External file JSON format error: {}",
+                            e
+                        ))
+                    })?;
+                let json_object = json.as_object().ok_or_else(|| {
+                    crate::error::ErrorKind::ExternalCredsSourceError(format!(
+                        "External subject JSON format is not object"
+                    ))
+                })?;
+
+                if let Some(subject_json_value) =
+                    json_object.get(&json_settings.subject_token_field_name)
+                {
+                    if let Some(subject_json_value_str) = subject_json_value.as_str() {
+                        Ok(subject_json_value_str.into())
+                    } else {
+                        Err(crate::error::ErrorKind::ExternalCredsSourceError(format!(
+                            "External subject JSON field must have string type: {}",
+                            &json_settings.subject_token_field_name
+                        ))
+                        .into())
+                    }
+                } else {
+                    Err(crate::error::ErrorKind::ExternalCredsSourceError(format!(
+                        "External subject JSON format doesn't contain required field: {}",
+                        &json_settings.subject_token_field_name
+                    ))
+                    .into())
+                }
+            }
+            ExternalCredentialUrlFormat::Text => Ok(file_content.into()),
+        }
+    } else {
+        Ok(file_content.into())
     }
 }

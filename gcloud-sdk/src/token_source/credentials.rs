@@ -271,6 +271,7 @@ mod external_account {
     }
 
     #[derive(Debug, serde::Serialize, serde::Deserialize)]
+    #[serde(rename_all = "camelCase")]
     struct IamCredentialsTokenResponse {
         access_token: SecretValue,
         expire_time: chrono::DateTime<chrono::Utc>,
@@ -300,7 +301,9 @@ mod external_account {
             scope: scopes.join(" "),
         };
 
-        let sts_http_request = client.post(external_account.token_url.as_str());
+        let sts_http_request = client
+            .post(external_account.token_url.as_str())
+            .header(reqwest::header::CONTENT_TYPE, "application/json");
         let sts_http_response = sts_http_request.json(&sts_request_body).send().await?;
 
         if sts_http_response.status().is_success() {
@@ -313,9 +316,12 @@ mod external_account {
                     "Using impersonation URL {}",
                     service_account_impersonation_url
                 );
-                let mut iam_generate_token_request = client.post(service_account_impersonation_url);
-                iam_generate_token_request = iam_generate_token_request
-                    .header(reqwest::header::AUTHORIZATION, sts_token.header_value());
+
+                let iam_generate_token_request = client
+                    .post(service_account_impersonation_url)
+                    .header(reqwest::header::AUTHORIZATION, sts_token.header_value())
+                    .header(reqwest::header::CONTENT_TYPE, "application/json");
+
                 let iam_generate_body = IamCredentialsGenerateAccessToken {
                     scope: external_account.scopes.clone().join(" "),
                 };
