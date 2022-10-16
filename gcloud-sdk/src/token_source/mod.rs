@@ -5,18 +5,19 @@ use std::path::PathBuf;
 
 use async_trait::async_trait;
 use chrono::prelude::*;
+use secret_vault_value::SecretValue;
 
 pub mod auth_token_generator;
 pub mod credentials;
 pub mod metadata;
-
-use serde::{Deserialize, Serialize};
 
 pub use credentials::{from_env_var, from_well_known_file};
 use metadata::from_metadata;
 
 pub use credentials::{from_file, from_json};
 use tracing::*;
+
+mod ext_creds_source;
 
 pub type BoxSource = Box<dyn Source + Send + Sync + 'static>;
 
@@ -73,25 +74,10 @@ pub async fn find_default(token_scopes: &[String]) -> crate::error::Result<BoxSo
     Err(crate::error::ErrorKind::TokenSource.into())
 }
 
-#[derive(PartialEq, Eq, Hash, Serialize, Deserialize, Clone)]
-pub struct TokenValue(String);
-
-impl TokenValue {
-    pub fn sensitive_value(&self) -> &String {
-        &self.0
-    }
-}
-
-impl Debug for TokenValue {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "TokenValue(len:{})", self.0.len())
-    }
-}
-
 #[derive(Debug, Clone)]
 pub struct Token {
     pub type_: String,
-    pub token: TokenValue,
+    pub token: SecretValue,
     pub expiry: DateTime<Utc>,
 }
 
@@ -111,7 +97,7 @@ impl Token {
     }
 
     pub fn header_value(&self) -> String {
-        format!("{} {}", self.type_, self.token.0)
+        format!("{} {}", self.type_, self.token.as_sensitive_str())
     }
 }
 
@@ -119,7 +105,10 @@ impl TryFrom<TokenResponse> for Token {
     type Error = crate::error::Error;
 
     fn try_from(v: TokenResponse) -> Result<Self, Self::Error> {
-        if v.token_type.is_empty() || v.access_token.0.is_empty() || v.expires_in == 0 {
+        if v.token_type.is_empty()
+            || v.access_token.as_sensitive_bytes().is_empty()
+            || v.expires_in == 0
+        {
             Err(crate::error::ErrorKind::TokenData.into())
         } else {
             Ok(Token {
@@ -134,7 +123,7 @@ impl TryFrom<TokenResponse> for Token {
 #[derive(Debug, serde::Serialize, serde::Deserialize)]
 struct TokenResponse {
     token_type: String,
-    access_token: TokenValue,
+    access_token: SecretValue,
     expires_in: u64,
 }
 

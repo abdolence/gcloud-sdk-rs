@@ -8,7 +8,7 @@ impl crate::GoogleRestApi {
             crate::google_rest_apis::storage_v1::apis::configuration::Configuration {
                 client: self.client.clone(),
                 user_agent: Some(crate::GCLOUD_SDK_USER_AGENT.to_string()),
-                oauth_access_token: Some(token.token.sensitive_value().to_string()),
+                oauth_access_token: Some(token.token.as_sensitive_str().to_string()),
                 ..Default::default()
             },
         )

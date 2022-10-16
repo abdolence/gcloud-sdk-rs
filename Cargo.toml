@@ -5,4 +5,5 @@ members = [
     "examples/firestore-client",
     "examples/secrets-manager-client",
     "examples/gcs-rest-client",
+    "examples/simple-api-client",
 ]
