@@ -9,6 +9,7 @@ use tracing::*;
 pub enum ExternalCredentialSource {
     UrlBased(ExternalCredentialUrl),
     FileBased(ExternalCredentialFile),
+    // AWS external source implementation example https://github.com/googleapis/google-auth-library-nodejs/blob/4bbd13fbf9081e004209d0ffc336648cff0c529e/src/auth/awsclient.ts
 }
 
 #[derive(Debug, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
@@ -74,7 +75,8 @@ pub async fn subject_token_url(
                     let json: serde_json::Value = response.json().await?;
                     let json_object = json.as_object().ok_or_else(|| {
                         crate::error::ErrorKind::ExternalCredsSourceError(format!(
-                            "External subject JSON format is not object"
+                            "External subject JSON format is not object: {}",
+                            json
                         ))
                     })?;
 
@@ -140,7 +142,8 @@ pub async fn subject_token_file(
                     })?;
                 let json_object = json.as_object().ok_or_else(|| {
                     crate::error::ErrorKind::ExternalCredsSourceError(format!(
-                        "External subject JSON format is not object"
+                        "External subject JSON format is not object: {}",
+                        json
                     ))
                 })?;
 

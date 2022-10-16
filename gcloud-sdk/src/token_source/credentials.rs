@@ -228,11 +228,11 @@ mod oauth2 {
     pub(super) async fn fetch_token(url: &str, user: &User) -> crate::error::Result<Token> {
         let req = httpc_post(url).form(&Payload {
             client_id: &user.client_id,
-            client_secret: &user.client_secret.as_sensitive_str(),
+            client_secret: user.client_secret.as_sensitive_str(),
             grant_type: GRANT_TYPE,
             // The reflesh token is not included in the response from google's server,
             // so it always uses the specified refresh token from the file.
-            refresh_token: &user.refresh_token.as_sensitive_str(),
+            refresh_token: user.refresh_token.as_sensitive_str(),
         });
         let resp = req.send().await?;
         if resp.status().is_success() {

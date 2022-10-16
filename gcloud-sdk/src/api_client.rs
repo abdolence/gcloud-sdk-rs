@@ -170,12 +170,10 @@ impl GoogleEnvironment {
                 metadata_result
             } else {
                 let local_creds: Option<crate::token_source::credentials::Credentials> =
-                    if let Some(Some(src)) =
-                        crate::token_source::from_env_var(&GCP_DEFAULT_SCOPES).ok()
-                    {
+                    if let Ok(Some(src)) = crate::token_source::from_env_var(&GCP_DEFAULT_SCOPES) {
                         Some(src)
-                    } else if let Some(Some(src)) =
-                        crate::token_source::from_well_known_file(&GCP_DEFAULT_SCOPES).ok()
+                    } else if let Ok(Some(src)) =
+                        crate::token_source::from_well_known_file(&GCP_DEFAULT_SCOPES)
                     {
                         Some(src)
                     } else {
