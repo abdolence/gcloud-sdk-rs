@@ -88,6 +88,13 @@ Looks for credentials in the following places, preferring the first location fou
 - A JSON file in a location known to the gcloud command-line tool using `gcloud auth application-default login`.
 - On Google Compute Engine, it fetches credentials from the metadata server.
 
+### Workload Identity Federation
+The library provides the support for workload identity federation support to use "keyless" integrations with different providers:
+- URL based OIDC/SAML (for example GitHub actions) with text/json file formats;
+- File based OIDC/SAML  with text/json file formats;
+
+AWS provider is not supported yet (feel free to open a PR to support).
+
 ### Local development
 Don't confuse `gcloud auth login` with `gcloud auth application-default login` for local development,
 since the first authorize only `gcloud` tool to access the Cloud Platform.
