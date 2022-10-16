@@ -154,9 +154,10 @@ pub struct GoogleEnvironment;
 
 impl GoogleEnvironment {
     pub async fn detect_google_project_id() -> Option<String> {
-        let for_env = std::env::var("PROJECT_ID")
+        let for_env = std::env::var("GCP_PROJECT_ID")
             .ok()
-            .or_else(|| std::env::var("GCP_PROJECT_ID").ok());
+            .or_else(|| std::env::var("GCP_PROJECT").ok())
+            .or_else(|| std::env::var("PROJECT_ID").ok());
         if for_env.is_some() {
             debug!("Detected GCP Project ID using environment variables");
             for_env
@@ -169,12 +170,10 @@ impl GoogleEnvironment {
                 metadata_result
             } else {
                 let local_creds: Option<crate::token_source::credentials::Credentials> =
-                    if let Some(Some(src)) =
-                        crate::token_source::from_env_var(&GCP_DEFAULT_SCOPES).ok()
-                    {
+                    if let Ok(Some(src)) = crate::token_source::from_env_var(&GCP_DEFAULT_SCOPES) {
                         Some(src)
-                    } else if let Some(Some(src)) =
-                        crate::token_source::from_well_known_file(&GCP_DEFAULT_SCOPES).ok()
+                    } else if let Ok(Some(src)) =
+                        crate::token_source::from_well_known_file(&GCP_DEFAULT_SCOPES)
                     {
                         Some(src)
                     } else {
@@ -188,12 +187,15 @@ impl GoogleEnvironment {
                     crate::token_source::credentials::Credentials::User(user) => {
                         user.quota_project_id
                     }
+                    crate::token_source::credentials::Credentials::ExternalAccount(
+                        external_account,
+                    ) => external_account.quota_project_id,
                 });
 
                 if local_quota_project_id.is_some() {
                     debug!("Detected default project id from local defined quota_project_id");
                 } else {
-                    debug!("No GCP Project ID detected in this environment. Please specify it explicitly using environment variables: `PROJECT_ID` or `GCP_PROJECT_ID`");
+                    debug!("No GCP Project ID detected in this environment. Please specify it explicitly using environment variables: `PROJECT_ID`,`GCP_PROJECT_ID`, or `GCP_PROJECT`");
                 }
                 local_quota_project_id
             }

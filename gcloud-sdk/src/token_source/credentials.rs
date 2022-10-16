@@ -4,7 +4,9 @@ use std::{
 };
 
 use async_trait::async_trait;
+use secret_vault_value::SecretValue;
 
+use crate::token_source::ext_creds_source::ExternalCredentialSource;
 use crate::token_source::{BoxSource, Source, Token};
 
 #[derive(Debug, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
@@ -12,13 +14,15 @@ use crate::token_source::{BoxSource, Source, Token};
 pub enum Credentials {
     ServiceAccount(ServiceAccount),
     User(User),
+    // GCP Keyless integration with external parties such as GitHub
+    ExternalAccount(ExternalAccount),
 }
 
 #[derive(Debug, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
 pub struct ServiceAccount {
     pub client_email: String,
     private_key_id: String,
-    private_key: String,
+    private_key: SecretValue,
     token_uri: String,
     #[serde(skip)]
     pub scopes: Vec<String>,
@@ -27,19 +31,39 @@ pub struct ServiceAccount {
 
 #[derive(Debug, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
 pub struct User {
-    client_secret: String,
+    client_secret: SecretValue,
     pub client_id: String,
-    refresh_token: String,
+    refresh_token: SecretValue,
     pub quota_project_id: Option<String>,
+}
+
+#[derive(Debug, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
+pub struct ExternalAccount {
+    pub audience: String,
+    pub subject_token_type: String,
+    pub token_url: String,
+    pub service_account_impersonation_url: Option<String>,
+    pub service_account_impersonation: Option<ServiceAccountImpersonationSettings>,
+    pub quota_project_id: Option<String>,
+    pub credential_source: ExternalCredentialSource,
+    #[serde(skip)]
+    pub scopes: Vec<String>,
+}
+
+#[derive(Debug, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
+pub struct ServiceAccountImpersonationSettings {
+    pub token_lifetime_seconds: Option<u64>,
 }
 
 #[async_trait]
 impl Source for Credentials {
     async fn token(&self) -> crate::error::Result<Token> {
-        use Credentials::*;
         match self {
-            ServiceAccount(sa) => jwt::token(sa).await,
-            User(user) => oauth2::token(user).await,
+            Credentials::ServiceAccount(sa) => jwt::token(sa).await,
+            Credentials::User(user) => oauth2::token(user).await,
+            Credentials::ExternalAccount(external_account) => {
+                external_account::token(external_account).await
+            }
         }
     }
 }
@@ -89,6 +113,8 @@ pub fn from_json(buf: &[u8], scopes: &[String]) -> crate::error::Result<Credenti
         serde_json::from_slice(buf).map_err(crate::error::ErrorKind::CredentialsJson)?;
     if let Credentials::ServiceAccount(ref mut sa) = creds {
         sa.scopes = scopes.to_owned()
+    } else if let Credentials::ExternalAccount(ref mut external_account) = creds {
+        external_account.scopes = scopes.to_owned()
     }
     Ok(creds)
 }
@@ -158,7 +184,7 @@ mod jwt {
             exp: iat + DEFAULT_EXPIRE,
         };
         let header = header("JWT", &sa.private_key_id);
-        let key = EncodingKey::from_rsa_pem(sa.private_key.as_bytes())?;
+        let key = EncodingKey::from_rsa_pem(sa.private_key.as_sensitive_bytes())?;
         let assertion = &encode(&header, &claims, &key)?;
 
         let req = httpc_post(&sa.token_uri).form(&Payload {
@@ -202,11 +228,11 @@ mod oauth2 {
     pub(super) async fn fetch_token(url: &str, user: &User) -> crate::error::Result<Token> {
         let req = httpc_post(url).form(&Payload {
             client_id: &user.client_id,
-            client_secret: &user.client_secret,
+            client_secret: user.client_secret.as_sensitive_str(),
             grant_type: GRANT_TYPE,
             // The reflesh token is not included in the response from google's server,
             // so it always uses the specified refresh token from the file.
-            refresh_token: &user.refresh_token,
+            refresh_token: user.refresh_token.as_sensitive_str(),
         });
         let resp = req.send().await?;
         if resp.status().is_success() {
@@ -214,6 +240,122 @@ mod oauth2 {
             Token::try_from(resp)
         } else {
             Err(crate::error::ErrorKind::HttpStatus(resp.status()).into())
+        }
+    }
+}
+
+mod external_account {
+    use crate::GCP_DEFAULT_SCOPES;
+    use secret_vault_value::SecretValue;
+    use std::convert::TryFrom;
+    use tracing::*;
+
+    use crate::token_source::credentials::ExternalAccount;
+    use crate::token_source::{ext_creds_source, Token, TokenResponse};
+
+    #[derive(Debug, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
+    #[serde(rename_all = "camelCase")]
+    struct StsRequest {
+        pub grant_type: String,
+        pub audience: String,
+        pub requested_token_type: String,
+        pub subject_token_type: String,
+        pub subject_token: SecretValue,
+        pub scope: String,
+    }
+
+    #[derive(Debug, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
+    #[serde(rename_all = "camelCase")]
+    struct IamCredentialsGenerateAccessToken {
+        pub scope: String,
+    }
+
+    #[derive(Debug, serde::Serialize, serde::Deserialize)]
+    #[serde(rename_all = "camelCase")]
+    struct IamCredentialsTokenResponse {
+        access_token: SecretValue,
+        expire_time: chrono::DateTime<chrono::Utc>,
+    }
+
+    // This implements source described here: https://google.aip.dev/auth/4117
+    pub async fn token(external_account: &ExternalAccount) -> crate::error::Result<Token> {
+        debug!(
+            "Detected external account {}",
+            &external_account.subject_token_type
+        );
+        let client = reqwest::Client::new();
+        let subject_token = ext_creds_source::subject_token(&client, external_account).await?;
+
+        let scopes = if external_account.service_account_impersonation_url.is_some() {
+            GCP_DEFAULT_SCOPES.clone()
+        } else {
+            external_account.scopes.clone()
+        };
+
+        let sts_request_body = StsRequest {
+            grant_type: "urn:ietf:params:oauth:grant-type:token-exchange".to_string(),
+            audience: external_account.audience.to_string(),
+            requested_token_type: "urn:ietf:params:oauth:token-type:access_token".to_string(),
+            subject_token_type: external_account.subject_token_type.clone(),
+            subject_token,
+            scope: scopes.join(" "),
+        };
+
+        let sts_http_request = client
+            .post(external_account.token_url.as_str())
+            .header(reqwest::header::CONTENT_TYPE, "application/json");
+        let sts_http_response = sts_http_request.json(&sts_request_body).send().await?;
+
+        if sts_http_response.status().is_success() {
+            let resp = sts_http_response.json::<TokenResponse>().await?;
+            let sts_token = Token::try_from(resp)?;
+            if let Some(service_account_impersonation_url) =
+                &external_account.service_account_impersonation_url
+            {
+                debug!(
+                    "Using impersonation URL {}",
+                    service_account_impersonation_url
+                );
+
+                let iam_generate_token_request = client
+                    .post(service_account_impersonation_url)
+                    .header(reqwest::header::AUTHORIZATION, sts_token.header_value())
+                    .header(reqwest::header::CONTENT_TYPE, "application/json");
+
+                let iam_generate_body = IamCredentialsGenerateAccessToken {
+                    scope: external_account.scopes.clone().join(" "),
+                };
+
+                let iam_generate_token_response = iam_generate_token_request
+                    .json(&iam_generate_body)
+                    .send()
+                    .await?;
+                if iam_generate_token_response.status().is_success() {
+                    let iam_generate_resp_body = iam_generate_token_response
+                        .json::<IamCredentialsTokenResponse>()
+                        .await?;
+
+                    Ok(Token {
+                        token: iam_generate_resp_body.access_token,
+                        ..sts_token
+                    })
+                } else {
+                    let status = iam_generate_token_response.status();
+                    let err_body = iam_generate_token_response.text().await?;
+                    let err_text = format!("Unable to receive subject using external impersonation url: {}. HTTP: {} {}", &external_account.token_url, status, err_body);
+                    Err(crate::error::ErrorKind::ExternalCredsSourceError(err_text).into())
+                }
+            } else {
+                Ok(sts_token)
+            }
+        } else {
+            let status = sts_http_response.status();
+            let err_body = sts_http_response.text().await?;
+            let err_text = format!(
+                "Unable to receive subject using external url: {}. HTTP: {} {}",
+                &external_account.token_url, status, err_body
+            );
+            Err(crate::error::ErrorKind::ExternalCredsSourceError(err_text).into())
         }
     }
 }

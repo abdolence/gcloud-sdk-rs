@@ -24,6 +24,7 @@ pub enum ErrorKind {
     TokenData,
     GrpcStatus(tonic::transport::Error),
     UrlError(hyper::http::uri::InvalidUri),
+    ExternalCredsSourceError(String),
     #[doc(hidden)]
     __Nonexhaustive,
 }
@@ -60,6 +61,7 @@ impl fmt::Display for Error {
             GrpcStatus(ref e) => write!(f, "Tonic/gRPC error: {}", e),
             TonicMetadata(ref e) => write!(f, "Tonic metadata error: {}", e),
             UrlError(ref e) => write!(f, "Url error: {}", e),
+            ExternalCredsSourceError(ref e) => write!(f, "External creds source error: {}", e),
             __Nonexhaustive => write!(f, "unknown error"),
         }
     }
