@@ -1,7 +1,6 @@
 name: Check Gcloud
 on:
   workflow_dispatch:
-  push:
 env:
   GCP_PROJECT: latestbit
   GCP_PROJECT_ID: 288860578009
@@ -27,5 +26,4 @@ jobs:
         uses: google-github-actions/setup-gcloud@v0
       - name: Run test example
         run: |
-          gcloud logging write "testlog" "Test message from pipeline"
           cargo run --bin simple-api-client-example
