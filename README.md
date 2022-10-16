@@ -93,7 +93,7 @@ The library provides the support for workload identity federation support to use
 - URL based OIDC/SAML (for example GitHub actions) with text/json file formats;
 - File based OIDC/SAML  with text/json file formats;
 
-AWS provider is not supported yet (feel free to open a PR to support).
+AWS provider is not supported yet (feel free to open a PR to support, https://github.com/abdolence/gcloud-sdk-rs/issues/29).
 
 ### Local development
 Don't confuse `gcloud auth login` with `gcloud auth application-default login` for local development,
