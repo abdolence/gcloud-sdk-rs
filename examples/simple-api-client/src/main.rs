@@ -1,6 +1,6 @@
 use gcloud_sdk::google::logging::v2::logging_service_v2_client::LoggingServiceV2Client;
-use gcloud_sdk::*;
 use gcloud_sdk::google::logging::v2::{log_entry, LogEntry, WriteLogEntriesRequest};
+use gcloud_sdk::*;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -32,7 +32,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
             log_name: log_name.clone(),
             entries: vec![LogEntry {
                 log_name: log_name.clone(),
-                payload: Some(log_entry::Payload::TextPayload("Test log message".to_string())),
+                payload: Some(log_entry::Payload::TextPayload(
+                    "Test log message".to_string(),
+                )),
                 ..Default::default()
             }],
             ..Default::default()
