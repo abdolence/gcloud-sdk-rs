@@ -842,10 +842,12 @@ pub struct InputAudioConfig {
     /// the same session do not necessarily need to specify the same language.
     #[prost(string, tag="3")]
     pub language_code: ::prost::alloc::string::String,
-    /// If `true`, Dialogflow returns \[SpeechWordInfo][google.cloud.dialogflow.v2beta1.SpeechWordInfo\] in
-    /// \[StreamingRecognitionResult][google.cloud.dialogflow.v2beta1.StreamingRecognitionResult\] with information about the recognized speech
-    /// words, e.g. start and end time offsets. If false or unspecified, Speech
-    /// doesn't return any word-level information.
+    /// If `true`, Dialogflow returns
+    /// \[SpeechWordInfo][google.cloud.dialogflow.v2beta1.SpeechWordInfo\] in
+    /// \[StreamingRecognitionResult][google.cloud.dialogflow.v2beta1.StreamingRecognitionResult\]
+    /// with information about the recognized speech words, e.g. start and end time
+    /// offsets. If false or unspecified, Speech doesn't return any word-level
+    /// information.
     #[prost(bool, tag="13")]
     pub enable_word_info: bool,
     /// A list of strings containing words and phrases that the speech
@@ -881,7 +883,8 @@ pub struct InputAudioConfig {
     /// for more details.
     #[prost(string, tag="7")]
     pub model: ::prost::alloc::string::String,
-    /// Which variant of the [Speech model]\[google.cloud.dialogflow.v2beta1.InputAudioConfig.model\] to use.
+    /// Which variant of the [Speech
+    /// model]\[google.cloud.dialogflow.v2beta1.InputAudioConfig.model\] to use.
     #[prost(enumeration="SpeechModelVariant", tag="10")]
     pub model_variant: i32,
     /// If `false` (default), recognition does not cease until the
@@ -896,7 +899,9 @@ pub struct InputAudioConfig {
     /// over StreamingDetectIntentRequest.single_utterance.
     #[prost(bool, tag="8")]
     pub single_utterance: bool,
-    /// Only used in \[Participants.AnalyzeContent][google.cloud.dialogflow.v2beta1.Participants.AnalyzeContent\] and
+    /// Only used in
+    /// \[Participants.AnalyzeContent][google.cloud.dialogflow.v2beta1.Participants.AnalyzeContent\]
+    /// and
     /// \[Participants.StreamingAnalyzeContent][google.cloud.dialogflow.v2beta1.Participants.StreamingAnalyzeContent\].
     /// If `false` and recognition doesn't return any result, trigger
     /// `NO_SPEECH_RECOGNIZED` event to Dialogflow agent.
@@ -916,9 +921,10 @@ pub struct VoiceSelectionParams {
     pub name: ::prost::alloc::string::String,
     /// Optional. The preferred gender of the voice. If not set, the service will
     /// choose a voice based on the other parameters such as language_code and
-    /// \[name][google.cloud.dialogflow.v2beta1.VoiceSelectionParams.name\]. Note that this is only a preference, not requirement. If a
-    /// voice of the appropriate gender is not available, the synthesizer should
-    /// substitute a voice with a different gender rather than failing the request.
+    /// \[name][google.cloud.dialogflow.v2beta1.VoiceSelectionParams.name\]. Note
+    /// that this is only a preference, not requirement. If a voice of the
+    /// appropriate gender is not available, the synthesizer should substitute a
+    /// voice with a different gender rather than failing the request.
     #[prost(enumeration="SsmlVoiceGender", tag="2")]
     pub ssml_gender: i32,
 }
@@ -981,18 +987,30 @@ pub struct TelephonyDtmfEvents {
     #[prost(enumeration="TelephonyDtmf", repeated, tag="1")]
     pub dtmf_events: ::prost::alloc::vec::Vec<i32>,
 }
-/// Configures speech transcription for \[ConversationProfile][google.cloud.dialogflow.v2beta1.ConversationProfile\].
+/// Configures speech transcription for
+/// \[ConversationProfile][google.cloud.dialogflow.v2beta1.ConversationProfile\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SpeechToTextConfig {
     /// The speech model used in speech to text.
     /// `SPEECH_MODEL_VARIANT_UNSPECIFIED`, `USE_BEST_AVAILABLE` will be treated as
-    /// `USE_ENHANCED`. It can be overridden in \[AnalyzeContentRequest][google.cloud.dialogflow.v2beta1.AnalyzeContentRequest\] and
-    /// \[StreamingAnalyzeContentRequest][google.cloud.dialogflow.v2beta1.StreamingAnalyzeContentRequest\] request.
-    /// If enhanced model variant is specified and an enhanced
-    /// version of the specified model for the language does not exist, then it
-    /// would emit an error.
+    /// `USE_ENHANCED`. It can be overridden in
+    /// \[AnalyzeContentRequest][google.cloud.dialogflow.v2beta1.AnalyzeContentRequest\]
+    /// and
+    /// \[StreamingAnalyzeContentRequest][google.cloud.dialogflow.v2beta1.StreamingAnalyzeContentRequest\]
+    /// request. If enhanced model variant is specified and an enhanced version of
+    /// the specified model for the language does not exist, then it would emit an
+    /// error.
     #[prost(enumeration="SpeechModelVariant", tag="1")]
     pub speech_model_variant: i32,
+    /// Which Speech model to select. Select the model best suited to your domain
+    /// to get best results. If a model is not explicitly specified, then a default
+    /// model is used.
+    /// Refer to
+    /// [Cloud Speech API
+    /// documentation](<https://cloud.google.com/speech-to-text/docs/basics#select-model>)
+    /// for more details.
+    #[prost(string, tag="2")]
+    pub model: ::prost::alloc::string::String,
 }
 /// Audio encoding of the audio content sent in the conversational query request.
 /// Refer to the
@@ -1055,7 +1073,8 @@ impl AudioEncoding {
         }
     }
 }
-/// Variant of the specified [Speech model]\[google.cloud.dialogflow.v2beta1.InputAudioConfig.model\] to use.
+/// Variant of the specified [Speech
+/// model]\[google.cloud.dialogflow.v2beta1.InputAudioConfig.model\] to use.
 ///
 /// See the [Cloud Speech
 /// documentation](<https://cloud.google.com/speech-to-text/docs/enhanced-models>)
@@ -1083,8 +1102,8 @@ pub enum SpeechModelVariant {
     /// Use an enhanced model variant:
     ///
     /// * If an enhanced variant does not exist for the given
-    ///    \[model][google.cloud.dialogflow.v2beta1.InputAudioConfig.model\] and request language, Dialogflow falls
-    ///    back to the standard variant.
+    ///    \[model][google.cloud.dialogflow.v2beta1.InputAudioConfig.model\] and
+    ///    request language, Dialogflow falls back to the standard variant.
     ///
     ///    The [Cloud Speech
     ///    documentation](<https://cloud.google.com/speech-to-text/docs/enhanced-models>)
