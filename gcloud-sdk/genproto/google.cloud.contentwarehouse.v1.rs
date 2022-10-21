@@ -1090,8 +1090,10 @@ pub mod document_schema_service_client {
         }
         /// Updates a Document Schema. Returns INVALID_ARGUMENT if the name of the
         /// Document Schema is non-empty and does not equal the existing name.
-        /// Supports only appending new properties and updating existing properties
-        /// will result into INVALID_ARGUMENT.
+        /// Supports only appending new properties, adding new ENUM possible values,
+        /// and updating the [EnumTypeOptions.validation_check_disabled][google.cloud.contentwarehouse.v1.EnumTypeOptions.validation_check_disabled] flag for
+        /// ENUM possible values. Updating existing properties will result into
+        /// INVALID_ARGUMENT.
         pub async fn update_document_schema(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateDocumentSchemaRequest>,
@@ -1133,7 +1135,8 @@ pub mod document_schema_service_client {
             self.inner.unary(request.into_request(), path, codec).await
         }
         /// Deletes a document schema. Returns NOT_FOUND if the document schema does
-        /// not exist.
+        /// not exist. Returns BAD_REQUEST if the document schema has documents
+        /// depending on it.
         pub async fn delete_document_schema(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteDocumentSchemaRequest>,
@@ -1659,7 +1662,9 @@ pub struct SearchDocumentsRequest {
     /// Optional. Controls if the search document request requires the return of a total size
     /// of matched documents. See \[SearchDocumentsResponse.total_size][google.cloud.contentwarehouse.v1.SearchDocumentsResponse.total_size\].
     ///
-    /// Enabling this flag may adversely impact performance.
+    /// Enabling this flag may adversely impact performance. Hint: If this is
+    /// used with pagination, set this flag on the initial query but set this
+    /// to false on subsequent page calls (keep the total count locally).
     ///
     /// Defaults to false.
     #[prost(bool, tag="10")]
@@ -2091,7 +2096,10 @@ pub struct SearchDocumentsResponse {
     pub next_page_token: ::prost::alloc::string::String,
     /// The total number of matched documents which is available only if the client
     /// set \[SearchDocumentsRequest.require_total_size][google.cloud.contentwarehouse.v1.SearchDocumentsRequest.require_total_size\] to `true`. Otherwise, the
-    /// value will be `-1`.
+    /// value will be `-1`. `total_size` will max at &quot;100,000&quot;. If this
+    /// is returned, then it can be assumed that the count is equal to or greater
+    /// than 100,000. Typically a UI would handle this condition by displaying
+    /// &quot;of many&quot;, for example: &quot;Displaying 10 of many&quot;.
     #[prost(int32, tag="3")]
     pub total_size: i32,
     /// Additional information for the API invocation, such as the request tracking

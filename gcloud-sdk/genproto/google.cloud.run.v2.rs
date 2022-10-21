@@ -213,6 +213,8 @@ pub mod condition {
         /// A task reached its retry limit and the last attempt failed due to the
         /// user container exiting with a non-zero exit code.
         NonZeroExitCode = 2,
+        /// The execution was cancelled by users.
+        Cancelled = 3,
     }
     impl ExecutionReason {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -224,6 +226,7 @@ pub mod condition {
                 ExecutionReason::Undefined => "EXECUTION_REASON_UNDEFINED",
                 ExecutionReason::JobStatusServicePollingError => "JOB_STATUS_SERVICE_POLLING_ERROR",
                 ExecutionReason::NonZeroExitCode => "NON_ZERO_EXIT_CODE",
+                ExecutionReason::Cancelled => "CANCELLED",
             }
         }
     }
@@ -298,6 +301,25 @@ pub struct Container {
     /// Volume to mount into the container's filesystem.
     #[prost(message, repeated, tag="8")]
     pub volume_mounts: ::prost::alloc::vec::Vec<VolumeMount>,
+    /// Container's working directory.
+    /// If not specified, the container runtime's default will be used, which
+    /// might be configured in the container image.
+    #[prost(string, tag="9")]
+    pub working_dir: ::prost::alloc::string::String,
+    /// Periodic probe of container liveness.
+    /// Container will be restarted if the probe fails.
+    /// More info:
+    /// <https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes>
+    #[prost(message, optional, tag="10")]
+    pub liveness_probe: ::core::option::Option<Probe>,
+    /// Startup probe of application within the container.
+    /// All other probes are disabled if a startup probe is provided, until it
+    /// succeeds. Container will not be added to service endpoints if the probe
+    /// fails.
+    /// More info:
+    /// <https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes>
+    #[prost(message, optional, tag="11")]
+    pub startup_probe: ::core::option::Option<Probe>,
 }
 /// ResourceRequirements describes the compute resource requirements.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -432,7 +454,7 @@ pub struct SecretVolumeSource {
     #[prost(message, repeated, tag="2")]
     pub items: ::prost::alloc::vec::Vec<VersionToPath>,
     /// Integer representation of mode bits to use on created files by default.
-    /// Must be a value between 0000 and 0777 (octal), defaulting to 0644.
+    /// Must be a value between 0000 and 0777 (octal), defaulting to 0444.
     /// Directories within the path are not affected by  this setting.
     ///
     /// Notes
@@ -491,6 +513,79 @@ pub struct CloudSqlInstance {
     /// {project}:{location}:{instance}
     #[prost(string, repeated, tag="1")]
     pub instances: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Probe describes a health check to be performed against a container to
+/// determine whether it is alive or ready to receive traffic.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Probe {
+    /// Number of seconds after the container has started before the probe is
+    /// initiated.
+    /// Defaults to 0 seconds. Minimum value is 0. Maximum value for liveness probe
+    /// is 3600. Maximum value for startup probe is 240.
+    /// More info:
+    /// <https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes>
+    #[prost(int32, tag="1")]
+    pub initial_delay_seconds: i32,
+    /// Number of seconds after which the probe times out.
+    /// Defaults to 1 second. Minimum value is 1. Maximum value is 3600.
+    /// Must be smaller than period_seconds.
+    /// More info:
+    /// <https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes>
+    #[prost(int32, tag="2")]
+    pub timeout_seconds: i32,
+    /// How often (in seconds) to perform the probe.
+    /// Default to 10 seconds. Minimum value is 1. Maximum value for liveness probe
+    /// is 3600. Maximum value for startup probe is 240.
+    /// Must be greater or equal than timeout_seconds.
+    #[prost(int32, tag="3")]
+    pub period_seconds: i32,
+    /// Minimum consecutive failures for the probe to be considered failed after
+    /// having succeeded. Defaults to 3. Minimum value is 1.
+    #[prost(int32, tag="4")]
+    pub failure_threshold: i32,
+    #[prost(oneof="probe::ProbeType", tags="5, 6")]
+    pub probe_type: ::core::option::Option<probe::ProbeType>,
+}
+/// Nested message and enum types in `Probe`.
+pub mod probe {
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum ProbeType {
+        /// HTTPGet specifies the http request to perform.
+        /// Exactly one of HTTPGet or TCPSocket must be specified.
+        #[prost(message, tag="5")]
+        HttpGet(super::HttpGetAction),
+        /// TCPSocket specifies an action involving a TCP port.
+        /// Exactly one of HTTPGet or TCPSocket must be specified.
+        #[prost(message, tag="6")]
+        TcpSocket(super::TcpSocketAction),
+    }
+}
+/// HTTPGetAction describes an action based on HTTP Get requests.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct HttpGetAction {
+    /// Path to access on the HTTP server. Defaults to '/'.
+    #[prost(string, tag="1")]
+    pub path: ::prost::alloc::string::String,
+    /// Custom headers to set in the request. HTTP allows repeated headers.
+    #[prost(message, repeated, tag="4")]
+    pub http_headers: ::prost::alloc::vec::Vec<HttpHeader>,
+}
+/// HTTPHeader describes a custom header to be used in HTTP probes
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct HttpHeader {
+    /// Required. The header field name
+    #[prost(string, tag="1")]
+    pub name: ::prost::alloc::string::String,
+    /// The header field value
+    #[prost(string, tag="2")]
+    pub value: ::prost::alloc::string::String,
+}
+/// TCPSocketAction describes an action based on opening a socket
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TcpSocketAction {
+    /// Port number to access on the container. Must be in the range 1 to 65535.
+    #[prost(int32, tag="1")]
+    pub port: i32,
 }
 /// VPC Access settings. For more information on creating a VPC Connector, visit
 /// <https://cloud.google.com/vpc/docs/configure-serverless-vpc-access> For
@@ -1034,15 +1129,17 @@ impl TrafficTargetAllocationType {
 /// Request message for creating a Service.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateServiceRequest {
-    /// Required. The location and project in which this service should be created.
-    /// Format: projects/{projectnumber}/locations/{location}
+    /// The location and project in which this service should be created.
+    /// Format: projects/{project}/locations/{location}
+    /// Only lowercase characters, digits, and hyphens.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The Service instance to create.
     #[prost(message, optional, tag="2")]
     pub service: ::core::option::Option<Service>,
-    /// Required. The unique identifier for the Service. The name of the service becomes
-    /// {parent}/services/{service_id}.
+    /// Required. The unique identifier for the Service. It must begin with letter,
+    /// and may not end with hyphen; must contain fewer than 50 characters.
+    /// The name of the service becomes {parent}/services/{service_id}.
     #[prost(string, tag="3")]
     pub service_id: ::prost::alloc::string::String,
     /// Indicates that the request should be validated and default values
@@ -1071,7 +1168,7 @@ pub struct UpdateServiceRequest {
 pub struct ListServicesRequest {
     /// Required. The location and project to list resources on.
     /// Location must be a valid GCP region, and may not be the "-" wildcard.
-    /// Format: projects/{projectnumber}/locations/{location}
+    /// Format: projects/{project}/locations/{location}
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     /// Maximum number of Services to return in this call.
@@ -1100,7 +1197,7 @@ pub struct ListServicesResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetServiceRequest {
     /// Required. The full name of the Service.
-    /// Format: projects/{projectnumber}/locations/{location}/services/{service}
+    /// Format: projects/{project}/locations/{location}/services/{service}
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -1108,7 +1205,7 @@ pub struct GetServiceRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteServiceRequest {
     /// Required. The full name of the Service.
-    /// Format: projects/{projectnumber}/locations/{location}/services/{service}
+    /// Format: projects/{project}/locations/{location}/services/{service}
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// Indicates that the request should be validated without actually

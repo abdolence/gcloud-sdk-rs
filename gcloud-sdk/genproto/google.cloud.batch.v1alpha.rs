@@ -466,7 +466,7 @@ pub struct Job {
     /// Output only. Job status. It is read only for users.
     #[prost(message, optional, tag="9")]
     pub status: ::core::option::Option<JobStatus>,
-    /// Job notification.
+    /// Deprecated: please use notifications instead.
     #[deprecated]
     #[prost(message, optional, tag="10")]
     pub notification: ::core::option::Option<JobNotification>,
@@ -739,7 +739,7 @@ pub struct AllocationPolicy {
     /// Location where compute resources should be allocated for the Job.
     #[prost(message, optional, tag="1")]
     pub location: ::core::option::Option<allocation_policy::LocationPolicy>,
-    /// Create only instances allowed by this policy.
+    /// Deprecated: please use instances\[0\].policy instead.
     #[deprecated]
     #[prost(message, optional, tag="2")]
     pub instance: ::core::option::Option<allocation_policy::InstancePolicy>,
@@ -747,25 +747,19 @@ pub struct AllocationPolicy {
     /// Only instances\[0\] is supported now.
     #[prost(message, repeated, tag="8")]
     pub instances: ::prost::alloc::vec::Vec<allocation_policy::InstancePolicyOrTemplate>,
-    /// Instance templates that are used to VMs.
-    /// If specified, only instance_templates\[0\] is used.
+    /// Deprecated: please use instances\[0\].template instead.
     #[deprecated]
     #[prost(string, repeated, tag="3")]
     pub instance_templates: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// Create only instances in the listed provisiong models.
-    /// Default to allow all.
-    ///
-    /// Currently only the first model of the provisioning_models list will be
-    /// considered; specifying additional models (e.g., 2nd, 3rd, etc.) is a no-op.
+    /// Deprecated: please use instances\[i\].policy.provisioning_model instead.
     #[deprecated]
     #[prost(enumeration="allocation_policy::ProvisioningModel", repeated, packed="false", tag="4")]
     pub provisioning_models: ::prost::alloc::vec::Vec<i32>,
-    /// Email of the service account that VMs will run as.
+    /// Deprecated: please use service_account instead.
     #[deprecated]
     #[prost(string, tag="5")]
     pub service_account_email: ::prost::alloc::string::String,
     /// Service account that VMs will run as.
-    /// Not yet implemented.
     #[prost(message, optional, tag="9")]
     pub service_account: ::core::option::Option<ServiceAccount>,
     /// Labels applied to all VM instances and other resources
@@ -848,7 +842,9 @@ pub mod allocation_policy {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AttachedDisk {
         /// Device name that the guest operating system will see.
-        /// If not specified, this is default to the disk name.
+        /// It is used by Runnable.volumes field to mount disks. So please specify
+        /// the device_name if you want Batch to help mount the disk, and it should
+        /// match the device_name field in volumes.
         #[prost(string, tag="3")]
         pub device_name: ::prost::alloc::string::String,
         #[prost(oneof="attached_disk::Attached", tags="1, 2")]
@@ -875,6 +871,7 @@ pub mod allocation_policy {
         /// The number of accelerators of this type.
         #[prost(int64, tag="2")]
         pub count: i64,
+        /// Deprecated: please use instances\[0\].install_gpu_drivers instead.
         #[deprecated]
         #[prost(bool, tag="3")]
         pub install_gpu_drivers: bool,
@@ -883,6 +880,7 @@ pub mod allocation_policy {
     /// created by this InstancePolicy.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct InstancePolicy {
+        /// Deprecated: please use machine_type instead.
         #[deprecated]
         #[prost(string, repeated, tag="1")]
         pub allowed_machine_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
@@ -910,6 +908,10 @@ pub mod allocation_policy {
     /// Either an InstancePolicy or an instance template.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct InstancePolicyOrTemplate {
+        /// Set this field true if users want Batch to help fetch drivers from a
+        /// third party location and install them for GPUs specified in
+        /// policy.accelerators or instance_template on their behalf. Default is
+        /// false.
         #[prost(bool, tag="3")]
         pub install_gpu_drivers: bool,
         #[prost(oneof="instance_policy_or_template::PolicyTemplate", tags="1, 2")]
@@ -1080,11 +1082,14 @@ pub mod task_group {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ServiceAccount {
     /// Email address of the service account. If not specified, the default
-    /// Compute Engine service account for the project will be used.
+    /// Compute Engine service account for the project will be used. If instance
+    /// template is being used, the service account has to be specified in the
+    /// instance template and it has to match the email field here.
     #[prost(string, tag="1")]
     pub email: ::prost::alloc::string::String,
     /// List of scopes to be enabled for this service account on the VM, in
     /// addition to the cloud-platform API scope that will be added by default.
+    #[deprecated]
     #[prost(string, repeated, tag="2")]
     pub scopes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }

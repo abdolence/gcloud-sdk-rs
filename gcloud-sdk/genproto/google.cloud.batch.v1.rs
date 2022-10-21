@@ -612,6 +612,9 @@ pub struct AllocationPolicy {
     /// Only instances\[0\] is supported now.
     #[prost(message, repeated, tag="8")]
     pub instances: ::prost::alloc::vec::Vec<allocation_policy::InstancePolicyOrTemplate>,
+    /// Service account that VMs will run as.
+    #[prost(message, optional, tag="9")]
+    pub service_account: ::core::option::Option<ServiceAccount>,
     /// Labels applied to all VM instances and other resources
     /// created by AllocationPolicy.
     /// Labels could be user provided or system generated.
@@ -687,7 +690,9 @@ pub mod allocation_policy {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AttachedDisk {
         /// Device name that the guest operating system will see.
-        /// If not specified, this is default to the disk name.
+        /// It is used by Runnable.volumes field to mount disks. So please specify
+        /// the device_name if you want Batch to help mount the disk, and it should
+        /// match the device_name field in volumes.
         #[prost(string, tag="3")]
         pub device_name: ::prost::alloc::string::String,
         #[prost(oneof="attached_disk::Attached", tags="1, 2")]
@@ -714,6 +719,7 @@ pub mod allocation_policy {
         /// The number of accelerators of this type.
         #[prost(int64, tag="2")]
         pub count: i64,
+        /// Deprecated: please use instances\[0\].install_gpu_drivers instead.
         #[deprecated]
         #[prost(bool, tag="3")]
         pub install_gpu_drivers: bool,
@@ -746,6 +752,12 @@ pub mod allocation_policy {
     /// Either an InstancePolicy or an instance template.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct InstancePolicyOrTemplate {
+        /// Set this field true if users want Batch to help fetch drivers from a
+        /// third party location and install them for GPUs specified in
+        /// policy.accelerators or instance_template on their behalf. Default is
+        /// false.
+        #[prost(bool, tag="3")]
+        pub install_gpu_drivers: bool,
         #[prost(oneof="instance_policy_or_template::PolicyTemplate", tags="1, 2")]
         pub policy_template: ::core::option::Option<instance_policy_or_template::PolicyTemplate>,
     }
@@ -870,6 +882,16 @@ pub struct TaskGroup {
     /// VMs running the Batch tasks in the same TaskGroup.
     #[prost(bool, tag="12")]
     pub permissive_ssh: bool,
+}
+/// Carries information about a Google Cloud service account.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ServiceAccount {
+    /// Email address of the service account. If not specified, the default
+    /// Compute Engine service account for the project will be used. If instance
+    /// template is being used, the service account has to be specified in the
+    /// instance template and it has to match the email field here.
+    #[prost(string, tag="1")]
+    pub email: ::prost::alloc::string::String,
 }
 /// CreateJob Request.
 #[derive(Clone, PartialEq, ::prost::Message)]
