@@ -594,6 +594,10 @@ pub struct Address {
     /// Check the IpVersion enum for the list of possible values.
     #[prost(string, optional, tag="294959552")]
     pub ip_version: ::core::option::Option<::prost::alloc::string::String>,
+    /// The endpoint type of this address, which should be VM or NETLB. This is used for deciding which type of endpoint this address can be used after the external IPv6 address reservation.
+    /// Check the Ipv6EndpointType enum for the list of possible values.
+    #[prost(string, optional, tag="97501004")]
+    pub ipv6_endpoint_type: ::core::option::Option<::prost::alloc::string::String>,
     /// [Output Only] Type of the resource. Always compute#address for addresses.
     #[prost(string, optional, tag="3292052")]
     pub kind: ::core::option::Option<::prost::alloc::string::String>,
@@ -680,6 +684,30 @@ pub mod address {
                 IpVersion::Ipv4 => "IPV4",
                 IpVersion::Ipv6 => "IPV6",
                 IpVersion::UnspecifiedVersion => "UNSPECIFIED_VERSION",
+            }
+        }
+    }
+    /// The endpoint type of this address, which should be VM or NETLB. This is used for deciding which type of endpoint this address can be used after the external IPv6 address reservation.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum Ipv6EndpointType {
+        /// A value indicating that the enum field is not set.
+        UndefinedIpv6EndpointType = 0,
+        /// Reserved IPv6 address can be used on network load balancer.
+        Netlb = 74173363,
+        /// Reserved IPv6 address can be used on VM.
+        Vm = 2743,
+    }
+    impl Ipv6EndpointType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Ipv6EndpointType::UndefinedIpv6EndpointType => "UNDEFINED_IPV6_ENDPOINT_TYPE",
+                Ipv6EndpointType::Netlb => "NETLB",
+                Ipv6EndpointType::Vm => "VM",
             }
         }
     }
@@ -3120,7 +3148,7 @@ pub struct BackendService {
     /// The URL of the network to which this backend service belongs. This field can only be specified when the load balancing scheme is set to INTERNAL.
     #[prost(string, optional, tag="232872494")]
     pub network: ::core::option::Option<::prost::alloc::string::String>,
-    /// Settings controlling the eviction of unhealthy hosts from the load balancing pool for the backend service. If not set, this feature is considered disabled. This field is applicable to either: - A regional backend service with the service_protocol set to HTTP, HTTPS, or HTTP2, and load_balancing_scheme set to INTERNAL_MANAGED. - A global backend service with the load_balancing_scheme set to INTERNAL_SELF_MANAGED. Not supported when the backend service is referenced by a URL map that is bound to target gRPC proxy that has validateForProxyless field set to true.
+    /// Settings controlling the eviction of unhealthy hosts from the load balancing pool for the backend service. If not set, this feature is considered disabled. This field is applicable to either: - A regional backend service with the service_protocol set to HTTP, HTTPS, HTTP2, or GRPC, and load_balancing_scheme set to INTERNAL_MANAGED. - A global backend service with the load_balancing_scheme set to INTERNAL_SELF_MANAGED. 
     #[prost(message, optional, tag="354625086")]
     pub outlier_detection: ::core::option::Option<OutlierDetection>,
     /// Deprecated in favor of portName. The TCP port to connect on the backend. The default value is 80. For Internal TCP/UDP Load Balancing and Network Load Balancing, omit port.
@@ -6601,6 +6629,8 @@ pub struct ErrorDetails {
     pub help: ::core::option::Option<Help>,
     #[prost(message, optional, tag="404537155")]
     pub localized_message: ::core::option::Option<LocalizedMessage>,
+    #[prost(message, optional, tag="93923861")]
+    pub quota_info: ::core::option::Option<QuotaExceededInfo>,
 }
 /// Describes the cause of the error with structured details. Example of an error when contacting the "pubsub.googleapis.com" API when it is not enabled: { "reason": "API_DISABLED" "domain": "googleapis.com" "metadata": { "resource": "projects/123", "service": "pubsub.googleapis.com" } } This response indicates that the pubsub.googleapis.com API is not enabled. Example of an error that is returned when attempting to create a Spanner instance in a region that is out of stock: { "reason": "STOCKOUT" "domain": "spanner.googleapis.com", "metadata": { "availableRegions": "us-central1,us-east2" } }
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -7361,6 +7391,7 @@ pub struct ForwardingRule {
     /// This field identifies the subnetwork that the load balanced IP should belong to for this Forwarding Rule, used in internal load balancing and network load balancing with IPv6. If the network specified is in auto subnet mode, this field is optional. However, a subnetwork must be specified if the network is in custom subnet mode or when creating external forwarding rule with IPv6.
     #[prost(string, optional, tag="307827694")]
     pub subnetwork: ::core::option::Option<::prost::alloc::string::String>,
+    /// The URL of the target resource to receive the matched traffic. For regional forwarding rules, this target must be in the same region as the forwarding rule. For global forwarding rules, this target must be a global load balancing resource. The forwarded traffic must be of a type appropriate to the target object. For more information, see the "Target" column in [Port specifications](<https://cloud.google.com/load-balancing/docs/forwarding-rule-concepts#ip_address_specifications>). For Private Service Connect forwarding rules that forward traffic to Google APIs, provide the name of a supported Google API bundle: - vpc-sc - APIs that support VPC Service Controls. - all-apis - All supported Google APIs. 
     #[prost(string, optional, tag="192835985")]
     pub target: ::core::option::Option<::prost::alloc::string::String>,
 }
@@ -7600,30 +7631,30 @@ pub struct GrpcHealthCheck {
     /// The gRPC service name for the health check. This field is optional. The value of grpc_service_name has the following meanings by convention: - Empty service_name means the overall status of all services at the backend. - Non-empty service_name means the health of that gRPC service, as defined by the owner of the service. The grpc_service_name can only be ASCII.
     #[prost(string, optional, tag="136533078")]
     pub grpc_service_name: ::core::option::Option<::prost::alloc::string::String>,
-    /// The port number for the health check request. Must be specified if port_name and port_specification are not set or if port_specification is USE_FIXED_PORT. Valid values are 1 through 65535.
+    /// The TCP port number to which the health check prober sends packets. Valid values are 1 through 65535.
     #[prost(int32, optional, tag="3446913")]
     pub port: ::core::option::Option<i32>,
-    /// Port name as defined in InstanceGroup#NamedPort#name. If both port and port_name are defined, port takes precedence. The port_name should conform to RFC1035.
+    /// Not supported.
     #[prost(string, optional, tag="41534345")]
     pub port_name: ::core::option::Option<::prost::alloc::string::String>,
-    /// Specifies how port is selected for health checking, can be one of following values: USE_FIXED_PORT: The port number in port is used for health checking. USE_NAMED_PORT: The portName is used for health checking. USE_SERVING_PORT: For NetworkEndpointGroup, the port specified for each network endpoint is used for health checking. For other backends, the port or named port specified in the Backend Service is used for health checking. If not specified, gRPC health check follows behavior specified in port and portName fields.
+    /// Specifies how a port is selected for health checking. Can be one of the following values: USE_FIXED_PORT: Specifies a port number explicitly using the port field in the health check. Supported by backend services for pass-through load balancers and backend services for proxy load balancers. Not supported by target pools. The health check supports all backends supported by the backend service provided the backend can be health checked. For example, GCE_VM_IP network endpoint groups, GCE_VM_IP_PORT network endpoint groups, and instance group backends. USE_NAMED_PORT: Not supported. USE_SERVING_PORT: Provides an indirect method of specifying the health check port by referring to the backend service. Only supported by backend services for proxy load balancers. Not supported by target pools. Not supported by backend services for pass-through load balancers. Supports all backends that can be health checked; for example, GCE_VM_IP_PORT network endpoint groups and instance group backends. For GCE_VM_IP_PORT network endpoint group backends, the health check uses the port number specified for each endpoint in the network endpoint group. For instance group backends, the health check uses the port number determined by looking up the backend service's named port in the instance group's list of named ports.
     /// Check the PortSpecification enum for the list of possible values.
     #[prost(string, optional, tag="51590597")]
     pub port_specification: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Nested message and enum types in `GRPCHealthCheck`.
 pub mod grpc_health_check {
-    /// Specifies how port is selected for health checking, can be one of following values: USE_FIXED_PORT: The port number in port is used for health checking. USE_NAMED_PORT: The portName is used for health checking. USE_SERVING_PORT: For NetworkEndpointGroup, the port specified for each network endpoint is used for health checking. For other backends, the port or named port specified in the Backend Service is used for health checking. If not specified, gRPC health check follows behavior specified in port and portName fields.
+    /// Specifies how a port is selected for health checking. Can be one of the following values: USE_FIXED_PORT: Specifies a port number explicitly using the port field in the health check. Supported by backend services for pass-through load balancers and backend services for proxy load balancers. Not supported by target pools. The health check supports all backends supported by the backend service provided the backend can be health checked. For example, GCE_VM_IP network endpoint groups, GCE_VM_IP_PORT network endpoint groups, and instance group backends. USE_NAMED_PORT: Not supported. USE_SERVING_PORT: Provides an indirect method of specifying the health check port by referring to the backend service. Only supported by backend services for proxy load balancers. Not supported by target pools. Not supported by backend services for pass-through load balancers. Supports all backends that can be health checked; for example, GCE_VM_IP_PORT network endpoint groups and instance group backends. For GCE_VM_IP_PORT network endpoint group backends, the health check uses the port number specified for each endpoint in the network endpoint group. For instance group backends, the health check uses the port number determined by looking up the backend service's named port in the instance group's list of named ports.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum PortSpecification {
         /// A value indicating that the enum field is not set.
         UndefinedPortSpecification = 0,
-        /// The port number in port is used for health checking.
+        /// The port number in the health check's port is used for health checking. Applies to network endpoint group and instance group backends.
         UseFixedPort = 190235748,
-        /// The portName is used for health checking.
+        /// Not supported.
         UseNamedPort = 349300671,
-        /// For NetworkEndpointGroup, the port specified for each network endpoint is used for health checking. For other backends, the port or named port specified in the Backend Service is used for health checking.
+        /// For network endpoint group backends, the health check uses the port number specified on each endpoint in the network endpoint group. For instance group backends, the health check uses the port number specified for the backend service's named port defined in the instance group's named ports.
         UseServingPort = 362637516,
     }
     impl PortSpecification {
@@ -9401,16 +9432,16 @@ pub mod guest_os_feature {
 ///
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Http2HealthCheck {
-    /// The value of the host header in the HTTP/2 health check request. If left empty (default value), the IP on behalf of which this health check is performed will be used.
+    /// The value of the host header in the HTTP/2 health check request. If left empty (default value), the host header is set to the destination IP address to which health check packets are sent. The destination IP address depends on the type of load balancer. For details, see: <https://cloud.google.com/load-balancing/docs/health-check-concepts#hc-packet-dest>
     #[prost(string, optional, tag="3208616")]
     pub host: ::core::option::Option<::prost::alloc::string::String>,
-    /// The TCP port number for the health check request. The default value is 443. Valid values are 1 through 65535.
+    /// The TCP port number to which the health check prober sends packets. The default value is 443. Valid values are 1 through 65535.
     #[prost(int32, optional, tag="3446913")]
     pub port: ::core::option::Option<i32>,
-    /// Port name as defined in InstanceGroup#NamedPort#name. If both port and port_name are defined, port takes precedence.
+    /// Not supported.
     #[prost(string, optional, tag="41534345")]
     pub port_name: ::core::option::Option<::prost::alloc::string::String>,
-    /// Specifies how port is selected for health checking, can be one of following values: USE_FIXED_PORT: The port number in port is used for health checking. USE_NAMED_PORT: The portName is used for health checking. USE_SERVING_PORT: For NetworkEndpointGroup, the port specified for each network endpoint is used for health checking. For other backends, the port or named port specified in the Backend Service is used for health checking. If not specified, HTTP2 health check follows behavior specified in port and portName fields.
+    /// Specifies how a port is selected for health checking. Can be one of the following values: USE_FIXED_PORT: Specifies a port number explicitly using the port field in the health check. Supported by backend services for pass-through load balancers and backend services for proxy load balancers. Not supported by target pools. The health check supports all backends supported by the backend service provided the backend can be health checked. For example, GCE_VM_IP network endpoint groups, GCE_VM_IP_PORT network endpoint groups, and instance group backends. USE_NAMED_PORT: Not supported. USE_SERVING_PORT: Provides an indirect method of specifying the health check port by referring to the backend service. Only supported by backend services for proxy load balancers. Not supported by target pools. Not supported by backend services for pass-through load balancers. Supports all backends that can be health checked; for example, GCE_VM_IP_PORT network endpoint groups and instance group backends. For GCE_VM_IP_PORT network endpoint group backends, the health check uses the port number specified for each endpoint in the network endpoint group. For instance group backends, the health check uses the port number determined by looking up the backend service's named port in the instance group's list of named ports.
     /// Check the PortSpecification enum for the list of possible values.
     #[prost(string, optional, tag="51590597")]
     pub port_specification: ::core::option::Option<::prost::alloc::string::String>,
@@ -9421,23 +9452,23 @@ pub struct Http2HealthCheck {
     /// The request path of the HTTP/2 health check request. The default value is /.
     #[prost(string, optional, tag="229403605")]
     pub request_path: ::core::option::Option<::prost::alloc::string::String>,
-    /// The string to match anywhere in the first 1024 bytes of the response body. If left empty (the default value), the status code determines health. The response data can only be ASCII.
+    /// Creates a content-based HTTP/2 health check. In addition to the required HTTP 200 (OK) status code, you can configure the health check to pass only when the backend sends this specific ASCII response string within the first 1024 bytes of the HTTP response body. For details, see: <https://cloud.google.com/load-balancing/docs/health-check-concepts#criteria-protocol-http>
     #[prost(string, optional, tag="196547649")]
     pub response: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Nested message and enum types in `HTTP2HealthCheck`.
 pub mod http2_health_check {
-    /// Specifies how port is selected for health checking, can be one of following values: USE_FIXED_PORT: The port number in port is used for health checking. USE_NAMED_PORT: The portName is used for health checking. USE_SERVING_PORT: For NetworkEndpointGroup, the port specified for each network endpoint is used for health checking. For other backends, the port or named port specified in the Backend Service is used for health checking. If not specified, HTTP2 health check follows behavior specified in port and portName fields.
+    /// Specifies how a port is selected for health checking. Can be one of the following values: USE_FIXED_PORT: Specifies a port number explicitly using the port field in the health check. Supported by backend services for pass-through load balancers and backend services for proxy load balancers. Not supported by target pools. The health check supports all backends supported by the backend service provided the backend can be health checked. For example, GCE_VM_IP network endpoint groups, GCE_VM_IP_PORT network endpoint groups, and instance group backends. USE_NAMED_PORT: Not supported. USE_SERVING_PORT: Provides an indirect method of specifying the health check port by referring to the backend service. Only supported by backend services for proxy load balancers. Not supported by target pools. Not supported by backend services for pass-through load balancers. Supports all backends that can be health checked; for example, GCE_VM_IP_PORT network endpoint groups and instance group backends. For GCE_VM_IP_PORT network endpoint group backends, the health check uses the port number specified for each endpoint in the network endpoint group. For instance group backends, the health check uses the port number determined by looking up the backend service's named port in the instance group's list of named ports.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum PortSpecification {
         /// A value indicating that the enum field is not set.
         UndefinedPortSpecification = 0,
-        /// The port number in port is used for health checking.
+        /// The port number in the health check's port is used for health checking. Applies to network endpoint group and instance group backends.
         UseFixedPort = 190235748,
-        /// The portName is used for health checking.
+        /// Not supported.
         UseNamedPort = 349300671,
-        /// For NetworkEndpointGroup, the port specified for each network endpoint is used for health checking. For other backends, the port or named port specified in the Backend Service is used for health checking.
+        /// For network endpoint group backends, the health check uses the port number specified on each endpoint in the network endpoint group. For instance group backends, the health check uses the port number specified for the backend service's named port defined in the instance group's named ports.
         UseServingPort = 362637516,
     }
     impl PortSpecification {
@@ -9480,16 +9511,16 @@ pub mod http2_health_check {
 ///
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HttpHealthCheck {
-    /// The value of the host header in the HTTP health check request. If left empty (default value), the IP on behalf of which this health check is performed will be used.
+    /// The value of the host header in the HTTP health check request. If left empty (default value), the host header is set to the destination IP address to which health check packets are sent. The destination IP address depends on the type of load balancer. For details, see: <https://cloud.google.com/load-balancing/docs/health-check-concepts#hc-packet-dest>
     #[prost(string, optional, tag="3208616")]
     pub host: ::core::option::Option<::prost::alloc::string::String>,
-    /// The TCP port number for the health check request. The default value is 80. Valid values are 1 through 65535.
+    /// The TCP port number to which the health check prober sends packets. The default value is 80. Valid values are 1 through 65535.
     #[prost(int32, optional, tag="3446913")]
     pub port: ::core::option::Option<i32>,
-    /// Port name as defined in InstanceGroup#NamedPort#name. If both port and port_name are defined, port takes precedence.
+    /// Not supported.
     #[prost(string, optional, tag="41534345")]
     pub port_name: ::core::option::Option<::prost::alloc::string::String>,
-    /// Specifies how port is selected for health checking, can be one of following values: USE_FIXED_PORT: The port number in port is used for health checking. USE_NAMED_PORT: The portName is used for health checking. USE_SERVING_PORT: For NetworkEndpointGroup, the port specified for each network endpoint is used for health checking. For other backends, the port or named port specified in the Backend Service is used for health checking. If not specified, HTTP health check follows behavior specified in port and portName fields.
+    /// Specifies how a port is selected for health checking. Can be one of the following values: USE_FIXED_PORT: Specifies a port number explicitly using the port field in the health check. Supported by backend services for pass-through load balancers and backend services for proxy load balancers. Also supported in legacy HTTP health checks for target pools. The health check supports all backends supported by the backend service provided the backend can be health checked. For example, GCE_VM_IP network endpoint groups, GCE_VM_IP_PORT network endpoint groups, and instance group backends. USE_NAMED_PORT: Not supported. USE_SERVING_PORT: Provides an indirect method of specifying the health check port by referring to the backend service. Only supported by backend services for proxy load balancers. Not supported by target pools. Not supported by backend services for pass-through load balancers. Supports all backends that can be health checked; for example, GCE_VM_IP_PORT network endpoint groups and instance group backends. For GCE_VM_IP_PORT network endpoint group backends, the health check uses the port number specified for each endpoint in the network endpoint group. For instance group backends, the health check uses the port number determined by looking up the backend service's named port in the instance group's list of named ports.
     /// Check the PortSpecification enum for the list of possible values.
     #[prost(string, optional, tag="51590597")]
     pub port_specification: ::core::option::Option<::prost::alloc::string::String>,
@@ -9500,23 +9531,23 @@ pub struct HttpHealthCheck {
     /// The request path of the HTTP health check request. The default value is /.
     #[prost(string, optional, tag="229403605")]
     pub request_path: ::core::option::Option<::prost::alloc::string::String>,
-    /// The string to match anywhere in the first 1024 bytes of the response body. If left empty (the default value), the status code determines health. The response data can only be ASCII.
+    /// Creates a content-based HTTP health check. In addition to the required HTTP 200 (OK) status code, you can configure the health check to pass only when the backend sends this specific ASCII response string within the first 1024 bytes of the HTTP response body. For details, see: <https://cloud.google.com/load-balancing/docs/health-check-concepts#criteria-protocol-http>
     #[prost(string, optional, tag="196547649")]
     pub response: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Nested message and enum types in `HTTPHealthCheck`.
 pub mod http_health_check {
-    /// Specifies how port is selected for health checking, can be one of following values: USE_FIXED_PORT: The port number in port is used for health checking. USE_NAMED_PORT: The portName is used for health checking. USE_SERVING_PORT: For NetworkEndpointGroup, the port specified for each network endpoint is used for health checking. For other backends, the port or named port specified in the Backend Service is used for health checking. If not specified, HTTP health check follows behavior specified in port and portName fields.
+    /// Specifies how a port is selected for health checking. Can be one of the following values: USE_FIXED_PORT: Specifies a port number explicitly using the port field in the health check. Supported by backend services for pass-through load balancers and backend services for proxy load balancers. Also supported in legacy HTTP health checks for target pools. The health check supports all backends supported by the backend service provided the backend can be health checked. For example, GCE_VM_IP network endpoint groups, GCE_VM_IP_PORT network endpoint groups, and instance group backends. USE_NAMED_PORT: Not supported. USE_SERVING_PORT: Provides an indirect method of specifying the health check port by referring to the backend service. Only supported by backend services for proxy load balancers. Not supported by target pools. Not supported by backend services for pass-through load balancers. Supports all backends that can be health checked; for example, GCE_VM_IP_PORT network endpoint groups and instance group backends. For GCE_VM_IP_PORT network endpoint group backends, the health check uses the port number specified for each endpoint in the network endpoint group. For instance group backends, the health check uses the port number determined by looking up the backend service's named port in the instance group's list of named ports.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum PortSpecification {
         /// A value indicating that the enum field is not set.
         UndefinedPortSpecification = 0,
-        /// The port number in port is used for health checking.
+        /// The port number in the health check's port is used for health checking. Applies to network endpoint group and instance group backends.
         UseFixedPort = 190235748,
-        /// The portName is used for health checking.
+        /// Not supported.
         UseNamedPort = 349300671,
-        /// For NetworkEndpointGroup, the port specified for each network endpoint is used for health checking. For other backends, the port or named port specified in the Backend Service is used for health checking.
+        /// For network endpoint group backends, the health check uses the port number specified on each endpoint in the network endpoint group. For instance group backends, the health check uses the port number specified for the backend service's named port defined in the instance group's named ports.
         UseServingPort = 362637516,
     }
     impl PortSpecification {
@@ -9559,16 +9590,16 @@ pub mod http_health_check {
 ///
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HttpsHealthCheck {
-    /// The value of the host header in the HTTPS health check request. If left empty (default value), the IP on behalf of which this health check is performed will be used.
+    /// The value of the host header in the HTTPS health check request. If left empty (default value), the host header is set to the destination IP address to which health check packets are sent. The destination IP address depends on the type of load balancer. For details, see: <https://cloud.google.com/load-balancing/docs/health-check-concepts#hc-packet-dest>
     #[prost(string, optional, tag="3208616")]
     pub host: ::core::option::Option<::prost::alloc::string::String>,
-    /// The TCP port number for the health check request. The default value is 443. Valid values are 1 through 65535.
+    /// The TCP port number to which the health check prober sends packets. The default value is 443. Valid values are 1 through 65535.
     #[prost(int32, optional, tag="3446913")]
     pub port: ::core::option::Option<i32>,
-    /// Port name as defined in InstanceGroup#NamedPort#name. If both port and port_name are defined, port takes precedence.
+    /// Not supported.
     #[prost(string, optional, tag="41534345")]
     pub port_name: ::core::option::Option<::prost::alloc::string::String>,
-    /// Specifies how port is selected for health checking, can be one of following values: USE_FIXED_PORT: The port number in port is used for health checking. USE_NAMED_PORT: The portName is used for health checking. USE_SERVING_PORT: For NetworkEndpointGroup, the port specified for each network endpoint is used for health checking. For other backends, the port or named port specified in the Backend Service is used for health checking. If not specified, HTTPS health check follows behavior specified in port and portName fields.
+    /// Specifies how a port is selected for health checking. Can be one of the following values: USE_FIXED_PORT: Specifies a port number explicitly using the port field in the health check. Supported by backend services for pass-through load balancers and backend services for proxy load balancers. Not supported by target pools. The health check supports all backends supported by the backend service provided the backend can be health checked. For example, GCE_VM_IP network endpoint groups, GCE_VM_IP_PORT network endpoint groups, and instance group backends. USE_NAMED_PORT: Not supported. USE_SERVING_PORT: Provides an indirect method of specifying the health check port by referring to the backend service. Only supported by backend services for proxy load balancers. Not supported by target pools. Not supported by backend services for pass-through load balancers. Supports all backends that can be health checked; for example, GCE_VM_IP_PORT network endpoint groups and instance group backends. For GCE_VM_IP_PORT network endpoint group backends, the health check uses the port number specified for each endpoint in the network endpoint group. For instance group backends, the health check uses the port number determined by looking up the backend service's named port in the instance group's list of named ports.
     /// Check the PortSpecification enum for the list of possible values.
     #[prost(string, optional, tag="51590597")]
     pub port_specification: ::core::option::Option<::prost::alloc::string::String>,
@@ -9579,23 +9610,23 @@ pub struct HttpsHealthCheck {
     /// The request path of the HTTPS health check request. The default value is /.
     #[prost(string, optional, tag="229403605")]
     pub request_path: ::core::option::Option<::prost::alloc::string::String>,
-    /// The string to match anywhere in the first 1024 bytes of the response body. If left empty (the default value), the status code determines health. The response data can only be ASCII.
+    /// Creates a content-based HTTPS health check. In addition to the required HTTP 200 (OK) status code, you can configure the health check to pass only when the backend sends this specific ASCII response string within the first 1024 bytes of the HTTP response body. For details, see: <https://cloud.google.com/load-balancing/docs/health-check-concepts#criteria-protocol-http>
     #[prost(string, optional, tag="196547649")]
     pub response: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Nested message and enum types in `HTTPSHealthCheck`.
 pub mod https_health_check {
-    /// Specifies how port is selected for health checking, can be one of following values: USE_FIXED_PORT: The port number in port is used for health checking. USE_NAMED_PORT: The portName is used for health checking. USE_SERVING_PORT: For NetworkEndpointGroup, the port specified for each network endpoint is used for health checking. For other backends, the port or named port specified in the Backend Service is used for health checking. If not specified, HTTPS health check follows behavior specified in port and portName fields.
+    /// Specifies how a port is selected for health checking. Can be one of the following values: USE_FIXED_PORT: Specifies a port number explicitly using the port field in the health check. Supported by backend services for pass-through load balancers and backend services for proxy load balancers. Not supported by target pools. The health check supports all backends supported by the backend service provided the backend can be health checked. For example, GCE_VM_IP network endpoint groups, GCE_VM_IP_PORT network endpoint groups, and instance group backends. USE_NAMED_PORT: Not supported. USE_SERVING_PORT: Provides an indirect method of specifying the health check port by referring to the backend service. Only supported by backend services for proxy load balancers. Not supported by target pools. Not supported by backend services for pass-through load balancers. Supports all backends that can be health checked; for example, GCE_VM_IP_PORT network endpoint groups and instance group backends. For GCE_VM_IP_PORT network endpoint group backends, the health check uses the port number specified for each endpoint in the network endpoint group. For instance group backends, the health check uses the port number determined by looking up the backend service's named port in the instance group's list of named ports.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum PortSpecification {
         /// A value indicating that the enum field is not set.
         UndefinedPortSpecification = 0,
-        /// The port number in port is used for health checking.
+        /// The port number in the health check's port is used for health checking. Applies to network endpoint group and instance group backends.
         UseFixedPort = 190235748,
-        /// The portName is used for health checking.
+        /// Not supported.
         UseNamedPort = 349300671,
-        /// For NetworkEndpointGroup, the port specified for each network endpoint is used for health checking. For other backends, the port or named port specified in the Backend Service is used for health checking.
+        /// For network endpoint group backends, the health check uses the port number specified on each endpoint in the network endpoint group. For instance group backends, the health check uses the port number specified for the backend service's named port defined in the instance group's named ports.
         UseServingPort = 362637516,
     }
     impl PortSpecification {
@@ -11698,6 +11729,9 @@ pub struct Instance {
     /// Resource policies applied to this instance.
     #[prost(string, repeated, tag="22220385")]
     pub resource_policies: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// [Output Only] Specifies values set for instance attributes as compared to the values requested by user in the corresponding input only field.
+    #[prost(message, optional, tag="249429315")]
+    pub resource_status: ::core::option::Option<ResourceStatus>,
     /// [Output Only] Reserved for future use.
     #[prost(bool, optional, tag="480964267")]
     pub satisfies_pzs: ::core::option::Option<bool>,
@@ -12019,6 +12053,10 @@ pub struct InstanceGroupManager {
     /// [Output Only] The resource type, which is always compute#instanceGroupManager for managed instance groups.
     #[prost(string, optional, tag="3292052")]
     pub kind: ::core::option::Option<::prost::alloc::string::String>,
+    /// Pagination behavior of the listManagedInstances API method for this managed instance group.
+    /// Check the ListManagedInstancesResults enum for the list of possible values.
+    #[prost(string, optional, tag="296047156")]
+    pub list_managed_instances_results: ::core::option::Option<::prost::alloc::string::String>,
     /// The name of the managed instance group. The name must be 1-63 characters long, and comply with RFC1035.
     #[prost(string, optional, tag="3373707")]
     pub name: ::core::option::Option<::prost::alloc::string::String>,
@@ -12052,6 +12090,33 @@ pub struct InstanceGroupManager {
     /// [Output Only] The URL of a zone where the managed instance group is located (for zonal resources).
     #[prost(string, optional, tag="3744684")]
     pub zone: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// Nested message and enum types in `InstanceGroupManager`.
+pub mod instance_group_manager {
+    /// Pagination behavior of the listManagedInstances API method for this managed instance group.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum ListManagedInstancesResults {
+        /// A value indicating that the enum field is not set.
+        UndefinedListManagedInstancesResults = 0,
+        /// (Default) Pagination is disabled for the group's listManagedInstances API method. maxResults and pageToken query parameters are ignored and all instances are returned in a single response.
+        Pageless = 32183464,
+        /// Pagination is enabled for the group's listManagedInstances API method. maxResults and pageToken query parameters are respected.
+        Paginated = 40190637,
+    }
+    impl ListManagedInstancesResults {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                ListManagedInstancesResults::UndefinedListManagedInstancesResults => "UNDEFINED_LIST_MANAGED_INSTANCES_RESULTS",
+                ListManagedInstancesResults::Pageless => "PAGELESS",
+                ListManagedInstancesResults::Paginated => "PAGINATED",
+            }
+        }
+    }
 }
 ///
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -17869,6 +17934,8 @@ pub struct NetworkEndpointGroup {
     /// Check the NetworkEndpointType enum for the list of possible values.
     #[prost(string, optional, tag="118301523")]
     pub network_endpoint_type: ::core::option::Option<::prost::alloc::string::String>,
+    #[prost(message, optional, tag="71937481")]
+    pub psc_data: ::core::option::Option<NetworkEndpointGroupPscData>,
     /// The target service url used to set up private service connection to a Google API or a PSC Producer Service Attachment. An example value is: "asia-northeast3-cloudkms.googleapis.com"
     #[prost(string, optional, tag="269132134")]
     pub psc_target_service: ::core::option::Option<::prost::alloc::string::String>,
@@ -18012,6 +18079,58 @@ pub struct NetworkEndpointGroupList {
     /// [Output Only] Informational warning message.
     #[prost(message, optional, tag="50704284")]
     pub warning: ::core::option::Option<Warning>,
+}
+/// All data that is specifically relevant to only network endpoint groups of type PRIVATE_SERVICE_CONNECT.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct NetworkEndpointGroupPscData {
+    /// [Output Only] Address allocated from given subnetwork for PSC. This IP address acts as a VIP for a PSC NEG, allowing it to act as an endpoint in L7 PSC-XLB.
+    #[prost(string, optional, tag="452646572")]
+    pub consumer_psc_address: ::core::option::Option<::prost::alloc::string::String>,
+    /// [Output Only] The PSC connection id of the PSC Network Endpoint Group Consumer.
+    #[prost(uint64, optional, tag="292082397")]
+    pub psc_connection_id: ::core::option::Option<u64>,
+    /// [Output Only] The connection status of the PSC Forwarding Rule.
+    /// Check the PscConnectionStatus enum for the list of possible values.
+    #[prost(string, optional, tag="184149172")]
+    pub psc_connection_status: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// Nested message and enum types in `NetworkEndpointGroupPscData`.
+pub mod network_endpoint_group_psc_data {
+    /// [Output Only] The connection status of the PSC Forwarding Rule.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum PscConnectionStatus {
+        /// A value indicating that the enum field is not set.
+        UndefinedPscConnectionStatus = 0,
+        /// The connection has been accepted by the producer.
+        Accepted = 246714279,
+        /// The connection has been closed by the producer and will not serve traffic going forward.
+        Closed = 380163436,
+        /// The connection has been accepted by the producer, but the producer needs to take further action before the forwarding rule can serve traffic.
+        NeedsAttention = 344491452,
+        /// The connection is pending acceptance by the producer.
+        Pending = 35394935,
+        /// The connection has been rejected by the producer.
+        Rejected = 174130302,
+        StatusUnspecified = 42133066,
+    }
+    impl PscConnectionStatus {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                PscConnectionStatus::UndefinedPscConnectionStatus => "UNDEFINED_PSC_CONNECTION_STATUS",
+                PscConnectionStatus::Accepted => "ACCEPTED",
+                PscConnectionStatus::Closed => "CLOSED",
+                PscConnectionStatus::NeedsAttention => "NEEDS_ATTENTION",
+                PscConnectionStatus::Pending => "PENDING",
+                PscConnectionStatus::Rejected => "REJECTED",
+                PscConnectionStatus::StatusUnspecified => "STATUS_UNSPECIFIED",
+            }
+        }
+    }
 }
 ///
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -19376,16 +19495,16 @@ pub struct OutlierDetection {
     /// The base time that a host is ejected for. The real ejection time is equal to the base ejection time multiplied by the number of times the host has been ejected. Defaults to 30000ms or 30s.
     #[prost(message, optional, tag="80997255")]
     pub base_ejection_time: ::core::option::Option<Duration>,
-    /// Number of errors before a host is ejected from the connection pool. When the backend host is accessed over HTTP, a 5xx return code qualifies as an error. Defaults to 5.
+    /// Number of errors before a host is ejected from the connection pool. When the backend host is accessed over HTTP, a 5xx return code qualifies as an error. Defaults to 5. Not supported when the backend service is referenced by a URL map that is bound to target gRPC proxy that has validateForProxyless field set to true.
     #[prost(int32, optional, tag="387193248")]
     pub consecutive_errors: ::core::option::Option<i32>,
-    /// The number of consecutive gateway failures (502, 503, 504 status or connection errors that are mapped to one of those status codes) before a consecutive gateway failure ejection occurs. Defaults to 3.
+    /// The number of consecutive gateway failures (502, 503, 504 status or connection errors that are mapped to one of those status codes) before a consecutive gateway failure ejection occurs. Defaults to 3. Not supported when the backend service is referenced by a URL map that is bound to target gRPC proxy that has validateForProxyless field set to true.
     #[prost(int32, optional, tag="417504250")]
     pub consecutive_gateway_failure: ::core::option::Option<i32>,
-    /// The percentage chance that a host will be actually ejected when an outlier status is detected through consecutive 5xx. This setting can be used to disable ejection or to ramp it up slowly. Defaults to 0.
+    /// The percentage chance that a host will be actually ejected when an outlier status is detected through consecutive 5xx. This setting can be used to disable ejection or to ramp it up slowly. Defaults to 0. Not supported when the backend service is referenced by a URL map that is bound to target gRPC proxy that has validateForProxyless field set to true.
     #[prost(int32, optional, tag="213133760")]
     pub enforcing_consecutive_errors: ::core::option::Option<i32>,
-    /// The percentage chance that a host will be actually ejected when an outlier status is detected through consecutive gateway failures. This setting can be used to disable ejection or to ramp it up slowly. Defaults to 100.
+    /// The percentage chance that a host will be actually ejected when an outlier status is detected through consecutive gateway failures. This setting can be used to disable ejection or to ramp it up slowly. Defaults to 100. Not supported when the backend service is referenced by a URL map that is bound to target gRPC proxy that has validateForProxyless field set to true.
     #[prost(int32, optional, tag="394440666")]
     pub enforcing_consecutive_gateway_failure: ::core::option::Option<i32>,
     /// The percentage chance that a host will be actually ejected when an outlier status is detected through success rate statistics. This setting can be used to disable ejection or to ramp it up slowly. Defaults to 100.
@@ -21366,6 +21485,7 @@ pub mod quota {
         SslCertificates = 378372399,
         StaticAddresses = 93624049,
         StaticByoipAddresses = 275809649,
+        StaticExternalIpv6AddressRanges = 472346774,
         Subnetworks = 421330469,
         T2aCpus = 522170599,
         T2dCpus = 71187140,
@@ -21507,6 +21627,7 @@ pub mod quota {
                 Metric::SslCertificates => "SSL_CERTIFICATES",
                 Metric::StaticAddresses => "STATIC_ADDRESSES",
                 Metric::StaticByoipAddresses => "STATIC_BYOIP_ADDRESSES",
+                Metric::StaticExternalIpv6AddressRanges => "STATIC_EXTERNAL_IPV6_ADDRESS_RANGES",
                 Metric::Subnetworks => "SUBNETWORKS",
                 Metric::T2aCpus => "T2A_CPUS",
                 Metric::T2dCpus => "T2D_CPUS",
@@ -21524,6 +21645,22 @@ pub mod quota {
             }
         }
     }
+}
+/// Additional details for quota exceeded error for resource quota.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct QuotaExceededInfo {
+    /// The map holding related quota dimensions.
+    #[prost(map="string, string", tag="414334925")]
+    pub dimensions: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    /// Current effective quota limit. The limit's unit depends on the quota type or metric.
+    #[prost(double, optional, tag="102976443")]
+    pub limit: ::core::option::Option<f64>,
+    /// The name of the quota limit.
+    #[prost(string, optional, tag="398197903")]
+    pub limit_name: ::core::option::Option<::prost::alloc::string::String>,
+    /// The Compute Engine quota metric name.
+    #[prost(string, optional, tag="409881530")]
+    pub metric_name: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// The parameters of the raw disk image.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -23118,6 +23255,13 @@ pub mod resource_policy_weekly_cycle_day_of_week {
         }
     }
 }
+/// Contains output only fields. Use this sub-message for actual values set on Instance attributes as compared to the value requested by the user (intent) in their instance CRUD calls.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ResourceStatus {
+    /// [Output Only] An opaque ID of the host on which the VM is running.
+    #[prost(string, optional, tag="464370704")]
+    pub physical_host: ::core::option::Option<::prost::alloc::string::String>,
+}
 /// A request message for Instances.Resume. See the method description for details.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResumeInstanceRequest {
@@ -23351,6 +23495,9 @@ pub struct Router {
     /// [Output Only] Type of resource. Always compute#router for routers.
     #[prost(string, optional, tag="3292052")]
     pub kind: ::core::option::Option<::prost::alloc::string::String>,
+    /// Keys used for MD5 authentication.
+    #[prost(message, repeated, tag="71063322")]
+    pub md5_authentication_keys: ::prost::alloc::vec::Vec<RouterMd5AuthenticationKey>,
     /// Name of the resource. Provided by the client when the resource is created. The name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression `\[a-z]([-a-z0-9]*[a-z0-9\])?` which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash.
     #[prost(string, optional, tag="3373707")]
     pub name: ::core::option::Option<::prost::alloc::string::String>,
@@ -23509,6 +23656,9 @@ pub struct RouterBgpPeer {
     /// Check the ManagementType enum for the list of possible values.
     #[prost(string, optional, tag="173703606")]
     pub management_type: ::core::option::Option<::prost::alloc::string::String>,
+    /// Present if MD5 authentication is enabled for the peering. Must be the name of one of the entries in the Router.md5_authentication_keys. The field must comply with RFC1035.
+    #[prost(string, optional, tag="281075345")]
+    pub md5_authentication_key_name: ::core::option::Option<::prost::alloc::string::String>,
     /// Name of this BGP peer. The name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression `\[a-z]([-a-z0-9]*[a-z0-9\])?` which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash.
     #[prost(string, optional, tag="3373707")]
     pub name: ::core::option::Option<::prost::alloc::string::String>,
@@ -23738,6 +23888,16 @@ pub struct RouterList {
     /// [Output Only] Informational warning message.
     #[prost(message, optional, tag="50704284")]
     pub warning: ::core::option::Option<Warning>,
+}
+///
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RouterMd5AuthenticationKey {
+    /// [Input only] Value of the key. For patch and update calls, it can be skipped to copy the value from the previous configuration. This is allowed if the key with the same name existed before the operation. Maximum length is 80 characters. Can only contain printable ASCII characters.
+    #[prost(string, optional, tag="106079")]
+    pub key: ::core::option::Option<::prost::alloc::string::String>,
+    /// Name used to identify the key. Must be unique within a router. Must be referenced by at least one bgpPeer. Must comply with RFC1035.
+    #[prost(string, optional, tag="3373707")]
+    pub name: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Represents a Nat resource. It enables the VMs within the specified subnetworks to access Internet without external IP addresses. It specifies a list of subnetworks (and the ranges within) that want to use NAT. Customers can also provide the external IPs that would be used for NAT. GCP would auto-allocate ephemeral IPs if no external IPs are provided.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -24013,12 +24173,21 @@ pub struct RouterStatusBgpPeerStatus {
     pub advertised_routes: ::prost::alloc::vec::Vec<Route>,
     #[prost(message, optional, tag="395631729")]
     pub bfd_status: ::core::option::Option<BfdStatus>,
+    /// Enable IPv6 traffic over BGP Peer. If not specified, it is disabled by default.
+    #[prost(bool, optional, tag="181467939")]
+    pub enable_ipv6: ::core::option::Option<bool>,
     /// IP address of the local BGP interface.
     #[prost(string, optional, tag="406272220")]
     pub ip_address: ::core::option::Option<::prost::alloc::string::String>,
+    /// IPv6 address of the local BGP interface.
+    #[prost(string, optional, tag="27968211")]
+    pub ipv6_nexthop_address: ::core::option::Option<::prost::alloc::string::String>,
     /// URL of the VPN tunnel that this BGP peer controls.
     #[prost(string, optional, tag="352296953")]
     pub linked_vpn_tunnel: ::core::option::Option<::prost::alloc::string::String>,
+    /// Informs whether MD5 authentication is enabled on this BGP peer.
+    #[prost(bool, optional, tag="451152075")]
+    pub md5_auth_enabled: ::core::option::Option<bool>,
     /// Name of this BGP peer. Unique within the Routers resource.
     #[prost(string, optional, tag="3373707")]
     pub name: ::core::option::Option<::prost::alloc::string::String>,
@@ -24028,6 +24197,9 @@ pub struct RouterStatusBgpPeerStatus {
     /// IP address of the remote BGP interface.
     #[prost(string, optional, tag="207735769")]
     pub peer_ip_address: ::core::option::Option<::prost::alloc::string::String>,
+    /// IPv6 address of the remote BGP interface.
+    #[prost(string, optional, tag="491486608")]
+    pub peer_ipv6_nexthop_address: ::core::option::Option<::prost::alloc::string::String>,
     /// [Output only] URI of the VM instance that is used as third-party router appliances such as Next Gen Firewalls, Virtual Routers, or Router Appliances. The VM instance is the peer side of the BGP session.
     #[prost(string, optional, tag="468312989")]
     pub router_appliance_instance: ::core::option::Option<::prost::alloc::string::String>,
@@ -24038,6 +24210,10 @@ pub struct RouterStatusBgpPeerStatus {
     /// Check the Status enum for the list of possible values.
     #[prost(string, optional, tag="181260274")]
     pub status: ::core::option::Option<::prost::alloc::string::String>,
+    /// Indicates why particular status was returned.
+    /// Check the StatusReason enum for the list of possible values.
+    #[prost(string, optional, tag="342706993")]
+    pub status_reason: ::core::option::Option<::prost::alloc::string::String>,
     /// Time this session has been up. Format: 14 years, 51 weeks, 6 days, 23 hours, 59 minutes, 59 seconds
     #[prost(string, optional, tag="235379688")]
     pub uptime: ::core::option::Option<::prost::alloc::string::String>,
@@ -24068,6 +24244,29 @@ pub mod router_status_bgp_peer_status {
                 Status::Down => "DOWN",
                 Status::Unknown => "UNKNOWN",
                 Status::Up => "UP",
+            }
+        }
+    }
+    /// Indicates why particular status was returned.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum StatusReason {
+        /// A value indicating that the enum field is not set.
+        UndefinedStatusReason = 0,
+        /// Indicates internal problems with configuration of MD5 authentication. This particular reason can only be returned when md5AuthEnabled is true and status is DOWN.
+        Md5AuthInternalProblem = 140462259,
+        Unspecified = 394331913,
+    }
+    impl StatusReason {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                StatusReason::UndefinedStatusReason => "UNDEFINED_STATUS_REASON",
+                StatusReason::Md5AuthInternalProblem => "MD5_AUTH_INTERNAL_PROBLEM",
+                StatusReason::Unspecified => "STATUS_REASON_UNSPECIFIED",
             }
         }
     }
@@ -24216,13 +24415,13 @@ pub mod rule {
 ///
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SslHealthCheck {
-    /// The TCP port number for the health check request. The default value is 443. Valid values are 1 through 65535.
+    /// The TCP port number to which the health check prober sends packets. The default value is 443. Valid values are 1 through 65535.
     #[prost(int32, optional, tag="3446913")]
     pub port: ::core::option::Option<i32>,
-    /// Port name as defined in InstanceGroup#NamedPort#name. If both port and port_name are defined, port takes precedence.
+    /// Not supported.
     #[prost(string, optional, tag="41534345")]
     pub port_name: ::core::option::Option<::prost::alloc::string::String>,
-    /// Specifies how port is selected for health checking, can be one of following values: USE_FIXED_PORT: The port number in port is used for health checking. USE_NAMED_PORT: The portName is used for health checking. USE_SERVING_PORT: For NetworkEndpointGroup, the port specified for each network endpoint is used for health checking. For other backends, the port or named port specified in the Backend Service is used for health checking. If not specified, SSL health check follows behavior specified in port and portName fields.
+    /// Specifies how a port is selected for health checking. Can be one of the following values: USE_FIXED_PORT: Specifies a port number explicitly using the port field in the health check. Supported by backend services for pass-through load balancers and backend services for proxy load balancers. Not supported by target pools. The health check supports all backends supported by the backend service provided the backend can be health checked. For example, GCE_VM_IP network endpoint groups, GCE_VM_IP_PORT network endpoint groups, and instance group backends. USE_NAMED_PORT: Not supported. USE_SERVING_PORT: Provides an indirect method of specifying the health check port by referring to the backend service. Only supported by backend services for proxy load balancers. Not supported by target pools. Not supported by backend services for pass-through load balancers. Supports all backends that can be health checked; for example, GCE_VM_IP_PORT network endpoint groups and instance group backends. For GCE_VM_IP_PORT network endpoint group backends, the health check uses the port number specified for each endpoint in the network endpoint group. For instance group backends, the health check uses the port number determined by looking up the backend service's named port in the instance group's list of named ports.
     /// Check the PortSpecification enum for the list of possible values.
     #[prost(string, optional, tag="51590597")]
     pub port_specification: ::core::option::Option<::prost::alloc::string::String>,
@@ -24230,26 +24429,26 @@ pub struct SslHealthCheck {
     /// Check the ProxyHeader enum for the list of possible values.
     #[prost(string, optional, tag="160374142")]
     pub proxy_header: ::core::option::Option<::prost::alloc::string::String>,
-    /// The application data to send once the SSL connection has been established (default value is empty). If both request and response are empty, the connection establishment alone will indicate health. The request data can only be ASCII.
+    /// Instructs the health check prober to send this exact ASCII string, up to 1024 bytes in length, after establishing the TCP connection and SSL handshake.
     #[prost(string, optional, tag="21951119")]
     pub request: ::core::option::Option<::prost::alloc::string::String>,
-    /// The bytes to match against the beginning of the response data. If left empty (the default value), any response will indicate health. The response data can only be ASCII.
+    /// Creates a content-based SSL health check. In addition to establishing a TCP connection and the TLS handshake, you can configure the health check to pass only when the backend sends this exact response ASCII string, up to 1024 bytes in length. For details, see: <https://cloud.google.com/load-balancing/docs/health-check-concepts#criteria-protocol-ssl-tcp>
     #[prost(string, optional, tag="196547649")]
     pub response: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Nested message and enum types in `SSLHealthCheck`.
 pub mod ssl_health_check {
-    /// Specifies how port is selected for health checking, can be one of following values: USE_FIXED_PORT: The port number in port is used for health checking. USE_NAMED_PORT: The portName is used for health checking. USE_SERVING_PORT: For NetworkEndpointGroup, the port specified for each network endpoint is used for health checking. For other backends, the port or named port specified in the Backend Service is used for health checking. If not specified, SSL health check follows behavior specified in port and portName fields.
+    /// Specifies how a port is selected for health checking. Can be one of the following values: USE_FIXED_PORT: Specifies a port number explicitly using the port field in the health check. Supported by backend services for pass-through load balancers and backend services for proxy load balancers. Not supported by target pools. The health check supports all backends supported by the backend service provided the backend can be health checked. For example, GCE_VM_IP network endpoint groups, GCE_VM_IP_PORT network endpoint groups, and instance group backends. USE_NAMED_PORT: Not supported. USE_SERVING_PORT: Provides an indirect method of specifying the health check port by referring to the backend service. Only supported by backend services for proxy load balancers. Not supported by target pools. Not supported by backend services for pass-through load balancers. Supports all backends that can be health checked; for example, GCE_VM_IP_PORT network endpoint groups and instance group backends. For GCE_VM_IP_PORT network endpoint group backends, the health check uses the port number specified for each endpoint in the network endpoint group. For instance group backends, the health check uses the port number determined by looking up the backend service's named port in the instance group's list of named ports.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum PortSpecification {
         /// A value indicating that the enum field is not set.
         UndefinedPortSpecification = 0,
-        /// The port number in port is used for health checking.
+        /// The port number in the health check's port is used for health checking. Applies to network endpoint group and instance group backends.
         UseFixedPort = 190235748,
-        /// The portName is used for health checking.
+        /// Not supported.
         UseNamedPort = 349300671,
-        /// For NetworkEndpointGroup, the port specified for each network endpoint is used for health checking. For other backends, the port or named port specified in the Backend Service is used for health checking.
+        /// For network endpoint group backends, the health check uses the port number specified on each endpoint in the network endpoint group. For instance group backends, the health check uses the port number specified for the backend service's named port defined in the instance group's named ports.
         UseServingPort = 362637516,
     }
     impl PortSpecification {
@@ -24808,7 +25007,7 @@ pub struct SecurityPolicy {
     /// [Output Only] URL of the region where the regional security policy resides. This field is not applicable to global security policies.
     #[prost(string, optional, tag="138946292")]
     pub region: ::core::option::Option<::prost::alloc::string::String>,
-    /// A list of rules that belong to this policy. There must always be a default rule (rule with priority 2147483647 and match "*"). If no rules are provided when creating a security policy, a default rule with action "allow" will be added.
+    /// A list of rules that belong to this policy. There must always be a default rule which is a rule with priority 2147483647 and match all condition (for the match condition this means match "*" for srcIpRanges and for the networkMatch condition every field must be either match "*" or not set). If no rules are provided when creating a security policy, a default rule with action "allow" will be added.
     #[prost(message, repeated, tag="108873975")]
     pub rules: ::prost::alloc::vec::Vec<SecurityPolicyRule>,
     /// [Output Only] Server-defined URL for the resource.
@@ -25128,7 +25327,7 @@ pub struct SecurityPolicyRuleRateLimitOptions {
     /// Action to take for requests that are under the configured rate limit threshold. Valid option is "allow" only.
     #[prost(string, optional, tag="517612367")]
     pub conform_action: ::core::option::Option<::prost::alloc::string::String>,
-    /// Determines the key to enforce the rate_limit_threshold on. Possible values are: - ALL: A single rate limit threshold is applied to all the requests matching this rule. This is the default value if this field 'enforce_on_key' is not configured. - IP: The source IP address of the request is the key. Each IP has this limit enforced separately. - HTTP_HEADER: The value of the HTTP header whose name is configured under "enforce_on_key_name". The key value is truncated to the first 128 bytes of the header value. If no such header is present in the request, the key type defaults to ALL. - XFF_IP: The first IP address (i.e. the originating client IP address) specified in the list of IPs under X-Forwarded-For HTTP header. If no such header is present or the value is not a valid IP, the key defaults to the source IP address of the request i.e. key type IP. - HTTP_COOKIE: The value of the HTTP cookie whose name is configured under "enforce_on_key_name". The key value is truncated to the first 128 bytes of the cookie value. If no such cookie is present in the request, the key type defaults to ALL.
+    /// Determines the key to enforce the rate_limit_threshold on. Possible values are: - ALL: A single rate limit threshold is applied to all the requests matching this rule. This is the default value if this field 'enforce_on_key' is not configured. - IP: The source IP address of the request is the key. Each IP has this limit enforced separately. - HTTP_HEADER: The value of the HTTP header whose name is configured under "enforce_on_key_name". The key value is truncated to the first 128 bytes of the header value. If no such header is present in the request, the key type defaults to ALL. - XFF_IP: The first IP address (i.e. the originating client IP address) specified in the list of IPs under X-Forwarded-For HTTP header. If no such header is present or the value is not a valid IP, the key defaults to the source IP address of the request i.e. key type IP. - HTTP_COOKIE: The value of the HTTP cookie whose name is configured under "enforce_on_key_name". The key value is truncated to the first 128 bytes of the cookie value. If no such cookie is present in the request, the key type defaults to ALL. - HTTP_PATH: The URL path of the HTTP request. The key value is truncated to the first 128 bytes. - SNI: Server name indication in the TLS session of the HTTPS request. The key value is truncated to the first 128 bytes. The key type defaults to ALL on a HTTP session. - REGION_CODE: The country/region from which the request originates.
     /// Check the EnforceOnKey enum for the list of possible values.
     #[prost(string, optional, tag="416648956")]
     pub enforce_on_key: ::core::option::Option<::prost::alloc::string::String>,
@@ -25147,7 +25346,7 @@ pub struct SecurityPolicyRuleRateLimitOptions {
 }
 /// Nested message and enum types in `SecurityPolicyRuleRateLimitOptions`.
 pub mod security_policy_rule_rate_limit_options {
-    /// Determines the key to enforce the rate_limit_threshold on. Possible values are: - ALL: A single rate limit threshold is applied to all the requests matching this rule. This is the default value if this field 'enforce_on_key' is not configured. - IP: The source IP address of the request is the key. Each IP has this limit enforced separately. - HTTP_HEADER: The value of the HTTP header whose name is configured under "enforce_on_key_name". The key value is truncated to the first 128 bytes of the header value. If no such header is present in the request, the key type defaults to ALL. - XFF_IP: The first IP address (i.e. the originating client IP address) specified in the list of IPs under X-Forwarded-For HTTP header. If no such header is present or the value is not a valid IP, the key defaults to the source IP address of the request i.e. key type IP. - HTTP_COOKIE: The value of the HTTP cookie whose name is configured under "enforce_on_key_name". The key value is truncated to the first 128 bytes of the cookie value. If no such cookie is present in the request, the key type defaults to ALL. 
+    /// Determines the key to enforce the rate_limit_threshold on. Possible values are: - ALL: A single rate limit threshold is applied to all the requests matching this rule. This is the default value if this field 'enforce_on_key' is not configured. - IP: The source IP address of the request is the key. Each IP has this limit enforced separately. - HTTP_HEADER: The value of the HTTP header whose name is configured under "enforce_on_key_name". The key value is truncated to the first 128 bytes of the header value. If no such header is present in the request, the key type defaults to ALL. - XFF_IP: The first IP address (i.e. the originating client IP address) specified in the list of IPs under X-Forwarded-For HTTP header. If no such header is present or the value is not a valid IP, the key defaults to the source IP address of the request i.e. key type IP. - HTTP_COOKIE: The value of the HTTP cookie whose name is configured under "enforce_on_key_name". The key value is truncated to the first 128 bytes of the cookie value. If no such cookie is present in the request, the key type defaults to ALL. - HTTP_PATH: The URL path of the HTTP request. The key value is truncated to the first 128 bytes. - SNI: Server name indication in the TLS session of the HTTPS request. The key value is truncated to the first 128 bytes. The key type defaults to ALL on a HTTP session. - REGION_CODE: The country/region from which the request originates. 
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum EnforceOnKey {
@@ -25156,7 +25355,10 @@ pub mod security_policy_rule_rate_limit_options {
         All = 64897,
         HttpCookie = 494981627,
         HttpHeader = 91597348,
+        HttpPath = 311503228,
         Ip = 2343,
+        RegionCode = 79559768,
+        Sni = 82254,
         XffIp = 438707118,
     }
     impl EnforceOnKey {
@@ -25170,7 +25372,10 @@ pub mod security_policy_rule_rate_limit_options {
                 EnforceOnKey::All => "ALL",
                 EnforceOnKey::HttpCookie => "HTTP_COOKIE",
                 EnforceOnKey::HttpHeader => "HTTP_HEADER",
+                EnforceOnKey::HttpPath => "HTTP_PATH",
                 EnforceOnKey::Ip => "IP",
+                EnforceOnKey::RegionCode => "REGION_CODE",
+                EnforceOnKey::Sni => "SNI",
                 EnforceOnKey::XffIp => "XFF_IP",
             }
         }
@@ -28190,13 +28395,13 @@ pub struct SwitchToCustomModeNetworkRequest {
 ///
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TcpHealthCheck {
-    /// The TCP port number for the health check request. The default value is 80. Valid values are 1 through 65535.
+    /// The TCP port number to which the health check prober sends packets. The default value is 80. Valid values are 1 through 65535.
     #[prost(int32, optional, tag="3446913")]
     pub port: ::core::option::Option<i32>,
-    /// Port name as defined in InstanceGroup#NamedPort#name. If both port and port_name are defined, port takes precedence.
+    /// Not supported.
     #[prost(string, optional, tag="41534345")]
     pub port_name: ::core::option::Option<::prost::alloc::string::String>,
-    /// Specifies how port is selected for health checking, can be one of following values: USE_FIXED_PORT: The port number in port is used for health checking. USE_NAMED_PORT: The portName is used for health checking. USE_SERVING_PORT: For NetworkEndpointGroup, the port specified for each network endpoint is used for health checking. For other backends, the port or named port specified in the Backend Service is used for health checking. If not specified, TCP health check follows behavior specified in port and portName fields.
+    /// Specifies how a port is selected for health checking. Can be one of the following values: USE_FIXED_PORT: Specifies a port number explicitly using the port field in the health check. Supported by backend services for pass-through load balancers and backend services for proxy load balancers. Not supported by target pools. The health check supports all backends supported by the backend service provided the backend can be health checked. For example, GCE_VM_IP network endpoint groups, GCE_VM_IP_PORT network endpoint groups, and instance group backends. USE_NAMED_PORT: Not supported. USE_SERVING_PORT: Provides an indirect method of specifying the health check port by referring to the backend service. Only supported by backend services for proxy load balancers. Not supported by target pools. Not supported by backend services for pass-through load balancers. Supports all backends that can be health checked; for example, GCE_VM_IP_PORT network endpoint groups and instance group backends. For GCE_VM_IP_PORT network endpoint group backends, the health check uses the port number specified for each endpoint in the network endpoint group. For instance group backends, the health check uses the port number determined by looking up the backend service's named port in the instance group's list of named ports.
     /// Check the PortSpecification enum for the list of possible values.
     #[prost(string, optional, tag="51590597")]
     pub port_specification: ::core::option::Option<::prost::alloc::string::String>,
@@ -28204,26 +28409,26 @@ pub struct TcpHealthCheck {
     /// Check the ProxyHeader enum for the list of possible values.
     #[prost(string, optional, tag="160374142")]
     pub proxy_header: ::core::option::Option<::prost::alloc::string::String>,
-    /// The application data to send once the TCP connection has been established (default value is empty). If both request and response are empty, the connection establishment alone will indicate health. The request data can only be ASCII.
+    /// Instructs the health check prober to send this exact ASCII string, up to 1024 bytes in length, after establishing the TCP connection.
     #[prost(string, optional, tag="21951119")]
     pub request: ::core::option::Option<::prost::alloc::string::String>,
-    /// The bytes to match against the beginning of the response data. If left empty (the default value), any response will indicate health. The response data can only be ASCII.
+    /// Creates a content-based TCP health check. In addition to establishing a TCP connection, you can configure the health check to pass only when the backend sends this exact response ASCII string, up to 1024 bytes in length. For details, see: <https://cloud.google.com/load-balancing/docs/health-check-concepts#criteria-protocol-ssl-tcp>
     #[prost(string, optional, tag="196547649")]
     pub response: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Nested message and enum types in `TCPHealthCheck`.
 pub mod tcp_health_check {
-    /// Specifies how port is selected for health checking, can be one of following values: USE_FIXED_PORT: The port number in port is used for health checking. USE_NAMED_PORT: The portName is used for health checking. USE_SERVING_PORT: For NetworkEndpointGroup, the port specified for each network endpoint is used for health checking. For other backends, the port or named port specified in the Backend Service is used for health checking. If not specified, TCP health check follows behavior specified in port and portName fields.
+    /// Specifies how a port is selected for health checking. Can be one of the following values: USE_FIXED_PORT: Specifies a port number explicitly using the port field in the health check. Supported by backend services for pass-through load balancers and backend services for proxy load balancers. Not supported by target pools. The health check supports all backends supported by the backend service provided the backend can be health checked. For example, GCE_VM_IP network endpoint groups, GCE_VM_IP_PORT network endpoint groups, and instance group backends. USE_NAMED_PORT: Not supported. USE_SERVING_PORT: Provides an indirect method of specifying the health check port by referring to the backend service. Only supported by backend services for proxy load balancers. Not supported by target pools. Not supported by backend services for pass-through load balancers. Supports all backends that can be health checked; for example, GCE_VM_IP_PORT network endpoint groups and instance group backends. For GCE_VM_IP_PORT network endpoint group backends, the health check uses the port number specified for each endpoint in the network endpoint group. For instance group backends, the health check uses the port number determined by looking up the backend service's named port in the instance group's list of named ports.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum PortSpecification {
         /// A value indicating that the enum field is not set.
         UndefinedPortSpecification = 0,
-        /// The port number in port is used for health checking.
+        /// The port number in the health check's port is used for health checking. Applies to network endpoint group and instance group backends.
         UseFixedPort = 190235748,
-        /// The portName is used for health checking.
+        /// Not supported.
         UseNamedPort = 349300671,
-        /// For NetworkEndpointGroup, the port specified for each network endpoint is used for health checking. For other backends, the port or named port specified in the Backend Service is used for health checking.
+        /// For network endpoint group backends, the health check uses the port number specified on each endpoint in the network endpoint group. For instance group backends, the health check uses the port number specified for the backend service's named port defined in the instance group's named ports.
         UseServingPort = 362637516,
     }
     impl PortSpecification {
@@ -45154,7 +45359,7 @@ pub mod region_security_policies_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        /// Patches the specified policy with the data included in the request.
+        /// Patches the specified policy with the data included in the request. To clear fields in the rule, leave the fields empty and specify them in the updateMask. This cannot be used to be update the rules in the policy. Please use the per rule methods like addRule, patchRule, and removeRule instead.
         pub async fn patch(
             &mut self,
             request: impl tonic::IntoRequest<super::PatchRegionSecurityPolicyRequest>,
@@ -47574,7 +47779,7 @@ pub mod security_policies_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        /// Patches the specified policy with the data included in the request. This cannot be used to be update the rules in the policy. Please use the per rule methods like addRule, patchRule, and removeRule instead.
+        /// Patches the specified policy with the data included in the request. To clear fields in the rule, leave the fields empty and specify them in the updateMask. This cannot be used to be update the rules in the policy. Please use the per rule methods like addRule, patchRule, and removeRule instead.
         pub async fn patch(
             &mut self,
             request: impl tonic::IntoRequest<super::PatchSecurityPolicyRequest>,

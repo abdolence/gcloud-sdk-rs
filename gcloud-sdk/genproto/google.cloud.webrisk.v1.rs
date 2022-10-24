@@ -1,7 +1,9 @@
 /// Describes an API diff request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ComputeThreatListDiffRequest {
-    /// Required. The threat list to update. Only a single ThreatType should be specified.
+    /// Required. The threat list to update. Only a single ThreatType should be specified
+    /// per request. If you want to handle multiple ThreatTypes, you must make one
+    /// request per ThreatType.
     #[prost(enumeration="ThreatType", tag="1")]
     pub threat_type: i32,
     /// The current version token of the client for the requested list (the
@@ -115,7 +117,7 @@ pub struct SearchUrisRequest {
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchUrisResponse {
-    /// The threat list matches. This may be empty if the URI is on no list.
+    /// The threat list matches. This might be empty if the URI is on no list.
     #[prost(message, optional, tag="1")]
     pub threat: ::core::option::Option<search_uris_response::ThreatUri>,
 }
@@ -138,6 +140,8 @@ pub mod search_uris_response {
 pub struct SearchHashesRequest {
     /// A hash prefix, consisting of the most significant 4-32 bytes of a SHA256
     /// hash. For JSON requests, this field is base64-encoded.
+    /// Note that if this parameter is provided by a URI, it must be encoded using
+    /// the web safe base64 variant (RFC 4648).
     #[prost(bytes="vec", tag="1")]
     pub hash_prefix: ::prost::alloc::vec::Vec<u8>,
     /// Required. The ThreatLists to search in. Multiple ThreatLists may be specified.
@@ -251,10 +255,10 @@ pub struct RiceDeltaEncoding {
     #[prost(bytes="vec", tag="4")]
     pub encoded_data: ::prost::alloc::vec::Vec<u8>,
 }
-/// Wraps a URI that might be displaying phishing content.
+/// Wraps a URI that might be displaying malicious content.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Submission {
-    /// Required. The URI that is being reported for phishing content to be analyzed.
+    /// Required. The URI that is being reported for malicious content to be analyzed.
     #[prost(string, tag="1")]
     pub uri: ::prost::alloc::string::String,
 }
@@ -269,12 +273,12 @@ pub struct CreateSubmissionRequest {
     #[prost(message, optional, tag="2")]
     pub submission: ::core::option::Option<Submission>,
 }
-/// The type of threat. This maps dirrectly to the threat list a threat may
+/// The type of threat. This maps directly to the threat list a threat may
 /// belong to.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum ThreatType {
-    /// Unknown.
+    /// No entries should match this threat type. This threat type is unused.
     Unspecified = 0,
     /// Malware targeting any platform.
     Malware = 1,
@@ -282,6 +286,9 @@ pub enum ThreatType {
     SocialEngineering = 2,
     /// Unwanted software targeting any platform.
     UnwantedSoftware = 3,
+    /// A list of extended coverage social engineering URIs targeting any
+    /// platform.
+    SocialEngineeringExtendedCoverage = 4,
 }
 impl ThreatType {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -294,6 +301,7 @@ impl ThreatType {
             ThreatType::Malware => "MALWARE",
             ThreatType::SocialEngineering => "SOCIAL_ENGINEERING",
             ThreatType::UnwantedSoftware => "UNWANTED_SOFTWARE",
+            ThreatType::SocialEngineeringExtendedCoverage => "SOCIAL_ENGINEERING_EXTENDED_COVERAGE",
         }
     }
 }
@@ -473,7 +481,8 @@ pub mod web_risk_service_client {
         /// content, the site will be added to the [Google's Social Engineering
         /// lists](https://support.google.com/webmasters/answer/6350487/) in order to
         /// protect users that could get exposed to this threat in the future. Only
-        /// projects with CREATE_SUBMISSION_USERS visibility can use this method.
+        /// allowlisted projects can use this method during Early Access. Please reach
+        /// out to Sales or your customer engineer to obtain access.
         pub async fn create_submission(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateSubmissionRequest>,

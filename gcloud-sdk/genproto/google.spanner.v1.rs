@@ -412,7 +412,8 @@ pub struct QueryPlan {
 ///
 ///       Queries on change streams must be performed with the snapshot read-only
 ///       transaction mode, specifying a strong read. Please see
-///       \[TransactionOptions.ReadOnly.strong][google.spanner.v1.TransactionOptions.ReadOnly.strong\] for more details.
+///       \[TransactionOptions.ReadOnly.strong][google.spanner.v1.TransactionOptions.ReadOnly.strong\]
+///       for more details.
 ///
 ///    3. Partitioned DML. This type of transaction is used to execute
 ///       a single Partitioned DML statement. Partitioned DML partitions
@@ -548,7 +549,8 @@ pub struct QueryPlan {
 /// Queries on change streams (see below for more details) must also specify
 /// the strong read timestamp bound.
 ///
-/// See \[TransactionOptions.ReadOnly.strong][google.spanner.v1.TransactionOptions.ReadOnly.strong\].
+/// See
+/// \[TransactionOptions.ReadOnly.strong][google.spanner.v1.TransactionOptions.ReadOnly.strong\].
 ///
 /// Exact staleness:
 ///
@@ -569,7 +571,9 @@ pub struct QueryPlan {
 /// equivalent boundedly stale concurrency modes. On the other hand,
 /// boundedly stale reads usually return fresher results.
 ///
-/// See \[TransactionOptions.ReadOnly.read_timestamp][google.spanner.v1.TransactionOptions.ReadOnly.read_timestamp\] and
+/// See
+/// \[TransactionOptions.ReadOnly.read_timestamp][google.spanner.v1.TransactionOptions.ReadOnly.read_timestamp\]
+/// and
 /// \[TransactionOptions.ReadOnly.exact_staleness][google.spanner.v1.TransactionOptions.ReadOnly.exact_staleness\].
 ///
 /// Bounded staleness:
@@ -599,7 +603,9 @@ pub struct QueryPlan {
 /// which rows will be read, it can only be used with single-use
 /// read-only transactions.
 ///
-/// See \[TransactionOptions.ReadOnly.max_staleness][google.spanner.v1.TransactionOptions.ReadOnly.max_staleness\] and
+/// See
+/// \[TransactionOptions.ReadOnly.max_staleness][google.spanner.v1.TransactionOptions.ReadOnly.max_staleness\]
+/// and
 /// \[TransactionOptions.ReadOnly.min_read_timestamp][google.spanner.v1.TransactionOptions.ReadOnly.min_read_timestamp\].
 ///
 /// Old read timestamps and garbage collection:
@@ -713,6 +719,45 @@ pub mod transaction_options {
     /// transaction type has no options.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ReadWrite {
+        /// Read lock mode for the transaction.
+        #[prost(enumeration="read_write::ReadLockMode", tag="1")]
+        pub read_lock_mode: i32,
+    }
+    /// Nested message and enum types in `ReadWrite`.
+    pub mod read_write {
+        /// `ReadLockMode` is used to set the read lock mode for read-write
+        /// transactions.
+        #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+        #[repr(i32)]
+        pub enum ReadLockMode {
+            /// Default value.
+            ///
+            /// If the value is not specified, the pessimistic read lock is used.
+            Unspecified = 0,
+            /// Pessimistic lock mode.
+            ///
+            /// Read locks are acquired immediately on read.
+            Pessimistic = 1,
+            /// Optimistic lock mode.
+            ///
+            /// Locks for reads within the transaction are not acquired on read.
+            /// Instead the locks are acquired on a commit to validate that
+            /// read/queried data has not changed since the transaction started.
+            Optimistic = 2,
+        }
+        impl ReadLockMode {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    ReadLockMode::Unspecified => "READ_LOCK_MODE_UNSPECIFIED",
+                    ReadLockMode::Pessimistic => "PESSIMISTIC",
+                    ReadLockMode::Optimistic => "OPTIMISTIC",
+                }
+            }
+        }
     }
     /// Message type to initiate a Partitioned DML transaction.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -722,7 +767,8 @@ pub mod transaction_options {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ReadOnly {
         /// If true, the Cloud Spanner-selected read timestamp is included in
-        /// the \[Transaction][google.spanner.v1.Transaction\] message that describes the transaction.
+        /// the \[Transaction][google.spanner.v1.Transaction\] message that describes
+        /// the transaction.
         #[prost(bool, tag="6")]
         pub return_read_timestamp: bool,
         /// How to choose the timestamp for the read-only transaction.
@@ -846,7 +892,8 @@ pub struct Transaction {
 /// \[Read][google.spanner.v1.Spanner.Read\] or
 /// \[ExecuteSql][google.spanner.v1.Spanner.ExecuteSql\] call runs.
 ///
-/// See \[TransactionOptions][google.spanner.v1.TransactionOptions\] for more information about transactions.
+/// See \[TransactionOptions][google.spanner.v1.TransactionOptions\] for more
+/// information about transactions.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TransactionSelector {
     /// If no fields are set, the default is a single use transaction
@@ -870,7 +917,8 @@ pub mod transaction_selector {
         Id(::prost::alloc::vec::Vec<u8>),
         /// Begin a new transaction and execute this read or SQL query in
         /// it. The transaction ID of the new transaction is returned in
-        /// \[ResultSetMetadata.transaction][google.spanner.v1.ResultSetMetadata.transaction\], which is a \[Transaction][google.spanner.v1.Transaction\].
+        /// \[ResultSetMetadata.transaction][google.spanner.v1.ResultSetMetadata.transaction\],
+        /// which is a \[Transaction][google.spanner.v1.Transaction\].
         #[prost(message, tag="3")]
         Begin(super::TransactionOptions),
     }
