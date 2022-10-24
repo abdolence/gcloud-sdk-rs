@@ -154,10 +154,10 @@ pub struct GoogleEnvironment;
 
 impl GoogleEnvironment {
     pub async fn detect_google_project_id() -> Option<String> {
-        let for_env = std::env::var("GCP_PROJECT_ID")
+        let for_env = std::env::var("GCP_PROJECT")
             .ok()
-            .or_else(|| std::env::var("GCP_PROJECT").ok())
-            .or_else(|| std::env::var("PROJECT_ID").ok());
+            .or_else(|| std::env::var("PROJECT_ID").ok())
+            .or_else(|| std::env::var("GCP_PROJECT_ID").ok());
         if for_env.is_some() {
             debug!("Detected GCP Project ID using environment variables");
             for_env
