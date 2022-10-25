@@ -35,16 +35,17 @@ where
     B: GoogleApiClientBuilder<C>,
     C: Clone + Send + Sync,
 {
-    pub async fn with_token_source(
+    pub async fn with_token_source<S: AsRef<str>>(
         builder: B,
-        google_api_url: &'static str,
+        google_api_url: S,
         cloud_resource_prefix: Option<String>,
         token_source_type: TokenSourceType,
         token_scopes: Vec<String>,
     ) -> crate::error::Result<Self> {
         debug!(
             "Creating a new Google API client for {}. Scopes: {:?}",
-            google_api_url, token_scopes
+            google_api_url.as_ref(),
+            token_scopes
         );
 
         #[cfg(feature = "tls-roots")]
@@ -96,9 +97,9 @@ impl<C> GoogleApiClient<GoogleApiClientBuilderFunction<C>, C>
 where
     C: Clone + Send + Sync,
 {
-    pub async fn from_function(
+    pub async fn from_function<S: AsRef<str>>(
         builder_fn: fn(GoogleAuthMiddlewareService<Channel>) -> C,
-        google_api_url: &'static str,
+        google_api_url: S,
         cloud_resource_prefix_meta: Option<String>,
     ) -> crate::error::Result<Self> {
         Self::from_function_with_scopes(
@@ -110,9 +111,9 @@ where
         .await
     }
 
-    pub async fn from_function_with_scopes(
+    pub async fn from_function_with_scopes<S: AsRef<str>>(
         builder_fn: fn(GoogleAuthMiddlewareService<Channel>) -> C,
-        google_api_url: &'static str,
+        google_api_url: S,
         cloud_resource_prefix_meta: Option<String>,
         token_scopes: Vec<String>,
     ) -> crate::error::Result<Self> {
@@ -126,9 +127,9 @@ where
         .await
     }
 
-    pub async fn from_function_with_token_source(
+    pub async fn from_function_with_token_source<S: AsRef<str>>(
         builder_fn: fn(GoogleAuthMiddlewareService<Channel>) -> C,
-        google_api_url: &'static str,
+        google_api_url: S,
         cloud_resource_prefix_meta: Option<String>,
         token_scopes: Vec<String>,
         token_source_type: TokenSourceType,
@@ -202,13 +203,14 @@ impl GoogleEnvironment {
         }
     }
 
-    pub async fn init_google_services_channel(
-        api_url: &'static str,
+    pub async fn init_google_services_channel<S: AsRef<str>>(
+        api_url: S,
     ) -> Result<Channel, crate::error::Error> {
-        let domain_name = api_url.to_string().replace("https://", "");
+        let api_url_string = api_url.as_ref().to_string();
+        let domain_name = api_url_string.replace("https://", "");
         let tls_config = Self::init_google_services_channel_tls_config(domain_name);
 
-        Ok(Channel::from_static(api_url)
+        Ok(Channel::from_shared(api_url_string)?
             .tls_config(tls_config)?
             .connect_timeout(Duration::from_secs(30))
             .tcp_keepalive(Some(Duration::from_secs(5)))
@@ -230,10 +232,10 @@ impl GoogleEnvironment {
     }
 
     #[cfg(feature = "tls-roots")]
-    pub async fn init_google_services_channel_with_native_roots(
-        api_url: &'static str,
+    pub async fn init_google_services_channel_with_native_roots<S: AsRef<str>>(
+        api_url: S,
     ) -> Result<Channel, crate::error::Error> {
-        Ok(Channel::from_static(api_url)
+        Ok(Channel::from_shared(api_url.as_ref().to_string())?
             .connect_timeout(Duration::from_secs(30))
             .tcp_keepalive(Some(Duration::from_secs(5)))
             .keep_alive_timeout(Duration::from_secs(60))
