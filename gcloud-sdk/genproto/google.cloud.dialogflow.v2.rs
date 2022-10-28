@@ -948,6 +948,13 @@ pub struct OutputAudioConfig {
     #[prost(message, optional, tag="3")]
     pub synthesize_speech_config: ::core::option::Option<SynthesizeSpeechConfig>,
 }
+/// A wrapper of repeated TelephonyDtmf digits.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TelephonyDtmfEvents {
+    /// A sequence of TelephonyDtmf digits.
+    #[prost(enumeration="TelephonyDtmf", repeated, tag="1")]
+    pub dtmf_events: ::prost::alloc::vec::Vec<i32>,
+}
 /// Configures speech transcription for \[ConversationProfile][google.cloud.dialogflow.v2.ConversationProfile\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SpeechToTextConfig {
@@ -960,6 +967,15 @@ pub struct SpeechToTextConfig {
     /// would emit an error.
     #[prost(enumeration="SpeechModelVariant", tag="1")]
     pub speech_model_variant: i32,
+    /// Which Speech model to select. Select the model best suited to your domain
+    /// to get best results. If a model is not explicitly specified, then a default
+    /// model is used.
+    /// Refer to
+    /// [Cloud Speech API
+    /// documentation](<https://cloud.google.com/speech-to-text/docs/basics#select-model>)
+    /// for more details.
+    #[prost(string, tag="2")]
+    pub model: ::prost::alloc::string::String,
 }
 /// Audio encoding of the audio content sent in the conversational query request.
 /// Refer to the
@@ -1140,6 +1156,73 @@ impl OutputAudioEncoding {
             OutputAudioEncoding::Mp364Kbps => "OUTPUT_AUDIO_ENCODING_MP3_64_KBPS",
             OutputAudioEncoding::OggOpus => "OUTPUT_AUDIO_ENCODING_OGG_OPUS",
             OutputAudioEncoding::Mulaw => "OUTPUT_AUDIO_ENCODING_MULAW",
+        }
+    }
+}
+/// \[DTMF\](<https://en.wikipedia.org/wiki/Dual-tone_multi-frequency_signaling>)
+/// digit in Telephony Gateway.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum TelephonyDtmf {
+    /// Not specified. This value may be used to indicate an absent digit.
+    Unspecified = 0,
+    /// Number: '1'.
+    DtmfOne = 1,
+    /// Number: '2'.
+    DtmfTwo = 2,
+    /// Number: '3'.
+    DtmfThree = 3,
+    /// Number: '4'.
+    DtmfFour = 4,
+    /// Number: '5'.
+    DtmfFive = 5,
+    /// Number: '6'.
+    DtmfSix = 6,
+    /// Number: '7'.
+    DtmfSeven = 7,
+    /// Number: '8'.
+    DtmfEight = 8,
+    /// Number: '9'.
+    DtmfNine = 9,
+    /// Number: '0'.
+    DtmfZero = 10,
+    /// Letter: 'A'.
+    DtmfA = 11,
+    /// Letter: 'B'.
+    DtmfB = 12,
+    /// Letter: 'C'.
+    DtmfC = 13,
+    /// Letter: 'D'.
+    DtmfD = 14,
+    /// Asterisk/star: '*'.
+    DtmfStar = 15,
+    /// Pound/diamond/hash/square/gate/octothorpe: '#'.
+    DtmfPound = 16,
+}
+impl TelephonyDtmf {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            TelephonyDtmf::Unspecified => "TELEPHONY_DTMF_UNSPECIFIED",
+            TelephonyDtmf::DtmfOne => "DTMF_ONE",
+            TelephonyDtmf::DtmfTwo => "DTMF_TWO",
+            TelephonyDtmf::DtmfThree => "DTMF_THREE",
+            TelephonyDtmf::DtmfFour => "DTMF_FOUR",
+            TelephonyDtmf::DtmfFive => "DTMF_FIVE",
+            TelephonyDtmf::DtmfSix => "DTMF_SIX",
+            TelephonyDtmf::DtmfSeven => "DTMF_SEVEN",
+            TelephonyDtmf::DtmfEight => "DTMF_EIGHT",
+            TelephonyDtmf::DtmfNine => "DTMF_NINE",
+            TelephonyDtmf::DtmfZero => "DTMF_ZERO",
+            TelephonyDtmf::DtmfA => "DTMF_A",
+            TelephonyDtmf::DtmfB => "DTMF_B",
+            TelephonyDtmf::DtmfC => "DTMF_C",
+            TelephonyDtmf::DtmfD => "DTMF_D",
+            TelephonyDtmf::DtmfStar => "DTMF_STAR",
+            TelephonyDtmf::DtmfPound => "DTMF_POUND",
         }
     }
 }
@@ -4675,6 +4758,36 @@ pub struct Participant {
     /// media stream to this participant. This field can be updated.
     #[prost(string, tag="6")]
     pub sip_recording_media_label: ::prost::alloc::string::String,
+    /// Optional. Obfuscated user id that should be associated with the created participant.
+    ///
+    /// You can specify a user id as follows:
+    ///
+    /// 1. If you set this field in
+    ///     \[CreateParticipantRequest][google.cloud.dialogflow.v2.CreateParticipantRequest.participant\] or
+    ///     \[UpdateParticipantRequest][google.cloud.dialogflow.v2.UpdateParticipantRequest.participant\],
+    ///     Dialogflow adds the obfuscated user id with the participant.
+    ///
+    /// 2. If you set this field in
+    ///     \[AnalyzeContent][google.cloud.dialogflow.v2.AnalyzeContentRequest.obfuscated_external_user_id\] or
+    ///     \[StreamingAnalyzeContent][google.cloud.dialogflow.v2.StreamingAnalyzeContentRequest.obfuscated_external_user_id\],
+    ///     Dialogflow will update \[Participant.obfuscated_external_user_id][google.cloud.dialogflow.v2.Participant.obfuscated_external_user_id\].
+    ///
+    /// Dialogflow returns an error if you try to add a user id for a
+    /// non-\[END_USER][google.cloud.dialogflow.v2.Participant.Role.END_USER\] participant.
+    ///
+    /// Dialogflow uses this user id for billing and measurement purposes. For
+    /// example, Dialogflow determines whether a user in one conversation returned
+    /// in a later conversation.
+    ///
+    /// Note:
+    ///
+    /// * Please never pass raw user ids to Dialogflow. Always obfuscate your user
+    ///    id first.
+    /// * Dialogflow only accepts a UTF-8 encoded string, e.g., a hex digest of a
+    ///    hash function like SHA-512.
+    /// * The length of the user id must be <= 256 characters.
+    #[prost(string, tag="7")]
+    pub obfuscated_external_user_id: ::prost::alloc::string::String,
     /// Optional. Key-value filters on the metadata of documents returned by article
     /// suggestion. If specified, article suggestion only returns suggested
     /// documents that match all filters in their \[Document.metadata][google.cloud.dialogflow.v2.Document.metadata\]. Multiple
@@ -4929,6 +5042,179 @@ pub struct AnalyzeContentResponse {
     pub end_user_suggestion_results: ::prost::alloc::vec::Vec<SuggestionResult>,
     /// Indicates the parameters of DTMF.
     #[prost(message, optional, tag="9")]
+    pub dtmf_parameters: ::core::option::Option<DtmfParameters>,
+}
+/// The top-level message sent by the client to the
+/// \[Participants.StreamingAnalyzeContent][google.cloud.dialogflow.v2.Participants.StreamingAnalyzeContent\] method.
+///
+/// Multiple request messages should be sent in order:
+///
+/// 1.  The first message must contain
+///      \[participant][google.cloud.dialogflow.v2.StreamingAnalyzeContentRequest.participant\],
+///      \[config][google.cloud.dialogflow.v2.StreamingAnalyzeContentRequest.config\] and optionally
+///      \[query_params][google.cloud.dialogflow.v2.StreamingAnalyzeContentRequest.query_params\]. If you want
+///      to receive an audio response, it should also contain
+///      \[reply_audio_config][google.cloud.dialogflow.v2.StreamingAnalyzeContentRequest.reply_audio_config\].
+///      The message must not contain
+///      \[input][google.cloud.dialogflow.v2.StreamingAnalyzeContentRequest.input\].
+///
+/// 2.  If \[config][google.cloud.dialogflow.v2.StreamingAnalyzeContentRequest.config\] in the first message
+///      was set to \[audio_config][google.cloud.dialogflow.v2.StreamingAnalyzeContentRequest.audio_config\],
+///      all subsequent messages must contain
+///      \[input_audio][google.cloud.dialogflow.v2.StreamingAnalyzeContentRequest.input_audio\] to continue
+///      with Speech recognition.
+///      However, note that:
+///
+///      * Dialogflow will bill you for the audio so far.
+///      * Dialogflow discards all Speech recognition results in favor of the
+///        text input.
+///
+///   3. If \[StreamingAnalyzeContentRequest.config][google.cloud.dialogflow.v2.StreamingAnalyzeContentRequest.config\] in the first message was set
+///     to \[StreamingAnalyzeContentRequest.text_config][google.cloud.dialogflow.v2.StreamingAnalyzeContentRequest.text_config\], then the second message
+///     must contain only \[input_text][google.cloud.dialogflow.v2.StreamingAnalyzeContentRequest.input_text\].
+///     Moreover, you must not send more than two messages.
+///
+///   After you sent all input, you must half-close or abort the request stream.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StreamingAnalyzeContentRequest {
+    /// Required. The name of the participant this text comes from.
+    /// Format: `projects/<Project ID>/locations/<Location
+    /// ID>/conversations/<Conversation ID>/participants/<Participant ID>`.
+    #[prost(string, tag="1")]
+    pub participant: ::prost::alloc::string::String,
+    /// Speech synthesis configuration.
+    /// The speech synthesis settings for a virtual agent that may be configured
+    /// for the associated conversation profile are not used when calling
+    /// StreamingAnalyzeContent. If this configuration is not supplied, speech
+    /// synthesis is disabled.
+    #[prost(message, optional, tag="4")]
+    pub reply_audio_config: ::core::option::Option<OutputAudioConfig>,
+    /// Parameters for a Dialogflow virtual-agent query.
+    #[prost(message, optional, tag="7")]
+    pub query_params: ::core::option::Option<QueryParameters>,
+    /// Parameters for a human assist query.
+    #[prost(message, optional, tag="8")]
+    pub assist_query_params: ::core::option::Option<AssistQueryParameters>,
+    /// Additional parameters to be put into Dialogflow CX session parameters. To
+    /// remove a parameter from the session, clients should explicitly set the
+    /// parameter value to null.
+    ///
+    /// Note: this field should only be used if you are connecting to a Dialogflow
+    /// CX agent.
+    #[prost(message, optional, tag="13")]
+    pub cx_parameters: ::core::option::Option<::prost_types::Struct>,
+    /// Enable partial virtual agent responses. If this flag is not enabled,
+    /// response stream still contains only one final response even if some
+    /// `Fulfillment`s in Dialogflow virtual agent have been configured to return
+    /// partial responses.
+    #[prost(bool, tag="12")]
+    pub enable_partial_automated_agent_reply: bool,
+    /// The input config.
+    #[prost(oneof="streaming_analyze_content_request::Config", tags="2, 3")]
+    pub config: ::core::option::Option<streaming_analyze_content_request::Config>,
+    /// The input.
+    #[prost(oneof="streaming_analyze_content_request::Input", tags="5, 6, 9")]
+    pub input: ::core::option::Option<streaming_analyze_content_request::Input>,
+}
+/// Nested message and enum types in `StreamingAnalyzeContentRequest`.
+pub mod streaming_analyze_content_request {
+    /// The input config.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Config {
+        /// Instructs the speech recognizer how to process the speech audio.
+        #[prost(message, tag="2")]
+        AudioConfig(super::InputAudioConfig),
+        /// The natural language text to be processed.
+        #[prost(message, tag="3")]
+        TextConfig(super::InputTextConfig),
+    }
+    /// The input.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Input {
+        /// The input audio content to be recognized. Must be sent if `audio_config`
+        /// is set in the first message. The complete audio over all streaming
+        /// messages must not exceed 1 minute.
+        #[prost(bytes, tag="5")]
+        InputAudio(::prost::alloc::vec::Vec<u8>),
+        /// The UTF-8 encoded natural language text to be processed. Must be sent if
+        /// `text_config` is set in the first message. Text length must not exceed
+        /// 256 bytes for virtual agent interactions. The `input_text` field can be
+        /// only sent once.
+        #[prost(string, tag="6")]
+        InputText(::prost::alloc::string::String),
+        /// The DTMF digits used to invoke intent and fill in parameter value.
+        ///
+        /// This input is ignored if the previous response indicated that DTMF input
+        /// is not accepted.
+        #[prost(message, tag="9")]
+        InputDtmf(super::TelephonyDtmfEvents),
+    }
+}
+/// The top-level message returned from the `StreamingAnalyzeContent` method.
+///
+/// Multiple response messages can be returned in order:
+///
+/// 1.  If the input was set to streaming audio, the first one or more messages
+///      contain `recognition_result`. Each `recognition_result` represents a more
+///      complete transcript of what the user said. The last `recognition_result`
+///      has `is_final` set to `true`.
+///
+/// 2.  In virtual agent stage: if `enable_partial_automated_agent_reply` is
+///      true, the following N (currently 1 <= N <= 4) messages
+///      contain `automated_agent_reply` and optionally `reply_audio`
+///      returned by the virtual agent. The first (N-1)
+///      `automated_agent_reply`s will have `automated_agent_reply_type` set to
+///      `PARTIAL`. The last `automated_agent_reply` has
+///      `automated_agent_reply_type` set to `FINAL`.
+///      If `enable_partial_automated_agent_reply` is not enabled, response stream
+///      only contains the final reply.
+///
+///      In human assist stage: the following N (N >= 1) messages contain
+///      `human_agent_suggestion_results`, `end_user_suggestion_results` or
+///      `message`.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StreamingAnalyzeContentResponse {
+    /// The result of speech recognition.
+    #[prost(message, optional, tag="1")]
+    pub recognition_result: ::core::option::Option<StreamingRecognitionResult>,
+    /// The output text content.
+    /// This field is set if an automated agent responded with a text for the user.
+    #[prost(string, tag="2")]
+    pub reply_text: ::prost::alloc::string::String,
+    /// The audio data bytes encoded as specified in the request.
+    /// This field is set if:
+    ///
+    ///   - The `reply_audio_config` field is specified in the request.
+    ///   - The automated agent, which this output comes from, responded with audio.
+    ///     In such case, the `reply_audio.config` field contains settings used to
+    ///     synthesize the speech.
+    ///
+    /// In some scenarios, multiple output audio fields may be present in the
+    /// response structure. In these cases, only the top-most-level audio output
+    /// has content.
+    #[prost(message, optional, tag="3")]
+    pub reply_audio: ::core::option::Option<OutputAudio>,
+    /// Only set if a Dialogflow automated agent has responded.
+    /// Note that: \[AutomatedAgentReply.detect_intent_response.output_audio][\]
+    /// and \[AutomatedAgentReply.detect_intent_response.output_audio_config][\]
+    /// are always empty, use \[reply_audio][google.cloud.dialogflow.v2.StreamingAnalyzeContentResponse.reply_audio\] instead.
+    #[prost(message, optional, tag="4")]
+    pub automated_agent_reply: ::core::option::Option<AutomatedAgentReply>,
+    /// Message analyzed by CCAI.
+    #[prost(message, optional, tag="6")]
+    pub message: ::core::option::Option<Message>,
+    /// The suggestions for most recent human agent. The order is the same as
+    /// \[HumanAgentAssistantConfig.SuggestionConfig.feature_configs][google.cloud.dialogflow.v2.HumanAgentAssistantConfig.SuggestionConfig.feature_configs\] of
+    /// \[HumanAgentAssistantConfig.human_agent_suggestion_config][google.cloud.dialogflow.v2.HumanAgentAssistantConfig.human_agent_suggestion_config\].
+    #[prost(message, repeated, tag="7")]
+    pub human_agent_suggestion_results: ::prost::alloc::vec::Vec<SuggestionResult>,
+    /// The suggestions for end user. The order is the same as
+    /// \[HumanAgentAssistantConfig.SuggestionConfig.feature_configs][google.cloud.dialogflow.v2.HumanAgentAssistantConfig.SuggestionConfig.feature_configs\] of
+    /// \[HumanAgentAssistantConfig.end_user_suggestion_config][google.cloud.dialogflow.v2.HumanAgentAssistantConfig.end_user_suggestion_config\].
+    #[prost(message, repeated, tag="8")]
+    pub end_user_suggestion_results: ::prost::alloc::vec::Vec<SuggestionResult>,
+    /// Indicates the parameters of DTMF.
+    #[prost(message, optional, tag="10")]
     pub dtmf_parameters: ::core::option::Option<DtmfParameters>,
 }
 /// The request message for \[Participants.SuggestArticles][google.cloud.dialogflow.v2.Participants.SuggestArticles\].
@@ -5229,6 +5515,15 @@ pub mod suggestion_result {
         SuggestSmartRepliesResponse(super::SuggestSmartRepliesResponse),
     }
 }
+/// Defines the language used in the input text.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct InputTextConfig {
+    /// Required. The language of this conversational query. See [Language
+    /// Support](<https://cloud.google.com/dialogflow/docs/reference/language>)
+    /// for a list of the currently supported language codes.
+    #[prost(string, tag="1")]
+    pub language_code: ::prost::alloc::string::String,
+}
 /// Represents a part of a message possibly annotated with an entity. The part
 /// can be an entity or purely a part of the message between two entities or
 /// message start/end.
@@ -5464,6 +5759,47 @@ pub mod participants_client {
                 "/google.cloud.dialogflow.v2.Participants/AnalyzeContent",
             );
             self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Adds a text (chat, for example), or audio (phone recording, for example)
+        /// message from a participant into the conversation.
+        /// Note: This method is only available through the gRPC API (not REST).
+        ///
+        /// The top-level message sent to the client by the server is
+        /// `StreamingAnalyzeContentResponse`. Multiple response messages can be
+        /// returned in order. The first one or more messages contain the
+        /// `recognition_result` field. Each result represents a more complete
+        /// transcript of what the user said. The next message contains the
+        /// `reply_text` field and potentially the `reply_audio` field. The message can
+        /// also contain the `automated_agent_reply` field.
+        ///
+        /// Note: Always use agent versions for production traffic
+        /// sent to virtual agents. See [Versions and
+        /// environments](https://cloud.google.com/dialogflow/es/docs/agents-versions).
+        pub async fn streaming_analyze_content(
+            &mut self,
+            request: impl tonic::IntoStreamingRequest<
+                Message = super::StreamingAnalyzeContentRequest,
+            >,
+        ) -> Result<
+            tonic::Response<
+                tonic::codec::Streaming<super::StreamingAnalyzeContentResponse>,
+            >,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dialogflow.v2.Participants/StreamingAnalyzeContent",
+            );
+            self.inner.streaming(request.into_streaming_request(), path, codec).await
         }
         /// Gets suggested articles for a participant based on specific historical
         /// messages.
