@@ -106,7 +106,7 @@ pub struct InputConfig {
     pub entity_type: i32,
     /// Optional. Provide the bigquery table containing the previous results if
     /// cluster ID stability is desired. Format is
-    /// “projects/*/datasets/*/tables/*".
+    /// `projects/*/datasets/*/tables/*`.
     #[prost(string, tag="3")]
     pub previous_result_bigquery_table: ::prost::alloc::string::String,
 }
@@ -157,7 +157,7 @@ pub mod input_config {
 /// The input config for BigQuery tables.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BigQueryInputConfig {
-    /// Required. Format is “projects/*/datasets/*/tables/*”.
+    /// Required. Format is `projects/*/datasets/*/tables/*`.
     #[prost(string, tag="1")]
     pub bigquery_table: ::prost::alloc::string::String,
     /// Required. Schema mapping file
@@ -191,9 +191,10 @@ pub mod recon_config {
     pub struct Options {
         /// If true, separate clusters by their geographic region (from geocoding).
         /// Uses the following entity features:
-        ///   - schema.org/addressLocality
-        ///   - schema.org/addressRegion
-        ///   - schema.org/addressCountry
+        ///
+        /// - schema.org/addressLocality
+        /// - schema.org/addressRegion
+        /// - schema.org/addressCountry
         /// Warning: processing will no longer be regionalized!
         #[prost(bool, tag="100")]
         pub enable_geocoding_separation: bool,

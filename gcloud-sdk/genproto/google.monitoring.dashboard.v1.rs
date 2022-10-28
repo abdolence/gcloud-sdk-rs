@@ -599,7 +599,7 @@ pub struct TimeSeriesQuery {
     #[prost(string, tag="5")]
     pub unit_override: ::prost::alloc::string::String,
     /// Parameters needed to obtain data for the chart.
-    #[prost(oneof="time_series_query::Source", tags="1, 2, 3")]
+    #[prost(oneof="time_series_query::Source", tags="1, 2, 3, 6")]
     pub source: ::core::option::Option<time_series_query::Source>,
 }
 /// Nested message and enum types in `TimeSeriesQuery`.
@@ -613,9 +613,12 @@ pub mod time_series_query {
         /// Parameters to fetch a ratio between two time series filters.
         #[prost(message, tag="2")]
         TimeSeriesFilterRatio(super::TimeSeriesFilterRatio),
-        /// A query used to fetch time series.
+        /// A query used to fetch time series with MQL.
         #[prost(string, tag="3")]
         TimeSeriesQueryLanguage(::prost::alloc::string::String),
+        /// A query used to fetch time series with PromQL.
+        #[prost(string, tag="6")]
+        PrometheusQuery(::prost::alloc::string::String),
     }
 }
 /// A filter that defines a subset of time series data that is displayed in a
@@ -927,8 +930,9 @@ pub mod scorecard {
 /// Table display options that can be reused.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TableDisplayOptions {
-    /// Optional. Columns to display in the table. Leave empty to display all available
-    /// columns. Note: This field is for future features and is not currently used.
+    /// Optional. This field is unused and has been replaced by
+    /// TimeSeriesTable.column_settings
+    #[deprecated]
     #[prost(string, repeated, tag="1")]
     pub shown_columns: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }

@@ -255,6 +255,21 @@ pub struct BuildStep {
     /// as the build progresses.
     #[prost(enumeration="build::Status", tag="12")]
     pub status: i32,
+    /// Allow this build step to fail without failing the entire build.
+    ///
+    /// If false, the entire build will fail if this step fails. Otherwise, the
+    /// build will succeed, but this step will still have a failure status.
+    /// Error information will be reported in the failure_detail field.
+    #[prost(bool, tag="14")]
+    pub allow_failure: bool,
+    /// Output only. Return code from running the step.
+    #[prost(int32, tag="16")]
+    pub exit_code: i32,
+    /// Allow this build step to fail without failing the entire build if and
+    /// only if the exit code is one of the specified codes. If allow_failure
+    /// is also specified, this field will take precedence.
+    #[prost(int32, repeated, tag="18")]
+    pub allow_exit_codes: ::prost::alloc::vec::Vec<i32>,
     /// A shell script to be executed in the step.
     ///
     /// When script is provided, the user cannot specify the entrypoint or args.
