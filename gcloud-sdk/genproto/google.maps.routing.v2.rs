@@ -244,6 +244,37 @@ impl PolylineEncoding {
         }
     }
 }
+/// Labels for the `Route` that are useful to identify specific properties
+/// of the route to compare against others.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum RouteLabel {
+    /// Default - not used.
+    Unspecified = 0,
+    /// The default "best" route returned for the route computation.
+    DefaultRoute = 1,
+    /// An alternative to the default "best" route. Routes like this will be
+    /// returned when `ComputeRoutesRequest.compute_alternative_routes` is
+    /// specified.
+    DefaultRouteAlternate = 2,
+    /// Fuel efficient route. Routes labeled with this value are determined to be
+    /// optimized for Eco parameters such as fuel consumption.
+    FuelEfficient = 3,
+}
+impl RouteLabel {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            RouteLabel::Unspecified => "ROUTE_LABEL_UNSPECIFIED",
+            RouteLabel::DefaultRoute => "DEFAULT_ROUTE",
+            RouteLabel::DefaultRouteAlternate => "DEFAULT_ROUTE_ALTERNATE",
+            RouteLabel::FuelEfficient => "FUEL_EFFICIENT",
+        }
+    }
+}
 /// Traffic density indicator on a contiguous segment of a polyline or path.
 /// Given a path with points P_0, P_1, ... , P_N (zero-based index), the
 /// SpeedReadingInterval defines an interval and describes its traffic using the
@@ -306,6 +337,10 @@ pub struct TollInfo {
 /// that join beginning, ending, and intermediate waypoints.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Route {
+    /// Labels for the `Route` that are useful to identify specific properties
+    /// of the route to compare against others.
+    #[prost(enumeration="RouteLabel", repeated, tag="13")]
+    pub route_labels: ::prost::alloc::vec::Vec<i32>,
     /// A collection of legs (path segments between waypoints) that make-up the
     /// route. Each leg corresponds to the trip between two non-`via` Waypoints.
     /// For example, a route with no intermediate waypoints has only one leg. A
@@ -345,6 +380,13 @@ pub struct Route {
     /// Additional information about the route.
     #[prost(message, optional, tag="9")]
     pub travel_advisory: ::core::option::Option<RouteTravelAdvisory>,
+    /// Web-safe base64 encoded route token that can be passed to NavigationSDK,
+    /// which allows the Navigation SDK to reconstruct the route during navigation,
+    /// and in the event of rerouting honor the original intention when Routes
+    /// ComputeRoutes is called. Customers should treat this token as an
+    /// opaque blob.
+    #[prost(string, tag="12")]
+    pub route_token: ::prost::alloc::string::String,
 }
 /// Encapsulates the additional information that the user should be informed
 /// about, such as possible traffic zone restriction etc.
@@ -369,6 +411,9 @@ pub struct RouteTravelAdvisory {
     ///      speed_reading_intervals: [A,C), [C,D), [D,G).
     #[prost(message, repeated, tag="3")]
     pub speed_reading_intervals: ::prost::alloc::vec::Vec<SpeedReadingInterval>,
+    /// The fuel consumption prediction in microliters.
+    #[prost(int64, tag="5")]
+    pub fuel_consumption_microliters: i64,
 }
 /// Encapsulates the additional information that the user should be informed
 /// about, such as possible traffic zone restriction etc. on a route leg.
@@ -800,6 +845,8 @@ pub enum VehicleEmissionType {
     Electric = 2,
     /// Hybrid fuel (such as gasoline + electric) vehicle.
     Hybrid = 3,
+    /// Diesel fueled vehicle.
+    Diesel = 4,
 }
 impl VehicleEmissionType {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -812,6 +859,7 @@ impl VehicleEmissionType {
             VehicleEmissionType::Gasoline => "GASOLINE",
             VehicleEmissionType::Electric => "ELECTRIC",
             VehicleEmissionType::Hybrid => "HYBRID",
+            VehicleEmissionType::Diesel => "DIESEL",
         }
     }
 }
@@ -1064,6 +1112,39 @@ pub struct ComputeRoutesRequest {
     /// units are inferred from the location of the request.
     #[prost(enumeration="Units", tag="11")]
     pub units: i32,
+    /// Optional. Specifies what reference routes to calculate as part of the request in
+    /// addition to the default route.
+    /// A reference route is a route with a different route calculation objective
+    /// than the default route. For example an FUEL_EFFICIENT reference route
+    /// calculation takes into account various parameters that would generate an
+    /// optimal fuel efficient route.
+    #[prost(enumeration="compute_routes_request::ReferenceRoute", repeated, packed="false", tag="14")]
+    pub requested_reference_routes: ::prost::alloc::vec::Vec<i32>,
+}
+/// Nested message and enum types in `ComputeRoutesRequest`.
+pub mod compute_routes_request {
+    /// A supported reference route on the ComputeRoutesRequest.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum ReferenceRoute {
+        /// Not used. Requests containing this value fail.
+        Unspecified = 0,
+        /// Fuel efficient route. Routes labeled with this value are determined to be
+        /// optimized for parameters such as fuel consumption.
+        FuelEfficient = 1,
+    }
+    impl ReferenceRoute {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                ReferenceRoute::Unspecified => "REFERENCE_ROUTE_UNSPECIFIED",
+                ReferenceRoute::FuelEfficient => "FUEL_EFFICIENT",
+            }
+        }
+    }
 }
 /// ComputeRoutes the response message.
 #[derive(Clone, PartialEq, ::prost::Message)]
