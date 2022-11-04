@@ -1042,20 +1042,19 @@ pub struct SearchTripsRequest {
     /// * `eta_to_first_waypoint`
     #[prost(string, tag="4")]
     pub vehicle_id: ::prost::alloc::string::String,
-    /// If set to true, only Trips that influence the drivers route
-    /// are included in the response.
+    /// If set to true, the response includes Trips that influence a driver's
+    /// route.
     #[prost(bool, tag="5")]
     pub active_trips_only: bool,
-    /// If not set, the server will decide the number of
-    /// results to return.
+    /// If not set, the server decides the number of results to return.
     #[prost(int32, tag="6")]
     pub page_size: i32,
-    /// Set this to a value previously returned in the
-    /// SearchTripsResponse to continue from previous results.
+    /// Set this to a value previously returned in the `SearchTripsResponse` to
+    /// continue from previous results.
     #[prost(string, tag="7")]
     pub page_token: ::prost::alloc::string::String,
-    /// If specified, returns the trips that have not been updated after
-    /// the time `(current - minimum_staleness)`.
+    /// If specified, returns the trips that have not been updated after the time
+    /// `(current - minimum_staleness)`.
     #[prost(message, optional, tag="8")]
     pub minimum_staleness: ::core::option::Option<::prost_types::Duration>,
 }
@@ -1794,8 +1793,8 @@ pub struct UpdateVehicleAttributesRequest {
 /// `UpdateVehicleAttributes` response message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateVehicleAttributesResponse {
-    /// Required. The updated full list of vehicle attributes, including new,
-    /// altered and untouched attributes.
+    /// Required. The updated full list of vehicle attributes, including new, altered, and
+    /// untouched attributes.
     #[prost(message, repeated, tag="1")]
     pub attributes: ::prost::alloc::vec::Vec<VehicleAttribute>,
 }
@@ -2021,10 +2020,10 @@ pub struct ListVehiclesRequest {
     /// Default value: 100.
     #[prost(int32, tag="3")]
     pub page_size: i32,
-    /// The `next_page_token` value returned from a previous call to
-    /// `ListVehicles`. Functionality is undefined if the filter criteria of this
-    /// request don't match the criteria in the request that produced this
-    /// `page_token`.
+    /// The value of the `next_page_token` provided by a previous call to
+    /// `ListVehicles` so that you can paginate through groups of vehicles. The
+    /// value is undefined if the filter criteria of the request is not the same as
+    /// the filter criteria for the previous call to `ListVehicles`.
     #[prost(string, tag="4")]
     pub page_token: ::prost::alloc::string::String,
     /// Specifies the required minimum capacity of the vehicle. All vehicles
@@ -2032,16 +2031,16 @@ pub struct ListVehiclesRequest {
     /// value. If set, must be greater or equal to 0.
     #[prost(message, optional, tag="6")]
     pub minimum_capacity: ::core::option::Option<i32>,
-    /// Restrict the response to vehicles that support at least
-    /// one of the specified trip types.
+    /// Restricts the response to vehicles that support at least one of the
+    /// specified trip types.
     #[prost(enumeration="TripType", repeated, tag="7")]
     pub trip_types: ::prost::alloc::vec::Vec<i32>,
-    /// Restrict the response to vehicles that have updated
-    /// their locations within the specified duration back from now.
-    /// If present, must be a valid positive duration.
+    /// Restricts the response to vehicles that have updated their locations within
+    /// the specified duration at the time of the call. If present, must be a valid
+    /// positive duration.
     #[prost(message, optional, tag="8")]
     pub maximum_staleness: ::core::option::Option<::prost_types::Duration>,
-    /// Required. Restrict the response to vehicles with one of the specified type
+    /// Required. Restricts the response to vehicles with one of the specified type
     /// categories.
     #[prost(enumeration="vehicle::vehicle_type::Category", repeated, packed="false", tag="9")]
     pub vehicle_type_categories: ::prost::alloc::vec::Vec<i32>,
@@ -2063,19 +2062,18 @@ pub struct ListVehiclesRequest {
     /// ...)
     /// ```
     ///
-    /// Restrict the response to vehicles with the specified attributes. This field
-    /// is a conjunction/AND operation. A max of 50 required_attributes is allowed.
-    /// This matches the maximum number of attributes allowed on a vehicle. Each
-    /// repeated string should be of the format "key:value".
+    /// Restricts the response to vehicles with the specified attributes. This
+    /// field is a conjunction/AND operation. Your app can specify up to 100
+    /// attributes; however, the combined key:value string length cannot exceed
+    /// 1024 characters.
     #[prost(string, repeated, tag="10")]
     pub required_attributes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// Restrict the response to vehicles with at least one
-    /// of the specified attributes in each `VehicleAttributeList`.
-    /// Within each list, a vehicle must match at least one of the attributes.
-    /// This field is an inclusive disjunction/OR operation in each
-    /// `VehicleAttributeList` and a conjunction/AND operation across the
-    /// collection of `VehicleAttributeList`. Each repeated string should be of the
-    /// format "key1:value1|key2:value2|key3:value3".
+    /// Restricts the response to vehicles with at least one of the specified
+    /// attributes in each `VehicleAttributeList`. Within each list, a vehicle must
+    /// match at least one of the attributes. This field is an inclusive
+    /// disjunction/OR operation in each `VehicleAttributeList` and a
+    /// conjunction/AND operation across the collection of `VehicleAttributeList`.
+    /// Format: key1:value1|key2:value2|key3:value3...
     #[prost(string, repeated, tag="13")]
     pub required_one_of_attributes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// `required_one_of_attribute_sets` provides additional functionality.
@@ -2094,7 +2092,7 @@ pub struct ListVehiclesRequest {
     /// ...)
     /// ```
     ///
-    /// Restrict the response to vehicles that match all the attributes in a
+    /// Restricts the response to vehicles that match all the attributes in a
     /// `VehicleAttributeList`. Within each list, a vehicle must match all of the
     /// attributes. This field is a conjunction/AND operation in each
     /// `VehicleAttributeList` and inclusive disjunction/OR operation across the
@@ -2102,7 +2100,7 @@ pub struct ListVehiclesRequest {
     /// format "key1:value1|key2:value2|key3:value3".
     #[prost(string, repeated, tag="15")]
     pub required_one_of_attribute_sets: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// Restrict the response to vehicles that have this vehicle state.
+    /// Restricts the response to vehicles that have this vehicle state.
     #[prost(enumeration="VehicleState", tag="11")]
     pub vehicle_state: i32,
     /// Only return the vehicles with current trip(s).
