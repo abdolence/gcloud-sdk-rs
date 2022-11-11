@@ -8,15 +8,15 @@ pub struct Setting {
     /// * `organizations/{organization_id}/settings/{setting_name}`
     ///
     /// For example, "/projects/123/settings/gcp-enableMyFeature"
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. Metadata about a setting which is not editable by the end user.
-    #[prost(message, optional, tag="7")]
+    #[prost(message, optional, tag = "7")]
     pub metadata: ::core::option::Option<SettingMetadata>,
     /// The configured value of the setting at the given parent resource (ignoring
     /// the resource hierarchy). The data type of \[Value][google.cloud.resourcesettings.v1.Value\] must always be
     /// consistent with the data type defined in \[Setting.metadata][google.cloud.resourcesettings.v1.Setting.metadata\].
-    #[prost(message, optional, tag="8")]
+    #[prost(message, optional, tag = "8")]
     pub local_value: ::core::option::Option<Value>,
     /// Output only. The computed effective value of the setting at the given parent resource
     /// (based on the resource hierarchy).
@@ -32,42 +32,52 @@ pub struct Setting {
     ///
     /// The data type of \[Value][google.cloud.resourcesettings.v1.Value\] must always be
     /// consistent with the data type defined in \[Setting.metadata][google.cloud.resourcesettings.v1.Setting.metadata\].
-    #[prost(message, optional, tag="9")]
+    #[prost(message, optional, tag = "9")]
     pub effective_value: ::core::option::Option<Value>,
     /// A fingerprint used for optimistic concurrency. See
     /// \[UpdateSetting][google.cloud.resourcesettings.v1.ResourceSettingsService.UpdateSetting\] for more
     /// details.
-    #[prost(string, tag="10")]
+    #[prost(string, tag = "10")]
     pub etag: ::prost::alloc::string::String,
 }
 /// Metadata about a setting which is not editable by the end user.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SettingMetadata {
     /// The human readable name for this setting.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub display_name: ::prost::alloc::string::String,
     /// A detailed description of what this setting does.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub description: ::prost::alloc::string::String,
     /// A flag indicating that values of this setting cannot be modified (see
     /// documentation of the specific setting for updates and reasons).
-    #[prost(bool, tag="3")]
+    #[prost(bool, tag = "3")]
     pub read_only: bool,
     /// The data type for this setting.
-    #[prost(enumeration="setting_metadata::DataType", tag="4")]
+    #[prost(enumeration = "setting_metadata::DataType", tag = "4")]
     pub data_type: i32,
     /// The value provided by \[Setting.effective_value][google.cloud.resourcesettings.v1.Setting.effective_value\] if no setting value is
     /// explicitly set.
     ///
     /// Note: not all settings have a default value.
-    #[prost(message, optional, tag="5")]
+    #[prost(message, optional, tag = "5")]
     pub default_value: ::core::option::Option<Value>,
 }
 /// Nested message and enum types in `SettingMetadata`.
 pub mod setting_metadata {
     /// The data type for setting values of this setting. See \[Value][google.cloud.resourcesettings.v1.Value\] for more
     /// details on the available data types.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum DataType {
         /// Unspecified data type.
@@ -101,7 +111,7 @@ pub mod setting_metadata {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Value {
     /// Selects the data type and associated value.
-    #[prost(oneof="value::Value", tags="1, 2, 3, 4")]
+    #[prost(oneof = "value::Value", tags = "1, 2, 3, 4")]
     pub value: ::core::option::Option<value::Value>,
 }
 /// Nested message and enum types in `Value`.
@@ -112,7 +122,7 @@ pub mod value {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct StringSet {
         /// The strings in the set
-        #[prost(string, repeated, tag="1")]
+        #[prost(string, repeated, tag = "1")]
         pub values: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
     /// A enum value that can hold any enum type setting values.
@@ -121,23 +131,23 @@ pub mod value {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct EnumValue {
         /// The value of this enum
-        #[prost(string, tag="1")]
+        #[prost(string, tag = "1")]
         pub value: ::prost::alloc::string::String,
     }
     /// Selects the data type and associated value.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Value {
         /// Defines this value as being a boolean value.
-        #[prost(bool, tag="1")]
+        #[prost(bool, tag = "1")]
         BooleanValue(bool),
         /// Defines this value as being a string value.
-        #[prost(string, tag="2")]
+        #[prost(string, tag = "2")]
         StringValue(::prost::alloc::string::String),
         /// Defines this value as being a StringSet.
-        #[prost(message, tag="3")]
+        #[prost(message, tag = "3")]
         StringSetValue(StringSet),
         /// Defines this value as being a Enum.
-        #[prost(message, tag="4")]
+        #[prost(message, tag = "4")]
         EnumValue(EnumValue),
     }
 }
@@ -151,26 +161,26 @@ pub struct ListSettingsRequest {
     /// * `projects/{project_id}`
     /// * `folders/{folder_id}`
     /// * `organizations/{organization_id}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Unused. The size of the page to be returned.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Unused. A page token used to retrieve the next page.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
     /// The SettingView for this request.
-    #[prost(enumeration="SettingView", tag="4")]
+    #[prost(enumeration = "SettingView", tag = "4")]
     pub view: i32,
 }
 /// The response from ListSettings.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSettingsResponse {
     /// A list of settings that are available at the specified Cloud resource.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub settings: ::prost::alloc::vec::Vec<Setting>,
     /// Unused. A page token used to retrieve the next page.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request for GetSetting.
@@ -178,17 +188,17 @@ pub struct ListSettingsResponse {
 pub struct GetSettingRequest {
     /// Required. The name of the setting to get. See \[Setting][google.cloud.resourcesettings.v1.Setting\] for naming
     /// requirements.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The SettingView for this request.
-    #[prost(enumeration="SettingView", tag="2")]
+    #[prost(enumeration = "SettingView", tag = "2")]
     pub view: i32,
 }
 /// The request for UpdateSetting.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateSettingRequest {
     /// Required. The setting to update. See \[Setting][google.cloud.resourcesettings.v1.Setting\] for field requirements.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub setting: ::core::option::Option<Setting>,
 }
 /// View options for Settings.

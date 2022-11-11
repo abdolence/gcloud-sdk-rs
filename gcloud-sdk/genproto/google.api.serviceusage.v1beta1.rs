@@ -5,22 +5,22 @@ pub struct Service {
     ///
     /// A valid name would be:
     /// - `projects/123/services/serviceusage.googleapis.com`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The resource name of the consumer.
     ///
     /// A valid name would be:
     /// - `projects/123`
-    #[prost(string, tag="5")]
+    #[prost(string, tag = "5")]
     pub parent: ::prost::alloc::string::String,
     /// The service configuration of the available service.
     /// Some fields may be filtered out of the configuration in responses to
     /// the `ListServices` method. These fields are present only in responses to
     /// the `GetService` method.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub config: ::core::option::Option<ServiceConfig>,
     /// Whether or not the service has been enabled for use by the consumer.
-    #[prost(enumeration="State", tag="4")]
+    #[prost(enumeration = "State", tag = "4")]
     pub state: i32,
 }
 /// The configuration of the service.
@@ -30,39 +30,41 @@ pub struct ServiceConfig {
     ///
     /// An example DNS address would be:
     /// `calendar.googleapis.com`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The product title for this service.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub title: ::prost::alloc::string::String,
     /// A list of API interfaces exported by this service. Contains only the names,
     /// versions, and method names of the interfaces.
-    #[prost(message, repeated, tag="3")]
+    #[prost(message, repeated, tag = "3")]
     pub apis: ::prost::alloc::vec::Vec<::prost_types::Api>,
     /// Additional API documentation. Contains only the summary and the
     /// documentation URL.
-    #[prost(message, optional, tag="6")]
+    #[prost(message, optional, tag = "6")]
     pub documentation: ::core::option::Option<super::super::Documentation>,
     /// Quota configuration.
-    #[prost(message, optional, tag="10")]
+    #[prost(message, optional, tag = "10")]
     pub quota: ::core::option::Option<super::super::Quota>,
     /// Auth configuration. Contains only the OAuth rules.
-    #[prost(message, optional, tag="11")]
+    #[prost(message, optional, tag = "11")]
     pub authentication: ::core::option::Option<super::super::Authentication>,
     /// Configuration controlling usage of this service.
-    #[prost(message, optional, tag="15")]
+    #[prost(message, optional, tag = "15")]
     pub usage: ::core::option::Option<super::super::Usage>,
     /// Configuration for network endpoints. Contains only the names and aliases
     /// of the endpoints.
-    #[prost(message, repeated, tag="18")]
+    #[prost(message, repeated, tag = "18")]
     pub endpoints: ::prost::alloc::vec::Vec<super::super::Endpoint>,
     /// Defines the monitored resources used by this service. This is required
     /// by the \[Service.monitoring][google.api.Service.monitoring\] and \[Service.logging][google.api.Service.logging\] configurations.
-    #[prost(message, repeated, tag="25")]
-    pub monitored_resources: ::prost::alloc::vec::Vec<super::super::MonitoredResourceDescriptor>,
+    #[prost(message, repeated, tag = "25")]
+    pub monitored_resources: ::prost::alloc::vec::Vec<
+        super::super::MonitoredResourceDescriptor,
+    >,
     /// Monitoring configuration.
     /// This should not include the 'producer_destinations' field.
-    #[prost(message, optional, tag="28")]
+    #[prost(message, optional, tag = "28")]
     pub monitoring: ::core::option::Option<super::super::Monitoring>,
 }
 /// The operation metadata returned for the batchend services operation.
@@ -70,7 +72,7 @@ pub struct ServiceConfig {
 pub struct OperationMetadata {
     /// The full name of the resources that this operation is directly
     /// associated with.
-    #[prost(string, repeated, tag="2")]
+    #[prost(string, repeated, tag = "2")]
     pub resource_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Consumer quota settings for a quota metric.
@@ -83,22 +85,22 @@ pub struct ConsumerQuotaMetric {
     ///
     /// The resource name is intended to be opaque and should not be parsed for
     /// its component strings, since its representation could change in the future.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The name of the metric.
     ///
     /// An example name would be:
     /// `compute.googleapis.com/cpus`
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub metric: ::prost::alloc::string::String,
     /// The display name of the metric.
     ///
     /// An example name would be:
     /// `CPUs`
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub display_name: ::prost::alloc::string::String,
     /// The consumer quota for each quota limit defined on the metric.
-    #[prost(message, repeated, tag="3")]
+    #[prost(message, repeated, tag = "3")]
     pub consumer_quota_limits: ::prost::alloc::vec::Vec<ConsumerQuotaLimit>,
     /// The quota limits targeting the descendant containers of the
     /// consumer in request.
@@ -109,10 +111,10 @@ pub struct ConsumerQuotaMetric {
     ///
     /// The `quota_buckets` field of each descendant consumer quota limit will not
     /// be populated.
-    #[prost(message, repeated, tag="6")]
+    #[prost(message, repeated, tag = "6")]
     pub descendant_consumer_quota_limits: ::prost::alloc::vec::Vec<ConsumerQuotaLimit>,
     /// The units in which the metric value is reported.
-    #[prost(string, tag="5")]
+    #[prost(string, tag = "5")]
     pub unit: ::prost::alloc::string::String,
 }
 /// Consumer quota settings for a quota limit.
@@ -125,13 +127,13 @@ pub struct ConsumerQuotaLimit {
     ///
     /// The resource name is intended to be opaque and should not be parsed for
     /// its component strings, since its representation could change in the future.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The name of the parent metric of this limit.
     ///
     /// An example name would be:
     /// `compute.googleapis.com/cpus`
-    #[prost(string, tag="8")]
+    #[prost(string, tag = "8")]
     pub metric: ::prost::alloc::string::String,
     /// The limit unit.
     ///
@@ -139,18 +141,18 @@ pub struct ConsumerQuotaLimit {
     /// `1/{project}/{region}`
     /// Note that `{project}` and `{region}` are not placeholders in this example;
     /// the literal characters `{` and `}` occur in the string.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub unit: ::prost::alloc::string::String,
     /// Whether this limit is precise or imprecise.
-    #[prost(bool, tag="3")]
+    #[prost(bool, tag = "3")]
     pub is_precise: bool,
     /// Whether admin overrides are allowed on this limit
-    #[prost(bool, tag="7")]
+    #[prost(bool, tag = "7")]
     pub allows_admin_overrides: bool,
     /// Summary of the enforced quota buckets, organized by quota dimension,
     /// ordered from least specific to most specific (for example, the global
     /// default bucket, with no quota dimensions, will always appear first).
-    #[prost(message, repeated, tag="9")]
+    #[prost(message, repeated, tag = "9")]
     pub quota_buckets: ::prost::alloc::vec::Vec<QuotaBucket>,
 }
 /// A quota bucket is a quota provisioning unit for a specific set of dimensions.
@@ -158,20 +160,20 @@ pub struct ConsumerQuotaLimit {
 pub struct QuotaBucket {
     /// The effective limit of this quota bucket. Equal to default_limit if there
     /// are no overrides.
-    #[prost(int64, tag="1")]
+    #[prost(int64, tag = "1")]
     pub effective_limit: i64,
     /// The default limit of this quota bucket, as specified by the service
     /// configuration.
-    #[prost(int64, tag="2")]
+    #[prost(int64, tag = "2")]
     pub default_limit: i64,
     /// Producer override on this quota bucket.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub producer_override: ::core::option::Option<QuotaOverride>,
     /// Consumer override on this quota bucket.
-    #[prost(message, optional, tag="4")]
+    #[prost(message, optional, tag = "4")]
     pub consumer_override: ::core::option::Option<QuotaOverride>,
     /// Admin override on this quota bucket.
-    #[prost(message, optional, tag="5")]
+    #[prost(message, optional, tag = "5")]
     pub admin_override: ::core::option::Option<QuotaOverride>,
     /// The dimensions of this quota bucket.
     ///
@@ -184,8 +186,11 @@ pub struct QuotaBucket {
     /// For example, if the map has key `region` and value `us-east-1`, then the
     /// specified effective limit is only effective in that region, and the
     /// specified overrides apply only in that region.
-    #[prost(map="string, string", tag="6")]
-    pub dimensions: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map = "string, string", tag = "6")]
+    pub dimensions: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
 }
 /// A quota override
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -199,11 +204,11 @@ pub struct QuotaOverride {
     ///
     /// The resource name is intended to be opaque and should not be parsed for
     /// its component strings, since its representation could change in the future.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The overriding quota limit value.
     /// Can be any nonnegative integer, or -1 (unlimited quota).
-    #[prost(int64, tag="2")]
+    #[prost(int64, tag = "2")]
     pub override_value: i64,
     /// If this map is nonempty, then this override applies only to specific values
     /// for dimensions defined in the limit unit.
@@ -227,13 +232,16 @@ pub struct QuotaOverride {
     /// *   If any valid key other than `region` or `zone` appears in the map, then
     ///      all valid keys other than `region` or `zone` must also appear in the
     ///      map.
-    #[prost(map="string, string", tag="3")]
-    pub dimensions: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map = "string, string", tag = "3")]
+    pub dimensions: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
     /// The name of the metric to which this override applies.
     ///
     /// An example name would be:
     /// `compute.googleapis.com/cpus`
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub metric: ::prost::alloc::string::String,
     /// The limit unit of the limit to which this override applies.
     ///
@@ -241,12 +249,12 @@ pub struct QuotaOverride {
     /// `1/{project}/{region}`
     /// Note that `{project}` and `{region}` are not placeholders in this example;
     /// the literal characters `{` and `}` occur in the string.
-    #[prost(string, tag="5")]
+    #[prost(string, tag = "5")]
     pub unit: ::prost::alloc::string::String,
     /// The resource name of the ancestor that requested the override. For example:
     /// `organizations/12345` or `folders/67890`.
     /// Used by admin overrides only.
-    #[prost(string, tag="6")]
+    #[prost(string, tag = "6")]
     pub admin_override_ancestor: ::prost::alloc::string::String,
 }
 /// Import data embedded in the request message
@@ -256,7 +264,7 @@ pub struct OverrideInlineSource {
     /// Each override must have a value for 'metric' and 'unit', to specify
     /// which metric and which limit the override should be applied to.
     /// The 'name' field of the override does not need to be set; it is ignored.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub overrides: ::prost::alloc::vec::Vec<QuotaOverride>,
 }
 /// Quota policy created by quota administrator.
@@ -267,11 +275,11 @@ pub struct AdminQuotaPolicy {
     ///
     /// Example names would be:
     /// `organizations/123/services/compute.googleapis.com/consumerQuotaMetrics/compute.googleapis.com%2Fcpus/limits/%2Fproject%2Fregion/adminQuotaPolicies/4a3f2c1d`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The quota policy value.
     /// Can be any nonnegative integer, or -1 (unlimited quota).
-    #[prost(int64, tag="2")]
+    #[prost(int64, tag = "2")]
     pub policy_value: i64,
     ///
     /// If this map is nonempty, then this policy applies only to specific values
@@ -286,13 +294,16 @@ pub struct AdminQuotaPolicy {
     /// *   If `region` appears as a key, its value must be a valid Cloud region.
     /// *   If `zone` appears as a key, its value must be a valid Cloud zone.
     /// *   Keys other than `region` or `zone` are not valid.
-    #[prost(map="string, string", tag="3")]
-    pub dimensions: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map = "string, string", tag = "3")]
+    pub dimensions: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
     /// The name of the metric to which this policy applies.
     ///
     /// An example name would be:
     /// `compute.googleapis.com/cpus`
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub metric: ::prost::alloc::string::String,
     /// The limit unit of the limit to which this policy applies.
     ///
@@ -300,11 +311,11 @@ pub struct AdminQuotaPolicy {
     /// `1/{project}/{region}`
     /// Note that `{project}` and `{region}` are not placeholders in this example;
     /// the literal characters `{` and `}` occur in the string.
-    #[prost(string, tag="5")]
+    #[prost(string, tag = "5")]
     pub unit: ::prost::alloc::string::String,
     /// The cloud resource container at which the quota policy is created. The
     /// format is `{container_type}/{container_number}`
-    #[prost(string, tag="6")]
+    #[prost(string, tag = "6")]
     pub container: ::prost::alloc::string::String,
 }
 /// Service identity for a service. This is the identity that service producer
@@ -313,11 +324,11 @@ pub struct AdminQuotaPolicy {
 pub struct ServiceIdentity {
     /// The email address of the service account that a service producer would use
     /// to access consumer resources.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub email: ::prost::alloc::string::String,
     /// The unique and stable id of the service account.
     /// <https://cloud.google.com/iam/reference/rest/v1/projects.serviceAccounts#ServiceAccount>
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub unique_id: ::prost::alloc::string::String,
 }
 /// Whether or not a service has been enabled for use by a consumer.
@@ -400,7 +411,9 @@ impl QuotaSafetyCheck {
         match self {
             QuotaSafetyCheck::Unspecified => "QUOTA_SAFETY_CHECK_UNSPECIFIED",
             QuotaSafetyCheck::LimitDecreaseBelowUsage => "LIMIT_DECREASE_BELOW_USAGE",
-            QuotaSafetyCheck::LimitDecreasePercentageTooHigh => "LIMIT_DECREASE_PERCENTAGE_TOO_HIGH",
+            QuotaSafetyCheck::LimitDecreasePercentageTooHigh => {
+                "LIMIT_DECREASE_PERCENTAGE_TOO_HIGH"
+            }
         }
     }
 }
@@ -418,7 +431,7 @@ pub struct EnableServiceRequest {
     /// An example name would be:
     /// `projects/123/services/serviceusage.googleapis.com`
     /// where `123` is the project number (not project ID).
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for the `DisableService` method.
@@ -431,7 +444,7 @@ pub struct DisableServiceRequest {
     /// An example name would be:
     /// `projects/123/services/serviceusage.googleapis.com`
     /// where `123` is the project number (not project ID).
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for the `GetService` method.
@@ -442,7 +455,7 @@ pub struct GetServiceRequest {
     /// An example name would be:
     /// `projects/123/services/serviceusage.googleapis.com`
     /// where `123` is the project number (not project ID).
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for the `ListServices` method.
@@ -453,31 +466,31 @@ pub struct ListServicesRequest {
     /// An example name would be:
     /// `projects/123`
     /// where `123` is the project number (not project ID).
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Requested size of the next page of data.
     /// Requested page size cannot exceed 200.
     ///   If not set, the default page size is 50.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Token identifying which result to start with, which is returned by a
     /// previous list call.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
     /// Only list services that conform to the given filter.
     /// The allowed filter strings are `state:ENABLED` and `state:DISABLED`.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
 }
 /// Response message for the `ListServices` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListServicesResponse {
     /// The available services for the requested project.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub services: ::prost::alloc::vec::Vec<Service>,
     /// Token that can be passed to `ListServices` to resume a paginated
     /// query.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for the `BatchEnableServices` method.
@@ -490,7 +503,7 @@ pub struct BatchEnableServicesRequest {
     /// where `123` is the project number (not project ID).
     ///
     /// The `BatchEnableServices` method currently only supports projects.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The identifiers of the services to enable on the project.
     ///
@@ -506,7 +519,7 @@ pub struct BatchEnableServicesRequest {
     /// A single request can enable a maximum of 20 services at a time. If more
     /// than 20 services are specified, the request will fail, and no state changes
     /// will occur.
-    #[prost(string, repeated, tag="2")]
+    #[prost(string, repeated, tag = "2")]
     pub service_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for ListConsumerQuotaMetrics
@@ -518,28 +531,28 @@ pub struct ListConsumerQuotaMetricsRequest {
     /// `projects/123/services/serviceconsumermanagement.googleapis.com`
     /// `folders/345/services/serviceconsumermanagement.googleapis.com`
     /// `organizations/456/services/serviceconsumermanagement.googleapis.com`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Requested size of the next page of data.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Token identifying which result to start with; returned by a previous list
     /// call.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
     /// Specifies the level of detail for quota information in the response.
-    #[prost(enumeration="QuotaView", tag="4")]
+    #[prost(enumeration = "QuotaView", tag = "4")]
     pub view: i32,
 }
 /// Response message for ListConsumerQuotaMetrics
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListConsumerQuotaMetricsResponse {
     /// Quota settings for the consumer, organized by quota metric.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub metrics: ::prost::alloc::vec::Vec<ConsumerQuotaMetric>,
     /// Token identifying which result to start with; returned by a previous list
     /// call.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for GetConsumerQuotaMetric
@@ -549,10 +562,10 @@ pub struct GetConsumerQuotaMetricRequest {
     ///
     /// An example name would be:
     /// `projects/123/services/serviceusage.googleapis.com/quotas/metrics/serviceusage.googleapis.com%2Fmutate_requests`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Specifies the level of detail for quota information in the response.
-    #[prost(enumeration="QuotaView", tag="2")]
+    #[prost(enumeration = "QuotaView", tag = "2")]
     pub view: i32,
 }
 /// Request message for GetConsumerQuotaLimit
@@ -562,10 +575,10 @@ pub struct GetConsumerQuotaLimitRequest {
     ///
     /// Use the quota limit resource name returned by previous
     /// ListConsumerQuotaMetrics and GetConsumerQuotaMetric API calls.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Specifies the level of detail for quota information in the response.
-    #[prost(enumeration="QuotaView", tag="2")]
+    #[prost(enumeration = "QuotaView", tag = "2")]
     pub view: i32,
 }
 /// Request message for CreateAdminOverride.
@@ -576,21 +589,21 @@ pub struct CreateAdminOverrideRequest {
     ///
     /// An example name would be:
     /// `projects/123/services/compute.googleapis.com/consumerQuotaMetrics/compute.googleapis.com%2Fcpus/limits/%2Fproject%2Fregion`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The admin override to create.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub r#override: ::core::option::Option<QuotaOverride>,
     /// Whether to force the creation of the quota override.
     /// Setting the force parameter to 'true' ignores all quota safety checks that
     /// would fail the request. QuotaSafetyCheck lists all such validations.
-    #[prost(bool, tag="3")]
+    #[prost(bool, tag = "3")]
     pub force: bool,
     /// The list of quota safety checks to ignore before the override mutation.
     /// Unlike 'force' field that ignores all the quota safety checks, the
     /// 'force_only' field ignores only the specified checks; other checks are
     /// still enforced. The 'force' and 'force_only' fields cannot both be set.
-    #[prost(enumeration="QuotaSafetyCheck", repeated, tag="4")]
+    #[prost(enumeration = "QuotaSafetyCheck", repeated, tag = "4")]
     pub force_only: ::prost::alloc::vec::Vec<i32>,
 }
 /// Request message for UpdateAdminOverride.
@@ -600,26 +613,26 @@ pub struct UpdateAdminOverrideRequest {
     ///
     /// An example name would be:
     /// `projects/123/services/compute.googleapis.com/consumerQuotaMetrics/compute.googleapis.com%2Fcpus/limits/%2Fproject%2Fregion/adminOverrides/4a3f2c1d`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The new override.
     /// Only the override_value is updated; all other fields are ignored.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub r#override: ::core::option::Option<QuotaOverride>,
     /// Whether to force the update of the quota override.
     /// Setting the force parameter to 'true' ignores all quota safety checks that
     /// would fail the request. QuotaSafetyCheck lists all such validations.
-    #[prost(bool, tag="3")]
+    #[prost(bool, tag = "3")]
     pub force: bool,
     /// Update only the specified fields of the override.
     /// If unset, all fields will be updated.
-    #[prost(message, optional, tag="4")]
+    #[prost(message, optional, tag = "4")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// The list of quota safety checks to ignore before the override mutation.
     /// Unlike 'force' field that ignores all the quota safety checks, the
     /// 'force_only' field ignores only the specified checks; other checks are
     /// still enforced. The 'force' and 'force_only' fields cannot both be set.
-    #[prost(enumeration="QuotaSafetyCheck", repeated, tag="5")]
+    #[prost(enumeration = "QuotaSafetyCheck", repeated, tag = "5")]
     pub force_only: ::prost::alloc::vec::Vec<i32>,
 }
 /// Request message for DeleteAdminOverride.
@@ -629,18 +642,18 @@ pub struct DeleteAdminOverrideRequest {
     ///
     /// An example name would be:
     /// `projects/123/services/compute.googleapis.com/consumerQuotaMetrics/compute.googleapis.com%2Fcpus/limits/%2Fproject%2Fregion/adminOverrides/4a3f2c1d`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Whether to force the deletion of the quota override.
     /// Setting the force parameter to 'true' ignores all quota safety checks that
     /// would fail the request. QuotaSafetyCheck lists all such validations.
-    #[prost(bool, tag="2")]
+    #[prost(bool, tag = "2")]
     pub force: bool,
     /// The list of quota safety checks to ignore before the override mutation.
     /// Unlike 'force' field that ignores all the quota safety checks, the
     /// 'force_only' field ignores only the specified checks; other checks are
     /// still enforced. The 'force' and 'force_only' fields cannot both be set.
-    #[prost(enumeration="QuotaSafetyCheck", repeated, tag="3")]
+    #[prost(enumeration = "QuotaSafetyCheck", repeated, tag = "3")]
     pub force_only: ::prost::alloc::vec::Vec<i32>,
 }
 /// Request message for ListAdminOverrides
@@ -651,32 +664,32 @@ pub struct ListAdminOverridesRequest {
     ///
     /// An example name would be:
     /// `projects/123/services/compute.googleapis.com/consumerQuotaMetrics/compute.googleapis.com%2Fcpus/limits/%2Fproject%2Fregion`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Requested size of the next page of data.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Token identifying which result to start with; returned by a previous list
     /// call.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for ListAdminOverrides.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAdminOverridesResponse {
     /// Admin overrides on this limit.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub overrides: ::prost::alloc::vec::Vec<QuotaOverride>,
     /// Token identifying which result to start with; returned by a previous list
     /// call.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Response message for BatchCreateAdminOverrides
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchCreateAdminOverridesResponse {
     /// The overrides that were created.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub overrides: ::prost::alloc::vec::Vec<QuotaOverride>,
 }
 /// Request message for ImportAdminOverrides
@@ -686,21 +699,21 @@ pub struct ImportAdminOverridesRequest {
     ///
     /// An example name would be:
     /// `projects/123/services/compute.googleapis.com`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Whether to force the creation of the quota overrides.
     /// Setting the force parameter to 'true' ignores all quota safety checks that
     /// would fail the request. QuotaSafetyCheck lists all such validations.
-    #[prost(bool, tag="3")]
+    #[prost(bool, tag = "3")]
     pub force: bool,
     /// The list of quota safety checks to ignore before the override mutation.
     /// Unlike 'force' field that ignores all the quota safety checks, the
     /// 'force_only' field ignores only the specified checks; other checks are
     /// still enforced. The 'force' and 'force_only' fields cannot both be set.
-    #[prost(enumeration="QuotaSafetyCheck", repeated, tag="4")]
+    #[prost(enumeration = "QuotaSafetyCheck", repeated, tag = "4")]
     pub force_only: ::prost::alloc::vec::Vec<i32>,
     /// Source of import data
-    #[prost(oneof="import_admin_overrides_request::Source", tags="2")]
+    #[prost(oneof = "import_admin_overrides_request::Source", tags = "2")]
     pub source: ::core::option::Option<import_admin_overrides_request::Source>,
 }
 /// Nested message and enum types in `ImportAdminOverridesRequest`.
@@ -709,7 +722,7 @@ pub mod import_admin_overrides_request {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
         /// The import data is specified in the request message itself
-        #[prost(message, tag="2")]
+        #[prost(message, tag = "2")]
         InlineSource(super::OverrideInlineSource),
     }
 }
@@ -717,15 +730,14 @@ pub mod import_admin_overrides_request {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportAdminOverridesResponse {
     /// The overrides that were created from the imported data.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub overrides: ::prost::alloc::vec::Vec<QuotaOverride>,
 }
 /// Metadata message that provides information such as progress,
 /// partial failures, and similar information on each GetOperation call
 /// of LRO returned by ImportAdminOverrides.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ImportAdminOverridesMetadata {
-}
+pub struct ImportAdminOverridesMetadata {}
 /// Request message for CreateConsumerOverride.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateConsumerOverrideRequest {
@@ -734,21 +746,21 @@ pub struct CreateConsumerOverrideRequest {
     ///
     /// An example name would be:
     /// `projects/123/services/compute.googleapis.com/consumerQuotaMetrics/compute.googleapis.com%2Fcpus/limits/%2Fproject%2Fregion`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The override to create.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub r#override: ::core::option::Option<QuotaOverride>,
     /// Whether to force the creation of the quota override.
     /// Setting the force parameter to 'true' ignores all quota safety checks that
     /// would fail the request. QuotaSafetyCheck lists all such validations.
-    #[prost(bool, tag="3")]
+    #[prost(bool, tag = "3")]
     pub force: bool,
     /// The list of quota safety checks to ignore before the override mutation.
     /// Unlike 'force' field that ignores all the quota safety checks, the
     /// 'force_only' field ignores only the specified checks; other checks are
     /// still enforced. The 'force' and 'force_only' fields cannot both be set.
-    #[prost(enumeration="QuotaSafetyCheck", repeated, tag="4")]
+    #[prost(enumeration = "QuotaSafetyCheck", repeated, tag = "4")]
     pub force_only: ::prost::alloc::vec::Vec<i32>,
 }
 /// Request message for UpdateConsumerOverride.
@@ -758,26 +770,26 @@ pub struct UpdateConsumerOverrideRequest {
     ///
     /// An example name would be:
     /// `projects/123/services/compute.googleapis.com/consumerQuotaMetrics/compute.googleapis.com%2Fcpus/limits/%2Fproject%2Fregion/consumerOverrides/4a3f2c1d`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The new override.
     /// Only the override_value is updated; all other fields are ignored.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub r#override: ::core::option::Option<QuotaOverride>,
     /// Whether to force the update of the quota override.
     /// Setting the force parameter to 'true' ignores all quota safety checks that
     /// would fail the request. QuotaSafetyCheck lists all such validations.
-    #[prost(bool, tag="3")]
+    #[prost(bool, tag = "3")]
     pub force: bool,
     /// Update only the specified fields of the override.
     /// If unset, all fields will be updated.
-    #[prost(message, optional, tag="4")]
+    #[prost(message, optional, tag = "4")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// The list of quota safety checks to ignore before the override mutation.
     /// Unlike 'force' field that ignores all the quota safety checks, the
     /// 'force_only' field ignores only the specified checks; other checks are
     /// still enforced. The 'force' and 'force_only' fields cannot both be set.
-    #[prost(enumeration="QuotaSafetyCheck", repeated, tag="5")]
+    #[prost(enumeration = "QuotaSafetyCheck", repeated, tag = "5")]
     pub force_only: ::prost::alloc::vec::Vec<i32>,
 }
 /// Request message for DeleteConsumerOverride.
@@ -787,18 +799,18 @@ pub struct DeleteConsumerOverrideRequest {
     ///
     /// An example name would be:
     /// `projects/123/services/compute.googleapis.com/consumerQuotaMetrics/compute.googleapis.com%2Fcpus/limits/%2Fproject%2Fregion/consumerOverrides/4a3f2c1d`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Whether to force the deletion of the quota override.
     /// Setting the force parameter to 'true' ignores all quota safety checks that
     /// would fail the request. QuotaSafetyCheck lists all such validations.
-    #[prost(bool, tag="2")]
+    #[prost(bool, tag = "2")]
     pub force: bool,
     /// The list of quota safety checks to ignore before the override mutation.
     /// Unlike 'force' field that ignores all the quota safety checks, the
     /// 'force_only' field ignores only the specified checks; other checks are
     /// still enforced. The 'force' and 'force_only' fields cannot both be set.
-    #[prost(enumeration="QuotaSafetyCheck", repeated, tag="3")]
+    #[prost(enumeration = "QuotaSafetyCheck", repeated, tag = "3")]
     pub force_only: ::prost::alloc::vec::Vec<i32>,
 }
 /// Request message for ListConsumerOverrides
@@ -809,32 +821,32 @@ pub struct ListConsumerOverridesRequest {
     ///
     /// An example name would be:
     /// `projects/123/services/compute.googleapis.com/consumerQuotaMetrics/compute.googleapis.com%2Fcpus/limits/%2Fproject%2Fregion`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Requested size of the next page of data.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Token identifying which result to start with; returned by a previous list
     /// call.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for ListConsumerOverrides.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListConsumerOverridesResponse {
     /// Consumer overrides on this limit.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub overrides: ::prost::alloc::vec::Vec<QuotaOverride>,
     /// Token identifying which result to start with; returned by a previous list
     /// call.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Response message for BatchCreateConsumerOverrides
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchCreateConsumerOverridesResponse {
     /// The overrides that were created.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub overrides: ::prost::alloc::vec::Vec<QuotaOverride>,
 }
 /// Request message for ImportConsumerOverrides
@@ -844,21 +856,21 @@ pub struct ImportConsumerOverridesRequest {
     ///
     /// An example name would be:
     /// `projects/123/services/compute.googleapis.com`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Whether to force the creation of the quota overrides.
     /// Setting the force parameter to 'true' ignores all quota safety checks that
     /// would fail the request. QuotaSafetyCheck lists all such validations.
-    #[prost(bool, tag="3")]
+    #[prost(bool, tag = "3")]
     pub force: bool,
     /// The list of quota safety checks to ignore before the override mutation.
     /// Unlike 'force' field that ignores all the quota safety checks, the
     /// 'force_only' field ignores only the specified checks; other checks are
     /// still enforced. The 'force' and 'force_only' fields cannot both be set.
-    #[prost(enumeration="QuotaSafetyCheck", repeated, tag="4")]
+    #[prost(enumeration = "QuotaSafetyCheck", repeated, tag = "4")]
     pub force_only: ::prost::alloc::vec::Vec<i32>,
     /// Source of import data
-    #[prost(oneof="import_consumer_overrides_request::Source", tags="2")]
+    #[prost(oneof = "import_consumer_overrides_request::Source", tags = "2")]
     pub source: ::core::option::Option<import_consumer_overrides_request::Source>,
 }
 /// Nested message and enum types in `ImportConsumerOverridesRequest`.
@@ -867,7 +879,7 @@ pub mod import_consumer_overrides_request {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
         /// The import data is specified in the request message itself
-        #[prost(message, tag="2")]
+        #[prost(message, tag = "2")]
         InlineSource(super::OverrideInlineSource),
     }
 }
@@ -875,46 +887,41 @@ pub mod import_consumer_overrides_request {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportConsumerOverridesResponse {
     /// The overrides that were created from the imported data.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub overrides: ::prost::alloc::vec::Vec<QuotaOverride>,
 }
 /// Metadata message that provides information such as progress,
 /// partial failures, and similar information on each GetOperation call
 /// of LRO returned by ImportConsumerOverrides.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ImportConsumerOverridesMetadata {
-}
+pub struct ImportConsumerOverridesMetadata {}
 /// Response message for ImportAdminQuotaPolicies
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportAdminQuotaPoliciesResponse {
     /// The policies that were created from the imported data.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub policies: ::prost::alloc::vec::Vec<AdminQuotaPolicy>,
 }
 /// Metadata message that provides information such as progress,
 /// partial failures, and similar information on each GetOperation call
 /// of LRO returned by ImportAdminQuotaPolicies.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ImportAdminQuotaPoliciesMetadata {
-}
+pub struct ImportAdminQuotaPoliciesMetadata {}
 /// Metadata message that provides information such as progress,
 /// partial failures, and similar information on each GetOperation call
 /// of LRO returned by CreateAdminQuotaPolicy.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CreateAdminQuotaPolicyMetadata {
-}
+pub struct CreateAdminQuotaPolicyMetadata {}
 /// Metadata message that provides information such as progress,
 /// partial failures, and similar information on each GetOperation call
 /// of LRO returned by UpdateAdminQuotaPolicy.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UpdateAdminQuotaPolicyMetadata {
-}
+pub struct UpdateAdminQuotaPolicyMetadata {}
 /// Metadata message that provides information such as progress,
 /// partial failures, and similar information on each GetOperation call
 /// of LRO returned by DeleteAdminQuotaPolicy.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DeleteAdminQuotaPolicyMetadata {
-}
+pub struct DeleteAdminQuotaPolicyMetadata {}
 /// Request message for generating service identity.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateServiceIdentityRequest {
@@ -925,7 +932,7 @@ pub struct GenerateServiceIdentityRequest {
     /// An example name would be:
     /// `projects/123/services/example.googleapis.com` where `123` is the
     /// project number.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
 }
 /// Response message for getting service identity.
@@ -934,16 +941,26 @@ pub struct GetServiceIdentityResponse {
     /// Service identity that service producer can use to access consumer
     /// resources. If exists is true, it contains email and unique_id. If exists is
     /// false, it contains pre-constructed email and empty unique_id.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub identity: ::core::option::Option<ServiceIdentity>,
     /// Service identity state.
-    #[prost(enumeration="get_service_identity_response::IdentityState", tag="2")]
+    #[prost(enumeration = "get_service_identity_response::IdentityState", tag = "2")]
     pub state: i32,
 }
 /// Nested message and enum types in `GetServiceIdentityResponse`.
 pub mod get_service_identity_response {
     /// Enum for service identity state.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum IdentityState {
         /// Default service identity state. This value is used if the state is
@@ -967,8 +984,7 @@ pub mod get_service_identity_response {
 }
 /// Metadata for the `GetServiceIdentity` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GetServiceIdentityMetadata {
-}
+pub struct GetServiceIdentityMetadata {}
 /// Generated client implementations.
 pub mod service_usage_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]

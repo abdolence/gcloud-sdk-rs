@@ -4,7 +4,7 @@ pub struct ListEkmConnectionsRequest {
     /// Required. The resource name of the location associated with the
     /// \[EkmConnections][google.cloud.kms.v1.EkmConnection\] to list, in the format
     /// `projects/*/locations/*`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. Optional limit on the number of
     /// \[EkmConnections][google.cloud.kms.v1.EkmConnection\] to include in the
@@ -13,39 +13,39 @@ pub struct ListEkmConnectionsRequest {
     /// \[ListEkmConnectionsResponse.next_page_token][google.cloud.kms.v1.ListEkmConnectionsResponse.next_page_token\]
     /// in a subsequent request. If unspecified, the server will pick an
     /// appropriate default.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Optional. Optional pagination token, returned earlier via
     /// \[ListEkmConnectionsResponse.next_page_token][google.cloud.kms.v1.ListEkmConnectionsResponse.next_page_token\].
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
     /// Optional. Only include resources that match the filter in the response. For
     /// more information, see
     /// [Sorting and filtering list
     /// results](<https://cloud.google.com/kms/docs/sorting-and-filtering>).
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
     /// Optional. Specify how the results should be sorted. If not specified, the
     /// results will be sorted in the default order.  For more information, see
     /// [Sorting and filtering list
     /// results](<https://cloud.google.com/kms/docs/sorting-and-filtering>).
-    #[prost(string, tag="5")]
+    #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
 /// Response message for \[KeyManagementService.ListEkmConnections][\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEkmConnectionsResponse {
     /// The list of \[EkmConnections][google.cloud.kms.v1.EkmConnection\].
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub ekm_connections: ::prost::alloc::vec::Vec<EkmConnection>,
     /// A token to retrieve next page of results. Pass this value in
     /// \[ListEkmConnectionsRequest.page_token][google.cloud.kms.v1.ListEkmConnectionsRequest.page_token\]
     /// to retrieve the next page of results.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
     /// The total number of \[EkmConnections][google.cloud.kms.v1.EkmConnection\]
     /// that matched the query.
-    #[prost(int32, tag="3")]
+    #[prost(int32, tag = "3")]
     pub total_size: i32,
 }
 /// Request message for \[KeyManagementService.GetEkmConnection][\].
@@ -53,7 +53,7 @@ pub struct ListEkmConnectionsResponse {
 pub struct GetEkmConnectionRequest {
     /// Required. The \[name][google.cloud.kms.v1.EkmConnection.name\] of the
     /// \[EkmConnection][google.cloud.kms.v1.EkmConnection\] to get.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for \[KeyManagementService.CreateEkmConnection][\].
@@ -62,15 +62,15 @@ pub struct CreateEkmConnectionRequest {
     /// Required. The resource name of the location associated with the
     /// \[EkmConnection][google.cloud.kms.v1.EkmConnection\], in the format
     /// `projects/*/locations/*`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. It must be unique within a location and match the regular
     /// expression `\[a-zA-Z0-9_-\]{1,63}`.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub ekm_connection_id: ::prost::alloc::string::String,
     /// Required. An \[EkmConnection][google.cloud.kms.v1.EkmConnection\] with
     /// initial field values.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub ekm_connection: ::core::option::Option<EkmConnection>,
 }
 /// Request message for \[KeyManagementService.UpdateEkmConnection][\].
@@ -78,10 +78,10 @@ pub struct CreateEkmConnectionRequest {
 pub struct UpdateEkmConnectionRequest {
     /// Required. \[EkmConnection][google.cloud.kms.v1.EkmConnection\] with updated
     /// values.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub ekm_connection: ::core::option::Option<EkmConnection>,
     /// Required. List of fields to be updated in this request.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// A \[Certificate][google.cloud.kms.v1.Certificate\] represents an X.509
@@ -89,38 +89,40 @@ pub struct UpdateEkmConnectionRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Certificate {
     /// Required. The raw certificate bytes in DER format.
-    #[prost(bytes="vec", tag="1")]
+    #[prost(bytes = "vec", tag = "1")]
     pub raw_der: ::prost::alloc::vec::Vec<u8>,
     /// Output only. True if the certificate was parsed successfully.
-    #[prost(bool, tag="2")]
+    #[prost(bool, tag = "2")]
     pub parsed: bool,
     /// Output only. The issuer distinguished name in RFC 2253 format. Only present
     /// if \[parsed][google.cloud.kms.v1.Certificate.parsed\] is true.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub issuer: ::prost::alloc::string::String,
     /// Output only. The subject distinguished name in RFC 2253 format. Only
     /// present if \[parsed][google.cloud.kms.v1.Certificate.parsed\] is true.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub subject: ::prost::alloc::string::String,
     /// Output only. The subject Alternative DNS names. Only present if
     /// \[parsed][google.cloud.kms.v1.Certificate.parsed\] is true.
-    #[prost(string, repeated, tag="5")]
-    pub subject_alternative_dns_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    #[prost(string, repeated, tag = "5")]
+    pub subject_alternative_dns_names: ::prost::alloc::vec::Vec<
+        ::prost::alloc::string::String,
+    >,
     /// Output only. The certificate is not valid before this time. Only present if
     /// \[parsed][google.cloud.kms.v1.Certificate.parsed\] is true.
-    #[prost(message, optional, tag="6")]
+    #[prost(message, optional, tag = "6")]
     pub not_before_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The certificate is not valid after this time. Only present if
     /// \[parsed][google.cloud.kms.v1.Certificate.parsed\] is true.
-    #[prost(message, optional, tag="7")]
+    #[prost(message, optional, tag = "7")]
     pub not_after_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The certificate serial number as a hex string. Only present if
     /// \[parsed][google.cloud.kms.v1.Certificate.parsed\] is true.
-    #[prost(string, tag="8")]
+    #[prost(string, tag = "8")]
     pub serial_number: ::prost::alloc::string::String,
     /// Output only. The SHA-256 certificate fingerprint as a hex string. Only
     /// present if \[parsed][google.cloud.kms.v1.Certificate.parsed\] is true.
-    #[prost(string, tag="9")]
+    #[prost(string, tag = "9")]
     pub sha256_fingerprint: ::prost::alloc::string::String,
 }
 /// An \[EkmConnection][google.cloud.kms.v1.EkmConnection\] represents an
@@ -136,11 +138,11 @@ pub struct EkmConnection {
     /// Output only. The resource name for the
     /// \[EkmConnection][google.cloud.kms.v1.EkmConnection\] in the format
     /// `projects/*/locations/*/ekmConnections/*`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. The time at which the
     /// \[EkmConnection][google.cloud.kms.v1.EkmConnection\] was created.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// A list of
     /// \[ServiceResolvers][google.cloud.kms.v1.EkmConnection.ServiceResolver\] where
@@ -148,12 +150,12 @@ pub struct EkmConnection {
     /// replica. Currently, only a single
     /// \[ServiceResolver][google.cloud.kms.v1.EkmConnection.ServiceResolver\] is
     /// supported.
-    #[prost(message, repeated, tag="3")]
+    #[prost(message, repeated, tag = "3")]
     pub service_resolvers: ::prost::alloc::vec::Vec<ekm_connection::ServiceResolver>,
     /// This checksum is computed by the server based on the value of other fields,
     /// and may be sent on update requests to ensure the client has an up-to-date
     /// value before proceeding.
-    #[prost(string, tag="5")]
+    #[prost(string, tag = "5")]
     pub etag: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `EkmConnection`.
@@ -166,7 +168,7 @@ pub mod ekm_connection {
         /// Required. The resource name of the Service Directory service pointing to
         /// an EKM replica, in the format
         /// `projects/*/locations/*/namespaces/*/services/*`.
-        #[prost(string, tag="1")]
+        #[prost(string, tag = "1")]
         pub service_directory_service: ::prost::alloc::string::String,
         /// Optional. The filter applied to the endpoints of the resolved service. If
         /// no filter is specified, all endpoints will be considered. An endpoint
@@ -174,14 +176,14 @@ pub mod ekm_connection {
         ///
         /// For endpoint filter syntax and examples, see
         /// <https://cloud.google.com/service-directory/docs/reference/rpc/google.cloud.servicedirectory.v1#resolveservicerequest.>
-        #[prost(string, tag="2")]
+        #[prost(string, tag = "2")]
         pub endpoint_filter: ::prost::alloc::string::String,
         /// Required. The hostname of the EKM replica used at TLS and HTTP layers.
-        #[prost(string, tag="3")]
+        #[prost(string, tag = "3")]
         pub hostname: ::prost::alloc::string::String,
         /// Required. A list of leaf server certificates used to authenticate HTTPS
         /// connections to the EKM replica.
-        #[prost(message, repeated, tag="4")]
+        #[prost(message, repeated, tag = "4")]
         pub server_certificates: ::prost::alloc::vec::Vec<super::Certificate>,
     }
 }
@@ -350,11 +352,11 @@ pub struct KeyRing {
     /// Output only. The resource name for the
     /// \[KeyRing][google.cloud.kms.v1.KeyRing\] in the format
     /// `projects/*/locations/*/keyRings/*`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. The time at which this \[KeyRing][google.cloud.kms.v1.KeyRing\]
     /// was created.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// A \[CryptoKey][google.cloud.kms.v1.CryptoKey\] represents a logical key that
@@ -368,7 +370,7 @@ pub struct CryptoKey {
     /// Output only. The resource name for this
     /// \[CryptoKey][google.cloud.kms.v1.CryptoKey\] in the format
     /// `projects/*/locations/*/keyRings/*/cryptoKeys/*`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. A copy of the "primary"
     /// \[CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion\] that will be used
@@ -383,15 +385,15 @@ pub struct CryptoKey {
     /// Keys with \[purpose][google.cloud.kms.v1.CryptoKey.purpose\]
     /// \[ENCRYPT_DECRYPT][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT\]
     /// may have a primary. For other keys, this field will be omitted.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub primary: ::core::option::Option<CryptoKeyVersion>,
     /// Immutable. The immutable purpose of this
     /// \[CryptoKey][google.cloud.kms.v1.CryptoKey\].
-    #[prost(enumeration="crypto_key::CryptoKeyPurpose", tag="3")]
+    #[prost(enumeration = "crypto_key::CryptoKeyPurpose", tag = "3")]
     pub purpose: i32,
     /// Output only. The time at which this
     /// \[CryptoKey][google.cloud.kms.v1.CryptoKey\] was created.
-    #[prost(message, optional, tag="5")]
+    #[prost(message, optional, tag = "5")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// At \[next_rotation_time][google.cloud.kms.v1.CryptoKey.next_rotation_time\],
     /// the Key Management Service will automatically:
@@ -409,7 +411,7 @@ pub struct CryptoKey {
     /// Keys with \[purpose][google.cloud.kms.v1.CryptoKey.purpose\]
     /// \[ENCRYPT_DECRYPT][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT\]
     /// support automatic rotation. For other keys, this field must be omitted.
-    #[prost(message, optional, tag="7")]
+    #[prost(message, optional, tag = "7")]
     pub next_rotation_time: ::core::option::Option<::prost_types::Timestamp>,
     /// A template describing settings for new
     /// \[CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion\] instances. The
@@ -417,21 +419,24 @@ pub struct CryptoKey {
     /// instances created by either
     /// \[CreateCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.CreateCryptoKeyVersion\]
     /// or auto-rotation are controlled by this template.
-    #[prost(message, optional, tag="11")]
+    #[prost(message, optional, tag = "11")]
     pub version_template: ::core::option::Option<CryptoKeyVersionTemplate>,
     /// Labels with user-defined metadata. For more information, see
     /// [Labeling Keys](<https://cloud.google.com/kms/docs/labeling-keys>).
-    #[prost(map="string, string", tag="10")]
-    pub labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map = "string, string", tag = "10")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
     /// Immutable. Whether this key may contain imported versions only.
-    #[prost(bool, tag="13")]
+    #[prost(bool, tag = "13")]
     pub import_only: bool,
     /// Immutable. The period of time that versions of this key spend in the
     /// \[DESTROY_SCHEDULED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.DESTROY_SCHEDULED\]
     /// state before transitioning to
     /// \[DESTROYED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.DESTROYED\].
     /// If not specified at creation time, the default duration is 24 hours.
-    #[prost(message, optional, tag="14")]
+    #[prost(message, optional, tag = "14")]
     pub destroy_scheduled_duration: ::core::option::Option<::prost_types::Duration>,
     /// Immutable. The resource name of the backend environment where the key
     /// material for all \[CryptoKeyVersions][google.cloud.kms.v1.CryptoKeyVersion\]
@@ -443,10 +448,10 @@ pub struct CryptoKey {
     /// resource name in the format `projects/*/locations/*/ekmConnections/*`.
     /// Note, this list is non-exhaustive and may apply to additional
     /// \[ProtectionLevels][google.cloud.kms.v1.ProtectionLevel\] in the future.
-    #[prost(string, tag="15")]
+    #[prost(string, tag = "15")]
     pub crypto_key_backend: ::prost::alloc::string::String,
     /// Controls the rate of automatic rotation.
-    #[prost(oneof="crypto_key::RotationSchedule", tags="8")]
+    #[prost(oneof = "crypto_key::RotationSchedule", tags = "8")]
     pub rotation_schedule: ::core::option::Option<crypto_key::RotationSchedule>,
 }
 /// Nested message and enum types in `CryptoKey`.
@@ -456,7 +461,17 @@ pub mod crypto_key {
     /// \[CryptoKey][google.cloud.kms.v1.CryptoKey\]. A given key can only be used
     /// for the operations allowed by its purpose. For more information, see [Key
     /// purposes](<https://cloud.google.com/kms/docs/algorithms#key_purposes>).
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum CryptoKeyPurpose {
         /// Not specified.
@@ -511,7 +526,7 @@ pub mod crypto_key {
         /// Keys with \[purpose][google.cloud.kms.v1.CryptoKey.purpose\]
         /// \[ENCRYPT_DECRYPT][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT\]
         /// support automatic rotation. For other keys, this field must be omitted.
-        #[prost(message, tag="8")]
+        #[prost(message, tag = "8")]
         RotationPeriod(::prost_types::Duration),
     }
 }
@@ -527,7 +542,7 @@ pub struct CryptoKeyVersionTemplate {
     /// a \[CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion\] based on this
     /// template. Immutable. Defaults to
     /// \[SOFTWARE][google.cloud.kms.v1.ProtectionLevel.SOFTWARE\].
-    #[prost(enumeration="ProtectionLevel", tag="1")]
+    #[prost(enumeration = "ProtectionLevel", tag = "1")]
     pub protection_level: i32,
     /// Required.
     /// \[Algorithm][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionAlgorithm\]
@@ -539,7 +554,7 @@ pub struct CryptoKeyVersionTemplate {
     /// this field is omitted and
     /// \[CryptoKey.purpose][google.cloud.kms.v1.CryptoKey.purpose\] is
     /// \[ENCRYPT_DECRYPT][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT\].
-    #[prost(enumeration="crypto_key_version::CryptoKeyVersionAlgorithm", tag="3")]
+    #[prost(enumeration = "crypto_key_version::CryptoKeyVersionAlgorithm", tag = "3")]
     pub algorithm: i32,
 }
 /// Contains an HSM-generated attestation about a key operation. For more
@@ -548,15 +563,17 @@ pub struct CryptoKeyVersionTemplate {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KeyOperationAttestation {
     /// Output only. The format of the attestation data.
-    #[prost(enumeration="key_operation_attestation::AttestationFormat", tag="4")]
+    #[prost(enumeration = "key_operation_attestation::AttestationFormat", tag = "4")]
     pub format: i32,
     /// Output only. The attestation data provided by the HSM when the key
     /// operation was performed.
-    #[prost(bytes="vec", tag="5")]
+    #[prost(bytes = "vec", tag = "5")]
     pub content: ::prost::alloc::vec::Vec<u8>,
     /// Output only. The certificate chains needed to validate the attestation
-    #[prost(message, optional, tag="6")]
-    pub cert_chains: ::core::option::Option<key_operation_attestation::CertificateChains>,
+    #[prost(message, optional, tag = "6")]
+    pub cert_chains: ::core::option::Option<
+        key_operation_attestation::CertificateChains,
+    >,
 }
 /// Nested message and enum types in `KeyOperationAttestation`.
 pub mod key_operation_attestation {
@@ -566,17 +583,29 @@ pub mod key_operation_attestation {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CertificateChains {
         /// Cavium certificate chain corresponding to the attestation.
-        #[prost(string, repeated, tag="1")]
+        #[prost(string, repeated, tag = "1")]
         pub cavium_certs: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         /// Google card certificate chain corresponding to the attestation.
-        #[prost(string, repeated, tag="2")]
+        #[prost(string, repeated, tag = "2")]
         pub google_card_certs: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         /// Google partition certificate chain corresponding to the attestation.
-        #[prost(string, repeated, tag="3")]
-        pub google_partition_certs: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+        #[prost(string, repeated, tag = "3")]
+        pub google_partition_certs: ::prost::alloc::vec::Vec<
+            ::prost::alloc::string::String,
+        >,
     }
     /// Attestation formats provided by the HSM.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum AttestationFormat {
         /// Not specified.
@@ -618,67 +647,67 @@ pub struct CryptoKeyVersion {
     /// Output only. The resource name for this
     /// \[CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion\] in the format
     /// `projects/*/locations/*/keyRings/*/cryptoKeys/*/cryptoKeyVersions/*`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The current state of the
     /// \[CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion\].
-    #[prost(enumeration="crypto_key_version::CryptoKeyVersionState", tag="3")]
+    #[prost(enumeration = "crypto_key_version::CryptoKeyVersionState", tag = "3")]
     pub state: i32,
     /// Output only. The \[ProtectionLevel][google.cloud.kms.v1.ProtectionLevel\]
     /// describing how crypto operations are performed with this
     /// \[CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion\].
-    #[prost(enumeration="ProtectionLevel", tag="7")]
+    #[prost(enumeration = "ProtectionLevel", tag = "7")]
     pub protection_level: i32,
     /// Output only. The
     /// \[CryptoKeyVersionAlgorithm][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionAlgorithm\]
     /// that this \[CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion\]
     /// supports.
-    #[prost(enumeration="crypto_key_version::CryptoKeyVersionAlgorithm", tag="10")]
+    #[prost(enumeration = "crypto_key_version::CryptoKeyVersionAlgorithm", tag = "10")]
     pub algorithm: i32,
     /// Output only. Statement that was generated and signed by the HSM at key
     /// creation time. Use this statement to verify attributes of the key as stored
     /// on the HSM, independently of Google. Only provided for key versions with
     /// \[protection_level][google.cloud.kms.v1.CryptoKeyVersion.protection_level\]
     /// \[HSM][google.cloud.kms.v1.ProtectionLevel.HSM\].
-    #[prost(message, optional, tag="8")]
+    #[prost(message, optional, tag = "8")]
     pub attestation: ::core::option::Option<KeyOperationAttestation>,
     /// Output only. The time at which this
     /// \[CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion\] was created.
-    #[prost(message, optional, tag="4")]
+    #[prost(message, optional, tag = "4")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The time this
     /// \[CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion\]'s key material was
     /// generated.
-    #[prost(message, optional, tag="11")]
+    #[prost(message, optional, tag = "11")]
     pub generate_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The time this
     /// \[CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion\]'s key material is
     /// scheduled for destruction. Only present if
     /// \[state][google.cloud.kms.v1.CryptoKeyVersion.state\] is
     /// \[DESTROY_SCHEDULED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.DESTROY_SCHEDULED\].
-    #[prost(message, optional, tag="5")]
+    #[prost(message, optional, tag = "5")]
     pub destroy_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The time this CryptoKeyVersion's key material was
     /// destroyed. Only present if
     /// \[state][google.cloud.kms.v1.CryptoKeyVersion.state\] is
     /// \[DESTROYED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.DESTROYED\].
-    #[prost(message, optional, tag="6")]
+    #[prost(message, optional, tag = "6")]
     pub destroy_event_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The name of the \[ImportJob][google.cloud.kms.v1.ImportJob\]
     /// used in the most recent import of this
     /// \[CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion\]. Only present if
     /// the underlying key material was imported.
-    #[prost(string, tag="14")]
+    #[prost(string, tag = "14")]
     pub import_job: ::prost::alloc::string::String,
     /// Output only. The time at which this
     /// \[CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion\]'s key material was
     /// most recently imported.
-    #[prost(message, optional, tag="15")]
+    #[prost(message, optional, tag = "15")]
     pub import_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The root cause of the most recent import failure. Only present
     /// if \[state][google.cloud.kms.v1.CryptoKeyVersion.state\] is
     /// \[IMPORT_FAILED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.IMPORT_FAILED\].
-    #[prost(string, tag="16")]
+    #[prost(string, tag = "16")]
     pub import_failure_reason: ::prost::alloc::string::String,
     /// ExternalProtectionLevelOptions stores a group of additional fields for
     /// configuring a \[CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion\] that
@@ -686,12 +715,14 @@ pub struct CryptoKeyVersion {
     /// \[EXTERNAL][google.cloud.kms.v1.ProtectionLevel.EXTERNAL\] protection level
     /// and \[EXTERNAL_VPC][google.cloud.kms.v1.ProtectionLevel.EXTERNAL_VPC\]
     /// protection levels.
-    #[prost(message, optional, tag="17")]
-    pub external_protection_level_options: ::core::option::Option<ExternalProtectionLevelOptions>,
+    #[prost(message, optional, tag = "17")]
+    pub external_protection_level_options: ::core::option::Option<
+        ExternalProtectionLevelOptions,
+    >,
     /// Output only. Whether or not this key version is eligible for reimport, by
     /// being specified as a target in
     /// \[ImportCryptoKeyVersionRequest.crypto_key_version][google.cloud.kms.v1.ImportCryptoKeyVersionRequest.crypto_key_version\].
-    #[prost(bool, tag="18")]
+    #[prost(bool, tag = "18")]
     pub reimport_eligible: bool,
 }
 /// Nested message and enum types in `CryptoKeyVersion`.
@@ -741,7 +772,17 @@ pub mod crypto_key_version {
     ///
     /// For more information, see [Key purposes and algorithms]
     /// (<https://cloud.google.com/kms/docs/algorithms>).
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum CryptoKeyVersionAlgorithm {
         /// Not specified.
@@ -803,37 +844,91 @@ pub mod crypto_key_version {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                CryptoKeyVersionAlgorithm::Unspecified => "CRYPTO_KEY_VERSION_ALGORITHM_UNSPECIFIED",
-                CryptoKeyVersionAlgorithm::GoogleSymmetricEncryption => "GOOGLE_SYMMETRIC_ENCRYPTION",
-                CryptoKeyVersionAlgorithm::RsaSignPss2048Sha256 => "RSA_SIGN_PSS_2048_SHA256",
-                CryptoKeyVersionAlgorithm::RsaSignPss3072Sha256 => "RSA_SIGN_PSS_3072_SHA256",
-                CryptoKeyVersionAlgorithm::RsaSignPss4096Sha256 => "RSA_SIGN_PSS_4096_SHA256",
-                CryptoKeyVersionAlgorithm::RsaSignPss4096Sha512 => "RSA_SIGN_PSS_4096_SHA512",
-                CryptoKeyVersionAlgorithm::RsaSignPkcs12048Sha256 => "RSA_SIGN_PKCS1_2048_SHA256",
-                CryptoKeyVersionAlgorithm::RsaSignPkcs13072Sha256 => "RSA_SIGN_PKCS1_3072_SHA256",
-                CryptoKeyVersionAlgorithm::RsaSignPkcs14096Sha256 => "RSA_SIGN_PKCS1_4096_SHA256",
-                CryptoKeyVersionAlgorithm::RsaSignPkcs14096Sha512 => "RSA_SIGN_PKCS1_4096_SHA512",
-                CryptoKeyVersionAlgorithm::RsaSignRawPkcs12048 => "RSA_SIGN_RAW_PKCS1_2048",
-                CryptoKeyVersionAlgorithm::RsaSignRawPkcs13072 => "RSA_SIGN_RAW_PKCS1_3072",
-                CryptoKeyVersionAlgorithm::RsaSignRawPkcs14096 => "RSA_SIGN_RAW_PKCS1_4096",
-                CryptoKeyVersionAlgorithm::RsaDecryptOaep2048Sha256 => "RSA_DECRYPT_OAEP_2048_SHA256",
-                CryptoKeyVersionAlgorithm::RsaDecryptOaep3072Sha256 => "RSA_DECRYPT_OAEP_3072_SHA256",
-                CryptoKeyVersionAlgorithm::RsaDecryptOaep4096Sha256 => "RSA_DECRYPT_OAEP_4096_SHA256",
-                CryptoKeyVersionAlgorithm::RsaDecryptOaep4096Sha512 => "RSA_DECRYPT_OAEP_4096_SHA512",
-                CryptoKeyVersionAlgorithm::RsaDecryptOaep2048Sha1 => "RSA_DECRYPT_OAEP_2048_SHA1",
-                CryptoKeyVersionAlgorithm::RsaDecryptOaep3072Sha1 => "RSA_DECRYPT_OAEP_3072_SHA1",
-                CryptoKeyVersionAlgorithm::RsaDecryptOaep4096Sha1 => "RSA_DECRYPT_OAEP_4096_SHA1",
+                CryptoKeyVersionAlgorithm::Unspecified => {
+                    "CRYPTO_KEY_VERSION_ALGORITHM_UNSPECIFIED"
+                }
+                CryptoKeyVersionAlgorithm::GoogleSymmetricEncryption => {
+                    "GOOGLE_SYMMETRIC_ENCRYPTION"
+                }
+                CryptoKeyVersionAlgorithm::RsaSignPss2048Sha256 => {
+                    "RSA_SIGN_PSS_2048_SHA256"
+                }
+                CryptoKeyVersionAlgorithm::RsaSignPss3072Sha256 => {
+                    "RSA_SIGN_PSS_3072_SHA256"
+                }
+                CryptoKeyVersionAlgorithm::RsaSignPss4096Sha256 => {
+                    "RSA_SIGN_PSS_4096_SHA256"
+                }
+                CryptoKeyVersionAlgorithm::RsaSignPss4096Sha512 => {
+                    "RSA_SIGN_PSS_4096_SHA512"
+                }
+                CryptoKeyVersionAlgorithm::RsaSignPkcs12048Sha256 => {
+                    "RSA_SIGN_PKCS1_2048_SHA256"
+                }
+                CryptoKeyVersionAlgorithm::RsaSignPkcs13072Sha256 => {
+                    "RSA_SIGN_PKCS1_3072_SHA256"
+                }
+                CryptoKeyVersionAlgorithm::RsaSignPkcs14096Sha256 => {
+                    "RSA_SIGN_PKCS1_4096_SHA256"
+                }
+                CryptoKeyVersionAlgorithm::RsaSignPkcs14096Sha512 => {
+                    "RSA_SIGN_PKCS1_4096_SHA512"
+                }
+                CryptoKeyVersionAlgorithm::RsaSignRawPkcs12048 => {
+                    "RSA_SIGN_RAW_PKCS1_2048"
+                }
+                CryptoKeyVersionAlgorithm::RsaSignRawPkcs13072 => {
+                    "RSA_SIGN_RAW_PKCS1_3072"
+                }
+                CryptoKeyVersionAlgorithm::RsaSignRawPkcs14096 => {
+                    "RSA_SIGN_RAW_PKCS1_4096"
+                }
+                CryptoKeyVersionAlgorithm::RsaDecryptOaep2048Sha256 => {
+                    "RSA_DECRYPT_OAEP_2048_SHA256"
+                }
+                CryptoKeyVersionAlgorithm::RsaDecryptOaep3072Sha256 => {
+                    "RSA_DECRYPT_OAEP_3072_SHA256"
+                }
+                CryptoKeyVersionAlgorithm::RsaDecryptOaep4096Sha256 => {
+                    "RSA_DECRYPT_OAEP_4096_SHA256"
+                }
+                CryptoKeyVersionAlgorithm::RsaDecryptOaep4096Sha512 => {
+                    "RSA_DECRYPT_OAEP_4096_SHA512"
+                }
+                CryptoKeyVersionAlgorithm::RsaDecryptOaep2048Sha1 => {
+                    "RSA_DECRYPT_OAEP_2048_SHA1"
+                }
+                CryptoKeyVersionAlgorithm::RsaDecryptOaep3072Sha1 => {
+                    "RSA_DECRYPT_OAEP_3072_SHA1"
+                }
+                CryptoKeyVersionAlgorithm::RsaDecryptOaep4096Sha1 => {
+                    "RSA_DECRYPT_OAEP_4096_SHA1"
+                }
                 CryptoKeyVersionAlgorithm::EcSignP256Sha256 => "EC_SIGN_P256_SHA256",
                 CryptoKeyVersionAlgorithm::EcSignP384Sha384 => "EC_SIGN_P384_SHA384",
-                CryptoKeyVersionAlgorithm::EcSignSecp256k1Sha256 => "EC_SIGN_SECP256K1_SHA256",
+                CryptoKeyVersionAlgorithm::EcSignSecp256k1Sha256 => {
+                    "EC_SIGN_SECP256K1_SHA256"
+                }
                 CryptoKeyVersionAlgorithm::HmacSha256 => "HMAC_SHA256",
-                CryptoKeyVersionAlgorithm::ExternalSymmetricEncryption => "EXTERNAL_SYMMETRIC_ENCRYPTION",
+                CryptoKeyVersionAlgorithm::ExternalSymmetricEncryption => {
+                    "EXTERNAL_SYMMETRIC_ENCRYPTION"
+                }
             }
         }
     }
     /// The state of a \[CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion\],
     /// indicating if it can be used.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum CryptoKeyVersionState {
         /// Not specified.
@@ -885,7 +980,9 @@ pub mod crypto_key_version {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                CryptoKeyVersionState::Unspecified => "CRYPTO_KEY_VERSION_STATE_UNSPECIFIED",
+                CryptoKeyVersionState::Unspecified => {
+                    "CRYPTO_KEY_VERSION_STATE_UNSPECIFIED"
+                }
                 CryptoKeyVersionState::PendingGeneration => "PENDING_GENERATION",
                 CryptoKeyVersionState::Enabled => "ENABLED",
                 CryptoKeyVersionState::Disabled => "DISABLED",
@@ -902,7 +999,17 @@ pub mod crypto_key_version {
     /// \[KeyManagementService.ListCryptoKeyVersions][google.cloud.kms.v1.KeyManagementService.ListCryptoKeyVersions\]
     /// and
     /// \[KeyManagementService.ListCryptoKeys][google.cloud.kms.v1.KeyManagementService.ListCryptoKeys\].
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum CryptoKeyVersionView {
         /// Default view for each
@@ -922,7 +1029,9 @@ pub mod crypto_key_version {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                CryptoKeyVersionView::Unspecified => "CRYPTO_KEY_VERSION_VIEW_UNSPECIFIED",
+                CryptoKeyVersionView::Unspecified => {
+                    "CRYPTO_KEY_VERSION_VIEW_UNSPECIFIED"
+                }
                 CryptoKeyVersionView::Full => "FULL",
             }
         }
@@ -938,12 +1047,12 @@ pub struct PublicKey {
     /// [General Considerations](<https://tools.ietf.org/html/rfc7468#section-2>) and
     /// [Textual Encoding of Subject Public Key Info]
     /// (<https://tools.ietf.org/html/rfc7468#section-13>).
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub pem: ::prost::alloc::string::String,
     /// The
     /// \[Algorithm][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionAlgorithm\]
     /// associated with this key.
-    #[prost(enumeration="crypto_key_version::CryptoKeyVersionAlgorithm", tag="2")]
+    #[prost(enumeration = "crypto_key_version::CryptoKeyVersionAlgorithm", tag = "2")]
     pub algorithm: i32,
     /// Integrity verification field. A CRC32C checksum of the returned
     /// \[PublicKey.pem][google.cloud.kms.v1.PublicKey.pem\]. An integrity check of
@@ -959,18 +1068,18 @@ pub struct PublicKey {
     /// that support this type.
     ///
     /// NOTE: This field is in Beta.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub pem_crc32c: ::core::option::Option<i64>,
     /// The \[name][google.cloud.kms.v1.CryptoKeyVersion.name\] of the
     /// \[CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion\] public key.
     /// Provided here for verification.
     ///
     /// NOTE: This field is in Beta.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub name: ::prost::alloc::string::String,
     /// The \[ProtectionLevel][google.cloud.kms.v1.ProtectionLevel\] of the
     /// \[CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion\] public key.
-    #[prost(enumeration="ProtectionLevel", tag="5")]
+    #[prost(enumeration = "ProtectionLevel", tag = "5")]
     pub protection_level: i32,
 }
 /// An \[ImportJob][google.cloud.kms.v1.ImportJob\] can be used to create
@@ -1011,11 +1120,11 @@ pub struct ImportJob {
     /// Output only. The resource name for this
     /// \[ImportJob][google.cloud.kms.v1.ImportJob\] in the format
     /// `projects/*/locations/*/keyRings/*/importJobs/*`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. Immutable. The wrapping method to be used for incoming key
     /// material.
-    #[prost(enumeration="import_job::ImportMethod", tag="2")]
+    #[prost(enumeration = "import_job::ImportMethod", tag = "2")]
     pub import_method: i32,
     /// Required. Immutable. The protection level of the
     /// \[ImportJob][google.cloud.kms.v1.ImportJob\]. This must match the
@@ -1023,34 +1132,34 @@ pub struct ImportJob {
     /// of the \[version_template][google.cloud.kms.v1.CryptoKey.version_template\]
     /// on the \[CryptoKey][google.cloud.kms.v1.CryptoKey\] you attempt to import
     /// into.
-    #[prost(enumeration="ProtectionLevel", tag="9")]
+    #[prost(enumeration = "ProtectionLevel", tag = "9")]
     pub protection_level: i32,
     /// Output only. The time at which this
     /// \[ImportJob][google.cloud.kms.v1.ImportJob\] was created.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The time this \[ImportJob][google.cloud.kms.v1.ImportJob\]'s key
     /// material was generated.
-    #[prost(message, optional, tag="4")]
+    #[prost(message, optional, tag = "4")]
     pub generate_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The time at which this
     /// \[ImportJob][google.cloud.kms.v1.ImportJob\] is scheduled for expiration and
     /// can no longer be used to import key material.
-    #[prost(message, optional, tag="5")]
+    #[prost(message, optional, tag = "5")]
     pub expire_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The time this \[ImportJob][google.cloud.kms.v1.ImportJob\]
     /// expired. Only present if \[state][google.cloud.kms.v1.ImportJob.state\] is
     /// \[EXPIRED][google.cloud.kms.v1.ImportJob.ImportJobState.EXPIRED\].
-    #[prost(message, optional, tag="10")]
+    #[prost(message, optional, tag = "10")]
     pub expire_event_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The current state of the
     /// \[ImportJob][google.cloud.kms.v1.ImportJob\], indicating if it can be used.
-    #[prost(enumeration="import_job::ImportJobState", tag="6")]
+    #[prost(enumeration = "import_job::ImportJobState", tag = "6")]
     pub state: i32,
     /// Output only. The public key with which to wrap key material prior to
     /// import. Only returned if \[state][google.cloud.kms.v1.ImportJob.state\] is
     /// \[ACTIVE][google.cloud.kms.v1.ImportJob.ImportJobState.ACTIVE\].
-    #[prost(message, optional, tag="7")]
+    #[prost(message, optional, tag = "7")]
     pub public_key: ::core::option::Option<import_job::WrappingPublicKey>,
     /// Output only. Statement that was generated and signed by the key creator
     /// (for example, an HSM) at key creation time. Use this statement to verify
@@ -1058,7 +1167,7 @@ pub struct ImportJob {
     /// Only present if the chosen
     /// \[ImportMethod][google.cloud.kms.v1.ImportJob.ImportMethod\] is one with a
     /// protection level of \[HSM][google.cloud.kms.v1.ProtectionLevel.HSM\].
-    #[prost(message, optional, tag="8")]
+    #[prost(message, optional, tag = "8")]
     pub attestation: ::core::option::Option<KeyOperationAttestation>,
 }
 /// Nested message and enum types in `ImportJob`.
@@ -1073,13 +1182,23 @@ pub mod import_job {
         /// Considerations](<https://tools.ietf.org/html/rfc7468#section-2>) and
         /// [Textual Encoding of Subject Public Key Info]
         /// (<https://tools.ietf.org/html/rfc7468#section-13>).
-        #[prost(string, tag="1")]
+        #[prost(string, tag = "1")]
         pub pem: ::prost::alloc::string::String,
     }
     /// \[ImportMethod][google.cloud.kms.v1.ImportJob.ImportMethod\] describes the
     /// key wrapping method chosen for this
     /// \[ImportJob][google.cloud.kms.v1.ImportJob\].
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum ImportMethod {
         /// Not specified.
@@ -1114,7 +1233,17 @@ pub mod import_job {
     }
     /// The state of the \[ImportJob][google.cloud.kms.v1.ImportJob\], indicating if
     /// it can be used.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum ImportJobState {
         /// Not specified.
@@ -1158,13 +1287,13 @@ pub mod import_job {
 pub struct ExternalProtectionLevelOptions {
     /// The URI for an external resource that this
     /// \[CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion\] represents.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub external_key_uri: ::prost::alloc::string::String,
     /// The path to the external key material on the EKM when using
     /// \[EkmConnection][google.cloud.kms.v1.EkmConnection\] e.g., "v0/my/key". Set
     /// this field instead of external_key_uri when using an
     /// \[EkmConnection][google.cloud.kms.v1.EkmConnection\].
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub ekm_connection_key_path: ::prost::alloc::string::String,
 }
 /// \[ProtectionLevel][google.cloud.kms.v1.ProtectionLevel\] specifies how
@@ -1206,7 +1335,7 @@ pub struct ListKeyRingsRequest {
     /// Required. The resource name of the location associated with the
     /// \[KeyRings][google.cloud.kms.v1.KeyRing\], in the format
     /// `projects/*/locations/*`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. Optional limit on the number of
     /// \[KeyRings][google.cloud.kms.v1.KeyRing\] to include in the response. Further
@@ -1215,23 +1344,23 @@ pub struct ListKeyRingsRequest {
     /// \[ListKeyRingsResponse.next_page_token][google.cloud.kms.v1.ListKeyRingsResponse.next_page_token\]
     /// in a subsequent request.  If unspecified, the server will pick an
     /// appropriate default.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Optional. Optional pagination token, returned earlier via
     /// \[ListKeyRingsResponse.next_page_token][google.cloud.kms.v1.ListKeyRingsResponse.next_page_token\].
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
     /// Optional. Only include resources that match the filter in the response. For
     /// more information, see
     /// [Sorting and filtering list
     /// results](<https://cloud.google.com/kms/docs/sorting-and-filtering>).
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
     /// Optional. Specify how the results should be sorted. If not specified, the
     /// results will be sorted in the default order.  For more information, see
     /// [Sorting and filtering list
     /// results](<https://cloud.google.com/kms/docs/sorting-and-filtering>).
-    #[prost(string, tag="5")]
+    #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
 /// Request message for
@@ -1240,7 +1369,7 @@ pub struct ListKeyRingsRequest {
 pub struct ListCryptoKeysRequest {
     /// Required. The resource name of the \[KeyRing][google.cloud.kms.v1.KeyRing\]
     /// to list, in the format `projects/*/locations/*/keyRings/*`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. Optional limit on the number of
     /// \[CryptoKeys][google.cloud.kms.v1.CryptoKey\] to include in the response.
@@ -1249,26 +1378,26 @@ pub struct ListCryptoKeysRequest {
     /// \[ListCryptoKeysResponse.next_page_token][google.cloud.kms.v1.ListCryptoKeysResponse.next_page_token\]
     /// in a subsequent request.  If unspecified, the server will pick an
     /// appropriate default.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Optional. Optional pagination token, returned earlier via
     /// \[ListCryptoKeysResponse.next_page_token][google.cloud.kms.v1.ListCryptoKeysResponse.next_page_token\].
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
     /// The fields of the primary version to include in the response.
-    #[prost(enumeration="crypto_key_version::CryptoKeyVersionView", tag="4")]
+    #[prost(enumeration = "crypto_key_version::CryptoKeyVersionView", tag = "4")]
     pub version_view: i32,
     /// Optional. Only include resources that match the filter in the response. For
     /// more information, see
     /// [Sorting and filtering list
     /// results](<https://cloud.google.com/kms/docs/sorting-and-filtering>).
-    #[prost(string, tag="5")]
+    #[prost(string, tag = "5")]
     pub filter: ::prost::alloc::string::String,
     /// Optional. Specify how the results should be sorted. If not specified, the
     /// results will be sorted in the default order. For more information, see
     /// [Sorting and filtering list
     /// results](<https://cloud.google.com/kms/docs/sorting-and-filtering>).
-    #[prost(string, tag="6")]
+    #[prost(string, tag = "6")]
     pub order_by: ::prost::alloc::string::String,
 }
 /// Request message for
@@ -1278,7 +1407,7 @@ pub struct ListCryptoKeyVersionsRequest {
     /// Required. The resource name of the
     /// \[CryptoKey][google.cloud.kms.v1.CryptoKey\] to list, in the format
     /// `projects/*/locations/*/keyRings/*/cryptoKeys/*`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. Optional limit on the number of
     /// \[CryptoKeyVersions][google.cloud.kms.v1.CryptoKeyVersion\] to include in the
@@ -1287,26 +1416,26 @@ pub struct ListCryptoKeyVersionsRequest {
     /// \[ListCryptoKeyVersionsResponse.next_page_token][google.cloud.kms.v1.ListCryptoKeyVersionsResponse.next_page_token\]
     /// in a subsequent request. If unspecified, the server will pick an
     /// appropriate default.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Optional. Optional pagination token, returned earlier via
     /// \[ListCryptoKeyVersionsResponse.next_page_token][google.cloud.kms.v1.ListCryptoKeyVersionsResponse.next_page_token\].
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
     /// The fields to include in the response.
-    #[prost(enumeration="crypto_key_version::CryptoKeyVersionView", tag="4")]
+    #[prost(enumeration = "crypto_key_version::CryptoKeyVersionView", tag = "4")]
     pub view: i32,
     /// Optional. Only include resources that match the filter in the response. For
     /// more information, see
     /// [Sorting and filtering list
     /// results](<https://cloud.google.com/kms/docs/sorting-and-filtering>).
-    #[prost(string, tag="5")]
+    #[prost(string, tag = "5")]
     pub filter: ::prost::alloc::string::String,
     /// Optional. Specify how the results should be sorted. If not specified, the
     /// results will be sorted in the default order. For more information, see
     /// [Sorting and filtering list
     /// results](<https://cloud.google.com/kms/docs/sorting-and-filtering>).
-    #[prost(string, tag="6")]
+    #[prost(string, tag = "6")]
     pub order_by: ::prost::alloc::string::String,
 }
 /// Request message for
@@ -1315,7 +1444,7 @@ pub struct ListCryptoKeyVersionsRequest {
 pub struct ListImportJobsRequest {
     /// Required. The resource name of the \[KeyRing][google.cloud.kms.v1.KeyRing\]
     /// to list, in the format `projects/*/locations/*/keyRings/*`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. Optional limit on the number of
     /// \[ImportJobs][google.cloud.kms.v1.ImportJob\] to include in the response.
@@ -1324,23 +1453,23 @@ pub struct ListImportJobsRequest {
     /// \[ListImportJobsResponse.next_page_token][google.cloud.kms.v1.ListImportJobsResponse.next_page_token\]
     /// in a subsequent request. If unspecified, the server will pick an
     /// appropriate default.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Optional. Optional pagination token, returned earlier via
     /// \[ListImportJobsResponse.next_page_token][google.cloud.kms.v1.ListImportJobsResponse.next_page_token\].
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
     /// Optional. Only include resources that match the filter in the response. For
     /// more information, see
     /// [Sorting and filtering list
     /// results](<https://cloud.google.com/kms/docs/sorting-and-filtering>).
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
     /// Optional. Specify how the results should be sorted. If not specified, the
     /// results will be sorted in the default order. For more information, see
     /// [Sorting and filtering list
     /// results](<https://cloud.google.com/kms/docs/sorting-and-filtering>).
-    #[prost(string, tag="5")]
+    #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
 /// Response message for
@@ -1348,16 +1477,16 @@ pub struct ListImportJobsRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListKeyRingsResponse {
     /// The list of \[KeyRings][google.cloud.kms.v1.KeyRing\].
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub key_rings: ::prost::alloc::vec::Vec<KeyRing>,
     /// A token to retrieve next page of results. Pass this value in
     /// \[ListKeyRingsRequest.page_token][google.cloud.kms.v1.ListKeyRingsRequest.page_token\]
     /// to retrieve the next page of results.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
     /// The total number of \[KeyRings][google.cloud.kms.v1.KeyRing\] that matched
     /// the query.
-    #[prost(int32, tag="3")]
+    #[prost(int32, tag = "3")]
     pub total_size: i32,
 }
 /// Response message for
@@ -1365,16 +1494,16 @@ pub struct ListKeyRingsResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCryptoKeysResponse {
     /// The list of \[CryptoKeys][google.cloud.kms.v1.CryptoKey\].
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub crypto_keys: ::prost::alloc::vec::Vec<CryptoKey>,
     /// A token to retrieve next page of results. Pass this value in
     /// \[ListCryptoKeysRequest.page_token][google.cloud.kms.v1.ListCryptoKeysRequest.page_token\]
     /// to retrieve the next page of results.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
     /// The total number of \[CryptoKeys][google.cloud.kms.v1.CryptoKey\] that
     /// matched the query.
-    #[prost(int32, tag="3")]
+    #[prost(int32, tag = "3")]
     pub total_size: i32,
 }
 /// Response message for
@@ -1382,17 +1511,17 @@ pub struct ListCryptoKeysResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCryptoKeyVersionsResponse {
     /// The list of \[CryptoKeyVersions][google.cloud.kms.v1.CryptoKeyVersion\].
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub crypto_key_versions: ::prost::alloc::vec::Vec<CryptoKeyVersion>,
     /// A token to retrieve next page of results. Pass this value in
     /// \[ListCryptoKeyVersionsRequest.page_token][google.cloud.kms.v1.ListCryptoKeyVersionsRequest.page_token\]
     /// to retrieve the next page of results.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
     /// The total number of
     /// \[CryptoKeyVersions][google.cloud.kms.v1.CryptoKeyVersion\] that matched the
     /// query.
-    #[prost(int32, tag="3")]
+    #[prost(int32, tag = "3")]
     pub total_size: i32,
 }
 /// Response message for
@@ -1400,16 +1529,16 @@ pub struct ListCryptoKeyVersionsResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListImportJobsResponse {
     /// The list of \[ImportJobs][google.cloud.kms.v1.ImportJob\].
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub import_jobs: ::prost::alloc::vec::Vec<ImportJob>,
     /// A token to retrieve next page of results. Pass this value in
     /// \[ListImportJobsRequest.page_token][google.cloud.kms.v1.ListImportJobsRequest.page_token\]
     /// to retrieve the next page of results.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
     /// The total number of \[ImportJobs][google.cloud.kms.v1.ImportJob\] that
     /// matched the query.
-    #[prost(int32, tag="3")]
+    #[prost(int32, tag = "3")]
     pub total_size: i32,
 }
 /// Request message for
@@ -1418,7 +1547,7 @@ pub struct ListImportJobsResponse {
 pub struct GetKeyRingRequest {
     /// Required. The \[name][google.cloud.kms.v1.KeyRing.name\] of the
     /// \[KeyRing][google.cloud.kms.v1.KeyRing\] to get.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for
@@ -1427,7 +1556,7 @@ pub struct GetKeyRingRequest {
 pub struct GetCryptoKeyRequest {
     /// Required. The \[name][google.cloud.kms.v1.CryptoKey.name\] of the
     /// \[CryptoKey][google.cloud.kms.v1.CryptoKey\] to get.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for
@@ -1436,7 +1565,7 @@ pub struct GetCryptoKeyRequest {
 pub struct GetCryptoKeyVersionRequest {
     /// Required. The \[name][google.cloud.kms.v1.CryptoKeyVersion.name\] of the
     /// \[CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion\] to get.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for
@@ -1445,7 +1574,7 @@ pub struct GetCryptoKeyVersionRequest {
 pub struct GetPublicKeyRequest {
     /// Required. The \[name][google.cloud.kms.v1.CryptoKeyVersion.name\] of the
     /// \[CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion\] public key to get.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for
@@ -1454,7 +1583,7 @@ pub struct GetPublicKeyRequest {
 pub struct GetImportJobRequest {
     /// Required. The \[name][google.cloud.kms.v1.ImportJob.name\] of the
     /// \[ImportJob][google.cloud.kms.v1.ImportJob\] to get.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for
@@ -1464,15 +1593,15 @@ pub struct CreateKeyRingRequest {
     /// Required. The resource name of the location associated with the
     /// \[KeyRings][google.cloud.kms.v1.KeyRing\], in the format
     /// `projects/*/locations/*`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. It must be unique within a location and match the regular
     /// expression `\[a-zA-Z0-9_-\]{1,63}`
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub key_ring_id: ::prost::alloc::string::String,
     /// Required. A \[KeyRing][google.cloud.kms.v1.KeyRing\] with initial field
     /// values.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub key_ring: ::core::option::Option<KeyRing>,
 }
 /// Request message for
@@ -1481,15 +1610,15 @@ pub struct CreateKeyRingRequest {
 pub struct CreateCryptoKeyRequest {
     /// Required. The \[name][google.cloud.kms.v1.KeyRing.name\] of the KeyRing
     /// associated with the \[CryptoKeys][google.cloud.kms.v1.CryptoKey\].
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. It must be unique within a KeyRing and match the regular
     /// expression `\[a-zA-Z0-9_-\]{1,63}`
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub crypto_key_id: ::prost::alloc::string::String,
     /// Required. A \[CryptoKey][google.cloud.kms.v1.CryptoKey\] with initial field
     /// values.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub crypto_key: ::core::option::Option<CryptoKey>,
     /// If set to true, the request will create a
     /// \[CryptoKey][google.cloud.kms.v1.CryptoKey\] without any
@@ -1499,7 +1628,7 @@ pub struct CreateCryptoKeyRequest {
     /// or
     /// \[ImportCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.ImportCryptoKeyVersion\]
     /// before you can use this \[CryptoKey][google.cloud.kms.v1.CryptoKey\].
-    #[prost(bool, tag="5")]
+    #[prost(bool, tag = "5")]
     pub skip_initial_version_creation: bool,
 }
 /// Request message for
@@ -1509,11 +1638,11 @@ pub struct CreateCryptoKeyVersionRequest {
     /// Required. The \[name][google.cloud.kms.v1.CryptoKey.name\] of the
     /// \[CryptoKey][google.cloud.kms.v1.CryptoKey\] associated with the
     /// \[CryptoKeyVersions][google.cloud.kms.v1.CryptoKeyVersion\].
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. A \[CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion\] with
     /// initial field values.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub crypto_key_version: ::core::option::Option<CryptoKeyVersion>,
 }
 /// Request message for
@@ -1525,7 +1654,7 @@ pub struct ImportCryptoKeyVersionRequest {
     ///
     /// The create permission is only required on this key when creating a new
     /// \[CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion\].
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. The optional \[name][google.cloud.kms.v1.CryptoKeyVersion.name\] of
     /// an existing \[CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion\] to
@@ -1547,23 +1676,25 @@ pub struct ImportCryptoKeyVersionRequest {
     /// \[CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion\] exactly if the
     /// \[CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion\] has ever contained
     /// key material.
-    #[prost(string, tag="6")]
+    #[prost(string, tag = "6")]
     pub crypto_key_version: ::prost::alloc::string::String,
     /// Required. The
     /// \[algorithm][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionAlgorithm\]
     /// of the key being imported. This does not need to match the
     /// \[version_template][google.cloud.kms.v1.CryptoKey.version_template\] of the
     /// \[CryptoKey][google.cloud.kms.v1.CryptoKey\] this version imports into.
-    #[prost(enumeration="crypto_key_version::CryptoKeyVersionAlgorithm", tag="2")]
+    #[prost(enumeration = "crypto_key_version::CryptoKeyVersionAlgorithm", tag = "2")]
     pub algorithm: i32,
     /// Required. The \[name][google.cloud.kms.v1.ImportJob.name\] of the
     /// \[ImportJob][google.cloud.kms.v1.ImportJob\] that was used to wrap this key
     /// material.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub import_job: ::prost::alloc::string::String,
     /// Required. The incoming wrapped key material that is to be imported.
-    #[prost(oneof="import_crypto_key_version_request::WrappedKeyMaterial", tags="5")]
-    pub wrapped_key_material: ::core::option::Option<import_crypto_key_version_request::WrappedKeyMaterial>,
+    #[prost(oneof = "import_crypto_key_version_request::WrappedKeyMaterial", tags = "5")]
+    pub wrapped_key_material: ::core::option::Option<
+        import_crypto_key_version_request::WrappedKeyMaterial,
+    >,
 }
 /// Nested message and enum types in `ImportCryptoKeyVersionRequest`.
 pub mod import_crypto_key_version_request {
@@ -1594,7 +1725,7 @@ pub mod import_crypto_key_version_request {
         ///
         /// This format is the same as the format produced by PKCS#11 mechanism
         /// CKM_RSA_AES_KEY_WRAP.
-        #[prost(bytes, tag="5")]
+        #[prost(bytes, tag = "5")]
         RsaAesWrappedKey(::prost::alloc::vec::Vec<u8>),
     }
 }
@@ -1605,15 +1736,15 @@ pub struct CreateImportJobRequest {
     /// Required. The \[name][google.cloud.kms.v1.KeyRing.name\] of the
     /// \[KeyRing][google.cloud.kms.v1.KeyRing\] associated with the
     /// \[ImportJobs][google.cloud.kms.v1.ImportJob\].
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. It must be unique within a KeyRing and match the regular
     /// expression `\[a-zA-Z0-9_-\]{1,63}`
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub import_job_id: ::prost::alloc::string::String,
     /// Required. An \[ImportJob][google.cloud.kms.v1.ImportJob\] with initial field
     /// values.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub import_job: ::core::option::Option<ImportJob>,
 }
 /// Request message for
@@ -1621,10 +1752,10 @@ pub struct CreateImportJobRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateCryptoKeyRequest {
     /// Required. \[CryptoKey][google.cloud.kms.v1.CryptoKey\] with updated values.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub crypto_key: ::core::option::Option<CryptoKey>,
     /// Required. List of fields to be updated in this request.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for
@@ -1633,10 +1764,10 @@ pub struct UpdateCryptoKeyRequest {
 pub struct UpdateCryptoKeyVersionRequest {
     /// Required. \[CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion\] with
     /// updated values.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub crypto_key_version: ::core::option::Option<CryptoKeyVersion>,
     /// Required. List of fields to be updated in this request.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for
@@ -1645,11 +1776,11 @@ pub struct UpdateCryptoKeyVersionRequest {
 pub struct UpdateCryptoKeyPrimaryVersionRequest {
     /// Required. The resource name of the
     /// \[CryptoKey][google.cloud.kms.v1.CryptoKey\] to update.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The id of the child
     /// \[CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion\] to use as primary.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub crypto_key_version_id: ::prost::alloc::string::String,
 }
 /// Request message for
@@ -1658,7 +1789,7 @@ pub struct UpdateCryptoKeyPrimaryVersionRequest {
 pub struct DestroyCryptoKeyVersionRequest {
     /// Required. The resource name of the
     /// \[CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion\] to destroy.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for
@@ -1667,7 +1798,7 @@ pub struct DestroyCryptoKeyVersionRequest {
 pub struct RestoreCryptoKeyVersionRequest {
     /// Required. The resource name of the
     /// \[CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion\] to restore.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for
@@ -1677,15 +1808,15 @@ pub struct DecryptRequest {
     /// Required. The resource name of the
     /// \[CryptoKey][google.cloud.kms.v1.CryptoKey\] to use for decryption. The
     /// server will choose the appropriate version.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The encrypted data originally returned in
     /// \[EncryptResponse.ciphertext][google.cloud.kms.v1.EncryptResponse.ciphertext\].
-    #[prost(bytes="vec", tag="2")]
+    #[prost(bytes = "vec", tag = "2")]
     pub ciphertext: ::prost::alloc::vec::Vec<u8>,
     /// Optional. Optional data that must match the data originally supplied in
     /// \[EncryptRequest.additional_authenticated_data][google.cloud.kms.v1.EncryptRequest.additional_authenticated_data\].
-    #[prost(bytes="vec", tag="3")]
+    #[prost(bytes = "vec", tag = "3")]
     pub additional_authenticated_data: ::prost::alloc::vec::Vec<u8>,
     /// Optional. An optional CRC32C checksum of the
     /// \[DecryptRequest.ciphertext][google.cloud.kms.v1.DecryptRequest.ciphertext\].
@@ -1706,7 +1837,7 @@ pub struct DecryptRequest {
     /// languages. However, it is a non-negative integer, which will never exceed
     /// 2^32-1, and can be safely downconverted to uint32 in languages that support
     /// this type.
-    #[prost(message, optional, tag="5")]
+    #[prost(message, optional, tag = "5")]
     pub ciphertext_crc32c: ::core::option::Option<i64>,
     /// Optional. An optional CRC32C checksum of the
     /// \[DecryptRequest.additional_authenticated_data][google.cloud.kms.v1.DecryptRequest.additional_authenticated_data\].
@@ -1727,7 +1858,7 @@ pub struct DecryptRequest {
     /// languages. However, it is a non-negative integer, which will never exceed
     /// 2^32-1, and can be safely downconverted to uint32 in languages that support
     /// this type.
-    #[prost(message, optional, tag="6")]
+    #[prost(message, optional, tag = "6")]
     pub additional_authenticated_data_crc32c: ::core::option::Option<i64>,
 }
 /// Request message for
@@ -1737,7 +1868,7 @@ pub struct AsymmetricSignRequest {
     /// Required. The resource name of the
     /// \[CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion\] to use for
     /// signing.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. The digest of the data to sign. The digest must be produced with
     /// the same digest algorithm as specified by the key version's
@@ -1746,7 +1877,7 @@ pub struct AsymmetricSignRequest {
     /// This field may not be supplied if
     /// \[AsymmetricSignRequest.data][google.cloud.kms.v1.AsymmetricSignRequest.data\]
     /// is supplied.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub digest: ::core::option::Option<Digest>,
     /// Optional. An optional CRC32C checksum of the
     /// \[AsymmetricSignRequest.digest][google.cloud.kms.v1.AsymmetricSignRequest.digest\].
@@ -1767,13 +1898,13 @@ pub struct AsymmetricSignRequest {
     /// languages. However, it is a non-negative integer, which will never exceed
     /// 2^32-1, and can be safely downconverted to uint32 in languages that support
     /// this type.
-    #[prost(message, optional, tag="4")]
+    #[prost(message, optional, tag = "4")]
     pub digest_crc32c: ::core::option::Option<i64>,
     /// Optional. The data to sign.
     /// It can't be supplied if
     /// \[AsymmetricSignRequest.digest][google.cloud.kms.v1.AsymmetricSignRequest.digest\]
     /// is supplied.
-    #[prost(bytes="vec", tag="6")]
+    #[prost(bytes = "vec", tag = "6")]
     pub data: ::prost::alloc::vec::Vec<u8>,
     /// Optional. An optional CRC32C checksum of the
     /// \[AsymmetricSignRequest.data][google.cloud.kms.v1.AsymmetricSignRequest.data\].
@@ -1794,7 +1925,7 @@ pub struct AsymmetricSignRequest {
     /// languages. However, it is a non-negative integer, which will never exceed
     /// 2^32-1, and can be safely downconverted to uint32 in languages that support
     /// this type.
-    #[prost(message, optional, tag="7")]
+    #[prost(message, optional, tag = "7")]
     pub data_crc32c: ::core::option::Option<i64>,
 }
 /// Request message for
@@ -1804,12 +1935,12 @@ pub struct AsymmetricDecryptRequest {
     /// Required. The resource name of the
     /// \[CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion\] to use for
     /// decryption.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The data encrypted with the named
     /// \[CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion\]'s public key using
     /// OAEP.
-    #[prost(bytes="vec", tag="3")]
+    #[prost(bytes = "vec", tag = "3")]
     pub ciphertext: ::prost::alloc::vec::Vec<u8>,
     /// Optional. An optional CRC32C checksum of the
     /// \[AsymmetricDecryptRequest.ciphertext][google.cloud.kms.v1.AsymmetricDecryptRequest.ciphertext\].
@@ -1830,7 +1961,7 @@ pub struct AsymmetricDecryptRequest {
     /// languages. However, it is a non-negative integer, which will never exceed
     /// 2^32-1, and can be safely downconverted to uint32 in languages that support
     /// this type.
-    #[prost(message, optional, tag="4")]
+    #[prost(message, optional, tag = "4")]
     pub ciphertext_crc32c: ::core::option::Option<i64>,
 }
 /// Request message for
@@ -1840,11 +1971,11 @@ pub struct MacSignRequest {
     /// Required. The resource name of the
     /// \[CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion\] to use for
     /// signing.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The data to sign. The MAC tag is computed over this data field
     /// based on the specific algorithm.
-    #[prost(bytes="vec", tag="2")]
+    #[prost(bytes = "vec", tag = "2")]
     pub data: ::prost::alloc::vec::Vec<u8>,
     /// Optional. An optional CRC32C checksum of the
     /// \[MacSignRequest.data][google.cloud.kms.v1.MacSignRequest.data\]. If
@@ -1863,7 +1994,7 @@ pub struct MacSignRequest {
     /// languages. However, it is a non-negative integer, which will never exceed
     /// 2^32-1, and can be safely downconverted to uint32 in languages that support
     /// this type.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub data_crc32c: ::core::option::Option<i64>,
 }
 /// Request message for
@@ -1873,12 +2004,12 @@ pub struct MacVerifyRequest {
     /// Required. The resource name of the
     /// \[CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion\] to use for
     /// verification.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The data used previously as a
     /// \[MacSignRequest.data][google.cloud.kms.v1.MacSignRequest.data\] to generate
     /// the MAC tag.
-    #[prost(bytes="vec", tag="2")]
+    #[prost(bytes = "vec", tag = "2")]
     pub data: ::prost::alloc::vec::Vec<u8>,
     /// Optional. An optional CRC32C checksum of the
     /// \[MacVerifyRequest.data][google.cloud.kms.v1.MacVerifyRequest.data\]. If
@@ -1898,10 +2029,10 @@ pub struct MacVerifyRequest {
     /// languages. However, it is a non-negative integer, which will never exceed
     /// 2^32-1, and can be safely downconverted to uint32 in languages that support
     /// this type.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub data_crc32c: ::core::option::Option<i64>,
     /// Required. The signature to verify.
-    #[prost(bytes="vec", tag="4")]
+    #[prost(bytes = "vec", tag = "4")]
     pub mac: ::prost::alloc::vec::Vec<u8>,
     /// Optional. An optional CRC32C checksum of the
     /// \[MacVerifyRequest.mac][google.cloud.kms.v1.MacVerifyRequest.mac\]. If
@@ -1919,7 +2050,7 @@ pub struct MacVerifyRequest {
     /// languages. However, it is a non-negative integer, which will never exceed
     /// 2^32-1, and can be safely downconverted to uint32 in languages that support
     /// this type.
-    #[prost(message, optional, tag="5")]
+    #[prost(message, optional, tag = "5")]
     pub mac_crc32c: ::core::option::Option<i64>,
 }
 /// Request message for
@@ -1928,17 +2059,17 @@ pub struct MacVerifyRequest {
 pub struct GenerateRandomBytesRequest {
     /// The project-specific location in which to generate random bytes.
     /// For example, "projects/my-project/locations/us-central1".
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub location: ::prost::alloc::string::String,
     /// The length in bytes of the amount of randomness to retrieve.  Minimum 8
     /// bytes, maximum 1024 bytes.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub length_bytes: i32,
     /// The \[ProtectionLevel][google.cloud.kms.v1.ProtectionLevel\] to use when
     /// generating the random data. Currently, only
     /// \[HSM][google.cloud.kms.v1.ProtectionLevel.HSM\] protection level is
     /// supported.
-    #[prost(enumeration="ProtectionLevel", tag="3")]
+    #[prost(enumeration = "ProtectionLevel", tag = "3")]
     pub protection_level: i32,
 }
 /// Response message for
@@ -1949,10 +2080,10 @@ pub struct EncryptResponse {
     /// \[CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion\] used in
     /// encryption. Check this field to verify that the intended resource was used
     /// for encryption.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The encrypted data.
-    #[prost(bytes="vec", tag="2")]
+    #[prost(bytes = "vec", tag = "2")]
     pub ciphertext: ::prost::alloc::vec::Vec<u8>,
     /// Integrity verification field. A CRC32C checksum of the returned
     /// \[EncryptResponse.ciphertext][google.cloud.kms.v1.EncryptResponse.ciphertext\].
@@ -1967,7 +2098,7 @@ pub struct EncryptResponse {
     /// across different languages. However, it is a non-negative integer, which
     /// will never exceed 2^32-1, and can be safely downconverted to uint32 in
     /// languages that support this type.
-    #[prost(message, optional, tag="4")]
+    #[prost(message, optional, tag = "4")]
     pub ciphertext_crc32c: ::core::option::Option<i64>,
     /// Integrity verification field. A flag indicating whether
     /// \[EncryptRequest.plaintext_crc32c][google.cloud.kms.v1.EncryptRequest.plaintext_crc32c\]
@@ -1983,7 +2114,7 @@ pub struct EncryptResponse {
     /// \[EncryptRequest.plaintext_crc32c][google.cloud.kms.v1.EncryptRequest.plaintext_crc32c\]
     /// but this field is still false, discard the response and perform a limited
     /// number of retries.
-    #[prost(bool, tag="5")]
+    #[prost(bool, tag = "5")]
     pub verified_plaintext_crc32c: bool,
     /// Integrity verification field. A flag indicating whether
     /// \[EncryptRequest.additional_authenticated_data_crc32c][google.cloud.kms.v1.EncryptRequest.additional_authenticated_data_crc32c\]
@@ -1999,12 +2130,12 @@ pub struct EncryptResponse {
     /// \[EncryptRequest.additional_authenticated_data_crc32c][google.cloud.kms.v1.EncryptRequest.additional_authenticated_data_crc32c\]
     /// but this field is still false, discard the response and perform a limited
     /// number of retries.
-    #[prost(bool, tag="6")]
+    #[prost(bool, tag = "6")]
     pub verified_additional_authenticated_data_crc32c: bool,
     /// The \[ProtectionLevel][google.cloud.kms.v1.ProtectionLevel\] of the
     /// \[CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion\] used in
     /// encryption.
-    #[prost(enumeration="ProtectionLevel", tag="7")]
+    #[prost(enumeration = "ProtectionLevel", tag = "7")]
     pub protection_level: i32,
 }
 /// Response message for
@@ -2012,7 +2143,7 @@ pub struct EncryptResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AsymmetricSignResponse {
     /// The created signature.
-    #[prost(bytes="vec", tag="1")]
+    #[prost(bytes = "vec", tag = "1")]
     pub signature: ::prost::alloc::vec::Vec<u8>,
     /// Integrity verification field. A CRC32C checksum of the returned
     /// \[AsymmetricSignResponse.signature][google.cloud.kms.v1.AsymmetricSignResponse.signature\].
@@ -2027,7 +2158,7 @@ pub struct AsymmetricSignResponse {
     /// across different languages. However, it is a non-negative integer, which
     /// will never exceed 2^32-1, and can be safely downconverted to uint32 in
     /// languages that support this type.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub signature_crc32c: ::core::option::Option<i64>,
     /// Integrity verification field. A flag indicating whether
     /// \[AsymmetricSignRequest.digest_crc32c][google.cloud.kms.v1.AsymmetricSignRequest.digest_crc32c\]
@@ -2043,12 +2174,12 @@ pub struct AsymmetricSignResponse {
     /// \[AsymmetricSignRequest.digest_crc32c][google.cloud.kms.v1.AsymmetricSignRequest.digest_crc32c\]
     /// but this field is still false, discard the response and perform a limited
     /// number of retries.
-    #[prost(bool, tag="3")]
+    #[prost(bool, tag = "3")]
     pub verified_digest_crc32c: bool,
     /// The resource name of the
     /// \[CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion\] used for signing.
     /// Check this field to verify that the intended resource was used for signing.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub name: ::prost::alloc::string::String,
     /// Integrity verification field. A flag indicating whether
     /// \[AsymmetricSignRequest.data_crc32c][google.cloud.kms.v1.AsymmetricSignRequest.data_crc32c\]
@@ -2064,11 +2195,11 @@ pub struct AsymmetricSignResponse {
     /// \[AsymmetricSignRequest.data_crc32c][google.cloud.kms.v1.AsymmetricSignRequest.data_crc32c\]
     /// but this field is still false, discard the response and perform a limited
     /// number of retries.
-    #[prost(bool, tag="5")]
+    #[prost(bool, tag = "5")]
     pub verified_data_crc32c: bool,
     /// The \[ProtectionLevel][google.cloud.kms.v1.ProtectionLevel\] of the
     /// \[CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion\] used for signing.
-    #[prost(enumeration="ProtectionLevel", tag="6")]
+    #[prost(enumeration = "ProtectionLevel", tag = "6")]
     pub protection_level: i32,
 }
 /// Response message for
@@ -2076,7 +2207,7 @@ pub struct AsymmetricSignResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AsymmetricDecryptResponse {
     /// The decrypted data originally encrypted with the matching public key.
-    #[prost(bytes="vec", tag="1")]
+    #[prost(bytes = "vec", tag = "1")]
     pub plaintext: ::prost::alloc::vec::Vec<u8>,
     /// Integrity verification field. A CRC32C checksum of the returned
     /// \[AsymmetricDecryptResponse.plaintext][google.cloud.kms.v1.AsymmetricDecryptResponse.plaintext\].
@@ -2091,7 +2222,7 @@ pub struct AsymmetricDecryptResponse {
     /// across different languages. However, it is a non-negative integer, which
     /// will never exceed 2^32-1, and can be safely downconverted to uint32 in
     /// languages that support this type.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub plaintext_crc32c: ::core::option::Option<i64>,
     /// Integrity verification field. A flag indicating whether
     /// \[AsymmetricDecryptRequest.ciphertext_crc32c][google.cloud.kms.v1.AsymmetricDecryptRequest.ciphertext_crc32c\]
@@ -2107,12 +2238,12 @@ pub struct AsymmetricDecryptResponse {
     /// \[AsymmetricDecryptRequest.ciphertext_crc32c][google.cloud.kms.v1.AsymmetricDecryptRequest.ciphertext_crc32c\]
     /// but this field is still false, discard the response and perform a limited
     /// number of retries.
-    #[prost(bool, tag="3")]
+    #[prost(bool, tag = "3")]
     pub verified_ciphertext_crc32c: bool,
     /// The \[ProtectionLevel][google.cloud.kms.v1.ProtectionLevel\] of the
     /// \[CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion\] used in
     /// decryption.
-    #[prost(enumeration="ProtectionLevel", tag="4")]
+    #[prost(enumeration = "ProtectionLevel", tag = "4")]
     pub protection_level: i32,
 }
 /// Response message for
@@ -2122,10 +2253,10 @@ pub struct MacSignResponse {
     /// The resource name of the
     /// \[CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion\] used for signing.
     /// Check this field to verify that the intended resource was used for signing.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The created signature.
-    #[prost(bytes="vec", tag="2")]
+    #[prost(bytes = "vec", tag = "2")]
     pub mac: ::prost::alloc::vec::Vec<u8>,
     /// Integrity verification field. A CRC32C checksum of the returned
     /// \[MacSignResponse.mac][google.cloud.kms.v1.MacSignResponse.mac\]. An
@@ -2140,7 +2271,7 @@ pub struct MacSignResponse {
     /// across different languages. However, it is a non-negative integer, which
     /// will never exceed 2^32-1, and can be safely downconverted to uint32 in
     /// languages that support this type.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub mac_crc32c: ::core::option::Option<i64>,
     /// Integrity verification field. A flag indicating whether
     /// \[MacSignRequest.data_crc32c][google.cloud.kms.v1.MacSignRequest.data_crc32c\]
@@ -2156,11 +2287,11 @@ pub struct MacSignResponse {
     /// \[MacSignRequest.data_crc32c][google.cloud.kms.v1.MacSignRequest.data_crc32c\]
     /// but this field is still false, discard the response and perform a limited
     /// number of retries.
-    #[prost(bool, tag="4")]
+    #[prost(bool, tag = "4")]
     pub verified_data_crc32c: bool,
     /// The \[ProtectionLevel][google.cloud.kms.v1.ProtectionLevel\] of the
     /// \[CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion\] used for signing.
-    #[prost(enumeration="ProtectionLevel", tag="5")]
+    #[prost(enumeration = "ProtectionLevel", tag = "5")]
     pub protection_level: i32,
 }
 /// Response message for
@@ -2171,13 +2302,13 @@ pub struct MacVerifyResponse {
     /// \[CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion\] used for
     /// verification. Check this field to verify that the intended resource was
     /// used for verification.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// This field indicates whether or not the verification operation for
     /// \[MacVerifyRequest.mac][google.cloud.kms.v1.MacVerifyRequest.mac\] over
     /// \[MacVerifyRequest.data][google.cloud.kms.v1.MacVerifyRequest.data\] was
     /// successful.
-    #[prost(bool, tag="2")]
+    #[prost(bool, tag = "2")]
     pub success: bool,
     /// Integrity verification field. A flag indicating whether
     /// \[MacVerifyRequest.data_crc32c][google.cloud.kms.v1.MacVerifyRequest.data_crc32c\]
@@ -2193,7 +2324,7 @@ pub struct MacVerifyResponse {
     /// \[MacVerifyRequest.data_crc32c][google.cloud.kms.v1.MacVerifyRequest.data_crc32c\]
     /// but this field is still false, discard the response and perform a limited
     /// number of retries.
-    #[prost(bool, tag="3")]
+    #[prost(bool, tag = "3")]
     pub verified_data_crc32c: bool,
     /// Integrity verification field. A flag indicating whether
     /// \[MacVerifyRequest.mac_crc32c][google.cloud.kms.v1.MacVerifyRequest.mac_crc32c\]
@@ -2209,18 +2340,18 @@ pub struct MacVerifyResponse {
     /// \[MacVerifyRequest.mac_crc32c][google.cloud.kms.v1.MacVerifyRequest.mac_crc32c\]
     /// but this field is still false, discard the response and perform a limited
     /// number of retries.
-    #[prost(bool, tag="4")]
+    #[prost(bool, tag = "4")]
     pub verified_mac_crc32c: bool,
     /// Integrity verification field. This value is used for the integrity
     /// verification of \[MacVerifyResponse.success\]. If the value of this field
     /// contradicts the value of \[MacVerifyResponse.success\], discard the response
     /// and perform a limited number of retries.
-    #[prost(bool, tag="5")]
+    #[prost(bool, tag = "5")]
     pub verified_success_integrity: bool,
     /// The \[ProtectionLevel][google.cloud.kms.v1.ProtectionLevel\] of the
     /// \[CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion\] used for
     /// verification.
-    #[prost(enumeration="ProtectionLevel", tag="6")]
+    #[prost(enumeration = "ProtectionLevel", tag = "6")]
     pub protection_level: i32,
 }
 /// Response message for
@@ -2228,7 +2359,7 @@ pub struct MacVerifyResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateRandomBytesResponse {
     /// The generated data.
-    #[prost(bytes="vec", tag="1")]
+    #[prost(bytes = "vec", tag = "1")]
     pub data: ::prost::alloc::vec::Vec<u8>,
     /// Integrity verification field. A CRC32C checksum of the returned
     /// \[GenerateRandomBytesResponse.data][google.cloud.kms.v1.GenerateRandomBytesResponse.data\].
@@ -2243,14 +2374,14 @@ pub struct GenerateRandomBytesResponse {
     /// across different languages. However, it is a non-negative integer, which
     /// will never exceed 2^32-1, and can be safely downconverted to uint32 in
     /// languages that support this type.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub data_crc32c: ::core::option::Option<i64>,
 }
 /// A \[Digest][google.cloud.kms.v1.Digest\] holds a cryptographic message digest.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Digest {
     /// Required. The message digest.
-    #[prost(oneof="digest::Digest", tags="1, 2, 3")]
+    #[prost(oneof = "digest::Digest", tags = "1, 2, 3")]
     pub digest: ::core::option::Option<digest::Digest>,
 }
 /// Nested message and enum types in `Digest`.
@@ -2259,13 +2390,13 @@ pub mod digest {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Digest {
         /// A message digest produced with the SHA-256 algorithm.
-        #[prost(bytes, tag="1")]
+        #[prost(bytes, tag = "1")]
         Sha256(::prost::alloc::vec::Vec<u8>),
         /// A message digest produced with the SHA-384 algorithm.
-        #[prost(bytes, tag="2")]
+        #[prost(bytes, tag = "2")]
         Sha384(::prost::alloc::vec::Vec<u8>),
         /// A message digest produced with the SHA-512 algorithm.
-        #[prost(bytes, tag="3")]
+        #[prost(bytes, tag = "3")]
         Sha512(::prost::alloc::vec::Vec<u8>),
     }
 }
@@ -2277,13 +2408,13 @@ pub struct LocationMetadata {
     /// \[protection_level][google.cloud.kms.v1.CryptoKeyVersionTemplate.protection_level\]
     /// \[HSM][google.cloud.kms.v1.ProtectionLevel.HSM\] can be created in this
     /// location.
-    #[prost(bool, tag="1")]
+    #[prost(bool, tag = "1")]
     pub hsm_available: bool,
     /// Indicates whether \[CryptoKeys][google.cloud.kms.v1.CryptoKey\] with
     /// \[protection_level][google.cloud.kms.v1.CryptoKeyVersionTemplate.protection_level\]
     /// \[EXTERNAL][google.cloud.kms.v1.ProtectionLevel.EXTERNAL\] can be created in
     /// this location.
-    #[prost(bool, tag="2")]
+    #[prost(bool, tag = "2")]
     pub ekm_available: bool,
 }
 /// Generated client implementations.

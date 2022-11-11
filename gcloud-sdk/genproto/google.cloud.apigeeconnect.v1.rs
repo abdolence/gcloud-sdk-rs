@@ -3,19 +3,19 @@
 pub struct ListConnectionsRequest {
     /// Required. Parent name of the form:
     ///      `projects/{project_number or project_id}/endpoints/{endpoint}`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of connections to return. The service may return fewer
     /// than this value. If unspecified, at most 100 connections will be returned.
     /// The maximum value is 1000; values above 1000 will be coerced to 1000.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// A page token, received from a previous `ListConnections` call.
     /// Provide this to retrieve the subsequent page.
     ///
     /// When paginating, all other parameters provided to `ListConnections` must
     /// match the call that provided the page token.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
 /// The response for
@@ -23,33 +23,33 @@ pub struct ListConnectionsRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListConnectionsResponse {
     /// A list of clients.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub connections: ::prost::alloc::vec::Vec<Connection>,
     /// A token that can be sent as `page_token` to retrieve the next page.
     /// If this field is omitted, there are no subsequent pages.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Connection {
     /// The endpoint that the connection is made against.
     /// Format: `projects/{project_number}/endpoints/{endpoint}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub endpoint: ::prost::alloc::string::String,
     /// Cluster information.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub cluster: ::core::option::Option<Cluster>,
     /// The count of streams.
-    #[prost(int32, tag="3")]
+    #[prost(int32, tag = "3")]
     pub stream_count: i32,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Cluster {
     /// The name of the cluster.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The region of the cluster.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub region: ::prost::alloc::string::String,
 }
 /// Generated client implementations.
@@ -149,30 +149,30 @@ pub mod connection_service_client {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EgressRequest {
     /// Unique identifier for the request.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub id: ::prost::alloc::string::String,
     /// Actual payload to send to agent.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub payload: ::core::option::Option<Payload>,
     /// Tether Endpoint.
-    #[prost(enumeration="TetherEndpoint", tag="3")]
+    #[prost(enumeration = "TetherEndpoint", tag = "3")]
     pub endpoint: i32,
     /// GCP Project.
     /// Format: `projects/{project_number}`.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub project: ::prost::alloc::string::String,
     /// Unique identifier for clients to trace their request/response.
-    #[prost(string, tag="5")]
+    #[prost(string, tag = "5")]
     pub trace_id: ::prost::alloc::string::String,
     /// Timeout for the HTTP request.
-    #[prost(message, optional, tag="6")]
+    #[prost(message, optional, tag = "6")]
     pub timeout: ::core::option::Option<::prost_types::Duration>,
 }
 /// Payload for EgressRequest.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Payload {
     /// The kind of payload.
-    #[prost(oneof="payload::Kind", tags="1, 2, 3")]
+    #[prost(oneof = "payload::Kind", tags = "1, 2, 3")]
     pub kind: ::core::option::Option<payload::Kind>,
 }
 /// Nested message and enum types in `Payload`.
@@ -181,13 +181,13 @@ pub mod payload {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Kind {
         /// The HttpRequest proto.
-        #[prost(message, tag="1")]
+        #[prost(message, tag = "1")]
         HttpRequest(super::HttpRequest),
         /// The information of stream.
-        #[prost(message, tag="2")]
+        #[prost(message, tag = "2")]
         StreamInfo(super::StreamInfo),
         /// The action taken by agent.
-        #[prost(enumeration="super::Action", tag="3")]
+        #[prost(enumeration = "super::Action", tag = "3")]
         Action(i32),
     }
 }
@@ -195,55 +195,55 @@ pub mod payload {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StreamInfo {
     /// Unique identifier for the stream.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub id: ::prost::alloc::string::String,
 }
 /// gRPC response payload for tether.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EgressResponse {
     /// Unique identifier for the response. Matches the EgressRequest's id.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub id: ::prost::alloc::string::String,
     /// HttpResponse.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub http_response: ::core::option::Option<HttpResponse>,
     /// Errors from application when handling the http request.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub status: ::core::option::Option<super::super::super::rpc::Status>,
     /// GCP Project.
     /// Format: `projects/{project_number}`.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub project: ::prost::alloc::string::String,
     /// Unique identifier for clients to trace their request/response. Matches the
     /// EgressRequest's trace id
-    #[prost(string, tag="5")]
+    #[prost(string, tag = "5")]
     pub trace_id: ::prost::alloc::string::String,
     /// Tether Endpoint.
-    #[prost(enumeration="TetherEndpoint", tag="6")]
+    #[prost(enumeration = "TetherEndpoint", tag = "6")]
     pub endpoint: i32,
     /// Name is the full resource path of endpoint.
     /// Format: `projects/{project_number or project_id}/endpoints/{endpoint}`
-    #[prost(string, tag="7")]
+    #[prost(string, tag = "7")]
     pub name: ::prost::alloc::string::String,
 }
 /// The proto definition of http request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HttpRequest {
     /// A unique identifier for the request.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub id: ::prost::alloc::string::String,
     /// The HTTP request method.
     /// Valid methods: "GET", "HEAD", "POST", "PUT", "PATCH","DELETE".
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub method: ::prost::alloc::string::String,
     /// The HTTP request URL.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub url: ::core::option::Option<Url>,
     /// The HTTP request headers.
-    #[prost(message, repeated, tag="4")]
+    #[prost(message, repeated, tag = "4")]
     pub headers: ::prost::alloc::vec::Vec<Header>,
     /// HTTP request body.
-    #[prost(bytes="vec", tag="5")]
+    #[prost(bytes = "vec", tag = "5")]
     pub body: ::prost::alloc::vec::Vec<u8>,
 }
 /// The proto definition of url.
@@ -253,46 +253,46 @@ pub struct HttpRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Url {
     /// Scheme.
-    #[prost(enumeration="Scheme", tag="1")]
+    #[prost(enumeration = "Scheme", tag = "1")]
     pub scheme: i32,
     /// Host or Host:Port.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub host: ::prost::alloc::string::String,
     /// Path starts with `/`.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub path: ::prost::alloc::string::String,
 }
 /// The http headers.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Header {
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub key: ::prost::alloc::string::String,
-    #[prost(string, repeated, tag="2")]
+    #[prost(string, repeated, tag = "2")]
     pub values: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The proto definition of http response.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HttpResponse {
     /// A unique identifier that matches the request ID.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub id: ::prost::alloc::string::String,
     /// Status of http response, e.g. "200 OK".
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub status: ::prost::alloc::string::String,
     /// Status code of http response, e.g. 200.
-    #[prost(int32, tag="3")]
+    #[prost(int32, tag = "3")]
     pub status_code: i32,
     /// The HTTP 1.1 response body.
-    #[prost(bytes="vec", tag="4")]
+    #[prost(bytes = "vec", tag = "4")]
     pub body: ::prost::alloc::vec::Vec<u8>,
     /// The HTTP response headers.
-    #[prost(message, repeated, tag="5")]
+    #[prost(message, repeated, tag = "5")]
     pub headers: ::prost::alloc::vec::Vec<Header>,
     /// Content length records the length of the associated content. The
     /// value -1 indicates that the length is unknown. Unless http method
     /// is "HEAD", values >= 0 indicate that the given number of bytes may
     /// be read from Body.
-    #[prost(int64, tag="6")]
+    #[prost(int64, tag = "6")]
     pub content_length: i64,
 }
 /// The action taken by agent.

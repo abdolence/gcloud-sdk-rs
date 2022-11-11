@@ -4,16 +4,16 @@ pub struct Book {
     /// The resource name of the book.
     /// Book names have the form `shelves/{shelf_id}/books/{book_id}`.
     /// The name is ignored when creating a book.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The name of the book author.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub author: ::prost::alloc::string::String,
     /// The title of the book.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub title: ::prost::alloc::string::String,
     /// Value indicating whether the book has been read.
-    #[prost(bool, tag="4")]
+    #[prost(bool, tag = "4")]
     pub read: bool,
 }
 /// A Shelf contains a collection of books with a theme.
@@ -22,24 +22,24 @@ pub struct Shelf {
     /// The resource name of the shelf.
     /// Shelf names have the form `shelves/{shelf_id}`.
     /// The name is ignored when creating a shelf.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The theme of the shelf
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub theme: ::prost::alloc::string::String,
 }
 /// Request message for LibraryService.CreateShelf.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateShelfRequest {
     /// The shelf to create.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub shelf: ::core::option::Option<Shelf>,
 }
 /// Request message for LibraryService.GetShelf.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetShelfRequest {
     /// The name of the shelf to retrieve.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for LibraryService.ListShelves.
@@ -47,34 +47,34 @@ pub struct GetShelfRequest {
 pub struct ListShelvesRequest {
     /// Requested page size. Server may return fewer shelves than requested.
     /// If unspecified, server will pick an appropriate default.
-    #[prost(int32, tag="1")]
+    #[prost(int32, tag = "1")]
     pub page_size: i32,
     /// A token identifying a page of results the server should return.
     /// Typically, this is the value of
     /// \[ListShelvesResponse.next_page_token][google.example.library.v1.ListShelvesResponse.next_page_token\]
     /// returned from the previous call to `ListShelves` method.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for LibraryService.ListShelves.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListShelvesResponse {
     /// The list of shelves.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub shelves: ::prost::alloc::vec::Vec<Shelf>,
     /// A token to retrieve next page of results.
     /// Pass this value in the
     /// \[ListShelvesRequest.page_token][google.example.library.v1.ListShelvesRequest.page_token\]
     /// field in the subsequent call to `ListShelves` method to retrieve the next
     /// page of results.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for LibraryService.DeleteShelf.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteShelfRequest {
     /// The name of the shelf to delete.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Describes the shelf being removed (other_shelf_name) and updated
@@ -82,75 +82,75 @@ pub struct DeleteShelfRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MergeShelvesRequest {
     /// The name of the shelf we're adding books to.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The name of the shelf we're removing books from and deleting.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub other_shelf: ::prost::alloc::string::String,
 }
 /// Request message for LibraryService.CreateBook.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateBookRequest {
     /// The name of the shelf in which the book is created.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The book to create.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub book: ::core::option::Option<Book>,
 }
 /// Request message for LibraryService.GetBook.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetBookRequest {
     /// The name of the book to retrieve.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for LibraryService.ListBooks.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListBooksRequest {
     /// The name of the shelf whose books we'd like to list.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Requested page size. Server may return fewer books than requested.
     /// If unspecified, server will pick an appropriate default.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// A token identifying a page of results the server should return.
     /// Typically, this is the value of
     /// \[ListBooksResponse.next_page_token][google.example.library.v1.ListBooksResponse.next_page_token\].
     /// returned from the previous call to `ListBooks` method.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for LibraryService.ListBooks.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListBooksResponse {
     /// The list of books.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub books: ::prost::alloc::vec::Vec<Book>,
     /// A token to retrieve next page of results.
     /// Pass this value in the
     /// \[ListBooksRequest.page_token][google.example.library.v1.ListBooksRequest.page_token\]
     /// field in the subsequent call to `ListBooks` method to retrieve the next
     /// page of results.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for LibraryService.UpdateBook.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateBookRequest {
     /// The name of the book to update.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub book: ::core::option::Option<Book>,
     /// Required. Mask of fields to update.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for LibraryService.DeleteBook.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteBookRequest {
     /// The name of the book to delete.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Describes what book to move (name) and what shelf we're moving it
@@ -158,10 +158,10 @@ pub struct DeleteBookRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MoveBookRequest {
     /// The name of the book to move.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The name of the destination shelf.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub other_shelf_name: ::prost::alloc::string::String,
 }
 /// Generated client implementations.

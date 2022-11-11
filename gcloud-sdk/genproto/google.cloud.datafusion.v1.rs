@@ -10,12 +10,12 @@ pub struct NetworkConfig {
     /// will be peered for executing pipelines. In case of shared VPC where the
     /// network resides in another host project the network should specified in
     /// the form of projects/{host-project-id}/global/networks/{network}
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub network: ::prost::alloc::string::String,
     /// The IP range in CIDR notation to use for the managed Data Fusion instance
     /// nodes. This range must not overlap with any other ranges used in the
     /// customer network.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub ip_allocation: ::prost::alloc::string::String,
 }
 /// The Data Fusion version. This proto message stores information about certain
@@ -23,22 +23,32 @@ pub struct NetworkConfig {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Version {
     /// The version number of the Data Fusion instance, such as '6.0.1.0'.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub version_number: ::prost::alloc::string::String,
     /// Whether this is currently the default version for Cloud Data Fusion
-    #[prost(bool, tag="2")]
+    #[prost(bool, tag = "2")]
     pub default_version: bool,
     /// Represents a list of available feature names for a given version.
-    #[prost(string, repeated, tag="3")]
+    #[prost(string, repeated, tag = "3")]
     pub available_features: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Type represents the release availability of the version
-    #[prost(enumeration="version::Type", tag="4")]
+    #[prost(enumeration = "version::Type", tag = "4")]
     pub r#type: i32,
 }
 /// Nested message and enum types in `Version`.
 pub mod version {
     /// Each type represents the release availability of a CDF version
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum Type {
         /// Version does not have availability yet
@@ -66,17 +76,27 @@ pub mod version {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Accelerator {
     /// The type of an accelator for a CDF instance.
-    #[prost(enumeration="accelerator::AcceleratorType", tag="1")]
+    #[prost(enumeration = "accelerator::AcceleratorType", tag = "1")]
     pub accelerator_type: i32,
     /// The state of the accelerator
-    #[prost(enumeration="accelerator::State", tag="2")]
+    #[prost(enumeration = "accelerator::State", tag = "2")]
     pub state: i32,
 }
 /// Nested message and enum types in `Accelerator`.
 pub mod accelerator {
     /// Each type represents an Accelerator (Add-On) supported by Cloud Data Fusion
     /// service.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum AcceleratorType {
         /// Default value, if unspecified.
@@ -106,7 +126,17 @@ pub mod accelerator {
         }
     }
     /// Different values possible for the state of an accelerator
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum State {
         /// Default value, do not use
@@ -141,7 +171,7 @@ pub struct CryptoKeyConfig {
     /// The name of the key which is used to encrypt/decrypt customer data. For key
     /// in Cloud KMS, the key should be in the format of
     /// `projects/*/locations/*/keyRings/*/cryptoKeys/*`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub key_reference: ::prost::alloc::string::String,
 }
 /// Represents a Data Fusion instance.
@@ -149,110 +179,131 @@ pub struct CryptoKeyConfig {
 pub struct Instance {
     /// Output only. The name of this instance is in the form of
     /// projects/{project}/locations/{location}/instances/{instance}.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// A description of this instance.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub description: ::prost::alloc::string::String,
     /// Required. Instance type.
-    #[prost(enumeration="instance::Type", tag="3")]
+    #[prost(enumeration = "instance::Type", tag = "3")]
     pub r#type: i32,
     /// Option to enable Stackdriver Logging.
-    #[prost(bool, tag="4")]
+    #[prost(bool, tag = "4")]
     pub enable_stackdriver_logging: bool,
     /// Option to enable Stackdriver Monitoring.
-    #[prost(bool, tag="5")]
+    #[prost(bool, tag = "5")]
     pub enable_stackdriver_monitoring: bool,
     /// Specifies whether the Data Fusion instance should be private. If set to
     /// true, all Data Fusion nodes will have private IP addresses and will not be
     /// able to access the public internet.
-    #[prost(bool, tag="6")]
+    #[prost(bool, tag = "6")]
     pub private_instance: bool,
     /// Network configuration options. These are required when a private Data
     /// Fusion instance is to be created.
-    #[prost(message, optional, tag="7")]
+    #[prost(message, optional, tag = "7")]
     pub network_config: ::core::option::Option<NetworkConfig>,
     /// The resource labels for instance to use to annotate any related underlying
     /// resources such as Compute Engine VMs. The character '=' is not allowed to
     /// be used within the labels.
-    #[prost(map="string, string", tag="8")]
-    pub labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map = "string, string", tag = "8")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
     /// Map of additional options used to configure the behavior of
     /// Data Fusion instance.
-    #[prost(map="string, string", tag="9")]
-    pub options: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map = "string, string", tag = "9")]
+    pub options: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
     /// Output only. The time the instance was created.
-    #[prost(message, optional, tag="10")]
+    #[prost(message, optional, tag = "10")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The time the instance was last updated.
-    #[prost(message, optional, tag="11")]
+    #[prost(message, optional, tag = "11")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The current state of this Data Fusion instance.
-    #[prost(enumeration="instance::State", tag="12")]
+    #[prost(enumeration = "instance::State", tag = "12")]
     pub state: i32,
     /// Output only. Additional information about the current state of this Data
     /// Fusion instance if available.
-    #[prost(string, tag="13")]
+    #[prost(string, tag = "13")]
     pub state_message: ::prost::alloc::string::String,
     /// Output only. Endpoint on which the Data Fusion UI is accessible.
-    #[prost(string, tag="14")]
+    #[prost(string, tag = "14")]
     pub service_endpoint: ::prost::alloc::string::String,
     /// Name of the zone in which the Data Fusion instance will be created. Only
     /// DEVELOPER instances use this field.
-    #[prost(string, tag="15")]
+    #[prost(string, tag = "15")]
     pub zone: ::prost::alloc::string::String,
     /// Current version of the Data Fusion. Only specifiable in Update.
-    #[prost(string, tag="16")]
+    #[prost(string, tag = "16")]
     pub version: ::prost::alloc::string::String,
     /// Output only. Deprecated. Use tenant_project_id instead to extract the tenant project ID.
     #[deprecated]
-    #[prost(string, tag="17")]
+    #[prost(string, tag = "17")]
     pub service_account: ::prost::alloc::string::String,
     /// Display name for an instance.
-    #[prost(string, tag="18")]
+    #[prost(string, tag = "18")]
     pub display_name: ::prost::alloc::string::String,
     /// Available versions that the instance can be upgraded to using
     /// UpdateInstanceRequest.
-    #[prost(message, repeated, tag="19")]
+    #[prost(message, repeated, tag = "19")]
     pub available_version: ::prost::alloc::vec::Vec<Version>,
     /// Output only. Endpoint on which the REST APIs is accessible.
-    #[prost(string, tag="20")]
+    #[prost(string, tag = "20")]
     pub api_endpoint: ::prost::alloc::string::String,
     /// Output only. Cloud Storage bucket generated by Data Fusion in the customer project.
-    #[prost(string, tag="21")]
+    #[prost(string, tag = "21")]
     pub gcs_bucket: ::prost::alloc::string::String,
     /// List of accelerators enabled for this CDF instance.
-    #[prost(message, repeated, tag="22")]
+    #[prost(message, repeated, tag = "22")]
     pub accelerators: ::prost::alloc::vec::Vec<Accelerator>,
     /// Output only. P4 service account for the customer project.
-    #[prost(string, tag="23")]
+    #[prost(string, tag = "23")]
     pub p4_service_account: ::prost::alloc::string::String,
     /// Output only. The name of the tenant project.
-    #[prost(string, tag="24")]
+    #[prost(string, tag = "24")]
     pub tenant_project_id: ::prost::alloc::string::String,
     /// User-managed service account to set on Dataproc when Cloud Data Fusion
     /// creates Dataproc to run data processing pipelines.
     ///
     /// This allows users to have fine-grained access control on Dataproc's
     /// accesses to cloud resources.
-    #[prost(string, tag="25")]
+    #[prost(string, tag = "25")]
     pub dataproc_service_account: ::prost::alloc::string::String,
     /// Option to enable granular role-based access control.
-    #[prost(bool, tag="27")]
+    #[prost(bool, tag = "27")]
     pub enable_rbac: bool,
     /// The crypto key configuration. This field is used by the Customer-Managed
     /// Encryption Keys (CMEK) feature.
-    #[prost(message, optional, tag="28")]
+    #[prost(message, optional, tag = "28")]
     pub crypto_key_config: ::core::option::Option<CryptoKeyConfig>,
     /// Output only. If the instance state is DISABLED, the reason for disabling the instance.
-    #[prost(enumeration="instance::DisabledReason", repeated, packed="false", tag="29")]
+    #[prost(
+        enumeration = "instance::DisabledReason",
+        repeated,
+        packed = "false",
+        tag = "29"
+    )]
     pub disabled_reason: ::prost::alloc::vec::Vec<i32>,
 }
 /// Nested message and enum types in `Instance`.
 pub mod instance {
     /// Represents the type of Data Fusion instance. Each type is configured with
     /// the default settings for processing and memory.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum Type {
         /// No type specified. The instance creation will fail.
@@ -287,7 +338,17 @@ pub mod instance {
         }
     }
     /// Represents the state of a Data Fusion instance
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum State {
         /// Instance does not have a state yet
@@ -336,7 +397,17 @@ pub mod instance {
         }
     }
     /// The reason for disabling the instance if the state is DISABLED.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum DisabledReason {
         /// This is an unknown reason for disabling.
@@ -364,34 +435,34 @@ pub struct ListInstancesRequest {
     /// in the format projects/{project}/locations/{location}. If the location is
     /// specified as '-' (wildcard), then all regions available to the project
     /// are queried, and the results are aggregated.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of items to return.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// The next_page_token value to use if there are additional
     /// results to retrieve for this list request.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
     /// List filter.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
     /// Sort results. Supported values are "name", "name desc",  or "" (unsorted).
-    #[prost(string, tag="5")]
+    #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
 /// Response message for the list instance request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListInstancesResponse {
     /// Represents a list of Data Fusion instances.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub instances: ::prost::alloc::vec::Vec<Instance>,
     /// Token to retrieve the next page of results or empty if there are no more
     /// results in the list.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
     /// Locations that could not be reached.
-    #[prost(string, repeated, tag="3")]
+    #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for the list available versions request.
@@ -399,30 +470,30 @@ pub struct ListInstancesResponse {
 pub struct ListAvailableVersionsRequest {
     /// Required. The project and location for which to retrieve instance information
     /// in the format projects/{project}/locations/{location}.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of items to return.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// The next_page_token value to use if there are additional
     /// results to retrieve for this list request.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
     /// Whether or not to return the latest patch of every available minor version.
     /// If true, only the latest patch will be returned. Ex. if allowed versions is
     /// [6.1.1, 6.1.2, 6.2.0] then response will be [6.1.2, 6.2.0]
-    #[prost(bool, tag="4")]
+    #[prost(bool, tag = "4")]
     pub latest_patch_only: bool,
 }
 /// Response message for the list available versions request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAvailableVersionsResponse {
     /// Represents a list of versions that are supported.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub available_versions: ::prost::alloc::vec::Vec<Version>,
     /// Token to retrieve the next page of results or empty if there are no more
     /// results in the list.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for getting details about a Data Fusion instance.
@@ -430,7 +501,7 @@ pub struct ListAvailableVersionsResponse {
 pub struct GetInstanceRequest {
     /// Required. The instance resource name in the format
     /// projects/{project}/locations/{location}/instances/{instance}.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for creating a Data Fusion instance.
@@ -438,13 +509,13 @@ pub struct GetInstanceRequest {
 pub struct CreateInstanceRequest {
     /// Required. The instance's project and location in the format
     /// projects/{project}/locations/{location}.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The name of the instance to create.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub instance_id: ::prost::alloc::string::String,
     /// An instance resource.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub instance: ::core::option::Option<Instance>,
 }
 /// Request message for deleting a Data Fusion instance.
@@ -452,7 +523,7 @@ pub struct CreateInstanceRequest {
 pub struct DeleteInstanceRequest {
     /// Required. The instance resource name in the format
     /// projects/{project}/locations/{location}/instances/{instance}
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for updating a Data Fusion instance.
@@ -463,7 +534,7 @@ pub struct UpdateInstanceRequest {
     /// Required. The instance resource that replaces the resource on the server. Currently,
     /// Data Fusion only allows replacing labels, options, and stack driver
     /// settings. All other fields will be ignored.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub instance: ::core::option::Option<Instance>,
     /// Field mask is used to specify the fields that the update will overwrite
     /// in an instance resource. The fields specified in the update_mask are
@@ -471,7 +542,7 @@ pub struct UpdateInstanceRequest {
     /// A field will be overwritten if it is in the mask.
     /// If the user does not provide a mask, all the supported fields (labels,
     /// options, and version currently) will be overwritten.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for restarting a Data Fusion instance.
@@ -479,42 +550,45 @@ pub struct UpdateInstanceRequest {
 pub struct RestartInstanceRequest {
     /// Required. Name of the Data Fusion instance which need to be restarted in the form of
     /// projects/{project}/locations/{location}/instances/{instance}
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Represents the metadata of a long-running operation.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationMetadata {
     /// The time the operation was created.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The time the operation finished running.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Server-defined resource path for the target of the operation.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub target: ::prost::alloc::string::String,
     /// Name of the verb executed by the operation.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub verb: ::prost::alloc::string::String,
     /// Human-readable status of the operation if any.
-    #[prost(string, tag="5")]
+    #[prost(string, tag = "5")]
     pub status_detail: ::prost::alloc::string::String,
     /// Identifies whether the user has requested cancellation
     /// of the operation. Operations that have successfully been cancelled
     /// have \[Operation.error][\] value with a \[google.rpc.Status.code][google.rpc.Status.code\] of 1,
     /// corresponding to `Code.CANCELLED`.
-    #[prost(bool, tag="6")]
+    #[prost(bool, tag = "6")]
     pub requested_cancellation: bool,
     /// API version used to start the operation.
-    #[prost(string, tag="7")]
+    #[prost(string, tag = "7")]
     pub api_version: ::prost::alloc::string::String,
     /// Map to hold any additional status info for the operation
     /// If there is an accelerator being enabled/disabled/deleted, this will be
     /// populated with accelerator name as key and status as
     /// ENABLING, DISABLING or DELETING
-    #[prost(map="string, string", tag="8")]
-    pub additional_status: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map = "string, string", tag = "8")]
+    pub additional_status: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
 }
 /// Generated client implementations.
 pub mod data_fusion_client {

@@ -3,22 +3,24 @@
 pub struct Policy {
     /// Output only. The resource name, in the format `projects/*/policy`. There is
     /// at most one policy per project.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. A descriptive comment.
-    #[prost(string, tag="6")]
+    #[prost(string, tag = "6")]
     pub description: ::prost::alloc::string::String,
     /// Optional. Controls the evaluation of a Google-maintained global admission
     /// policy for common system-level images. Images not covered by the global
     /// policy will be subject to the project admission policy. This setting
     /// has no effect when specified inside a global admission policy.
-    #[prost(enumeration="policy::GlobalPolicyEvaluationMode", tag="7")]
+    #[prost(enumeration = "policy::GlobalPolicyEvaluationMode", tag = "7")]
     pub global_policy_evaluation_mode: i32,
     /// Optional. Admission policy allowlisting. A matching admission request will
     /// always be permitted. This feature is typically used to exclude Google or
     /// third-party infrastructure images from Binary Authorization policies.
-    #[prost(message, repeated, tag="2")]
-    pub admission_whitelist_patterns: ::prost::alloc::vec::Vec<AdmissionWhitelistPattern>,
+    #[prost(message, repeated, tag = "2")]
+    pub admission_whitelist_patterns: ::prost::alloc::vec::Vec<
+        AdmissionWhitelistPattern,
+    >,
     /// Optional. Per-cluster admission rules. Cluster spec format:
     /// `location.clusterId`. There can be at most one admission rule per cluster
     /// spec.
@@ -26,34 +28,56 @@ pub struct Policy {
     /// (e.g. us-central1).
     /// For `clusterId` syntax restrictions see
     /// <https://cloud.google.com/container-engine/reference/rest/v1/projects.zones.clusters.>
-    #[prost(map="string, message", tag="3")]
-    pub cluster_admission_rules: ::std::collections::HashMap<::prost::alloc::string::String, AdmissionRule>,
+    #[prost(map = "string, message", tag = "3")]
+    pub cluster_admission_rules: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        AdmissionRule,
+    >,
     /// Optional. Per-kubernetes-namespace admission rules. K8s namespace spec format:
     /// \[a-z.-\]+, e.g. 'some-namespace'
-    #[prost(map="string, message", tag="10")]
-    pub kubernetes_namespace_admission_rules: ::std::collections::HashMap<::prost::alloc::string::String, AdmissionRule>,
+    #[prost(map = "string, message", tag = "10")]
+    pub kubernetes_namespace_admission_rules: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        AdmissionRule,
+    >,
     /// Optional. Per-kubernetes-service-account admission rules. Service account
     /// spec format: `namespace:serviceaccount`. e.g. 'test-ns:default'
-    #[prost(map="string, message", tag="8")]
-    pub kubernetes_service_account_admission_rules: ::std::collections::HashMap<::prost::alloc::string::String, AdmissionRule>,
+    #[prost(map = "string, message", tag = "8")]
+    pub kubernetes_service_account_admission_rules: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        AdmissionRule,
+    >,
     /// Optional. Per-istio-service-identity admission rules. Istio service
     /// identity spec format:
     /// spiffe://<domain>/ns/<namespace>/sa/<serviceaccount> or
     /// <domain>/ns/<namespace>/sa/<serviceaccount>
     /// e.g. spiffe://example.com/ns/test-ns/sa/default
-    #[prost(map="string, message", tag="9")]
-    pub istio_service_identity_admission_rules: ::std::collections::HashMap<::prost::alloc::string::String, AdmissionRule>,
+    #[prost(map = "string, message", tag = "9")]
+    pub istio_service_identity_admission_rules: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        AdmissionRule,
+    >,
     /// Required. Default admission rule for a cluster without a per-cluster, per-
     /// kubernetes-service-account, or per-istio-service-identity admission rule.
-    #[prost(message, optional, tag="4")]
+    #[prost(message, optional, tag = "4")]
     pub default_admission_rule: ::core::option::Option<AdmissionRule>,
     /// Output only. Time when the policy was last updated.
-    #[prost(message, optional, tag="5")]
+    #[prost(message, optional, tag = "5")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Nested message and enum types in `Policy`.
 pub mod policy {
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum GlobalPolicyEvaluationMode {
         /// Not specified: DISABLE is assumed.
@@ -70,7 +94,9 @@ pub mod policy {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                GlobalPolicyEvaluationMode::Unspecified => "GLOBAL_POLICY_EVALUATION_MODE_UNSPECIFIED",
+                GlobalPolicyEvaluationMode::Unspecified => {
+                    "GLOBAL_POLICY_EVALUATION_MODE_UNSPECIFIED"
+                }
                 GlobalPolicyEvaluationMode::Enable => "ENABLE",
                 GlobalPolicyEvaluationMode::Disable => "DISABLE",
             }
@@ -85,7 +111,7 @@ pub struct AdmissionWhitelistPattern {
     /// This supports a trailing `*` wildcard, but this is allowed only in
     /// text after the `registry/` part. This also supports a trailing `**`
     /// wildcard which matches subdirectories of a given entry.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name_pattern: ::prost::alloc::string::String,
 }
 /// An [admission rule]\[google.cloud.binaryauthorization.v1.AdmissionRule\] specifies either that all container images
@@ -98,7 +124,7 @@ pub struct AdmissionWhitelistPattern {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AdmissionRule {
     /// Required. How this admission rule will be evaluated.
-    #[prost(enumeration="admission_rule::EvaluationMode", tag="1")]
+    #[prost(enumeration = "admission_rule::EvaluationMode", tag = "1")]
     pub evaluation_mode: i32,
     /// Optional. The resource names of the attestors that must attest to
     /// a container image, in the format `projects/*/attestors/*`. Each
@@ -108,15 +134,27 @@ pub struct AdmissionRule {
     ///
     /// Note: this field must be non-empty when the evaluation_mode field specifies
     /// REQUIRE_ATTESTATION, otherwise it must be empty.
-    #[prost(string, repeated, tag="2")]
-    pub require_attestations_by: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    #[prost(string, repeated, tag = "2")]
+    pub require_attestations_by: ::prost::alloc::vec::Vec<
+        ::prost::alloc::string::String,
+    >,
     /// Required. The action when a pod creation is denied by the admission rule.
-    #[prost(enumeration="admission_rule::EnforcementMode", tag="3")]
+    #[prost(enumeration = "admission_rule::EnforcementMode", tag = "3")]
     pub enforcement_mode: i32,
 }
 /// Nested message and enum types in `AdmissionRule`.
 pub mod admission_rule {
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum EvaluationMode {
         /// Do not use.
@@ -146,7 +184,17 @@ pub mod admission_rule {
     }
     /// Defines the possible actions when a pod creation is denied by an admission
     /// rule.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum EnforcementMode {
         /// Do not use.
@@ -165,7 +213,9 @@ pub mod admission_rule {
         pub fn as_str_name(&self) -> &'static str {
             match self {
                 EnforcementMode::Unspecified => "ENFORCEMENT_MODE_UNSPECIFIED",
-                EnforcementMode::EnforcedBlockAndAuditLog => "ENFORCED_BLOCK_AND_AUDIT_LOG",
+                EnforcementMode::EnforcedBlockAndAuditLog => {
+                    "ENFORCED_BLOCK_AND_AUDIT_LOG"
+                }
                 EnforcementMode::DryrunAuditLogOnly => "DRYRUN_AUDIT_LOG_ONLY",
             }
         }
@@ -178,16 +228,16 @@ pub mod admission_rule {
 pub struct Attestor {
     /// Required. The resource name, in the format:
     /// `projects/*/attestors/*`. This field may not be updated.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. A descriptive comment.  This field may be updated.
     /// The field may be displayed in chooser dialogs.
-    #[prost(string, tag="6")]
+    #[prost(string, tag = "6")]
     pub description: ::prost::alloc::string::String,
     /// Output only. Time when the attestor was last updated.
-    #[prost(message, optional, tag="4")]
+    #[prost(message, optional, tag = "4")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    #[prost(oneof="attestor::AttestorType", tags="3")]
+    #[prost(oneof = "attestor::AttestorType", tags = "3")]
     pub attestor_type: ::core::option::Option<attestor::AttestorType>,
 }
 /// Nested message and enum types in `Attestor`.
@@ -196,7 +246,7 @@ pub mod attestor {
     pub enum AttestorType {
         /// This specifies how an attestation will be read, and how it will be used
         /// during policy enforcement.
-        #[prost(message, tag="3")]
+        #[prost(message, tag = "3")]
         UserOwnedGrafeasNote(super::UserOwnedGrafeasNote),
     }
 }
@@ -211,7 +261,7 @@ pub struct UserOwnedGrafeasNote {
     /// An attestation by this attestor is stored as a Grafeas
     /// Attestation.Authority Occurrence that names a container image and that
     /// links to this Note. Grafeas is an external dependency.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub note_reference: ::prost::alloc::string::String,
     /// Optional. Public keys that verify attestations signed by this
     /// attestor.  This field may be updated.
@@ -222,7 +272,7 @@ pub struct UserOwnedGrafeasNote {
     ///
     /// If this field is empty, this attestor always returns that no
     /// valid attestations exist.
-    #[prost(message, repeated, tag="2")]
+    #[prost(message, repeated, tag = "2")]
     pub public_keys: ::prost::alloc::vec::Vec<AttestorPublicKey>,
     /// Output only. This field will contain the service account email address
     /// that this Attestor will use as the principal when querying Container
@@ -233,7 +283,7 @@ pub struct UserOwnedGrafeasNote {
     /// This email address is fixed for the lifetime of the Attestor, but callers
     /// should not make any other assumptions about the service account email;
     /// future versions may use an email based on a different naming pattern.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub delegation_service_account_email: ::prost::alloc::string::String,
 }
 /// A public key in the PkixPublicKey format (see
@@ -244,14 +294,14 @@ pub struct UserOwnedGrafeasNote {
 pub struct PkixPublicKey {
     /// A PEM-encoded public key, as described in
     /// <https://tools.ietf.org/html/rfc7468#section-13>
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub public_key_pem: ::prost::alloc::string::String,
     /// The signature algorithm used to verify a message against a signature using
     /// this key.
     /// These signature algorithm must match the structure and any object
     /// identifiers encoded in `public_key_pem` (i.e. this algorithm must match
     /// that of the public key).
-    #[prost(enumeration="pkix_public_key::SignatureAlgorithm", tag="2")]
+    #[prost(enumeration = "pkix_public_key::SignatureAlgorithm", tag = "2")]
     pub signature_algorithm: i32,
 }
 /// Nested message and enum types in `PkixPublicKey`.
@@ -262,7 +312,17 @@ pub mod pkix_public_key {
     /// PemKeyType, which is in turn based on KMS's supported signing algorithms.
     /// See <https://cloud.google.com/kms/docs/algorithms.> In the future, BinAuthz
     /// might support additional public key types independently of Tink and/or KMS.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum SignatureAlgorithm {
         /// Not specified.
@@ -302,10 +362,18 @@ pub mod pkix_public_key {
                 SignatureAlgorithm::RsaPss3072Sha256 => "RSA_PSS_3072_SHA256",
                 SignatureAlgorithm::RsaPss4096Sha256 => "RSA_PSS_4096_SHA256",
                 SignatureAlgorithm::RsaPss4096Sha512 => "RSA_PSS_4096_SHA512",
-                SignatureAlgorithm::RsaSignPkcs12048Sha256 => "RSA_SIGN_PKCS1_2048_SHA256",
-                SignatureAlgorithm::RsaSignPkcs13072Sha256 => "RSA_SIGN_PKCS1_3072_SHA256",
-                SignatureAlgorithm::RsaSignPkcs14096Sha256 => "RSA_SIGN_PKCS1_4096_SHA256",
-                SignatureAlgorithm::RsaSignPkcs14096Sha512 => "RSA_SIGN_PKCS1_4096_SHA512",
+                SignatureAlgorithm::RsaSignPkcs12048Sha256 => {
+                    "RSA_SIGN_PKCS1_2048_SHA256"
+                }
+                SignatureAlgorithm::RsaSignPkcs13072Sha256 => {
+                    "RSA_SIGN_PKCS1_3072_SHA256"
+                }
+                SignatureAlgorithm::RsaSignPkcs14096Sha256 => {
+                    "RSA_SIGN_PKCS1_4096_SHA256"
+                }
+                SignatureAlgorithm::RsaSignPkcs14096Sha512 => {
+                    "RSA_SIGN_PKCS1_4096_SHA512"
+                }
                 SignatureAlgorithm::EcdsaP256Sha256 => "ECDSA_P256_SHA256",
                 SignatureAlgorithm::EcdsaP384Sha384 => "ECDSA_P384_SHA384",
                 SignatureAlgorithm::EcdsaP521Sha512 => "ECDSA_P521_SHA512",
@@ -318,7 +386,7 @@ pub mod pkix_public_key {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AttestorPublicKey {
     /// Optional. A descriptive comment. This field may be updated.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub comment: ::prost::alloc::string::String,
     /// The ID of this public key.
     /// Signatures verified by BinAuthz must include the ID of the public key that
@@ -327,9 +395,9 @@ pub struct AttestorPublicKey {
     /// Additional restrictions on this field can be imposed based on which public
     /// key type is encapsulated. See the documentation on `public_key` cases below
     /// for details.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub id: ::prost::alloc::string::String,
-    #[prost(oneof="attestor_public_key::PublicKey", tags="3, 5")]
+    #[prost(oneof = "attestor_public_key::PublicKey", tags = "3, 5")]
     pub public_key: ::core::option::Option<attestor_public_key::PublicKey>,
 }
 /// Nested message and enum types in `AttestorPublicKey`.
@@ -344,7 +412,7 @@ pub mod attestor_public_key {
         /// computes this ID as the OpenPGP RFC4880 V4 fingerprint, represented as
         /// upper-case hex.  If `id` is provided by the caller, it will be
         /// overwritten by the API-calculated ID.
-        #[prost(string, tag="3")]
+        #[prost(string, tag = "3")]
         AsciiArmoredPgpPublicKey(::prost::alloc::string::String),
         /// A raw PKIX SubjectPublicKeyInfo format public key.
         ///
@@ -352,7 +420,7 @@ pub mod attestor_public_key {
         /// type of public key, but it MUST be a valid RFC3986 URI. If `id` is left
         /// blank, a default one will be computed based on the digest of the DER
         /// encoding of the public key.
-        #[prost(message, tag="5")]
+        #[prost(message, tag = "5")]
         PkixPublicKey(super::PkixPublicKey),
     }
 }
@@ -361,7 +429,7 @@ pub mod attestor_public_key {
 pub struct GetPolicyRequest {
     /// Required. The resource name of the \[policy][google.cloud.binaryauthorization.v1.Policy\] to retrieve,
     /// in the format `projects/*/policy`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for \[BinauthzManagementService.UpdatePolicy][\].
@@ -370,22 +438,22 @@ pub struct UpdatePolicyRequest {
     /// Required. A new or updated \[policy][google.cloud.binaryauthorization.v1.Policy\] value. The service will
     /// overwrite the [policy name]\[google.cloud.binaryauthorization.v1.Policy.name\] field with the resource name in
     /// the request URL, in the format `projects/*/policy`.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub policy: ::core::option::Option<Policy>,
 }
 /// Request message for \[BinauthzManagementService.CreateAttestor][\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateAttestorRequest {
     /// Required. The parent of this \[attestor][google.cloud.binaryauthorization.v1.Attestor\].
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The \[attestors][google.cloud.binaryauthorization.v1.Attestor\] ID.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub attestor_id: ::prost::alloc::string::String,
     /// Required. The initial \[attestor][google.cloud.binaryauthorization.v1.Attestor\] value. The service will
     /// overwrite the [attestor name]\[google.cloud.binaryauthorization.v1.Attestor.name\] field with the resource name,
     /// in the format `projects/*/attestors/*`.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub attestor: ::core::option::Option<Attestor>,
 }
 /// Request message for \[BinauthzManagementService.GetAttestor][\].
@@ -393,7 +461,7 @@ pub struct CreateAttestorRequest {
 pub struct GetAttestorRequest {
     /// Required. The name of the \[attestor][google.cloud.binaryauthorization.v1.Attestor\] to retrieve, in the format
     /// `projects/*/attestors/*`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for \[BinauthzManagementService.UpdateAttestor][\].
@@ -402,7 +470,7 @@ pub struct UpdateAttestorRequest {
     /// Required. The updated \[attestor][google.cloud.binaryauthorization.v1.Attestor\] value. The service will
     /// overwrite the [attestor name]\[google.cloud.binaryauthorization.v1.Attestor.name\] field with the resource name
     /// in the request URL, in the format `projects/*/attestors/*`.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub attestor: ::core::option::Option<Attestor>,
 }
 /// Request message for \[BinauthzManagementService.ListAttestors][\].
@@ -410,28 +478,28 @@ pub struct UpdateAttestorRequest {
 pub struct ListAttestorsRequest {
     /// Required. The resource name of the project associated with the
     /// \[attestors][google.cloud.binaryauthorization.v1.Attestor\], in the format `projects/*`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Requested page size. The server may return fewer results than requested. If
     /// unspecified, the server will pick an appropriate default.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// A token identifying a page of results the server should return. Typically,
     /// this is the value of \[ListAttestorsResponse.next_page_token][google.cloud.binaryauthorization.v1.ListAttestorsResponse.next_page_token\] returned
     /// from the previous call to the `ListAttestors` method.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for \[BinauthzManagementService.ListAttestors][\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAttestorsResponse {
     /// The list of \[attestors][google.cloud.binaryauthorization.v1.Attestor\].
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub attestors: ::prost::alloc::vec::Vec<Attestor>,
     /// A token to retrieve the next page of results. Pass this value in the
     /// \[ListAttestorsRequest.page_token][google.cloud.binaryauthorization.v1.ListAttestorsRequest.page_token\] field in the subsequent call to the
     /// `ListAttestors` method to retrieve the next page of results.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for \[BinauthzManagementService.DeleteAttestor][\].
@@ -439,7 +507,7 @@ pub struct ListAttestorsResponse {
 pub struct DeleteAttestorRequest {
     /// Required. The name of the \[attestors][google.cloud.binaryauthorization.v1.Attestor\] to delete, in the format
     /// `projects/*/attestors/*`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request to read the current system policy.
@@ -447,7 +515,7 @@ pub struct DeleteAttestorRequest {
 pub struct GetSystemPolicyRequest {
     /// Required. The resource name, in the format `locations/*/policy`.
     /// Note that the system policy is not associated with a project.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for
@@ -457,21 +525,23 @@ pub struct ValidateAttestationOccurrenceRequest {
     /// Required. The resource name of the \[Attestor][google.cloud.binaryauthorization.v1.Attestor\] of the
     /// \[occurrence][grafeas.v1.Occurrence\], in the format
     /// `projects/*/attestors/*`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub attestor: ::prost::alloc::string::String,
     /// Required. An \[AttestationOccurrence][grafeas.v1.AttestationOccurrence\] to
     /// be checked that it can be verified by the Attestor. It does not have to be
     /// an existing entity in Container Analysis. It must otherwise be a valid
     /// AttestationOccurrence.
-    #[prost(message, optional, tag="2")]
-    pub attestation: ::core::option::Option<super::super::super::super::grafeas::v1::AttestationOccurrence>,
+    #[prost(message, optional, tag = "2")]
+    pub attestation: ::core::option::Option<
+        super::super::super::super::grafeas::v1::AttestationOccurrence,
+    >,
     /// Required. The resource name of the \[Note][grafeas.v1.Note\] to which the
     /// containing \[Occurrence][grafeas.v1.Occurrence\] is associated.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub occurrence_note: ::prost::alloc::string::String,
     /// Required. The URI of the artifact (e.g. container image) that is the
     /// subject of the containing \[Occurrence][grafeas.v1.Occurrence\].
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub occurrence_resource_uri: ::prost::alloc::string::String,
 }
 /// Response message for
@@ -479,16 +549,26 @@ pub struct ValidateAttestationOccurrenceRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ValidateAttestationOccurrenceResponse {
     /// The result of the Attestation validation.
-    #[prost(enumeration="validate_attestation_occurrence_response::Result", tag="1")]
+    #[prost(enumeration = "validate_attestation_occurrence_response::Result", tag = "1")]
     pub result: i32,
     /// The reason for denial if the Attestation couldn't be validated.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub denial_reason: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `ValidateAttestationOccurrenceResponse`.
 pub mod validate_attestation_occurrence_response {
     /// The enum returned in the "result" field.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum Result {
         /// Unspecified.

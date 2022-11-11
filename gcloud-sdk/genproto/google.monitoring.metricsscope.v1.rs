@@ -10,16 +10,16 @@ pub struct MetricsScope {
     /// specified with the scoping project number.
     /// Example:
     /// `locations/global/metricsScopes/{SCOPING_PROJECT_ID_OR_NUMBER}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. The time when this `Metrics Scope` was created.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The time when this `Metrics Scope` record was last updated.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The list of projects monitored by this `Metrics Scope`.
-    #[prost(message, repeated, tag="4")]
+    #[prost(message, repeated, tag = "4")]
     pub monitored_projects: ::prost::alloc::vec::Vec<MonitoredProject>,
 }
 /// A [project being
@@ -32,10 +32,10 @@ pub struct MonitoredProject {
     /// contains the equivalent project numbers.
     /// Example:
     /// `locations/global/metricsScopes/{SCOPING_PROJECT_ID_OR_NUMBER}/projects/{MONITORED_PROJECT_ID_OR_NUMBER}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. The time when this `MonitoredProject` was created.
-    #[prost(message, optional, tag="6")]
+    #[prost(message, optional, tag = "6")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Request for the `GetMetricsScope` method.
@@ -44,7 +44,7 @@ pub struct GetMetricsScopeRequest {
     /// Required. The resource name of the `Metrics Scope`.
     /// Example:
     /// `locations/global/metricsScopes/{SCOPING_PROJECT_ID_OR_NUMBER}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request for the `ListMetricsScopesByMonitoredProject` method.
@@ -53,7 +53,7 @@ pub struct ListMetricsScopesByMonitoredProjectRequest {
     /// Required. The resource name of the `Monitored Project` being requested.
     /// Example:
     /// `projects/{MONITORED_PROJECT_ID_OR_NUMBER}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub monitored_resource_container: ::prost::alloc::string::String,
 }
 /// Response for the `ListMetricsScopesByMonitoredProject` method.
@@ -61,7 +61,7 @@ pub struct ListMetricsScopesByMonitoredProjectRequest {
 pub struct ListMetricsScopesByMonitoredProjectResponse {
     /// A set of all metrics scopes that the specified monitored project has been
     /// added to.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub metrics_scopes: ::prost::alloc::vec::Vec<MetricsScope>,
 }
 /// Request for the `CreateMonitoredProject` method.
@@ -71,13 +71,13 @@ pub struct CreateMonitoredProjectRequest {
     /// project.
     /// Example:
     /// `locations/global/metricsScopes/{SCOPING_PROJECT_ID_OR_NUMBER}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The initial `MonitoredProject` configuration.
     /// Specify only the `monitored_project.name` field. All other fields are
     /// ignored. The `monitored_project.name` must be in the format:
     /// `locations/global/metricsScopes/{SCOPING_PROJECT_ID_OR_NUMBER}/projects/{MONITORED_PROJECT_ID_OR_NUMBER}`
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub monitored_project: ::core::option::Option<MonitoredProject>,
 }
 /// Request for the `DeleteMonitoredProject` method.
@@ -90,7 +90,7 @@ pub struct DeleteMonitoredProjectRequest {
     /// Authorization requires the following [Google
     /// IAM](<https://cloud.google.com/iam>) permissions on both the `Metrics Scope`
     /// and on the `MonitoredProject`: `monitoring.metricsScopes.link`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Contains metadata for longrunning operation for the edit Metrics Scope
@@ -98,19 +98,29 @@ pub struct DeleteMonitoredProjectRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationMetadata {
     /// Current state of the batch operation.
-    #[prost(enumeration="operation_metadata::State", tag="1")]
+    #[prost(enumeration = "operation_metadata::State", tag = "1")]
     pub state: i32,
     /// The time when the batch request was received.
-    #[prost(message, optional, tag="5")]
+    #[prost(message, optional, tag = "5")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The time when the operation result was last updated.
-    #[prost(message, optional, tag="6")]
+    #[prost(message, optional, tag = "6")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Nested message and enum types in `OperationMetadata`.
 pub mod operation_metadata {
     /// Batch operation states.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum State {
         /// Invalid.

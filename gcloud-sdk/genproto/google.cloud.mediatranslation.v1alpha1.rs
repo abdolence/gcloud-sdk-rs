@@ -40,13 +40,13 @@ pub struct TranslateSpeechConfig {
     ///    sample rate of the file being used.
     ///
     ///
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub audio_encoding: ::prost::alloc::string::String,
     /// Required. Source language code (BCP-47) of the input audio.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub source_language_code: ::prost::alloc::string::String,
     /// Required. Target language code (BCP-47) of the output.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub target_language_code: ::prost::alloc::string::String,
     /// Optional. A list of up to 3 additional language codes (BCP-47), listing possible
     /// alternative languages of the supplied audio. If alternative source
@@ -61,24 +61,26 @@ pub struct TranslateSpeechConfig {
     /// the translation will happen between source_language_code and
     /// alternative_source_language_codes. The target_language_code will be
     /// ignored. It will be useful in conversation mode.
-    #[prost(string, repeated, tag="6")]
-    pub alternative_source_language_codes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    #[prost(string, repeated, tag = "6")]
+    pub alternative_source_language_codes: ::prost::alloc::vec::Vec<
+        ::prost::alloc::string::String,
+    >,
     /// Optional. Sample rate in Hertz of the audio data. Valid values are:
     /// 8000-48000. 16000 is optimal. For best results, set the sampling rate of
     /// the audio source to 16000 Hz. If that's not possible, use the native sample
     /// rate of the audio source (instead of re-sampling).
     ///
-    #[prost(int32, tag="4")]
+    #[prost(int32, tag = "4")]
     pub sample_rate_hertz: i32,
     /// Optional.
-    #[prost(string, tag="5")]
+    #[prost(string, tag = "5")]
     pub model: ::prost::alloc::string::String,
 }
 /// Config used for streaming translation.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StreamingTranslateSpeechConfig {
     /// Required. The common config for all the following audio contents.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub audio_config: ::core::option::Option<TranslateSpeechConfig>,
     /// Optional. If `false` or omitted, the system performs
     /// continuous translation (continuing to wait for and process audio even if
@@ -94,7 +96,7 @@ pub struct StreamingTranslateSpeechConfig {
     /// responses until the stream is terminated. To construct the complete
     /// sentence in a streaming way, one should override (if `is_final` of previous
     /// response is false), or append (if 'is_final' of previous response is true).
-    #[prost(bool, tag="2")]
+    #[prost(bool, tag = "2")]
     pub single_utterance: bool,
     /// Optional. Stability control for the media translation text. The value should be
     /// "LOW", "MEDIUM", "HIGH". It applies to text/text_and_audio translation
@@ -115,7 +117,7 @@ pub struct StreamingTranslateSpeechConfig {
     /// responses. Thus it may impact quality in some situation. "HIGH" stability
     /// will generate "final" responses more frequently.
     ///
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub stability: ::prost::alloc::string::String,
     /// Optional. Translation mode, the value should be "text", "audio", "text_and_audio".
     /// Default empty string will be treated as "text".
@@ -130,13 +132,13 @@ pub struct StreamingTranslateSpeechConfig {
     /// "is_final" is true, we will also output its corresponding audio
     /// translation. When "is_final" is false, audio_translation field will be
     /// empty.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub translation_mode: ::prost::alloc::string::String,
     /// Optional. If disable_interim_results is true, we will only return "final" responses.
     /// Otherwise, we will return all the responses. Default value will be false.
     /// User can only set disable_interim_results to be true with "high" stability
     /// mode.
-    #[prost(bool, tag="5")]
+    #[prost(bool, tag = "5")]
     pub disable_interim_results: bool,
 }
 /// The top-level message sent by the client for the `StreamingTranslateSpeech`
@@ -147,8 +149,13 @@ pub struct StreamingTranslateSpeechConfig {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StreamingTranslateSpeechRequest {
     /// The streaming request, which is either a streaming config or content.
-    #[prost(oneof="streaming_translate_speech_request::StreamingRequest", tags="1, 2")]
-    pub streaming_request: ::core::option::Option<streaming_translate_speech_request::StreamingRequest>,
+    #[prost(
+        oneof = "streaming_translate_speech_request::StreamingRequest",
+        tags = "1, 2"
+    )]
+    pub streaming_request: ::core::option::Option<
+        streaming_translate_speech_request::StreamingRequest,
+    >,
 }
 /// Nested message and enum types in `StreamingTranslateSpeechRequest`.
 pub mod streaming_translate_speech_request {
@@ -158,7 +165,7 @@ pub mod streaming_translate_speech_request {
         /// Provides information to the recognizer that specifies how to process the
         /// request. The first `StreamingTranslateSpeechRequest` message must contain
         /// a `streaming_config` message.
-        #[prost(message, tag="1")]
+        #[prost(message, tag = "1")]
         StreamingConfig(super::StreamingTranslateSpeechConfig),
         /// The audio data to be translated. Sequential chunks of audio data are sent
         /// in sequential `StreamingTranslateSpeechRequest` messages. The first
@@ -168,7 +175,7 @@ pub mod streaming_translate_speech_request {
         /// encoded as specified in `StreamingTranslateSpeechConfig`. Note: as with
         /// all bytes fields, protobuffers use a pure binary representation (not
         /// base64).
-        #[prost(bytes, tag="2")]
+        #[prost(bytes, tag = "2")]
         AudioContent(::prost::alloc::vec::Vec<u8>),
     }
 }
@@ -177,18 +184,22 @@ pub mod streaming_translate_speech_request {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StreamingTranslateSpeechResult {
     /// Text translation result.
-    #[prost(message, optional, tag="1")]
-    pub text_translation_result: ::core::option::Option<streaming_translate_speech_result::TextTranslationResult>,
+    #[prost(message, optional, tag = "1")]
+    pub text_translation_result: ::core::option::Option<
+        streaming_translate_speech_result::TextTranslationResult,
+    >,
     /// Audio translation result.
-    #[prost(message, optional, tag="2")]
-    pub audio_translation_result: ::core::option::Option<streaming_translate_speech_result::AudioTranslationResult>,
+    #[prost(message, optional, tag = "2")]
+    pub audio_translation_result: ::core::option::Option<
+        streaming_translate_speech_result::AudioTranslationResult,
+    >,
     /// Output only. The debug only recognition result in original language. This field is debug
     /// only and will be set to empty string if not available.
     /// This is implementation detail and will not be backward compatible.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub recognition_result: ::prost::alloc::string::String,
     /// Output only.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub detected_source_language_code: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `StreamingTranslateSpeechResult`.
@@ -197,7 +208,7 @@ pub mod streaming_translate_speech_result {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct TextTranslationResult {
         /// Output only. The translated sentence.
-        #[prost(string, tag="1")]
+        #[prost(string, tag = "1")]
         pub translation: ::prost::alloc::string::String,
         /// Output only. If `false`, this `StreamingTranslateSpeechResult` represents
         /// an interim result that may change. If `true`, this is the final time the
@@ -205,14 +216,14 @@ pub mod streaming_translate_speech_result {
         /// `StreamingTranslateSpeechResult`, the streaming translator will not
         /// return any further hypotheses for this portion of the transcript and
         /// corresponding audio.
-        #[prost(bool, tag="2")]
+        #[prost(bool, tag = "2")]
         pub is_final: bool,
     }
     /// Audio translation result.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AudioTranslationResult {
         /// Output only. The translated audio.
-        #[prost(bytes="vec", tag="1")]
+        #[prost(bytes = "vec", tag = "1")]
         pub audio_translation: ::prost::alloc::vec::Vec<u8>,
     }
 }
@@ -222,7 +233,7 @@ pub mod streaming_translate_speech_result {
 pub struct StreamingTranslateSpeechResponse {
     /// Output only. If set, returns a \[google.rpc.Status][google.rpc.Status\] message that
     /// specifies the error for the operation.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub error: ::core::option::Option<super::super::super::rpc::Status>,
     /// Output only. The translation result that is currently being processed (For text
     /// translation, `is_final` could be `true` or `false`.
@@ -230,16 +241,29 @@ pub struct StreamingTranslateSpeechResponse {
     /// audio response is stable and will not get changed later. For
     /// text_and_audio, we still have `is_final` field in text translation, but we
     /// only output corresponsding audio when `is_final` is true.).
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub result: ::core::option::Option<StreamingTranslateSpeechResult>,
     /// Output only. Indicates the type of speech event.
-    #[prost(enumeration="streaming_translate_speech_response::SpeechEventType", tag="3")]
+    #[prost(
+        enumeration = "streaming_translate_speech_response::SpeechEventType",
+        tag = "3"
+    )]
     pub speech_event_type: i32,
 }
 /// Nested message and enum types in `StreamingTranslateSpeechResponse`.
 pub mod streaming_translate_speech_response {
     /// Indicates the type of speech event.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum SpeechEventType {
         /// No speech event specified.

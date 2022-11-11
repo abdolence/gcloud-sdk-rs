@@ -12,18 +12,28 @@
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CompleteDeploymentEvent {
     /// The `state` of this deployment completion event.
-    #[prost(enumeration="complete_deployment_event::State", tag="3")]
+    #[prost(enumeration = "complete_deployment_event::State", tag = "3")]
     pub state: i32,
     /// Flag to indicate if deployment is preview only.
-    #[prost(bool, tag="4")]
+    #[prost(bool, tag = "4")]
     pub preview_only: bool,
-    #[prost(oneof="complete_deployment_event::Result", tags="1, 2")]
+    #[prost(oneof = "complete_deployment_event::Result", tags = "1, 2")]
     pub result: ::core::option::Option<complete_deployment_event::Result>,
 }
 /// Nested message and enum types in `CompleteDeploymentEvent`.
 pub mod complete_deployment_event {
     /// State of the completed deployment.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum State {
         /// The zero value. It is applied when `state` is unset. Do not use.
@@ -51,10 +61,10 @@ pub mod complete_deployment_event {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Result {
         /// Result of the Deployment recorded upon completion.
-        #[prost(message, tag="1")]
+        #[prost(message, tag = "1")]
         Value(super::CompleteDeploymentResult),
         /// Result of the Deployment if the `Operation` results in an error.
-        #[prost(message, tag="2")]
+        #[prost(message, tag = "2")]
         Error(super::super::super::super::super::rpc::Status),
     }
 }
@@ -63,14 +73,14 @@ pub mod complete_deployment_event {
 pub struct CompleteDeploymentResult {
     /// This is the Deployment that completed.
     /// Format is projects/{project}/locations/{location}/deployments/{name}.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub deployment: ::prost::alloc::string::String,
     /// This is the Preview that completed.
     /// Format is projects/{project}/locations/{location}/previews/{preview}
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub preview: ::prost::alloc::string::String,
     /// The message that is returned when a deployment completes. This **can** be
     /// an error message if the `Deployment` `state` is `FAILED`.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub message: ::prost::alloc::string::String,
 }

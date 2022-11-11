@@ -3,7 +3,7 @@
 pub struct GetSupportAccountRequest {
     /// The resource name of the support accounts. For example:
     /// `supportAccounts/accountA`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// The request message for `ListSupportAccount`.
@@ -13,26 +13,26 @@ pub struct ListSupportAccountsRequest {
     /// account list by a cloud_resource. For example, to filter results by support
     /// accounts associated with an Organization, its value should be:
     /// "cloud_resource:organizations/<organization_id>"
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub filter: ::prost::alloc::string::String,
     /// Maximum number of accounts fetched with each request.
-    #[prost(int64, tag="2")]
+    #[prost(int64, tag = "2")]
     pub page_size: i64,
     /// A token identifying the page of results to return. If unspecified, the
     /// first page is retrieved.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
 /// The response message for `ListSupportAccount`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSupportAccountsResponse {
     /// A list of support accounts.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub accounts: ::prost::alloc::vec::Vec<super::common::SupportAccount>,
     /// A token to retrieve the next page of results. This should be passed on in
     /// `page_token` field of `ListSupportAccountRequest` for next request. If
     /// unspecified, there are no more results to retrieve.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request message for `GetCase` method.
@@ -40,7 +40,7 @@ pub struct ListSupportAccountsResponse {
 pub struct GetCaseRequest {
     /// Name of case resource requested.
     /// For example: "supportAccounts/accountA/cases/123"
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// The request message for `ListCase` method.
@@ -48,81 +48,80 @@ pub struct GetCaseRequest {
 pub struct ListCasesRequest {
     /// Name of the account resource for which cases are requested. For example:
     /// "supportAccounts/accountA"
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The filter applied to the search results. Currently it only accepts "OPEN"
     /// or "CLOSED" strings, filtering out cases that are open or resolved.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub filter: ::prost::alloc::string::String,
     /// Maximum number of cases fetched with each request.
-    #[prost(int64, tag="3")]
+    #[prost(int64, tag = "3")]
     pub page_size: i64,
     /// A token identifying the page of results to return. If unspecified, the
     /// first page is retrieved.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub page_token: ::prost::alloc::string::String,
 }
 /// The response message for `ListCase` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCasesResponse {
     /// A list of cases.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub cases: ::prost::alloc::vec::Vec<super::common::Case>,
     /// A token to retrieve the next page of results. This should be passed on in
     /// `page_token` field of `ListCaseRequest` for next request. If unspecified,
     /// there are no more results to retrieve.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request message for `ListComments` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCommentsRequest {
     /// The resource name of case for which comments should be listed.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// The response message for `ListComments` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCommentsResponse {
     /// A list of comments.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub comments: ::prost::alloc::vec::Vec<super::common::Comment>,
 }
 /// The request message for `CreateCase` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateCaseRequest {
     /// The resource name for `SupportAccount` under which this case is created.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The case resource to create.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub case: ::core::option::Option<super::common::Case>,
 }
 /// The request message for `UpdateCase` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateCaseRequest {
     /// The case resource to update.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub case: ::core::option::Option<super::common::Case>,
     /// A field that represents attributes of a Case object that should be updated
     /// as part of this request.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The request message for `CreateComment` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateCommentRequest {
     /// The resource name of case to which this comment should be added.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The `Comment` to be added to this case.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub comment: ::core::option::Option<super::common::Comment>,
 }
 /// The request message for `GetIssueTaxonomy` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GetIssueTaxonomyRequest {
-}
+pub struct GetIssueTaxonomyRequest {}
 /// Generated client implementations.
 pub mod cloud_support_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]

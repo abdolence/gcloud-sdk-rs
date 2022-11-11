@@ -2,10 +2,10 @@
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RelatedUrl {
     /// Specific URL associated with the resource.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub url: ::prost::alloc::string::String,
     /// Label to describe usage of the URL.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub label: ::prost::alloc::string::String,
 }
 /// Verifiers (e.g. Kritis implementations) MUST verify signatures
@@ -38,7 +38,7 @@ pub struct Signature {
     /// the payload explicitly. Alternatively, a message might have a canonical
     /// serialization that can always be unambiguously computed to derive the
     /// payload.
-    #[prost(bytes="vec", tag="1")]
+    #[prost(bytes = "vec", tag = "1")]
     pub signature: ::prost::alloc::vec::Vec<u8>,
     /// The identifier for the public key that verifies this signature.
     ///    * The `public_key_id` is required.
@@ -57,7 +57,7 @@ pub struct Signature {
     /// serialization):
     ///    * "ni:///sha-256;cD9o9Cq6LG3jD0iKXqEi_vdjJGecm_iXkbqVoScViaU"
     ///    * "nih:///sha-256;703f68f42aba2c6de30f488a5ea122fef76324679c9bf89791ba95a1271589a5"
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub public_key_id: ::prost::alloc::string::String,
 }
 /// MUST match
@@ -65,18 +65,18 @@ pub struct Signature {
 /// authenticated message of arbitrary type.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Envelope {
-    #[prost(bytes="vec", tag="1")]
+    #[prost(bytes = "vec", tag = "1")]
     pub payload: ::prost::alloc::vec::Vec<u8>,
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub payload_type: ::prost::alloc::string::String,
-    #[prost(message, repeated, tag="3")]
+    #[prost(message, repeated, tag = "3")]
     pub signatures: ::prost::alloc::vec::Vec<EnvelopeSignature>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EnvelopeSignature {
-    #[prost(bytes="vec", tag="1")]
+    #[prost(bytes = "vec", tag = "1")]
     pub sig: ::prost::alloc::vec::Vec<u8>,
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub keyid: ::prost::alloc::string::String,
 }
 /// Indicates the location at which a package was found.
@@ -84,7 +84,7 @@ pub struct EnvelopeSignature {
 pub struct FileLocation {
     /// For jars that are contained inside .war files, this filepath
     /// can indicate the path to war file combined with the path to jar file.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub file_path: ::prost::alloc::string::String,
 }
 /// License information.
@@ -95,20 +95,20 @@ pub struct License {
     /// or some combination of license identifiers.
     /// Examples: "LGPL-2.1-only OR MIT", "LGPL-2.1-only AND MIT",
     /// "GPL-2.0-or-later WITH Bison-exception-2.2".
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub expression: ::prost::alloc::string::String,
     /// Comments
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub comments: ::prost::alloc::string::String,
 }
 /// Digest information.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Digest {
     /// `SHA1`, `SHA512` etc.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub algo: ::prost::alloc::string::String,
     /// Value of the digest.
-    #[prost(bytes="vec", tag="2")]
+    #[prost(bytes = "vec", tag = "2")]
     pub digest_bytes: ::prost::alloc::vec::Vec<u8>,
 }
 /// Kind represents the kinds of notes supported.
@@ -159,10 +159,6 @@ impl NoteKind {
         }
     }
 }
-// An attestation wrapper with a PGP-compatible signature. This message only
-// supports `ATTACHED` signatures, where the payload that is signed is included
-// alongside the signature itself in the same file.
-
 /// Note kind that represents a logical attestation "role" or "authority". For
 /// example, an organization might have one `Authority` for "QA" and one for
 /// "build". This note is intended to act strictly as a grouping mechanism for
@@ -174,7 +170,7 @@ impl NoteKind {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AttestationNote {
     /// Hint hints at the purpose of the attestation authority.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub hint: ::core::option::Option<attestation_note::Hint>,
 }
 /// Nested message and enum types in `AttestationNote`.
@@ -190,7 +186,7 @@ pub mod attestation_note {
     pub struct Hint {
         /// Required. The human readable name of this attestation authority, for
         /// example "qa".
-        #[prost(string, tag="1")]
+        #[prost(string, tag = "1")]
         pub human_readable_name: ::prost::alloc::string::String,
     }
 }
@@ -199,7 +195,7 @@ pub struct Jwt {
     /// The compact encoding of a JWS, which is always three base64 encoded strings
     /// joined by periods. For details, see:
     /// <https://tools.ietf.org/html/rfc7515.html#section-3.1>
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub compact_jwt: ::prost::alloc::string::String,
 }
 /// Occurrence that represents a single "attestation". The authenticity of an
@@ -214,13 +210,13 @@ pub struct Jwt {
 pub struct AttestationOccurrence {
     /// Required. The serialized payload that is verified by one or more
     /// `signatures`.
-    #[prost(bytes="vec", tag="1")]
+    #[prost(bytes = "vec", tag = "1")]
     pub serialized_payload: ::prost::alloc::vec::Vec<u8>,
     /// One or more signatures over `serialized_payload`.  Verifier implementations
     /// should consider this attestation message verified if at least one
     /// `signature` verifies `serialized_payload`.  See `Signature` in common.proto
     /// for more details on signature structure and verification.
-    #[prost(message, repeated, tag="2")]
+    #[prost(message, repeated, tag = "2")]
     pub signatures: ::prost::alloc::vec::Vec<Signature>,
     /// One or more JWTs encoding a self-contained attestation.
     /// Each JWT encodes the payload that it verifies within the JWT itself.
@@ -231,7 +227,7 @@ pub struct AttestationOccurrence {
     /// Each JWT SHOULD encode a claim specific to the `resource_uri` of this
     /// Occurrence, but this is not validated by Grafeas metadata API
     /// implementations.  The JWT itself is opaque to Grafeas.
-    #[prost(message, repeated, tag="3")]
+    #[prost(message, repeated, tag = "3")]
     pub jwts: ::prost::alloc::vec::Vec<Jwt>,
 }
 /// Note provider assigned severity/impact ranking.
@@ -267,9 +263,6 @@ impl Severity {
         }
     }
 }
-// Spec defined at
-// <https://github.com/in-toto/attestation/blob/main/spec/predicates/provenance.md>
-
 /// Steps taken to build the artifact.
 /// For a TaskRun, typically each container corresponds to one step in the
 /// recipe.
@@ -277,21 +270,21 @@ impl Severity {
 pub struct Recipe {
     /// URI indicating what type of recipe was performed. It determines the meaning
     /// of recipe.entryPoint, recipe.arguments, recipe.environment, and materials.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub r#type: ::prost::alloc::string::String,
     /// Index in materials containing the recipe steps that are not implied by
     /// recipe.type. For example, if the recipe type were "make", then this would
     /// point to the source containing the Makefile, not the make program itself.
     /// Set to -1 if the recipe doesn't come from a material, as zero is default
     /// unset value for int64.
-    #[prost(int64, tag="2")]
+    #[prost(int64, tag = "2")]
     pub defined_in_material: i64,
     /// String identifying the entry point into the build.
     /// This is often a path to a configuration file and/or a target label within
     /// that file. The syntax and meaning are defined by recipe.type. For example,
     /// if the recipe type were "make", then this would reference the directory in
     /// which to run make as well as which target to use.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub entry_point: ::prost::alloc::string::String,
     /// Collection of all external inputs that influenced the build on top of
     /// recipe.definedInMaterial and recipe.entryPoint. For example, if the recipe
@@ -299,13 +292,13 @@ pub struct Recipe {
     /// the target, which is captured in recipe.entryPoint. Since the arguments
     /// field can greatly vary in structure, depending on the builder and recipe
     /// type, this is of form "Any".
-    #[prost(message, repeated, tag="4")]
+    #[prost(message, repeated, tag = "4")]
     pub arguments: ::prost::alloc::vec::Vec<::prost_types::Any>,
     /// Any other builder-controlled inputs necessary for correctly evaluating the
     /// recipe. Usually only needed for reproducing the build but not evaluated as
     /// part of policy. Since the environment field can greatly vary in structure,
     /// depending on the builder and recipe type, this is of form "Any".
-    #[prost(message, repeated, tag="5")]
+    #[prost(message, repeated, tag = "5")]
     pub environment: ::prost::alloc::vec::Vec<::prost_types::Any>,
 }
 /// Indicates that the builder claims certain fields in this message to be
@@ -314,15 +307,15 @@ pub struct Recipe {
 pub struct Completeness {
     /// If true, the builder claims that recipe.arguments is complete, meaning that
     /// all external inputs are properly captured in the recipe.
-    #[prost(bool, tag="1")]
+    #[prost(bool, tag = "1")]
     pub arguments: bool,
     /// If true, the builder claims that recipe.environment is claimed to be
     /// complete.
-    #[prost(bool, tag="2")]
+    #[prost(bool, tag = "2")]
     pub environment: bool,
     /// If true, the builder claims that materials are complete, usually through
     /// some controls to prevent network access. Sometimes called "hermetic".
-    #[prost(bool, tag="3")]
+    #[prost(bool, tag = "3")]
     pub materials: bool,
 }
 /// Other properties of the build.
@@ -331,32 +324,32 @@ pub struct Metadata {
     /// Identifies the particular build invocation, which can be useful for finding
     /// associated logs or other ad-hoc analysis. The value SHOULD be globally
     /// unique, per in-toto Provenance spec.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub build_invocation_id: ::prost::alloc::string::String,
     /// The timestamp of when the build started.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub build_started_on: ::core::option::Option<::prost_types::Timestamp>,
     /// The timestamp of when the build completed.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub build_finished_on: ::core::option::Option<::prost_types::Timestamp>,
     /// Indicates that the builder claims certain fields in this message to be
     /// complete.
-    #[prost(message, optional, tag="4")]
+    #[prost(message, optional, tag = "4")]
     pub completeness: ::core::option::Option<Completeness>,
     /// If true, the builder claims that running the recipe on materials will
     /// produce bit-for-bit identical output.
-    #[prost(bool, tag="5")]
+    #[prost(bool, tag = "5")]
     pub reproducible: bool,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BuilderConfig {
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub id: ::prost::alloc::string::String,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InTotoProvenance {
     /// required
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub builder_config: ::core::option::Option<BuilderConfig>,
     /// Identifies the configuration used for the build.
     /// When combined with materials, this SHOULD fully describe the build,
@@ -364,21 +357,21 @@ pub struct InTotoProvenance {
     /// (if the build is reproducible).
     ///
     /// required
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub recipe: ::core::option::Option<Recipe>,
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub metadata: ::core::option::Option<Metadata>,
     /// The collection of artifacts that influenced the build including sources,
     /// dependencies, build tools, base images, and so on. This is considered to be
     /// incomplete unless metadata.completeness.materials is true. Unset or null is
     /// equivalent to empty.
-    #[prost(string, repeated, tag="4")]
+    #[prost(string, repeated, tag = "4")]
     pub materials: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SlsaProvenance {
     /// required
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub builder: ::core::option::Option<slsa_provenance::SlsaBuilder>,
     /// Identifies the configuration used for the build.
     /// When combined with materials, this SHOULD fully describe the build,
@@ -386,15 +379,15 @@ pub struct SlsaProvenance {
     /// (if the build is reproducible).
     ///
     /// required
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub recipe: ::core::option::Option<slsa_provenance::SlsaRecipe>,
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub metadata: ::core::option::Option<slsa_provenance::SlsaMetadata>,
     /// The collection of artifacts that influenced the build including sources,
     /// dependencies, build tools, base images, and so on. This is considered to be
     /// incomplete unless metadata.completeness.materials is true. Unset or null is
     /// equivalent to empty.
-    #[prost(message, repeated, tag="4")]
+    #[prost(message, repeated, tag = "4")]
     pub materials: ::prost::alloc::vec::Vec<slsa_provenance::Material>,
 }
 /// Nested message and enum types in `SlsaProvenance`.
@@ -407,34 +400,34 @@ pub mod slsa_provenance {
         /// URI indicating what type of recipe was performed. It determines the
         /// meaning of recipe.entryPoint, recipe.arguments, recipe.environment, and
         /// materials.
-        #[prost(string, tag="1")]
+        #[prost(string, tag = "1")]
         pub r#type: ::prost::alloc::string::String,
         /// Index in materials containing the recipe steps that are not implied by
         /// recipe.type. For example, if the recipe type were "make", then this would
         /// point to the source containing the Makefile, not the make program itself.
         /// Set to -1 if the recipe doesn't come from a material, as zero is default
         /// unset value for int64.
-        #[prost(int64, tag="2")]
+        #[prost(int64, tag = "2")]
         pub defined_in_material: i64,
         /// String identifying the entry point into the build.
         /// This is often a path to a configuration file and/or a target label within
         /// that file. The syntax and meaning are defined by recipe.type. For
         /// example, if the recipe type were "make", then this would reference the
         /// directory in which to run make as well as which target to use.
-        #[prost(string, tag="3")]
+        #[prost(string, tag = "3")]
         pub entry_point: ::prost::alloc::string::String,
         /// Collection of all external inputs that influenced the build on top of
         /// recipe.definedInMaterial and recipe.entryPoint. For example, if the
         /// recipe type were "make", then this might be the flags passed to make
         /// aside from the target, which is captured in recipe.entryPoint. Depending
         /// on the recipe Type, the structure may be different.
-        #[prost(message, optional, tag="4")]
+        #[prost(message, optional, tag = "4")]
         pub arguments: ::core::option::Option<::prost_types::Any>,
         /// Any other builder-controlled inputs necessary for correctly evaluating
         /// the recipe. Usually only needed for reproducing the build but not
         /// evaluated as part of policy. Depending on the recipe Type, the structure
         /// may be different.
-        #[prost(message, optional, tag="5")]
+        #[prost(message, optional, tag = "5")]
         pub environment: ::core::option::Option<::prost_types::Any>,
     }
     /// Indicates that the builder claims certain fields in this message to be
@@ -443,15 +436,15 @@ pub mod slsa_provenance {
     pub struct SlsaCompleteness {
         /// If true, the builder claims that recipe.arguments is complete, meaning
         /// that all external inputs are properly captured in the recipe.
-        #[prost(bool, tag="1")]
+        #[prost(bool, tag = "1")]
         pub arguments: bool,
         /// If true, the builder claims that recipe.environment is claimed to be
         /// complete.
-        #[prost(bool, tag="2")]
+        #[prost(bool, tag = "2")]
         pub environment: bool,
         /// If true, the builder claims that materials are complete, usually through
         /// some controls to prevent network access. Sometimes called "hermetic".
-        #[prost(bool, tag="3")]
+        #[prost(bool, tag = "3")]
         pub materials: bool,
     }
     /// Other properties of the build.
@@ -460,50 +453,53 @@ pub mod slsa_provenance {
         /// Identifies the particular build invocation, which can be useful for
         /// finding associated logs or other ad-hoc analysis. The value SHOULD be
         /// globally unique, per in-toto Provenance spec.
-        #[prost(string, tag="1")]
+        #[prost(string, tag = "1")]
         pub build_invocation_id: ::prost::alloc::string::String,
         /// The timestamp of when the build started.
-        #[prost(message, optional, tag="2")]
+        #[prost(message, optional, tag = "2")]
         pub build_started_on: ::core::option::Option<::prost_types::Timestamp>,
         /// The timestamp of when the build completed.
-        #[prost(message, optional, tag="3")]
+        #[prost(message, optional, tag = "3")]
         pub build_finished_on: ::core::option::Option<::prost_types::Timestamp>,
         /// Indicates that the builder claims certain fields in this message to be
         /// complete.
-        #[prost(message, optional, tag="4")]
+        #[prost(message, optional, tag = "4")]
         pub completeness: ::core::option::Option<SlsaCompleteness>,
         /// If true, the builder claims that running the recipe on materials will
         /// produce bit-for-bit identical output.
-        #[prost(bool, tag="5")]
+        #[prost(bool, tag = "5")]
         pub reproducible: bool,
     }
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SlsaBuilder {
-        #[prost(string, tag="1")]
+        #[prost(string, tag = "1")]
         pub id: ::prost::alloc::string::String,
     }
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Material {
-        #[prost(string, tag="1")]
+        #[prost(string, tag = "1")]
         pub uri: ::prost::alloc::string::String,
-        #[prost(map="string, string", tag="2")]
-        pub digest: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+        #[prost(map = "string, string", tag = "2")]
+        pub digest: ::std::collections::HashMap<
+            ::prost::alloc::string::String,
+            ::prost::alloc::string::String,
+        >,
     }
 }
 /// See full explanation of fields at slsa.dev/provenance/v0.2.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SlsaProvenanceZeroTwo {
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub builder: ::core::option::Option<slsa_provenance_zero_two::SlsaBuilder>,
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub build_type: ::prost::alloc::string::String,
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub invocation: ::core::option::Option<slsa_provenance_zero_two::SlsaInvocation>,
-    #[prost(message, optional, tag="4")]
+    #[prost(message, optional, tag = "4")]
     pub build_config: ::core::option::Option<::prost_types::Struct>,
-    #[prost(message, optional, tag="5")]
+    #[prost(message, optional, tag = "5")]
     pub metadata: ::core::option::Option<slsa_provenance_zero_two::SlsaMetadata>,
-    #[prost(message, repeated, tag="6")]
+    #[prost(message, repeated, tag = "6")]
     pub materials: ::prost::alloc::vec::Vec<slsa_provenance_zero_two::SlsaMaterial>,
 }
 /// Nested message and enum types in `SlsaProvenanceZeroTwo`.
@@ -512,62 +508,68 @@ pub mod slsa_provenance_zero_two {
     /// correctly performed the operation and populated this provenance.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SlsaBuilder {
-        #[prost(string, tag="1")]
+        #[prost(string, tag = "1")]
         pub id: ::prost::alloc::string::String,
     }
     /// The collection of artifacts that influenced the build including sources,
     /// dependencies, build tools, base images, and so on.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SlsaMaterial {
-        #[prost(string, tag="1")]
+        #[prost(string, tag = "1")]
         pub uri: ::prost::alloc::string::String,
-        #[prost(map="string, string", tag="2")]
-        pub digest: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+        #[prost(map = "string, string", tag = "2")]
+        pub digest: ::std::collections::HashMap<
+            ::prost::alloc::string::String,
+            ::prost::alloc::string::String,
+        >,
     }
     /// Identifies the event that kicked off the build.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SlsaInvocation {
-        #[prost(message, optional, tag="1")]
+        #[prost(message, optional, tag = "1")]
         pub config_source: ::core::option::Option<SlsaConfigSource>,
-        #[prost(message, optional, tag="2")]
+        #[prost(message, optional, tag = "2")]
         pub parameters: ::core::option::Option<::prost_types::Struct>,
-        #[prost(message, optional, tag="3")]
+        #[prost(message, optional, tag = "3")]
         pub environment: ::core::option::Option<::prost_types::Struct>,
     }
     /// Describes where the config file that kicked off the build came from.
     /// This is effectively a pointer to the source where buildConfig came from.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SlsaConfigSource {
-        #[prost(string, tag="1")]
+        #[prost(string, tag = "1")]
         pub uri: ::prost::alloc::string::String,
-        #[prost(map="string, string", tag="2")]
-        pub digest: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
-        #[prost(string, tag="3")]
+        #[prost(map = "string, string", tag = "2")]
+        pub digest: ::std::collections::HashMap<
+            ::prost::alloc::string::String,
+            ::prost::alloc::string::String,
+        >,
+        #[prost(string, tag = "3")]
         pub entry_point: ::prost::alloc::string::String,
     }
     /// Other properties of the build.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SlsaMetadata {
-        #[prost(string, tag="1")]
+        #[prost(string, tag = "1")]
         pub build_invocation_id: ::prost::alloc::string::String,
-        #[prost(message, optional, tag="2")]
+        #[prost(message, optional, tag = "2")]
         pub build_started_on: ::core::option::Option<::prost_types::Timestamp>,
-        #[prost(message, optional, tag="3")]
+        #[prost(message, optional, tag = "3")]
         pub build_finished_on: ::core::option::Option<::prost_types::Timestamp>,
-        #[prost(message, optional, tag="4")]
+        #[prost(message, optional, tag = "4")]
         pub completeness: ::core::option::Option<SlsaCompleteness>,
-        #[prost(bool, tag="5")]
+        #[prost(bool, tag = "5")]
         pub reproducible: bool,
     }
     /// Indicates that the builder claims certain fields in this message to be
     /// complete.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SlsaCompleteness {
-        #[prost(bool, tag="1")]
+        #[prost(bool, tag = "1")]
         pub parameters: bool,
-        #[prost(bool, tag="2")]
+        #[prost(bool, tag = "2")]
         pub environment: bool,
-        #[prost(bool, tag="3")]
+        #[prost(bool, tag = "3")]
         pub materials: bool,
     }
 }
@@ -578,84 +580,90 @@ pub mod slsa_provenance_zero_two {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InTotoStatement {
     /// Always `<https://in-toto.io/Statement/v0.1`.>
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub r#type: ::prost::alloc::string::String,
-    #[prost(message, repeated, tag="2")]
+    #[prost(message, repeated, tag = "2")]
     pub subject: ::prost::alloc::vec::Vec<Subject>,
     /// `<https://slsa.dev/provenance/v0.1`> for SlsaProvenance.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub predicate_type: ::prost::alloc::string::String,
-    #[prost(oneof="in_toto_statement::Predicate", tags="4, 5, 6")]
+    #[prost(oneof = "in_toto_statement::Predicate", tags = "4, 5, 6")]
     pub predicate: ::core::option::Option<in_toto_statement::Predicate>,
 }
 /// Nested message and enum types in `InTotoStatement`.
 pub mod in_toto_statement {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Predicate {
-        #[prost(message, tag="4")]
+        #[prost(message, tag = "4")]
         Provenance(super::InTotoProvenance),
-        #[prost(message, tag="5")]
+        #[prost(message, tag = "5")]
         SlsaProvenance(super::SlsaProvenance),
-        #[prost(message, tag="6")]
+        #[prost(message, tag = "6")]
         SlsaProvenanceZeroTwo(super::SlsaProvenanceZeroTwo),
     }
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Subject {
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// `"<ALGORITHM>": "<HEX_VALUE>"`
     /// Algorithms can be e.g. sha256, sha512
     /// See
     /// <https://github.com/in-toto/attestation/blob/main/spec/field_types.md#DigestSet>
-    #[prost(map="string, string", tag="2")]
-    pub digest: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map = "string, string", tag = "2")]
+    pub digest: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
 }
 /// Provenance of a build. Contains all information needed to verify the full
 /// details about the build from source to completion.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BuildProvenance {
     /// Required. Unique identifier of the build.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub id: ::prost::alloc::string::String,
     /// ID of the project.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub project_id: ::prost::alloc::string::String,
     /// Commands requested by the build.
-    #[prost(message, repeated, tag="3")]
+    #[prost(message, repeated, tag = "3")]
     pub commands: ::prost::alloc::vec::Vec<Command>,
     /// Output of the build.
-    #[prost(message, repeated, tag="4")]
+    #[prost(message, repeated, tag = "4")]
     pub built_artifacts: ::prost::alloc::vec::Vec<Artifact>,
     /// Time at which the build was created.
-    #[prost(message, optional, tag="5")]
+    #[prost(message, optional, tag = "5")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Time at which execution of the build was started.
-    #[prost(message, optional, tag="6")]
+    #[prost(message, optional, tag = "6")]
     pub start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Time at which execution of the build was finished.
-    #[prost(message, optional, tag="7")]
+    #[prost(message, optional, tag = "7")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
     /// E-mail address of the user who initiated this build. Note that this was the
     /// user's e-mail address at the time the build was initiated; this address may
     /// not represent the same end-user for all time.
-    #[prost(string, tag="8")]
+    #[prost(string, tag = "8")]
     pub creator: ::prost::alloc::string::String,
     /// URI where any logs for this provenance were written.
-    #[prost(string, tag="9")]
+    #[prost(string, tag = "9")]
     pub logs_uri: ::prost::alloc::string::String,
     /// Details of the Source input to the build.
-    #[prost(message, optional, tag="10")]
+    #[prost(message, optional, tag = "10")]
     pub source_provenance: ::core::option::Option<Source>,
     /// Trigger identifier if the build was triggered automatically; empty if not.
-    #[prost(string, tag="11")]
+    #[prost(string, tag = "11")]
     pub trigger_id: ::prost::alloc::string::String,
     /// Special options applied to this build. This is a catch-all field where
     /// build providers can enter any desired additional details.
-    #[prost(map="string, string", tag="12")]
-    pub build_options: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map = "string, string", tag = "12")]
+    pub build_options: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
     /// Version string of the builder at the time this build was executed.
-    #[prost(string, tag="13")]
+    #[prost(string, tag = "13")]
     pub builder_version: ::prost::alloc::string::String,
 }
 /// Source describes the location of the source used for the build.
@@ -663,7 +671,7 @@ pub struct BuildProvenance {
 pub struct Source {
     /// If provided, the input binary artifacts for the build came from this
     /// location.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub artifact_storage_source_uri: ::prost::alloc::string::String,
     /// Hash(es) of the build source, which can be used to verify that the original
     /// source integrity was maintained in the build.
@@ -673,16 +681,19 @@ pub struct Source {
     ///
     /// If the build source came in a single package such as a gzipped tarfile
     /// (.tar.gz), the FileHash will be for the single path to that file.
-    #[prost(map="string, message", tag="2")]
-    pub file_hashes: ::std::collections::HashMap<::prost::alloc::string::String, FileHashes>,
+    #[prost(map = "string, message", tag = "2")]
+    pub file_hashes: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        FileHashes,
+    >,
     /// If provided, the source code used for the build came from this location.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub context: ::core::option::Option<SourceContext>,
     /// If provided, some of the source code used for the build may be found in
     /// these locations, in the case where the source repository had multiple
     /// remotes or submodules. This list will not include the context specified in
     /// the context field.
-    #[prost(message, repeated, tag="4")]
+    #[prost(message, repeated, tag = "4")]
     pub additional_contexts: ::prost::alloc::vec::Vec<SourceContext>,
 }
 /// Container message for hashes of byte content of files, used in source
@@ -690,17 +701,17 @@ pub struct Source {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FileHashes {
     /// Required. Collection of file hashes.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub file_hash: ::prost::alloc::vec::Vec<Hash>,
 }
 /// Container message for hash values.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Hash {
     /// Required. The type of hash that was performed, e.g. "SHA-256".
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub r#type: ::prost::alloc::string::String,
     /// Required. The hash value.
-    #[prost(bytes="vec", tag="2")]
+    #[prost(bytes = "vec", tag = "2")]
     pub value: ::prost::alloc::vec::Vec<u8>,
 }
 /// Command describes a step performed as part of the build pipeline.
@@ -708,24 +719,24 @@ pub struct Hash {
 pub struct Command {
     /// Required. Name of the command, as presented on the command line, or if the
     /// command is packaged as a Docker container, as presented to `docker pull`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Environment variables set before running this command.
-    #[prost(string, repeated, tag="2")]
+    #[prost(string, repeated, tag = "2")]
     pub env: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Command-line arguments used when executing this command.
-    #[prost(string, repeated, tag="3")]
+    #[prost(string, repeated, tag = "3")]
     pub args: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Working directory (relative to project source root) used when running this
     /// command.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub dir: ::prost::alloc::string::String,
     /// Optional unique identifier for this command, used in wait_for to reference
     /// this command as a dependency.
-    #[prost(string, tag="5")]
+    #[prost(string, tag = "5")]
     pub id: ::prost::alloc::string::String,
     /// The ID(s) of the command(s) that this command depends on.
-    #[prost(string, repeated, tag="6")]
+    #[prost(string, repeated, tag = "6")]
     pub wait_for: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Artifact describes a build product.
@@ -733,18 +744,18 @@ pub struct Command {
 pub struct Artifact {
     /// Hash or checksum value of a binary, or Docker Registry 2.0 digest of a
     /// container.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub checksum: ::prost::alloc::string::String,
     /// Artifact ID, if any; for container images, this will be a URL by digest
     /// like `gcr.io/projectID/imagename@sha256:123456`.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub id: ::prost::alloc::string::String,
     /// Related artifact names. This may be the path to a binary or jar file, or in
     /// the case of a container build, the name used to push the container image to
     /// Google Container Registry, as presented to `docker push`. Note that a
     /// single Artifact ID can have multiple names, for example if two tags are
     /// applied to one image.
-    #[prost(string, repeated, tag="3")]
+    #[prost(string, repeated, tag = "3")]
     pub names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// A SourceContext is a reference to a tree of files. A SourceContext together
@@ -752,10 +763,13 @@ pub struct Artifact {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SourceContext {
     /// Labels with user defined metadata.
-    #[prost(map="string, string", tag="4")]
-    pub labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map = "string, string", tag = "4")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
     /// A SourceContext can refer any one of the following types of repositories.
-    #[prost(oneof="source_context::Context", tags="1, 2, 3")]
+    #[prost(oneof = "source_context::Context", tags = "1, 2, 3")]
     pub context: ::core::option::Option<source_context::Context>,
 }
 /// Nested message and enum types in `SourceContext`.
@@ -764,13 +778,13 @@ pub mod source_context {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Context {
         /// A SourceContext referring to a revision in a Google Cloud Source Repo.
-        #[prost(message, tag="1")]
+        #[prost(message, tag = "1")]
         CloudRepo(super::CloudRepoSourceContext),
         /// A SourceContext referring to a Gerrit project.
-        #[prost(message, tag="2")]
+        #[prost(message, tag = "2")]
         Gerrit(super::GerritSourceContext),
         /// A SourceContext referring to any third party Git repo (e.g., GitHub).
-        #[prost(message, tag="3")]
+        #[prost(message, tag = "3")]
         Git(super::GitSourceContext),
     }
 }
@@ -778,16 +792,26 @@ pub mod source_context {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AliasContext {
     /// The alias kind.
-    #[prost(enumeration="alias_context::Kind", tag="1")]
+    #[prost(enumeration = "alias_context::Kind", tag = "1")]
     pub kind: i32,
     /// The alias name.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub name: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `AliasContext`.
 pub mod alias_context {
     /// The type of an alias.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum Kind {
         /// Unknown.
@@ -820,11 +844,11 @@ pub mod alias_context {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CloudRepoSourceContext {
     /// The ID of the repo.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub repo_id: ::core::option::Option<RepoId>,
     /// A revision in a Cloud Repo can be identified by either its revision ID or
     /// its alias.
-    #[prost(oneof="cloud_repo_source_context::Revision", tags="2, 3")]
+    #[prost(oneof = "cloud_repo_source_context::Revision", tags = "2, 3")]
     pub revision: ::core::option::Option<cloud_repo_source_context::Revision>,
 }
 /// Nested message and enum types in `CloudRepoSourceContext`.
@@ -834,10 +858,10 @@ pub mod cloud_repo_source_context {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Revision {
         /// A revision ID.
-        #[prost(string, tag="2")]
+        #[prost(string, tag = "2")]
         RevisionId(::prost::alloc::string::String),
         /// An alias, which may be a branch or tag.
-        #[prost(message, tag="3")]
+        #[prost(message, tag = "3")]
         AliasContext(super::AliasContext),
     }
 }
@@ -845,16 +869,16 @@ pub mod cloud_repo_source_context {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GerritSourceContext {
     /// The URI of a running Gerrit instance.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub host_uri: ::prost::alloc::string::String,
     /// The full project name within the host. Projects may be nested, so
     /// "project/subproject" is a valid project name. The "repo name" is the
     /// hostURI/project.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub gerrit_project: ::prost::alloc::string::String,
     /// A revision in a Gerrit project can be identified by either its revision ID
     /// or its alias.
-    #[prost(oneof="gerrit_source_context::Revision", tags="3, 4")]
+    #[prost(oneof = "gerrit_source_context::Revision", tags = "3, 4")]
     pub revision: ::core::option::Option<gerrit_source_context::Revision>,
 }
 /// Nested message and enum types in `GerritSourceContext`.
@@ -864,10 +888,10 @@ pub mod gerrit_source_context {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Revision {
         /// A revision (commit) ID.
-        #[prost(string, tag="3")]
+        #[prost(string, tag = "3")]
         RevisionId(::prost::alloc::string::String),
         /// An alias, which may be a branch or tag.
-        #[prost(message, tag="4")]
+        #[prost(message, tag = "4")]
         AliasContext(super::AliasContext),
     }
 }
@@ -876,10 +900,10 @@ pub mod gerrit_source_context {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GitSourceContext {
     /// Git repository URL.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub url: ::prost::alloc::string::String,
     /// Git commit hash.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub revision_id: ::prost::alloc::string::String,
 }
 /// A unique identifier for a Cloud Repo.
@@ -887,7 +911,7 @@ pub struct GitSourceContext {
 pub struct RepoId {
     /// A cloud repo can be identified by either its project ID and repository name
     /// combination, or its globally unique identifier.
-    #[prost(oneof="repo_id::Id", tags="1, 2")]
+    #[prost(oneof = "repo_id::Id", tags = "1, 2")]
     pub id: ::core::option::Option<repo_id::Id>,
 }
 /// Nested message and enum types in `RepoId`.
@@ -897,10 +921,10 @@ pub mod repo_id {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Id {
         /// A combination of a project ID and a repo name.
-        #[prost(message, tag="1")]
+        #[prost(message, tag = "1")]
         ProjectRepoId(super::ProjectRepoId),
         /// A server-assigned, globally unique identifier.
-        #[prost(string, tag="2")]
+        #[prost(string, tag = "2")]
         Uid(::prost::alloc::string::String),
     }
 }
@@ -909,10 +933,10 @@ pub mod repo_id {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProjectRepoId {
     /// The ID of the project.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub project_id: ::prost::alloc::string::String,
     /// The name of the repo. Leave empty for the default repo.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub repo_name: ::prost::alloc::string::String,
 }
 /// Note holding the version of the provider's builder and the signature of the
@@ -920,14 +944,14 @@ pub struct ProjectRepoId {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BuildNote {
     /// Required. Immutable. Version of the builder which produced this build.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub builder_version: ::prost::alloc::string::String,
 }
 /// Details of a build occurrence.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BuildOccurrence {
     /// The actual provenance for the build.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub provenance: ::core::option::Option<BuildProvenance>,
     /// Serialized JSON representation of the provenance, used in generating the
     /// build signature in the corresponding build note. After verifying the
@@ -940,40 +964,40 @@ pub struct BuildOccurrence {
     /// The serialized form is captured both to avoid ambiguity in how the
     /// provenance is marshalled to json as well to prevent incompatibilities with
     /// future changes.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub provenance_bytes: ::prost::alloc::string::String,
     /// Deprecated. See InTotoStatement for the replacement.
     /// In-toto Provenance representation as defined in spec.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub intoto_provenance: ::core::option::Option<InTotoProvenance>,
     /// In-toto Statement representation as defined in spec.
     /// The intoto_statement can contain any type of provenance. The serialized
     /// payload of the statement can be stored and signed in the Occurrence's
     /// envelope.
-    #[prost(message, optional, tag="4")]
+    #[prost(message, optional, tag = "4")]
     pub intoto_statement: ::core::option::Option<InTotoStatement>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ComplianceNote {
     /// The title that identifies this compliance check.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub title: ::prost::alloc::string::String,
     /// A description about this compliance check.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub description: ::prost::alloc::string::String,
     /// The OS and config versions the benchmark applies to.
-    #[prost(message, repeated, tag="3")]
+    #[prost(message, repeated, tag = "3")]
     pub version: ::prost::alloc::vec::Vec<ComplianceVersion>,
     /// A rationale for the existence of this compliance check.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub rationale: ::prost::alloc::string::String,
     /// A description of remediation steps if the compliance check fails.
-    #[prost(string, tag="5")]
+    #[prost(string, tag = "5")]
     pub remediation: ::prost::alloc::string::String,
     /// Serialized scan instructions with a predefined format.
-    #[prost(bytes="vec", tag="7")]
+    #[prost(bytes = "vec", tag = "7")]
     pub scan_instructions: ::prost::alloc::vec::Vec<u8>,
-    #[prost(oneof="compliance_note::ComplianceType", tags="6")]
+    #[prost(oneof = "compliance_note::ComplianceType", tags = "6")]
     pub compliance_type: ::core::option::Option<compliance_note::ComplianceType>,
 }
 /// Nested message and enum types in `ComplianceNote`.
@@ -981,14 +1005,14 @@ pub mod compliance_note {
     /// A compliance check that is a CIS benchmark.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CisBenchmark {
-        #[prost(int32, tag="1")]
+        #[prost(int32, tag = "1")]
         pub profile_level: i32,
-        #[prost(enumeration="super::Severity", tag="2")]
+        #[prost(enumeration = "super::Severity", tag = "2")]
         pub severity: i32,
     }
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ComplianceType {
-        #[prost(message, tag="6")]
+        #[prost(message, tag = "6")]
         CisBenchmark(CisBenchmark),
     }
 }
@@ -998,24 +1022,24 @@ pub mod compliance_note {
 pub struct ComplianceVersion {
     /// The CPE URI (<https://cpe.mitre.org/specification/>) this benchmark is
     /// applicable to.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub cpe_uri: ::prost::alloc::string::String,
     /// The name of the document that defines this benchmark, e.g. "CIS
     /// Container-Optimized OS".
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub benchmark_document: ::prost::alloc::string::String,
     /// The version of the benchmark. This is set to the version of the OS-specific
     /// CIS document the benchmark is defined in.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub version: ::prost::alloc::string::String,
 }
 /// An indication that the compliance checks in the associated ComplianceNote
 /// were not satisfied for particular resources or a specified reason.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ComplianceOccurrence {
-    #[prost(message, repeated, tag="2")]
+    #[prost(message, repeated, tag = "2")]
     pub non_compliant_files: ::prost::alloc::vec::Vec<NonCompliantFile>,
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub non_compliance_reason: ::prost::alloc::string::String,
 }
 /// Details about files that caused a compliance check to fail.
@@ -1026,13 +1050,13 @@ pub struct ComplianceOccurrence {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NonCompliantFile {
     /// Empty if `display_command` is set.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub path: ::prost::alloc::string::String,
     /// Command to display the non-compliant files.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub display_command: ::prost::alloc::string::String,
     /// Explains why a file is non compliant for a CIS check.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub reason: ::prost::alloc::string::String,
 }
 /// Common Vulnerability Scoring System version 3.
@@ -1040,35 +1064,45 @@ pub struct NonCompliantFile {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CvsSv3 {
     /// The base score is a function of the base metric scores.
-    #[prost(float, tag="1")]
+    #[prost(float, tag = "1")]
     pub base_score: f32,
-    #[prost(float, tag="2")]
+    #[prost(float, tag = "2")]
     pub exploitability_score: f32,
-    #[prost(float, tag="3")]
+    #[prost(float, tag = "3")]
     pub impact_score: f32,
     /// Base Metrics
     /// Represents the intrinsic characteristics of a vulnerability that are
     /// constant over time and across user environments.
-    #[prost(enumeration="cvs_sv3::AttackVector", tag="5")]
+    #[prost(enumeration = "cvs_sv3::AttackVector", tag = "5")]
     pub attack_vector: i32,
-    #[prost(enumeration="cvs_sv3::AttackComplexity", tag="6")]
+    #[prost(enumeration = "cvs_sv3::AttackComplexity", tag = "6")]
     pub attack_complexity: i32,
-    #[prost(enumeration="cvs_sv3::PrivilegesRequired", tag="7")]
+    #[prost(enumeration = "cvs_sv3::PrivilegesRequired", tag = "7")]
     pub privileges_required: i32,
-    #[prost(enumeration="cvs_sv3::UserInteraction", tag="8")]
+    #[prost(enumeration = "cvs_sv3::UserInteraction", tag = "8")]
     pub user_interaction: i32,
-    #[prost(enumeration="cvs_sv3::Scope", tag="9")]
+    #[prost(enumeration = "cvs_sv3::Scope", tag = "9")]
     pub scope: i32,
-    #[prost(enumeration="cvs_sv3::Impact", tag="10")]
+    #[prost(enumeration = "cvs_sv3::Impact", tag = "10")]
     pub confidentiality_impact: i32,
-    #[prost(enumeration="cvs_sv3::Impact", tag="11")]
+    #[prost(enumeration = "cvs_sv3::Impact", tag = "11")]
     pub integrity_impact: i32,
-    #[prost(enumeration="cvs_sv3::Impact", tag="12")]
+    #[prost(enumeration = "cvs_sv3::Impact", tag = "12")]
     pub availability_impact: i32,
 }
 /// Nested message and enum types in `CVSSv3`.
 pub mod cvs_sv3 {
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum AttackVector {
         Unspecified = 0,
@@ -1092,7 +1126,17 @@ pub mod cvs_sv3 {
             }
         }
     }
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum AttackComplexity {
         Unspecified = 0,
@@ -1112,7 +1156,17 @@ pub mod cvs_sv3 {
             }
         }
     }
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum PrivilegesRequired {
         Unspecified = 0,
@@ -1134,7 +1188,17 @@ pub mod cvs_sv3 {
             }
         }
     }
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum UserInteraction {
         Unspecified = 0,
@@ -1154,7 +1218,17 @@ pub mod cvs_sv3 {
             }
         }
     }
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum Scope {
         Unspecified = 0,
@@ -1174,7 +1248,17 @@ pub mod cvs_sv3 {
             }
         }
     }
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum Impact {
         Unspecified = 0,
@@ -1204,37 +1288,47 @@ pub mod cvs_sv3 {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Cvss {
     /// The base score is a function of the base metric scores.
-    #[prost(float, tag="1")]
+    #[prost(float, tag = "1")]
     pub base_score: f32,
-    #[prost(float, tag="2")]
+    #[prost(float, tag = "2")]
     pub exploitability_score: f32,
-    #[prost(float, tag="3")]
+    #[prost(float, tag = "3")]
     pub impact_score: f32,
     /// Base Metrics
     /// Represents the intrinsic characteristics of a vulnerability that are
     /// constant over time and across user environments.
-    #[prost(enumeration="cvss::AttackVector", tag="4")]
+    #[prost(enumeration = "cvss::AttackVector", tag = "4")]
     pub attack_vector: i32,
-    #[prost(enumeration="cvss::AttackComplexity", tag="5")]
+    #[prost(enumeration = "cvss::AttackComplexity", tag = "5")]
     pub attack_complexity: i32,
-    #[prost(enumeration="cvss::Authentication", tag="6")]
+    #[prost(enumeration = "cvss::Authentication", tag = "6")]
     pub authentication: i32,
-    #[prost(enumeration="cvss::PrivilegesRequired", tag="7")]
+    #[prost(enumeration = "cvss::PrivilegesRequired", tag = "7")]
     pub privileges_required: i32,
-    #[prost(enumeration="cvss::UserInteraction", tag="8")]
+    #[prost(enumeration = "cvss::UserInteraction", tag = "8")]
     pub user_interaction: i32,
-    #[prost(enumeration="cvss::Scope", tag="9")]
+    #[prost(enumeration = "cvss::Scope", tag = "9")]
     pub scope: i32,
-    #[prost(enumeration="cvss::Impact", tag="10")]
+    #[prost(enumeration = "cvss::Impact", tag = "10")]
     pub confidentiality_impact: i32,
-    #[prost(enumeration="cvss::Impact", tag="11")]
+    #[prost(enumeration = "cvss::Impact", tag = "11")]
     pub integrity_impact: i32,
-    #[prost(enumeration="cvss::Impact", tag="12")]
+    #[prost(enumeration = "cvss::Impact", tag = "12")]
     pub availability_impact: i32,
 }
 /// Nested message and enum types in `CVSS`.
 pub mod cvss {
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum AttackVector {
         Unspecified = 0,
@@ -1258,7 +1352,17 @@ pub mod cvss {
             }
         }
     }
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum AttackComplexity {
         Unspecified = 0,
@@ -1278,7 +1382,17 @@ pub mod cvss {
             }
         }
     }
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum Authentication {
         Unspecified = 0,
@@ -1300,7 +1414,17 @@ pub mod cvss {
             }
         }
     }
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum PrivilegesRequired {
         Unspecified = 0,
@@ -1322,7 +1446,17 @@ pub mod cvss {
             }
         }
     }
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum UserInteraction {
         Unspecified = 0,
@@ -1342,7 +1476,17 @@ pub mod cvss {
             }
         }
     }
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum Scope {
         Unspecified = 0,
@@ -1362,7 +1506,17 @@ pub mod cvss {
             }
         }
     }
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum Impact {
         Unspecified = 0,
@@ -1410,39 +1564,49 @@ impl CvssVersion {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeploymentNote {
     /// Required. Resource URI for the artifact being deployed.
-    #[prost(string, repeated, tag="1")]
+    #[prost(string, repeated, tag = "1")]
     pub resource_uri: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The period during which some deployable was active in a runtime.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeploymentOccurrence {
     /// Identity of the user that triggered this deployment.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub user_email: ::prost::alloc::string::String,
     /// Required. Beginning of the lifetime of this deployment.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub deploy_time: ::core::option::Option<::prost_types::Timestamp>,
     /// End of the lifetime of this deployment.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub undeploy_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Configuration used to create this deployment.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub config: ::prost::alloc::string::String,
     /// Address of the runtime element hosting this deployment.
-    #[prost(string, tag="5")]
+    #[prost(string, tag = "5")]
     pub address: ::prost::alloc::string::String,
     /// Output only. Resource URI for the artifact being deployed taken from
     /// the deployable field with the same name.
-    #[prost(string, repeated, tag="6")]
+    #[prost(string, repeated, tag = "6")]
     pub resource_uri: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Platform hosting this deployment.
-    #[prost(enumeration="deployment_occurrence::Platform", tag="7")]
+    #[prost(enumeration = "deployment_occurrence::Platform", tag = "7")]
     pub platform: i32,
 }
 /// Nested message and enum types in `DeploymentOccurrence`.
 pub mod deployment_occurrence {
     /// Types of platforms.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum Platform {
         /// Unknown.
@@ -1476,37 +1640,39 @@ pub mod deployment_occurrence {
 pub struct DiscoveryNote {
     /// Required. Immutable. The kind of analysis that is handled by this
     /// discovery.
-    #[prost(enumeration="NoteKind", tag="1")]
+    #[prost(enumeration = "NoteKind", tag = "1")]
     pub analysis_kind: i32,
 }
 /// Provides information about the analysis status of a discovered resource.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DiscoveryOccurrence {
     /// Whether the resource is continuously analyzed.
-    #[prost(enumeration="discovery_occurrence::ContinuousAnalysis", tag="1")]
+    #[prost(enumeration = "discovery_occurrence::ContinuousAnalysis", tag = "1")]
     pub continuous_analysis: i32,
     /// The status of discovery for the resource.
-    #[prost(enumeration="discovery_occurrence::AnalysisStatus", tag="2")]
+    #[prost(enumeration = "discovery_occurrence::AnalysisStatus", tag = "2")]
     pub analysis_status: i32,
-    #[prost(message, optional, tag="7")]
-    pub analysis_completed: ::core::option::Option<discovery_occurrence::AnalysisCompleted>,
+    #[prost(message, optional, tag = "7")]
+    pub analysis_completed: ::core::option::Option<
+        discovery_occurrence::AnalysisCompleted,
+    >,
     /// Indicates any errors encountered during analysis of a resource. There
     /// could be 0 or more of these errors.
-    #[prost(message, repeated, tag="8")]
+    #[prost(message, repeated, tag = "8")]
     pub analysis_error: ::prost::alloc::vec::Vec<super::super::google::rpc::Status>,
     /// When an error is encountered this will contain a LocalizedMessage under
     /// details to show to the user. The LocalizedMessage is output only and
     /// populated by the API.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub analysis_status_error: ::core::option::Option<super::super::google::rpc::Status>,
     /// The CPE of the resource being scanned.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub cpe: ::prost::alloc::string::String,
     /// The last time this resource was scanned.
-    #[prost(message, optional, tag="5")]
+    #[prost(message, optional, tag = "5")]
     pub last_scan_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The time occurrences related to this discovery occurrence were archived.
-    #[prost(message, optional, tag="6")]
+    #[prost(message, optional, tag = "6")]
     pub archive_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Nested message and enum types in `DiscoveryOccurrence`.
@@ -1515,11 +1681,21 @@ pub mod discovery_occurrence {
     /// analysis can be performed on a single resource.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AnalysisCompleted {
-        #[prost(string, repeated, tag="1")]
+        #[prost(string, repeated, tag = "1")]
         pub analysis_type: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
     /// Whether the resource is continuously analyzed.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum ContinuousAnalysis {
         /// Unknown.
@@ -1544,7 +1720,17 @@ pub mod discovery_occurrence {
     }
     /// Analysis status for a resource. Currently for initial analysis only (not
     /// updated in continuous analysis).
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum AnalysisStatus {
         /// Unknown.
@@ -1581,7 +1767,7 @@ pub mod discovery_occurrence {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DsseAttestationNote {
     /// DSSEHint hints at the purpose of the attestation authority.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub hint: ::core::option::Option<dsse_attestation_note::DsseHint>,
 }
 /// Nested message and enum types in `DSSEAttestationNote`.
@@ -1597,7 +1783,7 @@ pub mod dsse_attestation_note {
     pub struct DsseHint {
         /// Required. The human readable name of this attestation authority, for
         /// example "cloudbuild-prod".
-        #[prost(string, tag="1")]
+        #[prost(string, tag = "1")]
         pub human_readable_name: ::prost::alloc::string::String,
     }
 }
@@ -1607,16 +1793,18 @@ pub mod dsse_attestation_note {
 pub struct DsseAttestationOccurrence {
     /// If doing something security critical, make sure to verify the signatures in
     /// this metadata.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub envelope: ::core::option::Option<Envelope>,
-    #[prost(oneof="dsse_attestation_occurrence::DecodedPayload", tags="2")]
-    pub decoded_payload: ::core::option::Option<dsse_attestation_occurrence::DecodedPayload>,
+    #[prost(oneof = "dsse_attestation_occurrence::DecodedPayload", tags = "2")]
+    pub decoded_payload: ::core::option::Option<
+        dsse_attestation_occurrence::DecodedPayload,
+    >,
 }
 /// Nested message and enum types in `DSSEAttestationOccurrence`.
 pub mod dsse_attestation_occurrence {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum DecodedPayload {
-        #[prost(message, tag="2")]
+        #[prost(message, tag = "2")]
         Statement(super::InTotoStatement),
     }
 }
@@ -1625,10 +1813,10 @@ pub mod dsse_attestation_occurrence {
 pub struct Layer {
     /// Required. The recovered Dockerfile directive used to construct this layer.
     /// See <https://docs.docker.com/engine/reference/builder/> for more information.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub directive: ::prost::alloc::string::String,
     /// The recovered arguments to the Dockerfile directive.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub arguments: ::prost::alloc::string::String,
 }
 /// A set of properties that uniquely identify a given Docker image.
@@ -1636,16 +1824,16 @@ pub struct Layer {
 pub struct Fingerprint {
     /// Required. The layer ID of the final layer in the Docker image's v1
     /// representation.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub v1_name: ::prost::alloc::string::String,
     /// Required. The ordered list of v2 blobs that represent a given image.
-    #[prost(string, repeated, tag="2")]
+    #[prost(string, repeated, tag = "2")]
     pub v2_blob: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Output only. The name of the image's v2 blobs computed via:
     ///    \[bottom\] := v2_blob\[bottom\]
     ///    \[N\] := sha256(v2_blob\[N\] + " " + v2_name\[N+1\])
     /// Only the name of the final blob is kept.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub v2_name: ::prost::alloc::string::String,
 }
 /// Basis describes the base image portion (Note) of the DockerImage
@@ -1657,10 +1845,10 @@ pub struct Fingerprint {
 pub struct ImageNote {
     /// Required. Immutable. The resource_url for the resource representing the
     /// basis of associated occurrence images.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub resource_url: ::prost::alloc::string::String,
     /// Required. Immutable. The fingerprint of the base image.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub fingerprint: ::core::option::Option<Fingerprint>,
 }
 /// Details of the derived image portion of the DockerImage relationship. This
@@ -1669,20 +1857,20 @@ pub struct ImageNote {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImageOccurrence {
     /// Required. The fingerprint of the derived image.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub fingerprint: ::core::option::Option<Fingerprint>,
     /// Output only. The number of layers by which this image differs from the
     /// associated image basis.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub distance: i32,
     /// This contains layer-specific metadata, if populated it has length
     /// "distance" and is ordered with \[distance\] being the layer immediately
     /// following the base image and \[1\] being the final layer.
-    #[prost(message, repeated, tag="3")]
+    #[prost(message, repeated, tag = "3")]
     pub layer_info: ::prost::alloc::vec::Vec<Layer>,
     /// Output only. This contains the base image URL for the derived image
     /// occurrence.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub base_resource_url: ::prost::alloc::string::String,
 }
 /// This represents a particular channel of distribution for a given package.
@@ -1691,23 +1879,23 @@ pub struct ImageOccurrence {
 pub struct Distribution {
     /// The cpe_uri in [CPE format](<https://cpe.mitre.org/specification/>)
     /// denoting the package manager version distributing a package.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub cpe_uri: ::prost::alloc::string::String,
     /// The CPU architecture for which packages in this distribution channel were
     /// built.
-    #[prost(enumeration="Architecture", tag="2")]
+    #[prost(enumeration = "Architecture", tag = "2")]
     pub architecture: i32,
     /// The latest available version of this package in this distribution channel.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub latest_version: ::core::option::Option<Version>,
     /// A freeform string denoting the maintainer of this package.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub maintainer: ::prost::alloc::string::String,
     /// The distribution channel-specific homepage for this package.
-    #[prost(string, tag="5")]
+    #[prost(string, tag = "5")]
     pub url: ::prost::alloc::string::String,
     /// The distribution channel-specific description of this package.
-    #[prost(string, tag="6")]
+    #[prost(string, tag = "6")]
     pub description: ::prost::alloc::string::String,
 }
 /// An occurrence of a particular package installation found within a system's
@@ -1716,101 +1904,101 @@ pub struct Distribution {
 pub struct Location {
     /// Deprecated.
     /// The CPE URI in [CPE format](<https://cpe.mitre.org/specification/>)
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub cpe_uri: ::prost::alloc::string::String,
     /// Deprecated.
     /// The version installed at this location.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub version: ::core::option::Option<Version>,
     /// The path from which we gathered that this package/version is installed.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub path: ::prost::alloc::string::String,
 }
 /// PackageNote represents a particular package version.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PackageNote {
     /// The name of the package.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Deprecated.
     /// The various channels by which a package is distributed.
-    #[prost(message, repeated, tag="10")]
+    #[prost(message, repeated, tag = "10")]
     pub distribution: ::prost::alloc::vec::Vec<Distribution>,
     /// The type of package; whether native or non native (e.g., ruby gems,
     /// node.js packages, etc.).
-    #[prost(string, tag="11")]
+    #[prost(string, tag = "11")]
     pub package_type: ::prost::alloc::string::String,
     /// The cpe_uri in [CPE format](<https://cpe.mitre.org/specification/>)
     /// denoting the package manager version distributing a package.
     /// The cpe_uri will be blank for language packages.
-    #[prost(string, tag="12")]
+    #[prost(string, tag = "12")]
     pub cpe_uri: ::prost::alloc::string::String,
     /// The CPU architecture for which packages in this distribution channel were
     /// built. Architecture will be blank for language packages.
-    #[prost(enumeration="Architecture", tag="13")]
+    #[prost(enumeration = "Architecture", tag = "13")]
     pub architecture: i32,
     /// The version of the package.
-    #[prost(message, optional, tag="14")]
+    #[prost(message, optional, tag = "14")]
     pub version: ::core::option::Option<Version>,
     /// A freeform text denoting the maintainer of this package.
-    #[prost(string, tag="15")]
+    #[prost(string, tag = "15")]
     pub maintainer: ::prost::alloc::string::String,
     /// The homepage for this package.
-    #[prost(string, tag="16")]
+    #[prost(string, tag = "16")]
     pub url: ::prost::alloc::string::String,
     /// The description of this package.
-    #[prost(string, tag="17")]
+    #[prost(string, tag = "17")]
     pub description: ::prost::alloc::string::String,
     /// Licenses that have been declared by the authors of the package.
-    #[prost(message, optional, tag="18")]
+    #[prost(message, optional, tag = "18")]
     pub license: ::core::option::Option<License>,
     /// Hash value, typically a file digest, that allows unique
     /// identification a specific package.
-    #[prost(message, repeated, tag="19")]
+    #[prost(message, repeated, tag = "19")]
     pub digest: ::prost::alloc::vec::Vec<Digest>,
 }
 /// Details on how a particular software package was installed on a system.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PackageOccurrence {
     /// The name of the installed package.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// All of the places within the filesystem versions of this package
     /// have been found.
-    #[prost(message, repeated, tag="2")]
+    #[prost(message, repeated, tag = "2")]
     pub location: ::prost::alloc::vec::Vec<Location>,
     /// The type of package; whether native or non native (e.g., ruby gems,
     /// node.js packages, etc.).
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub package_type: ::prost::alloc::string::String,
     /// The cpe_uri in [CPE format](<https://cpe.mitre.org/specification/>)
     /// denoting the package manager version distributing a package.
     /// The cpe_uri will be blank for language packages.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub cpe_uri: ::prost::alloc::string::String,
     /// The CPU architecture for which packages in this distribution channel were
     /// built. Architecture will be blank for language packages.
-    #[prost(enumeration="Architecture", tag="5")]
+    #[prost(enumeration = "Architecture", tag = "5")]
     pub architecture: i32,
     /// Licenses that have been declared by the authors of the package.
-    #[prost(message, optional, tag="6")]
+    #[prost(message, optional, tag = "6")]
     pub license: ::core::option::Option<License>,
     /// The version of the package.
-    #[prost(message, optional, tag="7")]
+    #[prost(message, optional, tag = "7")]
     pub version: ::core::option::Option<Version>,
 }
 /// Version contains structured information about the version of a package.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Version {
     /// Used to correct mistakes in the version numbering scheme.
-    #[prost(int32, tag="1")]
+    #[prost(int32, tag = "1")]
     pub epoch: i32,
     /// Required only when version kind is NORMAL. The main part of the version
     /// name.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub name: ::prost::alloc::string::String,
     /// The iteration of the package build from the above version.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub revision: ::prost::alloc::string::String,
     /// Whether this version is specifying part of an inclusive range. Grafeas
     /// does not have the capability to specify version ranges; instead we have
@@ -1818,21 +2006,31 @@ pub struct Version {
     /// insufficient - we also need to specify whether the version is included in
     /// the range or is excluded from the range. This boolean is expected to be set
     /// to true when the version is included in a range.
-    #[prost(bool, tag="6")]
+    #[prost(bool, tag = "6")]
     pub inclusive: bool,
     /// Required. Distinguishes between sentinel MIN/MAX versions and normal
     /// versions.
-    #[prost(enumeration="version::VersionKind", tag="4")]
+    #[prost(enumeration = "version::VersionKind", tag = "4")]
     pub kind: i32,
     /// Human readable version string. This string is of the form
     /// <epoch>:<name>-<revision> and is only set when kind is NORMAL.
-    #[prost(string, tag="5")]
+    #[prost(string, tag = "5")]
     pub full_name: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `Version`.
 pub mod version {
     /// Whether this is an ordinary package version or a sentinel MIN/MAX version.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum VersionKind {
         /// Unknown.
@@ -1890,17 +2088,17 @@ impl Architecture {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpgradeNote {
     /// Required for non-Windows OS. The package this Upgrade is for.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub package: ::prost::alloc::string::String,
     /// Required for non-Windows OS. The version of the package in machine + human
     /// readable form.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub version: ::core::option::Option<Version>,
     /// Metadata about the upgrade for each specific operating system.
-    #[prost(message, repeated, tag="3")]
+    #[prost(message, repeated, tag = "3")]
     pub distributions: ::prost::alloc::vec::Vec<UpgradeDistribution>,
     /// Required for Windows OS. Represents the metadata about the Windows update.
-    #[prost(message, optional, tag="4")]
+    #[prost(message, optional, tag = "4")]
     pub windows_update: ::core::option::Option<WindowsUpdate>,
 }
 /// The Upgrade Distribution represents metadata about the Upgrade for each
@@ -1910,19 +2108,19 @@ pub struct UpgradeNote {
 pub struct UpgradeDistribution {
     /// Required - The specific operating system this metadata applies to. See
     /// <https://cpe.mitre.org/specification/.>
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub cpe_uri: ::prost::alloc::string::String,
     /// The operating system classification of this Upgrade, as specified by the
     /// upstream operating system upgrade feed. For Windows the classification is
     /// one of the category_ids listed at
     /// <https://docs.microsoft.com/en-us/previous-versions/windows/desktop/ff357803(v=vs.85>)
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub classification: ::prost::alloc::string::String,
     /// The severity as specified by the upstream operating system.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub severity: ::prost::alloc::string::String,
     /// The cve tied to this Upgrade.
-    #[prost(string, repeated, tag="4")]
+    #[prost(string, repeated, tag = "4")]
     pub cve: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Windows Update represents the metadata about the update for the Windows
@@ -1932,26 +2130,26 @@ pub struct UpgradeDistribution {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WindowsUpdate {
     /// Required - The unique identifier for the update.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub identity: ::core::option::Option<windows_update::Identity>,
     /// The localized title of the update.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub title: ::prost::alloc::string::String,
     /// The localized description of the update.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub description: ::prost::alloc::string::String,
     /// The list of categories to which the update belongs.
-    #[prost(message, repeated, tag="4")]
+    #[prost(message, repeated, tag = "4")]
     pub categories: ::prost::alloc::vec::Vec<windows_update::Category>,
     /// The Microsoft Knowledge Base article IDs that are associated with the
     /// update.
-    #[prost(string, repeated, tag="5")]
+    #[prost(string, repeated, tag = "5")]
     pub kb_article_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The hyperlink to the support information for the update.
-    #[prost(string, tag="6")]
+    #[prost(string, tag = "6")]
     pub support_url: ::prost::alloc::string::String,
     /// The last published timestamp of the update.
-    #[prost(message, optional, tag="7")]
+    #[prost(message, optional, tag = "7")]
     pub last_published_timestamp: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Nested message and enum types in `WindowsUpdate`.
@@ -1960,20 +2158,20 @@ pub mod windows_update {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Identity {
         /// The revision independent identifier of the update.
-        #[prost(string, tag="1")]
+        #[prost(string, tag = "1")]
         pub update_id: ::prost::alloc::string::String,
         /// The revision number of the update.
-        #[prost(int32, tag="2")]
+        #[prost(int32, tag = "2")]
         pub revision: i32,
     }
     /// The category to which the update belongs.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Category {
         /// The identifier of the category.
-        #[prost(string, tag="1")]
+        #[prost(string, tag = "1")]
         pub category_id: ::prost::alloc::string::String,
         /// The localized name of the category.
-        #[prost(string, tag="2")]
+        #[prost(string, tag = "2")]
         pub name: ::prost::alloc::string::String,
     }
 }
@@ -1985,19 +2183,19 @@ pub mod windows_update {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpgradeOccurrence {
     /// Required for non-Windows OS. The package this Upgrade is for.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub package: ::prost::alloc::string::String,
     /// Required for non-Windows OS. The version of the package in a machine +
     /// human readable form.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub parsed_version: ::core::option::Option<Version>,
     /// Metadata about the upgrade for available for the specific operating system
     /// for the resource_url. This allows efficient filtering, as well as
     /// making it easier to use the occurrence.
-    #[prost(message, optional, tag="4")]
+    #[prost(message, optional, tag = "4")]
     pub distribution: ::core::option::Option<UpgradeDistribution>,
     /// Required for Windows OS. Represents the metadata about the Windows update.
-    #[prost(message, optional, tag="5")]
+    #[prost(message, optional, tag = "5")]
     pub windows_update: ::core::option::Option<WindowsUpdate>,
 }
 /// A security vulnerability that can be found in resources.
@@ -2005,30 +2203,30 @@ pub struct UpgradeOccurrence {
 pub struct VulnerabilityNote {
     /// The CVSS score of this vulnerability. CVSS score is on a scale of 0 - 10
     /// where 0 indicates low severity and 10 indicates high severity.
-    #[prost(float, tag="1")]
+    #[prost(float, tag = "1")]
     pub cvss_score: f32,
     /// The note provider assigned severity of this vulnerability.
-    #[prost(enumeration="Severity", tag="2")]
+    #[prost(enumeration = "Severity", tag = "2")]
     pub severity: i32,
     /// Details of all known distros and packages affected by this vulnerability.
-    #[prost(message, repeated, tag="3")]
+    #[prost(message, repeated, tag = "3")]
     pub details: ::prost::alloc::vec::Vec<vulnerability_note::Detail>,
     /// The full description of the CVSSv3 for this vulnerability.
-    #[prost(message, optional, tag="4")]
+    #[prost(message, optional, tag = "4")]
     pub cvss_v3: ::core::option::Option<CvsSv3>,
     /// Windows details get their own format because the information format and
     /// model don't match a normal detail. Specifically Windows updates are done as
     /// patches, thus Windows vulnerabilities really are a missing package, rather
     /// than a package being at an incorrect version.
-    #[prost(message, repeated, tag="5")]
+    #[prost(message, repeated, tag = "5")]
     pub windows_details: ::prost::alloc::vec::Vec<vulnerability_note::WindowsDetail>,
     /// The time this information was last changed at the source. This is an
     /// upstream timestamp from the underlying information source - e.g. Ubuntu
     /// security tracker.
-    #[prost(message, optional, tag="6")]
+    #[prost(message, optional, tag = "6")]
     pub source_update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// CVSS version used to populate cvss_score and severity.
-    #[prost(enumeration="CvssVersion", tag="7")]
+    #[prost(enumeration = "CvssVersion", tag = "7")]
     pub cvss_version: i32,
 }
 /// Nested message and enum types in `VulnerabilityNote`.
@@ -2038,21 +2236,21 @@ pub mod vulnerability_note {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Detail {
         /// The distro assigned severity of this vulnerability.
-        #[prost(string, tag="1")]
+        #[prost(string, tag = "1")]
         pub severity_name: ::prost::alloc::string::String,
         /// A vendor-specific description of this vulnerability.
-        #[prost(string, tag="2")]
+        #[prost(string, tag = "2")]
         pub description: ::prost::alloc::string::String,
         /// The type of package; whether native or non native (e.g., ruby gems,
         /// node.js packages, etc.).
-        #[prost(string, tag="3")]
+        #[prost(string, tag = "3")]
         pub package_type: ::prost::alloc::string::String,
         /// Required. The [CPE URI](<https://cpe.mitre.org/specification/>) this
         /// vulnerability affects.
-        #[prost(string, tag="4")]
+        #[prost(string, tag = "4")]
         pub affected_cpe_uri: ::prost::alloc::string::String,
         /// Required. The package this vulnerability affects.
-        #[prost(string, tag="5")]
+        #[prost(string, tag = "5")]
         pub affected_package: ::prost::alloc::string::String,
         /// The version number at the start of an interval in which this
         /// vulnerability exists. A vulnerability can affect a package between
@@ -2061,7 +2259,7 @@ pub mod vulnerability_note {
         /// represented in its own Detail. If a specific affected version is provided
         /// by a vulnerability database, affected_version_start and
         /// affected_version_end will be the same in that Detail.
-        #[prost(message, optional, tag="6")]
+        #[prost(message, optional, tag = "6")]
         pub affected_version_start: ::core::option::Option<super::Version>,
         /// The version number at the end of an interval in which this vulnerability
         /// exists. A vulnerability can affect a package between version numbers
@@ -2070,56 +2268,56 @@ pub mod vulnerability_note {
         /// own Detail. If a specific affected version is provided by a vulnerability
         /// database, affected_version_start and affected_version_end will be the
         /// same in that Detail.
-        #[prost(message, optional, tag="7")]
+        #[prost(message, optional, tag = "7")]
         pub affected_version_end: ::core::option::Option<super::Version>,
         /// The distro recommended [CPE URI](<https://cpe.mitre.org/specification/>)
         /// to update to that contains a fix for this vulnerability. It is possible
         /// for this to be different from the affected_cpe_uri.
-        #[prost(string, tag="8")]
+        #[prost(string, tag = "8")]
         pub fixed_cpe_uri: ::prost::alloc::string::String,
         /// The distro recommended package to update to that contains a fix for this
         /// vulnerability. It is possible for this to be different from the
         /// affected_package.
-        #[prost(string, tag="9")]
+        #[prost(string, tag = "9")]
         pub fixed_package: ::prost::alloc::string::String,
         /// The distro recommended version to update to that contains a
         /// fix for this vulnerability. Setting this to VersionKind.MAXIMUM means no
         /// such version is yet available.
-        #[prost(message, optional, tag="10")]
+        #[prost(message, optional, tag = "10")]
         pub fixed_version: ::core::option::Option<super::Version>,
         /// Whether this detail is obsolete. Occurrences are expected not to point to
         /// obsolete details.
-        #[prost(bool, tag="11")]
+        #[prost(bool, tag = "11")]
         pub is_obsolete: bool,
         /// The time this information was last changed at the source. This is an
         /// upstream timestamp from the underlying information source - e.g. Ubuntu
         /// security tracker.
-        #[prost(message, optional, tag="12")]
+        #[prost(message, optional, tag = "12")]
         pub source_update_time: ::core::option::Option<::prost_types::Timestamp>,
         /// The source from which the information in this Detail was obtained.
-        #[prost(string, tag="13")]
+        #[prost(string, tag = "13")]
         pub source: ::prost::alloc::string::String,
         /// The name of the vendor of the product.
-        #[prost(string, tag="14")]
+        #[prost(string, tag = "14")]
         pub vendor: ::prost::alloc::string::String,
     }
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct WindowsDetail {
         /// Required. The [CPE URI](<https://cpe.mitre.org/specification/>) this
         /// vulnerability affects.
-        #[prost(string, tag="1")]
+        #[prost(string, tag = "1")]
         pub cpe_uri: ::prost::alloc::string::String,
         /// Required. The name of this vulnerability.
-        #[prost(string, tag="2")]
+        #[prost(string, tag = "2")]
         pub name: ::prost::alloc::string::String,
         /// The description of this vulnerability.
-        #[prost(string, tag="3")]
+        #[prost(string, tag = "3")]
         pub description: ::prost::alloc::string::String,
         /// Required. The names of the KBs which have hotfixes to mitigate this
         /// vulnerability. Note that there may be multiple hotfixes (and thus
         /// multiple KBs) that mitigate a given vulnerability. Currently any listed
         /// KBs presence is considered a fix.
-        #[prost(message, repeated, tag="4")]
+        #[prost(message, repeated, tag = "4")]
         pub fixing_kbs: ::prost::alloc::vec::Vec<windows_detail::KnowledgeBase>,
     }
     /// Nested message and enum types in `WindowsDetail`.
@@ -2127,11 +2325,11 @@ pub mod vulnerability_note {
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct KnowledgeBase {
             /// The KB name (generally of the form KB\[0-9\]+ (e.g., KB123456)).
-            #[prost(string, tag="1")]
+            #[prost(string, tag = "1")]
             pub name: ::prost::alloc::string::String,
             /// A link to the KB in the [Windows update catalog]
             /// (<https://www.catalog.update.microsoft.com/>).
-            #[prost(string, tag="2")]
+            #[prost(string, tag = "2")]
             pub url: ::prost::alloc::string::String,
         }
     }
@@ -2141,31 +2339,31 @@ pub mod vulnerability_note {
 pub struct VulnerabilityOccurrence {
     /// The type of package; whether native or non native (e.g., ruby gems, node.js
     /// packages, etc.).
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub r#type: ::prost::alloc::string::String,
     /// Output only. The note provider assigned severity of this vulnerability.
-    #[prost(enumeration="Severity", tag="2")]
+    #[prost(enumeration = "Severity", tag = "2")]
     pub severity: i32,
     /// Output only. The CVSS score of this vulnerability. CVSS score is on a
     /// scale of 0 - 10 where 0 indicates low severity and 10 indicates high
     /// severity.
-    #[prost(float, tag="3")]
+    #[prost(float, tag = "3")]
     pub cvss_score: f32,
     /// The cvss v3 score for the vulnerability.
-    #[prost(message, optional, tag="10")]
+    #[prost(message, optional, tag = "10")]
     pub cvssv3: ::core::option::Option<Cvss>,
     /// Required. The set of affected locations and their fixes (if available)
     /// within the associated resource.
-    #[prost(message, repeated, tag="4")]
+    #[prost(message, repeated, tag = "4")]
     pub package_issue: ::prost::alloc::vec::Vec<vulnerability_occurrence::PackageIssue>,
     /// Output only. A one sentence description of this vulnerability.
-    #[prost(string, tag="5")]
+    #[prost(string, tag = "5")]
     pub short_description: ::prost::alloc::string::String,
     /// Output only. A detailed description of this vulnerability.
-    #[prost(string, tag="6")]
+    #[prost(string, tag = "6")]
     pub long_description: ::prost::alloc::string::String,
     /// Output only. URLs related to this vulnerability.
-    #[prost(message, repeated, tag="7")]
+    #[prost(message, repeated, tag = "7")]
     pub related_urls: ::prost::alloc::vec::Vec<RelatedUrl>,
     /// The distro assigned severity for this vulnerability when it is available,
     /// otherwise this is the note provider assigned severity.
@@ -2177,14 +2375,14 @@ pub struct VulnerabilityOccurrence {
     /// PackageIssue level. In the case where multiple PackageIssues have differing
     /// effective severities, this field should be the highest severity for any of
     /// the PackageIssues.
-    #[prost(enumeration="Severity", tag="8")]
+    #[prost(enumeration = "Severity", tag = "8")]
     pub effective_severity: i32,
     /// Output only. Whether at least one of the affected packages has a fix
     /// available.
-    #[prost(bool, tag="9")]
+    #[prost(bool, tag = "9")]
     pub fix_available: bool,
     /// Output only. CVSS version used to populate cvss_score and severity.
-    #[prost(enumeration="CvssVersion", tag="11")]
+    #[prost(enumeration = "CvssVersion", tag = "11")]
     pub cvss_version: i32,
 }
 /// Nested message and enum types in `VulnerabilityOccurrence`.
@@ -2195,41 +2393,41 @@ pub mod vulnerability_occurrence {
     pub struct PackageIssue {
         /// Required. The [CPE URI](<https://cpe.mitre.org/specification/>) this
         /// vulnerability was found in.
-        #[prost(string, tag="1")]
+        #[prost(string, tag = "1")]
         pub affected_cpe_uri: ::prost::alloc::string::String,
         /// Required. The package this vulnerability was found in.
-        #[prost(string, tag="2")]
+        #[prost(string, tag = "2")]
         pub affected_package: ::prost::alloc::string::String,
         /// Required. The version of the package that is installed on the resource
         /// affected by this vulnerability.
-        #[prost(message, optional, tag="3")]
+        #[prost(message, optional, tag = "3")]
         pub affected_version: ::core::option::Option<super::Version>,
         /// The [CPE URI](<https://cpe.mitre.org/specification/>) this vulnerability
         /// was fixed in. It is possible for this to be different from the
         /// affected_cpe_uri.
-        #[prost(string, tag="4")]
+        #[prost(string, tag = "4")]
         pub fixed_cpe_uri: ::prost::alloc::string::String,
         /// The package this vulnerability was fixed in. It is possible for this to
         /// be different from the affected_package.
-        #[prost(string, tag="5")]
+        #[prost(string, tag = "5")]
         pub fixed_package: ::prost::alloc::string::String,
         /// Required. The version of the package this vulnerability was fixed in.
         /// Setting this to VersionKind.MAXIMUM means no fix is yet available.
-        #[prost(message, optional, tag="6")]
+        #[prost(message, optional, tag = "6")]
         pub fixed_version: ::core::option::Option<super::Version>,
         /// Output only. Whether a fix is available for this package.
-        #[prost(bool, tag="7")]
+        #[prost(bool, tag = "7")]
         pub fix_available: bool,
         /// The type of package (e.g. OS, MAVEN, GO).
-        #[prost(string, tag="8")]
+        #[prost(string, tag = "8")]
         pub package_type: ::prost::alloc::string::String,
         /// The distro or language system assigned severity for this vulnerability
         /// when that is available and note provider assigned severity when it is not
         /// available.
-        #[prost(enumeration="super::Severity", tag="9")]
+        #[prost(enumeration = "super::Severity", tag = "9")]
         pub effective_severity: i32,
         /// The location at which this package was found.
-        #[prost(message, repeated, tag="10")]
+        #[prost(message, repeated, tag = "10")]
         pub file_location: ::prost::alloc::vec::Vec<super::FileLocation>,
     }
 }
@@ -2238,37 +2436,40 @@ pub mod vulnerability_occurrence {
 pub struct Occurrence {
     /// Output only. The name of the occurrence in the form of
     /// `projects/\[PROJECT_ID]/occurrences/[OCCURRENCE_ID\]`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. Immutable. A URI that represents the resource for which the
     /// occurrence applies. For example,
     /// `<https://gcr.io/project/image@sha256:123abc`> for a Docker image.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub resource_uri: ::prost::alloc::string::String,
     /// Required. Immutable. The analysis note associated with this occurrence, in
     /// the form of `projects/\[PROVIDER_ID]/notes/[NOTE_ID\]`. This field can be
     /// used as a filter in list requests.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub note_name: ::prost::alloc::string::String,
     /// Output only. This explicitly denotes which of the occurrence details are
     /// specified. This field can be used as a filter in list requests.
-    #[prost(enumeration="NoteKind", tag="4")]
+    #[prost(enumeration = "NoteKind", tag = "4")]
     pub kind: i32,
     /// A description of actions that can be taken to remedy the note.
-    #[prost(string, tag="5")]
+    #[prost(string, tag = "5")]
     pub remediation: ::prost::alloc::string::String,
     /// Output only. The time this occurrence was created.
-    #[prost(message, optional, tag="6")]
+    #[prost(message, optional, tag = "6")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The time this occurrence was last updated.
-    #[prost(message, optional, tag="7")]
+    #[prost(message, optional, tag = "7")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// <https://github.com/secure-systems-lab/dsse>
-    #[prost(message, optional, tag="18")]
+    #[prost(message, optional, tag = "18")]
     pub envelope: ::core::option::Option<Envelope>,
     /// Required. Immutable. Describes the details of the note kind found on this
     /// resource.
-    #[prost(oneof="occurrence::Details", tags="8, 9, 10, 11, 12, 13, 14, 15, 16, 17")]
+    #[prost(
+        oneof = "occurrence::Details",
+        tags = "8, 9, 10, 11, 12, 13, 14, 15, 16, 17"
+    )]
     pub details: ::core::option::Option<occurrence::Details>,
 }
 /// Nested message and enum types in `Occurrence`.
@@ -2278,35 +2479,35 @@ pub mod occurrence {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Details {
         /// Describes a security vulnerability.
-        #[prost(message, tag="8")]
+        #[prost(message, tag = "8")]
         Vulnerability(super::VulnerabilityOccurrence),
         /// Describes a verifiable build.
-        #[prost(message, tag="9")]
+        #[prost(message, tag = "9")]
         Build(super::BuildOccurrence),
         /// Describes how this resource derives from the basis in the associated
         /// note.
-        #[prost(message, tag="10")]
+        #[prost(message, tag = "10")]
         Image(super::ImageOccurrence),
         /// Describes the installation of a package on the linked resource.
-        #[prost(message, tag="11")]
+        #[prost(message, tag = "11")]
         Package(super::PackageOccurrence),
         /// Describes the deployment of an artifact on a runtime.
-        #[prost(message, tag="12")]
+        #[prost(message, tag = "12")]
         Deployment(super::DeploymentOccurrence),
         /// Describes when a resource was discovered.
-        #[prost(message, tag="13")]
+        #[prost(message, tag = "13")]
         Discovery(super::DiscoveryOccurrence),
         /// Describes an attestation of an artifact.
-        #[prost(message, tag="14")]
+        #[prost(message, tag = "14")]
         Attestation(super::AttestationOccurrence),
         /// Describes an available package upgrade on the linked resource.
-        #[prost(message, tag="15")]
+        #[prost(message, tag = "15")]
         Upgrade(super::UpgradeOccurrence),
         /// Describes a compliance violation on a linked resource.
-        #[prost(message, tag="16")]
+        #[prost(message, tag = "16")]
         Compliance(super::ComplianceOccurrence),
         /// Describes an attestation of an artifact using dsse.
-        #[prost(message, tag="17")]
+        #[prost(message, tag = "17")]
         DsseAttestation(super::DsseAttestationOccurrence),
     }
 }
@@ -2315,37 +2516,37 @@ pub mod occurrence {
 pub struct Note {
     /// Output only. The name of the note in the form of
     /// `projects/\[PROVIDER_ID]/notes/[NOTE_ID\]`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// A one sentence description of this note.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub short_description: ::prost::alloc::string::String,
     /// A detailed description of this note.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub long_description: ::prost::alloc::string::String,
     /// Output only. The type of analysis. This field can be used as a filter in
     /// list requests.
-    #[prost(enumeration="NoteKind", tag="4")]
+    #[prost(enumeration = "NoteKind", tag = "4")]
     pub kind: i32,
     /// URLs associated with this note.
-    #[prost(message, repeated, tag="5")]
+    #[prost(message, repeated, tag = "5")]
     pub related_url: ::prost::alloc::vec::Vec<RelatedUrl>,
     /// Time of expiration for this note. Empty if note does not expire.
-    #[prost(message, optional, tag="6")]
+    #[prost(message, optional, tag = "6")]
     pub expiration_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The time this note was created. This field can be used as a
     /// filter in list requests.
-    #[prost(message, optional, tag="7")]
+    #[prost(message, optional, tag = "7")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The time this note was last updated. This field can be used as
     /// a filter in list requests.
-    #[prost(message, optional, tag="8")]
+    #[prost(message, optional, tag = "8")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Other notes related to this note.
-    #[prost(string, repeated, tag="9")]
+    #[prost(string, repeated, tag = "9")]
     pub related_note_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Required. Immutable. The type of analysis this note represents.
-    #[prost(oneof="note::Type", tags="10, 11, 12, 13, 14, 15, 16, 17, 18, 19")]
+    #[prost(oneof = "note::Type", tags = "10, 11, 12, 13, 14, 15, 16, 17, 18, 19")]
     pub r#type: ::core::option::Option<note::Type>,
 }
 /// Nested message and enum types in `Note`.
@@ -2354,34 +2555,34 @@ pub mod note {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Type {
         /// A note describing a package vulnerability.
-        #[prost(message, tag="10")]
+        #[prost(message, tag = "10")]
         Vulnerability(super::VulnerabilityNote),
         /// A note describing build provenance for a verifiable build.
-        #[prost(message, tag="11")]
+        #[prost(message, tag = "11")]
         Build(super::BuildNote),
         /// A note describing a base image.
-        #[prost(message, tag="12")]
+        #[prost(message, tag = "12")]
         Image(super::ImageNote),
         /// A note describing a package hosted by various package managers.
-        #[prost(message, tag="13")]
+        #[prost(message, tag = "13")]
         Package(super::PackageNote),
         /// A note describing something that can be deployed.
-        #[prost(message, tag="14")]
+        #[prost(message, tag = "14")]
         Deployment(super::DeploymentNote),
         /// A note describing the initial analysis of a resource.
-        #[prost(message, tag="15")]
+        #[prost(message, tag = "15")]
         Discovery(super::DiscoveryNote),
         /// A note describing an attestation role.
-        #[prost(message, tag="16")]
+        #[prost(message, tag = "16")]
         Attestation(super::AttestationNote),
         /// A note describing available package upgrades.
-        #[prost(message, tag="17")]
+        #[prost(message, tag = "17")]
         Upgrade(super::UpgradeNote),
         /// A note describing a compliance check.
-        #[prost(message, tag="18")]
+        #[prost(message, tag = "18")]
         Compliance(super::ComplianceNote),
         /// A note describing a dsse attestation note.
-        #[prost(message, tag="19")]
+        #[prost(message, tag = "19")]
         DsseAttestation(super::DsseAttestationNote),
     }
 }
@@ -2390,7 +2591,7 @@ pub mod note {
 pub struct GetOccurrenceRequest {
     /// The name of the occurrence in the form of
     /// `projects/\[PROJECT_ID]/occurrences/[OCCURRENCE_ID\]`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request to list occurrences.
@@ -2398,29 +2599,29 @@ pub struct GetOccurrenceRequest {
 pub struct ListOccurrencesRequest {
     /// The name of the project to list occurrences for in the form of
     /// `projects/\[PROJECT_ID\]`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The filter expression.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub filter: ::prost::alloc::string::String,
     /// Number of occurrences to return in the list. Must be positive. Max allowed
     /// page size is 1000. If not specified, page size defaults to 20.
-    #[prost(int32, tag="3")]
+    #[prost(int32, tag = "3")]
     pub page_size: i32,
     /// Token to provide to skip to a particular spot in the list.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response for listing occurrences.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListOccurrencesResponse {
     /// The occurrences requested.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub occurrences: ::prost::alloc::vec::Vec<Occurrence>,
     /// The next pagination token in the list response. It should be used as
     /// `page_token` for the following request. An empty value means no more
     /// results.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request to delete an occurrence.
@@ -2428,7 +2629,7 @@ pub struct ListOccurrencesResponse {
 pub struct DeleteOccurrenceRequest {
     /// The name of the occurrence in the form of
     /// `projects/\[PROJECT_ID]/occurrences/[OCCURRENCE_ID\]`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request to create a new occurrence.
@@ -2436,10 +2637,10 @@ pub struct DeleteOccurrenceRequest {
 pub struct CreateOccurrenceRequest {
     /// The name of the project in the form of `projects/\[PROJECT_ID\]`, under which
     /// the occurrence is to be created.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The occurrence to create.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub occurrence: ::core::option::Option<Occurrence>,
 }
 /// Request to update an occurrence.
@@ -2447,13 +2648,13 @@ pub struct CreateOccurrenceRequest {
 pub struct UpdateOccurrenceRequest {
     /// The name of the occurrence in the form of
     /// `projects/\[PROJECT_ID]/occurrences/[OCCURRENCE_ID\]`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The updated occurrence.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub occurrence: ::core::option::Option<Occurrence>,
     /// The fields to update.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request to get a note.
@@ -2461,7 +2662,7 @@ pub struct UpdateOccurrenceRequest {
 pub struct GetNoteRequest {
     /// The name of the note in the form of
     /// `projects/\[PROVIDER_ID]/notes/[NOTE_ID\]`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request to get the note to which the specified occurrence is attached.
@@ -2469,7 +2670,7 @@ pub struct GetNoteRequest {
 pub struct GetOccurrenceNoteRequest {
     /// The name of the occurrence in the form of
     /// `projects/\[PROJECT_ID]/occurrences/[OCCURRENCE_ID\]`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request to list notes.
@@ -2477,29 +2678,29 @@ pub struct GetOccurrenceNoteRequest {
 pub struct ListNotesRequest {
     /// The name of the project to list notes for in the form of
     /// `projects/\[PROJECT_ID\]`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The filter expression.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub filter: ::prost::alloc::string::String,
     /// Number of notes to return in the list. Must be positive. Max allowed page
     /// size is 1000. If not specified, page size defaults to 20.
-    #[prost(int32, tag="3")]
+    #[prost(int32, tag = "3")]
     pub page_size: i32,
     /// Token to provide to skip to a particular spot in the list.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response for listing notes.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNotesResponse {
     /// The notes requested.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub notes: ::prost::alloc::vec::Vec<Note>,
     /// The next pagination token in the list response. It should be used as
     /// `page_token` for the following request. An empty value means no more
     /// results.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request to delete a note.
@@ -2507,7 +2708,7 @@ pub struct ListNotesResponse {
 pub struct DeleteNoteRequest {
     /// The name of the note in the form of
     /// `projects/\[PROVIDER_ID]/notes/[NOTE_ID\]`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request to create a new note.
@@ -2515,13 +2716,13 @@ pub struct DeleteNoteRequest {
 pub struct CreateNoteRequest {
     /// The name of the project in the form of `projects/\[PROJECT_ID\]`, under which
     /// the note is to be created.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The ID to use for this note.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub note_id: ::prost::alloc::string::String,
     /// The note to create.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub note: ::core::option::Option<Note>,
 }
 /// Request to update a note.
@@ -2529,13 +2730,13 @@ pub struct CreateNoteRequest {
 pub struct UpdateNoteRequest {
     /// The name of the note in the form of
     /// `projects/\[PROVIDER_ID]/notes/[NOTE_ID\]`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The updated note.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub note: ::core::option::Option<Note>,
     /// The fields to update.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request to list occurrences for a note.
@@ -2543,26 +2744,26 @@ pub struct UpdateNoteRequest {
 pub struct ListNoteOccurrencesRequest {
     /// The name of the note to list occurrences for in the form of
     /// `projects/\[PROVIDER_ID]/notes/[NOTE_ID\]`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The filter expression.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub filter: ::prost::alloc::string::String,
     /// Number of occurrences to return in the list.
-    #[prost(int32, tag="3")]
+    #[prost(int32, tag = "3")]
     pub page_size: i32,
     /// Token to provide to skip to a particular spot in the list.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response for listing occurrences for a note.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNoteOccurrencesResponse {
     /// The occurrences attached to the specified note.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub occurrences: ::prost::alloc::vec::Vec<Occurrence>,
     /// Token to provide to skip to a particular spot in the list.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request to create notes in batch.
@@ -2570,17 +2771,17 @@ pub struct ListNoteOccurrencesResponse {
 pub struct BatchCreateNotesRequest {
     /// The name of the project in the form of `projects/\[PROJECT_ID\]`, under which
     /// the notes are to be created.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The notes to create. Max allowed length is 1000.
-    #[prost(map="string, message", tag="2")]
+    #[prost(map = "string, message", tag = "2")]
     pub notes: ::std::collections::HashMap<::prost::alloc::string::String, Note>,
 }
 /// Response for creating notes in batch.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchCreateNotesResponse {
     /// The notes that were created.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub notes: ::prost::alloc::vec::Vec<Note>,
 }
 /// Request to create occurrences in batch.
@@ -2588,17 +2789,17 @@ pub struct BatchCreateNotesResponse {
 pub struct BatchCreateOccurrencesRequest {
     /// The name of the project in the form of `projects/\[PROJECT_ID\]`, under which
     /// the occurrences are to be created.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The occurrences to create. Max allowed length is 1000.
-    #[prost(message, repeated, tag="2")]
+    #[prost(message, repeated, tag = "2")]
     pub occurrences: ::prost::alloc::vec::Vec<Occurrence>,
 }
 /// Response for creating occurrences in batch.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchCreateOccurrencesResponse {
     /// The occurrences that were created.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub occurrences: ::prost::alloc::vec::Vec<Occurrence>,
 }
 /// Generated client implementations.

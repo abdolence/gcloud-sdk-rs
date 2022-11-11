@@ -3,18 +3,18 @@
 pub struct ErrorGroup {
     /// The group resource name.
     /// Example: <code>projects/my-project-123/groups/CNSgkpnppqKCUw</code>
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Group IDs are unique for a given project. If the same kind of error
     /// occurs in different service contexts, it will receive the same group ID.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub group_id: ::prost::alloc::string::String,
     /// Associated tracking issues.
-    #[prost(message, repeated, tag="3")]
+    #[prost(message, repeated, tag = "3")]
     pub tracking_issues: ::prost::alloc::vec::Vec<TrackingIssue>,
     /// Error group's resolution status.
     /// An unspecified resolution status will be interpreted as OPEN
-    #[prost(enumeration="ResolutionStatus", tag="5")]
+    #[prost(enumeration = "ResolutionStatus", tag = "5")]
     pub resolution_status: i32,
 }
 /// Information related to tracking the progress on resolving the error.
@@ -22,7 +22,7 @@ pub struct ErrorGroup {
 pub struct TrackingIssue {
     /// A URL pointing to a related entry in an issue tracking system.
     /// Example: `<https://github.com/user/project/issues/4`>
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub url: ::prost::alloc::string::String,
 }
 /// An error event which is returned by the Error Reporting system.
@@ -31,16 +31,16 @@ pub struct ErrorEvent {
     /// Time when the event occurred as provided in the error report.
     /// If the report did not contain a timestamp, the time the error was received
     /// by the Error Reporting system is used.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub event_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The `ServiceContext` for which this error was reported.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub service_context: ::core::option::Option<ServiceContext>,
     /// The stack trace that was reported or logged by the service.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub message: ::prost::alloc::string::String,
     /// Data about the context in which the error occurred.
-    #[prost(message, optional, tag="5")]
+    #[prost(message, optional, tag = "5")]
     pub context: ::core::option::Option<ErrorContext>,
 }
 /// Describes a running service that sends errors.
@@ -54,20 +54,20 @@ pub struct ServiceContext {
     ///
     /// Contains the service name for error reports extracted from Google
     /// App Engine logs or `default` if the App Engine default service is used.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub service: ::prost::alloc::string::String,
     /// Represents the source code version that the developer provided,
     /// which could represent a version label or a Git SHA-1 hash, for example.
     /// For App Engine standard environment, the version is set to the version of
     /// the app.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub version: ::prost::alloc::string::String,
     /// Type of the MonitoredResource. List of possible values:
     /// <https://cloud.google.com/monitoring/api/resources>
     ///
     /// Value is set automatically for incoming errors and must not be set when
     /// reporting errors.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub resource_type: ::prost::alloc::string::String,
 }
 /// A description of the context in which an error occurred.
@@ -78,7 +78,7 @@ pub struct ServiceContext {
 pub struct ErrorContext {
     /// The HTTP request which was processed when the error was
     /// triggered.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub http_request: ::core::option::Option<HttpRequestContext>,
     /// The user who caused or was affected by the crash.
     /// This can be a user ID, an email address, or an arbitrary token that
@@ -88,14 +88,14 @@ pub struct ErrorContext {
     /// Error Reporting system will use other data, such as remote IP address, to
     /// distinguish affected users. See `affected_users_count` in
     /// `ErrorGroupStats`.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub user: ::prost::alloc::string::String,
     /// The location in the source code where the decision was made to
     /// report the error, usually the place where it was logged.
     /// For a logged exception this would be the source line where the
     /// exception is logged, usually close to the place where it was
     /// caught.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub report_location: ::core::option::Option<SourceLocation>,
 }
 /// HTTP request data that is related to a reported error.
@@ -105,25 +105,25 @@ pub struct ErrorContext {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HttpRequestContext {
     /// The type of HTTP request, such as `GET`, `POST`, etc.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub method: ::prost::alloc::string::String,
     /// The URL of the request.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub url: ::prost::alloc::string::String,
     /// The user agent information that is provided with the request.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub user_agent: ::prost::alloc::string::String,
     /// The referrer information that is provided with the request.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub referrer: ::prost::alloc::string::String,
     /// The HTTP response status code for the request.
-    #[prost(int32, tag="5")]
+    #[prost(int32, tag = "5")]
     pub response_status_code: i32,
     /// The IP address from which the request originated.
     /// This can be IPv4, IPv6, or a token which is derived from the
     /// IP address, depending on the data that has been provided
     /// in the error report.
-    #[prost(string, tag="6")]
+    #[prost(string, tag = "6")]
     pub remote_ip: ::prost::alloc::string::String,
 }
 /// Indicates a location in the source code of the service for which errors are
@@ -134,15 +134,15 @@ pub struct HttpRequestContext {
 pub struct SourceLocation {
     /// The source code filename, which can include a truncated relative
     /// path, or a full path from a production machine.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub file_path: ::prost::alloc::string::String,
     /// 1-based. 0 indicates that the line number is unknown.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub line_number: i32,
     /// Human-readable name of a function or method.
     /// The value can include optional context like the class or package name.
     /// For example, `my.package.MyClass.method` in case of Java.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub function_name: ::prost::alloc::string::String,
 }
 /// Resolution status of an error group.
@@ -187,14 +187,14 @@ pub struct GetGroupRequest {
     /// to return a list of groups belonging to this project.
     ///
     /// Example: `projects/my-project-123/groups/my-group`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub group_name: ::prost::alloc::string::String,
 }
 /// A request to replace the existing data for the given group.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateGroupRequest {
     /// Required. The group which replaces the resource on the server.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub group: ::core::option::Option<ErrorGroup>,
 }
 /// Generated client implementations.
@@ -319,15 +319,15 @@ pub struct ListGroupStatsRequest {
     /// [Google Cloud Console](<https://support.google.com/cloud/answer/6158840>).
     ///
     /// Examples: `projects/my-project-123`, `projects/5551234`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub project_name: ::prost::alloc::string::String,
     /// Optional. List all <code>ErrorGroupStats</code> with these IDs.
-    #[prost(string, repeated, tag="2")]
+    #[prost(string, repeated, tag = "2")]
     pub group_id: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. List only <code>ErrorGroupStats</code> which belong to a service
     /// context that matches the filter.
     /// Data for all service contexts is returned if this field is not specified.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub service_filter: ::core::option::Option<ServiceContextFilter>,
     /// Optional. List data for the given time range.
     /// If not set, a default time range is used. The field
@@ -337,50 +337,50 @@ pub struct ListGroupStatsRequest {
     /// range are returned, unless the request contains an explicit
     /// <code>group_id</code> list. If a <code>group_id</code> list is given, also
     /// <code>ErrorGroupStats</code> with zero occurrences are returned.
-    #[prost(message, optional, tag="5")]
+    #[prost(message, optional, tag = "5")]
     pub time_range: ::core::option::Option<QueryTimeRange>,
     /// Optional. The preferred duration for a single returned `TimedCount`.
     /// If not set, no timed counts are returned.
-    #[prost(message, optional, tag="6")]
+    #[prost(message, optional, tag = "6")]
     pub timed_count_duration: ::core::option::Option<::prost_types::Duration>,
     /// Optional. The alignment of the timed counts to be returned.
     /// Default is `ALIGNMENT_EQUAL_AT_END`.
-    #[prost(enumeration="TimedCountAlignment", tag="7")]
+    #[prost(enumeration = "TimedCountAlignment", tag = "7")]
     pub alignment: i32,
     /// Optional. Time where the timed counts shall be aligned if rounded
     /// alignment is chosen. Default is 00:00 UTC.
-    #[prost(message, optional, tag="8")]
+    #[prost(message, optional, tag = "8")]
     pub alignment_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Optional. The sort order in which the results are returned.
     /// Default is `COUNT_DESC`.
-    #[prost(enumeration="ErrorGroupOrder", tag="9")]
+    #[prost(enumeration = "ErrorGroupOrder", tag = "9")]
     pub order: i32,
     /// Optional. The maximum number of results to return per response.
     /// Default is 20.
-    #[prost(int32, tag="11")]
+    #[prost(int32, tag = "11")]
     pub page_size: i32,
     /// Optional. A `next_page_token` provided by a previous response. To view
     /// additional results, pass this token along with the identical query
     /// parameters as the first request.
-    #[prost(string, tag="12")]
+    #[prost(string, tag = "12")]
     pub page_token: ::prost::alloc::string::String,
 }
 /// Contains a set of requested error group stats.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListGroupStatsResponse {
     /// The error group stats which match the given request.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub error_group_stats: ::prost::alloc::vec::Vec<ErrorGroupStats>,
     /// If non-empty, more results are available.
     /// Pass this token, along with the same query parameters as the first
     /// request, to view the next page of results.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
     /// The timestamp specifies the start time to which the request was restricted.
     /// The start time is set based on the requested time range. It may be adjusted
     /// to a later time if a project has exceeded the storage quota and older data
     /// has been deleted.
-    #[prost(message, optional, tag="4")]
+    #[prost(message, optional, tag = "4")]
     pub time_range_begin: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Data extracted for a specific group based on certain filter criteria,
@@ -388,11 +388,11 @@ pub struct ListGroupStatsResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ErrorGroupStats {
     /// Group data that is independent of the filter criteria.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub group: ::core::option::Option<ErrorGroup>,
     /// Approximate total number of events in the given group that match
     /// the filter criteria.
-    #[prost(int64, tag="2")]
+    #[prost(int64, tag = "2")]
     pub count: i64,
     /// Approximate number of affected users in the given group that
     /// match the filter criteria.
@@ -406,7 +406,7 @@ pub struct ErrorGroupStats {
     /// context that was provided in the error report. If more users are
     /// implicitly affected, such as due to a crash of the whole service,
     /// this is not reflected here.
-    #[prost(int64, tag="3")]
+    #[prost(int64, tag = "3")]
     pub affected_users_count: i64,
     /// Approximate number of occurrences over time.
     /// Timed counts returned by ListGroups are guaranteed to be:
@@ -414,33 +414,33 @@ pub struct ErrorGroupStats {
     /// - Inside the requested time interval
     /// - Non-overlapping, and
     /// - Ordered by ascending time.
-    #[prost(message, repeated, tag="4")]
+    #[prost(message, repeated, tag = "4")]
     pub timed_counts: ::prost::alloc::vec::Vec<TimedCount>,
     /// Approximate first occurrence that was ever seen for this group
     /// and which matches the given filter criteria, ignoring the
     /// time_range that was specified in the request.
-    #[prost(message, optional, tag="5")]
+    #[prost(message, optional, tag = "5")]
     pub first_seen_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Approximate last occurrence that was ever seen for this group and
     /// which matches the given filter criteria, ignoring the time_range
     /// that was specified in the request.
-    #[prost(message, optional, tag="6")]
+    #[prost(message, optional, tag = "6")]
     pub last_seen_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Service contexts with a non-zero error count for the given filter
     /// criteria. This list can be truncated if multiple services are affected.
     /// Refer to `num_affected_services` for the total count.
-    #[prost(message, repeated, tag="7")]
+    #[prost(message, repeated, tag = "7")]
     pub affected_services: ::prost::alloc::vec::Vec<ServiceContext>,
     /// The total number of services with a non-zero error count for the given
     /// filter criteria.
-    #[prost(int32, tag="8")]
+    #[prost(int32, tag = "8")]
     pub num_affected_services: i32,
     /// An arbitrary event that is chosen as representative for the whole group.
     /// The representative event is intended to be used as a quick preview for
     /// the whole group. Events in the group are usually sufficiently similar
     /// to each other such that showing an arbitrary representative provides
     /// insight into the characteristics of the group as a whole.
-    #[prost(message, optional, tag="9")]
+    #[prost(message, optional, tag = "9")]
     pub representative: ::core::option::Option<ErrorEvent>,
 }
 /// The number of errors in a given time period.
@@ -449,13 +449,13 @@ pub struct ErrorGroupStats {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TimedCount {
     /// Approximate number of occurrences in the given time period.
-    #[prost(int64, tag="1")]
+    #[prost(int64, tag = "1")]
     pub count: i64,
     /// Start of the time period to which `count` refers (included).
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// End of the time period to which `count` refers (excluded).
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Specifies a set of error events to return.
@@ -467,41 +467,41 @@ pub struct ListEventsRequest {
     /// ID](<https://support.google.com/cloud/answer/6158840>).
     ///
     /// Example: `projects/my-project-123`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub project_name: ::prost::alloc::string::String,
     /// Required. The group for which events shall be returned.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub group_id: ::prost::alloc::string::String,
     /// Optional. List only ErrorGroups which belong to a service context that
     /// matches the filter.
     /// Data for all service contexts is returned if this field is not specified.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub service_filter: ::core::option::Option<ServiceContextFilter>,
     /// Optional. List only data for the given time range.
     /// If not set a default time range is used. The field time_range_begin
     /// in the response will specify the beginning of this time range.
-    #[prost(message, optional, tag="4")]
+    #[prost(message, optional, tag = "4")]
     pub time_range: ::core::option::Option<QueryTimeRange>,
     /// Optional. The maximum number of results to return per response.
-    #[prost(int32, tag="6")]
+    #[prost(int32, tag = "6")]
     pub page_size: i32,
     /// Optional. A `next_page_token` provided by a previous response.
-    #[prost(string, tag="7")]
+    #[prost(string, tag = "7")]
     pub page_token: ::prost::alloc::string::String,
 }
 /// Contains a set of requested error events.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEventsResponse {
     /// The error events which match the given request.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub error_events: ::prost::alloc::vec::Vec<ErrorEvent>,
     /// If non-empty, more results are available.
     /// Pass this token, along with the same query parameters as the first
     /// request, to view the next page of results.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
     /// The timestamp specifies the start time to which the request was restricted.
-    #[prost(message, optional, tag="4")]
+    #[prost(message, optional, tag = "4")]
     pub time_range_begin: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Requests might be rejected or the resulting timed count durations might be
@@ -509,13 +509,23 @@ pub struct ListEventsResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryTimeRange {
     /// Restricts the query to the specified time range.
-    #[prost(enumeration="query_time_range::Period", tag="1")]
+    #[prost(enumeration = "query_time_range::Period", tag = "1")]
     pub period: i32,
 }
 /// Nested message and enum types in `QueryTimeRange`.
 pub mod query_time_range {
     /// The supported time ranges.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum Period {
         /// Do not use.
@@ -561,15 +571,15 @@ pub mod query_time_range {
 pub struct ServiceContextFilter {
     /// Optional. The exact value to match against
     /// \[`ServiceContext.service`\](/error-reporting/reference/rest/v1beta1/ServiceContext#FIELDS.service).
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub service: ::prost::alloc::string::String,
     /// Optional. The exact value to match against
     /// \[`ServiceContext.version`\](/error-reporting/reference/rest/v1beta1/ServiceContext#FIELDS.version).
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub version: ::prost::alloc::string::String,
     /// Optional. The exact value to match against
     /// \[`ServiceContext.resource_type`\](/error-reporting/reference/rest/v1beta1/ServiceContext#FIELDS.resource_type).
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub resource_type: ::prost::alloc::string::String,
 }
 /// Deletes all events in the project.
@@ -581,13 +591,12 @@ pub struct DeleteEventsRequest {
     /// ID](<https://support.google.com/cloud/answer/6158840>).
     ///
     /// Example: `projects/my-project-123`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub project_name: ::prost::alloc::string::String,
 }
 /// Response message for deleting error events.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DeleteEventsResponse {
-}
+pub struct DeleteEventsResponse {}
 /// Specifies how the time periods of error group counts are aligned.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
@@ -616,7 +625,9 @@ impl TimedCountAlignment {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            TimedCountAlignment::ErrorCountAlignmentUnspecified => "ERROR_COUNT_ALIGNMENT_UNSPECIFIED",
+            TimedCountAlignment::ErrorCountAlignmentUnspecified => {
+                "ERROR_COUNT_ALIGNMENT_UNSPECIFIED"
+            }
             TimedCountAlignment::AlignmentEqualRounded => "ALIGNMENT_EQUAL_ROUNDED",
             TimedCountAlignment::AlignmentEqualAtEnd => "ALIGNMENT_EQUAL_AT_END",
         }
@@ -795,27 +806,26 @@ pub struct ReportErrorEventRequest {
     /// ID](<https://support.google.com/cloud/answer/6158840>).
     ///
     /// Example: // `projects/my-project-123`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub project_name: ::prost::alloc::string::String,
     /// Required. The error event to be reported.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub event: ::core::option::Option<ReportedErrorEvent>,
 }
 /// Response for reporting an individual error event.
 /// Data may be added to this message in the future.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ReportErrorEventResponse {
-}
+pub struct ReportErrorEventResponse {}
 /// An error event which is reported to the Error Reporting system.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReportedErrorEvent {
     /// Optional. Time when the event occurred.
     /// If not provided, the time when the event was received by the
     /// Error Reporting system will be used.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub event_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Required. The service context in which this error has occurred.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub service_context: ::core::option::Option<ServiceContext>,
     /// Required. The error message.
     /// If no `context.reportLocation` is provided, the message must contain a
@@ -841,10 +851,10 @@ pub struct ReportedErrorEvent {
     /// \[`(string)$exception`\](<http://php.net/manual/en/exception.tostring.php>).
     /// * **Go**: Must be the return value of
     /// \[`runtime.Stack()`\](<https://golang.org/pkg/runtime/debug/#Stack>).
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub message: ::prost::alloc::string::String,
     /// Optional. A description of the context in which the error occurred.
-    #[prost(message, optional, tag="4")]
+    #[prost(message, optional, tag = "4")]
     pub context: ::core::option::Option<ErrorContext>,
 }
 /// Generated client implementations.

@@ -6,61 +6,74 @@
 pub struct Domain {
     /// Output only. The unique name of the domain using the form:
     /// `projects/{project_id}/locations/global/domains/{domain_name}`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. Resource labels that can contain user-provided metadata.
-    #[prost(map="string, string", tag="2")]
-    pub labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map = "string, string", tag = "2")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
     /// Optional. The full names of the Google Compute Engine
     /// \[networks\](/compute/docs/networks-and-firewalls#networks) the domain
     /// instance is connected to. Networks can be added using UpdateDomain.
     /// The domain is only available on networks listed in `authorized_networks`.
     /// If CIDR subnets overlap between networks, domain creation will fail.
-    #[prost(string, repeated, tag="3")]
+    #[prost(string, repeated, tag = "3")]
     pub authorized_networks: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Required. The CIDR range of internal addresses that are reserved for this
     /// domain. Reserved networks must be /24 or larger. Ranges must be
     /// unique and non-overlapping with existing subnets in
     /// \[Domain].[authorized_networks\].
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub reserved_ip_range: ::prost::alloc::string::String,
     /// Required. Locations where domain needs to be provisioned.
     /// \[regions][compute/docs/regions-zones/\]
     /// e.g. us-west1 or us-east4
     /// Service supports up to 4 locations at once. Each location will use a /26
     /// block.
-    #[prost(string, repeated, tag="5")]
+    #[prost(string, repeated, tag = "5")]
     pub locations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. The name of delegated administrator account used to perform
     /// Active Directory operations. If not specified, `setupadmin` will be used.
-    #[prost(string, tag="6")]
+    #[prost(string, tag = "6")]
     pub admin: ::prost::alloc::string::String,
     /// Output only. The fully-qualified domain name of the exposed domain used by
     /// clients to connect to the service. Similar to what would be chosen for an
     /// Active Directory set up on an internal network.
-    #[prost(string, tag="10")]
+    #[prost(string, tag = "10")]
     pub fqdn: ::prost::alloc::string::String,
     /// Output only. The time the instance was created.
-    #[prost(message, optional, tag="11")]
+    #[prost(message, optional, tag = "11")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The last update time.
-    #[prost(message, optional, tag="12")]
+    #[prost(message, optional, tag = "12")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The current state of this domain.
-    #[prost(enumeration="domain::State", tag="13")]
+    #[prost(enumeration = "domain::State", tag = "13")]
     pub state: i32,
     /// Output only. Additional information about the current status of this
     /// domain, if available.
-    #[prost(string, tag="14")]
+    #[prost(string, tag = "14")]
     pub status_message: ::prost::alloc::string::String,
     /// Output only. The current trusts associated with the domain.
-    #[prost(message, repeated, tag="15")]
+    #[prost(message, repeated, tag = "15")]
     pub trusts: ::prost::alloc::vec::Vec<Trust>,
 }
 /// Nested message and enum types in `Domain`.
 pub mod domain {
     /// Represents the different states of a managed domain.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum State {
         /// Not set.
@@ -106,50 +119,62 @@ pub mod domain {
 pub struct Trust {
     /// The fully qualified target domain name which will be in trust with the
     /// current domain.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub target_domain_name: ::prost::alloc::string::String,
     /// The type of trust represented by the trust resource.
-    #[prost(enumeration="trust::TrustType", tag="2")]
+    #[prost(enumeration = "trust::TrustType", tag = "2")]
     pub trust_type: i32,
     /// The trust direction, which decides if the current domain is trusted,
     /// trusting, or both.
-    #[prost(enumeration="trust::TrustDirection", tag="3")]
+    #[prost(enumeration = "trust::TrustDirection", tag = "3")]
     pub trust_direction: i32,
     /// The trust authentication type, which decides whether the trusted side has
     /// forest/domain wide access or selective access to an approved set of
     /// resources.
-    #[prost(bool, tag="4")]
+    #[prost(bool, tag = "4")]
     pub selective_authentication: bool,
     /// The target DNS server IP addresses which can resolve the remote domain
     /// involved in the trust.
-    #[prost(string, repeated, tag="5")]
-    pub target_dns_ip_addresses: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    #[prost(string, repeated, tag = "5")]
+    pub target_dns_ip_addresses: ::prost::alloc::vec::Vec<
+        ::prost::alloc::string::String,
+    >,
     /// Input only. The trust secret used for the handshake
     /// with the target domain. It will not be stored.
-    #[prost(string, tag="6")]
+    #[prost(string, tag = "6")]
     pub trust_handshake_secret: ::prost::alloc::string::String,
     /// Output only. The time the instance was created.
-    #[prost(message, optional, tag="7")]
+    #[prost(message, optional, tag = "7")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The last update time.
-    #[prost(message, optional, tag="8")]
+    #[prost(message, optional, tag = "8")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The current state of the trust.
-    #[prost(enumeration="trust::State", tag="9")]
+    #[prost(enumeration = "trust::State", tag = "9")]
     pub state: i32,
     /// Output only. Additional information about the current state of the
     /// trust, if available.
-    #[prost(string, tag="11")]
+    #[prost(string, tag = "11")]
     pub state_description: ::prost::alloc::string::String,
     /// Output only. The last heartbeat time when the trust was known to be
     /// connected.
-    #[prost(message, optional, tag="12")]
+    #[prost(message, optional, tag = "12")]
     pub last_trust_heartbeat_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Nested message and enum types in `Trust`.
 pub mod trust {
     /// Represents the different states of a domain trust.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum State {
         /// Not set.
@@ -182,7 +207,17 @@ pub mod trust {
         }
     }
     /// Represents the different inter-forest trust types.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum TrustType {
         /// Not set.
@@ -209,7 +244,17 @@ pub mod trust {
     /// See
     /// \[System.DirectoryServices.ActiveDirectory.TrustDirection\](<https://docs.microsoft.com/en-us/dotnet/api/system.directoryservices.activedirectory.trustdirection?view=netframework-4.7.2>)
     /// for more information.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum TrustDirection {
         /// Not set.
@@ -240,25 +285,25 @@ pub mod trust {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OpMetadata {
     /// Output only. The time the operation was created.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The time the operation finished running.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Server-defined resource path for the target of the operation.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub target: ::prost::alloc::string::String,
     /// Output only. Name of the verb executed by the operation.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub verb: ::prost::alloc::string::String,
     /// Output only. Identifies whether the user has requested cancellation
     /// of the operation. Operations that have successfully been cancelled
     /// have \[Operation.error][\] value with a \[google.rpc.Status.code][google.rpc.Status.code\] of 1,
     /// corresponding to `Code.CANCELLED`.
-    #[prost(bool, tag="5")]
+    #[prost(bool, tag = "5")]
     pub requested_cancellation: bool,
     /// Output only. API version used to start the operation.
-    #[prost(string, tag="6")]
+    #[prost(string, tag = "6")]
     pub api_version: ::prost::alloc::string::String,
 }
 /// Request message for
@@ -267,7 +312,7 @@ pub struct OpMetadata {
 pub struct CreateMicrosoftAdDomainRequest {
     /// Required. The resource project name and location using the form:
     /// `projects/{project_id}/locations/global`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. A domain name, e.g. mydomain.myorg.com, with the following restrictions:
     ///   * Must contain only lowercase letters, numbers, periods and hyphens.
@@ -279,10 +324,10 @@ pub struct CreateMicrosoftAdDomainRequest {
     ///     15 chars.
     ///   * The last segment cannot be fully numeric.
     ///   * Must be unique within the customer project.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub domain_name: ::prost::alloc::string::String,
     /// Required. A Managed Identity domain resource.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub domain: ::core::option::Option<Domain>,
 }
 /// Request message for
@@ -291,7 +336,7 @@ pub struct CreateMicrosoftAdDomainRequest {
 pub struct ResetAdminPasswordRequest {
     /// Required. The domain resource name using the form:
     /// `projects/{project_id}/locations/global/domains/{domain_name}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Response message for
@@ -299,7 +344,7 @@ pub struct ResetAdminPasswordRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResetAdminPasswordResponse {
     /// A random password. See \[admin][google.cloud.managedidentities.v1beta1.Domain.admin\] for more information.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub password: ::prost::alloc::string::String,
 }
 /// Request message for
@@ -308,7 +353,7 @@ pub struct ResetAdminPasswordResponse {
 pub struct ListDomainsRequest {
     /// Required. The resource name of the domain location using the form:
     /// `projects/{project_id}/locations/global`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. The maximum number of items to return.
     /// If not specified, a default value of 1000 will be used.
@@ -316,21 +361,21 @@ pub struct ListDomainsRequest {
     /// Callers should rely on a response's
     /// \[next_page_token][google.cloud.managedidentities.v1beta1.ListDomainsResponse.next_page_token\]
     /// to determine if there are additional results to list.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// The `next_page_token` value returned from a previous ListDomainsRequest
     /// request, if any.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
     /// Optional. A filter specifying constraints of a list operation.
     /// For example, `Domain.fqdn="mydomain.myorginization"`.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
     /// Optional. Specifies the ordering of results. See
     /// [Sorting
     /// order](<https://cloud.google.com/apis/design/design_patterns#sorting_order>)
     /// for more information.
-    #[prost(string, tag="5")]
+    #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
 /// Response message for
@@ -338,14 +383,14 @@ pub struct ListDomainsRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDomainsResponse {
     /// A list of Managed Identities Service domains in the project.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub domains: ::prost::alloc::vec::Vec<Domain>,
     /// A token to retrieve the next page of results, or empty if there are no more
     /// results in the list.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
     /// A list of locations that could not be reached.
-    #[prost(string, repeated, tag="3")]
+    #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for
@@ -354,7 +399,7 @@ pub struct ListDomainsResponse {
 pub struct GetDomainRequest {
     /// Required. The domain resource name using the form:
     /// `projects/{project_id}/locations/global/domains/{domain_name}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for
@@ -368,11 +413,11 @@ pub struct UpdateDomainRequest {
     ///   * `locations`
     ///   * `authorized_networks`
     ///   * `audit_logs_enabled`
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// Required. Domain message with updated fields. Only supported fields specified in
     /// update_mask are updated.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub domain: ::core::option::Option<Domain>,
 }
 /// Request message for
@@ -381,7 +426,7 @@ pub struct UpdateDomainRequest {
 pub struct DeleteDomainRequest {
     /// Required. The domain resource name using the form:
     /// `projects/{project_id}/locations/global/domains/{domain_name}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for
@@ -390,10 +435,10 @@ pub struct DeleteDomainRequest {
 pub struct AttachTrustRequest {
     /// Required. The resource domain name, project name and location using the form:
     /// `projects/{project_id}/locations/global/domains/{domain_name}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The domain trust resource.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub trust: ::core::option::Option<Trust>,
 }
 /// Request message for
@@ -402,16 +447,18 @@ pub struct AttachTrustRequest {
 pub struct ReconfigureTrustRequest {
     /// Required. The resource domain name, project name and location using the form:
     /// `projects/{project_id}/locations/global/domains/{domain_name}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The fully-qualified target domain name which will be in trust with current
     /// domain.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub target_domain_name: ::prost::alloc::string::String,
     /// Required. The target DNS server IP addresses to resolve the remote domain involved
     /// in the trust.
-    #[prost(string, repeated, tag="3")]
-    pub target_dns_ip_addresses: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    #[prost(string, repeated, tag = "3")]
+    pub target_dns_ip_addresses: ::prost::alloc::vec::Vec<
+        ::prost::alloc::string::String,
+    >,
 }
 /// Request message for
 /// \[DetachTrust][google.cloud.managedidentities.v1beta1.DetachTrust\]
@@ -419,10 +466,10 @@ pub struct ReconfigureTrustRequest {
 pub struct DetachTrustRequest {
     /// Required. The resource domain name, project name, and location using the form:
     /// `projects/{project_id}/locations/global/domains/{domain_name}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The domain trust resource to removed.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub trust: ::core::option::Option<Trust>,
 }
 /// Request message for
@@ -431,10 +478,10 @@ pub struct DetachTrustRequest {
 pub struct ValidateTrustRequest {
     /// Required. The resource domain name, project name, and location using the form:
     /// `projects/{project_id}/locations/global/domains/{domain_name}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The domain trust to validate trust state for.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub trust: ::core::option::Option<Trust>,
 }
 /// Generated client implementations.

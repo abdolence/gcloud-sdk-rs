@@ -3,10 +3,10 @@
 pub struct GetVulnerabilityOccurrencesSummaryRequest {
     /// Required. The name of the project to get a vulnerability summary for in the form of
     /// `projects/\[PROJECT_ID\]`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The filter expression.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub filter: ::prost::alloc::string::String,
 }
 /// A summary of how many vulnerability occurrences there are per resource and
@@ -14,8 +14,10 @@ pub struct GetVulnerabilityOccurrencesSummaryRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VulnerabilityOccurrencesSummary {
     /// A listing by resource of the number of fixable and total vulnerabilities.
-    #[prost(message, repeated, tag="1")]
-    pub counts: ::prost::alloc::vec::Vec<vulnerability_occurrences_summary::FixableTotalByDigest>,
+    #[prost(message, repeated, tag = "1")]
+    pub counts: ::prost::alloc::vec::Vec<
+        vulnerability_occurrences_summary::FixableTotalByDigest,
+    >,
 }
 /// Nested message and enum types in `VulnerabilityOccurrencesSummary`.
 pub mod vulnerability_occurrences_summary {
@@ -23,17 +25,20 @@ pub mod vulnerability_occurrences_summary {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct FixableTotalByDigest {
         /// The affected resource.
-        #[prost(string, tag="1")]
+        #[prost(string, tag = "1")]
         pub resource_uri: ::prost::alloc::string::String,
         /// The severity for this count. SEVERITY_UNSPECIFIED indicates total across
         /// all severities.
-        #[prost(enumeration="super::super::super::super::super::grafeas::v1::Severity", tag="2")]
+        #[prost(
+            enumeration = "super::super::super::super::super::grafeas::v1::Severity",
+            tag = "2"
+        )]
         pub severity: i32,
         /// The number of fixable vulnerabilities associated with this resource.
-        #[prost(int64, tag="3")]
+        #[prost(int64, tag = "3")]
         pub fixable_count: i64,
         /// The total number of vulnerabilities associated with this resource.
-        #[prost(int64, tag="4")]
+        #[prost(int64, tag = "4")]
         pub total_count: i64,
     }
 }

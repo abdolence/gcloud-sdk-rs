@@ -3,10 +3,10 @@
 pub struct CreateAssessmentRequest {
     /// Required. The name of the project in which the assessment will be created,
     /// in the format "projects/{project_number}".
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The assessment details.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub assessment: ::core::option::Option<Assessment>,
 }
 /// The request message to annotate an Assessment.
@@ -14,28 +14,43 @@ pub struct CreateAssessmentRequest {
 pub struct AnnotateAssessmentRequest {
     /// Required. The resource name of the Assessment, in the format
     /// "projects/{project_number}/assessments/{assessment_id}".
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. The annotation that will be assigned to the Event. This field can be left
     /// empty to provide reasons that apply to an event without concluding whether
     /// the event is legitimate or fraudulent.
-    #[prost(enumeration="annotate_assessment_request::Annotation", tag="2")]
+    #[prost(enumeration = "annotate_assessment_request::Annotation", tag = "2")]
     pub annotation: i32,
     /// Optional. Optional reasons for the annotation that will be assigned to the Event.
-    #[prost(enumeration="annotate_assessment_request::Reason", repeated, packed="false", tag="3")]
+    #[prost(
+        enumeration = "annotate_assessment_request::Reason",
+        repeated,
+        packed = "false",
+        tag = "3"
+    )]
     pub reasons: ::prost::alloc::vec::Vec<i32>,
     /// Optional. Optional unique stable hashed user identifier to apply to the assessment.
     /// This is an alternative to setting the hashed_account_id in
     /// CreateAssessment, for example when the account identifier is not yet known
     /// in the initial request. It is recommended that the identifier is hashed
     /// using hmac-sha256 with stable secret.
-    #[prost(bytes="vec", tag="4")]
+    #[prost(bytes = "vec", tag = "4")]
     pub hashed_account_id: ::prost::alloc::vec::Vec<u8>,
 }
 /// Nested message and enum types in `AnnotateAssessmentRequest`.
 pub mod annotate_assessment_request {
     /// Enum that represents the types of annotations.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum Annotation {
         /// Default unspecified type.
@@ -69,7 +84,17 @@ pub mod annotate_assessment_request {
         }
     }
     /// Enum that represents potential reasons for annotating an assessment.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum Reason {
         /// Default unspecified reason.
@@ -127,22 +152,21 @@ pub mod annotate_assessment_request {
 }
 /// Empty response for AnnotateAssessment.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AnnotateAssessmentResponse {
-}
+pub struct AnnotateAssessmentResponse {}
 /// Password leak verification info.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PasswordLeakVerification {
     /// Optional. Scrypt hash of the username+password that the customer wants to verify
     /// against a known password leak.
-    #[prost(bytes="vec", tag="1")]
+    #[prost(bytes = "vec", tag = "1")]
     pub hashed_user_credentials: ::prost::alloc::vec::Vec<u8>,
     /// Output only. Whether or not the user's credentials are present in a known leak.
-    #[prost(bool, tag="2")]
+    #[prost(bool, tag = "2")]
     pub credentials_leaked: bool,
     /// Optional. The username part of the user credentials for which we want to trigger a
     /// leak check in canonicalized form. This is the same data used to create the
     /// hashed_user_credentials on the customer side.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub canonicalized_username: ::prost::alloc::string::String,
 }
 /// A recaptcha assessment resource.
@@ -150,37 +174,52 @@ pub struct PasswordLeakVerification {
 pub struct Assessment {
     /// Output only. The resource name for the Assessment in the format
     /// "projects/{project_number}/assessments/{assessment_id}".
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The event being assessed.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub event: ::core::option::Option<Event>,
     /// Output only. Legitimate event score from 0.0 to 1.0.
     /// (1.0 means very likely legitimate traffic while 0.0 means very likely
     /// non-legitimate traffic).
-    #[prost(float, tag="3")]
+    #[prost(float, tag = "3")]
     pub score: f32,
     /// Output only. Properties of the provided event token.
-    #[prost(message, optional, tag="4")]
+    #[prost(message, optional, tag = "4")]
     pub token_properties: ::core::option::Option<TokenProperties>,
     /// Output only. Reasons contributing to the risk analysis verdict.
-    #[prost(enumeration="assessment::ClassificationReason", repeated, packed="false", tag="5")]
+    #[prost(
+        enumeration = "assessment::ClassificationReason",
+        repeated,
+        packed = "false",
+        tag = "5"
+    )]
     pub reasons: ::prost::alloc::vec::Vec<i32>,
     /// Information about the user's credentials used to check for leaks.
     /// This feature is part of the Early Access Program (EAP). Exercise caution,
     /// and do not deploy integrations based on this feature in a production
     /// environment.
-    #[prost(message, optional, tag="7")]
+    #[prost(message, optional, tag = "7")]
     pub password_leak_verification: ::core::option::Option<PasswordLeakVerification>,
     /// Assessment returned by Account Defender when a hashed_account_id is
     /// provided.
-    #[prost(message, optional, tag="8")]
+    #[prost(message, optional, tag = "8")]
     pub account_defender_assessment: ::core::option::Option<AccountDefenderAssessment>,
 }
 /// Nested message and enum types in `Assessment`.
 pub mod assessment {
     /// Reasons contributing to the risk analysis verdict.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum ClassificationReason {
         /// Default unspecified type.
@@ -209,7 +248,9 @@ pub mod assessment {
                 ClassificationReason::Automation => "AUTOMATION",
                 ClassificationReason::UnexpectedEnvironment => "UNEXPECTED_ENVIRONMENT",
                 ClassificationReason::TooMuchTraffic => "TOO_MUCH_TRAFFIC",
-                ClassificationReason::UnexpectedUsagePatterns => "UNEXPECTED_USAGE_PATTERNS",
+                ClassificationReason::UnexpectedUsagePatterns => {
+                    "UNEXPECTED_USAGE_PATTERNS"
+                }
                 ClassificationReason::LowConfidenceScore => "LOW_CONFIDENCE_SCORE",
             }
         }
@@ -219,27 +260,27 @@ pub mod assessment {
 pub struct Event {
     /// Optional. The user response token provided by the reCAPTCHA client-side integration
     /// on your site.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub token: ::prost::alloc::string::String,
     /// Optional. The site key that was used to invoke reCAPTCHA on your site and generate
     /// the token.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub site_key: ::prost::alloc::string::String,
     /// Optional. The user agent present in the request from the user's device related to
     /// this event.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub user_agent: ::prost::alloc::string::String,
     /// Optional. The IP address in the request from the user's device related to this event.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub user_ip_address: ::prost::alloc::string::String,
     /// Optional. The expected action for this type of event. This should be the same action
     /// provided at token generation time on client-side platforms already
     /// integrated with recaptcha enterprise.
-    #[prost(string, tag="5")]
+    #[prost(string, tag = "5")]
     pub expected_action: ::prost::alloc::string::String,
     /// Optional. Optional unique stable hashed user identifier for the request. The
     /// identifier should ideally be hashed using sha256 with stable secret.
-    #[prost(bytes="vec", tag="6")]
+    #[prost(bytes = "vec", tag = "6")]
     pub hashed_account_id: ::prost::alloc::vec::Vec<u8>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -249,25 +290,35 @@ pub struct TokenProperties {
     /// a user failing to solve a challenge or a sitekey mismatch (i.e the sitekey
     /// used to generate the token was different than the one specified in the
     /// assessment).
-    #[prost(bool, tag="1")]
+    #[prost(bool, tag = "1")]
     pub valid: bool,
     /// Reason associated with the response when valid = false.
-    #[prost(enumeration="token_properties::InvalidReason", tag="2")]
+    #[prost(enumeration = "token_properties::InvalidReason", tag = "2")]
     pub invalid_reason: i32,
     /// The timestamp corresponding to the generation of the token.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The hostname of the page on which the token was generated.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub hostname: ::prost::alloc::string::String,
     /// Action name provided at token generation.
-    #[prost(string, tag="5")]
+    #[prost(string, tag = "5")]
     pub action: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `TokenProperties`.
 pub mod token_properties {
     /// Enum that represents the types of invalid token reasons.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum InvalidReason {
         /// Default unspecified type.
@@ -314,13 +365,27 @@ pub mod token_properties {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AccountDefenderAssessment {
     /// Labels for this request.
-    #[prost(enumeration="account_defender_assessment::AccountDefenderLabel", repeated, tag="1")]
+    #[prost(
+        enumeration = "account_defender_assessment::AccountDefenderLabel",
+        repeated,
+        tag = "1"
+    )]
     pub labels: ::prost::alloc::vec::Vec<i32>,
 }
 /// Nested message and enum types in `AccountDefenderAssessment`.
 pub mod account_defender_assessment {
     /// Labels returned by Account Defender for this request.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum AccountDefenderLabel {
         /// Default unspecified type.
@@ -347,9 +412,15 @@ pub mod account_defender_assessment {
             match self {
                 AccountDefenderLabel::Unspecified => "ACCOUNT_DEFENDER_LABEL_UNSPECIFIED",
                 AccountDefenderLabel::ProfileMatch => "PROFILE_MATCH",
-                AccountDefenderLabel::SuspiciousLoginActivity => "SUSPICIOUS_LOGIN_ACTIVITY",
-                AccountDefenderLabel::SuspiciousAccountCreation => "SUSPICIOUS_ACCOUNT_CREATION",
-                AccountDefenderLabel::RelatedAccountsNumberHigh => "RELATED_ACCOUNTS_NUMBER_HIGH",
+                AccountDefenderLabel::SuspiciousLoginActivity => {
+                    "SUSPICIOUS_LOGIN_ACTIVITY"
+                }
+                AccountDefenderLabel::SuspiciousAccountCreation => {
+                    "SUSPICIOUS_ACCOUNT_CREATION"
+                }
+                AccountDefenderLabel::RelatedAccountsNumberHigh => {
+                    "RELATED_ACCOUNTS_NUMBER_HIGH"
+                }
             }
         }
     }

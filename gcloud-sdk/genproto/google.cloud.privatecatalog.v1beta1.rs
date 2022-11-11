@@ -6,30 +6,30 @@ pub struct SearchCatalogsRequest {
     /// * `projects/{project}`
     /// * `folders/{folder}`
     /// * `organizations/{organization}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub resource: ::prost::alloc::string::String,
     /// The query to filter the catalogs. The supported queries are:
     ///
     /// * Get a single catalog: `name=catalogs/{catalog}`
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub query: ::prost::alloc::string::String,
     /// The maximum number of entries that are requested.
-    #[prost(int32, tag="3")]
+    #[prost(int32, tag = "3")]
     pub page_size: i32,
     /// A pagination token returned from a previous call to SearchCatalogs that
     /// indicates where this listing should continue from.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for \[PrivateCatalog.SearchCatalogs][google.cloud.privatecatalog.v1beta1.PrivateCatalog.SearchCatalogs\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchCatalogsResponse {
     /// The `Catalog`s computed from the resource context.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub catalogs: ::prost::alloc::vec::Vec<Catalog>,
     /// A pagination token returned from a previous call to SearchCatalogs that
     /// indicates from where listing should continue.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for \[PrivateCatalog.SearchProducts][google.cloud.privatecatalog.v1beta1.PrivateCatalog.SearchProducts\].
@@ -37,7 +37,7 @@ pub struct SearchCatalogsResponse {
 pub struct SearchProductsRequest {
     /// Required. The name of the resource context. See \[SearchCatalogsRequest.resource][google.cloud.privatecatalog.v1beta1.SearchCatalogsRequest.resource\]
     /// for details.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub resource: ::prost::alloc::string::String,
     /// The query to filter the products.
     ///
@@ -46,25 +46,25 @@ pub struct SearchProductsRequest {
     /// * List products under a catalog: `parent=catalogs/{catalog}`
     /// * Get a product by name:
     /// `name=catalogs/{catalog}/products/{product}`
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub query: ::prost::alloc::string::String,
     /// The maximum number of entries that are requested.
-    #[prost(int32, tag="3")]
+    #[prost(int32, tag = "3")]
     pub page_size: i32,
     /// A pagination token returned from a previous call to SearchProducts that
     /// indicates where this listing should continue from.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for \[PrivateCatalog.SearchProducts][google.cloud.privatecatalog.v1beta1.PrivateCatalog.SearchProducts\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchProductsResponse {
     /// The `Product` resources computed from the resource context.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub products: ::prost::alloc::vec::Vec<Product>,
     /// A pagination token returned from a previous call to SearchProducts that
     /// indicates from where listing should continue.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for \[PrivateCatalog.SearchVersions][google.cloud.privatecatalog.v1beta1.PrivateCatalog.SearchVersions\].
@@ -72,7 +72,7 @@ pub struct SearchProductsResponse {
 pub struct SearchVersionsRequest {
     /// Required. The name of the resource context. See \[SearchCatalogsRequest.resource][google.cloud.privatecatalog.v1beta1.SearchCatalogsRequest.resource\]
     /// for details.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub resource: ::prost::alloc::string::String,
     /// Required. The query to filter the versions.
     ///
@@ -81,25 +81,25 @@ pub struct SearchVersionsRequest {
     /// `parent=catalogs/{catalog}/products/{product}`
     /// * Get a version by name:
     /// `name=catalogs/{catalog}/products/{product}/versions/{version}`
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub query: ::prost::alloc::string::String,
     /// The maximum number of entries that are requested.
-    #[prost(int32, tag="3")]
+    #[prost(int32, tag = "3")]
     pub page_size: i32,
     /// A pagination token returned from a previous call to SearchVersions
     /// that indicates where this listing should continue from.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for \[PrivateCatalog.SearchVersions][google.cloud.privatecatalog.v1beta1.PrivateCatalog.SearchVersions\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchVersionsResponse {
     /// The `Version` resources computed from the resource context.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub versions: ::prost::alloc::vec::Vec<Version>,
     /// A pagination token returned from a previous call to SearchVersions that
     /// indicates from where the listing should continue.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The readonly representation of a catalog computed with a given resource
@@ -108,19 +108,19 @@ pub struct SearchVersionsResponse {
 pub struct Catalog {
     /// Output only. The resource name of the target catalog, in the format of
     /// `catalogs/{catalog}'.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. The descriptive name of the catalog as it appears in UIs.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub display_name: ::prost::alloc::string::String,
     /// Output only. The description of the catalog.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub description: ::prost::alloc::string::String,
     /// Output only. The time when the catalog was created.
-    #[prost(message, optional, tag="4")]
+    #[prost(message, optional, tag = "4")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The time when the catalog was last updated.
-    #[prost(message, optional, tag="5")]
+    #[prost(message, optional, tag = "5")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// The readonly representation of a product computed with a given resource
@@ -131,14 +131,14 @@ pub struct Product {
     /// `products/\[a-z][-a-z0-9]*[a-z0-9\]'.
     ///
     /// A unique identifier for the product under a catalog.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. The type of the product asset. It can be one of the following values:
     ///
     /// * `google.deploymentmanager.Template`
     /// * `google.cloudprivatecatalog.ListingOnly`
     /// * `google.cloudprivatecatalog.Terraform`
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub asset_type: ::prost::alloc::string::String,
     /// Required. Output only. The display metadata to describe the product. The JSON schema of the
     /// metadata differs by \[Product.asset_type][google.cloud.privatecatalog.v1beta1.Product.asset_type\].
@@ -297,62 +297,74 @@ pub struct Product {
     /// - name
     /// - description
     /// additionalProperties: true
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub display_metadata: ::core::option::Option<::prost_types::Struct>,
     /// Output only. The icon URI of the product.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub icon_uri: ::prost::alloc::string::String,
     /// Output only. A collection of assets referred by a product.
     /// This field is set for Terraform Products only.
-    #[prost(message, repeated, tag="10")]
+    #[prost(message, repeated, tag = "10")]
     pub asset_references: ::prost::alloc::vec::Vec<AssetReference>,
     /// Output only. The time when the product was created.
-    #[prost(message, optional, tag="5")]
+    #[prost(message, optional, tag = "5")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The time when the product was last updated.
-    #[prost(message, optional, tag="6")]
+    #[prost(message, optional, tag = "6")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Defines the reference of an asset belonging to a product.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AssetReference {
     /// Output only. A unique identifier among asset references in a product.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub id: ::prost::alloc::string::String,
     /// Output only. The human-readable description of the referenced asset. Maximum 256
     /// characters in length.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub description: ::prost::alloc::string::String,
     /// Output only. The definition of input parameters to hydrate the asset template.
-    #[prost(message, optional, tag="6")]
+    #[prost(message, optional, tag = "6")]
     pub inputs: ::core::option::Option<Inputs>,
     /// Output only. The current state of the asset reference.
-    #[prost(enumeration="asset_reference::AssetValidationState", tag="7")]
+    #[prost(enumeration = "asset_reference::AssetValidationState", tag = "7")]
     pub validation_status: i32,
     /// Output only. The validation process metadata.
-    #[prost(message, optional, tag="8")]
-    pub validation_operation: ::core::option::Option<super::super::super::longrunning::Operation>,
+    #[prost(message, optional, tag = "8")]
+    pub validation_operation: ::core::option::Option<
+        super::super::super::longrunning::Operation,
+    >,
     /// Output only. The cloud storage source.
-    #[prost(message, optional, tag="16")]
+    #[prost(message, optional, tag = "16")]
     pub gcs_source: ::core::option::Option<GcsSource>,
     /// Output only. The creation timestamp of the asset reference.
-    #[prost(message, optional, tag="12")]
+    #[prost(message, optional, tag = "12")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The last update timestamp of the asset reference.
-    #[prost(message, optional, tag="13")]
+    #[prost(message, optional, tag = "13")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The version of the source used for this asset reference.
     #[deprecated]
-    #[prost(string, tag="14")]
+    #[prost(string, tag = "14")]
     pub version: ::prost::alloc::string::String,
     /// The destination of the asset.
-    #[prost(oneof="asset_reference::Source", tags="10, 11, 15")]
+    #[prost(oneof = "asset_reference::Source", tags = "10, 11, 15")]
     pub source: ::core::option::Option<asset_reference::Source>,
 }
 /// Nested message and enum types in `AssetReference`.
 pub mod asset_reference {
     /// Possible validation steates of an asset reference.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum AssetValidationState {
         /// Unknown state.
@@ -382,13 +394,13 @@ pub mod asset_reference {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
         /// Output only. The asset resource name if an asset is hosted by Private Catalog.
-        #[prost(string, tag="10")]
+        #[prost(string, tag = "10")]
         Asset(::prost::alloc::string::String),
         /// Output only. The cloud storage object path.
-        #[prost(string, tag="11")]
+        #[prost(string, tag = "11")]
         GcsPath(::prost::alloc::string::String),
         /// Output only. The git source.
-        #[prost(message, tag="15")]
+        #[prost(message, tag = "15")]
         GitSource(super::GitSource),
     }
 }
@@ -396,38 +408,38 @@ pub mod asset_reference {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Inputs {
     /// Output only. The JSON schema defining the inputs and their formats.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub parameters: ::core::option::Option<::prost_types::Struct>,
 }
 /// Defines how to access Cloud Storage source.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GcsSource {
     /// Output only. the cloud storage object path.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub gcs_path: ::prost::alloc::string::String,
     /// Output only. Generation of the object, which is set when the content of an object starts
     /// being written.
-    #[prost(int64, tag="2")]
+    #[prost(int64, tag = "2")]
     pub generation: i64,
     /// Output only. The time when the object metadata was last changed.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Defines how to access a Git Source.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GitSource {
     /// Location of the Git repo to build.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub repo: ::prost::alloc::string::String,
     /// Directory, relative to the source root, in which to run the build.
     ///
     /// This must be a relative path. If a step's `dir` is specified and is an
     /// absolute path, this value is ignored for that step's execution.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub dir: ::prost::alloc::string::String,
     /// The revision to fetch from the Git repository such as a branch, a tag, a
     /// commit SHA, or any Git ref.
-    #[prost(oneof="git_source::Ref", tags="3, 4, 5")]
+    #[prost(oneof = "git_source::Ref", tags = "3, 4, 5")]
     pub r#ref: ::core::option::Option<git_source::Ref>,
 }
 /// Nested message and enum types in `GitSource`.
@@ -437,13 +449,13 @@ pub mod git_source {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Ref {
         /// The revision commit to use.
-        #[prost(string, tag="3")]
+        #[prost(string, tag = "3")]
         Commit(::prost::alloc::string::String),
         /// The revision branch to use.
-        #[prost(string, tag="4")]
+        #[prost(string, tag = "4")]
         Branch(::prost::alloc::string::String),
         /// The revision tag to use.
-        #[prost(string, tag="5")]
+        #[prost(string, tag = "5")]
         Tag(::prost::alloc::string::String),
     }
 }
@@ -455,22 +467,22 @@ pub struct Version {
     /// `catalogs/{catalog}/products/{product}/versions/\[a-z][-a-z0-9]*[a-z0-9\]'.
     ///
     /// A unique identifier for the version under a product.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. The user-supplied description of the version. Maximum of 256
     /// characters.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub description: ::prost::alloc::string::String,
     /// Output only. The asset which has been validated and is ready to be
     /// provisioned. See
     /// \[google.cloud.privatecatalogproducer.v1beta.Version.asset][\] for details.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub asset: ::core::option::Option<::prost_types::Struct>,
     /// Output only. The time when the version was created.
-    #[prost(message, optional, tag="5")]
+    #[prost(message, optional, tag = "5")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The time when the version was last updated.
-    #[prost(message, optional, tag="6")]
+    #[prost(message, optional, tag = "6")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Generated client implementations.

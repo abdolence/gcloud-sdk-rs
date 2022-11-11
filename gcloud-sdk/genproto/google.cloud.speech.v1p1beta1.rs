@@ -4,14 +4,14 @@
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomClass {
     /// The resource name of the custom class.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// If this custom class is a resource, the custom_class_id is the resource id
     /// of the CustomClass. Case sensitive.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub custom_class_id: ::prost::alloc::string::String,
     /// A collection of class items.
-    #[prost(message, repeated, tag="3")]
+    #[prost(message, repeated, tag = "3")]
     pub items: ::prost::alloc::vec::Vec<custom_class::ClassItem>,
 }
 /// Nested message and enum types in `CustomClass`.
@@ -20,7 +20,7 @@ pub mod custom_class {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ClassItem {
         /// The class item's value.
-        #[prost(string, tag="1")]
+        #[prost(string, tag = "1")]
         pub value: ::prost::alloc::string::String,
     }
 }
@@ -29,10 +29,10 @@ pub mod custom_class {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PhraseSet {
     /// The resource name of the phrase set.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// A list of word and phrases.
-    #[prost(message, repeated, tag="2")]
+    #[prost(message, repeated, tag = "2")]
     pub phrases: ::prost::alloc::vec::Vec<phrase_set::Phrase>,
     /// Hint Boost. Positive value will increase the probability that a specific
     /// phrase will be recognized over other similar sounding phrases. The higher
@@ -43,7 +43,7 @@ pub struct PhraseSet {
     /// values between 0 (exclusive) and 20. We recommend using a binary search
     /// approach to finding the optimal value for your use case. Speech recognition
     /// will skip PhraseSets with a boost value of 0.
-    #[prost(float, tag="4")]
+    #[prost(float, tag = "4")]
     pub boost: f32,
 }
 /// Nested message and enum types in `PhraseSet`.
@@ -76,7 +76,7 @@ pub mod phrase_set {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Phrase {
         /// The phrase itself.
-        #[prost(string, tag="1")]
+        #[prost(string, tag = "1")]
         pub value: ::prost::alloc::string::String,
         /// Hint Boost. Overrides the boost set at the phrase set level.
         /// Positive value will increase the probability that a specific phrase will
@@ -87,7 +87,7 @@ pub mod phrase_set {
         /// with values between 0 and 20. We recommend using a binary search approach
         /// to finding the optimal value for your use case. Speech recognition
         /// will skip PhraseSets with a boost value of 0.
-        #[prost(float, tag="2")]
+        #[prost(float, tag = "2")]
         pub boost: f32,
     }
 }
@@ -97,16 +97,16 @@ pub struct SpeechAdaptation {
     /// A collection of phrase sets. To specify the hints inline, leave the
     /// phrase set's `name` blank and fill in the rest of its fields. Any
     /// phrase set can use any custom class.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub phrase_sets: ::prost::alloc::vec::Vec<PhraseSet>,
     /// A collection of phrase set resource names to use.
-    #[prost(string, repeated, tag="2")]
+    #[prost(string, repeated, tag = "2")]
     pub phrase_set_references: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// A collection of custom classes. To specify the classes inline, leave the
     /// class' `name` blank and fill in the rest of its fields, giving it a unique
     /// `custom_class_id`. Refer to the inline defined class in phrase hints by its
     /// `custom_class_id`.
-    #[prost(message, repeated, tag="3")]
+    #[prost(message, repeated, tag = "3")]
     pub custom_classes: ::prost::alloc::vec::Vec<CustomClass>,
 }
 /// Transcription normalization configuration. Use transcription normalization
@@ -119,7 +119,7 @@ pub struct TranscriptNormalization {
     /// at a time. For example, the second entry in ["cat" => "dog", "mountain cat"
     /// => "mountain dog"] will never be applied because we will always process the
     /// first entry before it. At most 100 entries.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub entries: ::prost::alloc::vec::Vec<transcript_normalization::Entry>,
 }
 /// Nested message and enum types in `TranscriptNormalization`.
@@ -128,13 +128,13 @@ pub mod transcript_normalization {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Entry {
         /// What to replace. Max length is 100 characters.
-        #[prost(string, tag="1")]
+        #[prost(string, tag = "1")]
         pub search: ::prost::alloc::string::String,
         /// What to replace with. Max length is 100 characters.
-        #[prost(string, tag="2")]
+        #[prost(string, tag = "2")]
         pub replace: ::prost::alloc::string::String,
         /// Whether the search is case sensitive.
-        #[prost(bool, tag="3")]
+        #[prost(bool, tag = "3")]
         pub case_sensitive: bool,
     }
 }
@@ -143,10 +143,10 @@ pub mod transcript_normalization {
 pub struct RecognizeRequest {
     /// Required. Provides information to the recognizer that specifies how to
     /// process the request.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub config: ::core::option::Option<RecognitionConfig>,
     /// Required. The audio data to be recognized.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub audio: ::core::option::Option<RecognitionAudio>,
 }
 /// The top-level message sent by the client for the `LongRunningRecognize`
@@ -155,19 +155,19 @@ pub struct RecognizeRequest {
 pub struct LongRunningRecognizeRequest {
     /// Required. Provides information to the recognizer that specifies how to
     /// process the request.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub config: ::core::option::Option<RecognitionConfig>,
     /// Required. The audio data to be recognized.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub audio: ::core::option::Option<RecognitionAudio>,
     /// Optional. Specifies an optional destination for the recognition results.
-    #[prost(message, optional, tag="4")]
+    #[prost(message, optional, tag = "4")]
     pub output_config: ::core::option::Option<TranscriptOutputConfig>,
 }
 /// Specifies an optional destination for the recognition results.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TranscriptOutputConfig {
-    #[prost(oneof="transcript_output_config::OutputType", tags="1")]
+    #[prost(oneof = "transcript_output_config::OutputType", tags = "1")]
     pub output_type: ::core::option::Option<transcript_output_config::OutputType>,
 }
 /// Nested message and enum types in `TranscriptOutputConfig`.
@@ -177,7 +177,7 @@ pub mod transcript_output_config {
         /// Specifies a Cloud Storage URI for the recognition results. Must be
         /// specified in the format: `gs://bucket_name/object_name`, and the bucket
         /// must already exist.
-        #[prost(string, tag="1")]
+        #[prost(string, tag = "1")]
         GcsUri(::prost::alloc::string::String),
     }
 }
@@ -189,8 +189,10 @@ pub mod transcript_output_config {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StreamingRecognizeRequest {
     /// The streaming request, which is either a streaming config or audio content.
-    #[prost(oneof="streaming_recognize_request::StreamingRequest", tags="1, 2")]
-    pub streaming_request: ::core::option::Option<streaming_recognize_request::StreamingRequest>,
+    #[prost(oneof = "streaming_recognize_request::StreamingRequest", tags = "1, 2")]
+    pub streaming_request: ::core::option::Option<
+        streaming_recognize_request::StreamingRequest,
+    >,
 }
 /// Nested message and enum types in `StreamingRecognizeRequest`.
 pub mod streaming_recognize_request {
@@ -200,7 +202,7 @@ pub mod streaming_recognize_request {
         /// Provides information to the recognizer that specifies how to process the
         /// request. The first `StreamingRecognizeRequest` message must contain a
         /// `streaming_config`  message.
-        #[prost(message, tag="1")]
+        #[prost(message, tag = "1")]
         StreamingConfig(super::StreamingRecognitionConfig),
         /// The audio data to be recognized. Sequential chunks of audio data are sent
         /// in sequential `StreamingRecognizeRequest` messages. The first
@@ -210,7 +212,7 @@ pub mod streaming_recognize_request {
         /// `RecognitionConfig`. Note: as with all bytes fields, proto buffers use a
         /// pure binary representation (not base64). See
         /// [content limits](<https://cloud.google.com/speech-to-text/quotas#content>).
-        #[prost(bytes, tag="2")]
+        #[prost(bytes, tag = "2")]
         AudioContent(::prost::alloc::vec::Vec<u8>),
     }
 }
@@ -220,7 +222,7 @@ pub mod streaming_recognize_request {
 pub struct StreamingRecognitionConfig {
     /// Required. Provides information to the recognizer that specifies how to
     /// process the request.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub config: ::core::option::Option<RecognitionConfig>,
     /// If `false` or omitted, the recognizer will perform continuous
     /// recognition (continuing to wait for and process audio even if the user
@@ -243,13 +245,13 @@ pub struct StreamingRecognitionConfig {
     /// * The `model` field is left undefined. In this case the API auto-selects
     ///    a model based on any other parameters that you set in
     ///    `RecognitionConfig`.
-    #[prost(bool, tag="2")]
+    #[prost(bool, tag = "2")]
     pub single_utterance: bool,
     /// If `true`, interim results (tentative hypotheses) may be
     /// returned as they become available (these interim results are indicated with
     /// the `is_final=false` flag).
     /// If `false` or omitted, only `is_final=true` result(s) are returned.
-    #[prost(bool, tag="3")]
+    #[prost(bool, tag = "3")]
     pub interim_results: bool,
 }
 /// Provides information to the recognizer that specifies how to process the
@@ -259,7 +261,7 @@ pub struct RecognitionConfig {
     /// Encoding of audio data sent in all `RecognitionAudio` messages.
     /// This field is optional for `FLAC` and `WAV` audio files and required
     /// for all other audio formats. For details, see \[AudioEncoding][google.cloud.speech.v1p1beta1.RecognitionConfig.AudioEncoding\].
-    #[prost(enumeration="recognition_config::AudioEncoding", tag="1")]
+    #[prost(enumeration = "recognition_config::AudioEncoding", tag = "1")]
     pub encoding: i32,
     /// Sample rate in Hertz of the audio data sent in all
     /// `RecognitionAudio` messages. Valid values are: 8000-48000.
@@ -268,7 +270,7 @@ pub struct RecognitionConfig {
     /// the audio source (instead of re-sampling).
     /// This field is optional for FLAC and WAV audio files, but is
     /// required for all other audio formats. For details, see \[AudioEncoding][google.cloud.speech.v1p1beta1.RecognitionConfig.AudioEncoding\].
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub sample_rate_hertz: i32,
     /// The number of channels in the input audio data.
     /// ONLY set this for MULTI-CHANNEL recognition.
@@ -279,7 +281,7 @@ pub struct RecognitionConfig {
     /// Note: We only recognize the first channel by default.
     /// To perform independent recognition on each channel set
     /// `enable_separate_recognition_per_channel` to 'true'.
-    #[prost(int32, tag="7")]
+    #[prost(int32, tag = "7")]
     pub audio_channel_count: i32,
     /// This needs to be set to `true` explicitly and `audio_channel_count` > 1
     /// to get each channel recognized separately. The recognition result will
@@ -287,7 +289,7 @@ pub struct RecognitionConfig {
     /// to. If this is not true, we will only recognize the first channel. The
     /// request is billed cumulatively for all channels recognized:
     /// `audio_channel_count` multiplied by the length of the audio.
-    #[prost(bool, tag="12")]
+    #[prost(bool, tag = "12")]
     pub enable_separate_recognition_per_channel: bool,
     /// Required. The language of the supplied audio as a
     /// \[BCP-47\](<https://www.rfc-editor.org/rfc/bcp/bcp47.txt>) language tag.
@@ -295,7 +297,7 @@ pub struct RecognitionConfig {
     /// See [Language
     /// Support](<https://cloud.google.com/speech-to-text/docs/languages>) for a list
     /// of the currently supported language codes.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub language_code: ::prost::alloc::string::String,
     /// A list of up to 3 additional
     /// \[BCP-47\](<https://www.rfc-editor.org/rfc/bcp/bcp47.txt>) language tags,
@@ -309,58 +311,60 @@ pub struct RecognitionConfig {
     /// This feature is only supported for Voice Command and Voice Search use cases
     /// and performance may vary for other use cases (e.g., phone call
     /// transcription).
-    #[prost(string, repeated, tag="18")]
-    pub alternative_language_codes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    #[prost(string, repeated, tag = "18")]
+    pub alternative_language_codes: ::prost::alloc::vec::Vec<
+        ::prost::alloc::string::String,
+    >,
     /// Maximum number of recognition hypotheses to be returned.
     /// Specifically, the maximum number of `SpeechRecognitionAlternative` messages
     /// within each `SpeechRecognitionResult`.
     /// The server may return fewer than `max_alternatives`.
     /// Valid values are `0`-`30`. A value of `0` or `1` will return a maximum of
     /// one. If omitted, will return a maximum of one.
-    #[prost(int32, tag="4")]
+    #[prost(int32, tag = "4")]
     pub max_alternatives: i32,
     /// If set to `true`, the server will attempt to filter out
     /// profanities, replacing all but the initial character in each filtered word
     /// with asterisks, e.g. "f***". If set to `false` or omitted, profanities
     /// won't be filtered out.
-    #[prost(bool, tag="5")]
+    #[prost(bool, tag = "5")]
     pub profanity_filter: bool,
     /// Speech adaptation configuration improves the accuracy of speech
     /// recognition. For more information, see the [speech
     /// adaptation](<https://cloud.google.com/speech-to-text/docs/adaptation>)
     /// documentation.
     /// When speech adaptation is set it supersedes the `speech_contexts` field.
-    #[prost(message, optional, tag="20")]
+    #[prost(message, optional, tag = "20")]
     pub adaptation: ::core::option::Option<SpeechAdaptation>,
     /// Use transcription normalization to automatically replace parts of the
     /// transcript with phrases of your choosing. For StreamingRecognize, this
     /// normalization only applies to stable partial transcripts (stability > 0.8)
     /// and final transcripts.
-    #[prost(message, optional, tag="24")]
+    #[prost(message, optional, tag = "24")]
     pub transcript_normalization: ::core::option::Option<TranscriptNormalization>,
     /// Array of \[SpeechContext][google.cloud.speech.v1p1beta1.SpeechContext\].
     /// A means to provide context to assist the speech recognition. For more
     /// information, see
     /// [speech
     /// adaptation](<https://cloud.google.com/speech-to-text/docs/adaptation>).
-    #[prost(message, repeated, tag="6")]
+    #[prost(message, repeated, tag = "6")]
     pub speech_contexts: ::prost::alloc::vec::Vec<SpeechContext>,
     /// If `true`, the top result includes a list of words and
     /// the start and end time offsets (timestamps) for those words. If
     /// `false`, no word-level time offset information is returned. The default is
     /// `false`.
-    #[prost(bool, tag="8")]
+    #[prost(bool, tag = "8")]
     pub enable_word_time_offsets: bool,
     /// If `true`, the top result includes a list of words and the
     /// confidence for those words. If `false`, no word-level confidence
     /// information is returned. The default is `false`.
-    #[prost(bool, tag="15")]
+    #[prost(bool, tag = "15")]
     pub enable_word_confidence: bool,
     /// If 'true', adds punctuation to recognition result hypotheses.
     /// This feature is only available in select languages. Setting this for
     /// requests in other languages has no effect at all.
     /// The default 'false' value does not add punctuation to result hypotheses.
-    #[prost(bool, tag="11")]
+    #[prost(bool, tag = "11")]
     pub enable_automatic_punctuation: bool,
     /// The spoken punctuation behavior for the call
     /// If not set, uses default behavior based on model of choice
@@ -369,27 +373,27 @@ pub struct RecognitionConfig {
     /// the request. For example, "how are you question mark" becomes "how are
     /// you?". See <https://cloud.google.com/speech-to-text/docs/spoken-punctuation>
     /// for support. If 'false', spoken punctuation is not replaced.
-    #[prost(message, optional, tag="22")]
+    #[prost(message, optional, tag = "22")]
     pub enable_spoken_punctuation: ::core::option::Option<bool>,
     /// The spoken emoji behavior for the call
     /// If not set, uses default behavior based on model of choice
     /// If 'true', adds spoken emoji formatting for the request. This will replace
     /// spoken emojis with the corresponding Unicode symbols in the final
     /// transcript. If 'false', spoken emojis are not replaced.
-    #[prost(message, optional, tag="23")]
+    #[prost(message, optional, tag = "23")]
     pub enable_spoken_emojis: ::core::option::Option<bool>,
     /// If 'true', enables speaker detection for each recognized word in
     /// the top alternative of the recognition result using a speaker_tag provided
     /// in the WordInfo.
     /// Note: Use diarization_config instead.
     #[deprecated]
-    #[prost(bool, tag="16")]
+    #[prost(bool, tag = "16")]
     pub enable_speaker_diarization: bool,
     /// If set, specifies the estimated number of speakers in the conversation.
     /// Defaults to '2'. Ignored unless enable_speaker_diarization is set to true.
     /// Note: Use diarization_config instead.
     #[deprecated]
-    #[prost(int32, tag="17")]
+    #[prost(int32, tag = "17")]
     pub diarization_speaker_count: i32,
     /// Config to enable speaker diarization and set additional
     /// parameters to make diarization better suited for your application.
@@ -399,10 +403,10 @@ pub struct RecognitionConfig {
     /// identify the speakers in the conversation over time.
     /// For non-streaming requests, the diarization results will be provided only
     /// in the top alternative of the FINAL SpeechRecognitionResult.
-    #[prost(message, optional, tag="19")]
+    #[prost(message, optional, tag = "19")]
     pub diarization_config: ::core::option::Option<SpeakerDiarizationConfig>,
     /// Metadata regarding this request.
-    #[prost(message, optional, tag="9")]
+    #[prost(message, optional, tag = "9")]
     pub metadata: ::core::option::Option<RecognitionMetadata>,
     /// Which model to select for the given request. Select the model
     /// best suited to your domain to get best results. If a model is not
@@ -455,7 +459,7 @@ pub struct RecognitionConfig {
     ///          provider.</td>
     ///    </tr>
     /// </table>
-    #[prost(string, tag="13")]
+    #[prost(string, tag = "13")]
     pub model: ::prost::alloc::string::String,
     /// Set to true to use an enhanced model for speech recognition.
     /// If `use_enhanced` is set to true and the `model` field is not set, then
@@ -465,7 +469,7 @@ pub struct RecognitionConfig {
     /// If `use_enhanced` is true and an enhanced version of the specified model
     /// does not exist, then the speech is recognized using the standard version
     /// of the specified model.
-    #[prost(bool, tag="14")]
+    #[prost(bool, tag = "14")]
     pub use_enhanced: bool,
 }
 /// Nested message and enum types in `RecognitionConfig`.
@@ -493,7 +497,17 @@ pub mod recognition_config {
     /// encoding configuration must match the encoding described in the audio
     /// header; otherwise the request returns an
     /// \[google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT\] error code.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum AudioEncoding {
         /// Not specified.
@@ -568,70 +582,80 @@ pub struct SpeakerDiarizationConfig {
     /// If 'true', enables speaker detection for each recognized word in
     /// the top alternative of the recognition result using a speaker_tag provided
     /// in the WordInfo.
-    #[prost(bool, tag="1")]
+    #[prost(bool, tag = "1")]
     pub enable_speaker_diarization: bool,
     /// Minimum number of speakers in the conversation. This range gives you more
     /// flexibility by allowing the system to automatically determine the correct
     /// number of speakers. If not set, the default value is 2.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub min_speaker_count: i32,
     /// Maximum number of speakers in the conversation. This range gives you more
     /// flexibility by allowing the system to automatically determine the correct
     /// number of speakers. If not set, the default value is 6.
-    #[prost(int32, tag="3")]
+    #[prost(int32, tag = "3")]
     pub max_speaker_count: i32,
     /// Output only. Unused.
     #[deprecated]
-    #[prost(int32, tag="5")]
+    #[prost(int32, tag = "5")]
     pub speaker_tag: i32,
 }
 /// Description of audio data to be recognized.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RecognitionMetadata {
     /// The use case most closely describing the audio content to be recognized.
-    #[prost(enumeration="recognition_metadata::InteractionType", tag="1")]
+    #[prost(enumeration = "recognition_metadata::InteractionType", tag = "1")]
     pub interaction_type: i32,
     /// The industry vertical to which this speech recognition request most
     /// closely applies. This is most indicative of the topics contained
     /// in the audio.  Use the 6-digit NAICS code to identify the industry
     /// vertical - see <https://www.naics.com/search/.>
-    #[prost(uint32, tag="3")]
+    #[prost(uint32, tag = "3")]
     pub industry_naics_code_of_audio: u32,
     /// The audio type that most closely describes the audio being recognized.
-    #[prost(enumeration="recognition_metadata::MicrophoneDistance", tag="4")]
+    #[prost(enumeration = "recognition_metadata::MicrophoneDistance", tag = "4")]
     pub microphone_distance: i32,
     /// The original media the speech was recorded on.
-    #[prost(enumeration="recognition_metadata::OriginalMediaType", tag="5")]
+    #[prost(enumeration = "recognition_metadata::OriginalMediaType", tag = "5")]
     pub original_media_type: i32,
     /// The type of device the speech was recorded with.
-    #[prost(enumeration="recognition_metadata::RecordingDeviceType", tag="6")]
+    #[prost(enumeration = "recognition_metadata::RecordingDeviceType", tag = "6")]
     pub recording_device_type: i32,
     /// The device used to make the recording.  Examples 'Nexus 5X' or
     /// 'Polycom SoundStation IP 6000' or 'POTS' or 'VoIP' or
     /// 'Cardioid Microphone'.
-    #[prost(string, tag="7")]
+    #[prost(string, tag = "7")]
     pub recording_device_name: ::prost::alloc::string::String,
     /// Mime type of the original audio file.  For example `audio/m4a`,
     /// `audio/x-alaw-basic`, `audio/mp3`, `audio/3gpp`.
     /// A list of possible audio mime types is maintained at
     /// <http://www.iana.org/assignments/media-types/media-types.xhtml#audio>
-    #[prost(string, tag="8")]
+    #[prost(string, tag = "8")]
     pub original_mime_type: ::prost::alloc::string::String,
     /// Obfuscated (privacy-protected) ID of the user, to identify number of
     /// unique users using the service.
     #[deprecated]
-    #[prost(int64, tag="9")]
+    #[prost(int64, tag = "9")]
     pub obfuscated_id: i64,
     /// Description of the content. Eg. "Recordings of federal supreme court
     /// hearings from 2012".
-    #[prost(string, tag="10")]
+    #[prost(string, tag = "10")]
     pub audio_topic: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `RecognitionMetadata`.
 pub mod recognition_metadata {
     /// Use case categories that the audio recognition request can be described
     /// by.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum InteractionType {
         /// Use case is either unknown or is something other than one of the other
@@ -680,7 +704,17 @@ pub mod recognition_metadata {
         }
     }
     /// Enumerates the types of capture settings describing an audio file.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum MicrophoneDistance {
         /// Audio type is not known.
@@ -709,7 +743,17 @@ pub mod recognition_metadata {
         }
     }
     /// The original media the speech was recorded on.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum OriginalMediaType {
         /// Unknown original media type.
@@ -733,7 +777,17 @@ pub mod recognition_metadata {
         }
     }
     /// The type of device the speech was recorded with.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum RecordingDeviceType {
         /// The recording device is unknown.
@@ -785,7 +839,7 @@ pub struct SpeechContext {
     /// providing phrase hints for every month of the year, using the $MONTH class
     /// improves the likelihood of correctly transcribing audio that includes
     /// months.
-    #[prost(string, repeated, tag="1")]
+    #[prost(string, repeated, tag = "1")]
     pub phrases: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Hint Boost. Positive value will increase the probability that a specific
     /// phrase will be recognized over other similar sounding phrases. The higher
@@ -795,7 +849,7 @@ pub struct SpeechContext {
     /// accept a wide range of positive values, most use cases are best served with
     /// values between 0 and 20. We recommend using a binary search approach to
     /// finding the optimal value for your use case.
-    #[prost(float, tag="4")]
+    #[prost(float, tag = "4")]
     pub boost: f32,
 }
 /// Contains audio data in the encoding specified in the `RecognitionConfig`.
@@ -806,7 +860,7 @@ pub struct SpeechContext {
 pub struct RecognitionAudio {
     /// The audio source, which is either inline content or a Google Cloud
     /// Storage uri.
-    #[prost(oneof="recognition_audio::AudioSource", tags="1, 2")]
+    #[prost(oneof = "recognition_audio::AudioSource", tags = "1, 2")]
     pub audio_source: ::core::option::Option<recognition_audio::AudioSource>,
 }
 /// Nested message and enum types in `RecognitionAudio`.
@@ -818,7 +872,7 @@ pub mod recognition_audio {
         /// The audio data bytes encoded as specified in
         /// `RecognitionConfig`. Note: as with all bytes fields, proto buffers use a
         /// pure binary representation, whereas JSON representations use base64.
-        #[prost(bytes, tag="1")]
+        #[prost(bytes, tag = "1")]
         Content(::prost::alloc::vec::Vec<u8>),
         /// URI that points to a file that contains audio data bytes as specified in
         /// `RecognitionConfig`. The file must not be compressed (for example, gzip).
@@ -827,7 +881,7 @@ pub mod recognition_audio {
         /// `gs://bucket_name/object_name` (other URI formats return
         /// \[google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT\]). For more information, see
         /// [Request URIs](<https://cloud.google.com/storage/docs/reference-uris>).
-        #[prost(string, tag="2")]
+        #[prost(string, tag = "2")]
         Uri(::prost::alloc::string::String),
     }
 }
@@ -838,10 +892,10 @@ pub mod recognition_audio {
 pub struct RecognizeResponse {
     /// Sequential list of transcription results corresponding to
     /// sequential portions of audio.
-    #[prost(message, repeated, tag="2")]
+    #[prost(message, repeated, tag = "2")]
     pub results: ::prost::alloc::vec::Vec<SpeechRecognitionResult>,
     /// When available, billed audio seconds for the corresponding request.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub total_billed_time: ::core::option::Option<::prost_types::Duration>,
 }
 /// The only message returned to the client by the `LongRunningRecognize` method.
@@ -853,16 +907,16 @@ pub struct RecognizeResponse {
 pub struct LongRunningRecognizeResponse {
     /// Sequential list of transcription results corresponding to
     /// sequential portions of audio.
-    #[prost(message, repeated, tag="2")]
+    #[prost(message, repeated, tag = "2")]
     pub results: ::prost::alloc::vec::Vec<SpeechRecognitionResult>,
     /// When available, billed audio seconds for the corresponding request.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub total_billed_time: ::core::option::Option<::prost_types::Duration>,
     /// Original output config if present in the request.
-    #[prost(message, optional, tag="6")]
+    #[prost(message, optional, tag = "6")]
     pub output_config: ::core::option::Option<TranscriptOutputConfig>,
     /// If the transcript output fails this field contains the relevant error.
-    #[prost(message, optional, tag="7")]
+    #[prost(message, optional, tag = "7")]
     pub output_error: ::core::option::Option<super::super::super::rpc::Status>,
 }
 /// Describes the progress of a long-running `LongRunningRecognize` call. It is
@@ -872,20 +926,20 @@ pub struct LongRunningRecognizeResponse {
 pub struct LongRunningRecognizeMetadata {
     /// Approximate percentage of audio processed thus far. Guaranteed to be 100
     /// when the audio is fully processed and the results are available.
-    #[prost(int32, tag="1")]
+    #[prost(int32, tag = "1")]
     pub progress_percent: i32,
     /// Time when the request was received.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Time of the most recent processing update.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub last_update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The URI of the audio file being transcribed. Empty if the audio was sent
     /// as byte content.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub uri: ::prost::alloc::string::String,
     /// Output only. A copy of the TranscriptOutputConfig if it was set in the request.
-    #[prost(message, optional, tag="5")]
+    #[prost(message, optional, tag = "5")]
     pub output_config: ::core::option::Option<TranscriptOutputConfig>,
 }
 /// `StreamingRecognizeResponse` is the only message returned to the client by
@@ -941,26 +995,36 @@ pub struct LongRunningRecognizeMetadata {
 pub struct StreamingRecognizeResponse {
     /// If set, returns a \[google.rpc.Status][google.rpc.Status\] message that
     /// specifies the error for the operation.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub error: ::core::option::Option<super::super::super::rpc::Status>,
     /// This repeated list contains zero or more results that
     /// correspond to consecutive portions of the audio currently being processed.
     /// It contains zero or one `is_final=true` result (the newly settled portion),
     /// followed by zero or more `is_final=false` results (the interim results).
-    #[prost(message, repeated, tag="2")]
+    #[prost(message, repeated, tag = "2")]
     pub results: ::prost::alloc::vec::Vec<StreamingRecognitionResult>,
     /// Indicates the type of speech event.
-    #[prost(enumeration="streaming_recognize_response::SpeechEventType", tag="4")]
+    #[prost(enumeration = "streaming_recognize_response::SpeechEventType", tag = "4")]
     pub speech_event_type: i32,
     /// When available, billed audio seconds for the stream.
     /// Set only if this is the last response in the stream.
-    #[prost(message, optional, tag="5")]
+    #[prost(message, optional, tag = "5")]
     pub total_billed_time: ::core::option::Option<::prost_types::Duration>,
 }
 /// Nested message and enum types in `StreamingRecognizeResponse`.
 pub mod streaming_recognize_response {
     /// Indicates the type of speech event.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum SpeechEventType {
         /// No speech event specified.
@@ -995,35 +1059,35 @@ pub struct StreamingRecognitionResult {
     /// maximum specified in `max_alternatives`).
     /// These alternatives are ordered in terms of accuracy, with the top (first)
     /// alternative being the most probable, as ranked by the recognizer.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub alternatives: ::prost::alloc::vec::Vec<SpeechRecognitionAlternative>,
     /// If `false`, this `StreamingRecognitionResult` represents an
     /// interim result that may change. If `true`, this is the final time the
     /// speech service will return this particular `StreamingRecognitionResult`,
     /// the recognizer will not return any further hypotheses for this portion of
     /// the transcript and corresponding audio.
-    #[prost(bool, tag="2")]
+    #[prost(bool, tag = "2")]
     pub is_final: bool,
     /// An estimate of the likelihood that the recognizer will not
     /// change its guess about this interim result. Values range from 0.0
     /// (completely unstable) to 1.0 (completely stable).
     /// This field is only provided for interim results (`is_final=false`).
     /// The default of 0.0 is a sentinel value indicating `stability` was not set.
-    #[prost(float, tag="3")]
+    #[prost(float, tag = "3")]
     pub stability: f32,
     /// Time offset of the end of this result relative to the
     /// beginning of the audio.
-    #[prost(message, optional, tag="4")]
+    #[prost(message, optional, tag = "4")]
     pub result_end_time: ::core::option::Option<::prost_types::Duration>,
     /// For multi-channel audio, this is the channel number corresponding to the
     /// recognized result for the audio from that channel.
     /// For audio_channel_count = N, its output values can range from '1' to 'N'.
-    #[prost(int32, tag="5")]
+    #[prost(int32, tag = "5")]
     pub channel_tag: i32,
     /// Output only. The \[BCP-47\](<https://www.rfc-editor.org/rfc/bcp/bcp47.txt>) language tag
     /// of the language in this result. This language code was detected to have
     /// the most likelihood of being spoken in the audio.
-    #[prost(string, tag="6")]
+    #[prost(string, tag = "6")]
     pub language_code: ::prost::alloc::string::String,
 }
 /// A speech recognition result corresponding to a portion of the audio.
@@ -1033,21 +1097,21 @@ pub struct SpeechRecognitionResult {
     /// maximum specified in `max_alternatives`).
     /// These alternatives are ordered in terms of accuracy, with the top (first)
     /// alternative being the most probable, as ranked by the recognizer.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub alternatives: ::prost::alloc::vec::Vec<SpeechRecognitionAlternative>,
     /// For multi-channel audio, this is the channel number corresponding to the
     /// recognized result for the audio from that channel.
     /// For audio_channel_count = N, its output values can range from '1' to 'N'.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub channel_tag: i32,
     /// Time offset of the end of this result relative to the
     /// beginning of the audio.
-    #[prost(message, optional, tag="4")]
+    #[prost(message, optional, tag = "4")]
     pub result_end_time: ::core::option::Option<::prost_types::Duration>,
     /// Output only. The \[BCP-47\](<https://www.rfc-editor.org/rfc/bcp/bcp47.txt>) language tag
     /// of the language in this result. This language code was detected to have
     /// the most likelihood of being spoken in the audio.
-    #[prost(string, tag="5")]
+    #[prost(string, tag = "5")]
     pub language_code: ::prost::alloc::string::String,
 }
 /// Alternative hypotheses (a.k.a. n-best list).
@@ -1057,7 +1121,7 @@ pub struct SpeechRecognitionAlternative {
     /// In languages that use spaces to separate words, the transcript might have a
     /// leading space if it isn't the first result. You can concatenate each result
     /// to obtain the full transcript without using a separator.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub transcript: ::prost::alloc::string::String,
     /// The confidence estimate between 0.0 and 1.0. A higher number
     /// indicates an estimated greater likelihood that the recognized words are
@@ -1066,12 +1130,12 @@ pub struct SpeechRecognitionAlternative {
     /// This field is not guaranteed to be accurate and users should not rely on it
     /// to be always provided.
     /// The default of 0.0 is a sentinel value indicating `confidence` was not set.
-    #[prost(float, tag="2")]
+    #[prost(float, tag = "2")]
     pub confidence: f32,
     /// A list of word-specific information for each recognized word.
     /// Note: When `enable_speaker_diarization` is true, you will see all the words
     /// from the beginning of the audio.
-    #[prost(message, repeated, tag="3")]
+    #[prost(message, repeated, tag = "3")]
     pub words: ::prost::alloc::vec::Vec<WordInfo>,
 }
 /// Word-specific information for recognized words.
@@ -1083,7 +1147,7 @@ pub struct WordInfo {
     /// in the top hypothesis.
     /// This is an experimental feature and the accuracy of the time offset can
     /// vary.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub start_time: ::core::option::Option<::prost_types::Duration>,
     /// Time offset relative to the beginning of the audio,
     /// and corresponding to the end of the spoken word.
@@ -1091,10 +1155,10 @@ pub struct WordInfo {
     /// in the top hypothesis.
     /// This is an experimental feature and the accuracy of the time offset can
     /// vary.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub end_time: ::core::option::Option<::prost_types::Duration>,
     /// The word corresponding to this set of information.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub word: ::prost::alloc::string::String,
     /// The confidence estimate between 0.0 and 1.0. A higher number
     /// indicates an estimated greater likelihood that the recognized words are
@@ -1103,14 +1167,14 @@ pub struct WordInfo {
     /// This field is not guaranteed to be accurate and users should not rely on it
     /// to be always provided.
     /// The default of 0.0 is a sentinel value indicating `confidence` was not set.
-    #[prost(float, tag="4")]
+    #[prost(float, tag = "4")]
     pub confidence: f32,
     /// Output only. A distinct integer value is assigned for every speaker within
     /// the audio. This field specifies which one of those speakers was detected to
     /// have spoken this word. Value ranges from '1' to diarization_speaker_count.
     /// speaker_tag is set if enable_speaker_diarization = 'true' and only in the
     /// top alternative.
-    #[prost(int32, tag="5")]
+    #[prost(int32, tag = "5")]
     pub speaker_tag: i32,
 }
 /// Generated client implementations.
@@ -1272,17 +1336,17 @@ pub struct CreatePhraseSetRequest {
     /// endpoint, use the `global` location. To specify a region, use a
     /// [regional endpoint](<https://cloud.google.com/speech-to-text/docs/endpoints>)
     /// with matching `us` or `eu` location value.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The ID to use for the phrase set, which will become the final
     /// component of the phrase set's resource name.
     ///
     /// This value should restrict to letters, numbers, and hyphens, with the first
     /// character a letter, the last a letter or a number, and be 4-63 characters.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub phrase_set_id: ::prost::alloc::string::String,
     /// Required. The phrase set to create.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub phrase_set: ::core::option::Option<PhraseSet>,
 }
 /// Message sent by the client for the `UpdatePhraseSet` method.
@@ -1300,10 +1364,10 @@ pub struct UpdatePhraseSetRequest {
     /// endpoint, use the `global` location. To specify a region, use a
     /// [regional endpoint](<https://cloud.google.com/speech-to-text/docs/endpoints>)
     /// with matching `us` or `eu` location value.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub phrase_set: ::core::option::Option<PhraseSet>,
     /// The list of fields to be updated.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Message sent by the client for the `GetPhraseSet` method.
@@ -1318,7 +1382,7 @@ pub struct GetPhraseSetRequest {
     /// endpoint, use the `global` location. To specify a region, use a
     /// [regional endpoint](<https://cloud.google.com/speech-to-text/docs/endpoints>)
     /// with matching `us` or `eu` location value.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Message sent by the client for the `ListPhraseSet` method.
@@ -1333,31 +1397,31 @@ pub struct ListPhraseSetRequest {
     /// endpoint, use the `global` location. To specify a region, use a
     /// [regional endpoint](<https://cloud.google.com/speech-to-text/docs/endpoints>)
     /// with matching `us` or `eu` location value.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of phrase sets to return. The service may return
     /// fewer than this value. If unspecified, at most 50 phrase sets will be
     /// returned. The maximum value is 1000; values above 1000 will be coerced to
     /// 1000.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// A page token, received from a previous `ListPhraseSet` call.
     /// Provide this to retrieve the subsequent page.
     ///
     /// When paginating, all other parameters provided to `ListPhraseSet` must
     /// match the call that provided the page token.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
 /// Message returned to the client by the `ListPhraseSet` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPhraseSetResponse {
     /// The phrase set.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub phrase_sets: ::prost::alloc::vec::Vec<PhraseSet>,
     /// A token, which can be sent as `page_token` to retrieve the next page.
     /// If this field is omitted, there are no subsequent pages.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Message sent by the client for the `DeletePhraseSet` method.
@@ -1366,7 +1430,7 @@ pub struct DeletePhraseSetRequest {
     /// Required. The name of the phrase set to delete. Format:
     ///
     /// `projects/{project}/locations/{location}/phraseSets/{phrase_set}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Message sent by the client for the `CreateCustomClass` method.
@@ -1381,17 +1445,17 @@ pub struct CreateCustomClassRequest {
     /// endpoint, use the `global` location. To specify a region, use a
     /// [regional endpoint](<https://cloud.google.com/speech-to-text/docs/endpoints>)
     /// with matching `us` or `eu` location value.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The ID to use for the custom class, which will become the final
     /// component of the custom class' resource name.
     ///
     /// This value should restrict to letters, numbers, and hyphens, with the first
     /// character a letter, the last a letter or a number, and be 4-63 characters.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub custom_class_id: ::prost::alloc::string::String,
     /// Required. The custom class to create.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub custom_class: ::core::option::Option<CustomClass>,
 }
 /// Message sent by the client for the `UpdateCustomClass` method.
@@ -1409,10 +1473,10 @@ pub struct UpdateCustomClassRequest {
     /// endpoint, use the `global` location. To specify a region, use a
     /// [regional endpoint](<https://cloud.google.com/speech-to-text/docs/endpoints>)
     /// with matching `us` or `eu` location value.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub custom_class: ::core::option::Option<CustomClass>,
     /// The list of fields to be updated.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Message sent by the client for the `GetCustomClass` method.
@@ -1421,7 +1485,7 @@ pub struct GetCustomClassRequest {
     /// Required. The name of the custom class to retrieve. Format:
     ///
     /// `projects/{project}/locations/{location}/customClasses/{custom_class}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Message sent by the client for the `ListCustomClasses` method.
@@ -1436,31 +1500,31 @@ pub struct ListCustomClassesRequest {
     /// endpoint, use the `global` location. To specify a region, use a
     /// [regional endpoint](<https://cloud.google.com/speech-to-text/docs/endpoints>)
     /// with matching `us` or `eu` location value.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of custom classes to return. The service may return
     /// fewer than this value. If unspecified, at most 50 custom classes will be
     /// returned. The maximum value is 1000; values above 1000 will be coerced to
     /// 1000.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// A page token, received from a previous `ListCustomClass` call.
     /// Provide this to retrieve the subsequent page.
     ///
     /// When paginating, all other parameters provided to `ListCustomClass` must
     /// match the call that provided the page token.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
 /// Message returned to the client by the `ListCustomClasses` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCustomClassesResponse {
     /// The custom classes.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub custom_classes: ::prost::alloc::vec::Vec<CustomClass>,
     /// A token, which can be sent as `page_token` to retrieve the next page.
     /// If this field is omitted, there are no subsequent pages.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Message sent by the client for the `DeleteCustomClass` method.
@@ -1475,7 +1539,7 @@ pub struct DeleteCustomClassRequest {
     /// endpoint, use the `global` location. To specify a region, use a
     /// [regional endpoint](<https://cloud.google.com/speech-to-text/docs/endpoints>)
     /// with matching `us` or `eu` location value.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Generated client implementations.
