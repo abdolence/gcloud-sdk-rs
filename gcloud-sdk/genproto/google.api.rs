@@ -118,7 +118,7 @@ pub struct ResourceDescriptor {
     /// /\[A-Za-z][a-zA-Z0-9\]+/. It should start with an upper case character and
     /// should use PascalCase (UpperCamelCase). The maximum number of
     /// characters allowed for the `resource_type_kind` is 100.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub r#type: ::prost::alloc::string::String,
     /// Optional. The relative resource name pattern associated with this resource
     /// type. The DNS prefix of the full resource name shouldn't be specified here.
@@ -139,11 +139,11 @@ pub struct ResourceDescriptor {
     /// hierarchy. It is expected that, if multiple patterns are provided,
     /// the same component name (e.g. "project") refers to IDs of the same
     /// type of resource.
-    #[prost(string, repeated, tag="2")]
+    #[prost(string, repeated, tag = "2")]
     pub pattern: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. The field on the resource that designates the resource name
     /// field. If omitted, this is assumed to be "name".
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub name_field: ::prost::alloc::string::String,
     /// Optional. The historical or future-looking state of the resource pattern.
     ///
@@ -160,7 +160,7 @@ pub struct ResourceDescriptor {
     ///          history: ORIGINALLY_SINGLE_PATTERN
     ///        };
     ///      }
-    #[prost(enumeration="resource_descriptor::History", tag="4")]
+    #[prost(enumeration = "resource_descriptor::History", tag = "4")]
     pub history: i32,
     /// The plural name used in the resource name and permission names, such as
     /// 'projects' for the resource name of 'projects/{project}' and the permission
@@ -170,24 +170,34 @@ pub struct ResourceDescriptor {
     ///
     /// Note: The plural form is required even for singleton resources. See
     /// <https://aip.dev/156>
-    #[prost(string, tag="5")]
+    #[prost(string, tag = "5")]
     pub plural: ::prost::alloc::string::String,
     /// The same concept of the `singular` field in k8s CRD spec
     /// <https://kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/>
     /// Such as "project" for the `resourcemanager.googleapis.com/Project` type.
-    #[prost(string, tag="6")]
+    #[prost(string, tag = "6")]
     pub singular: ::prost::alloc::string::String,
     /// Style flag(s) for this resource.
     /// These indicate that a resource is expected to conform to a given
     /// style. See the specific style flags for additional information.
-    #[prost(enumeration="resource_descriptor::Style", repeated, tag="10")]
+    #[prost(enumeration = "resource_descriptor::Style", repeated, tag = "10")]
     pub style: ::prost::alloc::vec::Vec<i32>,
 }
 /// Nested message and enum types in `ResourceDescriptor`.
 pub mod resource_descriptor {
     /// A description of the historical or future-looking state of the
     /// resource pattern.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum History {
         /// The "unset" value.
@@ -214,7 +224,17 @@ pub mod resource_descriptor {
         }
     }
     /// A flag representing a specific style that a resource claims to conform to.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum Style {
         /// The unspecified value. Do not use.
@@ -266,7 +286,7 @@ pub struct ResourceReference {
     ///          type: "*"
     ///        }];
     ///      }
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub r#type: ::prost::alloc::string::String,
     /// The resource type of a child collection that the annotated field
     /// references. This is useful for annotating the `parent` field that
@@ -279,7 +299,7 @@ pub struct ResourceReference {
     ///          child_type: "logging.googleapis.com/LogEntry"
     ///        };
     ///      }
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub child_type: ::prost::alloc::string::String,
 }
 /// Defines the HTTP configuration for an API service. It contains a list of
@@ -290,7 +310,7 @@ pub struct Http {
     /// A list of HTTP configuration rules that apply to individual API methods.
     ///
     /// **NOTE:** All service configuration rules follow "last one wins" order.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub rules: ::prost::alloc::vec::Vec<HttpRule>,
     /// When set to true, URL path parameters will be fully URI-decoded except in
     /// cases of single segment matches in reserved expansion, where "%2F" will be
@@ -298,7 +318,7 @@ pub struct Http {
     ///
     /// The default behavior is to not decode RFC 6570 reserved characters in multi
     /// segment matches.
-    #[prost(bool, tag="2")]
+    #[prost(bool, tag = "2")]
     pub fully_decode_reserved_expansion: bool,
 }
 /// # gRPC Transcoding
@@ -575,7 +595,7 @@ pub struct HttpRule {
     /// Selects a method to which this rule applies.
     ///
     /// Refer to \[selector][google.api.DocumentationRule.selector\] for syntax details.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub selector: ::prost::alloc::string::String,
     /// The name of the request field whose value is mapped to the HTTP request
     /// body, or `*` for mapping all request fields not captured by the path
@@ -583,7 +603,7 @@ pub struct HttpRule {
     ///
     /// NOTE: the referred field must be present at the top-level of the request
     /// message type.
-    #[prost(string, tag="7")]
+    #[prost(string, tag = "7")]
     pub body: ::prost::alloc::string::String,
     /// Optional. The name of the response field whose value is mapped to the HTTP
     /// response body. When omitted, the entire response message will be used
@@ -591,17 +611,17 @@ pub struct HttpRule {
     ///
     /// NOTE: The referred field must be present at the top-level of the response
     /// message type.
-    #[prost(string, tag="12")]
+    #[prost(string, tag = "12")]
     pub response_body: ::prost::alloc::string::String,
     /// Additional HTTP bindings for the selector. Nested bindings must
     /// not contain an `additional_bindings` field themselves (that is,
     /// the nesting may only be one level deep).
-    #[prost(message, repeated, tag="11")]
+    #[prost(message, repeated, tag = "11")]
     pub additional_bindings: ::prost::alloc::vec::Vec<HttpRule>,
     /// Determines the URL pattern is matched by this rules. This pattern can be
     /// used with any of the {get|put|post|delete|patch} methods. A custom method
     /// can be defined using the 'custom' field.
-    #[prost(oneof="http_rule::Pattern", tags="2, 3, 4, 5, 6, 8")]
+    #[prost(oneof = "http_rule::Pattern", tags = "2, 3, 4, 5, 6, 8")]
     pub pattern: ::core::option::Option<http_rule::Pattern>,
 }
 /// Nested message and enum types in `HttpRule`.
@@ -613,25 +633,25 @@ pub mod http_rule {
     pub enum Pattern {
         /// Maps to HTTP GET. Used for listing and getting information about
         /// resources.
-        #[prost(string, tag="2")]
+        #[prost(string, tag = "2")]
         Get(::prost::alloc::string::String),
         /// Maps to HTTP PUT. Used for replacing a resource.
-        #[prost(string, tag="3")]
+        #[prost(string, tag = "3")]
         Put(::prost::alloc::string::String),
         /// Maps to HTTP POST. Used for creating a resource or performing an action.
-        #[prost(string, tag="4")]
+        #[prost(string, tag = "4")]
         Post(::prost::alloc::string::String),
         /// Maps to HTTP DELETE. Used for deleting a resource.
-        #[prost(string, tag="5")]
+        #[prost(string, tag = "5")]
         Delete(::prost::alloc::string::String),
         /// Maps to HTTP PATCH. Used for updating a resource.
-        #[prost(string, tag="6")]
+        #[prost(string, tag = "6")]
         Patch(::prost::alloc::string::String),
         /// The custom pattern is used for specifying an HTTP method that is not
         /// included in the `pattern` field, such as HEAD, or "*" to leave the
         /// HTTP method unspecified for this rule. The wild-card rule is useful
         /// for services that provide content to Web (HTML) clients.
-        #[prost(message, tag="8")]
+        #[prost(message, tag = "8")]
         Custom(super::CustomHttpPattern),
     }
 }
@@ -639,10 +659,10 @@ pub mod http_rule {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomHttpPattern {
     /// The name of this custom HTTP verb.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub kind: ::prost::alloc::string::String,
     /// The path matched by this custom verb.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub path: ::prost::alloc::string::String,
 }
 /// `Authentication` defines the authentication configuration for API methods
@@ -668,10 +688,10 @@ pub struct Authentication {
     /// A list of authentication rules that apply to individual API methods.
     ///
     /// **NOTE:** All service configuration rules follow "last one wins" order.
-    #[prost(message, repeated, tag="3")]
+    #[prost(message, repeated, tag = "3")]
     pub rules: ::prost::alloc::vec::Vec<AuthenticationRule>,
     /// Defines a set of authentication providers that a service supports.
-    #[prost(message, repeated, tag="4")]
+    #[prost(message, repeated, tag = "4")]
     pub providers: ::prost::alloc::vec::Vec<AuthProvider>,
 }
 /// Authentication rules for the service.
@@ -688,17 +708,17 @@ pub struct AuthenticationRule {
     /// Selects the methods to which this rule applies.
     ///
     /// Refer to \[selector][google.api.DocumentationRule.selector\] for syntax details.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub selector: ::prost::alloc::string::String,
     /// The requirements for OAuth credentials.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub oauth: ::core::option::Option<OAuthRequirements>,
     /// If true, the service accepts API keys without any other credential.
     /// This flag only applies to HTTP and gRPC requests.
-    #[prost(bool, tag="5")]
+    #[prost(bool, tag = "5")]
     pub allow_without_credential: bool,
     /// Requirements for additional authentication providers.
-    #[prost(message, repeated, tag="7")]
+    #[prost(message, repeated, tag = "7")]
     pub requirements: ::prost::alloc::vec::Vec<AuthRequirement>,
 }
 /// Specifies a location to extract JWT from an API request.
@@ -712,9 +732,9 @@ pub struct JwtLocation {
     ///
     /// For example, for "Authorization: Bearer {JWT}",
     /// value_prefix="Bearer " with a space at the end.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub value_prefix: ::prost::alloc::string::String,
-    #[prost(oneof="jwt_location::In", tags="1, 2")]
+    #[prost(oneof = "jwt_location::In", tags = "1, 2")]
     pub r#in: ::core::option::Option<jwt_location::In>,
 }
 /// Nested message and enum types in `JwtLocation`.
@@ -722,10 +742,10 @@ pub mod jwt_location {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum In {
         /// Specifies HTTP header name to extract JWT token.
-        #[prost(string, tag="1")]
+        #[prost(string, tag = "1")]
         Header(::prost::alloc::string::String),
         /// Specifies URL query parameter name to extract JWT token.
-        #[prost(string, tag="2")]
+        #[prost(string, tag = "2")]
         Query(::prost::alloc::string::String),
     }
 }
@@ -738,7 +758,7 @@ pub struct AuthProvider {
     /// `AuthRequirement.provider_id`.
     ///
     /// Example: "bookstore_auth".
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub id: ::prost::alloc::string::String,
     /// Identifies the principal that issued the JWT. See
     /// <https://tools.ietf.org/html/draft-ietf-oauth-json-web-token-32#section-4.1.1>
@@ -746,7 +766,7 @@ pub struct AuthProvider {
     ///
     /// Example: <https://securetoken.google.com>
     /// Example: 1234567-compute@developer.gserviceaccount.com
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub issuer: ::prost::alloc::string::String,
     /// URL of the provider's public key set to validate signature of the JWT. See
     /// [OpenID
@@ -760,7 +780,7 @@ pub struct AuthProvider {
     ///   service account).
     ///
     /// Example: <https://www.googleapis.com/oauth2/v1/certs>
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub jwks_uri: ::prost::alloc::string::String,
     /// The list of JWT
     /// \[audiences\](<https://tools.ietf.org/html/draft-ietf-oauth-json-web-token-32#section-4.1.3>).
@@ -779,11 +799,11 @@ pub struct AuthProvider {
     ///
     ///      audiences: bookstore_android.apps.googleusercontent.com,
     ///                 bookstore_web.apps.googleusercontent.com
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub audiences: ::prost::alloc::string::String,
     /// Redirect URL if JWT token is required but not present or is expired.
     /// Implement authorizationUrl of securityDefinitions in OpenAPI spec.
-    #[prost(string, tag="5")]
+    #[prost(string, tag = "5")]
     pub authorization_url: ::prost::alloc::string::String,
     /// Defines the locations to extract the JWT.
     ///
@@ -802,7 +822,7 @@ pub struct AuthProvider {
     ///       value_prefix: "Bearer "
     ///     - header: x-goog-iap-jwt-assertion
     ///     - query: access_token
-    #[prost(message, repeated, tag="6")]
+    #[prost(message, repeated, tag = "6")]
     pub jwt_locations: ::prost::alloc::vec::Vec<JwtLocation>,
 }
 /// OAuth scopes are a way to define data and permissions on data. For example,
@@ -832,7 +852,7 @@ pub struct OAuthRequirements {
     ///
     ///       canonical_scopes: <https://www.googleapis.com/auth/calendar,>
     ///                         <https://www.googleapis.com/auth/calendar.read>
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub canonical_scopes: ::prost::alloc::string::String,
 }
 /// User-defined authentication requirements, including support for
@@ -845,7 +865,7 @@ pub struct AuthRequirement {
     /// Example:
     ///
     ///      provider_id: bookstore_auth
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub provider_id: ::prost::alloc::string::String,
     /// NOTE: This will be deprecated soon, once AuthProvider.audiences is
     /// implemented and accepted in all the runtime components.
@@ -863,7 +883,7 @@ pub struct AuthRequirement {
     ///
     ///      audiences: bookstore_android.apps.googleusercontent.com,
     ///                 bookstore_web.apps.googleusercontent.com
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub audiences: ::prost::alloc::string::String,
 }
 /// `Backend` defines the backend configuration for a service.
@@ -872,7 +892,7 @@ pub struct Backend {
     /// A list of API backend rules that apply to individual API methods.
     ///
     /// **NOTE:** All service configuration rules follow "last one wins" order.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub rules: ::prost::alloc::vec::Vec<BackendRule>,
 }
 /// A backend rule provides configuration for an individual API element.
@@ -881,7 +901,7 @@ pub struct BackendRule {
     /// Selects the methods to which this rule applies.
     ///
     /// Refer to \[selector][google.api.DocumentationRule.selector\] for syntax details.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub selector: ::prost::alloc::string::String,
     /// The address of the API backend.
     ///
@@ -903,21 +923,21 @@ pub struct BackendRule {
     ///
     /// For HTTP backends, use \[protocol][google.api.BackendRule.protocol\]
     /// to specify the protocol version.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub address: ::prost::alloc::string::String,
     /// The number of seconds to wait for a response from a request. The default
     /// varies based on the request protocol and deployment environment.
-    #[prost(double, tag="3")]
+    #[prost(double, tag = "3")]
     pub deadline: f64,
     /// Minimum deadline in seconds needed for this method. Calls having deadline
     /// value lower than this will be rejected.
-    #[prost(double, tag="4")]
+    #[prost(double, tag = "4")]
     pub min_deadline: f64,
     /// The number of seconds to wait for the completion of a long running
     /// operation. The default is no deadline.
-    #[prost(double, tag="5")]
+    #[prost(double, tag = "5")]
     pub operation_deadline: f64,
-    #[prost(enumeration="backend_rule::PathTranslation", tag="6")]
+    #[prost(enumeration = "backend_rule::PathTranslation", tag = "6")]
     pub path_translation: i32,
     /// The protocol used for sending a request to the backend.
     /// The supported values are "http/1.1" and "h2".
@@ -940,7 +960,7 @@ pub struct BackendRule {
     /// See
     /// <https://www.iana.org/assignments/tls-extensiontype-values/tls-extensiontype-values.xhtml#alpn-protocol-ids>
     /// for more details on the supported values.
-    #[prost(string, tag="9")]
+    #[prost(string, tag = "9")]
     pub protocol: ::prost::alloc::string::String,
     /// Authentication settings used by the backend.
     ///
@@ -956,7 +976,7 @@ pub struct BackendRule {
     ///
     /// Refer to <https://developers.google.com/identity/protocols/OpenIDConnect> for
     /// JWT ID token.
-    #[prost(oneof="backend_rule::Authentication", tags="7, 8")]
+    #[prost(oneof = "backend_rule::Authentication", tags = "7, 8")]
     pub authentication: ::core::option::Option<backend_rule::Authentication>,
 }
 /// Nested message and enum types in `BackendRule`.
@@ -968,7 +988,17 @@ pub mod backend_rule {
     /// Path Translation is applicable only to HTTP-based backends. Backends which
     /// do not accept requests over HTTP/HTTPS should leave `path_translation`
     /// unspecified.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum PathTranslation {
         Unspecified = 0,
@@ -1049,13 +1079,13 @@ pub mod backend_rule {
         /// The JWT audience is used when generating a JWT ID token for the backend.
         /// This ID token will be added in the HTTP "authorization" header, and sent
         /// to the backend.
-        #[prost(string, tag="7")]
+        #[prost(string, tag = "7")]
         JwtAudience(::prost::alloc::string::String),
         /// When disable_auth is true, a JWT ID token won't be generated and the
         /// original "Authorization" HTTP header will be preserved. If the header is
         /// used to carry the original token and is expected by the backend, this
         /// field must be set to true to preserve the header.
-        #[prost(bool, tag="8")]
+        #[prost(bool, tag = "8")]
         DisableAuth(bool),
     }
 }
@@ -1097,7 +1127,7 @@ pub struct Billing {
     /// There can be multiple consumer destinations per service, each one must have
     /// a different monitored resource type. A metric can be used in at most
     /// one consumer destination.
-    #[prost(message, repeated, tag="8")]
+    #[prost(message, repeated, tag = "8")]
     pub consumer_destinations: ::prost::alloc::vec::Vec<billing::BillingDestination>,
 }
 /// Nested message and enum types in `Billing`.
@@ -1108,11 +1138,11 @@ pub mod billing {
     pub struct BillingDestination {
         /// The monitored resource type. The type must be defined in
         /// \[Service.monitored_resources][google.api.Service.monitored_resources\] section.
-        #[prost(string, tag="1")]
+        #[prost(string, tag = "1")]
         pub monitored_resource: ::prost::alloc::string::String,
         /// Names of the metrics to report to this billing destination.
         /// Each name must be defined in \[Service.metrics][google.api.Service.metrics\] section.
-        #[prost(string, repeated, tag="2")]
+        #[prost(string, repeated, tag = "2")]
         pub metrics: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
 }
@@ -1133,22 +1163,22 @@ pub struct ConfigChange {
     /// - visibility.rules\[selector=="google.LibraryService.ListBooks"\].restriction
     /// - quota.metric_rules\[selector=="google"].metric_costs[key=="reads"\].value
     /// - logging.producer_destinations\[0\]
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub element: ::prost::alloc::string::String,
     /// Value of the changed object in the old Service configuration,
     /// in JSON format. This field will not be populated if ChangeType == ADDED.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub old_value: ::prost::alloc::string::String,
     /// Value of the changed object in the new Service configuration,
     /// in JSON format. This field will not be populated if ChangeType == REMOVED.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub new_value: ::prost::alloc::string::String,
     /// The type for this change, either ADDED, REMOVED, or MODIFIED.
-    #[prost(enumeration="ChangeType", tag="4")]
+    #[prost(enumeration = "ChangeType", tag = "4")]
     pub change_type: i32,
     /// Collection of advice provided for this change, useful for determining the
     /// possible impact of this change.
-    #[prost(message, repeated, tag="5")]
+    #[prost(message, repeated, tag = "5")]
     pub advices: ::prost::alloc::vec::Vec<Advice>,
 }
 /// Generated advice about this change, used for providing more
@@ -1157,7 +1187,7 @@ pub struct ConfigChange {
 pub struct Advice {
     /// Useful description for why this advice was applied and what actions should
     /// be taken to mitigate any implied risks.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub description: ::prost::alloc::string::String,
 }
 /// Classifies set of possible modifications to an object in the service
@@ -1210,7 +1240,7 @@ impl ChangeType {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProjectProperties {
     /// List of per consumer project-specific properties.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub properties: ::prost::alloc::vec::Vec<Property>,
 }
 /// Defines project properties.
@@ -1226,19 +1256,29 @@ pub struct ProjectProperties {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Property {
     /// The name of the property (a.k.a key).
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The type of this property.
-    #[prost(enumeration="property::PropertyType", tag="2")]
+    #[prost(enumeration = "property::PropertyType", tag = "2")]
     pub r#type: i32,
     /// The description of the property
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub description: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `Property`.
 pub mod property {
     /// Supported data type of the property values
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum PropertyType {
         /// The type is unspecified, and will result in an error.
@@ -1309,7 +1349,7 @@ pub struct Context {
     /// A list of RPC context rules that apply to individual API methods.
     ///
     /// **NOTE:** All service configuration rules follow "last one wins" order.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub rules: ::prost::alloc::vec::Vec<ContextRule>,
 }
 /// A context rule provides information about the context for an individual API
@@ -1319,22 +1359,26 @@ pub struct ContextRule {
     /// Selects the methods to which this rule applies.
     ///
     /// Refer to \[selector][google.api.DocumentationRule.selector\] for syntax details.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub selector: ::prost::alloc::string::String,
     /// A list of full type names of requested contexts.
-    #[prost(string, repeated, tag="2")]
+    #[prost(string, repeated, tag = "2")]
     pub requested: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// A list of full type names of provided contexts.
-    #[prost(string, repeated, tag="3")]
+    #[prost(string, repeated, tag = "3")]
     pub provided: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// A list of full type names or extension IDs of extensions allowed in grpc
     /// side channel from client to backend.
-    #[prost(string, repeated, tag="4")]
-    pub allowed_request_extensions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    #[prost(string, repeated, tag = "4")]
+    pub allowed_request_extensions: ::prost::alloc::vec::Vec<
+        ::prost::alloc::string::String,
+    >,
     /// A list of full type names or extension IDs of extensions allowed in grpc
     /// side channel from backend to client.
-    #[prost(string, repeated, tag="5")]
-    pub allowed_response_extensions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    #[prost(string, repeated, tag = "5")]
+    pub allowed_response_extensions: ::prost::alloc::vec::Vec<
+        ::prost::alloc::string::String,
+    >,
 }
 /// Selects and configures the service controller used by the service.  The
 /// service controller handles features like abuse, quota, billing, logging,
@@ -1343,7 +1387,7 @@ pub struct ContextRule {
 pub struct Control {
     /// The service control environment to use. If empty, no control plane
     /// feature (like quota and billing) will be enabled.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub environment: ::prost::alloc::string::String,
 }
 /// `Distribution` contains summary statistics for a population of values. It
@@ -1365,11 +1409,11 @@ pub struct Distribution {
     /// The number of values in the population. Must be non-negative. This value
     /// must equal the sum of the values in `bucket_counts` if a histogram is
     /// provided.
-    #[prost(int64, tag="1")]
+    #[prost(int64, tag = "1")]
     pub count: i64,
     /// The arithmetic mean of the values in the population. If `count` is zero
     /// then this field must be zero.
-    #[prost(double, tag="2")]
+    #[prost(double, tag = "2")]
     pub mean: f64,
     /// The sum of squared deviations from the mean of the values in the
     /// population. For values x_i this is:
@@ -1380,15 +1424,15 @@ pub struct Distribution {
     /// describes Welford's method for accumulating this sum in one pass.
     ///
     /// If `count` is zero then this field must be zero.
-    #[prost(double, tag="3")]
+    #[prost(double, tag = "3")]
     pub sum_of_squared_deviation: f64,
     /// If specified, contains the range of the population values. The field
     /// must not be present if the `count` is zero.
-    #[prost(message, optional, tag="4")]
+    #[prost(message, optional, tag = "4")]
     pub range: ::core::option::Option<distribution::Range>,
     /// Defines the histogram bucket boundaries. If the distribution does not
     /// contain a histogram, then omit this field.
-    #[prost(message, optional, tag="6")]
+    #[prost(message, optional, tag = "6")]
     pub bucket_options: ::core::option::Option<distribution::BucketOptions>,
     /// The number of values in each bucket of the histogram, as described in
     /// `bucket_options`. If the distribution does not have a histogram, then omit
@@ -1405,10 +1449,10 @@ pub struct Distribution {
     /// count for the underflow bucket (number 0). The next N-2 values are the
     /// counts for the finite buckets (number 1 through N-2). The N'th value in
     /// `bucket_counts` is the count for the overflow bucket (number N-1).
-    #[prost(int64, repeated, tag="7")]
+    #[prost(int64, repeated, tag = "7")]
     pub bucket_counts: ::prost::alloc::vec::Vec<i64>,
     /// Must be in increasing order of `value` field.
-    #[prost(message, repeated, tag="10")]
+    #[prost(message, repeated, tag = "10")]
     pub exemplars: ::prost::alloc::vec::Vec<distribution::Exemplar>,
 }
 /// Nested message and enum types in `Distribution`.
@@ -1417,10 +1461,10 @@ pub mod distribution {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Range {
         /// The minimum of the population values.
-        #[prost(double, tag="1")]
+        #[prost(double, tag = "1")]
         pub min: f64,
         /// The maximum of the population values.
-        #[prost(double, tag="2")]
+        #[prost(double, tag = "2")]
         pub max: f64,
     }
     /// `BucketOptions` describes the bucket boundaries used to create a histogram
@@ -1441,7 +1485,7 @@ pub mod distribution {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct BucketOptions {
         /// Exactly one of these three fields must be set.
-        #[prost(oneof="bucket_options::Options", tags="1, 2, 3")]
+        #[prost(oneof = "bucket_options::Options", tags = "1, 2, 3")]
         pub options: ::core::option::Option<bucket_options::Options>,
     }
     /// Nested message and enum types in `BucketOptions`.
@@ -1458,13 +1502,13 @@ pub mod distribution {
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Linear {
             /// Must be greater than 0.
-            #[prost(int32, tag="1")]
+            #[prost(int32, tag = "1")]
             pub num_finite_buckets: i32,
             /// Must be greater than 0.
-            #[prost(double, tag="2")]
+            #[prost(double, tag = "2")]
             pub width: f64,
             /// Lower bound of the first bucket.
-            #[prost(double, tag="3")]
+            #[prost(double, tag = "3")]
             pub offset: f64,
         }
         /// Specifies an exponential sequence of buckets that have a width that is
@@ -1479,13 +1523,13 @@ pub mod distribution {
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Exponential {
             /// Must be greater than 0.
-            #[prost(int32, tag="1")]
+            #[prost(int32, tag = "1")]
             pub num_finite_buckets: i32,
             /// Must be greater than 1.
-            #[prost(double, tag="2")]
+            #[prost(double, tag = "2")]
             pub growth_factor: f64,
             /// Must be greater than 0.
-            #[prost(double, tag="3")]
+            #[prost(double, tag = "3")]
             pub scale: f64,
         }
         /// Specifies a set of buckets with arbitrary widths.
@@ -1502,20 +1546,20 @@ pub mod distribution {
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Explicit {
             /// The values must be monotonically increasing.
-            #[prost(double, repeated, tag="1")]
+            #[prost(double, repeated, tag = "1")]
             pub bounds: ::prost::alloc::vec::Vec<f64>,
         }
         /// Exactly one of these three fields must be set.
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Options {
             /// The linear bucket.
-            #[prost(message, tag="1")]
+            #[prost(message, tag = "1")]
             LinearBuckets(Linear),
             /// The exponential buckets.
-            #[prost(message, tag="2")]
+            #[prost(message, tag = "2")]
             ExponentialBuckets(Exponential),
             /// The explicit buckets.
-            #[prost(message, tag="3")]
+            #[prost(message, tag = "3")]
             ExplicitBuckets(Explicit),
         }
     }
@@ -1528,10 +1572,10 @@ pub mod distribution {
     pub struct Exemplar {
         /// Value of the exemplar point. This value determines to which bucket the
         /// exemplar belongs.
-        #[prost(double, tag="1")]
+        #[prost(double, tag = "1")]
         pub value: f64,
         /// The observation (sampling) time of the above value.
-        #[prost(message, optional, tag="2")]
+        #[prost(message, optional, tag = "2")]
         pub timestamp: ::core::option::Option<::prost_types::Timestamp>,
         /// Contextual information about the example value. Examples are:
         ///
@@ -1544,7 +1588,7 @@ pub mod distribution {
         ///
         /// There may be only a single attachment of any given message type in a
         /// single exemplar, and this is enforced by the system.
-        #[prost(message, repeated, tag="3")]
+        #[prost(message, repeated, tag = "3")]
         pub attachments: ::prost::alloc::vec::Vec<::prost_types::Any>,
     }
 }
@@ -1607,24 +1651,24 @@ pub mod distribution {
 pub struct Documentation {
     /// A short summary of what the service does. Can only be provided by
     /// plain text.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub summary: ::prost::alloc::string::String,
     /// The top level pages for the documentation set.
-    #[prost(message, repeated, tag="5")]
+    #[prost(message, repeated, tag = "5")]
     pub pages: ::prost::alloc::vec::Vec<Page>,
     /// A list of documentation rules that apply to individual API elements.
     ///
     /// **NOTE:** All service configuration rules follow "last one wins" order.
-    #[prost(message, repeated, tag="3")]
+    #[prost(message, repeated, tag = "3")]
     pub rules: ::prost::alloc::vec::Vec<DocumentationRule>,
     /// The URL to the root of documentation.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub documentation_root_url: ::prost::alloc::string::String,
     /// Specifies the service root url if the default one (the service name
     /// from the yaml file) is not suitable. This can be seen in any fully
     /// specified service urls as well as sections that show a base that other
     /// urls are relative to.
-    #[prost(string, tag="6")]
+    #[prost(string, tag = "6")]
     pub service_root_url: ::prost::alloc::string::String,
     /// Declares a single overview page. For example:
     /// <pre><code>documentation:
@@ -1639,7 +1683,7 @@ pub struct Documentation {
     ///      content: &#40;== include overview.md ==&#41;
     /// </code></pre>
     /// Note: you cannot specify both `overview` field and `pages` field.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub overview: ::prost::alloc::string::String,
 }
 /// A documentation rule provides information about individual API elements.
@@ -1651,14 +1695,14 @@ pub struct DocumentationRule {
     /// qualified name, i.e. "foo.*" is ok, but not "foo.b*" or "foo.*.bar". A
     /// wildcard will match one or more components. To specify a default for all
     /// applicable elements, the whole pattern "*" is used.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub selector: ::prost::alloc::string::String,
     /// Description of the selected API(s).
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub description: ::prost::alloc::string::String,
     /// Deprecation description of the selected element(s). It can be provided if
     /// an element is marked as `deprecated`.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub deprecation_description: ::prost::alloc::string::String,
 }
 /// Represents a documentation page. A page can contain subpages to represent
@@ -1679,15 +1723,15 @@ pub struct Page {
     /// </code></pre>
     /// You can reference `Java` page using Markdown reference link syntax:
     /// `\[Java][Tutorial.Java\]`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The Markdown content of the page. You can use <code>&#40;== include {path}
     /// ==&#41;</code> to include content from a Markdown file.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub content: ::prost::alloc::string::String,
     /// Subpages of this page. The order of subpages specified here will be
     /// honored in the generated docset.
-    #[prost(message, repeated, tag="3")]
+    #[prost(message, repeated, tag = "3")]
     pub subpages: ::prost::alloc::vec::Vec<Page>,
 }
 /// `Endpoint` describes a network endpoint of a service that serves a set of
@@ -1709,7 +1753,7 @@ pub struct Page {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Endpoint {
     /// The canonical name of this endpoint.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Unimplemented. Dot not use.
     ///
@@ -1719,14 +1763,14 @@ pub struct Endpoint {
     ///
     /// Additional names that this endpoint will be hosted on.
     #[deprecated]
-    #[prost(string, repeated, tag="2")]
+    #[prost(string, repeated, tag = "2")]
     pub aliases: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The specification of an Internet routable address of API frontend that will
     /// handle requests to this [API
     /// Endpoint](<https://cloud.google.com/apis/design/glossary>). It should be
     /// either a valid IPv4 address or a fully-qualified domain name. For example,
     /// "8.8.8.8" or "myservice.appspot.com".
-    #[prost(string, tag="101")]
+    #[prost(string, tag = "101")]
     pub target: ::prost::alloc::string::String,
     /// Allowing
     /// \[CORS\](<https://en.wikipedia.org/wiki/Cross-origin_resource_sharing>), aka
@@ -1734,7 +1778,7 @@ pub struct Endpoint {
     /// receive and respond to HTTP OPTIONS requests. The response will be used by
     /// the browser to determine whether the subsequent cross-origin request is
     /// allowed to proceed.
-    #[prost(bool, tag="5")]
+    #[prost(bool, tag = "5")]
     pub allow_cors: bool,
 }
 /// Defines the supported values for `google.rpc.ErrorInfo.reason` for the
@@ -2117,7 +2161,9 @@ impl ErrorReason {
             ErrorReason::ConsumerInvalid => "CONSUMER_INVALID",
             ErrorReason::SecurityPolicyViolated => "SECURITY_POLICY_VIOLATED",
             ErrorReason::AccessTokenExpired => "ACCESS_TOKEN_EXPIRED",
-            ErrorReason::AccessTokenScopeInsufficient => "ACCESS_TOKEN_SCOPE_INSUFFICIENT",
+            ErrorReason::AccessTokenScopeInsufficient => {
+                "ACCESS_TOKEN_SCOPE_INSUFFICIENT"
+            }
             ErrorReason::AccountStateInvalid => "ACCOUNT_STATE_INVALID",
             ErrorReason::AccessTokenTypeUnsupported => "ACCESS_TOKEN_TYPE_UNSUPPORTED",
         }
@@ -2169,33 +2215,43 @@ impl ErrorReason {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HttpBody {
     /// The HTTP Content-Type header value specifying the content type of the body.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub content_type: ::prost::alloc::string::String,
     /// The HTTP request/response body as raw binary.
-    #[prost(bytes="vec", tag="2")]
+    #[prost(bytes = "vec", tag = "2")]
     pub data: ::prost::alloc::vec::Vec<u8>,
     /// Application specific response metadata. Must be set in the first response
     /// for streaming APIs.
-    #[prost(message, repeated, tag="3")]
+    #[prost(message, repeated, tag = "3")]
     pub extensions: ::prost::alloc::vec::Vec<::prost_types::Any>,
 }
 /// A description of a label.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LabelDescriptor {
     /// The label key.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub key: ::prost::alloc::string::String,
     /// The type of data that can be assigned to the label.
-    #[prost(enumeration="label_descriptor::ValueType", tag="2")]
+    #[prost(enumeration = "label_descriptor::ValueType", tag = "2")]
     pub value_type: i32,
     /// A human-readable description for the label.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub description: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `LabelDescriptor`.
 pub mod label_descriptor {
     /// Value types that can be used as label values.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum ValueType {
         /// A variable-length string. This is the default.
@@ -2294,20 +2350,20 @@ pub struct LogDescriptor {
     /// include the following characters: upper- and lower-case alphanumeric
     /// characters \[A-Za-z0-9\], and punctuation characters including
     /// slash, underscore, hyphen, period \[/_-.\].
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The set of labels that are available to describe a specific log entry.
     /// Runtime requests that contain labels not specified here are
     /// considered invalid.
-    #[prost(message, repeated, tag="2")]
+    #[prost(message, repeated, tag = "2")]
     pub labels: ::prost::alloc::vec::Vec<LabelDescriptor>,
     /// A human-readable description of this log. This information appears in
     /// the documentation and can contain details.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub description: ::prost::alloc::string::String,
     /// The human-readable name for this log. This information appears on
     /// the user interface and should be concise.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub display_name: ::prost::alloc::string::String,
 }
 /// Logging configuration of the service.
@@ -2345,13 +2401,13 @@ pub struct Logging {
     /// There can be multiple producer destinations, each one must have a
     /// different monitored resource type. A log can be used in at most
     /// one producer destination.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub producer_destinations: ::prost::alloc::vec::Vec<logging::LoggingDestination>,
     /// Logging configurations for sending logs to the consumer project.
     /// There can be multiple consumer destinations, each one must have a
     /// different monitored resource type. A log can be used in at most
     /// one consumer destination.
-    #[prost(message, repeated, tag="2")]
+    #[prost(message, repeated, tag = "2")]
     pub consumer_destinations: ::prost::alloc::vec::Vec<logging::LoggingDestination>,
 }
 /// Nested message and enum types in `Logging`.
@@ -2362,13 +2418,13 @@ pub mod logging {
     pub struct LoggingDestination {
         /// The monitored resource type. The type must be defined in the
         /// \[Service.monitored_resources][google.api.Service.monitored_resources\] section.
-        #[prost(string, tag="3")]
+        #[prost(string, tag = "3")]
         pub monitored_resource: ::prost::alloc::string::String,
         /// Names of the logs to be sent to this destination. Each name must
         /// be defined in the \[Service.logs][google.api.Service.logs\] section. If the log name is
         /// not a domain scoped name, it will be automatically prefixed with
         /// the service name followed by "/".
-        #[prost(string, repeated, tag="1")]
+        #[prost(string, repeated, tag = "1")]
         pub logs: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
 }
@@ -2379,7 +2435,7 @@ pub mod logging {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MetricDescriptor {
     /// The resource name of the metric descriptor.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The metric type, including its DNS name prefix. The type is not
     /// URL-encoded. All user-defined metric types have the DNS name
@@ -2389,7 +2445,7 @@ pub struct MetricDescriptor {
     ///      "custom.googleapis.com/invoice/paid/amount"
     ///      "external.googleapis.com/prometheus/up"
     ///      "appengine.googleapis.com/http/server/response_latencies"
-    #[prost(string, tag="8")]
+    #[prost(string, tag = "8")]
     pub r#type: ::prost::alloc::string::String,
     /// The set of labels that can be used to describe a specific
     /// instance of this metric type. For example, the
@@ -2397,15 +2453,15 @@ pub struct MetricDescriptor {
     /// type has a label for the HTTP response code, `response_code`, so
     /// you can look at latencies for successful responses or just
     /// for responses that failed.
-    #[prost(message, repeated, tag="2")]
+    #[prost(message, repeated, tag = "2")]
     pub labels: ::prost::alloc::vec::Vec<LabelDescriptor>,
     /// Whether the metric records instantaneous values, changes to a value, etc.
     /// Some combinations of `metric_kind` and `value_type` might not be supported.
-    #[prost(enumeration="metric_descriptor::MetricKind", tag="3")]
+    #[prost(enumeration = "metric_descriptor::MetricKind", tag = "3")]
     pub metric_kind: i32,
     /// Whether the measurement is an integer, a floating-point number, etc.
     /// Some combinations of `metric_kind` and `value_type` might not be supported.
-    #[prost(enumeration="metric_descriptor::ValueType", tag="4")]
+    #[prost(enumeration = "metric_descriptor::ValueType", tag = "4")]
     pub value_type: i32,
     /// The units in which the metric value is reported. It is only applicable
     /// if the `value_type` is `INT64`, `DOUBLE`, or `DISTRIBUTION`. The `unit`
@@ -2509,30 +2565,32 @@ pub struct MetricDescriptor {
     /// * `10^2.%` indicates a metric contains a ratio, typically in the range
     ///     0..1, that will be multiplied by 100 and displayed as a percentage
     ///     (so a metric value `0.03` means "3 percent").
-    #[prost(string, tag="5")]
+    #[prost(string, tag = "5")]
     pub unit: ::prost::alloc::string::String,
     /// A detailed description of the metric, which can be used in documentation.
-    #[prost(string, tag="6")]
+    #[prost(string, tag = "6")]
     pub description: ::prost::alloc::string::String,
     /// A concise name for the metric, which can be displayed in user interfaces.
     /// Use sentence case without an ending period, for example "Request count".
     /// This field is optional but it is recommended to be set for any metrics
     /// associated with user-visible concepts, such as Quota.
-    #[prost(string, tag="7")]
+    #[prost(string, tag = "7")]
     pub display_name: ::prost::alloc::string::String,
     /// Optional. Metadata which can be used to guide usage of the metric.
-    #[prost(message, optional, tag="10")]
+    #[prost(message, optional, tag = "10")]
     pub metadata: ::core::option::Option<metric_descriptor::MetricDescriptorMetadata>,
     /// Optional. The launch stage of the metric definition.
-    #[prost(enumeration="LaunchStage", tag="12")]
+    #[prost(enumeration = "LaunchStage", tag = "12")]
     pub launch_stage: i32,
     /// Read-only. If present, then a [time
     /// series]\[google.monitoring.v3.TimeSeries\], which is identified partially by
     /// a metric type and a \[MonitoredResourceDescriptor][google.api.MonitoredResourceDescriptor\], that is associated
     /// with this metric type can only be associated with one of the monitored
     /// resource types listed here.
-    #[prost(string, repeated, tag="13")]
-    pub monitored_resource_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    #[prost(string, repeated, tag = "13")]
+    pub monitored_resource_types: ::prost::alloc::vec::Vec<
+        ::prost::alloc::string::String,
+    >,
 }
 /// Nested message and enum types in `MetricDescriptor`.
 pub mod metric_descriptor {
@@ -2541,24 +2599,34 @@ pub mod metric_descriptor {
     pub struct MetricDescriptorMetadata {
         /// Deprecated. Must use the \[MetricDescriptor.launch_stage][google.api.MetricDescriptor.launch_stage\] instead.
         #[deprecated]
-        #[prost(enumeration="super::LaunchStage", tag="1")]
+        #[prost(enumeration = "super::LaunchStage", tag = "1")]
         pub launch_stage: i32,
         /// The sampling period of metric data points. For metrics which are written
         /// periodically, consecutive data points are stored at this time interval,
         /// excluding data loss due to errors. Metrics with a higher granularity have
         /// a smaller sampling period.
-        #[prost(message, optional, tag="2")]
+        #[prost(message, optional, tag = "2")]
         pub sample_period: ::core::option::Option<::prost_types::Duration>,
         /// The delay of data points caused by ingestion. Data points older than this
         /// age are guaranteed to be ingested and available to be read, excluding
         /// data loss due to errors.
-        #[prost(message, optional, tag="3")]
+        #[prost(message, optional, tag = "3")]
         pub ingest_delay: ::core::option::Option<::prost_types::Duration>,
     }
     /// The kind of measurement. It describes how the data is reported.
     /// For information on setting the start time and end time based on
     /// the MetricKind, see \[TimeInterval][google.monitoring.v3.TimeInterval\].
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum MetricKind {
         /// Do not use this default value.
@@ -2589,7 +2657,17 @@ pub mod metric_descriptor {
         }
     }
     /// The value type of a metric.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum ValueType {
         /// Do not use this default value.
@@ -2633,12 +2711,15 @@ pub mod metric_descriptor {
 pub struct Metric {
     /// An existing metric type, see \[google.api.MetricDescriptor][google.api.MetricDescriptor\].
     /// For example, `custom.googleapis.com/invoice/paid/amount`.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub r#type: ::prost::alloc::string::String,
     /// The set of label values that uniquely identify this metric. All
     /// labels listed in the `MetricDescriptor` must be assigned values.
-    #[prost(map="string, string", tag="2")]
-    pub labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map = "string, string", tag = "2")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
 }
 /// An object that describes the schema of a \[MonitoredResource][google.api.MonitoredResource\] object using a
 /// type name and a set of labels.  For example, the monitored resource
@@ -2658,29 +2739,29 @@ pub struct MonitoredResourceDescriptor {
     /// {project_id} is a project ID that provides API-specific context for
     /// accessing the type.  APIs that do not use project information can use the
     /// resource name format `"monitoredResourceDescriptors/{type}"`.
-    #[prost(string, tag="5")]
+    #[prost(string, tag = "5")]
     pub name: ::prost::alloc::string::String,
     /// Required. The monitored resource type. For example, the type
     /// `"cloudsql_database"` represents databases in Google Cloud SQL.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub r#type: ::prost::alloc::string::String,
     /// Optional. A concise name for the monitored resource type that might be
     /// displayed in user interfaces. It should be a Title Cased Noun Phrase,
     /// without any article or other determiners. For example,
     /// `"Google Cloud SQL Database"`.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub display_name: ::prost::alloc::string::String,
     /// Optional. A detailed description of the monitored resource type that might
     /// be used in documentation.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub description: ::prost::alloc::string::String,
     /// Required. A set of labels used to describe instances of this monitored
     /// resource type. For example, an individual Google Cloud SQL database is
     /// identified by values for the labels `"database_id"` and `"zone"`.
-    #[prost(message, repeated, tag="4")]
+    #[prost(message, repeated, tag = "4")]
     pub labels: ::prost::alloc::vec::Vec<LabelDescriptor>,
     /// Optional. The launch stage of the monitored resource definition.
-    #[prost(enumeration="LaunchStage", tag="7")]
+    #[prost(enumeration = "LaunchStage", tag = "7")]
     pub launch_stage: i32,
 }
 /// An object representing a resource that can be used for monitoring, logging,
@@ -2701,13 +2782,16 @@ pub struct MonitoredResource {
     /// Required. The monitored resource type. This field must match
     /// the `type` field of a \[MonitoredResourceDescriptor][google.api.MonitoredResourceDescriptor\] object. For
     /// example, the type of a Compute Engine VM instance is `gce_instance`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub r#type: ::prost::alloc::string::String,
     /// Required. Values for all of the labels listed in the associated monitored
     /// resource descriptor. For example, Compute Engine VM instances use the
     /// labels `"project_id"`, `"instance_id"`, and `"zone"`.
-    #[prost(map="string, string", tag="2")]
-    pub labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map = "string, string", tag = "2")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
 }
 /// Auxiliary metadata for a \[MonitoredResource][google.api.MonitoredResource\] object.
 /// \[MonitoredResource][google.api.MonitoredResource\] objects contain the minimum set of information to
@@ -2727,11 +2811,14 @@ pub struct MonitoredResourceMetadata {
     ///      { "name": "my-test-instance",
     ///        "security_group": ["a", "b", "c"],
     ///        "spot_instance": false }
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub system_labels: ::core::option::Option<::prost_types::Struct>,
     /// Output only. A map of user-defined metadata labels.
-    #[prost(map="string, string", tag="2")]
-    pub user_labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map = "string, string", tag = "2")]
+    pub user_labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
 }
 /// Monitoring configuration of the service.
 ///
@@ -2793,16 +2880,20 @@ pub struct Monitoring {
     /// needed for different sets of metrics associated with that monitored
     /// resource type. A monitored resource and metric pair may only be used once
     /// in the Monitoring configuration.
-    #[prost(message, repeated, tag="1")]
-    pub producer_destinations: ::prost::alloc::vec::Vec<monitoring::MonitoringDestination>,
+    #[prost(message, repeated, tag = "1")]
+    pub producer_destinations: ::prost::alloc::vec::Vec<
+        monitoring::MonitoringDestination,
+    >,
     /// Monitoring configurations for sending metrics to the consumer project.
     /// There can be multiple consumer destinations. A monitored resource type may
     /// appear in multiple monitoring destinations if different aggregations are
     /// needed for different sets of metrics associated with that monitored
     /// resource type. A monitored resource and metric pair may only be used once
     /// in the Monitoring configuration.
-    #[prost(message, repeated, tag="2")]
-    pub consumer_destinations: ::prost::alloc::vec::Vec<monitoring::MonitoringDestination>,
+    #[prost(message, repeated, tag = "2")]
+    pub consumer_destinations: ::prost::alloc::vec::Vec<
+        monitoring::MonitoringDestination,
+    >,
 }
 /// Nested message and enum types in `Monitoring`.
 pub mod monitoring {
@@ -2812,11 +2903,11 @@ pub mod monitoring {
     pub struct MonitoringDestination {
         /// The monitored resource type. The type must be defined in
         /// \[Service.monitored_resources][google.api.Service.monitored_resources\] section.
-        #[prost(string, tag="1")]
+        #[prost(string, tag = "1")]
         pub monitored_resource: ::prost::alloc::string::String,
         /// Types of the metrics to report to this monitoring destination.
         /// Each type must be defined in \[Service.metrics][google.api.Service.metrics\] section.
-        #[prost(string, repeated, tag="2")]
+        #[prost(string, repeated, tag = "2")]
         pub metrics: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
 }
@@ -2874,11 +2965,11 @@ pub mod monitoring {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Quota {
     /// List of `QuotaLimit` definitions for the service.
-    #[prost(message, repeated, tag="3")]
+    #[prost(message, repeated, tag = "3")]
     pub limits: ::prost::alloc::vec::Vec<QuotaLimit>,
     /// List of `MetricRule` definitions, each one mapping a selected method to one
     /// or more metrics.
-    #[prost(message, repeated, tag="4")]
+    #[prost(message, repeated, tag = "4")]
     pub metric_rules: ::prost::alloc::vec::Vec<MetricRule>,
 }
 /// Bind API methods to metrics. Binding a method to a metric causes that
@@ -2888,7 +2979,7 @@ pub struct MetricRule {
     /// Selects the methods to which this rule applies.
     ///
     /// Refer to \[selector][google.api.DocumentationRule.selector\] for syntax details.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub selector: ::prost::alloc::string::String,
     /// Metrics to update when the selected methods are called, and the associated
     /// cost applied to each metric.
@@ -2896,7 +2987,7 @@ pub struct MetricRule {
     /// The key of the map is the metric name, and the values are the amount
     /// increased for the metric against which the quota limits are defined.
     /// The value must not be negative.
-    #[prost(map="string, int64", tag="2")]
+    #[prost(map = "string, int64", tag = "2")]
     pub metric_costs: ::std::collections::HashMap<::prost::alloc::string::String, i64>,
 }
 /// `QuotaLimit` defines a specific limit that applies over a specified duration
@@ -2910,12 +3001,12 @@ pub struct QuotaLimit {
     /// name can only include alphanumeric characters as well as '-'.
     ///
     /// The maximum length of the limit name is 64 characters.
-    #[prost(string, tag="6")]
+    #[prost(string, tag = "6")]
     pub name: ::prost::alloc::string::String,
     /// Optional. User-visible, extended description for this quota limit.
     /// Should be used only when more context is needed to understand this limit
     /// than provided by the limit's display name (see: `display_name`).
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub description: ::prost::alloc::string::String,
     /// Default number of tokens that can be consumed during the specified
     /// duration. This is the number of tokens assigned when a client
@@ -2927,7 +3018,7 @@ pub struct QuotaLimit {
     /// negative values are allowed.
     ///
     /// Used by group-based quotas only.
-    #[prost(int64, tag="3")]
+    #[prost(int64, tag = "3")]
     pub default_limit: i64,
     /// Maximum number of tokens that can be consumed during the specified
     /// duration. Client application developers can override the default limit up
@@ -2938,7 +3029,7 @@ pub struct QuotaLimit {
     /// indicating unlimited maximum quota.
     ///
     /// Used by group-based quotas only.
-    #[prost(int64, tag="4")]
+    #[prost(int64, tag = "4")]
     pub max_limit: i64,
     /// Free tier value displayed in the Developers Console for this limit.
     /// The free tier is the number of tokens that will be subtracted from the
@@ -2948,17 +3039,17 @@ pub struct QuotaLimit {
     /// defaults to 0, indicating that there is no free tier for this service.
     ///
     /// Used by group-based quotas only.
-    #[prost(int64, tag="7")]
+    #[prost(int64, tag = "7")]
     pub free_tier: i64,
     /// Duration of this limit in textual notation. Must be "100s" or "1d".
     ///
     /// Used by group-based quotas only.
-    #[prost(string, tag="5")]
+    #[prost(string, tag = "5")]
     pub duration: ::prost::alloc::string::String,
     /// The name of the metric this quota limit applies to. The quota limits with
     /// the same metric will be checked together during runtime. The metric must be
     /// defined within the service config.
-    #[prost(string, tag="8")]
+    #[prost(string, tag = "8")]
     pub metric: ::prost::alloc::string::String,
     /// Specify the unit of the quota limit. It uses the same syntax as
     /// \[Metric.unit][\]. The supported unit kinds are determined by the quota
@@ -2969,18 +3060,18 @@ pub struct QuotaLimit {
     ///
     /// Note: the order of unit components is insignificant.
     /// The "1" at the beginning is required to follow the metric unit syntax.
-    #[prost(string, tag="9")]
+    #[prost(string, tag = "9")]
     pub unit: ::prost::alloc::string::String,
     /// Tiered limit values. You must specify this as a key:value pair, with an
     /// integer value that is the maximum number of requests allowed for the
     /// specified unit. Currently only STANDARD is supported.
-    #[prost(map="string, int64", tag="10")]
+    #[prost(map = "string, int64", tag = "10")]
     pub values: ::std::collections::HashMap<::prost::alloc::string::String, i64>,
     /// User-visible display name for this limit.
     /// Optional. If not set, the UI will provide a default display name based on
     /// the quota configuration. This field can be used to override the default
     /// display name generated from the configuration.
-    #[prost(string, tag="12")]
+    #[prost(string, tag = "12")]
     pub display_name: ::prost::alloc::string::String,
 }
 /// Specifies the routing information that should be sent along with the request
@@ -3350,14 +3441,14 @@ pub struct RoutingRule {
     /// `path_template` is not provided), "last one wins" rule
     /// determines which Parameter gets used.
     /// See the examples for more details.
-    #[prost(message, repeated, tag="2")]
+    #[prost(message, repeated, tag = "2")]
     pub routing_parameters: ::prost::alloc::vec::Vec<RoutingParameter>,
 }
 /// A projection from an input message to the GRPC or REST header.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RoutingParameter {
     /// A request field to extract the header key-value pair from.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub field: ::prost::alloc::string::String,
     /// A pattern matching the key-value field. Optional.
     /// If not specified, the whole field specified in the `field` field will be
@@ -3413,14 +3504,14 @@ pub struct RoutingParameter {
     ///      }
     ///
     /// See Example 1 for more details.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub path_template: ::prost::alloc::string::String,
 }
 /// Source information used to create a Service Config
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SourceInfo {
     /// All files used during config generation.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub source_files: ::prost::alloc::vec::Vec<::prost_types::Any>,
 }
 /// ### System parameter configuration
@@ -3460,7 +3551,7 @@ pub struct SystemParameters {
     ///                http_header: Api-Key2
     ///
     /// **NOTE:** All service configuration rules follow "last one wins" order.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub rules: ::prost::alloc::vec::Vec<SystemParameterRule>,
 }
 /// Define a system parameter rule mapping system parameter definitions to
@@ -3471,14 +3562,14 @@ pub struct SystemParameterRule {
     /// methods in all APIs.
     ///
     /// Refer to \[selector][google.api.DocumentationRule.selector\] for syntax details.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub selector: ::prost::alloc::string::String,
     /// Define parameters. Multiple names may be defined for a parameter.
     /// For a given method call, only one of them should be used. If multiple
     /// names are used the behavior is implementation-dependent.
     /// If none of the specified names are present the behavior is
     /// parameter-dependent.
-    #[prost(message, repeated, tag="2")]
+    #[prost(message, repeated, tag = "2")]
     pub parameters: ::prost::alloc::vec::Vec<SystemParameter>,
 }
 /// Define a parameter's name and location. The parameter may be passed as either
@@ -3487,15 +3578,15 @@ pub struct SystemParameterRule {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SystemParameter {
     /// Define the name of the parameter, such as "api_key" . It is case sensitive.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Define the HTTP header name to use for the parameter. It is case
     /// insensitive.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub http_header: ::prost::alloc::string::String,
     /// Define the URL query parameter name to use for the parameter. It is case
     /// sensitive.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub url_query_parameter: ::prost::alloc::string::String,
 }
 /// Configuration controlling usage of a service.
@@ -3510,12 +3601,12 @@ pub struct Usage {
     /// Other Google APIs should include
     /// "serviceusage.googleapis.com/tos/universal". Additional ToS can be
     /// included based on the business needs.
-    #[prost(string, repeated, tag="1")]
+    #[prost(string, repeated, tag = "1")]
     pub requirements: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// A list of usage rules that apply to individual API methods.
     ///
     /// **NOTE:** All service configuration rules follow "last one wins" order.
-    #[prost(message, repeated, tag="6")]
+    #[prost(message, repeated, tag = "6")]
     pub rules: ::prost::alloc::vec::Vec<UsageRule>,
     /// The full resource name of a channel used for sending notifications to the
     /// service producer.
@@ -3525,7 +3616,7 @@ pub struct Usage {
     /// channel. To use Google Cloud Pub/Sub as the channel, this must be the name
     /// of a Cloud Pub/Sub topic that uses the Cloud Pub/Sub topic name format
     /// documented in <https://cloud.google.com/pubsub/docs/overview.>
-    #[prost(string, tag="7")]
+    #[prost(string, tag = "7")]
     pub producer_notification_channel: ::prost::alloc::string::String,
 }
 /// Usage configuration rules for the service.
@@ -3559,17 +3650,17 @@ pub struct UsageRule {
     /// methods in all APIs.
     ///
     /// Refer to \[selector][google.api.DocumentationRule.selector\] for syntax details.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub selector: ::prost::alloc::string::String,
     /// If true, the selected method allows unregistered calls, e.g. calls
     /// that don't identify any user or application.
-    #[prost(bool, tag="2")]
+    #[prost(bool, tag = "2")]
     pub allow_unregistered_calls: bool,
     /// If true, the selected method should skip service control and the control
     /// plane features, such as quota and billing, will not be available.
     /// This flag is used by Google Cloud Endpoints to bypass checks for internal
     /// methods, such as service health check methods.
-    #[prost(bool, tag="3")]
+    #[prost(bool, tag = "3")]
     pub skip_service_control: bool,
 }
 /// `Service` is the root object of Google service configuration schema. It
@@ -3600,26 +3691,26 @@ pub struct Service {
     /// service, such as `calendar.googleapis.com`. The service name
     /// typically goes through DNS verification to make sure the owner
     /// of the service also owns the DNS name.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The product title for this service.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub title: ::prost::alloc::string::String,
     /// The Google project that owns this service.
-    #[prost(string, tag="22")]
+    #[prost(string, tag = "22")]
     pub producer_project_id: ::prost::alloc::string::String,
     /// A unique ID for a specific instance of this message, typically assigned
     /// by the client for tracking purpose. Must be no longer than 63 characters
     /// and only lower case letters, digits, '.', '_' and '-' are allowed. If
     /// empty, the server may choose to generate one instead.
-    #[prost(string, tag="33")]
+    #[prost(string, tag = "33")]
     pub id: ::prost::alloc::string::String,
     /// A list of API interfaces exported by this service. Only the `name` field
     /// of the \[google.protobuf.Api][google.protobuf.Api\] needs to be provided by the configuration
     /// author, as the remaining fields will be derived from the IDL during the
     /// normalization process. It is an error to specify an API interface here
     /// which cannot be resolved against the associated IDL files.
-    #[prost(message, repeated, tag="3")]
+    #[prost(message, repeated, tag = "3")]
     pub apis: ::prost::alloc::vec::Vec<::prost_types::Api>,
     /// A list of all proto message types included in this API service.
     /// Types referenced directly or indirectly by the `apis` are
@@ -3629,7 +3720,7 @@ pub struct Service {
     ///
     ///      types:
     ///      - name: google.protobuf.Int32
-    #[prost(message, repeated, tag="4")]
+    #[prost(message, repeated, tag = "4")]
     pub types: ::prost::alloc::vec::Vec<::prost_types::Type>,
     /// A list of all enum types included in this API service.  Enums
     /// referenced directly or indirectly by the `apis` are automatically
@@ -3638,68 +3729,68 @@ pub struct Service {
     ///
     ///      enums:
     ///      - name: google.someapi.v1.SomeEnum
-    #[prost(message, repeated, tag="5")]
+    #[prost(message, repeated, tag = "5")]
     pub enums: ::prost::alloc::vec::Vec<::prost_types::Enum>,
     /// Additional API documentation.
-    #[prost(message, optional, tag="6")]
+    #[prost(message, optional, tag = "6")]
     pub documentation: ::core::option::Option<Documentation>,
     /// API backend configuration.
-    #[prost(message, optional, tag="8")]
+    #[prost(message, optional, tag = "8")]
     pub backend: ::core::option::Option<Backend>,
     /// HTTP configuration.
-    #[prost(message, optional, tag="9")]
+    #[prost(message, optional, tag = "9")]
     pub http: ::core::option::Option<Http>,
     /// Quota configuration.
-    #[prost(message, optional, tag="10")]
+    #[prost(message, optional, tag = "10")]
     pub quota: ::core::option::Option<Quota>,
     /// Auth configuration.
-    #[prost(message, optional, tag="11")]
+    #[prost(message, optional, tag = "11")]
     pub authentication: ::core::option::Option<Authentication>,
     /// Context configuration.
-    #[prost(message, optional, tag="12")]
+    #[prost(message, optional, tag = "12")]
     pub context: ::core::option::Option<Context>,
     /// Configuration controlling usage of this service.
-    #[prost(message, optional, tag="15")]
+    #[prost(message, optional, tag = "15")]
     pub usage: ::core::option::Option<Usage>,
     /// Configuration for network endpoints.  If this is empty, then an endpoint
     /// with the same name as the service is automatically generated to service all
     /// defined APIs.
-    #[prost(message, repeated, tag="18")]
+    #[prost(message, repeated, tag = "18")]
     pub endpoints: ::prost::alloc::vec::Vec<Endpoint>,
     /// Configuration for the service control plane.
-    #[prost(message, optional, tag="21")]
+    #[prost(message, optional, tag = "21")]
     pub control: ::core::option::Option<Control>,
     /// Defines the logs used by this service.
-    #[prost(message, repeated, tag="23")]
+    #[prost(message, repeated, tag = "23")]
     pub logs: ::prost::alloc::vec::Vec<LogDescriptor>,
     /// Defines the metrics used by this service.
-    #[prost(message, repeated, tag="24")]
+    #[prost(message, repeated, tag = "24")]
     pub metrics: ::prost::alloc::vec::Vec<MetricDescriptor>,
     /// Defines the monitored resources used by this service. This is required
     /// by the \[Service.monitoring][google.api.Service.monitoring\] and \[Service.logging][google.api.Service.logging\] configurations.
-    #[prost(message, repeated, tag="25")]
+    #[prost(message, repeated, tag = "25")]
     pub monitored_resources: ::prost::alloc::vec::Vec<MonitoredResourceDescriptor>,
     /// Billing configuration.
-    #[prost(message, optional, tag="26")]
+    #[prost(message, optional, tag = "26")]
     pub billing: ::core::option::Option<Billing>,
     /// Logging configuration.
-    #[prost(message, optional, tag="27")]
+    #[prost(message, optional, tag = "27")]
     pub logging: ::core::option::Option<Logging>,
     /// Monitoring configuration.
-    #[prost(message, optional, tag="28")]
+    #[prost(message, optional, tag = "28")]
     pub monitoring: ::core::option::Option<Monitoring>,
     /// System parameter configuration.
-    #[prost(message, optional, tag="29")]
+    #[prost(message, optional, tag = "29")]
     pub system_parameters: ::core::option::Option<SystemParameters>,
     /// Output only. The source information for this configuration if available.
-    #[prost(message, optional, tag="37")]
+    #[prost(message, optional, tag = "37")]
     pub source_info: ::core::option::Option<SourceInfo>,
     /// Obsolete. Do not use.
     ///
     /// This field has no semantic meaning. The service config compiler always
     /// sets this field to `3`.
     #[deprecated]
-    #[prost(message, optional, tag="20")]
+    #[prost(message, optional, tag = "20")]
     pub config_version: ::core::option::Option<u32>,
 }
 /// `Visibility` defines restrictions for the visibility of service
@@ -3729,7 +3820,7 @@ pub struct Visibility {
     /// A list of visibility rules that apply to individual API elements.
     ///
     /// **NOTE:** All service configuration rules follow "last one wins" order.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub rules: ::prost::alloc::vec::Vec<VisibilityRule>,
 }
 /// A visibility rule provides visibility configuration for an individual API
@@ -3739,7 +3830,7 @@ pub struct VisibilityRule {
     /// Selects methods, messages, fields, enums, etc. to which this rule applies.
     ///
     /// Refer to \[selector][google.api.DocumentationRule.selector\] for syntax details.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub selector: ::prost::alloc::string::String,
     /// A comma-separated list of visibility labels that apply to the `selector`.
     /// Any of the listed labels can be used to grant the visibility.
@@ -3756,6 +3847,6 @@ pub struct VisibilityRule {
     ///
     /// Removing INTERNAL from this restriction will break clients that rely on
     /// this method and only had access to it through INTERNAL.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub restriction: ::prost::alloc::string::String,
 }

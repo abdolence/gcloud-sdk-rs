@@ -37,7 +37,7 @@
 pub struct Worker {
     /// A list of devices; the first device is the primary device. See the `Device`
     /// message for more information.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub devices: ::prost::alloc::vec::Vec<Device>,
     /// A worker may contain "global" properties. For example, certain machines
     /// might be reserved for certain types of jobs, like short-running compilation
@@ -46,7 +46,7 @@ pub struct Worker {
     /// to the worker as a whole.
     ///
     /// The behaviour of repeated keys is identical to that of Device.Property.
-    #[prost(message, repeated, tag="2")]
+    #[prost(message, repeated, tag = "2")]
     pub properties: ::prost::alloc::vec::Vec<worker::Property>,
     /// Bots can be configured in certain ways when accepting leases. For example,
     /// many leases are executed inside a Docker container. To support this, the
@@ -64,7 +64,7 @@ pub struct Worker {
     /// When this message is sent by the server to the bot in the context of a
     /// lease, it represents a command to the bot to apply the setting. Keys may
     /// be repeated during reporting but not in a lease.
-    #[prost(message, repeated, tag="3")]
+    #[prost(message, repeated, tag = "3")]
     pub configs: ::prost::alloc::vec::Vec<worker::Config>,
 }
 /// Nested message and enum types in `Worker`.
@@ -82,10 +82,10 @@ pub mod worker {
         /// throughput. To support this, the server can assign different values for
         /// `pool` (such as "itest" and "utest") to different workers, and then have
         /// jobs request workers from those pools.
-        #[prost(string, tag="1")]
+        #[prost(string, tag = "1")]
         pub key: ::prost::alloc::string::String,
         /// The property's value.
-        #[prost(string, tag="2")]
+        #[prost(string, tag = "2")]
         pub value: ::prost::alloc::string::String,
     }
     /// A configuration request or report; see the `configs` field for more
@@ -101,10 +101,10 @@ pub mod worker {
         /// its own images; the bot may optionally *also* report images that are
         /// present in its cache. When being requested in a lease, the value is the
         /// URI of the image (eg `gcr.io/user/image@sha256:hash`).
-        #[prost(string, tag="1")]
+        #[prost(string, tag = "1")]
         pub key: ::prost::alloc::string::String,
         /// The configuration's value.
-        #[prost(string, tag="2")]
+        #[prost(string, tag = "2")]
         pub value: ::prost::alloc::string::String,
     }
 }
@@ -122,7 +122,7 @@ pub struct Device {
     /// logical name expected by the task to a machine-readable name that the task
     /// can actually use, such as a USB address. The method by which this mapping
     /// is communicated to the task is not covered in this API.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub handle: ::prost::alloc::string::String,
     /// Properties of this device that don't change based on the tasks that are
     /// running on it, e.g. OS, CPU architecture, etc.
@@ -133,7 +133,7 @@ pub struct Device {
     ///     example, an "ISA" property might include "x86", "x86-64" and "sse4".
     ///
     ///     * Request context: the device *must* support *all* of the listed values.
-    #[prost(message, repeated, tag="2")]
+    #[prost(message, repeated, tag = "2")]
     pub properties: ::prost::alloc::vec::Vec<device::Property>,
 }
 /// Nested message and enum types in `Device`.
@@ -152,10 +152,10 @@ pub mod device {
         ///
         /// * has-docker: "true" if the bot has Docker installed. This will be
         /// replaced in the future by a more structured message for Docker support.
-        #[prost(string, tag="1")]
+        #[prost(string, tag = "1")]
         pub key: ::prost::alloc::string::String,
         /// The property's value.
-        #[prost(string, tag="2")]
+        #[prost(string, tag = "2")]
         pub value: ::prost::alloc::string::String,
     }
 }
@@ -170,7 +170,7 @@ pub mod device {
 pub struct BotSession {
     /// The bot session name, as selected by the server. Output only during a call
     /// to CreateBotSession.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// A unique bot ID within the farm used to persistently identify this bot over
     /// time (i.e., over multiple sessions). This ID must be unique within a
@@ -186,11 +186,11 @@ pub struct BotSession {
     /// invalid session, the server must reject that request, and may also
     /// quarantine the other bot with the same bot IDs (ie, stop sending it new
     /// leases and alert an admin).
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub bot_id: ::prost::alloc::string::String,
     /// The status of the bot. This must be populated in every call to
     /// UpdateBotSession.
-    #[prost(enumeration="BotStatus", tag="3")]
+    #[prost(enumeration = "BotStatus", tag = "3")]
     pub status: i32,
     /// A description of the worker hosting this bot. The Worker message is used
     /// here in the Status context (see Worker for more information).  If multiple
@@ -200,19 +200,19 @@ pub struct BotSession {
     /// During the call to CreateBotSession, the server may make arbitrary changes
     /// to the worker's `server_properties` field (see that field for more
     /// information). Otherwise, this field is input-only.
-    #[prost(message, optional, tag="4")]
+    #[prost(message, optional, tag = "4")]
     pub worker: ::core::option::Option<Worker>,
     /// A list of all leases that are a part of this session. See the Lease message
     /// for details.
-    #[prost(message, repeated, tag="5")]
+    #[prost(message, repeated, tag = "5")]
     pub leases: ::prost::alloc::vec::Vec<Lease>,
     /// The time at which this bot session will expire, unless the bot calls
     /// UpdateBotSession again. Output only.
-    #[prost(message, optional, tag="6")]
+    #[prost(message, optional, tag = "6")]
     pub expire_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The version of the bot code currently running. The server may use this
     /// information to issue an admin action to tell the bot to update itself.
-    #[prost(string, tag="7")]
+    #[prost(string, tag = "7")]
     pub version: ::prost::alloc::string::String,
 }
 /// A Lease is a lease that the scheduler has assigned to this bot. If the bot
@@ -236,21 +236,21 @@ pub struct BotSession {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Lease {
     /// A short string uniquely identifing the lease within this bot session.
-    #[prost(string, tag="7")]
+    #[prost(string, tag = "7")]
     pub id: ::prost::alloc::string::String,
     /// The actual work to be performed, if any. May be omitted by the server if
     /// the lease is not in the `PENDING` state. The message must be meaningful to
     /// the bot. Output only (must only be set by the server).
-    #[prost(message, optional, tag="8")]
+    #[prost(message, optional, tag = "8")]
     pub payload: ::core::option::Option<::prost_types::Any>,
     /// Any result the bot wishes to provide about the lease. Must not be changed
     /// after the first call with the lease in the `COMPLETED` or `CANCELLED`
     /// state. Input only (must only be set by the bot, will not be echoed by the
     /// server).
-    #[prost(message, optional, tag="9")]
+    #[prost(message, optional, tag = "9")]
     pub result: ::core::option::Option<::prost_types::Any>,
     /// The state of the lease. See LeaseState for more information.
-    #[prost(enumeration="LeaseState", tag="2")]
+    #[prost(enumeration = "LeaseState", tag = "2")]
     pub state: i32,
     /// The final status of the lease (should be populated by the bot if the state
     /// is completed). This is the status of the lease, not of any task represented
@@ -259,27 +259,27 @@ pub struct Lease {
     /// FAILED_PRECONDITION. But if the assignment in the lease didn't execute
     /// correctly, this field will be `OK` while the failure of the assignment must
     /// communicated via the `result` field.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub status: ::core::option::Option<super::super::super::rpc::Status>,
     /// The requirements that are being claimed by this lease. This field may be
     /// omitted by the server if the lease is not pending.
-    #[prost(message, optional, tag="4")]
+    #[prost(message, optional, tag = "4")]
     pub requirements: ::core::option::Option<Worker>,
     /// The time at which this lease expires. The server *may* extend this over
     /// time, but due to race conditions, the bot is not *required* to respect any
     /// expiry date except the first one.
-    #[prost(message, optional, tag="5")]
+    #[prost(message, optional, tag = "5")]
     pub expire_time: ::core::option::Option<::prost_types::Timestamp>,
     /// DEPRECATED. The assignment should be provided to the bot via the `payload`
     /// field. Clients that wish to use a simple name (such as a queue of work
     /// provided elsewhere) should define a custom message type and encode it into
     /// `payload`.
     #[deprecated]
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub assignment: ::prost::alloc::string::String,
     /// DEPRECATED. Use `payload` instead.
     #[deprecated]
-    #[prost(message, optional, tag="6")]
+    #[prost(message, optional, tag = "6")]
     pub inline_assignment: ::core::option::Option<::prost_types::Any>,
 }
 /// AdminTemp is a prelimiary set of administration tasks. It's called "Temp"
@@ -297,16 +297,26 @@ pub struct Lease {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AdminTemp {
     /// The admin action; see `Command` for legal values.
-    #[prost(enumeration="admin_temp::Command", tag="1")]
+    #[prost(enumeration = "admin_temp::Command", tag = "1")]
     pub command: i32,
     /// The argument to the admin action; see `Command` for semantics.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub arg: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `AdminTemp`.
 pub mod admin_temp {
     /// Possible administration actions.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum Command {
         /// Illegal value.
@@ -344,25 +354,25 @@ pub mod admin_temp {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateBotSessionRequest {
     /// Required. The farm resource.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The bot session to create. Server-assigned fields like name must
     /// be unset.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub bot_session: ::core::option::Option<BotSession>,
 }
 /// Request message for UpdateBotSession.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateBotSessionRequest {
     /// Required. The bot session name. Must match bot_session.name.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The bot session resource to update.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub bot_session: ::core::option::Option<BotSession>,
     /// Required. The fields on the bot that should be updated. See the BotSession
     /// resource for which fields are updatable by which caller.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// A coarse description of the status of the bot that the server uses to
@@ -593,13 +603,13 @@ pub mod bots_client {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CommandTask {
     /// The inputs to the task.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub inputs: ::core::option::Option<command_task::Inputs>,
     /// The expected outputs from the task.
-    #[prost(message, optional, tag="4")]
+    #[prost(message, optional, tag = "4")]
     pub expected_outputs: ::core::option::Option<command_task::Outputs>,
     /// The timeouts of this task.
-    #[prost(message, optional, tag="5")]
+    #[prost(message, optional, tag = "5")]
     pub timeouts: ::core::option::Option<command_task::Timeouts>,
 }
 /// Nested message and enum types in `CommandTask`.
@@ -617,7 +627,7 @@ pub mod command_task {
         ///
         /// All other fields in the RWAPI must consistently use forward slashes,
         /// since those fields may be interpretted by both the service and the bot.
-        #[prost(string, repeated, tag="1")]
+        #[prost(string, repeated, tag = "1")]
         pub arguments: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         /// The input filesystem to be set up prior to the task beginning. The
         /// contents should be a repeated set of FileMetadata messages though other
@@ -628,7 +638,7 @@ pub mod command_task {
         /// metadata, in which case it may be useful to break up portions of the
         /// filesystem that change frequently (eg, specific input files) from those
         /// that don't (eg, standard header files).
-        #[prost(message, repeated, tag="2")]
+        #[prost(message, repeated, tag = "2")]
         pub files: ::prost::alloc::vec::Vec<super::Digest>,
         /// Inline contents for blobs expected to be needed by the bot to execute the
         /// task. For example, contents of entries in `files` or blobs that are
@@ -637,15 +647,15 @@ pub mod command_task {
         /// The bot should check against this list before downloading required task
         /// inputs to reduce the number of communications between itself and the
         /// remote CAS server.
-        #[prost(message, repeated, tag="4")]
+        #[prost(message, repeated, tag = "4")]
         pub inline_blobs: ::prost::alloc::vec::Vec<super::Blob>,
         /// All environment variables required by the task.
-        #[prost(message, repeated, tag="3")]
+        #[prost(message, repeated, tag = "3")]
         pub environment_variables: ::prost::alloc::vec::Vec<inputs::EnvironmentVariable>,
         /// Directory from which a command is executed. It is a relative directory
         /// with respect to the bot's working directory (i.e., "./"). If it is
         /// non-empty, then it must exist under "./". Otherwise, "./" will be used.
-        #[prost(string, tag="5")]
+        #[prost(string, tag = "5")]
         pub working_directory: ::prost::alloc::string::String,
     }
     /// Nested message and enum types in `Inputs`.
@@ -654,10 +664,10 @@ pub mod command_task {
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct EnvironmentVariable {
             /// The envvar name.
-            #[prost(string, tag="1")]
+            #[prost(string, tag = "1")]
             pub name: ::prost::alloc::string::String,
             /// The envvar value.
-            #[prost(string, tag="2")]
+            #[prost(string, tag = "2")]
             pub value: ::prost::alloc::string::String,
         }
     }
@@ -666,25 +676,25 @@ pub mod command_task {
     pub struct Outputs {
         /// A list of expected files, relative to the execution root. All paths
         /// MUST be delimited by forward slashes.
-        #[prost(string, repeated, tag="1")]
+        #[prost(string, repeated, tag = "1")]
         pub files: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         /// A list of expected directories, relative to the execution root. All paths
         /// MUST be delimited by forward slashes.
-        #[prost(string, repeated, tag="2")]
+        #[prost(string, repeated, tag = "2")]
         pub directories: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         /// The destination to which any stdout should be sent. The method by which
         /// the bot should send the stream contents to that destination is not
         /// defined in this API. As examples, the destination could be a file
         /// referenced in the `files` field in this message, or it could be a URI
         /// that must be written via the ByteStream API.
-        #[prost(string, tag="3")]
+        #[prost(string, tag = "3")]
         pub stdout_destination: ::prost::alloc::string::String,
         /// The destination to which any stderr should be sent. The method by which
         /// the bot should send the stream contents to that destination is not
         /// defined in this API. As examples, the destination could be a file
         /// referenced in the `files` field in this message, or it could be a URI
         /// that must be written via the ByteStream API.
-        #[prost(string, tag="4")]
+        #[prost(string, tag = "4")]
         pub stderr_destination: ::prost::alloc::string::String,
     }
     /// Describes the timeouts associated with this task.
@@ -693,13 +703,13 @@ pub mod command_task {
         /// This specifies the maximum time that the task can run, excluding the
         /// time required to download inputs or upload outputs. That is, the worker
         /// will terminate the task if it runs longer than this.
-        #[prost(message, optional, tag="1")]
+        #[prost(message, optional, tag = "1")]
         pub execution: ::core::option::Option<::prost_types::Duration>,
         /// This specifies the maximum amount of time the task can be idle - that is,
         /// go without generating some output in either stdout or stderr. If the
         /// process is silent for more than the specified time, the worker will
         /// terminate the task.
-        #[prost(message, optional, tag="2")]
+        #[prost(message, optional, tag = "2")]
         pub idle: ::core::option::Option<::prost_types::Duration>,
         /// If the execution or IO timeouts are exceeded, the worker will try to
         /// gracefully terminate the task and return any existing logs. However,
@@ -707,7 +717,7 @@ pub mod command_task {
         /// timeout specifies how long to wait for a terminated task to shut down
         /// gracefully (e.g. via SIGTERM) before we bring down the hammer (e.g.
         /// SIGKILL on *nix, CTRL_BREAK_EVENT on Windows).
-        #[prost(message, optional, tag="3")]
+        #[prost(message, optional, tag = "3")]
         pub shutdown: ::core::option::Option<::prost_types::Duration>,
     }
 }
@@ -719,13 +729,13 @@ pub struct CommandOutputs {
     /// exceeded its deadline or was cancelled, the process may still produce an
     /// exit code as it is cancelled, and this will be populated, but a successful
     /// (zero) is unlikely to be correct unless the status code is OK.
-    #[prost(int32, tag="1")]
+    #[prost(int32, tag = "1")]
     pub exit_code: i32,
     /// The output files. The blob referenced by the digest should contain
     /// one of the following (implementation-dependent):
     ///     * A marshalled DirectoryMetadata of the returned filesystem
     ///     * A LUCI-style .isolated file
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub outputs: ::core::option::Option<Digest>,
 }
 /// DEPRECATED - use CommandResult instead.
@@ -736,11 +746,11 @@ pub struct CommandOverhead {
     /// The elapsed time between calling Accept and Complete. The server will also
     /// have its own idea of what this should be, but this excludes the overhead of
     /// the RPCs and the bot response time.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub duration: ::core::option::Option<::prost_types::Duration>,
     /// The amount of time *not* spent executing the command (ie
     /// uploading/downloading files).
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub overhead: ::core::option::Option<::prost_types::Duration>,
 }
 /// All information about the execution of a command, suitable for providing as
@@ -750,28 +760,28 @@ pub struct CommandResult {
     /// An overall status for the command. For example, if the command timed out,
     /// this might have a code of DEADLINE_EXCEEDED; if it was killed by the OS for
     /// memory exhaustion, it might have a code of RESOURCE_EXHAUSTED.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub status: ::core::option::Option<super::super::super::rpc::Status>,
     /// The exit code of the process. An exit code of "0" should only be trusted if
     /// `status` has a code of OK (otherwise it may simply be unset).
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub exit_code: i32,
     /// The output files. The blob referenced by the digest should contain
     /// one of the following (implementation-dependent):
     ///     * A marshalled DirectoryMetadata of the returned filesystem
     ///     * A LUCI-style .isolated file
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub outputs: ::core::option::Option<Digest>,
     /// The elapsed time between calling Accept and Complete. The server will also
     /// have its own idea of what this should be, but this excludes the overhead of
     /// the RPCs and the bot response time.
     #[deprecated]
-    #[prost(message, optional, tag="4")]
+    #[prost(message, optional, tag = "4")]
     pub duration: ::core::option::Option<::prost_types::Duration>,
     /// The amount of time *not* spent executing the command (ie
     /// uploading/downloading files).
     #[deprecated]
-    #[prost(message, optional, tag="5")]
+    #[prost(message, optional, tag = "5")]
     pub overhead: ::core::option::Option<::prost_types::Duration>,
     /// Implementation-dependent metadata about the task. Both servers and bots
     /// may define messages which can be encoded here; bots are free to provide
@@ -779,7 +789,7 @@ pub struct CommandResult {
     /// of the values to process and ignore others. In particular, it is *not*
     /// considered an error for the bot to provide the server with a field that it
     /// doesn't know about.
-    #[prost(message, repeated, tag="6")]
+    #[prost(message, repeated, tag = "6")]
     pub metadata: ::prost::alloc::vec::Vec<::prost_types::Any>,
 }
 /// The metadata for a file. Similar to the equivalent message in the Remote
@@ -791,18 +801,18 @@ pub struct FileMetadata {
     /// and must correspond to an entry in CommandTask.outputs.files. If this
     /// message is part of a Directory message, then the path is relative to the
     /// root of that directory. All paths MUST be delimited by forward slashes.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub path: ::prost::alloc::string::String,
     /// A pointer to the contents of the file. The method by which a client
     /// retrieves the contents from a CAS system is not defined here.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub digest: ::core::option::Option<Digest>,
     /// If the file is small enough, its contents may also or alternatively be
     /// listed here.
-    #[prost(bytes="vec", tag="3")]
+    #[prost(bytes = "vec", tag = "3")]
     pub contents: ::prost::alloc::vec::Vec<u8>,
     /// Properties of the file
-    #[prost(bool, tag="4")]
+    #[prost(bool, tag = "4")]
     pub is_executable: bool,
 }
 /// The metadata for a directory. Similar to the equivalent message in the Remote
@@ -811,11 +821,11 @@ pub struct FileMetadata {
 pub struct DirectoryMetadata {
     /// The path of the directory, as in
     /// \[FileMetadata.path][google.devtools.remoteworkers.v1test2.FileMetadata.path\].
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub path: ::prost::alloc::string::String,
     /// A pointer to the contents of the directory, in the form of a marshalled
     /// Directory message.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub digest: ::core::option::Option<Digest>,
 }
 /// The CommandTask and CommandResult messages assume the existence of a service
@@ -831,23 +841,23 @@ pub struct DirectoryMetadata {
 pub struct Digest {
     /// A string-encoded hash (eg "1a2b3c", not the byte array [0x1a, 0x2b, 0x3c])
     /// using an implementation-defined hash algorithm (eg SHA-256).
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub hash: ::prost::alloc::string::String,
     /// The size of the contents. While this is not strictly required as part of an
     /// identifier (after all, any given hash will have exactly one canonical
     /// size), it's useful in almost all cases when one might want to send or
     /// retrieve blobs of content and is included here for this reason.
-    #[prost(int64, tag="2")]
+    #[prost(int64, tag = "2")]
     pub size_bytes: i64,
 }
 /// Describes a blob of binary content with its digest.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Blob {
     /// The digest of the blob. This should be verified by the receiver.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub digest: ::core::option::Option<Digest>,
     /// The contents of the blob.
-    #[prost(bytes="vec", tag="2")]
+    #[prost(bytes = "vec", tag = "2")]
     pub contents: ::prost::alloc::vec::Vec<u8>,
 }
 /// The contents of a directory. Similar to the equivalent message in the Remote
@@ -855,9 +865,9 @@ pub struct Blob {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Directory {
     /// The files in this directory
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub files: ::prost::alloc::vec::Vec<FileMetadata>,
     /// Any subdirectories
-    #[prost(message, repeated, tag="2")]
+    #[prost(message, repeated, tag = "2")]
     pub directories: ::prost::alloc::vec::Vec<DirectoryMetadata>,
 }

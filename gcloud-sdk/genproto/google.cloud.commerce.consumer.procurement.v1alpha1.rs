@@ -13,47 +13,47 @@ pub struct Order {
     /// Output only. The resource name of the order.
     /// Has the form
     /// `billingAccounts/{billing_account}/orders/{order}`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The user-specified name of the order.
     /// Must be unique within a billing account.
-    #[prost(string, tag="10")]
+    #[prost(string, tag = "10")]
     pub display_name: ::prost::alloc::string::String,
     /// Output only. The items being purchased.
-    #[prost(message, repeated, tag="6")]
+    #[prost(message, repeated, tag = "6")]
     pub line_items: ::prost::alloc::vec::Vec<LineItem>,
     /// Output only. Line items that were cancelled.
-    #[prost(message, repeated, tag="7")]
+    #[prost(message, repeated, tag = "7")]
     pub cancelled_line_items: ::prost::alloc::vec::Vec<LineItem>,
     /// Output only. The creation timestamp.
-    #[prost(message, optional, tag="8")]
+    #[prost(message, optional, tag = "8")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The last update timestamp.
-    #[prost(message, optional, tag="9")]
+    #[prost(message, optional, tag = "9")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The weak etag of the order.
-    #[prost(string, tag="11")]
+    #[prost(string, tag = "11")]
     pub etag: ::prost::alloc::string::String,
 }
 /// A single item within an order.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LineItem {
     /// Output only. Line item ID.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub line_item_id: ::prost::alloc::string::String,
     /// Output only. Current state and information of this item. It tells what,
     /// e.g. which offer, is currently effective.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub line_item_info: ::core::option::Option<LineItemInfo>,
     /// Output only. A change made on the item which is pending and not yet
     /// effective. Absence of this field indicates the line item is not undergoing
     /// a change.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub pending_change: ::core::option::Option<LineItemChange>,
     /// Output only. Changes made on the item that are not pending anymore which might be
     /// because they already took effect, were reverted by the customer, or were
     /// rejected by the partner. No more operations are allowed on these changes.
-    #[prost(message, repeated, tag="4")]
+    #[prost(message, repeated, tag = "4")]
     pub change_history: ::prost::alloc::vec::Vec<LineItemChange>,
 }
 /// A change made on a line item.
@@ -61,43 +61,43 @@ pub struct LineItem {
 pub struct LineItemChange {
     /// Output only. Change ID.
     /// All changes made within one order update operation have the same change_id.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub change_id: ::prost::alloc::string::String,
     /// Required. Type of the change to make.
-    #[prost(enumeration="LineItemChangeType", tag="2")]
+    #[prost(enumeration = "LineItemChangeType", tag = "2")]
     pub change_type: i32,
     /// Output only. Line item info before the change.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub old_line_item_info: ::core::option::Option<LineItemInfo>,
     /// Line item info after the change.
-    #[prost(message, optional, tag="4")]
+    #[prost(message, optional, tag = "4")]
     pub new_line_item_info: ::core::option::Option<LineItemInfo>,
     /// Output only. State of the change.
-    #[prost(enumeration="LineItemChangeState", tag="5")]
+    #[prost(enumeration = "LineItemChangeState", tag = "5")]
     pub change_state: i32,
     /// Output only. Provider-supplied message explaining the LineItemChange's
     /// state. Mainly used to communicate progress and ETA for provisioning in the
     /// case of `PENDING_APPROVAL`, and to explain why the change request was
     /// denied or canceled in the case of `REJECTED` and `CANCELED` states.
-    #[prost(string, tag="6")]
+    #[prost(string, tag = "6")]
     pub state_reason: ::prost::alloc::string::String,
     /// Output only. Predefined enum types for why this line item change is in current state.
     /// For example, a line item change's state could be
     /// `LINE_ITEM_CHANGE_STATE_COMPLETED` because of end-of-term expiration,
     /// immediate cancellation initiated by the user, or system-initiated
     /// cancellation.
-    #[prost(enumeration="LineItemChangeStateReasonType", tag="10")]
+    #[prost(enumeration = "LineItemChangeStateReasonType", tag = "10")]
     pub change_state_reason_type: i32,
     /// Output only. A time at which the change became or will become (in case of
     /// pending change) effective.
-    #[prost(message, optional, tag="7")]
+    #[prost(message, optional, tag = "7")]
     pub change_effective_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The time when change was initiated.
-    #[prost(message, optional, tag="8")]
+    #[prost(message, optional, tag = "8")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The time when change was updated, e.g. approved/rejected by
     /// partners or cancelled by the user.
-    #[prost(message, optional, tag="9")]
+    #[prost(message, optional, tag = "9")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Line item information.
@@ -106,23 +106,23 @@ pub struct LineItemInfo {
     /// Optional. The name of the offer can have either of these formats:
     /// 'billingAccounts/{billing_account}/offers/{offer}',
     /// or 'services/{service}/standardOffers/{offer}'.
-    #[prost(string, tag="13")]
+    #[prost(string, tag = "13")]
     pub offer: ::prost::alloc::string::String,
     /// Optional. User-provided parameters.
-    #[prost(message, repeated, tag="9")]
+    #[prost(message, repeated, tag = "9")]
     pub parameters: ::prost::alloc::vec::Vec<Parameter>,
     /// Output only. Information about the subscription created, if applicable.
-    #[prost(message, optional, tag="10")]
+    #[prost(message, optional, tag = "10")]
     pub subscription: ::core::option::Option<Subscription>,
 }
 /// User-provided Parameters.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Parameter {
     /// Name of the parameter.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Value of parameter.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub value: ::core::option::Option<parameter::Value>,
 }
 /// Nested message and enum types in `Parameter`.
@@ -130,7 +130,7 @@ pub mod parameter {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Value {
         /// The kind of value.
-        #[prost(oneof="value::Kind", tags="3, 4, 5")]
+        #[prost(oneof = "value::Kind", tags = "3, 4, 5")]
         pub kind: ::core::option::Option<value::Kind>,
     }
     /// Nested message and enum types in `Value`.
@@ -139,13 +139,13 @@ pub mod parameter {
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Kind {
             /// Represents an int64 value.
-            #[prost(int64, tag="3")]
+            #[prost(int64, tag = "3")]
             Int64Value(i64),
             /// Represents a string value.
-            #[prost(string, tag="4")]
+            #[prost(string, tag = "4")]
             StringValue(::prost::alloc::string::String),
             /// Represents a double value.
-            #[prost(double, tag="5")]
+            #[prost(double, tag = "5")]
             DoubleValue(f64),
         }
     }
@@ -154,15 +154,15 @@ pub mod parameter {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Subscription {
     /// The timestamp when the subscription begins, if applicable.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The timestamp when the subscription ends, if applicable.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Whether auto renewal is enabled by user choice on current subscription.
     /// This field indicates order/subscription status after pending plan change is
     /// cancelled or rejected.
-    #[prost(bool, tag="2")]
+    #[prost(bool, tag = "2")]
     pub auto_renewal_enabled: bool,
 }
 /// Type of a line item change.
@@ -191,7 +191,9 @@ impl LineItemChangeType {
             LineItemChangeType::Create => "LINE_ITEM_CHANGE_TYPE_CREATE",
             LineItemChangeType::Update => "LINE_ITEM_CHANGE_TYPE_UPDATE",
             LineItemChangeType::Cancel => "LINE_ITEM_CHANGE_TYPE_CANCEL",
-            LineItemChangeType::RevertCancellation => "LINE_ITEM_CHANGE_TYPE_REVERT_CANCELLATION",
+            LineItemChangeType::RevertCancellation => {
+                "LINE_ITEM_CHANGE_TYPE_REVERT_CANCELLATION"
+            }
         }
     }
 }
@@ -228,7 +230,9 @@ impl LineItemChangeState {
     pub fn as_str_name(&self) -> &'static str {
         match self {
             LineItemChangeState::Unspecified => "LINE_ITEM_CHANGE_STATE_UNSPECIFIED",
-            LineItemChangeState::PendingApproval => "LINE_ITEM_CHANGE_STATE_PENDING_APPROVAL",
+            LineItemChangeState::PendingApproval => {
+                "LINE_ITEM_CHANGE_STATE_PENDING_APPROVAL"
+            }
             LineItemChangeState::Approved => "LINE_ITEM_CHANGE_STATE_APPROVED",
             LineItemChangeState::Completed => "LINE_ITEM_CHANGE_STATE_COMPLETED",
             LineItemChangeState::Rejected => "LINE_ITEM_CHANGE_STATE_REJECTED",
@@ -258,10 +262,18 @@ impl LineItemChangeStateReasonType {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            LineItemChangeStateReasonType::Unspecified => "LINE_ITEM_CHANGE_STATE_REASON_TYPE_UNSPECIFIED",
-            LineItemChangeStateReasonType::Expired => "LINE_ITEM_CHANGE_STATE_REASON_TYPE_EXPIRED",
-            LineItemChangeStateReasonType::UserCancelled => "LINE_ITEM_CHANGE_STATE_REASON_TYPE_USER_CANCELLED",
-            LineItemChangeStateReasonType::SystemCancelled => "LINE_ITEM_CHANGE_STATE_REASON_TYPE_SYSTEM_CANCELLED",
+            LineItemChangeStateReasonType::Unspecified => {
+                "LINE_ITEM_CHANGE_STATE_REASON_TYPE_UNSPECIFIED"
+            }
+            LineItemChangeStateReasonType::Expired => {
+                "LINE_ITEM_CHANGE_STATE_REASON_TYPE_EXPIRED"
+            }
+            LineItemChangeStateReasonType::UserCancelled => {
+                "LINE_ITEM_CHANGE_STATE_REASON_TYPE_USER_CANCELLED"
+            }
+            LineItemChangeStateReasonType::SystemCancelled => {
+                "LINE_ITEM_CHANGE_STATE_REASON_TYPE_SYSTEM_CANCELLED"
+            }
         }
     }
 }
@@ -270,14 +282,14 @@ impl LineItemChangeStateReasonType {
 pub struct PlaceOrderRequest {
     /// Required. The resource name of the parent resource.
     /// This field has the form  `billingAccounts/{billing-account-id}`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The user-specified name of the order being placed.
     /// Must be unique within a billing account.
-    #[prost(string, tag="6")]
+    #[prost(string, tag = "6")]
     pub display_name: ::prost::alloc::string::String,
     /// Optional. Places order for offer. Required when an offer-based order is being placed.
-    #[prost(message, repeated, tag="10")]
+    #[prost(message, repeated, tag = "10")]
     pub line_item_info: ::prost::alloc::vec::Vec<LineItemInfo>,
     /// Optional. A unique identifier for this request.
     /// The server will ignore subsequent requests that provide a duplicate request
@@ -285,19 +297,18 @@ pub struct PlaceOrderRequest {
     ///
     /// The request ID must be a valid
     /// \[UUID\](<https://en.wikipedia.org/wiki/Universally_unique_identifier#Format>).
-    #[prost(string, tag="7")]
+    #[prost(string, tag = "7")]
     pub request_id: ::prost::alloc::string::String,
 }
 /// Message stored in the metadata field of the Operation returned by
 /// \[ConsumerProcurementService.PlaceOrder][google.cloud.commerce.consumer.procurement.v1alpha1.ConsumerProcurementService.PlaceOrder\].
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PlaceOrderMetadata {
-}
+pub struct PlaceOrderMetadata {}
 /// Request message for \[ConsumerProcurementService.GetOrder][google.cloud.commerce.consumer.procurement.v1alpha1.ConsumerProcurementService.GetOrder\]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetOrderRequest {
     /// Required. The name of the order to retrieve.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for \[ConsumerProcurementService.ListOrders][google.cloud.commerce.consumer.procurement.v1alpha1.ConsumerProcurementService.ListOrders\].
@@ -305,14 +316,14 @@ pub struct GetOrderRequest {
 pub struct ListOrdersRequest {
     /// Required. The parent resource to query for orders.
     /// This field has the form `billingAccounts/{billing-account-id}`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of entries requested.
     /// The default page size is 25 and the maximum page size is 200.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// The token for fetching the next page.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
     /// Filter that you can use to limit the list request.
     ///
@@ -330,17 +341,17 @@ pub struct ListOrdersRequest {
     /// Queries can be combined with `OR`, and `NOT` to form more complex queries.
     /// You can also group them to force a desired evaluation order.
     /// For example, `display_name=abc OR display_name=def`.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
 }
 /// Response message for \[ConsumerProcurementService.ListOrders][google.cloud.commerce.consumer.procurement.v1alpha1.ConsumerProcurementService.ListOrders\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListOrdersResponse {
     /// The list of orders in this response.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub orders: ::prost::alloc::vec::Vec<Order>,
     /// The token for fetching the next page.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Generated client implementations.

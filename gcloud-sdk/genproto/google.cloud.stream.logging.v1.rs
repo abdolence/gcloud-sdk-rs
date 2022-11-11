@@ -5,16 +5,16 @@
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationEventLog {
     /// Enum for type of event being logged.
-    #[prost(enumeration="OperationEventType", tag="1")]
+    #[prost(enumeration = "OperationEventType", tag = "1")]
     pub event_type: i32,
     /// Timestamp when the event occurred.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub event_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Operation resource identifier.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub operation: ::prost::alloc::string::String,
     /// Artifact created as a result of the operation.
-    #[prost(message, repeated, tag="4")]
+    #[prost(message, repeated, tag = "4")]
     pub operation_artifacts: ::prost::alloc::vec::Vec<OperationArtifact>,
 }
 /// OperationArtifact contains the information about the artifact created as
@@ -22,10 +22,10 @@ pub struct OperationEventLog {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationArtifact {
     /// Type of the artifact.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub artifact_type: ::prost::alloc::string::String,
     /// Location of the artifact.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub artifact_uri: ::prost::alloc::string::String,
 }
 /// SessionEventLog contains the time series data regarding the streaming session
@@ -35,13 +35,13 @@ pub struct OperationArtifact {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SessionEventLog {
     /// Enum for type of event being logged.
-    #[prost(enumeration="SessionEventType", tag="1")]
+    #[prost(enumeration = "SessionEventType", tag = "1")]
     pub event_type: i32,
     /// Timestamp when the event occurred.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub event_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Session identifier generated from the server.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub session_id: ::prost::alloc::string::String,
 }
 /// OperationEventType is the enum value for the state of operation.
@@ -87,20 +87,48 @@ impl OperationEventType {
     pub fn as_str_name(&self) -> &'static str {
         match self {
             OperationEventType::Unspecified => "OPERATION_EVENT_TYPE_UNSPECIFIED",
-            OperationEventType::OperationEventCreateContentStarted => "OPERATION_EVENT_CREATE_CONTENT_STARTED",
-            OperationEventType::OperationEventCreateContentEnded => "OPERATION_EVENT_CREATE_CONTENT_ENDED",
-            OperationEventType::OperationEventBuildContentStarted => "OPERATION_EVENT_BUILD_CONTENT_STARTED",
-            OperationEventType::OperationEventBuildContentEnded => "OPERATION_EVENT_BUILD_CONTENT_ENDED",
-            OperationEventType::OperationEventUpdateContentStarted => "OPERATION_EVENT_UPDATE_CONTENT_STARTED",
-            OperationEventType::OperationEventUpdateContentEnded => "OPERATION_EVENT_UPDATE_CONTENT_ENDED",
-            OperationEventType::OperationEventDeleteContentStarted => "OPERATION_EVENT_DELETE_CONTENT_STARTED",
-            OperationEventType::OperationEventDeleteContentEnded => "OPERATION_EVENT_DELETE_CONTENT_ENDED",
-            OperationEventType::OperationEventCreateInstanceStarted => "OPERATION_EVENT_CREATE_INSTANCE_STARTED",
-            OperationEventType::OperationEventCreateInstanceEnded => "OPERATION_EVENT_CREATE_INSTANCE_ENDED",
-            OperationEventType::OperationEventUpdateInstanceStarted => "OPERATION_EVENT_UPDATE_INSTANCE_STARTED",
-            OperationEventType::OperationEventUpdateInstanceEnded => "OPERATION_EVENT_UPDATE_INSTANCE_ENDED",
-            OperationEventType::OperationEventDeleteInstanceStarted => "OPERATION_EVENT_DELETE_INSTANCE_STARTED",
-            OperationEventType::OperationEventDeleteInstanceEnded => "OPERATION_EVENT_DELETE_INSTANCE_ENDED",
+            OperationEventType::OperationEventCreateContentStarted => {
+                "OPERATION_EVENT_CREATE_CONTENT_STARTED"
+            }
+            OperationEventType::OperationEventCreateContentEnded => {
+                "OPERATION_EVENT_CREATE_CONTENT_ENDED"
+            }
+            OperationEventType::OperationEventBuildContentStarted => {
+                "OPERATION_EVENT_BUILD_CONTENT_STARTED"
+            }
+            OperationEventType::OperationEventBuildContentEnded => {
+                "OPERATION_EVENT_BUILD_CONTENT_ENDED"
+            }
+            OperationEventType::OperationEventUpdateContentStarted => {
+                "OPERATION_EVENT_UPDATE_CONTENT_STARTED"
+            }
+            OperationEventType::OperationEventUpdateContentEnded => {
+                "OPERATION_EVENT_UPDATE_CONTENT_ENDED"
+            }
+            OperationEventType::OperationEventDeleteContentStarted => {
+                "OPERATION_EVENT_DELETE_CONTENT_STARTED"
+            }
+            OperationEventType::OperationEventDeleteContentEnded => {
+                "OPERATION_EVENT_DELETE_CONTENT_ENDED"
+            }
+            OperationEventType::OperationEventCreateInstanceStarted => {
+                "OPERATION_EVENT_CREATE_INSTANCE_STARTED"
+            }
+            OperationEventType::OperationEventCreateInstanceEnded => {
+                "OPERATION_EVENT_CREATE_INSTANCE_ENDED"
+            }
+            OperationEventType::OperationEventUpdateInstanceStarted => {
+                "OPERATION_EVENT_UPDATE_INSTANCE_STARTED"
+            }
+            OperationEventType::OperationEventUpdateInstanceEnded => {
+                "OPERATION_EVENT_UPDATE_INSTANCE_ENDED"
+            }
+            OperationEventType::OperationEventDeleteInstanceStarted => {
+                "OPERATION_EVENT_DELETE_INSTANCE_STARTED"
+            }
+            OperationEventType::OperationEventDeleteInstanceEnded => {
+                "OPERATION_EVENT_DELETE_INSTANCE_ENDED"
+            }
         }
     }
 }
@@ -161,26 +189,66 @@ impl SessionEventType {
     pub fn as_str_name(&self) -> &'static str {
         match self {
             SessionEventType::Unspecified => "SESSION_EVENT_TYPE_UNSPECIFIED",
-            SessionEventType::SessionEventServerStreamerShuttingDown => "SESSION_EVENT_SERVER_STREAMER_SHUTTING_DOWN",
-            SessionEventType::SessionEventServerStreamerReady => "SESSION_EVENT_SERVER_STREAMER_READY",
-            SessionEventType::SessionEventServerStreamerBinaryStarted => "SESSION_EVENT_SERVER_STREAMER_BINARY_STARTED",
-            SessionEventType::SessionEventServerStreamerReadPodImageNames => "SESSION_EVENT_SERVER_STREAMER_READ_POD_IMAGE_NAMES",
-            SessionEventType::SessionEventServerStreamerConnectedToGame => "SESSION_EVENT_SERVER_STREAMER_CONNECTED_TO_GAME",
-            SessionEventType::SessionEventServerStreamerConnectedToClient => "SESSION_EVENT_SERVER_STREAMER_CONNECTED_TO_CLIENT",
-            SessionEventType::SessionEventServerStreamerDisconnectedFromClient => "SESSION_EVENT_SERVER_STREAMER_DISCONNECTED_FROM_CLIENT",
-            SessionEventType::SessionEventServerStreamerReceivedCreateSessionRequest => "SESSION_EVENT_SERVER_STREAMER_RECEIVED_CREATE_SESSION_REQUEST",
-            SessionEventType::SessionEventServerStreamerGameMessageStreamClosed => "SESSION_EVENT_SERVER_STREAMER_GAME_MESSAGE_STREAM_CLOSED",
-            SessionEventType::SessionEventServerStreamerGameFrameStreamClosed => "SESSION_EVENT_SERVER_STREAMER_GAME_FRAME_STREAM_CLOSED",
-            SessionEventType::SessionEventServerStreamerGameMessageStreamError => "SESSION_EVENT_SERVER_STREAMER_GAME_MESSAGE_STREAM_ERROR",
-            SessionEventType::SessionEventServerStreamerGameAudioStreamError => "SESSION_EVENT_SERVER_STREAMER_GAME_AUDIO_STREAM_ERROR",
-            SessionEventType::SessionEventServerStreamerGameAudioStreamClosed => "SESSION_EVENT_SERVER_STREAMER_GAME_AUDIO_STREAM_CLOSED",
-            SessionEventType::SessionEventServerStreamerGameFrameStreamError => "SESSION_EVENT_SERVER_STREAMER_GAME_FRAME_STREAM_ERROR",
-            SessionEventType::SessionEventServerGameDisconnectingAfterPausedTooLong => "SESSION_EVENT_SERVER_GAME_DISCONNECTING_AFTER_PAUSED_TOO_LONG",
-            SessionEventType::SessionEventServerStreamerReceivedExperimentConfiguration => "SESSION_EVENT_SERVER_STREAMER_RECEIVED_EXPERIMENT_CONFIGURATION",
-            SessionEventType::SessionEventServerGameConnectedToLoggingService => "SESSION_EVENT_SERVER_GAME_CONNECTED_TO_LOGGING_SERVICE",
-            SessionEventType::SessionEventServerStreamerDeterminedSessionOptions => "SESSION_EVENT_SERVER_STREAMER_DETERMINED_SESSION_OPTIONS",
-            SessionEventType::SessionEventServerStreamerKilledInMiddleOfSession => "SESSION_EVENT_SERVER_STREAMER_KILLED_IN_MIDDLE_OF_SESSION",
-            SessionEventType::SessionEventServerGameUpdatedFramePipeline => "SESSION_EVENT_SERVER_GAME_UPDATED_FRAME_PIPELINE",
+            SessionEventType::SessionEventServerStreamerShuttingDown => {
+                "SESSION_EVENT_SERVER_STREAMER_SHUTTING_DOWN"
+            }
+            SessionEventType::SessionEventServerStreamerReady => {
+                "SESSION_EVENT_SERVER_STREAMER_READY"
+            }
+            SessionEventType::SessionEventServerStreamerBinaryStarted => {
+                "SESSION_EVENT_SERVER_STREAMER_BINARY_STARTED"
+            }
+            SessionEventType::SessionEventServerStreamerReadPodImageNames => {
+                "SESSION_EVENT_SERVER_STREAMER_READ_POD_IMAGE_NAMES"
+            }
+            SessionEventType::SessionEventServerStreamerConnectedToGame => {
+                "SESSION_EVENT_SERVER_STREAMER_CONNECTED_TO_GAME"
+            }
+            SessionEventType::SessionEventServerStreamerConnectedToClient => {
+                "SESSION_EVENT_SERVER_STREAMER_CONNECTED_TO_CLIENT"
+            }
+            SessionEventType::SessionEventServerStreamerDisconnectedFromClient => {
+                "SESSION_EVENT_SERVER_STREAMER_DISCONNECTED_FROM_CLIENT"
+            }
+            SessionEventType::SessionEventServerStreamerReceivedCreateSessionRequest => {
+                "SESSION_EVENT_SERVER_STREAMER_RECEIVED_CREATE_SESSION_REQUEST"
+            }
+            SessionEventType::SessionEventServerStreamerGameMessageStreamClosed => {
+                "SESSION_EVENT_SERVER_STREAMER_GAME_MESSAGE_STREAM_CLOSED"
+            }
+            SessionEventType::SessionEventServerStreamerGameFrameStreamClosed => {
+                "SESSION_EVENT_SERVER_STREAMER_GAME_FRAME_STREAM_CLOSED"
+            }
+            SessionEventType::SessionEventServerStreamerGameMessageStreamError => {
+                "SESSION_EVENT_SERVER_STREAMER_GAME_MESSAGE_STREAM_ERROR"
+            }
+            SessionEventType::SessionEventServerStreamerGameAudioStreamError => {
+                "SESSION_EVENT_SERVER_STREAMER_GAME_AUDIO_STREAM_ERROR"
+            }
+            SessionEventType::SessionEventServerStreamerGameAudioStreamClosed => {
+                "SESSION_EVENT_SERVER_STREAMER_GAME_AUDIO_STREAM_CLOSED"
+            }
+            SessionEventType::SessionEventServerStreamerGameFrameStreamError => {
+                "SESSION_EVENT_SERVER_STREAMER_GAME_FRAME_STREAM_ERROR"
+            }
+            SessionEventType::SessionEventServerGameDisconnectingAfterPausedTooLong => {
+                "SESSION_EVENT_SERVER_GAME_DISCONNECTING_AFTER_PAUSED_TOO_LONG"
+            }
+            SessionEventType::SessionEventServerStreamerReceivedExperimentConfiguration => {
+                "SESSION_EVENT_SERVER_STREAMER_RECEIVED_EXPERIMENT_CONFIGURATION"
+            }
+            SessionEventType::SessionEventServerGameConnectedToLoggingService => {
+                "SESSION_EVENT_SERVER_GAME_CONNECTED_TO_LOGGING_SERVICE"
+            }
+            SessionEventType::SessionEventServerStreamerDeterminedSessionOptions => {
+                "SESSION_EVENT_SERVER_STREAMER_DETERMINED_SESSION_OPTIONS"
+            }
+            SessionEventType::SessionEventServerStreamerKilledInMiddleOfSession => {
+                "SESSION_EVENT_SERVER_STREAMER_KILLED_IN_MIDDLE_OF_SESSION"
+            }
+            SessionEventType::SessionEventServerGameUpdatedFramePipeline => {
+                "SESSION_EVENT_SERVER_GAME_UPDATED_FRAME_PIPELINE"
+            }
             SessionEventType::SessionEventServerError => "SESSION_EVENT_SERVER_ERROR",
         }
     }

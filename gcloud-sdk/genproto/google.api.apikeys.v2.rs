@@ -9,44 +9,47 @@ pub struct Key {
     ///
     /// NOTE: Key is a global resource; hence the only supported value for
     /// location is `global`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. Unique id in UUID4 format.
-    #[prost(string, tag="5")]
+    #[prost(string, tag = "5")]
     pub uid: ::prost::alloc::string::String,
     /// Human-readable display name of this key that you can modify.
     /// The maximum length is 63 characters.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub display_name: ::prost::alloc::string::String,
     /// Output only. An encrypted and signed value held by this key.
     /// This field can be accessed only through the `GetKeyString` method.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub key_string: ::prost::alloc::string::String,
     /// Output only. A timestamp identifying the time this key was originally
     /// created.
-    #[prost(message, optional, tag="4")]
+    #[prost(message, optional, tag = "4")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. A timestamp identifying the time this key was last
     /// updated.
-    #[prost(message, optional, tag="6")]
+    #[prost(message, optional, tag = "6")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. A timestamp when this key was deleted. If the resource is not deleted,
     /// this must be empty.
-    #[prost(message, optional, tag="7")]
+    #[prost(message, optional, tag = "7")]
     pub delete_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Annotations is an unstructured key-value map stored with a policy that
     /// may be set by external tools to store and retrieve arbitrary metadata.
     /// They are not queryable and should be preserved when modifying objects.
-    #[prost(map="string, string", tag="8")]
-    pub annotations: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map = "string, string", tag = "8")]
+    pub annotations: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
     /// Key restrictions.
-    #[prost(message, optional, tag="9")]
+    #[prost(message, optional, tag = "9")]
     pub restrictions: ::core::option::Option<Restrictions>,
     /// Output only. A checksum computed by the server based on the current value of the Key
     /// resource. This may be sent on update and delete requests to ensure the
     /// client has an up-to-date value before proceeding.
     /// See <https://google.aip.dev/154.>
-    #[prost(string, tag="11")]
+    #[prost(string, tag = "11")]
     pub etag: ::prost::alloc::string::String,
 }
 /// Describes the restrictions on the key.
@@ -56,12 +59,12 @@ pub struct Restrictions {
     /// more specific methods. Requests are allowed if they
     /// match any of these restrictions. If no restrictions are
     /// specified, all targets are allowed.
-    #[prost(message, repeated, tag="5")]
+    #[prost(message, repeated, tag = "5")]
     pub api_targets: ::prost::alloc::vec::Vec<ApiTarget>,
     /// The websites, IP addresses, Android apps, or iOS apps (the clients) that
     /// are allowed to use the key. You can specify only one type of client
     /// restrictions per key.
-    #[prost(oneof="restrictions::ClientRestrictions", tags="1, 2, 3, 4")]
+    #[prost(oneof = "restrictions::ClientRestrictions", tags = "1, 2, 3, 4")]
     pub client_restrictions: ::core::option::Option<restrictions::ClientRestrictions>,
 }
 /// Nested message and enum types in `Restrictions`.
@@ -72,16 +75,16 @@ pub mod restrictions {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ClientRestrictions {
         /// The HTTP referrers (websites) that are allowed to use the key.
-        #[prost(message, tag="1")]
+        #[prost(message, tag = "1")]
         BrowserKeyRestrictions(super::BrowserKeyRestrictions),
         /// The IP addresses of callers that are allowed to use the key.
-        #[prost(message, tag="2")]
+        #[prost(message, tag = "2")]
         ServerKeyRestrictions(super::ServerKeyRestrictions),
         /// The Android apps that are allowed to use the key.
-        #[prost(message, tag="3")]
+        #[prost(message, tag = "3")]
         AndroidKeyRestrictions(super::AndroidKeyRestrictions),
         /// The iOS apps that are allowed to use the key.
-        #[prost(message, tag="4")]
+        #[prost(message, tag = "4")]
         IosKeyRestrictions(super::IosKeyRestrictions),
     }
 }
@@ -90,7 +93,7 @@ pub mod restrictions {
 pub struct BrowserKeyRestrictions {
     /// A list of regular expressions for the referrer URLs that are allowed
     /// to make API calls with this key.
-    #[prost(string, repeated, tag="1")]
+    #[prost(string, repeated, tag = "1")]
     pub allowed_referrers: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The IP addresses of callers that are allowed to use the key.
@@ -98,7 +101,7 @@ pub struct BrowserKeyRestrictions {
 pub struct ServerKeyRestrictions {
     /// A list of the caller IP addresses that are allowed to make API calls
     /// with this key.
-    #[prost(string, repeated, tag="1")]
+    #[prost(string, repeated, tag = "1")]
     pub allowed_ips: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The Android apps that are allowed to use the key.
@@ -106,7 +109,7 @@ pub struct ServerKeyRestrictions {
 pub struct AndroidKeyRestrictions {
     /// A list of Android applications that are allowed to make API calls with
     /// this key.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub allowed_applications: ::prost::alloc::vec::Vec<AndroidApplication>,
 }
 /// Identifier of an Android application for key use.
@@ -116,17 +119,17 @@ pub struct AndroidApplication {
     /// acceptable : DA:39:A3:EE:5E:6B:4B:0D:32:55:BF:EF:95:60:18:90:AF:D8:07:09 or
     /// DA39A3EE5E6B4B0D3255BFEF95601890AFD80709.
     /// Output format is the latter.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub sha1_fingerprint: ::prost::alloc::string::String,
     /// The package name of the application.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub package_name: ::prost::alloc::string::String,
 }
 /// The iOS apps that are allowed to use the key.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IosKeyRestrictions {
     /// A list of bundle IDs that are allowed when making API calls with this key.
-    #[prost(string, repeated, tag="1")]
+    #[prost(string, repeated, tag = "1")]
     pub allowed_bundle_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// A restriction for a specific service and optionally one or multiple
@@ -137,7 +140,7 @@ pub struct ApiTarget {
     /// service name, for example: `translate.googleapis.com`.
     /// You can use [`gcloud services list`](/sdk/gcloud/reference/services/list)
     /// to get a list of services that are enabled in the project.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub service: ::prost::alloc::string::String,
     /// Optional. List of one or more methods that can be called.
     /// If empty, all methods for the service are allowed. A wildcard
@@ -147,19 +150,19 @@ pub struct ApiTarget {
     ///    `TranslateText`
     ///    `Get*`
     ///    `translate.googleapis.com.Get*`
-    #[prost(string, repeated, tag="2")]
+    #[prost(string, repeated, tag = "2")]
     pub methods: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for `CreateKey` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateKeyRequest {
     /// Required. The project in which the API key is created.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The API key fields to set at creation time.
     /// You can configure only the `display_name`, `restrictions`, and
     /// `annotations` fields.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub key: ::core::option::Option<Key>,
     /// User specified key id (optional). If specified, it will become the final
     /// component of the key resource name.
@@ -170,55 +173,55 @@ pub struct CreateKeyRequest {
     /// expression: `\[a-z]([a-z0-9-]{0,61}[a-z0-9\])?`.
     ///
     /// The id must NOT be a UUID-like string.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub key_id: ::prost::alloc::string::String,
 }
 /// Request message for `ListKeys` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListKeysRequest {
     /// Required. Lists all API keys associated with this project.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. Specifies the maximum number of results to be returned at a time.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Optional. Requests a specific page of results.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
     /// Optional. Indicate that keys deleted in the past 30 days should also be
     /// returned.
-    #[prost(bool, tag="6")]
+    #[prost(bool, tag = "6")]
     pub show_deleted: bool,
 }
 /// Response message for `ListKeys` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListKeysResponse {
     /// A list of API keys.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub keys: ::prost::alloc::vec::Vec<Key>,
     /// The pagination token for the next page of results.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for `GetKey` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetKeyRequest {
     /// Required. The resource name of the API key to get.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for `GetKeyString` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetKeyStringRequest {
     /// Required. The resource name of the API key to be retrieved.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Response message for `GetKeyString` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetKeyStringResponse {
     /// An encrypted and signed value of the key.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub key_string: ::prost::alloc::string::String,
 }
 /// Request message for `UpdateKey` method.
@@ -227,7 +230,7 @@ pub struct UpdateKeyRequest {
     /// Required. Set the `name` field to the resource name of the API key to be
     /// updated. You can update only the `display_name`, `restrictions`, and
     /// `annotations` fields.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub key: ::core::option::Option<Key>,
     /// The field mask specifies which fields to be updated as part of this
     /// request. All other fields are ignored.
@@ -236,43 +239,43 @@ pub struct UpdateKeyRequest {
     /// equivalent to all allowed fields that are set on the wire. If the field
     /// mask has a special value "*", the service treats it equivalent to replace
     /// all allowed mutable fields.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for `DeleteKey` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteKeyRequest {
     /// Required. The resource name of the API key to be deleted.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. The etag known to the client for the expected state of the key.
     /// This is to be used for optimistic concurrency.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub etag: ::prost::alloc::string::String,
 }
 /// Request message for `UndeleteKey` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UndeleteKeyRequest {
     /// Required. The resource name of the API key to be undeleted.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for `LookupKey` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LookupKeyRequest {
     /// Required. Finds the project that owns the key string value.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub key_string: ::prost::alloc::string::String,
 }
 /// Response message for `LookupKey` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LookupKeyResponse {
     /// The project that owns the key with the value specified in the request.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The resource name of the API key. If the API key has been purged,
     /// resource name is empty.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub name: ::prost::alloc::string::String,
 }
 /// Generated client implementations.

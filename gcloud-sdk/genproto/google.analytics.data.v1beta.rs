@@ -6,19 +6,19 @@ pub struct DateRange {
     /// be after `end_date`. The format `NdaysAgo`, `yesterday`, or `today` is also
     /// accepted, and in that case, the date is inferred based on the property's
     /// reporting time zone.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub start_date: ::prost::alloc::string::String,
     /// The inclusive end date for the query in the format `YYYY-MM-DD`. Cannot
     /// be before `start_date`. The format `NdaysAgo`, `yesterday`, or `today` is
     /// also accepted, and in that case, the date is inferred based on the
     /// property's reporting time zone.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub end_date: ::prost::alloc::string::String,
     /// Assigns a name to this date range. The dimension `dateRange` is valued to
     /// this name in a report response. If set, cannot begin with `date_range_` or
     /// `RESERVED_`. If not set, date ranges are named by their zero based index in
     /// the request: `date_range_0`, `date_range_1`, etc.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub name: ::prost::alloc::string::String,
 }
 /// A contiguous set of minutes: startMinutesAgo, startMinutesAgo + 1, ...,
@@ -33,7 +33,7 @@ pub struct MinuteRange {
     /// properties can request up to the last 30 minutes of event data
     /// (`startMinutesAgo <= 29`), and 360 Analytics properties can request up to
     /// the last 60 minutes of event data (`startMinutesAgo <= 59`).
-    #[prost(int32, optional, tag="1")]
+    #[prost(int32, optional, tag = "1")]
     pub start_minutes_ago: ::core::option::Option<i32>,
     /// The inclusive end minute for the query as a number of minutes before now.
     /// Cannot be before `startMinutesAgo`. For example, `"endMinutesAgo": 15`
@@ -44,13 +44,13 @@ pub struct MinuteRange {
     /// properties can request any minute in the last 30 minutes of event data
     /// (`endMinutesAgo <= 29`), and 360 Analytics properties can request any
     /// minute in the last 60 minutes of event data (`endMinutesAgo <= 59`).
-    #[prost(int32, optional, tag="2")]
+    #[prost(int32, optional, tag = "2")]
     pub end_minutes_ago: ::core::option::Option<i32>,
     /// Assigns a name to this minute range. The dimension `dateRange` is valued to
     /// this name in a report response. If set, cannot begin with `date_range_` or
     /// `RESERVED_`. If not set, minute ranges are named by their zero based index
     /// in the request: `date_range_0`, `date_range_1`, etc.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub name: ::prost::alloc::string::String,
 }
 /// Dimensions are attributes of your data. For example, the dimension city
@@ -71,11 +71,11 @@ pub struct Dimension {
     ///
     /// Dimensions are referenced by `name` in `dimensionFilter`, `orderBys`,
     /// `dimensionExpression`, and `pivots`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// One dimension can be the result of an expression of multiple dimensions.
     /// For example, dimension "country, city": concatenate(country, ", ", city).
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub dimension_expression: ::core::option::Option<DimensionExpression>,
 }
 /// Used to express a dimension which is the result of a formula of multiple
@@ -85,7 +85,7 @@ pub struct Dimension {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DimensionExpression {
     /// Specify one type of dimension expression for `DimensionExpression`.
-    #[prost(oneof="dimension_expression::OneExpression", tags="4, 5, 6")]
+    #[prost(oneof = "dimension_expression::OneExpression", tags = "4, 5, 6")]
     pub one_expression: ::core::option::Option<dimension_expression::OneExpression>,
 }
 /// Nested message and enum types in `DimensionExpression`.
@@ -95,7 +95,7 @@ pub mod dimension_expression {
     pub struct CaseExpression {
         /// Name of a dimension. The name must refer back to a name in dimensions
         /// field of the request.
-        #[prost(string, tag="1")]
+        #[prost(string, tag = "1")]
         pub dimension_name: ::prost::alloc::string::String,
     }
     /// Used to combine dimension values to a single dimension.
@@ -103,7 +103,7 @@ pub mod dimension_expression {
     pub struct ConcatenateExpression {
         /// Names of dimensions. The names must refer back to names in the dimensions
         /// field of the request.
-        #[prost(string, repeated, tag="1")]
+        #[prost(string, repeated, tag = "1")]
         pub dimension_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         /// The delimiter placed between dimension names.
         ///
@@ -112,21 +112,21 @@ pub mod dimension_expression {
         /// present in response with no distinction. For example if dimension 1 value
         /// = "US,FR", dimension 2 value = "JP", and delimiter = ",", then the
         /// response will contain "US,FR,JP".
-        #[prost(string, tag="2")]
+        #[prost(string, tag = "2")]
         pub delimiter: ::prost::alloc::string::String,
     }
     /// Specify one type of dimension expression for `DimensionExpression`.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum OneExpression {
         /// Used to convert a dimension value to lower case.
-        #[prost(message, tag="4")]
+        #[prost(message, tag = "4")]
         LowerCase(CaseExpression),
         /// Used to convert a dimension value to upper case.
-        #[prost(message, tag="5")]
+        #[prost(message, tag = "5")]
         UpperCase(CaseExpression),
         /// Used to combine dimension values to a single dimension.
         /// For example, dimension "country, city": concatenate(country, ", ", city).
-        #[prost(message, tag="6")]
+        #[prost(message, tag = "6")]
         Concatenate(ConcatenateExpression),
     }
 }
@@ -147,16 +147,16 @@ pub struct Metric {
     ///
     /// Metrics are referenced by `name` in `metricFilter`, `orderBys`, and metric
     /// `expression`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// A mathematical expression for derived metrics. For example, the metric
     /// Event count per user is `eventCount/totalUsers`.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub expression: ::prost::alloc::string::String,
     /// Indicates if a metric is invisible in the report response. If a metric is
     /// invisible, the metric will not produce a column in the response, but can be
     /// used in `metricFilter`, `orderBys`, or a metric `expression`.
-    #[prost(bool, tag="3")]
+    #[prost(bool, tag = "3")]
     pub invisible: bool,
 }
 /// To express dimension or metric filters. The fields in the same
@@ -164,7 +164,7 @@ pub struct Metric {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FilterExpression {
     /// Specify one type of filter expression for `FilterExpression`.
-    #[prost(oneof="filter_expression::Expr", tags="1, 2, 3, 4")]
+    #[prost(oneof = "filter_expression::Expr", tags = "1, 2, 3, 4")]
     pub expr: ::core::option::Option<filter_expression::Expr>,
 }
 /// Nested message and enum types in `FilterExpression`.
@@ -173,17 +173,17 @@ pub mod filter_expression {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Expr {
         /// The FilterExpressions in and_group have an AND relationship.
-        #[prost(message, tag="1")]
+        #[prost(message, tag = "1")]
         AndGroup(super::FilterExpressionList),
         /// The FilterExpressions in or_group have an OR relationship.
-        #[prost(message, tag="2")]
+        #[prost(message, tag = "2")]
         OrGroup(super::FilterExpressionList),
         /// The FilterExpression is NOT of not_expression.
-        #[prost(message, tag="3")]
+        #[prost(message, tag = "3")]
         NotExpression(::prost::alloc::boxed::Box<super::FilterExpression>),
         /// A primitive filter. In the same FilterExpression, all of the filter's
         /// field names need to be either all dimensions or all metrics.
-        #[prost(message, tag="4")]
+        #[prost(message, tag = "4")]
         Filter(super::Filter),
     }
 }
@@ -191,7 +191,7 @@ pub mod filter_expression {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FilterExpressionList {
     /// A list of filter expressions.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub expressions: ::prost::alloc::vec::Vec<FilterExpression>,
 }
 /// An expression to filter dimension or metric values.
@@ -203,10 +203,10 @@ pub struct Filter {
     /// this field. However in a RunPivotReportRequest, this field must be
     /// additionally specified by name in the RunPivotReportRequest's dimensions or
     /// metrics.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub field_name: ::prost::alloc::string::String,
     /// Specify one type of filter for `Filter`.
-    #[prost(oneof="filter::OneFilter", tags="3, 4, 5, 6")]
+    #[prost(oneof = "filter::OneFilter", tags = "3, 4, 5, 6")]
     pub one_filter: ::core::option::Option<filter::OneFilter>,
 }
 /// Nested message and enum types in `Filter`.
@@ -215,19 +215,29 @@ pub mod filter {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct StringFilter {
         /// The match type for this filter.
-        #[prost(enumeration="string_filter::MatchType", tag="1")]
+        #[prost(enumeration = "string_filter::MatchType", tag = "1")]
         pub match_type: i32,
         /// The string value used for the matching.
-        #[prost(string, tag="2")]
+        #[prost(string, tag = "2")]
         pub value: ::prost::alloc::string::String,
         /// If true, the string value is case sensitive.
-        #[prost(bool, tag="3")]
+        #[prost(bool, tag = "3")]
         pub case_sensitive: bool,
     }
     /// Nested message and enum types in `StringFilter`.
     pub mod string_filter {
         /// The match type of a string filter
-        #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
         #[repr(i32)]
         pub enum MatchType {
             /// Unspecified
@@ -268,26 +278,36 @@ pub mod filter {
     pub struct InListFilter {
         /// The list of string values.
         /// Must be non-empty.
-        #[prost(string, repeated, tag="1")]
+        #[prost(string, repeated, tag = "1")]
         pub values: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         /// If true, the string value is case sensitive.
-        #[prost(bool, tag="2")]
+        #[prost(bool, tag = "2")]
         pub case_sensitive: bool,
     }
     /// Filters for numeric or date values.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct NumericFilter {
         /// The operation type for this filter.
-        #[prost(enumeration="numeric_filter::Operation", tag="1")]
+        #[prost(enumeration = "numeric_filter::Operation", tag = "1")]
         pub operation: i32,
         /// A numeric value or a date value.
-        #[prost(message, optional, tag="2")]
+        #[prost(message, optional, tag = "2")]
         pub value: ::core::option::Option<super::NumericValue>,
     }
     /// Nested message and enum types in `NumericFilter`.
     pub mod numeric_filter {
         /// The operation applied to a numeric filter
-        #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
         #[repr(i32)]
         pub enum Operation {
             /// Unspecified.
@@ -324,26 +344,26 @@ pub mod filter {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct BetweenFilter {
         /// Begins with this number.
-        #[prost(message, optional, tag="1")]
+        #[prost(message, optional, tag = "1")]
         pub from_value: ::core::option::Option<super::NumericValue>,
         /// Ends with this number.
-        #[prost(message, optional, tag="2")]
+        #[prost(message, optional, tag = "2")]
         pub to_value: ::core::option::Option<super::NumericValue>,
     }
     /// Specify one type of filter for `Filter`.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum OneFilter {
         /// Strings related filter.
-        #[prost(message, tag="3")]
+        #[prost(message, tag = "3")]
         StringFilter(StringFilter),
         /// A filter for in list values.
-        #[prost(message, tag="4")]
+        #[prost(message, tag = "4")]
         InListFilter(InListFilter),
         /// A filter for numeric or date values.
-        #[prost(message, tag="5")]
+        #[prost(message, tag = "5")]
         NumericFilter(NumericFilter),
         /// A filter for two values.
-        #[prost(message, tag="6")]
+        #[prost(message, tag = "6")]
         BetweenFilter(BetweenFilter),
     }
 }
@@ -353,10 +373,10 @@ pub mod filter {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OrderBy {
     /// If true, sorts by descending order.
-    #[prost(bool, tag="4")]
+    #[prost(bool, tag = "4")]
     pub desc: bool,
     /// Specify one type of order by for `OrderBy`.
-    #[prost(oneof="order_by::OneOrderBy", tags="1, 2, 3")]
+    #[prost(oneof = "order_by::OneOrderBy", tags = "1, 2, 3")]
     pub one_order_by: ::core::option::Option<order_by::OneOrderBy>,
 }
 /// Nested message and enum types in `OrderBy`.
@@ -365,23 +385,33 @@ pub mod order_by {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct MetricOrderBy {
         /// A metric name in the request to order by.
-        #[prost(string, tag="1")]
+        #[prost(string, tag = "1")]
         pub metric_name: ::prost::alloc::string::String,
     }
     /// Sorts by dimension values.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DimensionOrderBy {
         /// A dimension name in the request to order by.
-        #[prost(string, tag="1")]
+        #[prost(string, tag = "1")]
         pub dimension_name: ::prost::alloc::string::String,
         /// Controls the rule for dimension value ordering.
-        #[prost(enumeration="dimension_order_by::OrderType", tag="2")]
+        #[prost(enumeration = "dimension_order_by::OrderType", tag = "2")]
         pub order_type: i32,
     }
     /// Nested message and enum types in `DimensionOrderBy`.
     pub mod dimension_order_by {
         /// Rule to order the string dimension values by.
-        #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
         #[repr(i32)]
         pub enum OrderType {
             /// Unspecified.
@@ -407,7 +437,9 @@ pub mod order_by {
                 match self {
                     OrderType::Unspecified => "ORDER_TYPE_UNSPECIFIED",
                     OrderType::Alphanumeric => "ALPHANUMERIC",
-                    OrderType::CaseInsensitiveAlphanumeric => "CASE_INSENSITIVE_ALPHANUMERIC",
+                    OrderType::CaseInsensitiveAlphanumeric => {
+                        "CASE_INSENSITIVE_ALPHANUMERIC"
+                    }
                     OrderType::Numeric => "NUMERIC",
                 }
             }
@@ -418,13 +450,13 @@ pub mod order_by {
     pub struct PivotOrderBy {
         /// In the response to order by, order rows by this column. Must be a metric
         /// name from the request.
-        #[prost(string, tag="1")]
+        #[prost(string, tag = "1")]
         pub metric_name: ::prost::alloc::string::String,
         /// Used to select a dimension name and value pivot. If multiple pivot
         /// selections are given, the sort occurs on rows where all pivot selection
         /// dimension name and value pairs match the row's dimension name and value
         /// pair.
-        #[prost(message, repeated, tag="2")]
+        #[prost(message, repeated, tag = "2")]
         pub pivot_selections: ::prost::alloc::vec::Vec<pivot_order_by::PivotSelection>,
     }
     /// Nested message and enum types in `PivotOrderBy`.
@@ -448,10 +480,10 @@ pub mod order_by {
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct PivotSelection {
             /// Must be a dimension name from the request.
-            #[prost(string, tag="1")]
+            #[prost(string, tag = "1")]
             pub dimension_name: ::prost::alloc::string::String,
             /// Order by only when the named dimension is this value.
-            #[prost(string, tag="2")]
+            #[prost(string, tag = "2")]
             pub dimension_value: ::prost::alloc::string::String,
         }
     }
@@ -459,13 +491,13 @@ pub mod order_by {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum OneOrderBy {
         /// Sorts results by a metric's values.
-        #[prost(message, tag="1")]
+        #[prost(message, tag = "1")]
         Metric(MetricOrderBy),
         /// Sorts results by a dimension's values.
-        #[prost(message, tag="2")]
+        #[prost(message, tag = "2")]
         Dimension(DimensionOrderBy),
         /// Sorts results by a metric's values within a pivot column group.
-        #[prost(message, tag="3")]
+        #[prost(message, tag = "3")]
         Pivot(PivotOrderBy),
     }
 }
@@ -476,17 +508,17 @@ pub struct Pivot {
     /// "dateRange" produces a date range column; for each row in the response,
     /// dimension values in the date range column will indicate the corresponding
     /// date range from the request.
-    #[prost(string, repeated, tag="1")]
+    #[prost(string, repeated, tag = "1")]
     pub field_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Specifies how dimensions are ordered in the pivot. In the first Pivot, the
     /// OrderBys determine Row and PivotDimensionHeader ordering; in subsequent
     /// Pivots, the OrderBys determine only PivotDimensionHeader ordering.
     /// Dimensions specified in these OrderBys must be a subset of
     /// Pivot.field_names.
-    #[prost(message, repeated, tag="2")]
+    #[prost(message, repeated, tag = "2")]
     pub order_bys: ::prost::alloc::vec::Vec<OrderBy>,
     /// The row count of the start row. The first row is counted as row 0.
-    #[prost(int64, tag="3")]
+    #[prost(int64, tag = "3")]
     pub offset: i64,
     /// The number of unique combinations of dimension values to return in this
     /// pivot. The `limit` parameter is required. A `limit` of 10,000 is common for
@@ -495,11 +527,11 @@ pub struct Pivot {
     /// The product of the `limit` for each `pivot` in a `RunPivotReportRequest`
     /// must not exceed 100,000. For example, a two pivot request with `limit:
     /// 1000` in each pivot will fail because the product is `1,000,000`.
-    #[prost(int64, tag="4")]
+    #[prost(int64, tag = "4")]
     pub limit: i64,
     /// Aggregate the metrics by dimensions in this pivot using the specified
     /// metric_aggregations.
-    #[prost(enumeration="MetricAggregation", repeated, tag="5")]
+    #[prost(enumeration = "MetricAggregation", repeated, tag = "5")]
     pub metric_aggregations: ::prost::alloc::vec::Vec<i32>,
 }
 /// The specification of cohorts for a cohort report.
@@ -524,14 +556,14 @@ pub struct CohortSpec {
     ///
     /// Most cohort reports define only a single cohort. If multiple cohorts are
     /// specified, each cohort can be recognized in the report by their name.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub cohorts: ::prost::alloc::vec::Vec<Cohort>,
     /// Cohort reports follow cohorts over an extended reporting date range. This
     /// range specifies an offset duration to follow the cohorts over.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub cohorts_range: ::core::option::Option<CohortsRange>,
     /// Optional settings for a cohort report.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub cohort_report_settings: ::core::option::Option<CohortReportSettings>,
 }
 /// Defines a cohort selection criteria. A cohort is a group of users who share
@@ -543,11 +575,11 @@ pub struct Cohort {
     /// name in a report response. If set, cannot begin with `cohort_` or
     /// `RESERVED_`. If not set, cohorts are named by their zero based index
     /// `cohort_0`, `cohort_1`, etc.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Dimension used by the cohort. Required and only supports
     /// `firstSessionDate`.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub dimension: ::prost::alloc::string::String,
     /// The cohort selects users whose first touch date is between start date and
     /// end date defined in the `dateRange`. This `dateRange` does not specify the
@@ -565,7 +597,7 @@ pub struct Cohort {
     /// aligned to a week boundary, starting at Sunday and ending Saturday. If
     /// `CohortsRange` uses monthly granularity, this `dateRange` can be aligned to
     /// a month, starting at the first and ending on the last day of the month.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub date_range: ::core::option::Option<DateRange>,
 }
 /// Configures the extended reporting date range for a cohort report. Specifies
@@ -574,7 +606,7 @@ pub struct Cohort {
 pub struct CohortsRange {
     /// Required. The granularity used to interpret the `startOffset` and
     /// `endOffset` for the extended reporting date range for a cohort report.
-    #[prost(enumeration="cohorts_range::Granularity", tag="1")]
+    #[prost(enumeration = "cohorts_range::Granularity", tag = "1")]
     pub granularity: i32,
     /// `startOffset` specifies the start date of the extended reporting date range
     /// for a cohort report. `startOffset` is commonly set to 0 so that reports
@@ -588,7 +620,7 @@ pub struct CohortsRange {
     ///
     /// If `granularity` is `MONTHLY`, the `startDate` of the extended reporting
     /// date range is `startDate` of the cohort plus `startOffset * 30` days.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub start_offset: i32,
     /// Required. `endOffset` specifies the end date of the extended reporting date
     /// range for a cohort report. `endOffset` can be any positive integer but is
@@ -603,14 +635,24 @@ pub struct CohortsRange {
     ///
     /// If `granularity` is `MONTHLY`, the `endDate` of the extended reporting date
     /// range is `endDate` of the cohort plus `endOffset * 30` days.
-    #[prost(int32, tag="3")]
+    #[prost(int32, tag = "3")]
     pub end_offset: i32,
 }
 /// Nested message and enum types in `CohortsRange`.
 pub mod cohorts_range {
     /// The granularity used to interpret the `startOffset` and `endOffset` for the
     /// extended reporting date range for a cohort report.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum Granularity {
         /// Should never be specified.
@@ -646,7 +688,7 @@ pub mod cohorts_range {
 pub struct CohortReportSettings {
     /// If true, accumulates the result from first touch day to the end day. Not
     /// supported in `RunReportRequest`.
-    #[prost(bool, tag="1")]
+    #[prost(bool, tag = "1")]
     pub accumulate: bool,
 }
 /// Response's metadata carrying additional information about the report content.
@@ -654,13 +696,15 @@ pub struct CohortReportSettings {
 pub struct ResponseMetaData {
     /// If true, indicates some buckets of dimension combinations are rolled into
     /// "(other)" row. This can happen for high cardinality reports.
-    #[prost(bool, tag="3")]
+    #[prost(bool, tag = "3")]
     pub data_loss_from_other_row: bool,
     /// Describes the schema restrictions actively enforced in creating this
     /// report. To learn more, see [Access and data-restriction
     /// management](<https://support.google.com/analytics/answer/10851388>).
-    #[prost(message, optional, tag="4")]
-    pub schema_restriction_response: ::core::option::Option<response_meta_data::SchemaRestrictionResponse>,
+    #[prost(message, optional, tag = "4")]
+    pub schema_restriction_response: ::core::option::Option<
+        response_meta_data::SchemaRestrictionResponse,
+    >,
     /// The currency code used in this report. Intended to be used in formatting
     /// currency metrics like `purchaseRevenue` for visualization. If currency_code
     /// was specified in the request, this response parameter will echo the request
@@ -671,16 +715,16 @@ pub struct ResponseMetaData {
     /// standard (<https://en.wikipedia.org/wiki/ISO_4217>); for example "USD",
     /// "EUR", "JPY". To learn more, see
     /// <https://support.google.com/analytics/answer/9796179.>
-    #[prost(string, optional, tag="5")]
+    #[prost(string, optional, tag = "5")]
     pub currency_code: ::core::option::Option<::prost::alloc::string::String>,
     /// The property's current timezone. Intended to be used to interpret
     /// time-based dimensions like `hour` and `minute`. Formatted as strings from
     /// the IANA Time Zone database (<https://www.iana.org/time-zones>); for example
     /// "America/New_York" or "Asia/Tokyo".
-    #[prost(string, optional, tag="6")]
+    #[prost(string, optional, tag = "6")]
     pub time_zone: ::core::option::Option<::prost::alloc::string::String>,
     /// If empty reason is specified, the report is empty for this reason.
-    #[prost(string, optional, tag="7")]
+    #[prost(string, optional, tag = "7")]
     pub empty_reason: ::core::option::Option<::prost::alloc::string::String>,
     /// If `subjectToThresholding` is true, this report is subject to thresholding
     /// and only returns data that meets the minimum aggregation thresholds. It is
@@ -690,7 +734,7 @@ pub struct ResponseMetaData {
     /// thresholds](<https://support.google.com/analytics/answer/9383630>) and [About
     /// Demographics and
     /// Interests](<https://support.google.com/analytics/answer/2799357>).
-    #[prost(bool, optional, tag="8")]
+    #[prost(bool, optional, tag = "8")]
     pub subject_to_thresholding: ::core::option::Option<bool>,
 }
 /// Nested message and enum types in `ResponseMetaData`.
@@ -704,8 +748,10 @@ pub mod response_meta_data {
         /// `purchaseRevenue` always has the restriction type `REVENUE_DATA`.
         /// However, this active response restriction is only populated if the user's
         /// custom role disallows access to `REVENUE_DATA`.
-        #[prost(message, repeated, tag="1")]
-        pub active_metric_restrictions: ::prost::alloc::vec::Vec<schema_restriction_response::ActiveMetricRestriction>,
+        #[prost(message, repeated, tag = "1")]
+        pub active_metric_restrictions: ::prost::alloc::vec::Vec<
+            schema_restriction_response::ActiveMetricRestriction,
+        >,
     }
     /// Nested message and enum types in `SchemaRestrictionResponse`.
     pub mod schema_restriction_response {
@@ -713,10 +759,14 @@ pub mod response_meta_data {
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct ActiveMetricRestriction {
             /// The name of the restricted metric.
-            #[prost(string, optional, tag="1")]
+            #[prost(string, optional, tag = "1")]
             pub metric_name: ::core::option::Option<::prost::alloc::string::String>,
             /// The reason for this metric's restriction.
-            #[prost(enumeration="super::super::RestrictedMetricType", repeated, tag="2")]
+            #[prost(
+                enumeration = "super::super::RestrictedMetricType",
+                repeated,
+                tag = "2"
+            )]
             pub restricted_metric_types: ::prost::alloc::vec::Vec<i32>,
         }
     }
@@ -728,7 +778,7 @@ pub mod response_meta_data {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DimensionHeader {
     /// The dimension's name.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Describes a metric column in the report. Visible metrics requested in a
@@ -738,10 +788,10 @@ pub struct DimensionHeader {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MetricHeader {
     /// The metric's name.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The metric's data type.
-    #[prost(enumeration="MetricType", tag="2")]
+    #[prost(enumeration = "MetricType", tag = "2")]
     pub r#type: i32,
 }
 /// Dimensions' values in a single pivot.
@@ -749,19 +799,19 @@ pub struct MetricHeader {
 pub struct PivotHeader {
     /// The size is the same as the cardinality of the corresponding dimension
     /// combinations.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub pivot_dimension_headers: ::prost::alloc::vec::Vec<PivotDimensionHeader>,
     /// The cardinality of the pivot. The total number of rows for this pivot's
     /// fields regardless of how the parameters `offset` and `limit` are specified
     /// in the request.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub row_count: i32,
 }
 /// Summarizes dimension values from a row for this pivot.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PivotDimensionHeader {
     /// Values of multiple dimensions in a pivot.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub dimension_values: ::prost::alloc::vec::Vec<DimensionValue>,
 }
 /// Report data for each row.
@@ -805,17 +855,17 @@ pub struct PivotDimensionHeader {
 pub struct Row {
     /// List of requested dimension values. In a PivotReport, dimension_values
     /// are only listed for dimensions included in a pivot.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub dimension_values: ::prost::alloc::vec::Vec<DimensionValue>,
     /// List of requested visible metric values.
-    #[prost(message, repeated, tag="2")]
+    #[prost(message, repeated, tag = "2")]
     pub metric_values: ::prost::alloc::vec::Vec<MetricValue>,
 }
 /// The value of a dimension.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DimensionValue {
     /// One kind of dimension value
-    #[prost(oneof="dimension_value::OneValue", tags="1")]
+    #[prost(oneof = "dimension_value::OneValue", tags = "1")]
     pub one_value: ::core::option::Option<dimension_value::OneValue>,
 }
 /// Nested message and enum types in `DimensionValue`.
@@ -824,7 +874,7 @@ pub mod dimension_value {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum OneValue {
         /// Value as a string if the dimension type is a string.
-        #[prost(string, tag="1")]
+        #[prost(string, tag = "1")]
         Value(::prost::alloc::string::String),
     }
 }
@@ -832,7 +882,7 @@ pub mod dimension_value {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MetricValue {
     /// One of metric value
-    #[prost(oneof="metric_value::OneValue", tags="4")]
+    #[prost(oneof = "metric_value::OneValue", tags = "4")]
     pub one_value: ::core::option::Option<metric_value::OneValue>,
 }
 /// Nested message and enum types in `MetricValue`.
@@ -841,7 +891,7 @@ pub mod metric_value {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum OneValue {
         /// Measurement value. See MetricHeader for type.
-        #[prost(string, tag="4")]
+        #[prost(string, tag = "4")]
         Value(::prost::alloc::string::String),
     }
 }
@@ -849,7 +899,7 @@ pub mod metric_value {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NumericValue {
     /// One of a numeric value
-    #[prost(oneof="numeric_value::OneValue", tags="1, 2")]
+    #[prost(oneof = "numeric_value::OneValue", tags = "1, 2")]
     pub one_value: ::core::option::Option<numeric_value::OneValue>,
 }
 /// Nested message and enum types in `NumericValue`.
@@ -858,10 +908,10 @@ pub mod numeric_value {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum OneValue {
         /// Integer value
-        #[prost(int64, tag="1")]
+        #[prost(int64, tag = "1")]
         Int64Value(i64),
         /// Double value
-        #[prost(double, tag="2")]
+        #[prost(double, tag = "2")]
         DoubleValue(f64),
     }
 }
@@ -873,28 +923,28 @@ pub struct PropertyQuota {
     /// Standard Analytics Properties can use up to 25,000 tokens per day;
     /// Analytics 360 Properties can use 250,000 tokens per day. Most requests
     /// consume fewer than 10 tokens.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub tokens_per_day: ::core::option::Option<QuotaStatus>,
     /// Standard Analytics Properties can use up to 5,000 tokens per hour;
     /// Analytics 360 Properties can use 50,000 tokens per hour. An API request
     /// consumes a single number of tokens, and that number is deducted from all of
     /// the hourly, daily, and per project hourly quotas.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub tokens_per_hour: ::core::option::Option<QuotaStatus>,
     /// Standard Analytics Properties can send up to 10 concurrent requests;
     /// Analytics 360 Properties can use up to 50 concurrent requests.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub concurrent_requests: ::core::option::Option<QuotaStatus>,
     /// Standard Analytics Properties and cloud project pairs can have up to 10
     /// server errors per hour; Analytics 360 Properties and cloud project pairs
     /// can have up to 50 server errors per hour.
-    #[prost(message, optional, tag="4")]
+    #[prost(message, optional, tag = "4")]
     pub server_errors_per_project_per_hour: ::core::option::Option<QuotaStatus>,
     /// Analytics Properties can send up to 120 requests with potentially
     /// thresholded dimensions per hour. In a batch request, each report request
     /// is individually counted for this quota if the request contains potentially
     /// thresholded dimensions.
-    #[prost(message, optional, tag="5")]
+    #[prost(message, optional, tag = "5")]
     pub potentially_thresholded_requests_per_hour: ::core::option::Option<QuotaStatus>,
     /// Analytics Properties can use up to 25% of their tokens per project per
     /// hour. This amounts to standard Analytics Properties can use up to 1,250
@@ -902,17 +952,17 @@ pub struct PropertyQuota {
     /// tokens per project per hour. An API request consumes a single number of
     /// tokens, and that number is deducted from all of the hourly, daily, and per
     /// project hourly quotas.
-    #[prost(message, optional, tag="6")]
+    #[prost(message, optional, tag = "6")]
     pub tokens_per_project_per_hour: ::core::option::Option<QuotaStatus>,
 }
 /// Current state for a particular quota group.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QuotaStatus {
     /// Quota consumed by this request.
-    #[prost(int32, tag="1")]
+    #[prost(int32, tag = "1")]
     pub consumed: i32,
     /// Quota remaining after this request.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub remaining: i32,
 }
 /// Explains a dimension.
@@ -920,27 +970,27 @@ pub struct QuotaStatus {
 pub struct DimensionMetadata {
     /// This dimension's name. Useable in \[Dimension\](#Dimension)'s `name`. For
     /// example, `eventName`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub api_name: ::prost::alloc::string::String,
     /// This dimension's name within the Google Analytics user interface. For
     /// example, `Event name`.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub ui_name: ::prost::alloc::string::String,
     /// Description of how this dimension is used and calculated.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub description: ::prost::alloc::string::String,
     /// Still usable but deprecated names for this dimension. If populated, this
     /// dimension is available by either `apiName` or one of `deprecatedApiNames`
     /// for a period of time. After the deprecation period, the dimension will be
     /// available only by `apiName`.
-    #[prost(string, repeated, tag="4")]
+    #[prost(string, repeated, tag = "4")]
     pub deprecated_api_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// True if the dimension is a custom dimension for this property.
-    #[prost(bool, tag="5")]
+    #[prost(bool, tag = "5")]
     pub custom_definition: bool,
     /// The display name of the category that this dimension belongs to. Similar
     /// dimensions and metrics are categorized together.
-    #[prost(string, tag="7")]
+    #[prost(string, tag = "7")]
     pub category: ::prost::alloc::string::String,
 }
 /// Explains a metric.
@@ -948,31 +998,31 @@ pub struct DimensionMetadata {
 pub struct MetricMetadata {
     /// A metric name. Useable in \[Metric\](#Metric)'s `name`. For example,
     /// `eventCount`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub api_name: ::prost::alloc::string::String,
     /// This metric's name within the Google Analytics user interface. For example,
     /// `Event count`.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub ui_name: ::prost::alloc::string::String,
     /// Description of how this metric is used and calculated.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub description: ::prost::alloc::string::String,
     /// Still usable but deprecated names for this metric. If populated, this
     /// metric is available by either `apiName` or one of `deprecatedApiNames`
     /// for a period of time. After the deprecation period, the metric will be
     /// available only by `apiName`.
-    #[prost(string, repeated, tag="4")]
+    #[prost(string, repeated, tag = "4")]
     pub deprecated_api_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The type of this metric.
-    #[prost(enumeration="MetricType", tag="5")]
+    #[prost(enumeration = "MetricType", tag = "5")]
     pub r#type: i32,
     /// The mathematical expression for this derived metric. Can be used in
     /// \[Metric\](#Metric)'s `expression` field for equivalent reports. Most metrics
     /// are not expressions, and for non-expressions, this field is empty.
-    #[prost(string, tag="6")]
+    #[prost(string, tag = "6")]
     pub expression: ::prost::alloc::string::String,
     /// True if the metric is a custom metric for this property.
-    #[prost(bool, tag="7")]
+    #[prost(bool, tag = "7")]
     pub custom_definition: bool,
     /// If reasons are specified, your access is blocked to this metric for this
     /// property. API requests from you to this property for this metric will
@@ -982,17 +1032,27 @@ pub struct MetricMetadata {
     ///
     /// To learn more, see [Access and data-restriction
     /// management](<https://support.google.com/analytics/answer/10851388>).
-    #[prost(enumeration="metric_metadata::BlockedReason", repeated, tag="8")]
+    #[prost(enumeration = "metric_metadata::BlockedReason", repeated, tag = "8")]
     pub blocked_reasons: ::prost::alloc::vec::Vec<i32>,
     /// The display name of the category that this metrics belongs to. Similar
     /// dimensions and metrics are categorized together.
-    #[prost(string, tag="10")]
+    #[prost(string, tag = "10")]
     pub category: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `MetricMetadata`.
 pub mod metric_metadata {
     /// Justifications for why this metric is blocked.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum BlockedReason {
         /// Will never be specified in API response.
@@ -1024,11 +1084,11 @@ pub struct DimensionCompatibility {
     /// The dimension metadata contains the API name for this compatibility
     /// information. The dimension metadata also contains other helpful information
     /// like the UI name and description.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub dimension_metadata: ::core::option::Option<DimensionMetadata>,
     /// The compatibility of this dimension. If the compatibility is COMPATIBLE,
     /// this dimension can be successfully added to the report.
-    #[prost(enumeration="Compatibility", optional, tag="2")]
+    #[prost(enumeration = "Compatibility", optional, tag = "2")]
     pub compatibility: ::core::option::Option<i32>,
 }
 /// The compatibility for a single metric.
@@ -1037,11 +1097,11 @@ pub struct MetricCompatibility {
     /// The metric metadata contains the API name for this compatibility
     /// information. The metric metadata also contains other helpful information
     /// like the UI name and description.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub metric_metadata: ::core::option::Option<MetricMetadata>,
     /// The compatibility of this metric. If the compatibility is COMPATIBLE,
     /// this metric can be successfully added to the report.
-    #[prost(enumeration="Compatibility", optional, tag="2")]
+    #[prost(enumeration = "Compatibility", optional, tag = "2")]
     pub compatibility: ::core::option::Option<i32>,
 }
 /// Represents aggregation of metrics.
@@ -1195,51 +1255,51 @@ pub struct CheckCompatibilityRequest {
     /// Set the Property ID to 0 for compatibility checking on dimensions and
     /// metrics common to all properties. In this special mode, this method will
     /// not return custom dimensions and metrics.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub property: ::prost::alloc::string::String,
     /// The dimensions in this report. `dimensions` should be the same value as in
     /// your `runReport` request.
-    #[prost(message, repeated, tag="2")]
+    #[prost(message, repeated, tag = "2")]
     pub dimensions: ::prost::alloc::vec::Vec<Dimension>,
     /// The metrics in this report. `metrics` should be the same value as in your
     /// `runReport` request.
-    #[prost(message, repeated, tag="3")]
+    #[prost(message, repeated, tag = "3")]
     pub metrics: ::prost::alloc::vec::Vec<Metric>,
     /// The filter clause of dimensions. `dimensionFilter` should be the same value
     /// as in your `runReport` request.
-    #[prost(message, optional, tag="4")]
+    #[prost(message, optional, tag = "4")]
     pub dimension_filter: ::core::option::Option<FilterExpression>,
     /// The filter clause of metrics. `metricFilter` should be the same value as in
     /// your `runReport` request
-    #[prost(message, optional, tag="5")]
+    #[prost(message, optional, tag = "5")]
     pub metric_filter: ::core::option::Option<FilterExpression>,
     /// Filters the dimensions and metrics in the response to just this
     /// compatibility. Commonly used as `”compatibilityFilter”: “COMPATIBLE”`
     /// to only return compatible dimensions & metrics.
-    #[prost(enumeration="Compatibility", tag="6")]
+    #[prost(enumeration = "Compatibility", tag = "6")]
     pub compatibility_filter: i32,
 }
 /// The compatibility response with the compatibility of each dimension & metric.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CheckCompatibilityResponse {
     /// The compatibility of each dimension.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub dimension_compatibilities: ::prost::alloc::vec::Vec<DimensionCompatibility>,
     /// The compatibility of each metric.
-    #[prost(message, repeated, tag="2")]
+    #[prost(message, repeated, tag = "2")]
     pub metric_compatibilities: ::prost::alloc::vec::Vec<MetricCompatibility>,
 }
 /// The dimensions and metrics currently accepted in reporting methods.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Metadata {
     /// Resource name of this metadata.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub name: ::prost::alloc::string::String,
     /// The dimension descriptions.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub dimensions: ::prost::alloc::vec::Vec<DimensionMetadata>,
     /// The metric descriptions.
-    #[prost(message, repeated, tag="2")]
+    #[prost(message, repeated, tag = "2")]
     pub metrics: ::prost::alloc::vec::Vec<MetricMetadata>,
 }
 /// The request to generate a report.
@@ -1253,30 +1313,30 @@ pub struct RunReportRequest {
     /// consistent with the batch-level property.
     ///
     /// Example: properties/1234
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub property: ::prost::alloc::string::String,
     /// The dimensions requested and displayed.
-    #[prost(message, repeated, tag="2")]
+    #[prost(message, repeated, tag = "2")]
     pub dimensions: ::prost::alloc::vec::Vec<Dimension>,
     /// The metrics requested and displayed.
-    #[prost(message, repeated, tag="3")]
+    #[prost(message, repeated, tag = "3")]
     pub metrics: ::prost::alloc::vec::Vec<Metric>,
     /// Date ranges of data to read. If multiple date ranges are requested, each
     /// response row will contain a zero based date range index. If two date
     /// ranges overlap, the event data for the overlapping days is included in the
     /// response rows for both date ranges. In a cohort request, this `dateRanges`
     /// must be unspecified.
-    #[prost(message, repeated, tag="4")]
+    #[prost(message, repeated, tag = "4")]
     pub date_ranges: ::prost::alloc::vec::Vec<DateRange>,
     /// Dimension filters allow you to ask for only specific dimension values in
     /// the report. To learn more, see [Fundamentals of Dimension
     /// Filters](<https://developers.google.com/analytics/devguides/reporting/data/v1/basics#dimension_filters>)
     /// for examples. Metrics cannot be used in this filter.
-    #[prost(message, optional, tag="5")]
+    #[prost(message, optional, tag = "5")]
     pub dimension_filter: ::core::option::Option<FilterExpression>,
     /// The filter clause of metrics. Applied after aggregating the report's rows,
     /// similar to SQL having-clause. Dimensions cannot be used in this filter.
-    #[prost(message, optional, tag="6")]
+    #[prost(message, optional, tag = "6")]
     pub metric_filter: ::core::option::Option<FilterExpression>,
     /// The row count of the start row. The first row is counted as row 0.
     ///
@@ -1287,7 +1347,7 @@ pub struct RunReportRequest {
     ///
     /// To learn more about this pagination parameter, see
     /// \[Pagination\](<https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination>).
-    #[prost(int64, tag="7")]
+    #[prost(int64, tag = "7")]
     pub offset: i64,
     /// The number of rows to return. If unspecified, 10,000 rows are returned. The
     /// API returns a maximum of 100,000 rows per request, no matter how many you
@@ -1301,31 +1361,31 @@ pub struct RunReportRequest {
     ///
     /// To learn more about this pagination parameter, see
     /// \[Pagination\](<https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination>).
-    #[prost(int64, tag="8")]
+    #[prost(int64, tag = "8")]
     pub limit: i64,
     /// Aggregation of metrics. Aggregated metric values will be shown in rows
     /// where the dimension_values are set to "RESERVED_(MetricAggregation)".
-    #[prost(enumeration="MetricAggregation", repeated, tag="9")]
+    #[prost(enumeration = "MetricAggregation", repeated, tag = "9")]
     pub metric_aggregations: ::prost::alloc::vec::Vec<i32>,
     /// Specifies how rows are ordered in the response.
-    #[prost(message, repeated, tag="10")]
+    #[prost(message, repeated, tag = "10")]
     pub order_bys: ::prost::alloc::vec::Vec<OrderBy>,
     /// A currency code in ISO4217 format, such as "AED", "USD", "JPY".
     /// If the field is empty, the report uses the property's default currency.
-    #[prost(string, tag="11")]
+    #[prost(string, tag = "11")]
     pub currency_code: ::prost::alloc::string::String,
     /// Cohort group associated with this request. If there is a cohort group
     /// in the request the 'cohort' dimension must be present.
-    #[prost(message, optional, tag="12")]
+    #[prost(message, optional, tag = "12")]
     pub cohort_spec: ::core::option::Option<CohortSpec>,
     /// If false or unspecified, each row with all metrics equal to 0 will not be
     /// returned. If true, these rows will be returned if they are not separately
     /// removed by a filter.
-    #[prost(bool, tag="13")]
+    #[prost(bool, tag = "13")]
     pub keep_empty_rows: bool,
     /// Toggles whether to return the current state of this Analytics Property's
     /// quota. Quota is returned in \[PropertyQuota\](#PropertyQuota).
-    #[prost(bool, tag="14")]
+    #[prost(bool, tag = "14")]
     pub return_property_quota: bool,
 }
 /// The response report table corresponding to a request.
@@ -1333,23 +1393,23 @@ pub struct RunReportRequest {
 pub struct RunReportResponse {
     /// Describes dimension columns. The number of DimensionHeaders and ordering of
     /// DimensionHeaders matches the dimensions present in rows.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub dimension_headers: ::prost::alloc::vec::Vec<DimensionHeader>,
     /// Describes metric columns. The number of MetricHeaders and ordering of
     /// MetricHeaders matches the metrics present in rows.
-    #[prost(message, repeated, tag="2")]
+    #[prost(message, repeated, tag = "2")]
     pub metric_headers: ::prost::alloc::vec::Vec<MetricHeader>,
     /// Rows of dimension value combinations and metric values in the report.
-    #[prost(message, repeated, tag="3")]
+    #[prost(message, repeated, tag = "3")]
     pub rows: ::prost::alloc::vec::Vec<Row>,
     /// If requested, the totaled values of metrics.
-    #[prost(message, repeated, tag="4")]
+    #[prost(message, repeated, tag = "4")]
     pub totals: ::prost::alloc::vec::Vec<Row>,
     /// If requested, the maximum values of metrics.
-    #[prost(message, repeated, tag="5")]
+    #[prost(message, repeated, tag = "5")]
     pub maximums: ::prost::alloc::vec::Vec<Row>,
     /// If requested, the minimum values of metrics.
-    #[prost(message, repeated, tag="6")]
+    #[prost(message, repeated, tag = "6")]
     pub minimums: ::prost::alloc::vec::Vec<Row>,
     /// The total number of rows in the query result. `rowCount` is independent of
     /// the number of rows returned in the response, the `limit` request
@@ -1359,18 +1419,18 @@ pub struct RunReportResponse {
     ///
     /// To learn more about this pagination parameter, see
     /// \[Pagination\](<https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination>).
-    #[prost(int32, tag="7")]
+    #[prost(int32, tag = "7")]
     pub row_count: i32,
     /// Metadata for the report.
-    #[prost(message, optional, tag="8")]
+    #[prost(message, optional, tag = "8")]
     pub metadata: ::core::option::Option<ResponseMetaData>,
     /// This Analytics Property's quota state including this request.
-    #[prost(message, optional, tag="9")]
+    #[prost(message, optional, tag = "9")]
     pub property_quota: ::core::option::Option<PropertyQuota>,
     /// Identifies what kind of resource this message is. This `kind` is always the
     /// fixed string "analyticsData#runReport". Useful to distinguish between
     /// response types in JSON.
-    #[prost(string, tag="10")]
+    #[prost(string, tag = "10")]
     pub kind: ::prost::alloc::string::String,
 }
 /// The request to generate a pivot report.
@@ -1384,55 +1444,55 @@ pub struct RunPivotReportRequest {
     /// consistent with the batch-level property.
     ///
     /// Example: properties/1234
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub property: ::prost::alloc::string::String,
     /// The dimensions requested. All defined dimensions must be used by one of the
     /// following: dimension_expression, dimension_filter, pivots, order_bys.
-    #[prost(message, repeated, tag="2")]
+    #[prost(message, repeated, tag = "2")]
     pub dimensions: ::prost::alloc::vec::Vec<Dimension>,
     /// The metrics requested, at least one metric needs to be specified. All
     /// defined metrics must be used by one of the following: metric_expression,
     /// metric_filter, order_bys.
-    #[prost(message, repeated, tag="3")]
+    #[prost(message, repeated, tag = "3")]
     pub metrics: ::prost::alloc::vec::Vec<Metric>,
     /// The date range to retrieve event data for the report. If multiple date
     /// ranges are specified, event data from each date range is used in the
     /// report. A special dimension with field name "dateRange" can be included in
     /// a Pivot's field names; if included, the report compares between date
     /// ranges. In a cohort request, this `dateRanges` must be unspecified.
-    #[prost(message, repeated, tag="4")]
+    #[prost(message, repeated, tag = "4")]
     pub date_ranges: ::prost::alloc::vec::Vec<DateRange>,
     /// Describes the visual format of the report's dimensions in columns or rows.
     /// The union of the fieldNames (dimension names) in all pivots must be a
     /// subset of dimension names defined in Dimensions. No two pivots can share a
     /// dimension. A dimension is only visible if it appears in a pivot.
-    #[prost(message, repeated, tag="5")]
+    #[prost(message, repeated, tag = "5")]
     pub pivots: ::prost::alloc::vec::Vec<Pivot>,
     /// The filter clause of dimensions. Dimensions must be requested to be used in
     /// this filter. Metrics cannot be used in this filter.
-    #[prost(message, optional, tag="6")]
+    #[prost(message, optional, tag = "6")]
     pub dimension_filter: ::core::option::Option<FilterExpression>,
     /// The filter clause of metrics. Applied at post aggregation phase, similar to
     /// SQL having-clause. Metrics must be requested to be used in this filter.
     /// Dimensions cannot be used in this filter.
-    #[prost(message, optional, tag="7")]
+    #[prost(message, optional, tag = "7")]
     pub metric_filter: ::core::option::Option<FilterExpression>,
     /// A currency code in ISO4217 format, such as "AED", "USD", "JPY".
     /// If the field is empty, the report uses the property's default currency.
-    #[prost(string, tag="8")]
+    #[prost(string, tag = "8")]
     pub currency_code: ::prost::alloc::string::String,
     /// Cohort group associated with this request. If there is a cohort group
     /// in the request the 'cohort' dimension must be present.
-    #[prost(message, optional, tag="9")]
+    #[prost(message, optional, tag = "9")]
     pub cohort_spec: ::core::option::Option<CohortSpec>,
     /// If false or unspecified, each row with all metrics equal to 0 will not be
     /// returned. If true, these rows will be returned if they are not separately
     /// removed by a filter.
-    #[prost(bool, tag="10")]
+    #[prost(bool, tag = "10")]
     pub keep_empty_rows: bool,
     /// Toggles whether to return the current state of this Analytics Property's
     /// quota. Quota is returned in \[PropertyQuota\](#PropertyQuota).
-    #[prost(bool, tag="11")]
+    #[prost(bool, tag = "11")]
     pub return_property_quota: bool,
 }
 /// The response pivot report table corresponding to a pivot request.
@@ -1474,35 +1534,35 @@ pub struct RunPivotReportResponse {
     ///          "dimensionValues": [{ "value": "scroll" }]
     ///        }]
     ///      }]
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub pivot_headers: ::prost::alloc::vec::Vec<PivotHeader>,
     /// Describes dimension columns. The number of DimensionHeaders and ordering of
     /// DimensionHeaders matches the dimensions present in rows.
-    #[prost(message, repeated, tag="2")]
+    #[prost(message, repeated, tag = "2")]
     pub dimension_headers: ::prost::alloc::vec::Vec<DimensionHeader>,
     /// Describes metric columns. The number of MetricHeaders and ordering of
     /// MetricHeaders matches the metrics present in rows.
-    #[prost(message, repeated, tag="3")]
+    #[prost(message, repeated, tag = "3")]
     pub metric_headers: ::prost::alloc::vec::Vec<MetricHeader>,
     /// Rows of dimension value combinations and metric values in the report.
-    #[prost(message, repeated, tag="4")]
+    #[prost(message, repeated, tag = "4")]
     pub rows: ::prost::alloc::vec::Vec<Row>,
     /// Aggregation of metric values. Can be totals, minimums, or maximums. The
     /// returned aggregations are controlled by the metric_aggregations in the
     /// pivot. The type of aggregation returned in each row is shown by the
     /// dimension_values which are set to "RESERVED_<MetricAggregation>".
-    #[prost(message, repeated, tag="5")]
+    #[prost(message, repeated, tag = "5")]
     pub aggregates: ::prost::alloc::vec::Vec<Row>,
     /// Metadata for the report.
-    #[prost(message, optional, tag="6")]
+    #[prost(message, optional, tag = "6")]
     pub metadata: ::core::option::Option<ResponseMetaData>,
     /// This Analytics Property's quota state including this request.
-    #[prost(message, optional, tag="7")]
+    #[prost(message, optional, tag = "7")]
     pub property_quota: ::core::option::Option<PropertyQuota>,
     /// Identifies what kind of resource this message is. This `kind` is always the
     /// fixed string "analyticsData#runPivotReport". Useful to distinguish between
     /// response types in JSON.
-    #[prost(string, tag="8")]
+    #[prost(string, tag = "8")]
     pub kind: ::prost::alloc::string::String,
 }
 /// The batch request containing multiple report requests.
@@ -1517,23 +1577,23 @@ pub struct BatchRunReportsRequest {
     /// property.
     ///
     /// Example: properties/1234
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub property: ::prost::alloc::string::String,
     /// Individual requests. Each request has a separate report response. Each
     /// batch request is allowed up to 5 requests.
-    #[prost(message, repeated, tag="2")]
+    #[prost(message, repeated, tag = "2")]
     pub requests: ::prost::alloc::vec::Vec<RunReportRequest>,
 }
 /// The batch response containing multiple reports.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchRunReportsResponse {
     /// Individual responses. Each response has a separate report request.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub reports: ::prost::alloc::vec::Vec<RunReportResponse>,
     /// Identifies what kind of resource this message is. This `kind` is always the
     /// fixed string "analyticsData#batchRunReports". Useful to distinguish between
     /// response types in JSON.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub kind: ::prost::alloc::string::String,
 }
 /// The batch request containing multiple pivot report requests.
@@ -1548,23 +1608,23 @@ pub struct BatchRunPivotReportsRequest {
     /// property.
     ///
     /// Example: properties/1234
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub property: ::prost::alloc::string::String,
     /// Individual requests. Each request has a separate pivot report response.
     /// Each batch request is allowed up to 5 requests.
-    #[prost(message, repeated, tag="2")]
+    #[prost(message, repeated, tag = "2")]
     pub requests: ::prost::alloc::vec::Vec<RunPivotReportRequest>,
 }
 /// The batch response containing multiple pivot reports.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchRunPivotReportsResponse {
     /// Individual responses. Each response has a separate pivot report request.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub pivot_reports: ::prost::alloc::vec::Vec<RunPivotReportResponse>,
     /// Identifies what kind of resource this message is. This `kind` is always the
     /// fixed string "analyticsData#batchRunPivotReports". Useful to distinguish
     /// between response types in JSON.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub kind: ::prost::alloc::string::String,
 }
 /// Request for a property's dimension and metric metadata.
@@ -1581,7 +1641,7 @@ pub struct GetMetadataRequest {
     /// Set the Property ID to 0 for dimensions and metrics common to all
     /// properties. In this special mode, this method will not return custom
     /// dimensions and metrics.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// The request to generate a realtime report.
@@ -1593,20 +1653,20 @@ pub struct RunRealtimeReportRequest {
     /// ID](<https://developers.google.com/analytics/devguides/reporting/data/v1/property-id>).
     ///
     /// Example: properties/1234
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub property: ::prost::alloc::string::String,
     /// The dimensions requested and displayed.
-    #[prost(message, repeated, tag="2")]
+    #[prost(message, repeated, tag = "2")]
     pub dimensions: ::prost::alloc::vec::Vec<Dimension>,
     /// The metrics requested and displayed.
-    #[prost(message, repeated, tag="3")]
+    #[prost(message, repeated, tag = "3")]
     pub metrics: ::prost::alloc::vec::Vec<Metric>,
     /// The filter clause of dimensions. Metrics cannot be used in this filter.
-    #[prost(message, optional, tag="4")]
+    #[prost(message, optional, tag = "4")]
     pub dimension_filter: ::core::option::Option<FilterExpression>,
     /// The filter clause of metrics. Applied at post aggregation phase, similar to
     /// SQL having-clause. Dimensions cannot be used in this filter.
-    #[prost(message, optional, tag="5")]
+    #[prost(message, optional, tag = "5")]
     pub metric_filter: ::core::option::Option<FilterExpression>,
     /// The number of rows to return. If unspecified, 10,000 rows are returned. The
     /// API returns a maximum of 100,000 rows per request, no matter how many you
@@ -1617,25 +1677,25 @@ pub struct RunRealtimeReportRequest {
     /// fewer than 300 possible values for the dimension `country`, so when
     /// reporting on only `country`, you can't get more than 300 rows, even if you
     /// set `limit` to a higher value.
-    #[prost(int64, tag="6")]
+    #[prost(int64, tag = "6")]
     pub limit: i64,
     /// Aggregation of metrics. Aggregated metric values will be shown in rows
     /// where the dimension_values are set to "RESERVED_(MetricAggregation)".
-    #[prost(enumeration="MetricAggregation", repeated, tag="7")]
+    #[prost(enumeration = "MetricAggregation", repeated, tag = "7")]
     pub metric_aggregations: ::prost::alloc::vec::Vec<i32>,
     /// Specifies how rows are ordered in the response.
-    #[prost(message, repeated, tag="8")]
+    #[prost(message, repeated, tag = "8")]
     pub order_bys: ::prost::alloc::vec::Vec<OrderBy>,
     /// Toggles whether to return the current state of this Analytics Property's
     /// Realtime quota. Quota is returned in \[PropertyQuota\](#PropertyQuota).
-    #[prost(bool, tag="9")]
+    #[prost(bool, tag = "9")]
     pub return_property_quota: bool,
     /// The minute ranges of event data to read. If unspecified, one minute range
     /// for the last 30 minutes will be used. If multiple minute ranges are
     /// requested, each response row will contain a zero based minute range index.
     /// If two minute ranges overlap, the event data for the overlapping minutes is
     /// included in the response rows for both minute ranges.
-    #[prost(message, repeated, tag="10")]
+    #[prost(message, repeated, tag = "10")]
     pub minute_ranges: ::prost::alloc::vec::Vec<MinuteRange>,
 }
 /// The response realtime report table corresponding to a request.
@@ -1643,38 +1703,38 @@ pub struct RunRealtimeReportRequest {
 pub struct RunRealtimeReportResponse {
     /// Describes dimension columns. The number of DimensionHeaders and ordering of
     /// DimensionHeaders matches the dimensions present in rows.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub dimension_headers: ::prost::alloc::vec::Vec<DimensionHeader>,
     /// Describes metric columns. The number of MetricHeaders and ordering of
     /// MetricHeaders matches the metrics present in rows.
-    #[prost(message, repeated, tag="2")]
+    #[prost(message, repeated, tag = "2")]
     pub metric_headers: ::prost::alloc::vec::Vec<MetricHeader>,
     /// Rows of dimension value combinations and metric values in the report.
-    #[prost(message, repeated, tag="3")]
+    #[prost(message, repeated, tag = "3")]
     pub rows: ::prost::alloc::vec::Vec<Row>,
     /// If requested, the totaled values of metrics.
-    #[prost(message, repeated, tag="4")]
+    #[prost(message, repeated, tag = "4")]
     pub totals: ::prost::alloc::vec::Vec<Row>,
     /// If requested, the maximum values of metrics.
-    #[prost(message, repeated, tag="5")]
+    #[prost(message, repeated, tag = "5")]
     pub maximums: ::prost::alloc::vec::Vec<Row>,
     /// If requested, the minimum values of metrics.
-    #[prost(message, repeated, tag="6")]
+    #[prost(message, repeated, tag = "6")]
     pub minimums: ::prost::alloc::vec::Vec<Row>,
     /// The total number of rows in the query result. `rowCount` is independent of
     /// the number of rows returned in the response and the `limit` request
     /// parameter. For example if a query returns 175 rows and includes `limit`
     /// of 50 in the API request, the response will contain `rowCount` of 175 but
     /// only 50 rows.
-    #[prost(int32, tag="7")]
+    #[prost(int32, tag = "7")]
     pub row_count: i32,
     /// This Analytics Property's Realtime quota state including this request.
-    #[prost(message, optional, tag="8")]
+    #[prost(message, optional, tag = "8")]
     pub property_quota: ::core::option::Option<PropertyQuota>,
     /// Identifies what kind of resource this message is. This `kind` is always the
     /// fixed string "analyticsData#runRealtimeReport". Useful to distinguish
     /// between response types in JSON.
-    #[prost(string, tag="9")]
+    #[prost(string, tag = "9")]
     pub kind: ::prost::alloc::string::String,
 }
 /// Generated client implementations.

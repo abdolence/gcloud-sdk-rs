@@ -1,7 +1,6 @@
 /// Pull target.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PullTarget {
-}
+pub struct PullTarget {}
 /// The pull message contains data that can be used by the caller of
 /// \[LeaseTasks][google.cloud.tasks.v2beta2.CloudTasks.LeaseTasks\] to process the task.
 ///
@@ -10,7 +9,7 @@ pub struct PullTarget {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PullMessage {
     /// A data payload consumed by the worker to execute the task.
-    #[prost(bytes="vec", tag="1")]
+    #[prost(bytes = "vec", tag = "1")]
     pub payload: ::prost::alloc::vec::Vec<u8>,
     /// The task's tag.
     ///
@@ -31,7 +30,7 @@ pub struct PullMessage {
     /// \[bytes\](<https://cloud.google.com/appengine/docs/standard/java/javadoc/com/google/appengine/api/taskqueue/TaskOptions.html#tag-byte:A->),
     /// only UTF-8 encoded tags can be used in Cloud Tasks. If a tag isn't UTF-8
     /// encoded, the tag will be empty when the task is returned by Cloud Tasks.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub tag: ::prost::alloc::string::String,
 }
 /// App Engine HTTP target.
@@ -55,7 +54,7 @@ pub struct AppEngineHttpTarget {
     /// If set, `app_engine_routing_override` is used for all tasks in
     /// the queue, no matter what the setting is for the
     /// [task-level app_engine_routing]\[google.cloud.tasks.v2beta2.AppEngineHttpRequest.app_engine_routing\].
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub app_engine_routing_override: ::core::option::Option<AppEngineRouting>,
 }
 /// App Engine HTTP request.
@@ -132,7 +131,7 @@ pub struct AppEngineHttpRequest {
     /// handler](<https://cloud.google.com/appengine/docs/java/taskqueue/push/creating-handlers#writing_a_push_task_request_handler>)
     /// and the App Engine documentation for your runtime on [How Requests are
     /// Handled](<https://cloud.google.com/appengine/docs/standard/python3/how-requests-are-handled>).
-    #[prost(enumeration="HttpMethod", tag="1")]
+    #[prost(enumeration = "HttpMethod", tag = "1")]
     pub http_method: i32,
     /// Task-level setting for App Engine routing.
     ///
@@ -140,7 +139,7 @@ pub struct AppEngineHttpRequest {
     /// \[app_engine_routing_override][google.cloud.tasks.v2beta2.AppEngineHttpTarget.app_engine_routing_override\]
     /// is used for all tasks in the queue, no matter what the setting is for the
     /// [task-level app_engine_routing]\[google.cloud.tasks.v2beta2.AppEngineHttpRequest.app_engine_routing\].
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub app_engine_routing: ::core::option::Option<AppEngineRouting>,
     /// The relative URL.
     ///
@@ -148,7 +147,7 @@ pub struct AppEngineHttpRequest {
     /// It can contain a path and query string arguments.
     /// If the relative URL is empty, then the root path "/" will be used.
     /// No spaces are allowed, and the maximum length allowed is 2083 characters.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub relative_url: ::prost::alloc::string::String,
     /// HTTP request headers.
     ///
@@ -192,15 +191,18 @@ pub struct AppEngineHttpRequest {
     /// Although there is no specific limit for the maximum number of headers or
     /// the size, there is a limit on the maximum size of the \[Task][google.cloud.tasks.v2beta2.Task\]. For more
     /// information, see the \[CreateTask][google.cloud.tasks.v2beta2.CloudTasks.CreateTask\] documentation.
-    #[prost(map="string, string", tag="4")]
-    pub headers: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map = "string, string", tag = "4")]
+    pub headers: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
     /// Payload.
     ///
     /// The payload will be sent as the HTTP message body. A message
     /// body, and thus a payload, is allowed only if the HTTP method is
     /// POST or PUT. It is an error to set a data payload on a task with
     /// an incompatible \[HttpMethod][google.cloud.tasks.v2beta2.HttpMethod\].
-    #[prost(bytes="vec", tag="5")]
+    #[prost(bytes = "vec", tag = "5")]
     pub payload: ::prost::alloc::vec::Vec<u8>,
 }
 /// App Engine Routing.
@@ -235,7 +237,7 @@ pub struct AppEngineRouting {
     /// \[service][google.cloud.tasks.v2beta2.AppEngineRouting.service\],
     /// \[version][google.cloud.tasks.v2beta2.AppEngineRouting.version\], and
     /// \[instance][google.cloud.tasks.v2beta2.AppEngineRouting.instance\] are the empty string.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub service: ::prost::alloc::string::String,
     /// App version.
     ///
@@ -253,7 +255,7 @@ pub struct AppEngineRouting {
     /// \[service][google.cloud.tasks.v2beta2.AppEngineRouting.service\],
     /// \[version][google.cloud.tasks.v2beta2.AppEngineRouting.version\], and
     /// \[instance][google.cloud.tasks.v2beta2.AppEngineRouting.instance\] are the empty string.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub version: ::prost::alloc::string::String,
     /// App instance.
     ///
@@ -268,7 +270,7 @@ pub struct AppEngineRouting {
     /// routing](<https://cloud.google.com/appengine/docs/standard/python/how-requests-are-routed>)
     /// and [App Engine Flex request
     /// routing](<https://cloud.google.com/appengine/docs/flexible/python/how-requests-are-routed>).
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub instance: ::prost::alloc::string::String,
     /// Output only. The host that the task is sent to.
     ///
@@ -331,7 +333,7 @@ pub struct AppEngineRouting {
     /// \[instance][google.cloud.tasks.v2beta2.AppEngineRouting.instance\] is invalid, then the task
     /// will be sent to the default version of the default service when
     /// the task is attempted.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub host: ::prost::alloc::string::String,
 }
 /// The HTTP method used to execute the task.
@@ -391,7 +393,7 @@ pub struct Queue {
     ///     For more information, see <https://cloud.google.com/about/locations/.>
     /// * `QUEUE_ID` can contain letters (\[A-Za-z\]), numbers (\[0-9\]), or
     ///    hyphens (-). The maximum length is 100 characters.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Rate limits for task dispatches.
     ///
@@ -408,7 +410,7 @@ pub struct Queue {
     ///    particular a task after its first attempt fails. That is,
     ///    \[retry_config][google.cloud.tasks.v2beta2.Queue.retry_config\] controls task retries (the
     ///    second attempt, third attempt, etc).
-    #[prost(message, optional, tag="5")]
+    #[prost(message, optional, tag = "5")]
     pub rate_limits: ::core::option::Option<RateLimits>,
     /// Settings that determine the retry behavior.
     ///
@@ -420,7 +422,7 @@ pub struct Queue {
     ///    explicitly set on the task and were created by the App Engine SDK. See
     ///    [App Engine
     ///    documentation](<https://cloud.google.com/appengine/docs/standard/python/taskqueue/push/retrying-tasks>).
-    #[prost(message, optional, tag="6")]
+    #[prost(message, optional, tag = "6")]
     pub retry_config: ::core::option::Option<RetryConfig>,
     /// Output only. The state of the queue.
     ///
@@ -429,7 +431,7 @@ pub struct Queue {
     /// \[ResumeQueue][google.cloud.tasks.v2beta2.CloudTasks.ResumeQueue\], or uploading
     /// \[queue.yaml/xml\](<https://cloud.google.com/appengine/docs/python/config/queueref>).
     /// \[UpdateQueue][google.cloud.tasks.v2beta2.CloudTasks.UpdateQueue\] cannot be used to change `state`.
-    #[prost(enumeration="queue::State", tag="7")]
+    #[prost(enumeration = "queue::State", tag = "7")]
     pub state: i32,
     /// Output only. The last time this queue was purged.
     ///
@@ -442,7 +444,7 @@ pub struct Queue {
     ///
     /// Purge time will be truncated to the nearest microsecond. Purge
     /// time will be unset if the queue has never been purged.
-    #[prost(message, optional, tag="8")]
+    #[prost(message, optional, tag = "8")]
     pub purge_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The maximum amount of time that a task will be retained in
     /// this queue.
@@ -456,7 +458,7 @@ pub struct Queue {
     /// [storage quota](<https://cloud.google.com/appengine/quotas#Task_Queue>) for
     /// these queues. To view the maximum valid duration, see the documentation for
     /// \[Duration][google.protobuf.Duration\].
-    #[prost(message, optional, tag="9")]
+    #[prost(message, optional, tag = "9")]
     pub task_ttl: ::core::option::Option<::prost_types::Duration>,
     /// The task tombstone time to live (TTL).
     ///
@@ -468,12 +470,12 @@ pub struct Queue {
     /// \[CreateTaskRequest][google.cloud.tasks.v2beta2.CreateTaskRequest.task\].
     ///
     /// Queues created by Cloud Tasks have a default `tombstone_ttl` of 1 hour.
-    #[prost(message, optional, tag="10")]
+    #[prost(message, optional, tag = "10")]
     pub tombstone_ttl: ::core::option::Option<::prost_types::Duration>,
     /// Output only. The realtime, informational statistics for a queue. In order
     /// to receive the statistics the caller should include this field in the
     /// FieldMask.
-    #[prost(message, optional, tag="16")]
+    #[prost(message, optional, tag = "16")]
     pub stats: ::core::option::Option<QueueStats>,
     /// Caller-specified and required in \[CreateQueue][google.cloud.tasks.v2beta2.CloudTasks.CreateQueue][\],
     /// after which the queue config type becomes output only, though fields within
@@ -482,13 +484,23 @@ pub struct Queue {
     /// The queue's target.
     ///
     /// The target applies to all tasks in the queue.
-    #[prost(oneof="queue::TargetType", tags="3, 4")]
+    #[prost(oneof = "queue::TargetType", tags = "3, 4")]
     pub target_type: ::core::option::Option<queue::TargetType>,
 }
 /// Nested message and enum types in `Queue`.
 pub mod queue {
     /// State of the queue.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum State {
         /// Unspecified state.
@@ -552,12 +564,12 @@ pub mod queue {
         /// App Engine HTTP target.
         ///
         /// An App Engine queue is a queue that has an \[AppEngineHttpTarget][google.cloud.tasks.v2beta2.AppEngineHttpTarget\].
-        #[prost(message, tag="3")]
+        #[prost(message, tag = "3")]
         AppEngineHttpTarget(super::AppEngineHttpTarget),
         /// Pull target.
         ///
         /// A pull queue is a queue that has a \[PullTarget][google.cloud.tasks.v2beta2.PullTarget\].
-        #[prost(message, tag="4")]
+        #[prost(message, tag = "4")]
         PullTarget(super::PullTarget),
     }
 }
@@ -585,7 +597,7 @@ pub struct RateLimits {
     /// This field has the same meaning as
     /// [rate in
     /// queue.yaml/xml](<https://cloud.google.com/appengine/docs/standard/python/config/queueref#rate>).
-    #[prost(double, tag="1")]
+    #[prost(double, tag = "1")]
     pub max_tasks_dispatched_per_second: f64,
     /// The max burst size.
     ///
@@ -620,7 +632,7 @@ pub struct RateLimits {
     /// \[UpdateQueue][google.cloud.tasks.v2beta2.CloudTasks.UpdateQueue\] is updating
     /// \[max_dispatches_per_second][RateLimits.max_dispatches_per_second\].
     ///
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub max_burst_size: i32,
     /// The maximum number of concurrent tasks that Cloud Tasks allows
     /// to be dispatched for this queue. After this threshold has been
@@ -641,7 +653,7 @@ pub struct RateLimits {
     /// This field has the same meaning as
     /// [max_concurrent_requests in
     /// queue.yaml/xml](<https://cloud.google.com/appengine/docs/standard/python/config/queueref#max_concurrent_requests>).
-    #[prost(int32, tag="3")]
+    #[prost(int32, tag = "3")]
     pub max_concurrent_tasks: i32,
 }
 /// Retry config.
@@ -669,7 +681,7 @@ pub struct RetryConfig {
     /// This field has the same meaning as
     /// [task_age_limit in
     /// queue.yaml/xml](<https://cloud.google.com/appengine/docs/standard/python/config/queueref#retry_parameters>).
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub max_retry_duration: ::core::option::Option<::prost_types::Duration>,
     /// A task will be \[scheduled][google.cloud.tasks.v2beta2.Task.schedule_time\] for retry between
     /// \[min_backoff][google.cloud.tasks.v2beta2.RetryConfig.min_backoff\] and
@@ -688,7 +700,7 @@ pub struct RetryConfig {
     /// This field has the same meaning as
     /// [min_backoff_seconds in
     /// queue.yaml/xml](<https://cloud.google.com/appengine/docs/standard/python/config/queueref#retry_parameters>).
-    #[prost(message, optional, tag="4")]
+    #[prost(message, optional, tag = "4")]
     pub min_backoff: ::core::option::Option<::prost_types::Duration>,
     /// A task will be \[scheduled][google.cloud.tasks.v2beta2.Task.schedule_time\] for retry between
     /// \[min_backoff][google.cloud.tasks.v2beta2.RetryConfig.min_backoff\] and
@@ -707,7 +719,7 @@ pub struct RetryConfig {
     /// This field has the same meaning as
     /// [max_backoff_seconds in
     /// queue.yaml/xml](<https://cloud.google.com/appengine/docs/standard/python/config/queueref#retry_parameters>).
-    #[prost(message, optional, tag="5")]
+    #[prost(message, optional, tag = "5")]
     pub max_backoff: ::core::option::Option<::prost_types::Duration>,
     /// The time between retries will double `max_doublings` times.
     ///
@@ -737,7 +749,7 @@ pub struct RetryConfig {
     /// This field has the same meaning as
     /// [max_doublings in
     /// queue.yaml/xml](<https://cloud.google.com/appengine/docs/standard/python/config/queueref#retry_parameters>).
-    #[prost(int32, tag="6")]
+    #[prost(int32, tag = "6")]
     pub max_doublings: i32,
     /// Number of attempts per task.
     ///
@@ -749,7 +761,7 @@ pub struct RetryConfig {
     /// This field has the same meaning as
     /// [task_retry_limit in
     /// queue.yaml/xml](<https://cloud.google.com/appengine/docs/standard/python/config/queueref#retry_parameters>).
-    #[prost(oneof="retry_config::NumAttempts", tags="1, 2")]
+    #[prost(oneof = "retry_config::NumAttempts", tags = "1, 2")]
     pub num_attempts: ::core::option::Option<retry_config::NumAttempts>,
 }
 /// Nested message and enum types in `RetryConfig`.
@@ -771,10 +783,10 @@ pub mod retry_config {
         /// Cloud Tasks will attempt the task `max_attempts` times (that
         /// is, if the first attempt fails, then there will be
         /// `max_attempts - 1` retries).  Must be > 0.
-        #[prost(int32, tag="1")]
+        #[prost(int32, tag = "1")]
         MaxAttempts(i32),
         /// If true, then the number of attempts is unlimited.
-        #[prost(bool, tag="2")]
+        #[prost(bool, tag = "2")]
         UnlimitedAttempts(bool),
     }
 }
@@ -785,26 +797,26 @@ pub struct QueueStats {
     /// the queue that haven't been executed, the tasks in the queue which the
     /// queue has dispatched but has not yet received a reply for, and the failed
     /// tasks that the queue is retrying.
-    #[prost(int64, tag="1")]
+    #[prost(int64, tag = "1")]
     pub tasks_count: i64,
     /// Output only. An estimation of the nearest time in the future where a task in the queue
     /// is scheduled to be executed.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub oldest_estimated_arrival_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The number of tasks that the queue has dispatched and received a reply for
     /// during the last minute. This variable counts both successful and
     /// non-successful executions.
-    #[prost(int64, tag="3")]
+    #[prost(int64, tag = "3")]
     pub executed_last_minute_count: i64,
     /// Output only. The number of requests that the queue has dispatched but has not received
     /// a reply for yet.
-    #[prost(int64, tag="4")]
+    #[prost(int64, tag = "4")]
     pub concurrent_dispatches_count: i64,
     /// Output only. The current maximum number of tasks per second executed by the queue.
     /// The maximum value of this variable is controlled by the RateLimits of the
     /// Queue. However, this value could be less to avoid overloading the endpoints
     /// tasks in the queue are targeting.
-    #[prost(double, tag="5")]
+    #[prost(double, tag = "5")]
     pub effective_execution_rate: f64,
 }
 /// A unit of scheduled work.
@@ -830,7 +842,7 @@ pub struct Task {
     ///    hyphens (-). The maximum length is 100 characters.
     /// * `TASK_ID` can contain only letters (\[A-Za-z\]), numbers (\[0-9\]),
     ///    hyphens (-), or underscores (_). The maximum length is 500 characters.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The time when the task is scheduled to be attempted.
     ///
@@ -842,25 +854,25 @@ pub struct Task {
     /// leased plus the \[lease_duration][google.cloud.tasks.v2beta2.LeaseTasksRequest.lease_duration\].
     ///
     /// `schedule_time` will be truncated to the nearest microsecond.
-    #[prost(message, optional, tag="5")]
+    #[prost(message, optional, tag = "5")]
     pub schedule_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The time that the task was created.
     ///
     /// `create_time` will be truncated to the nearest second.
-    #[prost(message, optional, tag="6")]
+    #[prost(message, optional, tag = "6")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The task status.
-    #[prost(message, optional, tag="7")]
+    #[prost(message, optional, tag = "7")]
     pub status: ::core::option::Option<TaskStatus>,
     /// Output only. The view specifies which subset of the \[Task][google.cloud.tasks.v2beta2.Task\] has
     /// been returned.
-    #[prost(enumeration="task::View", tag="8")]
+    #[prost(enumeration = "task::View", tag = "8")]
     pub view: i32,
     /// Required.
     ///
     /// The task's payload is used by the task's target to process the task.
     /// A payload is valid only if it is compatible with the queue's target.
-    #[prost(oneof="task::PayloadType", tags="3, 4")]
+    #[prost(oneof = "task::PayloadType", tags = "3, 4")]
     pub payload_type: ::core::option::Option<task::PayloadType>,
 }
 /// Nested message and enum types in `Task`.
@@ -872,7 +884,17 @@ pub mod task {
     /// payloads, might be desirable to return only when needed because
     /// of its large size or because of the sensitivity of data that it
     /// contains.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum View {
         /// Unspecified. Defaults to BASIC.
@@ -919,13 +941,13 @@ pub mod task {
         /// on the queue.
         ///
         /// An App Engine task is a task that has \[AppEngineHttpRequest][google.cloud.tasks.v2beta2.AppEngineHttpRequest\] set.
-        #[prost(message, tag="3")]
+        #[prost(message, tag = "3")]
         AppEngineHttpRequest(super::AppEngineHttpRequest),
         /// \[LeaseTasks][google.cloud.tasks.v2beta2.CloudTasks.LeaseTasks\] to process the task. Can be
         /// set only if \[pull_target][google.cloud.tasks.v2beta2.Queue.pull_target\] is set on the queue.
         ///
         /// A pull task is a task that has \[PullMessage][google.cloud.tasks.v2beta2.PullMessage\] set.
-        #[prost(message, tag="4")]
+        #[prost(message, tag = "4")]
         PullMessage(super::PullMessage),
     }
 }
@@ -936,12 +958,12 @@ pub struct TaskStatus {
     ///
     /// This count includes attempts which have been dispatched but haven't
     /// received a response.
-    #[prost(int32, tag="1")]
+    #[prost(int32, tag = "1")]
     pub attempt_dispatch_count: i32,
     /// Output only. The number of attempts which have received a response.
     ///
     /// This field is not calculated for [pull tasks]\[google.cloud.tasks.v2beta2.PullMessage\].
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub attempt_response_count: i32,
     /// Output only. The status of the task's first attempt.
     ///
@@ -949,12 +971,12 @@ pub struct TaskStatus {
     /// The other \[AttemptStatus][google.cloud.tasks.v2beta2.AttemptStatus\] information is not retained by Cloud Tasks.
     ///
     /// This field is not calculated for [pull tasks]\[google.cloud.tasks.v2beta2.PullMessage\].
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub first_attempt_status: ::core::option::Option<AttemptStatus>,
     /// Output only. The status of the task's last attempt.
     ///
     /// This field is not calculated for [pull tasks]\[google.cloud.tasks.v2beta2.PullMessage\].
-    #[prost(message, optional, tag="4")]
+    #[prost(message, optional, tag = "4")]
     pub last_attempt_status: ::core::option::Option<AttemptStatus>,
 }
 /// The status of a task attempt.
@@ -963,23 +985,23 @@ pub struct AttemptStatus {
     /// Output only. The time that this attempt was scheduled.
     ///
     /// `schedule_time` will be truncated to the nearest microsecond.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub schedule_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The time that this attempt was dispatched.
     ///
     /// `dispatch_time` will be truncated to the nearest microsecond.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub dispatch_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The time that this attempt response was received.
     ///
     /// `response_time` will be truncated to the nearest microsecond.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub response_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The response from the target for this attempt.
     ///
     /// If the task has not been attempted or the task is currently running
     /// then the response status is unset.
-    #[prost(message, optional, tag="4")]
+    #[prost(message, optional, tag = "4")]
     pub response_status: ::core::option::Option<super::super::super::rpc::Status>,
 }
 /// Request message for \[ListQueues][google.cloud.tasks.v2beta2.CloudTasks.ListQueues\].
@@ -987,7 +1009,7 @@ pub struct AttemptStatus {
 pub struct ListQueuesRequest {
     /// Required. The location name.
     /// For example: `projects/PROJECT_ID/locations/LOCATION_ID`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// `filter` can be used to specify a subset of queues. Any \[Queue][google.cloud.tasks.v2beta2.Queue\]
     /// field can be used as a filter and several operators as supported.
@@ -1000,7 +1022,7 @@ pub struct ListQueuesRequest {
     ///
     /// Note that using filters might cause fewer queues than the
     /// requested_page size to be returned.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub filter: ::prost::alloc::string::String,
     /// Requested page size.
     ///
@@ -1009,7 +1031,7 @@ pub struct ListQueuesRequest {
     /// even if more queues exist; use the
     /// \[next_page_token][google.cloud.tasks.v2beta2.ListQueuesResponse.next_page_token\] in the
     /// response to determine if more queues exist.
-    #[prost(int32, tag="3")]
+    #[prost(int32, tag = "3")]
     pub page_size: i32,
     /// A token identifying the page of results to return.
     ///
@@ -1019,20 +1041,20 @@ pub struct ListQueuesRequest {
     /// from the previous call to \[ListQueues][google.cloud.tasks.v2beta2.CloudTasks.ListQueues\]
     /// method. It is an error to switch the value of the
     /// \[filter][google.cloud.tasks.v2beta2.ListQueuesRequest.filter\] while iterating through pages.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub page_token: ::prost::alloc::string::String,
     /// Optional. Read mask is used for a more granular control over what the API returns.
     /// If the mask is not present all fields will be returned except
     /// \[Queue.stats\]. \[Queue.stats\] will be returned only if it was  explicitly
     /// specified in the mask.
-    #[prost(message, optional, tag="5")]
+    #[prost(message, optional, tag = "5")]
     pub read_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Response message for \[ListQueues][google.cloud.tasks.v2beta2.CloudTasks.ListQueues\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListQueuesResponse {
     /// The list of queues.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub queues: ::prost::alloc::vec::Vec<Queue>,
     /// A token to retrieve next page of results.
     ///
@@ -1043,7 +1065,7 @@ pub struct ListQueuesResponse {
     /// If the next_page_token is empty, there are no more results.
     ///
     /// The page token is valid for only 2 hours.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for \[GetQueue][google.cloud.tasks.v2beta2.CloudTasks.GetQueue\].
@@ -1051,13 +1073,13 @@ pub struct ListQueuesResponse {
 pub struct GetQueueRequest {
     /// Required. The resource name of the queue. For example:
     /// `projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. Read mask is used for a more granular control over what the API returns.
     /// If the mask is not present all fields will be returned except
     /// \[Queue.stats\]. \[Queue.stats\] will be returned only if it was  explicitly
     /// specified in the mask.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub read_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for \[CreateQueue][google.cloud.tasks.v2beta2.CloudTasks.CreateQueue\].
@@ -1069,12 +1091,12 @@ pub struct CreateQueueRequest {
     /// The list of allowed locations can be obtained by calling Cloud
     /// Tasks' implementation of
     /// \[ListLocations][google.cloud.location.Locations.ListLocations\].
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The queue to create.
     ///
     /// [Queue's name]\[google.cloud.tasks.v2beta2.Queue.name\] cannot be the same as an existing queue.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub queue: ::core::option::Option<Queue>,
 }
 /// Request message for \[UpdateQueue][google.cloud.tasks.v2beta2.CloudTasks.UpdateQueue\].
@@ -1087,12 +1109,12 @@ pub struct UpdateQueueRequest {
     /// Output only fields cannot be modified using UpdateQueue.
     /// Any value specified for an output only field will be ignored.
     /// The queue's \[name][google.cloud.tasks.v2beta2.Queue.name\] cannot be changed.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub queue: ::core::option::Option<Queue>,
     /// A mask used to specify which fields of the queue are being updated.
     ///
     /// If empty, then all fields will be updated.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for \[DeleteQueue][google.cloud.tasks.v2beta2.CloudTasks.DeleteQueue\].
@@ -1100,7 +1122,7 @@ pub struct UpdateQueueRequest {
 pub struct DeleteQueueRequest {
     /// Required. The queue name. For example:
     /// `projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for \[PurgeQueue][google.cloud.tasks.v2beta2.CloudTasks.PurgeQueue\].
@@ -1108,7 +1130,7 @@ pub struct DeleteQueueRequest {
 pub struct PurgeQueueRequest {
     /// Required. The queue name. For example:
     /// `projects/PROJECT_ID/location/LOCATION_ID/queues/QUEUE_ID`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for \[PauseQueue][google.cloud.tasks.v2beta2.CloudTasks.PauseQueue\].
@@ -1116,7 +1138,7 @@ pub struct PurgeQueueRequest {
 pub struct PauseQueueRequest {
     /// Required. The queue name. For example:
     /// `projects/PROJECT_ID/location/LOCATION_ID/queues/QUEUE_ID`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for \[ResumeQueue][google.cloud.tasks.v2beta2.CloudTasks.ResumeQueue\].
@@ -1124,7 +1146,7 @@ pub struct PauseQueueRequest {
 pub struct ResumeQueueRequest {
     /// Required. The queue name. For example:
     /// `projects/PROJECT_ID/location/LOCATION_ID/queues/QUEUE_ID`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for listing tasks using \[ListTasks][google.cloud.tasks.v2beta2.CloudTasks.ListTasks\].
@@ -1132,7 +1154,7 @@ pub struct ResumeQueueRequest {
 pub struct ListTasksRequest {
     /// Required. The queue name. For example:
     /// `projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The response_view specifies which subset of the \[Task][google.cloud.tasks.v2beta2.Task\] will be
     /// returned.
@@ -1146,7 +1168,7 @@ pub struct ListTasksRequest {
     /// Authorization for \[FULL][google.cloud.tasks.v2beta2.Task.View.FULL\] requires
     /// `cloudtasks.tasks.fullView` [Google IAM](<https://cloud.google.com/iam/>)
     /// permission on the \[Task][google.cloud.tasks.v2beta2.Task\] resource.
-    #[prost(enumeration="task::View", tag="2")]
+    #[prost(enumeration = "task::View", tag = "2")]
     pub response_view: i32,
     /// Maximum page size.
     ///
@@ -1156,7 +1178,7 @@ pub struct ListTasksRequest {
     ///
     /// The maximum page size is 1000. If unspecified, the page size will be the
     /// maximum.
-    #[prost(int32, tag="4")]
+    #[prost(int32, tag = "4")]
     pub page_size: i32,
     /// A token identifying the page of results to return.
     ///
@@ -1167,14 +1189,14 @@ pub struct ListTasksRequest {
     /// method.
     ///
     /// The page token is valid for only 2 hours.
-    #[prost(string, tag="5")]
+    #[prost(string, tag = "5")]
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for listing tasks using \[ListTasks][google.cloud.tasks.v2beta2.CloudTasks.ListTasks\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTasksResponse {
     /// The list of tasks.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub tasks: ::prost::alloc::vec::Vec<Task>,
     /// A token to retrieve next page of results.
     ///
@@ -1183,7 +1205,7 @@ pub struct ListTasksResponse {
     /// \[page_token][google.cloud.tasks.v2beta2.ListTasksRequest.page_token\].
     ///
     /// If the next_page_token is empty, there are no more results.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for getting a task using \[GetTask][google.cloud.tasks.v2beta2.CloudTasks.GetTask\].
@@ -1191,7 +1213,7 @@ pub struct ListTasksResponse {
 pub struct GetTaskRequest {
     /// Required. The task name. For example:
     /// `projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The response_view specifies which subset of the \[Task][google.cloud.tasks.v2beta2.Task\] will be
     /// returned.
@@ -1205,7 +1227,7 @@ pub struct GetTaskRequest {
     /// Authorization for \[FULL][google.cloud.tasks.v2beta2.Task.View.FULL\] requires
     /// `cloudtasks.tasks.fullView` [Google IAM](<https://cloud.google.com/iam/>)
     /// permission on the \[Task][google.cloud.tasks.v2beta2.Task\] resource.
-    #[prost(enumeration="task::View", tag="2")]
+    #[prost(enumeration = "task::View", tag = "2")]
     pub response_view: i32,
 }
 /// Request message for \[CreateTask][google.cloud.tasks.v2beta2.CloudTasks.CreateTask\].
@@ -1215,7 +1237,7 @@ pub struct CreateTaskRequest {
     /// `projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID`
     ///
     /// The queue must already exist.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The task to add.
     ///
@@ -1250,7 +1272,7 @@ pub struct CreateTaskRequest {
     /// task commands. The infrastructure relies on an approximately
     /// uniform distribution of task ids to store and serve tasks
     /// efficiently.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub task: ::core::option::Option<Task>,
     /// The response_view specifies which subset of the \[Task][google.cloud.tasks.v2beta2.Task\] will be
     /// returned.
@@ -1264,7 +1286,7 @@ pub struct CreateTaskRequest {
     /// Authorization for \[FULL][google.cloud.tasks.v2beta2.Task.View.FULL\] requires
     /// `cloudtasks.tasks.fullView` [Google IAM](<https://cloud.google.com/iam/>)
     /// permission on the \[Task][google.cloud.tasks.v2beta2.Task\] resource.
-    #[prost(enumeration="task::View", tag="3")]
+    #[prost(enumeration = "task::View", tag = "3")]
     pub response_view: i32,
 }
 /// Request message for deleting a task using
@@ -1273,7 +1295,7 @@ pub struct CreateTaskRequest {
 pub struct DeleteTaskRequest {
     /// Required. The task name. For example:
     /// `projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for leasing tasks using \[LeaseTasks][google.cloud.tasks.v2beta2.CloudTasks.LeaseTasks\].
@@ -1281,7 +1303,7 @@ pub struct DeleteTaskRequest {
 pub struct LeaseTasksRequest {
     /// Required. The queue name. For example:
     /// `projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of tasks to lease.
     ///
@@ -1293,7 +1315,7 @@ pub struct LeaseTasksRequest {
     /// The maximum total size of a [lease tasks response]\[google.cloud.tasks.v2beta2.LeaseTasksResponse\] is
     /// 32 MB. If the sum of all task sizes requested reaches this limit,
     /// fewer tasks than requested are returned.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub max_tasks: i32,
     /// Required. The duration of the lease.
     ///
@@ -1314,7 +1336,7 @@ pub struct LeaseTasksRequest {
     ///
     /// The maximum lease duration is 1 week.
     /// `lease_duration` will be truncated to the nearest second.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub lease_duration: ::core::option::Option<::prost_types::Duration>,
     /// The response_view specifies which subset of the \[Task][google.cloud.tasks.v2beta2.Task\] will be
     /// returned.
@@ -1328,7 +1350,7 @@ pub struct LeaseTasksRequest {
     /// Authorization for \[FULL][google.cloud.tasks.v2beta2.Task.View.FULL\] requires
     /// `cloudtasks.tasks.fullView` [Google IAM](<https://cloud.google.com/iam/>)
     /// permission on the \[Task][google.cloud.tasks.v2beta2.Task\] resource.
-    #[prost(enumeration="task::View", tag="4")]
+    #[prost(enumeration = "task::View", tag = "4")]
     pub response_view: i32,
     /// `filter` can be used to specify a subset of tasks to lease.
     ///
@@ -1359,14 +1381,14 @@ pub struct LeaseTasksRequest {
     /// aren't UTF-8 encoded can't be used in the
     /// \[filter][google.cloud.tasks.v2beta2.LeaseTasksRequest.filter\] and the task's
     /// \[tag][google.cloud.tasks.v2beta2.PullMessage.tag\] will be displayed as empty in Cloud Tasks.
-    #[prost(string, tag="5")]
+    #[prost(string, tag = "5")]
     pub filter: ::prost::alloc::string::String,
 }
 /// Response message for leasing tasks using \[LeaseTasks][google.cloud.tasks.v2beta2.CloudTasks.LeaseTasks\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LeaseTasksResponse {
     /// The leased tasks.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub tasks: ::prost::alloc::vec::Vec<Task>,
 }
 /// Request message for acknowledging a task using
@@ -1375,14 +1397,14 @@ pub struct LeaseTasksResponse {
 pub struct AcknowledgeTaskRequest {
     /// Required. The task name. For example:
     /// `projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The task's current schedule time, available in the
     /// \[schedule_time][google.cloud.tasks.v2beta2.Task.schedule_time\] returned by
     /// \[LeaseTasks][google.cloud.tasks.v2beta2.CloudTasks.LeaseTasks\] response or
     /// \[RenewLease][google.cloud.tasks.v2beta2.CloudTasks.RenewLease\] response. This restriction is
     /// to ensure that your worker currently holds the lease.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub schedule_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Request message for renewing a lease using
@@ -1391,21 +1413,21 @@ pub struct AcknowledgeTaskRequest {
 pub struct RenewLeaseRequest {
     /// Required. The task name. For example:
     /// `projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The task's current schedule time, available in the
     /// \[schedule_time][google.cloud.tasks.v2beta2.Task.schedule_time\] returned by
     /// \[LeaseTasks][google.cloud.tasks.v2beta2.CloudTasks.LeaseTasks\] response or
     /// \[RenewLease][google.cloud.tasks.v2beta2.CloudTasks.RenewLease\] response. This restriction is
     /// to ensure that your worker currently holds the lease.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub schedule_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Required. The desired new lease duration, starting from now.
     ///
     ///
     /// The maximum lease duration is 1 week.
     /// `lease_duration` will be truncated to the nearest second.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub lease_duration: ::core::option::Option<::prost_types::Duration>,
     /// The response_view specifies which subset of the \[Task][google.cloud.tasks.v2beta2.Task\] will be
     /// returned.
@@ -1419,7 +1441,7 @@ pub struct RenewLeaseRequest {
     /// Authorization for \[FULL][google.cloud.tasks.v2beta2.Task.View.FULL\] requires
     /// `cloudtasks.tasks.fullView` [Google IAM](<https://cloud.google.com/iam/>)
     /// permission on the \[Task][google.cloud.tasks.v2beta2.Task\] resource.
-    #[prost(enumeration="task::View", tag="4")]
+    #[prost(enumeration = "task::View", tag = "4")]
     pub response_view: i32,
 }
 /// Request message for canceling a lease using
@@ -1428,14 +1450,14 @@ pub struct RenewLeaseRequest {
 pub struct CancelLeaseRequest {
     /// Required. The task name. For example:
     /// `projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The task's current schedule time, available in the
     /// \[schedule_time][google.cloud.tasks.v2beta2.Task.schedule_time\] returned by
     /// \[LeaseTasks][google.cloud.tasks.v2beta2.CloudTasks.LeaseTasks\] response or
     /// \[RenewLease][google.cloud.tasks.v2beta2.CloudTasks.RenewLease\] response. This restriction is
     /// to ensure that your worker currently holds the lease.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub schedule_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The response_view specifies which subset of the \[Task][google.cloud.tasks.v2beta2.Task\] will be
     /// returned.
@@ -1449,7 +1471,7 @@ pub struct CancelLeaseRequest {
     /// Authorization for \[FULL][google.cloud.tasks.v2beta2.Task.View.FULL\] requires
     /// `cloudtasks.tasks.fullView` [Google IAM](<https://cloud.google.com/iam/>)
     /// permission on the \[Task][google.cloud.tasks.v2beta2.Task\] resource.
-    #[prost(enumeration="task::View", tag="3")]
+    #[prost(enumeration = "task::View", tag = "3")]
     pub response_view: i32,
 }
 /// Request message for forcing a task to run now using
@@ -1458,7 +1480,7 @@ pub struct CancelLeaseRequest {
 pub struct RunTaskRequest {
     /// Required. The task name. For example:
     /// `projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The response_view specifies which subset of the \[Task][google.cloud.tasks.v2beta2.Task\] will be
     /// returned.
@@ -1472,7 +1494,7 @@ pub struct RunTaskRequest {
     /// Authorization for \[FULL][google.cloud.tasks.v2beta2.Task.View.FULL\] requires
     /// `cloudtasks.tasks.fullView` [Google IAM](<https://cloud.google.com/iam/>)
     /// permission on the \[Task][google.cloud.tasks.v2beta2.Task\] resource.
-    #[prost(enumeration="task::View", tag="2")]
+    #[prost(enumeration = "task::View", tag = "2")]
     pub response_view: i32,
 }
 /// Generated client implementations.

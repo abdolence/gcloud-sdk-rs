@@ -4,19 +4,19 @@ pub struct Repo {
     /// Resource name of the repository, of the form
     /// `projects/<project>/repos/<repo>`.  The repo name may contain slashes.
     /// eg, `projects/myproject/repos/name/with/slash`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The disk usage of the repo, in bytes. Read-only field. Size is only
     /// returned by GetRepo.
-    #[prost(int64, tag="2")]
+    #[prost(int64, tag = "2")]
     pub size: i64,
     /// URL to clone the repository from Google Cloud Source Repositories.
     /// Read-only field.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub url: ::prost::alloc::string::String,
     /// How this repository mirrors a repository managed by another service.
     /// Read-only field.
-    #[prost(message, optional, tag="4")]
+    #[prost(message, optional, tag = "4")]
     pub mirror_config: ::core::option::Option<MirrorConfig>,
 }
 /// Configuration to automatically mirror a repository from another
@@ -24,18 +24,18 @@ pub struct Repo {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MirrorConfig {
     /// URL of the main repository at the other hosting service.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub url: ::prost::alloc::string::String,
     /// ID of the webhook listening to updates to trigger mirroring.
     /// Removing this webhook from the other hosting service will stop
     /// Google Cloud Source Repositories from receiving notifications,
     /// and thereby disabling mirroring.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub webhook_id: ::prost::alloc::string::String,
     /// ID of the SSH deploy key at the other hosting service.
     /// Removing this key from the other service would deauthorize
     /// Google Cloud Source Repositories from mirroring.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub deploy_key_id: ::prost::alloc::string::String,
 }
 /// Request for GetRepo.
@@ -43,7 +43,7 @@ pub struct MirrorConfig {
 pub struct GetRepoRequest {
     /// The name of the requested repository. Values are of the form
     /// `projects/<project>/repos/<repo>`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request for ListRepos.
@@ -51,28 +51,28 @@ pub struct GetRepoRequest {
 pub struct ListReposRequest {
     /// The project ID whose repos should be listed. Values are of the form
     /// `projects/<project>`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Maximum number of repositories to return; between 1 and 500.
     /// If not set or zero, defaults to 100 at the server.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Resume listing repositories where a prior ListReposResponse
     /// left off. This is an opaque token that must be obtained from
     /// a recent, prior ListReposResponse's next_page_token field.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response for ListRepos.  The size is not set in the returned repositories.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListReposResponse {
     /// The listed repos.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub repos: ::prost::alloc::vec::Vec<Repo>,
     /// If non-empty, additional repositories exist within the project. These
     /// can be retrieved by including this value in the next ListReposRequest's
     /// page_token field.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request for CreateRepo
@@ -80,11 +80,11 @@ pub struct ListReposResponse {
 pub struct CreateRepoRequest {
     /// The project in which to create the repo. Values are of the form
     /// `projects/<project>`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The repo to create.  Only name should be set; setting other fields
     /// is an error.  The project in the name should match the parent field.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub repo: ::core::option::Option<Repo>,
 }
 /// Request for DeleteRepo.
@@ -92,7 +92,7 @@ pub struct CreateRepoRequest {
 pub struct DeleteRepoRequest {
     /// The name of the repo to delete. Values are of the form
     /// `projects/<project>/repos/<repo>`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Generated client implementations.

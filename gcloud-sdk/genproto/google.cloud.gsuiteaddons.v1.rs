@@ -5,7 +5,7 @@ pub struct GetAuthorizationRequest {
     /// authorization information.
     ///
     /// Example: `projects/my_project/authorization`.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub name: ::prost::alloc::string::String,
 }
 /// The authorization information used when invoking deployment endpoints.
@@ -13,15 +13,15 @@ pub struct GetAuthorizationRequest {
 pub struct Authorization {
     /// The canonical full name of this resource.
     /// Example:  `projects/123/authorization`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The email address of the service account used to authenticate requests to
     /// add-on callback endpoints.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub service_account_email: ::prost::alloc::string::String,
     /// The OAuth client ID used to obtain OAuth access tokens for a user on the
     /// add-on's behalf.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub oauth_client_id: ::prost::alloc::string::String,
 }
 /// Request message to create a deployment.
@@ -30,21 +30,21 @@ pub struct CreateDeploymentRequest {
     /// Required. Name of the project in which to create the deployment.
     ///
     /// Example: `projects/my_project`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The id to use for this deployment.  The full name of the created
     /// resource will be `projects/<project_number>/deployments/<deployment_id>`.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub deployment_id: ::prost::alloc::string::String,
     /// Required. The deployment to create (deployment.name cannot be set).
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub deployment: ::core::option::Option<Deployment>,
 }
 /// Request message to create or replace a deployment.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReplaceDeploymentRequest {
     /// Required. The deployment to create or replace.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub deployment: ::core::option::Option<Deployment>,
 }
 /// Request message to get a deployment.
@@ -53,7 +53,7 @@ pub struct GetDeploymentRequest {
     /// Required. The full resource name of the deployment to get.
     ///
     /// Example:  `projects/my_project/deployments/my_deployment`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message to list deployments for a project.
@@ -62,31 +62,31 @@ pub struct ListDeploymentsRequest {
     /// Required. Name of the project in which to create the deployment.
     ///
     /// Example: `projects/my_project`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of deployments to return. The service may return fewer
     /// than this value.
     /// If unspecified, at most 1000 deployments will be returned.
     /// The maximum value is 1000; values above 1000 will be coerced to 1000.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// A page token, received from a previous `ListDeployments` call.
     /// Provide this to retrieve the subsequent page.
     ///
     /// When paginating, all other parameters provided to `ListDeployments` must
     /// match the call that provided the page token.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message to list deployments.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDeploymentsResponse {
     /// The list of deployments for the given project.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub deployments: ::prost::alloc::vec::Vec<Deployment>,
     /// A token, which can be sent as `page_token` to retrieve the next page.
     /// If this field is omitted, there are no subsequent pages.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message to delete a deployment.
@@ -95,11 +95,11 @@ pub struct DeleteDeploymentRequest {
     /// Required. The full resource name of the deployment to delete.
     ///
     /// Example:  `projects/my_project/deployments/my_deployment`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The etag of the deployment to delete.
     /// If this is provided, it must match the server's etag.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub etag: ::prost::alloc::string::String,
 }
 /// Request message to install a developer mode deployment.
@@ -108,7 +108,7 @@ pub struct InstallDeploymentRequest {
     /// Required. The full resource name of the deployment to install.
     ///
     /// Example:  `projects/my_project/deployments/my_deployment`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message to uninstall a developer mode deployment.
@@ -117,7 +117,7 @@ pub struct UninstallDeploymentRequest {
     /// Required. The full resource name of the deployment to install.
     ///
     /// Example:  `projects/my_project/deployments/my_deployment`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message to get the install status of a developer mode deployment.
@@ -126,7 +126,7 @@ pub struct GetInstallStatusRequest {
     /// Required. The full resource name of the deployment.
     ///
     /// Example:  `projects/my_project/deployments/my_deployment/installStatus`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Developer mode install status of a deployment
@@ -135,10 +135,10 @@ pub struct InstallStatus {
     /// The canonical full resource name of the deployment install status.
     ///
     /// Example:  `projects/123/deployments/my_deployment/installStatus`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// True if the deployment is installed for the user
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub installed: ::core::option::Option<bool>,
 }
 /// A Google Workspace Add-on deployment
@@ -146,48 +146,64 @@ pub struct InstallStatus {
 pub struct Deployment {
     /// The deployment resource name.
     /// Example:  projects/123/deployments/my_deployment.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The list of Google OAuth scopes for which to request consent from the end
     /// user before executing an add-on endpoint.
-    #[prost(string, repeated, tag="2")]
+    #[prost(string, repeated, tag = "2")]
     pub oauth_scopes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The Google Workspace Add-on configuration.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub add_ons: ::core::option::Option<AddOns>,
     /// This value is computed by the server based on the version of the
     /// deployment in storage, and may be sent on update and delete requests to
     /// ensure the client has an up-to-date value before proceeding.
-    #[prost(string, tag="5")]
+    #[prost(string, tag = "5")]
     pub etag: ::prost::alloc::string::String,
 }
 /// A Google Workspace Add-on configuration.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddOns {
     /// Configuration that is common across all Google Workspace Add-ons.
-    #[prost(message, optional, tag="1")]
-    pub common: ::core::option::Option<super::super::super::apps::script::r#type::CommonAddOnManifest>,
+    #[prost(message, optional, tag = "1")]
+    pub common: ::core::option::Option<
+        super::super::super::apps::script::r#type::CommonAddOnManifest,
+    >,
     /// Gmail add-on configuration.
-    #[prost(message, optional, tag="2")]
-    pub gmail: ::core::option::Option<super::super::super::apps::script::r#type::gmail::GmailAddOnManifest>,
+    #[prost(message, optional, tag = "2")]
+    pub gmail: ::core::option::Option<
+        super::super::super::apps::script::r#type::gmail::GmailAddOnManifest,
+    >,
     /// Drive add-on configuration.
-    #[prost(message, optional, tag="5")]
-    pub drive: ::core::option::Option<super::super::super::apps::script::r#type::drive::DriveAddOnManifest>,
+    #[prost(message, optional, tag = "5")]
+    pub drive: ::core::option::Option<
+        super::super::super::apps::script::r#type::drive::DriveAddOnManifest,
+    >,
     /// Calendar add-on configuration.
-    #[prost(message, optional, tag="6")]
-    pub calendar: ::core::option::Option<super::super::super::apps::script::r#type::calendar::CalendarAddOnManifest>,
+    #[prost(message, optional, tag = "6")]
+    pub calendar: ::core::option::Option<
+        super::super::super::apps::script::r#type::calendar::CalendarAddOnManifest,
+    >,
     /// Docs add-on configuration.
-    #[prost(message, optional, tag="7")]
-    pub docs: ::core::option::Option<super::super::super::apps::script::r#type::docs::DocsAddOnManifest>,
+    #[prost(message, optional, tag = "7")]
+    pub docs: ::core::option::Option<
+        super::super::super::apps::script::r#type::docs::DocsAddOnManifest,
+    >,
     /// Sheets add-on configuration.
-    #[prost(message, optional, tag="8")]
-    pub sheets: ::core::option::Option<super::super::super::apps::script::r#type::sheets::SheetsAddOnManifest>,
+    #[prost(message, optional, tag = "8")]
+    pub sheets: ::core::option::Option<
+        super::super::super::apps::script::r#type::sheets::SheetsAddOnManifest,
+    >,
     /// Slides add-on configuration.
-    #[prost(message, optional, tag="10")]
-    pub slides: ::core::option::Option<super::super::super::apps::script::r#type::slides::SlidesAddOnManifest>,
+    #[prost(message, optional, tag = "10")]
+    pub slides: ::core::option::Option<
+        super::super::super::apps::script::r#type::slides::SlidesAddOnManifest,
+    >,
     /// Options for sending requests to add-on HTTP endpoints
-    #[prost(message, optional, tag="15")]
-    pub http_options: ::core::option::Option<super::super::super::apps::script::r#type::HttpOptions>,
+    #[prost(message, optional, tag = "15")]
+    pub http_options: ::core::option::Option<
+        super::super::super::apps::script::r#type::HttpOptions,
+    >,
 }
 /// Generated client implementations.
 pub mod g_suite_add_ons_client {

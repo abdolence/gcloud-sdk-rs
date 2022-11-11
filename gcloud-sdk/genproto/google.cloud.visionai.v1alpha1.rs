@@ -2,11 +2,13 @@
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PersonalProtectiveEquipmentDetectionOutput {
     /// Current timestamp.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub current_time: ::core::option::Option<::prost_types::Timestamp>,
     /// A list of DetectedPersons.
-    #[prost(message, repeated, tag="2")]
-    pub detected_persons: ::prost::alloc::vec::Vec<personal_protective_equipment_detection_output::DetectedPerson>,
+    #[prost(message, repeated, tag = "2")]
+    pub detected_persons: ::prost::alloc::vec::Vec<
+        personal_protective_equipment_detection_output::DetectedPerson,
+    >,
 }
 /// Nested message and enum types in `PersonalProtectiveEquipmentDetectionOutput`.
 pub mod personal_protective_equipment_detection_output {
@@ -14,40 +16,40 @@ pub mod personal_protective_equipment_detection_output {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct PersonEntity {
         /// Entity id.
-        #[prost(int64, tag="1")]
+        #[prost(int64, tag = "1")]
         pub person_entity_id: i64,
     }
     /// The entity info for annotations from PPE detection prediction result.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct PpeEntity {
         /// Label id.
-        #[prost(int64, tag="1")]
+        #[prost(int64, tag = "1")]
         pub ppe_label_id: i64,
         /// Human readable string of the label (Examples: helmet, glove, mask).
-        #[prost(string, tag="2")]
+        #[prost(string, tag = "2")]
         pub ppe_label_string: ::prost::alloc::string::String,
         /// Human readable string of the super category label (Examples: head_cover,
         /// hands_cover, face_cover).
-        #[prost(string, tag="3")]
+        #[prost(string, tag = "3")]
         pub ppe_supercategory_label_string: ::prost::alloc::string::String,
         /// Entity id.
-        #[prost(int64, tag="4")]
+        #[prost(int64, tag = "4")]
         pub ppe_entity_id: i64,
     }
     /// Bounding Box in the normalized coordinates.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct NormalizedBoundingBox {
         /// Min in x coordinate.
-        #[prost(float, tag="1")]
+        #[prost(float, tag = "1")]
         pub xmin: f32,
         /// Min in y coordinate.
-        #[prost(float, tag="2")]
+        #[prost(float, tag = "2")]
         pub ymin: f32,
         /// Width of the bounding box.
-        #[prost(float, tag="3")]
+        #[prost(float, tag = "3")]
         pub width: f32,
         /// Height of the bounding box.
-        #[prost(float, tag="4")]
+        #[prost(float, tag = "4")]
         pub height: f32,
     }
     /// PersonIdentified box contains the location and the entity info of the
@@ -55,32 +57,32 @@ pub mod personal_protective_equipment_detection_output {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct PersonIdentifiedBox {
         /// An unique id for this box.
-        #[prost(int64, tag="1")]
+        #[prost(int64, tag = "1")]
         pub box_id: i64,
         /// Bounding Box in the normalized coordinates.
-        #[prost(message, optional, tag="2")]
+        #[prost(message, optional, tag = "2")]
         pub normalized_bounding_box: ::core::option::Option<NormalizedBoundingBox>,
         /// Confidence score associated with this box.
-        #[prost(float, tag="3")]
+        #[prost(float, tag = "3")]
         pub confidence_score: f32,
         /// Person entity info.
-        #[prost(message, optional, tag="4")]
+        #[prost(message, optional, tag = "4")]
         pub person_entity: ::core::option::Option<PersonEntity>,
     }
     /// PPEIdentified box contains the location and the entity info of the PPE.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct PpeIdentifiedBox {
         /// An unique id for this box.
-        #[prost(int64, tag="1")]
+        #[prost(int64, tag = "1")]
         pub box_id: i64,
         /// Bounding Box in the normalized coordinates.
-        #[prost(message, optional, tag="2")]
+        #[prost(message, optional, tag = "2")]
         pub normalized_bounding_box: ::core::option::Option<NormalizedBoundingBox>,
         /// Confidence score associated with this box.
-        #[prost(float, tag="3")]
+        #[prost(float, tag = "3")]
         pub confidence_score: f32,
         /// PPE entity info.
-        #[prost(message, optional, tag="4")]
+        #[prost(message, optional, tag = "4")]
         pub ppe_entity: ::core::option::Option<PpeEntity>,
     }
     /// Detected Person contains the detected person and their associated
@@ -88,32 +90,32 @@ pub mod personal_protective_equipment_detection_output {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DetectedPerson {
         /// The id of detected person.
-        #[prost(int64, tag="1")]
+        #[prost(int64, tag = "1")]
         pub person_id: i64,
         /// The info of detected person identified box.
-        #[prost(message, optional, tag="2")]
+        #[prost(message, optional, tag = "2")]
         pub detected_person_identified_box: ::core::option::Option<PersonIdentifiedBox>,
         /// The info of detected person associated ppe identified boxes.
-        #[prost(message, repeated, tag="3")]
+        #[prost(message, repeated, tag = "3")]
         pub detected_ppe_identified_boxes: ::prost::alloc::vec::Vec<PpeIdentifiedBox>,
         /// Coverage score for each body part.
         /// Coverage score for face.
-        #[prost(float, optional, tag="4")]
+        #[prost(float, optional, tag = "4")]
         pub face_coverage_score: ::core::option::Option<f32>,
         /// Coverage score for eyes.
-        #[prost(float, optional, tag="5")]
+        #[prost(float, optional, tag = "5")]
         pub eyes_coverage_score: ::core::option::Option<f32>,
         /// Coverage score for head.
-        #[prost(float, optional, tag="6")]
+        #[prost(float, optional, tag = "6")]
         pub head_coverage_score: ::core::option::Option<f32>,
         /// Coverage score for hands.
-        #[prost(float, optional, tag="7")]
+        #[prost(float, optional, tag = "7")]
         pub hands_coverage_score: ::core::option::Option<f32>,
         /// Coverage score for body.
-        #[prost(float, optional, tag="8")]
+        #[prost(float, optional, tag = "8")]
         pub body_coverage_score: ::core::option::Option<f32>,
         /// Coverage score for feet.
-        #[prost(float, optional, tag="9")]
+        #[prost(float, optional, tag = "9")]
         pub feet_coverage_score: ::core::option::Option<f32>,
     }
 }
@@ -121,11 +123,13 @@ pub mod personal_protective_equipment_detection_output {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ObjectDetectionPredictionResult {
     /// Current timestamp.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub current_time: ::core::option::Option<::prost_types::Timestamp>,
     /// A list of identified boxes.
-    #[prost(message, repeated, tag="2")]
-    pub identified_boxes: ::prost::alloc::vec::Vec<object_detection_prediction_result::IdentifiedBox>,
+    #[prost(message, repeated, tag = "2")]
+    pub identified_boxes: ::prost::alloc::vec::Vec<
+        object_detection_prediction_result::IdentifiedBox,
+    >,
 }
 /// Nested message and enum types in `ObjectDetectionPredictionResult`.
 pub mod object_detection_prediction_result {
@@ -133,26 +137,28 @@ pub mod object_detection_prediction_result {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Entity {
         /// Label id.
-        #[prost(int64, tag="1")]
+        #[prost(int64, tag = "1")]
         pub label_id: i64,
         /// Human readable string of the label.
-        #[prost(string, tag="2")]
+        #[prost(string, tag = "2")]
         pub label_string: ::prost::alloc::string::String,
     }
     /// Identified box contains location and the entity of the object.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct IdentifiedBox {
         /// An unique id for this box.
-        #[prost(int64, tag="1")]
+        #[prost(int64, tag = "1")]
         pub box_id: i64,
         /// Bounding Box in the normalized coordinates.
-        #[prost(message, optional, tag="2")]
-        pub normalized_bounding_box: ::core::option::Option<identified_box::NormalizedBoundingBox>,
+        #[prost(message, optional, tag = "2")]
+        pub normalized_bounding_box: ::core::option::Option<
+            identified_box::NormalizedBoundingBox,
+        >,
         /// Confidence score associated with this box.
-        #[prost(float, tag="3")]
+        #[prost(float, tag = "3")]
         pub confidence_score: f32,
         /// Entity of this box.
-        #[prost(message, optional, tag="4")]
+        #[prost(message, optional, tag = "4")]
         pub entity: ::core::option::Option<Entity>,
     }
     /// Nested message and enum types in `IdentifiedBox`.
@@ -161,16 +167,16 @@ pub mod object_detection_prediction_result {
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct NormalizedBoundingBox {
             /// Min in x coordinate.
-            #[prost(float, tag="1")]
+            #[prost(float, tag = "1")]
             pub xmin: f32,
             /// Min in y coordinate.
-            #[prost(float, tag="2")]
+            #[prost(float, tag = "2")]
             pub ymin: f32,
             /// Width of the bounding box.
-            #[prost(float, tag="3")]
+            #[prost(float, tag = "3")]
             pub width: f32,
             /// Height of the bounding box.
-            #[prost(float, tag="4")]
+            #[prost(float, tag = "4")]
             pub height: f32,
         }
     }
@@ -181,15 +187,15 @@ pub struct ImageObjectDetectionPredictionResult {
     /// The resource IDs of the AnnotationSpecs that had been identified, ordered
     /// by the confidence score descendingly. It is the id segment instead of full
     /// resource name.
-    #[prost(int64, repeated, tag="1")]
+    #[prost(int64, repeated, tag = "1")]
     pub ids: ::prost::alloc::vec::Vec<i64>,
     /// The display names of the AnnotationSpecs that had been identified, order
     /// matches the IDs.
-    #[prost(string, repeated, tag="2")]
+    #[prost(string, repeated, tag = "2")]
     pub display_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The Model's confidences in correctness of the predicted IDs, higher value
     /// means higher confidence. Order matches the Ids.
-    #[prost(float, repeated, tag="3")]
+    #[prost(float, repeated, tag = "3")]
     pub confidences: ::prost::alloc::vec::Vec<f32>,
     /// Bounding boxes, i.e. the rectangles over the image, that pinpoint
     /// the found AnnotationSpecs. Given in order that matches the IDs. Each
@@ -197,22 +203,22 @@ pub struct ImageObjectDetectionPredictionResult {
     /// `yMax`, which represent the extremal coordinates of the box. They are
     /// relative to the image size, and the point 0,0 is in the top left
     /// of the image.
-    #[prost(message, repeated, tag="4")]
+    #[prost(message, repeated, tag = "4")]
     pub bboxes: ::prost::alloc::vec::Vec<::prost_types::ListValue>,
 }
 /// Prediction output format for Image and Text Classification.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ClassificationPredictionResult {
     /// The resource IDs of the AnnotationSpecs that had been identified.
-    #[prost(int64, repeated, tag="1")]
+    #[prost(int64, repeated, tag = "1")]
     pub ids: ::prost::alloc::vec::Vec<i64>,
     /// The display names of the AnnotationSpecs that had been identified, order
     /// matches the IDs.
-    #[prost(string, repeated, tag="2")]
+    #[prost(string, repeated, tag = "2")]
     pub display_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The Model's confidences in correctness of the predicted IDs, higher value
     /// means higher confidence. Order matches the Ids.
-    #[prost(float, repeated, tag="3")]
+    #[prost(float, repeated, tag = "3")]
     pub confidences: ::prost::alloc::vec::Vec<f32>,
 }
 /// Prediction output format for Image Segmentation.
@@ -224,14 +230,14 @@ pub struct ImageSegmentationPredictionResult {
     /// AnntoationSpec and the color can be found in model's metadata. The model
     /// will choose the most likely category and if none of the categories reach
     /// the confidence threshold, the pixel will be marked as background.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub category_mask: ::prost::alloc::string::String,
     /// A one channel image which is encoded as an 8bit lossless PNG. The size of
     /// the image will be the same as the original image. For a specific pixel,
     /// darker color means less confidence in correctness of the cateogry in the
     /// categoryMask for the corresponding pixel. Black means no confidence and
     /// white means complete confidence.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub confidence_mask: ::prost::alloc::string::String,
 }
 /// Prediction output format for Video Action Recognition.
@@ -239,16 +245,18 @@ pub struct ImageSegmentationPredictionResult {
 pub struct VideoActionRecognitionPredictionResult {
     /// The beginning, inclusive, of the video's time segment in which the
     /// actions have been identified.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub segment_start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The end, inclusive, of the video's time segment in which the actions have
     /// been identified. Particularly, if the end is the same as the start, it
     /// means the identification happens on a specific video frame.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub segment_end_time: ::core::option::Option<::prost_types::Timestamp>,
     /// All of the actions identified in the time range.
-    #[prost(message, repeated, tag="3")]
-    pub actions: ::prost::alloc::vec::Vec<video_action_recognition_prediction_result::IdentifiedAction>,
+    #[prost(message, repeated, tag = "3")]
+    pub actions: ::prost::alloc::vec::Vec<
+        video_action_recognition_prediction_result::IdentifiedAction,
+    >,
 }
 /// Nested message and enum types in `VideoActionRecognitionPredictionResult`.
 pub mod video_action_recognition_prediction_result {
@@ -258,14 +266,14 @@ pub mod video_action_recognition_prediction_result {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct IdentifiedAction {
         /// The resource ID of the AnnotationSpec that had been identified.
-        #[prost(string, tag="1")]
+        #[prost(string, tag = "1")]
         pub id: ::prost::alloc::string::String,
         /// The display name of the AnnotationSpec that had been identified.
-        #[prost(string, tag="2")]
+        #[prost(string, tag = "2")]
         pub display_name: ::prost::alloc::string::String,
         /// The Model's confidence in correction of this identification, higher
         /// value means higher confidence.
-        #[prost(float, tag="3")]
+        #[prost(float, tag = "3")]
         pub confidence: f32,
     }
 }
@@ -274,16 +282,18 @@ pub mod video_action_recognition_prediction_result {
 pub struct VideoObjectTrackingPredictionResult {
     /// The beginning, inclusive, of the video's time segment in which the
     /// current identifications happens.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub segment_start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The end, inclusive, of the video's time segment in which the current
     /// identifications happen. Particularly, if the end is the same as the start,
     /// it means the identifications happen on a specific video frame.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub segment_end_time: ::core::option::Option<::prost_types::Timestamp>,
     /// All of the objects detected in the specified time range.
-    #[prost(message, repeated, tag="3")]
-    pub objects: ::prost::alloc::vec::Vec<video_object_tracking_prediction_result::DetectedObject>,
+    #[prost(message, repeated, tag = "3")]
+    pub objects: ::prost::alloc::vec::Vec<
+        video_object_tracking_prediction_result::DetectedObject,
+    >,
 }
 /// Nested message and enum types in `VideoObjectTrackingPredictionResult`.
 pub mod video_object_tracking_prediction_result {
@@ -293,16 +303,16 @@ pub mod video_object_tracking_prediction_result {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct BoundingBox {
         /// The leftmost coordinate of the bounding box.
-        #[prost(float, tag="1")]
+        #[prost(float, tag = "1")]
         pub x_min: f32,
         /// The rightmost coordinate of the bounding box.
-        #[prost(float, tag="2")]
+        #[prost(float, tag = "2")]
         pub x_max: f32,
         /// The topmost coordinate of the bounding box.
-        #[prost(float, tag="3")]
+        #[prost(float, tag = "3")]
         pub y_min: f32,
         /// The bottommost coordinate of the bounding box.
-        #[prost(float, tag="4")]
+        #[prost(float, tag = "4")]
         pub y_max: f32,
     }
     /// Each DetectedObject is one particular identification of an object
@@ -311,23 +321,23 @@ pub mod video_object_tracking_prediction_result {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DetectedObject {
         /// The resource ID of the AnnotationSpec that had been identified.
-        #[prost(string, tag="1")]
+        #[prost(string, tag = "1")]
         pub id: ::prost::alloc::string::String,
         /// The display name of the AnnotationSpec that had been identified.
-        #[prost(string, tag="2")]
+        #[prost(string, tag = "2")]
         pub display_name: ::prost::alloc::string::String,
         /// Boundingbox.
-        #[prost(message, optional, tag="3")]
+        #[prost(message, optional, tag = "3")]
         pub bounding_box: ::core::option::Option<BoundingBox>,
         /// The Model's confidence in correction of this identification, higher
         /// value means higher confidence.
-        #[prost(float, tag="4")]
+        #[prost(float, tag = "4")]
         pub confidence: f32,
         /// The same object may be identified on muitiple frames which are typical
         /// adjacent. The set of frames where a particular object has been detected
         /// form a track. This track_id can be used to trace down all frames for an
         /// detected object.
-        #[prost(int64, tag="5")]
+        #[prost(int64, tag = "5")]
         pub track_id: i64,
     }
 }
@@ -336,17 +346,19 @@ pub mod video_object_tracking_prediction_result {
 pub struct VideoClassificationPredictionResult {
     /// The beginning, inclusive, of the video's time segment in which the
     /// classifications have been identified.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub segment_start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The end, inclusive, of the video's time segment in which the
     /// classifications have been identified. Particularly, if the end is the same
     /// as the start, it means the identification happens on a specific video
     /// frame.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub segment_end_time: ::core::option::Option<::prost_types::Timestamp>,
     /// All of the classifications identified in the time range.
-    #[prost(message, repeated, tag="3")]
-    pub classifications: ::prost::alloc::vec::Vec<video_classification_prediction_result::IdentifiedClassification>,
+    #[prost(message, repeated, tag = "3")]
+    pub classifications: ::prost::alloc::vec::Vec<
+        video_classification_prediction_result::IdentifiedClassification,
+    >,
 }
 /// Nested message and enum types in `VideoClassificationPredictionResult`.
 pub mod video_classification_prediction_result {
@@ -356,14 +368,14 @@ pub mod video_classification_prediction_result {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct IdentifiedClassification {
         /// The resource ID of the AnnotationSpec that had been identified.
-        #[prost(string, tag="1")]
+        #[prost(string, tag = "1")]
         pub id: ::prost::alloc::string::String,
         /// The display name of the AnnotationSpec that had been identified.
-        #[prost(string, tag="2")]
+        #[prost(string, tag = "2")]
         pub display_name: ::prost::alloc::string::String,
         /// The Model's confidence in correction of this identification, higher
         /// value means higher confidence.
-        #[prost(float, tag="3")]
+        #[prost(float, tag = "3")]
         pub confidence: f32,
     }
 }
@@ -371,22 +383,28 @@ pub mod video_classification_prediction_result {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OccupancyCountingPredictionResult {
     /// Current timestamp.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub current_time: ::core::option::Option<::prost_types::Timestamp>,
     /// A list of identified boxes.
-    #[prost(message, repeated, tag="2")]
-    pub identified_boxes: ::prost::alloc::vec::Vec<occupancy_counting_prediction_result::IdentifiedBox>,
+    #[prost(message, repeated, tag = "2")]
+    pub identified_boxes: ::prost::alloc::vec::Vec<
+        occupancy_counting_prediction_result::IdentifiedBox,
+    >,
     /// Detection statistics.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub stats: ::core::option::Option<occupancy_counting_prediction_result::Stats>,
     /// Track related information. All the tracks that are live at this timestamp.
     /// It only exists if tracking is enabled.
-    #[prost(message, repeated, tag="4")]
-    pub track_info: ::prost::alloc::vec::Vec<occupancy_counting_prediction_result::TrackInfo>,
+    #[prost(message, repeated, tag = "4")]
+    pub track_info: ::prost::alloc::vec::Vec<
+        occupancy_counting_prediction_result::TrackInfo,
+    >,
     /// Dwell time related information. All the tracks that are live in a given
     /// zone with a start and end dwell time timestamp
-    #[prost(message, repeated, tag="5")]
-    pub dwell_time_info: ::prost::alloc::vec::Vec<occupancy_counting_prediction_result::DwellTimeInfo>,
+    #[prost(message, repeated, tag = "5")]
+    pub dwell_time_info: ::prost::alloc::vec::Vec<
+        occupancy_counting_prediction_result::DwellTimeInfo,
+    >,
 }
 /// Nested message and enum types in `OccupancyCountingPredictionResult`.
 pub mod occupancy_counting_prediction_result {
@@ -394,30 +412,32 @@ pub mod occupancy_counting_prediction_result {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Entity {
         /// Label id.
-        #[prost(int64, tag="1")]
+        #[prost(int64, tag = "1")]
         pub label_id: i64,
         /// Human readable string of the label.
-        #[prost(string, tag="2")]
+        #[prost(string, tag = "2")]
         pub label_string: ::prost::alloc::string::String,
     }
     /// Identified box contains location and the entity of the object.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct IdentifiedBox {
         /// An unique id for this box.
-        #[prost(int64, tag="1")]
+        #[prost(int64, tag = "1")]
         pub box_id: i64,
         /// Bounding Box in the normalized coordinates.
-        #[prost(message, optional, tag="2")]
-        pub normalized_bounding_box: ::core::option::Option<identified_box::NormalizedBoundingBox>,
+        #[prost(message, optional, tag = "2")]
+        pub normalized_bounding_box: ::core::option::Option<
+            identified_box::NormalizedBoundingBox,
+        >,
         /// Confidence score associated with this box.
-        #[prost(float, tag="3")]
+        #[prost(float, tag = "3")]
         pub score: f32,
         /// Entity of this box.
-        #[prost(message, optional, tag="4")]
+        #[prost(message, optional, tag = "4")]
         pub entity: ::core::option::Option<Entity>,
         /// An unique id to identify a track. It should be consistent across frames.
         /// It only exists if tracking is enabled.
-        #[prost(int64, tag="5")]
+        #[prost(int64, tag = "5")]
         pub track_id: i64,
     }
     /// Nested message and enum types in `IdentifiedBox`.
@@ -426,16 +446,16 @@ pub mod occupancy_counting_prediction_result {
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct NormalizedBoundingBox {
             /// Min in x coordinate.
-            #[prost(float, tag="1")]
+            #[prost(float, tag = "1")]
             pub xmin: f32,
             /// Min in y coordinate.
-            #[prost(float, tag="2")]
+            #[prost(float, tag = "2")]
             pub ymin: f32,
             /// Width of the bounding box.
-            #[prost(float, tag="3")]
+            #[prost(float, tag = "3")]
             pub width: f32,
             /// Height of the bounding box.
-            #[prost(float, tag="4")]
+            #[prost(float, tag = "4")]
             pub height: f32,
         }
     }
@@ -443,13 +463,13 @@ pub mod occupancy_counting_prediction_result {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Stats {
         /// Counts of the full frame.
-        #[prost(message, repeated, tag="1")]
+        #[prost(message, repeated, tag = "1")]
         pub full_frame_count: ::prost::alloc::vec::Vec<stats::ObjectCount>,
         /// Crossing line counts.
-        #[prost(message, repeated, tag="2")]
+        #[prost(message, repeated, tag = "2")]
         pub crossing_line_counts: ::prost::alloc::vec::Vec<stats::CrossingLineCount>,
         /// Active zone counts.
-        #[prost(message, repeated, tag="3")]
+        #[prost(message, repeated, tag = "3")]
         pub active_zone_counts: ::prost::alloc::vec::Vec<stats::ActiveZoneCount>,
     }
     /// Nested message and enum types in `Stats`.
@@ -459,33 +479,33 @@ pub mod occupancy_counting_prediction_result {
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct ObjectCount {
             /// Entity of this object.
-            #[prost(message, optional, tag="1")]
+            #[prost(message, optional, tag = "1")]
             pub entity: ::core::option::Option<super::Entity>,
             /// Count of the object.
-            #[prost(int32, tag="2")]
+            #[prost(int32, tag = "2")]
             pub count: i32,
         }
         /// Message for Crossing line count.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct CrossingLineCount {
             /// Line annotation from the user.
-            #[prost(message, optional, tag="1")]
+            #[prost(message, optional, tag = "1")]
             pub annotation: ::core::option::Option<super::super::StreamAnnotation>,
             /// The direction that follows the right hand rule.
-            #[prost(message, repeated, tag="2")]
+            #[prost(message, repeated, tag = "2")]
             pub positive_direction_counts: ::prost::alloc::vec::Vec<ObjectCount>,
             /// The direction that is opposite to the right hand rule.
-            #[prost(message, repeated, tag="3")]
+            #[prost(message, repeated, tag = "3")]
             pub negative_direction_counts: ::prost::alloc::vec::Vec<ObjectCount>,
         }
         /// Message for the active zone count.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct ActiveZoneCount {
             /// Active zone annotation from the user.
-            #[prost(message, optional, tag="1")]
+            #[prost(message, optional, tag = "1")]
             pub annotation: ::core::option::Option<super::super::StreamAnnotation>,
             /// Counts in the zone.
-            #[prost(message, repeated, tag="2")]
+            #[prost(message, repeated, tag = "2")]
             pub counts: ::prost::alloc::vec::Vec<ObjectCount>,
         }
     }
@@ -493,26 +513,26 @@ pub mod occupancy_counting_prediction_result {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct TrackInfo {
         /// An unique id to identify a track. It should be consistent across frames.
-        #[prost(string, tag="1")]
+        #[prost(string, tag = "1")]
         pub track_id: ::prost::alloc::string::String,
         /// Start timestamp of this track.
-        #[prost(message, optional, tag="2")]
+        #[prost(message, optional, tag = "2")]
         pub start_time: ::core::option::Option<::prost_types::Timestamp>,
     }
     /// The dwell time info for annotations from occupancy counting operator.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DwellTimeInfo {
         /// An unique id to identify a track. It should be consistent across frames.
-        #[prost(string, tag="1")]
+        #[prost(string, tag = "1")]
         pub track_id: ::prost::alloc::string::String,
         /// The unique id for the zone in which the object is dwelling/waiting.
-        #[prost(string, tag="2")]
+        #[prost(string, tag = "2")]
         pub zone_id: ::prost::alloc::string::String,
         /// The beginning time when a dwelling object has been identified in a zone.
-        #[prost(message, optional, tag="3")]
+        #[prost(message, optional, tag = "3")]
         pub dwell_start_time: ::core::option::Option<::prost_types::Timestamp>,
         /// The end time when a dwelling object has exited in a zone.
-        #[prost(message, optional, tag="4")]
+        #[prost(message, optional, tag = "4")]
         pub dwell_end_time: ::core::option::Option<::prost_types::Timestamp>,
     }
 }
@@ -522,18 +542,18 @@ pub struct StreamAnnotation {
     /// ID of the annotation. It must be unique when used in the certain context.
     /// For example, all the annotations to one input streams of a Vision AI
     /// application.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub id: ::prost::alloc::string::String,
     /// User-friendly name for the annotation.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub display_name: ::prost::alloc::string::String,
     /// The Vision AI stream resource name.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub source_stream: ::prost::alloc::string::String,
     /// The actual type of Annotation.
-    #[prost(enumeration="StreamAnnotationType", tag="4")]
+    #[prost(enumeration = "StreamAnnotationType", tag = "4")]
     pub r#type: i32,
-    #[prost(oneof="stream_annotation::AnnotationPayload", tags="5, 6")]
+    #[prost(oneof = "stream_annotation::AnnotationPayload", tags = "5, 6")]
     pub annotation_payload: ::core::option::Option<stream_annotation::AnnotationPayload>,
 }
 /// Nested message and enum types in `StreamAnnotation`.
@@ -541,10 +561,10 @@ pub mod stream_annotation {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum AnnotationPayload {
         /// Annotation for type ACTIVE_ZONE
-        #[prost(message, tag="5")]
+        #[prost(message, tag = "5")]
         ActiveZone(super::NormalizedPolygon),
         /// Annotation for type CROSSING_LINE
-        #[prost(message, tag="6")]
+        #[prost(message, tag = "6")]
         CrossingLine(super::NormalizedPolyline),
     }
 }
@@ -552,7 +572,7 @@ pub mod stream_annotation {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StreamAnnotations {
     /// Multiple annotations.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub stream_annotations: ::prost::alloc::vec::Vec<StreamAnnotation>,
 }
 /// Normalized Polygon.
@@ -560,7 +580,7 @@ pub struct StreamAnnotations {
 pub struct NormalizedPolygon {
     /// The bounding polygon normalized vertices. Top left corner of the image
     /// will be [0, 0].
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub normalized_vertices: ::prost::alloc::vec::Vec<NormalizedVertex>,
 }
 /// Normalized Pplyline, which represents a curve consisting of connected
@@ -568,7 +588,7 @@ pub struct NormalizedPolygon {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NormalizedPolyline {
     /// A sequence of vertices connected by straight lines.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub normalized_vertices: ::prost::alloc::vec::Vec<NormalizedVertex>,
 }
 /// A vertex represents a 2D point in the image.
@@ -577,10 +597,10 @@ pub struct NormalizedPolyline {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NormalizedVertex {
     /// X coordinate.
-    #[prost(float, tag="1")]
+    #[prost(float, tag = "1")]
     pub x: f32,
     /// Y coordinate.
-    #[prost(float, tag="2")]
+    #[prost(float, tag = "2")]
     pub y: f32,
 }
 /// Message of essential metadata of App Platform.
@@ -589,17 +609,17 @@ pub struct NormalizedVertex {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AppPlatformMetadata {
     /// The application resource name.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub application: ::prost::alloc::string::String,
     /// The instance resource id. Instance is the nested resource of application
     /// under collection 'instances'.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub instance_id: ::prost::alloc::string::String,
     /// The node name of the application graph.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub node: ::prost::alloc::string::String,
     /// The referred processor resource name of the application node.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub processor: ::prost::alloc::string::String,
 }
 /// For any cloud function based customer processing logic, customer's cloud
@@ -610,11 +630,13 @@ pub struct AppPlatformMetadata {
 pub struct AppPlatformCloudFunctionRequest {
     /// The metadata of the AppPlatform for customer to identify the source of the
     /// payload.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub app_platform_metadata: ::core::option::Option<AppPlatformMetadata>,
     /// The actual annotations to be processed by the customized Cloud Function.
-    #[prost(message, repeated, tag="2")]
-    pub annotations: ::prost::alloc::vec::Vec<app_platform_cloud_function_request::StructedInputAnnotation>,
+    #[prost(message, repeated, tag = "2")]
+    pub annotations: ::prost::alloc::vec::Vec<
+        app_platform_cloud_function_request::StructedInputAnnotation,
+    >,
 }
 /// Nested message and enum types in `AppPlatformCloudFunctionRequest`.
 pub mod app_platform_cloud_function_request {
@@ -623,10 +645,10 @@ pub mod app_platform_cloud_function_request {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct StructedInputAnnotation {
         /// The ingestion time of the current annotation.
-        #[prost(int64, tag="1")]
+        #[prost(int64, tag = "1")]
         pub ingestion_time_micros: i64,
         /// The struct format of the actual annotation.
-        #[prost(message, optional, tag="2")]
+        #[prost(message, optional, tag = "2")]
         pub annotation: ::core::option::Option<::prost_types::Struct>,
     }
 }
@@ -636,8 +658,10 @@ pub struct AppPlatformCloudFunctionResponse {
     /// The modified annotations that is returned back to AppPlatform.
     /// If the annotations fields are empty, then those annotations will be dropped
     /// by AppPlatform.
-    #[prost(message, repeated, tag="2")]
-    pub annotations: ::prost::alloc::vec::Vec<app_platform_cloud_function_response::StructedOutputAnnotation>,
+    #[prost(message, repeated, tag = "2")]
+    pub annotations: ::prost::alloc::vec::Vec<
+        app_platform_cloud_function_response::StructedOutputAnnotation,
+    >,
 }
 /// Nested message and enum types in `AppPlatformCloudFunctionResponse`.
 pub mod app_platform_cloud_function_response {
@@ -646,7 +670,7 @@ pub mod app_platform_cloud_function_response {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct StructedOutputAnnotation {
         /// The struct format of the actual annotation.
-        #[prost(message, optional, tag="1")]
+        #[prost(message, optional, tag = "1")]
         pub annotation: ::core::option::Option<::prost_types::Struct>,
     }
 }
@@ -683,34 +707,50 @@ impl StreamAnnotationType {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Cluster {
     /// Output only. Name of the resource.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. The create timestamp.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The update timestamp.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Labels as key value pairs
-    #[prost(map="string, string", tag="4")]
-    pub labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map = "string, string", tag = "4")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
     /// Annotations to allow clients to store small amounts of arbitrary data.
-    #[prost(map="string, string", tag="5")]
-    pub annotations: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map = "string, string", tag = "5")]
+    pub annotations: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
     /// Output only. The DNS name of the data plane service
-    #[prost(string, tag="6")]
+    #[prost(string, tag = "6")]
     pub dataplane_service_endpoint: ::prost::alloc::string::String,
     /// Output only. The current state of the cluster.
-    #[prost(enumeration="cluster::State", tag="7")]
+    #[prost(enumeration = "cluster::State", tag = "7")]
     pub state: i32,
     /// Output only. The private service connection service target name.
-    #[prost(string, tag="8")]
+    #[prost(string, tag = "8")]
     pub psc_target: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `Cluster`.
 pub mod cluster {
     /// The current state of the cluster.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum State {
         /// Not set.
@@ -746,42 +786,42 @@ pub mod cluster {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationMetadata {
     /// Output only. The time the operation was created.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The time the operation finished running.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Server-defined resource path for the target of the operation.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub target: ::prost::alloc::string::String,
     /// Output only. Name of the verb executed by the operation.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub verb: ::prost::alloc::string::String,
     /// Output only. Human-readable status of the operation, if any.
-    #[prost(string, tag="5")]
+    #[prost(string, tag = "5")]
     pub status_message: ::prost::alloc::string::String,
     /// Output only. Identifies whether the user has requested cancellation
     /// of the operation. Operations that have successfully been cancelled
     /// have \[Operation.error][\] value with a \[google.rpc.Status.code][google.rpc.Status.code\] of 1,
     /// corresponding to `Code.CANCELLED`.
-    #[prost(bool, tag="6")]
+    #[prost(bool, tag = "6")]
     pub requested_cancellation: bool,
     /// Output only. API version used to start the operation.
-    #[prost(string, tag="7")]
+    #[prost(string, tag = "7")]
     pub api_version: ::prost::alloc::string::String,
 }
 /// The Google Cloud Storage location for the input content.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GcsSource {
     /// Required. References to a Google Cloud Storage paths.
-    #[prost(string, repeated, tag="1")]
+    #[prost(string, repeated, tag = "1")]
     pub uris: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Represents an actual value of an operator attribute.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AttributeValue {
     /// Attribute value.
-    #[prost(oneof="attribute_value::Value", tags="1, 2, 3, 4")]
+    #[prost(oneof = "attribute_value::Value", tags = "1, 2, 3, 4")]
     pub value: ::core::option::Option<attribute_value::Value>,
 }
 /// Nested message and enum types in `AttributeValue`.
@@ -790,16 +830,16 @@ pub mod attribute_value {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Value {
         /// int.
-        #[prost(int64, tag="1")]
+        #[prost(int64, tag = "1")]
         I(i64),
         /// float.
-        #[prost(float, tag="2")]
+        #[prost(float, tag = "2")]
         F(f32),
         /// bool.
-        #[prost(bool, tag="3")]
+        #[prost(bool, tag = "3")]
         B(bool),
         /// string.
-        #[prost(bytes, tag="4")]
+        #[prost(bytes, tag = "4")]
         S(::prost::alloc::vec::Vec<u8>),
     }
 }
@@ -813,25 +853,28 @@ pub struct AnalyzerDefinition {
     /// The name of this analyzer.
     ///
     /// Tentatively \[a-z][a-z0-9]*(_[a-z0-9\]+)*.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub analyzer: ::prost::alloc::string::String,
     /// The name of the operator that this analyzer runs.
     ///
     /// Must match the name of a supported operator.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub operator: ::prost::alloc::string::String,
     /// Input streams.
-    #[prost(message, repeated, tag="3")]
+    #[prost(message, repeated, tag = "3")]
     pub inputs: ::prost::alloc::vec::Vec<analyzer_definition::StreamInput>,
     /// The attribute values that this analyzer applies to the operator.
     ///
     /// Supply a mapping between the attribute names and the actual value you wish
     /// to apply. If an attribute name is omitted, then it will take a
     /// preconfigured default value.
-    #[prost(map="string, message", tag="4")]
-    pub attrs: ::std::collections::HashMap<::prost::alloc::string::String, AttributeValue>,
+    #[prost(map = "string, message", tag = "4")]
+    pub attrs: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        AttributeValue,
+    >,
     /// Debug options.
-    #[prost(message, optional, tag="5")]
+    #[prost(message, optional, tag = "5")]
     pub debug_options: ::core::option::Option<analyzer_definition::DebugOptions>,
 }
 /// Nested message and enum types in `AnalyzerDefinition`.
@@ -857,15 +900,18 @@ pub mod analyzer_definition {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct StreamInput {
         /// The name of the stream input (as discussed above).
-        #[prost(string, tag="1")]
+        #[prost(string, tag = "1")]
         pub input: ::prost::alloc::string::String,
     }
     /// Options available for debugging purposes only.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DebugOptions {
         /// Environment variables.
-        #[prost(map="string, string", tag="1")]
-        pub environment_variables: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+        #[prost(map = "string, string", tag = "1")]
+        pub environment_variables: ::std::collections::HashMap<
+            ::prost::alloc::string::String,
+            ::prost::alloc::string::String,
+        >,
     }
 }
 /// Defines a full analysis.
@@ -879,91 +925,100 @@ pub mod analyzer_definition {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnalysisDefinition {
     /// Analyzer definitions.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub analyzers: ::prost::alloc::vec::Vec<AnalyzerDefinition>,
 }
 /// Message describing the Analysis object.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Analysis {
     /// The name of resource.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. The create timestamp.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The update timestamp.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Labels as key value pairs.
-    #[prost(map="string, string", tag="4")]
-    pub labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map = "string, string", tag = "4")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
     /// The definition of the analysis.
-    #[prost(message, optional, tag="5")]
+    #[prost(message, optional, tag = "5")]
     pub analysis_definition: ::core::option::Option<AnalysisDefinition>,
     /// Map from the input parameter in the definition to the real stream.
     /// E.g., suppose you had a stream source operator named "input-0" and you try
     /// to receive from the real stream "stream-0". You can add the following
     /// mapping: [input-0: stream-0].
-    #[prost(map="string, string", tag="6")]
-    pub input_streams_mapping: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map = "string, string", tag = "6")]
+    pub input_streams_mapping: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
     /// Map from the output parameter in the definition to the real stream.
     /// E.g., suppose you had a stream sink operator named "output-0" and you try
     /// to send to the real stream "stream-0". You can add the following
     /// mapping: [output-0: stream-0].
-    #[prost(map="string, string", tag="7")]
-    pub output_streams_mapping: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map = "string, string", tag = "7")]
+    pub output_streams_mapping: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
 }
 /// Message for requesting list of Analyses
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAnalysesRequest {
     /// Required. Parent value for ListAnalysesRequest
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Requested page size. Server may return fewer items than requested.
     /// If unspecified, server will pick an appropriate default.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// A token identifying a page of results the server should return.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
     /// Filtering results
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
     /// Hint for how to order the results
-    #[prost(string, tag="5")]
+    #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
 /// Message for response to listing Analyses
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAnalysesResponse {
     /// The list of Analysis
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub analyses: ::prost::alloc::vec::Vec<Analysis>,
     /// A token identifying a page of results the server should return.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
     /// Locations that could not be reached.
-    #[prost(string, repeated, tag="3")]
+    #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Message for getting an Analysis.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAnalysisRequest {
     /// Required. Name of the resource.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Message for creating an Analysis.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateAnalysisRequest {
     /// Required. Value for parent.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. Id of the requesting object.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub analysis_id: ::prost::alloc::string::String,
     /// Required. The resource being created.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub analysis: ::core::option::Option<Analysis>,
     /// Optional. An optional request ID to identify requests. Specify a unique request ID
     /// so that if you must retry your request, the server will know to ignore
@@ -978,7 +1033,7 @@ pub struct CreateAnalysisRequest {
     ///
     /// The request ID must be a valid UUID with the exception that zero UUID is
     /// not supported (00000000-0000-0000-0000-000000000000).
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub request_id: ::prost::alloc::string::String,
 }
 /// Message for updating an Analysis.
@@ -989,10 +1044,10 @@ pub struct UpdateAnalysisRequest {
     /// The fields specified in the update_mask are relative to the resource, not
     /// the full request. A field will be overwritten if it is in the mask. If the
     /// user does not provide a mask then all fields will be overwritten.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// Required. The resource being updated.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub analysis: ::core::option::Option<Analysis>,
     /// Optional. An optional request ID to identify requests. Specify a unique request ID
     /// so that if you must retry your request, the server will know to ignore
@@ -1007,14 +1062,14 @@ pub struct UpdateAnalysisRequest {
     ///
     /// The request ID must be a valid UUID with the exception that zero UUID is
     /// not supported (00000000-0000-0000-0000-000000000000).
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub request_id: ::prost::alloc::string::String,
 }
 /// Message for deleting an Analysis.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteAnalysisRequest {
     /// Required. Name of the resource.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. An optional request ID to identify requests. Specify a unique request ID
     /// so that if you must retry your request, the server will know to ignore
@@ -1029,7 +1084,7 @@ pub struct DeleteAnalysisRequest {
     ///
     /// The request ID must be a valid UUID with the exception that zero UUID is
     /// not supported (00000000-0000-0000-0000-000000000000).
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub request_id: ::prost::alloc::string::String,
 }
 /// Generated client implementations.
@@ -1220,10 +1275,10 @@ pub struct CreateApplicationInstancesRequest {
     /// Required. the name of the application to retrieve.
     /// Format:
     /// "projects/{project}/locations/{location}/applications/{application}"
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The resources being created.
-    #[prost(message, repeated, tag="2")]
+    #[prost(message, repeated, tag = "2")]
     pub application_instances: ::prost::alloc::vec::Vec<ApplicationInstance>,
     /// Optional. An optional request ID to identify requests. Specify a unique request ID
     /// so that if you must retry your request, the server will know to ignore
@@ -1238,7 +1293,7 @@ pub struct CreateApplicationInstancesRequest {
     ///
     /// The request ID must be a valid UUID with the exception that zero UUID is
     /// not supported (00000000-0000-0000-0000-000000000000).
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub request_id: ::prost::alloc::string::String,
 }
 /// Message for removing stream input from an Application.
@@ -1247,10 +1302,10 @@ pub struct DeleteApplicationInstancesRequest {
     /// Required. the name of the application to retrieve.
     /// Format:
     /// "projects/{project}/locations/{location}/applications/{application}"
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. Id of the requesting object.
-    #[prost(string, repeated, tag="2")]
+    #[prost(string, repeated, tag = "2")]
     pub instance_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. An optional request ID to identify requests. Specify a unique request ID
     /// so that if you must retry your request, the server will know to ignore
@@ -1265,60 +1320,60 @@ pub struct DeleteApplicationInstancesRequest {
     ///
     /// The request ID must be a valid UUID with the exception that zero UUID is
     /// not supported (00000000-0000-0000-0000-000000000000).
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub request_id: ::prost::alloc::string::String,
 }
 /// Message for requesting list of Applications.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListApplicationsRequest {
     /// Required. Parent value for ListApplicationsRequest.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Requested page size. Server may return fewer items than requested.
     /// If unspecified, server will pick an appropriate default.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// A token identifying a page of results the server should return.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
     /// Filtering results.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
     /// Hint for how to order the results.
-    #[prost(string, tag="5")]
+    #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
 /// Message for response to listing Applications.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListApplicationsResponse {
     /// The list of Application.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub applications: ::prost::alloc::vec::Vec<Application>,
     /// A token identifying a page of results the server should return.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
     /// Locations that could not be reached.
-    #[prost(string, repeated, tag="3")]
+    #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Message for getting a Application.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetApplicationRequest {
     /// Required. Name of the resource.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Message for creating a Application.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateApplicationRequest {
     /// Required. Value for parent.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. Id of the requesting object.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub application_id: ::prost::alloc::string::String,
     /// Required. The resource being created.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub application: ::core::option::Option<Application>,
     /// Optional. An optional request ID to identify requests. Specify a unique request ID
     /// so that if you must retry your request, the server will know to ignore
@@ -1333,7 +1388,7 @@ pub struct CreateApplicationRequest {
     ///
     /// The request ID must be a valid UUID with the exception that zero UUID is
     /// not supported (00000000-0000-0000-0000-000000000000).
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub request_id: ::prost::alloc::string::String,
 }
 /// Message for updating an Application.
@@ -1344,10 +1399,10 @@ pub struct UpdateApplicationRequest {
     /// The fields specified in the update_mask are relative to the resource, not
     /// the full request. A field will be overwritten if it is in the mask. If the
     /// user does not provide a mask then all fields will be overwritten.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// Required. The resource being updated.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub application: ::core::option::Option<Application>,
     /// Optional. An optional request ID to identify requests. Specify a unique request ID
     /// so that if you must retry your request, the server will know to ignore
@@ -1362,14 +1417,14 @@ pub struct UpdateApplicationRequest {
     ///
     /// The request ID must be a valid UUID with the exception that zero UUID is
     /// not supported (00000000-0000-0000-0000-000000000000).
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub request_id: ::prost::alloc::string::String,
 }
 /// Message for deleting an Application.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteApplicationRequest {
     /// Required. Name of the resource.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. An optional request ID to identify requests. Specify a unique request ID
     /// so that if you must retry your request, the server will know to ignore
@@ -1384,12 +1439,12 @@ pub struct DeleteApplicationRequest {
     ///
     /// The request ID must be a valid UUID with the exception that zero UUID is
     /// not supported (00000000-0000-0000-0000-000000000000).
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub request_id: ::prost::alloc::string::String,
     /// Optional. If set to true, any instances and drafts from this application will also be
     /// deleted. (Otherwise, the request will only work if the application has no
     /// instances and drafts.)
-    #[prost(bool, tag="3")]
+    #[prost(bool, tag = "3")]
     pub force: bool,
 }
 /// Message for deploying an Application.
@@ -1398,11 +1453,11 @@ pub struct DeployApplicationRequest {
     /// Required. the name of the application to retrieve.
     /// Format:
     /// "projects/{project}/locations/{location}/applications/{application}"
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// If set, validate the request and preview the application graph, but do not
     /// actually deploy it.
-    #[prost(bool, tag="2")]
+    #[prost(bool, tag = "2")]
     pub validate_only: bool,
     /// Optional. An optional request ID to identify requests. Specify a unique request ID
     /// so that if you must retry your request, the server will know to ignore
@@ -1417,10 +1472,10 @@ pub struct DeployApplicationRequest {
     ///
     /// The request ID must be a valid UUID with the exception that zero UUID is
     /// not supported (00000000-0000-0000-0000-000000000000).
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub request_id: ::prost::alloc::string::String,
     /// Optional. Whether or not to enable monitoring for the application on deployment.
-    #[prost(bool, tag="4")]
+    #[prost(bool, tag = "4")]
     pub enable_monitoring: bool,
 }
 /// Message for undeploying an Application.
@@ -1429,7 +1484,7 @@ pub struct UndeployApplicationRequest {
     /// Required. the name of the application to retrieve.
     /// Format:
     /// "projects/{project}/locations/{location}/applications/{application}"
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. An optional request ID to identify requests. Specify a unique request ID
     /// so that if you must retry your request, the server will know to ignore
@@ -1444,13 +1499,13 @@ pub struct UndeployApplicationRequest {
     ///
     /// The request ID must be a valid UUID with the exception that zero UUID is
     /// not supported (00000000-0000-0000-0000-000000000000).
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub request_id: ::prost::alloc::string::String,
 }
 /// Message about a single stream input config.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ApplicationStreamInput {
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub stream_with_annotation: ::core::option::Option<StreamWithAnnotation>,
 }
 /// Message for adding stream input to an Application.
@@ -1459,11 +1514,11 @@ pub struct AddApplicationStreamInputRequest {
     /// Required. the name of the application to retrieve.
     /// Format:
     /// "projects/{project}/locations/{location}/applications/{application}"
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The stream inputs to add, the stream resource name is the key of each
     /// StreamInput, and it must be unique within each application.
-    #[prost(message, repeated, tag="2")]
+    #[prost(message, repeated, tag = "2")]
     pub application_stream_inputs: ::prost::alloc::vec::Vec<ApplicationStreamInput>,
     /// Optional. An optional request ID to identify requests. Specify a unique request ID
     /// so that if you must retry your request, the server will know to ignore
@@ -1478,7 +1533,7 @@ pub struct AddApplicationStreamInputRequest {
     ///
     /// The request ID must be a valid UUID with the exception that zero UUID is
     /// not supported (00000000-0000-0000-0000-000000000000).
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub request_id: ::prost::alloc::string::String,
 }
 /// Message for updating stream input to an Application.
@@ -1487,11 +1542,11 @@ pub struct UpdateApplicationStreamInputRequest {
     /// Required. the name of the application to retrieve.
     /// Format:
     /// "projects/{project}/locations/{location}/applications/{application}"
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The stream inputs to update, the stream resource name is the key of each
     /// StreamInput, and it must be unique within each application.
-    #[prost(message, repeated, tag="2")]
+    #[prost(message, repeated, tag = "2")]
     pub application_stream_inputs: ::prost::alloc::vec::Vec<ApplicationStreamInput>,
     /// Optional. An optional request ID to identify requests. Specify a unique request ID
     /// so that if you must retry your request, the server will know to ignore
@@ -1506,11 +1561,11 @@ pub struct UpdateApplicationStreamInputRequest {
     ///
     /// The request ID must be a valid UUID with the exception that zero UUID is
     /// not supported (00000000-0000-0000-0000-000000000000).
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub request_id: ::prost::alloc::string::String,
     /// If true, UpdateApplicationStreamInput will insert stream input to
     /// application even if the target stream is not included in the application.
-    #[prost(bool, tag="4")]
+    #[prost(bool, tag = "4")]
     pub allow_missing: bool,
 }
 /// Message for removing stream input from an Application.
@@ -1519,11 +1574,13 @@ pub struct RemoveApplicationStreamInputRequest {
     /// Required. the name of the application to retrieve.
     /// Format:
     /// "projects/{project}/locations/{location}/applications/{application}"
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The target stream to remove.
-    #[prost(message, repeated, tag="2")]
-    pub target_stream_inputs: ::prost::alloc::vec::Vec<remove_application_stream_input_request::TargetStreamInput>,
+    #[prost(message, repeated, tag = "2")]
+    pub target_stream_inputs: ::prost::alloc::vec::Vec<
+        remove_application_stream_input_request::TargetStreamInput,
+    >,
     /// Optional. An optional request ID to identify requests. Specify a unique request ID
     /// so that if you must retry your request, the server will know to ignore
     /// the request if it has already been completed. The server will guarantee
@@ -1537,7 +1594,7 @@ pub struct RemoveApplicationStreamInputRequest {
     ///
     /// The request ID must be a valid UUID with the exception that zero UUID is
     /// not supported (00000000-0000-0000-0000-000000000000).
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub request_id: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `RemoveApplicationStreamInputRequest`.
@@ -1545,7 +1602,7 @@ pub mod remove_application_stream_input_request {
     /// Message about target streamInput to remove.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct TargetStreamInput {
-        #[prost(string, tag="1")]
+        #[prost(string, tag = "1")]
         pub stream: ::prost::alloc::string::String,
     }
 }
@@ -1553,93 +1610,93 @@ pub mod remove_application_stream_input_request {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListInstancesRequest {
     /// Required. Parent value for ListInstancesRequest.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Requested page size. Server may return fewer items than requested.
     /// If unspecified, server will pick an appropriate default.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// A token identifying a page of results the server should return.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
     /// Filtering results.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
     /// Hint for how to order the results.
-    #[prost(string, tag="5")]
+    #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
 /// Message for response to listing Instances.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListInstancesResponse {
     /// The list of Instance.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub instances: ::prost::alloc::vec::Vec<Instance>,
     /// A token identifying a page of results the server should return.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
     /// Locations that could not be reached.
-    #[prost(string, repeated, tag="3")]
+    #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Message for getting a Instance.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetInstanceRequest {
     /// Required. Name of the resource.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Message for requesting list of Drafts.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDraftsRequest {
     /// Required. Parent value for ListDraftsRequest.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Requested page size. Server may return fewer items than requested.
     /// If unspecified, server will pick an appropriate default.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// A token identifying a page of results the server should return.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
     /// Filtering results.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
     /// Hint for how to order the results.
-    #[prost(string, tag="5")]
+    #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
 /// Message for response to listing Drafts.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDraftsResponse {
     /// The list of Draft.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub drafts: ::prost::alloc::vec::Vec<Draft>,
     /// A token identifying a page of results the server should return.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
     /// Locations that could not be reached.
-    #[prost(string, repeated, tag="3")]
+    #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Message for getting a Draft.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetDraftRequest {
     /// Required. Name of the resource.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Message for creating a Draft.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateDraftRequest {
     /// Required. Value for parent.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. Id of the requesting object.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub draft_id: ::prost::alloc::string::String,
     /// Required. The resource being created.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub draft: ::core::option::Option<Draft>,
     /// Optional. An optional request ID to identify requests. Specify a unique request ID
     /// so that if you must retry your request, the server will know to ignore
@@ -1654,7 +1711,7 @@ pub struct CreateDraftRequest {
     ///
     /// The request ID must be a valid UUID with the exception that zero UUID is
     /// not supported (00000000-0000-0000-0000-000000000000).
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub request_id: ::prost::alloc::string::String,
 }
 /// Message for updating an Draft.
@@ -1665,10 +1722,10 @@ pub struct UpdateDraftRequest {
     /// The fields specified in the update_mask are relative to the resource, not
     /// the full request. A field will be overwritten if it is in the mask. If the
     /// user does not provide a mask then all fields will be overwritten.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// Required. The resource being updated.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub draft: ::core::option::Option<Draft>,
     /// Optional. An optional request ID to identify requests. Specify a unique request ID
     /// so that if you must retry your request, the server will know to ignore
@@ -1683,11 +1740,11 @@ pub struct UpdateDraftRequest {
     ///
     /// The request ID must be a valid UUID with the exception that zero UUID is
     /// not supported (00000000-0000-0000-0000-000000000000).
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub request_id: ::prost::alloc::string::String,
     /// If true, UpdateDraftRequest will create one resource if the target resource
     /// doesn't exist, this time, the field_mask will be ignored.
-    #[prost(bool, tag="4")]
+    #[prost(bool, tag = "4")]
     pub allow_missing: bool,
 }
 /// Message for updating an ApplicationInstance.
@@ -1696,10 +1753,12 @@ pub struct UpdateApplicationInstancesRequest {
     /// Required. the name of the application to retrieve.
     /// Format:
     /// "projects/{project}/locations/{location}/applications/{application}"
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    #[prost(message, repeated, tag="2")]
-    pub application_instances: ::prost::alloc::vec::Vec<update_application_instances_request::UpdateApplicationInstance>,
+    #[prost(message, repeated, tag = "2")]
+    pub application_instances: ::prost::alloc::vec::Vec<
+        update_application_instances_request::UpdateApplicationInstance,
+    >,
     /// Optional. An optional request ID to identify requests. Specify a unique request ID
     /// so that if you must retry your request, the server will know to ignore
     /// the request if it has already been completed. The server will guarantee
@@ -1713,11 +1772,11 @@ pub struct UpdateApplicationInstancesRequest {
     ///
     /// The request ID must be a valid UUID with the exception that zero UUID is
     /// not supported (00000000-0000-0000-0000-000000000000).
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub request_id: ::prost::alloc::string::String,
     /// If true, Update Request will create one resource if the target resource
     /// doesn't exist, this time, the field_mask will be ignored.
-    #[prost(bool, tag="4")]
+    #[prost(bool, tag = "4")]
     pub allow_missing: bool,
 }
 /// Nested message and enum types in `UpdateApplicationInstancesRequest`.
@@ -1729,13 +1788,13 @@ pub mod update_application_instances_request {
         /// The fields specified in the update_mask are relative to the resource, not
         /// the full request. A field will be overwritten if it is in the mask. If
         /// the user does not provide a mask then all fields will be overwritten.
-        #[prost(message, optional, tag="1")]
+        #[prost(message, optional, tag = "1")]
         pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
         /// Required. The resource being updated.
-        #[prost(message, optional, tag="2")]
+        #[prost(message, optional, tag = "2")]
         pub instance: ::core::option::Option<super::Instance>,
         /// Required. The id of the instance.
-        #[prost(string, tag="3")]
+        #[prost(string, tag = "3")]
         pub instance_id: ::prost::alloc::string::String,
     }
 }
@@ -1743,7 +1802,7 @@ pub mod update_application_instances_request {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteDraftRequest {
     /// Required. Name of the resource.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. An optional request ID to identify requests. Specify a unique request ID
     /// so that if you must retry your request, the server will know to ignore
@@ -1758,74 +1817,74 @@ pub struct DeleteDraftRequest {
     ///
     /// The request ID must be a valid UUID with the exception that zero UUID is
     /// not supported (00000000-0000-0000-0000-000000000000).
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub request_id: ::prost::alloc::string::String,
 }
 /// Message for requesting list of Processors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListProcessorsRequest {
     /// Required. Parent value for ListProcessorsRequest.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Requested page size. Server may return fewer items than requested.
     /// If unspecified, server will pick an appropriate default.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// A token identifying a page of results the server should return.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
     /// Filtering results.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
     /// Hint for how to order the results.
-    #[prost(string, tag="5")]
+    #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
 /// Message for response to listing Processors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListProcessorsResponse {
     /// The list of Processor.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub processors: ::prost::alloc::vec::Vec<Processor>,
     /// A token identifying a page of results the server should return.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
     /// Locations that could not be reached.
-    #[prost(string, repeated, tag="3")]
+    #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request Message for listing Prebuilt Processors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPrebuiltProcessorsRequest {
     /// Required. Parent path.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
 }
 /// Response Message for listing Prebuilt Processors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPrebuiltProcessorsResponse {
     /// The list of Processor.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub processors: ::prost::alloc::vec::Vec<Processor>,
 }
 /// Message for getting a Processor.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetProcessorRequest {
     /// Required. Name of the resource.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Message for creating a Processor.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateProcessorRequest {
     /// Required. Value for parent.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. Id of the requesting object.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub processor_id: ::prost::alloc::string::String,
     /// Required. The resource being created.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub processor: ::core::option::Option<Processor>,
     /// Optional. An optional request ID to identify requests. Specify a unique request ID
     /// so that if you must retry your request, the server will know to ignore
@@ -1840,7 +1899,7 @@ pub struct CreateProcessorRequest {
     ///
     /// The request ID must be a valid UUID with the exception that zero UUID is
     /// not supported (00000000-0000-0000-0000-000000000000).
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub request_id: ::prost::alloc::string::String,
 }
 /// Message for updating a Processor.
@@ -1851,10 +1910,10 @@ pub struct UpdateProcessorRequest {
     /// The fields specified in the update_mask are relative to the resource, not
     /// the full request. A field will be overwritten if it is in the mask. If the
     /// user does not provide a mask then all fields will be overwritten.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// Required. The resource being updated.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub processor: ::core::option::Option<Processor>,
     /// Optional. An optional request ID to identify requests. Specify a unique request ID
     /// so that if you must retry your request, the server will know to ignore
@@ -1869,14 +1928,14 @@ pub struct UpdateProcessorRequest {
     ///
     /// The request ID must be a valid UUID with the exception that zero UUID is
     /// not supported (00000000-0000-0000-0000-000000000000).
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub request_id: ::prost::alloc::string::String,
 }
 /// Message for deleting a Processor.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteProcessorRequest {
     /// Required. Name of the resource
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. An optional request ID to identify requests. Specify a unique request ID
     /// so that if you must retry your request, the server will know to ignore
@@ -1891,39 +1950,42 @@ pub struct DeleteProcessorRequest {
     ///
     /// The request ID must be a valid UUID with the exception that zero UUID is
     /// not supported (00000000-0000-0000-0000-000000000000).
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub request_id: ::prost::alloc::string::String,
 }
 /// Message describing Application object
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Application {
     /// name of resource
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. [Output only] Create timestamp
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. [Output only] Update timestamp
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Labels as key value pairs
-    #[prost(map="string, string", tag="4")]
-    pub labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map = "string, string", tag = "4")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
     /// Required. A user friendly display name for the solution.
-    #[prost(string, tag="5")]
+    #[prost(string, tag = "5")]
     pub display_name: ::prost::alloc::string::String,
     /// A description for this application.
-    #[prost(string, tag="6")]
+    #[prost(string, tag = "6")]
     pub description: ::prost::alloc::string::String,
     /// Application graph configuration.
-    #[prost(message, optional, tag="7")]
+    #[prost(message, optional, tag = "7")]
     pub application_configs: ::core::option::Option<ApplicationConfigs>,
     /// Output only. Application graph runtime info. Only exists when application state equals
     /// to DEPLOYED.
-    #[prost(message, optional, tag="8")]
+    #[prost(message, optional, tag = "8")]
     pub runtime_info: ::core::option::Option<application::ApplicationRuntimeInfo>,
     /// Output only. State of the application.
-    #[prost(enumeration="application::State", tag="9")]
+    #[prost(enumeration = "application::State", tag = "9")]
     pub state: i32,
 }
 /// Nested message and enum types in `Application`.
@@ -1932,11 +1994,13 @@ pub mod application {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ApplicationRuntimeInfo {
         /// Timestamp when the engine be deployed
-        #[prost(message, optional, tag="1")]
+        #[prost(message, optional, tag = "1")]
         pub deploy_time: ::core::option::Option<::prost_types::Timestamp>,
         /// Globally created resources like warehouse dataschemas.
-        #[prost(message, repeated, tag="3")]
-        pub global_output_resources: ::prost::alloc::vec::Vec<application_runtime_info::GlobalOutputResource>,
+        #[prost(message, repeated, tag = "3")]
+        pub global_output_resources: ::prost::alloc::vec::Vec<
+            application_runtime_info::GlobalOutputResource,
+        >,
     }
     /// Nested message and enum types in `ApplicationRuntimeInfo`.
     pub mod application_runtime_info {
@@ -1944,24 +2008,34 @@ pub mod application {
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct GlobalOutputResource {
             /// The full resource name of the outputted resources.
-            #[prost(string, tag="1")]
+            #[prost(string, tag = "1")]
             pub output_resource: ::prost::alloc::string::String,
             /// The name of graph node who produces the output resource name.
             /// For example:
             /// output_resource:
             /// /projects/123/locations/us-central1/corpora/my-corpus/dataSchemas/my-schema
             /// producer_node: occupancy-count
-            #[prost(string, tag="2")]
+            #[prost(string, tag = "2")]
             pub producer_node: ::prost::alloc::string::String,
             /// The key of the output resource, it has to be unique within the same
             /// producer node. One producer node can output several output resources,
             /// the key can be used to match corresponding output resources.
-            #[prost(string, tag="3")]
+            #[prost(string, tag = "3")]
             pub key: ::prost::alloc::string::String,
         }
     }
     /// State of the Application
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum State {
         /// The default value. This value is used if the state is omitted.
@@ -2013,10 +2087,10 @@ pub mod application {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ApplicationConfigs {
     /// A list of nodes  in the application graph.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub nodes: ::prost::alloc::vec::Vec<Node>,
     /// Monitoring-related configuration for this application.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub monitoring_config: ::core::option::Option<application_configs::MonitoringConfig>,
 }
 /// Nested message and enum types in `ApplicationConfigs`.
@@ -2025,7 +2099,7 @@ pub mod application_configs {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct MonitoringConfig {
         /// Whether this application has monitoring enabled.
-        #[prost(bool, tag="1")]
+        #[prost(bool, tag = "1")]
         pub enabled: bool,
     }
 }
@@ -2033,23 +2107,23 @@ pub mod application_configs {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Node {
     /// Required. A unique name for the node.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// A user friendly display name for the node.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub display_name: ::prost::alloc::string::String,
     /// Node config.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub node_config: ::core::option::Option<ProcessorConfig>,
     /// Processor name refer to the chosen processor resource.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub processor: ::prost::alloc::string::String,
     /// Parent node. Input node should not have parent node. For V1 Alpha1/Beta
     /// only media warehouse node can have multiple parents, other types of nodes
     /// will only have one parent.
-    #[prost(message, repeated, tag="5")]
+    #[prost(message, repeated, tag = "5")]
     pub parents: ::prost::alloc::vec::Vec<node::InputEdge>,
-    #[prost(oneof="node::StreamOutputConfig", tags="6")]
+    #[prost(oneof = "node::StreamOutputConfig", tags = "6")]
     pub stream_output_config: ::core::option::Option<node::StreamOutputConfig>,
 }
 /// Nested message and enum types in `Node`.
@@ -2058,15 +2132,15 @@ pub mod node {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct InputEdge {
         /// The name of the parent node.
-        #[prost(string, tag="1")]
+        #[prost(string, tag = "1")]
         pub parent_node: ::prost::alloc::string::String,
         /// The connected output artifact of the parent node.
         /// It can be omitted if target processor only has 1 output artifact.
-        #[prost(string, tag="2")]
+        #[prost(string, tag = "2")]
         pub parent_output_channel: ::prost::alloc::string::String,
         /// The connected input channel of the current node's processor.
         /// It can be omitted if target processor only has 1 input channel.
-        #[prost(string, tag="3")]
+        #[prost(string, tag = "3")]
         pub connected_input_channel: ::prost::alloc::string::String,
     }
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -2088,7 +2162,7 @@ pub mod node {
         /// be the output channel name (or leave it blank if there is only 1 output
         /// channel of the processor) and `output_resource` should be the target
         /// output stream.
-        #[prost(bool, tag="6")]
+        #[prost(bool, tag = "6")]
         OutputAllOutputChannelsToStream(bool),
     }
 }
@@ -2096,59 +2170,65 @@ pub mod node {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Draft {
     /// name of resource
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. [Output only] Create timestamp
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. [Output only] Create timestamp
-    #[prost(message, optional, tag="7")]
+    #[prost(message, optional, tag = "7")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Labels as key value pairs
-    #[prost(map="string, string", tag="3")]
-    pub labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map = "string, string", tag = "3")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
     /// Required. A user friendly display name for the solution.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub display_name: ::prost::alloc::string::String,
     /// A description for this application.
-    #[prost(string, tag="5")]
+    #[prost(string, tag = "5")]
     pub description: ::prost::alloc::string::String,
     /// The draft application configs which haven't been updated to an application.
-    #[prost(message, optional, tag="6")]
+    #[prost(message, optional, tag = "6")]
     pub draft_application_configs: ::core::option::Option<ApplicationConfigs>,
 }
 /// Message describing Instance object
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Instance {
     /// Output only. name of resource
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. [Output only] Create timestamp
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. [Output only] Update timestamp
-    #[prost(message, optional, tag="8")]
+    #[prost(message, optional, tag = "8")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Labels as key value pairs
-    #[prost(map="string, string", tag="3")]
-    pub labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map = "string, string", tag = "3")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
     /// Required. A user friendly display name for the solution.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub display_name: ::prost::alloc::string::String,
     /// A description for this application.
-    #[prost(string, tag="5")]
+    #[prost(string, tag = "5")]
     pub description: ::prost::alloc::string::String,
     /// The input resources for the current application instance.
     /// For example:
     /// input_resources:
     /// visionai.googleapis.com/v1/projects/123/locations/us-central1/clusters/456/streams/stream-a
-    #[prost(message, repeated, tag="6")]
+    #[prost(message, repeated, tag = "6")]
     pub input_resources: ::prost::alloc::vec::Vec<instance::InputResource>,
     /// All the output resources associated to one application instance.
-    #[prost(message, repeated, tag="7")]
+    #[prost(message, repeated, tag = "7")]
     pub output_resources: ::prost::alloc::vec::Vec<instance::OutputResource>,
     /// State of the instance.
-    #[prost(enumeration="instance::State", tag="9")]
+    #[prost(enumeration = "instance::State", tag = "9")]
     pub state: i32,
 }
 /// Nested message and enum types in `Instance`.
@@ -2161,15 +2241,17 @@ pub mod instance {
         /// input_resource:
         /// visionai.googleapis.com/v1/projects/123/locations/us-central1/clusters/456/streams/input-stream-a
         /// consumer_node: stream-input
-        #[prost(string, tag="2")]
+        #[prost(string, tag = "2")]
         pub consumer_node: ::prost::alloc::string::String,
         /// The specific input resource binding which will consume the current Input
         /// Resource, can be ignored is there is only 1 input binding.
-        #[prost(string, tag="3")]
+        #[prost(string, tag = "3")]
         pub input_resource_binding: ::prost::alloc::string::String,
         /// Required. Specify the input to the application instance.
-        #[prost(oneof="input_resource::InputResourceInformation", tags="1, 4")]
-        pub input_resource_information: ::core::option::Option<input_resource::InputResourceInformation>,
+        #[prost(oneof = "input_resource::InputResourceInformation", tags = "1, 4")]
+        pub input_resource_information: ::core::option::Option<
+            input_resource::InputResourceInformation,
+        >,
     }
     /// Nested message and enum types in `InputResource`.
     pub mod input_resource {
@@ -2177,11 +2259,11 @@ pub mod instance {
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum InputResourceInformation {
             /// The direct input resource name.
-            #[prost(string, tag="1")]
+            #[prost(string, tag = "1")]
             InputResource(::prost::alloc::string::String),
             /// If the input resource is VisionAI Stream, the associated annotations
             /// can be specified using annotated_stream instead.
-            #[prost(message, tag="4")]
+            #[prost(message, tag = "4")]
             AnnotatedStream(super::super::StreamWithAnnotation),
         }
     }
@@ -2189,32 +2271,42 @@ pub mod instance {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct OutputResource {
         /// The output resource name for the current application instance.
-        #[prost(string, tag="1")]
+        #[prost(string, tag = "1")]
         pub output_resource: ::prost::alloc::string::String,
         /// The name of graph node who produces the output resource name.
         /// For example:
         /// output_resource:
         /// /projects/123/locations/us-central1/clusters/456/streams/output-application-789-stream-a-occupancy-counting
         /// producer_node: occupancy-counting
-        #[prost(string, tag="2")]
+        #[prost(string, tag = "2")]
         pub producer_node: ::prost::alloc::string::String,
         /// The specific output resource binding which produces the current
         /// OutputResource.
-        #[prost(string, tag="4")]
+        #[prost(string, tag = "4")]
         pub output_resource_binding: ::prost::alloc::string::String,
         /// Output only. Whether the output resource is temporary which means the resource is
         /// generated during the deployment of the application.
         /// Temporary resource will be deleted during the undeployment of the
         /// application.
-        #[prost(bool, tag="3")]
+        #[prost(bool, tag = "3")]
         pub is_temporary: bool,
         /// Output only. Whether the output resource is created automatically by the Vision AI App
         /// Platform.
-        #[prost(bool, tag="5")]
+        #[prost(bool, tag = "5")]
         pub autogen: bool,
     }
     /// State of the Instance
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum State {
         /// The default value. This value is used if the state is omitted.
@@ -2266,10 +2358,10 @@ pub mod instance {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ApplicationInstance {
     /// Required. Id of the requesting object.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub instance_id: ::prost::alloc::string::String,
     /// Required. The resource being created.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub instance: ::core::option::Option<Instance>,
 }
 /// Message describing Processor object.
@@ -2277,51 +2369,69 @@ pub struct ApplicationInstance {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Processor {
     /// name of resource.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. [Output only] Create timestamp.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. [Output only] Update timestamp.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Labels as key value pairs.
-    #[prost(map="string, string", tag="4")]
-    pub labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map = "string, string", tag = "4")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
     /// Required. A user friendly display name for the processor.
-    #[prost(string, tag="5")]
+    #[prost(string, tag = "5")]
     pub display_name: ::prost::alloc::string::String,
     /// Illustrative sentences for describing the functionality of the processor.
-    #[prost(string, tag="10")]
+    #[prost(string, tag = "10")]
     pub description: ::prost::alloc::string::String,
     /// Output only. Processor Type.
-    #[prost(enumeration="processor::ProcessorType", tag="6")]
+    #[prost(enumeration = "processor::ProcessorType", tag = "6")]
     pub processor_type: i32,
     /// Model Type.
-    #[prost(enumeration="ModelType", tag="13")]
+    #[prost(enumeration = "ModelType", tag = "13")]
     pub model_type: i32,
     /// Source info for customer created processor.
-    #[prost(message, optional, tag="7")]
+    #[prost(message, optional, tag = "7")]
     pub custom_processor_source_info: ::core::option::Option<CustomProcessorSourceInfo>,
     /// Output only. State of the Processor.
-    #[prost(enumeration="processor::ProcessorState", tag="8")]
+    #[prost(enumeration = "processor::ProcessorState", tag = "8")]
     pub state: i32,
     /// Output only. [Output only] The input / output specifications of a processor, each type
     /// of processor has fixed input / output specs which cannot be altered by
     /// customer.
-    #[prost(message, optional, tag="11")]
+    #[prost(message, optional, tag = "11")]
     pub processor_io_spec: ::core::option::Option<ProcessorIoSpec>,
     /// Output only. The corresponding configuration can be used in the Application to customize
     /// the behavior of the processor.
-    #[prost(string, tag="14")]
+    #[prost(string, tag = "14")]
     pub configuration_typeurl: ::prost::alloc::string::String,
-    #[prost(enumeration="StreamAnnotationType", repeated, packed="false", tag="15")]
+    #[prost(
+        enumeration = "StreamAnnotationType",
+        repeated,
+        packed = "false",
+        tag = "15"
+    )]
     pub supported_annotation_types: ::prost::alloc::vec::Vec<i32>,
 }
 /// Nested message and enum types in `Processor`.
 pub mod processor {
     /// Type
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum ProcessorType {
         /// Processor Type UNSPECIFIED.
@@ -2357,7 +2467,17 @@ pub mod processor {
             }
         }
     }
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum ProcessorState {
         /// Unspecified Processor state.
@@ -2392,20 +2512,28 @@ pub mod processor {
 pub struct ProcessorIoSpec {
     /// For processors with input_channel_specs, the processor must be explicitly
     /// connected to another processor.
-    #[prost(message, repeated, tag="3")]
-    pub graph_input_channel_specs: ::prost::alloc::vec::Vec<processor_io_spec::GraphInputChannelSpec>,
+    #[prost(message, repeated, tag = "3")]
+    pub graph_input_channel_specs: ::prost::alloc::vec::Vec<
+        processor_io_spec::GraphInputChannelSpec,
+    >,
     /// The output artifact specifications for the current processor.
-    #[prost(message, repeated, tag="4")]
-    pub graph_output_channel_specs: ::prost::alloc::vec::Vec<processor_io_spec::GraphOutputChannelSpec>,
+    #[prost(message, repeated, tag = "4")]
+    pub graph_output_channel_specs: ::prost::alloc::vec::Vec<
+        processor_io_spec::GraphOutputChannelSpec,
+    >,
     /// The input resource that needs to be fed from the application instance.
-    #[prost(message, repeated, tag="5")]
-    pub instance_resource_input_binding_specs: ::prost::alloc::vec::Vec<processor_io_spec::InstanceResourceInputBindingSpec>,
+    #[prost(message, repeated, tag = "5")]
+    pub instance_resource_input_binding_specs: ::prost::alloc::vec::Vec<
+        processor_io_spec::InstanceResourceInputBindingSpec,
+    >,
     /// The output resource that the processor will generate per instance.
     /// Other than the explicitly listed output bindings here, all the processors'
     /// GraphOutputChannels can be binded to stream resource. The bind name then is
     /// the same as the GraphOutputChannel's name.
-    #[prost(message, repeated, tag="6")]
-    pub instance_resource_output_binding_specs: ::prost::alloc::vec::Vec<processor_io_spec::InstanceResourceOutputBindingSpec>,
+    #[prost(message, repeated, tag = "6")]
+    pub instance_resource_output_binding_specs: ::prost::alloc::vec::Vec<
+        processor_io_spec::InstanceResourceOutputBindingSpec,
+    >,
 }
 /// Nested message and enum types in `ProcessorIOSpec`.
 pub mod processor_io_spec {
@@ -2413,39 +2541,41 @@ pub mod processor_io_spec {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct GraphInputChannelSpec {
         /// The name of the current input channel.
-        #[prost(string, tag="1")]
+        #[prost(string, tag = "1")]
         pub name: ::prost::alloc::string::String,
         /// The data types of the current input channel.
         /// When this field has more than 1 value, it means this input channel can be
         /// connected to either of these different data types.
-        #[prost(enumeration="DataType", tag="2")]
+        #[prost(enumeration = "DataType", tag = "2")]
         pub data_type: i32,
         /// If specified, only those detailed data types can be connected to the
         /// processor. For example, jpeg stream for MEDIA, or PredictionResult proto
         /// for PROTO type. If unspecified, then any proto is accepted.
-        #[prost(string, repeated, tag="5")]
-        pub accepted_data_type_uris: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+        #[prost(string, repeated, tag = "5")]
+        pub accepted_data_type_uris: ::prost::alloc::vec::Vec<
+            ::prost::alloc::string::String,
+        >,
         /// Whether the current input channel is required by the processor.
         /// For example, for a processor with required video input and optional audio
         /// input, if video input is missing, the application will be rejected while
         /// the audio input can be missing as long as the video input exists.
-        #[prost(bool, tag="3")]
+        #[prost(bool, tag = "3")]
         pub required: bool,
         /// How many input edges can be connected to this input channel. 0 means
         /// unlimited.
-        #[prost(int64, tag="4")]
+        #[prost(int64, tag = "4")]
         pub max_connection_allowed: i64,
     }
     /// Message for output channel specification.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct GraphOutputChannelSpec {
         /// The name of the current output channel.
-        #[prost(string, tag="1")]
+        #[prost(string, tag = "1")]
         pub name: ::prost::alloc::string::String,
         /// The data type of the current output channel.
-        #[prost(enumeration="DataType", tag="2")]
+        #[prost(enumeration = "DataType", tag = "2")]
         pub data_type: i32,
-        #[prost(string, tag="3")]
+        #[prost(string, tag = "3")]
         pub data_type_uri: ::prost::alloc::string::String,
     }
     /// Message for instance resource channel specification.
@@ -2455,10 +2585,15 @@ pub mod processor_io_spec {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct InstanceResourceInputBindingSpec {
         /// Name of the input binding, unique within the processor.
-        #[prost(string, tag="1")]
+        #[prost(string, tag = "1")]
         pub name: ::prost::alloc::string::String,
-        #[prost(oneof="instance_resource_input_binding_spec::ResourceType", tags="2, 3")]
-        pub resource_type: ::core::option::Option<instance_resource_input_binding_spec::ResourceType>,
+        #[prost(
+            oneof = "instance_resource_input_binding_spec::ResourceType",
+            tags = "2, 3"
+        )]
+        pub resource_type: ::core::option::Option<
+            instance_resource_input_binding_spec::ResourceType,
+        >,
     }
     /// Nested message and enum types in `InstanceResourceInputBindingSpec`.
     pub mod instance_resource_input_binding_spec {
@@ -2466,29 +2601,39 @@ pub mod processor_io_spec {
         pub enum ResourceType {
             /// The configuration proto that includes the Googleapis resources. I.e.
             /// type.googleapis.com/google.cloud.vision.v1.StreamWithAnnotation
-            #[prost(string, tag="2")]
+            #[prost(string, tag = "2")]
             ConfigTypeUri(::prost::alloc::string::String),
             /// The direct type url of Googleapis resource. i.e.
             /// type.googleapis.com/google.cloud.vision.v1.Asset
-            #[prost(string, tag="3")]
+            #[prost(string, tag = "3")]
             ResourceTypeUri(::prost::alloc::string::String),
         }
     }
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct InstanceResourceOutputBindingSpec {
         /// Name of the output binding, unique within the processor.
-        #[prost(string, tag="1")]
+        #[prost(string, tag = "1")]
         pub name: ::prost::alloc::string::String,
         /// The resource type uri of the acceptable output resource.
-        #[prost(string, tag="2")]
+        #[prost(string, tag = "2")]
         pub resource_type_uri: ::prost::alloc::string::String,
         /// Whether the output resource needs to be explicitly set in the instance.
         /// If it is false, the processor will automatically generate it if required.
-        #[prost(bool, tag="3")]
+        #[prost(bool, tag = "3")]
         pub explicit: bool,
     }
     /// High level data types supported by the processor.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum DataType {
         /// The default value of DataType.
@@ -2516,22 +2661,27 @@ pub mod processor_io_spec {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomProcessorSourceInfo {
     /// The original product which holds the custom processor's functionality.
-    #[prost(enumeration="custom_processor_source_info::SourceType", tag="1")]
+    #[prost(enumeration = "custom_processor_source_info::SourceType", tag = "1")]
     pub source_type: i32,
     /// Output only. Additional info related to the imported custom processor.
     /// Data is filled in by app platform during the processor creation.
-    #[prost(map="string, string", tag="4")]
-    pub additional_info: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map = "string, string", tag = "4")]
+    pub additional_info: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
     /// Model schema files which specifies the signature of the model.
     /// For VERTEX_CUSTOM models, instances schema is required.
     /// If instances schema is not specified during the processor creation,
     /// VisionAI Platform will try to get it from Vertex, if it doesn't exist, the
     /// creation will fail.
-    #[prost(message, optional, tag="5")]
+    #[prost(message, optional, tag = "5")]
     pub model_schema: ::core::option::Option<custom_processor_source_info::ModelSchema>,
     /// The path where App Platform loads the artifacts for the custom processor.
-    #[prost(oneof="custom_processor_source_info::ArtifactPath", tags="2")]
-    pub artifact_path: ::core::option::Option<custom_processor_source_info::ArtifactPath>,
+    #[prost(oneof = "custom_processor_source_info::ArtifactPath", tags = "2")]
+    pub artifact_path: ::core::option::Option<
+        custom_processor_source_info::ArtifactPath,
+    >,
 }
 /// Nested message and enum types in `CustomProcessorSourceInfo`.
 pub mod custom_processor_source_info {
@@ -2541,19 +2691,29 @@ pub mod custom_processor_source_info {
     pub struct ModelSchema {
         /// Cloud Storage location to a YAML file that defines the format of a single
         /// instance used in prediction and explanation requests.
-        #[prost(message, optional, tag="1")]
+        #[prost(message, optional, tag = "1")]
         pub instances_schema: ::core::option::Option<super::GcsSource>,
         /// Cloud Storage location to a YAML file that defines the prediction and
         /// explanation parameters.
-        #[prost(message, optional, tag="2")]
+        #[prost(message, optional, tag = "2")]
         pub parameters_schema: ::core::option::Option<super::GcsSource>,
         /// Cloud Storage location to a YAML file that defines the format of a single
         /// prediction or explanation.
-        #[prost(message, optional, tag="3")]
+        #[prost(message, optional, tag = "3")]
         pub predictions_schema: ::core::option::Option<super::GcsSource>,
     }
     /// Source type of the imported custom processor.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum SourceType {
         /// Source type unspecified.
@@ -2580,14 +2740,17 @@ pub mod custom_processor_source_info {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ArtifactPath {
         /// The resource name original model hosted in the vertex AI platform.
-        #[prost(string, tag="2")]
+        #[prost(string, tag = "2")]
         VertexModel(::prost::alloc::string::String),
     }
 }
 /// Next ID: 23
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProcessorConfig {
-    #[prost(oneof="processor_config::ProcessorConfig", tags="9, 20, 10, 11, 12, 15, 13, 14, 17, 18, 19, 22")]
+    #[prost(
+        oneof = "processor_config::ProcessorConfig",
+        tags = "9, 20, 10, 11, 12, 15, 13, 14, 17, 18, 19, 22"
+    )]
     pub processor_config: ::core::option::Option<processor_config::ProcessorConfig>,
 }
 /// Nested message and enum types in `ProcessorConfig`.
@@ -2595,41 +2758,43 @@ pub mod processor_config {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ProcessorConfig {
         /// Configs of stream input processor.
-        #[prost(message, tag="9")]
+        #[prost(message, tag = "9")]
         VideoStreamInputConfig(super::VideoStreamInputConfig),
         /// Config of AI-enabled input devices.
-        #[prost(message, tag="20")]
+        #[prost(message, tag = "20")]
         AiEnabledDevicesInputConfig(super::AiEnabledDevicesInputConfig),
         /// Configs of media warehouse processor.
-        #[prost(message, tag="10")]
+        #[prost(message, tag = "10")]
         MediaWarehouseConfig(super::MediaWarehouseConfig),
         /// Configs of person blur processor.
-        #[prost(message, tag="11")]
+        #[prost(message, tag = "11")]
         PersonBlurConfig(super::PersonBlurConfig),
         /// Configs of occupancy count processor.
-        #[prost(message, tag="12")]
+        #[prost(message, tag = "12")]
         OccupancyCountConfig(super::OccupancyCountConfig),
         /// Configs of Person Vehicle Detection processor.
-        #[prost(message, tag="15")]
+        #[prost(message, tag = "15")]
         PersonVehicleDetectionConfig(super::PersonVehicleDetectionConfig),
         /// Configs of Vertex AutoML vision processor.
-        #[prost(message, tag="13")]
+        #[prost(message, tag = "13")]
         VertexAutomlVisionConfig(super::VertexAutoMlVisionConfig),
         /// Configs of Vertex AutoML video processor.
-        #[prost(message, tag="14")]
+        #[prost(message, tag = "14")]
         VertexAutomlVideoConfig(super::VertexAutoMlVideoConfig),
         /// Configs of Vertex Custom processor.
-        #[prost(message, tag="17")]
+        #[prost(message, tag = "17")]
         VertexCustomConfig(super::VertexCustomConfig),
         /// Configs of General Object Detection processor.
-        #[prost(message, tag="18")]
+        #[prost(message, tag = "18")]
         GeneralObjectDetectionConfig(super::GeneralObjectDetectionConfig),
         /// Configs of BigQuery processor.
-        #[prost(message, tag="19")]
+        #[prost(message, tag = "19")]
         BigQueryConfig(super::BigQueryConfig),
         /// Configs of personal_protective_equipment_detection_config
-        #[prost(message, tag="22")]
-        PersonalProtectiveEquipmentDetectionConfig(super::PersonalProtectiveEquipmentDetectionConfig),
+        #[prost(message, tag = "22")]
+        PersonalProtectiveEquipmentDetectionConfig(
+            super::PersonalProtectiveEquipmentDetectionConfig,
+        ),
     }
 }
 /// Message describing Vision AI stream with application specific annotations.
@@ -2637,10 +2802,10 @@ pub mod processor_config {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StreamWithAnnotation {
     /// Vision AI Stream resource name.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub stream: ::prost::alloc::string::String,
     /// Annotations that will be applied to the whole application.
-    #[prost(message, repeated, tag="2")]
+    #[prost(message, repeated, tag = "2")]
     pub application_annotations: ::prost::alloc::vec::Vec<StreamAnnotation>,
     /// Annotations that will be applied to the specific node of the application.
     /// If the same type of the annotations is applied to both application and
@@ -2650,8 +2815,10 @@ pub struct StreamWithAnnotation {
     /// application and one active zone annotation for the Occupancy Analytic
     /// processor, then the Occupancy Analytic processor will have two active zones
     /// defined.
-    #[prost(message, repeated, tag="3")]
-    pub node_annotations: ::prost::alloc::vec::Vec<stream_with_annotation::NodeAnnotation>,
+    #[prost(message, repeated, tag = "3")]
+    pub node_annotations: ::prost::alloc::vec::Vec<
+        stream_with_annotation::NodeAnnotation,
+    >,
 }
 /// Nested message and enum types in `StreamWithAnnotation`.
 pub mod stream_with_annotation {
@@ -2659,10 +2826,10 @@ pub mod stream_with_annotation {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct NodeAnnotation {
         /// The node name of the application graph.
-        #[prost(string, tag="1")]
+        #[prost(string, tag = "1")]
         pub node: ::prost::alloc::string::String,
         /// The node specific stream annotations.
-        #[prost(message, repeated, tag="2")]
+        #[prost(message, repeated, tag = "2")]
         pub annotations: ::prost::alloc::vec::Vec<super::StreamAnnotation>,
     }
 }
@@ -2673,47 +2840,56 @@ pub mod stream_with_annotation {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VideoStreamInputConfig {
     #[deprecated]
-    #[prost(string, repeated, tag="1")]
+    #[prost(string, repeated, tag = "1")]
     pub streams: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     #[deprecated]
-    #[prost(message, repeated, tag="2")]
+    #[prost(message, repeated, tag = "2")]
     pub streams_with_annotation: ::prost::alloc::vec::Vec<StreamWithAnnotation>,
 }
 /// Message describing AI-enabled Devices Input Config.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AiEnabledDevicesInputConfig {
-}
+pub struct AiEnabledDevicesInputConfig {}
 /// Message describing MediaWarehouseConfig.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MediaWarehouseConfig {
     /// Resource name of the Media Warehouse corpus.
     /// Format:
     /// projects/${project_id}/locations/${location_id}/corpora/${corpus_id}
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub corpus: ::prost::alloc::string::String,
     /// Deprecated.
     #[deprecated]
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub region: ::prost::alloc::string::String,
     /// The duration for which all media assets, associated metadata, and search
     /// documents can exist.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub ttl: ::core::option::Option<::prost_types::Duration>,
 }
 /// Message describing FaceBlurConfig.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PersonBlurConfig {
     /// Person blur type.
-    #[prost(enumeration="person_blur_config::PersonBlurType", tag="1")]
+    #[prost(enumeration = "person_blur_config::PersonBlurType", tag = "1")]
     pub person_blur_type: i32,
     /// Whether only blur faces other than the whole object in the processor.
-    #[prost(bool, tag="2")]
+    #[prost(bool, tag = "2")]
     pub faces_only: bool,
 }
 /// Nested message and enum types in `PersonBlurConfig`.
 pub mod person_blur_config {
     /// Type of Person Blur
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum PersonBlurType {
         /// PersonBlur Type UNSPECIFIED.
@@ -2742,15 +2918,15 @@ pub mod person_blur_config {
 pub struct OccupancyCountConfig {
     /// Whether to count the appearances of people, output counts have 'people' as
     /// the key.
-    #[prost(bool, tag="1")]
+    #[prost(bool, tag = "1")]
     pub enable_people_counting: bool,
     /// Whether to count the appearances of vehicles, output counts will have
     /// 'vehicle' as the key.
-    #[prost(bool, tag="2")]
+    #[prost(bool, tag = "2")]
     pub enable_vehicle_counting: bool,
     /// Whether to track each invidual object's loitering time inside the scene or
     /// specific zone.
-    #[prost(bool, tag="3")]
+    #[prost(bool, tag = "3")]
     pub enable_dwelling_time_tracking: bool,
 }
 /// Message describing PersonVehicleDetectionConfig.
@@ -2760,35 +2936,34 @@ pub struct PersonVehicleDetectionConfig {
     /// must be set to true.
     /// Whether to count the appearances of people, output counts have 'people' as
     /// the key.
-    #[prost(bool, tag="1")]
+    #[prost(bool, tag = "1")]
     pub enable_people_counting: bool,
     /// Whether to count the appearances of vehicles, output counts will have
     /// 'vehicle' as the key.
-    #[prost(bool, tag="2")]
+    #[prost(bool, tag = "2")]
     pub enable_vehicle_counting: bool,
 }
 /// Message describing PersonalProtectiveEquipmentDetectionConfig.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PersonalProtectiveEquipmentDetectionConfig {
     /// Whether to enable face coverage detection.
-    #[prost(bool, tag="1")]
+    #[prost(bool, tag = "1")]
     pub enable_face_coverage_detection: bool,
     /// Whether to enable head coverage detection.
-    #[prost(bool, tag="2")]
+    #[prost(bool, tag = "2")]
     pub enable_head_coverage_detection: bool,
     /// Whether to enable hands coverage detection.
-    #[prost(bool, tag="3")]
+    #[prost(bool, tag = "3")]
     pub enable_hands_coverage_detection: bool,
 }
 /// Message of configurations for General Object Detection processor.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GeneralObjectDetectionConfig {
-}
+pub struct GeneralObjectDetectionConfig {}
 /// Message of configurations for BigQuery processor.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BigQueryConfig {
     /// BigQuery table resource for Vision AI Platform to ingest annotations to.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub table: ::prost::alloc::string::String,
     /// Data Schema
     /// By default, Vision AI Application will try to write annotations to the
@@ -2825,14 +3000,17 @@ pub struct BigQueryConfig {
     /// AppendRowsRequest stored in the annotations field.
     /// * To drop the annotation, simply clear the annotations field in the
     /// returned AppPlatformCloudFunctionResponse.
-    #[prost(map="string, string", tag="2")]
-    pub cloud_function_mapping: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map = "string, string", tag = "2")]
+    pub cloud_function_mapping: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
     /// If true, App Platform will create the BigQuery DataSet and the
     /// BigQuery Table with default schema if the specified table doesn't exist.
     /// This doesn't work if any cloud function customized schema is specified
     /// since the system doesn't know your desired schema.
     /// JSON column will be used in the default table created by App Platform.
-    #[prost(bool, tag="3")]
+    #[prost(bool, tag = "3")]
     pub create_default_table_if_not_exists: bool,
 }
 /// Message of configurations of Vertex AutoML Vision Processors.
@@ -2840,11 +3018,11 @@ pub struct BigQueryConfig {
 pub struct VertexAutoMlVisionConfig {
     /// Only entities with higher score than the threshold will be returned.
     /// Value 0.0 means to return all the detected entities.
-    #[prost(float, tag="1")]
+    #[prost(float, tag = "1")]
     pub confidence_threshold: f32,
     /// At most this many predictions will be returned per output frame.
     /// Value 0 means to return all the detected entities.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub max_predictions: i32,
 }
 /// Message describing VertexAutoMLVideoConfig.
@@ -2852,19 +3030,19 @@ pub struct VertexAutoMlVisionConfig {
 pub struct VertexAutoMlVideoConfig {
     /// Only entities with higher score than the threshold will be returned.
     /// Value 0.0 means returns all the detected entities.
-    #[prost(float, tag="1")]
+    #[prost(float, tag = "1")]
     pub confidence_threshold: f32,
     /// Labels specified in this field won't be returned.
-    #[prost(string, repeated, tag="2")]
+    #[prost(string, repeated, tag = "2")]
     pub blocked_labels: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// At most this many predictions will be returned per output frame.
     /// Value 0 means to return all the detected entities.
-    #[prost(int32, tag="3")]
+    #[prost(int32, tag = "3")]
     pub max_predictions: i32,
     /// Only Bounding Box whose size is larger than this limit will be returned.
     /// Object Tracking only.
     /// Value 0.0 means to return all the detected entities.
-    #[prost(float, tag="4")]
+    #[prost(float, tag = "4")]
     pub bounding_box_size_limit: f32,
 }
 /// Message describing VertexCustomConfig.
@@ -2874,11 +3052,11 @@ pub struct VertexCustomConfig {
     /// operator sends prediction requests to Vertex AI endpoint. Default value is
     /// 0, which means there is no max prediction fps limit. The operator sends
     /// prediction requests at input fps.
-    #[prost(int32, tag="1")]
+    #[prost(int32, tag = "1")]
     pub max_prediction_fps: i32,
     /// A description of resources that are dedicated to the DeployedModel, and
     /// that need a higher degree of manual configuration.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub dedicated_resources: ::core::option::Option<DedicatedResources>,
     /// If not empty, the prediction result will be sent to the specified cloud
     /// function for post processing.
@@ -2888,7 +3066,7 @@ pub struct VertexCustomConfig {
     /// PredictResponse stored in the annotations field.
     /// * To drop the prediction output, simply clear the payload field in the
     /// returned AppPlatformCloudFunctionResponse.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub post_processing_cloud_function: ::prost::alloc::string::String,
     /// If true, the prediction request received by custom model will also contain
     /// metadata with the following schema:
@@ -2898,7 +3076,7 @@ pub struct VertexCustomConfig {
     ///        'node': STRING;
     ///        'processor': STRING;
     ///   }
-    #[prost(bool, tag="4")]
+    #[prost(bool, tag = "4")]
     pub attach_application_metadata: bool,
 }
 /// Specification of a single machine.
@@ -2915,14 +3093,14 @@ pub struct MachineSpec {
     /// For \[DeployedModel][\] this field is optional, and the default
     /// value is `n1-standard-2`. For \[BatchPredictionJob][\] or as part of
     /// \[WorkerPoolSpec][\] this field is required.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub machine_type: ::prost::alloc::string::String,
     /// Immutable. The type of accelerator(s) that may be attached to the machine as per
     /// \[accelerator_count][google.cloud.visionai.v1alpha1.MachineSpec.accelerator_count\].
-    #[prost(enumeration="AcceleratorType", tag="2")]
+    #[prost(enumeration = "AcceleratorType", tag = "2")]
     pub accelerator_type: i32,
     /// The number of accelerators to attach to the machine.
-    #[prost(int32, tag="3")]
+    #[prost(int32, tag = "3")]
     pub accelerator_count: i32,
 }
 /// The metric specification that defines the target resource utilization
@@ -2936,13 +3114,13 @@ pub struct AutoscalingMetricSpec {
     /// * For Online Prediction:
     /// * `aiplatform.googleapis.com/prediction/online/accelerator/duty_cycle`
     /// * `aiplatform.googleapis.com/prediction/online/cpu/utilization`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub metric_name: ::prost::alloc::string::String,
     /// The target resource utilization in percentage (1% - 100%) for the given
     /// metric; once the real usage deviates from the target by a certain
     /// percentage, the machine replicas change. The default value is 60
     /// (representing 60%) if not provided.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub target: i32,
 }
 /// A description of resources that are dedicated to a DeployedModel, and
@@ -2950,7 +3128,7 @@ pub struct AutoscalingMetricSpec {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DedicatedResources {
     /// Required. Immutable. The specification of a single machine used by the prediction.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub machine_spec: ::core::option::Option<MachineSpec>,
     /// Required. Immutable. The minimum number of machine replicas this DeployedModel will be always
     /// deployed on. This value must be greater than or equal to 1.
@@ -2958,7 +3136,7 @@ pub struct DedicatedResources {
     /// If traffic against the DeployedModel increases, it may dynamically be
     /// deployed onto more replicas, and as traffic decreases, some of these extra
     /// replicas may be freed.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub min_replica_count: i32,
     /// Immutable. The maximum number of replicas this DeployedModel may be deployed on when
     /// the traffic against it increases. If the requested value is too large,
@@ -2973,7 +3151,7 @@ pub struct DedicatedResources {
     /// quotas. Specifically, you will be charged for max_replica_count *
     /// number of cores in the selected machine type) and (max_replica_count *
     /// number of GPUs per replica in the selected machine type).
-    #[prost(int32, tag="3")]
+    #[prost(int32, tag = "3")]
     pub max_replica_count: i32,
     /// Immutable. The metric specifications that overrides a resource
     /// utilization metric (CPU utilization, accelerator's duty cycle, and so on)
@@ -2995,42 +3173,34 @@ pub struct DedicatedResources {
     /// \[autoscaling_metric_specs.metric_name][google.cloud.visionai.v1alpha1.AutoscalingMetricSpec.metric_name\]
     /// to `aiplatform.googleapis.com/prediction/online/cpu/utilization` and
     /// \[autoscaling_metric_specs.target][google.cloud.visionai.v1alpha1.AutoscalingMetricSpec.target\] to `80`.
-    #[prost(message, repeated, tag="4")]
+    #[prost(message, repeated, tag = "4")]
     pub autoscaling_metric_specs: ::prost::alloc::vec::Vec<AutoscalingMetricSpec>,
 }
 /// RPC Request Messages.
 /// Message for DeployApplication Response.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DeployApplicationResponse {
-}
+pub struct DeployApplicationResponse {}
 /// Message for UndeployApplication Response.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UndeployApplicationResponse {
-}
+pub struct UndeployApplicationResponse {}
 /// Message for RemoveApplicationStreamInput Response.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct RemoveApplicationStreamInputResponse {
-}
+pub struct RemoveApplicationStreamInputResponse {}
 /// Message for AddApplicationStreamInput Response.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AddApplicationStreamInputResponse {
-}
+pub struct AddApplicationStreamInputResponse {}
 /// Message for AddApplicationStreamInput Response.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UpdateApplicationStreamInputResponse {
-}
+pub struct UpdateApplicationStreamInputResponse {}
 /// Message for DeleteApplicationInstance Response.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DeleteApplicationInstancesResponse {
-}
+pub struct DeleteApplicationInstancesResponse {}
 /// Message for CreateApplicationInstance Response.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CreateApplicationInstancesResponse {
-}
+pub struct CreateApplicationInstancesResponse {}
 /// Message for UpdateApplicationInstances Response.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UpdateApplicationInstancesResponse {
-}
+pub struct UpdateApplicationInstancesResponse {}
 /// All the supported model types in Vision AI App Platform.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
@@ -3781,32 +3951,32 @@ pub mod app_platform_client {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GstreamerBufferDescriptor {
     /// The caps string of the payload.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub caps_string: ::prost::alloc::string::String,
     /// Whether the buffer is a key frame.
-    #[prost(bool, tag="2")]
+    #[prost(bool, tag = "2")]
     pub is_key_frame: bool,
     /// PTS of the frame.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub pts_time: ::core::option::Option<::prost_types::Timestamp>,
     /// DTS of the frame.
-    #[prost(message, optional, tag="4")]
+    #[prost(message, optional, tag = "4")]
     pub dts_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Duration of the frame.
-    #[prost(message, optional, tag="5")]
+    #[prost(message, optional, tag = "5")]
     pub duration: ::core::option::Option<::prost_types::Duration>,
 }
 /// The descriptor for a raw image.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RawImageDescriptor {
     /// Raw image format. Its possible values are: "srgb".
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub format: ::prost::alloc::string::String,
     /// The height of the image.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub height: i32,
     /// The width of the image.
-    #[prost(int32, tag="3")]
+    #[prost(int32, tag = "3")]
     pub width: i32,
 }
 /// The message that represents the data type of a packet.
@@ -3814,10 +3984,10 @@ pub struct RawImageDescriptor {
 pub struct PacketType {
     /// The type class of the packet. Its possible values are:
     /// "gst", "protobuf", and "string".
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub type_class: ::prost::alloc::string::String,
     /// The type descriptor.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub type_descriptor: ::core::option::Option<packet_type::TypeDescriptor>,
 }
 /// Nested message and enum types in `PacketType`.
@@ -3835,13 +4005,13 @@ pub mod packet_type {
         /// type string here can in fact be separated by multiple '/'s of its own.
         ///
         /// Please see the open source SDK for specific codec documentation.
-        #[prost(string, tag="1")]
+        #[prost(string, tag = "1")]
         pub r#type: ::prost::alloc::string::String,
         /// Detailed information about the type.
         ///
         /// It is non-empty only for specific type class codecs. Needed only when the
         /// type string alone is not enough to disambiguate the specific type.
-        #[prost(oneof="type_descriptor::TypeDetails", tags="2, 3")]
+        #[prost(oneof = "type_descriptor::TypeDetails", tags = "2, 3")]
         pub type_details: ::core::option::Option<type_descriptor::TypeDetails>,
     }
     /// Nested message and enum types in `TypeDescriptor`.
@@ -3853,10 +4023,10 @@ pub mod packet_type {
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum TypeDetails {
             /// GstreamerBufferDescriptor is the descriptor for gstreamer buffer type.
-            #[prost(message, tag="2")]
+            #[prost(message, tag = "2")]
             GstreamerBufferDescriptor(super::super::GstreamerBufferDescriptor),
             /// RawImageDescriptor is the descriptor for the raw image type.
-            #[prost(message, tag="3")]
+            #[prost(message, tag = "3")]
             RawImageDescriptor(super::super::RawImageDescriptor),
         }
     }
@@ -3865,7 +4035,7 @@ pub mod packet_type {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ServerMetadata {
     /// The offset position for the packet in its stream.
-    #[prost(int64, tag="1")]
+    #[prost(int64, tag = "1")]
     pub offset: i64,
     /// The timestamp at which the stream server receives this packet. This is
     /// based on the local clock of on the server side. It is guaranteed to be
@@ -3873,7 +4043,7 @@ pub struct ServerMetadata {
     /// this timestamp is not comparable across packets sent to the same stream
     /// different sessions. Session here refers to one individual gRPC streaming
     /// request to the stream server.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub ingest_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// The message that represents series metadata.
@@ -3881,32 +4051,32 @@ pub struct ServerMetadata {
 pub struct SeriesMetadata {
     /// Series name. It's in the format of
     /// "projects/{project}/locations/{location}/clusters/{cluster}/series/{stream}".
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub series: ::prost::alloc::string::String,
 }
 /// The message that represents packet header.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PacketHeader {
     /// Input only. The capture time of the packet.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub capture_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Input only. Immutable. The type of the payload.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub r#type: ::core::option::Option<PacketType>,
     /// Input only. This field is for users to attach user managed metadata.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub metadata: ::core::option::Option<::prost_types::Struct>,
     /// Output only. Metadata that the server appends to each packet before sending
     /// it to receivers. You don't need to set a value for this field when sending
     /// packets.
-    #[prost(message, optional, tag="4")]
+    #[prost(message, optional, tag = "4")]
     pub server_metadata: ::core::option::Option<ServerMetadata>,
     /// Input only. Immutable. Metadata that the server needs to know where to
     /// write the packets to. It's only required for the first packet.
-    #[prost(message, optional, tag="5")]
+    #[prost(message, optional, tag = "5")]
     pub series_metadata: ::core::option::Option<SeriesMetadata>,
     /// Immutable. Packet flag set. SDK will set the flag automatically.
-    #[prost(int32, tag="6")]
+    #[prost(int32, tag = "6")]
     pub flags: i32,
     /// Immutable. Header string for tracing across services. It should be set when the packet
     /// is first arrived in the stream server.
@@ -3919,23 +4089,23 @@ pub struct PacketHeader {
     ///    characters)
     /// Example: "00-404142434445464748494a4b4c4d4e4f-6162636465666768-01"
     ///            v  trace_id                         span_id          options
-    #[prost(string, tag="7")]
+    #[prost(string, tag = "7")]
     pub trace_context: ::prost::alloc::string::String,
 }
 /// The quanta of datum that the series accepts.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Packet {
     /// The packet header.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub header: ::core::option::Option<PacketHeader>,
     /// The payload of the packet.
-    #[prost(bytes="vec", tag="2")]
+    #[prost(bytes = "vec", tag = "2")]
     pub payload: ::prost::alloc::vec::Vec<u8>,
 }
 /// Request message for ReceiveEvents.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReceiveEventsRequest {
-    #[prost(oneof="receive_events_request::Request", tags="1, 2")]
+    #[prost(oneof = "receive_events_request::Request", tags = "1, 2")]
     pub request: ::core::option::Option<receive_events_request::Request>,
 }
 /// Nested message and enum types in `ReceiveEventsRequest`.
@@ -3945,18 +4115,18 @@ pub mod receive_events_request {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SetupRequest {
         /// The cluster name.
-        #[prost(string, tag="1")]
+        #[prost(string, tag = "1")]
         pub cluster: ::prost::alloc::string::String,
         /// The stream name. The service will return the events for the given stream.
-        #[prost(string, tag="2")]
+        #[prost(string, tag = "2")]
         pub stream: ::prost::alloc::string::String,
         /// A name for the receiver to self-identify.
         ///
         /// This is used to keep track of a receiver's read progress.
-        #[prost(string, tag="3")]
+        #[prost(string, tag = "3")]
         pub receiver: ::prost::alloc::string::String,
         /// Controller mode configuration for receiving events from the server.
-        #[prost(message, optional, tag="4")]
+        #[prost(message, optional, tag = "4")]
         pub controlled_mode: ::core::option::Option<super::ControlledMode>,
         /// The maximum duration of server silence before the client determines the
         /// server unreachable.
@@ -3964,7 +4134,7 @@ pub mod receive_events_request {
         /// The client must either receive an `Event` update or a heart beat message
         /// before this duration expires; otherwise, the client will automatically
         /// cancel the current connection and retry.
-        #[prost(message, optional, tag="5")]
+        #[prost(message, optional, tag = "5")]
         pub heartbeat_interval: ::core::option::Option<::prost_types::Duration>,
         /// The grace period after which a `writes_done_request` is issued, that a
         /// `WritesDone` is expected from the client.
@@ -3972,16 +4142,16 @@ pub mod receive_events_request {
         /// The server is free to cancel the RPC should this expire.
         ///
         /// A system default will be chosen if unset.
-        #[prost(message, optional, tag="6")]
+        #[prost(message, optional, tag = "6")]
         pub writes_done_grace_period: ::core::option::Option<::prost_types::Duration>,
     }
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Request {
         /// The setup request to setup the RPC connection.
-        #[prost(message, tag="1")]
+        #[prost(message, tag = "1")]
         SetupRequest(SetupRequest),
         /// This request checkpoints the consumer's read progress.
-        #[prost(message, tag="2")]
+        #[prost(message, tag = "2")]
         CommitRequest(super::CommitRequest),
     }
 }
@@ -3989,27 +4159,27 @@ pub mod receive_events_request {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EventUpdate {
     /// The name of the stream that the event is attached to.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub stream: ::prost::alloc::string::String,
     /// The name of the event.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub event: ::prost::alloc::string::String,
     /// The name of the series.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub series: ::prost::alloc::string::String,
     /// The timestamp when the Event update happens.
-    #[prost(message, optional, tag="4")]
+    #[prost(message, optional, tag = "4")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The offset of the message that will be used to acknowledge of the message
     /// receiving.
-    #[prost(int64, tag="5")]
+    #[prost(int64, tag = "5")]
     pub offset: i64,
 }
 /// Control message for a ReceiveEventsResponse.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReceiveEventsControlResponse {
     /// Possible control messages.
-    #[prost(oneof="receive_events_control_response::Control", tags="1, 2")]
+    #[prost(oneof = "receive_events_control_response::Control", tags = "1, 2")]
     pub control: ::core::option::Option<receive_events_control_response::Control>,
 }
 /// Nested message and enum types in `ReceiveEventsControlResponse`.
@@ -4018,7 +4188,7 @@ pub mod receive_events_control_response {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Control {
         /// A server heartbeat.
-        #[prost(bool, tag="1")]
+        #[prost(bool, tag = "1")]
         Heartbeat(bool),
         /// A request to the receiver to complete any final writes followed by a
         /// `WritesDone`; e.g. issue any final `CommitRequest`s.
@@ -4029,7 +4199,7 @@ pub mod receive_events_control_response {
         /// If `WritesDone` does not get issued, then the server will forcefully
         /// cancel the connection, and the receiver will likely receive an
         /// uninformative after `Read` returns `false` and `Finish` is called.
-        #[prost(bool, tag="2")]
+        #[prost(bool, tag = "2")]
         WritesDoneRequest(bool),
     }
 }
@@ -4037,7 +4207,7 @@ pub mod receive_events_control_response {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReceiveEventsResponse {
     /// Possible response types.
-    #[prost(oneof="receive_events_response::Response", tags="1, 2")]
+    #[prost(oneof = "receive_events_response::Response", tags = "1, 2")]
     pub response: ::core::option::Option<receive_events_response::Response>,
 }
 /// Nested message and enum types in `ReceiveEventsResponse`.
@@ -4046,10 +4216,10 @@ pub mod receive_events_response {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Response {
         /// The event update message.
-        #[prost(message, tag="1")]
+        #[prost(message, tag = "1")]
         EventUpdate(super::EventUpdate),
         /// A control message from the server.
-        #[prost(message, tag="2")]
+        #[prost(message, tag = "2")]
         Control(super::ReceiveEventsControlResponse),
     }
 }
@@ -4057,99 +4227,98 @@ pub mod receive_events_response {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Lease {
     /// The lease id.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub id: ::prost::alloc::string::String,
     /// The series name.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub series: ::prost::alloc::string::String,
     /// The owner name.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub owner: ::prost::alloc::string::String,
     /// The lease expire time.
-    #[prost(message, optional, tag="4")]
+    #[prost(message, optional, tag = "4")]
     pub expire_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The lease type.
-    #[prost(enumeration="LeaseType", tag="5")]
+    #[prost(enumeration = "LeaseType", tag = "5")]
     pub lease_type: i32,
 }
 /// Request message for acquiring a lease.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AcquireLeaseRequest {
     /// The series name.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub series: ::prost::alloc::string::String,
     /// The owner name.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub owner: ::prost::alloc::string::String,
     /// The lease term.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub term: ::core::option::Option<::prost_types::Duration>,
     /// The lease type.
-    #[prost(enumeration="LeaseType", tag="4")]
+    #[prost(enumeration = "LeaseType", tag = "4")]
     pub lease_type: i32,
 }
 /// Request message for renewing a lease.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RenewLeaseRequest {
     /// Lease id.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub id: ::prost::alloc::string::String,
     /// Series name.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub series: ::prost::alloc::string::String,
     /// Lease owner.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub owner: ::prost::alloc::string::String,
     /// Lease term.
-    #[prost(message, optional, tag="4")]
+    #[prost(message, optional, tag = "4")]
     pub term: ::core::option::Option<::prost_types::Duration>,
 }
 /// Request message for releasing lease.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReleaseLeaseRequest {
     /// Lease id.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub id: ::prost::alloc::string::String,
     /// Series name.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub series: ::prost::alloc::string::String,
     /// Lease owner.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub owner: ::prost::alloc::string::String,
 }
 /// Response message for release lease.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ReleaseLeaseResponse {
-}
+pub struct ReleaseLeaseResponse {}
 /// RequestMetadata is the metadata message for the request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RequestMetadata {
     /// Stream name.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub stream: ::prost::alloc::string::String,
     /// Evevt name.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub event: ::prost::alloc::string::String,
     /// Series name.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub series: ::prost::alloc::string::String,
     /// Lease id.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub lease_id: ::prost::alloc::string::String,
     /// Owner name.
-    #[prost(string, tag="5")]
+    #[prost(string, tag = "5")]
     pub owner: ::prost::alloc::string::String,
     /// Lease term specifies how long the client wants the session to be maintained
     /// by the server after the client leaves. If the lease term is not set, the
     /// server will release the session immediately and the client cannot reconnect
     /// to the same session later.
-    #[prost(message, optional, tag="6")]
+    #[prost(message, optional, tag = "6")]
     pub lease_term: ::core::option::Option<::prost_types::Duration>,
 }
 /// Request message for sending packets.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SendPacketsRequest {
-    #[prost(oneof="send_packets_request::Request", tags="1, 2")]
+    #[prost(oneof = "send_packets_request::Request", tags = "1, 2")]
     pub request: ::core::option::Option<send_packets_request::Request>,
 }
 /// Nested message and enum types in `SendPacketsRequest`.
@@ -4157,50 +4326,49 @@ pub mod send_packets_request {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Request {
         /// Packets sent over the streaming rpc.
-        #[prost(message, tag="1")]
+        #[prost(message, tag = "1")]
         Packet(super::Packet),
         /// The first message of the streaming rpc including the request metadata.
-        #[prost(message, tag="2")]
+        #[prost(message, tag = "2")]
         Metadata(super::RequestMetadata),
     }
 }
 /// Response message for sending packets.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct SendPacketsResponse {
-}
+pub struct SendPacketsResponse {}
 /// Request message for receiving packets.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReceivePacketsRequest {
     /// Metadata that the server needs to know where to read the packets from.
     ///
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub series_metadata: ::core::option::Option<SeriesMetadata>,
     /// To start receiving packets, client has to provide a unique consumer name.
     /// If the consumer name was duplicated, the stream server will reject the
     /// request.
     ///
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub consumer: ::prost::alloc::string::String,
     /// The configuration for the consumer to reset its offset. If this field is
     /// not set, the existing consumers will resume its consumption from where it
     /// stopped previously; otherwise a new consumer it will consume from the
     /// latest packet in the stream.
     ///
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub offset_config: ::core::option::Option<OffsetConfig>,
     /// If this value is specified, the stream server will stop the streaming gRPC
     /// connection if no new packet is available for a duration longer than the
     /// `timeout` here. Otherwise, the stream server will block until a packet is
     /// available.
     ///
-    #[prost(message, optional, tag="4")]
+    #[prost(message, optional, tag = "4")]
     pub timeout: ::core::option::Option<::prost_types::Duration>,
     /// Request metadata is the metadata of the ReceivePacketRequest.
     ///
-    #[prost(message, optional, tag="5")]
+    #[prost(message, optional, tag = "5")]
     pub metadata: ::core::option::Option<RequestMetadata>,
     /// Possible request types from the client.
-    #[prost(oneof="receive_packets_request::Request", tags="6, 7")]
+    #[prost(oneof = "receive_packets_request::Request", tags = "6, 7")]
     pub request: ::core::option::Option<receive_packets_request::Request>,
 }
 /// Nested message and enum types in `ReceivePacketsRequest`.
@@ -4209,12 +4377,12 @@ pub mod receive_packets_request {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SetupRequest {
         /// The configurations that specify where packets are retrieved.
-        #[prost(message, optional, tag="1")]
+        #[prost(message, optional, tag = "1")]
         pub metadata: ::core::option::Option<super::RequestMetadata>,
         /// A name for the receiver to self-identify.
         ///
         /// This is used to keep track of a receiver's read progress.
-        #[prost(string, tag="2")]
+        #[prost(string, tag = "2")]
         pub receiver: ::prost::alloc::string::String,
         /// The maximum duration of server silence before the client determines the
         /// server unreachable.
@@ -4222,7 +4390,7 @@ pub mod receive_packets_request {
         /// The client must either receive a `Packet` or a heart beat message before
         /// this duration expires; otherwise, the client will automatically cancel
         /// the current connection and retry.
-        #[prost(message, optional, tag="5")]
+        #[prost(message, optional, tag = "5")]
         pub heartbeat_interval: ::core::option::Option<::prost_types::Duration>,
         /// The grace period after which a `writes_done_request` is issued, that a
         /// `WritesDone` is expected from the client.
@@ -4230,10 +4398,10 @@ pub mod receive_packets_request {
         /// The server is free to cancel the RPC should this expire.
         ///
         /// A system default will be chosen if unset.
-        #[prost(message, optional, tag="6")]
+        #[prost(message, optional, tag = "6")]
         pub writes_done_grace_period: ::core::option::Option<::prost_types::Duration>,
         /// The mode in which the consumer reads messages.
-        #[prost(oneof="setup_request::ConsumerMode", tags="3, 4")]
+        #[prost(oneof = "setup_request::ConsumerMode", tags = "3, 4")]
         pub consumer_mode: ::core::option::Option<setup_request::ConsumerMode>,
     }
     /// Nested message and enum types in `SetupRequest`.
@@ -4242,10 +4410,10 @@ pub mod receive_packets_request {
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum ConsumerMode {
             /// Options for configuring eager mode.
-            #[prost(message, tag="3")]
+            #[prost(message, tag = "3")]
             EagerReceiveMode(super::super::EagerMode),
             /// Options for configuring controlled mode.
-            #[prost(message, tag="4")]
+            #[prost(message, tag = "4")]
             ControlledReceiveMode(super::super::ControlledMode),
         }
     }
@@ -4255,10 +4423,10 @@ pub mod receive_packets_request {
         /// The request to setup the initial state of session.
         ///
         /// The client must send and only send this as the first message.
-        #[prost(message, tag="6")]
+        #[prost(message, tag = "6")]
         SetupRequest(SetupRequest),
         /// This request checkpoints the consumer's read progress.
-        #[prost(message, tag="7")]
+        #[prost(message, tag = "7")]
         CommitRequest(super::CommitRequest),
     }
 }
@@ -4268,14 +4436,14 @@ pub mod receive_packets_request {
 pub struct ResponseMetadata {
     /// If the EOS is on, the client should not expect more packets from the
     /// server.
-    #[prost(bool, tag="1")]
+    #[prost(bool, tag = "1")]
     pub end_of_stream: bool,
 }
 /// Control message for a ReceivePacketsResponse.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReceivePacketsControlResponse {
     /// Possible control messages.
-    #[prost(oneof="receive_packets_control_response::Control", tags="1, 2")]
+    #[prost(oneof = "receive_packets_control_response::Control", tags = "1, 2")]
     pub control: ::core::option::Option<receive_packets_control_response::Control>,
 }
 /// Nested message and enum types in `ReceivePacketsControlResponse`.
@@ -4284,7 +4452,7 @@ pub mod receive_packets_control_response {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Control {
         /// A server heartbeat.
-        #[prost(bool, tag="1")]
+        #[prost(bool, tag = "1")]
         Heartbeat(bool),
         /// A request to the receiver to complete any final writes followed by a
         /// `WritesDone`; e.g. issue any final `CommitRequest`s.
@@ -4295,7 +4463,7 @@ pub mod receive_packets_control_response {
         /// If `WritesDone` does not get issued, then the server will forcefully
         /// cancel the connection, and the receiver will likely receive an
         /// uninformative after `Read` returns `false` and `Finish` is called.
-        #[prost(bool, tag="2")]
+        #[prost(bool, tag = "2")]
         WritesDoneRequest(bool),
     }
 }
@@ -4303,7 +4471,7 @@ pub mod receive_packets_control_response {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReceivePacketsResponse {
     /// Possible response types.
-    #[prost(oneof="receive_packets_response::Response", tags="1, 3, 2")]
+    #[prost(oneof = "receive_packets_response::Response", tags = "1, 3, 2")]
     pub response: ::core::option::Option<receive_packets_response::Response>,
 }
 /// Nested message and enum types in `ReceivePacketsResponse`.
@@ -4312,14 +4480,14 @@ pub mod receive_packets_response {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Response {
         /// A genuine data payload originating from the sender.
-        #[prost(message, tag="1")]
+        #[prost(message, tag = "1")]
         Packet(super::Packet),
         /// A control message from the server.
-        #[prost(message, tag="3")]
+        #[prost(message, tag = "3")]
         Control(super::ReceivePacketsControlResponse),
         /// Response metadata message.
         ///
-        #[prost(message, tag="2")]
+        #[prost(message, tag = "2")]
         Metadata(super::ResponseMetadata),
     }
 }
@@ -4327,13 +4495,23 @@ pub mod receive_packets_response {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OffsetConfig {
     /// Offset config.
-    #[prost(oneof="offset_config::Config", tags="1, 2, 3")]
+    #[prost(oneof = "offset_config::Config", tags = "1, 2, 3")]
     pub config: ::core::option::Option<offset_config::Config>,
 }
 /// Nested message and enum types in `OffsetConfig`.
 pub mod offset_config {
     /// SpecialOffset is a set of predefined special offset configuration.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum SpecialOffset {
         /// Offset not specified.
@@ -4360,27 +4538,26 @@ pub mod offset_config {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Config {
         /// The start consuming from the earliest or latest position.
-        #[prost(enumeration="SpecialOffset", tag="1")]
+        #[prost(enumeration = "SpecialOffset", tag = "1")]
         SpecialOffset(i32),
         /// The offset position that the consumer wants to set to. The consumer can
         /// specify a position in the stream and start consuming from there. If the
         /// packet for the `seek_position` is not a critical frame, the consumer will
         /// receive the latest critical packet prior to the that in the
         /// `seek_position`.
-        #[prost(int64, tag="2")]
+        #[prost(int64, tag = "2")]
         SeekPosition(i64),
         /// The consumer will start consuming from the latest packet that is earlier
         /// than the `seek_time`. If the packet for the `seek_time` is not a critical
         /// frame, the consumer will receive the latest critical packet prior to the
         /// `seek_time`.
-        #[prost(message, tag="3")]
+        #[prost(message, tag = "3")]
         SeekTime(::prost_types::Timestamp),
     }
 }
 /// The options for receiver under the eager mode.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct EagerMode {
-}
+pub struct EagerMode {}
 /// The options for receiver under the controlled mode.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ControlledMode {
@@ -4392,10 +4569,10 @@ pub struct ControlledMode {
     /// "begin": This will read from the earliest available message.
     ///
     /// "end": This will read only future messages.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub fallback_starting_offset: ::prost::alloc::string::String,
     /// This is the offset from which to start receiveing.
-    #[prost(oneof="controlled_mode::StartingOffset", tags="1")]
+    #[prost(oneof = "controlled_mode::StartingOffset", tags = "1")]
     pub starting_offset: ::core::option::Option<controlled_mode::StartingOffset>,
 }
 /// Nested message and enum types in `ControlledMode`.
@@ -4414,7 +4591,7 @@ pub mod controlled_mode {
         /// "stored": This will resume reads one past the last committed offset.
         ///            It is the only option that resumes progress; all others
         ///            jump unilaterally.
-        #[prost(string, tag="1")]
+        #[prost(string, tag = "1")]
         StartingLogicalOffset(::prost::alloc::string::String),
     }
 }
@@ -4425,7 +4602,7 @@ pub mod controlled_mode {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CommitRequest {
     /// The offset to commit.
-    #[prost(int64, tag="1")]
+    #[prost(int64, tag = "1")]
     pub offset: i64,
 }
 /// The lease type.
@@ -4665,64 +4842,86 @@ pub mod streaming_service_client {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Stream {
     /// Name of the resource.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. The create timestamp.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The update timestamp.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Labels as key value pairs.
-    #[prost(map="string, string", tag="4")]
-    pub labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map = "string, string", tag = "4")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
     /// Annotations to allow clients to store small amounts of arbitrary data.
-    #[prost(map="string, string", tag="5")]
-    pub annotations: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map = "string, string", tag = "5")]
+    pub annotations: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
     /// The display name for the stream resource.
-    #[prost(string, tag="6")]
+    #[prost(string, tag = "6")]
     pub display_name: ::prost::alloc::string::String,
     /// Whether to enable the HLS playback service on this stream.
-    #[prost(bool, tag="7")]
+    #[prost(bool, tag = "7")]
     pub enable_hls_playback: bool,
     /// The name of the media warehouse asset for long term storage of stream data.
     /// Format: projects/${p_id}/locations/${l_id}/corpora/${c_id}/assets/${a_id}
     /// Remain empty if the media warehouse storage is not needed for the stream.
-    #[prost(string, tag="8")]
+    #[prost(string, tag = "8")]
     pub media_warehouse_asset: ::prost::alloc::string::String,
 }
 /// Message describing the Event object.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Event {
     /// Name of the resource.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. The create timestamp.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The update timestamp.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Labels as key value pairs.
-    #[prost(map="string, string", tag="4")]
-    pub labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map = "string, string", tag = "4")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
     /// Annotations to allow clients to store small amounts of arbitrary data.
-    #[prost(map="string, string", tag="5")]
-    pub annotations: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map = "string, string", tag = "5")]
+    pub annotations: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
     /// The clock used for joining streams.
-    #[prost(enumeration="event::Clock", tag="6")]
+    #[prost(enumeration = "event::Clock", tag = "6")]
     pub alignment_clock: i32,
     /// Grace period for cleaning up the event. This is the time the controller
     /// waits for before deleting the event. During this period, if there is any
     /// active channel on the event. The deletion of the event after grace_period
     /// will be ignored.
-    #[prost(message, optional, tag="7")]
+    #[prost(message, optional, tag = "7")]
     pub grace_period: ::core::option::Option<::prost_types::Duration>,
 }
 /// Nested message and enum types in `Event`.
 pub mod event {
     /// Clock that will be used for joining streams.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum Clock {
         /// Clock is not specified.
@@ -4751,103 +4950,115 @@ pub mod event {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Series {
     /// Name of the resource.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. The create timestamp.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The update timestamp.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Labels as key value pairs.
-    #[prost(map="string, string", tag="4")]
-    pub labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map = "string, string", tag = "4")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
     /// Annotations to allow clients to store small amounts of arbitrary data.
-    #[prost(map="string, string", tag="5")]
-    pub annotations: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map = "string, string", tag = "5")]
+    pub annotations: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
     /// Required. Stream that is associated with this series.
-    #[prost(string, tag="6")]
+    #[prost(string, tag = "6")]
     pub stream: ::prost::alloc::string::String,
     /// Required. Event that is associated with this series.
-    #[prost(string, tag="7")]
+    #[prost(string, tag = "7")]
     pub event: ::prost::alloc::string::String,
 }
 /// Message describing the Channel object.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Channel {
     /// Name of the resource.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. The create timestamp.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The update timestamp.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Labels as key value pairs.
-    #[prost(map="string, string", tag="4")]
-    pub labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map = "string, string", tag = "4")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
     /// Annotations to allow clients to store small amounts of arbitrary data.
-    #[prost(map="string, string", tag="5")]
-    pub annotations: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map = "string, string", tag = "5")]
+    pub annotations: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
     /// Required. Stream that is associated with this series.
-    #[prost(string, tag="6")]
+    #[prost(string, tag = "6")]
     pub stream: ::prost::alloc::string::String,
     /// Required. Event that is associated with this series.
-    #[prost(string, tag="7")]
+    #[prost(string, tag = "7")]
     pub event: ::prost::alloc::string::String,
 }
 /// Message for requesting list of Clusters.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListClustersRequest {
     /// Required. Parent value for ListClustersRequest.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Requested page size. Server may return fewer items than requested.
     /// If unspecified, server will pick an appropriate default.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// A token identifying a page of results the server should return.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
     /// Filtering results.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
     /// Hint for how to order the results.
-    #[prost(string, tag="5")]
+    #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
 /// Message for response to listing Clusters.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListClustersResponse {
     /// The list of Cluster.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub clusters: ::prost::alloc::vec::Vec<Cluster>,
     /// A token identifying a page of results the server should return.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
     /// Locations that could not be reached.
-    #[prost(string, repeated, tag="3")]
+    #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Message for getting a Cluster.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetClusterRequest {
     /// Required. Name of the resource.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Message for creating a Cluster.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateClusterRequest {
     /// Required. Value for parent.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. Id of the requesting object.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub cluster_id: ::prost::alloc::string::String,
     /// Required. The resource being created.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub cluster: ::core::option::Option<Cluster>,
     /// Optional. An optional request ID to identify requests. Specify a unique request ID
     /// so that if you must retry your request, the server will know to ignore
@@ -4862,7 +5073,7 @@ pub struct CreateClusterRequest {
     ///
     /// The request ID must be a valid UUID with the exception that zero UUID is
     /// not supported (00000000-0000-0000-0000-000000000000).
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub request_id: ::prost::alloc::string::String,
 }
 /// Message for updating a Cluster.
@@ -4873,10 +5084,10 @@ pub struct UpdateClusterRequest {
     /// The fields specified in the update_mask are relative to the resource, not
     /// the full request. A field will be overwritten if it is in the mask. If the
     /// user does not provide a mask then all fields will be overwritten.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// Required. The resource being updated
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub cluster: ::core::option::Option<Cluster>,
     /// Optional. An optional request ID to identify requests. Specify a unique request ID
     /// so that if you must retry your request, the server will know to ignore
@@ -4891,14 +5102,14 @@ pub struct UpdateClusterRequest {
     ///
     /// The request ID must be a valid UUID with the exception that zero UUID is
     /// not supported (00000000-0000-0000-0000-000000000000).
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub request_id: ::prost::alloc::string::String,
 }
 /// Message for deleting a Cluster.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteClusterRequest {
     /// Required. Name of the resource
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. An optional request ID to identify requests. Specify a unique request ID
     /// so that if you must retry your request, the server will know to ignore
@@ -4913,60 +5124,60 @@ pub struct DeleteClusterRequest {
     ///
     /// The request ID must be a valid UUID with the exception that zero UUID is
     /// not supported (00000000-0000-0000-0000-000000000000).
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub request_id: ::prost::alloc::string::String,
 }
 /// Message for requesting list of Streams.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListStreamsRequest {
     /// Required. Parent value for ListStreamsRequest.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Requested page size. Server may return fewer items than requested.
     /// If unspecified, server will pick an appropriate default.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// A token identifying a page of results the server should return.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
     /// Filtering results.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
     /// Hint for how to order the results.
-    #[prost(string, tag="5")]
+    #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
 /// Message for response to listing Streams.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListStreamsResponse {
     /// The list of Stream.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub streams: ::prost::alloc::vec::Vec<Stream>,
     /// A token identifying a page of results the server should return.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
     /// Locations that could not be reached.
-    #[prost(string, repeated, tag="3")]
+    #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Message for getting a Stream.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetStreamRequest {
     /// Required. Name of the resource.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Message for creating a Stream.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateStreamRequest {
     /// Required. Value for parent.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. Id of the requesting object.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub stream_id: ::prost::alloc::string::String,
     /// Required. The resource being created.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub stream: ::core::option::Option<Stream>,
     /// Optional. An optional request ID to identify requests. Specify a unique request ID
     /// so that if you must retry your request, the server will know to ignore
@@ -4981,7 +5192,7 @@ pub struct CreateStreamRequest {
     ///
     /// The request ID must be a valid UUID with the exception that zero UUID is
     /// not supported (00000000-0000-0000-0000-000000000000).
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub request_id: ::prost::alloc::string::String,
 }
 /// Message for updating a Stream.
@@ -4992,10 +5203,10 @@ pub struct UpdateStreamRequest {
     /// The fields specified in the update_mask are relative to the resource, not
     /// the full request. A field will be overwritten if it is in the mask. If the
     /// user does not provide a mask then all fields will be overwritten.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// Required. The resource being updated.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub stream: ::core::option::Option<Stream>,
     /// Optional. An optional request ID to identify requests. Specify a unique request ID
     /// so that if you must retry your request, the server will know to ignore
@@ -5010,14 +5221,14 @@ pub struct UpdateStreamRequest {
     ///
     /// The request ID must be a valid UUID with the exception that zero UUID is
     /// not supported (00000000-0000-0000-0000-000000000000).
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub request_id: ::prost::alloc::string::String,
 }
 /// Message for deleting a Stream.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteStreamRequest {
     /// Required. Name of the resource.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. An optional request ID to identify requests. Specify a unique request ID
     /// so that if you must retry your request, the server will know to ignore
@@ -5032,19 +5243,18 @@ pub struct DeleteStreamRequest {
     ///
     /// The request ID must be a valid UUID with the exception that zero UUID is
     /// not supported (00000000-0000-0000-0000-000000000000).
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub request_id: ::prost::alloc::string::String,
 }
 /// Message for the response of GetStreamThumbnail. The empty response message
 /// indicates the thumbnail image has been uploaded to GCS successfully.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GetStreamThumbnailResponse {
-}
+pub struct GetStreamThumbnailResponse {}
 /// Request message for getting the auth token to access the stream HLS contents.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateStreamHlsTokenRequest {
     /// Required. The name of the stream.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub stream: ::prost::alloc::string::String,
 }
 /// Response message for GenerateStreamHlsToken.
@@ -5056,63 +5266,63 @@ pub struct GenerateStreamHlsTokenResponse {
     /// requests to get the HLS playlist manifest and the video chunks.
     /// eg: curl -H "Authorization: Bearer $TOKEN"
     ///      <https://domain.com/test-stream.playback/master.m3u8>
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub token: ::prost::alloc::string::String,
     /// The expiration time of the token.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub expiration_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Message for requesting list of Events.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEventsRequest {
     /// Required. Parent value for ListEventsRequest.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Requested page size. Server may return fewer items than requested.
     /// If unspecified, server will pick an appropriate default.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// A token identifying a page of results the server should return.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
     /// Filtering results.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
     /// Hint for how to order the results.
-    #[prost(string, tag="5")]
+    #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
 /// Message for response to listing Events.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEventsResponse {
     /// The list of Event.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub events: ::prost::alloc::vec::Vec<Event>,
     /// A token identifying a page of results the server should return.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
     /// Locations that could not be reached.
-    #[prost(string, repeated, tag="3")]
+    #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Message for getting a Event.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetEventRequest {
     /// Required. Name of the resource.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Message for creating a Event.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateEventRequest {
     /// Required. Value for parent.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. Id of the requesting object.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub event_id: ::prost::alloc::string::String,
     /// Required. The resource being created.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub event: ::core::option::Option<Event>,
     /// Optional. An optional request ID to identify requests. Specify a unique request ID
     /// so that if you must retry your request, the server will know to ignore
@@ -5127,7 +5337,7 @@ pub struct CreateEventRequest {
     ///
     /// The request ID must be a valid UUID with the exception that zero UUID is
     /// not supported (00000000-0000-0000-0000-000000000000).
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub request_id: ::prost::alloc::string::String,
 }
 /// Message for updating a Event.
@@ -5138,10 +5348,10 @@ pub struct UpdateEventRequest {
     /// The fields specified in the update_mask are relative to the resource, not
     /// the full request. A field will be overwritten if it is in the mask. If the
     /// user does not provide a mask then all fields will be overwritten.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// Required. The resource being updated.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub event: ::core::option::Option<Event>,
     /// Optional. An optional request ID to identify requests. Specify a unique request ID
     /// so that if you must retry your request, the server will know to ignore
@@ -5156,14 +5366,14 @@ pub struct UpdateEventRequest {
     ///
     /// The request ID must be a valid UUID with the exception that zero UUID is
     /// not supported (00000000-0000-0000-0000-000000000000).
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub request_id: ::prost::alloc::string::String,
 }
 /// Message for deleting a Event.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteEventRequest {
     /// Required. Name of the resource.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. An optional request ID to identify requests. Specify a unique request ID
     /// so that if you must retry your request, the server will know to ignore
@@ -5178,60 +5388,60 @@ pub struct DeleteEventRequest {
     ///
     /// The request ID must be a valid UUID with the exception that zero UUID is
     /// not supported (00000000-0000-0000-0000-000000000000).
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub request_id: ::prost::alloc::string::String,
 }
 /// Message for requesting list of Series.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSeriesRequest {
     /// Required. Parent value for ListSeriesRequest.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Requested page size. Server may return fewer items than requested.
     /// If unspecified, server will pick an appropriate default.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// A token identifying a page of results the server should return.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
     /// Filtering results.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
     /// Hint for how to order the results.
-    #[prost(string, tag="5")]
+    #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
 /// Message for response to listing Series.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSeriesResponse {
     /// The list of Series.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub series: ::prost::alloc::vec::Vec<Series>,
     /// A token identifying a page of results the server should return.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
     /// Locations that could not be reached.
-    #[prost(string, repeated, tag="3")]
+    #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Message for getting a Series.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetSeriesRequest {
     /// Required. Name of the resource.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Message for creating a Series.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateSeriesRequest {
     /// Required. Value for parent.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. Id of the requesting object.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub series_id: ::prost::alloc::string::String,
     /// Required. The resource being created.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub series: ::core::option::Option<Series>,
     /// Optional. An optional request ID to identify requests. Specify a unique request ID
     /// so that if you must retry your request, the server will know to ignore
@@ -5246,7 +5456,7 @@ pub struct CreateSeriesRequest {
     ///
     /// The request ID must be a valid UUID with the exception that zero UUID is
     /// not supported (00000000-0000-0000-0000-000000000000).
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub request_id: ::prost::alloc::string::String,
 }
 /// Message for updating a Series.
@@ -5257,10 +5467,10 @@ pub struct UpdateSeriesRequest {
     /// relative to the resource, not the full request. A field will be overwritten
     /// if it is in the mask. If the user does not provide a mask then all fields
     /// will be overwritten.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// Required. The resource being updated
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub series: ::core::option::Option<Series>,
     /// Optional. An optional request ID to identify requests. Specify a unique request ID
     /// so that if you must retry your request, the server will know to ignore
@@ -5275,14 +5485,14 @@ pub struct UpdateSeriesRequest {
     ///
     /// The request ID must be a valid UUID with the exception that zero UUID is
     /// not supported (00000000-0000-0000-0000-000000000000).
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub request_id: ::prost::alloc::string::String,
 }
 /// Message for deleting a Series.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteSeriesRequest {
     /// Required. Name of the resource.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. An optional request ID to identify requests. Specify a unique request ID
     /// so that if you must retry your request, the server will know to ignore
@@ -5297,20 +5507,20 @@ pub struct DeleteSeriesRequest {
     ///
     /// The request ID must be a valid UUID with the exception that zero UUID is
     /// not supported (00000000-0000-0000-0000-000000000000).
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub request_id: ::prost::alloc::string::String,
 }
 /// Message for materializing a channel.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MaterializeChannelRequest {
     /// Required. Value for parent.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. Id of the channel.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub channel_id: ::prost::alloc::string::String,
     /// Required. The resource being created.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub channel: ::core::option::Option<Channel>,
     /// Optional. An optional request ID to identify requests. Specify a unique request ID
     /// so that if you must retry your request, the server will know to ignore
@@ -5325,7 +5535,7 @@ pub struct MaterializeChannelRequest {
     ///
     /// The request ID must be a valid UUID with the exception that zero UUID is
     /// not supported (00000000-0000-0000-0000-000000000000).
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub request_id: ::prost::alloc::string::String,
 }
 /// Generated client implementations.
@@ -5890,10 +6100,10 @@ pub mod streams_service_client {
 pub struct CreateAssetRequest {
     /// Required. The parent resource where this asset will be created.
     /// Format: projects/*/locations/*/corpora/*
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The asset to create.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub asset: ::core::option::Option<Asset>,
     /// Optional. The ID to use for the asset, which will become the final component of
     /// the asset's resource name if user choose to specify. Otherwise, asset id
@@ -5902,7 +6112,7 @@ pub struct CreateAssetRequest {
     /// This value should be up to 63 characters, and valid characters
     /// are /\[a-z][0-9\]-/. The first character must be a letter, the last could be
     /// a letter or a number.
-    #[prost(string, optional, tag="3")]
+    #[prost(string, optional, tag = "3")]
     pub asset_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Request message for GetAsset.
@@ -5911,7 +6121,7 @@ pub struct GetAssetRequest {
     /// Required. The name of the asset to retrieve.
     /// Format:
     /// projects/{project_number}/locations/{location}/corpora/{corpus}/assets/{asset}
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for ListAssets.
@@ -5920,31 +6130,31 @@ pub struct ListAssetsRequest {
     /// Required. The parent, which owns this collection of assets.
     /// Format:
     /// projects/{project_number}/locations/{location}/corpora/{corpus}
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of assets to return. The service may return fewer than
     /// this value.
     /// If unspecified, at most 50 assets will be returned.
     /// The maximum value is 1000; values above 1000 will be coerced to 1000.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// A page token, received from a previous `ListAssets` call.
     /// Provide this to retrieve the subsequent page.
     ///
     /// When paginating, all other parameters provided to `ListAssets` must match
     /// the call that provided the page token.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for ListAssets.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAssetsResponse {
     /// The assets from the specified corpus.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub assets: ::prost::alloc::vec::Vec<Asset>,
     /// A token, which can be sent as `page_token` to retrieve the next page.
     /// If this field is omitted, there are no subsequent pages.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Response message for UpdateAsset.
@@ -5955,10 +6165,10 @@ pub struct UpdateAssetRequest {
     /// The asset's `name` field is used to identify the asset to be updated.
     /// Format:
     /// projects/{project_number}/locations/{location}/corpora/{corpus}/assets/{asset}
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub asset: ::core::option::Option<Asset>,
     /// The list of fields to be updated.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for DeleteAsset.
@@ -5967,7 +6177,7 @@ pub struct DeleteAssetRequest {
     /// Required. The name of the asset to delete.
     /// Format:
     /// projects/{project_number}/locations/{location}/corpora/{corpus}/assets/{asset}
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// An asset is a resource in corpus. It represents a media object inside corpus,
@@ -5979,22 +6189,22 @@ pub struct Asset {
     /// Resource name of the asset.
     /// Form:
     /// `projects/{project_number}/locations/{location_id}/corpora/{corpus_id}/assets/{asset_id}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The duration for which all media assets, associated metadata, and search
     /// documents can exist. If not set, then it will using the default ttl in the
     /// parent corpus resource.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub ttl: ::core::option::Option<::prost_types::Duration>,
 }
 /// Request message of CreateCorpus API.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateCorpusRequest {
     /// Required. Form: `projects/{project_number}/locations/{location_id}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The corpus to be created.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub corpus: ::core::option::Option<Corpus>,
 }
 /// Corpus is a set of video contents for management. Within a corpus, videos
@@ -6004,73 +6214,73 @@ pub struct Corpus {
     /// Resource name of the corpus.
     /// Form:
     /// `projects/{project_number}/locations/{location_id}/corpora/{corpus_id}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The corpus name to shown in the UI. The name can be up to 32 characters
     /// long.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub display_name: ::prost::alloc::string::String,
     /// Optional. Description of the corpus. Can be up to 25000 characters long.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub description: ::prost::alloc::string::String,
     /// Required. The default TTL value for all assets under the corpus without a asset level
     /// user-defined TTL with a maximum of 10 years. This is required for all
     /// corpora.
-    #[prost(message, optional, tag="5")]
+    #[prost(message, optional, tag = "5")]
     pub default_ttl: ::core::option::Option<::prost_types::Duration>,
 }
 /// Request message for GetCorpus.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCorpusRequest {
     /// Required. The resource name of the corpus to retrieve.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for UpdateCorpus.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateCorpusRequest {
     /// Required. The corpus which replaces the resource on the server.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub corpus: ::core::option::Option<Corpus>,
     /// The list of fields to be updated.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for ListCorpora.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCorporaRequest {
     /// Required. The resource name of the project from which to list corpora.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Requested page size. API may return fewer results than requested.
     /// If negative, INVALID_ARGUMENT error will be returned.
     /// If unspecified or 0, API will pick a default size, which is 10.
     /// If the requested page size is larger than the maximum size, API will pick
     /// use the maximum size, which is 20.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// A token identifying a page of results for the server to return.
     /// Typically obtained via \[ListCorpora.next_page_token][\] of the previous
     /// \[Warehouse.ListCorpora][google.cloud.visionai.v1alpha1.Warehouse.ListCorpora\] call.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for ListCorpora.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCorporaResponse {
     /// The corpora in the project.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub corpora: ::prost::alloc::vec::Vec<Corpus>,
     /// A token to retrieve next page of results.
     /// Pass to \[ListCorporaRequest.page_token][google.cloud.visionai.v1alpha1.ListCorporaRequest.page_token\] to obtain that page.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for DeleteCorpus.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteCorpusRequest {
     /// Required. The resource name of the corpus to delete.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for CreateDataSchema.
@@ -6078,10 +6288,10 @@ pub struct DeleteCorpusRequest {
 pub struct CreateDataSchemaRequest {
     /// Required. The parent resource where this data schema will be created.
     /// Format: projects/*/locations/*/corpora/*
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The data schema to create.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub data_schema: ::core::option::Option<DataSchema>,
 }
 /// Data schema indicates how the user specified annotation is interpreted in the
@@ -6091,16 +6301,16 @@ pub struct DataSchema {
     /// Resource name of the data schema in the form of:
     /// `projects/{project_number}/locations/{location}/corpora/{corpus}/dataSchemas/{data_schema}`
     /// where {data_schema} part should be the same as the `key` field below.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The key of this data schema. This key should be matching the key of user
     /// specified annotation and unique inside corpus. This value can be up to
     /// 63 characters, and valid characters are /\[a-z][0-9\]-/. The first character
     /// must be a letter, the last could be a letter or a number.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub key: ::prost::alloc::string::String,
     /// The schema details mapping to the key.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub schema_details: ::core::option::Option<DataSchemaDetails>,
 }
 /// Data schema details indicates the data type and the data struct corresponding
@@ -6108,16 +6318,16 @@ pub struct DataSchema {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataSchemaDetails {
     /// Type of the annotation.
-    #[prost(enumeration="data_schema_details::DataType", tag="1")]
+    #[prost(enumeration = "data_schema_details::DataType", tag = "1")]
     pub r#type: i32,
     /// Config for protobuf any type.
-    #[prost(message, optional, tag="6")]
+    #[prost(message, optional, tag = "6")]
     pub proto_any_config: ::core::option::Option<data_schema_details::ProtoAnyConfig>,
     /// The granularity associated with this DataSchema.
-    #[prost(enumeration="data_schema_details::Granularity", tag="5")]
+    #[prost(enumeration = "data_schema_details::Granularity", tag = "5")]
     pub granularity: i32,
     /// The search strategy to be applied on the `key` above.
-    #[prost(message, optional, tag="7")]
+    #[prost(message, optional, tag = "7")]
     pub search_strategy: ::core::option::Option<data_schema_details::SearchStrategy>,
 }
 /// Nested message and enum types in `DataSchemaDetails`.
@@ -6126,7 +6336,7 @@ pub mod data_schema_details {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ProtoAnyConfig {
         /// The type URI of the proto message.
-        #[prost(string, tag="1")]
+        #[prost(string, tag = "1")]
         pub type_uri: ::prost::alloc::string::String,
     }
     /// The search strategy for annotations value of the `key`.
@@ -6137,13 +6347,23 @@ pub mod data_schema_details {
         /// which is documented in the DataSchemaDetails.DataType. Specifying
         /// unsupported `search_strategy_type` for data types will result in
         /// INVALID_ARGUMENT error.
-        #[prost(enumeration="search_strategy::SearchStrategyType", tag="1")]
+        #[prost(enumeration = "search_strategy::SearchStrategyType", tag = "1")]
         pub search_strategy_type: i32,
     }
     /// Nested message and enum types in `SearchStrategy`.
     pub mod search_strategy {
         /// The types of search strategies to be applied on the annotation key.
-        #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
         #[repr(i32)]
         pub enum SearchStrategyType {
             /// Annotatation values of the `key` above will not be searchable.
@@ -6170,7 +6390,17 @@ pub mod data_schema_details {
         }
     }
     /// Data type of the annotation.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum DataType {
         /// Unspecified type.
@@ -6259,7 +6489,17 @@ pub mod data_schema_details {
         }
     }
     /// The granularity of annotations under this DataSchema.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum Granularity {
         /// Unspecified granularity.
@@ -6289,10 +6529,10 @@ pub struct UpdateDataSchemaRequest {
     /// Required. The data schema's `name` field is used to identify the data schema to be
     /// updated. Format:
     /// projects/{project_number}/locations/{location}/corpora/{corpus}/dataSchemas/{data_schema}
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub data_schema: ::core::option::Option<DataSchema>,
     /// The list of fields to be updated.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for GetDataSchema.
@@ -6301,7 +6541,7 @@ pub struct GetDataSchemaRequest {
     /// Required. The name of the data schema to retrieve.
     /// Format:
     /// projects/{project_number}/locations/{location_id}/corpora/{corpus_id}/dataSchemas/{data_schema_id}
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for DeleteDataSchema.
@@ -6310,7 +6550,7 @@ pub struct DeleteDataSchemaRequest {
     /// Required. The name of the data schema to delete.
     /// Format:
     /// projects/{project_number}/locations/{location_id}/corpora/{corpus_id}/dataSchemas/{data_schema_id}
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for ListDataSchemas.
@@ -6319,30 +6559,30 @@ pub struct ListDataSchemasRequest {
     /// Required. The parent, which owns this collection of data schemas.
     /// Format:
     /// projects/{project_number}/locations/{location_id}/corpora/{corpus_id}
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of data schemas to return. The service may return fewer
     /// than this value. If unspecified, at most 50 data schemas will be returned.
     /// The maximum value is 1000; values above 1000 will be coerced to 1000.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// A page token, received from a previous `ListDataSchemas` call.
     /// Provide this to retrieve the subsequent page.
     ///
     /// When paginating, all other parameters provided to `ListDataSchemas` must
     /// match the call that provided the page token.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for ListDataSchemas.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDataSchemasResponse {
     /// The data schemas from the specified corpus.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub data_schemas: ::prost::alloc::vec::Vec<DataSchema>,
     /// A token, which can be sent as `page_token` to retrieve the next page.
     /// If this field is omitted, there are no subsequent pages.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for CreateAnnotation.
@@ -6350,10 +6590,10 @@ pub struct ListDataSchemasResponse {
 pub struct CreateAnnotationRequest {
     /// Required. The parent resource where this annotation will be created.
     /// Format: projects/*/locations/*/corpora/*/assets/*
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The annotation to create.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub annotation: ::core::option::Option<Annotation>,
     /// Optional. The ID to use for the annotation, which will become the final component of
     /// the annotation's resource name if user choose to specify. Otherwise,
@@ -6362,7 +6602,7 @@ pub struct CreateAnnotationRequest {
     /// This value should be up to 63 characters, and valid characters
     /// are /\[a-z][0-9\]-/. The first character must be a letter, the last could be
     /// a letter or a number.
-    #[prost(string, optional, tag="3")]
+    #[prost(string, optional, tag = "3")]
     pub annotation_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// An annotation is a resource in asset. It represents a key-value mapping of
@@ -6372,40 +6612,40 @@ pub struct Annotation {
     /// Resource name of the annotation.
     /// Form:
     /// `projects/{project_number}/locations/{location}/corpora/{corpus}/assets/{asset}/annotations/{annotation}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// User provided annotation.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub user_specified_annotation: ::core::option::Option<UserSpecifiedAnnotation>,
 }
 /// Annotation provided by users.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UserSpecifiedAnnotation {
     /// Required. Key of the annotation. The key must be set with type by CreateDataSchema.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub key: ::prost::alloc::string::String,
     /// Value of the annotation. The value must be able to convert
     /// to the type according to the data schema.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub value: ::core::option::Option<AnnotationValue>,
     /// Partition information in time and space for the sub-asset level annotation.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub partition: ::core::option::Option<Partition>,
 }
 /// Location Coordinate Representation
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GeoCoordinate {
     /// Latitude Coordinate. Degrees [-90 .. 90]
-    #[prost(double, tag="1")]
+    #[prost(double, tag = "1")]
     pub latitude: f64,
     /// Longitude Coordinate. Degrees [-180 .. 180]
-    #[prost(double, tag="2")]
+    #[prost(double, tag = "2")]
     pub longitude: f64,
 }
 /// Value of annotation, including all types available in data schema.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnnotationValue {
-    #[prost(oneof="annotation_value::Value", tags="1, 2, 3, 5, 7, 8, 9, 10")]
+    #[prost(oneof = "annotation_value::Value", tags = "1, 2, 3, 5, 7, 8, 9, 10")]
     pub value: ::core::option::Option<annotation_value::Value>,
 }
 /// Nested message and enum types in `AnnotationValue`.
@@ -6413,28 +6653,28 @@ pub mod annotation_value {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Value {
         /// Value of int type annotation.
-        #[prost(int64, tag="1")]
+        #[prost(int64, tag = "1")]
         IntValue(i64),
         /// Value of float type annotation.
-        #[prost(float, tag="2")]
+        #[prost(float, tag = "2")]
         FloatValue(f32),
         /// Value of string type annotation.
-        #[prost(string, tag="3")]
+        #[prost(string, tag = "3")]
         StrValue(::prost::alloc::string::String),
         /// Value of date time type annotation.
-        #[prost(string, tag="5")]
+        #[prost(string, tag = "5")]
         DatetimeValue(::prost::alloc::string::String),
         /// Value of geo coordinate type annotation.
-        #[prost(message, tag="7")]
+        #[prost(message, tag = "7")]
         GeoCoordinate(super::GeoCoordinate),
         /// Value of any proto value.
-        #[prost(message, tag="8")]
+        #[prost(message, tag = "8")]
         ProtoAnyValue(::prost_types::Any),
         /// Value of boolean type annotation.
-        #[prost(bool, tag="9")]
+        #[prost(bool, tag = "9")]
         BoolValue(bool),
         /// Value of customized struct annotation.
-        #[prost(message, tag="10")]
+        #[prost(message, tag = "10")]
         CustomizedStructDataValue(::prost_types::Struct),
     }
 }
@@ -6444,19 +6684,19 @@ pub struct ListAnnotationsRequest {
     /// The parent, which owns this collection of annotations.
     /// Format:
     /// projects/{project_number}/locations/{location}/corpora/{corpus}/assets/{asset}
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of annotations to return. The service may return fewer
     /// than this value. If unspecified, at most 50 annotations will be returned.
     /// The maximum value is 1000; values above 1000 will be coerced to 1000.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// A page token, received from a previous `ListAnnotations` call.
     /// Provide this to retrieve the subsequent page.
     ///
     /// When paginating, all other parameters provided to `ListAnnotations` must
     /// match the call that provided the page token.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
     /// The filter applied to the returned list.
     /// We only support filtering for the following fields:
@@ -6468,18 +6708,18 @@ pub struct ListAnnotationsRequest {
     /// "partition.temporal_partition.start_time > "2012-04-21T11:30:00-04:00" AND
     /// partition.temporal_partition.end_time < "2012-04-22T11:30:00-04:00" AND
     /// key = "example_key""
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
 }
 /// Request message for ListAnnotations API.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAnnotationsResponse {
     /// The annotations from the specified asset.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub annotations: ::prost::alloc::vec::Vec<Annotation>,
     /// A token, which can be sent as `page_token` to retrieve the next page.
     /// If this field is omitted, there are no subsequent pages.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for GetAnnotation API.
@@ -6488,7 +6728,7 @@ pub struct GetAnnotationRequest {
     /// Required. The name of the annotation to retrieve.
     /// Format:
     /// projects/{project_number}/locations/{location}/corpora/{corpus}/assets/{asset}/annotations/{annotation}
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for UpdateAnnotation API.
@@ -6498,10 +6738,10 @@ pub struct UpdateAnnotationRequest {
     /// The annotation's `name` field is used to identify the annotation to be
     /// updated. Format:
     /// projects/{project_number}/locations/{location}/corpora/{corpus}/assets/{asset}/annotations/{annotation}
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub annotation: ::core::option::Option<Annotation>,
     /// The list of fields to be updated.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for DeleteAnnotation API.
@@ -6510,7 +6750,7 @@ pub struct DeleteAnnotationRequest {
     /// Required. The name of the annotation to delete.
     /// Format:
     /// projects/{project_number}/locations/{location}/corpora/{corpus}/assets/{asset}/annotations/{annotation}
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for CreateSearchConfig.
@@ -6518,16 +6758,16 @@ pub struct DeleteAnnotationRequest {
 pub struct CreateSearchConfigRequest {
     /// Required. The parent resource where this search configuration will be created.
     /// Format: projects/*/locations/*/corpora/*
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The search config to create.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub search_config: ::core::option::Option<SearchConfig>,
     /// Required. ID to use for the new search config. Will become the final component of the
     /// SearchConfig's resource name. This value should be up to 63 characters, and
     /// valid characters are /\[a-z][0-9\]-_/. The first character must be a letter,
     /// the last could be a letter or a number.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub search_config_id: ::prost::alloc::string::String,
 }
 /// Request message for UpdateSearchConfig.
@@ -6538,11 +6778,11 @@ pub struct UpdateSearchConfigRequest {
     /// The search configuration's `name` field is used to identify the resource to
     /// be updated. Format:
     /// projects/{project_number}/locations/{location}/corpora/{corpus}/searchConfigs/{search_config}
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub search_config: ::core::option::Option<SearchConfig>,
     /// The list of fields to be updated. If left unset, all field paths will be
     /// updated/overwritten.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for GetSearchConfig.
@@ -6551,7 +6791,7 @@ pub struct GetSearchConfigRequest {
     /// Required. The name of the search configuration to retrieve.
     /// Format:
     /// projects/{project_number}/locations/{location}/corpora/{corpus}/searchConfigs/{search_config}
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for DeleteSearchConfig.
@@ -6560,7 +6800,7 @@ pub struct DeleteSearchConfigRequest {
     /// Required. The name of the search configuration to delete.
     /// Format:
     /// projects/{project_number}/locations/{location}/corpora/{corpus}/searchConfigs/{search_config}
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for ListSearchConfigs.
@@ -6569,12 +6809,12 @@ pub struct ListSearchConfigsRequest {
     /// Required. The parent, which owns this collection of search configurations.
     /// Format:
     /// projects/{project_number}/locations/{location}/corpora/{corpus}
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of search configurations to return. The service may
     /// return fewer than this value. If unspecified, a page size of 50 will be
     /// used. The maximum value is 1000; values above 1000 will be coerced to 1000.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// A page token, received from a previous `ListSearchConfigs` call.
     /// Provide this to retrieve the subsequent page.
@@ -6582,18 +6822,18 @@ pub struct ListSearchConfigsRequest {
     /// When paginating, all other parameters provided to
     /// `ListSearchConfigs` must match the call that provided the page
     /// token.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for ListSearchConfigs.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSearchConfigsResponse {
     /// The search configurations from the specified corpus.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub search_configs: ::prost::alloc::vec::Vec<SearchConfig>,
     /// A token, which can be sent as `page_token` to retrieve the next page.
     /// If this field is omitted, there are no subsequent pages.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// SearchConfig stores different properties that will affect search
@@ -6606,13 +6846,13 @@ pub struct SearchConfig {
     /// dimension name.
     /// Form:
     /// `projects/{project_number}/locations/{location}/corpora/{corpus}/searchConfigs/{search_config}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Establishes a FacetDimension and associated specifications.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub facet_property: ::core::option::Option<FacetProperty>,
     /// Creates a mapping between a custom SearchCriteria and one or more UGA keys.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub search_criteria_property: ::core::option::Option<SearchCriteriaProperty>,
 }
 /// Central configuration for a facet.
@@ -6631,21 +6871,21 @@ pub struct FacetProperty {
     /// mapped_field equals the parent SearchConfig.name, the parent must
     /// also contain a SearchCriteriaProperty that maps to the same fields.
     /// mapped_fields must not be empty.
-    #[prost(string, repeated, tag="1")]
+    #[prost(string, repeated, tag = "1")]
     pub mapped_fields: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Display name of the facet. To be used by UI for facet rendering.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub display_name: ::prost::alloc::string::String,
     /// Maximum number of unique bucket to return for one facet. Bucket number can
     /// be large for high-cardinality facet such as "player". We only return top-n
     /// most related ones to user. If it's <= 0, the server will decide the
     /// appropriate result_size.
-    #[prost(int64, tag="3")]
+    #[prost(int64, tag = "3")]
     pub result_size: i64,
     /// Facet bucket type e.g. value, range.
-    #[prost(enumeration="FacetBucketType", tag="4")]
+    #[prost(enumeration = "FacetBucketType", tag = "4")]
     pub bucket_type: i32,
-    #[prost(oneof="facet_property::RangeFacetConfig", tags="5, 6, 7")]
+    #[prost(oneof = "facet_property::RangeFacetConfig", tags = "5, 6, 7")]
     pub range_facet_config: ::core::option::Option<facet_property::RangeFacetConfig>,
 }
 /// Nested message and enum types in `FacetProperty`.
@@ -6661,14 +6901,14 @@ pub mod facet_property {
     pub struct FixedRangeBucketSpec {
         /// Lower bound of the bucket. NOTE: Only integer type is currently supported
         /// for this field.
-        #[prost(message, optional, tag="1")]
+        #[prost(message, optional, tag = "1")]
         pub bucket_start: ::core::option::Option<super::FacetValue>,
         /// Bucket granularity. NOTE: Only integer type is currently supported for
         /// this field.
-        #[prost(message, optional, tag="2")]
+        #[prost(message, optional, tag = "2")]
         pub bucket_granularity: ::core::option::Option<super::FacetValue>,
         /// Total number of buckets.
-        #[prost(int32, tag="3")]
+        #[prost(int32, tag = "3")]
         pub bucket_count: i32,
     }
     /// If bucket type is CUSTOM_RANGE, specify how values are bucketized. Use
@@ -6682,20 +6922,30 @@ pub mod facet_property {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CustomRangeBucketSpec {
         /// Currently, only integer type is supported for this field.
-        #[prost(message, repeated, tag="1")]
+        #[prost(message, repeated, tag = "1")]
         pub endpoints: ::prost::alloc::vec::Vec<super::FacetValue>,
     }
     /// If bucket type is DATE, specify how date values are bucketized.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DateTimeBucketSpec {
         /// Granularity of date type facet.
-        #[prost(enumeration="date_time_bucket_spec::Granularity", tag="1")]
+        #[prost(enumeration = "date_time_bucket_spec::Granularity", tag = "1")]
         pub granularity: i32,
     }
     /// Nested message and enum types in `DateTimeBucketSpec`.
     pub mod date_time_bucket_spec {
         /// Granularity enum for the datetime bucket.
-        #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
         #[repr(i32)]
         pub enum Granularity {
             /// Unspecified granularity.
@@ -6725,13 +6975,13 @@ pub mod facet_property {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum RangeFacetConfig {
         /// Fixed range facet bucket config.
-        #[prost(message, tag="5")]
+        #[prost(message, tag = "5")]
         FixedRangeBucketSpec(FixedRangeBucketSpec),
         /// Custom range facet bucket config.
-        #[prost(message, tag="6")]
+        #[prost(message, tag = "6")]
         CustomRangeBucketSpec(CustomRangeBucketSpec),
         /// Datetime range facet bucket config.
-        #[prost(message, tag="7")]
+        #[prost(message, tag = "7")]
         DatetimeBucketSpec(DateTimeBucketSpec),
     }
 }
@@ -6760,13 +7010,13 @@ pub struct SearchCriteriaProperty {
     ///
     /// MWH search will return search documents where (player=Tom Brady ||
     /// coach=Tom Brady || player=Bill Belichick || coach=Bill Belichick).
-    #[prost(string, repeated, tag="1")]
+    #[prost(string, repeated, tag = "1")]
     pub mapped_fields: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Definition of a single value with generic type.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FacetValue {
-    #[prost(oneof="facet_value::Value", tags="1, 2, 3")]
+    #[prost(oneof = "facet_value::Value", tags = "1, 2, 3")]
     pub value: ::core::option::Option<facet_value::Value>,
 }
 /// Nested message and enum types in `FacetValue`.
@@ -6774,13 +7024,13 @@ pub mod facet_value {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Value {
         /// String type value.
-        #[prost(string, tag="1")]
+        #[prost(string, tag = "1")]
         StringValue(::prost::alloc::string::String),
         /// Integer type value.
-        #[prost(int64, tag="2")]
+        #[prost(int64, tag = "2")]
         IntegerValue(i64),
         /// Datetime type value.
-        #[prost(message, tag="3")]
+        #[prost(message, tag = "3")]
         DatetimeValue(super::super::super::super::r#type::DateTime),
     }
 }
@@ -6789,12 +7039,12 @@ pub mod facet_value {
 pub struct FacetBucket {
     /// Whether one facet bucket is selected. This field represents user's facet
     /// selection. It is set by frontend in SearchVideosRequest.
-    #[prost(bool, tag="3")]
+    #[prost(bool, tag = "3")]
     pub selected: bool,
     /// Bucket associated with a facet. For example, bucket of facet “team”
     /// can be "49ers", "patriots", etc; bucket of facet "player" can be "tom
     /// brady", "drew brees", etc.
-    #[prost(oneof="facet_bucket::BucketValue", tags="2, 4")]
+    #[prost(oneof = "facet_bucket::BucketValue", tags = "2, 4")]
     pub bucket_value: ::core::option::Option<facet_bucket::BucketValue>,
 }
 /// Nested message and enum types in `FacetBucket`.
@@ -6803,10 +7053,10 @@ pub mod facet_bucket {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Range {
         /// Start of the range. Non-existence indicates some bound (e.g. -inf).
-        #[prost(message, optional, tag="1")]
+        #[prost(message, optional, tag = "1")]
         pub start: ::core::option::Option<super::FacetValue>,
         /// End of the range. Non-existence indicates some bound (e.g. inf).
-        #[prost(message, optional, tag="2")]
+        #[prost(message, optional, tag = "2")]
         pub end: ::core::option::Option<super::FacetValue>,
     }
     /// Bucket associated with a facet. For example, bucket of facet “team”
@@ -6815,10 +7065,10 @@ pub mod facet_bucket {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum BucketValue {
         /// Singular value.
-        #[prost(message, tag="2")]
+        #[prost(message, tag = "2")]
         Value(super::FacetValue),
         /// Range value.
-        #[prost(message, tag="4")]
+        #[prost(message, tag = "4")]
         Range(Range),
     }
 }
@@ -6827,31 +7077,33 @@ pub mod facet_bucket {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FacetGroup {
     /// Unique id of the facet group.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub facet_id: ::prost::alloc::string::String,
     /// Display name of the facet. To be used by UI for facet rendering.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub display_name: ::prost::alloc::string::String,
     /// Buckets associated with the facet. E.g. for "Team" facet, the bucket
     /// can be 49ers, patriots, etc.
-    #[prost(message, repeated, tag="3")]
+    #[prost(message, repeated, tag = "3")]
     pub buckets: ::prost::alloc::vec::Vec<FacetBucket>,
     /// Facet bucket type.
-    #[prost(enumeration="FacetBucketType", tag="4")]
+    #[prost(enumeration = "FacetBucketType", tag = "4")]
     pub bucket_type: i32,
     /// If true, return query matched annotations for this facet group's selection.
     /// This option is only applicable for facets based on partition level
     /// annotations. It supports the following facet values:
     ///   - INTEGER
     ///   - STRING (DataSchema.SearchStrategy.EXACT_SEARCH only)
-    #[prost(bool, tag="5")]
+    #[prost(bool, tag = "5")]
     pub fetch_matched_annotations: bool,
 }
 /// Request message for IngestAsset API.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IngestAssetRequest {
-    #[prost(oneof="ingest_asset_request::StreamingRequest", tags="1, 2")]
-    pub streaming_request: ::core::option::Option<ingest_asset_request::StreamingRequest>,
+    #[prost(oneof = "ingest_asset_request::StreamingRequest", tags = "1, 2")]
+    pub streaming_request: ::core::option::Option<
+        ingest_asset_request::StreamingRequest,
+    >,
 }
 /// Nested message and enum types in `IngestAssetRequest`.
 pub mod ingest_asset_request {
@@ -6859,9 +7111,9 @@ pub mod ingest_asset_request {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Config {
         /// Required. The resource name of the asset that the ingested data belongs to.
-        #[prost(string, tag="1")]
+        #[prost(string, tag = "1")]
         pub asset: ::prost::alloc::string::String,
-        #[prost(oneof="config::DataType", tags="2")]
+        #[prost(oneof = "config::DataType", tags = "2")]
         pub data_type: ::core::option::Option<config::DataType>,
     }
     /// Nested message and enum types in `Config`.
@@ -6870,13 +7122,23 @@ pub mod ingest_asset_request {
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct VideoType {
             /// Container format of the video data.
-            #[prost(enumeration="video_type::ContainerFormat", tag="1")]
+            #[prost(enumeration = "video_type::ContainerFormat", tag = "1")]
             pub container_format: i32,
         }
         /// Nested message and enum types in `VideoType`.
         pub mod video_type {
             /// Container format of the video.
-            #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+            #[derive(
+                Clone,
+                Copy,
+                Debug,
+                PartialEq,
+                Eq,
+                Hash,
+                PartialOrd,
+                Ord,
+                ::prost::Enumeration
+            )]
             #[repr(i32)]
             pub enum ContainerFormat {
                 /// The default type, not supposed to be used.
@@ -6900,7 +7162,7 @@ pub mod ingest_asset_request {
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum DataType {
             /// Type information for video data.
-            #[prost(message, tag="2")]
+            #[prost(message, tag = "2")]
             VideoType(VideoType),
         }
     }
@@ -6908,21 +7170,23 @@ pub mod ingest_asset_request {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct TimeIndexedData {
         /// Data to be ingested.
-        #[prost(bytes="vec", tag="1")]
+        #[prost(bytes = "vec", tag = "1")]
         pub data: ::prost::alloc::vec::Vec<u8>,
         /// Time range of the data.
-        #[prost(message, optional, tag="2")]
-        pub temporal_partition: ::core::option::Option<super::partition::TemporalPartition>,
+        #[prost(message, optional, tag = "2")]
+        pub temporal_partition: ::core::option::Option<
+            super::partition::TemporalPartition,
+        >,
     }
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum StreamingRequest {
         /// Provides information for the data and the asset resource name that the
         /// data belongs to. The first `IngestAssetRequest` message must only contain
         /// a `Config` message.
-        #[prost(message, tag="1")]
+        #[prost(message, tag = "1")]
         Config(Config),
         /// Data to be ingested.
-        #[prost(message, tag="2")]
+        #[prost(message, tag = "2")]
         TimeIndexedData(TimeIndexedData),
     }
 }
@@ -6930,8 +7194,10 @@ pub mod ingest_asset_request {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IngestAssetResponse {
     /// Time range of the data that has been successfully ingested.
-    #[prost(message, optional, tag="1")]
-    pub successfully_ingested_partition: ::core::option::Option<partition::TemporalPartition>,
+    #[prost(message, optional, tag = "1")]
+    pub successfully_ingested_partition: ::core::option::Option<
+        partition::TemporalPartition,
+    >,
 }
 /// Request message for ClipAsset API.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -6939,10 +7205,10 @@ pub struct ClipAssetRequest {
     /// Required. The resource name of the asset to request clips for.
     /// Form:
     /// 'projects/{project_number}/locations/{location_id}/corpora/{corpus_id}/assets/{asset_id}'
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The time range to request clips for.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub temporal_partition: ::core::option::Option<partition::TemporalPartition>,
 }
 /// Response message for ClipAsset API.
@@ -6950,7 +7216,7 @@ pub struct ClipAssetRequest {
 pub struct ClipAssetResponse {
     /// A list of signed uris to download the video clips that cover the requested
     /// time range ordered by time.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub time_indexed_uris: ::prost::alloc::vec::Vec<clip_asset_response::TimeIndexedUri>,
 }
 /// Nested message and enum types in `ClipAssetResponse`.
@@ -6959,10 +7225,12 @@ pub mod clip_asset_response {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct TimeIndexedUri {
         /// Time range of the video that the uri is for.
-        #[prost(message, optional, tag="1")]
-        pub temporal_partition: ::core::option::Option<super::partition::TemporalPartition>,
+        #[prost(message, optional, tag = "1")]
+        pub temporal_partition: ::core::option::Option<
+            super::partition::TemporalPartition,
+        >,
         /// Signed uri to download the video clip.
-        #[prost(string, tag="2")]
+        #[prost(string, tag = "2")]
         pub uri: ::prost::alloc::string::String,
     }
 }
@@ -6972,10 +7240,10 @@ pub struct GenerateHlsUriRequest {
     /// Required. The resource name of the asset to request clips for.
     /// Form:
     /// 'projects/{project_number}/locations/{location_id}/corpora/{corpus_id}/assets/{asset_id}'
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The time range to request clips for.
-    #[prost(message, repeated, tag="2")]
+    #[prost(message, repeated, tag = "2")]
     pub temporal_partitions: ::prost::alloc::vec::Vec<partition::TemporalPartition>,
 }
 /// Response message for GenerateHlsUri API.
@@ -6983,11 +7251,11 @@ pub struct GenerateHlsUriRequest {
 pub struct GenerateHlsUriResponse {
     /// A signed uri to download the HLS manifest corresponding to the requested
     /// times.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub uri: ::prost::alloc::string::String,
     /// A list of temporal partitions of the content returned in the order they
     /// appear in the stream.
-    #[prost(message, repeated, tag="2")]
+    #[prost(message, repeated, tag = "2")]
     pub temporal_partitions: ::prost::alloc::vec::Vec<partition::TemporalPartition>,
 }
 /// Request message for SearchAssets.
@@ -6995,40 +7263,40 @@ pub struct GenerateHlsUriResponse {
 pub struct SearchAssetsRequest {
     /// Required. The parent corpus to search.
     /// Form: `projects/{project_id}/locations/{location_id}/corpora/{corpus_id}'
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub corpus: ::prost::alloc::string::String,
     /// The number of results to be returned in this page. If it's 0, the server
     /// will decide the appropriate page_size.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// The continuation token to fetch the next page. If empty, it means it is
     /// fetching the first page.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
     /// Time ranges that matching video content must fall within. If no ranges are
     /// provided, there will be no time restriction. This field is treated just
     /// like the criteria below, but defined separately for convenience as it is
     /// used frequently. Note that if the end_time is in the future, it will be
     /// clamped to the time the request was received.
-    #[prost(message, optional, tag="5")]
+    #[prost(message, optional, tag = "5")]
     pub content_time_ranges: ::core::option::Option<DateTimeRangeArray>,
     /// Criteria applied to search results.
-    #[prost(message, repeated, tag="4")]
+    #[prost(message, repeated, tag = "4")]
     pub criteria: ::prost::alloc::vec::Vec<Criteria>,
     /// Stores most recent facet selection state. Only facet groups with user's
     /// selection will be presented here. Selection state is either selected or
     /// unselected. Only selected facet buckets will be used as search criteria.
-    #[prost(message, repeated, tag="6")]
+    #[prost(message, repeated, tag = "6")]
     pub facet_selections: ::prost::alloc::vec::Vec<FacetGroup>,
     /// A list of annotation keys to specify the annotations to be retrieved and
     /// returned with each search result.
     /// Annotation granularity must be GRANULARITY_ASSET_LEVEL and its search
     /// strategy must not be NO_SEARCH.
-    #[prost(string, repeated, tag="8")]
+    #[prost(string, repeated, tag = "8")]
     pub result_annotation_keys: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Sorting specification. If this field is not specified, by default:
     /// - STREAM_VIDEO: search results are sorted by the start time.
-    #[prost(oneof="search_assets_request::SortSpec", tags="9")]
+    #[prost(oneof = "search_assets_request::SortSpec", tags = "9")]
     pub sort_spec: ::core::option::Option<search_assets_request::SortSpec>,
 }
 /// Nested message and enum types in `SearchAssetsRequest`.
@@ -7038,7 +7306,7 @@ pub mod search_assets_request {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum SortSpec {
         /// Sort by the value under the data schema key.
-        #[prost(message, tag="9")]
+        #[prost(message, tag = "9")]
         SchemaKeySortingStrategy(super::SchemaKeySortingStrategy),
     }
 }
@@ -7046,7 +7314,7 @@ pub mod search_assets_request {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SchemaKeySortingStrategy {
     /// Options in the front have high priority than those in the back.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub options: ::prost::alloc::vec::Vec<schema_key_sorting_strategy::Option>,
 }
 /// Nested message and enum types in `SchemaKeySortingStrategy`.
@@ -7055,14 +7323,14 @@ pub mod schema_key_sorting_strategy {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Option {
         /// The data used to sort.
-        #[prost(string, tag="1")]
+        #[prost(string, tag = "1")]
         pub data_schema_key: ::prost::alloc::string::String,
         /// Whether to sort in decreasing order or increasing order.
         /// By default, results are sorted in incresing order.
-        #[prost(bool, tag="2")]
+        #[prost(bool, tag = "2")]
         pub sort_decreasing: bool,
         /// Aggregate method for the current data schema key.
-        #[prost(enumeration="option::AggregateMethod", optional, tag="3")]
+        #[prost(enumeration = "option::AggregateMethod", optional, tag = "3")]
         pub aggregate_method: ::core::option::Option<i32>,
     }
     /// Nested message and enum types in `Option`.
@@ -7072,7 +7340,17 @@ pub mod schema_key_sorting_strategy {
         /// is used when results are sorted in decreasing order,
         /// AGGREGATE_METHOD_SMALLEST is used when results are sorted in
         /// incresing order.
-        #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
         #[repr(i32)]
         pub enum AggregateMethod {
             /// The unspecified aggregate method will be overwritten as mentioned
@@ -7103,15 +7381,15 @@ pub mod schema_key_sorting_strategy {
 pub struct AnnotationMatchingResult {
     /// The criteria used for matching. It can be an input search criteria or a
     /// criteria converted from a facet selection.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub criteria: ::core::option::Option<Criteria>,
     /// Matched annotations for the criteria.
-    #[prost(message, repeated, tag="2")]
+    #[prost(message, repeated, tag = "2")]
     pub matched_annotations: ::prost::alloc::vec::Vec<Annotation>,
     /// Status of the match result. Possible values:
     /// FAILED_PRECONDITION - the criteria is not eligible for match.
     /// OK - matching is performed.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub status: ::core::option::Option<super::super::super::rpc::Status>,
 }
 /// Search result contains asset name and corresponding time ranges.
@@ -7120,128 +7398,128 @@ pub struct SearchResultItem {
     /// The resource name of the asset.
     /// Form:
     /// 'projects/{project_number}/locations/{location_id}/corpora/{corpus_id}/assets/{asset_id}'
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub asset: ::prost::alloc::string::String,
     /// The matched asset segments.
     /// Deprecated: please use singular `segment` field.
     #[deprecated]
-    #[prost(message, repeated, tag="2")]
+    #[prost(message, repeated, tag = "2")]
     pub segments: ::prost::alloc::vec::Vec<partition::TemporalPartition>,
     /// The matched asset segment.
-    #[prost(message, optional, tag="5")]
+    #[prost(message, optional, tag = "5")]
     pub segment: ::core::option::Option<partition::TemporalPartition>,
     /// Search result annotations specified by result_annotation_keys in search
     /// request.
-    #[prost(message, repeated, tag="3")]
+    #[prost(message, repeated, tag = "3")]
     pub requested_annotations: ::prost::alloc::vec::Vec<Annotation>,
     /// Criteria or facet-selection based annotation matching results associated to
     /// this search result item. Only contains results for criteria or
     /// facet_selections with fetch_matched_annotations=true.
-    #[prost(message, repeated, tag="4")]
+    #[prost(message, repeated, tag = "4")]
     pub annotation_matching_results: ::prost::alloc::vec::Vec<AnnotationMatchingResult>,
 }
 /// Response message for SearchAssets.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchAssetsResponse {
     /// Returned search results.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub search_result_items: ::prost::alloc::vec::Vec<SearchResultItem>,
     /// The next-page continuation token.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
     /// Facet search results of a given query, which contains user's
     /// already-selected facet values and updated facet search results.
-    #[prost(message, repeated, tag="3")]
+    #[prost(message, repeated, tag = "3")]
     pub facet_results: ::prost::alloc::vec::Vec<FacetGroup>,
 }
 /// Integer range type.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IntRange {
     /// Start of the int range.
-    #[prost(int64, optional, tag="1")]
+    #[prost(int64, optional, tag = "1")]
     pub start: ::core::option::Option<i64>,
     /// End of the int range.
-    #[prost(int64, optional, tag="2")]
+    #[prost(int64, optional, tag = "2")]
     pub end: ::core::option::Option<i64>,
 }
 /// Float range type.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FloatRange {
     /// Start of the float range.
-    #[prost(float, optional, tag="1")]
+    #[prost(float, optional, tag = "1")]
     pub start: ::core::option::Option<f32>,
     /// End of the float range.
-    #[prost(float, optional, tag="2")]
+    #[prost(float, optional, tag = "2")]
     pub end: ::core::option::Option<f32>,
 }
 /// A list of string-type values.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StringArray {
     /// String type values.
-    #[prost(string, repeated, tag="1")]
+    #[prost(string, repeated, tag = "1")]
     pub txt_values: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// A list of integer range values.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IntRangeArray {
     /// Int range values.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub int_ranges: ::prost::alloc::vec::Vec<IntRange>,
 }
 /// A list of float range values.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FloatRangeArray {
     /// Float range values.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub float_ranges: ::prost::alloc::vec::Vec<FloatRange>,
 }
 /// Datetime range type.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DateTimeRange {
     /// Start date time.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub start: ::core::option::Option<super::super::super::r#type::DateTime>,
     /// End data time.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub end: ::core::option::Option<super::super::super::r#type::DateTime>,
 }
 /// A list of datetime range values.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DateTimeRangeArray {
     /// Date time ranges.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub date_time_ranges: ::prost::alloc::vec::Vec<DateTimeRange>,
 }
 /// Representation of a circle area.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CircleArea {
     /// Latitude of circle area's center. Degrees [-90 .. 90]
-    #[prost(double, tag="1")]
+    #[prost(double, tag = "1")]
     pub latitude: f64,
     /// Longitude of circle area's center. Degrees [-180 .. 180]
-    #[prost(double, tag="2")]
+    #[prost(double, tag = "2")]
     pub longitude: f64,
     /// Radius of the circle area in meters.
-    #[prost(double, tag="3")]
+    #[prost(double, tag = "3")]
     pub radius_meter: f64,
 }
 /// A list of locations.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GeoLocationArray {
     /// A list of circle areas.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub circle_areas: ::prost::alloc::vec::Vec<CircleArea>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BoolValue {
-    #[prost(bool, tag="1")]
+    #[prost(bool, tag = "1")]
     pub value: bool,
 }
 /// Filter criteria applied to current search results.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Criteria {
     /// The UGA field or ML field to apply filtering criteria.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub field: ::prost::alloc::string::String,
     /// If true, return query matched annotations for this criteria.
     /// This option is only applicable for partition level annotations and supports
@@ -7250,9 +7528,9 @@ pub struct Criteria {
     ///   - FLOAT
     ///   - STRING (DataSchema.SearchStrategy.EXACT_SEARCH only)
     ///   - BOOLEAN
-    #[prost(bool, tag="8")]
+    #[prost(bool, tag = "8")]
     pub fetch_matched_annotations: bool,
-    #[prost(oneof="criteria::Value", tags="2, 3, 4, 5, 6, 7")]
+    #[prost(oneof = "criteria::Value", tags = "2, 3, 4, 5, 6, 7")]
     pub value: ::core::option::Option<criteria::Value>,
 }
 /// Nested message and enum types in `Criteria`.
@@ -7260,22 +7538,22 @@ pub mod criteria {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Value {
         /// The text values associated with the field.
-        #[prost(message, tag="2")]
+        #[prost(message, tag = "2")]
         TextArray(super::StringArray),
         /// The integer ranges associated with the field.
-        #[prost(message, tag="3")]
+        #[prost(message, tag = "3")]
         IntRangeArray(super::IntRangeArray),
         /// The float ranges associated with the field.
-        #[prost(message, tag="4")]
+        #[prost(message, tag = "4")]
         FloatRangeArray(super::FloatRangeArray),
         /// The datetime ranges associated with the field.
-        #[prost(message, tag="5")]
+        #[prost(message, tag = "5")]
         DateTimeRangeArray(super::DateTimeRangeArray),
         /// Geo Location array.
-        #[prost(message, tag="6")]
+        #[prost(message, tag = "6")]
         GeoLocationArray(super::GeoLocationArray),
         /// A Boolean value.
-        #[prost(message, tag="7")]
+        #[prost(message, tag = "7")]
         BoolValue(super::BoolValue),
     }
 }
@@ -7284,10 +7562,10 @@ pub mod criteria {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Partition {
     /// Partition of asset in time.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub temporal_partition: ::core::option::Option<partition::TemporalPartition>,
     /// Partition of asset in space.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub spatial_partition: ::core::option::Option<partition::SpatialPartition>,
 }
 /// Nested message and enum types in `Partition`.
@@ -7296,38 +7574,36 @@ pub mod partition {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct TemporalPartition {
         /// Start time of the partition.
-        #[prost(message, optional, tag="1")]
+        #[prost(message, optional, tag = "1")]
         pub start_time: ::core::option::Option<::prost_types::Timestamp>,
         /// End time of the partition.
-        #[prost(message, optional, tag="2")]
+        #[prost(message, optional, tag = "2")]
         pub end_time: ::core::option::Option<::prost_types::Timestamp>,
     }
     /// Partition of asset in space.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SpatialPartition {
         /// The minimum x coordinate value.
-        #[prost(int64, optional, tag="1")]
+        #[prost(int64, optional, tag = "1")]
         pub x_min: ::core::option::Option<i64>,
         /// The minimum y coordinate value.
-        #[prost(int64, optional, tag="2")]
+        #[prost(int64, optional, tag = "2")]
         pub y_min: ::core::option::Option<i64>,
         /// The maximum x coordinate value.
-        #[prost(int64, optional, tag="3")]
+        #[prost(int64, optional, tag = "3")]
         pub x_max: ::core::option::Option<i64>,
         /// The maximum y coordinate value.
-        #[prost(int64, optional, tag="4")]
+        #[prost(int64, optional, tag = "4")]
         pub y_max: ::core::option::Option<i64>,
     }
 }
 /// The metadata for DeleteAsset API that embeds in
 /// \[metadata][google.longrunning.Operation.metadata\] field.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DeleteAssetMetadata {
-}
+pub struct DeleteAssetMetadata {}
 /// Metadata for CreateCorpus API.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CreateCorpusMetadata {
-}
+pub struct CreateCorpusMetadata {}
 /// Different types for a facet bucket.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]

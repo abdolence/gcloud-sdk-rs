@@ -3,17 +3,20 @@
 pub struct Feature {
     /// Output only. The full, unique name of this Feature resource in the format
     /// `projects/*/locations/*/features/*`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// GCP labels for this Feature.
-    #[prost(map="string, string", tag="2")]
-    pub labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map = "string, string", tag = "2")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
     /// Output only. State of the Feature resource itself.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub resource_state: ::core::option::Option<FeatureResourceState>,
     /// Optional. Hub-wide Feature configuration. If this Feature does not support any
     /// Hub-wide configuration, this field may be unused.
-    #[prost(message, optional, tag="4")]
+    #[prost(message, optional, tag = "4")]
     pub spec: ::core::option::Option<CommonFeatureSpec>,
     /// Optional. Membership-specific configuration for this Feature. If this Feature does
     /// not support any per-Membership configuration, this field may be unused.
@@ -32,10 +35,13 @@ pub struct Feature {
     /// ONE of the entries will be saved, with no guarantees as to which. For this
     /// reason, it is recommended the same format be used for all entries when
     /// mutating a Feature.
-    #[prost(map="string, message", tag="5")]
-    pub membership_specs: ::std::collections::HashMap<::prost::alloc::string::String, MembershipFeatureSpec>,
+    #[prost(map = "string, message", tag = "5")]
+    pub membership_specs: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        MembershipFeatureSpec,
+    >,
     /// Output only. The Hub-wide Feature state.
-    #[prost(message, optional, tag="6")]
+    #[prost(message, optional, tag = "6")]
     pub state: ::core::option::Option<CommonFeatureState>,
     /// Output only. Membership-specific Feature status. If this Feature does
     /// report any per-Membership status, this field may be unused.
@@ -47,16 +53,19 @@ pub struct Feature {
     /// Where {p} is the project number, {l} is a valid location and {m} is a valid
     /// Membership in this project at that location. {p} MUST match the Feature's
     /// project number.
-    #[prost(map="string, message", tag="7")]
-    pub membership_states: ::std::collections::HashMap<::prost::alloc::string::String, MembershipFeatureState>,
+    #[prost(map = "string, message", tag = "7")]
+    pub membership_states: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        MembershipFeatureState,
+    >,
     /// Output only. When the Feature resource was created.
-    #[prost(message, optional, tag="8")]
+    #[prost(message, optional, tag = "8")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. When the Feature resource was last updated.
-    #[prost(message, optional, tag="9")]
+    #[prost(message, optional, tag = "9")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. When the Feature resource was deleted.
-    #[prost(message, optional, tag="10")]
+    #[prost(message, optional, tag = "10")]
     pub delete_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// FeatureResourceState describes the state of a Feature *resource* in the
@@ -65,13 +74,23 @@ pub struct Feature {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FeatureResourceState {
     /// The current state of the Feature resource in the Hub API.
-    #[prost(enumeration="feature_resource_state::State", tag="1")]
+    #[prost(enumeration = "feature_resource_state::State", tag = "1")]
     pub state: i32,
 }
 /// Nested message and enum types in `FeatureResourceState`.
 pub mod feature_resource_state {
     /// State describes the lifecycle status of a Feature.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum State {
         /// State is unknown or not set.
@@ -113,19 +132,29 @@ pub mod feature_resource_state {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FeatureState {
     /// The high-level, machine-readable status of this Feature.
-    #[prost(enumeration="feature_state::Code", tag="1")]
+    #[prost(enumeration = "feature_state::Code", tag = "1")]
     pub code: i32,
     /// A human-readable description of the current status.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub description: ::prost::alloc::string::String,
     /// The time this status and any related Feature-specific details were updated.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Nested message and enum types in `FeatureState`.
 pub mod feature_state {
     /// Code represents a machine-readable, high-level status of the Feature.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum Code {
         /// Unknown or not set.
@@ -161,7 +190,7 @@ pub mod feature_state {
 /// CommonFeatureSpec contains Hub-wide configuration information
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CommonFeatureSpec {
-    #[prost(oneof="common_feature_spec::FeatureSpec", tags="102, 108")]
+    #[prost(oneof = "common_feature_spec::FeatureSpec", tags = "102, 108")]
     pub feature_spec: ::core::option::Option<common_feature_spec::FeatureSpec>,
 }
 /// Nested message and enum types in `CommonFeatureSpec`.
@@ -169,10 +198,10 @@ pub mod common_feature_spec {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum FeatureSpec {
         /// Multicluster Ingress-specific spec.
-        #[prost(message, tag="102")]
+        #[prost(message, tag = "102")]
         Multiclusteringress(super::super::multiclusteringress::v1alpha::FeatureSpec),
         /// Cloud Audit Logging-specific spec.
-        #[prost(message, tag="108")]
+        #[prost(message, tag = "108")]
         Cloudauditlogging(super::super::cloudauditlogging::v1alpha::FeatureSpec),
     }
 }
@@ -180,9 +209,9 @@ pub mod common_feature_spec {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CommonFeatureState {
     /// Output only. The "running state" of the Feature in this Hub.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub state: ::core::option::Option<FeatureState>,
-    #[prost(oneof="common_feature_state::FeatureState", tags="100")]
+    #[prost(oneof = "common_feature_state::FeatureState", tags = "100")]
     pub feature_state: ::core::option::Option<common_feature_state::FeatureState>,
 }
 /// Nested message and enum types in `CommonFeatureState`.
@@ -190,7 +219,7 @@ pub mod common_feature_state {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum FeatureState {
         /// Service Mesh-specific state.
-        #[prost(message, tag="100")]
+        #[prost(message, tag = "100")]
         Servicemesh(super::super::servicemesh::v1alpha::FeatureState),
     }
 }
@@ -198,7 +227,7 @@ pub mod common_feature_state {
 /// Membership.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MembershipFeatureSpec {
-    #[prost(oneof="membership_feature_spec::FeatureSpec", tags="106")]
+    #[prost(oneof = "membership_feature_spec::FeatureSpec", tags = "106")]
     pub feature_spec: ::core::option::Option<membership_feature_spec::FeatureSpec>,
 }
 /// Nested message and enum types in `MembershipFeatureSpec`.
@@ -206,7 +235,7 @@ pub mod membership_feature_spec {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum FeatureSpec {
         /// Config Management-specific spec.
-        #[prost(message, tag="106")]
+        #[prost(message, tag = "106")]
         Configmanagement(super::super::configmanagement::v1alpha::MembershipSpec),
     }
 }
@@ -215,9 +244,9 @@ pub mod membership_feature_spec {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MembershipFeatureState {
     /// The high-level state of this Feature for a single membership.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub state: ::core::option::Option<FeatureState>,
-    #[prost(oneof="membership_feature_state::FeatureState", tags="100, 104, 106")]
+    #[prost(oneof = "membership_feature_state::FeatureState", tags = "100, 104, 106")]
     pub feature_state: ::core::option::Option<membership_feature_state::FeatureState>,
 }
 /// Nested message and enum types in `MembershipFeatureState`.
@@ -225,13 +254,13 @@ pub mod membership_feature_state {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum FeatureState {
         /// Service Mesh-specific state.
-        #[prost(message, tag="100")]
+        #[prost(message, tag = "100")]
         Servicemesh(super::super::servicemesh::v1alpha::MembershipState),
         /// Metering-specific spec.
-        #[prost(message, tag="104")]
+        #[prost(message, tag = "104")]
         Metering(super::super::metering::v1alpha::MembershipState),
         /// Config Management-specific state.
-        #[prost(message, tag="106")]
+        #[prost(message, tag = "106")]
         Configmanagement(super::super::configmanagement::v1alpha::MembershipState),
     }
 }
@@ -240,17 +269,17 @@ pub mod membership_feature_state {
 pub struct ListFeaturesRequest {
     /// The parent (project and location) where the Features will be listed.
     /// Specified in the format `projects/*/locations/*`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// When requesting a 'page' of resources, `page_size` specifies number of
     /// resources to return. If unspecified or set to 0, all resources will
     /// be returned.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Token returned by previous call to `ListFeatures` which
     /// specifies the position in the list from where to continue listing the
     /// resources.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
     /// Lists Features that match the filter expression, following the syntax
     /// outlined in <https://google.aip.dev/160.>
@@ -268,23 +297,23 @@ pub struct ListFeaturesRequest {
     ///    - Features that have a label called `foo` whose value is `bar`:
     ///
     ///        labels.foo = bar
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
     /// One or more fields to compare and use to sort the output.
     /// See <https://google.aip.dev/132#ordering.>
-    #[prost(string, tag="5")]
+    #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
 /// Response message for the `GkeHub.ListFeatures` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFeaturesResponse {
     /// The list of matching Features
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub resources: ::prost::alloc::vec::Vec<Feature>,
     /// A token to request the next page of resources from the
     /// `ListFeatures` method. The value of an empty string means
     /// that there are no more resources to return.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for `GkeHub.GetFeature` method.
@@ -292,7 +321,7 @@ pub struct ListFeaturesResponse {
 pub struct GetFeatureRequest {
     /// The Feature resource name in the format
     /// `projects/*/locations/*/features/*`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for the `GkeHub.CreateFeature` method.
@@ -300,13 +329,13 @@ pub struct GetFeatureRequest {
 pub struct CreateFeatureRequest {
     /// The parent (project and location) where the Feature will be created.
     /// Specified in the format `projects/*/locations/*`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The ID of the feature to create.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub feature_id: ::prost::alloc::string::String,
     /// The Feature resource to create.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub resource: ::core::option::Option<Feature>,
     /// Optional. A request ID to identify requests. Specify a unique request ID
     /// so that if you must retry your request, the server will know to ignore
@@ -321,7 +350,7 @@ pub struct CreateFeatureRequest {
     ///
     /// The request ID must be a valid UUID with the exception that zero UUID is
     /// not supported (00000000-0000-0000-0000-000000000000).
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for `GkeHub.DeleteFeature` method.
@@ -329,12 +358,12 @@ pub struct CreateFeatureRequest {
 pub struct DeleteFeatureRequest {
     /// The Feature resource name in the format
     /// `projects/*/locations/*/features/*`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// If set to true, the delete will ignore any outstanding resources for
     /// this Feature (that is, `FeatureState.has_resources` is set to true). These
     /// resources will NOT be cleaned up or modified in any way.
-    #[prost(bool, tag="2")]
+    #[prost(bool, tag = "2")]
     pub force: bool,
     /// Optional. A request ID to identify requests. Specify a unique request ID
     /// so that if you must retry your request, the server will know to ignore
@@ -349,7 +378,7 @@ pub struct DeleteFeatureRequest {
     ///
     /// The request ID must be a valid UUID with the exception that zero UUID is
     /// not supported (00000000-0000-0000-0000-000000000000).
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for `GkeHub.UpdateFeature` method.
@@ -357,10 +386,10 @@ pub struct DeleteFeatureRequest {
 pub struct UpdateFeatureRequest {
     /// The Feature resource name in the format
     /// `projects/*/locations/*/features/*`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Mask of fields to update.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// Only fields specified in update_mask are updated.
     /// If you specify a field in the update_mask but don't specify its value here
@@ -370,7 +399,7 @@ pub struct UpdateFeatureRequest {
     /// value to the empty string.
     /// If you specify the update_mask to be a special path "*", fully replaces all
     /// user-modifiable fields to match `resource`.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub resource: ::core::option::Option<Feature>,
     /// Optional. A request ID to identify requests. Specify a unique request ID
     /// so that if you must retry your request, the server will know to ignore
@@ -385,35 +414,35 @@ pub struct UpdateFeatureRequest {
     ///
     /// The request ID must be a valid UUID with the exception that zero UUID is
     /// not supported (00000000-0000-0000-0000-000000000000).
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub request_id: ::prost::alloc::string::String,
 }
 /// Represents the metadata of the long-running operation.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationMetadata {
     /// Output only. The time the operation was created.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The time the operation finished running.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Server-defined resource path for the target of the operation.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub target: ::prost::alloc::string::String,
     /// Output only. Name of the verb executed by the operation.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub verb: ::prost::alloc::string::String,
     /// Output only. Human-readable status of the operation, if any.
-    #[prost(string, tag="5")]
+    #[prost(string, tag = "5")]
     pub status_detail: ::prost::alloc::string::String,
     /// Output only. Identifies whether the user has requested cancellation
     /// of the operation. Operations that have successfully been cancelled
     /// have \[Operation.error][\] value with a \[google.rpc.Status.code][google.rpc.Status.code\] of 1,
     /// corresponding to `Code.CANCELLED`.
-    #[prost(bool, tag="6")]
+    #[prost(bool, tag = "6")]
     pub cancel_requested: bool,
     /// Output only. API version used to start the operation.
-    #[prost(string, tag="7")]
+    #[prost(string, tag = "7")]
     pub api_version: ::prost::alloc::string::String,
 }
 /// Generated client implementations.

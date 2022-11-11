@@ -12,10 +12,10 @@ pub struct HttpTarget {
     /// `<http://acme.com`> and `<https://acme.com/sales:8080`.> Cloud Scheduler will
     /// encode some characters for safety and compatibility. The maximum allowed
     /// URL length is 2083 characters after encoding.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub uri: ::prost::alloc::string::String,
     /// Which HTTP method to use for the request.
-    #[prost(enumeration="HttpMethod", tag="2")]
+    #[prost(enumeration = "HttpMethod", tag = "2")]
     pub http_method: i32,
     /// The user can specify HTTP request headers to send with the job's
     /// HTTP request. This map contains the header field names and
@@ -32,18 +32,21 @@ pub struct HttpTarget {
     /// * `X-AppEngine-*`: Google internal use only.
     ///
     /// The total size of headers must be less than 80KB.
-    #[prost(map="string, string", tag="3")]
-    pub headers: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map = "string, string", tag = "3")]
+    pub headers: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
     /// HTTP request body. A request body is allowed only if the HTTP
     /// method is POST, PUT, or PATCH. It is an error to set body on a job with an
     /// incompatible \[HttpMethod][google.cloud.scheduler.v1.HttpMethod\].
-    #[prost(bytes="vec", tag="4")]
+    #[prost(bytes = "vec", tag = "4")]
     pub body: ::prost::alloc::vec::Vec<u8>,
     /// The mode for generating an `Authorization` header for HTTP requests.
     ///
     /// If specified, all `Authorization` headers in the \[HttpTarget.headers][google.cloud.scheduler.v1.HttpTarget.headers\]
     /// field will be overridden.
-    #[prost(oneof="http_target::AuthorizationHeader", tags="5, 6")]
+    #[prost(oneof = "http_target::AuthorizationHeader", tags = "5, 6")]
     pub authorization_header: ::core::option::Option<http_target::AuthorizationHeader>,
 }
 /// Nested message and enum types in `HttpTarget`.
@@ -61,7 +64,7 @@ pub mod http_target {
         ///
         /// This type of authorization should generally only be used when calling
         /// Google APIs hosted on *.googleapis.com.
-        #[prost(message, tag="5")]
+        #[prost(message, tag = "5")]
         OauthToken(super::OAuthToken),
         /// If specified, an
         /// \[OIDC\](<https://developers.google.com/identity/protocols/OpenIDConnect>)
@@ -71,7 +74,7 @@ pub mod http_target {
         /// This type of authorization can be used for many scenarios, including
         /// calling Cloud Run, or endpoints where you intend to validate the token
         /// yourself.
-        #[prost(message, tag="6")]
+        #[prost(message, tag = "6")]
         OidcToken(super::OidcToken),
     }
 }
@@ -88,10 +91,10 @@ pub mod http_target {
 pub struct AppEngineHttpTarget {
     /// The HTTP method to use for the request. PATCH and OPTIONS are not
     /// permitted.
-    #[prost(enumeration="HttpMethod", tag="1")]
+    #[prost(enumeration = "HttpMethod", tag = "1")]
     pub http_method: i32,
     /// App Engine Routing setting for the job.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub app_engine_routing: ::core::option::Option<AppEngineRouting>,
     /// The relative URI.
     ///
@@ -99,7 +102,7 @@ pub struct AppEngineHttpTarget {
     /// It can contain a path, query string arguments, and `#` fragments.
     /// If the relative URL is empty, then the root path "/" will be used.
     /// No spaces are allowed, and the maximum length allowed is 2083 characters.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub relative_uri: ::prost::alloc::string::String,
     /// HTTP request headers.
     ///
@@ -133,14 +136,17 @@ pub struct AppEngineHttpTarget {
     ///
     /// In addition, some App Engine headers, which contain
     /// job-specific information, are also be sent to the job handler.
-    #[prost(map="string, string", tag="4")]
-    pub headers: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map = "string, string", tag = "4")]
+    pub headers: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
     /// Body.
     ///
     /// HTTP request body. A request body is allowed only if the HTTP method is
     /// POST or PUT. It will result in invalid argument error to set a body on a
     /// job with an incompatible \[HttpMethod][google.cloud.scheduler.v1.HttpMethod\].
-    #[prost(bytes="vec", tag="5")]
+    #[prost(bytes = "vec", tag = "5")]
     pub body: ::prost::alloc::vec::Vec<u8>,
 }
 /// Pub/Sub target. The job will be delivered by publishing a message to
@@ -154,20 +160,23 @@ pub struct PubsubTarget {
     /// for example `projects/PROJECT_ID/topics/TOPIC_ID`.
     ///
     /// The topic must be in the same project as the Cloud Scheduler job.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub topic_name: ::prost::alloc::string::String,
     /// The message payload for PubsubMessage.
     ///
     /// Pubsub message must contain either non-empty data, or at least one
     /// attribute.
-    #[prost(bytes="vec", tag="3")]
+    #[prost(bytes = "vec", tag = "3")]
     pub data: ::prost::alloc::vec::Vec<u8>,
     /// Attributes for PubsubMessage.
     ///
     /// Pubsub message must contain either non-empty data, or at least one
     /// attribute.
-    #[prost(map="string, string", tag="4")]
-    pub attributes: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map = "string, string", tag = "4")]
+    pub attributes: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
 }
 /// App Engine Routing.
 ///
@@ -186,13 +195,13 @@ pub struct AppEngineRouting {
     ///
     /// By default, the job is sent to the service which is the default
     /// service when the job is attempted.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub service: ::prost::alloc::string::String,
     /// App version.
     ///
     /// By default, the job is sent to the version which is the default
     /// version when the job is attempted.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub version: ::prost::alloc::string::String,
     /// App instance.
     ///
@@ -207,7 +216,7 @@ pub struct AppEngineRouting {
     /// routing](<https://cloud.google.com/appengine/docs/standard/python/how-requests-are-routed>)
     /// and [App Engine Flex request
     /// routing](<https://cloud.google.com/appengine/docs/flexible/python/how-requests-are-routed>).
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub instance: ::prost::alloc::string::String,
     /// Output only. The host that the job is sent to.
     ///
@@ -267,7 +276,7 @@ pub struct AppEngineRouting {
     /// \[version][google.cloud.scheduler.v1.AppEngineRouting.version\], or
     /// \[instance][google.cloud.scheduler.v1.AppEngineRouting.instance\] is invalid, then the job will be sent
     /// to the default version of the default service when the job is attempted.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub host: ::prost::alloc::string::String,
 }
 /// Contains information needed for generating an
@@ -280,12 +289,12 @@ pub struct OAuthToken {
     /// to be used for generating OAuth token.
     /// The service account must be within the same project as the job. The caller
     /// must have iam.serviceAccounts.actAs permission for the service account.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub service_account_email: ::prost::alloc::string::String,
     /// OAuth scope to be used for generating OAuth access token.
     /// If not specified, "<https://www.googleapis.com/auth/cloud-platform">
     /// will be used.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub scope: ::prost::alloc::string::String,
 }
 /// Contains information needed for generating an
@@ -300,11 +309,11 @@ pub struct OidcToken {
     /// to be used for generating OIDC token.
     /// The service account must be within the same project as the job. The caller
     /// must have iam.serviceAccounts.actAs permission for the service account.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub service_account_email: ::prost::alloc::string::String,
     /// Audience to be used when generating OIDC token. If not specified, the URI
     /// specified in target will be used.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub audience: ::prost::alloc::string::String,
 }
 /// The HTTP method used to execute the job.
@@ -367,14 +376,14 @@ pub struct Job {
     ///     For more information, see <https://cloud.google.com/about/locations/.>
     /// * `JOB_ID` can contain only letters (\[A-Za-z\]), numbers (\[0-9\]),
     ///     hyphens (-), or underscores (_). The maximum length is 500 characters.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Optionally caller-specified in \[CreateJob][google.cloud.scheduler.v1.CloudScheduler.CreateJob\] or
     /// \[UpdateJob][google.cloud.scheduler.v1.CloudScheduler.UpdateJob\].
     ///
     /// A human-readable description for the job. This string must not contain
     /// more than 500 characters.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub description: ::prost::alloc::string::String,
     /// Required, except when used with \[UpdateJob][google.cloud.scheduler.v1.CloudScheduler.UpdateJob\].
     ///
@@ -399,7 +408,7 @@ pub struct Job {
     /// the job will be tried a total of \[retry_count][google.cloud.scheduler.v1.RetryConfig.retry_count\]
     /// times, with exponential backoff, until the next scheduled start
     /// time.
-    #[prost(string, tag="20")]
+    #[prost(string, tag = "20")]
     pub schedule: ::prost::alloc::string::String,
     /// Specifies the time zone to be used in interpreting
     /// \[schedule][google.cloud.scheduler.v1.Job.schedule\]. The value of this field must be a time
@@ -410,27 +419,27 @@ pub struct Job {
     /// determined by the chosen tz. For UTC use the string "utc". If a
     /// time zone is not specified, the default will be in UTC (also known
     /// as GMT).
-    #[prost(string, tag="21")]
+    #[prost(string, tag = "21")]
     pub time_zone: ::prost::alloc::string::String,
     /// Output only. The creation time of the job.
-    #[prost(message, optional, tag="9")]
+    #[prost(message, optional, tag = "9")]
     pub user_update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. State of the job.
-    #[prost(enumeration="job::State", tag="10")]
+    #[prost(enumeration = "job::State", tag = "10")]
     pub state: i32,
     /// Output only. The response from the target for the last attempted execution.
-    #[prost(message, optional, tag="11")]
+    #[prost(message, optional, tag = "11")]
     pub status: ::core::option::Option<super::super::super::rpc::Status>,
     /// Output only. The next time the job is scheduled. Note that this may be a
     /// retry of a previously failed attempt or the next execution time
     /// according to the schedule.
-    #[prost(message, optional, tag="17")]
+    #[prost(message, optional, tag = "17")]
     pub schedule_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The time the last job attempt started.
-    #[prost(message, optional, tag="18")]
+    #[prost(message, optional, tag = "18")]
     pub last_attempt_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Settings that determine the retry behavior.
-    #[prost(message, optional, tag="19")]
+    #[prost(message, optional, tag = "19")]
     pub retry_config: ::core::option::Option<RetryConfig>,
     /// The deadline for job attempts. If the request handler does not respond by
     /// this deadline then the request is cancelled and the attempt is marked as a
@@ -442,18 +451,28 @@ pub struct Job {
     /// * For [HTTP targets]\[google.cloud.scheduler.v1.Job.http_target\], between 15 seconds and 30 minutes.
     /// * For [App Engine HTTP targets]\[google.cloud.scheduler.v1.Job.app_engine_http_target\], between 15
     ///    seconds and 24 hours.
-    #[prost(message, optional, tag="22")]
+    #[prost(message, optional, tag = "22")]
     pub attempt_deadline: ::core::option::Option<::prost_types::Duration>,
     /// Required.
     ///
     /// Delivery settings containing destination and parameters.
-    #[prost(oneof="job::Target", tags="4, 5, 6")]
+    #[prost(oneof = "job::Target", tags = "4, 5, 6")]
     pub target: ::core::option::Option<job::Target>,
 }
 /// Nested message and enum types in `Job`.
 pub mod job {
     /// State of the job.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum State {
         /// Unspecified state.
@@ -493,13 +512,13 @@ pub mod job {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Target {
         /// Pub/Sub target.
-        #[prost(message, tag="4")]
+        #[prost(message, tag = "4")]
         PubsubTarget(super::PubsubTarget),
         /// App Engine HTTP target.
-        #[prost(message, tag="5")]
+        #[prost(message, tag = "5")]
         AppEngineHttpTarget(super::AppEngineHttpTarget),
         /// HTTP target.
-        #[prost(message, tag="6")]
+        #[prost(message, tag = "6")]
         HttpTarget(super::HttpTarget),
     }
 }
@@ -526,7 +545,7 @@ pub struct RetryConfig {
     /// whichever comes first.
     ///
     /// Values greater than 5 and negative values are not allowed.
-    #[prost(int32, tag="1")]
+    #[prost(int32, tag = "1")]
     pub retry_count: i32,
     /// The time limit for retrying a failed job, measured from time when an
     /// execution was first attempted. If specified with
@@ -535,19 +554,19 @@ pub struct RetryConfig {
     ///
     /// The default value for max_retry_duration is zero, which means retry
     /// duration is unlimited.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub max_retry_duration: ::core::option::Option<::prost_types::Duration>,
     /// The minimum amount of time to wait before retrying a job after
     /// it fails.
     ///
     /// The default value of this field is 5 seconds.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub min_backoff_duration: ::core::option::Option<::prost_types::Duration>,
     /// The maximum amount of time to wait before retrying a job after
     /// it fails.
     ///
     /// The default value of this field is 1 hour.
-    #[prost(message, optional, tag="4")]
+    #[prost(message, optional, tag = "4")]
     pub max_backoff_duration: ::core::option::Option<::prost_types::Duration>,
     /// The time between retries will double `max_doublings` times.
     ///
@@ -568,7 +587,7 @@ pub struct RetryConfig {
     /// requests will retry at 10s, 20s, 40s, 80s, 160s, 240s, 300s, 300s, ....
     ///
     /// The default value of this field is 5.
-    #[prost(int32, tag="5")]
+    #[prost(int32, tag = "5")]
     pub max_doublings: i32,
 }
 /// Request message for listing jobs using \[ListJobs][google.cloud.scheduler.v1.CloudScheduler.ListJobs\].
@@ -576,7 +595,7 @@ pub struct RetryConfig {
 pub struct ListJobsRequest {
     /// Required. The location name. For example:
     /// `projects/PROJECT_ID/locations/LOCATION_ID`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Requested page size.
     ///
@@ -584,7 +603,7 @@ pub struct ListJobsRequest {
     /// be the maximum. Fewer jobs than requested might be returned,
     /// even if more jobs exist; use next_page_token to determine if more
     /// jobs exist.
-    #[prost(int32, tag="5")]
+    #[prost(int32, tag = "5")]
     pub page_size: i32,
     /// A token identifying a page of results the server will return. To
     /// request the first page results, page_token must be empty. To
@@ -593,14 +612,14 @@ pub struct ListJobsRequest {
     /// the previous call to \[ListJobs][google.cloud.scheduler.v1.CloudScheduler.ListJobs\]. It is an error to
     /// switch the value of \[filter][google.cloud.scheduler.v1.ListJobsRequest.filter\] or
     /// \[order_by][google.cloud.scheduler.v1.ListJobsRequest.order_by\] while iterating through pages.
-    #[prost(string, tag="6")]
+    #[prost(string, tag = "6")]
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for listing jobs using \[ListJobs][google.cloud.scheduler.v1.CloudScheduler.ListJobs\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListJobsResponse {
     /// The list of jobs.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub jobs: ::prost::alloc::vec::Vec<Job>,
     /// A token to retrieve next page of results. Pass this value in the
     /// \[page_token][google.cloud.scheduler.v1.ListJobsRequest.page_token\] field in the subsequent call to
@@ -609,7 +628,7 @@ pub struct ListJobsResponse {
     /// through which to paginate.
     ///
     /// The page token is valid for only 2 hours.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for \[GetJob][google.cloud.scheduler.v1.CloudScheduler.GetJob\].
@@ -617,7 +636,7 @@ pub struct ListJobsResponse {
 pub struct GetJobRequest {
     /// Required. The job name. For example:
     /// `projects/PROJECT_ID/locations/LOCATION_ID/jobs/JOB_ID`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for \[CreateJob][google.cloud.scheduler.v1.CloudScheduler.CreateJob\].
@@ -625,14 +644,14 @@ pub struct GetJobRequest {
 pub struct CreateJobRequest {
     /// Required. The location name. For example:
     /// `projects/PROJECT_ID/locations/LOCATION_ID`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The job to add. The user can optionally specify a name for the
     /// job in \[name][google.cloud.scheduler.v1.Job.name\]. \[name][google.cloud.scheduler.v1.Job.name\] cannot be the same as an
     /// existing job. If a name is not specified then the system will
     /// generate a random unique name that will be returned
     /// (\[name][google.cloud.scheduler.v1.Job.name\]) in the response.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub job: ::core::option::Option<Job>,
 }
 /// Request message for \[UpdateJob][google.cloud.scheduler.v1.CloudScheduler.UpdateJob\].
@@ -642,10 +661,10 @@ pub struct UpdateJobRequest {
     ///
     /// Output only fields cannot be modified using UpdateJob.
     /// Any value specified for an output only field will be ignored.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub job: ::core::option::Option<Job>,
     /// A  mask used to specify which fields of the job are being updated.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for deleting a job using
@@ -654,7 +673,7 @@ pub struct UpdateJobRequest {
 pub struct DeleteJobRequest {
     /// Required. The job name. For example:
     /// `projects/PROJECT_ID/locations/LOCATION_ID/jobs/JOB_ID`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for \[PauseJob][google.cloud.scheduler.v1.CloudScheduler.PauseJob\].
@@ -662,7 +681,7 @@ pub struct DeleteJobRequest {
 pub struct PauseJobRequest {
     /// Required. The job name. For example:
     /// `projects/PROJECT_ID/locations/LOCATION_ID/jobs/JOB_ID`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for \[ResumeJob][google.cloud.scheduler.v1.CloudScheduler.ResumeJob\].
@@ -670,7 +689,7 @@ pub struct PauseJobRequest {
 pub struct ResumeJobRequest {
     /// Required. The job name. For example:
     /// `projects/PROJECT_ID/locations/LOCATION_ID/jobs/JOB_ID`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for forcing a job to run now using
@@ -679,7 +698,7 @@ pub struct ResumeJobRequest {
 pub struct RunJobRequest {
     /// Required. The job name. For example:
     /// `projects/PROJECT_ID/locations/LOCATION_ID/jobs/JOB_ID`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Generated client implementations.

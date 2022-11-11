@@ -21,26 +21,26 @@ pub struct Constraint {
     /// * `organizations/{organization_id}/constraints/{constraint_name}`
     ///
     /// For example, "/projects/123/constraints/compute.disableSerialPortAccess".
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The human readable name.
     ///
     /// Mutable.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub display_name: ::prost::alloc::string::String,
     /// Detailed description of what this `Constraint` controls as well as how and
     /// where it is enforced.
     ///
     /// Mutable.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub description: ::prost::alloc::string::String,
     /// The evaluation behavior of this constraint in the absence of 'Policy'.
-    #[prost(enumeration="constraint::ConstraintDefault", tag="4")]
+    #[prost(enumeration = "constraint::ConstraintDefault", tag = "4")]
     pub constraint_default: i32,
     /// The type of restrictions for this `Constraint`.
     ///
     /// Immutable after creation.
-    #[prost(oneof="constraint::ConstraintType", tags="5, 6")]
+    #[prost(oneof = "constraint::ConstraintType", tags = "5, 6")]
     pub constraint_type: ::core::option::Option<constraint::ConstraintType>,
 }
 /// Nested message and enum types in `Constraint`.
@@ -52,13 +52,13 @@ pub mod constraint {
         /// Indicates whether values grouped into categories can be used in
         /// `Policy.allowed_values` and `Policy.denied_values`. For example,
         /// `"in:Python"` would match any value in the 'Python' group.
-        #[prost(bool, tag="1")]
+        #[prost(bool, tag = "1")]
         pub supports_in: bool,
         /// Indicates whether subtrees of Cloud Resource Manager resource hierarchy
         /// can be used in `Policy.allowed_values` and `Policy.denied_values`. For
         /// example, `"under:folders/123"` would match any resource under the
         /// 'folders/123' folder.
-        #[prost(bool, tag="2")]
+        #[prost(bool, tag = "2")]
         pub supports_under: bool,
     }
     /// A `Constraint` that is either enforced or not.
@@ -67,13 +67,22 @@ pub mod constraint {
     /// If it is enforced on a VM instance, serial port connections will not be
     /// opened to that instance.
     #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct BooleanConstraint {
-    }
+    pub struct BooleanConstraint {}
     /// Specifies the default behavior in the absence of any `Policy` for the
     /// `Constraint`. This must not be `CONSTRAINT_DEFAULT_UNSPECIFIED`.
     ///
     /// Immutable after creation.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum ConstraintDefault {
         /// This is only used for distinguishing unset values and should never be
@@ -105,10 +114,10 @@ pub mod constraint {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ConstraintType {
         /// Defines this constraint as being a ListConstraint.
-        #[prost(message, tag="5")]
+        #[prost(message, tag = "5")]
         ListConstraint(ListConstraint),
         /// Defines this constraint as being a BooleanConstraint.
-        #[prost(message, tag="6")]
+        #[prost(message, tag = "6")]
         BooleanConstraint(BooleanConstraint),
     }
 }
@@ -128,14 +137,14 @@ pub struct Policy {
     /// Note: `projects/{project_id}/policies/{constraint_name}` is also an
     /// acceptable name for API requests, but responses will return the name using
     /// the equivalent project number.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Basic information about the Organization Policy.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub spec: ::core::option::Option<PolicySpec>,
     /// Deprecated.
     #[deprecated]
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub alternate: ::core::option::Option<AlternatePolicySpec>,
 }
 /// Similar to PolicySpec but with an extra 'launch' field for launch reference.
@@ -145,10 +154,10 @@ pub struct AlternatePolicySpec {
     /// Reference to the launch that will be used while audit logging and to
     /// control the launch.
     /// Should be set only in the alternate policy.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub launch: ::prost::alloc::string::String,
     /// Specify `Constraint` for configurations of Cloud Platform resources.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub spec: ::core::option::Option<PolicySpec>,
 }
 /// Defines a Cloud Organization `PolicySpec` which is used to specify
@@ -166,12 +175,12 @@ pub struct PolicySpec {
     ///
     /// When the `Policy` is returned from a `GetEffectivePolicy` request, the
     /// `etag` will be unset.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub etag: ::prost::alloc::string::String,
     /// Output only. The time stamp this was previously updated. This
     /// represents the last time a call to `CreatePolicy` or `UpdatePolicy` was
     /// made for that `Policy`.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Up to 10 PolicyRules are allowed.
     ///
@@ -181,7 +190,7 @@ pub struct PolicySpec {
     ///      of the PolicyRule without a condition.
     ///    - During policy evaluation, PolicyRules with conditions that are
     ///      true for a target resource take precedence.
-    #[prost(message, repeated, tag="3")]
+    #[prost(message, repeated, tag = "3")]
     pub rules: ::prost::alloc::vec::Vec<policy_spec::PolicyRule>,
     /// Determines the inheritance behavior for this `Policy`.
     ///
@@ -190,7 +199,7 @@ pub struct PolicySpec {
     /// effective policy. If it is false, then no rules are inherited, and this
     /// Policy becomes the new root for evaluation.
     /// This field can be set only for Policies which configure list constraints.
-    #[prost(bool, tag="4")]
+    #[prost(bool, tag = "4")]
     pub inherit_from_parent: bool,
     /// Ignores policies set above this resource and restores the
     /// `constraint_default` enforcement behavior of the specific `Constraint` at
@@ -198,7 +207,7 @@ pub struct PolicySpec {
     /// This field can be set in policies for either list or boolean
     /// constraints. If set, `rules` must be empty and `inherit_from_parent`
     /// must be set to false.
-    #[prost(bool, tag="5")]
+    #[prost(bool, tag = "5")]
     pub reset: bool,
 }
 /// Nested message and enum types in `PolicySpec`.
@@ -218,9 +227,9 @@ pub mod policy_spec {
         /// "resource.matchTag('123456789/environment,
         /// 'prod')". or "resource.matchTagId('tagKeys/123',
         /// 'tagValues/456')".
-        #[prost(message, optional, tag="5")]
+        #[prost(message, optional, tag = "5")]
         pub condition: ::core::option::Option<super::super::super::super::r#type::Expr>,
-        #[prost(oneof="policy_rule::Kind", tags="1, 2, 3, 4")]
+        #[prost(oneof = "policy_rule::Kind", tags = "1, 2, 3, 4")]
         pub kind: ::core::option::Option<policy_rule::Kind>,
     }
     /// Nested message and enum types in `PolicyRule`.
@@ -243,30 +252,30 @@ pub mod policy_spec {
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct StringValues {
             /// List of values allowed at this resource.
-            #[prost(string, repeated, tag="1")]
+            #[prost(string, repeated, tag = "1")]
             pub allowed_values: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
             /// List of values denied at this resource.
-            #[prost(string, repeated, tag="2")]
+            #[prost(string, repeated, tag = "2")]
             pub denied_values: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         }
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Kind {
             /// List of values to be used for this PolicyRule. This field can be set
             /// only in Policies for list constraints.
-            #[prost(message, tag="1")]
+            #[prost(message, tag = "1")]
             Values(StringValues),
             /// Setting this to true means that all values are allowed. This field can
             /// be set only in Policies for list constraints.
-            #[prost(bool, tag="2")]
+            #[prost(bool, tag = "2")]
             AllowAll(bool),
             /// Setting this to true means that all values are denied. This field can
             /// be set only in Policies for list constraints.
-            #[prost(bool, tag="3")]
+            #[prost(bool, tag = "3")]
             DenyAll(bool),
             /// If `true`, then the `Policy` is enforced. If `false`, then any
             /// configuration is acceptable.
             /// This field can be set only in Policies for boolean constraints.
-            #[prost(bool, tag="4")]
+            #[prost(bool, tag = "4")]
             Enforce(bool),
         }
     }
@@ -281,16 +290,16 @@ pub struct ListConstraintsRequest {
     /// * `projects/{project_id}`
     /// * `folders/{folder_id}`
     /// * `organizations/{organization_id}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Size of the pages to be returned. This is currently unsupported and will
     /// be ignored. The server may at any point start using this field to limit
     /// page size.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Page token used to retrieve the next page. This is currently unsupported
     /// and will be ignored. The server may at any point start using this field.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
 /// The response returned from the \[ListConstraints\]
@@ -298,10 +307,10 @@ pub struct ListConstraintsRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListConstraintsResponse {
     /// The collection of constraints that are available on the targeted resource.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub constraints: ::prost::alloc::vec::Vec<Constraint>,
     /// Page token used to retrieve the next page. This is currently not used.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request sent to the \[ListPolicies\]
@@ -315,16 +324,16 @@ pub struct ListPoliciesRequest {
     /// * `projects/{project_id}`
     /// * `folders/{folder_id}`
     /// * `organizations/{organization_id}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Size of the pages to be returned. This is currently unsupported and will
     /// be ignored. The server may at any point start using this field to limit
     /// page size.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Page token used to retrieve the next page. This is currently unsupported
     /// and will be ignored. The server may at any point start using this field.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
 /// The response returned from the \[ListPolicies\]
@@ -334,11 +343,11 @@ pub struct ListPoliciesRequest {
 pub struct ListPoliciesResponse {
     /// All `Policies` that exist on the resource. It will be empty if no
     /// `Policies` are set.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub policies: ::prost::alloc::vec::Vec<Policy>,
     /// Page token used to retrieve the next page. This is currently not used, but
     /// the server may at any point start supplying a valid token.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request sent to the \[GetPolicy\]
@@ -346,7 +355,7 @@ pub struct ListPoliciesResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetPolicyRequest {
     /// Required. Resource name of the policy. See `Policy` for naming requirements.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// The request sent to the \[GetEffectivePolicy\]
@@ -354,7 +363,7 @@ pub struct GetPolicyRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetEffectivePolicyRequest {
     /// Required. The effective policy to compute. See `Policy` for naming rules.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// The request sent to the \[CreatePolicyRequest\]
@@ -367,10 +376,10 @@ pub struct CreatePolicyRequest {
     /// * `projects/{project_id}`
     /// * `folders/{folder_id}`
     /// * `organizations/{organization_id}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. `Policy` to create.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub policy: ::core::option::Option<Policy>,
 }
 /// The request sent to the \[UpdatePolicyRequest\]
@@ -378,7 +387,7 @@ pub struct CreatePolicyRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdatePolicyRequest {
     /// Required. `Policy` to update.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub policy: ::core::option::Option<Policy>,
 }
 /// The request sent to the \[DeletePolicy\]
@@ -387,7 +396,7 @@ pub struct UpdatePolicyRequest {
 pub struct DeletePolicyRequest {
     /// Required. Name of the policy to delete.
     /// See `Policy` for naming rules.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Generated client implementations.

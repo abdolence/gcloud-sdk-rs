@@ -5,22 +5,22 @@ pub struct Service {
     ///
     /// A valid name would be:
     /// - projects/123/services/serviceusage.googleapis.com
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The resource name of the consumer.
     ///
     /// A valid name would be:
     /// - projects/123
-    #[prost(string, tag="5")]
+    #[prost(string, tag = "5")]
     pub parent: ::prost::alloc::string::String,
     /// The service configuration of the available service.
     /// Some fields may be filtered out of the configuration in responses to
     /// the `ListServices` method. These fields are present only in responses to
     /// the `GetService` method.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub config: ::core::option::Option<ServiceConfig>,
     /// Whether or not the service has been enabled for use by the consumer.
-    #[prost(enumeration="State", tag="4")]
+    #[prost(enumeration = "State", tag = "4")]
     pub state: i32,
 }
 /// The configuration of the service.
@@ -30,39 +30,41 @@ pub struct ServiceConfig {
     ///
     /// An example DNS address would be:
     /// `calendar.googleapis.com`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The product title for this service.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub title: ::prost::alloc::string::String,
     /// A list of API interfaces exported by this service. Contains only the names,
     /// versions, and method names of the interfaces.
-    #[prost(message, repeated, tag="3")]
+    #[prost(message, repeated, tag = "3")]
     pub apis: ::prost::alloc::vec::Vec<::prost_types::Api>,
     /// Additional API documentation. Contains only the summary and the
     /// documentation URL.
-    #[prost(message, optional, tag="6")]
+    #[prost(message, optional, tag = "6")]
     pub documentation: ::core::option::Option<super::super::Documentation>,
     /// Quota configuration.
-    #[prost(message, optional, tag="10")]
+    #[prost(message, optional, tag = "10")]
     pub quota: ::core::option::Option<super::super::Quota>,
     /// Auth configuration. Contains only the OAuth rules.
-    #[prost(message, optional, tag="11")]
+    #[prost(message, optional, tag = "11")]
     pub authentication: ::core::option::Option<super::super::Authentication>,
     /// Configuration controlling usage of this service.
-    #[prost(message, optional, tag="15")]
+    #[prost(message, optional, tag = "15")]
     pub usage: ::core::option::Option<super::super::Usage>,
     /// Configuration for network endpoints. Contains only the names and aliases
     /// of the endpoints.
-    #[prost(message, repeated, tag="18")]
+    #[prost(message, repeated, tag = "18")]
     pub endpoints: ::prost::alloc::vec::Vec<super::super::Endpoint>,
     /// Defines the monitored resources used by this service. This is required
     /// by the \[Service.monitoring][google.api.Service.monitoring\] and \[Service.logging][google.api.Service.logging\] configurations.
-    #[prost(message, repeated, tag="25")]
-    pub monitored_resources: ::prost::alloc::vec::Vec<super::super::MonitoredResourceDescriptor>,
+    #[prost(message, repeated, tag = "25")]
+    pub monitored_resources: ::prost::alloc::vec::Vec<
+        super::super::MonitoredResourceDescriptor,
+    >,
     /// Monitoring configuration.
     /// This should not include the 'producer_destinations' field.
-    #[prost(message, optional, tag="28")]
+    #[prost(message, optional, tag = "28")]
     pub monitoring: ::core::option::Option<super::super::Monitoring>,
 }
 /// The operation metadata returned for the batchend services operation.
@@ -70,7 +72,7 @@ pub struct ServiceConfig {
 pub struct OperationMetadata {
     /// The full name of the resources that this operation is directly
     /// associated with.
-    #[prost(string, repeated, tag="2")]
+    #[prost(string, repeated, tag = "2")]
     pub resource_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Whether or not a service has been enabled for use by a consumer.
@@ -114,7 +116,7 @@ pub struct EnableServiceRequest {
     /// An example name would be:
     /// `projects/123/services/serviceusage.googleapis.com` where `123` is the
     /// project number.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Response message for the `EnableService` method.
@@ -123,7 +125,7 @@ pub struct EnableServiceRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EnableServiceResponse {
     /// The new state of the service after enabling.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub service: ::core::option::Option<Service>,
 }
 /// Request message for the `DisableService` method.
@@ -136,24 +138,34 @@ pub struct DisableServiceRequest {
     /// An example name would be:
     /// `projects/123/services/serviceusage.googleapis.com` where `123` is the
     /// project number.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Indicates if services that are enabled and which depend on this service
     /// should also be disabled. If not set, an error will be generated if any
     /// enabled services depend on the service to be disabled. When set, the
     /// service, and any enabled services that depend on it, will be disabled
     /// together.
-    #[prost(bool, tag="2")]
+    #[prost(bool, tag = "2")]
     pub disable_dependent_services: bool,
     /// Defines the behavior for checking service usage when disabling a service.
-    #[prost(enumeration="disable_service_request::CheckIfServiceHasUsage", tag="3")]
+    #[prost(enumeration = "disable_service_request::CheckIfServiceHasUsage", tag = "3")]
     pub check_if_service_has_usage: i32,
 }
 /// Nested message and enum types in `DisableServiceRequest`.
 pub mod disable_service_request {
     /// Enum to determine if service usage should be checked when disabling a
     /// service.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum CheckIfServiceHasUsage {
         /// When unset, the default behavior is used, which is SKIP.
@@ -172,7 +184,9 @@ pub mod disable_service_request {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                CheckIfServiceHasUsage::Unspecified => "CHECK_IF_SERVICE_HAS_USAGE_UNSPECIFIED",
+                CheckIfServiceHasUsage::Unspecified => {
+                    "CHECK_IF_SERVICE_HAS_USAGE_UNSPECIFIED"
+                }
                 CheckIfServiceHasUsage::Skip => "SKIP",
                 CheckIfServiceHasUsage::Check => "CHECK",
             }
@@ -185,7 +199,7 @@ pub mod disable_service_request {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DisableServiceResponse {
     /// The new state of the service after disabling.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub service: ::core::option::Option<Service>,
 }
 /// Request message for the `GetService` method.
@@ -196,7 +210,7 @@ pub struct GetServiceRequest {
     /// An example name would be:
     /// `projects/123/services/serviceusage.googleapis.com` where `123` is the
     /// project number.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for the `ListServices` method.
@@ -206,31 +220,31 @@ pub struct ListServicesRequest {
     ///
     /// An example name would be:
     /// `projects/123` where `123` is the project number.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Requested size of the next page of data.
     /// Requested page size cannot exceed 200.
     /// If not set, the default page size is 50.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Token identifying which result to start with, which is returned by a
     /// previous list call.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
     /// Only list services that conform to the given filter.
     /// The allowed filter strings are `state:ENABLED` and `state:DISABLED`.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
 }
 /// Response message for the `ListServices` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListServicesResponse {
     /// The available services for the requested project.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub services: ::prost::alloc::vec::Vec<Service>,
     /// Token that can be passed to `ListServices` to resume a paginated
     /// query.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for the `BatchEnableServices` method.
@@ -242,7 +256,7 @@ pub struct BatchEnableServicesRequest {
     /// `projects/123` where `123` is the project number.
     ///
     /// The `BatchEnableServices` method currently only supports projects.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The identifiers of the services to enable on the project.
     ///
@@ -255,7 +269,7 @@ pub struct BatchEnableServicesRequest {
     /// A single request can enable a maximum of 20 services at a time. If more
     /// than 20 services are specified, the request will fail, and no state changes
     /// will occur.
-    #[prost(string, repeated, tag="2")]
+    #[prost(string, repeated, tag = "2")]
     pub service_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Response message for the `BatchEnableServices` method.
@@ -264,12 +278,14 @@ pub struct BatchEnableServicesRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchEnableServicesResponse {
     /// The new state of the services after enabling.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub services: ::prost::alloc::vec::Vec<Service>,
     /// If allow_partial_success is true, and one or more services could not be
     /// enabled, this field contains the details about each failure.
-    #[prost(message, repeated, tag="2")]
-    pub failures: ::prost::alloc::vec::Vec<batch_enable_services_response::EnableFailure>,
+    #[prost(message, repeated, tag = "2")]
+    pub failures: ::prost::alloc::vec::Vec<
+        batch_enable_services_response::EnableFailure,
+    >,
 }
 /// Nested message and enum types in `BatchEnableServicesResponse`.
 pub mod batch_enable_services_response {
@@ -277,10 +293,10 @@ pub mod batch_enable_services_response {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct EnableFailure {
         /// The service id of a service that could not be enabled.
-        #[prost(string, tag="1")]
+        #[prost(string, tag = "1")]
         pub service_id: ::prost::alloc::string::String,
         /// An error message describing why the service could not be enabled.
-        #[prost(string, tag="2")]
+        #[prost(string, tag = "2")]
         pub error_message: ::prost::alloc::string::String,
     }
 }
@@ -292,7 +308,7 @@ pub struct BatchGetServicesRequest {
     /// match this field. An example name would be: `projects/123` where `123` is
     /// the project number. The `BatchGetServices` method currently only supports
     /// projects.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Names of the services to retrieve.
     ///
@@ -300,14 +316,14 @@ pub struct BatchGetServicesRequest {
     /// `projects/123/services/serviceusage.googleapis.com` where `123` is the
     /// project number.
     /// A single request can get a maximum of 30 services at a time.
-    #[prost(string, repeated, tag="2")]
+    #[prost(string, repeated, tag = "2")]
     pub names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Response message for the `BatchGetServices` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchGetServicesResponse {
     /// The requested Service states.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub services: ::prost::alloc::vec::Vec<Service>,
 }
 /// Generated client implementations.

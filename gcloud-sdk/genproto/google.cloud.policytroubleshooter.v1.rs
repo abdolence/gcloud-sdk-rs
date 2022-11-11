@@ -8,14 +8,14 @@ pub struct AccessTuple {
     ///
     /// The member must be a Google Account or a service account. Other types of
     /// members are not supported.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub principal: ::prost::alloc::string::String,
     /// Required. The full resource name that identifies the resource. For example,
     /// `//compute.googleapis.com/projects/my-project/zones/us-central1-a/instances/my-instance`.
     ///
     /// For examples of full resource names for Google Cloud services, see
     /// <https://cloud.google.com/iam/help/troubleshooter/full-resource-names.>
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub full_resource_name: ::prost::alloc::string::String,
     /// Required. The IAM permission to check for the specified member and resource.
     ///
@@ -24,7 +24,7 @@ pub struct AccessTuple {
     ///
     /// For a complete list of predefined IAM roles and the permissions in each
     /// role, see <https://cloud.google.com/iam/help/roles/reference.>
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub permission: ::prost::alloc::string::String,
 }
 /// Details about how a specific IAM \[Policy][google.iam.v1.Policy\] contributed
@@ -39,7 +39,7 @@ pub struct ExplainedPolicy {
     /// this policy. To determine whether the member actually has the permission,
     /// use the `access` field in the
     /// \[TroubleshootIamPolicyResponse][IamChecker.TroubleshootIamPolicyResponse\].
-    #[prost(enumeration="AccessState", tag="1")]
+    #[prost(enumeration = "AccessState", tag = "1")]
     pub access: i32,
     /// The full resource name that identifies the resource. For example,
     /// `//compute.googleapis.com/projects/my-project/zones/us-central1-a/instances/my-instance`.
@@ -49,27 +49,27 @@ pub struct ExplainedPolicy {
     ///
     /// For examples of full resource names for Google Cloud services, see
     /// <https://cloud.google.com/iam/help/troubleshooter/full-resource-names.>
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub full_resource_name: ::prost::alloc::string::String,
     /// The IAM policy attached to the resource.
     ///
     /// If the sender of the request does not have access to the policy, this field
     /// is empty.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub policy: ::core::option::Option<super::super::super::iam::v1::Policy>,
     /// Details about how each binding in the policy affects the member's ability,
     /// or inability, to use the permission for the resource.
     ///
     /// If the sender of the request does not have access to the policy, this field
     /// is omitted.
-    #[prost(message, repeated, tag="4")]
+    #[prost(message, repeated, tag = "4")]
     pub binding_explanations: ::prost::alloc::vec::Vec<BindingExplanation>,
     /// The relevance of this policy to the overall determination in the
     /// \[TroubleshootIamPolicyResponse][IamChecker.TroubleshootIamPolicyResponse\].
     ///
     /// If the sender of the request does not have access to the policy, this field
     /// is omitted.
-    #[prost(enumeration="HeuristicRelevance", tag="5")]
+    #[prost(enumeration = "HeuristicRelevance", tag = "5")]
     pub relevance: i32,
 }
 /// Details about how a binding in a policy affects a member's ability to use a
@@ -84,22 +84,22 @@ pub struct BindingExplanation {
     /// this binding. To determine whether the member actually has the permission,
     /// use the `access` field in the
     /// \[TroubleshootIamPolicyResponse][IamChecker.TroubleshootIamPolicyResponse\].
-    #[prost(enumeration="AccessState", tag="1")]
+    #[prost(enumeration = "AccessState", tag = "1")]
     pub access: i32,
     /// The role that this binding grants. For example,
     /// `roles/compute.serviceAgent`.
     ///
     /// For a complete list of predefined IAM roles, as well as the permissions in
     /// each role, see <https://cloud.google.com/iam/help/roles/reference.>
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub role: ::prost::alloc::string::String,
     /// Indicates whether the role granted by this binding contains the specified
     /// permission.
-    #[prost(enumeration="binding_explanation::RolePermission", tag="3")]
+    #[prost(enumeration = "binding_explanation::RolePermission", tag = "3")]
     pub role_permission: i32,
     /// The relevance of the permission's existence, or nonexistence, in the role
     /// to the overall determination for the entire policy.
-    #[prost(enumeration="HeuristicRelevance", tag="4")]
+    #[prost(enumeration = "HeuristicRelevance", tag = "4")]
     pub role_permission_relevance: i32,
     /// Indicates whether each member in the binding includes the member specified
     /// in the request, either directly or indirectly. Each key identifies a member
@@ -121,18 +121,21 @@ pub struct BindingExplanation {
     /// For the second member in the binding, the key is
     /// `group:product-eng@example.com`, and the `membership` field in the value is
     /// set to `MEMBERSHIP_INCLUDED`.
-    #[prost(map="string, message", tag="5")]
-    pub memberships: ::std::collections::HashMap<::prost::alloc::string::String, binding_explanation::AnnotatedMembership>,
+    #[prost(map = "string, message", tag = "5")]
+    pub memberships: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        binding_explanation::AnnotatedMembership,
+    >,
     /// The relevance of this binding to the overall determination for the entire
     /// policy.
-    #[prost(enumeration="HeuristicRelevance", tag="6")]
+    #[prost(enumeration = "HeuristicRelevance", tag = "6")]
     pub relevance: i32,
     /// A condition expression that prevents access unless the expression evaluates
     /// to `true`.
     ///
     /// To learn about IAM Conditions, see
     /// <http://cloud.google.com/iam/help/conditions/overview.>
-    #[prost(message, optional, tag="7")]
+    #[prost(message, optional, tag = "7")]
     pub condition: ::core::option::Option<super::super::super::r#type::Expr>,
 }
 /// Nested message and enum types in `BindingExplanation`.
@@ -141,15 +144,25 @@ pub mod binding_explanation {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AnnotatedMembership {
         /// Indicates whether the binding includes the member.
-        #[prost(enumeration="Membership", tag="1")]
+        #[prost(enumeration = "Membership", tag = "1")]
         pub membership: i32,
         /// The relevance of the member's status to the overall determination for the
         /// binding.
-        #[prost(enumeration="super::HeuristicRelevance", tag="2")]
+        #[prost(enumeration = "super::HeuristicRelevance", tag = "2")]
         pub relevance: i32,
     }
     /// Whether a role includes a specific permission.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum RolePermission {
         /// Reserved for future use.
@@ -171,12 +184,24 @@ pub mod binding_explanation {
                 RolePermission::Unspecified => "ROLE_PERMISSION_UNSPECIFIED",
                 RolePermission::Included => "ROLE_PERMISSION_INCLUDED",
                 RolePermission::NotIncluded => "ROLE_PERMISSION_NOT_INCLUDED",
-                RolePermission::UnknownInfoDenied => "ROLE_PERMISSION_UNKNOWN_INFO_DENIED",
+                RolePermission::UnknownInfoDenied => {
+                    "ROLE_PERMISSION_UNKNOWN_INFO_DENIED"
+                }
             }
         }
     }
     /// Whether the binding includes the member.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum Membership {
         /// Reserved for future use.
@@ -276,7 +301,7 @@ impl HeuristicRelevance {
 pub struct TroubleshootIamPolicyRequest {
     /// The information to use for checking whether a member has a permission for a
     /// resource.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub access_tuple: ::core::option::Option<AccessTuple>,
 }
 /// Response for \[TroubleshootIamPolicy][google.cloud.policytroubleshooter.v1.IamChecker.TroubleshootIamPolicy\].
@@ -284,7 +309,7 @@ pub struct TroubleshootIamPolicyRequest {
 pub struct TroubleshootIamPolicyResponse {
     /// Indicates whether the member has the specified permission for the specified
     /// resource, based on evaluating all of the applicable IAM policies.
-    #[prost(enumeration="AccessState", tag="1")]
+    #[prost(enumeration = "AccessState", tag = "1")]
     pub access: i32,
     /// List of IAM policies that were evaluated to check the member's permissions,
     /// with annotations to indicate how each policy contributed to the final
@@ -296,7 +321,7 @@ pub struct TroubleshootIamPolicyResponse {
     ///
     /// To learn more about the resource hierarchy, see
     /// <https://cloud.google.com/iam/help/resource-hierarchy.>
-    #[prost(message, repeated, tag="2")]
+    #[prost(message, repeated, tag = "2")]
     pub explained_policies: ::prost::alloc::vec::Vec<ExplainedPolicy>,
 }
 /// Generated client implementations.

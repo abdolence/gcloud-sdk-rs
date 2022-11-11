@@ -5,7 +5,7 @@
 pub struct Endpoint {
     /// Immutable. The resource name for the endpoint in the format
     /// `projects/*/locations/*/namespaces/*/services/*/endpoints/*`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. An IPv4 or IPv6 address. Service Directory will reject bad
     /// addresses like:
@@ -15,10 +15,10 @@ pub struct Endpoint {
     ///    "\[::1\]"
     ///    "\[::1\]:8080"
     /// Limited to 45 characters.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub address: ::prost::alloc::string::String,
     /// Optional. Service Directory will reject values outside of [0, 65535].
-    #[prost(int32, tag="3")]
+    #[prost(int32, tag = "3")]
     pub port: i32,
     /// Optional. Annotations for the endpoint. This data can be consumed by
     /// service clients. Restrictions:
@@ -40,8 +40,11 @@ pub struct Endpoint {
     /// Note: This field is equivalent to the 'metadata' field in the v1beta1 API.
     /// They have the same syntax and read/write to the same location in Service
     /// Directory.
-    #[prost(map="string, string", tag="5")]
-    pub annotations: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map = "string, string", tag = "5")]
+    pub annotations: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
 }
 /// An individual service. A service contains a name and optional metadata.
 /// A service must exist before
@@ -51,7 +54,7 @@ pub struct Endpoint {
 pub struct Service {
     /// Immutable. The resource name for the service in the format
     /// `projects/*/locations/*/namespaces/*/services/*`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. Annotations for the service. This data can be consumed by service
     /// clients.
@@ -74,12 +77,15 @@ pub struct Service {
     /// Note: This field is equivalent to the 'metadata' field in the v1beta1 API.
     /// They have the same syntax and read/write to the same location in Service
     /// Directory.
-    #[prost(map="string, string", tag="4")]
-    pub annotations: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map = "string, string", tag = "4")]
+    pub annotations: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
     /// Output only. Endpoints associated with this service. Returned on
     /// LookupService.Resolve. Control plane clients should use
     /// RegistrationService.ListEndpoints.
-    #[prost(message, repeated, tag="3")]
+    #[prost(message, repeated, tag = "3")]
     pub endpoints: ::prost::alloc::vec::Vec<Endpoint>,
 }
 /// The request message for
@@ -88,12 +94,12 @@ pub struct Service {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResolveServiceRequest {
     /// Required. The name of the service to resolve.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. The maximum number of endpoints to return. Defaults to 25.
     /// Maximum is 100. If a value less than one is specified, the Default is used.
     /// If a value greater than the Maximum is specified, the Maximum is used.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub max_endpoints: i32,
     /// Optional. The filter applied to the endpoints of the resolved service.
     ///
@@ -113,14 +119,14 @@ pub struct ResolveServiceRequest {
     /// * "metadata.owner!=sd AND metadata.foo=bar" returns
     ///    Endpoints that have "owner" field in metadata with a value that is not
     ///    "sd" AND have the key/value foo=bar.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub endpoint_filter: ::prost::alloc::string::String,
 }
 /// The response message for
 /// \[LookupService.ResolveService][google.cloud.servicedirectory.v1.LookupService.ResolveService\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResolveServiceResponse {
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub service: ::core::option::Option<Service>,
 }
 /// Generated client implementations.
@@ -224,13 +230,16 @@ pub mod lookup_service_client {
 pub struct Namespace {
     /// Immutable. The resource name for the namespace in the format
     /// `projects/*/locations/*/namespaces/*`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. Resource labels associated with this Namespace.
     /// No more than 64 user labels can be associated with a given resource.  Label
     /// keys and values can be no longer than 63 characters.
-    #[prost(map="string, string", tag="2")]
-    pub labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map = "string, string", tag = "2")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
 }
 /// The request message for
 /// \[RegistrationService.CreateNamespace][google.cloud.servicedirectory.v1.RegistrationService.CreateNamespace\].
@@ -238,7 +247,7 @@ pub struct Namespace {
 pub struct CreateNamespaceRequest {
     /// Required. The resource name of the project and location the namespace
     /// will be created in.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The Resource ID must be 1-63 characters long, and comply with
     /// <a href="<https://www.ietf.org/rfc/rfc1035.txt"> target="_blank">RFC1035</a>.
@@ -247,10 +256,10 @@ pub struct CreateNamespaceRequest {
     /// character must be a lowercase letter, and all following characters must
     /// be a dash, lowercase letter, or digit, except the last character, which
     /// cannot be a dash.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub namespace_id: ::prost::alloc::string::String,
     /// Required. A namespace with initial fields set.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub namespace: ::core::option::Option<Namespace>,
 }
 /// The request message for
@@ -259,14 +268,14 @@ pub struct CreateNamespaceRequest {
 pub struct ListNamespacesRequest {
     /// Required. The resource name of the project and location whose namespaces
     /// we'd like to list.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. The maximum number of items to return.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Optional. The next_page_token value returned from a previous List request,
     /// if any.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
     /// Optional. The filter to list result by.
     ///
@@ -291,7 +300,7 @@ pub struct ListNamespacesRequest {
     /// * "doesnotexist.foo=bar" returns an empty list. Note that Namespace doesn't
     ///    have a field called "doesnotexist". Since the filter does not match any
     ///    Namespaces, it returns no results.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
     /// Optional. The order to list result by.
     ///
@@ -302,7 +311,7 @@ pub struct ListNamespacesRequest {
     /// blank, "asc" is used.
     /// Note that an empty order_by string result in default order, which is order
     /// by name in ascending order.
-    #[prost(string, tag="5")]
+    #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
 /// The response message for
@@ -310,11 +319,11 @@ pub struct ListNamespacesRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNamespacesResponse {
     /// The list of namespaces.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub namespaces: ::prost::alloc::vec::Vec<Namespace>,
     /// Token to retrieve the next page of results, or empty if there are no
     /// more results in the list.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request message for
@@ -322,7 +331,7 @@ pub struct ListNamespacesResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetNamespaceRequest {
     /// Required. The name of the namespace to retrieve.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// The request message for
@@ -330,10 +339,10 @@ pub struct GetNamespaceRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateNamespaceRequest {
     /// Required. The updated namespace.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub namespace: ::core::option::Option<Namespace>,
     /// Required. List of fields to be updated in this request.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The request message for
@@ -341,7 +350,7 @@ pub struct UpdateNamespaceRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteNamespaceRequest {
     /// Required. The name of the namespace to delete.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// The request message for
@@ -349,7 +358,7 @@ pub struct DeleteNamespaceRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateServiceRequest {
     /// Required. The resource name of the namespace this service will belong to.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The Resource ID must be 1-63 characters long, and comply with
     /// <a href="<https://www.ietf.org/rfc/rfc1035.txt"> target="_blank">RFC1035</a>.
@@ -358,10 +367,10 @@ pub struct CreateServiceRequest {
     /// character must be a lowercase letter, and all following characters must
     /// be a dash, lowercase letter, or digit, except the last character, which
     /// cannot be a dash.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub service_id: ::prost::alloc::string::String,
     /// Required. A service  with initial fields set.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub service: ::core::option::Option<Service>,
 }
 /// The request message for
@@ -370,14 +379,14 @@ pub struct CreateServiceRequest {
 pub struct ListServicesRequest {
     /// Required. The resource name of the namespace whose services we'd
     /// like to list.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. The maximum number of items to return.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Optional. The next_page_token value returned from a previous List request,
     /// if any.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
     /// Optional. The filter to list result by.
     ///
@@ -402,10 +411,10 @@ pub struct ListServicesRequest {
     /// * "doesnotexist.foo=bar" returns an empty list. Note that Service doesn't
     ///    have a field called "doesnotexist". Since the filter does not match any
     ///    Services, it returns no results.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
     /// Optional. The order to list result by.
-    #[prost(string, tag="5")]
+    #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
 /// The response message for
@@ -413,11 +422,11 @@ pub struct ListServicesRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListServicesResponse {
     /// The list of services.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub services: ::prost::alloc::vec::Vec<Service>,
     /// Token to retrieve the next page of results, or empty if there are no
     /// more results in the list.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request message for
@@ -427,7 +436,7 @@ pub struct ListServicesResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetServiceRequest {
     /// Required. The name of the service to get.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// The request message for
@@ -435,10 +444,10 @@ pub struct GetServiceRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateServiceRequest {
     /// Required. The updated service.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub service: ::core::option::Option<Service>,
     /// Required. List of fields to be updated in this request.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The request message for
@@ -446,7 +455,7 @@ pub struct UpdateServiceRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteServiceRequest {
     /// Required. The name of the service to delete.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// The request message for
@@ -454,7 +463,7 @@ pub struct DeleteServiceRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateEndpointRequest {
     /// Required. The resource name of the service that this endpoint provides.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The Resource ID must be 1-63 characters long, and comply with
     /// <a href="<https://www.ietf.org/rfc/rfc1035.txt"> target="_blank">RFC1035</a>.
@@ -463,10 +472,10 @@ pub struct CreateEndpointRequest {
     /// character must be a lowercase letter, and all following characters must
     /// be a dash, lowercase letter, or digit, except the last character, which
     /// cannot be a dash.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub endpoint_id: ::prost::alloc::string::String,
     /// Required. A endpoint with initial fields set.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub endpoint: ::core::option::Option<Endpoint>,
 }
 /// The request message for
@@ -475,14 +484,14 @@ pub struct CreateEndpointRequest {
 pub struct ListEndpointsRequest {
     /// Required. The resource name of the service whose endpoints we'd like to
     /// list.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. The maximum number of items to return.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Optional. The next_page_token value returned from a previous List request,
     /// if any.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
     /// Optional. The filter to list result by.
     ///
@@ -509,10 +518,10 @@ pub struct ListEndpointsRequest {
     /// * "doesnotexist.foo=bar" returns an empty list. Note that Endpoint doesn't
     ///    have a field called "doesnotexist". Since the filter does not match any
     ///    Endpoints, it returns no results.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
     /// Optional. The order to list result by.
-    #[prost(string, tag="5")]
+    #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
 /// The response message for
@@ -520,11 +529,11 @@ pub struct ListEndpointsRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEndpointsResponse {
     /// The list of endpoints.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub endpoints: ::prost::alloc::vec::Vec<Endpoint>,
     /// Token to retrieve the next page of results, or empty if there are no
     /// more results in the list.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request message for
@@ -534,7 +543,7 @@ pub struct ListEndpointsResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetEndpointRequest {
     /// Required. The name of the endpoint to get.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// The request message for
@@ -542,10 +551,10 @@ pub struct GetEndpointRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateEndpointRequest {
     /// Required. The updated endpoint.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub endpoint: ::core::option::Option<Endpoint>,
     /// Required. List of fields to be updated in this request.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The request message for
@@ -553,7 +562,7 @@ pub struct UpdateEndpointRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteEndpointRequest {
     /// Required. The name of the endpoint to delete.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Generated client implementations.

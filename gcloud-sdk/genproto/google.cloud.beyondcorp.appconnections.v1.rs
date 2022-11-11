@@ -3,7 +3,7 @@
 pub struct ListAppConnectionsRequest {
     /// Required. The resource name of the AppConnection location using the form:
     /// `projects/{project_id}/locations/{location_id}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. The maximum number of items to return.
     /// If not specified, a default value of 50 will be used by the service.
@@ -11,34 +11,34 @@ pub struct ListAppConnectionsRequest {
     /// and a caller should only rely on response's
     /// \[next_page_token][BeyondCorp.ListAppConnectionsResponse.next_page_token\] to
     /// determine if there are more instances left to be queried.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Optional. The next_page_token value returned from a previous
     /// ListAppConnectionsRequest, if any.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
     /// Optional. A filter specifying constraints of a list operation.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
     /// Optional. Specifies the ordering of results. See
     /// [Sorting
     /// order](<https://cloud.google.com/apis/design/design_patterns#sorting_order>)
     /// for more information.
-    #[prost(string, tag="5")]
+    #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
 /// Response message for BeyondCorp.ListAppConnections.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAppConnectionsResponse {
     /// A list of BeyondCorp AppConnections in the project.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub app_connections: ::prost::alloc::vec::Vec<AppConnection>,
     /// A token to retrieve the next page of results, or empty if there are no more
     /// results in the list.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
     /// A list of locations that could not be reached.
-    #[prost(string, repeated, tag="3")]
+    #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for BeyondCorp.GetAppConnection.
@@ -46,7 +46,7 @@ pub struct ListAppConnectionsResponse {
 pub struct GetAppConnectionRequest {
     /// Required. BeyondCorp AppConnection name using the form:
     /// `projects/{project_id}/locations/{location_id}/appConnections/{app_connection_id}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for BeyondCorp.CreateAppConnection.
@@ -54,16 +54,16 @@ pub struct GetAppConnectionRequest {
 pub struct CreateAppConnectionRequest {
     /// Required. The resource project name of the AppConnection location using the
     /// form: `projects/{project_id}/locations/{location_id}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. User-settable AppConnection resource ID.
     ///   * Must start with a letter.
     ///   * Must contain between 4-63 characters from `/\[a-z][0-9\]-/`.
     ///   * Must end with a number or a letter.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub app_connection_id: ::prost::alloc::string::String,
     /// Required. A BeyondCorp AppConnection resource.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub app_connection: ::core::option::Option<AppConnection>,
     /// Optional. An optional request ID to identify requests. Specify a unique
     /// request ID so that if you must retry your request, the server will know to
@@ -78,11 +78,11 @@ pub struct CreateAppConnectionRequest {
     ///
     /// The request ID must be a valid UUID with the exception that zero UUID is
     /// not supported (00000000-0000-0000-0000-000000000000).
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub request_id: ::prost::alloc::string::String,
     /// Optional. If set, validates request by executing a dry-run which would not
     /// alter the resource in any way.
-    #[prost(bool, tag="5")]
+    #[prost(bool, tag = "5")]
     pub validate_only: bool,
 }
 /// Request message for BeyondCorp.UpdateAppConnection.
@@ -95,11 +95,11 @@ pub struct UpdateAppConnectionRequest {
     /// * `display_name`
     /// * `application_endpoint`
     /// * `connectors`
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// Required. AppConnection message with updated fields. Only supported fields
     /// specified in update_mask are updated.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub app_connection: ::core::option::Option<AppConnection>,
     /// Optional. An optional request ID to identify requests. Specify a unique
     /// request ID so that if you must retry your request, the server will know to
@@ -114,14 +114,14 @@ pub struct UpdateAppConnectionRequest {
     ///
     /// The request ID must be a valid UUID with the exception that zero UUID is
     /// not supported (00000000-0000-0000-0000-000000000000).
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub request_id: ::prost::alloc::string::String,
     /// Optional. If set, validates request by executing a dry-run which would not
     /// alter the resource in any way.
-    #[prost(bool, tag="4")]
+    #[prost(bool, tag = "4")]
     pub validate_only: bool,
     /// Optional. If set as true, will create the resource if it is not found.
-    #[prost(bool, tag="5")]
+    #[prost(bool, tag = "5")]
     pub allow_missing: bool,
 }
 /// Request message for BeyondCorp.DeleteAppConnection.
@@ -129,7 +129,7 @@ pub struct UpdateAppConnectionRequest {
 pub struct DeleteAppConnectionRequest {
     /// Required. BeyondCorp Connector name using the form:
     /// `projects/{project_id}/locations/{location_id}/appConnections/{app_connection_id}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. An optional request ID to identify requests. Specify a unique
     /// request ID so that if you must retry your request, the server will know to
@@ -144,11 +144,11 @@ pub struct DeleteAppConnectionRequest {
     ///
     /// The request ID must be a valid UUID with the exception that zero UUID is
     /// not supported (00000000-0000-0000-0000-000000000000).
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub request_id: ::prost::alloc::string::String,
     /// Optional. If set, validates request by executing a dry-run which would not
     /// alter the resource in any way.
-    #[prost(bool, tag="3")]
+    #[prost(bool, tag = "3")]
     pub validate_only: bool,
 }
 /// Request message for BeyondCorp.ResolveAppConnections.
@@ -156,12 +156,12 @@ pub struct DeleteAppConnectionRequest {
 pub struct ResolveAppConnectionsRequest {
     /// Required. The resource name of the AppConnection location using the form:
     /// `projects/{project_id}/locations/{location_id}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. BeyondCorp Connector name of the connector associated with those
     /// AppConnections using the form:
     /// `projects/{project_id}/locations/{location_id}/appConnectors/{app_connector_id}`
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub app_connector_id: ::prost::alloc::string::String,
     /// Optional. The maximum number of items to return.
     /// If not specified, a default value of 50 will be used by the service.
@@ -169,25 +169,27 @@ pub struct ResolveAppConnectionsRequest {
     /// and a caller should only rely on response's
     /// \[next_page_token][BeyondCorp.ResolveAppConnectionsResponse.next_page_token\]
     /// to determine if there are more instances left to be queried.
-    #[prost(int32, tag="3")]
+    #[prost(int32, tag = "3")]
     pub page_size: i32,
     /// Optional. The next_page_token value returned from a previous
     /// ResolveAppConnectionsResponse, if any.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for BeyondCorp.ResolveAppConnections.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResolveAppConnectionsResponse {
     /// A list of BeyondCorp AppConnections with details in the project.
-    #[prost(message, repeated, tag="1")]
-    pub app_connection_details: ::prost::alloc::vec::Vec<resolve_app_connections_response::AppConnectionDetails>,
+    #[prost(message, repeated, tag = "1")]
+    pub app_connection_details: ::prost::alloc::vec::Vec<
+        resolve_app_connections_response::AppConnectionDetails,
+    >,
     /// A token to retrieve the next page of results, or empty if there are no more
     /// results in the list.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
     /// A list of locations that could not be reached.
-    #[prost(string, repeated, tag="3")]
+    #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Nested message and enum types in `ResolveAppConnectionsResponse`.
@@ -196,11 +198,11 @@ pub mod resolve_app_connections_response {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AppConnectionDetails {
         /// A BeyondCorp AppConnection in the project.
-        #[prost(message, optional, tag="1")]
+        #[prost(message, optional, tag = "1")]
         pub app_connection: ::core::option::Option<super::AppConnection>,
         /// If type=GCP_REGIONAL_MIG, contains most recent VM instances, like
         /// `<https://www.googleapis.com/compute/v1/projects/{project_id}/zones/{zone_id}/instances/{instance_id}`.>
-        #[prost(string, repeated, tag="2")]
+        #[prost(string, repeated, tag = "2")]
         pub recent_mig_vms: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
 }
@@ -212,41 +214,46 @@ pub mod resolve_app_connections_response {
 pub struct AppConnection {
     /// Required. Unique resource name of the AppConnection.
     /// The name is ignored when creating a AppConnection.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. Timestamp when the resource was created.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Timestamp when the resource was last modified.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Optional. Resource labels to represent user provided metadata.
-    #[prost(map="string, string", tag="4")]
-    pub labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map = "string, string", tag = "4")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
     /// Optional. An arbitrary user-provided name for the AppConnection. Cannot
     /// exceed 64 characters.
-    #[prost(string, tag="5")]
+    #[prost(string, tag = "5")]
     pub display_name: ::prost::alloc::string::String,
     /// Output only. A unique identifier for the instance generated by the
     /// system.
-    #[prost(string, tag="6")]
+    #[prost(string, tag = "6")]
     pub uid: ::prost::alloc::string::String,
     /// Required. The type of network connectivity used by the AppConnection.
-    #[prost(enumeration="app_connection::Type", tag="7")]
+    #[prost(enumeration = "app_connection::Type", tag = "7")]
     pub r#type: i32,
     /// Required. Address of the remote application endpoint for the BeyondCorp
     /// AppConnection.
-    #[prost(message, optional, tag="8")]
-    pub application_endpoint: ::core::option::Option<app_connection::ApplicationEndpoint>,
+    #[prost(message, optional, tag = "8")]
+    pub application_endpoint: ::core::option::Option<
+        app_connection::ApplicationEndpoint,
+    >,
     /// Optional. List of \[google.cloud.beyondcorp.v1main.Connector.name\] that are
     /// authorised to be associated with this AppConnection.
-    #[prost(string, repeated, tag="9")]
+    #[prost(string, repeated, tag = "9")]
     pub connectors: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Output only. The current state of the AppConnection.
-    #[prost(enumeration="app_connection::State", tag="10")]
+    #[prost(enumeration = "app_connection::State", tag = "10")]
     pub state: i32,
     /// Optional. Gateway used by the AppConnection.
-    #[prost(message, optional, tag="11")]
+    #[prost(message, optional, tag = "11")]
     pub gateway: ::core::option::Option<app_connection::Gateway>,
 }
 /// Nested message and enum types in `AppConnection`.
@@ -255,10 +262,10 @@ pub mod app_connection {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ApplicationEndpoint {
         /// Required. Hostname or IP address of the remote application endpoint.
-        #[prost(string, tag="1")]
+        #[prost(string, tag = "1")]
         pub host: ::prost::alloc::string::String,
         /// Required. Port of the remote application endpoint.
-        #[prost(int32, tag="2")]
+        #[prost(int32, tag = "2")]
         pub port: i32,
     }
     /// Gateway represents a user facing component that serves as an entrance to
@@ -266,24 +273,34 @@ pub mod app_connection {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Gateway {
         /// Required. The type of hosting used by the gateway.
-        #[prost(enumeration="gateway::Type", tag="2")]
+        #[prost(enumeration = "gateway::Type", tag = "2")]
         pub r#type: i32,
         /// Output only. Server-defined URI for this resource.
-        #[prost(string, tag="3")]
+        #[prost(string, tag = "3")]
         pub uri: ::prost::alloc::string::String,
         /// Output only. Ingress port reserved on the gateways for this
         /// AppConnection, if not specified or zero, the default port is 19443.
-        #[prost(int32, tag="4")]
+        #[prost(int32, tag = "4")]
         pub ingress_port: i32,
         /// Required. AppGateway name in following format:
         /// `projects/{project_id}/locations/{location_id}/appgateways/{gateway_id}`
-        #[prost(string, tag="5")]
+        #[prost(string, tag = "5")]
         pub app_gateway: ::prost::alloc::string::String,
     }
     /// Nested message and enum types in `Gateway`.
     pub mod gateway {
         /// Enum listing possible gateway hosting options.
-        #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
         #[repr(i32)]
         pub enum Type {
             /// Default value. This value is unused.
@@ -306,7 +323,17 @@ pub mod app_connection {
     }
     /// Enum containing list of all possible network connectivity options
     /// supported by BeyondCorp AppConnection.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum Type {
         /// Default value. This value is unused.
@@ -328,7 +355,17 @@ pub mod app_connection {
         }
     }
     /// Represents the different states of a AppConnection.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum State {
         /// Default value. This value is unused.
@@ -366,29 +403,29 @@ pub mod app_connection {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AppConnectionOperationMetadata {
     /// Output only. The time the operation was created.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The time the operation finished running.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Server-defined resource path for the target of the operation.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub target: ::prost::alloc::string::String,
     /// Output only. Name of the verb executed by the operation.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub verb: ::prost::alloc::string::String,
     /// Output only. Human-readable status of the operation, if any.
-    #[prost(string, tag="5")]
+    #[prost(string, tag = "5")]
     pub status_message: ::prost::alloc::string::String,
     /// Output only. Identifies whether the user has requested cancellation
     /// of the operation. Operations that have successfully been cancelled
     /// have \[Operation.error][\] value with a
     /// \[google.rpc.Status.code][google.rpc.Status.code\] of 1, corresponding to
     /// `Code.CANCELLED`.
-    #[prost(bool, tag="6")]
+    #[prost(bool, tag = "6")]
     pub requested_cancellation: bool,
     /// Output only. API version used to start the operation.
-    #[prost(string, tag="7")]
+    #[prost(string, tag = "7")]
     pub api_version: ::prost::alloc::string::String,
 }
 /// Generated client implementations.

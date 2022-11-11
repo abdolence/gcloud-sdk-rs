@@ -3,24 +3,24 @@
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TemporalAsset {
     /// The time window when the asset data and state was observed.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub window: ::core::option::Option<TimeWindow>,
     /// If the asset is deleted or not.
-    #[prost(bool, tag="2")]
+    #[prost(bool, tag = "2")]
     pub deleted: bool,
     /// Asset.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub asset: ::core::option::Option<Asset>,
 }
 /// A time window of (start_time, end_time].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TimeWindow {
     /// Start time of the time window (exclusive).
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// End time of the time window (inclusive).
     /// Current timestamp if not specified.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Cloud asset. This includes all Google Cloud Platform resources,
@@ -32,17 +32,17 @@ pub struct Asset {
     /// See [Resource
     /// Names](<https://cloud.google.com/apis/design/resource_names#full_resource_name>)
     /// for more information.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Type of the asset. Example: "compute.googleapis.com/Disk".
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub asset_type: ::prost::alloc::string::String,
     /// Representation of the resource.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub resource: ::core::option::Option<Resource>,
     /// Representation of the actual Cloud IAM policy set on a cloud resource. For
     /// each resource, there must be at most one Cloud IAM policy set on it.
-    #[prost(message, optional, tag="4")]
+    #[prost(message, optional, tag = "4")]
     pub iam_policy: ::core::option::Option<super::super::super::iam::v1::Policy>,
     /// Asset's ancestry path in Cloud Resource Manager (CRM) hierarchy,
     /// represented as a list of relative resource names. Ancestry path starts with
@@ -50,33 +50,33 @@ pub struct Asset {
     /// project/folder/organization, this starts from the asset itself.
     ///
     /// Example: ["projects/123456789", "folders/5432", "organizations/1234"]
-    #[prost(string, repeated, tag="6")]
+    #[prost(string, repeated, tag = "6")]
     pub ancestors: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Representation of a cloud resource.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Resource {
     /// The API version. Example: "v1".
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub version: ::prost::alloc::string::String,
     /// The URL of the discovery document containing the resource's JSON schema.
     /// For example:
     /// `"<https://www.googleapis.com/discovery/v1/apis/compute/v1/rest"`.>
     /// It will be left unspecified for resources without a discovery-based API,
     /// such as Cloud Bigtable.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub discovery_document_uri: ::prost::alloc::string::String,
     /// The JSON schema name listed in the discovery document.
     /// Example: "Project". It will be left unspecified for resources (such as
     /// Cloud Bigtable) without a discovery-based API.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub discovery_name: ::prost::alloc::string::String,
     /// The REST URL for accessing the resource. An HTTP GET operation using this
     /// URL returns the resource itself.
     /// Example:
     /// `<https://cloudresourcemanager.googleapis.com/v1/projects/my-project-123`.>
     /// It will be left unspecified for resources without a REST API.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub resource_url: ::prost::alloc::string::String,
     /// The full name of the immediate parent of this resource. See
     /// [Resource
@@ -89,11 +89,11 @@ pub struct Resource {
     /// `"//cloudresourcemanager.googleapis.com/projects/my_project_123"`.
     ///
     /// For third-party assets, it is up to the users to define.
-    #[prost(string, tag="5")]
+    #[prost(string, tag = "5")]
     pub parent: ::prost::alloc::string::String,
     /// The content of the resource, in which some sensitive fields are scrubbed
     /// away and may not be present.
-    #[prost(message, optional, tag="6")]
+    #[prost(message, optional, tag = "6")]
     pub data: ::core::option::Option<::prost_types::Struct>,
 }
 /// Create asset feed request.
@@ -104,18 +104,18 @@ pub struct CreateFeedRequest {
     /// "organizations/123"), a folder number (such as "folders/123"), a project ID
     /// (such as "projects/my-project-id")", or a project number (such as
     /// "projects/12345").
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. This is the client-assigned asset feed identifier and it needs to
     /// be unique under a specific parent project/folder/organization.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub feed_id: ::prost::alloc::string::String,
     /// Required. The feed details. The field `name` must be empty and it will be generated
     /// in the format of:
     /// projects/project_number/feeds/feed_id
     /// folders/folder_number/feeds/feed_id
     /// organizations/organization_number/feeds/feed_id
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub feed: ::core::option::Option<Feed>,
 }
 /// Get asset feed request.
@@ -125,7 +125,7 @@ pub struct GetFeedRequest {
     /// projects/project_number/feeds/feed_id
     /// folders/folder_number/feeds/feed_id
     /// organizations/organization_number/feeds/feed_id
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// List asset feeds request.
@@ -134,13 +134,13 @@ pub struct ListFeedsRequest {
     /// Required. The parent project/folder/organization whose feeds are to be
     /// listed. It can only be using project/folder/organization number (such as
     /// "folders/12345")", or a project ID (such as "projects/my-project-id").
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFeedsResponse {
     /// A list of feeds.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub feeds: ::prost::alloc::vec::Vec<Feed>,
 }
 /// Update asset feed request.
@@ -151,12 +151,12 @@ pub struct UpdateFeedRequest {
     /// projects/project_number/feeds/feed_id or
     /// folders/folder_number/feeds/feed_id or
     /// organizations/organization_number/feeds/feed_id.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub feed: ::core::option::Option<Feed>,
     /// Required. Only updates the `feed` fields indicated by this mask.
     /// The field mask must not be empty, and it must not contain fields that
     /// are immutable or only set by the server.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -165,14 +165,14 @@ pub struct DeleteFeedRequest {
     /// projects/project_number/feeds/feed_id
     /// folders/folder_number/feeds/feed_id
     /// organizations/organization_number/feeds/feed_id
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Output configuration for export assets destination.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OutputConfig {
     /// Asset export destination.
-    #[prost(oneof="output_config::Destination", tags="1")]
+    #[prost(oneof = "output_config::Destination", tags = "1")]
     pub destination: ::core::option::Option<output_config::Destination>,
 }
 /// Nested message and enum types in `OutputConfig`.
@@ -181,7 +181,7 @@ pub mod output_config {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Destination {
         /// Destination on Cloud Storage.
-        #[prost(message, tag="1")]
+        #[prost(message, tag = "1")]
         GcsDestination(super::GcsDestination),
     }
 }
@@ -189,7 +189,7 @@ pub mod output_config {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GcsDestination {
     /// Required.
-    #[prost(oneof="gcs_destination::ObjectUri", tags="1")]
+    #[prost(oneof = "gcs_destination::ObjectUri", tags = "1")]
     pub object_uri: ::core::option::Option<gcs_destination::ObjectUri>,
 }
 /// Nested message and enum types in `GcsDestination`.
@@ -202,7 +202,7 @@ pub mod gcs_destination {
         /// Editing Object
         /// Metadata](<https://cloud.google.com/storage/docs/viewing-editing-metadata>)
         /// for more information.
-        #[prost(string, tag="1")]
+        #[prost(string, tag = "1")]
         Uri(::prost::alloc::string::String),
     }
 }
@@ -211,14 +211,14 @@ pub mod gcs_destination {
 pub struct PubsubDestination {
     /// The name of the Cloud Pub/Sub topic to publish to.
     /// For example: `projects/PROJECT_ID/topics/TOPIC_ID`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub topic: ::prost::alloc::string::String,
 }
 /// Output configuration for asset feed destination.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FeedOutputConfig {
     /// Asset feed destination.
-    #[prost(oneof="feed_output_config::Destination", tags="1")]
+    #[prost(oneof = "feed_output_config::Destination", tags = "1")]
     pub destination: ::core::option::Option<feed_output_config::Destination>,
 }
 /// Nested message and enum types in `FeedOutputConfig`.
@@ -227,7 +227,7 @@ pub mod feed_output_config {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Destination {
         /// Destination on Cloud Pubsub.
-        #[prost(message, tag="1")]
+        #[prost(message, tag = "1")]
         PubsubDestination(super::PubsubDestination),
     }
 }
@@ -245,7 +245,7 @@ pub struct Feed {
     ///
     /// The client-assigned feed identifier must be unique within the parent
     /// project/folder/organization.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// A list of the full names of the assets to receive updates. You must specify
     /// either or both of asset_names and asset_types. Only asset updates matching
@@ -255,7 +255,7 @@ pub struct Feed {
     /// See [Resource
     /// Names](<https://cloud.google.com/apis/design/resource_names#full_resource_name>)
     /// for more info.
-    #[prost(string, repeated, tag="2")]
+    #[prost(string, repeated, tag = "2")]
     pub asset_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// A list of types of the assets to receive updates. You must specify either
     /// or both of asset_names and asset_types. Only asset updates matching
@@ -264,15 +264,15 @@ pub struct Feed {
     /// "compute.googleapis.com/Disk" See [Introduction to Cloud Asset
     /// Inventory](<https://cloud.google.com/resource-manager/docs/cloud-asset-inventory/overview>)
     /// for all supported asset types.
-    #[prost(string, repeated, tag="3")]
+    #[prost(string, repeated, tag = "3")]
     pub asset_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Asset content type. If not specified, no content but the asset name and
     /// type will be returned.
-    #[prost(enumeration="ContentType", tag="4")]
+    #[prost(enumeration = "ContentType", tag = "4")]
     pub content_type: i32,
     /// Required. Feed output configuration defining where the asset updates are
     /// published to.
-    #[prost(message, optional, tag="5")]
+    #[prost(message, optional, tag = "5")]
     pub feed_output_config: ::core::option::Option<FeedOutputConfig>,
 }
 /// Asset content type.

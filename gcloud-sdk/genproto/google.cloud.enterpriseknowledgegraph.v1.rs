@@ -47,19 +47,29 @@ impl JobState {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CommonOperationMetadata {
     /// The state of the operation.
-    #[prost(enumeration="common_operation_metadata::State", tag="1")]
+    #[prost(enumeration = "common_operation_metadata::State", tag = "1")]
     pub state: i32,
     /// The creation time of the operation.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The last update time of the operation.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Nested message and enum types in `CommonOperationMetadata`.
 pub mod common_operation_metadata {
     /// State of the longrunning operation.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum State {
         /// Unspecified state.
@@ -99,15 +109,15 @@ pub mod common_operation_metadata {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InputConfig {
     /// Set of input BigQuery tables.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub bigquery_input_configs: ::prost::alloc::vec::Vec<BigQueryInputConfig>,
     /// Entity type
-    #[prost(enumeration="input_config::EntityType", tag="2")]
+    #[prost(enumeration = "input_config::EntityType", tag = "2")]
     pub entity_type: i32,
     /// Optional. Provide the bigquery table containing the previous results if
     /// cluster ID stability is desired. Format is
     /// `projects/*/datasets/*/tables/*`.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub previous_result_bigquery_table: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `InputConfig`.
@@ -115,7 +125,17 @@ pub mod input_config {
     /// The type of entities we will support. Currently, we only support people,
     /// establishment, property, and product types. If the type is
     /// unspecified, it will be generic type.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum EntityType {
         /// The default value.
@@ -158,30 +178,30 @@ pub mod input_config {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BigQueryInputConfig {
     /// Required. Format is `projects/*/datasets/*/tables/*`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub bigquery_table: ::prost::alloc::string::String,
     /// Required. Schema mapping file
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub gcs_uri: ::prost::alloc::string::String,
 }
 /// The desired output location and metadata.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OutputConfig {
     /// Format is “projects/*/datasets/*”.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub bigquery_dataset: ::prost::alloc::string::String,
 }
 /// Recon configs
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReconConfig {
     /// Extra options that affect entity clustering behavior.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub options: ::core::option::Option<recon_config::Options>,
     /// Model Configs
-    #[prost(message, optional, tag="4")]
+    #[prost(message, optional, tag = "4")]
     pub model_config: ::core::option::Option<recon_config::ModelConfig>,
     /// Choice of clustering algorithm. Default is ConnectedComponentsConfig.
-    #[prost(oneof="recon_config::ClusteringConfig", tags="1, 2")]
+    #[prost(oneof = "recon_config::ClusteringConfig", tags = "1, 2")]
     pub clustering_config: ::core::option::Option<recon_config::ClusteringConfig>,
 }
 /// Nested message and enum types in `ReconConfig`.
@@ -196,7 +216,7 @@ pub mod recon_config {
         /// - schema.org/addressRegion
         /// - schema.org/addressCountry
         /// Warning: processing will no longer be regionalized!
-        #[prost(bool, tag="100")]
+        #[prost(bool, tag = "100")]
         pub enable_geocoding_separation: bool,
     }
     /// Model Configs
@@ -204,21 +224,21 @@ pub mod recon_config {
     pub struct ModelConfig {
         /// Model name. Refer to external documentation for valid names.
         /// If unspecified, it defaults to the one mentioned in the documentation.
-        #[prost(string, tag="1")]
+        #[prost(string, tag = "1")]
         pub model_name: ::prost::alloc::string::String,
         /// Model version tag. Refer to external documentation for valid tags.
         /// If unspecified, it defaults to the one mentioned in the documentation.
-        #[prost(string, tag="2")]
+        #[prost(string, tag = "2")]
         pub version_tag: ::prost::alloc::string::String,
     }
     /// Choice of clustering algorithm. Default is ConnectedComponentsConfig.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ClusteringConfig {
         /// Configs for connected components.
-        #[prost(message, tag="1")]
+        #[prost(message, tag = "1")]
         ConnectedComponentsConfig(super::ConnectedComponentsConfig),
         /// Configs for affinity clustering.
-        #[prost(message, tag="2")]
+        #[prost(message, tag = "2")]
         AffinityClusteringConfig(super::AffinityClusteringConfig),
     }
 }
@@ -226,21 +246,21 @@ pub mod recon_config {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConnectedComponentsConfig {
     /// Threshold used for connected components. Default value is 0.85.
-    #[prost(float, tag="1")]
+    #[prost(float, tag = "1")]
     pub weight_threshold: f32,
 }
 /// Options for affinity clustering.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AffinityClusteringConfig {
     /// Number of iterations to perform. Default value is 1.
-    #[prost(int64, tag="1")]
+    #[prost(int64, tag = "1")]
     pub compression_round_count: i64,
 }
 /// Details of operations that perform deletes of any entities.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteOperationMetadata {
     /// The common part of the operation metadata.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub common_metadata: ::core::option::Option<CommonOperationMetadata>,
 }
 /// Request message for CreateEntityReconciliationJob.
@@ -249,10 +269,10 @@ pub struct CreateEntityReconciliationJobRequest {
     /// Required. The resource name of the Location to create the
     /// EntityReconciliationJob in. Format:
     /// `projects/{project}/locations/{location}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The EntityReconciliationJob to create.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub entity_reconciliation_job: ::core::option::Option<EntityReconciliationJob>,
 }
 /// Request message for GetEntityReconciliationJob.
@@ -261,7 +281,7 @@ pub struct GetEntityReconciliationJobRequest {
     /// Required. The name of the EntityReconciliationJob resource.
     /// Format:
     /// `projects/{project}/locations/{location}/entityReconciliationJobs/{entity_reconciliation_job}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for
@@ -270,17 +290,17 @@ pub struct GetEntityReconciliationJobRequest {
 pub struct ListEntityReconciliationJobsRequest {
     /// Required. The name of the EntityReconciliationJob's parent resource.
     /// Format: `projects/{project}/locations/{location}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// An expression for filtering the results of the request. For field names
     /// both snake_case and camelCase are supported.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub filter: ::prost::alloc::string::String,
     /// The standard list page size.
-    #[prost(int32, tag="3")]
+    #[prost(int32, tag = "3")]
     pub page_size: i32,
     /// The standard list page token.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for
@@ -289,10 +309,10 @@ pub struct ListEntityReconciliationJobsRequest {
 pub struct ListEntityReconciliationJobsResponse {
     /// A list of EntityReconciliationJobs that matches the specified filter in the
     /// request.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub entity_reconciliation_jobs: ::prost::alloc::vec::Vec<EntityReconciliationJob>,
     /// The standard List next-page token.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for CancelEntityReconciliationJob.
@@ -301,7 +321,7 @@ pub struct CancelEntityReconciliationJobRequest {
     /// Required. The name of the EntityReconciliationJob resource.
     /// Format:
     /// `projects/{project}/locations/{location}/entityReconciliationJobs/{entity_reconciliation_job}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for DeleteEntityReconciliationJob.
@@ -310,43 +330,187 @@ pub struct DeleteEntityReconciliationJobRequest {
     /// Required. The name of the EntityReconciliationJob resource.
     /// Format:
     /// `projects/{project}/locations/{location}/entityReconciliationJobs/{entity_reconciliation_job}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Entity reconciliation job message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EntityReconciliationJob {
     /// Output only. Resource name of the EntityReconciliationJob.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. Information about the input BigQuery tables.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub input_config: ::core::option::Option<InputConfig>,
     /// Required. The desired output location.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub output_config: ::core::option::Option<OutputConfig>,
     /// Output only. The detailed state of the job.
-    #[prost(enumeration="JobState", tag="4")]
+    #[prost(enumeration = "JobState", tag = "4")]
     pub state: i32,
     /// Output only. Only populated when the job's state is JOB_STATE_FAILED or
     /// JOB_STATE_CANCELLED.
-    #[prost(message, optional, tag="5")]
+    #[prost(message, optional, tag = "5")]
     pub error: ::core::option::Option<super::super::super::rpc::Status>,
     /// Output only. Time when the EntityReconciliationJob was created.
-    #[prost(message, optional, tag="6")]
+    #[prost(message, optional, tag = "6")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Time when the EntityReconciliationJob entered any of the
     /// following states: `JOB_STATE_SUCCEEDED`, `JOB_STATE_FAILED`,
     /// `JOB_STATE_CANCELLED`.
-    #[prost(message, optional, tag="7")]
+    #[prost(message, optional, tag = "7")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Time when the EntityReconciliationJob was most recently
     /// updated.
-    #[prost(message, optional, tag="8")]
+    #[prost(message, optional, tag = "8")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Optional. Recon configs to adjust the clustering behavior.
-    #[prost(message, optional, tag="9")]
+    #[prost(message, optional, tag = "9")]
     pub recon_config: ::core::option::Option<ReconConfig>,
+}
+/// Request message for
+/// \[EnterpriseKnowledgeGraphService.Lookup][google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService.Lookup\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct LookupRequest {
+    /// Required. The name of the Entity's parent resource.
+    /// Format:
+    /// `projects/{project}/locations/{location}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The list of entity ids to be used for lookup.
+    #[prost(string, repeated, tag = "2")]
+    pub ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// The list of language codes (defined in ISO 693) to run the query with,
+    /// e.g. 'en'.
+    #[prost(string, repeated, tag = "3")]
+    pub languages: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Response message for
+/// \[EnterpriseKnowledgeGraphService.Lookup][google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService.Lookup\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct LookupResponse {
+    /// The local context applicable for the response. See more details at
+    /// <http://www.w3.org/TR/json-ld/#context-definitions.>
+    #[prost(message, optional, tag = "1")]
+    pub context: ::core::option::Option<::prost_types::Value>,
+    /// The schema type of top-level JSON-LD object, e.g. ItemList.
+    #[prost(message, optional, tag = "2")]
+    pub r#type: ::core::option::Option<::prost_types::Value>,
+    /// The item list of search results.
+    #[prost(message, optional, tag = "3")]
+    pub item_list_element: ::core::option::Option<::prost_types::ListValue>,
+}
+/// Request message for
+/// \[EnterpriseKnowledgeGraphService.Search][google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService.Search\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SearchRequest {
+    /// Required. The name of the Entity's parent resource.
+    /// Format:
+    /// `projects/{project}/locations/{location}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The literal query string for search.
+    #[prost(string, tag = "2")]
+    pub query: ::prost::alloc::string::String,
+    /// The list of language codes (defined in ISO 693) to run the query with,
+    /// e.g. 'en'.
+    #[prost(string, repeated, tag = "3")]
+    pub languages: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Restricts returned entities with these types, e.g. Person
+    /// (as defined in <http://schema.org/Person>). If multiple types are specified,
+    /// returned entities will contain one or more of these types.
+    #[prost(string, repeated, tag = "4")]
+    pub types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Limits the number of entities to be returned.
+    #[prost(message, optional, tag = "6")]
+    pub limit: ::core::option::Option<i32>,
+}
+/// Response message for
+/// \[EnterpriseKnowledgeGraphService.Search][google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService.Search\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SearchResponse {
+    /// The local context applicable for the response. See more details at
+    /// <http://www.w3.org/TR/json-ld/#context-definitions.>
+    #[prost(message, optional, tag = "1")]
+    pub context: ::core::option::Option<::prost_types::Value>,
+    /// The schema type of top-level JSON-LD object, e.g. ItemList.
+    #[prost(message, optional, tag = "2")]
+    pub r#type: ::core::option::Option<::prost_types::Value>,
+    /// The item list of search results.
+    #[prost(message, optional, tag = "3")]
+    pub item_list_element: ::core::option::Option<::prost_types::ListValue>,
+}
+/// Request message for
+/// \[EnterpriseKnowledgeGraphService.LookupPublicKg][google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService.LookupPublicKg\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct LookupPublicKgRequest {
+    /// Required. The name of the Entity's parent resource.
+    /// Format:
+    /// `projects/{project}/locations/{location}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The list of entity ids to be used for lookup.
+    #[prost(string, repeated, tag = "2")]
+    pub ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// The list of language codes (defined in ISO 693) to run the query with,
+    /// e.g. 'en'.
+    #[prost(string, repeated, tag = "3")]
+    pub languages: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Response message for
+/// \[EnterpriseKnowledgeGraphService.LookupPublicKg][google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService.LookupPublicKg\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct LookupPublicKgResponse {
+    /// The local context applicable for the response. See more details at
+    /// <http://www.w3.org/TR/json-ld/#context-definitions.>
+    #[prost(message, optional, tag = "1")]
+    pub context: ::core::option::Option<::prost_types::Value>,
+    /// The schema type of top-level JSON-LD object, e.g. ItemList.
+    #[prost(message, optional, tag = "2")]
+    pub r#type: ::core::option::Option<::prost_types::Value>,
+    /// The item list of search results.
+    #[prost(message, optional, tag = "3")]
+    pub item_list_element: ::core::option::Option<::prost_types::ListValue>,
+}
+/// Request message for
+/// \[EnterpriseKnowledgeGraphService.Search][google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService.Search\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SearchPublicKgRequest {
+    /// Required. The name of the Entity's parent resource.
+    /// Format:
+    /// `projects/{project}/locations/{location}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The literal query string for search.
+    #[prost(string, tag = "2")]
+    pub query: ::prost::alloc::string::String,
+    /// The list of language codes (defined in ISO 693) to run the query with,
+    /// e.g. 'en'.
+    #[prost(string, repeated, tag = "3")]
+    pub languages: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Restricts returned entities with these types, e.g. Person
+    /// (as defined in <http://schema.org/Person>). If multiple types are specified,
+    /// returned entities will contain one or more of these types.
+    #[prost(string, repeated, tag = "4")]
+    pub types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Limits the number of entities to be returned.
+    #[prost(message, optional, tag = "6")]
+    pub limit: ::core::option::Option<i32>,
+}
+/// Response message for
+/// \[EnterpriseKnowledgeGraphService.Search][google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService.Search\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SearchPublicKgResponse {
+    /// The local context applicable for the response. See more details at
+    /// <http://www.w3.org/TR/json-ld/#context-definitions.>
+    #[prost(message, optional, tag = "1")]
+    pub context: ::core::option::Option<::prost_types::Value>,
+    /// The schema type of top-level JSON-LD object, e.g. ItemList.
+    #[prost(message, optional, tag = "2")]
+    pub r#type: ::core::option::Option<::prost_types::Value>,
+    /// The item list of search results.
+    #[prost(message, optional, tag = "3")]
+    pub item_list_element: ::core::option::Option<::prost_types::ListValue>,
 }
 /// Generated client implementations.
 pub mod enterprise_knowledge_graph_service_client {
@@ -524,6 +688,86 @@ pub mod enterprise_knowledge_graph_service_client {
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService/DeleteEntityReconciliationJob",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Finds the Cloud KG entities with CKG ID(s).
+        pub async fn lookup(
+            &mut self,
+            request: impl tonic::IntoRequest<super::LookupRequest>,
+        ) -> Result<tonic::Response<super::LookupResponse>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService/Lookup",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Searches the Cloud KG entities with entity name.
+        pub async fn search(
+            &mut self,
+            request: impl tonic::IntoRequest<super::SearchRequest>,
+        ) -> Result<tonic::Response<super::SearchResponse>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService/Search",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Finds the public KG entities with public KG ID(s).
+        pub async fn lookup_public_kg(
+            &mut self,
+            request: impl tonic::IntoRequest<super::LookupPublicKgRequest>,
+        ) -> Result<tonic::Response<super::LookupPublicKgResponse>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService/LookupPublicKg",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Searches the public KG entities with entity name.
+        pub async fn search_public_kg(
+            &mut self,
+            request: impl tonic::IntoRequest<super::SearchPublicKgRequest>,
+        ) -> Result<tonic::Response<super::SearchPublicKgResponse>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.enterpriseknowledgegraph.v1.EnterpriseKnowledgeGraphService/SearchPublicKg",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }

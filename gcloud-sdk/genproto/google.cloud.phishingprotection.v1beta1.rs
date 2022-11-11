@@ -3,16 +3,15 @@
 pub struct ReportPhishingRequest {
     /// Required. The name of the project for which the report will be created,
     /// in the format "projects/{project_number}".
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The URI that is being reported for phishing content to be analyzed.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub uri: ::prost::alloc::string::String,
 }
 /// The ReportPhishing (empty) response message.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ReportPhishingResponse {
-}
+pub struct ReportPhishingResponse {}
 /// Generated client implementations.
 pub mod phishing_protection_service_v1_beta1_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]

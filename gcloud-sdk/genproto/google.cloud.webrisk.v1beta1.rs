@@ -2,15 +2,17 @@
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ComputeThreatListDiffRequest {
     /// The ThreatList to update.
-    #[prost(enumeration="ThreatType", tag="1")]
+    #[prost(enumeration = "ThreatType", tag = "1")]
     pub threat_type: i32,
     /// The current version token of the client for the requested list (the
     /// client version that was received from the last successful diff).
-    #[prost(bytes="vec", tag="2")]
+    #[prost(bytes = "vec", tag = "2")]
     pub version_token: ::prost::alloc::vec::Vec<u8>,
     /// Required. The constraints associated with this request.
-    #[prost(message, optional, tag="3")]
-    pub constraints: ::core::option::Option<compute_threat_list_diff_request::Constraints>,
+    #[prost(message, optional, tag = "3")]
+    pub constraints: ::core::option::Option<
+        compute_threat_list_diff_request::Constraints,
+    >,
 }
 /// Nested message and enum types in `ComputeThreatListDiffRequest`.
 pub mod compute_threat_list_diff_request {
@@ -20,15 +22,15 @@ pub mod compute_threat_list_diff_request {
         /// The maximum size in number of entries. The diff will not contain more
         /// entries than this value.  This should be a power of 2 between 2**10 and
         /// 2**20.  If zero, no diff size limit is set.
-        #[prost(int32, tag="1")]
+        #[prost(int32, tag = "1")]
         pub max_diff_entries: i32,
         /// Sets the maximum number of entries that the client is willing to have
         /// in the local database. This should be a power of 2 between 2**10 and
         /// 2**20. If zero, no database size limit is set.
-        #[prost(int32, tag="2")]
+        #[prost(int32, tag = "2")]
         pub max_database_entries: i32,
         /// The compression types supported by the client.
-        #[prost(enumeration="super::CompressionType", repeated, tag="3")]
+        #[prost(enumeration = "super::CompressionType", repeated, tag = "3")]
         pub supported_compressions: ::prost::alloc::vec::Vec<i32>,
     }
 }
@@ -36,29 +38,29 @@ pub mod compute_threat_list_diff_request {
 pub struct ComputeThreatListDiffResponse {
     /// The type of response. This may indicate that an action must be taken by the
     /// client when the response is received.
-    #[prost(enumeration="compute_threat_list_diff_response::ResponseType", tag="4")]
+    #[prost(enumeration = "compute_threat_list_diff_response::ResponseType", tag = "4")]
     pub response_type: i32,
     /// A set of entries to add to a local threat type's list.
-    #[prost(message, optional, tag="5")]
+    #[prost(message, optional, tag = "5")]
     pub additions: ::core::option::Option<ThreatEntryAdditions>,
     /// A set of entries to remove from a local threat type's list.
     /// This field may be empty.
-    #[prost(message, optional, tag="6")]
+    #[prost(message, optional, tag = "6")]
     pub removals: ::core::option::Option<ThreatEntryRemovals>,
     /// The new opaque client version token.
-    #[prost(bytes="vec", tag="7")]
+    #[prost(bytes = "vec", tag = "7")]
     pub new_version_token: ::prost::alloc::vec::Vec<u8>,
     /// The expected SHA256 hash of the client state; that is, of the sorted list
     /// of all hashes present in the database after applying the provided diff.
     /// If the client state doesn't match the expected state, the client must
     /// disregard this diff and retry later.
-    #[prost(message, optional, tag="8")]
+    #[prost(message, optional, tag = "8")]
     pub checksum: ::core::option::Option<compute_threat_list_diff_response::Checksum>,
     /// The soonest the client should wait before issuing any diff
     /// request. Querying sooner is unlikely to produce a meaningful diff.
     /// Waiting longer is acceptable considering the use case.
     /// If this field is not set clients may update as soon as they want.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub recommended_next_diff: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Nested message and enum types in `ComputeThreatListDiffResponse`.
@@ -68,11 +70,21 @@ pub mod compute_threat_list_diff_response {
     pub struct Checksum {
         /// The SHA256 hash of the client state; that is, of the sorted list of all
         /// hashes present in the database.
-        #[prost(bytes="vec", tag="1")]
+        #[prost(bytes = "vec", tag = "1")]
         pub sha256: ::prost::alloc::vec::Vec<u8>,
     }
     /// The type of response sent to the client.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum ResponseType {
         /// Unknown.
@@ -102,16 +114,16 @@ pub mod compute_threat_list_diff_response {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchUrisRequest {
     /// Required. The URI to be checked for matches.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub uri: ::prost::alloc::string::String,
     /// Required. The ThreatLists to search in.
-    #[prost(enumeration="ThreatType", repeated, packed="false", tag="2")]
+    #[prost(enumeration = "ThreatType", repeated, packed = "false", tag = "2")]
     pub threat_types: ::prost::alloc::vec::Vec<i32>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchUrisResponse {
     /// The threat list matches. This may be empty if the URI is on no list.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub threat: ::core::option::Option<search_uris_response::ThreatUri>,
 }
 /// Nested message and enum types in `SearchUrisResponse`.
@@ -120,11 +132,11 @@ pub mod search_uris_response {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ThreatUri {
         /// The ThreatList this threat belongs to.
-        #[prost(enumeration="super::ThreatType", repeated, tag="1")]
+        #[prost(enumeration = "super::ThreatType", repeated, tag = "1")]
         pub threat_types: ::prost::alloc::vec::Vec<i32>,
         /// The cache lifetime for the returned match. Clients must not cache this
         /// response past this timestamp to avoid false positives.
-        #[prost(message, optional, tag="2")]
+        #[prost(message, optional, tag = "2")]
         pub expire_time: ::core::option::Option<::prost_types::Timestamp>,
     }
 }
@@ -133,21 +145,21 @@ pub mod search_uris_response {
 pub struct SearchHashesRequest {
     /// A hash prefix, consisting of the most significant 4-32 bytes of a SHA256
     /// hash. For JSON requests, this field is base64-encoded.
-    #[prost(bytes="vec", tag="1")]
+    #[prost(bytes = "vec", tag = "1")]
     pub hash_prefix: ::prost::alloc::vec::Vec<u8>,
     /// Required. The ThreatLists to search in.
-    #[prost(enumeration="ThreatType", repeated, packed="false", tag="2")]
+    #[prost(enumeration = "ThreatType", repeated, packed = "false", tag = "2")]
     pub threat_types: ::prost::alloc::vec::Vec<i32>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchHashesResponse {
     /// The full hashes that matched the requested prefixes.
     /// The hash will be populated in the key.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub threats: ::prost::alloc::vec::Vec<search_hashes_response::ThreatHash>,
     /// For requested entities that did not match the threat list, how long to
     /// cache the response until.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub negative_expire_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Nested message and enum types in `SearchHashesResponse`.
@@ -157,15 +169,15 @@ pub mod search_hashes_response {
     pub struct ThreatHash {
         /// The ThreatList this threat belongs to.
         /// This must contain at least one entry.
-        #[prost(enumeration="super::ThreatType", repeated, tag="1")]
+        #[prost(enumeration = "super::ThreatType", repeated, tag = "1")]
         pub threat_types: ::prost::alloc::vec::Vec<i32>,
         /// A 32 byte SHA256 hash. This field is in binary format. For JSON
         /// requests, hashes are base64-encoded.
-        #[prost(bytes="vec", tag="2")]
+        #[prost(bytes = "vec", tag = "2")]
         pub hash: ::prost::alloc::vec::Vec<u8>,
         /// The cache lifetime for the returned match. Clients must not cache this
         /// response past this timestamp to avoid false positives.
-        #[prost(message, optional, tag="3")]
+        #[prost(message, optional, tag = "3")]
         pub expire_time: ::core::option::Option<::prost_types::Timestamp>,
     }
 }
@@ -175,32 +187,32 @@ pub mod search_hashes_response {
 pub struct ThreatEntryAdditions {
     /// The raw SHA256-formatted entries.
     /// Repeated to allow returning sets of hashes with different prefix sizes.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub raw_hashes: ::prost::alloc::vec::Vec<RawHashes>,
     /// The encoded 4-byte prefixes of SHA256-formatted entries, using a
     /// Golomb-Rice encoding. The hashes are converted to uint32, sorted in
     /// ascending order, then delta encoded and stored as encoded_data.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub rice_hashes: ::core::option::Option<RiceDeltaEncoding>,
 }
 /// Contains the set of entries to remove from a local database.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ThreatEntryRemovals {
     /// The raw removal indices for a local list.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub raw_indices: ::core::option::Option<RawIndices>,
     /// The encoded local, lexicographically-sorted list indices, using a
     /// Golomb-Rice encoding. Used for sending compressed removal indices. The
     /// removal indices (uint32) are sorted in ascending order, then delta encoded
     /// and stored as encoded_data.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub rice_indices: ::core::option::Option<RiceDeltaEncoding>,
 }
 /// A set of raw indices to remove from a local list.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RawIndices {
     /// The indices to remove from a lexicographically-sorted local list.
-    #[prost(int32, repeated, tag="1")]
+    #[prost(int32, repeated, tag = "1")]
     pub indices: ::prost::alloc::vec::Vec<i32>,
 }
 /// The uncompressed threat entries in hash format.
@@ -215,12 +227,12 @@ pub struct RawIndices {
 pub struct RawHashes {
     /// The number of bytes for each prefix encoded below.  This field can be
     /// anywhere from 4 (shortest prefix) to 32 (full SHA256 hash).
-    #[prost(int32, tag="1")]
+    #[prost(int32, tag = "1")]
     pub prefix_size: i32,
     /// The hashes, in binary format, concatenated into one long string. Hashes are
     /// sorted in lexicographic order. For JSON API users, hashes are
     /// base64-encoded.
-    #[prost(bytes="vec", tag="2")]
+    #[prost(bytes = "vec", tag = "2")]
     pub raw_hashes: ::prost::alloc::vec::Vec<u8>,
 }
 /// The Rice-Golomb encoded data. Used for sending compressed 4-byte hashes or
@@ -230,19 +242,19 @@ pub struct RiceDeltaEncoding {
     /// The offset of the first entry in the encoded data, or, if only a single
     /// integer was encoded, that single integer's value. If the field is empty or
     /// missing, assume zero.
-    #[prost(int64, tag="1")]
+    #[prost(int64, tag = "1")]
     pub first_value: i64,
     /// The Golomb-Rice parameter, which is a number between 2 and 28. This field
     /// is missing (that is, zero) if `num_entries` is zero.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub rice_parameter: i32,
     /// The number of entries that are delta encoded in the encoded data. If only a
     /// single integer was encoded, this will be zero and the single value will be
     /// stored in `first_value`.
-    #[prost(int32, tag="3")]
+    #[prost(int32, tag = "3")]
     pub entry_count: i32,
     /// The encoded deltas that are encoded using the Golomb-Rice coder.
-    #[prost(bytes="vec", tag="4")]
+    #[prost(bytes = "vec", tag = "4")]
     pub encoded_data: ::prost::alloc::vec::Vec<u8>,
 }
 /// The type of threat. This maps dirrectly to the threat list a threat may

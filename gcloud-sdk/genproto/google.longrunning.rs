@@ -5,23 +5,23 @@ pub struct Operation {
     /// The server-assigned name, which is only unique within the same service that
     /// originally returns it. If you use the default HTTP mapping, the
     /// `name` should be a resource name ending with `operations/{unique_id}`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Service-specific metadata associated with the operation.  It typically
     /// contains progress information and common metadata such as create time.
     /// Some services might not provide such metadata.  Any method that returns a
     /// long-running operation should document the metadata type, if any.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub metadata: ::core::option::Option<::prost_types::Any>,
     /// If the value is `false`, it means the operation is still in progress.
     /// If `true`, the operation is completed, and either `error` or `response` is
     /// available.
-    #[prost(bool, tag="3")]
+    #[prost(bool, tag = "3")]
     pub done: bool,
     /// The operation result, which can be either an `error` or a valid `response`.
     /// If `done` == `false`, neither `error` nor `response` is set.
     /// If `done` == `true`, exactly one of `error` or `response` is set.
-    #[prost(oneof="operation::Result", tags="4, 5")]
+    #[prost(oneof = "operation::Result", tags = "4, 5")]
     pub result: ::core::option::Option<operation::Result>,
 }
 /// Nested message and enum types in `Operation`.
@@ -32,7 +32,7 @@ pub mod operation {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Result {
         /// The error result of the operation in case of failure or cancellation.
-        #[prost(message, tag="4")]
+        #[prost(message, tag = "4")]
         Error(super::super::rpc::Status),
         /// The normal response of the operation in case of success.  If the original
         /// method returns no data on success, such as `Delete`, the response is
@@ -42,7 +42,7 @@ pub mod operation {
         /// is the original method name.  For example, if the original method name
         /// is `TakeSnapshot()`, the inferred response type is
         /// `TakeSnapshotResponse`.
-        #[prost(message, tag="5")]
+        #[prost(message, tag = "5")]
         Response(::prost_types::Any),
     }
 }
@@ -50,59 +50,59 @@ pub mod operation {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetOperationRequest {
     /// The name of the operation resource.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// The request message for \[Operations.ListOperations][google.longrunning.Operations.ListOperations\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListOperationsRequest {
     /// The name of the operation's parent resource.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub name: ::prost::alloc::string::String,
     /// The standard list filter.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub filter: ::prost::alloc::string::String,
     /// The standard list page size.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// The standard list page token.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
 /// The response message for \[Operations.ListOperations][google.longrunning.Operations.ListOperations\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListOperationsResponse {
     /// A list of operations that matches the specified filter in the request.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub operations: ::prost::alloc::vec::Vec<Operation>,
     /// The standard List next-page token.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request message for \[Operations.CancelOperation][google.longrunning.Operations.CancelOperation\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CancelOperationRequest {
     /// The name of the operation resource to be cancelled.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// The request message for \[Operations.DeleteOperation][google.longrunning.Operations.DeleteOperation\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteOperationRequest {
     /// The name of the operation resource to be deleted.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// The request message for \[Operations.WaitOperation][google.longrunning.Operations.WaitOperation\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WaitOperationRequest {
     /// The name of the operation resource to wait on.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The maximum duration to wait before timing out. If left blank, the wait
     /// will be at most the time permitted by the underlying HTTP/RPC protocol.
     /// If RPC context deadline is also specified, the shorter one will be used.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub timeout: ::core::option::Option<::prost_types::Duration>,
 }
 /// A message representing the message types used by a long-running operation.
@@ -126,7 +126,7 @@ pub struct OperationInfo {
     /// message name must be used (e.g. `google.protobuf.Struct`).
     ///
     /// Note: Altering this value constitutes a breaking change.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub response_type: ::prost::alloc::string::String,
     /// Required. The message name of the metadata type for this long-running
     /// operation.
@@ -135,7 +135,7 @@ pub struct OperationInfo {
     /// message name must be used (e.g. `google.protobuf.Struct`).
     ///
     /// Note: Altering this value constitutes a breaking change.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub metadata_type: ::prost::alloc::string::String,
 }
 /// Generated client implementations.

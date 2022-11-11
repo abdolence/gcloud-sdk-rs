@@ -4,28 +4,38 @@
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AptArtifact {
     /// Output only. The Artifact Registry resource name of the artifact.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. The Apt package name of the artifact.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub package_name: ::prost::alloc::string::String,
     /// Output only. An artifact is a binary or source package.
-    #[prost(enumeration="apt_artifact::PackageType", tag="3")]
+    #[prost(enumeration = "apt_artifact::PackageType", tag = "3")]
     pub package_type: i32,
     /// Output only. Operating system architecture of the artifact.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub architecture: ::prost::alloc::string::String,
     /// Output only. Repository component of the artifact.
-    #[prost(string, tag="5")]
+    #[prost(string, tag = "5")]
     pub component: ::prost::alloc::string::String,
     /// Output only. Contents of the artifact's control metadata file.
-    #[prost(bytes="vec", tag="6")]
+    #[prost(bytes = "vec", tag = "6")]
     pub control_file: ::prost::alloc::vec::Vec<u8>,
 }
 /// Nested message and enum types in `AptArtifact`.
 pub mod apt_artifact {
     /// Package type is either binary or source.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum PackageType {
         /// Package type is not specified.
@@ -53,20 +63,20 @@ pub mod apt_artifact {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportAptArtifactsGcsSource {
     /// Cloud Storage paths URI (e.g., gs://my_bucket//my_object).
-    #[prost(string, repeated, tag="1")]
+    #[prost(string, repeated, tag = "1")]
     pub uris: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Supports URI wildcards for matching multiple objects from a single URI.
-    #[prost(bool, tag="2")]
+    #[prost(bool, tag = "2")]
     pub use_wildcards: bool,
 }
 /// The request to import new apt artifacts.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportAptArtifactsRequest {
     /// The name of the parent resource where the artifacts will be imported.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The source location of the package binaries.
-    #[prost(oneof="import_apt_artifacts_request::Source", tags="2")]
+    #[prost(oneof = "import_apt_artifacts_request::Source", tags = "2")]
     pub source: ::core::option::Option<import_apt_artifacts_request::Source>,
 }
 /// Nested message and enum types in `ImportAptArtifactsRequest`.
@@ -75,7 +85,7 @@ pub mod import_apt_artifacts_request {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
         /// Google Cloud Storage location where input content is located.
-        #[prost(message, tag="2")]
+        #[prost(message, tag = "2")]
         GcsSource(super::ImportAptArtifactsGcsSource),
     }
 }
@@ -83,10 +93,10 @@ pub mod import_apt_artifacts_request {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportAptArtifactsErrorInfo {
     /// The detailed error status.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub error: ::core::option::Option<super::super::super::rpc::Status>,
     /// The source that was not imported.
-    #[prost(oneof="import_apt_artifacts_error_info::Source", tags="1")]
+    #[prost(oneof = "import_apt_artifacts_error_info::Source", tags = "1")]
     pub source: ::core::option::Option<import_apt_artifacts_error_info::Source>,
 }
 /// Nested message and enum types in `ImportAptArtifactsErrorInfo`.
@@ -95,7 +105,7 @@ pub mod import_apt_artifacts_error_info {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
         /// Google Cloud Storage location requested.
-        #[prost(message, tag="1")]
+        #[prost(message, tag = "1")]
         GcsSource(super::ImportAptArtifactsGcsSource),
     }
 }
@@ -103,16 +113,15 @@ pub mod import_apt_artifacts_error_info {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportAptArtifactsResponse {
     /// The Apt artifacts imported.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub apt_artifacts: ::prost::alloc::vec::Vec<AptArtifact>,
     /// Detailed error info for packages that were not imported.
-    #[prost(message, repeated, tag="2")]
+    #[prost(message, repeated, tag = "2")]
     pub errors: ::prost::alloc::vec::Vec<ImportAptArtifactsErrorInfo>,
 }
 /// The operation metadata for importing artifacts.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ImportAptArtifactsMetadata {
-}
+pub struct ImportAptArtifactsMetadata {}
 /// DockerImage represents a docker artifact.
 /// The following fields are returned as untyped metadata in the Version
 /// resource, using camelcase keys (i.e. metadata.imageSizeBytes):
@@ -131,83 +140,93 @@ pub struct DockerImage {
     /// project_id, "test-repo" is the repository_name and
     /// "nginx@sha256:e9954c1fc875017be1c3e36eca16be2d9e9bccc4bf072163515467d6a823c7cf"
     /// is the image's digest.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. URL to access the image.
     /// Example:
     /// us-west4-docker.pkg.dev/test-project/test-repo/nginx@sha256:e9954c1fc875017be1c3e36eca16be2d9e9bccc4bf072163515467d6a823c7cf
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub uri: ::prost::alloc::string::String,
     /// Tags attached to this image.
-    #[prost(string, repeated, tag="3")]
+    #[prost(string, repeated, tag = "3")]
     pub tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Calculated size of the image.
     /// This field is returned as the 'metadata.imageSizeBytes' field in the
     /// Version resource.
-    #[prost(int64, tag="4")]
+    #[prost(int64, tag = "4")]
     pub image_size_bytes: i64,
     /// Time the image was uploaded.
-    #[prost(message, optional, tag="5")]
+    #[prost(message, optional, tag = "5")]
     pub upload_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Media type of this image, e.g.
     /// "application/vnd.docker.distribution.manifest.v2+json".
     /// This field is returned as the 'metadata.mediaType' field in the
     /// Version resource.
-    #[prost(string, tag="6")]
+    #[prost(string, tag = "6")]
     pub media_type: ::prost::alloc::string::String,
     /// The time this image was built.
     /// This field is returned as the 'metadata.buildTime' field in the
     /// Version resource.
     /// The build time is returned to the client as an RFC 3339 string, which can
     /// be easily used with the JavaScript Date constructor.
-    #[prost(message, optional, tag="7")]
+    #[prost(message, optional, tag = "7")]
     pub build_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// The request to list docker images.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDockerImagesRequest {
     /// Required. The name of the parent resource whose docker images will be listed.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of artifacts to return.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// The next_page_token value returned from a previous list request, if any.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
 /// The response from listing docker images.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDockerImagesResponse {
     /// The docker images returned.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub docker_images: ::prost::alloc::vec::Vec<DockerImage>,
     /// The token to retrieve the next page of artifacts, or empty if there are no
     /// more artifacts to return.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request to get docker images.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetDockerImageRequest {
     /// Required. The name of the docker images.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// A hash of file content.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Hash {
     /// The algorithm used to compute the hash value.
-    #[prost(enumeration="hash::HashType", tag="1")]
+    #[prost(enumeration = "hash::HashType", tag = "1")]
     pub r#type: i32,
     /// The hash value.
-    #[prost(bytes="vec", tag="2")]
+    #[prost(bytes = "vec", tag = "2")]
     pub value: ::prost::alloc::vec::Vec<u8>,
 }
 /// Nested message and enum types in `Hash`.
 pub mod hash {
     /// The algorithm used to compute the hash.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum HashType {
         /// Unspecified.
@@ -237,22 +256,22 @@ pub struct File {
     /// The name of the file, for example:
     /// "projects/p1/locations/us-central1/repositories/repo1/files/a%2Fb%2Fc.txt".
     /// If the file ID part contains slashes, they are escaped.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The size of the File in bytes.
-    #[prost(int64, tag="3")]
+    #[prost(int64, tag = "3")]
     pub size_bytes: i64,
     /// The hashes of the file content.
-    #[prost(message, repeated, tag="4")]
+    #[prost(message, repeated, tag = "4")]
     pub hashes: ::prost::alloc::vec::Vec<Hash>,
     /// The time when the File was created.
-    #[prost(message, optional, tag="5")]
+    #[prost(message, optional, tag = "5")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The time when the File was last updated.
-    #[prost(message, optional, tag="6")]
+    #[prost(message, optional, tag = "6")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The name of the Package or Version that owns this file, if any.
-    #[prost(string, tag="7")]
+    #[prost(string, tag = "7")]
     pub owner: ::prost::alloc::string::String,
 }
 /// The request to list files.
@@ -260,7 +279,7 @@ pub struct File {
 pub struct ListFilesRequest {
     /// The name of the repository whose files will be listed. For example:
     /// "projects/p1/locations/us-central1/repositories/repo1
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// An expression for filtering the results of the request. Filter rules are
     /// case insensitive. The fields eligible for filtering are:
@@ -274,34 +293,34 @@ pub struct ListFilesRequest {
     ///    ID starting with "a/b/".
     ///    * `owner="projects/p1/locations/us-central1/repositories/repo1/packages/pkg1/versions/1.0"` -->
     ///    Files owned by the version `1.0` in package `pkg1`.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
     /// The maximum number of files to return.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// The next_page_token value returned from a previous list request, if any.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
     /// The field to order the results by.
-    #[prost(string, tag="5")]
+    #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
 /// The response from listing files.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFilesResponse {
     /// The files returned.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub files: ::prost::alloc::vec::Vec<File>,
     /// The token to retrieve the next page of files, or empty if there are no
     /// more files to return.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request to retrieve a file.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetFileRequest {
     /// The name of the file to retrieve.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Packages are named collections of versions.
@@ -310,55 +329,55 @@ pub struct Package {
     /// The name of the package, for example:
     /// "projects/p1/locations/us-central1/repositories/repo1/packages/pkg1".
     /// If the package ID part contains slashes, the slashes are escaped.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The display name of the package.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub display_name: ::prost::alloc::string::String,
     /// The time when the package was created.
-    #[prost(message, optional, tag="5")]
+    #[prost(message, optional, tag = "5")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The time when the package was last updated. This includes publishing a new
     /// version of the package.
-    #[prost(message, optional, tag="6")]
+    #[prost(message, optional, tag = "6")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// The request to list packages.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPackagesRequest {
     /// Required. The name of the parent resource whose packages will be listed.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of packages to return. Maximum page size is 1,000.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// The next_page_token value returned from a previous list request, if any.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
 /// The response from listing packages.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPackagesResponse {
     /// The packages returned.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub packages: ::prost::alloc::vec::Vec<Package>,
     /// The token to retrieve the next page of packages, or empty if there are no
     /// more packages to return.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request to retrieve a package.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetPackageRequest {
     /// Required. The name of the package to retrieve.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// The request to delete a package.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeletePackageRequest {
     /// Required. The name of the package to delete.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// A Repository for storing artifacts with a specific format.
@@ -366,35 +385,38 @@ pub struct DeletePackageRequest {
 pub struct Repository {
     /// The name of the repository, for example:
     /// "projects/p1/locations/us-central1/repositories/repo1".
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The format of packages that are stored in the repository.
-    #[prost(enumeration="repository::Format", tag="2")]
+    #[prost(enumeration = "repository::Format", tag = "2")]
     pub format: i32,
     /// The user-provided description of the repository.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub description: ::prost::alloc::string::String,
     /// Labels with user-defined metadata.
     /// This field may contain up to 64 entries. Label keys and values may be no
     /// longer than 63 characters. Label keys must begin with a lowercase letter
     /// and may only contain lowercase letters, numeric characters, underscores,
     /// and dashes.
-    #[prost(map="string, string", tag="4")]
-    pub labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map = "string, string", tag = "4")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
     /// The time when the repository was created.
-    #[prost(message, optional, tag="5")]
+    #[prost(message, optional, tag = "5")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The time when the repository was last updated.
-    #[prost(message, optional, tag="6")]
+    #[prost(message, optional, tag = "6")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The Cloud KMS resource name of the customer managed encryption key that's
     /// used to encrypt the contents of the Repository. Has the form:
     /// `projects/my-project/locations/my-region/keyRings/my-kr/cryptoKeys/my-key`.
     /// This value may not be changed after the Repository has been created.
-    #[prost(string, tag="8")]
+    #[prost(string, tag = "8")]
     pub kms_key_name: ::prost::alloc::string::String,
     /// Repository-specific configurations.
-    #[prost(oneof="repository::FormatConfig", tags="9")]
+    #[prost(oneof = "repository::FormatConfig", tags = "9")]
     pub format_config: ::core::option::Option<repository::FormatConfig>,
 }
 /// Nested message and enum types in `Repository`.
@@ -406,16 +428,26 @@ pub mod repository {
     pub struct MavenRepositoryConfig {
         /// The repository with this flag will allow publishing
         /// the same snapshot versions.
-        #[prost(bool, tag="1")]
+        #[prost(bool, tag = "1")]
         pub allow_snapshot_overwrites: bool,
         /// Version policy defines the versions that the registry will accept.
-        #[prost(enumeration="maven_repository_config::VersionPolicy", tag="2")]
+        #[prost(enumeration = "maven_repository_config::VersionPolicy", tag = "2")]
         pub version_policy: i32,
     }
     /// Nested message and enum types in `MavenRepositoryConfig`.
     pub mod maven_repository_config {
         /// VersionPolicy is the version policy for the repository.
-        #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
         #[repr(i32)]
         pub enum VersionPolicy {
             /// VERSION_POLICY_UNSPECIFIED - the version policy is not defined.
@@ -442,7 +474,17 @@ pub mod repository {
         }
     }
     /// A package format.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum Format {
         /// Unspecified package format.
@@ -482,7 +524,7 @@ pub mod repository {
     pub enum FormatConfig {
         /// Maven repository config contains repository level configuration
         /// for the repositories of maven type.
-        #[prost(message, tag="9")]
+        #[prost(message, tag = "9")]
         MavenConfig(MavenRepositoryConfig),
     }
 }
@@ -490,63 +532,63 @@ pub mod repository {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRepositoriesRequest {
     /// Required. The name of the parent resource whose repositories will be listed.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of repositories to return. Maximum page size is 1,000.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// The next_page_token value returned from a previous list request, if any.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
 /// The response from listing repositories.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRepositoriesResponse {
     /// The repositories returned.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub repositories: ::prost::alloc::vec::Vec<Repository>,
     /// The token to retrieve the next page of repositories, or empty if there are
     /// no more repositories to return.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request to retrieve a repository.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetRepositoryRequest {
     /// Required. The name of the repository to retrieve.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// The request to create a new repository.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateRepositoryRequest {
     /// Required. The name of the parent resource where the repository will be created.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The repository id to use for this repository.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub repository_id: ::prost::alloc::string::String,
     /// The repository to be created.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub repository: ::core::option::Option<Repository>,
 }
 /// The request to update a repository.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateRepositoryRequest {
     /// The repository that replaces the resource on the server.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub repository: ::core::option::Option<Repository>,
     /// The update mask applies to the resource. For the `FieldMask` definition,
     /// see
     /// <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask>
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The request to delete a repository.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteRepositoryRequest {
     /// Required. The name of the repository to delete.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// The Artifact Registry settings that apply to a Project.
@@ -559,16 +601,26 @@ pub struct ProjectSettings {
     ///
     /// In update request: never set
     /// In response: always set
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The redirection state of the legacy repositories in this project.
-    #[prost(enumeration="project_settings::RedirectionState", tag="2")]
+    #[prost(enumeration = "project_settings::RedirectionState", tag = "2")]
     pub legacy_redirection_state: i32,
 }
 /// Nested message and enum types in `ProjectSettings`.
 pub mod project_settings {
     /// The possible redirection states for legacy repositories.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum RedirectionState {
         /// No redirection status has been set.
@@ -588,9 +640,15 @@ pub mod project_settings {
         pub fn as_str_name(&self) -> &'static str {
             match self {
                 RedirectionState::Unspecified => "REDIRECTION_STATE_UNSPECIFIED",
-                RedirectionState::RedirectionFromGcrIoDisabled => "REDIRECTION_FROM_GCR_IO_DISABLED",
-                RedirectionState::RedirectionFromGcrIoEnabled => "REDIRECTION_FROM_GCR_IO_ENABLED",
-                RedirectionState::RedirectionFromGcrIoFinalized => "REDIRECTION_FROM_GCR_IO_FINALIZED",
+                RedirectionState::RedirectionFromGcrIoDisabled => {
+                    "REDIRECTION_FROM_GCR_IO_DISABLED"
+                }
+                RedirectionState::RedirectionFromGcrIoEnabled => {
+                    "REDIRECTION_FROM_GCR_IO_ENABLED"
+                }
+                RedirectionState::RedirectionFromGcrIoFinalized => {
+                    "REDIRECTION_FROM_GCR_IO_FINALIZED"
+                }
             }
         }
     }
@@ -599,17 +657,17 @@ pub mod project_settings {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetProjectSettingsRequest {
     /// Required. The name of the projectSettings resource.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Sets the settings of the project.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateProjectSettingsRequest {
     /// The project settings.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub project_settings: ::core::option::Option<ProjectSettings>,
     /// Field mask to support partial updates.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Tags point to a version and represent an alternative name that can be used
@@ -621,20 +679,20 @@ pub struct Tag {
     /// If the package part contains slashes, the slashes are escaped.
     /// The tag part can only have characters in \[a-zA-Z0-9\-._~:@\], anything else
     /// must be URL encoded.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The name of the version the tag refers to, for example:
     /// "projects/p1/locations/us-central1/repositories/repo1/packages/pkg1/versions/sha256:5243811"
     /// If the package or version ID parts contain slashes, the slashes are
     /// escaped.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub version: ::prost::alloc::string::String,
 }
 /// The request to list tags.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTagsRequest {
     /// The name of the parent resource whose tags will be listed.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// An expression for filtering the results of the request. Filter rules are
     /// case insensitive. The fields eligible for filtering are:
@@ -645,63 +703,63 @@ pub struct ListTagsRequest {
     ///
     ///    * `version="projects/p1/locations/us-central1/repositories/repo1/packages/pkg1/versions/1.0"`
     ///    --> Tags that are applied to the version `1.0` in package `pkg1`.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
     /// The maximum number of tags to return. Maximum page size is 10,000.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// The next_page_token value returned from a previous list request, if any.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
 /// The response from listing tags.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTagsResponse {
     /// The tags returned.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub tags: ::prost::alloc::vec::Vec<Tag>,
     /// The token to retrieve the next page of tags, or empty if there are no
     /// more tags to return.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request to retrieve a tag.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetTagRequest {
     /// The name of the tag to retrieve.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// The request to create a new tag.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateTagRequest {
     /// The name of the parent resource where the tag will be created.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The tag id to use for this repository.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub tag_id: ::prost::alloc::string::String,
     /// The tag to be created.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub tag: ::core::option::Option<Tag>,
 }
 /// The request to create or update a tag.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateTagRequest {
     /// The tag that replaces the resource on the server.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub tag: ::core::option::Option<Tag>,
     /// The update mask applies to the resource. For the `FieldMask` definition,
     /// see
     /// <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask>
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The request to delete a tag.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteTagRequest {
     /// The name of the tag to delete.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// The body of a version resource. A version resource represents a
@@ -713,77 +771,77 @@ pub struct Version {
     /// "projects/p1/locations/us-central1/repositories/repo1/packages/pkg1/versions/art1".
     /// If the package or version ID parts contain slashes, the slashes are
     /// escaped.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. Description of the version, as specified in its metadata.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub description: ::prost::alloc::string::String,
     /// The time when the version was created.
-    #[prost(message, optional, tag="5")]
+    #[prost(message, optional, tag = "5")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The time when the version was last updated.
-    #[prost(message, optional, tag="6")]
+    #[prost(message, optional, tag = "6")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. A list of related tags. Will contain up to 100 tags that
     /// reference this version.
-    #[prost(message, repeated, tag="7")]
+    #[prost(message, repeated, tag = "7")]
     pub related_tags: ::prost::alloc::vec::Vec<Tag>,
     /// Output only. Repository-specific Metadata stored against this version.
     /// The fields returned are defined by the underlying repository-specific
     /// resource. Currently, the only resource in use is
     /// \[DockerImage][google.devtools.artifactregistry.v1.DockerImage\]
-    #[prost(message, optional, tag="8")]
+    #[prost(message, optional, tag = "8")]
     pub metadata: ::core::option::Option<::prost_types::Struct>,
 }
 /// The request to list versions.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListVersionsRequest {
     /// The name of the parent resource whose versions will be listed.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of versions to return. Maximum page size is 1,000.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// The next_page_token value returned from a previous list request, if any.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
     /// The view that should be returned in the response.
-    #[prost(enumeration="VersionView", tag="4")]
+    #[prost(enumeration = "VersionView", tag = "4")]
     pub view: i32,
     /// Optional. The field to order the results by.
-    #[prost(string, tag="5")]
+    #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
 /// The response from listing versions.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListVersionsResponse {
     /// The versions returned.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub versions: ::prost::alloc::vec::Vec<Version>,
     /// The token to retrieve the next page of versions, or empty if there are no
     /// more versions to return.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request to retrieve a version.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetVersionRequest {
     /// The name of the version to retrieve.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The view that should be returned in the response.
-    #[prost(enumeration="VersionView", tag="2")]
+    #[prost(enumeration = "VersionView", tag = "2")]
     pub view: i32,
 }
 /// The request to delete a version.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteVersionRequest {
     /// The name of the version to delete.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// By default, a version that is tagged may not be deleted. If force=true, the
     /// version and any tags pointing to the version are deleted.
-    #[prost(bool, tag="2")]
+    #[prost(bool, tag = "2")]
     pub force: bool,
 }
 /// The view, which determines what version information is returned in a
@@ -816,22 +874,32 @@ impl VersionView {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct YumArtifact {
     /// Output only. The Artifact Registry resource name of the artifact.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. The yum package name of the artifact.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub package_name: ::prost::alloc::string::String,
     /// Output only. An artifact is a binary or source package.
-    #[prost(enumeration="yum_artifact::PackageType", tag="3")]
+    #[prost(enumeration = "yum_artifact::PackageType", tag = "3")]
     pub package_type: i32,
     /// Output only. Operating system architecture of the artifact.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub architecture: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `YumArtifact`.
 pub mod yum_artifact {
     /// Package type is either binary or source.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum PackageType {
         /// Package type is not specified.
@@ -859,20 +927,20 @@ pub mod yum_artifact {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportYumArtifactsGcsSource {
     /// Cloud Storage paths URI (e.g., gs://my_bucket//my_object).
-    #[prost(string, repeated, tag="1")]
+    #[prost(string, repeated, tag = "1")]
     pub uris: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Supports URI wildcards for matching multiple objects from a single URI.
-    #[prost(bool, tag="2")]
+    #[prost(bool, tag = "2")]
     pub use_wildcards: bool,
 }
 /// The request to import new yum artifacts.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportYumArtifactsRequest {
     /// The name of the parent resource where the artifacts will be imported.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The source location of the package binaries.
-    #[prost(oneof="import_yum_artifacts_request::Source", tags="2")]
+    #[prost(oneof = "import_yum_artifacts_request::Source", tags = "2")]
     pub source: ::core::option::Option<import_yum_artifacts_request::Source>,
 }
 /// Nested message and enum types in `ImportYumArtifactsRequest`.
@@ -881,7 +949,7 @@ pub mod import_yum_artifacts_request {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
         /// Google Cloud Storage location where input content is located.
-        #[prost(message, tag="2")]
+        #[prost(message, tag = "2")]
         GcsSource(super::ImportYumArtifactsGcsSource),
     }
 }
@@ -889,10 +957,10 @@ pub mod import_yum_artifacts_request {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportYumArtifactsErrorInfo {
     /// The detailed error status.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub error: ::core::option::Option<super::super::super::rpc::Status>,
     /// The source that was not imported.
-    #[prost(oneof="import_yum_artifacts_error_info::Source", tags="1")]
+    #[prost(oneof = "import_yum_artifacts_error_info::Source", tags = "1")]
     pub source: ::core::option::Option<import_yum_artifacts_error_info::Source>,
 }
 /// Nested message and enum types in `ImportYumArtifactsErrorInfo`.
@@ -901,7 +969,7 @@ pub mod import_yum_artifacts_error_info {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
         /// Google Cloud Storage location requested.
-        #[prost(message, tag="1")]
+        #[prost(message, tag = "1")]
         GcsSource(super::ImportYumArtifactsGcsSource),
     }
 }
@@ -909,20 +977,18 @@ pub mod import_yum_artifacts_error_info {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportYumArtifactsResponse {
     /// The yum artifacts imported.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub yum_artifacts: ::prost::alloc::vec::Vec<YumArtifact>,
     /// Detailed error info for packages that were not imported.
-    #[prost(message, repeated, tag="2")]
+    #[prost(message, repeated, tag = "2")]
     pub errors: ::prost::alloc::vec::Vec<ImportYumArtifactsErrorInfo>,
 }
 /// The operation metadata for importing artifacts.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ImportYumArtifactsMetadata {
-}
+pub struct ImportYumArtifactsMetadata {}
 /// Metadata type for longrunning-operations, currently empty.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct OperationMetadata {
-}
+pub struct OperationMetadata {}
 /// Generated client implementations.
 pub mod artifact_registry_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]

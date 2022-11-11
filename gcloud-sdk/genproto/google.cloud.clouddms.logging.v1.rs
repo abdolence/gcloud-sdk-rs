@@ -2,10 +2,10 @@
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DatabaseType {
     /// The database provider.
-    #[prost(enumeration="DatabaseProvider", tag="1")]
+    #[prost(enumeration = "DatabaseProvider", tag = "1")]
     pub provider: i32,
     /// The database engine.
-    #[prost(enumeration="DatabaseEngine", tag="2")]
+    #[prost(enumeration = "DatabaseEngine", tag = "2")]
     pub engine: i32,
 }
 /// Migration job as stored in Cloud Logging logs.
@@ -13,56 +13,69 @@ pub struct DatabaseType {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LoggedMigrationJob {
     /// Required. The unique identifier for a migration job.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. Labels.
-    #[prost(map="string, string", tag="2")]
-    pub labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map = "string, string", tag = "2")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
     /// Required. The display name.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub display_name: ::prost::alloc::string::String,
     /// Required. The current migration job state.
-    #[prost(enumeration="logged_migration_job::State", tag="4")]
+    #[prost(enumeration = "logged_migration_job::State", tag = "4")]
     pub state: i32,
     /// Required. The current migration job phase.
-    #[prost(enumeration="logged_migration_job::Phase", tag="5")]
+    #[prost(enumeration = "logged_migration_job::Phase", tag = "5")]
     pub phase: i32,
     /// Required. The migration job type.
-    #[prost(enumeration="logged_migration_job::Type", tag="6")]
+    #[prost(enumeration = "logged_migration_job::Type", tag = "6")]
     pub r#type: i32,
     /// Optional. An optional dump path (gs://\[BUCKET_NAME]/[OBJECT_NAME\]).
-    #[prost(string, tag="7")]
+    #[prost(string, tag = "7")]
     pub dump_path: ::prost::alloc::string::String,
     /// Required. The migration job source connection profile name.
-    #[prost(string, tag="8")]
+    #[prost(string, tag = "8")]
     pub source: ::prost::alloc::string::String,
     /// Required. The migration job destination connection profile name.
-    #[prost(string, tag="9")]
+    #[prost(string, tag = "9")]
     pub destination: ::prost::alloc::string::String,
     /// Required. the migration job duration in seconds.
-    #[prost(message, optional, tag="10")]
+    #[prost(message, optional, tag = "10")]
     pub duration: ::core::option::Option<::prost_types::Duration>,
     /// Required. Type of connectivity to source database.
-    #[prost(enumeration="logged_migration_job::ConnectivityType", tag="11")]
+    #[prost(enumeration = "logged_migration_job::ConnectivityType", tag = "11")]
     pub connectivity_type: i32,
     /// Required. The error details in case of state FAILED.
-    #[prost(message, optional, tag="12")]
+    #[prost(message, optional, tag = "12")]
     pub error: ::core::option::Option<super::super::super::super::rpc::Status>,
     /// Required. The time when this migration job was completed. Should only be set when the
     /// phase of the migration job is COMPLETED.
-    #[prost(message, optional, tag="13")]
+    #[prost(message, optional, tag = "13")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Required. The indicative source database.
-    #[prost(message, optional, tag="14")]
+    #[prost(message, optional, tag = "14")]
     pub source_database: ::core::option::Option<DatabaseType>,
     /// Required. The indicative destination database.
-    #[prost(message, optional, tag="15")]
+    #[prost(message, optional, tag = "15")]
     pub destination_database: ::core::option::Option<DatabaseType>,
 }
 /// Nested message and enum types in `LoggedMigrationJob`.
 pub mod logged_migration_job {
     /// The migration job states enum.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum State {
         /// The state of the migration job is unknown.
@@ -125,7 +138,17 @@ pub mod logged_migration_job {
         }
     }
     /// The migration job phases enum.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum Phase {
         /// The phase of the migration job is unknown.
@@ -152,13 +175,25 @@ pub mod logged_migration_job {
                 Phase::FullDump => "FULL_DUMP",
                 Phase::Cdc => "CDC",
                 Phase::PromoteInProgress => "PROMOTE_IN_PROGRESS",
-                Phase::WaitingForSourceWritesToStop => "WAITING_FOR_SOURCE_WRITES_TO_STOP",
+                Phase::WaitingForSourceWritesToStop => {
+                    "WAITING_FOR_SOURCE_WRITES_TO_STOP"
+                }
                 Phase::PreparingTheDump => "PREPARING_THE_DUMP",
             }
         }
     }
     /// The migration job types.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum Type {
         /// The type of the migration job is unknown.
@@ -182,7 +217,17 @@ pub mod logged_migration_job {
         }
     }
     /// Type of connectivity to source database.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum ConnectivityType {
         /// No data defined.
@@ -213,16 +258,26 @@ pub mod logged_migration_job {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MySqlConnectionProfile {
     /// The database version.
-    #[prost(enumeration="my_sql_connection_profile::Version", tag="1")]
+    #[prost(enumeration = "my_sql_connection_profile::Version", tag = "1")]
     pub version: i32,
     /// The Cloud SQL id for a Cloud SQL instance.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub cloud_sql_id: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `MySqlConnectionProfile`.
 pub mod my_sql_connection_profile {
     /// The MySQL database version.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum Version {
         /// Unspecified version.
@@ -256,16 +311,26 @@ pub mod my_sql_connection_profile {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PostgreSqlConnectionProfile {
     /// The database version.
-    #[prost(enumeration="postgre_sql_connection_profile::Version", tag="1")]
+    #[prost(enumeration = "postgre_sql_connection_profile::Version", tag = "1")]
     pub version: i32,
     /// The Cloud SQL id for a Cloud SQL instance.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub cloud_sql_id: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `PostgreSqlConnectionProfile`.
 pub mod postgre_sql_connection_profile {
     /// The PostgreSQL database version.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum Version {
         /// Unspecified version.
@@ -302,20 +367,30 @@ pub mod postgre_sql_connection_profile {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CloudSqlConnectionProfile {
     /// The Cloud SQL id.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub cloud_sql_id: ::prost::alloc::string::String,
 }
 /// An Oracle connection profile.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OracleConnectionProfile {
     /// Required. Type of connectivity to source database.
-    #[prost(enumeration="oracle_connection_profile::ConnectivityType", tag="1")]
+    #[prost(enumeration = "oracle_connection_profile::ConnectivityType", tag = "1")]
     pub connectivity_type: i32,
 }
 /// Nested message and enum types in `OracleConnectionProfile`.
 pub mod oracle_connection_profile {
     /// Connectivity options used to establish a connection to the profile.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum ConnectivityType {
         /// No data defined.
@@ -347,31 +422,49 @@ pub mod oracle_connection_profile {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LoggedConnectionProfile {
     /// The unique identifier for a connection profile.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Labels.
-    #[prost(map="string, string", tag="2")]
-    pub labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map = "string, string", tag = "2")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
     /// The current connection profile state.
-    #[prost(enumeration="logged_connection_profile::State", tag="3")]
+    #[prost(enumeration = "logged_connection_profile::State", tag = "3")]
     pub state: i32,
     /// The display name.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub display_name: ::prost::alloc::string::String,
     /// The error details in case of state FAILED.
-    #[prost(message, optional, tag="5")]
+    #[prost(message, optional, tag = "5")]
     pub error: ::core::option::Option<super::super::super::super::rpc::Status>,
     /// The database provider.
-    #[prost(enumeration="DatabaseProvider", tag="6")]
+    #[prost(enumeration = "DatabaseProvider", tag = "6")]
     pub provider: i32,
     /// The connection profile definition
-    #[prost(oneof="logged_connection_profile::ConnectionProfile", tags="100, 101, 102, 103")]
-    pub connection_profile: ::core::option::Option<logged_connection_profile::ConnectionProfile>,
+    #[prost(
+        oneof = "logged_connection_profile::ConnectionProfile",
+        tags = "100, 101, 102, 103"
+    )]
+    pub connection_profile: ::core::option::Option<
+        logged_connection_profile::ConnectionProfile,
+    >,
 }
 /// Nested message and enum types in `LoggedConnectionProfile`.
 pub mod logged_connection_profile {
     /// The connection profile states enum.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum State {
         /// The state of the connection profile is unknown.
@@ -413,16 +506,16 @@ pub mod logged_connection_profile {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ConnectionProfile {
         /// A MySQL database connection profile.
-        #[prost(message, tag="100")]
+        #[prost(message, tag = "100")]
         Mysql(super::MySqlConnectionProfile),
         /// A PostgreSQL database connection profile.
-        #[prost(message, tag="101")]
+        #[prost(message, tag = "101")]
         Postgresql(super::PostgreSqlConnectionProfile),
         /// A CloudSQL database connection profile.
-        #[prost(message, tag="102")]
+        #[prost(message, tag = "102")]
         Cloudsql(super::CloudSqlConnectionProfile),
         /// An Oracle database connection profile.
-        #[prost(message, tag="103")]
+        #[prost(message, tag = "103")]
         Oracle(super::OracleConnectionProfile),
     }
 }
@@ -430,19 +523,19 @@ pub mod logged_connection_profile {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MigrationJobEventLog {
     /// The migration job resource
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub migration_job: ::core::option::Option<LoggedMigrationJob>,
     /// Timestamp of the event
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub occurrence_timestamp: ::core::option::Option<::prost_types::Timestamp>,
     /// Event code
-    #[prost(int32, tag="3")]
+    #[prost(int32, tag = "3")]
     pub code: i32,
     /// Event message
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub text_message: ::prost::alloc::string::String,
     /// Original event data
-    #[prost(oneof="migration_job_event_log::OriginalCause", tags="200, 201")]
+    #[prost(oneof = "migration_job_event_log::OriginalCause", tags = "200, 201")]
     pub original_cause: ::core::option::Option<migration_job_event_log::OriginalCause>,
 }
 /// Nested message and enum types in `MigrationJobEventLog`.
@@ -451,10 +544,10 @@ pub mod migration_job_event_log {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum OriginalCause {
         /// Original event code
-        #[prost(int32, tag="200")]
+        #[prost(int32, tag = "200")]
         OriginalCode(i32),
         /// Original event message
-        #[prost(string, tag="201")]
+        #[prost(string, tag = "201")]
         OriginalMessage(::prost::alloc::string::String),
     }
 }
@@ -462,20 +555,22 @@ pub mod migration_job_event_log {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConnectionProfileEventLog {
     /// The connection profilr resource
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub connection_profile: ::core::option::Option<LoggedConnectionProfile>,
     /// Timestamp of the event
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub occurrence_timestamp: ::core::option::Option<::prost_types::Timestamp>,
     /// Event code
-    #[prost(int32, tag="3")]
+    #[prost(int32, tag = "3")]
     pub code: i32,
     /// Event message
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub text_message: ::prost::alloc::string::String,
     /// Original event data
-    #[prost(oneof="connection_profile_event_log::OriginalCause", tags="200, 201")]
-    pub original_cause: ::core::option::Option<connection_profile_event_log::OriginalCause>,
+    #[prost(oneof = "connection_profile_event_log::OriginalCause", tags = "200, 201")]
+    pub original_cause: ::core::option::Option<
+        connection_profile_event_log::OriginalCause,
+    >,
 }
 /// Nested message and enum types in `ConnectionProfileEventLog`.
 pub mod connection_profile_event_log {
@@ -483,10 +578,10 @@ pub mod connection_profile_event_log {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum OriginalCause {
         /// Original event code
-        #[prost(int32, tag="200")]
+        #[prost(int32, tag = "200")]
         OriginalCode(i32),
         /// Original event message
-        #[prost(string, tag="201")]
+        #[prost(string, tag = "201")]
         OriginalMessage(::prost::alloc::string::String),
     }
 }
@@ -495,28 +590,41 @@ pub mod connection_profile_event_log {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LoggedPrivateConnection {
     /// The resource's name.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Labels.
-    #[prost(map="string, string", tag="2")]
-    pub labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map = "string, string", tag = "2")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
     /// Display name.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub display_name: ::prost::alloc::string::String,
     /// The state of the Private Connection.
-    #[prost(enumeration="logged_private_connection::State", tag="4")]
+    #[prost(enumeration = "logged_private_connection::State", tag = "4")]
     pub state: i32,
     /// The error details in case of state FAILED.
-    #[prost(message, optional, tag="5")]
+    #[prost(message, optional, tag = "5")]
     pub error: ::core::option::Option<super::super::super::super::rpc::Status>,
     /// VPC Peering Config.
-    #[prost(message, optional, tag="100")]
+    #[prost(message, optional, tag = "100")]
     pub vpc_peering_config: ::core::option::Option<VpcPeeringConfig>,
 }
 /// Nested message and enum types in `LoggedPrivateConnection`.
 pub mod logged_private_connection {
     /// Private Connection state.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum State {
         /// Unspecified state.
@@ -557,30 +665,32 @@ pub mod logged_private_connection {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VpcPeeringConfig {
     /// Fully qualified name of the VPC DMS will peer to.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub vpc_name: ::prost::alloc::string::String,
     /// The subnet that will be peered to. (CIDR of /29).
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub subnet: ::prost::alloc::string::String,
 }
 /// Log definition for a Private Connection event.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PrivateConnectionEventLog {
     /// The private connection resource.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub private_connection: ::core::option::Option<LoggedPrivateConnection>,
     /// Timestamp of the event.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub occurrence_timestamp: ::core::option::Option<::prost_types::Timestamp>,
     /// Event code.
-    #[prost(int32, tag="3")]
+    #[prost(int32, tag = "3")]
     pub code: i32,
     /// Event message.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub text_message: ::prost::alloc::string::String,
     /// Original event data.
-    #[prost(oneof="private_connection_event_log::OriginalCause", tags="200, 201")]
-    pub original_cause: ::core::option::Option<private_connection_event_log::OriginalCause>,
+    #[prost(oneof = "private_connection_event_log::OriginalCause", tags = "200, 201")]
+    pub original_cause: ::core::option::Option<
+        private_connection_event_log::OriginalCause,
+    >,
 }
 /// Nested message and enum types in `PrivateConnectionEventLog`.
 pub mod private_connection_event_log {
@@ -588,10 +698,10 @@ pub mod private_connection_event_log {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum OriginalCause {
         /// Original event code.
-        #[prost(int32, tag="200")]
+        #[prost(int32, tag = "200")]
         OriginalCode(i32),
         /// Original event message.
-        #[prost(string, tag="201")]
+        #[prost(string, tag = "201")]
         OriginalMessage(::prost::alloc::string::String),
     }
 }

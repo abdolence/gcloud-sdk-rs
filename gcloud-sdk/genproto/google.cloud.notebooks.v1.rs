@@ -5,24 +5,24 @@ pub struct Environment {
     /// Output only. Name of this environment.
     /// Format:
     /// `projects/{project_id}/locations/{location}/environments/{environment_id}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Display name of this environment for the UI.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub display_name: ::prost::alloc::string::String,
     /// A brief description of this environment.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub description: ::prost::alloc::string::String,
     /// Path to a Bash script that automatically runs after a notebook instance
     /// fully boots up. The path must be a URL or
     /// Cloud Storage path. Example: `"gs://path-to-file/file-name"`
-    #[prost(string, tag="8")]
+    #[prost(string, tag = "8")]
     pub post_startup_script: ::prost::alloc::string::String,
     /// Output only. The time at which this environment was created.
-    #[prost(message, optional, tag="9")]
+    #[prost(message, optional, tag = "9")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Type of the environment; can be one of VM image, or container image.
-    #[prost(oneof="environment::ImageType", tags="6, 7")]
+    #[prost(oneof = "environment::ImageType", tags = "6, 7")]
     pub image_type: ::core::option::Option<environment::ImageType>,
 }
 /// Nested message and enum types in `Environment`.
@@ -31,10 +31,10 @@ pub mod environment {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ImageType {
         /// Use a Compute Engine VM image to start the notebook instance.
-        #[prost(message, tag="6")]
+        #[prost(message, tag = "6")]
         VmImage(super::VmImage),
         /// Use a container image to start the notebook instance.
-        #[prost(message, tag="7")]
+        #[prost(message, tag = "7")]
         ContainerImage(super::ContainerImage),
     }
 }
@@ -44,10 +44,10 @@ pub mod environment {
 pub struct VmImage {
     /// Required. The name of the Google Cloud project that this VM image belongs to.
     /// Format: `{project_id}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub project: ::prost::alloc::string::String,
     /// The reference to an external Compute Engine VM image.
-    #[prost(oneof="vm_image::Image", tags="2, 3")]
+    #[prost(oneof = "vm_image::Image", tags = "2, 3")]
     pub image: ::core::option::Option<vm_image::Image>,
 }
 /// Nested message and enum types in `VmImage`.
@@ -56,11 +56,11 @@ pub mod vm_image {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Image {
         /// Use VM image name to find the image.
-        #[prost(string, tag="2")]
+        #[prost(string, tag = "2")]
         ImageName(::prost::alloc::string::String),
         /// Use this VM image family to find the image; the newest image in this
         /// family will be used.
-        #[prost(string, tag="3")]
+        #[prost(string, tag = "3")]
         ImageFamily(::prost::alloc::string::String),
     }
 }
@@ -70,30 +70,43 @@ pub mod vm_image {
 pub struct ContainerImage {
     /// Required. The path to the container image repository. For example:
     /// `gcr.io/{project_id}/{image_name}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub repository: ::prost::alloc::string::String,
     /// The tag of the container image. If not specified, this defaults
     /// to the latest tag.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub tag: ::prost::alloc::string::String,
 }
 /// The definition of an Event for a managed / semi-managed notebook instance.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Event {
     /// Event report time.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub report_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Event type.
-    #[prost(enumeration="event::EventType", tag="2")]
+    #[prost(enumeration = "event::EventType", tag = "2")]
     pub r#type: i32,
     /// Optional. Event details. This field is used to pass event information.
-    #[prost(map="string, string", tag="3")]
-    pub details: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map = "string, string", tag = "3")]
+    pub details: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
 }
 /// Nested message and enum types in `Event`.
 pub mod event {
     /// The definition of the event types.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum EventType {
         /// Event is not specified.
@@ -135,7 +148,7 @@ pub struct ExecutionTemplate {
     /// Required. Scale tier of the hardware used for notebook execution.
     /// DEPRECATED Will be discontinued. As right now only CUSTOM is supported.
     #[deprecated]
-    #[prost(enumeration="execution_template::ScaleTier", tag="1")]
+    #[prost(enumeration = "execution_template::ScaleTier", tag = "1")]
     pub scale_tier: i32,
     /// Specifies the type of virtual machine to use for your training
     /// job's master worker. You must specify this field when `scaleTier` is set to
@@ -185,69 +198,74 @@ pub struct ExecutionTemplate {
     /// field. Learn more about the [special configuration options for training
     /// with
     /// TPU](<https://cloud.google.com/ai-platform/training/docs/using-tpus#configuring_a_custom_tpu_machine>).
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub master_type: ::prost::alloc::string::String,
     /// Configuration (count and accelerator type) for hardware running notebook
     /// execution.
-    #[prost(message, optional, tag="3")]
-    pub accelerator_config: ::core::option::Option<execution_template::SchedulerAcceleratorConfig>,
+    #[prost(message, optional, tag = "3")]
+    pub accelerator_config: ::core::option::Option<
+        execution_template::SchedulerAcceleratorConfig,
+    >,
     /// Labels for execution.
     /// If execution is scheduled, a field included will be 'nbs-scheduled'.
     /// Otherwise, it is an immediate execution, and an included field will be
     /// 'nbs-immediate'. Use fields to efficiently index between various types of
     /// executions.
-    #[prost(map="string, string", tag="4")]
-    pub labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map = "string, string", tag = "4")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
     /// Path to the notebook file to execute.
     /// Must be in a Google Cloud Storage bucket.
     /// Format: `gs://{bucket_name}/{folder}/{notebook_file_name}`
     /// Ex: `gs://notebook_user/scheduled_notebooks/sentiment_notebook.ipynb`
-    #[prost(string, tag="5")]
+    #[prost(string, tag = "5")]
     pub input_notebook_file: ::prost::alloc::string::String,
     /// Container Image URI to a DLVM
     /// Example: 'gcr.io/deeplearning-platform-release/base-cu100'
     /// More examples can be found at:
     /// <https://cloud.google.com/ai-platform/deep-learning-containers/docs/choosing-container>
-    #[prost(string, tag="6")]
+    #[prost(string, tag = "6")]
     pub container_image_uri: ::prost::alloc::string::String,
     /// Path to the notebook folder to write to.
     /// Must be in a Google Cloud Storage bucket path.
     /// Format: `gs://{bucket_name}/{folder}`
     /// Ex: `gs://notebook_user/scheduled_notebooks`
-    #[prost(string, tag="7")]
+    #[prost(string, tag = "7")]
     pub output_notebook_folder: ::prost::alloc::string::String,
     /// Parameters to be overridden in the notebook during execution.
     /// Ref <https://papermill.readthedocs.io/en/latest/usage-parameterize.html> on
     /// how to specifying parameters in the input notebook and pass them here
     /// in an YAML file.
     /// Ex: `gs://notebook_user/scheduled_notebooks/sentiment_notebook_params.yaml`
-    #[prost(string, tag="8")]
+    #[prost(string, tag = "8")]
     pub params_yaml_file: ::prost::alloc::string::String,
     /// Parameters used within the 'input_notebook_file' notebook.
-    #[prost(string, tag="9")]
+    #[prost(string, tag = "9")]
     pub parameters: ::prost::alloc::string::String,
     /// The email address of a service account to use when running the execution.
     /// You must have the `iam.serviceAccounts.actAs` permission for the specified
     /// service account.
-    #[prost(string, tag="10")]
+    #[prost(string, tag = "10")]
     pub service_account: ::prost::alloc::string::String,
     /// The type of Job to be used on this execution.
-    #[prost(enumeration="execution_template::JobType", tag="11")]
+    #[prost(enumeration = "execution_template::JobType", tag = "11")]
     pub job_type: i32,
     /// Name of the kernel spec to use. This must be specified if the
     /// kernel spec name on the execution target does not match the name in the
     /// input notebook file.
-    #[prost(string, tag="14")]
+    #[prost(string, tag = "14")]
     pub kernel_spec: ::prost::alloc::string::String,
     /// The name of a Vertex AI \[Tensorboard\] resource to which this execution
     /// will upload Tensorboard logs.
     /// Format:
     /// `projects/{project}/locations/{location}/tensorboards/{tensorboard}`
-    #[prost(string, tag="15")]
+    #[prost(string, tag = "15")]
     pub tensorboard: ::prost::alloc::string::String,
     /// Parameters for an execution type.
     /// NOTE: There are currently no extra parameters for VertexAI jobs.
-    #[prost(oneof="execution_template::JobParameters", tags="12, 13")]
+    #[prost(oneof = "execution_template::JobParameters", tags = "12, 13")]
     pub job_parameters: ::core::option::Option<execution_template::JobParameters>,
 }
 /// Nested message and enum types in `ExecutionTemplate`.
@@ -259,10 +277,10 @@ pub mod execution_template {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SchedulerAcceleratorConfig {
         /// Type of this accelerator.
-        #[prost(enumeration="SchedulerAcceleratorType", tag="1")]
+        #[prost(enumeration = "SchedulerAcceleratorType", tag = "1")]
         pub r#type: i32,
         /// Count of cores of this accelerator.
-        #[prost(int64, tag="2")]
+        #[prost(int64, tag = "2")]
         pub core_count: i64,
     }
     /// Parameters used in Dataproc JobType executions.
@@ -270,7 +288,7 @@ pub mod execution_template {
     pub struct DataprocParameters {
         /// URI for cluster used to run Dataproc execution.
         /// Format: `projects/{PROJECT_ID}/regions/{REGION}/clusters/{CLUSTER_NAME}`
-        #[prost(string, tag="1")]
+        #[prost(string, tag = "1")]
         pub cluster: ::prost::alloc::string::String,
     }
     /// Parameters used in Vertex AI JobType executions.
@@ -286,17 +304,30 @@ pub mod execution_template {
         ///
         /// Private services access must already be configured for the network. If
         /// left unspecified, the job is not peered with any network.
-        #[prost(string, tag="1")]
+        #[prost(string, tag = "1")]
         pub network: ::prost::alloc::string::String,
         /// Environment variables.
         ///   At most 100 environment variables can be specified and unique.
         /// Example: GCP_BUCKET=gs://my-bucket/samples/
-        #[prost(map="string, string", tag="2")]
-        pub env: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+        #[prost(map = "string, string", tag = "2")]
+        pub env: ::std::collections::HashMap<
+            ::prost::alloc::string::String,
+            ::prost::alloc::string::String,
+        >,
     }
     /// Required. Specifies the machine types, the number of replicas for workers
     /// and parameter servers.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum ScaleTier {
         /// Unspecified Scale Tier.
@@ -339,7 +370,17 @@ pub mod execution_template {
         }
     }
     /// Hardware accelerator types for AI Platform Training jobs.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum SchedulerAcceleratorType {
         /// Unspecified accelerator type. Default to no GPU.
@@ -368,7 +409,9 @@ pub mod execution_template {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                SchedulerAcceleratorType::Unspecified => "SCHEDULER_ACCELERATOR_TYPE_UNSPECIFIED",
+                SchedulerAcceleratorType::Unspecified => {
+                    "SCHEDULER_ACCELERATOR_TYPE_UNSPECIFIED"
+                }
                 SchedulerAcceleratorType::NvidiaTeslaK80 => "NVIDIA_TESLA_K80",
                 SchedulerAcceleratorType::NvidiaTeslaP100 => "NVIDIA_TESLA_P100",
                 SchedulerAcceleratorType::NvidiaTeslaV100 => "NVIDIA_TESLA_V100",
@@ -381,7 +424,17 @@ pub mod execution_template {
         }
     }
     /// The backend used for this execution.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum JobType {
         /// No type specified.
@@ -411,10 +464,10 @@ pub mod execution_template {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum JobParameters {
         /// Parameters used in Dataproc JobType executions.
-        #[prost(message, tag="12")]
+        #[prost(message, tag = "12")]
         DataprocParameters(DataprocParameters),
         /// Parameters used in Vertex AI JobType executions.
-        #[prost(message, tag="13")]
+        #[prost(message, tag = "13")]
         VertexAiParameters(VertexAiParameters),
     }
 }
@@ -422,39 +475,49 @@ pub mod execution_template {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Execution {
     /// execute metadata including name, hardware spec, region, labels, etc.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub execution_template: ::core::option::Option<ExecutionTemplate>,
     /// Output only. The resource name of the execute. Format:
     /// `projects/{project_id}/locations/{location}/executions/{execution_id}`
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub name: ::prost::alloc::string::String,
     /// Output only. Name used for UI purposes.
     /// Name can only contain alphanumeric characters and underscores '_'.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub display_name: ::prost::alloc::string::String,
     /// A brief description of this execution.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub description: ::prost::alloc::string::String,
     /// Output only. Time the Execution was instantiated.
-    #[prost(message, optional, tag="5")]
+    #[prost(message, optional, tag = "5")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Time the Execution was last updated.
-    #[prost(message, optional, tag="6")]
+    #[prost(message, optional, tag = "6")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. State of the underlying AI Platform job.
-    #[prost(enumeration="execution::State", tag="7")]
+    #[prost(enumeration = "execution::State", tag = "7")]
     pub state: i32,
     /// Output notebook file generated by this execution
-    #[prost(string, tag="8")]
+    #[prost(string, tag = "8")]
     pub output_notebook_file: ::prost::alloc::string::String,
     /// Output only. The URI of the external job used to execute the notebook.
-    #[prost(string, tag="9")]
+    #[prost(string, tag = "9")]
     pub job_uri: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `Execution`.
 pub mod execution {
     /// Enum description of the state of the underlying AIP job.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum State {
         /// The job state is unspecified.
@@ -507,19 +570,29 @@ pub mod execution {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReservationAffinity {
     /// Optional. Type of reservation to consume
-    #[prost(enumeration="reservation_affinity::Type", tag="1")]
+    #[prost(enumeration = "reservation_affinity::Type", tag = "1")]
     pub consume_reservation_type: i32,
     /// Optional. Corresponds to the label key of reservation resource.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub key: ::prost::alloc::string::String,
     /// Optional. Corresponds to the label values of reservation resource.
-    #[prost(string, repeated, tag="3")]
+    #[prost(string, repeated, tag = "3")]
     pub values: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Nested message and enum types in `ReservationAffinity`.
 pub mod reservation_affinity {
     /// Indicates whether to consume capacity from an reservation or not.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum Type {
         /// Default type.
@@ -552,22 +625,22 @@ pub mod reservation_affinity {
 pub struct Instance {
     /// Output only. The name of this notebook instance. Format:
     /// `projects/{project_id}/locations/{location}/instances/{instance_id}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Path to a Bash script that automatically runs after a notebook instance
     /// fully boots up. The path must be a URL or
     /// Cloud Storage path (`gs://path-to-file/file-name`).
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub post_startup_script: ::prost::alloc::string::String,
     /// Output only. The proxy endpoint that is used to access the Jupyter notebook.
-    #[prost(string, tag="5")]
+    #[prost(string, tag = "5")]
     pub proxy_uri: ::prost::alloc::string::String,
     /// Input only. The owner of this instance after creation. Format: `alias@example.com`
     ///
     /// Currently supports one owner only. If not specified, all of the service
     /// account users of your VM instance's service account can use
     /// the instance.
-    #[prost(string, repeated, tag="6")]
+    #[prost(string, repeated, tag = "6")]
     pub instance_owners: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The service account on this instance, giving access to other Google
     /// Cloud services.
@@ -577,7 +650,7 @@ pub struct Instance {
     /// If not specified, the [Compute Engine default service
     /// account](<https://cloud.google.com/compute/docs/access/service-accounts#default_service_account>)
     /// is used.
-    #[prost(string, tag="7")]
+    #[prost(string, tag = "7")]
     pub service_account: ::prost::alloc::string::String,
     /// Optional. The URIs of service account scopes to be included in
     /// Compute Engine instances.
@@ -589,55 +662,55 @@ pub struct Instance {
     ///   - <https://www.googleapis.com/auth/userinfo.email>
     /// If not using default scopes, you need at least:
     ///     <https://www.googleapis.com/auth/compute>
-    #[prost(string, repeated, tag="31")]
+    #[prost(string, repeated, tag = "31")]
     pub service_account_scopes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Required. The [Compute Engine machine type](/compute/docs/machine-types) of this
     /// instance.
-    #[prost(string, tag="8")]
+    #[prost(string, tag = "8")]
     pub machine_type: ::prost::alloc::string::String,
     /// The hardware accelerator used on this instance. If you use
     /// accelerators, make sure that your configuration has
     /// [enough vCPUs and memory to support the `machine_type` you
     /// have selected](/compute/docs/gpus/#gpus-list).
-    #[prost(message, optional, tag="9")]
+    #[prost(message, optional, tag = "9")]
     pub accelerator_config: ::core::option::Option<instance::AcceleratorConfig>,
     /// Output only. The state of this instance.
-    #[prost(enumeration="instance::State", tag="10")]
+    #[prost(enumeration = "instance::State", tag = "10")]
     pub state: i32,
     /// Whether the end user authorizes Google Cloud to install GPU driver
     /// on this instance.
     /// If this field is empty or set to false, the GPU driver won't be installed.
     /// Only applicable to instances with GPUs.
-    #[prost(bool, tag="11")]
+    #[prost(bool, tag = "11")]
     pub install_gpu_driver: bool,
     /// Specify a custom Cloud Storage path where the GPU driver is stored.
     /// If not specified, we'll automatically choose from official GPU drivers.
-    #[prost(string, tag="12")]
+    #[prost(string, tag = "12")]
     pub custom_gpu_driver_path: ::prost::alloc::string::String,
     /// Input only. The type of the boot disk attached to this instance, defaults to
     /// standard persistent disk (`PD_STANDARD`).
-    #[prost(enumeration="instance::DiskType", tag="13")]
+    #[prost(enumeration = "instance::DiskType", tag = "13")]
     pub boot_disk_type: i32,
     /// Input only. The size of the boot disk in GB attached to this instance, up to a maximum
     /// of 64000&nbsp;GB (64&nbsp;TB). The minimum recommended value is
     /// 100&nbsp;GB. If not specified, this defaults to 100.
-    #[prost(int64, tag="14")]
+    #[prost(int64, tag = "14")]
     pub boot_disk_size_gb: i64,
     /// Input only. The type of the data disk attached to this instance, defaults to
     /// standard persistent disk (`PD_STANDARD`).
-    #[prost(enumeration="instance::DiskType", tag="25")]
+    #[prost(enumeration = "instance::DiskType", tag = "25")]
     pub data_disk_type: i32,
     /// Input only. The size of the data disk in GB attached to this instance, up to a maximum
     /// of 64000&nbsp;GB (64&nbsp;TB). You can choose the size of the data disk
     /// based on how big your notebooks and data are. If not specified, this
     /// defaults to 100.
-    #[prost(int64, tag="26")]
+    #[prost(int64, tag = "26")]
     pub data_disk_size_gb: i64,
     /// Input only. If true, the data disk will not be auto deleted when deleting the instance.
-    #[prost(bool, tag="27")]
+    #[prost(bool, tag = "27")]
     pub no_remove_data_disk: bool,
     /// Input only. Disk encryption method used on the boot and data disks, defaults to GMEK.
-    #[prost(enumeration="instance::DiskEncryption", tag="15")]
+    #[prost(enumeration = "instance::DiskEncryption", tag = "15")]
     pub disk_encryption: i32,
     /// Input only. The KMS key used to encrypt the disks, only applicable if disk_encryption
     /// is CMEK.
@@ -645,71 +718,79 @@ pub struct Instance {
     /// `projects/{project_id}/locations/{location}/keyRings/{key_ring_id}/cryptoKeys/{key_id}`
     ///
     /// Learn more about [using your own encryption keys](/kms/docs/quickstart).
-    #[prost(string, tag="16")]
+    #[prost(string, tag = "16")]
     pub kms_key: ::prost::alloc::string::String,
     /// Output only. Attached disks to notebook instance.
-    #[prost(message, repeated, tag="28")]
+    #[prost(message, repeated, tag = "28")]
     pub disks: ::prost::alloc::vec::Vec<instance::Disk>,
     /// Optional. Shielded VM configuration.
     /// [Images using supported Shielded VM
     /// features](<https://cloud.google.com/compute/docs/instances/modifying-shielded-vm>).
-    #[prost(message, optional, tag="30")]
-    pub shielded_instance_config: ::core::option::Option<instance::ShieldedInstanceConfig>,
+    #[prost(message, optional, tag = "30")]
+    pub shielded_instance_config: ::core::option::Option<
+        instance::ShieldedInstanceConfig,
+    >,
     /// If true, no public IP will be assigned to this instance.
-    #[prost(bool, tag="17")]
+    #[prost(bool, tag = "17")]
     pub no_public_ip: bool,
     /// If true, the notebook instance will not register with the proxy.
-    #[prost(bool, tag="18")]
+    #[prost(bool, tag = "18")]
     pub no_proxy_access: bool,
     /// The name of the VPC that this instance is in.
     /// Format:
     /// `projects/{project_id}/global/networks/{network_id}`
-    #[prost(string, tag="19")]
+    #[prost(string, tag = "19")]
     pub network: ::prost::alloc::string::String,
     /// The name of the subnet that this instance is in.
     /// Format:
     /// `projects/{project_id}/regions/{region}/subnetworks/{subnetwork_id}`
-    #[prost(string, tag="20")]
+    #[prost(string, tag = "20")]
     pub subnet: ::prost::alloc::string::String,
     /// Labels to apply to this instance.
     /// These can be later modified by the setLabels method.
-    #[prost(map="string, string", tag="21")]
-    pub labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map = "string, string", tag = "21")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
     /// Custom metadata to apply to this instance.
-    #[prost(map="string, string", tag="22")]
-    pub metadata: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map = "string, string", tag = "22")]
+    pub metadata: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
     /// Optional. The Compute Engine tags to add to runtime (see [Tagging
     /// instances](<https://cloud.google.com/compute/docs/label-or-tag-resources#tags>)).
-    #[prost(string, repeated, tag="32")]
+    #[prost(string, repeated, tag = "32")]
     pub tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The upgrade history of this instance.
-    #[prost(message, repeated, tag="29")]
+    #[prost(message, repeated, tag = "29")]
     pub upgrade_history: ::prost::alloc::vec::Vec<instance::UpgradeHistoryEntry>,
     /// Optional. The type of vNIC to be used on this interface. This may be gVNIC or
     /// VirtioNet.
-    #[prost(enumeration="instance::NicType", tag="33")]
+    #[prost(enumeration = "instance::NicType", tag = "33")]
     pub nic_type: i32,
     /// Optional. The optional reservation affinity. Setting this field will apply
     /// the specified [Zonal Compute
     /// Reservation](<https://cloud.google.com/compute/docs/instances/reserving-zonal-resources>)
     /// to this notebook instance.
-    #[prost(message, optional, tag="34")]
+    #[prost(message, optional, tag = "34")]
     pub reservation_affinity: ::core::option::Option<ReservationAffinity>,
     /// Output only. Email address of entity that sent original CreateInstance request.
-    #[prost(string, tag="36")]
+    #[prost(string, tag = "36")]
     pub creator: ::prost::alloc::string::String,
     /// Optional. Flag to enable ip forwarding or not, default false/off.
     /// <https://cloud.google.com/vpc/docs/using-routes#canipforward>
-    #[prost(bool, tag="39")]
+    #[prost(bool, tag = "39")]
     pub can_ip_forward: bool,
     /// Output only. Instance creation time.
-    #[prost(message, optional, tag="23")]
+    #[prost(message, optional, tag = "23")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Instance update time.
-    #[prost(message, optional, tag="24")]
+    #[prost(message, optional, tag = "24")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Type of the environment; can be one of VM image, or container image.
-    #[prost(oneof="instance::Environment", tags="2, 3")]
+    #[prost(oneof = "instance::Environment", tags = "2, 3")]
     pub environment: ::core::option::Option<instance::Environment>,
 }
 /// Nested message and enum types in `Instance`.
@@ -721,10 +802,10 @@ pub mod instance {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AcceleratorConfig {
         /// Type of this accelerator.
-        #[prost(enumeration="AcceleratorType", tag="1")]
+        #[prost(enumeration = "AcceleratorType", tag = "1")]
         pub r#type: i32,
         /// Count of cores of this accelerator.
-        #[prost(int64, tag="2")]
+        #[prost(int64, tag = "2")]
         pub core_count: i64,
     }
     /// An instance-attached disk resource.
@@ -732,11 +813,11 @@ pub mod instance {
     pub struct Disk {
         /// Indicates whether the disk will be auto-deleted when the instance is
         /// deleted (but not when the disk is detached from the instance).
-        #[prost(bool, tag="1")]
+        #[prost(bool, tag = "1")]
         pub auto_delete: bool,
         /// Indicates that this is a boot disk. The virtual machine will use the
         /// first partition of the disk for its root filesystem.
-        #[prost(bool, tag="2")]
+        #[prost(bool, tag = "2")]
         pub boot: bool,
         /// Indicates a unique device name of your choice that is reflected into the
         /// /dev/disk/by-id/google-* tree of a Linux operating system running within
@@ -746,20 +827,20 @@ pub mod instance {
         /// If not specified, the server chooses a default device name to apply to
         /// this disk, in the form persistent-disk-x, where x is a number assigned by
         /// Google Compute Engine.This field is only applicable for persistent disks.
-        #[prost(string, tag="3")]
+        #[prost(string, tag = "3")]
         pub device_name: ::prost::alloc::string::String,
         /// Indicates the size of the disk in base-2 GB.
-        #[prost(int64, tag="4")]
+        #[prost(int64, tag = "4")]
         pub disk_size_gb: i64,
         /// Indicates a list of features to enable on the guest operating system.
         /// Applicable only for bootable images. Read  Enabling guest operating
         /// system features to see a list of available options.
-        #[prost(message, repeated, tag="5")]
+        #[prost(message, repeated, tag = "5")]
         pub guest_os_features: ::prost::alloc::vec::Vec<disk::GuestOsFeature>,
         /// A zero-based index to this disk, where 0 is reserved for the
         /// boot disk. If you have many disks attached to an instance, each disk
         /// would have a unique index number.
-        #[prost(int64, tag="6")]
+        #[prost(int64, tag = "6")]
         pub index: i64,
         /// Indicates the disk interface to use for attaching this disk, which is
         /// either SCSI or NVME. The default is SCSI. Persistent disks must always
@@ -771,16 +852,16 @@ pub mod instance {
         ///
         /// * NVME
         /// * SCSI
-        #[prost(string, tag="7")]
+        #[prost(string, tag = "7")]
         pub interface: ::prost::alloc::string::String,
         /// Type of the resource. Always compute#attachedDisk for attached
         /// disks.
-        #[prost(string, tag="8")]
+        #[prost(string, tag = "8")]
         pub kind: ::prost::alloc::string::String,
         /// A list of publicly visible licenses. Reserved for Google's use.
         /// A License represents billing and aggregate usage data for public
         /// and marketplace images.
-        #[prost(string, repeated, tag="9")]
+        #[prost(string, repeated, tag = "9")]
         pub licenses: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         /// The mode in which to attach this disk, either READ_WRITE or READ_ONLY. If
         /// not specified, the default is to attach the disk in READ_WRITE mode.
@@ -788,18 +869,18 @@ pub mod instance {
         ///
         /// * READ_ONLY
         /// * READ_WRITE
-        #[prost(string, tag="10")]
+        #[prost(string, tag = "10")]
         pub mode: ::prost::alloc::string::String,
         /// Indicates a valid partial or full URL to an existing Persistent Disk
         /// resource.
-        #[prost(string, tag="11")]
+        #[prost(string, tag = "11")]
         pub source: ::prost::alloc::string::String,
         /// Indicates the type of the disk, either SCRATCH or PERSISTENT.
         /// Valid values:
         ///
         /// * PERSISTENT
         /// * SCRATCH
-        #[prost(string, tag="12")]
+        #[prost(string, tag = "12")]
         pub r#type: ::prost::alloc::string::String,
     }
     /// Nested message and enum types in `Disk`.
@@ -817,7 +898,7 @@ pub mod instance {
             /// * UEFI_COMPATIBLE
             /// * VIRTIO_SCSI_MULTIQUEUE
             /// * WINDOWS
-            #[prost(string, tag="1")]
+            #[prost(string, tag = "1")]
             pub r#type: ::prost::alloc::string::String,
         }
     }
@@ -831,10 +912,10 @@ pub mod instance {
         /// Secure Boot helps ensure that the system only runs authentic software by
         /// verifying the digital signature of all boot components, and halting the
         /// boot process if signature verification fails. Disabled by default.
-        #[prost(bool, tag="1")]
+        #[prost(bool, tag = "1")]
         pub enable_secure_boot: bool,
         /// Defines whether the instance has the vTPM enabled. Enabled by default.
-        #[prost(bool, tag="2")]
+        #[prost(bool, tag = "2")]
         pub enable_vtpm: bool,
         /// Defines whether the instance has integrity monitoring enabled.
         ///
@@ -842,48 +923,58 @@ pub mod instance {
         /// The attestation is performed against the integrity policy baseline. This
         /// baseline is initially derived from the implicitly trusted boot image when
         /// the instance is created. Enabled by default.
-        #[prost(bool, tag="3")]
+        #[prost(bool, tag = "3")]
         pub enable_integrity_monitoring: bool,
     }
     /// The entry of VM image upgrade history.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct UpgradeHistoryEntry {
         /// The snapshot of the boot disk of this notebook instance before upgrade.
-        #[prost(string, tag="1")]
+        #[prost(string, tag = "1")]
         pub snapshot: ::prost::alloc::string::String,
         /// The VM image before this instance upgrade.
-        #[prost(string, tag="2")]
+        #[prost(string, tag = "2")]
         pub vm_image: ::prost::alloc::string::String,
         /// The container image before this instance upgrade.
-        #[prost(string, tag="3")]
+        #[prost(string, tag = "3")]
         pub container_image: ::prost::alloc::string::String,
         /// The framework of this notebook instance.
-        #[prost(string, tag="4")]
+        #[prost(string, tag = "4")]
         pub framework: ::prost::alloc::string::String,
         /// The version of the notebook instance before this upgrade.
-        #[prost(string, tag="5")]
+        #[prost(string, tag = "5")]
         pub version: ::prost::alloc::string::String,
         /// The state of this instance upgrade history entry.
-        #[prost(enumeration="upgrade_history_entry::State", tag="6")]
+        #[prost(enumeration = "upgrade_history_entry::State", tag = "6")]
         pub state: i32,
         /// The time that this instance upgrade history entry is created.
-        #[prost(message, optional, tag="7")]
+        #[prost(message, optional, tag = "7")]
         pub create_time: ::core::option::Option<::prost_types::Timestamp>,
         /// Target VM Image. Format: ainotebooks-vm/project/image-name/name.
         #[deprecated]
-        #[prost(string, tag="8")]
+        #[prost(string, tag = "8")]
         pub target_image: ::prost::alloc::string::String,
         /// Action. Rolloback or Upgrade.
-        #[prost(enumeration="upgrade_history_entry::Action", tag="9")]
+        #[prost(enumeration = "upgrade_history_entry::Action", tag = "9")]
         pub action: i32,
         /// Target VM Version, like m63.
-        #[prost(string, tag="10")]
+        #[prost(string, tag = "10")]
         pub target_version: ::prost::alloc::string::String,
     }
     /// Nested message and enum types in `UpgradeHistoryEntry`.
     pub mod upgrade_history_entry {
         /// The definition of the states of this upgrade history entry.
-        #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
         #[repr(i32)]
         pub enum State {
             /// State is not specified.
@@ -910,7 +1001,17 @@ pub mod instance {
             }
         }
         /// The definition of operations of this upgrade history entry.
-        #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
         #[repr(i32)]
         pub enum Action {
             /// Operation is not specified.
@@ -936,7 +1037,17 @@ pub mod instance {
     }
     /// Definition of the types of hardware accelerators that can be used on this
     /// instance.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum AcceleratorType {
         /// Accelerator type is not specified.
@@ -987,7 +1098,17 @@ pub mod instance {
         }
     }
     /// The definition of the states of this instance.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum State {
         /// State is not specified.
@@ -1039,7 +1160,17 @@ pub mod instance {
         }
     }
     /// Possible disk types for notebook instances.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum DiskType {
         /// Disk type not set.
@@ -1069,7 +1200,17 @@ pub mod instance {
         }
     }
     /// Definition of the disk encryption options.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum DiskEncryption {
         /// Disk encryption is not specified.
@@ -1094,7 +1235,17 @@ pub mod instance {
     }
     /// The type of vNIC driver.
     /// Default should be UNSPECIFIED_NIC_TYPE.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum NicType {
         /// No type specified.
@@ -1121,10 +1272,10 @@ pub mod instance {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Environment {
         /// Use a Compute Engine VM image to start the notebook instance.
-        #[prost(message, tag="2")]
+        #[prost(message, tag = "2")]
         VmImage(super::VmImage),
         /// Use a container image to start the notebook instance.
-        #[prost(message, tag="3")]
+        #[prost(message, tag = "3")]
         ContainerImage(super::ContainerImage),
     }
 }
@@ -1133,10 +1284,10 @@ pub mod instance {
 pub struct InstanceConfig {
     /// Cron expression in UTC timezone, used to schedule instance auto upgrade.
     /// Please follow the [cron format](<https://en.wikipedia.org/wiki/Cron>).
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub notebook_upgrade_schedule: ::prost::alloc::string::String,
     /// Verifies core internal services are running.
-    #[prost(bool, tag="2")]
+    #[prost(bool, tag = "2")]
     pub enable_health_monitoring: bool,
 }
 /// The definition of a Runtime for a managed notebook instance.
@@ -1145,38 +1296,48 @@ pub struct Runtime {
     /// Output only. The resource name of the runtime.
     /// Format:
     /// `projects/{project}/locations/{location}/runtimes/{runtimeId}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. Runtime state.
-    #[prost(enumeration="runtime::State", tag="3")]
+    #[prost(enumeration = "runtime::State", tag = "3")]
     pub state: i32,
     /// Output only. Runtime health_state.
-    #[prost(enumeration="runtime::HealthState", tag="4")]
+    #[prost(enumeration = "runtime::HealthState", tag = "4")]
     pub health_state: i32,
     /// The config settings for accessing runtime.
-    #[prost(message, optional, tag="5")]
+    #[prost(message, optional, tag = "5")]
     pub access_config: ::core::option::Option<RuntimeAccessConfig>,
     /// The config settings for software inside the runtime.
-    #[prost(message, optional, tag="6")]
+    #[prost(message, optional, tag = "6")]
     pub software_config: ::core::option::Option<RuntimeSoftwareConfig>,
     /// Output only. Contains Runtime daemon metrics such as Service status and JupyterLab
     /// stats.
-    #[prost(message, optional, tag="7")]
+    #[prost(message, optional, tag = "7")]
     pub metrics: ::core::option::Option<RuntimeMetrics>,
     /// Output only. Runtime creation time.
-    #[prost(message, optional, tag="20")]
+    #[prost(message, optional, tag = "20")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Runtime update time.
-    #[prost(message, optional, tag="21")]
+    #[prost(message, optional, tag = "21")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Type of the runtime; currently only supports Compute Engine VM.
-    #[prost(oneof="runtime::RuntimeType", tags="2")]
+    #[prost(oneof = "runtime::RuntimeType", tags = "2")]
     pub runtime_type: ::core::option::Option<runtime::RuntimeType>,
 }
 /// Nested message and enum types in `Runtime`.
 pub mod runtime {
     /// The definition of the states of this runtime.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum State {
         /// State is not specified.
@@ -1219,7 +1380,17 @@ pub mod runtime {
         }
     }
     /// The runtime substate.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum HealthState {
         /// The runtime substate is unknown.
@@ -1258,7 +1429,7 @@ pub mod runtime {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum RuntimeType {
         /// Use a Compute Engine VM image to start the managed notebook instance.
-        #[prost(message, tag="2")]
+        #[prost(message, tag = "2")]
         VirtualMachine(super::VirtualMachine),
     }
 }
@@ -1277,16 +1448,26 @@ pub mod runtime {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RuntimeAcceleratorConfig {
     /// Accelerator model.
-    #[prost(enumeration="runtime_accelerator_config::AcceleratorType", tag="1")]
+    #[prost(enumeration = "runtime_accelerator_config::AcceleratorType", tag = "1")]
     pub r#type: i32,
     /// Count of cores of this accelerator.
-    #[prost(int64, tag="2")]
+    #[prost(int64, tag = "2")]
     pub core_count: i64,
 }
 /// Nested message and enum types in `RuntimeAcceleratorConfig`.
 pub mod runtime_accelerator_config {
     /// Type of this accelerator.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum AcceleratorType {
         /// Accelerator type is not specified.
@@ -1345,7 +1526,7 @@ pub struct EncryptionConfig {
     /// used to protect a resource, such as a disks. It has the following
     /// format:
     /// `projects/{PROJECT_ID}/locations/{REGION}/keyRings/{KEY_RING_NAME}/cryptoKeys/{KEY_NAME}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub kms_key: ::prost::alloc::string::String,
 }
 /// A Local attached disk resource.
@@ -1353,11 +1534,11 @@ pub struct EncryptionConfig {
 pub struct LocalDisk {
     /// Optional. Output only. Specifies whether the disk will be auto-deleted when the
     /// instance is deleted (but not when the disk is detached from the instance).
-    #[prost(bool, tag="1")]
+    #[prost(bool, tag = "1")]
     pub auto_delete: bool,
     /// Optional. Output only. Indicates that this is a boot disk. The virtual machine
     /// will use the first partition of the disk for its root filesystem.
-    #[prost(bool, tag="2")]
+    #[prost(bool, tag = "2")]
     pub boot: bool,
     /// Optional. Output only. Specifies a unique device name
     /// of your choice that is reflected into the
@@ -1368,17 +1549,17 @@ pub struct LocalDisk {
     /// If not specified, the server chooses a default device name to apply to this
     /// disk, in the form persistent-disk-x, where x is a number assigned by Google
     /// Compute Engine. This field is only applicable for persistent disks.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub device_name: ::prost::alloc::string::String,
     /// Output only. Indicates a list of features to enable on the guest operating system.
     /// Applicable only for bootable images. Read  Enabling guest operating
     /// system features to see a list of available options.
-    #[prost(message, repeated, tag="4")]
+    #[prost(message, repeated, tag = "4")]
     pub guest_os_features: ::prost::alloc::vec::Vec<local_disk::RuntimeGuestOsFeature>,
     /// Output only. A zero-based index to this disk, where 0 is reserved for the
     /// boot disk. If you have many disks attached to an instance, each disk would
     /// have a unique index number.
-    #[prost(int32, tag="5")]
+    #[prost(int32, tag = "5")]
     pub index: i32,
     /// Input only. Specifies the parameters for a new disk that will be created
     /// alongside the new instance. Use initialization parameters to create boot
@@ -1386,7 +1567,7 @@ pub struct LocalDisk {
     ///
     /// This property is mutually exclusive with the source property; you can only
     /// define one or the other, but not both.
-    #[prost(message, optional, tag="6")]
+    #[prost(message, optional, tag = "6")]
     pub initialize_params: ::core::option::Option<LocalDiskInitializeParams>,
     /// Specifies the disk interface to use for attaching this disk, which is
     /// either SCSI or NVME. The default is SCSI. Persistent disks must always use
@@ -1397,13 +1578,13 @@ pub struct LocalDisk {
     ///
     /// * NVME
     /// * SCSI
-    #[prost(string, tag="7")]
+    #[prost(string, tag = "7")]
     pub interface: ::prost::alloc::string::String,
     /// Output only. Type of the resource. Always compute#attachedDisk for attached disks.
-    #[prost(string, tag="8")]
+    #[prost(string, tag = "8")]
     pub kind: ::prost::alloc::string::String,
     /// Output only. Any valid publicly visible licenses.
-    #[prost(string, repeated, tag="9")]
+    #[prost(string, repeated, tag = "9")]
     pub licenses: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The mode in which to attach this disk, either READ_WRITE or READ_ONLY. If
     /// not specified, the default is to attach the disk in READ_WRITE mode.
@@ -1411,11 +1592,11 @@ pub struct LocalDisk {
     ///
     /// * READ_ONLY
     /// * READ_WRITE
-    #[prost(string, tag="10")]
+    #[prost(string, tag = "10")]
     pub mode: ::prost::alloc::string::String,
     /// Specifies a valid partial or full URL to an existing Persistent Disk
     /// resource.
-    #[prost(string, tag="11")]
+    #[prost(string, tag = "11")]
     pub source: ::prost::alloc::string::String,
     /// Specifies the type of the disk, either SCRATCH or PERSISTENT. If not
     /// specified, the default is PERSISTENT.
@@ -1423,7 +1604,7 @@ pub struct LocalDisk {
     ///
     /// * PERSISTENT
     /// * SCRATCH
-    #[prost(string, tag="12")]
+    #[prost(string, tag = "12")]
     pub r#type: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `LocalDisk`.
@@ -1448,7 +1629,7 @@ pub mod local_disk {
         /// * UEFI_COMPATIBLE
         /// * VIRTIO_SCSI_MULTIQUEUE
         /// * WINDOWS
-        #[prost(string, tag="1")]
+        #[prost(string, tag = "1")]
         pub r#type: ::prost::alloc::string::String,
     }
 }
@@ -1460,31 +1641,44 @@ pub mod local_disk {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LocalDiskInitializeParams {
     /// Optional. Provide this property when creating the disk.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub description: ::prost::alloc::string::String,
     /// Optional. Specifies the disk name. If not specified, the default is to use the name
     /// of the instance. If the disk with the instance name exists already in the
     /// given zone/region, a new name will be automatically generated.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub disk_name: ::prost::alloc::string::String,
     /// Optional. Specifies the size of the disk in base-2 GB. If not specified, the disk
     /// will be the same size as the image (usually 10GB). If specified, the size
     /// must be equal to or larger than 10GB. Default 100 GB.
-    #[prost(int64, tag="3")]
+    #[prost(int64, tag = "3")]
     pub disk_size_gb: i64,
     /// Input only. The type of the boot disk attached to this instance, defaults to
     /// standard persistent disk (`PD_STANDARD`).
-    #[prost(enumeration="local_disk_initialize_params::DiskType", tag="4")]
+    #[prost(enumeration = "local_disk_initialize_params::DiskType", tag = "4")]
     pub disk_type: i32,
     /// Optional. Labels to apply to this disk. These can be later modified by the
     /// disks.setLabels method. This field is only applicable for persistent disks.
-    #[prost(map="string, string", tag="5")]
-    pub labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map = "string, string", tag = "5")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
 }
 /// Nested message and enum types in `LocalDiskInitializeParams`.
 pub mod local_disk_initialize_params {
     /// Possible disk types.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum DiskType {
         /// Disk type not set.
@@ -1518,21 +1712,31 @@ pub mod local_disk_initialize_params {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RuntimeAccessConfig {
     /// The type of access mode this instance.
-    #[prost(enumeration="runtime_access_config::RuntimeAccessType", tag="1")]
+    #[prost(enumeration = "runtime_access_config::RuntimeAccessType", tag = "1")]
     pub access_type: i32,
     /// The owner of this runtime after creation. Format: `alias@example.com`
     /// Currently supports one owner only.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub runtime_owner: ::prost::alloc::string::String,
     /// Output only. The proxy endpoint that is used to access the runtime.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub proxy_uri: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `RuntimeAccessConfig`.
 pub mod runtime_access_config {
     /// Possible ways to access runtime. Authentication mode.
     /// Currently supports: Single User only.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum RuntimeAccessType {
         /// Unspecified access.
@@ -1570,45 +1774,48 @@ pub mod runtime_access_config {
 pub struct RuntimeSoftwareConfig {
     /// Cron expression in UTC timezone, used to schedule instance auto upgrade.
     /// Please follow the [cron format](<https://en.wikipedia.org/wiki/Cron>).
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub notebook_upgrade_schedule: ::prost::alloc::string::String,
     /// Verifies core internal services are running.
     /// Default: True
-    #[prost(bool, optional, tag="2")]
+    #[prost(bool, optional, tag = "2")]
     pub enable_health_monitoring: ::core::option::Option<bool>,
     /// Runtime will automatically shutdown after idle_shutdown_time.
     /// Default: True
-    #[prost(bool, optional, tag="3")]
+    #[prost(bool, optional, tag = "3")]
     pub idle_shutdown: ::core::option::Option<bool>,
     /// Time in minutes to wait before shutting down runtime. Default: 180 minutes
-    #[prost(int32, tag="4")]
+    #[prost(int32, tag = "4")]
     pub idle_shutdown_timeout: i32,
     /// Install Nvidia Driver automatically.
     /// Default: True
-    #[prost(bool, tag="5")]
+    #[prost(bool, tag = "5")]
     pub install_gpu_driver: bool,
     /// Specify a custom Cloud Storage path where the GPU driver is stored.
     /// If not specified, we'll automatically choose from official GPU drivers.
-    #[prost(string, tag="6")]
+    #[prost(string, tag = "6")]
     pub custom_gpu_driver_path: ::prost::alloc::string::String,
     /// Path to a Bash script that automatically runs after a notebook instance
     /// fully boots up. The path must be a URL or
     /// Cloud Storage path (`gs://path-to-file/file-name`).
-    #[prost(string, tag="7")]
+    #[prost(string, tag = "7")]
     pub post_startup_script: ::prost::alloc::string::String,
     /// Optional. Use a list of container images to use as Kernels in the notebook instance.
-    #[prost(message, repeated, tag="8")]
+    #[prost(message, repeated, tag = "8")]
     pub kernels: ::prost::alloc::vec::Vec<ContainerImage>,
     /// Output only. Bool indicating whether an newer image is available in an image family.
-    #[prost(bool, optional, tag="9")]
+    #[prost(bool, optional, tag = "9")]
     pub upgradeable: ::core::option::Option<bool>,
 }
 /// Contains runtime daemon metrics, such as OS and kernels and sessions stats.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RuntimeMetrics {
     /// Output only. The system metrics.
-    #[prost(map="string, string", tag="1")]
-    pub system_metrics: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map = "string, string", tag = "1")]
+    pub system_metrics: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
 }
 /// A set of Shielded Instance options.
 /// Check [Images using supported Shielded VM
@@ -1621,10 +1828,10 @@ pub struct RuntimeShieldedInstanceConfig {
     /// Secure Boot helps ensure that the system only runs authentic software by
     /// verifying the digital signature of all boot components, and halting the
     /// boot process if signature verification fails. Disabled by default.
-    #[prost(bool, tag="1")]
+    #[prost(bool, tag = "1")]
     pub enable_secure_boot: bool,
     /// Defines whether the instance has the vTPM enabled. Enabled by default.
-    #[prost(bool, tag="2")]
+    #[prost(bool, tag = "2")]
     pub enable_vtpm: bool,
     /// Defines whether the instance has integrity monitoring enabled.
     ///
@@ -1632,20 +1839,20 @@ pub struct RuntimeShieldedInstanceConfig {
     /// The attestation is performed against the integrity policy baseline. This
     /// baseline is initially derived from the implicitly trusted boot image when
     /// the instance is created. Enabled by default.
-    #[prost(bool, tag="3")]
+    #[prost(bool, tag = "3")]
     pub enable_integrity_monitoring: bool,
 }
 /// Runtime using Virtual Machine for computing.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VirtualMachine {
     /// Output only. The user-friendly name of the Managed Compute Engine instance.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub instance_name: ::prost::alloc::string::String,
     /// Output only. The unique identifier of the Managed Compute Engine instance.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub instance_id: ::prost::alloc::string::String,
     /// Virtual Machine configuration settings.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub virtual_machine_config: ::core::option::Option<VirtualMachineConfig>,
 }
 /// The config settings for virtual machine.
@@ -1656,28 +1863,28 @@ pub struct VirtualMachineConfig {
     /// in the corresponding runtime region.
     /// On a get request, zone will always be present. Example:
     /// * `us-central1-b`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub zone: ::prost::alloc::string::String,
     /// Required. The Compute Engine machine type used for runtimes.
     /// Short name is valid. Examples:
     /// * `n1-standard-2`
     /// * `e2-standard-8`
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub machine_type: ::prost::alloc::string::String,
     /// Optional. Use a list of container images to use as Kernels in the notebook instance.
-    #[prost(message, repeated, tag="3")]
+    #[prost(message, repeated, tag = "3")]
     pub container_images: ::prost::alloc::vec::Vec<ContainerImage>,
     /// Required. Data disk option configuration settings.
-    #[prost(message, optional, tag="4")]
+    #[prost(message, optional, tag = "4")]
     pub data_disk: ::core::option::Option<LocalDisk>,
     /// Optional. Encryption settings for virtual machine data disk.
-    #[prost(message, optional, tag="5")]
+    #[prost(message, optional, tag = "5")]
     pub encryption_config: ::core::option::Option<EncryptionConfig>,
     /// Optional. Shielded VM Instance configuration settings.
-    #[prost(message, optional, tag="6")]
+    #[prost(message, optional, tag = "6")]
     pub shielded_instance_config: ::core::option::Option<RuntimeShieldedInstanceConfig>,
     /// Optional. The Compute Engine accelerator configuration for this runtime.
-    #[prost(message, optional, tag="7")]
+    #[prost(message, optional, tag = "7")]
     pub accelerator_config: ::core::option::Option<RuntimeAcceleratorConfig>,
     /// Optional. The Compute Engine network to be used for machine
     /// communications. Cannot be specified with subnetwork. If neither
@@ -1697,7 +1904,7 @@ pub struct VirtualMachineConfig {
     /// configuring Private Service Access.
     /// * Shared VPC (network & subnet are required). Requires configuring Private
     /// Service Access.
-    #[prost(string, tag="8")]
+    #[prost(string, tag = "8")]
     pub network: ::prost::alloc::string::String,
     /// Optional. The Compute Engine subnetwork to be used for machine
     /// communications. Cannot be specified with network.
@@ -1706,7 +1913,7 @@ pub struct VirtualMachineConfig {
     ///
     /// * `<https://www.googleapis.com/compute/v1/projects/\[project_id\]/regions/us-east1/subnetworks/sub0`>
     /// * `projects/\[project_id\]/regions/us-east1/subnetworks/sub0`
-    #[prost(string, tag="9")]
+    #[prost(string, tag = "9")]
     pub subnet: ::prost::alloc::string::String,
     /// Optional. If true, runtime will only have internal IP
     /// addresses. By default, runtimes are not restricted to internal IP
@@ -1714,23 +1921,29 @@ pub struct VirtualMachineConfig {
     /// vm. This `internal_ip_only` restriction can only be enabled for
     /// subnetwork enabled networks, and all dependencies must be
     /// configured to be accessible without external IP addresses.
-    #[prost(bool, tag="10")]
+    #[prost(bool, tag = "10")]
     pub internal_ip_only: bool,
     /// Optional. The Compute Engine tags to add to runtime (see [Tagging
     /// instances](<https://cloud.google.com/compute/docs/label-or-tag-resources#tags>)).
-    #[prost(string, repeated, tag="13")]
+    #[prost(string, repeated, tag = "13")]
     pub tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Output only. The Compute Engine guest attributes. (see
     /// [Project and instance
     /// guest
     /// attributes](<https://cloud.google.com/compute/docs/storing-retrieving-metadata#guest_attributes>)).
-    #[prost(map="string, string", tag="14")]
-    pub guest_attributes: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map = "string, string", tag = "14")]
+    pub guest_attributes: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
     /// Optional. The Compute Engine metadata entries to add to virtual machine. (see
     /// [Project and instance
     /// metadata](<https://cloud.google.com/compute/docs/storing-retrieving-metadata#project_and_instance_metadata>)).
-    #[prost(map="string, string", tag="15")]
-    pub metadata: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map = "string, string", tag = "15")]
+    pub metadata: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
     /// Optional. The labels to associate with this runtime.
     /// Label **keys** must contain 1 to 63 characters, and must conform to
     /// [RFC 1035](<https://www.ietf.org/rfc/rfc1035.txt>).
@@ -1738,11 +1951,14 @@ pub struct VirtualMachineConfig {
     /// characters, and must conform to [RFC
     /// 1035](<https://www.ietf.org/rfc/rfc1035.txt>). No more than 32 labels can be
     /// associated with a cluster.
-    #[prost(map="string, string", tag="16")]
-    pub labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map = "string, string", tag = "16")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
     /// Optional. The type of vNIC to be used on this interface. This may be gVNIC or
     /// VirtioNet.
-    #[prost(enumeration="virtual_machine_config::NicType", tag="17")]
+    #[prost(enumeration = "virtual_machine_config::NicType", tag = "17")]
     pub nic_type: i32,
     /// Optional. Reserved IP Range name is used for VPC Peering.
     /// The subnetwork allocation will use the range *name* if it's assigned.
@@ -1758,10 +1974,10 @@ pub struct VirtualMachineConfig {
     ///    --purpose=VPC_PEERING
     ///
     /// Field value will be: `managed-notebooks-range-c`
-    #[prost(string, tag="18")]
+    #[prost(string, tag = "18")]
     pub reserved_ip_range: ::prost::alloc::string::String,
     /// Optional. Boot image metadata used for runtime upgradeability.
-    #[prost(message, optional, tag="19")]
+    #[prost(message, optional, tag = "19")]
     pub boot_image: ::core::option::Option<virtual_machine_config::BootImage>,
 }
 /// Nested message and enum types in `VirtualMachineConfig`.
@@ -1769,11 +1985,20 @@ pub mod virtual_machine_config {
     /// Definition of the boot image used by the Runtime.
     /// Used to facilitate runtime upgradeability.
     #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct BootImage {
-    }
+    pub struct BootImage {}
     /// The type of vNIC driver.
     /// Default should be UNSPECIFIED_NIC_TYPE.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum NicType {
         /// No type specified.
@@ -1802,30 +2027,30 @@ pub mod virtual_machine_config {
 pub struct ListRuntimesRequest {
     /// Required. Format:
     /// `parent=projects/{project_id}/locations/{location}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Maximum return size of the list call.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// A previous returned page token that can be used to continue listing
     /// from the last result.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response for listing Managed Notebook Runtimes.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRuntimesResponse {
     /// A list of returned Runtimes.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub runtimes: ::prost::alloc::vec::Vec<Runtime>,
     /// Page token that can be used to continue listing from the last result in the
     /// next list call.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
     /// Locations that could not be reached. For example,
     /// ['us-west1', 'us-central1'].
     /// A ListRuntimesResponse will only contain either runtimes or unreachables,
-    #[prost(string, repeated, tag="3")]
+    #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request for getting a Managed Notebook Runtime.
@@ -1833,7 +2058,7 @@ pub struct ListRuntimesResponse {
 pub struct GetRuntimeRequest {
     /// Required. Format:
     /// `projects/{project_id}/locations/{location}/runtimes/{runtime_id}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request for creating a Managed Notebook Runtime.
@@ -1841,16 +2066,16 @@ pub struct GetRuntimeRequest {
 pub struct CreateRuntimeRequest {
     /// Required. Format:
     /// `parent=projects/{project_id}/locations/{location}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. User-defined unique ID of this Runtime.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub runtime_id: ::prost::alloc::string::String,
     /// Required. The Runtime to be created.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub runtime: ::core::option::Option<Runtime>,
     /// Idempotent request UUID.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request for deleting a Managed Notebook Runtime.
@@ -1858,10 +2083,10 @@ pub struct CreateRuntimeRequest {
 pub struct DeleteRuntimeRequest {
     /// Required. Format:
     /// `projects/{project_id}/locations/{location}/runtimes/{runtime_id}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Idempotent request UUID.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request for starting a Managed Notebook Runtime.
@@ -1869,10 +2094,10 @@ pub struct DeleteRuntimeRequest {
 pub struct StartRuntimeRequest {
     /// Required. Format:
     /// `projects/{project_id}/locations/{location}/runtimes/{runtime_id}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Idempotent request UUID.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request for stopping a Managed Notebook Runtime.
@@ -1880,10 +2105,10 @@ pub struct StartRuntimeRequest {
 pub struct StopRuntimeRequest {
     /// Required. Format:
     /// `projects/{project_id}/locations/{location}/runtimes/{runtime_id}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Idempotent request UUID.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request for switching a Managed Notebook Runtime.
@@ -1891,16 +2116,16 @@ pub struct StopRuntimeRequest {
 pub struct SwitchRuntimeRequest {
     /// Required. Format:
     /// `projects/{project_id}/locations/{location}/runtimes/{runtime_id}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// machine type.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub machine_type: ::prost::alloc::string::String,
     /// accelerator config.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub accelerator_config: ::core::option::Option<RuntimeAcceleratorConfig>,
     /// Idempotent request UUID.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request for resetting a Managed Notebook Runtime.
@@ -1908,10 +2133,10 @@ pub struct SwitchRuntimeRequest {
 pub struct ResetRuntimeRequest {
     /// Required. Format:
     /// `projects/{project_id}/locations/{location}/runtimes/{runtime_id}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Idempotent request UUID.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request for reporting a Managed Notebook Event.
@@ -1919,14 +2144,14 @@ pub struct ResetRuntimeRequest {
 pub struct ReportRuntimeEventRequest {
     /// Required. Format:
     /// `projects/{project_id}/locations/{location}/runtimes/{runtime_id}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The VM hardware token for authenticating the VM.
     /// <https://cloud.google.com/compute/docs/instances/verifying-instance-identity>
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub vm_id: ::prost::alloc::string::String,
     /// Required. The Event to be reported.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub event: ::core::option::Option<Event>,
 }
 /// Request for getting a new access token.
@@ -1934,21 +2159,21 @@ pub struct ReportRuntimeEventRequest {
 pub struct RefreshRuntimeTokenInternalRequest {
     /// Required. Format:
     /// `projects/{project_id}/locations/{location}/runtimes/{runtime_id}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The VM hardware token for authenticating the VM.
     /// <https://cloud.google.com/compute/docs/instances/verifying-instance-identity>
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub vm_id: ::prost::alloc::string::String,
 }
 /// Response with a new access token.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RefreshRuntimeTokenInternalResponse {
     /// The OAuth 2.0 access token.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub access_token: ::prost::alloc::string::String,
     /// Output only. Token expiration time.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub expire_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Generated client implementations.
@@ -2264,23 +2489,23 @@ pub mod managed_notebook_service_client {
 pub struct Schedule {
     /// Output only. The name of this schedule. Format:
     /// `projects/{project_id}/locations/{location}/schedules/{schedule_id}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. Display name used for UI purposes.
     /// Name can only contain alphanumeric characters, hyphens '-',
     /// and underscores '_'.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub display_name: ::prost::alloc::string::String,
     /// A brief description of this environment.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub description: ::prost::alloc::string::String,
-    #[prost(enumeration="schedule::State", tag="4")]
+    #[prost(enumeration = "schedule::State", tag = "4")]
     pub state: i32,
     /// Cron-tab formatted schedule by which the job will execute.
     /// Format: minute, hour, day of month, month, day of week,
     /// e.g. 0 0 * * WED = every Wednesday
     /// More examples: <https://crontab.guru/examples.html>
-    #[prost(string, tag="5")]
+    #[prost(string, tag = "5")]
     pub cron_schedule: ::prost::alloc::string::String,
     /// Timezone on which the cron_schedule.
     /// The value of this field must be a time zone name from the tz database.
@@ -2290,26 +2515,36 @@ pub struct Schedule {
     /// The rules for daylight saving time are determined by the chosen tz.
     /// For UTC use the string "utc". If a time zone is not specified,
     /// the default will be in UTC (also known as GMT).
-    #[prost(string, tag="6")]
+    #[prost(string, tag = "6")]
     pub time_zone: ::prost::alloc::string::String,
     /// Output only. Time the schedule was created.
-    #[prost(message, optional, tag="7")]
+    #[prost(message, optional, tag = "7")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Time the schedule was last updated.
-    #[prost(message, optional, tag="8")]
+    #[prost(message, optional, tag = "8")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Notebook Execution Template corresponding to this schedule.
-    #[prost(message, optional, tag="9")]
+    #[prost(message, optional, tag = "9")]
     pub execution_template: ::core::option::Option<ExecutionTemplate>,
     /// Output only. The most recent execution names triggered from this schedule and their
     /// corresponding states.
-    #[prost(message, repeated, tag="10")]
+    #[prost(message, repeated, tag = "10")]
     pub recent_executions: ::prost::alloc::vec::Vec<Execution>,
 }
 /// Nested message and enum types in `Schedule`.
 pub mod schedule {
     /// State of the job.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum State {
         /// Unspecified state.
@@ -2354,31 +2589,31 @@ pub mod schedule {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationMetadata {
     /// The time the operation was created.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The time the operation finished running.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Server-defined resource path for the target of the operation.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub target: ::prost::alloc::string::String,
     /// Name of the verb executed by the operation.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub verb: ::prost::alloc::string::String,
     /// Human-readable status of the operation, if any.
-    #[prost(string, tag="5")]
+    #[prost(string, tag = "5")]
     pub status_message: ::prost::alloc::string::String,
     /// Identifies whether the user has requested cancellation
     /// of the operation. Operations that have successfully been cancelled
     /// have \[Operation.error][\] value with a
     /// \[google.rpc.Status.code][google.rpc.Status.code\] of 1, corresponding to `Code.CANCELLED`.
-    #[prost(bool, tag="6")]
+    #[prost(bool, tag = "6")]
     pub requested_cancellation: bool,
     /// API version used to start the operation.
-    #[prost(string, tag="7")]
+    #[prost(string, tag = "7")]
     pub api_version: ::prost::alloc::string::String,
     /// API endpoint name of this operation.
-    #[prost(string, tag="8")]
+    #[prost(string, tag = "8")]
     pub endpoint: ::prost::alloc::string::String,
 }
 /// Request for listing notebook instances.
@@ -2386,30 +2621,30 @@ pub struct OperationMetadata {
 pub struct ListInstancesRequest {
     /// Required. Format:
     /// `parent=projects/{project_id}/locations/{location}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Maximum return size of the list call.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// A previous returned page token that can be used to continue listing
     /// from the last result.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response for listing notebook instances.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListInstancesResponse {
     /// A list of returned instances.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub instances: ::prost::alloc::vec::Vec<Instance>,
     /// Page token that can be used to continue listing from the last result in the
     /// next list call.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
     /// Locations that could not be reached. For example,
     /// ['us-west1-a', 'us-central1-b'].
     /// A ListInstancesResponse will only contain either instances or unreachables,
-    #[prost(string, repeated, tag="3")]
+    #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request for getting a notebook instance.
@@ -2417,7 +2652,7 @@ pub struct ListInstancesResponse {
 pub struct GetInstanceRequest {
     /// Required. Format:
     /// `projects/{project_id}/locations/{location}/instances/{instance_id}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request for creating a notebook instance.
@@ -2425,13 +2660,13 @@ pub struct GetInstanceRequest {
 pub struct CreateInstanceRequest {
     /// Required. Format:
     /// `parent=projects/{project_id}/locations/{location}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. User-defined unique ID of this instance.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub instance_id: ::prost::alloc::string::String,
     /// Required. The instance to be created.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub instance: ::core::option::Option<Instance>,
 }
 /// Request for registering a notebook instance.
@@ -2439,13 +2674,13 @@ pub struct CreateInstanceRequest {
 pub struct RegisterInstanceRequest {
     /// Required. Format:
     /// `parent=projects/{project_id}/locations/{location}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. User defined unique ID of this instance. The `instance_id` must
     /// be 1 to 63 characters long and contain only lowercase letters,
     /// numeric characters, and dashes. The first character must be a lowercase
     /// letter and the last character cannot be a dash.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub instance_id: ::prost::alloc::string::String,
 }
 /// Request for setting instance accelerator.
@@ -2453,16 +2688,16 @@ pub struct RegisterInstanceRequest {
 pub struct SetInstanceAcceleratorRequest {
     /// Required. Format:
     /// `projects/{project_id}/locations/{location}/instances/{instance_id}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. Type of this accelerator.
-    #[prost(enumeration="instance::AcceleratorType", tag="2")]
+    #[prost(enumeration = "instance::AcceleratorType", tag = "2")]
     pub r#type: i32,
     /// Required. Count of cores of this accelerator. Note that not all combinations
     /// of `type` and `core_count` are valid. Check [GPUs on
     /// Compute Engine](<https://cloud.google.com/compute/docs/gpus/#gpus-list>) to
     /// find a valid combination. TPUs are not supported.
-    #[prost(int64, tag="3")]
+    #[prost(int64, tag = "3")]
     pub core_count: i64,
 }
 /// Request for setting instance machine type.
@@ -2470,11 +2705,11 @@ pub struct SetInstanceAcceleratorRequest {
 pub struct SetInstanceMachineTypeRequest {
     /// Required. Format:
     /// `projects/{project_id}/locations/{location}/instances/{instance_id}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The [Compute Engine machine
     /// type](<https://cloud.google.com/compute/docs/machine-types>).
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub machine_type: ::prost::alloc::string::String,
 }
 /// Request for updating instance configurations.
@@ -2482,10 +2717,10 @@ pub struct SetInstanceMachineTypeRequest {
 pub struct UpdateInstanceConfigRequest {
     /// Required. Format:
     /// `projects/{project_id}/locations/{location}/instances/{instance_id}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The instance configurations to be updated.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub config: ::core::option::Option<InstanceConfig>,
 }
 /// Request for setting instance labels.
@@ -2493,30 +2728,39 @@ pub struct UpdateInstanceConfigRequest {
 pub struct SetInstanceLabelsRequest {
     /// Required. Format:
     /// `projects/{project_id}/locations/{location}/instances/{instance_id}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Labels to apply to this instance.
     /// These can be later modified by the setLabels method
-    #[prost(map="string, string", tag="2")]
-    pub labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map = "string, string", tag = "2")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
 }
 /// Request for adding/changing metadata items  for an instance.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateInstanceMetadataItemsRequest {
     /// Required. Format:
     /// `projects/{project_id}/locations/{location}/instances/{instance_id}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Metadata items to add/update for the instance.
-    #[prost(map="string, string", tag="2")]
-    pub items: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map = "string, string", tag = "2")]
+    pub items: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
 }
 /// Response for adding/changing metadata items for an instance.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateInstanceMetadataItemsResponse {
     /// Map of items that were added/updated to/in the metadata.
-    #[prost(map="string, string", tag="1")]
-    pub items: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map = "string, string", tag = "1")]
+    pub items: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
 }
 /// Request for updating the Shielded Instance config for a notebook instance.
 /// You can only use this method on a stopped instance
@@ -2524,18 +2768,20 @@ pub struct UpdateInstanceMetadataItemsResponse {
 pub struct UpdateShieldedInstanceConfigRequest {
     /// Required. Format:
     /// `projects/{project_id}/locations/{location}/instances/{instance_id}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// ShieldedInstance configuration to be updated.
-    #[prost(message, optional, tag="2")]
-    pub shielded_instance_config: ::core::option::Option<instance::ShieldedInstanceConfig>,
+    #[prost(message, optional, tag = "2")]
+    pub shielded_instance_config: ::core::option::Option<
+        instance::ShieldedInstanceConfig,
+    >,
 }
 /// Request for deleting a notebook instance.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteInstanceRequest {
     /// Required. Format:
     /// `projects/{project_id}/locations/{location}/instances/{instance_id}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request for starting a notebook instance
@@ -2543,7 +2789,7 @@ pub struct DeleteInstanceRequest {
 pub struct StartInstanceRequest {
     /// Required. Format:
     /// `projects/{project_id}/locations/{location}/instances/{instance_id}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request for stopping a notebook instance
@@ -2551,7 +2797,7 @@ pub struct StartInstanceRequest {
 pub struct StopInstanceRequest {
     /// Required. Format:
     /// `projects/{project_id}/locations/{location}/instances/{instance_id}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request for resetting a notebook instance
@@ -2559,7 +2805,7 @@ pub struct StopInstanceRequest {
 pub struct ResetInstanceRequest {
     /// Required. Format:
     /// `projects/{project_id}/locations/{location}/instances/{instance_id}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request for notebook instances to report information to Notebooks API.
@@ -2567,46 +2813,49 @@ pub struct ResetInstanceRequest {
 pub struct ReportInstanceInfoRequest {
     /// Required. Format:
     /// `projects/{project_id}/locations/{location}/instances/{instance_id}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The VM hardware token for authenticating the VM.
     /// <https://cloud.google.com/compute/docs/instances/verifying-instance-identity>
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub vm_id: ::prost::alloc::string::String,
     /// The metadata reported to Notebooks API. This will be merged to the instance
     /// metadata store
-    #[prost(map="string, string", tag="3")]
-    pub metadata: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map = "string, string", tag = "3")]
+    pub metadata: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
 }
 /// Request for checking if a notebook instance is upgradeable.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IsInstanceUpgradeableRequest {
     /// Required. Format:
     /// `projects/{project_id}/locations/{location}/instances/{instance_id}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub notebook_instance: ::prost::alloc::string::String,
     /// Optional. The optional UpgradeType. Setting this field will search for additional
     /// compute images to upgrade this instance.
-    #[prost(enumeration="UpgradeType", tag="2")]
+    #[prost(enumeration = "UpgradeType", tag = "2")]
     pub r#type: i32,
 }
 /// Response for checking if a notebook instance is upgradeable.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IsInstanceUpgradeableResponse {
     /// If an instance is upgradeable.
-    #[prost(bool, tag="1")]
+    #[prost(bool, tag = "1")]
     pub upgradeable: bool,
     /// The version this instance will be upgraded to if calling the upgrade
     /// endpoint. This field will only be populated if field upgradeable is true.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub upgrade_version: ::prost::alloc::string::String,
     /// Additional information about upgrade.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub upgrade_info: ::prost::alloc::string::String,
     /// The new image self link this instance will be upgraded to if calling the
     /// upgrade endpoint. This field will only be populated if field upgradeable
     /// is true.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub upgrade_image: ::prost::alloc::string::String,
 }
 /// Request for checking if a notebook instance is healthy.
@@ -2614,14 +2863,14 @@ pub struct IsInstanceUpgradeableResponse {
 pub struct GetInstanceHealthRequest {
     /// Required. Format:
     /// `projects/{project_id}/locations/{location}/instances/{instance_id}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Response for checking if a notebook instance is healthy.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetInstanceHealthResponse {
     /// Output only. Runtime health_state.
-    #[prost(enumeration="get_instance_health_response::HealthState", tag="1")]
+    #[prost(enumeration = "get_instance_health_response::HealthState", tag = "1")]
     pub health_state: i32,
     /// Output only. Additional information about instance health.
     /// Example:
@@ -2632,13 +2881,26 @@ pub struct GetInstanceHealthResponse {
     ///    "jupyterlab_status": "-1",
     ///    "updated": "2020-10-18 09:40:03.573409"
     ///   }
-    #[prost(map="string, string", tag="2")]
-    pub health_info: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map = "string, string", tag = "2")]
+    pub health_info: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
 }
 /// Nested message and enum types in `GetInstanceHealthResponse`.
 pub mod get_instance_health_response {
     /// If an instance is healthy or not.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum HealthState {
         /// The instance substate is unknown.
@@ -2679,11 +2941,11 @@ pub mod get_instance_health_response {
 pub struct UpgradeInstanceRequest {
     /// Required. Format:
     /// `projects/{project_id}/locations/{location}/instances/{instance_id}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. The optional UpgradeType. Setting this field will search for additional
     /// compute images to upgrade this instance.
-    #[prost(enumeration="UpgradeType", tag="2")]
+    #[prost(enumeration = "UpgradeType", tag = "2")]
     pub r#type: i32,
 }
 /// Request for rollbacking a notebook instance
@@ -2691,11 +2953,11 @@ pub struct UpgradeInstanceRequest {
 pub struct RollbackInstanceRequest {
     /// Required. Format:
     /// `projects/{project_id}/locations/{location}/instances/{instance_id}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The snapshot for rollback.
     /// Example: "projects/test-project/global/snapshots/krwlzipynril".
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub target_snapshot: ::prost::alloc::string::String,
 }
 /// Request for upgrading a notebook instance from within the VM
@@ -2703,43 +2965,43 @@ pub struct RollbackInstanceRequest {
 pub struct UpgradeInstanceInternalRequest {
     /// Required. Format:
     /// `projects/{project_id}/locations/{location}/instances/{instance_id}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The VM hardware token for authenticating the VM.
     /// <https://cloud.google.com/compute/docs/instances/verifying-instance-identity>
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub vm_id: ::prost::alloc::string::String,
     /// Optional. The optional UpgradeType. Setting this field will search for additional
     /// compute images to upgrade this instance.
-    #[prost(enumeration="UpgradeType", tag="3")]
+    #[prost(enumeration = "UpgradeType", tag = "3")]
     pub r#type: i32,
 }
 /// Request for listing environments.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEnvironmentsRequest {
     /// Required. Format: `projects/{project_id}/locations/{location}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Maximum return size of the list call.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// A previous returned page token that can be used to continue listing from
     /// the last result.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response for listing environments.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEnvironmentsResponse {
     /// A list of returned environments.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub environments: ::prost::alloc::vec::Vec<Environment>,
     /// A page token that can be used to continue listing from the last result
     /// in the next list call.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
     /// Locations that could not be reached.
-    #[prost(string, repeated, tag="3")]
+    #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request for getting a notebook environment.
@@ -2747,23 +3009,23 @@ pub struct ListEnvironmentsResponse {
 pub struct GetEnvironmentRequest {
     /// Required. Format:
     /// `projects/{project_id}/locations/{location}/environments/{environment_id}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request for creating a notebook environment.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateEnvironmentRequest {
     /// Required. Format: `projects/{project_id}/locations/{location}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. User-defined unique ID of this environment. The `environment_id` must
     /// be 1 to 63 characters long and contain only lowercase letters,
     /// numeric characters, and dashes. The first character must be a lowercase
     /// letter and the last character cannot be a dash.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub environment_id: ::prost::alloc::string::String,
     /// Required. The environment to be created.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub environment: ::core::option::Option<Environment>,
 }
 /// Request for deleting a notebook environment.
@@ -2771,7 +3033,7 @@ pub struct CreateEnvironmentRequest {
 pub struct DeleteEnvironmentRequest {
     /// Required. Format:
     /// `projects/{project_id}/locations/{location}/environments/{environment_id}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request for listing scheduled notebook job.
@@ -2779,37 +3041,37 @@ pub struct DeleteEnvironmentRequest {
 pub struct ListSchedulesRequest {
     /// Required. Format:
     /// `parent=projects/{project_id}/locations/{location}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Maximum return size of the list call.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// A previous returned page token that can be used to continue listing
     /// from the last result.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
     /// Filter applied to resulting schedules.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
     /// Field to order results by.
-    #[prost(string, tag="5")]
+    #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
 /// Response for listing scheduled notebook job.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSchedulesResponse {
     /// A list of returned instances.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub schedules: ::prost::alloc::vec::Vec<Schedule>,
     /// Page token that can be used to continue listing from the last result in the
     /// next list call.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
     /// Schedules that could not be reached. For example:
     ///
     ///      ['projects/{project_id}/location/{location}/schedules/monthly_digest',
     ///       'projects/{project_id}/location/{location}/schedules/weekly_sentiment']
-    #[prost(string, repeated, tag="3")]
+    #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request for getting scheduled notebook.
@@ -2817,7 +3079,7 @@ pub struct ListSchedulesResponse {
 pub struct GetScheduleRequest {
     /// Required. Format:
     /// `projects/{project_id}/locations/{location}/schedules/{schedule_id}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request for deleting an Schedule
@@ -2825,7 +3087,7 @@ pub struct GetScheduleRequest {
 pub struct DeleteScheduleRequest {
     /// Required. Format:
     /// `projects/{project_id}/locations/{location}/schedules/{schedule_id}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request for created scheduled notebooks
@@ -2833,13 +3095,13 @@ pub struct DeleteScheduleRequest {
 pub struct CreateScheduleRequest {
     /// Required. Format:
     /// `parent=projects/{project_id}/locations/{location}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. User-defined unique ID of this schedule.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub schedule_id: ::prost::alloc::string::String,
     /// Required. The schedule to be created.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub schedule: ::core::option::Option<Schedule>,
 }
 /// Request for created scheduled notebooks
@@ -2847,7 +3109,7 @@ pub struct CreateScheduleRequest {
 pub struct TriggerScheduleRequest {
     /// Required. Format:
     /// `parent=projects/{project_id}/locations/{location}/schedules/{schedule_id}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request for listing scheduled notebook executions.
@@ -2855,39 +3117,39 @@ pub struct TriggerScheduleRequest {
 pub struct ListExecutionsRequest {
     /// Required. Format:
     /// `parent=projects/{project_id}/locations/{location}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Maximum return size of the list call.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// A previous returned page token that can be used to continue listing
     /// from the last result.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
     /// Filter applied to resulting executions. Currently only supports filtering
     /// executions by a specified schedule_id.
     /// Format: `schedule_id=<Schedule_ID>`
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
     /// Sort by field.
-    #[prost(string, tag="5")]
+    #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
 /// Response for listing scheduled notebook executions
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListExecutionsResponse {
     /// A list of returned instances.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub executions: ::prost::alloc::vec::Vec<Execution>,
     /// Page token that can be used to continue listing from the last result in the
     /// next list call.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
     /// Executions IDs that could not be reached. For example:
     ///
     ///      ['projects/{project_id}/location/{location}/executions/imagenet_test1',
     ///       'projects/{project_id}/location/{location}/executions/classifier_train1']
-    #[prost(string, repeated, tag="3")]
+    #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request for getting scheduled notebook execution
@@ -2895,7 +3157,7 @@ pub struct ListExecutionsResponse {
 pub struct GetExecutionRequest {
     /// Required. Format:
     /// `projects/{project_id}/locations/{location}/executions/{execution_id}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request for deleting a scheduled notebook execution
@@ -2903,7 +3165,7 @@ pub struct GetExecutionRequest {
 pub struct DeleteExecutionRequest {
     /// Required. Format:
     /// `projects/{project_id}/locations/{location}/executions/{execution_id}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request to create notebook execution
@@ -2911,13 +3173,13 @@ pub struct DeleteExecutionRequest {
 pub struct CreateExecutionRequest {
     /// Required. Format:
     /// `parent=projects/{project_id}/locations/{location}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. User-defined unique ID of this execution.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub execution_id: ::prost::alloc::string::String,
     /// Required. The execution to be created.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub execution: ::core::option::Option<Execution>,
 }
 /// Definition of the types of upgrade that can be used on this

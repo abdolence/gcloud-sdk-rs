@@ -12,18 +12,18 @@ pub struct AnnotateVideoRequest {
     /// Supported wildcards: '*' to match 0 or more characters;
     /// '?' to match 1 character. If unset, the input video should be embedded
     /// in the request as `input_content`. If set, `input_content` must be unset.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub input_uri: ::prost::alloc::string::String,
     /// The video data bytes.
     /// If unset, the input video(s) should be specified via the `input_uri`.
     /// If set, `input_uri` must be unset.
-    #[prost(bytes="vec", tag="6")]
+    #[prost(bytes = "vec", tag = "6")]
     pub input_content: ::prost::alloc::vec::Vec<u8>,
     /// Required. Requested video annotation features.
-    #[prost(enumeration="Feature", repeated, packed="false", tag="2")]
+    #[prost(enumeration = "Feature", repeated, packed = "false", tag = "2")]
     pub features: ::prost::alloc::vec::Vec<i32>,
     /// Additional video context and/or feature-specific parameters.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub video_context: ::core::option::Option<VideoContext>,
     /// Optional. Location where the output (in JSON format) should be stored.
     /// Currently, only [Cloud Storage](<https://cloud.google.com/storage/>)
@@ -32,13 +32,13 @@ pub struct AnnotateVideoRequest {
     /// \[google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT\]). For
     /// more information, see [Request
     /// URIs](<https://cloud.google.com/storage/docs/request-endpoints>).
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub output_uri: ::prost::alloc::string::String,
     /// Optional. Cloud region where annotation should take place. Supported cloud
     /// regions are: `us-east1`, `us-west1`, `europe-west1`, `asia-east1`. If no
     /// region is specified, the region will be determined based on video file
     /// location.
-    #[prost(string, tag="5")]
+    #[prost(string, tag = "5")]
     pub location_id: ::prost::alloc::string::String,
 }
 /// Video context and/or feature-specific parameters.
@@ -47,31 +47,33 @@ pub struct VideoContext {
     /// Video segments to annotate. The segments may overlap and are not required
     /// to be contiguous or span the whole video. If unspecified, each video is
     /// treated as a single segment.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub segments: ::prost::alloc::vec::Vec<VideoSegment>,
     /// Config for LABEL_DETECTION.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub label_detection_config: ::core::option::Option<LabelDetectionConfig>,
     /// Config for SHOT_CHANGE_DETECTION.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub shot_change_detection_config: ::core::option::Option<ShotChangeDetectionConfig>,
     /// Config for EXPLICIT_CONTENT_DETECTION.
-    #[prost(message, optional, tag="4")]
-    pub explicit_content_detection_config: ::core::option::Option<ExplicitContentDetectionConfig>,
+    #[prost(message, optional, tag = "4")]
+    pub explicit_content_detection_config: ::core::option::Option<
+        ExplicitContentDetectionConfig,
+    >,
     /// Config for FACE_DETECTION.
-    #[prost(message, optional, tag="5")]
+    #[prost(message, optional, tag = "5")]
     pub face_detection_config: ::core::option::Option<FaceDetectionConfig>,
     /// Config for SPEECH_TRANSCRIPTION.
-    #[prost(message, optional, tag="6")]
+    #[prost(message, optional, tag = "6")]
     pub speech_transcription_config: ::core::option::Option<SpeechTranscriptionConfig>,
     /// Config for TEXT_DETECTION.
-    #[prost(message, optional, tag="8")]
+    #[prost(message, optional, tag = "8")]
     pub text_detection_config: ::core::option::Option<TextDetectionConfig>,
     /// Config for PERSON_DETECTION.
-    #[prost(message, optional, tag="11")]
+    #[prost(message, optional, tag = "11")]
     pub person_detection_config: ::core::option::Option<PersonDetectionConfig>,
     /// Config for OBJECT_TRACKING.
-    #[prost(message, optional, tag="13")]
+    #[prost(message, optional, tag = "13")]
     pub object_tracking_config: ::core::option::Option<ObjectTrackingConfig>,
 }
 /// Config for LABEL_DETECTION.
@@ -80,17 +82,17 @@ pub struct LabelDetectionConfig {
     /// What labels should be detected with LABEL_DETECTION, in addition to
     /// video-level labels or segment-level labels.
     /// If unspecified, defaults to `SHOT_MODE`.
-    #[prost(enumeration="LabelDetectionMode", tag="1")]
+    #[prost(enumeration = "LabelDetectionMode", tag = "1")]
     pub label_detection_mode: i32,
     /// Whether the video has been shot from a stationary (i.e., non-moving)
     /// camera. When set to true, might improve detection accuracy for moving
     /// objects. Should be used with `SHOT_AND_FRAME_MODE` enabled.
-    #[prost(bool, tag="2")]
+    #[prost(bool, tag = "2")]
     pub stationary_camera: bool,
     /// Model to use for label detection.
     /// Supported values: "builtin/stable" (the default if unset) and
     /// "builtin/latest".
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub model: ::prost::alloc::string::String,
     /// The confidence threshold we perform filtering on the labels from
     /// frame-level detection. If not set, it is set to 0.4 by default. The valid
@@ -98,7 +100,7 @@ pub struct LabelDetectionConfig {
     /// range will be clipped.
     /// Note: For best results, follow the default threshold. We will update
     /// the default threshold everytime when we release a new model.
-    #[prost(float, tag="4")]
+    #[prost(float, tag = "4")]
     pub frame_confidence_threshold: f32,
     /// The confidence threshold we perform filtering on the labels from
     /// video-level and shot-level detections. If not set, it's set to 0.3 by
@@ -106,7 +108,7 @@ pub struct LabelDetectionConfig {
     /// outside of this range will be clipped.
     /// Note: For best results, follow the default threshold. We will update
     /// the default threshold everytime when we release a new model.
-    #[prost(float, tag="5")]
+    #[prost(float, tag = "5")]
     pub video_confidence_threshold: f32,
 }
 /// Config for SHOT_CHANGE_DETECTION.
@@ -115,7 +117,7 @@ pub struct ShotChangeDetectionConfig {
     /// Model to use for shot change detection.
     /// Supported values: "builtin/stable" (the default if unset) and
     /// "builtin/latest".
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub model: ::prost::alloc::string::String,
 }
 /// Config for OBJECT_TRACKING.
@@ -124,7 +126,7 @@ pub struct ObjectTrackingConfig {
     /// Model to use for object tracking.
     /// Supported values: "builtin/stable" (the default if unset) and
     /// "builtin/latest".
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub model: ::prost::alloc::string::String,
 }
 /// Config for EXPLICIT_CONTENT_DETECTION.
@@ -133,7 +135,7 @@ pub struct ExplicitContentDetectionConfig {
     /// Model to use for explicit content detection.
     /// Supported values: "builtin/stable" (the default if unset) and
     /// "builtin/latest".
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub model: ::prost::alloc::string::String,
 }
 /// Config for FACE_DETECTION.
@@ -142,14 +144,14 @@ pub struct FaceDetectionConfig {
     /// Model to use for face detection.
     /// Supported values: "builtin/stable" (the default if unset) and
     /// "builtin/latest".
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub model: ::prost::alloc::string::String,
     /// Whether bounding boxes are included in the face annotation output.
-    #[prost(bool, tag="2")]
+    #[prost(bool, tag = "2")]
     pub include_bounding_boxes: bool,
     /// Whether to enable face attributes detection, such as glasses, dark_glasses,
     /// mouth_open etc. Ignored if 'include_bounding_boxes' is set to false.
-    #[prost(bool, tag="5")]
+    #[prost(bool, tag = "5")]
     pub include_attributes: bool,
 }
 /// Config for PERSON_DETECTION.
@@ -157,17 +159,17 @@ pub struct FaceDetectionConfig {
 pub struct PersonDetectionConfig {
     /// Whether bounding boxes are included in the person detection annotation
     /// output.
-    #[prost(bool, tag="1")]
+    #[prost(bool, tag = "1")]
     pub include_bounding_boxes: bool,
     /// Whether to enable pose landmarks detection. Ignored if
     /// 'include_bounding_boxes' is set to false.
-    #[prost(bool, tag="2")]
+    #[prost(bool, tag = "2")]
     pub include_pose_landmarks: bool,
     /// Whether to enable person attributes detection, such as cloth color (black,
     /// blue, etc), type (coat, dress, etc), pattern (plain, floral, etc), hair,
     /// etc.
     /// Ignored if 'include_bounding_boxes' is set to false.
-    #[prost(bool, tag="3")]
+    #[prost(bool, tag = "3")]
     pub include_attributes: bool,
 }
 /// Config for TEXT_DETECTION.
@@ -178,12 +180,12 @@ pub struct TextDetectionConfig {
     /// be language code in BCP-47 format.
     ///
     /// Automatic language detection is performed if no hint is provided.
-    #[prost(string, repeated, tag="1")]
+    #[prost(string, repeated, tag = "1")]
     pub language_hints: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Model to use for text detection.
     /// Supported values: "builtin/stable" (the default if unset) and
     /// "builtin/latest".
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub model: ::prost::alloc::string::String,
 }
 /// Video segment.
@@ -191,21 +193,21 @@ pub struct TextDetectionConfig {
 pub struct VideoSegment {
     /// Time-offset, relative to the beginning of the video,
     /// corresponding to the start of the segment (inclusive).
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub start_time_offset: ::core::option::Option<::prost_types::Duration>,
     /// Time-offset, relative to the beginning of the video,
     /// corresponding to the end of the segment (inclusive).
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub end_time_offset: ::core::option::Option<::prost_types::Duration>,
 }
 /// Video segment level annotation results for label detection.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LabelSegment {
     /// Video segment where a label was detected.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub segment: ::core::option::Option<VideoSegment>,
     /// Confidence that the label is accurate. Range: [0, 1].
-    #[prost(float, tag="2")]
+    #[prost(float, tag = "2")]
     pub confidence: f32,
 }
 /// Video frame level annotation results for label detection.
@@ -213,10 +215,10 @@ pub struct LabelSegment {
 pub struct LabelFrame {
     /// Time-offset, relative to the beginning of the video, corresponding to the
     /// video frame for this location.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub time_offset: ::core::option::Option<::prost_types::Duration>,
     /// Confidence that the label is accurate. Range: [0, 1].
-    #[prost(float, tag="2")]
+    #[prost(float, tag = "2")]
     pub confidence: f32,
 }
 /// Detected entity from video analysis.
@@ -225,32 +227,32 @@ pub struct Entity {
     /// Opaque entity ID. Some IDs may be available in
     /// [Google Knowledge Graph Search
     /// API](<https://developers.google.com/knowledge-graph/>).
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub entity_id: ::prost::alloc::string::String,
     /// Textual description, e.g., `Fixed-gear bicycle`.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub description: ::prost::alloc::string::String,
     /// Language code for `description` in BCP-47 format.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub language_code: ::prost::alloc::string::String,
 }
 /// Label annotation.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LabelAnnotation {
     /// Detected entity.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub entity: ::core::option::Option<Entity>,
     /// Common categories for the detected entity.
     /// For example, when the label is `Terrier`, the category is likely `dog`. And
     /// in some cases there might be more than one categories e.g., `Terrier` could
     /// also be a `pet`.
-    #[prost(message, repeated, tag="2")]
+    #[prost(message, repeated, tag = "2")]
     pub category_entities: ::prost::alloc::vec::Vec<Entity>,
     /// All video segments where a label was detected.
-    #[prost(message, repeated, tag="3")]
+    #[prost(message, repeated, tag = "3")]
     pub segments: ::prost::alloc::vec::Vec<LabelSegment>,
     /// All video frames where a label was detected.
-    #[prost(message, repeated, tag="4")]
+    #[prost(message, repeated, tag = "4")]
     pub frames: ::prost::alloc::vec::Vec<LabelFrame>,
 }
 /// Video frame level annotation results for explicit content.
@@ -258,10 +260,10 @@ pub struct LabelAnnotation {
 pub struct ExplicitContentFrame {
     /// Time-offset, relative to the beginning of the video, corresponding to the
     /// video frame for this location.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub time_offset: ::core::option::Option<::prost_types::Duration>,
     /// Likelihood of the pornography content..
-    #[prost(enumeration="Likelihood", tag="2")]
+    #[prost(enumeration = "Likelihood", tag = "2")]
     pub pornography_likelihood: i32,
 }
 /// Explicit content annotation (based on per-frame visual signals only).
@@ -270,7 +272,7 @@ pub struct ExplicitContentFrame {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExplicitContentAnnotation {
     /// All video frames where explicit content was detected.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub frames: ::prost::alloc::vec::Vec<ExplicitContentFrame>,
 }
 /// Normalized bounding box.
@@ -279,16 +281,16 @@ pub struct ExplicitContentAnnotation {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NormalizedBoundingBox {
     /// Left X coordinate.
-    #[prost(float, tag="1")]
+    #[prost(float, tag = "1")]
     pub left: f32,
     /// Top Y coordinate.
-    #[prost(float, tag="2")]
+    #[prost(float, tag = "2")]
     pub top: f32,
     /// Right X coordinate.
-    #[prost(float, tag="3")]
+    #[prost(float, tag = "3")]
     pub right: f32,
     /// Bottom Y coordinate.
-    #[prost(float, tag="4")]
+    #[prost(float, tag = "4")]
     pub bottom: f32,
 }
 /// For tracking related features.
@@ -297,33 +299,33 @@ pub struct NormalizedBoundingBox {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TimestampedObject {
     /// Normalized Bounding box in a frame, where the object is located.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub normalized_bounding_box: ::core::option::Option<NormalizedBoundingBox>,
     /// Time-offset, relative to the beginning of the video,
     /// corresponding to the video frame for this object.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub time_offset: ::core::option::Option<::prost_types::Duration>,
     /// Optional. The attributes of the object in the bounding box.
-    #[prost(message, repeated, tag="3")]
+    #[prost(message, repeated, tag = "3")]
     pub attributes: ::prost::alloc::vec::Vec<DetectedAttribute>,
     /// Optional. The detected landmarks.
-    #[prost(message, repeated, tag="4")]
+    #[prost(message, repeated, tag = "4")]
     pub landmarks: ::prost::alloc::vec::Vec<DetectedLandmark>,
 }
 /// A track of an object instance.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Track {
     /// Video segment of a track.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub segment: ::core::option::Option<VideoSegment>,
     /// The object with timestamp and attributes per frame in the track.
-    #[prost(message, repeated, tag="2")]
+    #[prost(message, repeated, tag = "2")]
     pub timestamped_objects: ::prost::alloc::vec::Vec<TimestampedObject>,
     /// Optional. Attributes in the track level.
-    #[prost(message, repeated, tag="3")]
+    #[prost(message, repeated, tag = "3")]
     pub attributes: ::prost::alloc::vec::Vec<DetectedAttribute>,
     /// Optional. The confidence score of the tracked object.
-    #[prost(float, tag="4")]
+    #[prost(float, tag = "4")]
     pub confidence: f32,
 }
 /// A generic detected attribute represented by name in string format.
@@ -331,14 +333,14 @@ pub struct Track {
 pub struct DetectedAttribute {
     /// The name of the attribute, for example, glasses, dark_glasses, mouth_open.
     /// A full list of supported type names will be provided in the document.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Detected attribute confidence. Range [0, 1].
-    #[prost(float, tag="2")]
+    #[prost(float, tag = "2")]
     pub confidence: f32,
     /// Text value of the detection result. For example, the value for "HairColor"
     /// can be "black", "blonde", etc.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub value: ::prost::alloc::string::String,
 }
 /// Celebrity definition.
@@ -348,14 +350,14 @@ pub struct Celebrity {
     /// `video-intelligence/kg-mid` indicates a celebrity from preloaded gallery.
     /// kg-mid is the id in Google knowledge graph, which is unique for the
     /// celebrity.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The celebrity name.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub display_name: ::prost::alloc::string::String,
     /// Textual description of additional information about the celebrity, if
     /// applicable.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub description: ::prost::alloc::string::String,
 }
 /// The annotation result of a celebrity face track. RecognizedCelebrity field
@@ -363,10 +365,10 @@ pub struct Celebrity {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CelebrityTrack {
     /// Top N match of the celebrities for the face in this track.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub celebrities: ::prost::alloc::vec::Vec<celebrity_track::RecognizedCelebrity>,
     /// A track of a person's face.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub face_track: ::core::option::Option<Track>,
 }
 /// Nested message and enum types in `CelebrityTrack`.
@@ -375,10 +377,10 @@ pub mod celebrity_track {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct RecognizedCelebrity {
         /// The recognized celebrity.
-        #[prost(message, optional, tag="1")]
+        #[prost(message, optional, tag = "1")]
         pub celebrity: ::core::option::Option<super::Celebrity>,
         /// Recognition confidence. Range [0, 1].
-        #[prost(float, tag="2")]
+        #[prost(float, tag = "2")]
         pub confidence: f32,
     }
 }
@@ -387,7 +389,7 @@ pub mod celebrity_track {
 pub struct CelebrityRecognitionAnnotation {
     /// The tracks detected from the input video, including recognized celebrities
     /// and other detected faces in the video.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub celebrity_tracks: ::prost::alloc::vec::Vec<CelebrityTrack>,
 }
 /// A generic detected landmark represented by name in string format and a 2D
@@ -395,31 +397,31 @@ pub struct CelebrityRecognitionAnnotation {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DetectedLandmark {
     /// The name of this landmark, for example, left_hand, right_shoulder.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The 2D point of the detected landmark using the normalized image
     /// coordindate system. The normalized coordinates have the range from 0 to 1.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub point: ::core::option::Option<NormalizedVertex>,
     /// The confidence score of the detected landmark. Range [0, 1].
-    #[prost(float, tag="3")]
+    #[prost(float, tag = "3")]
     pub confidence: f32,
 }
 /// Face detection annotation.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FaceDetectionAnnotation {
     /// The face tracks with attributes.
-    #[prost(message, repeated, tag="3")]
+    #[prost(message, repeated, tag = "3")]
     pub tracks: ::prost::alloc::vec::Vec<Track>,
     /// The thumbnail of a person's face.
-    #[prost(bytes="vec", tag="4")]
+    #[prost(bytes = "vec", tag = "4")]
     pub thumbnail: ::prost::alloc::vec::Vec<u8>,
 }
 /// Person detection annotation per video.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PersonDetectionAnnotation {
     /// The detected tracks of a person.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub tracks: ::prost::alloc::vec::Vec<Track>,
 }
 /// Annotation results for a single video.
@@ -427,14 +429,14 @@ pub struct PersonDetectionAnnotation {
 pub struct VideoAnnotationResults {
     /// Video file location in
     /// [Cloud Storage](<https://cloud.google.com/storage/>).
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub input_uri: ::prost::alloc::string::String,
     /// Video segment on which the annotation is run.
-    #[prost(message, optional, tag="10")]
+    #[prost(message, optional, tag = "10")]
     pub segment: ::core::option::Option<VideoSegment>,
     /// Topical label annotations on video level or user-specified segment level.
     /// There is exactly one element for each unique label.
-    #[prost(message, repeated, tag="2")]
+    #[prost(message, repeated, tag = "2")]
     pub segment_label_annotations: ::prost::alloc::vec::Vec<LabelAnnotation>,
     /// Presence label annotations on video level or user-specified segment level.
     /// There is exactly one element for each unique label. Compared to the
@@ -442,55 +444,61 @@ pub struct VideoAnnotationResults {
     /// fine-grained, segment-level labels detected in video content and is made
     /// available only when the client sets `LabelDetectionConfig.model` to
     /// "builtin/latest" in the request.
-    #[prost(message, repeated, tag="23")]
+    #[prost(message, repeated, tag = "23")]
     pub segment_presence_label_annotations: ::prost::alloc::vec::Vec<LabelAnnotation>,
     /// Topical label annotations on shot level.
     /// There is exactly one element for each unique label.
-    #[prost(message, repeated, tag="3")]
+    #[prost(message, repeated, tag = "3")]
     pub shot_label_annotations: ::prost::alloc::vec::Vec<LabelAnnotation>,
     /// Presence label annotations on shot level. There is exactly one element for
     /// each unique label. Compared to the existing topical
     /// `shot_label_annotations`, this field presents more fine-grained, shot-level
     /// labels detected in video content and is made available only when the client
     /// sets `LabelDetectionConfig.model` to "builtin/latest" in the request.
-    #[prost(message, repeated, tag="24")]
+    #[prost(message, repeated, tag = "24")]
     pub shot_presence_label_annotations: ::prost::alloc::vec::Vec<LabelAnnotation>,
     /// Label annotations on frame level.
     /// There is exactly one element for each unique label.
-    #[prost(message, repeated, tag="4")]
+    #[prost(message, repeated, tag = "4")]
     pub frame_label_annotations: ::prost::alloc::vec::Vec<LabelAnnotation>,
     /// Face detection annotations.
-    #[prost(message, repeated, tag="13")]
+    #[prost(message, repeated, tag = "13")]
     pub face_detection_annotations: ::prost::alloc::vec::Vec<FaceDetectionAnnotation>,
     /// Shot annotations. Each shot is represented as a video segment.
-    #[prost(message, repeated, tag="6")]
+    #[prost(message, repeated, tag = "6")]
     pub shot_annotations: ::prost::alloc::vec::Vec<VideoSegment>,
     /// Explicit content annotation.
-    #[prost(message, optional, tag="7")]
+    #[prost(message, optional, tag = "7")]
     pub explicit_annotation: ::core::option::Option<ExplicitContentAnnotation>,
     /// Speech transcription.
-    #[prost(message, repeated, tag="11")]
+    #[prost(message, repeated, tag = "11")]
     pub speech_transcriptions: ::prost::alloc::vec::Vec<SpeechTranscription>,
     /// OCR text detection and tracking.
     /// Annotations for list of detected text snippets. Each will have list of
     /// frame information associated with it.
-    #[prost(message, repeated, tag="12")]
+    #[prost(message, repeated, tag = "12")]
     pub text_annotations: ::prost::alloc::vec::Vec<TextAnnotation>,
     /// Annotations for list of objects detected and tracked in video.
-    #[prost(message, repeated, tag="14")]
+    #[prost(message, repeated, tag = "14")]
     pub object_annotations: ::prost::alloc::vec::Vec<ObjectTrackingAnnotation>,
     /// Annotations for list of logos detected, tracked and recognized in video.
-    #[prost(message, repeated, tag="19")]
-    pub logo_recognition_annotations: ::prost::alloc::vec::Vec<LogoRecognitionAnnotation>,
+    #[prost(message, repeated, tag = "19")]
+    pub logo_recognition_annotations: ::prost::alloc::vec::Vec<
+        LogoRecognitionAnnotation,
+    >,
     /// Person detection annotations.
-    #[prost(message, repeated, tag="20")]
-    pub person_detection_annotations: ::prost::alloc::vec::Vec<PersonDetectionAnnotation>,
+    #[prost(message, repeated, tag = "20")]
+    pub person_detection_annotations: ::prost::alloc::vec::Vec<
+        PersonDetectionAnnotation,
+    >,
     /// Celebrity recognition annotations.
-    #[prost(message, optional, tag="21")]
-    pub celebrity_recognition_annotations: ::core::option::Option<CelebrityRecognitionAnnotation>,
+    #[prost(message, optional, tag = "21")]
+    pub celebrity_recognition_annotations: ::core::option::Option<
+        CelebrityRecognitionAnnotation,
+    >,
     /// If set, indicates an error. Note that for a single `AnnotateVideoRequest`
     /// some videos may succeed and some may fail.
-    #[prost(message, optional, tag="9")]
+    #[prost(message, optional, tag = "9")]
     pub error: ::core::option::Option<super::super::super::rpc::Status>,
 }
 /// Video annotation response. Included in the `response`
@@ -499,7 +507,7 @@ pub struct VideoAnnotationResults {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnnotateVideoResponse {
     /// Annotation results for all videos specified in `AnnotateVideoRequest`.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub annotation_results: ::prost::alloc::vec::Vec<VideoAnnotationResults>,
 }
 /// Annotation progress for a single video.
@@ -507,25 +515,25 @@ pub struct AnnotateVideoResponse {
 pub struct VideoAnnotationProgress {
     /// Video file location in
     /// [Cloud Storage](<https://cloud.google.com/storage/>).
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub input_uri: ::prost::alloc::string::String,
     /// Approximate percentage processed thus far. Guaranteed to be
     /// 100 when fully processed.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub progress_percent: i32,
     /// Time when the request was received.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Time of the most recent update.
-    #[prost(message, optional, tag="4")]
+    #[prost(message, optional, tag = "4")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Specifies which feature is being tracked if the request contains more than
     /// one feature.
-    #[prost(enumeration="Feature", tag="5")]
+    #[prost(enumeration = "Feature", tag = "5")]
     pub feature: i32,
     /// Specifies which segment is being tracked if the request contains more than
     /// one segment.
-    #[prost(message, optional, tag="6")]
+    #[prost(message, optional, tag = "6")]
     pub segment: ::core::option::Option<VideoSegment>,
 }
 /// Video annotation progress. Included in the `metadata`
@@ -534,7 +542,7 @@ pub struct VideoAnnotationProgress {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnnotateVideoProgress {
     /// Progress metadata for all videos specified in `AnnotateVideoRequest`.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub annotation_progress: ::prost::alloc::vec::Vec<VideoAnnotationProgress>,
 }
 /// Config for SPEECH_TRANSCRIPTION.
@@ -545,23 +553,23 @@ pub struct SpeechTranscriptionConfig {
     /// Example: "en-US".
     /// See [Language Support](<https://cloud.google.com/speech/docs/languages>)
     /// for a list of the currently supported language codes.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub language_code: ::prost::alloc::string::String,
     /// Optional. Maximum number of recognition hypotheses to be returned.
     /// Specifically, the maximum number of `SpeechRecognitionAlternative` messages
     /// within each `SpeechTranscription`. The server may return fewer than
     /// `max_alternatives`. Valid values are `0`-`30`. A value of `0` or `1` will
     /// return a maximum of one. If omitted, will return a maximum of one.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub max_alternatives: i32,
     /// Optional. If set to `true`, the server will attempt to filter out
     /// profanities, replacing all but the initial character in each filtered word
     /// with asterisks, e.g. "f***". If set to `false` or omitted, profanities
     /// won't be filtered out.
-    #[prost(bool, tag="3")]
+    #[prost(bool, tag = "3")]
     pub filter_profanity: bool,
     /// Optional. A means to provide context to assist the speech recognition.
-    #[prost(message, repeated, tag="4")]
+    #[prost(message, repeated, tag = "4")]
     pub speech_contexts: ::prost::alloc::vec::Vec<SpeechContext>,
     /// Optional. If 'true', adds punctuation to recognition result hypotheses.
     /// This feature is only available in select languages. Setting this for
@@ -569,11 +577,11 @@ pub struct SpeechTranscriptionConfig {
     /// does not add punctuation to result hypotheses. NOTE: "This is currently
     /// offered as an experimental service, complimentary to all users. In the
     /// future this may be exclusively available as a premium feature."
-    #[prost(bool, tag="5")]
+    #[prost(bool, tag = "5")]
     pub enable_automatic_punctuation: bool,
     /// Optional. For file formats, such as MXF or MKV, supporting multiple audio
     /// tracks, specify up to two tracks. Default: track 0.
-    #[prost(int32, repeated, packed="false", tag="6")]
+    #[prost(int32, repeated, packed = "false", tag = "6")]
     pub audio_tracks: ::prost::alloc::vec::Vec<i32>,
     /// Optional. If 'true', enables speaker detection for each recognized word in
     /// the top alternative of the recognition result using a speaker_tag provided
@@ -582,17 +590,17 @@ pub struct SpeechTranscriptionConfig {
     /// audio for the top alternative in every consecutive response.
     /// This is done in order to improve our speaker tags as our models learn to
     /// identify the speakers in the conversation over time.
-    #[prost(bool, tag="7")]
+    #[prost(bool, tag = "7")]
     pub enable_speaker_diarization: bool,
     /// Optional. If set, specifies the estimated number of speakers in the
     /// conversation. If not set, defaults to '2'. Ignored unless
     /// enable_speaker_diarization is set to true.
-    #[prost(int32, tag="8")]
+    #[prost(int32, tag = "8")]
     pub diarization_speaker_count: i32,
     /// Optional. If `true`, the top result includes a list of words and the
     /// confidence for those words. If `false`, no word-level confidence
     /// information is returned. The default is `false`.
-    #[prost(bool, tag="9")]
+    #[prost(bool, tag = "9")]
     pub enable_word_confidence: bool,
 }
 /// Provides "hints" to the speech recognizer to favor specific words and phrases
@@ -605,7 +613,7 @@ pub struct SpeechContext {
     /// specific commands are typically spoken by the user. This can also be used
     /// to add additional words to the vocabulary of the recognizer. See
     /// [usage limits](<https://cloud.google.com/speech/limits#content>).
-    #[prost(string, repeated, tag="1")]
+    #[prost(string, repeated, tag = "1")]
     pub phrases: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// A speech recognition result corresponding to a portion of the audio.
@@ -615,19 +623,19 @@ pub struct SpeechTranscription {
     /// in `max_alternatives`).  These alternatives are ordered in terms of
     /// accuracy, with the top (first) alternative being the most probable, as
     /// ranked by the recognizer.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub alternatives: ::prost::alloc::vec::Vec<SpeechRecognitionAlternative>,
     /// Output only. The \[BCP-47\](<https://www.rfc-editor.org/rfc/bcp/bcp47.txt>)
     /// language tag of the language in this result. This language code was
     /// detected to have the most likelihood of being spoken in the audio.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub language_code: ::prost::alloc::string::String,
 }
 /// Alternative hypotheses (a.k.a. n-best list).
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SpeechRecognitionAlternative {
     /// Transcript text representing the words that the user spoke.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub transcript: ::prost::alloc::string::String,
     /// Output only. The confidence estimate between 0.0 and 1.0. A higher number
     /// indicates an estimated greater likelihood that the recognized words are
@@ -635,12 +643,12 @@ pub struct SpeechRecognitionAlternative {
     /// This field is not guaranteed to be accurate and users should not rely on it
     /// to be always provided.
     /// The default of 0.0 is a sentinel value indicating `confidence` was not set.
-    #[prost(float, tag="2")]
+    #[prost(float, tag = "2")]
     pub confidence: f32,
     /// Output only. A list of word-specific information for each recognized word.
     /// Note: When `enable_speaker_diarization` is set to true, you will see all
     /// the words from the beginning of the audio.
-    #[prost(message, repeated, tag="3")]
+    #[prost(message, repeated, tag = "3")]
     pub words: ::prost::alloc::vec::Vec<WordInfo>,
 }
 /// Word-specific information for recognized words. Word information is only
@@ -652,16 +660,16 @@ pub struct WordInfo {
     /// corresponding to the start of the spoken word. This field is only set if
     /// `enable_word_time_offsets=true` and only in the top hypothesis. This is an
     /// experimental feature and the accuracy of the time offset can vary.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub start_time: ::core::option::Option<::prost_types::Duration>,
     /// Time offset relative to the beginning of the audio, and
     /// corresponding to the end of the spoken word. This field is only set if
     /// `enable_word_time_offsets=true` and only in the top hypothesis. This is an
     /// experimental feature and the accuracy of the time offset can vary.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub end_time: ::core::option::Option<::prost_types::Duration>,
     /// The word corresponding to this set of information.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub word: ::prost::alloc::string::String,
     /// Output only. The confidence estimate between 0.0 and 1.0. A higher number
     /// indicates an estimated greater likelihood that the recognized words are
@@ -669,13 +677,13 @@ pub struct WordInfo {
     /// This field is not guaranteed to be accurate and users should not rely on it
     /// to be always provided.
     /// The default of 0.0 is a sentinel value indicating `confidence` was not set.
-    #[prost(float, tag="4")]
+    #[prost(float, tag = "4")]
     pub confidence: f32,
     /// Output only. A distinct integer value is assigned for every speaker within
     /// the audio. This field specifies which one of those speakers was detected to
     /// have spoken this word. Value ranges from 1 up to diarization_speaker_count,
     /// and is only set if speaker diarization is enabled.
-    #[prost(int32, tag="5")]
+    #[prost(int32, tag = "5")]
     pub speaker_tag: i32,
 }
 /// A vertex represents a 2D point in the image.
@@ -684,10 +692,10 @@ pub struct WordInfo {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NormalizedVertex {
     /// X coordinate.
-    #[prost(float, tag="1")]
+    #[prost(float, tag = "1")]
     pub x: f32,
     /// Y coordinate.
-    #[prost(float, tag="2")]
+    #[prost(float, tag = "2")]
     pub y: f32,
 }
 /// Normalized bounding polygon for text (that might not be aligned with axis).
@@ -710,21 +718,21 @@ pub struct NormalizedVertex {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NormalizedBoundingPoly {
     /// Normalized vertices of the bounding polygon.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub vertices: ::prost::alloc::vec::Vec<NormalizedVertex>,
 }
 /// Video segment level annotation results for text detection.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TextSegment {
     /// Video segment where a text snippet was detected.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub segment: ::core::option::Option<VideoSegment>,
     /// Confidence for the track of detected text. It is calculated as the highest
     /// over all frames where OCR detected text appears.
-    #[prost(float, tag="2")]
+    #[prost(float, tag = "2")]
     pub confidence: f32,
     /// Information related to the frames where OCR detected text appears.
-    #[prost(message, repeated, tag="3")]
+    #[prost(message, repeated, tag = "3")]
     pub frames: ::prost::alloc::vec::Vec<TextFrame>,
 }
 /// Video frame level annotation results for text annotation (OCR).
@@ -733,10 +741,10 @@ pub struct TextSegment {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TextFrame {
     /// Bounding polygon of the detected text for this frame.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub rotated_bounding_box: ::core::option::Option<NormalizedBoundingPoly>,
     /// Timestamp of this frame.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub time_offset: ::core::option::Option<::prost_types::Duration>,
 }
 /// Annotations related to one detected OCR text snippet. This will contain the
@@ -745,10 +753,10 @@ pub struct TextFrame {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TextAnnotation {
     /// The detected text.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub text: ::prost::alloc::string::String,
     /// All video segments where OCR detected text appears.
-    #[prost(message, repeated, tag="2")]
+    #[prost(message, repeated, tag = "2")]
     pub segments: ::prost::alloc::vec::Vec<TextSegment>,
 }
 /// Video frame level annotations for object detection and tracking. This field
@@ -756,30 +764,30 @@ pub struct TextAnnotation {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ObjectTrackingFrame {
     /// The normalized bounding box location of this object track for the frame.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub normalized_bounding_box: ::core::option::Option<NormalizedBoundingBox>,
     /// The timestamp of the frame in microseconds.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub time_offset: ::core::option::Option<::prost_types::Duration>,
 }
 /// Annotations corresponding to one tracked object.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ObjectTrackingAnnotation {
     /// Entity to specify the object category that this track is labeled as.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub entity: ::core::option::Option<Entity>,
     /// Object category's labeling confidence of this track.
-    #[prost(float, tag="4")]
+    #[prost(float, tag = "4")]
     pub confidence: f32,
     /// Information corresponding to all frames where this object track appears.
     /// Non-streaming batch mode: it may be one or multiple ObjectTrackingFrame
     /// messages in frames.
     /// Streaming mode: it can only be one ObjectTrackingFrame message in frames.
-    #[prost(message, repeated, tag="2")]
+    #[prost(message, repeated, tag = "2")]
     pub frames: ::prost::alloc::vec::Vec<ObjectTrackingFrame>,
     /// Different representation of tracking info in non-streaming batch
     /// and streaming modes.
-    #[prost(oneof="object_tracking_annotation::TrackInfo", tags="3, 5")]
+    #[prost(oneof = "object_tracking_annotation::TrackInfo", tags = "3, 5")]
     pub track_info: ::core::option::Option<object_tracking_annotation::TrackInfo>,
 }
 /// Nested message and enum types in `ObjectTrackingAnnotation`.
@@ -790,7 +798,7 @@ pub mod object_tracking_annotation {
     pub enum TrackInfo {
         /// Non-streaming batch mode ONLY.
         /// Each object track corresponds to one video segment where it appears.
-        #[prost(message, tag="3")]
+        #[prost(message, tag = "3")]
         Segment(super::VideoSegment),
         /// Streaming mode ONLY.
         /// In streaming mode, we do not know the end time of a tracked object
@@ -798,7 +806,7 @@ pub mod object_tracking_annotation {
         /// Instead, we provide a unique identifiable integer track_id so that
         /// the customers can correlate the results of the ongoing
         /// ObjectTrackAnnotation of the same track_id over time.
-        #[prost(int64, tag="5")]
+        #[prost(int64, tag = "5")]
         TrackId(i64),
     }
 }
@@ -807,15 +815,15 @@ pub mod object_tracking_annotation {
 pub struct LogoRecognitionAnnotation {
     /// Entity category information to specify the logo class that all the logo
     /// tracks within this LogoRecognitionAnnotation are recognized as.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub entity: ::core::option::Option<Entity>,
     /// All logo tracks where the recognized logo appears. Each track corresponds
     /// to one logo instance appearing in consecutive frames.
-    #[prost(message, repeated, tag="2")]
+    #[prost(message, repeated, tag = "2")]
     pub tracks: ::prost::alloc::vec::Vec<Track>,
     /// All video segments where the recognized logo appears. There might be
     /// multiple instances of the same logo class appearing in one VideoSegment.
-    #[prost(message, repeated, tag="3")]
+    #[prost(message, repeated, tag = "3")]
     pub segments: ::prost::alloc::vec::Vec<VideoSegment>,
 }
 /// The top-level message sent by the client for the `StreamingAnnotateVideo`
@@ -826,8 +834,10 @@ pub struct LogoRecognitionAnnotation {
 pub struct StreamingAnnotateVideoRequest {
     /// *Required* The streaming request, which is either a streaming config or
     /// video content.
-    #[prost(oneof="streaming_annotate_video_request::StreamingRequest", tags="1, 2")]
-    pub streaming_request: ::core::option::Option<streaming_annotate_video_request::StreamingRequest>,
+    #[prost(oneof = "streaming_annotate_video_request::StreamingRequest", tags = "1, 2")]
+    pub streaming_request: ::core::option::Option<
+        streaming_annotate_video_request::StreamingRequest,
+    >,
 }
 /// Nested message and enum types in `StreamingAnnotateVideoRequest`.
 pub mod streaming_annotate_video_request {
@@ -838,7 +848,7 @@ pub mod streaming_annotate_video_request {
         /// Provides information to the annotator, specifing how to process the
         /// request. The first `AnnotateStreamingVideoRequest` message must only
         /// contain a `video_config` message.
-        #[prost(message, tag="1")]
+        #[prost(message, tag = "1")]
         VideoConfig(super::StreamingVideoConfig),
         /// The video data to be annotated. Chunks of video data are sequentially
         /// sent in `StreamingAnnotateVideoRequest` messages. Except the initial
@@ -847,7 +857,7 @@ pub mod streaming_annotate_video_request {
         /// messages must only contain `input_content` field.
         /// Note: as with all bytes fields, protobuffers use a pure binary
         /// representation (not base64).
-        #[prost(bytes, tag="2")]
+        #[prost(bytes, tag = "2")]
         InputContent(::prost::alloc::vec::Vec<u8>),
     }
 }
@@ -856,14 +866,19 @@ pub mod streaming_annotate_video_request {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StreamingVideoConfig {
     /// Requested annotation feature.
-    #[prost(enumeration="StreamingFeature", tag="1")]
+    #[prost(enumeration = "StreamingFeature", tag = "1")]
     pub feature: i32,
     /// Streaming storage option. By default: storage is disabled.
-    #[prost(message, optional, tag="30")]
+    #[prost(message, optional, tag = "30")]
     pub storage_config: ::core::option::Option<StreamingStorageConfig>,
     /// Config for requested annotation feature.
-    #[prost(oneof="streaming_video_config::StreamingConfig", tags="2, 3, 4, 5, 23, 21, 22")]
-    pub streaming_config: ::core::option::Option<streaming_video_config::StreamingConfig>,
+    #[prost(
+        oneof = "streaming_video_config::StreamingConfig",
+        tags = "2, 3, 4, 5, 23, 21, 22"
+    )]
+    pub streaming_config: ::core::option::Option<
+        streaming_video_config::StreamingConfig,
+    >,
 }
 /// Nested message and enum types in `StreamingVideoConfig`.
 pub mod streaming_video_config {
@@ -871,25 +886,25 @@ pub mod streaming_video_config {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum StreamingConfig {
         /// Config for STREAMING_SHOT_CHANGE_DETECTION.
-        #[prost(message, tag="2")]
+        #[prost(message, tag = "2")]
         ShotChangeDetectionConfig(super::StreamingShotChangeDetectionConfig),
         /// Config for STREAMING_LABEL_DETECTION.
-        #[prost(message, tag="3")]
+        #[prost(message, tag = "3")]
         LabelDetectionConfig(super::StreamingLabelDetectionConfig),
         /// Config for STREAMING_EXPLICIT_CONTENT_DETECTION.
-        #[prost(message, tag="4")]
+        #[prost(message, tag = "4")]
         ExplicitContentDetectionConfig(super::StreamingExplicitContentDetectionConfig),
         /// Config for STREAMING_OBJECT_TRACKING.
-        #[prost(message, tag="5")]
+        #[prost(message, tag = "5")]
         ObjectTrackingConfig(super::StreamingObjectTrackingConfig),
         /// Config for STREAMING_AUTOML_ACTION_RECOGNITION.
-        #[prost(message, tag="23")]
+        #[prost(message, tag = "23")]
         AutomlActionRecognitionConfig(super::StreamingAutomlActionRecognitionConfig),
         /// Config for STREAMING_AUTOML_CLASSIFICATION.
-        #[prost(message, tag="21")]
+        #[prost(message, tag = "21")]
         AutomlClassificationConfig(super::StreamingAutomlClassificationConfig),
         /// Config for STREAMING_AUTOML_OBJECT_TRACKING.
-        #[prost(message, tag="22")]
+        #[prost(message, tag = "22")]
         AutomlObjectTrackingConfig(super::StreamingAutomlObjectTrackingConfig),
     }
 }
@@ -900,16 +915,16 @@ pub mod streaming_video_config {
 pub struct StreamingAnnotateVideoResponse {
     /// If set, returns a \[google.rpc.Status][google.rpc.Status\] message that
     /// specifies the error for the operation.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub error: ::core::option::Option<super::super::super::rpc::Status>,
     /// Streaming annotation results.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub annotation_results: ::core::option::Option<StreamingVideoAnnotationResults>,
     /// Google Cloud Storage(GCS) URI that stores annotation results of one
     /// streaming session in JSON format.
     /// It is the annotation_result_storage_directory
     /// from the request followed by '/cloud_project_number-session_id'.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub annotation_results_uri: ::prost::alloc::string::String,
 }
 /// Streaming annotation results corresponding to a portion of the video
@@ -917,45 +932,42 @@ pub struct StreamingAnnotateVideoResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StreamingVideoAnnotationResults {
     /// Shot annotation results. Each shot is represented as a video segment.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub shot_annotations: ::prost::alloc::vec::Vec<VideoSegment>,
     /// Label annotation results.
-    #[prost(message, repeated, tag="2")]
+    #[prost(message, repeated, tag = "2")]
     pub label_annotations: ::prost::alloc::vec::Vec<LabelAnnotation>,
     /// Explicit content annotation results.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub explicit_annotation: ::core::option::Option<ExplicitContentAnnotation>,
     /// Object tracking results.
-    #[prost(message, repeated, tag="4")]
+    #[prost(message, repeated, tag = "4")]
     pub object_annotations: ::prost::alloc::vec::Vec<ObjectTrackingAnnotation>,
 }
 /// Config for STREAMING_SHOT_CHANGE_DETECTION.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct StreamingShotChangeDetectionConfig {
-}
+pub struct StreamingShotChangeDetectionConfig {}
 /// Config for STREAMING_LABEL_DETECTION.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StreamingLabelDetectionConfig {
     /// Whether the video has been captured from a stationary (i.e. non-moving)
     /// camera. When set to true, might improve detection accuracy for moving
     /// objects. Default: false.
-    #[prost(bool, tag="1")]
+    #[prost(bool, tag = "1")]
     pub stationary_camera: bool,
 }
 /// Config for STREAMING_EXPLICIT_CONTENT_DETECTION.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct StreamingExplicitContentDetectionConfig {
-}
+pub struct StreamingExplicitContentDetectionConfig {}
 /// Config for STREAMING_OBJECT_TRACKING.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct StreamingObjectTrackingConfig {
-}
+pub struct StreamingObjectTrackingConfig {}
 /// Config for STREAMING_AUTOML_ACTION_RECOGNITION.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StreamingAutomlActionRecognitionConfig {
     /// Resource name of AutoML model.
     /// Format: `projects/{project_id}/locations/{location_id}/models/{model_id}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub model_name: ::prost::alloc::string::String,
 }
 /// Config for STREAMING_AUTOML_CLASSIFICATION.
@@ -964,7 +976,7 @@ pub struct StreamingAutomlClassificationConfig {
     /// Resource name of AutoML model.
     /// Format:
     /// `projects/{project_number}/locations/{location_id}/models/{model_id}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub model_name: ::prost::alloc::string::String,
 }
 /// Config for STREAMING_AUTOML_OBJECT_TRACKING.
@@ -972,14 +984,14 @@ pub struct StreamingAutomlClassificationConfig {
 pub struct StreamingAutomlObjectTrackingConfig {
     /// Resource name of AutoML model.
     /// Format: `projects/{project_id}/locations/{location_id}/models/{model_id}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub model_name: ::prost::alloc::string::String,
 }
 /// Config for streaming storage option.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StreamingStorageConfig {
     /// Enable streaming storage. Default: false.
-    #[prost(bool, tag="1")]
+    #[prost(bool, tag = "1")]
     pub enable_storage_annotation_result: bool,
     /// Cloud Storage URI to store all annotation results for one client. Client
     /// should specify this field as the top-level storage directory. Annotation
@@ -991,7 +1003,7 @@ pub struct StreamingStorageConfig {
     /// bucket created by client and bucket permission shall also be configured
     /// properly. `object-id` can be arbitrary string that make sense to client.
     /// Other URI formats will return error and cause Cloud Storage write failure.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub annotation_result_storage_directory: ::prost::alloc::string::String,
 }
 /// Label detection mode.
@@ -1084,12 +1096,22 @@ impl StreamingFeature {
         match self {
             StreamingFeature::Unspecified => "STREAMING_FEATURE_UNSPECIFIED",
             StreamingFeature::StreamingLabelDetection => "STREAMING_LABEL_DETECTION",
-            StreamingFeature::StreamingShotChangeDetection => "STREAMING_SHOT_CHANGE_DETECTION",
-            StreamingFeature::StreamingExplicitContentDetection => "STREAMING_EXPLICIT_CONTENT_DETECTION",
+            StreamingFeature::StreamingShotChangeDetection => {
+                "STREAMING_SHOT_CHANGE_DETECTION"
+            }
+            StreamingFeature::StreamingExplicitContentDetection => {
+                "STREAMING_EXPLICIT_CONTENT_DETECTION"
+            }
             StreamingFeature::StreamingObjectTracking => "STREAMING_OBJECT_TRACKING",
-            StreamingFeature::StreamingAutomlActionRecognition => "STREAMING_AUTOML_ACTION_RECOGNITION",
-            StreamingFeature::StreamingAutomlClassification => "STREAMING_AUTOML_CLASSIFICATION",
-            StreamingFeature::StreamingAutomlObjectTracking => "STREAMING_AUTOML_OBJECT_TRACKING",
+            StreamingFeature::StreamingAutomlActionRecognition => {
+                "STREAMING_AUTOML_ACTION_RECOGNITION"
+            }
+            StreamingFeature::StreamingAutomlClassification => {
+                "STREAMING_AUTOML_CLASSIFICATION"
+            }
+            StreamingFeature::StreamingAutomlObjectTracking => {
+                "STREAMING_AUTOML_OBJECT_TRACKING"
+            }
         }
     }
 }

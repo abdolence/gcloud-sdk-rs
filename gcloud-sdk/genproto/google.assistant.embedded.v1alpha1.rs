@@ -2,13 +2,13 @@
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConverseConfig {
     /// *Required* Specifies how to process the subsequent incoming audio.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub audio_in_config: ::core::option::Option<AudioInConfig>,
     /// *Required* Specifies how to format the audio that will be returned.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub audio_out_config: ::core::option::Option<AudioOutConfig>,
     /// *Required* Represents the current dialog state.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub converse_state: ::core::option::Option<ConverseState>,
 }
 /// Specifies how to process the `audio_in` data that will be provided in
@@ -18,21 +18,31 @@ pub struct ConverseConfig {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AudioInConfig {
     /// *Required* Encoding of audio data sent in all `audio_in` messages.
-    #[prost(enumeration="audio_in_config::Encoding", tag="1")]
+    #[prost(enumeration = "audio_in_config::Encoding", tag = "1")]
     pub encoding: i32,
     /// *Required* Sample rate (in Hertz) of the audio data sent in all `audio_in`
     /// messages. Valid values are from 16000-24000, but 16000 is optimal.
     /// For best results, set the sampling rate of the audio source to 16000 Hz.
     /// If that's not possible, use the native sample rate of the audio source
     /// (instead of re-sampling).
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub sample_rate_hertz: i32,
 }
 /// Nested message and enum types in `AudioInConfig`.
 pub mod audio_in_config {
     /// Audio encoding of the data sent in the audio message.
     /// Audio must be one-channel (mono). The only language supported is "en-US".
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum Encoding {
         /// Not specified. Will return result \[google.rpc.Code.INVALID_ARGUMENT][\].
@@ -69,22 +79,32 @@ pub mod audio_in_config {
 pub struct AudioOutConfig {
     /// *Required* The encoding of audio data to be returned in all `audio_out`
     /// messages.
-    #[prost(enumeration="audio_out_config::Encoding", tag="1")]
+    #[prost(enumeration = "audio_out_config::Encoding", tag = "1")]
     pub encoding: i32,
     /// *Required* The sample rate in Hertz of the audio data returned in
     /// `audio_out` messages. Valid values are: 16000-24000.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub sample_rate_hertz: i32,
     /// *Required* Current volume setting of the device's audio output.
     /// Valid values are 1 to 100 (corresponding to 1% to 100%).
-    #[prost(int32, tag="3")]
+    #[prost(int32, tag = "3")]
     pub volume_percentage: i32,
 }
 /// Nested message and enum types in `AudioOutConfig`.
 pub mod audio_out_config {
     /// Audio encoding of the data returned in the audio message. All encodings are
     /// raw audio bytes with no header, except as indicated below.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum Encoding {
         /// Not specified. Will return result \[google.rpc.Code.INVALID_ARGUMENT][\].
@@ -122,7 +142,7 @@ pub struct ConverseState {
     /// `ConverseResponse`. If there was a prior `ConverseResponse`, do not omit
     /// this field; doing so will end that conversation (and this new request will
     /// start a new conversation).
-    #[prost(bytes="vec", tag="1")]
+    #[prost(bytes = "vec", tag = "1")]
     pub conversation_state: ::prost::alloc::vec::Vec<u8>,
 }
 /// The audio containing the assistant's response to the query. Sequential chunks
@@ -132,29 +152,29 @@ pub struct AudioOut {
     /// *Output-only* The audio data containing the assistant's response to the
     /// query. Sequential chunks of audio data are received in sequential
     /// `ConverseResponse` messages.
-    #[prost(bytes="vec", tag="1")]
+    #[prost(bytes = "vec", tag = "1")]
     pub audio_data: ::prost::alloc::vec::Vec<u8>,
 }
 /// The semantic result for the user's spoken query.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConverseResult {
     /// *Output-only* The recognized transcript of what the user said.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub spoken_request_text: ::prost::alloc::string::String,
     /// *Output-only* The text of the assistant's spoken response. This is only
     /// returned for an IFTTT action.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub spoken_response_text: ::prost::alloc::string::String,
     /// *Output-only* State information for subsequent `ConverseRequest`. This
     /// value should be saved in the client and returned in the
     /// `conversation_state` with the next `ConverseRequest`. (The client does not
     /// need to interpret or otherwise use this value.) There is no need to save
     /// this information across device restarts.
-    #[prost(bytes="vec", tag="3")]
+    #[prost(bytes = "vec", tag = "3")]
     pub conversation_state: ::prost::alloc::vec::Vec<u8>,
     /// *Output-only* Specifies the mode of the microphone after this `Converse`
     /// RPC is processed.
-    #[prost(enumeration="converse_result::MicrophoneMode", tag="4")]
+    #[prost(enumeration = "converse_result::MicrophoneMode", tag = "4")]
     pub microphone_mode: i32,
     /// *Output-only* Updated volume level. The value will be 0 or omitted
     /// (indicating no change) unless a voice command such as "Increase the volume"
@@ -165,13 +185,23 @@ pub struct ConverseResult {
     /// supply it in the `AudioOutConfig` of the next `ConverseRequest`. (Some
     /// clients may also implement other ways to allow the current volume level to
     /// be changed, for example, by providing a knob that the user can turn.)
-    #[prost(int32, tag="5")]
+    #[prost(int32, tag = "5")]
     pub volume_percentage: i32,
 }
 /// Nested message and enum types in `ConverseResult`.
 pub mod converse_result {
     /// Possible states of the microphone after a `Converse` RPC completes.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum MicrophoneMode {
         /// No mode specified.
@@ -206,7 +236,7 @@ pub mod converse_result {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConverseRequest {
     /// Exactly one of these fields must be specified in each `ConverseRequest`.
-    #[prost(oneof="converse_request::ConverseRequest", tags="1, 2")]
+    #[prost(oneof = "converse_request::ConverseRequest", tags = "1, 2")]
     pub converse_request: ::core::option::Option<converse_request::ConverseRequest>,
 }
 /// Nested message and enum types in `ConverseRequest`.
@@ -217,7 +247,7 @@ pub mod converse_request {
         /// The `config` message provides information to the recognizer that
         /// specifies how to process the request.
         /// The first `ConverseRequest` message must contain a `config` message.
-        #[prost(message, tag="1")]
+        #[prost(message, tag = "1")]
         Config(super::ConverseConfig),
         /// The audio data to be recognized. Sequential chunks of audio data are sent
         /// in sequential `ConverseRequest` messages. The first `ConverseRequest`
@@ -227,7 +257,7 @@ pub mod converse_request {
         /// Audio must be sent at approximately real-time (16000 samples per second).
         /// An error will be returned if audio is sent significantly faster or
         /// slower.
-        #[prost(bytes, tag="2")]
+        #[prost(bytes, tag = "2")]
         AudioIn(::prost::alloc::vec::Vec<u8>),
     }
 }
@@ -236,13 +266,23 @@ pub mod converse_request {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConverseResponse {
     /// Exactly one of these fields will be populated in each `ConverseResponse`.
-    #[prost(oneof="converse_response::ConverseResponse", tags="1, 2, 3, 5")]
+    #[prost(oneof = "converse_response::ConverseResponse", tags = "1, 2, 3, 5")]
     pub converse_response: ::core::option::Option<converse_response::ConverseResponse>,
 }
 /// Nested message and enum types in `ConverseResponse`.
 pub mod converse_response {
     /// Indicates the type of event.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum EventType {
         /// No event specified.
@@ -274,16 +314,16 @@ pub mod converse_response {
         /// message that specifies the error for the operation. If an error occurs
         /// during processing, this message will be set and there will be no further
         /// messages sent.
-        #[prost(message, tag="1")]
+        #[prost(message, tag = "1")]
         Error(super::super::super::super::rpc::Status),
         /// *Output-only* Indicates the type of event.
-        #[prost(enumeration="EventType", tag="2")]
+        #[prost(enumeration = "EventType", tag = "2")]
         EventType(i32),
         /// *Output-only* The audio containing the assistant's response to the query.
-        #[prost(message, tag="3")]
+        #[prost(message, tag = "3")]
         AudioOut(super::AudioOut),
         /// *Output-only* The semantic result for the user's spoken query.
-        #[prost(message, tag="5")]
+        #[prost(message, tag = "5")]
         Result(super::ConverseResult),
     }
 }

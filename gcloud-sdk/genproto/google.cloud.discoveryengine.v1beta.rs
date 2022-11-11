@@ -12,7 +12,7 @@ pub struct CustomAttribute {
     /// \[text][google.cloud.discoveryengine.v1beta.CustomAttribute.text\] or
     /// \[numbers][google.cloud.discoveryengine.v1beta.CustomAttribute.numbers\]
     /// should be set. Otherwise, an INVALID_ARGUMENT error is returned.
-    #[prost(string, repeated, tag="1")]
+    #[prost(string, repeated, tag = "1")]
     pub text: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The numerical values of this custom attribute. For example, `[2.3, 15.4]`
     /// when the key is "lengths_cm".
@@ -21,7 +21,7 @@ pub struct CustomAttribute {
     /// \[text][google.cloud.discoveryengine.v1beta.CustomAttribute.text\] or
     /// \[numbers][google.cloud.discoveryengine.v1beta.CustomAttribute.numbers\]
     /// should be set. Otherwise, an INVALID_ARGUMENT error is returned.
-    #[prost(double, repeated, tag="2")]
+    #[prost(double, repeated, tag = "2")]
     pub numbers: ::prost::alloc::vec::Vec<f64>,
 }
 /// Information of an end user.
@@ -38,7 +38,7 @@ pub struct UserInfo {
     ///
     /// The field must be a UTF-8 encoded string with a length limit of 128
     /// characters. Otherwise, an INVALID_ARGUMENT error is returned.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub user_id: ::prost::alloc::string::String,
     /// User agent as included in the HTTP header. Required for getting
     /// \[SearchResponse.sponsored_results][\].
@@ -50,7 +50,7 @@ pub struct UserInfo {
     /// GTM or JavaScript tag in
     /// \[UserEventService.CollectUserEvent][google.cloud.discoveryengine.v1beta.UserEventService.CollectUserEvent\]
     /// or if \[direct_user_request][\] is set.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub user_agent: ::prost::alloc::string::String,
 }
 /// Document captures all raw metadata information of items to be recommended or
@@ -63,29 +63,29 @@ pub struct Document {
     ///
     /// This field must be a UTF-8 encoded string with a length limit of 1024
     /// characters.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Immutable. The identifier of the document.
     ///
     /// Id should conform to \[RFC-1034\](<https://tools.ietf.org/html/rfc1034>)
     /// standard with a length limit of 63 characters.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub id: ::prost::alloc::string::String,
     /// Required. The identifier of the schema located in the same data store.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub schema_id: ::prost::alloc::string::String,
     /// The identifier of the parent document. Currently supports at most two level
     /// document hierarchy.
     ///
     /// Id should conform to \[RFC-1034\](<https://tools.ietf.org/html/rfc1034>)
     /// standard with a length limit of 63 characters.
-    #[prost(string, tag="7")]
+    #[prost(string, tag = "7")]
     pub parent_document_id: ::prost::alloc::string::String,
     /// Data representation. One of
     /// \[struct_data][google.cloud.discoveryengine.v1beta.Document.struct_data\] or
     /// \[json_data][google.cloud.discoveryengine.v1beta.Document.json_data\] should
     /// be provided otherwise an INVALID_ARGUMENT error is thrown.
-    #[prost(oneof="document::Data", tags="4, 5")]
+    #[prost(oneof = "document::Data", tags = "4, 5")]
     pub data: ::core::option::Option<document::Data>,
 }
 /// Nested message and enum types in `Document`.
@@ -98,11 +98,11 @@ pub mod document {
     pub enum Data {
         /// The structured JSON data for the document. It should conform to the
         /// registered \[schema][\] or an INVALID_ARGUMENT error is thrown.
-        #[prost(message, tag="4")]
+        #[prost(message, tag = "4")]
         StructData(::prost_types::Struct),
         /// The JSON string representation of the document. It should conform to the
         /// registered \[schema][\] or an INVALID_ARGUMENT error is thrown.
-        #[prost(string, tag="5")]
+        #[prost(string, tag = "5")]
         JsonData(::prost::alloc::string::String),
     }
 }
@@ -126,7 +126,7 @@ pub struct UserEvent {
     /// Media-related values:
     /// * `media-play`: Start/resume watching a video, playing a song, etc.
     /// * `media-complete`: Finished or stopped midway through a video, song, etc.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub event_type: ::prost::alloc::string::String,
     /// Required. A unique identifier for tracking visitors.
     ///
@@ -145,15 +145,15 @@ pub struct UserEvent {
     /// Analytics [Client
     /// ID](<https://developers.google.com/analytics/devguides/collection/analyticsjs/field-reference#clientId>)
     /// for this field.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub user_pseudo_id: ::prost::alloc::string::String,
     /// Only required for
     /// \[UserEventService.ImportUserEvents][google.cloud.discoveryengine.v1beta.UserEventService.ImportUserEvents\]
     /// method. Timestamp of when the user event happened.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub event_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Information about the end user.
-    #[prost(message, optional, tag="4")]
+    #[prost(message, optional, tag = "4")]
     pub user_info: ::core::option::Option<UserInfo>,
     /// Should set to true if the request is made directly from the end user, in
     /// which case the
@@ -166,7 +166,7 @@ pub struct UserEvent {
     ///
     /// This should not be set when using the JavaScript tag in
     /// \[UserEventService.CollectUserEvent][google.cloud.discoveryengine.v1beta.UserEventService.CollectUserEvent\].
-    #[prost(bool, tag="5")]
+    #[prost(bool, tag = "5")]
     pub direct_user_request: bool,
     /// A unique identifier for tracking a visitor session with a length limit of
     /// 128 bytes. A session is an aggregation of an end user behavior in a time
@@ -177,11 +177,11 @@ pub struct UserEvent {
     /// 2. The session_id should be unique across users, suggest use uuid or add
     /// \[UserEvent.user_pseudo_id][google.cloud.discoveryengine.v1beta.UserEvent.user_pseudo_id\]
     /// as prefix.
-    #[prost(string, tag="6")]
+    #[prost(string, tag = "6")]
     pub session_id: ::prost::alloc::string::String,
     /// Page metadata such as categories and other critical information for certain
     /// event types such as `view-category-page`.
-    #[prost(message, optional, tag="7")]
+    #[prost(message, optional, tag = "7")]
     pub page_info: ::core::option::Option<PageInfo>,
     /// Token to attribute an API response to user action(s) to trigger the event.
     ///
@@ -204,7 +204,7 @@ pub struct UserEvent {
     /// recommendation results, pass \[PredictResponse.attribution_token][\] as a URL
     /// parameter to product K's page. When recording events on product K's page,
     /// log the \[PredictResponse.attribution_token][\] to this field.
-    #[prost(string, tag="8")]
+    #[prost(string, tag = "8")]
     pub attribution_token: ::prost::alloc::string::String,
     /// The filter syntax consists of an expression language for constructing a
     /// predicate from one or more fields of the documents being filtered.
@@ -221,7 +221,7 @@ pub struct UserEvent {
     ///
     /// The value must be a UTF-8 encoded string with a length limit of 1,000
     /// characters. Otherwise, an INVALID_ARGUMENT error is returned.
-    #[prost(string, tag="9")]
+    #[prost(string, tag = "9")]
     pub filter: ::prost::alloc::string::String,
     /// List of Documents associated with this user event.
     ///
@@ -240,33 +240,33 @@ pub struct UserEvent {
     /// with different
     /// \[UserEvent.documents][google.cloud.discoveryengine.v1beta.UserEvent.documents\]
     /// is desired.
-    #[prost(message, repeated, tag="10")]
+    #[prost(message, repeated, tag = "10")]
     pub documents: ::prost::alloc::vec::Vec<DocumentInfo>,
     /// Panel metadata associated with this user event.
-    #[prost(message, optional, tag="11")]
+    #[prost(message, optional, tag = "11")]
     pub panel: ::core::option::Option<PanelInfo>,
     /// Search API details related to the event.
     ///
     /// This field should be set for `search` event.
-    #[prost(message, optional, tag="12")]
+    #[prost(message, optional, tag = "12")]
     pub search_info: ::core::option::Option<SearchInfo>,
     /// CompleteQuery API details related to the event.
     ///
     /// This field should be set for `search` event when autocomplete function is
     /// enabled and the user clicks a suggestion for search.
-    #[prost(message, optional, tag="13")]
+    #[prost(message, optional, tag = "13")]
     pub completion_info: ::core::option::Option<CompletionInfo>,
     /// The transaction metadata (if any) associated with this user event.
-    #[prost(message, optional, tag="14")]
+    #[prost(message, optional, tag = "14")]
     pub transaction_info: ::core::option::Option<TransactionInfo>,
     /// A list of identifiers for the independent experiment groups this user event
     /// belongs to. This is used to distinguish between user events associated with
     /// different experiment setups on the customer end.
-    #[prost(string, repeated, tag="15")]
+    #[prost(string, repeated, tag = "15")]
     pub tag_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The promotion IDs if this is an event associated with promotions.
     /// Currently, this field is restricted to at most one ID.
-    #[prost(string, repeated, tag="16")]
+    #[prost(string, repeated, tag = "16")]
     pub promotion_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Extra user event features to include in the recommendation model.
     /// These attributes must NOT contain data that needs to be parsed or processed
@@ -293,10 +293,13 @@ pub struct UserEvent {
     /// traffic_channel, which is how a user arrives at the site. Users can arrive
     /// at the site by coming to the site directly, coming through Google
     /// search, or in other ways.
-    #[prost(map="string, message", tag="17")]
-    pub attributes: ::std::collections::HashMap<::prost::alloc::string::String, CustomAttribute>,
+    #[prost(map = "string, message", tag = "17")]
+    pub attributes: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        CustomAttribute,
+    >,
     /// Media-specific info.
-    #[prost(message, optional, tag="18")]
+    #[prost(message, optional, tag = "18")]
     pub media_info: ::core::option::Option<MediaInfo>,
 }
 /// Detailed page information.
@@ -312,7 +315,7 @@ pub struct PageInfo {
     ///
     /// When using the client side event reporting with JavaScript pixel and Google
     /// Tag Manager, this value is filled in automatically.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub pageview_id: ::prost::alloc::string::String,
     /// The most specific category associated with a category page.
     ///
@@ -326,21 +329,21 @@ pub struct PageInfo {
     ///
     /// Required for `view-category-page` events. Other event types should not set
     /// this field. Otherwise, an INVALID_ARGUMENT error is returned.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub page_category: ::prost::alloc::string::String,
     /// Complete URL (window.location.href) of the user's current page.
     ///
     /// When using the client side event reporting with JavaScript pixel and Google
     /// Tag Manager, this value is filled in automatically. Maximum length 5,000
     /// characters.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub uri: ::prost::alloc::string::String,
     /// The referrer URL of the current page.
     ///
     /// When using the client side event reporting with JavaScript pixel and Google
     /// Tag Manager, this value is filled in automatically. However, some browser
     /// privacy restrictions may cause this field to be empty.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub referrer_uri: ::prost::alloc::string::String,
 }
 /// Detailed search information.
@@ -360,7 +363,7 @@ pub struct SearchInfo {
     /// or \[page_categories][\] is required for `search` events. Other event types
     /// should not set this field. Otherwise, an INVALID_ARGUMENT error is
     /// returned.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub search_query: ::prost::alloc::string::String,
     /// The order in which products are returned, if applicable.
     ///
@@ -373,7 +376,7 @@ pub struct SearchInfo {
     ///
     /// This can only be set for `search` events. Other event types should not set
     /// this field. Otherwise, an INVALID_ARGUMENT error is returned.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub order_by: ::prost::alloc::string::String,
     /// An integer that specifies the current offset for pagination (the 0-indexed
     /// starting location, amongst the products deemed by the API as relevant).
@@ -386,7 +389,7 @@ pub struct SearchInfo {
     ///
     /// This can only be set for `search` events. Other event types should not set
     /// this field. Otherwise, an INVALID_ARGUMENT error is returned.
-    #[prost(int32, optional, tag="3")]
+    #[prost(int32, optional, tag = "3")]
     pub offset: ::core::option::Option<i32>,
 }
 /// Detailed completion information including completion attribution token and
@@ -394,11 +397,11 @@ pub struct SearchInfo {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CompletionInfo {
     /// End user selected \[CompleteQueryResponse.CompletionResult.suggestion][\].
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub selected_suggestion: ::prost::alloc::string::String,
     /// End user selected \[CompleteQueryResponse.CompletionResult.suggestion][\]
     /// position, starting from 0.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub selected_position: i32,
 }
 /// A transaction represents the entire purchase transaction.
@@ -407,16 +410,16 @@ pub struct TransactionInfo {
     /// Required. Total non-zero value associated with the transaction. This value
     /// may include shipping, tax, or other adjustments to the total value that you
     /// want to include.
-    #[prost(float, optional, tag="1")]
+    #[prost(float, optional, tag = "1")]
     pub value: ::core::option::Option<f32>,
     /// Required. Currency code. Use three-character ISO-4217 code.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub currency: ::prost::alloc::string::String,
     /// The transaction ID with a length limit of 128 characters.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub transaction_id: ::prost::alloc::string::String,
     /// All the taxes associated with the transaction.
-    #[prost(float, optional, tag="4")]
+    #[prost(float, optional, tag = "4")]
     pub tax: ::core::option::Option<f32>,
     /// All the costs associated with the products. These can be manufacturing
     /// costs, shipping expenses not borne by the end user, or any other costs,
@@ -426,7 +429,7 @@ pub struct TransactionInfo {
     /// \[value][google.cloud.discoveryengine.v1beta.TransactionInfo.value\] -
     /// \[tax][google.cloud.discoveryengine.v1beta.TransactionInfo.tax\] -
     /// \[cost][google.cloud.discoveryengine.v1beta.TransactionInfo.cost\]
-    #[prost(float, optional, tag="5")]
+    #[prost(float, optional, tag = "5")]
     pub cost: ::core::option::Option<f32>,
     /// The total discount(s) value applied to this transaction.
     /// This figure should be excluded from
@@ -449,7 +452,7 @@ pub struct TransactionInfo {
     /// \[value][google.cloud.discoveryengine.v1beta.TransactionInfo.value\] -
     /// \[tax][google.cloud.discoveryengine.v1beta.TransactionInfo.tax\] -
     /// \[cost][google.cloud.discoveryengine.v1beta.TransactionInfo.cost\]
-    #[prost(float, optional, tag="6")]
+    #[prost(float, optional, tag = "6")]
     pub discount_value: ::core::option::Option<f32>,
 }
 /// Detailed document information associated with a user event.
@@ -463,11 +466,11 @@ pub struct DocumentInfo {
     /// Required for events of the following event types:
     /// * `add-to-cart`
     /// * `purchase`
-    #[prost(int32, optional, tag="3")]
+    #[prost(int32, optional, tag = "3")]
     pub quantity: ::core::option::Option<i32>,
     /// The promotion IDs associated with this Document.
     /// Currently, this field is restricted to at most one ID.
-    #[prost(string, repeated, tag="4")]
+    #[prost(string, repeated, tag = "4")]
     pub promotion_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// A required descriptor of the associated Document.
     ///
@@ -479,7 +482,7 @@ pub struct DocumentInfo {
     /// specified, then the provided values (default values allowed) for
     /// <location>, <data_store_id>, and <branch_id> are used when annotating with
     /// the stored Document.
-    #[prost(oneof="document_info::DocumentDescriptor", tags="1, 2")]
+    #[prost(oneof = "document_info::DocumentDescriptor", tags = "1, 2")]
     pub document_descriptor: ::core::option::Option<document_info::DocumentDescriptor>,
 }
 /// Nested message and enum types in `DocumentInfo`.
@@ -497,11 +500,11 @@ pub mod document_info {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum DocumentDescriptor {
         /// Required. The Document resource ID.
-        #[prost(string, tag="1")]
+        #[prost(string, tag = "1")]
         Id(::prost::alloc::string::String),
         /// Required. The Document resource full name, of the form:
         /// projects/<project_id>/locations/<location>/dataStores/<data_store_id>/branches/<branch_id>/documents/<document_id>
-        #[prost(string, tag="2")]
+        #[prost(string, tag = "2")]
         Name(::prost::alloc::string::String),
     }
 }
@@ -509,22 +512,22 @@ pub mod document_info {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PanelInfo {
     /// Required. The panel ID.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub panel_id: ::prost::alloc::string::String,
     /// The display name of the panel.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub display_name: ::prost::alloc::string::String,
     /// The ordered position of the panel, if shown to the user with other panels.
     /// If set, then
     /// \[total_panels][google.cloud.discoveryengine.v1beta.PanelInfo.total_panels\]
     /// must also be set.
-    #[prost(int32, optional, tag="4")]
+    #[prost(int32, optional, tag = "4")]
     pub panel_position: ::core::option::Option<i32>,
     /// The total number of panels, including this one, shown to the user.
     /// Must be set if
     /// \[panel_position][google.cloud.discoveryengine.v1beta.PanelInfo.panel_position\]
     /// is set.
-    #[prost(int32, optional, tag="5")]
+    #[prost(int32, optional, tag = "5")]
     pub total_panels: ::core::option::Option<i32>,
 }
 /// Media-specific user event information.
@@ -534,7 +537,7 @@ pub struct MediaInfo {
     /// For example, if the end user has finished 90 seconds of a playback video,
     /// then \[MediaInfo.media_progress_duration.seconds][Duration.seconds\] should
     /// be set to 90.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub media_progress_duration: ::core::option::Option<::prost_types::Duration>,
     /// Media progress should be computed using only the media_progress_duration
     /// relative to the media total length.
@@ -543,7 +546,7 @@ pub struct MediaInfo {
     ///
     /// If this is not a playback or the progress cannot be computed (e.g. ongoing
     /// livestream), this field should be unset.
-    #[prost(float, optional, tag="2")]
+    #[prost(float, optional, tag = "2")]
     pub media_progress_percentage: ::core::option::Option<f32>,
 }
 /// Google Cloud Storage location for input content.
@@ -555,7 +558,7 @@ pub struct GcsSource {
     /// `gs://bucket/directory/object.json`) or a pattern matching one or more
     /// files, such as `gs://bucket/directory/*.json`. A request can
     /// contain at most 100 files, and each file can be up to 2 GB.
-    #[prost(string, repeated, tag="1")]
+    #[prost(string, repeated, tag = "1")]
     pub input_uris: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The schema to use when parsing the data from the source.
     ///
@@ -569,7 +572,7 @@ pub struct GcsSource {
     /// document must
     ///    have a valid
     ///    \[Document.id][google.cloud.discoveryengine.v1beta.Document.id\].
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub data_schema: ::prost::alloc::string::String,
 }
 /// BigQuery source import data from.
@@ -578,20 +581,20 @@ pub struct BigQuerySource {
     /// The project ID (can be project # or ID) that the BigQuery source is in with
     /// a length limit of 128 characters. If not specified, inherits the project
     /// ID from the parent request.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub project_id: ::prost::alloc::string::String,
     /// Required. The BigQuery data set to copy the data from with a length limit
     /// of 1,024 characters.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub dataset_id: ::prost::alloc::string::String,
     /// Required. The BigQuery table to copy the data from with a length limit of
     /// 1,024 characters.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub table_id: ::prost::alloc::string::String,
     /// Intermediate Cloud Storage directory used for the import with a length
     /// limit of 2,000 characters. Can be specified if one wants to have the
     /// BigQuery export to a specific Cloud Storage directory.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub gcs_staging_dir: ::prost::alloc::string::String,
     /// The schema to use when parsing the data from the source.
     ///
@@ -603,11 +606,11 @@ pub struct BigQuerySource {
     /// * `document` (default): One JSON
     /// \[Document][google.cloud.discoveryengine.v1beta.Document\] per line. Each
     /// document must have a valid \[document.id][\].
-    #[prost(string, tag="6")]
+    #[prost(string, tag = "6")]
     pub data_schema: ::prost::alloc::string::String,
     /// BigQuery table partition info. Leave this empty if the BigQuery table
     /// is not partitioned.
-    #[prost(oneof="big_query_source::Partition", tags="5")]
+    #[prost(oneof = "big_query_source::Partition", tags = "5")]
     pub partition: ::core::option::Option<big_query_source::Partition>,
 }
 /// Nested message and enum types in `BigQuerySource`.
@@ -617,7 +620,7 @@ pub mod big_query_source {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Partition {
         /// BigQuery time partitioned table's _PARTITIONDATE in YYYY-MM-DD format.
-        #[prost(message, tag="5")]
+        #[prost(message, tag = "5")]
         PartitionDate(super::super::super::super::r#type::Date),
     }
 }
@@ -625,7 +628,7 @@ pub mod big_query_source {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportErrorConfig {
     /// Required. Errors destination.
-    #[prost(oneof="import_error_config::Destination", tags="1")]
+    #[prost(oneof = "import_error_config::Destination", tags = "1")]
     pub destination: ::core::option::Option<import_error_config::Destination>,
 }
 /// Nested message and enum types in `ImportErrorConfig`.
@@ -637,7 +640,7 @@ pub mod import_error_config {
         /// existing Cloud Storage directory. Import errors will be written to
         /// sharded files in this directory, one per line, as a JSON-encoded
         /// `google.rpc.Status` message.
-        #[prost(string, tag="1")]
+        #[prost(string, tag = "1")]
         GcsPrefix(::prost::alloc::string::String),
     }
 }
@@ -646,14 +649,14 @@ pub mod import_error_config {
 pub struct ImportUserEventsRequest {
     /// Required. Parent DataStore resource name, of the form
     /// `projects/{project}/locations/{location}/dataStores/{data_store}`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The desired location of errors incurred during the Import. Cannot be set
     /// for inline user event imports.
-    #[prost(message, optional, tag="5")]
+    #[prost(message, optional, tag = "5")]
     pub error_config: ::core::option::Option<ImportErrorConfig>,
     /// The desired input source of the user event data.
-    #[prost(oneof="import_user_events_request::Source", tags="2, 3, 4")]
+    #[prost(oneof = "import_user_events_request::Source", tags = "2, 3, 4")]
     pub source: ::core::option::Option<import_user_events_request::Source>,
 }
 /// Nested message and enum types in `ImportUserEventsRequest`.
@@ -662,20 +665,20 @@ pub mod import_user_events_request {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct InlineSource {
         /// Required. A list of user events to import. Recommended max of 10k items.
-        #[prost(message, repeated, tag="1")]
+        #[prost(message, repeated, tag = "1")]
         pub user_events: ::prost::alloc::vec::Vec<super::UserEvent>,
     }
     /// The desired input source of the user event data.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
         /// Required. The Inline source for the input content for UserEvents.
-        #[prost(message, tag="2")]
+        #[prost(message, tag = "2")]
         InlineSource(InlineSource),
         /// Required. Google Cloud Storage location for the input content.
-        #[prost(message, tag="3")]
+        #[prost(message, tag = "3")]
         GcsSource(super::GcsSource),
         /// Required. BigQuery input source.
-        #[prost(message, tag="4")]
+        #[prost(message, tag = "4")]
         BigquerySource(super::BigQuerySource),
     }
 }
@@ -685,18 +688,18 @@ pub mod import_user_events_request {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportUserEventsResponse {
     /// A sample of errors encountered while processing the request.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub error_samples: ::prost::alloc::vec::Vec<super::super::super::rpc::Status>,
     /// Echoes the destination for the complete errors if this field was set in
     /// the request.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub error_config: ::core::option::Option<ImportErrorConfig>,
     /// Count of user events imported with complete existing Documents.
-    #[prost(int64, tag="3")]
+    #[prost(int64, tag = "3")]
     pub joined_events_count: i64,
     /// Count of user events imported, but with Document information not found
     /// in the existing Branch.
-    #[prost(int64, tag="4")]
+    #[prost(int64, tag = "4")]
     pub unjoined_events_count: i64,
 }
 /// Metadata related to the progress of the Import operation. This will be
@@ -704,17 +707,17 @@ pub struct ImportUserEventsResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportUserEventsMetadata {
     /// Operation create time.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Operation last update time. If the operation is done, this is also the
     /// finish time.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Count of entries that were processed successfully.
-    #[prost(int64, tag="3")]
+    #[prost(int64, tag = "3")]
     pub success_count: i64,
     /// Count of entries that encountered errors while processing.
-    #[prost(int64, tag="4")]
+    #[prost(int64, tag = "4")]
     pub failure_count: i64,
 }
 /// Metadata related to the progress of the ImportDocuments operation. This will
@@ -722,17 +725,17 @@ pub struct ImportUserEventsMetadata {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportDocumentsMetadata {
     /// Operation create time.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Operation last update time. If the operation is done, this is also the
     /// finish time.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Count of entries that were processed successfully.
-    #[prost(int64, tag="3")]
+    #[prost(int64, tag = "3")]
     pub success_count: i64,
     /// Count of entries that encountered errors while processing.
-    #[prost(int64, tag="4")]
+    #[prost(int64, tag = "4")]
     pub failure_count: i64,
 }
 /// Request message for Import methods.
@@ -741,18 +744,18 @@ pub struct ImportDocumentsRequest {
     /// Required. The parent branch resource name, such as
     /// `projects/{project}/locations/{location}/dataStores/{data_store}/branches/{branch}`.
     /// Requires create/update permission.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The desired location of errors incurred during the Import.
-    #[prost(message, optional, tag="5")]
+    #[prost(message, optional, tag = "5")]
     pub error_config: ::core::option::Option<ImportErrorConfig>,
     /// The mode of reconciliation between existing documents and the documents to
     /// be imported. Defaults to
     /// \[ReconciliationMode.INCREMENTAL][google.cloud.discoveryengine.v1beta.ImportDocumentsRequest.ReconciliationMode.INCREMENTAL\].
-    #[prost(enumeration="import_documents_request::ReconciliationMode", tag="6")]
+    #[prost(enumeration = "import_documents_request::ReconciliationMode", tag = "6")]
     pub reconciliation_mode: i32,
     /// Required. The source of the input.
-    #[prost(oneof="import_documents_request::Source", tags="2, 3, 4")]
+    #[prost(oneof = "import_documents_request::Source", tags = "2, 3, 4")]
     pub source: ::core::option::Option<import_documents_request::Source>,
 }
 /// Nested message and enum types in `ImportDocumentsRequest`.
@@ -763,12 +766,22 @@ pub mod import_documents_request {
         /// Required. A list of documents to update/create. Each document must have a
         /// valid \[Document.id][google.cloud.discoveryengine.v1beta.Document.id\].
         /// Recommended max of 100 items.
-        #[prost(message, repeated, tag="1")]
+        #[prost(message, repeated, tag = "1")]
         pub documents: ::prost::alloc::vec::Vec<super::Document>,
     }
     /// Indicates how imported documents are reconciled with the existing documents
     /// created or imported before.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum ReconciliationMode {
         /// Defaults to INCREMENTAL.
@@ -796,13 +809,13 @@ pub mod import_documents_request {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
         /// The Inline source for the input content for documents.
-        #[prost(message, tag="2")]
+        #[prost(message, tag = "2")]
         InlineSource(InlineSource),
         /// Google Cloud Storage location for the input content.
-        #[prost(message, tag="3")]
+        #[prost(message, tag = "3")]
         GcsSource(super::GcsSource),
         /// BigQuery input source.
-        #[prost(message, tag="4")]
+        #[prost(message, tag = "4")]
         BigquerySource(super::BigQuerySource),
     }
 }
@@ -813,10 +826,10 @@ pub mod import_documents_request {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportDocumentsResponse {
     /// A sample of errors encountered while processing the request.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub error_samples: ::prost::alloc::vec::Vec<super::super::super::rpc::Status>,
     /// Echoes the destination for the complete errors in the request if set.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub error_config: ::core::option::Option<ImportErrorConfig>,
 }
 /// Request message for
@@ -834,7 +847,7 @@ pub struct GetDocumentRequest {
     ///
     /// If the requested \[Document][google.cloud.discoveryengine.v1beta.Document\]
     /// does not exist, a NOT_FOUND error is returned.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for
@@ -850,14 +863,14 @@ pub struct ListDocumentsRequest {
     /// If the caller does not have permission to list \[Documents][\]s under this
     /// branch, regardless of whether or not this branch exists, a
     /// PERMISSION_DENIED error is returned.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Maximum number of \[Document][google.cloud.discoveryengine.v1beta.Document\]s
     /// to return. If unspecified, defaults to 100. The maximum allowed value is
     /// 1000. Values above 1000 will be coerced to 1000.
     ///
     /// If this field is negative, an INVALID_ARGUMENT error is returned.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// A page token
     /// \[ListDocumentsResponse.next_page_token][google.cloud.discoveryengine.v1beta.ListDocumentsResponse.next_page_token\],
@@ -869,7 +882,7 @@ pub struct ListDocumentsRequest {
     /// \[DocumentService.ListDocuments][google.cloud.discoveryengine.v1beta.DocumentService.ListDocuments\]
     /// must match the call that provided the page token. Otherwise, an
     /// INVALID_ARGUMENT error is returned.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for
@@ -878,13 +891,13 @@ pub struct ListDocumentsRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDocumentsResponse {
     /// The \[Document][google.cloud.discoveryengine.v1beta.Document\]s.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub documents: ::prost::alloc::vec::Vec<Document>,
     /// A token that can be sent as
     /// \[ListDocumentsRequest.page_token][google.cloud.discoveryengine.v1beta.ListDocumentsRequest.page_token\]
     /// to retrieve the next page. If this field is omitted, there are no
     /// subsequent pages.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for
@@ -894,11 +907,11 @@ pub struct ListDocumentsResponse {
 pub struct CreateDocumentRequest {
     /// Required. The parent resource name, such as
     /// `projects/{project}/locations/{location}/dataStores/{data_store}/branches/{branch}`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The \[Document][google.cloud.discoveryengine.v1beta.Document\] to
     /// create.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub document: ::core::option::Option<Document>,
     /// Required. The ID to use for the
     /// \[Document][google.cloud.discoveryengine.v1beta.Document\], which will become
@@ -917,7 +930,7 @@ pub struct CreateDocumentRequest {
     /// This field must conform to \[RFC-1034\](<https://tools.ietf.org/html/rfc1034>)
     /// standard with a length limit of 63 characters. Otherwise, an
     /// INVALID_ARGUMENT error is returned.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub document_id: ::prost::alloc::string::String,
 }
 /// Request message for
@@ -935,13 +948,13 @@ pub struct UpdateDocumentRequest {
     /// does not exist and
     /// \[allow_missing][google.cloud.discoveryengine.v1beta.UpdateDocumentRequest.allow_missing\]
     /// is not set, a NOT_FOUND error is returned.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub document: ::core::option::Option<Document>,
     /// If set to true, and the
     /// \[Document][google.cloud.discoveryengine.v1beta.Document\] is not found, a
     /// new \[Document][google.cloud.discoveryengine.v1beta.Document\] will be
     /// created.
-    #[prost(bool, tag="2")]
+    #[prost(bool, tag = "2")]
     pub allow_missing: bool,
 }
 /// Request message for
@@ -959,7 +972,7 @@ pub struct DeleteDocumentRequest {
     ///
     /// If the \[Document][google.cloud.discoveryengine.v1beta.Document\] to delete
     /// does not exist, a NOT_FOUND error is returned.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Generated client implementations.
@@ -1173,7 +1186,7 @@ pub struct RecommendRequest {
     ///
     /// Before you can request recommendations from your model, you must create at
     /// least one serving config  for it.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub serving_config: ::prost::alloc::string::String,
     /// Required. Context about the user, what they are looking at and what action
     /// they took to trigger the Recommend request. Note that this user event
@@ -1191,13 +1204,13 @@ pub struct RecommendRequest {
     /// to a random unique ID and leave
     /// \[UserEvent.user_info.user_id][google.cloud.discoveryengine.v1beta.UserInfo.user_id\]
     /// unset.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub user_event: ::core::option::Option<UserEvent>,
     /// Maximum number of results to return. Set this property
     /// to the number of recommendation results needed. If zero, the service will
     /// choose a reasonable default. The maximum allowed value is 100. Values
     /// above 100 will be coerced to 100.
-    #[prost(int32, tag="3")]
+    #[prost(int32, tag = "3")]
     pub page_size: i32,
     /// Filter for restricting recommendation results with a length limit of 5,000
     /// characters. Currently, only filter expressions on the `filter_tags`
@@ -1217,13 +1230,13 @@ pub struct RecommendRequest {
     ///
     /// Note that the API will never return Documents with storageStatus of
     /// "EXPIRED" or "DELETED" regardless of filter choices.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
     /// Use validate only mode for this recommendation query. If set to true, a
     /// fake model will be used that returns arbitrary Document IDs.
     /// Note that the validate only mode should only be used for testing the API,
     /// or if the model is not ready.
-    #[prost(bool, tag="5")]
+    #[prost(bool, tag = "5")]
     pub validate_only: bool,
     /// Additional domain specific parameters for the recommendations.
     ///
@@ -1249,8 +1262,11 @@ pub struct RecommendRequest {
     ///     *  'auto-diversity'
     ///     This gives request-level control and adjusts recommendation results
     ///     based on Document category.
-    #[prost(map="string, message", tag="6")]
-    pub params: ::std::collections::HashMap<::prost::alloc::string::String, ::prost_types::Value>,
+    #[prost(map = "string, message", tag = "6")]
+    pub params: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost_types::Value,
+    >,
     /// The user labels applied to a resource must meet the following requirements:
     ///
     /// * Each resource can have multiple labels, up to a maximum of 64.
@@ -1268,30 +1284,33 @@ pub struct RecommendRequest {
     /// See [Google Cloud
     /// Document](<https://cloud.google.com/resource-manager/docs/creating-managing-labels#requirements>)
     /// for more details.
-    #[prost(map="string, string", tag="8")]
-    pub user_labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map = "string, string", tag = "8")]
+    pub user_labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
 }
 /// Response message for Recommend method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RecommendResponse {
     /// A list of recommended Documents. The order represents the ranking (from the
     /// most relevant Document to the least).
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub results: ::prost::alloc::vec::Vec<recommend_response::RecommendationResult>,
     /// A unique attribution token. This should be included in the
     /// \[UserEvent][google.cloud.discoveryengine.v1beta.UserEvent\] logs resulting
     /// from this recommendation, which enables accurate attribution of
     /// recommendation model performance.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub attribution_token: ::prost::alloc::string::String,
     /// IDs of documents in the request that were missing from the default Branch
     /// associated with the requested ServingConfig.
-    #[prost(string, repeated, tag="3")]
+    #[prost(string, repeated, tag = "3")]
     pub missing_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// True if
     /// \[RecommendRequest.validate_only][google.cloud.discoveryengine.v1beta.RecommendRequest.validate_only\]
     /// was set.
-    #[prost(bool, tag="4")]
+    #[prost(bool, tag = "4")]
     pub validate_only: bool,
 }
 /// Nested message and enum types in `RecommendResponse`.
@@ -1301,11 +1320,11 @@ pub mod recommend_response {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct RecommendationResult {
         /// Resource ID of the recommended Document.
-        #[prost(string, tag="1")]
+        #[prost(string, tag = "1")]
         pub id: ::prost::alloc::string::String,
         /// Set if `returnDocument` is set to true in
         /// \[RecommendRequest.params][google.cloud.discoveryengine.v1beta.RecommendRequest.params\].
-        #[prost(message, optional, tag="2")]
+        #[prost(message, optional, tag = "2")]
         pub document: ::core::option::Option<super::Document>,
         /// Additional Document metadata / annotations.
         ///
@@ -1314,8 +1333,11 @@ pub mod recommend_response {
         /// * `score`: Recommendation score in double value. Is set if
         ///    `returnScore` is set to true in
         ///    \[RecommendRequest.params][google.cloud.discoveryengine.v1beta.RecommendRequest.params\].
-        #[prost(map="string, message", tag="3")]
-        pub metadata: ::std::collections::HashMap<::prost::alloc::string::String, ::prost_types::Value>,
+        #[prost(map = "string, message", tag = "3")]
+        pub metadata: ::std::collections::HashMap<
+            ::prost::alloc::string::String,
+            ::prost_types::Value,
+        >,
     }
 }
 /// Generated client implementations.
@@ -1415,10 +1437,10 @@ pub mod recommendation_service_client {
 pub struct WriteUserEventRequest {
     /// Required. The parent DataStore resource name, such as
     /// `projects/{project}/locations/{location}/dataStores/{data_store}`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. User event to write.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub user_event: ::core::option::Option<UserEvent>,
 }
 /// Request message for CollectUserEvent method.
@@ -1426,22 +1448,22 @@ pub struct WriteUserEventRequest {
 pub struct CollectUserEventRequest {
     /// Required. The parent DataStore resource name, such as
     /// `projects/{project}/locations/{location}/dataStores/{data_store}`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. URL encoded UserEvent proto with a length limit of 2,000,000
     /// characters.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub user_event: ::prost::alloc::string::String,
     /// The URL including cgi-parameters but excluding the hash fragment with a
     /// length limit of 5,000 characters. This is often more useful than the
     /// referer URL, because many browsers only send the domain for 3rd party
     /// requests.
-    #[prost(string, optional, tag="3")]
+    #[prost(string, optional, tag = "3")]
     pub uri: ::core::option::Option<::prost::alloc::string::String>,
     /// The event timestamp in milliseconds. This prevents browser caching of
     /// otherwise identical get requests. The name is abbreviated to reduce the
     /// payload bytes.
-    #[prost(int64, optional, tag="4")]
+    #[prost(int64, optional, tag = "4")]
     pub ets: ::core::option::Option<i64>,
 }
 /// Generated client implementations.

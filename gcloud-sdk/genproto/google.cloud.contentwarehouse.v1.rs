@@ -1,16 +1,14 @@
 /// Metadata object for CreateDocument request (currently empty).
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CreateDocumentMetadata {
-}
+pub struct CreateDocumentMetadata {}
 /// Metadata object for UpdateDocument request (currently empty).
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UpdateDocumentMetadata {
-}
+pub struct UpdateDocumentMetadata {}
 /// Meta information is used to improve the performance of the service.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RequestMetadata {
     /// Provides user unique identification and groups information.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub user_info: ::core::option::Option<UserInfo>,
 }
 /// Additional information returned to client, such as debugging information.
@@ -18,7 +16,7 @@ pub struct RequestMetadata {
 pub struct ResponseMetadata {
     /// A unique id associated with this call. This id is logged for tracking
     /// purpose.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub request_id: ::prost::alloc::string::String,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -28,27 +26,27 @@ pub struct UserInfo {
     /// Allowed characters include numbers 0 to 9, uppercase and lowercase letters,
     /// and restricted special symbols (:, @, +, -, _, ~)
     /// The format is "user:xxxx@example.com";
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub id: ::prost::alloc::string::String,
     /// The unique group identifications which the user is belong to.
     /// The format is "group:yyyy@example.com";
-    #[prost(string, repeated, tag="2")]
+    #[prost(string, repeated, tag = "2")]
     pub group_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Options for Update operations.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateOptions {
     /// Type for update.
-    #[prost(enumeration="UpdateType", tag="1")]
+    #[prost(enumeration = "UpdateType", tag = "1")]
     pub update_type: i32,
     /// Field mask for merging Document fields.
     /// For the `FieldMask` definition,
     /// see
     /// <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask>
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// Options for merging.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub merge_fields_options: ::core::option::Option<MergeFieldsOptions>,
 }
 /// Options for merging updated fields.
@@ -60,7 +58,7 @@ pub struct MergeFieldsOptions {
     /// the destination message, set this flag to true. When this flag is set,
     /// specified submessage fields that are missing in source will be cleared in
     /// destination.
-    #[prost(bool, optional, tag="1")]
+    #[prost(bool, optional, tag = "1")]
     pub replace_message_fields: ::core::option::Option<bool>,
     /// When merging repeated fields, the default behavior is to append
     /// entries from the source repeated field to the destination repeated field.
@@ -71,7 +69,7 @@ pub struct MergeFieldsOptions {
     /// destination message, you must set both replace_repeated_fields and
     /// replace_message_fields to true, otherwise the repeated fields will be
     /// appended.
-    #[prost(bool, optional, tag="2")]
+    #[prost(bool, optional, tag = "2")]
     pub replace_repeated_fields: ::core::option::Option<bool>,
 }
 /// Update type of the requests.
@@ -101,9 +99,15 @@ impl UpdateType {
             UpdateType::Unspecified => "UPDATE_TYPE_UNSPECIFIED",
             UpdateType::Replace => "UPDATE_TYPE_REPLACE",
             UpdateType::Merge => "UPDATE_TYPE_MERGE",
-            UpdateType::InsertPropertiesByNames => "UPDATE_TYPE_INSERT_PROPERTIES_BY_NAMES",
-            UpdateType::ReplacePropertiesByNames => "UPDATE_TYPE_REPLACE_PROPERTIES_BY_NAMES",
-            UpdateType::DeletePropertiesByNames => "UPDATE_TYPE_DELETE_PROPERTIES_BY_NAMES",
+            UpdateType::InsertPropertiesByNames => {
+                "UPDATE_TYPE_INSERT_PROPERTIES_BY_NAMES"
+            }
+            UpdateType::ReplacePropertiesByNames => {
+                "UPDATE_TYPE_REPLACE_PROPERTIES_BY_NAMES"
+            }
+            UpdateType::DeletePropertiesByNames => {
+                "UPDATE_TYPE_DELETE_PROPERTIES_BY_NAMES"
+            }
         }
     }
 }
@@ -153,8 +157,12 @@ impl AccessControlMode {
         match self {
             AccessControlMode::AclModeUnknown => "ACL_MODE_UNKNOWN",
             AccessControlMode::AclModeUniversalAccess => "ACL_MODE_UNIVERSAL_ACCESS",
-            AccessControlMode::AclModeDocumentLevelAccessControlByoid => "ACL_MODE_DOCUMENT_LEVEL_ACCESS_CONTROL_BYOID",
-            AccessControlMode::AclModeDocumentLevelAccessControlGci => "ACL_MODE_DOCUMENT_LEVEL_ACCESS_CONTROL_GCI",
+            AccessControlMode::AclModeDocumentLevelAccessControlByoid => {
+                "ACL_MODE_DOCUMENT_LEVEL_ACCESS_CONTROL_BYOID"
+            }
+            AccessControlMode::AclModeDocumentLevelAccessControlGci => {
+                "ACL_MODE_DOCUMENT_LEVEL_ACCESS_CONTROL_GCI"
+            }
         }
     }
 }
@@ -166,65 +174,65 @@ pub struct Document {
     /// projects/{project_number}/locations/{location}/documents/{document_id}.
     ///
     /// The name is ignored when creating a document.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The reference ID set by customers. Must be unique per project and location.
-    #[prost(string, tag="11")]
+    #[prost(string, tag = "11")]
     pub reference_id: ::prost::alloc::string::String,
     /// Required. Display name of the document given by the user. This name will be displayed
     /// in the UI.
     /// Customer can populate this field with the name of the document. This
     /// differs from the 'title' field as 'title' is optional and stores the top
     /// heading in the document.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub display_name: ::prost::alloc::string::String,
     /// Title that describes the document.
     /// This is usually present in the top section of the document, and is a
     /// mandatory field for the question-answering feature.
-    #[prost(string, tag="18")]
+    #[prost(string, tag = "18")]
     pub title: ::prost::alloc::string::String,
     /// Uri to display the document, for example, in the UI.
-    #[prost(string, tag="17")]
+    #[prost(string, tag = "17")]
     pub display_uri: ::prost::alloc::string::String,
     /// The Document schema name.
     /// Format:
     /// projects/{project_number}/locations/{location}/documentSchemas/{document_schema_id}.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub document_schema_name: ::prost::alloc::string::String,
     /// A path linked to structured content file.
-    #[prost(string, tag="16")]
+    #[prost(string, tag = "16")]
     pub structured_content_uri: ::prost::alloc::string::String,
     /// List of values that are user supplied metadata.
-    #[prost(message, repeated, tag="7")]
+    #[prost(message, repeated, tag = "7")]
     pub properties: ::prost::alloc::vec::Vec<Property>,
     /// Output only. The time when the document is last updated.
-    #[prost(message, optional, tag="8")]
+    #[prost(message, optional, tag = "8")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The time when the document is created.
-    #[prost(message, optional, tag="9")]
+    #[prost(message, optional, tag = "9")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// This is used when DocAI was not used to load the document and parsing/
     /// extracting is needed for the inline_raw_document.  For example, if
     /// inline_raw_document is the byte representation of a PDF file, then
     /// this should be set to: RAW_DOCUMENT_FILE_TYPE_PDF.
-    #[prost(enumeration="RawDocumentFileType", tag="10")]
+    #[prost(enumeration = "RawDocumentFileType", tag = "10")]
     pub raw_document_file_type: i32,
     /// If true, makes the document visible to asynchronous policies and rules.
-    #[prost(bool, tag="12")]
+    #[prost(bool, tag = "12")]
     pub async_enabled: bool,
     /// If true, text extraction will not be performed.
-    #[prost(bool, tag="19")]
+    #[prost(bool, tag = "19")]
     pub text_extraction_disabled: bool,
     /// The user who creates the document.
-    #[prost(string, tag="13")]
+    #[prost(string, tag = "13")]
     pub creator: ::prost::alloc::string::String,
     /// The user who lastly updates the document.
-    #[prost(string, tag="14")]
+    #[prost(string, tag = "14")]
     pub updater: ::prost::alloc::string::String,
-    #[prost(oneof="document::StructuredContent", tags="15, 4")]
+    #[prost(oneof = "document::StructuredContent", tags = "15, 4")]
     pub structured_content: ::core::option::Option<document::StructuredContent>,
     /// Raw document file.
-    #[prost(oneof="document::RawDocument", tags="5, 6")]
+    #[prost(oneof = "document::RawDocument", tags = "5, 6")]
     pub raw_document: ::core::option::Option<document::RawDocument>,
 }
 /// Nested message and enum types in `Document`.
@@ -232,20 +240,20 @@ pub mod document {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum StructuredContent {
         /// Other document format, such as PPTX, XLXS
-        #[prost(string, tag="15")]
+        #[prost(string, tag = "15")]
         PlainText(::prost::alloc::string::String),
         /// Document AI format to save the structured content, including OCR.
-        #[prost(message, tag="4")]
+        #[prost(message, tag = "4")]
         CloudAiDocument(super::super::super::documentai::v1::Document),
     }
     /// Raw document file.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum RawDocument {
         /// Raw document file in Cloud Storage path.
-        #[prost(string, tag="5")]
+        #[prost(string, tag = "5")]
         RawDocumentPath(::prost::alloc::string::String),
         /// Raw document content.
-        #[prost(bytes, tag="6")]
+        #[prost(bytes, tag = "6")]
         InlineRawDocument(::prost::alloc::vec::Vec<u8>),
     }
 }
@@ -253,43 +261,43 @@ pub mod document {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DocumentReference {
     /// Required. Name of the referenced document.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub document_name: ::prost::alloc::string::String,
     /// display_name of the referenced document; this name does not need to be
     /// consistent to the display_name in the Document proto, depending on the ACL
     /// constraint.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub display_name: ::prost::alloc::string::String,
     /// Stores the subset of the referenced document's content.
     /// This is useful to allow user peek the information of the referenced
     /// document.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub snippet: ::prost::alloc::string::String,
     /// The document type of the document being referenced.
-    #[prost(bool, tag="4")]
+    #[prost(bool, tag = "4")]
     pub document_is_folder: bool,
     /// Output only. The time when the document is last updated.
-    #[prost(message, optional, tag="5")]
+    #[prost(message, optional, tag = "5")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The time when the document is created.
-    #[prost(message, optional, tag="6")]
+    #[prost(message, optional, tag = "6")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The time when the document is deleted.
-    #[prost(message, optional, tag="7")]
+    #[prost(message, optional, tag = "7")]
     pub delete_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Property of a document.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Property {
     /// Required. Must match the name of a PropertyDefinition in the DocumentSchema.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Type of the property.
     /// Must match the property_options type of the matching PropertyDefinition.
     /// Value of the Property parsed into a specific data type.
     /// Specific type value(s) obtained from Document AIs Property.mention_text
     /// field.
-    #[prost(oneof="property::Values", tags="2, 3, 4, 5, 6, 7, 8, 9")]
+    #[prost(oneof = "property::Values", tags = "2, 3, 4, 5, 6, 7, 8, 9")]
     pub values: ::core::option::Option<property::Values>,
 }
 /// Nested message and enum types in `Property`.
@@ -302,30 +310,30 @@ pub mod property {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Values {
         /// Integer property values.
-        #[prost(message, tag="2")]
+        #[prost(message, tag = "2")]
         IntegerValues(super::IntegerArray),
         /// Float property values.
-        #[prost(message, tag="3")]
+        #[prost(message, tag = "3")]
         FloatValues(super::FloatArray),
         /// String/text property values.
-        #[prost(message, tag="4")]
+        #[prost(message, tag = "4")]
         TextValues(super::TextArray),
         /// Enum property values.
-        #[prost(message, tag="5")]
+        #[prost(message, tag = "5")]
         EnumValues(super::EnumArray),
         /// Nested structured data property values.
-        #[prost(message, tag="6")]
+        #[prost(message, tag = "6")]
         PropertyValues(super::PropertyArray),
         /// Date time property values.
         /// It is not supported by CMEK compliant deployment.
-        #[prost(message, tag="7")]
+        #[prost(message, tag = "7")]
         DateTimeValues(super::DateTimeArray),
         /// Map property values.
-        #[prost(message, tag="8")]
+        #[prost(message, tag = "8")]
         MapProperty(super::MapProperty),
         /// Timestamp property values.
         /// It is not supported by CMEK compliant deployment.
-        #[prost(message, tag="9")]
+        #[prost(message, tag = "9")]
         TimestampValues(super::TimestampArray),
     }
 }
@@ -333,28 +341,28 @@ pub mod property {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IntegerArray {
     /// List of integer values.
-    #[prost(int32, repeated, tag="1")]
+    #[prost(int32, repeated, tag = "1")]
     pub values: ::prost::alloc::vec::Vec<i32>,
 }
 /// Float values.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FloatArray {
     /// List of float values.
-    #[prost(float, repeated, tag="1")]
+    #[prost(float, repeated, tag = "1")]
     pub values: ::prost::alloc::vec::Vec<f32>,
 }
 /// String/text values.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TextArray {
     /// List of text values.
-    #[prost(string, repeated, tag="1")]
+    #[prost(string, repeated, tag = "1")]
     pub values: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Enum values.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EnumArray {
     /// List of enum values.
-    #[prost(string, repeated, tag="1")]
+    #[prost(string, repeated, tag = "1")]
     pub values: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// DateTime values.
@@ -362,20 +370,20 @@ pub struct EnumArray {
 pub struct DateTimeArray {
     /// List of datetime values.
     /// Both OffsetDateTime and ZonedDateTime are supported.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub values: ::prost::alloc::vec::Vec<super::super::super::r#type::DateTime>,
 }
 /// Timestamp values.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TimestampArray {
     /// List of timestamp values.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub values: ::prost::alloc::vec::Vec<TimestampValue>,
 }
 /// Timestamp value type.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TimestampValue {
-    #[prost(oneof="timestamp_value::Value", tags="1, 2")]
+    #[prost(oneof = "timestamp_value::Value", tags = "1, 2")]
     pub value: ::core::option::Option<timestamp_value::Value>,
 }
 /// Nested message and enum types in `TimestampValue`.
@@ -383,12 +391,12 @@ pub mod timestamp_value {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Value {
         /// Timestamp value
-        #[prost(message, tag="1")]
+        #[prost(message, tag = "1")]
         TimestampValue(::prost_types::Timestamp),
         /// The string must represent a valid instant in UTC and is parsed using
         /// java.time.format.DateTimeFormatter.ISO_INSTANT.
         /// e.g. "2013-09-29T18:46:19Z"
-        #[prost(string, tag="2")]
+        #[prost(string, tag = "2")]
         TextValue(::prost::alloc::string::String),
     }
 }
@@ -396,7 +404,7 @@ pub mod timestamp_value {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PropertyArray {
     /// List of property values.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub properties: ::prost::alloc::vec::Vec<Property>,
 }
 /// Map property value.
@@ -405,7 +413,7 @@ pub struct PropertyArray {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MapProperty {
     /// Unordered map of dynamically typed values.
-    #[prost(map="string, message", tag="1")]
+    #[prost(map = "string, message", tag = "1")]
     pub fields: ::std::collections::HashMap<::prost::alloc::string::String, Value>,
 }
 /// `Value` represents a dynamically typed value which can be either be
@@ -415,7 +423,7 @@ pub struct MapProperty {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Value {
     /// The kind of value.
-    #[prost(oneof="value::Kind", tags="1, 2, 3, 4, 5, 6, 7")]
+    #[prost(oneof = "value::Kind", tags = "1, 2, 3, 4, 5, 6, 7")]
     pub kind: ::core::option::Option<value::Kind>,
 }
 /// Nested message and enum types in `Value`.
@@ -424,25 +432,25 @@ pub mod value {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Kind {
         /// Represents a float value.
-        #[prost(float, tag="1")]
+        #[prost(float, tag = "1")]
         FloatValue(f32),
         /// Represents a integer value.
-        #[prost(int32, tag="2")]
+        #[prost(int32, tag = "2")]
         IntValue(i32),
         /// Represents a string value.
-        #[prost(string, tag="3")]
+        #[prost(string, tag = "3")]
         StringValue(::prost::alloc::string::String),
         /// Represents an enum value.
-        #[prost(message, tag="4")]
+        #[prost(message, tag = "4")]
         EnumValue(super::EnumValue),
         /// Represents a datetime value.
-        #[prost(message, tag="5")]
+        #[prost(message, tag = "5")]
         DatetimeValue(super::super::super::super::r#type::DateTime),
         /// Represents a timestamp value.
-        #[prost(message, tag="6")]
+        #[prost(message, tag = "6")]
         TimestampValue(super::TimestampValue),
         /// Represents a boolean value.
-        #[prost(bool, tag="7")]
+        #[prost(bool, tag = "7")]
         BooleanValue(bool),
     }
 }
@@ -451,7 +459,7 @@ pub mod value {
 pub struct EnumValue {
     /// String value of the enum field. This must match defined set of enums
     /// in document schema using EnumTypeOptions.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub value: ::prost::alloc::string::String,
 }
 /// When a raw document is supplied, this indicates the file format
@@ -491,11 +499,11 @@ impl RawDocumentFileType {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListLinkedTargetsResponse {
     /// Target document-links.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub document_links: ::prost::alloc::vec::Vec<DocumentLink>,
     /// A token, which can be sent as `page_token` to retrieve the next page.
     /// If this field is omitted, there are no subsequent pages.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for DocumentLinkService.ListLinkedTargets.
@@ -504,22 +512,22 @@ pub struct ListLinkedTargetsRequest {
     /// Required. The name of the document, for which all target links are returned.
     /// Format:
     /// projects/{project_number}/locations/{location}/documents/{target_document_id}.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The meta information collected about the document creator, used to enforce
     /// access control for the service.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub request_metadata: ::core::option::Option<RequestMetadata>,
 }
 /// Response message for DocumentLinkService.ListLinkedSources.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListLinkedSourcesResponse {
     /// Source document-links.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub document_links: ::prost::alloc::vec::Vec<DocumentLink>,
     /// A token, which can be sent as `page_token` to retrieve the next page.
     /// If this field is omitted, there are no subsequent pages.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Response message for DocumentLinkService.ListLinkedSources.
@@ -528,25 +536,25 @@ pub struct ListLinkedSourcesRequest {
     /// Required. The name of the document, for which all source links are returned.
     /// Format:
     /// projects/{project_number}/locations/{location}/documents/{source_document_id}.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of document-links to return. The service may return
     /// fewer than this value.
     ///
     /// If unspecified, at most 50 document-links will be returned.
     /// The maximum value is 1000; values above 1000 will be coerced to 1000.
-    #[prost(int32, tag="3")]
+    #[prost(int32, tag = "3")]
     pub page_size: i32,
     /// A page token, received from a previous `ListLinkedSources` call.
     /// Provide this to retrieve the subsequent page.
     ///
     /// When paginating, all other parameters provided to `ListLinkedSources`
     /// must match the call that provided the page token.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub page_token: ::prost::alloc::string::String,
     /// The meta information collected about the document creator, used to enforce
     /// access control for the service.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub request_metadata: ::core::option::Option<RequestMetadata>,
 }
 /// A document-link between source and target document.
@@ -557,33 +565,43 @@ pub struct DocumentLink {
     /// the source document reference. Otherwise an exception will be thrown.
     /// Format:
     /// projects/{project_number}/locations/{location}/documents/{source_document_id}/documentLinks/{document_link_id}.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Document references of the source document.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub source_document_reference: ::core::option::Option<DocumentReference>,
     /// Document references of the target document.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub target_document_reference: ::core::option::Option<DocumentReference>,
     /// Description of this document-link.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub description: ::prost::alloc::string::String,
     /// Output only. The time when the documentLink is last updated.
-    #[prost(message, optional, tag="5")]
+    #[prost(message, optional, tag = "5")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The time when the documentLink is created.
-    #[prost(message, optional, tag="6")]
+    #[prost(message, optional, tag = "6")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The state of the documentlink. If target node has been deleted, the
     /// link is marked as invalid. Removing a source node will result in removal
     /// of all associated links.
-    #[prost(enumeration="document_link::State", tag="7")]
+    #[prost(enumeration = "document_link::State", tag = "7")]
     pub state: i32,
 }
 /// Nested message and enum types in `DocumentLink`.
 pub mod document_link {
     /// The state of a document-link.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum State {
         /// Unknown state of documentlink.
@@ -614,14 +632,14 @@ pub struct CreateDocumentLinkRequest {
     /// parent of document-link should be a document.
     /// Format:
     /// projects/{project_number}/locations/{location}/documents/{source_document_id}.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. Document links associated with the source documents (source_document_id).
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub document_link: ::core::option::Option<DocumentLink>,
     /// The meta information collected about the document creator, used to enforce
     /// access control for the service.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub request_metadata: ::core::option::Option<RequestMetadata>,
 }
 /// Request message for DocumentLinkService.DeleteDocumentLink.
@@ -630,11 +648,11 @@ pub struct DeleteDocumentLinkRequest {
     /// Required. The name of the document-link to be deleted.
     /// Format:
     /// projects/{project_number}/locations/{location}/documents/{source_document_id}/documentLinks/{document_link_id}.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The meta information collected about the document creator, used to enforce
     /// access control for the service.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub request_metadata: ::core::option::Option<RequestMetadata>,
 }
 /// Generated client implementations.
@@ -798,26 +816,26 @@ pub struct DocumentSchema {
     /// projects/{project_number}/locations/{location}/documentSchemas/{document_schema_id}.
     ///
     /// The name is ignored when creating a document schema.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. Name of the schema given by the user. Must be unique per customer.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub display_name: ::prost::alloc::string::String,
     /// Document details.
-    #[prost(message, repeated, tag="3")]
+    #[prost(message, repeated, tag = "3")]
     pub property_definitions: ::prost::alloc::vec::Vec<PropertyDefinition>,
     /// Document Type, true refers the document is a folder, otherwise it is
     /// a typical document.
-    #[prost(bool, tag="4")]
+    #[prost(bool, tag = "4")]
     pub document_is_folder: bool,
     /// Output only. The time when the document schema is last updated.
-    #[prost(message, optional, tag="5")]
+    #[prost(message, optional, tag = "5")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The time when the document schema is created.
-    #[prost(message, optional, tag="6")]
+    #[prost(message, optional, tag = "6")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Schema description.
-    #[prost(string, tag="7")]
+    #[prost(string, tag = "7")]
     pub description: ::prost::alloc::string::String,
 }
 /// Defines the metadata for a schema property.
@@ -827,32 +845,37 @@ pub struct PropertyDefinition {
     /// Must be unique within a document schema and is case insensitive.
     /// Names must be non-blank, start with a letter, and can contain alphanumeric
     /// characters and: /, :, -, _, and .
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The display-name for the property, used for front-end.
-    #[prost(string, tag="12")]
+    #[prost(string, tag = "12")]
     pub display_name: ::prost::alloc::string::String,
     /// Whether the property can have multiple values.
-    #[prost(bool, tag="2")]
+    #[prost(bool, tag = "2")]
     pub is_repeatable: bool,
     /// Whether the property can be filtered. If this is a sub-property, all the
     /// parent properties must be marked filterable.
-    #[prost(bool, tag="3")]
+    #[prost(bool, tag = "3")]
     pub is_filterable: bool,
     /// Indicates that the property should be included in a global search.
-    #[prost(bool, tag="4")]
+    #[prost(bool, tag = "4")]
     pub is_searchable: bool,
     /// Whether the property is user supplied metadata.
-    #[prost(bool, tag="5")]
+    #[prost(bool, tag = "5")]
     pub is_metadata: bool,
     /// Whether the property is mandatory.
     /// Default is 'false', i.e. populating property value can be skipped.
     /// If 'true' then user must populate the value for this property.
-    #[prost(bool, tag="14")]
+    #[prost(bool, tag = "14")]
     pub is_required: bool,
     /// Type of the property.
-    #[prost(oneof="property_definition::ValueTypeOptions", tags="7, 8, 9, 10, 11, 13, 15, 16")]
-    pub value_type_options: ::core::option::Option<property_definition::ValueTypeOptions>,
+    #[prost(
+        oneof = "property_definition::ValueTypeOptions",
+        tags = "7, 8, 9, 10, 11, 13, 15, 16"
+    )]
+    pub value_type_options: ::core::option::Option<
+        property_definition::ValueTypeOptions,
+    >,
 }
 /// Nested message and enum types in `PropertyDefinition`.
 pub mod property_definition {
@@ -860,91 +883,85 @@ pub mod property_definition {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ValueTypeOptions {
         /// Integer property.
-        #[prost(message, tag="7")]
+        #[prost(message, tag = "7")]
         IntegerTypeOptions(super::IntegerTypeOptions),
         /// Float property.
-        #[prost(message, tag="8")]
+        #[prost(message, tag = "8")]
         FloatTypeOptions(super::FloatTypeOptions),
         /// Text/string property.
-        #[prost(message, tag="9")]
+        #[prost(message, tag = "9")]
         TextTypeOptions(super::TextTypeOptions),
         /// Nested structured data property.
-        #[prost(message, tag="10")]
+        #[prost(message, tag = "10")]
         PropertyTypeOptions(super::PropertyTypeOptions),
         /// Enum/categorical property.
-        #[prost(message, tag="11")]
+        #[prost(message, tag = "11")]
         EnumTypeOptions(super::EnumTypeOptions),
         /// Date time property.
         /// It is not supported by CMEK compliant deployment.
-        #[prost(message, tag="13")]
+        #[prost(message, tag = "13")]
         DateTimeTypeOptions(super::DateTimeTypeOptions),
         /// Map property.
-        #[prost(message, tag="15")]
+        #[prost(message, tag = "15")]
         MapTypeOptions(super::MapTypeOptions),
         /// Timestamp property.
         /// It is not supported by CMEK compliant deployment.
-        #[prost(message, tag="16")]
+        #[prost(message, tag = "16")]
         TimestampTypeOptions(super::TimestampTypeOptions),
     }
 }
 /// Configurations for an integer property.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct IntegerTypeOptions {
-}
+pub struct IntegerTypeOptions {}
 /// Configurations for a float property.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct FloatTypeOptions {
-}
+pub struct FloatTypeOptions {}
 /// Configurations for a text property.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct TextTypeOptions {
-}
+pub struct TextTypeOptions {}
 /// Configurations for a date time property.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DateTimeTypeOptions {
-}
+pub struct DateTimeTypeOptions {}
 /// Configurations for a Map property.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MapTypeOptions {
-}
+pub struct MapTypeOptions {}
 /// Configurations for a timestamp property.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct TimestampTypeOptions {
-}
+pub struct TimestampTypeOptions {}
 /// Configurations for a nested structured data property.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PropertyTypeOptions {
     /// Required. List of property definitions.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub property_definitions: ::prost::alloc::vec::Vec<PropertyDefinition>,
 }
 /// Configurations for an enum/categorical property.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EnumTypeOptions {
     /// Required. List of possible enum values.
-    #[prost(string, repeated, tag="1")]
+    #[prost(string, repeated, tag = "1")]
     pub possible_values: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Make sure the Enum property value provided in the document is in the
     /// possile value list during document creation. The validation check runs by
     /// default.
-    #[prost(bool, tag="2")]
+    #[prost(bool, tag = "2")]
     pub validation_check_disabled: bool,
 }
 /// Request message for DocumentSchemaService.CreateDocumentSchema.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateDocumentSchemaRequest {
     /// Required. The parent name.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The document schema to create.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub document_schema: ::core::option::Option<DocumentSchema>,
 }
 /// Request message for DocumentSchemaService.GetDocumentSchema.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetDocumentSchemaRequest {
     /// Required. The name of the document schema to retrieve.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for DocumentSchemaService.UpdateDocumentSchema.
@@ -953,17 +970,17 @@ pub struct UpdateDocumentSchemaRequest {
     /// Required. The name of the document schema to update.
     /// Format:
     /// projects/{project_number}/locations/{location}/documentSchemas/{document_schema_id}.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The document schema to update with.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub document_schema: ::core::option::Option<DocumentSchema>,
 }
 /// Request message for DocumentSchemaService.DeleteDocumentSchema.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteDocumentSchemaRequest {
     /// Required. The name of the document schema to delete.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for DocumentSchemaService.ListDocumentSchemas.
@@ -971,31 +988,31 @@ pub struct DeleteDocumentSchemaRequest {
 pub struct ListDocumentSchemasRequest {
     /// Required. The parent, which owns this collection of document schemas.
     /// Format: projects/{project_number}/locations/{location}.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of document schemas to return. The service may return
     /// fewer than this value.
     /// If unspecified, at most 50 document schemas will be returned.
     /// The maximum value is 1000; values above 1000 will be coerced to 1000.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// A page token, received from a previous `ListDocumentSchemas` call.
     /// Provide this to retrieve the subsequent page.
     ///
     /// When paginating, all other parameters provided to `ListDocumentSchemas`
     /// must match the call that provided the page token.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for DocumentSchemaService.ListDocumentSchemas.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDocumentSchemasResponse {
     /// The document schemas from the specified parent.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub document_schemas: ::prost::alloc::vec::Vec<DocumentSchema>,
     /// A token, which can be sent as `page_token` to retrieve the next page.
     /// If this field is omitted, there are no subsequent pages.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Generated client implementations.
@@ -1183,7 +1200,7 @@ pub struct DocumentQuery {
     /// The query string that matches against the full text of the document and
     /// the searchable properties.
     /// The maximum number of allowed characters is 255.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub query: ::prost::alloc::string::String,
     /// Experimental, do not use.
     /// If the query is a natural language question. False by default. If true,
@@ -1191,7 +1208,7 @@ pub struct DocumentQuery {
     /// `result_count` in \[SearchDocumentsRequest][google.cloud.contentwarehouse.v1.SearchDocumentsRequest\] must be set. In addition, all
     /// other input fields related to search (pagination, histograms, etc.) will be
     /// ignored.
-    #[prost(bool, tag="12")]
+    #[prost(bool, tag = "12")]
     pub is_nl_query: bool,
     /// This filter specifies a structured syntax to match against the
     /// \[PropertyDefinition].[is_filterable][\] marked as `true`. The syntax for
@@ -1213,11 +1230,11 @@ pub struct DocumentQuery {
     /// `(LOWER(driving_license)="class \"a\"" OR EMPTY(driving_license)) AND
     /// driving_years > 10`
     #[deprecated]
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub custom_property_filter: ::prost::alloc::string::String,
     /// Documents created/updated within a range specified by this filter are
     /// searched against.
-    #[prost(message, repeated, tag="5")]
+    #[prost(message, repeated, tag = "5")]
     pub time_filters: ::prost::alloc::vec::Vec<TimeFilter>,
     /// This filter specifies the exact document schema
     /// \[Document.document_schema_name][google.cloud.contentwarehouse.v1.Document.document_schema_name\] of the documents to search against.
@@ -1228,12 +1245,12 @@ pub struct DocumentQuery {
     /// schemas.
     ///
     /// At most 20 document schema names are allowed.
-    #[prost(string, repeated, tag="6")]
+    #[prost(string, repeated, tag = "6")]
     pub document_schema_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// This filter specifies a structured syntax to match against the
     /// \[PropertyDefinition.is_filterable][google.cloud.contentwarehouse.v1.PropertyDefinition.is_filterable\] marked as `true`. The relationship
     /// between the PropertyFilters is OR.
-    #[prost(message, repeated, tag="7")]
+    #[prost(message, repeated, tag = "7")]
     pub property_filter: ::prost::alloc::vec::Vec<PropertyFilter>,
     /// This filter specifies the types of files to return: ALL, FOLDER, or FILE.
     /// If FOLDER or FILE is specified, then only either folders or files will be
@@ -1241,12 +1258,12 @@ pub struct DocumentQuery {
     /// returned.
     ///
     /// If no value is specified, ALL files will be returned.
-    #[prost(message, optional, tag="8")]
+    #[prost(message, optional, tag = "8")]
     pub file_type_filter: ::core::option::Option<FileTypeFilter>,
     /// Search all the documents under this specified folder.
     /// Format:
     /// projects/{project_number}/locations/{location}/documents/{document_id}.
-    #[prost(string, tag="9")]
+    #[prost(string, tag = "9")]
     pub folder_name_filter: ::prost::alloc::string::String,
     /// For custom synonyms.
     /// Customers provide the synonyms based on context. One customer can provide
@@ -1255,7 +1272,7 @@ pub struct DocumentQuery {
     /// By default, no custom synonyms wll be applied if no query context is
     /// provided.
     /// It is not supported for CMEK compliant deployment.
-    #[prost(string, repeated, tag="10")]
+    #[prost(string, repeated, tag = "10")]
     pub query_context: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The exact creator(s) of the documents to search against.
     ///
@@ -1263,24 +1280,36 @@ pub struct DocumentQuery {
     /// associated with any creator. If multiple values are specified, documents
     /// within the search results may be associated with any of the specified
     /// creators.
-    #[prost(string, repeated, tag="11")]
-    pub document_creator_filter: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    #[prost(string, repeated, tag = "11")]
+    pub document_creator_filter: ::prost::alloc::vec::Vec<
+        ::prost::alloc::string::String,
+    >,
 }
 /// Filter on create timestamp or update timestamp of documents.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TimeFilter {
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub time_range: ::core::option::Option<super::super::super::r#type::Interval>,
     /// Specifies which time field to filter documents on.
     ///
     /// Defaults to \[TimeField.UPLOAD_TIME][\].
-    #[prost(enumeration="time_filter::TimeField", tag="2")]
+    #[prost(enumeration = "time_filter::TimeField", tag = "2")]
     pub time_field: i32,
 }
 /// Nested message and enum types in `TimeFilter`.
 pub mod time_filter {
     /// Time field used in TimeFilter.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum TimeField {
         /// Default value.
@@ -1309,7 +1338,7 @@ pub struct PropertyFilter {
     /// The Document schema name \[Document.document_schema_name][google.cloud.contentwarehouse.v1.Document.document_schema_name\].
     /// Format:
     /// projects/{project_number}/locations/{location}/documentSchemas/{document_schema_id}.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub document_schema_name: ::prost::alloc::string::String,
     /// The filter condition.
     /// The syntax for this expression is a subset of SQL syntax.
@@ -1352,20 +1381,30 @@ pub struct PropertyFilter {
     ///
     /// * Operators: `=`, `<`, `<=`, `>`, and `>=`.
     /// * Boolean expressions: AND and OR.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub condition: ::prost::alloc::string::String,
 }
 /// Filter for the specific types of documents returned.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FileTypeFilter {
     /// The type of files to return.
-    #[prost(enumeration="file_type_filter::FileType", tag="1")]
+    #[prost(enumeration = "file_type_filter::FileType", tag = "1")]
     pub file_type: i32,
 }
 /// Nested message and enum types in `FileTypeFilter`.
 pub mod file_type_filter {
     /// Representation of the types of files.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum FileType {
         /// Default document type. If set, disables the filter.
@@ -1399,20 +1438,20 @@ pub struct HistogramQuery {
     /// searches.
     ///
     /// See \[SearchDocumentsRequest.histogram_queries][google.cloud.contentwarehouse.v1.SearchDocumentsRequest.histogram_queries\] for details about syntax.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub histogram_query: ::prost::alloc::string::String,
     /// Controls if the histogram query requires the return of a precise count.
     /// Enable this flag may adversely impact performance.
     ///
     /// Defaults to true.
-    #[prost(bool, tag="2")]
+    #[prost(bool, tag = "2")]
     pub require_precise_result_size: bool,
     /// Optional. Filter the result of histogram query by the property names. It only works
     /// with histogram query count('FilterableProperties').
     /// It is an optional. It will perform histogram on all the property names for
     /// all the document schemas. Setting this field will have a better
     /// performance.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub filters: ::core::option::Option<HistogramQueryPropertyNameFilter>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1425,7 +1464,7 @@ pub struct HistogramQueryPropertyNameFilter {
     /// At most 10 document schema names are allowed.
     /// Format:
     /// projects/{project_number}/locations/{location}/documentSchemas/{document_schema_id}.
-    #[prost(string, repeated, tag="1")]
+    #[prost(string, repeated, tag = "1")]
     pub document_schemas: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// It is optional. It will perform histogram for all the property names if it
     /// is not set.
@@ -1434,11 +1473,14 @@ pub struct HistogramQueryPropertyNameFilter {
     /// "schemaId.propertyName". The property needs to be defined in the schema.
     /// Example: the schema id is abc. Then the name of property for property
     /// MORTGAGE_TYPE will be "abc.MORTGAGE_TYPE".
-    #[prost(string, repeated, tag="2")]
+    #[prost(string, repeated, tag = "2")]
     pub property_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// By default, the y_axis is HISTOGRAM_YAXIS_DOCUMENT if this field is not
     /// set.
-    #[prost(enumeration="histogram_query_property_name_filter::HistogramYAxis", tag="3")]
+    #[prost(
+        enumeration = "histogram_query_property_name_filter::HistogramYAxis",
+        tag = "3"
+    )]
     pub y_axis: i32,
 }
 /// Nested message and enum types in `HistogramQueryPropertyNameFilter`.
@@ -1449,7 +1491,17 @@ pub mod histogram_query_property_name_filter {
     /// address: 1
     /// payment_method: 2
     /// line_item_description: 1
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum HistogramYAxis {
         /// Count the documents per property name.
@@ -1474,7 +1526,7 @@ pub mod histogram_query_property_name_filter {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HistogramQueryResult {
     /// Requested histogram expression.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub histogram_query: ::prost::alloc::string::String,
     /// A map from the values of the facet associated with distinct values to the
     /// number of matching entries with corresponding value.
@@ -1482,46 +1534,49 @@ pub struct HistogramQueryResult {
     /// The key format is:
     ///
     /// * (for string histogram) string values stored in the field.
-    #[prost(map="string, int64", tag="2")]
+    #[prost(map = "string, int64", tag = "2")]
     pub histogram: ::std::collections::HashMap<::prost::alloc::string::String, i64>,
 }
 /// Request Option for processing Cloud AI Document in CW Document.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CloudAiDocumentOption {
     /// Whether to convert all the entities to properties.
-    #[prost(bool, tag="1")]
+    #[prost(bool, tag = "1")]
     pub enable_entities_conversions: bool,
     /// If set, only selected entities will be converted to properties.
-    #[prost(map="string, string", tag="2")]
-    pub customized_entities_properties_conversions: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map = "string, string", tag = "2")]
+    pub customized_entities_properties_conversions: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
 }
 /// Request message for DocumentService.CreateDocument.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateDocumentRequest {
     /// Required. The parent name.
     /// Format: projects/{project_number}/locations/{location}.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The document to create.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub document: ::core::option::Option<Document>,
     /// The meta information collected about the end user, used to enforce access
     /// control for the service.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub request_metadata: ::core::option::Option<RequestMetadata>,
     /// Default document policy during creation. Conditions defined in the policy
     /// will be ignored.
-    #[prost(message, optional, tag="4")]
+    #[prost(message, optional, tag = "4")]
     pub policy: ::core::option::Option<super::super::super::iam::v1::Policy>,
     /// Request Option for processing Cloud AI Document in CW Document.
-    #[prost(message, optional, tag="5")]
+    #[prost(message, optional, tag = "5")]
     pub cloud_ai_document_option: ::core::option::Option<CloudAiDocumentOption>,
     /// Field mask for creating Document fields. If mask path is empty,
     /// it means all fields are masked.
     /// For the `FieldMask` definition,
     /// see
     /// <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask>
-    #[prost(message, optional, tag="6")]
+    #[prost(message, optional, tag = "6")]
     pub create_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for DocumentService.GetDocument.
@@ -1531,11 +1586,11 @@ pub struct GetDocumentRequest {
     /// Format:
     /// projects/{project_number}/locations/{location}/documents/{document_id} or
     /// projects/{project_number}/locations/{location}/documents/referenceId/{reference_id}.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The meta information collected about the end user, used to enforce access
     /// control for the service.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub request_metadata: ::core::option::Option<RequestMetadata>,
 }
 /// Request message for DocumentService.UpdateDocument.
@@ -1546,20 +1601,20 @@ pub struct UpdateDocumentRequest {
     /// projects/{project_number}/locations/{location}/documents/{document_id}
     /// or
     /// projects/{project_number}/locations/{location}/documents/referenceId/{reference_id}.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The document to update.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub document: ::core::option::Option<Document>,
     /// The meta information collected about the end user, used to enforce access
     /// control for the service.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub request_metadata: ::core::option::Option<RequestMetadata>,
     /// Request Option for processing Cloud AI Document in CW Document.
-    #[prost(message, optional, tag="5")]
+    #[prost(message, optional, tag = "5")]
     pub cloud_ai_document_option: ::core::option::Option<CloudAiDocumentOption>,
     /// Options for the update operation.
-    #[prost(message, optional, tag="6")]
+    #[prost(message, optional, tag = "6")]
     pub update_options: ::core::option::Option<UpdateOptions>,
 }
 /// Request message for DocumentService.DeleteDocument.
@@ -1570,11 +1625,11 @@ pub struct DeleteDocumentRequest {
     /// projects/{project_number}/locations/{location}/documents/{document_id}
     /// or
     /// projects/{project_number}/locations/{location}/documents/referenceId/{reference_id}.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The meta information collected about the end user, used to enforce access
     /// control for the service.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub request_metadata: ::core::option::Option<RequestMetadata>,
 }
 /// Request message for DocumentService.SearchDocuments.
@@ -1582,14 +1637,14 @@ pub struct DeleteDocumentRequest {
 pub struct SearchDocumentsRequest {
     /// Required. The parent, which owns this collection of documents.
     /// Format: projects/{project_number}/locations/{location}.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The meta information collected about the end user, used to enforce access
     /// control and improve the search quality of the service.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub request_metadata: ::core::option::Option<RequestMetadata>,
     /// Query used to search against documents (keyword, filters, etc.).
-    #[prost(message, optional, tag="4")]
+    #[prost(message, optional, tag = "4")]
     pub document_query: ::core::option::Option<DocumentQuery>,
     /// An integer that specifies the current offset (that is, starting result
     /// location, amongst the documents deemed by the API as relevant) in search
@@ -1601,17 +1656,17 @@ pub struct SearchDocumentsRequest {
     /// document, and 10 means to return from the 11th document. This can be used
     /// for pagination, (for example, pageSize = 10 and offset = 10 means to return
     /// from the second page).
-    #[prost(int32, tag="5")]
+    #[prost(int32, tag = "5")]
     pub offset: i32,
     /// A limit on the number of documents returned in the search results.
     /// Increasing this value above the default value of 10 can increase search
     /// response time. The value can be between 1 and 100.
-    #[prost(int32, tag="6")]
+    #[prost(int32, tag = "6")]
     pub page_size: i32,
     /// The token specifying the current offset within search results.
     /// See \[SearchDocumentsResponse.next_page_token][google.cloud.contentwarehouse.v1.SearchDocumentsResponse.next_page_token\] for an explanation of how
     /// to obtain the next set of query results.
-    #[prost(string, tag="7")]
+    #[prost(string, tag = "7")]
     pub page_token: ::prost::alloc::string::String,
     /// The criteria determining how search results are sorted. For non-empty
     /// query, default is `"relevance desc"`. For empty query, default is
@@ -1625,7 +1680,7 @@ pub struct SearchDocumentsRequest {
     /// * `"upload_date"`: By upload date ascending.
     /// * `"update_date desc"`: By last updated date descending.
     /// * `"update_date"`: By last updated date ascending.
-    #[prost(string, tag="8")]
+    #[prost(string, tag = "8")]
     pub order_by: ::prost::alloc::string::String,
     /// An expression specifying a histogram request against matching
     /// documents. Expression syntax is an aggregation function call with
@@ -1640,7 +1695,7 @@ pub struct SearchDocumentsRequest {
     ///
     /// * Histogram facet (aka filterable properties): Facet names with format
     /// &lt;schema id&gt;.&lt;facet&gt;. Facets will have the
-    /// format of: \[a-zA-Z][a-zA-Z0-9_:/-.\]. If the facet is a child
+    /// format of: `\[a-zA-Z][a-zA-Z0-9_:/-.\]`. If the facet is a child
     /// facet, then the parent hierarchy needs to be specified separated by
     /// dots in the prefix after the schema id. Thus, the format for a multi-
     /// level facet is: &lt;schema id&gt;.&lt;parent facet name&gt;.
@@ -1657,7 +1712,7 @@ pub struct SearchDocumentsRequest {
     ///
     /// * For schema id, abc123, get the counts for MORTGAGE_TYPE:
     ///    count('abc123.MORTGAGE_TYPE')
-    #[prost(message, repeated, tag="9")]
+    #[prost(message, repeated, tag = "9")]
     pub histogram_queries: ::prost::alloc::vec::Vec<HistogramQuery>,
     /// Optional. Controls if the search document request requires the return of a total size
     /// of matched documents. See \[SearchDocumentsResponse.total_size][google.cloud.contentwarehouse.v1.SearchDocumentsResponse.total_size\].
@@ -1667,13 +1722,13 @@ pub struct SearchDocumentsRequest {
     /// to false on subsequent page calls (keep the total count locally).
     ///
     /// Defaults to false.
-    #[prost(bool, tag="10")]
+    #[prost(bool, tag = "10")]
     pub require_total_size: bool,
     /// Experimental, do not use.
     /// The limit on the number of documents returned for the question-answering
     /// feature. To enable the question-answering feature, set
     /// \[DocumentQuery].[is_nl_query][\] to true.
-    #[prost(int32, tag="11")]
+    #[prost(int32, tag = "11")]
     pub qa_size_limit: i32,
 }
 /// Request message for DocumentService.FetchAcl
@@ -1683,15 +1738,15 @@ pub struct FetchAclRequest {
     /// Format for document:
     /// projects/{project_number}/locations/{location}/documents/{document_id}.
     /// Format for project: projects/{project_number}.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub resource: ::prost::alloc::string::String,
     /// The meta information collected about the end user, used to enforce access
     /// control for the service.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub request_metadata: ::core::option::Option<RequestMetadata>,
     /// For Get Project ACL only. Authorization check for end user will be ignored
     /// when project_owner=true.
-    #[prost(bool, tag="3")]
+    #[prost(bool, tag = "3")]
     pub project_owner: bool,
 }
 /// Request message for DocumentService.SetAcl.
@@ -1701,19 +1756,19 @@ pub struct SetAclRequest {
     /// Format for document:
     /// projects/{project_number}/locations/{location}/documents/{document_id}.
     /// Format for project: projects/{project_number}.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub resource: ::prost::alloc::string::String,
     /// Required. REQUIRED: The complete policy to be applied to the `resource`. The size of
     /// the policy is limited to a few 10s of KB.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub policy: ::core::option::Option<super::super::super::iam::v1::Policy>,
     /// The meta information collected about the end user, used to enforce access
     /// control for the service.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub request_metadata: ::core::option::Option<RequestMetadata>,
     /// For Set Project ACL only. Authorization check for end user will be ignored
     /// when project_owner=true.
-    #[prost(bool, tag="4")]
+    #[prost(bool, tag = "4")]
     pub project_owner: bool,
 }
 /// Represents a set of rules from a single customer.
@@ -1724,44 +1779,54 @@ pub struct RuleSet {
     /// projects/{project_number}/locations/{location}/ruleSet/{rule_set_id}.
     ///
     /// The name is ignored when creating a rule set.
-    #[prost(string, tag="6")]
+    #[prost(string, tag = "6")]
     pub name: ::prost::alloc::string::String,
     /// Short description of the rule-set.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub description: ::prost::alloc::string::String,
     /// Source of the rules i.e., customer name.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub source: ::prost::alloc::string::String,
     /// List of rules given by the customer.
-    #[prost(message, repeated, tag="3")]
+    #[prost(message, repeated, tag = "3")]
     pub rules: ::prost::alloc::vec::Vec<Rule>,
 }
 /// Represents the rule for a content warehouse trigger.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Rule {
     /// Short description of the rule and its context.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub description: ::prost::alloc::string::String,
     /// ID of the rule. It has to be unique across all the examples.
     /// This is managed internally.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub rule_id: ::prost::alloc::string::String,
     /// Identifies the trigger type for running the policy.
-    #[prost(enumeration="rule::TriggerType", tag="3")]
+    #[prost(enumeration = "rule::TriggerType", tag = "3")]
     pub trigger_type: i32,
     /// Represents the conditional expression to be evaluated.
     /// Expression should evaluate to a boolean result.
     /// When the condition is true actions are executed.
     /// Example: user_role = "hsbc_role_1" AND doc.salary > 20000
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub condition: ::prost::alloc::string::String,
     /// List of actions that are executed when the rule is satisfied.
-    #[prost(message, repeated, tag="5")]
+    #[prost(message, repeated, tag = "5")]
     pub actions: ::prost::alloc::vec::Vec<Action>,
 }
 /// Nested message and enum types in `Rule`.
 pub mod rule {
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum TriggerType {
         Unknown = 0,
@@ -1788,9 +1853,9 @@ pub mod rule {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Action {
     /// ID of the action. Managed internally.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub action_id: ::prost::alloc::string::String,
-    #[prost(oneof="action::Action", tags="2, 3, 4, 5, 6, 9, 10")]
+    #[prost(oneof = "action::Action", tags = "2, 3, 4, 5, 6, 9, 10")]
     pub action: ::core::option::Option<action::Action>,
 }
 /// Nested message and enum types in `Action`.
@@ -1798,25 +1863,25 @@ pub mod action {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Action {
         /// Action triggering access control operations.
-        #[prost(message, tag="2")]
+        #[prost(message, tag = "2")]
         AccessControl(super::AccessControlAction),
         /// Action triggering data validation operations.
-        #[prost(message, tag="3")]
+        #[prost(message, tag = "3")]
         DataValidation(super::DataValidationAction),
         /// Action triggering data update operations.
-        #[prost(message, tag="4")]
+        #[prost(message, tag = "4")]
         DataUpdate(super::DataUpdateAction),
         /// Action triggering create document link operation.
-        #[prost(message, tag="5")]
+        #[prost(message, tag = "5")]
         AddToFolder(super::AddToFolderAction),
         /// Action publish to Pub/Sub operation.
-        #[prost(message, tag="6")]
+        #[prost(message, tag = "6")]
         PublishToPubSub(super::PublishAction),
         /// Action removing a document from a folder.
-        #[prost(message, tag="9")]
+        #[prost(message, tag = "9")]
         RemoveFromFolderAction(super::RemoveFromFolderAction),
         /// Action deleting the document.
-        #[prost(message, tag="10")]
+        #[prost(message, tag = "10")]
         DeleteDocumentAction(super::DeleteDocumentAction),
     }
 }
@@ -1825,18 +1890,28 @@ pub mod action {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AccessControlAction {
     /// Identifies the type of operation.
-    #[prost(enumeration="access_control_action::OperationType", tag="1")]
+    #[prost(enumeration = "access_control_action::OperationType", tag = "1")]
     pub operation_type: i32,
     /// Represents the new policy from which bindings are added, removed or
     /// replaced based on the type of the operation. the policy is limited to a few
     /// 10s of KB.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub policy: ::core::option::Option<super::super::super::iam::v1::Policy>,
 }
 /// Nested message and enum types in `AccessControlAction`.
 pub mod access_control_action {
     /// Type of ACL modification operation.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum OperationType {
         Unknown = 0,
@@ -1868,8 +1943,11 @@ pub struct DataValidationAction {
     /// Map of (K, V) -> (field, string condition to be evaluated on the field)
     /// E.g., ("age", "age > 18  && age < 60") entry triggers validation of field
     /// age with the given condition. Map entries will be ANDed during validation.
-    #[prost(map="string, string", tag="1")]
-    pub conditions: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map = "string, string", tag = "1")]
+    pub conditions: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
 }
 /// Represents the action responsible for properties update operations.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1879,8 +1957,11 @@ pub struct DataUpdateAction {
     /// If the field is not present then new entry is added.
     /// During update action execution, value strings will be casted to
     /// appropriate types.
-    #[prost(map="string, string", tag="1")]
-    pub entries: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map = "string, string", tag = "1")]
+    pub entries: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
 }
 /// Represents the action responsible for adding document under a folder.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1888,7 +1969,7 @@ pub struct AddToFolderAction {
     /// Names of the folder under which new document is to be added.
     /// Format:
     /// projects/{project_number}/locations/{location}/documents/{document_id}.
-    #[prost(string, repeated, tag="1")]
+    #[prost(string, repeated, tag = "1")]
     pub folders: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Represents the action responsible for remove a document from a specific
@@ -1896,12 +1977,12 @@ pub struct AddToFolderAction {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RemoveFromFolderAction {
     /// Condition of the action to be executed.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub condition: ::prost::alloc::string::String,
     /// Name of the folder under which new document is to be added.
     /// Format:
     /// projects/{project_number}/locations/{location}/documents/{document_id}.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub folder: ::prost::alloc::string::String,
 }
 /// Represents the action responsible for publishing messages to a Pub/Sub topic.
@@ -1909,10 +1990,10 @@ pub struct RemoveFromFolderAction {
 pub struct PublishAction {
     /// The topic id in the Pub/Sub service for which messages will be published
     /// to.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub topic_id: ::prost::alloc::string::String,
     /// Messages to be published.
-    #[prost(string, repeated, tag="2")]
+    #[prost(string, repeated, tag = "2")]
     pub messages: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Represents the action responsible for deleting the document.
@@ -1920,7 +2001,7 @@ pub struct PublishAction {
 pub struct DeleteDocumentAction {
     /// Boolean field to select between hard vs soft delete options.
     /// Set 'true' for 'hard delete' and 'false' for 'soft delete'.
-    #[prost(bool, tag="1")]
+    #[prost(bool, tag = "1")]
     pub enable_hard_delete: bool,
 }
 /// Records the output of Rule Engine including rule evaluation and actions
@@ -1928,74 +2009,84 @@ pub struct DeleteDocumentAction {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RuleEngineOutput {
     /// Name of the document against which the rules and actions were evaluated.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub document_name: ::prost::alloc::string::String,
     /// Output from Rule Evaluator containing matched, unmatched and invalid rules.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub rule_evaluator_output: ::core::option::Option<RuleEvaluatorOutput>,
     /// Output from Action Executor containing rule and corresponding actions
     /// execution result.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub action_executor_output: ::core::option::Option<ActionExecutorOutput>,
 }
 /// Represents the output of the Rule Evaluator.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RuleEvaluatorOutput {
     /// List of rules fetched from database for the given request trigger type.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub triggered_rules: ::prost::alloc::vec::Vec<Rule>,
     /// A subset of triggered rules that are evaluated true for a given request.
-    #[prost(message, repeated, tag="2")]
+    #[prost(message, repeated, tag = "2")]
     pub matched_rules: ::prost::alloc::vec::Vec<Rule>,
     /// A subset of triggered rules that failed the validation check(s) after
     /// parsing.
-    #[prost(message, repeated, tag="3")]
+    #[prost(message, repeated, tag = "3")]
     pub invalid_rules: ::prost::alloc::vec::Vec<InvalidRule>,
 }
 /// A triggered rule that failed the validation check(s) after parsing.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InvalidRule {
     /// Triggered rule.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub rule: ::core::option::Option<Rule>,
     /// Validation error on a parsed expression.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub error: ::prost::alloc::string::String,
 }
 /// Represents the output of the Action Executor.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ActionExecutorOutput {
     /// List of rule and corresponding actions result.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub rule_actions_pairs: ::prost::alloc::vec::Vec<RuleActionsPair>,
 }
 /// Represents a rule and outputs of associated actions.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RuleActionsPair {
     /// Represents the rule.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub rule: ::core::option::Option<Rule>,
     /// Outputs of executing the actions associated with the above rule.
-    #[prost(message, repeated, tag="2")]
+    #[prost(message, repeated, tag = "2")]
     pub action_outputs: ::prost::alloc::vec::Vec<ActionOutput>,
 }
 /// Represents the result of executing an action.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ActionOutput {
     /// ID of the action.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub action_id: ::prost::alloc::string::String,
     /// State of an action.
-    #[prost(enumeration="action_output::State", tag="2")]
+    #[prost(enumeration = "action_output::State", tag = "2")]
     pub action_state: i32,
     /// Action execution output message.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub output_message: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `ActionOutput`.
 pub mod action_output {
     /// Represents execution state of the action.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum State {
         Unknown = 0,
@@ -2028,46 +2119,46 @@ pub mod action_output {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateDocumentResponse {
     /// Document created after executing create request.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub document: ::core::option::Option<Document>,
     /// Output from Rule Engine recording the rule evaluator and action executor's
     /// output.
     ///
     /// Refer format in: google/cloud/contentwarehouse/v1/rule_engine.proto
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub rule_engine_output: ::core::option::Option<RuleEngineOutput>,
     /// Additional information for the API invocation, such as the request tracking
     /// id.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub metadata: ::core::option::Option<ResponseMetadata>,
 }
 /// Response message for DocumentService.UpdateDocument.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateDocumentResponse {
     /// Updated document after executing update request.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub document: ::core::option::Option<Document>,
     /// Output from Rule Engine recording the rule evaluator and action executor's
     /// output.
     ///
     /// Refer format in: google/cloud/contentwarehouse/v1/rule_engine.proto
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub rule_engine_output: ::core::option::Option<RuleEngineOutput>,
     /// Additional information for the API invocation, such as the request tracking
     /// id.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub metadata: ::core::option::Option<ResponseMetadata>,
 }
 /// Additional result info for the question-answering feature.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QaResult {
     /// Highlighted sections in the snippet.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub highlights: ::prost::alloc::vec::Vec<qa_result::Highlight>,
     /// The calibrated confidence score for this document, in the range
     /// [0., 1.]. This represents the confidence level for whether the returned
     /// document and snippet answers the user's query.
-    #[prost(float, tag="2")]
+    #[prost(float, tag = "2")]
     pub confidence_score: f32,
 }
 /// Nested message and enum types in `QAResult`.
@@ -2077,10 +2168,10 @@ pub mod qa_result {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Highlight {
         /// Start index of the highlight.
-        #[prost(int32, tag="1")]
+        #[prost(int32, tag = "1")]
         pub start_index: i32,
         /// End index of the highlight, exclusive.
-        #[prost(int32, tag="2")]
+        #[prost(int32, tag = "2")]
         pub end_index: i32,
     }
 }
@@ -2088,11 +2179,13 @@ pub mod qa_result {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchDocumentsResponse {
     /// The document entities that match the specified \[SearchDocumentsRequest][google.cloud.contentwarehouse.v1.SearchDocumentsRequest\].
-    #[prost(message, repeated, tag="1")]
-    pub matching_documents: ::prost::alloc::vec::Vec<search_documents_response::MatchingDocument>,
+    #[prost(message, repeated, tag = "1")]
+    pub matching_documents: ::prost::alloc::vec::Vec<
+        search_documents_response::MatchingDocument,
+    >,
     /// The token that specifies the starting position of the next page of results.
     /// This field is empty if there are no more results.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
     /// The total number of matched documents which is available only if the client
     /// set \[SearchDocumentsRequest.require_total_size][google.cloud.contentwarehouse.v1.SearchDocumentsRequest.require_total_size\] to `true`. Otherwise, the
@@ -2100,15 +2193,15 @@ pub struct SearchDocumentsResponse {
     /// is returned, then it can be assumed that the count is equal to or greater
     /// than 100,000. Typically a UI would handle this condition by displaying
     /// &quot;of many&quot;, for example: &quot;Displaying 10 of many&quot;.
-    #[prost(int32, tag="3")]
+    #[prost(int32, tag = "3")]
     pub total_size: i32,
     /// Additional information for the API invocation, such as the request tracking
     /// id.
-    #[prost(message, optional, tag="4")]
+    #[prost(message, optional, tag = "4")]
     pub metadata: ::core::option::Option<ResponseMetadata>,
     /// The histogram results that match with the specified
     /// \[SearchDocumentsRequest.histogram_queries][google.cloud.contentwarehouse.v1.SearchDocumentsRequest.histogram_queries\].
-    #[prost(message, repeated, tag="6")]
+    #[prost(message, repeated, tag = "6")]
     pub histogram_query_results: ::prost::alloc::vec::Vec<HistogramQueryResult>,
 }
 /// Nested message and enum types in `SearchDocumentsResponse`.
@@ -2118,7 +2211,7 @@ pub mod search_documents_response {
     pub struct MatchingDocument {
         /// Document that matches the specified \[SearchDocumentsRequest][google.cloud.contentwarehouse.v1.SearchDocumentsRequest\].
         /// This document only contains indexed metadata information.
-        #[prost(message, optional, tag="1")]
+        #[prost(message, optional, tag = "1")]
         pub document: ::core::option::Option<super::Document>,
         /// Contains snippets of text from the document full raw text that most
         /// closely match a search query's keywords, if available. All HTML tags in
@@ -2129,11 +2222,11 @@ pub mod search_documents_response {
         /// contain a snippet that answers the user's natural-language query. No HTML
         /// bold tags will be present, and highlights in the answer snippet can be
         /// found in \[QAResult.highlights][google.cloud.contentwarehouse.v1.QAResult.highlights\].
-        #[prost(string, tag="2")]
+        #[prost(string, tag = "2")]
         pub search_text_snippet: ::prost::alloc::string::String,
         /// Experimental.
         /// Additional result info if the question-answering feature is enabled.
-        #[prost(message, optional, tag="3")]
+        #[prost(message, optional, tag = "3")]
         pub qa_result: ::core::option::Option<super::QaResult>,
     }
 }
@@ -2141,22 +2234,22 @@ pub mod search_documents_response {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FetchAclResponse {
     /// The IAM policy.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub policy: ::core::option::Option<super::super::super::iam::v1::Policy>,
     /// Additional information for the API invocation, such as the request tracking
     /// id.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub metadata: ::core::option::Option<ResponseMetadata>,
 }
 /// Response message for DocumentService.SetAcl.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetAclResponse {
     /// The policy will be attached to a resource (e.g. projecct, document).
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub policy: ::core::option::Option<super::super::super::iam::v1::Policy>,
     /// Additional information for the API invocation, such as the request tracking
     /// id.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub metadata: ::core::option::Option<ResponseMetadata>,
 }
 /// Generated client implementations.
@@ -2382,10 +2475,10 @@ pub mod document_service_client {
 pub struct CreateRuleSetRequest {
     /// Required. The parent name.
     /// Format: projects/{project_number}/locations/{location}.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The rule set to create.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub rule_set: ::core::option::Option<RuleSet>,
 }
 /// Request message for RuleSetService.GetRuleSet.
@@ -2394,7 +2487,7 @@ pub struct GetRuleSetRequest {
     /// Required. The name of the rule set to retrieve.
     /// Format:
     /// projects/{project_number}/locations/{location}/ruleSets/{rule_set_id}.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for RuleSetService.UpdateRuleSet.
@@ -2403,10 +2496,10 @@ pub struct UpdateRuleSetRequest {
     /// Required. The name of the rule set to update.
     /// Format:
     /// projects/{project_number}/locations/{location}/ruleSets/{rule_set_id}.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The rule set to update.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub rule_set: ::core::option::Option<RuleSet>,
 }
 /// Request message for RuleSetService.DeleteRuleSet.
@@ -2415,7 +2508,7 @@ pub struct DeleteRuleSetRequest {
     /// Required. The name of the rule set to delete.
     /// Format:
     /// projects/{project_number}/locations/{location}/ruleSets/{rule_set_id}.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for RuleSetService.ListRuleSets.
@@ -2423,31 +2516,31 @@ pub struct DeleteRuleSetRequest {
 pub struct ListRuleSetsRequest {
     /// Required. The parent, which owns this collection of document.
     /// Format: projects/{project_number}/locations/{location}.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of rule sets to return. The service may return
     /// fewer than this value.
     /// If unspecified, at most 50 rule sets will be returned.
     /// The maximum value is 1000; values above 1000 will be coerced to 1000.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// A page token, received from a previous `ListRuleSets` call.
     /// Provide this to retrieve the subsequent page.
     ///
     /// When paginating, all other parameters provided to `ListRuleSets`
     /// must match the call that provided the page token.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for RuleSetService.ListRuleSets.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRuleSetsResponse {
     /// The rule sets from the specified parent.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub rule_sets: ::prost::alloc::vec::Vec<RuleSet>,
     /// A token, which can be sent as `page_token` to retrieve the next page.
     /// If this field is omitted, there are no subsequent pages.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Generated client implementations.
@@ -2635,15 +2728,15 @@ pub struct SynonymSet {
     /// This is mandatory for google.api.resource.
     /// Format:
     /// projects/{project_number}/locations/{location}/synonymSets/{context}.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// This is a freeform field. Example contexts can be "sales," "engineering,"
     /// "real estate," "accounting," etc.
     /// The context can be supplied during search requests.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub context: ::prost::alloc::string::String,
     /// List of Synonyms for the context.
-    #[prost(message, repeated, tag="3")]
+    #[prost(message, repeated, tag = "3")]
     pub synonyms: ::prost::alloc::vec::Vec<synonym_set::Synonym>,
 }
 /// Nested message and enum types in `SynonymSet`.
@@ -2653,7 +2746,7 @@ pub mod synonym_set {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Synonym {
         /// For example: sale, invoice, bill, order
-        #[prost(string, repeated, tag="1")]
+        #[prost(string, repeated, tag = "1")]
         pub words: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
 }
@@ -2662,10 +2755,10 @@ pub mod synonym_set {
 pub struct CreateSynonymSetRequest {
     /// Required. The parent name.
     /// Format: projects/{project_number}/locations/{location}.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The synonymSet to be created for a context
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub synonym_set: ::core::option::Option<SynonymSet>,
 }
 /// Request message for SynonymSetService.GetSynonymSet.
@@ -2675,7 +2768,7 @@ pub struct GetSynonymSetRequest {
     /// Required. The name of the synonymSet to retrieve
     /// Format:
     /// projects/{project_number}/locations/{location}/synonymSets/{context}.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for SynonymSetService.ListSynonymSets.
@@ -2684,31 +2777,31 @@ pub struct GetSynonymSetRequest {
 pub struct ListSynonymSetsRequest {
     /// Required. The parent name.
     /// Format: projects/{project_number}/locations/{location}.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of synonymSets to return. The service may return
     /// fewer than this value.
     /// If unspecified, at most 50 rule sets will be returned.
     /// The maximum value is 1000; values above 1000 will be coerced to 1000.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// A page token, received from a previous `ListSynonymSets` call.
     /// Provide this to retrieve the subsequent page.
     ///
     /// When paginating, all other parameters provided to `ListSynonymSets`
     /// must match the call that provided the page token.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for SynonymSetService.ListSynonymSets.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSynonymSetsResponse {
     /// The synonymSets from the specified parent.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub synonym_sets: ::prost::alloc::vec::Vec<SynonymSet>,
     /// A page token, received from a previous `ListSynonymSets` call.
     /// Provide this to retrieve the subsequent page.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for SynonymSetService.UpdateSynonymSet.
@@ -2719,10 +2812,10 @@ pub struct UpdateSynonymSetRequest {
     /// Required. The name of the synonymSet to update
     /// Format:
     /// projects/{project_number}/locations/{location}/synonymSets/{context}.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The synonymSet to be updated for the customer
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub synonym_set: ::core::option::Option<SynonymSet>,
 }
 /// Request message for SynonymSetService.DeleteSynonymSet.
@@ -2731,7 +2824,7 @@ pub struct DeleteSynonymSetRequest {
     /// Required. The name of the synonymSet to delete
     /// Format:
     /// projects/{project_number}/locations/{location}/synonymSets/{context}.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Generated client implementations.

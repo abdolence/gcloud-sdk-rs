@@ -18,41 +18,44 @@
 pub struct Registration {
     /// Output only. Name of the `Registration` resource, in the format
     /// `projects/*/locations/*/registrations/<domain_name>`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. Immutable. The domain name. Unicode domain names must be expressed in Punycode format.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub domain_name: ::prost::alloc::string::String,
     /// Output only. The creation timestamp of the `Registration` resource.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The expiration timestamp of the `Registration`.
-    #[prost(message, optional, tag="6")]
+    #[prost(message, optional, tag = "6")]
     pub expire_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The state of the `Registration`
-    #[prost(enumeration="registration::State", tag="7")]
+    #[prost(enumeration = "registration::State", tag = "7")]
     pub state: i32,
     /// Output only. The set of issues with the `Registration` that require attention.
-    #[prost(enumeration="registration::Issue", repeated, packed="false", tag="8")]
+    #[prost(enumeration = "registration::Issue", repeated, packed = "false", tag = "8")]
     pub issues: ::prost::alloc::vec::Vec<i32>,
     /// Set of labels associated with the `Registration`.
-    #[prost(map="string, string", tag="9")]
-    pub labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map = "string, string", tag = "9")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
     /// Settings for management of the `Registration`, including renewal, billing,
     /// and transfer. You cannot update these with the `UpdateRegistration`
     /// method. To update these settings, use the `ConfigureManagementSettings`
     /// method.
-    #[prost(message, optional, tag="10")]
+    #[prost(message, optional, tag = "10")]
     pub management_settings: ::core::option::Option<ManagementSettings>,
     /// Settings controlling the DNS configuration of the `Registration`. You
     /// cannot update these with the `UpdateRegistration` method. To update these
     /// settings, use the `ConfigureDnsSettings` method.
-    #[prost(message, optional, tag="11")]
+    #[prost(message, optional, tag = "11")]
     pub dns_settings: ::core::option::Option<DnsSettings>,
     /// Required. Settings for contact information linked to the `Registration`. You cannot
     /// update these with the `UpdateRegistration` method. To update these
     /// settings, use the `ConfigureContactSettings` method.
-    #[prost(message, optional, tag="12")]
+    #[prost(message, optional, tag = "12")]
     pub contact_settings: ::core::option::Option<ContactSettings>,
     /// Output only. Pending contact settings for the `Registration`. Updates to the
     /// `contact_settings` field that change its `registrant_contact` or `privacy`
@@ -61,17 +64,27 @@ pub struct Registration {
     /// to the `contact_settings` that have not been confirmed. To confirm the
     /// changes, the `registrant_contact` must follow the instructions in the
     /// email they receive.
-    #[prost(message, optional, tag="13")]
+    #[prost(message, optional, tag = "13")]
     pub pending_contact_settings: ::core::option::Option<ContactSettings>,
     /// Output only. Set of options for the `contact_settings.privacy` field that this
     /// `Registration` supports.
-    #[prost(enumeration="ContactPrivacy", repeated, packed="false", tag="14")]
+    #[prost(enumeration = "ContactPrivacy", repeated, packed = "false", tag = "14")]
     pub supported_privacy: ::prost::alloc::vec::Vec<i32>,
 }
 /// Nested message and enum types in `Registration`.
 pub mod registration {
     /// Possible states of a `Registration`.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum State {
         /// The state is undefined.
@@ -119,7 +132,17 @@ pub mod registration {
         }
     }
     /// Possible issues with a `Registration` that require attention.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum Issue {
         /// The issue is undefined.
@@ -154,16 +177,26 @@ pub mod registration {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ManagementSettings {
     /// Output only. The renewal method for this `Registration`.
-    #[prost(enumeration="management_settings::RenewalMethod", tag="3")]
+    #[prost(enumeration = "management_settings::RenewalMethod", tag = "3")]
     pub renewal_method: i32,
     /// Controls whether the domain can be transferred to another registrar.
-    #[prost(enumeration="TransferLockState", tag="4")]
+    #[prost(enumeration = "TransferLockState", tag = "4")]
     pub transfer_lock_state: i32,
 }
 /// Nested message and enum types in `ManagementSettings`.
 pub mod management_settings {
     /// Defines how the `Registration` is renewed.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum RenewalMethod {
         /// The renewal method is undefined.
@@ -200,10 +233,10 @@ pub mod management_settings {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DnsSettings {
     /// The list of glue records for this `Registration`. Commonly empty.
-    #[prost(message, repeated, tag="4")]
+    #[prost(message, repeated, tag = "4")]
     pub glue_records: ::prost::alloc::vec::Vec<dns_settings::GlueRecord>,
     /// The DNS provider of the registration.
-    #[prost(oneof="dns_settings::DnsProvider", tags="1, 2")]
+    #[prost(oneof = "dns_settings::DnsProvider", tags = "1, 2")]
     pub dns_provider: ::core::option::Option<dns_settings::DnsProvider>,
 }
 /// Nested message and enum types in `DnsSettings`.
@@ -214,12 +247,12 @@ pub mod dns_settings {
         /// Required. A list of name servers that store the DNS zone for this domain. Each name
         /// server is a domain name, with Unicode domain names expressed in
         /// Punycode format.
-        #[prost(string, repeated, tag="1")]
+        #[prost(string, repeated, tag = "1")]
         pub name_servers: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         /// The list of DS records for this domain, which are used to enable DNSSEC.
         /// The domain's DNS provider can provide the values to set here. If this
         /// field is empty, DNSSEC is disabled.
-        #[prost(message, repeated, tag="2")]
+        #[prost(message, repeated, tag = "2")]
         pub ds_records: ::prost::alloc::vec::Vec<DsRecord>,
     }
     /// Configuration for using the free DNS zone provided by Google Domains as a
@@ -232,16 +265,16 @@ pub mod dns_settings {
         /// server is a domain name, with Unicode domain names expressed in
         /// Punycode format. This field is automatically populated with the name
         /// servers assigned to the Google Domains DNS zone.
-        #[prost(string, repeated, tag="1")]
+        #[prost(string, repeated, tag = "1")]
         pub name_servers: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         /// Required. The state of DS records for this domain. Used to enable or disable
         /// automatic DNSSEC.
-        #[prost(enumeration="DsState", tag="2")]
+        #[prost(enumeration = "DsState", tag = "2")]
         pub ds_state: i32,
         /// Output only. The list of DS records published for this domain. The list is
         /// automatically populated when `ds_state` is `DS_RECORDS_PUBLISHED`,
         /// otherwise it remains empty.
-        #[prost(message, repeated, tag="3")]
+        #[prost(message, repeated, tag = "3")]
         pub ds_records: ::prost::alloc::vec::Vec<DsRecord>,
     }
     /// Defines a Delegation Signer (DS) record, which is needed to enable DNSSEC
@@ -250,23 +283,33 @@ pub mod dns_settings {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DsRecord {
         /// The key tag of the record. Must be set in range 0 -- 65535.
-        #[prost(int32, tag="1")]
+        #[prost(int32, tag = "1")]
         pub key_tag: i32,
         /// The algorithm used to generate the referenced DNSKEY.
-        #[prost(enumeration="ds_record::Algorithm", tag="2")]
+        #[prost(enumeration = "ds_record::Algorithm", tag = "2")]
         pub algorithm: i32,
         /// The hash function used to generate the digest of the referenced DNSKEY.
-        #[prost(enumeration="ds_record::DigestType", tag="3")]
+        #[prost(enumeration = "ds_record::DigestType", tag = "3")]
         pub digest_type: i32,
         /// The digest generated from the referenced DNSKEY.
-        #[prost(string, tag="4")]
+        #[prost(string, tag = "4")]
         pub digest: ::prost::alloc::string::String,
     }
     /// Nested message and enum types in `DsRecord`.
     pub mod ds_record {
         /// List of algorithms used to create a DNSKEY. Certain
         /// algorithms are not supported for particular domains.
-        #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
         #[repr(i32)]
         pub enum Algorithm {
             /// The algorithm is unspecified.
@@ -336,7 +379,17 @@ pub mod dns_settings {
         }
         /// List of hash functions that may have been used to generate a digest of a
         /// DNSKEY.
-        #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
         #[repr(i32)]
         pub enum DigestType {
             /// The DigestType is unspecified.
@@ -375,21 +428,31 @@ pub mod dns_settings {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct GlueRecord {
         /// Required. Domain name of the host in Punycode format.
-        #[prost(string, tag="1")]
+        #[prost(string, tag = "1")]
         pub host_name: ::prost::alloc::string::String,
         /// List of IPv4 addresses corresponding to this host in the standard decimal
         /// format (e.g. `198.51.100.1`). At least one of `ipv4_address` and
         /// `ipv6_address` must be set.
-        #[prost(string, repeated, tag="2")]
+        #[prost(string, repeated, tag = "2")]
         pub ipv4_addresses: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         /// List of IPv6 addresses corresponding to this host in the standard
         /// hexadecimal format (e.g. `2001:db8::`). At least one of
         /// `ipv4_address` and `ipv6_address` must be set.
-        #[prost(string, repeated, tag="3")]
+        #[prost(string, repeated, tag = "3")]
         pub ipv6_addresses: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
     /// The publication state of DS records for a `Registration`.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum DsState {
         /// DS state is unspecified.
@@ -420,11 +483,11 @@ pub mod dns_settings {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum DnsProvider {
         /// An arbitrary DNS provider identified by its name servers.
-        #[prost(message, tag="1")]
+        #[prost(message, tag = "1")]
         CustomDns(CustomDns),
         /// The free DNS zone provided by
         /// [Google Domains](<https://domains.google/>).
-        #[prost(message, tag="2")]
+        #[prost(message, tag = "2")]
         GoogleDomainsDns(GoogleDomainsDns),
     }
 }
@@ -436,7 +499,7 @@ pub mod dns_settings {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ContactSettings {
     /// Required. Privacy setting for the contacts associated with the `Registration`.
-    #[prost(enumeration="ContactPrivacy", tag="1")]
+    #[prost(enumeration = "ContactPrivacy", tag = "1")]
     pub privacy: i32,
     /// Required. The registrant contact for the `Registration`.
     ///
@@ -446,13 +509,13 @@ pub struct ContactSettings {
     /// *Warning: For new `Registration`s, the registrant receives an email
     /// confirmation that they must complete within 15 days to avoid domain
     /// suspension.*
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub registrant_contact: ::core::option::Option<contact_settings::Contact>,
     /// Required. The administrative contact for the `Registration`.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub admin_contact: ::core::option::Option<contact_settings::Contact>,
     /// Required. The technical contact for the `Registration`.
-    #[prost(message, optional, tag="4")]
+    #[prost(message, optional, tag = "4")]
     pub technical_contact: ::core::option::Option<contact_settings::Contact>,
 }
 /// Nested message and enum types in `ContactSettings`.
@@ -461,18 +524,20 @@ pub mod contact_settings {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Contact {
         /// Required. Postal address of the contact.
-        #[prost(message, optional, tag="1")]
-        pub postal_address: ::core::option::Option<super::super::super::super::r#type::PostalAddress>,
+        #[prost(message, optional, tag = "1")]
+        pub postal_address: ::core::option::Option<
+            super::super::super::super::r#type::PostalAddress,
+        >,
         /// Required. Email address of the contact.
-        #[prost(string, tag="2")]
+        #[prost(string, tag = "2")]
         pub email: ::prost::alloc::string::String,
         /// Required. Phone number of the contact in international format. For example,
         /// `"+1-800-555-0123"`.
-        #[prost(string, tag="3")]
+        #[prost(string, tag = "3")]
         pub phone_number: ::prost::alloc::string::String,
         /// Fax number of the contact in international format. For example,
         /// `"+1-800-555-0123"`.
-        #[prost(string, tag="4")]
+        #[prost(string, tag = "4")]
         pub fax_number: ::prost::alloc::string::String,
     }
 }
@@ -480,34 +545,34 @@ pub mod contact_settings {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchDomainsRequest {
     /// Required. String used to search for available domain names.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub query: ::prost::alloc::string::String,
     /// Required. The location. Must be in the format `projects/*/locations/*`.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub location: ::prost::alloc::string::String,
 }
 /// Response for the `SearchDomains` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchDomainsResponse {
     /// Results of the domain name search.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub register_parameters: ::prost::alloc::vec::Vec<RegisterParameters>,
 }
 /// Request for the `RetrieveRegisterParameters` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RetrieveRegisterParametersRequest {
     /// Required. The domain name. Unicode domain names must be expressed in Punycode format.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub domain_name: ::prost::alloc::string::String,
     /// Required. The location. Must be in the format `projects/*/locations/*`.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub location: ::prost::alloc::string::String,
 }
 /// Response for the `RetrieveRegisterParameters` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RetrieveRegisterParametersResponse {
     /// Parameters to use when calling the `RegisterDomain` method.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub register_parameters: ::core::option::Option<RegisterParameters>,
 }
 /// Request for the `RegisterDomain` method.
@@ -515,46 +580,46 @@ pub struct RetrieveRegisterParametersResponse {
 pub struct RegisterDomainRequest {
     /// Required. The parent resource of the `Registration`. Must be in the
     /// format `projects/*/locations/*`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The complete `Registration` resource to be created.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub registration: ::core::option::Option<Registration>,
     /// The list of domain notices that you acknowledge. Call
     /// `RetrieveRegisterParameters` to see the notices that need acknowledgement.
-    #[prost(enumeration="DomainNotice", repeated, tag="3")]
+    #[prost(enumeration = "DomainNotice", repeated, tag = "3")]
     pub domain_notices: ::prost::alloc::vec::Vec<i32>,
     /// The list of contact notices that the caller acknowledges. The notices
     /// needed here depend on the values specified in
     /// `registration.contact_settings`.
-    #[prost(enumeration="ContactNotice", repeated, tag="4")]
+    #[prost(enumeration = "ContactNotice", repeated, tag = "4")]
     pub contact_notices: ::prost::alloc::vec::Vec<i32>,
     /// Required. Yearly price to register or renew the domain.
     /// The value that should be put here can be obtained from
     /// RetrieveRegisterParameters or SearchDomains calls.
-    #[prost(message, optional, tag="5")]
+    #[prost(message, optional, tag = "5")]
     pub yearly_price: ::core::option::Option<super::super::super::r#type::Money>,
     /// When true, only validation is performed, without actually registering
     /// the domain. Follows:
     /// <https://cloud.google.com/apis/design/design_patterns#request_validation>
-    #[prost(bool, tag="6")]
+    #[prost(bool, tag = "6")]
     pub validate_only: bool,
 }
 /// Request for the `RetrieveTransferParameters` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RetrieveTransferParametersRequest {
     /// Required. The domain name. Unicode domain names must be expressed in Punycode format.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub domain_name: ::prost::alloc::string::String,
     /// Required. The location. Must be in the format `projects/*/locations/*`.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub location: ::prost::alloc::string::String,
 }
 /// Response for the `RetrieveTransferParameters` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RetrieveTransferParametersResponse {
     /// Parameters to use when calling the `TransferDomain` method.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub transfer_parameters: ::core::option::Option<TransferParameters>,
 }
 /// Request for the `TransferDomain` method.
@@ -562,7 +627,7 @@ pub struct RetrieveTransferParametersResponse {
 pub struct TransferDomainRequest {
     /// Required. The parent resource of the `Registration`. Must be in the
     /// format `projects/*/locations/*`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The complete `Registration` resource to be created.
     ///
@@ -571,24 +636,24 @@ pub struct TransferDomainRequest {
     /// option only if you are sure that the domain's current DNS service
     /// does not cease upon transfer, as is often the case for DNS services
     /// provided for free by the registrar.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub registration: ::core::option::Option<Registration>,
     /// The list of contact notices that you acknowledge. The notices
     /// needed here depend on the values specified in
     /// `registration.contact_settings`.
-    #[prost(enumeration="ContactNotice", repeated, tag="3")]
+    #[prost(enumeration = "ContactNotice", repeated, tag = "3")]
     pub contact_notices: ::prost::alloc::vec::Vec<i32>,
     /// Required. Acknowledgement of the price to transfer or renew the domain for one year.
     /// Call `RetrieveTransferParameters` to obtain the price, which you must
     /// acknowledge.
-    #[prost(message, optional, tag="4")]
+    #[prost(message, optional, tag = "4")]
     pub yearly_price: ::core::option::Option<super::super::super::r#type::Money>,
     /// The domain's transfer authorization code. You can obtain this from the
     /// domain's current registrar.
-    #[prost(message, optional, tag="5")]
+    #[prost(message, optional, tag = "5")]
     pub authorization_code: ::core::option::Option<AuthorizationCode>,
     /// Validate the request without actually transferring the domain.
-    #[prost(bool, tag="6")]
+    #[prost(bool, tag = "6")]
     pub validate_only: bool,
 }
 /// Request for the `ListRegistrations` method.
@@ -596,14 +661,14 @@ pub struct TransferDomainRequest {
 pub struct ListRegistrationsRequest {
     /// Required. The project and location from which to list `Registration`s, specified in
     /// the format `projects/*/locations/*`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Maximum number of results to return.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// When set to the `next_page_token` from a prior response, provides the next
     /// page of results.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
     /// Filter expression to restrict the `Registration`s returned.
     ///
@@ -621,18 +686,18 @@ pub struct ListRegistrationsRequest {
     /// `AND` and `OR` operators. For example, to find domains that are suspended
     /// or have specific issues flagged, use an expression like
     /// `(state=SUSPENDED) OR (issue:*)`.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
 }
 /// Response for the `ListRegistrations` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRegistrationsResponse {
     /// A list of `Registration`s.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub registrations: ::prost::alloc::vec::Vec<Registration>,
     /// When present, there are more results to retrieve. Set `page_token` to this
     /// value on a subsequent call to get the next page of results.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request for the `GetRegistration` method.
@@ -640,19 +705,19 @@ pub struct ListRegistrationsResponse {
 pub struct GetRegistrationRequest {
     /// Required. The name of the `Registration` to get, in the format
     /// `projects/*/locations/*/registrations/*`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request for the `UpdateRegistration` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateRegistrationRequest {
     /// Fields of the `Registration` to update.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub registration: ::core::option::Option<Registration>,
     /// Required. The field mask describing which fields to update as a comma-separated list.
     /// For example, if only the labels are being updated, the `update_mask` is
     /// `"labels"`.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request for the `ConfigureManagementSettings` method.
@@ -660,15 +725,15 @@ pub struct UpdateRegistrationRequest {
 pub struct ConfigureManagementSettingsRequest {
     /// Required. The name of the `Registration` whose management settings are being updated,
     /// in the format `projects/*/locations/*/registrations/*`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub registration: ::prost::alloc::string::String,
     /// Fields of the `ManagementSettings` to update.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub management_settings: ::core::option::Option<ManagementSettings>,
     /// Required. The field mask describing which fields to update as a comma-separated list.
     /// For example, if only the transfer lock is being updated, the `update_mask`
     /// is `"transfer_lock_state"`.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request for the `ConfigureDnsSettings` method.
@@ -676,10 +741,10 @@ pub struct ConfigureManagementSettingsRequest {
 pub struct ConfigureDnsSettingsRequest {
     /// Required. The name of the `Registration` whose DNS settings are being updated,
     /// in the format `projects/*/locations/*/registrations/*`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub registration: ::prost::alloc::string::String,
     /// Fields of the `DnsSettings` to update.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub dns_settings: ::core::option::Option<DnsSettings>,
     /// Required. The field mask describing which fields to update as a comma-separated list.
     /// For example, if only the name servers are being updated for an existing
@@ -690,10 +755,10 @@ pub struct ConfigureDnsSettingsRequest {
     /// provider's field name as part of the field mask. For example, when changing
     /// from a Google Domains DNS configuration to a Custom DNS configuration, the
     /// `update_mask` is `"custom_dns"`. //
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// Validate the request without actually updating the DNS settings.
-    #[prost(bool, tag="4")]
+    #[prost(bool, tag = "4")]
     pub validate_only: bool,
 }
 /// Request for the `ConfigureContactSettings` method.
@@ -701,22 +766,22 @@ pub struct ConfigureDnsSettingsRequest {
 pub struct ConfigureContactSettingsRequest {
     /// Required. The name of the `Registration` whose contact settings are being updated,
     /// in the format `projects/*/locations/*/registrations/*`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub registration: ::prost::alloc::string::String,
     /// Fields of the `ContactSettings` to update.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub contact_settings: ::core::option::Option<ContactSettings>,
     /// Required. The field mask describing which fields to update as a comma-separated list.
     /// For example, if only the registrant contact is being updated, the
     /// `update_mask` is `"registrant_contact"`.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// The list of contact notices that the caller acknowledges. The notices
     /// needed here depend on the values specified in `contact_settings`.
-    #[prost(enumeration="ContactNotice", repeated, tag="4")]
+    #[prost(enumeration = "ContactNotice", repeated, tag = "4")]
     pub contact_notices: ::prost::alloc::vec::Vec<i32>,
     /// Validate the request without actually updating the contact settings.
-    #[prost(bool, tag="5")]
+    #[prost(bool, tag = "5")]
     pub validate_only: bool,
 }
 /// Request for the `ExportRegistration` method.
@@ -724,7 +789,7 @@ pub struct ConfigureContactSettingsRequest {
 pub struct ExportRegistrationRequest {
     /// Required. The name of the `Registration` to export,
     /// in the format `projects/*/locations/*/registrations/*`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request for the `DeleteRegistration` method.
@@ -732,7 +797,7 @@ pub struct ExportRegistrationRequest {
 pub struct DeleteRegistrationRequest {
     /// Required. The name of the `Registration` to delete,
     /// in the format `projects/*/locations/*/registrations/*`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request for the `RetrieveAuthorizationCode` method.
@@ -740,7 +805,7 @@ pub struct DeleteRegistrationRequest {
 pub struct RetrieveAuthorizationCodeRequest {
     /// Required. The name of the `Registration` whose authorization code is being retrieved,
     /// in the format `projects/*/locations/*/registrations/*`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub registration: ::prost::alloc::string::String,
 }
 /// Request for the `ResetAuthorizationCode` method.
@@ -748,34 +813,44 @@ pub struct RetrieveAuthorizationCodeRequest {
 pub struct ResetAuthorizationCodeRequest {
     /// Required. The name of the `Registration` whose authorization code is being reset,
     /// in the format `projects/*/locations/*/registrations/*`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub registration: ::prost::alloc::string::String,
 }
 /// Parameters required to register a new domain.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegisterParameters {
     /// The domain name. Unicode domain names are expressed in Punycode format.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub domain_name: ::prost::alloc::string::String,
     /// Indicates whether the domain is available for registration. This value is
     /// accurate when obtained by calling `RetrieveRegisterParameters`, but is
     /// approximate when obtained by calling `SearchDomains`.
-    #[prost(enumeration="register_parameters::Availability", tag="2")]
+    #[prost(enumeration = "register_parameters::Availability", tag = "2")]
     pub availability: i32,
     /// Contact privacy options that the domain supports.
-    #[prost(enumeration="ContactPrivacy", repeated, tag="3")]
+    #[prost(enumeration = "ContactPrivacy", repeated, tag = "3")]
     pub supported_privacy: ::prost::alloc::vec::Vec<i32>,
     /// Notices about special properties of the domain.
-    #[prost(enumeration="DomainNotice", repeated, tag="4")]
+    #[prost(enumeration = "DomainNotice", repeated, tag = "4")]
     pub domain_notices: ::prost::alloc::vec::Vec<i32>,
     /// Price to register or renew the domain for one year.
-    #[prost(message, optional, tag="5")]
+    #[prost(message, optional, tag = "5")]
     pub yearly_price: ::core::option::Option<super::super::super::r#type::Money>,
 }
 /// Nested message and enum types in `RegisterParameters`.
 pub mod register_parameters {
     /// Possible availability states of a domain name.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum Availability {
         /// The availability is unspecified.
@@ -812,24 +887,24 @@ pub mod register_parameters {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TransferParameters {
     /// The domain name. Unicode domain names are expressed in Punycode format.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub domain_name: ::prost::alloc::string::String,
     /// The registrar that currently manages the domain.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub current_registrar: ::prost::alloc::string::String,
     /// The name servers that currently store the configuration of the domain.
-    #[prost(string, repeated, tag="3")]
+    #[prost(string, repeated, tag = "3")]
     pub name_servers: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Indicates whether the domain is protected by a transfer lock. For a
     /// transfer to succeed, this must show `UNLOCKED`. To unlock a domain,
     /// go to its current registrar.
-    #[prost(enumeration="TransferLockState", tag="4")]
+    #[prost(enumeration = "TransferLockState", tag = "4")]
     pub transfer_lock_state: i32,
     /// Contact privacy options that the domain supports.
-    #[prost(enumeration="ContactPrivacy", repeated, tag="5")]
+    #[prost(enumeration = "ContactPrivacy", repeated, tag = "5")]
     pub supported_privacy: ::prost::alloc::vec::Vec<i32>,
     /// Price to transfer or renew the domain for one year.
-    #[prost(message, optional, tag="6")]
+    #[prost(message, optional, tag = "6")]
     pub yearly_price: ::core::option::Option<super::super::super::r#type::Money>,
 }
 /// Defines an authorization code.
@@ -837,29 +912,29 @@ pub struct TransferParameters {
 pub struct AuthorizationCode {
     /// The Authorization Code in ASCII. It can be used to transfer the domain
     /// to or from another registrar.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub code: ::prost::alloc::string::String,
 }
 /// Represents the metadata of the long-running operation. Output only.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationMetadata {
     /// The time the operation was created.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The time the operation finished running.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Server-defined resource path for the target of the operation.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub target: ::prost::alloc::string::String,
     /// Name of the verb executed by the operation.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub verb: ::prost::alloc::string::String,
     /// Human-readable status of the operation, if any.
-    #[prost(string, tag="5")]
+    #[prost(string, tag = "5")]
     pub status_detail: ::prost::alloc::string::String,
     /// API version used to start the operation.
-    #[prost(string, tag="6")]
+    #[prost(string, tag = "6")]
     pub api_version: ::prost::alloc::string::String,
 }
 /// Defines a set of possible contact privacy settings for a `Registration`.
@@ -946,7 +1021,9 @@ impl ContactNotice {
     pub fn as_str_name(&self) -> &'static str {
         match self {
             ContactNotice::Unspecified => "CONTACT_NOTICE_UNSPECIFIED",
-            ContactNotice::PublicContactDataAcknowledgement => "PUBLIC_CONTACT_DATA_ACKNOWLEDGEMENT",
+            ContactNotice::PublicContactDataAcknowledgement => {
+                "PUBLIC_CONTACT_DATA_ACKNOWLEDGEMENT"
+            }
         }
     }
 }

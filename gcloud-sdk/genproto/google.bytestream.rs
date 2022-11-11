@@ -2,14 +2,14 @@
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReadRequest {
     /// The name of the resource to read.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub resource_name: ::prost::alloc::string::String,
     /// The offset for the first byte to return in the read, relative to the start
     /// of the resource.
     ///
     /// A `read_offset` that is negative or greater than the size of the resource
     /// will cause an `OUT_OF_RANGE` error.
-    #[prost(int64, tag="2")]
+    #[prost(int64, tag = "2")]
     pub read_offset: i64,
     /// The maximum number of `data` bytes the server is allowed to return in the
     /// sum of all `ReadResponse` messages. A `read_limit` of zero indicates that
@@ -18,7 +18,7 @@ pub struct ReadRequest {
     /// If the stream returns fewer bytes than allowed by the `read_limit` and no
     /// error occurred, the stream includes all data from the `read_offset` to the
     /// end of the resource.
-    #[prost(int64, tag="3")]
+    #[prost(int64, tag = "3")]
     pub read_limit: i64,
 }
 /// Response object for ByteStream.Read.
@@ -28,7 +28,7 @@ pub struct ReadResponse {
     /// empty for any given `ReadResponse`. This enables the service to inform the
     /// client that the request is still live while it is running an operation to
     /// generate more data.
-    #[prost(bytes="vec", tag="10")]
+    #[prost(bytes = "vec", tag = "10")]
     pub data: ::prost::alloc::vec::Vec<u8>,
 }
 /// Request object for ByteStream.Write.
@@ -37,7 +37,7 @@ pub struct WriteRequest {
     /// The name of the resource to write. This **must** be set on the first
     /// `WriteRequest` of each `Write()` action. If it is set on subsequent calls,
     /// it **must** match the value of the first request.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub resource_name: ::prost::alloc::string::String,
     /// The offset from the beginning of the resource at which the data should be
     /// written. It is required on all `WriteRequest`s.
@@ -51,43 +51,43 @@ pub struct WriteRequest {
     /// sent previously on this stream.
     ///
     /// An incorrect value will cause an error.
-    #[prost(int64, tag="2")]
+    #[prost(int64, tag = "2")]
     pub write_offset: i64,
     /// If `true`, this indicates that the write is complete. Sending any
     /// `WriteRequest`s subsequent to one in which `finish_write` is `true` will
     /// cause an error.
-    #[prost(bool, tag="3")]
+    #[prost(bool, tag = "3")]
     pub finish_write: bool,
     /// A portion of the data for the resource. The client **may** leave `data`
     /// empty for any given `WriteRequest`. This enables the client to inform the
     /// service that the request is still live while it is running an operation to
     /// generate more data.
-    #[prost(bytes="vec", tag="10")]
+    #[prost(bytes = "vec", tag = "10")]
     pub data: ::prost::alloc::vec::Vec<u8>,
 }
 /// Response object for ByteStream.Write.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WriteResponse {
     /// The number of bytes that have been processed for the given resource.
-    #[prost(int64, tag="1")]
+    #[prost(int64, tag = "1")]
     pub committed_size: i64,
 }
 /// Request object for ByteStream.QueryWriteStatus.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryWriteStatusRequest {
     /// The name of the resource whose write status is being requested.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub resource_name: ::prost::alloc::string::String,
 }
 /// Response object for ByteStream.QueryWriteStatus.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryWriteStatusResponse {
     /// The number of bytes that have been processed for the given resource.
-    #[prost(int64, tag="1")]
+    #[prost(int64, tag = "1")]
     pub committed_size: i64,
     /// `complete` is `true` only if the client has sent a `WriteRequest` with
     /// `finish_write` set to true, and the server has processed that request.
-    #[prost(bool, tag="2")]
+    #[prost(bool, tag = "2")]
     pub complete: bool,
 }
 /// Generated client implementations.

@@ -2,20 +2,30 @@
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SecretEvent {
     /// Resource name of the secret in the format `projects/*/secrets/*`
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Type of event that is being logged for the secret
-    #[prost(enumeration="secret_event::EventType", tag="2")]
+    #[prost(enumeration = "secret_event::EventType", tag = "2")]
     pub r#type: i32,
     /// Human readable message describing the event
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub log_message: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `SecretEvent`.
 pub mod secret_event {
     /// Describes the type of event that is being logged. All logs have exactly one
     /// EventType.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum EventType {
         /// An unrecognized event type. Should never be used.

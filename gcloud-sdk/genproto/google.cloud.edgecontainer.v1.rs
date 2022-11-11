@@ -2,39 +2,42 @@
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Cluster {
     /// Required. The resource name of the cluster.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. The time when the cluster was created.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The time when the cluster was last updated.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Labels associated with this resource.
-    #[prost(map="string, string", tag="4")]
-    pub labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map = "string, string", tag = "4")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
     /// Optional. Fleet configuration.
-    #[prost(message, optional, tag="11")]
+    #[prost(message, optional, tag = "11")]
     pub fleet: ::core::option::Option<Fleet>,
     /// Required. Cluster-wide networking configuration.
-    #[prost(message, optional, tag="7")]
+    #[prost(message, optional, tag = "7")]
     pub networking: ::core::option::Option<ClusterNetworking>,
     /// Required. Immutable. RBAC policy that will be applied and managed by GEC.
-    #[prost(message, optional, tag="9")]
+    #[prost(message, optional, tag = "9")]
     pub authorization: ::core::option::Option<Authorization>,
     /// Optional. The default maximum number of pods per node used if a maximum value is not
     /// specified explicitly for a node pool in this cluster. If unspecified, the
     /// Kubernetes default value will be used.
-    #[prost(int32, tag="8")]
+    #[prost(int32, tag = "8")]
     pub default_max_pods_per_node: i32,
     /// Output only. The IP address of the Kubernetes API server.
-    #[prost(string, tag="6")]
+    #[prost(string, tag = "6")]
     pub endpoint: ::prost::alloc::string::String,
     /// Output only. The PEM-encoded public certificate of the cluster's CA.
-    #[prost(string, tag="10")]
+    #[prost(string, tag = "10")]
     pub cluster_ca_certificate: ::prost::alloc::string::String,
     /// Optional. Cluster-wide maintenance policy configuration.
-    #[prost(message, optional, tag="12")]
+    #[prost(message, optional, tag = "12")]
     pub maintenance_policy: ::core::option::Option<MaintenancePolicy>,
 }
 /// Cluster-wide networking configuration.
@@ -43,13 +46,17 @@ pub struct ClusterNetworking {
     /// Required. All pods in the cluster are assigned an RFC1918 IPv4 address from these
     /// blocks. Only a single block is supported. This field cannot be changed
     /// after creation.
-    #[prost(string, repeated, tag="1")]
-    pub cluster_ipv4_cidr_blocks: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    #[prost(string, repeated, tag = "1")]
+    pub cluster_ipv4_cidr_blocks: ::prost::alloc::vec::Vec<
+        ::prost::alloc::string::String,
+    >,
     /// Required. All services in the cluster are assigned an RFC1918 IPv4 address from these
     /// blocks. Only a single block is supported. This field cannot be changed
     /// after creation.
-    #[prost(string, repeated, tag="2")]
-    pub services_ipv4_cidr_blocks: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    #[prost(string, repeated, tag = "2")]
+    pub services_ipv4_cidr_blocks: ::prost::alloc::vec::Vec<
+        ::prost::alloc::string::String,
+    >,
 }
 /// Fleet related configuration.
 ///
@@ -62,20 +69,20 @@ pub struct Fleet {
     ///
     /// Project names are formatted as
     /// `projects/<project-number>`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub project: ::prost::alloc::string::String,
     /// Output only. The name of the managed Hub Membership resource associated to this cluster.
     ///
     /// Membership names are formatted as
     /// `projects/<project-number>/locations/global/membership/<cluster-id>`.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub membership: ::prost::alloc::string::String,
 }
 /// A user principal for an RBAC policy.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ClusterUser {
     /// Required. An active Google username.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub username: ::prost::alloc::string::String,
 }
 /// RBAC policy that will be applied and managed by GEC.
@@ -84,7 +91,7 @@ pub struct Authorization {
     /// Required. User that will be granted the cluster-admin role on the cluster, providing
     /// full access to the cluster. Currently, this is a singular field, but will
     /// be expanded to allow multiple admins in the future.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub admin_users: ::core::option::Option<ClusterUser>,
 }
 /// A set of Kubernetes nodes in a cluster with common configuration and
@@ -92,32 +99,35 @@ pub struct Authorization {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NodePool {
     /// Required. The resource name of the node pool.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. The time when the node pool was created.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The time when the node pool was last updated.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Labels associated with this resource.
-    #[prost(map="string, string", tag="4")]
-    pub labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map = "string, string", tag = "4")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
     /// Name of the Google Distributed Cloud Edge zone where this node pool will be
     /// created. For example: `us-central1-edge-customer-a`.
-    #[prost(string, tag="8")]
+    #[prost(string, tag = "8")]
     pub node_location: ::prost::alloc::string::String,
     /// Required. The number of nodes in the pool.
-    #[prost(int32, tag="6")]
+    #[prost(int32, tag = "6")]
     pub node_count: i32,
     /// Only machines matching this filter will be allowed to join the node pool.
     /// The filtering language accepts strings like "name=<name>", and is
     /// documented in more detail in \[AIP-160\](<https://google.aip.dev/160>).
-    #[prost(string, tag="7")]
+    #[prost(string, tag = "7")]
     pub machine_filter: ::prost::alloc::string::String,
     /// Optional. Local disk encryption options. This field is only used when enabling CMEK
     /// support.
-    #[prost(message, optional, tag="9")]
+    #[prost(message, optional, tag = "9")]
     pub local_disk_encryption: ::core::option::Option<node_pool::LocalDiskEncryption>,
 }
 /// Nested message and enum types in `NodePool`.
@@ -129,22 +139,22 @@ pub mod node_pool {
         /// projects/{project}/locations/{location}/keyRings/{keyRing}/cryptoKeys/{cryptoKey}
         /// to use for protecting node local disks. If not specified, a
         /// Google-managed key will be used instead.
-        #[prost(string, tag="1")]
+        #[prost(string, tag = "1")]
         pub kms_key: ::prost::alloc::string::String,
         /// Output only. The Cloud KMS CryptoKeyVersion currently in use for protecting node local
         /// disks. Only applicable if kms_key is set.
-        #[prost(string, tag="2")]
+        #[prost(string, tag = "2")]
         pub kms_key_active_version: ::prost::alloc::string::String,
         /// Output only. Availability of the Cloud KMS CryptoKey. If not `KEY_AVAILABLE`, then
         /// nodes may go offline as they cannot access their local data. This can be
         /// caused by a lack of permissions to use the key, or if the key is disabled
         /// or deleted.
-        #[prost(enumeration="super::KmsKeyState", tag="3")]
+        #[prost(enumeration = "super::KmsKeyState", tag = "3")]
         pub kms_key_state: i32,
         /// Output only. Error status returned by Cloud KMS when using this key. This field may be
         /// populated only if `kms_key_state` is not `KMS_KEY_STATE_KEY_AVAILABLE`.
         /// If populated, this field contains the error status reported by Cloud KMS.
-        #[prost(message, optional, tag="4")]
+        #[prost(message, optional, tag = "4")]
         pub kms_status: ::core::option::Option<super::super::super::super::rpc::Status>,
     }
 }
@@ -153,72 +163,78 @@ pub mod node_pool {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Machine {
     /// Required. The resource name of the machine.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. The time when the node pool was created.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The time when the node pool was last updated.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Labels associated with this resource.
-    #[prost(map="string, string", tag="4")]
-    pub labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map = "string, string", tag = "4")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
     /// Canonical resource name of the node that this machine is responsible for
     /// hosting e.g.
     /// projects/{project}/locations/{location}/clusters/{cluster_id}/nodePools/{pool_id}/{node},
     /// Or empty if the machine is not assigned to assume the role of a node.
-    #[prost(string, tag="5")]
+    #[prost(string, tag = "5")]
     pub hosted_node: ::prost::alloc::string::String,
     /// The Google Distributed Cloud Edge zone of this machine.
-    #[prost(string, tag="6")]
+    #[prost(string, tag = "6")]
     pub zone: ::prost::alloc::string::String,
     /// Output only. Whether the machine is disabled. If disabled, the machine is unable to
     /// enter service.
-    #[prost(bool, tag="8")]
+    #[prost(bool, tag = "8")]
     pub disabled: bool,
 }
 /// A VPN connection .
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VpnConnection {
     /// Required. The resource name of VPN connection
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. The time when the VPN connection was created.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The time when the VPN connection was last updated.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Labels associated with this resource.
-    #[prost(map="string, string", tag="4")]
-    pub labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map = "string, string", tag = "4")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
     /// NAT gateway IP, or WAN IP address. If a customer has multiple NAT IPs, the
     /// customer needs to configure NAT such that only one external IP maps to the
     /// GMEC Anthos cluster. This is empty if NAT is not used.
-    #[prost(string, tag="5")]
+    #[prost(string, tag = "5")]
     pub nat_gateway_ip: ::prost::alloc::string::String,
     /// Dynamic routing mode of the VPC network, `regional` or `global`.
     #[deprecated]
-    #[prost(enumeration="vpn_connection::BgpRoutingMode", tag="6")]
+    #[prost(enumeration = "vpn_connection::BgpRoutingMode", tag = "6")]
     pub bgp_routing_mode: i32,
     /// The canonical Cluster name to connect to. It is in the form of
     /// projects/{project}/locations/{location}/clusters/{cluster}.
-    #[prost(string, tag="7")]
+    #[prost(string, tag = "7")]
     pub cluster: ::prost::alloc::string::String,
     /// The network ID of VPC to connect to.
-    #[prost(string, tag="8")]
+    #[prost(string, tag = "8")]
     pub vpc: ::prost::alloc::string::String,
     /// Optional. Project detail of the VPC network. Required if VPC is in a different
     /// project than the cluster project.
-    #[prost(message, optional, tag="11")]
+    #[prost(message, optional, tag = "11")]
     pub vpc_project: ::core::option::Option<vpn_connection::VpcProject>,
     /// Whether this VPN connection has HA enabled on cluster side. If enabled,
     /// when creating VPN connection we will attempt to use 2 ANG floating IPs.
-    #[prost(bool, tag="9")]
+    #[prost(bool, tag = "9")]
     pub enable_high_availability: bool,
     /// Output only. The created connection details.
-    #[prost(message, optional, tag="10")]
+    #[prost(message, optional, tag = "10")]
     pub details: ::core::option::Option<vpn_connection::Details>,
 }
 /// Nested message and enum types in `VpnConnection`.
@@ -228,7 +244,7 @@ pub mod vpn_connection {
     pub struct VpcProject {
         /// The project of the VPC to connect to. If not specified, it is the same as
         /// the cluster project.
-        #[prost(string, tag="1")]
+        #[prost(string, tag = "1")]
         pub project_id: ::prost::alloc::string::String,
         /// Optional. The service account in the VPC project configured by user. It is used to
         /// create/delete Cloud Router and Cloud HA VPNs for VPN connection. If this
@@ -236,23 +252,23 @@ pub mod vpn_connection {
         /// remove the Cloud Router and Cloud VPN resources in |project_id|.
         /// It is in the form of
         /// service-{project_number}@gcp-sa-edgecontainer.iam.gserviceaccount.com.
-        #[prost(string, tag="2")]
+        #[prost(string, tag = "2")]
         pub service_account: ::prost::alloc::string::String,
     }
     /// The created connection details.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Details {
         /// The state of this connection.
-        #[prost(enumeration="details::State", tag="1")]
+        #[prost(enumeration = "details::State", tag = "1")]
         pub state: i32,
         /// The error message. This is only populated when state=ERROR.
-        #[prost(string, tag="2")]
+        #[prost(string, tag = "2")]
         pub error: ::prost::alloc::string::String,
         /// The Cloud Router info.
-        #[prost(message, optional, tag="3")]
+        #[prost(message, optional, tag = "3")]
         pub cloud_router: ::core::option::Option<details::CloudRouter>,
         /// Each connection has multiple Cloud VPN gateways.
-        #[prost(message, repeated, tag="4")]
+        #[prost(message, repeated, tag = "4")]
         pub cloud_vpns: ::prost::alloc::vec::Vec<details::CloudVpn>,
     }
     /// Nested message and enum types in `Details`.
@@ -261,18 +277,28 @@ pub mod vpn_connection {
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct CloudRouter {
             /// The created Cloud Router name.
-            #[prost(string, tag="1")]
+            #[prost(string, tag = "1")]
             pub name: ::prost::alloc::string::String,
         }
         /// The Cloud VPN info.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct CloudVpn {
             /// The created Cloud VPN gateway name.
-            #[prost(string, tag="1")]
+            #[prost(string, tag = "1")]
             pub gateway: ::prost::alloc::string::String,
         }
         /// The current connection state.
-        #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
         #[repr(i32)]
         pub enum State {
             /// Unknown.
@@ -300,7 +326,17 @@ pub mod vpn_connection {
         }
     }
     /// Routing mode.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum BgpRoutingMode {
         /// Unknown.
@@ -329,64 +365,67 @@ pub mod vpn_connection {
 pub struct LocationMetadata {
     /// The set of available Google Distributed Cloud Edge zones in the location.
     /// The map is keyed by the lowercase ID of each zone.
-    #[prost(map="string, message", tag="1")]
-    pub available_zones: ::std::collections::HashMap<::prost::alloc::string::String, ZoneMetadata>,
+    #[prost(map = "string, message", tag = "1")]
+    pub available_zones: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ZoneMetadata,
+    >,
 }
 /// A Google Distributed Cloud Edge zone where edge machines are located.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ZoneMetadata {
     /// Quota for resources in this zone.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub quota: ::prost::alloc::vec::Vec<Quota>,
 }
 /// Represents quota for Edge Container resources.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Quota {
     /// Name of the quota metric.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub metric: ::prost::alloc::string::String,
     /// Quota limit for this metric.
-    #[prost(double, tag="2")]
+    #[prost(double, tag = "2")]
     pub limit: f64,
     /// Current usage of this metric.
-    #[prost(double, tag="3")]
+    #[prost(double, tag = "3")]
     pub usage: f64,
 }
 /// Maintenance policy configuration.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MaintenancePolicy {
     /// Specifies the maintenance window in which maintenance may be performed.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub window: ::core::option::Option<MaintenanceWindow>,
 }
 /// Maintenance window configuration
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MaintenanceWindow {
     /// Configuration of a recurring maintenance window.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub recurring_window: ::core::option::Option<RecurringTimeWindow>,
 }
 /// Represents an arbitrary window of time that recurs.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RecurringTimeWindow {
     /// The window of the first recurrence.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub window: ::core::option::Option<TimeWindow>,
     /// An RRULE (<https://tools.ietf.org/html/rfc5545#section-3.8.5.3>) for how
     /// this window recurs. They go on for the span of time between the start and
     /// end time.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub recurrence: ::prost::alloc::string::String,
 }
 /// Represents an arbitrary window of time.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TimeWindow {
     /// The time that the window first starts.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The time that the window ends. The end time must take place after the
     /// start time.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Represents the accessibility state of a customer-managed KMS key used for
@@ -419,86 +458,86 @@ impl KmsKeyState {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationMetadata {
     /// The time the operation was created.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The time the operation finished running.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Server-defined resource path for the target of the operation.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub target: ::prost::alloc::string::String,
     /// The verb executed by the operation.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub verb: ::prost::alloc::string::String,
     /// Human-readable status of the operation, if any.
-    #[prost(string, tag="5")]
+    #[prost(string, tag = "5")]
     pub status_message: ::prost::alloc::string::String,
     /// Identifies whether the user has requested cancellation of the operation.
     /// Operations that have successfully been cancelled have \[Operation.error][\]
     /// value with a \[google.rpc.Status.code][google.rpc.Status.code\] of 1, corresponding to
     /// `Code.CANCELLED`.
-    #[prost(bool, tag="6")]
+    #[prost(bool, tag = "6")]
     pub requested_cancellation: bool,
     /// API version used to start the operation.
-    #[prost(string, tag="7")]
+    #[prost(string, tag = "7")]
     pub api_version: ::prost::alloc::string::String,
 }
 /// Lists clusters in a location.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListClustersRequest {
     /// Required. The parent location, which owns this collection of clusters.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of resources to list.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// A page token received from previous list request.
     /// A page token received from previous list request.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
     /// Only resources matching this filter will be listed.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
     /// Specifies the order in which resources will be listed.
-    #[prost(string, tag="5")]
+    #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
 /// List of clusters in a location.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListClustersResponse {
     /// Clusters in the location.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub clusters: ::prost::alloc::vec::Vec<Cluster>,
     /// A token to retrieve next page of results.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
     /// Locations that could not be reached.
-    #[prost(string, repeated, tag="3")]
+    #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Gets a cluster.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetClusterRequest {
     /// Required. The resource name of the cluster.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Creates a cluster.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateClusterRequest {
     /// Required. The parent location where this cluster will be created.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. A client-specified unique identifier for the cluster.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub cluster_id: ::prost::alloc::string::String,
     /// Required. The cluster to create.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub cluster: ::core::option::Option<Cluster>,
     /// A unique identifier for this request. Restricted to 36 ASCII characters. A
     /// random UUID is recommended. This request is only idempotent if
     /// `request_id` is provided.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub request_id: ::prost::alloc::string::String,
 }
 /// Updates a cluster.
@@ -509,101 +548,101 @@ pub struct UpdateClusterRequest {
     /// The fields specified in the update_mask are relative to the resource, not
     /// the full request. A field will be overwritten if it is in the mask. If the
     /// user does not provide a mask then all fields will be overwritten.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// The updated cluster.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub cluster: ::core::option::Option<Cluster>,
     /// A unique identifier for this request. Restricted to 36 ASCII characters.
     /// A random UUID is recommended.
     /// This request is only idempotent if `request_id` is provided.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub request_id: ::prost::alloc::string::String,
 }
 /// Deletes a cluster.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteClusterRequest {
     /// Required. The resource name of the cluster.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// A unique identifier for this request. Restricted to 36 ASCII characters. A
     /// random UUID is recommended. This request is only idempotent if
     /// `request_id` is provided.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub request_id: ::prost::alloc::string::String,
 }
 /// Generates an access token for a cluster.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateAccessTokenRequest {
     /// Required. The resource name of the cluster.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub cluster: ::prost::alloc::string::String,
 }
 /// An access token for a cluster.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateAccessTokenResponse {
     /// Output only. Access token to authenticate to k8s api-server.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub access_token: ::prost::alloc::string::String,
     /// Output only. Timestamp at which the token will expire.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub expire_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Lists node pools in a cluster.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNodePoolsRequest {
     /// Required. The parent cluster, which owns this collection of node pools.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of resources to list.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// A page token received from previous list request.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
     /// Only resources matching this filter will be listed.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
     /// Specifies the order in which resources will be listed.
-    #[prost(string, tag="5")]
+    #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
 /// List of node pools in a cluster.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNodePoolsResponse {
     /// Node pools in the cluster.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub node_pools: ::prost::alloc::vec::Vec<NodePool>,
     /// A token to retrieve next page of results.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
     /// Locations that could not be reached.
-    #[prost(string, repeated, tag="3")]
+    #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Gets a node pool.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetNodePoolRequest {
     /// Required. The resource name of the node pool.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Creates a node pool.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateNodePoolRequest {
     /// Required. The parent cluster where this node pool will be created.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. A client-specified unique identifier for the node pool.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub node_pool_id: ::prost::alloc::string::String,
     /// Required. The node pool to create.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub node_pool: ::core::option::Option<NodePool>,
     /// A unique identifier for this request. Restricted to 36 ASCII characters. A
     /// random UUID is recommended. This request is only idempotent if
     /// `request_id` is provided.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub request_id: ::prost::alloc::string::String,
 }
 /// Updates a node pool.
@@ -614,135 +653,135 @@ pub struct UpdateNodePoolRequest {
     /// The fields specified in the update_mask are relative to the resource, not
     /// the full request. A field will be overwritten if it is in the mask. If the
     /// user does not provide a mask then all fields will be overwritten.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// The updated node pool.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub node_pool: ::core::option::Option<NodePool>,
     /// A unique identifier for this request. Restricted to 36 ASCII characters. A
     /// random UUID is recommended. This request is only idempotent if
     /// `request_id` is provided.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub request_id: ::prost::alloc::string::String,
 }
 /// Deletes a node pool.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteNodePoolRequest {
     /// Required. The resource name of the node pool.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// A unique identifier for this request. Restricted to 36 ASCII characters. A
     /// random UUID is recommended. This request is only idempotent if
     /// `request_id` is provided.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub request_id: ::prost::alloc::string::String,
 }
 /// Lists machines in a site.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListMachinesRequest {
     /// Required. The parent site, which owns this collection of machines.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of resources to list.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// A page token received from previous list request.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
     /// Only resources matching this filter will be listed.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
     /// Specifies the order in which resources will be listed.
-    #[prost(string, tag="5")]
+    #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
 /// List of machines in a site.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListMachinesResponse {
     /// Machines in the site.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub machines: ::prost::alloc::vec::Vec<Machine>,
     /// A token to retrieve next page of results.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
     /// Locations that could not be reached.
-    #[prost(string, repeated, tag="3")]
+    #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Gets a machine.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetMachineRequest {
     /// Required. The resource name of the machine.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Lists VPN connections.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListVpnConnectionsRequest {
     /// Required. The parent location, which owns this collection of VPN connections.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of resources to list.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// A page token received from previous list request.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
     /// Only resources matching this filter will be listed.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
     /// Specifies the order in which resources will be listed.
-    #[prost(string, tag="5")]
+    #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
 /// List of VPN connections in a location.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListVpnConnectionsResponse {
     /// VpnConnections in the location.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub vpn_connections: ::prost::alloc::vec::Vec<VpnConnection>,
     /// A token to retrieve next page of results.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
     /// Locations that could not be reached.
-    #[prost(string, repeated, tag="3")]
+    #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Gets a VPN connection.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetVpnConnectionRequest {
     /// Required. The resource name of the vpn connection.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Creates a VPN connection.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateVpnConnectionRequest {
     /// Required. The parent location where this vpn connection will be created.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The VPN connection identifier.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub vpn_connection_id: ::prost::alloc::string::String,
     /// Required. The VPN connection to create.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub vpn_connection: ::core::option::Option<VpnConnection>,
     /// A unique identifier for this request. Restricted to 36 ASCII characters. A
     /// random UUID is recommended. This request is only idempotent if
     /// `request_id` is provided.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub request_id: ::prost::alloc::string::String,
 }
 /// Deletes a vpn connection.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteVpnConnectionRequest {
     /// Required. The resource name of the vpn connection.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// A unique identifier for this request. Restricted to 36 ASCII characters. A
     /// random UUID is recommended. This request is only idempotent if
     /// `request_id` is provided.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub request_id: ::prost::alloc::string::String,
 }
 /// Generated client implementations.

@@ -4,19 +4,19 @@ pub struct BigqueryMapping {
     /// The column which should be used as the event timestamps. If not specified
     /// 'Timestamp' is used by default. The column may have TIMESTAMP or INT64
     /// type (the latter is interpreted as microseconds since the Unix epoch).
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub timestamp_column: ::prost::alloc::string::String,
     /// The column which should be used as the group ID (grouping events into
     /// sessions). If not specified 'GroupId' is used by default, if the input
     /// table does not have such a column, random unique group IDs are
     /// generated automatically (different group ID per input row).
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub group_id_column: ::prost::alloc::string::String,
     /// The list of columns that should be translated to dimensions. If empty,
     /// all columns are translated to dimensions. The timestamp and group_id
     /// columns should not be listed here again. Columns are expected to have
     /// primitive types (STRING, INT64, FLOAT64 or NUMERIC).
-    #[prost(string, repeated, tag="3")]
+    #[prost(string, repeated, tag = "3")]
     pub dimension_column: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// A data source consists of multiple \[Event][google.cloud.timeseriesinsights.v1.Event\] objects stored on
@@ -29,11 +29,11 @@ pub struct DataSource {
     /// 1) Google Cloud Storage files (JSON) are defined in the following form.
     /// `gs://bucket_name/object_name`. For more information on Cloud Storage URIs,
     /// please see <https://cloud.google.com/storage/docs/reference-uris.>
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub uri: ::prost::alloc::string::String,
     /// For BigQuery inputs defines the columns that should be used for dimensions
     /// (including time and group ID).
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub bq_mapping: ::core::option::Option<BigqueryMapping>,
 }
 /// A collection of data sources sent for processing.
@@ -41,33 +41,43 @@ pub struct DataSource {
 pub struct DataSet {
     /// The dataset name, which will be used for querying, status and unload
     /// requests. This must be unique within a project.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// [Data dimension names]\[google.cloud.timeseriesinsights.v1.EventDimension.name\] allowed for this `DataSet`.
     ///
     /// If left empty, all dimension names are included. This field works as a
     /// filter to avoid regenerating the data.
-    #[prost(string, repeated, tag="2")]
+    #[prost(string, repeated, tag = "2")]
     pub data_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Input data.
-    #[prost(message, repeated, tag="3")]
+    #[prost(message, repeated, tag = "3")]
     pub data_sources: ::prost::alloc::vec::Vec<DataSource>,
     /// Dataset state in the system.
-    #[prost(enumeration="data_set::State", tag="4")]
+    #[prost(enumeration = "data_set::State", tag = "4")]
     pub state: i32,
     /// Dataset processing status.
-    #[prost(message, optional, tag="5")]
+    #[prost(message, optional, tag = "5")]
     pub status: ::core::option::Option<super::super::super::rpc::Status>,
     /// Periodically we discard dataset \[Event][google.cloud.timeseriesinsights.v1.Event\] objects that have
     /// timestamps older than 'ttl'.  Omitting this field or a zero value means no
     /// events are discarded.
-    #[prost(message, optional, tag="6")]
+    #[prost(message, optional, tag = "6")]
     pub ttl: ::core::option::Option<::prost_types::Duration>,
 }
 /// Nested message and enum types in `DataSet`.
 pub mod data_set {
     /// DataSet state.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum State {
         /// Unspecified / undefined state.
@@ -115,13 +125,13 @@ pub struct EventDimension {
     /// **NOTE**: `EventDimension` names must be composed of alphanumeric
     /// characters only, and are case insensitive. Unicode characters are *not*
     /// supported. The underscore '_' is also allowed.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Dimension value.
     ///
     /// **NOTE**: All entries of the dimension `name` must have the same `value`
     /// type.
-    #[prost(oneof="event_dimension::Value", tags="2, 3, 4, 5")]
+    #[prost(oneof = "event_dimension::Value", tags = "2, 3, 4, 5")]
     pub value: ::core::option::Option<event_dimension::Value>,
 }
 /// Nested message and enum types in `EventDimension`.
@@ -136,16 +146,16 @@ pub mod event_dimension {
         ///
         /// **NOTE**: String values are case insensitive. Unicode characters are
         /// supported.
-        #[prost(string, tag="2")]
+        #[prost(string, tag = "2")]
         StringVal(::prost::alloc::string::String),
         /// Long representation.
-        #[prost(int64, tag="3")]
+        #[prost(int64, tag = "3")]
         LongVal(i64),
         /// Bool representation.
-        #[prost(bool, tag="4")]
+        #[prost(bool, tag = "4")]
         BoolVal(bool),
         /// Double representation.
-        #[prost(double, tag="5")]
+        #[prost(double, tag = "5")]
         DoubleVal(f64),
     }
 }
@@ -173,16 +183,16 @@ pub mod event_dimension {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Event {
     /// Event dimensions.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub dimensions: ::prost::alloc::vec::Vec<EventDimension>,
     /// Event group ID.
     ///
     /// **NOTE**: JSON encoding should use a string to hold a 64-bit integer value,
     /// because a native JSON number holds only 53 binary bits for an integer.
-    #[prost(int64, tag="2")]
+    #[prost(int64, tag = "2")]
     pub group_id: i64,
     /// Event timestamp.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub event_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Appends events to an existing DataSet.
@@ -204,18 +214,18 @@ pub struct AppendEventsRequest {
     ///     returned.
     /// 0. The events must be newer than the current time minus
     ///     [DataSet TTL]\[google.cloud.timeseriesinsights.v1.DataSet.ttl\] or they will be dropped.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub events: ::prost::alloc::vec::Vec<Event>,
     /// Required. The DataSet to which we want to append to in the format of
     /// "projects/{project}/datasets/{dataset}"
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub dataset: ::prost::alloc::string::String,
 }
 /// Response for an AppendEvents RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AppendEventsResponse {
     /// Dropped events; empty if all events are successfully added.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub dropped_events: ::prost::alloc::vec::Vec<Event>,
 }
 /// Create a DataSet request.
@@ -223,53 +233,53 @@ pub struct AppendEventsResponse {
 pub struct CreateDataSetRequest {
     /// Required. Client project name which will own this DataSet in the format of
     /// 'projects/{project}'.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. Dataset to be loaded.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub dataset: ::core::option::Option<DataSet>,
 }
 /// Unload DataSet request from the serving system.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteDataSetRequest {
     /// Required. Dataset name in the format of "projects/{project}/datasets/{dataset}"
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// List the DataSets created by the current project.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDataSetsRequest {
     /// Required. Project owning the DataSet in the format of "projects/{project}".
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Number of results to return in the list.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Token to provide to skip to a particular spot in the list.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
 /// Created DataSets list response.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDataSetsResponse {
     /// The list of created DataSets.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub datasets: ::prost::alloc::vec::Vec<DataSet>,
     /// Token to receive the next page of results.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// A categorical dimension fixed to a certain value.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PinnedDimension {
     /// The name of the dimension for which we are fixing its value.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Dimension value.
     ///
     /// **NOTE**: The `value` type must match that in the data with the same
     /// `dimension` as name.
-    #[prost(oneof="pinned_dimension::Value", tags="2, 3")]
+    #[prost(oneof = "pinned_dimension::Value", tags = "2, 3")]
     pub value: ::core::option::Option<pinned_dimension::Value>,
 }
 /// Nested message and enum types in `PinnedDimension`.
@@ -282,11 +292,11 @@ pub mod pinned_dimension {
     pub enum Value {
         /// A string value. This can be used for \[dimensions][google.cloud.timeseriesinsights.v1.EventDimension\], which
         /// have their value field set to \[string_val][google.cloud.timeseriesinsights.v1.EventDimension.string_val\].
-        #[prost(string, tag="2")]
+        #[prost(string, tag = "2")]
         StringVal(::prost::alloc::string::String),
         /// A bool value. This can be used for \[dimensions][google.cloud.timeseriesinsights.v1.EventDimension\], which
         /// have their value field set to \[bool_val][google.cloud.timeseriesinsights.v1.EventDimension.bool_val\].
-        #[prost(bool, tag="3")]
+        #[prost(bool, tag = "3")]
         BoolVal(bool),
     }
 }
@@ -310,7 +320,7 @@ pub struct ForecastParams {
     /// Must be in the (0.0, inf) range.
     ///
     /// If unspecified, it defaults to 0.000001.
-    #[prost(double, optional, tag="12")]
+    #[prost(double, optional, tag = "12")]
     pub noise_threshold: ::core::option::Option<f64>,
     /// Optional. Specifying any known seasonality/periodicity in the time series
     /// for the slices we will analyze can improve the quality of the results.
@@ -320,7 +330,7 @@ pub struct ForecastParams {
     ///
     /// If your time series has multiple seasonal patterns, then set it to the most
     /// granular one (e.g. if it has daily and weekly patterns, set this to DAILY).
-    #[prost(enumeration="forecast_params::Period", tag="10")]
+    #[prost(enumeration = "forecast_params::Period", tag = "10")]
     pub seasonality_hint: i32,
     /// Optional. The length of the returned [forecasted
     /// timeseries]\[EvaluatedSlice.forecast\].
@@ -338,13 +348,23 @@ pub struct ForecastParams {
     /// detection. To detect anomalies for multiple points of time,
     /// simply send multiple queries with those as
     /// \[detectionTime][google.cloud.timeseriesinsights.v1.QueryDataSetRequest.detection_time\].
-    #[prost(message, optional, tag="13")]
+    #[prost(message, optional, tag = "13")]
     pub horizon_duration: ::core::option::Option<::prost_types::Duration>,
 }
 /// Nested message and enum types in `ForecastParams`.
 pub mod forecast_params {
     /// A time period of a fixed interval.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum Period {
         /// Unknown or simply not given.
@@ -381,7 +401,7 @@ pub mod forecast_params {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TimeseriesPoint {
     /// The timestamp of this point.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub time: ::core::option::Option<::prost_types::Timestamp>,
     /// The value for this point.
     ///
@@ -389,32 +409,32 @@ pub struct TimeseriesPoint {
     /// in the `[time, time + granularity]` range (see
     /// \[granularity][google.cloud.timeseriesinsights.v1.TimeseriesParams.granularity\]) using the specified
     /// \[metric][google.cloud.timeseriesinsights.v1.TimeseriesParams.metric\].
-    #[prost(double, optional, tag="2")]
+    #[prost(double, optional, tag = "2")]
     pub value: ::core::option::Option<f64>,
 }
 /// A time series.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Timeseries {
     /// The points in this time series, ordered by their timestamp.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub point: ::prost::alloc::vec::Vec<TimeseriesPoint>,
 }
 /// Forecast result for a given slice.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EvaluatedSlice {
     /// Values for all categorical dimensions that uniquely identify this slice.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub dimensions: ::prost::alloc::vec::Vec<PinnedDimension>,
     /// The actual value at the detection time (see
     /// \[detectionTime][google.cloud.timeseriesinsights.v1.QueryDataSetRequest.detection_time\]).
     ///
     /// **NOTE**: This value can be an estimate, so it should not be used as a
     /// source of truth.
-    #[prost(double, optional, tag="11")]
+    #[prost(double, optional, tag = "11")]
     pub detection_point_actual: ::core::option::Option<f64>,
     /// The expected value at the detection time, which is obtained by forecasting
     /// on the historical time series.
-    #[prost(double, optional, tag="12")]
+    #[prost(double, optional, tag = "12")]
     pub detection_point_forecast: ::core::option::Option<f64>,
     /// How much our forecast model expects the detection point actual will
     /// deviate from its forecasted value based on how well it fit the input time
@@ -427,7 +447,7 @@ pub struct EvaluatedSlice {
     /// anomaly is.
     ///
     /// The expected deviation is always positive.
-    #[prost(double, optional, tag="16")]
+    #[prost(double, optional, tag = "16")]
     pub expected_deviation: ::core::option::Option<f64>,
     /// Summarizes how significant the change between the actual and forecasted
     /// detection points are compared with the historical patterns observed on the
@@ -452,7 +472,7 @@ pub struct EvaluatedSlice {
     /// If there were issues evaluating this slice, then the anomaly score will be
     /// set to -1.0 and the \[status][google.cloud.timeseriesinsights.v1.EvaluatedSlice.status\] field will contain details on what
     /// went wrong.
-    #[prost(double, optional, tag="17")]
+    #[prost(double, optional, tag = "17")]
     pub anomaly_score: ::core::option::Option<f64>,
     /// The actual values in the `[`
     /// \[detectionTime][google.cloud.timeseriesinsights.v1.QueryDataSetRequest.detection_time\] `-`
@@ -462,7 +482,7 @@ pub struct EvaluatedSlice {
     ///
     /// **NOTE**: This field is only populated if
     /// \[returnTimeseries][google.cloud.timeseriesinsights.v1.QueryDataSetRequest.return_timeseries\] is true.
-    #[prost(message, optional, tag="5")]
+    #[prost(message, optional, tag = "5")]
     pub history: ::core::option::Option<Timeseries>,
     /// The forecasted values in the `[`
     /// \[detectionTime][google.cloud.timeseriesinsights.v1.QueryDataSetRequest.detection_time\] `+`
@@ -472,7 +492,7 @@ pub struct EvaluatedSlice {
     ///
     /// **NOTE**: This field is only populated if
     /// \[returnTimeseries][google.cloud.timeseriesinsights.v1.QueryDataSetRequest.return_timeseries\] is true.
-    #[prost(message, optional, tag="10")]
+    #[prost(message, optional, tag = "10")]
     pub forecast: ::core::option::Option<Timeseries>,
     /// Evaluation status. Contains an error message if the `anomalyScore` is < 0.
     ///
@@ -491,7 +511,7 @@ pub struct EvaluatedSlice {
     /// for this slice and could not evaluate it successfully. Should be a
     /// transient error.
     /// - **"Internal server error"**: Internal unexpected error.
-    #[prost(message, optional, tag="18")]
+    #[prost(message, optional, tag = "18")]
     pub status: ::core::option::Option<super::super::super::rpc::Status>,
 }
 /// Parameters that control how we slice the dataset and, optionally, filter
@@ -505,7 +525,7 @@ pub struct SlicingParams {
     /// in the queried `DataSet` will be ignored.
     ///
     /// Currently only dimensions that hold string values can be specified here.
-    #[prost(string, repeated, tag="1")]
+    #[prost(string, repeated, tag = "1")]
     pub dimension_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. We will only analyze slices for which
     /// \[EvaluatedSlice.dimensions][google.cloud.timeseriesinsights.v1.EvaluatedSlice.dimensions\] contain all of the
@@ -544,7 +564,7 @@ pub struct SlicingParams {
     ///    ]
     /// }
     /// ```
-    #[prost(message, repeated, tag="2")]
+    #[prost(message, repeated, tag = "2")]
     pub pinned_dimensions: ::prost::alloc::vec::Vec<PinnedDimension>,
 }
 /// Parameters that control how we construct the time series for each slice.
@@ -565,7 +585,7 @@ pub struct TimeseriesParams {
     /// `[detectionTime - forecastHistory, detectionTime + granularity]` time
     /// interval, the slice evaluation can fail. For more information, see
     /// \[EvaluatedSlice.status][google.cloud.timeseriesinsights.v1.EvaluatedSlice.status\].
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub forecast_history: ::core::option::Option<::prost_types::Duration>,
     /// Required. The time granularity of the time series (on the x-axis). Each time series
     /// point starting at time T will aggregate all events for a particular slice
@@ -580,7 +600,7 @@ pub struct TimeseriesParams {
     /// ingestion-time one).
     ///
     /// Currently, the minimal supported granularity is 10 seconds.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub granularity: ::core::option::Option<::prost_types::Duration>,
     /// Optional. Denotes the \[name][google.cloud.timeseriesinsights.v1.EventDimension.name\] of a numerical
     /// dimension that will have its values aggregated to compute the y-axis of the
@@ -651,7 +671,7 @@ pub struct TimeseriesParams {
     /// then the value of the point will be 22.
     /// - If the metric field is "" or unspecified, then the value of the point
     /// will be 3, as we will simply count the events.
-    #[prost(string, optional, tag="4")]
+    #[prost(string, optional, tag = "4")]
     pub metric: ::core::option::Option<::prost::alloc::string::String>,
     /// Optional. Together with the \[metric][google.cloud.timeseriesinsights.v1.TimeseriesParams.metric\] field, specifies how
     /// we will aggregate multiple events to obtain the value of a time series
@@ -659,14 +679,24 @@ pub struct TimeseriesParams {
     /// details.
     ///
     /// If the metric is not specified or "", then this field will be ignored.
-    #[prost(enumeration="timeseries_params::AggregationMethod", tag="5")]
+    #[prost(enumeration = "timeseries_params::AggregationMethod", tag = "5")]
     pub metric_aggregation_method: i32,
 }
 /// Nested message and enum types in `TimeseriesParams`.
 pub mod timeseries_params {
     /// Methods by which we can aggregate multiple events by a given
     /// \[metric][google.cloud.timeseriesinsights.v1.TimeseriesParams.metric\].
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum AggregationMethod {
         /// Unspecified.
@@ -697,7 +727,7 @@ pub mod timeseries_params {
 pub struct QueryDataSetRequest {
     /// Required. Loaded DataSet to be queried in the format of
     /// "projects/{project}/datasets/{dataset}"
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. This is the point in time that we want to probe for anomalies.
     ///
@@ -709,7 +739,7 @@ pub struct QueryDataSetRequest {
     /// [detectionTime, detectionTime + granularity) time interval, where
     /// the granularity is specified in the
     /// \[timeseriesParams.granularity][google.cloud.timeseriesinsights.v1.TimeseriesParams.granularity\] field.
-    #[prost(message, optional, tag="11")]
+    #[prost(message, optional, tag = "11")]
     pub detection_time: ::core::option::Option<::prost_types::Timestamp>,
     /// How many slices are returned in
     /// \[QueryDataSetResponse.slices][google.cloud.timeseriesinsights.v1.QueryDataSetResponse.slices\].
@@ -722,19 +752,19 @@ pub struct QueryDataSetRequest {
     /// latency and resource usage.
     ///
     /// Defaults to 50.
-    #[prost(int32, optional, tag="13")]
+    #[prost(int32, optional, tag = "13")]
     pub num_returned_slices: ::core::option::Option<i32>,
     /// Parameters controlling how we will split the dataset into the slices that
     /// we will analyze.
-    #[prost(message, optional, tag="9")]
+    #[prost(message, optional, tag = "9")]
     pub slicing_params: ::core::option::Option<SlicingParams>,
     /// Parameters controlling how we will build the time series used to predict
     /// the \[detectionTime][google.cloud.timeseriesinsights.v1.QueryDataSetRequest.detection_time\] value for each slice.
-    #[prost(message, optional, tag="10")]
+    #[prost(message, optional, tag = "10")]
     pub timeseries_params: ::core::option::Option<TimeseriesParams>,
     /// Parameters that control the time series forecasting models, such as the
     /// sensitivity of the anomaly detection.
-    #[prost(message, optional, tag="5")]
+    #[prost(message, optional, tag = "5")]
     pub forecast_params: ::core::option::Option<ForecastParams>,
     /// If specified, we will return the actual and forecasted time for all
     /// returned slices.
@@ -742,21 +772,21 @@ pub struct QueryDataSetRequest {
     /// The time series are returned in the
     /// \[EvaluatedSlice.history][google.cloud.timeseriesinsights.v1.EvaluatedSlice.history\] and
     /// \[EvaluatedSlice.forecast][google.cloud.timeseriesinsights.v1.EvaluatedSlice.forecast\] fields.
-    #[prost(bool, tag="8")]
+    #[prost(bool, tag = "8")]
     pub return_timeseries: bool,
 }
 /// Response for a query executed by the system.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryDataSetResponse {
     /// Loaded DataSet that was queried.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Slices sorted in descending order by their
     /// \[anomalyScore][google.cloud.timeseriesinsights.v1.EvaluatedSlice.anomaly_score\].
     ///
     /// At most \[numReturnedSlices][google.cloud.timeseriesinsights.v1.QueryDataSetRequest.num_returned_slices\]
     /// slices are present in this field.
-    #[prost(message, repeated, tag="3")]
+    #[prost(message, repeated, tag = "3")]
     pub slices: ::prost::alloc::vec::Vec<EvaluatedSlice>,
 }
 /// Request for evaluateSlice.
@@ -764,32 +794,32 @@ pub struct QueryDataSetResponse {
 pub struct EvaluateSliceRequest {
     /// Required. Loaded DataSet to be queried in the format of
     /// "projects/{project}/datasets/{dataset}"
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub dataset: ::prost::alloc::string::String,
     /// Required. Dimensions with pinned values that specify the slice for which we will
     /// fetch the time series.
-    #[prost(message, repeated, tag="2")]
+    #[prost(message, repeated, tag = "2")]
     pub pinned_dimensions: ::prost::alloc::vec::Vec<PinnedDimension>,
     /// Required. This is the point in time that we want to probe for anomalies.
     ///
     /// See documentation for
     /// \[QueryDataSetRequest.detectionTime][google.cloud.timeseriesinsights.v1.QueryDataSetRequest.detection_time\].
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub detection_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Parameters controlling how we will build the time series used to predict
     /// the \[detectionTime][google.cloud.timeseriesinsights.v1.EvaluateSliceRequest.detection_time\] value for this slice.
-    #[prost(message, optional, tag="4")]
+    #[prost(message, optional, tag = "4")]
     pub timeseries_params: ::core::option::Option<TimeseriesParams>,
     /// Parameters that control the time series forecasting models, such as the
     /// sensitivity of the anomaly detection.
-    #[prost(message, optional, tag="5")]
+    #[prost(message, optional, tag = "5")]
     pub forecast_params: ::core::option::Option<ForecastParams>,
 }
 /// Request for evaluateTimeseries.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EvaluateTimeseriesRequest {
     /// Required. Client project name in the format of 'projects/{project}'.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Evaluate this time series without requiring it was previously loaded in
     /// a data set.
@@ -808,14 +838,14 @@ pub struct EvaluateTimeseriesRequest {
     /// - "102s", "107s", "122s", "127s" (offset is "2s")
     /// However, the following sequence is invalid as it has inconsistent offsets:
     /// - "100s", "105s", "122s", "127s" (offsets are either "0s" or "2s")
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub timeseries: ::core::option::Option<Timeseries>,
     /// The granularity of the time series (time distance between two consecutive
     /// points).
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub granularity: ::core::option::Option<::prost_types::Duration>,
     /// The forecast parameters.
-    #[prost(message, optional, tag="4")]
+    #[prost(message, optional, tag = "4")]
     pub forecast_params: ::core::option::Option<ForecastParams>,
 }
 /// Generated client implementations.

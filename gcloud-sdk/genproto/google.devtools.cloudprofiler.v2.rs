@@ -5,13 +5,13 @@
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateProfileRequest {
     /// Parent project to create the profile in.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub parent: ::prost::alloc::string::String,
     /// Deployment details.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub deployment: ::core::option::Option<Deployment>,
     /// One or more profile types that the agent is capable of providing.
-    #[prost(enumeration="ProfileType", repeated, tag="2")]
+    #[prost(enumeration = "ProfileType", repeated, tag = "2")]
     pub profile_type: ::prost::alloc::vec::Vec<i32>,
 }
 /// CreateOfflineProfileRequest describes a profile resource offline creation
@@ -19,38 +19,38 @@ pub struct CreateProfileRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateOfflineProfileRequest {
     /// Parent project to create the profile in.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Contents of the profile to create.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub profile: ::core::option::Option<Profile>,
 }
 /// UpdateProfileRequest contains the profile to update.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateProfileRequest {
     /// Profile to update
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub profile: ::core::option::Option<Profile>,
     /// Field mask used to specify the fields to be overwritten. Currently only
     /// profile_bytes and labels fields are supported by UpdateProfile, so only
     /// those fields can be specified in the mask. When no mask is provided, all
     /// fields are overwritten.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Profile resource.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Profile {
     /// Output only. Opaque, server-assigned, unique ID for this profile.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Type of profile.
     /// For offline mode, this must be specified when creating the profile. For
     /// online mode it is assigned and returned by the server.
-    #[prost(enumeration="ProfileType", tag="2")]
+    #[prost(enumeration = "ProfileType", tag = "2")]
     pub profile_type: i32,
     /// Deployment this profile corresponds to.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub deployment: ::core::option::Option<Deployment>,
     /// Duration of the profiling session.
     /// Input (for the offline mode) or output (for the online mode).
@@ -58,24 +58,27 @@ pub struct Profile {
     /// from the effective profiling duration, which is recorded in the profile
     /// data, in case the profiling can't be stopped immediately (e.g. in case
     /// stopping the profiling is handled asynchronously).
-    #[prost(message, optional, tag="4")]
+    #[prost(message, optional, tag = "4")]
     pub duration: ::core::option::Option<::prost_types::Duration>,
     /// Input only. Profile bytes, as a gzip compressed serialized proto, the
     /// format is <https://github.com/google/pprof/blob/master/proto/profile.proto.>
-    #[prost(bytes="vec", tag="5")]
+    #[prost(bytes = "vec", tag = "5")]
     pub profile_bytes: ::prost::alloc::vec::Vec<u8>,
     /// Input only. Labels associated to this specific profile. These labels will
     /// get merged with the deployment labels for the final data set.  See
     /// documentation on deployment labels for validation rules and limits.
-    #[prost(map="string, string", tag="6")]
-    pub labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map = "string, string", tag = "6")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
 }
 /// Deployment contains the deployment identification information.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Deployment {
     /// Project ID is the ID of a cloud project.
     /// Validation regex: `^\[a-z][-a-z0-9:.]{4,61}[a-z0-9\]$`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub project_id: ::prost::alloc::string::String,
     /// Target is the service name used to group related deployments:
     /// * Service name for GAE Flex / Standard.
@@ -83,7 +86,7 @@ pub struct Deployment {
     /// * User-specified string for direct GCE profiling (e.g. Java).
     /// * Job name for Dataflow.
     /// Validation regex: `^\[a-z]([-a-z0-9_.]{0,253}[a-z0-9\])?$`.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub target: ::prost::alloc::string::String,
     /// Labels identify the deployment within the user universe and same target.
     /// Validation regex for label names: `^\[a-z0-9]([a-z0-9-]{0,61}[a-z0-9\])?$`.
@@ -98,8 +101,11 @@ pub struct Deployment {
     /// should be present describing the deployment location. An example of a zone
     /// is "us-central1-a", an example of a region is "us-central1" or
     /// "us-central".
-    #[prost(map="string, string", tag="3")]
-    pub labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map = "string, string", tag = "3")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
 }
 /// ProfileType is type of profiling data.
 /// NOTE: the enumeration member names are used (in lowercase) as unique string

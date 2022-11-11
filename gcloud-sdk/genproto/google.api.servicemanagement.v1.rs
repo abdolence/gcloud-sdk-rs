@@ -5,10 +5,10 @@ pub struct ManagedService {
     /// The name of the service. See the
     /// \[overview\](<https://cloud.google.com/service-infrastructure/docs/overview>)
     /// for naming requirements.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub service_name: ::prost::alloc::string::String,
     /// ID of the project that produces and owns this service.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub producer_project_id: ::prost::alloc::string::String,
 }
 /// The metadata associated with a long running operation resource.
@@ -16,16 +16,16 @@ pub struct ManagedService {
 pub struct OperationMetadata {
     /// The full name of the resources that this operation is directly
     /// associated with.
-    #[prost(string, repeated, tag="1")]
+    #[prost(string, repeated, tag = "1")]
     pub resource_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Detailed status information for each step. The order is undetermined.
-    #[prost(message, repeated, tag="2")]
+    #[prost(message, repeated, tag = "2")]
     pub steps: ::prost::alloc::vec::Vec<operation_metadata::Step>,
     /// Percentage of completion of this operation, ranging from 0 to 100.
-    #[prost(int32, tag="3")]
+    #[prost(int32, tag = "3")]
     pub progress_percentage: i32,
     /// The start time of the operation.
-    #[prost(message, optional, tag="4")]
+    #[prost(message, optional, tag = "4")]
     pub start_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Nested message and enum types in `OperationMetadata`.
@@ -34,14 +34,24 @@ pub mod operation_metadata {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Step {
         /// The short description of the step.
-        #[prost(string, tag="2")]
+        #[prost(string, tag = "2")]
         pub description: ::prost::alloc::string::String,
         /// The status code.
-        #[prost(enumeration="Status", tag="4")]
+        #[prost(enumeration = "Status", tag = "4")]
         pub status: i32,
     }
     /// Code describes the status of the operation (or one of its steps).
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum Status {
         /// Unspecifed code.
@@ -79,19 +89,29 @@ pub mod operation_metadata {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Diagnostic {
     /// File name and line number of the error or warning.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub location: ::prost::alloc::string::String,
     /// The kind of diagnostic information provided.
-    #[prost(enumeration="diagnostic::Kind", tag="2")]
+    #[prost(enumeration = "diagnostic::Kind", tag = "2")]
     pub kind: i32,
     /// Message describing the error or warning.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub message: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `Diagnostic`.
 pub mod diagnostic {
     /// The kind of diagnostic information possible.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum Kind {
         /// Warnings and errors
@@ -119,29 +139,39 @@ pub struct ConfigSource {
     /// A unique ID for a specific instance of this message, typically assigned
     /// by the client for tracking purpose. If empty, the server may choose to
     /// generate one instead.
-    #[prost(string, tag="5")]
+    #[prost(string, tag = "5")]
     pub id: ::prost::alloc::string::String,
     /// Set of source configuration files that are used to generate a service
     /// configuration (`google.api.Service`).
-    #[prost(message, repeated, tag="2")]
+    #[prost(message, repeated, tag = "2")]
     pub files: ::prost::alloc::vec::Vec<ConfigFile>,
 }
 /// Generic specification of a source configuration file
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConfigFile {
     /// The file name of the configuration file (full or relative path).
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub file_path: ::prost::alloc::string::String,
     /// The bytes that constitute the file.
-    #[prost(bytes="vec", tag="3")]
+    #[prost(bytes = "vec", tag = "3")]
     pub file_contents: ::prost::alloc::vec::Vec<u8>,
     /// The type of configuration file this represents.
-    #[prost(enumeration="config_file::FileType", tag="4")]
+    #[prost(enumeration = "config_file::FileType", tag = "4")]
     pub file_type: i32,
 }
 /// Nested message and enum types in `ConfigFile`.
 pub mod config_file {
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum FileType {
         /// Unknown file type.
@@ -189,7 +219,7 @@ pub mod config_file {
 pub struct ConfigRef {
     /// Resource name of a service config. It must have the following
     /// format: "services/{service name}/configs/{config id}".
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Change report associated with a particular service configuration.
@@ -203,7 +233,7 @@ pub struct ChangeReport {
     /// of each change.
     /// A ConfigChange identifier is a dot separated path to the configuration.
     /// Example: visibility.rules\[selector='LibraryService.CreateBook'\].restriction
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub config_changes: ::prost::alloc::vec::Vec<super::super::ConfigChange>,
 }
 /// A rollout resource that defines how service configuration versions are pushed
@@ -220,26 +250,26 @@ pub struct Rollout {
     /// date in ISO 8601 format.  "revision number" is a monotonically increasing
     /// positive number that is reset every day for each service.
     /// An example of the generated rollout_id is '2016-02-16r1'
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub rollout_id: ::prost::alloc::string::String,
     /// Creation time of the rollout. Readonly.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The user who created the Rollout. Readonly.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub created_by: ::prost::alloc::string::String,
     /// The status of this rollout. Readonly. In case of a failed rollout,
     /// the system will automatically rollback to the current Rollout
     /// version. Readonly.
-    #[prost(enumeration="rollout::RolloutStatus", tag="4")]
+    #[prost(enumeration = "rollout::RolloutStatus", tag = "4")]
     pub status: i32,
     /// The name of the service associated with this Rollout.
-    #[prost(string, tag="8")]
+    #[prost(string, tag = "8")]
     pub service_name: ::prost::alloc::string::String,
     /// Strategy that defines which versions of service configurations should be
     /// pushed
     /// and how they should be used at runtime.
-    #[prost(oneof="rollout::Strategy", tags="5, 200")]
+    #[prost(oneof = "rollout::Strategy", tags = "5, 200")]
     pub strategy: ::core::option::Option<rollout::Strategy>,
 }
 /// Nested message and enum types in `Rollout`.
@@ -279,16 +309,28 @@ pub mod rollout {
         /// Maps service configuration IDs to their corresponding traffic percentage.
         /// Key is the service configuration ID, Value is the traffic percentage
         /// which must be greater than 0.0 and the sum must equal to 100.0.
-        #[prost(map="string, double", tag="1")]
-        pub percentages: ::std::collections::HashMap<::prost::alloc::string::String, f64>,
+        #[prost(map = "string, double", tag = "1")]
+        pub percentages: ::std::collections::HashMap<
+            ::prost::alloc::string::String,
+            f64,
+        >,
     }
     /// Strategy used to delete a service. This strategy is a placeholder only
     /// used by the system generated rollout to delete a service.
     #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct DeleteServiceStrategy {
-    }
+    pub struct DeleteServiceStrategy {}
     /// Status of a Rollout.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum RolloutStatus {
         /// No status specified.
@@ -332,11 +374,11 @@ pub mod rollout {
     pub enum Strategy {
         /// Google Service Control selects service configurations based on
         /// traffic percentage.
-        #[prost(message, tag="5")]
+        #[prost(message, tag = "5")]
         TrafficPercentStrategy(TrafficPercentStrategy),
         /// The strategy associated with a rollout to delete a `ManagedService`.
         /// Readonly.
-        #[prost(message, tag="200")]
+        #[prost(message, tag = "200")]
         DeleteServiceStrategy(DeleteServiceStrategy),
     }
 }
@@ -344,15 +386,15 @@ pub mod rollout {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListServicesRequest {
     /// Include services produced by the specified project.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub producer_project_id: ::prost::alloc::string::String,
     /// The max number of items to include in the response list. Page size is 50
     /// if not specified. Maximum value is 100.
-    #[prost(int32, tag="5")]
+    #[prost(int32, tag = "5")]
     pub page_size: i32,
     /// Token identifying which result to start with; returned by a previous list
     /// call.
-    #[prost(string, tag="6")]
+    #[prost(string, tag = "6")]
     pub page_token: ::prost::alloc::string::String,
     /// Include services consumed by the specified consumer.
     ///
@@ -360,17 +402,17 @@ pub struct ListServicesRequest {
     /// forms:
     /// - project:<project_id>
     #[deprecated]
-    #[prost(string, tag="7")]
+    #[prost(string, tag = "7")]
     pub consumer_id: ::prost::alloc::string::String,
 }
 /// Response message for `ListServices` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListServicesResponse {
     /// The returned services will only have the name field set.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub services: ::prost::alloc::vec::Vec<ManagedService>,
     /// Token that can be passed to `ListServices` to resume a paginated query.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for `GetService` method.
@@ -378,14 +420,14 @@ pub struct ListServicesResponse {
 pub struct GetServiceRequest {
     /// Required. The name of the service.  See the `ServiceManager` overview for
     /// naming requirements.  For example: `example.googleapis.com`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub service_name: ::prost::alloc::string::String,
 }
 /// Request message for CreateService method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateServiceRequest {
     /// Required. Initial values for the service resource.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub service: ::core::option::Option<ManagedService>,
 }
 /// Request message for DeleteService method.
@@ -394,7 +436,7 @@ pub struct DeleteServiceRequest {
     /// Required. The name of the service.  See the
     /// \[overview\](<https://cloud.google.com/service-infrastructure/docs/overview>) for naming requirements.  For
     /// example: `example.googleapis.com`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub service_name: ::prost::alloc::string::String,
 }
 /// Request message for UndeleteService method.
@@ -403,14 +445,14 @@ pub struct UndeleteServiceRequest {
     /// Required. The name of the service. See the
     /// \[overview\](<https://cloud.google.com/service-infrastructure/docs/overview>) for naming requirements. For
     /// example: `example.googleapis.com`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub service_name: ::prost::alloc::string::String,
 }
 /// Response message for UndeleteService method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UndeleteServiceResponse {
     /// Revived service resource.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub service: ::core::option::Option<ManagedService>,
 }
 /// Request message for GetServiceConfig method.
@@ -419,22 +461,32 @@ pub struct GetServiceConfigRequest {
     /// Required. The name of the service.  See the
     /// \[overview\](<https://cloud.google.com/service-infrastructure/docs/overview>) for naming requirements.  For
     /// example: `example.googleapis.com`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub service_name: ::prost::alloc::string::String,
     /// Required. The id of the service configuration resource.
     ///
     /// This field must be specified for the server to return all fields, including
     /// `SourceInfo`.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub config_id: ::prost::alloc::string::String,
     /// Specifies which parts of the Service Config should be returned in the
     /// response.
-    #[prost(enumeration="get_service_config_request::ConfigView", tag="3")]
+    #[prost(enumeration = "get_service_config_request::ConfigView", tag = "3")]
     pub view: i32,
 }
 /// Nested message and enum types in `GetServiceConfigRequest`.
 pub mod get_service_config_request {
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum ConfigView {
         /// Server response includes all fields except SourceInfo.
@@ -464,24 +516,24 @@ pub struct ListServiceConfigsRequest {
     /// Required. The name of the service.  See the
     /// \[overview\](<https://cloud.google.com/service-infrastructure/docs/overview>) for naming requirements.  For
     /// example: `example.googleapis.com`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub service_name: ::prost::alloc::string::String,
     /// The token of the page to retrieve.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub page_token: ::prost::alloc::string::String,
     /// The max number of items to include in the response list. Page size is 50
     /// if not specified. Maximum value is 100.
-    #[prost(int32, tag="3")]
+    #[prost(int32, tag = "3")]
     pub page_size: i32,
 }
 /// Response message for ListServiceConfigs method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListServiceConfigsResponse {
     /// The list of service configuration resources.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub service_configs: ::prost::alloc::vec::Vec<super::super::Service>,
     /// The token of the next page of results.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for CreateServiceConfig method.
@@ -490,10 +542,10 @@ pub struct CreateServiceConfigRequest {
     /// Required. The name of the service.  See the
     /// \[overview\](<https://cloud.google.com/service-infrastructure/docs/overview>) for naming requirements.  For
     /// example: `example.googleapis.com`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub service_name: ::prost::alloc::string::String,
     /// Required. The service configuration resource.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub service_config: ::core::option::Option<super::super::Service>,
 }
 /// Request message for SubmitConfigSource method.
@@ -502,22 +554,22 @@ pub struct SubmitConfigSourceRequest {
     /// Required. The name of the service.  See the
     /// \[overview\](<https://cloud.google.com/service-infrastructure/docs/overview>) for naming requirements.  For
     /// example: `example.googleapis.com`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub service_name: ::prost::alloc::string::String,
     /// Required. The source configuration for the service.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub config_source: ::core::option::Option<ConfigSource>,
     /// Optional. If set, this will result in the generation of a
     /// `google.api.Service` configuration based on the `ConfigSource` provided,
     /// but the generated config and the sources will NOT be persisted.
-    #[prost(bool, tag="3")]
+    #[prost(bool, tag = "3")]
     pub validate_only: bool,
 }
 /// Response message for SubmitConfigSource method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SubmitConfigSourceResponse {
     /// The generated service configuration.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub service_config: ::core::option::Option<super::super::Service>,
 }
 /// Request message for 'CreateServiceRollout'
@@ -526,10 +578,10 @@ pub struct CreateServiceRolloutRequest {
     /// Required. The name of the service.  See the
     /// \[overview\](<https://cloud.google.com/service-infrastructure/docs/overview>) for naming requirements.  For
     /// example: `example.googleapis.com`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub service_name: ::prost::alloc::string::String,
     /// Required. The rollout resource. The `service_name` field is output only.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub rollout: ::core::option::Option<Rollout>,
 }
 /// Request message for 'ListServiceRollouts'
@@ -538,14 +590,14 @@ pub struct ListServiceRolloutsRequest {
     /// Required. The name of the service.  See the
     /// \[overview\](<https://cloud.google.com/service-infrastructure/docs/overview>) for naming requirements.  For
     /// example: `example.googleapis.com`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub service_name: ::prost::alloc::string::String,
     /// The token of the page to retrieve.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub page_token: ::prost::alloc::string::String,
     /// The max number of items to include in the response list. Page size is 50
     /// if not specified. Maximum value is 100.
-    #[prost(int32, tag="3")]
+    #[prost(int32, tag = "3")]
     pub page_size: i32,
     /// Required. Use `filter` to return subset of rollouts.
     /// The following filters are supported:
@@ -555,17 +607,17 @@ pub struct ListServiceRolloutsRequest {
     ///    -- To limit the results to those in
     ///       status (google.api.servicemanagement.v1.RolloutStatus) 'CANCELLED'
     ///       or 'FAILED', use filter='status=CANCELLED OR status=FAILED'
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
 }
 /// Response message for ListServiceRollouts method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListServiceRolloutsResponse {
     /// The list of rollout resources.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub rollouts: ::prost::alloc::vec::Vec<Rollout>,
     /// The token of the next page of results.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for GetServiceRollout method.
@@ -574,10 +626,10 @@ pub struct GetServiceRolloutRequest {
     /// Required. The name of the service.  See the
     /// \[overview\](<https://cloud.google.com/service-infrastructure/docs/overview>) for naming requirements.  For
     /// example: `example.googleapis.com`.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub service_name: ::prost::alloc::string::String,
     /// Required. The id of the rollout resource.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub rollout_id: ::prost::alloc::string::String,
 }
 /// Request message for GenerateConfigReport method.
@@ -588,33 +640,33 @@ pub struct GenerateConfigReportRequest {
     /// \[google.api.servicemanagement.v1.ConfigRef][google.api.servicemanagement.v1.ConfigRef\],
     /// \[google.api.servicemanagement.v1.ConfigSource][google.api.servicemanagement.v1.ConfigSource\],
     /// and \[google.api.Service][google.api.Service\]
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub new_config: ::core::option::Option<::prost_types::Any>,
     /// Optional. Service configuration against which the comparison will be done.
     /// For this version of API, the supported types are
     /// \[google.api.servicemanagement.v1.ConfigRef][google.api.servicemanagement.v1.ConfigRef\],
     /// \[google.api.servicemanagement.v1.ConfigSource][google.api.servicemanagement.v1.ConfigSource\],
     /// and \[google.api.Service][google.api.Service\]
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub old_config: ::core::option::Option<::prost_types::Any>,
 }
 /// Response message for GenerateConfigReport method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateConfigReportResponse {
     /// Name of the service this report belongs to.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub service_name: ::prost::alloc::string::String,
     /// ID of the service configuration this report belongs to.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub id: ::prost::alloc::string::String,
     /// list of ChangeReport, each corresponding to comparison between two
     /// service configurations.
-    #[prost(message, repeated, tag="3")]
+    #[prost(message, repeated, tag = "3")]
     pub change_reports: ::prost::alloc::vec::Vec<ChangeReport>,
     /// Errors / Linter warnings associated with the service definition this
     /// report
     /// belongs to.
-    #[prost(message, repeated, tag="4")]
+    #[prost(message, repeated, tag = "4")]
     pub diagnostics: ::prost::alloc::vec::Vec<Diagnostic>,
 }
 /// Generated client implementations.

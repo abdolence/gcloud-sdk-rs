@@ -2,7 +2,7 @@
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UploadRef {
     /// Required.
-    #[prost(oneof="upload_ref::FileSource", tags="1")]
+    #[prost(oneof = "upload_ref::FileSource", tags = "1")]
     pub file_source: ::core::option::Option<upload_ref::FileSource>,
 }
 /// Nested message and enum types in `UploadRef`.
@@ -13,7 +13,7 @@ pub mod upload_ref {
         /// An upload reference should be unique for each user. It follows
         /// the form:
         /// "<https://streetviewpublish.googleapis.com/media/user/{account_id}/photo/{upload_reference}">
-        #[prost(string, tag="1")]
+        #[prost(string, tag = "1")]
         UploadUrl(::prost::alloc::string::String),
     }
 }
@@ -21,7 +21,7 @@ pub mod upload_ref {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PhotoId {
     /// A unique identifier for a photo.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub id: ::prost::alloc::string::String,
 }
 /// Level information containing level number and its corresponding name.
@@ -30,12 +30,12 @@ pub struct Level {
     /// Optional. Floor number, used for ordering. 0 indicates the ground level, 1 indicates
     /// the first level above ground level, -1 indicates the first level under
     /// ground level. Non-integer values are OK.
-    #[prost(double, tag="1")]
+    #[prost(double, tag = "1")]
     pub number: f64,
     /// Required. A name assigned to this Level, restricted to 3 characters.
     /// Consider how the elevator buttons would be labeled for this level if there
     /// was an elevator.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub name: ::prost::alloc::string::String,
 }
 /// Raw pose measurement for an entity.
@@ -47,35 +47,37 @@ pub struct Pose {
     /// latitude and longitude pair are not provided, the geolocation from the
     /// exif header is used. A latitude and longitude pair not provided in the
     /// photo or exif header causes the photo process to fail.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub lat_lng_pair: ::core::option::Option<super::super::super::r#type::LatLng>,
     /// Altitude of the pose in meters above WGS84 ellipsoid.
     /// NaN indicates an unmeasured quantity.
-    #[prost(double, tag="2")]
+    #[prost(double, tag = "2")]
     pub altitude: f64,
     /// The following pose parameters pertain to the center of the photo. They
     /// match <https://developers.google.com/streetview/spherical-metadata.>
     /// Compass heading, measured at the center of the photo in degrees clockwise
     /// from North. Value must be >=0 and <360. NaN indicates an unmeasured
     /// quantity.
-    #[prost(double, tag="3")]
+    #[prost(double, tag = "3")]
     pub heading: f64,
     /// Pitch, measured at the center of the photo in degrees. Value must be >=-90
     /// and <= 90. A value of -90 means looking directly down, and a value of 90
     /// means looking directly up.
     /// NaN indicates an unmeasured quantity.
-    #[prost(double, tag="4")]
+    #[prost(double, tag = "4")]
     pub pitch: f64,
     /// Roll, measured in degrees. Value must be >= 0 and <360. A value of 0
     /// means level with the horizon.
     /// NaN indicates an unmeasured quantity.
-    #[prost(double, tag="5")]
+    #[prost(double, tag = "5")]
     pub roll: f64,
     /// Time of the GPS record since UTC epoch.
-    #[prost(message, optional, tag="6")]
-    pub gps_record_timestamp_unix_epoch: ::core::option::Option<::prost_types::Timestamp>,
+    #[prost(message, optional, tag = "6")]
+    pub gps_record_timestamp_unix_epoch: ::core::option::Option<
+        ::prost_types::Timestamp,
+    >,
     /// Level (the floor in a building) used to configure vertical navigation.
-    #[prost(message, optional, tag="7")]
+    #[prost(message, optional, tag = "7")]
     pub level: ::core::option::Option<Level>,
     /// The estimated horizontal accuracy of this pose in meters with 68%
     /// confidence (one standard deviation). For example, on Android, this value is
@@ -83,7 +85,7 @@ pub struct Pose {
     /// <https://developer.android.com/reference/android/location/Location#getAccuracy(>).
     /// Other platforms have different methods of obtaining similar accuracy
     /// estimations.
-    #[prost(float, tag="9")]
+    #[prost(float, tag = "9")]
     pub accuracy_meters: f32,
 }
 /// IMU data from the device sensors.
@@ -91,15 +93,15 @@ pub struct Pose {
 pub struct Imu {
     /// The accelerometer measurements in meters/sec^2 with increasing timestamps
     /// from devices.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub accel_mpsps: ::prost::alloc::vec::Vec<imu::Measurement3d>,
     /// The gyroscope measurements in radians/sec with increasing timestamps from
     /// devices.
-    #[prost(message, repeated, tag="2")]
+    #[prost(message, repeated, tag = "2")]
     pub gyro_rps: ::prost::alloc::vec::Vec<imu::Measurement3d>,
     /// The magnetometer measurements of the magnetic field in microtesla (uT) with
     /// increasing timestamps from devices.
-    #[prost(message, repeated, tag="3")]
+    #[prost(message, repeated, tag = "3")]
     pub mag_ut: ::prost::alloc::vec::Vec<imu::Measurement3d>,
 }
 /// Nested message and enum types in `Imu`.
@@ -108,16 +110,16 @@ pub mod imu {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Measurement3d {
         /// The timestamp of the IMU measurement.
-        #[prost(message, optional, tag="1")]
+        #[prost(message, optional, tag = "1")]
         pub capture_time: ::core::option::Option<::prost_types::Timestamp>,
         /// The sensor measurement in the x axis.
-        #[prost(float, tag="2")]
+        #[prost(float, tag = "2")]
         pub x: f32,
         /// The sensor measurement in the y axis.
-        #[prost(float, tag="3")]
+        #[prost(float, tag = "3")]
         pub y: f32,
         /// The sensor measurement in the z axis.
-        #[prost(float, tag="4")]
+        #[prost(float, tag = "4")]
         pub z: f32,
     }
 }
@@ -126,14 +128,14 @@ pub mod imu {
 pub struct Place {
     /// Place identifier, as described in
     /// <https://developers.google.com/places/place-id.>
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub place_id: ::prost::alloc::string::String,
     /// Output only. The name of the place, localized to the language_code.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub name: ::prost::alloc::string::String,
     /// Output only. The language_code that the name is localized with. This should
     /// be the language_code specified in the request, but may be a fallback.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub language_code: ::prost::alloc::string::String,
 }
 /// A connection is the link from a source photo to a destination photo.
@@ -141,7 +143,7 @@ pub struct Place {
 pub struct Connection {
     /// Required. The destination of the connection from the containing photo to
     /// another photo.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub target: ::core::option::Option<PhotoId>,
 }
 /// Photo is used to store 360 photos along with photo metadata.
@@ -150,57 +152,67 @@ pub struct Photo {
     /// Required. Output only. Required when updating a photo. Output only when creating a photo.
     /// Identifier for the photo, which is unique among all photos in
     /// Google.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub photo_id: ::core::option::Option<PhotoId>,
     /// Input only. Required when creating a photo. Input only. The resource URL where the
     /// photo bytes are uploaded to.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub upload_reference: ::core::option::Option<UploadRef>,
     /// Output only. The download URL for the photo bytes. This field is set only
     /// when
     /// \[GetPhotoRequest.view][google.streetview.publish.v1.GetPhotoRequest.view\]
     /// is set to
     /// \[PhotoView.INCLUDE_DOWNLOAD_URL][google.streetview.publish.v1.PhotoView.INCLUDE_DOWNLOAD_URL\].
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub download_url: ::prost::alloc::string::String,
     /// Output only. The thumbnail URL for showing a preview of the given photo.
-    #[prost(string, tag="9")]
+    #[prost(string, tag = "9")]
     pub thumbnail_url: ::prost::alloc::string::String,
     /// Output only. The share link for the photo.
-    #[prost(string, tag="11")]
+    #[prost(string, tag = "11")]
     pub share_link: ::prost::alloc::string::String,
     /// Optional. Pose of the photo.
-    #[prost(message, optional, tag="4")]
+    #[prost(message, optional, tag = "4")]
     pub pose: ::core::option::Option<Pose>,
     /// Optional. Connections to other photos. A connection represents the link from this
     /// photo to another photo.
-    #[prost(message, repeated, tag="5")]
+    #[prost(message, repeated, tag = "5")]
     pub connections: ::prost::alloc::vec::Vec<Connection>,
     /// Optional. Absolute time when the photo was captured.
     /// When the photo has no exif timestamp, this is used to set a timestamp in
     /// the photo metadata.
-    #[prost(message, optional, tag="6")]
+    #[prost(message, optional, tag = "6")]
     pub capture_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Time when the image was uploaded.
-    #[prost(message, optional, tag="14")]
+    #[prost(message, optional, tag = "14")]
     pub upload_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Optional. Places where this photo belongs.
-    #[prost(message, repeated, tag="7")]
+    #[prost(message, repeated, tag = "7")]
     pub places: ::prost::alloc::vec::Vec<Place>,
     /// Output only. View count of the photo.
-    #[prost(int64, tag="10")]
+    #[prost(int64, tag = "10")]
     pub view_count: i64,
     /// Output only. Status of rights transfer on this photo.
-    #[prost(enumeration="photo::TransferStatus", tag="12")]
+    #[prost(enumeration = "photo::TransferStatus", tag = "12")]
     pub transfer_status: i32,
     /// Output only. Status in Google Maps, whether this photo was published or rejected.
-    #[prost(enumeration="photo::MapsPublishStatus", tag="13")]
+    #[prost(enumeration = "photo::MapsPublishStatus", tag = "13")]
     pub maps_publish_status: i32,
 }
 /// Nested message and enum types in `Photo`.
 pub mod photo {
     /// Status of rights transfer.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum TransferStatus {
         /// The status of this transfer is unspecified.
@@ -241,7 +253,17 @@ pub mod photo {
         }
     }
     /// Publication status of the photo in Google Maps.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum MapsPublishStatus {
         /// The status of the photo is unknown.
@@ -258,7 +280,9 @@ pub mod photo {
         /// (if the ProtoBuf definition does not change) and safe for programmatic use.
         pub fn as_str_name(&self) -> &'static str {
             match self {
-                MapsPublishStatus::UnspecifiedMapsPublishStatus => "UNSPECIFIED_MAPS_PUBLISH_STATUS",
+                MapsPublishStatus::UnspecifiedMapsPublishStatus => {
+                    "UNSPECIFIED_MAPS_PUBLISH_STATUS"
+                }
                 MapsPublishStatus::Published => "PUBLISHED",
                 MapsPublishStatus::RejectedUnknown => "REJECTED_UNKNOWN",
             }
@@ -271,23 +295,23 @@ pub struct PhotoSequence {
     /// Output only. Unique identifier for the photo sequence.
     /// This also acts as a long running operation ID if uploading is performed
     /// asynchronously.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub id: ::prost::alloc::string::String,
     /// Output only. Photos with increasing timestamps.
-    #[prost(message, repeated, tag="2")]
+    #[prost(message, repeated, tag = "2")]
     pub photos: ::prost::alloc::vec::Vec<Photo>,
     /// Input only. Required when creating photo sequence. The resource name
     /// where the bytes of the photo sequence (in the form of video) are uploaded.
-    #[prost(message, optional, tag="3")]
+    #[prost(message, optional, tag = "3")]
     pub upload_reference: ::core::option::Option<UploadRef>,
     /// Optional. Absolute time when the photo sequence starts to be captured.
     /// If the photo sequence is a video, this is the start time of the video.
     /// If this field is populated in input, it overrides the capture time in the
     /// video or XDM file.
-    #[prost(message, optional, tag="4")]
+    #[prost(message, optional, tag = "4")]
     pub capture_time_override: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The time this photo sequence was created in uSV Store service.
-    #[prost(message, optional, tag="18")]
+    #[prost(message, optional, tag = "18")]
     pub upload_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Input only. Raw GPS measurements with increasing timestamps from the device that
     /// aren't time synced with each photo.
@@ -297,51 +321,61 @@ pub struct PhotoSequence {
     /// User can indicate which takes precedence using gps_source if raw GPS
     /// measurements are provided in both raw_gps_timeline and
     /// Camera Motion Metadata Track (CAMM).
-    #[prost(message, repeated, tag="7")]
+    #[prost(message, repeated, tag = "7")]
     pub raw_gps_timeline: ::prost::alloc::vec::Vec<Pose>,
     /// Input only. If both raw_gps_timeline and
     /// the Camera Motion Metadata Track (CAMM) contain GPS measurements,
     /// indicate which takes precedence.
-    #[prost(enumeration="photo_sequence::GpsSource", tag="8")]
+    #[prost(enumeration = "photo_sequence::GpsSource", tag = "8")]
     pub gps_source: i32,
     /// Input only. Three axis IMU data for the collection.
     /// If this data is too large to put in the request, then it should be put in
     /// the CAMM track for the video. This data always takes precedence over the
     /// equivalent CAMM data, if it exists.
-    #[prost(message, optional, tag="11")]
+    #[prost(message, optional, tag = "11")]
     pub imu: ::core::option::Option<Imu>,
     /// Output only. The processing state of this sequence.
-    #[prost(enumeration="ProcessingState", tag="12")]
+    #[prost(enumeration = "ProcessingState", tag = "12")]
     pub processing_state: i32,
     /// Output only. If this sequence has processing_state = FAILED, this will contain the
     /// reason why it failed. If the processing_state is any other value, this
     /// field will be unset.
-    #[prost(enumeration="ProcessingFailureReason", tag="13")]
+    #[prost(enumeration = "ProcessingFailureReason", tag = "13")]
     pub failure_reason: i32,
     /// Output only. If this sequence has `failure_reason` set, this may contain additional
     /// details about the failure.
-    #[prost(message, optional, tag="23")]
+    #[prost(message, optional, tag = "23")]
     pub failure_details: ::core::option::Option<ProcessingFailureDetails>,
     /// Output only. The computed distance of the photo sequence in meters.
-    #[prost(double, tag="16")]
+    #[prost(double, tag = "16")]
     pub distance_meters: f64,
     /// Output only. A rectangular box that encapsulates every image in this photo sequence.
-    #[prost(message, optional, tag="20")]
+    #[prost(message, optional, tag = "20")]
     pub sequence_bounds: ::core::option::Option<LatLngBounds>,
     /// Output only. The total number of views that all the published images in this
     /// PhotoSequence have received.
-    #[prost(int64, tag="21")]
+    #[prost(int64, tag = "21")]
     pub view_count: i64,
     /// Output only. The filename of the upload. Does not include the directory path. Only
     /// available if the sequence was uploaded on a platform that provides the
     /// filename.
-    #[prost(string, tag="22")]
+    #[prost(string, tag = "22")]
     pub filename: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `PhotoSequence`.
 pub mod photo_sequence {
     /// Primary source of GPS measurements.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum GpsSource {
         /// GPS in raw_gps_timeline takes precedence if it exists.
@@ -366,10 +400,10 @@ pub mod photo_sequence {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LatLngBounds {
     /// The southwest corner of these bounds.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub southwest: ::core::option::Option<super::super::super::r#type::LatLng>,
     /// The northeast corner of these bounds.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub northeast: ::core::option::Option<super::super::super::r#type::LatLng>,
 }
 /// Additional details to accompany the ProcessingFailureReason enum.
@@ -380,7 +414,7 @@ pub struct LatLngBounds {
 pub struct ProcessingFailureDetails {
     /// Only one set of details will be set, and must match the corresponding enum
     /// in ProcessingFailureReason.
-    #[prost(oneof="processing_failure_details::Details", tags="1, 2, 3, 4")]
+    #[prost(oneof = "processing_failure_details::Details", tags = "1, 2, 3, 4")]
     pub details: ::core::option::Option<processing_failure_details::Details>,
 }
 /// Nested message and enum types in `ProcessingFailureDetails`.
@@ -390,16 +424,16 @@ pub mod processing_failure_details {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Details {
         /// See InsufficientGpsFailureDetails.
-        #[prost(message, tag="1")]
+        #[prost(message, tag = "1")]
         InsufficientGpsDetails(super::InsufficientGpsFailureDetails),
         /// See GpsDataGapFailureDetails.
-        #[prost(message, tag="2")]
+        #[prost(message, tag = "2")]
         GpsDataGapDetails(super::GpsDataGapFailureDetails),
         /// See ImuDataGapFailureDetails.
-        #[prost(message, tag="3")]
+        #[prost(message, tag = "3")]
         ImuDataGapDetails(super::ImuDataGapFailureDetails),
         /// See NotOutdoorsFailureDetails.
-        #[prost(message, tag="4")]
+        #[prost(message, tag = "4")]
         NotOutdoorsDetails(super::NotOutdoorsFailureDetails),
     }
 }
@@ -407,7 +441,7 @@ pub mod processing_failure_details {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsufficientGpsFailureDetails {
     /// The number of GPS points that were found in the video.
-    #[prost(int32, optional, tag="1")]
+    #[prost(int32, optional, tag = "1")]
     pub gps_points_found: ::core::option::Option<i32>,
 }
 /// Details related to ProcessingFailureReason#GPS_DATA_GAP.
@@ -416,10 +450,10 @@ pub struct InsufficientGpsFailureDetails {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GpsDataGapFailureDetails {
     /// The duration of the gap in GPS data that was found.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub gap_duration: ::core::option::Option<::prost_types::Duration>,
     /// Relative time (from the start of the video stream) when the gap started.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub gap_start_time: ::core::option::Option<::prost_types::Duration>,
 }
 /// Details related to ProcessingFailureReason#IMU_DATA_GAP.
@@ -428,10 +462,10 @@ pub struct GpsDataGapFailureDetails {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImuDataGapFailureDetails {
     /// The duration of the gap in IMU data that was found.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub gap_duration: ::core::option::Option<::prost_types::Duration>,
     /// Relative time (from the start of the video stream) when the gap started.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub gap_start_time: ::core::option::Option<::prost_types::Duration>,
 }
 /// Details related to ProcessingFailureReason#NOT_OUTDOORS.
@@ -440,7 +474,7 @@ pub struct ImuDataGapFailureDetails {
 pub struct NotOutdoorsFailureDetails {
     /// Relative time (from the start of the video stream) when an indoor frame was
     /// found.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub start_time: ::core::option::Option<::prost_types::Duration>,
 }
 /// The processing state of the sequence. The states move as follows:
@@ -550,13 +584,17 @@ impl ProcessingFailureReason {
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     pub fn as_str_name(&self) -> &'static str {
         match self {
-            ProcessingFailureReason::Unspecified => "PROCESSING_FAILURE_REASON_UNSPECIFIED",
+            ProcessingFailureReason::Unspecified => {
+                "PROCESSING_FAILURE_REASON_UNSPECIFIED"
+            }
             ProcessingFailureReason::LowResolution => "LOW_RESOLUTION",
             ProcessingFailureReason::Duplicate => "DUPLICATE",
             ProcessingFailureReason::InsufficientGps => "INSUFFICIENT_GPS",
             ProcessingFailureReason::NoOverlapGps => "NO_OVERLAP_GPS",
             ProcessingFailureReason::InvalidGps => "INVALID_GPS",
-            ProcessingFailureReason::FailedToRefinePositions => "FAILED_TO_REFINE_POSITIONS",
+            ProcessingFailureReason::FailedToRefinePositions => {
+                "FAILED_TO_REFINE_POSITIONS"
+            }
             ProcessingFailureReason::Takedown => "TAKEDOWN",
             ProcessingFailureReason::CorruptVideo => "CORRUPT_VIDEO",
             ProcessingFailureReason::Internal => "INTERNAL",
@@ -567,11 +605,15 @@ impl ProcessingFailureReason {
             ProcessingFailureReason::JumpyGps => "JUMPY_GPS",
             ProcessingFailureReason::InvalidImu => "INVALID_IMU",
             ProcessingFailureReason::InsufficientImu => "INSUFFICIENT_IMU",
-            ProcessingFailureReason::InsufficientOverlapTimeSeries => "INSUFFICIENT_OVERLAP_TIME_SERIES",
+            ProcessingFailureReason::InsufficientOverlapTimeSeries => {
+                "INSUFFICIENT_OVERLAP_TIME_SERIES"
+            }
             ProcessingFailureReason::ImuDataGap => "IMU_DATA_GAP",
             ProcessingFailureReason::UnsupportedCamera => "UNSUPPORTED_CAMERA",
             ProcessingFailureReason::NotOutdoors => "NOT_OUTDOORS",
-            ProcessingFailureReason::InsufficientVideoFrames => "INSUFFICIENT_VIDEO_FRAMES",
+            ProcessingFailureReason::InsufficientVideoFrames => {
+                "INSUFFICIENT_VIDEO_FRAMES"
+            }
         }
     }
 }
@@ -579,7 +621,7 @@ impl ProcessingFailureReason {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreatePhotoRequest {
     /// Required. Photo to create.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub photo: ::core::option::Option<Photo>,
 }
 /// Request to get a \[Photo][google.streetview.publish.v1.Photo\].
@@ -594,18 +636,18 @@ pub struct CreatePhotoRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetPhotoRequest {
     /// Required. ID of the \[Photo][google.streetview.publish.v1.Photo\].
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub photo_id: ::prost::alloc::string::String,
     /// Required. Specifies if a download URL for the photo bytes should be returned in the
     /// \[Photo][google.streetview.publish.v1.Photo\] response.
-    #[prost(enumeration="PhotoView", tag="2")]
+    #[prost(enumeration = "PhotoView", tag = "2")]
     pub view: i32,
     /// The BCP-47 language code, such as "en-US" or "sr-Latn". For more
     /// information, see
     /// <http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.>
     /// If language_code is unspecified, the user's language preference for Google
     /// services is used.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub language_code: ::prost::alloc::string::String,
 }
 /// Request to get one or more \[Photos][google.streetview.publish.v1.Photo\].
@@ -621,18 +663,18 @@ pub struct BatchGetPhotosRequest {
     /// Required. IDs of the \[Photos][google.streetview.publish.v1.Photo\]. For HTTP
     /// GET requests, the URL query parameter should be
     /// `photoIds=<id1>&photoIds=<id2>&...`.
-    #[prost(string, repeated, tag="1")]
+    #[prost(string, repeated, tag = "1")]
     pub photo_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Required. Specifies if a download URL for the photo bytes should be returned in the
     /// Photo response.
-    #[prost(enumeration="PhotoView", tag="2")]
+    #[prost(enumeration = "PhotoView", tag = "2")]
     pub view: i32,
     /// Optional. The BCP-47 language code, such as "en-US" or "sr-Latn". For more
     /// information, see
     /// <http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.>
     /// If language_code is unspecified, the user's language preference for Google
     /// services is used.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub language_code: ::prost::alloc::string::String,
 }
 /// Response to batch get of \[Photos][google.streetview.publish.v1.Photo\].
@@ -642,7 +684,7 @@ pub struct BatchGetPhotosResponse {
     /// \[Photo][google.streetview.publish.v1.Photo\] requested, in the same order as
     /// the requests in
     /// \[BatchGetPhotos][google.streetview.publish.v1.StreetViewPublishService.BatchGetPhotos\].
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub results: ::prost::alloc::vec::Vec<PhotoResponse>,
 }
 /// Response payload for a single
@@ -655,11 +697,11 @@ pub struct BatchGetPhotosResponse {
 pub struct PhotoResponse {
     /// The status for the operation to get or update a single photo in the batch
     /// request.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub status: ::core::option::Option<super::super::super::rpc::Status>,
     /// The \[Photo][google.streetview.publish.v1.Photo\] resource, if the request
     /// was successful.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub photo: ::core::option::Option<Photo>,
 }
 /// Request to list all photos that belong to the user sending the request.
@@ -681,35 +723,35 @@ pub struct PhotoResponse {
 pub struct ListPhotosRequest {
     /// Required. Specifies if a download URL for the photos bytes should be returned in the
     /// Photos response.
-    #[prost(enumeration="PhotoView", tag="1")]
+    #[prost(enumeration = "PhotoView", tag = "1")]
     pub view: i32,
     /// Optional. The maximum number of photos to return.
     /// `pageSize` must be non-negative. If `pageSize` is zero or is not provided,
     /// the default page size of 100 is used.
     /// The number of photos returned in the response may be less than `pageSize`
     /// if the number of photos that belong to the user is less than `pageSize`.
-    #[prost(int32, tag="2")]
+    #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Optional. The
     /// \[nextPageToken][google.streetview.publish.v1.ListPhotosResponse.next_page_token\]
     /// value returned from a previous
     /// \[ListPhotos][google.streetview.publish.v1.StreetViewPublishService.ListPhotos\]
     /// request, if any.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
     /// Optional. The filter expression. For example: `placeId=ChIJj61dQgK6j4AR4GeTYWZsKWw`.
     ///
     /// The filters supported are: `placeId`, `min_latitude`, `max_latitude`,
     /// `min_longitude`, and `max_longitude`. See <https://google.aip.dev/160> for
     /// more information.
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
     /// Optional. The BCP-47 language code, such as "en-US" or "sr-Latn". For more
     /// information, see
     /// <http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.>
     /// If language_code is unspecified, the user's language preference for Google
     /// services is used.
-    #[prost(string, tag="5")]
+    #[prost(string, tag = "5")]
     pub language_code: ::prost::alloc::string::String,
 }
 /// Response to list all photos that belong to a user.
@@ -718,11 +760,11 @@ pub struct ListPhotosResponse {
     /// List of photos. The
     /// \[pageSize][google.streetview.publish.v1.ListPhotosRequest.page_size\] field
     /// in the request determines the number of items returned.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub photos: ::prost::alloc::vec::Vec<Photo>,
     /// Token to retrieve the next page of results, or empty if there are no more
     /// results in the list.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request to update the metadata of a
@@ -732,7 +774,7 @@ pub struct ListPhotosResponse {
 pub struct UpdatePhotoRequest {
     /// Required. \[Photo][google.streetview.publish.v1.Photo\] object containing the
     /// new metadata.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub photo: ::core::option::Option<Photo>,
     /// Required. Mask that identifies fields on the photo metadata to update.
     /// If not present, the old \[Photo][google.streetview.publish.v1.Photo\]
@@ -760,7 +802,7 @@ pub struct UpdatePhotoRequest {
     /// \[updateMask][google.streetview.publish.v1.UpdatePhotoRequest.update_mask\]
     /// contains `connections` and `UpdatePhotoRequest.photo.connections` is empty,
     /// all connections are removed.
-    #[prost(message, optional, tag="2")]
+    #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request to update the metadata of photos.
@@ -769,7 +811,7 @@ pub struct UpdatePhotoRequest {
 pub struct BatchUpdatePhotosRequest {
     /// Required. List of
     /// \[UpdatePhotoRequests][google.streetview.publish.v1.UpdatePhotoRequest\].
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub update_photo_requests: ::prost::alloc::vec::Vec<UpdatePhotoRequest>,
 }
 /// Response to batch update of metadata of one or more
@@ -779,14 +821,14 @@ pub struct BatchUpdatePhotosResponse {
     /// List of results for each individual
     /// \[Photo][google.streetview.publish.v1.Photo\] updated, in the same order as
     /// the request.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub results: ::prost::alloc::vec::Vec<PhotoResponse>,
 }
 /// Request to delete a \[Photo][google.streetview.publish.v1.Photo\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeletePhotoRequest {
     /// Required. ID of the \[Photo][google.streetview.publish.v1.Photo\].
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub photo_id: ::prost::alloc::string::String,
 }
 /// Request to delete multiple \[Photos][google.streetview.publish.v1.Photo\].
@@ -795,7 +837,7 @@ pub struct BatchDeletePhotosRequest {
     /// Required. IDs of the \[Photos][google.streetview.publish.v1.Photo\]. HTTP
     /// GET requests require the following syntax for the URL query parameter:
     /// `photoIds=<id1>&photoIds=<id2>&...`.
-    #[prost(string, repeated, tag="1")]
+    #[prost(string, repeated, tag = "1")]
     pub photo_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request to create a
@@ -804,17 +846,27 @@ pub struct BatchDeletePhotosRequest {
 pub struct CreatePhotoSequenceRequest {
     /// Required. \[PhotoSequence][google.streetview.publish.v1.PhotoSequence\] to
     /// create.
-    #[prost(message, optional, tag="1")]
+    #[prost(message, optional, tag = "1")]
     pub photo_sequence: ::core::option::Option<PhotoSequence>,
     /// Required. The input form of
     /// \[PhotoSequence][google.streetview.publish.v1.PhotoSequence\].
-    #[prost(enumeration="create_photo_sequence_request::InputType", tag="2")]
+    #[prost(enumeration = "create_photo_sequence_request::InputType", tag = "2")]
     pub input_type: i32,
 }
 /// Nested message and enum types in `CreatePhotoSequenceRequest`.
 pub mod create_photo_sequence_request {
     /// Input forms of \[PhotoSequence][google.streetview.publish.v1.PhotoSequence\].
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
     #[repr(i32)]
     pub enum InputType {
         /// Not specified. Server will return \[google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT\].
@@ -853,20 +905,20 @@ pub mod create_photo_sequence_request {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetPhotoSequenceRequest {
     /// Required. ID of the photo sequence.
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub sequence_id: ::prost::alloc::string::String,
     /// Specifies if a download URL for the photo sequence should be returned in
     /// `download_url` of individual photos in the
     /// \[PhotoSequence][google.streetview.publish.v1.PhotoSequence\] response.
     /// > Note: Currently not implemented.
     #[deprecated]
-    #[prost(enumeration="PhotoView", tag="2")]
+    #[prost(enumeration = "PhotoView", tag = "2")]
     pub view: i32,
     /// Optional. The filter expression. For example: `published_status=PUBLISHED`.
     ///
     /// The filters supported are: `published_status`.  See
     /// <https://google.aip.dev/160> for more information.
-    #[prost(string, tag="3")]
+    #[prost(string, tag = "3")]
     pub filter: ::prost::alloc::string::String,
 }
 /// Request to delete a
@@ -875,7 +927,7 @@ pub struct GetPhotoSequenceRequest {
 pub struct DeletePhotoSequenceRequest {
     /// Required. ID of the
     /// \[PhotoSequence][google.streetview.publish.v1.PhotoSequence\].
-    #[prost(string, tag="1")]
+    #[prost(string, tag = "1")]
     pub sequence_id: ::prost::alloc::string::String,
 }
 /// Response to batch delete of one or more
@@ -884,7 +936,7 @@ pub struct DeletePhotoSequenceRequest {
 pub struct BatchDeletePhotosResponse {
     /// The status for the operation to delete a single
     /// \[Photo][google.streetview.publish.v1.Photo\] in the batch request.
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, repeated, tag = "1")]
     pub status: ::prost::alloc::vec::Vec<super::super::super::rpc::Status>,
 }
 /// Request to list all photo sequences that belong to the user sending the
@@ -904,14 +956,14 @@ pub struct ListPhotoSequencesRequest {
     /// The number of photo sequences returned in the response may be less than
     /// `pageSize` if the number of matches is less than `pageSize`.
     /// This is currently unimplemented but is in process.
-    #[prost(int32, tag="1")]
+    #[prost(int32, tag = "1")]
     pub page_size: i32,
     /// Optional. The
     /// \[nextPageToken][google.streetview.publish.v1.ListPhotosResponse.next_page_token\]
     /// value returned from a previous
     /// \[ListPhotoSequences][google.streetview.publish.v1.StreetViewPublishService.ListPhotoSequences\]
     /// request, if any.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub page_token: ::prost::alloc::string::String,
     /// Optional. The filter expression. For example: `imagery_type=SPHERICAL`.
     ///
@@ -921,7 +973,7 @@ pub struct ListPhotoSequencesRequest {
     /// Filename queries should sent as a Phrase in order to support multple words
     /// and special characters by adding escaped quotes. Ex:
     /// filename_query="example of a phrase.mp4"
-    #[prost(string, tag="4")]
+    #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
 }
 /// Response to list all photo sequences that belong to a user.
@@ -945,11 +997,13 @@ pub struct ListPhotoSequencesResponse {
     ///    \[PhotoSequence][google.streetview.publish.v1.PhotoSequence\] message,
     ///    In each sequence, only
     ///    \[Id][google.streetview.publish.v1.PhotoSequence.id\] is populated.
-    #[prost(message, repeated, tag="1")]
-    pub photo_sequences: ::prost::alloc::vec::Vec<super::super::super::longrunning::Operation>,
+    #[prost(message, repeated, tag = "1")]
+    pub photo_sequences: ::prost::alloc::vec::Vec<
+        super::super::super::longrunning::Operation,
+    >,
     /// Token to retrieve the next page of results, or empty if there are no more
     /// results in the list.
-    #[prost(string, tag="2")]
+    #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Specifies which view of the \[Photo][google.streetview.publish.v1.Photo\]
