@@ -378,12 +378,22 @@ pub struct SpriteSheet {
     /// source aspect ratio, set the \[SpriteSheet.sprite_width_pixels][google.cloud.video.transcoder.v1.SpriteSheet.sprite_width_pixels\] field or
     /// the \[SpriteSheet.sprite_height_pixels][google.cloud.video.transcoder.v1.SpriteSheet.sprite_height_pixels\] field, but not both (the API will
     /// automatically calculate the missing field).
+    ///
+    /// For portrait videos that contain horizontal ASR and rotation metadata,
+    /// provide the width, in pixels, per the horizontal ASR. The API calculates
+    /// the height per the horizontal ASR. The API detects any rotation metadata
+    /// and swaps the requested height and width for the output.
     #[prost(int32, tag = "3")]
     pub sprite_width_pixels: i32,
     /// Required. The height of sprite in pixels. Must be an even integer. To preserve the
     /// source aspect ratio, set the \[SpriteSheet.sprite_height_pixels][google.cloud.video.transcoder.v1.SpriteSheet.sprite_height_pixels\] field or
     /// the \[SpriteSheet.sprite_width_pixels][google.cloud.video.transcoder.v1.SpriteSheet.sprite_width_pixels\] field, but not both (the API will
     /// automatically calculate the missing field).
+    ///
+    /// For portrait videos that contain horizontal ASR and rotation metadata,
+    /// provide the height, in pixels, per the horizontal ASR. The API calculates
+    /// the width per the horizontal ASR. The API detects any rotation metadata
+    /// and swaps the requested height and width for the output.
     #[prost(int32, tag = "4")]
     pub sprite_height_pixels: i32,
     /// The maximum number of sprites per row in a sprite sheet. The default is 0,
@@ -594,6 +604,9 @@ pub struct PreprocessingConfig {
     /// Specify the video pad filter configuration.
     #[prost(message, optional, tag = "6")]
     pub pad: ::core::option::Option<preprocessing_config::Pad>,
+    /// Specify the video deinterlace configuration.
+    #[prost(message, optional, tag = "7")]
+    pub deinterlace: ::core::option::Option<preprocessing_config::Deinterlace>,
 }
 /// Nested message and enum types in `PreprocessingConfig`.
 pub mod preprocessing_config {
@@ -711,6 +724,82 @@ pub mod preprocessing_config {
         #[prost(int32, tag = "4")]
         pub right_pixels: i32,
     }
+    /// Deinterlace configuration for input video.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Deinterlace {
+        /// Specify the video deinterlacing filter. The default is `yadif`.
+        #[prost(oneof = "deinterlace::DeinterlacingFilter", tags = "1, 2")]
+        pub deinterlacing_filter: ::core::option::Option<
+            deinterlace::DeinterlacingFilter,
+        >,
+    }
+    /// Nested message and enum types in `Deinterlace`.
+    pub mod deinterlace {
+        /// Yet Another Deinterlacing Filter Configuration.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct YadifConfig {
+            /// Specifies the deinterlacing mode to adopt.
+            /// The default is `send_frame`.
+            /// Supported values:
+            ///
+            /// - `send_frame`: Output one frame for each frame
+            /// - `send_field`: Output one frame for each field
+            #[prost(string, tag = "1")]
+            pub mode: ::prost::alloc::string::String,
+            /// Disable spacial interlacing.
+            /// The default is `false`.
+            #[prost(bool, tag = "2")]
+            pub disable_spatial_interlacing: bool,
+            /// The picture field parity assumed for the input interlaced video.
+            /// The default is `auto`.
+            /// Supported values:
+            ///
+            /// - `tff`: Assume the top field is first
+            /// - `bff`: Assume the bottom field is first
+            /// - `auto`: Enable automatic detection of field parity
+            #[prost(string, tag = "3")]
+            pub parity: ::prost::alloc::string::String,
+            /// Deinterlace all frames rather than just the frames identified as
+            /// interlaced. The default is `false`.
+            #[prost(bool, tag = "4")]
+            pub deinterlace_all_frames: bool,
+        }
+        /// Bob Weaver Deinterlacing Filter Configuration.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct BwdifConfig {
+            /// Specifies the deinterlacing mode to adopt.
+            /// The default is `send_frame`.
+            /// Supported values:
+            ///
+            /// - `send_frame`: Output one frame for each frame
+            /// - `send_field`: Output one frame for each field
+            #[prost(string, tag = "1")]
+            pub mode: ::prost::alloc::string::String,
+            /// The picture field parity assumed for the input interlaced video.
+            /// The default is `auto`.
+            /// Supported values:
+            ///
+            /// - `tff`: Assume the top field is first
+            /// - `bff`: Assume the bottom field is first
+            /// - `auto`: Enable automatic detection of field parity
+            #[prost(string, tag = "2")]
+            pub parity: ::prost::alloc::string::String,
+            /// Deinterlace all frames rather than just the frames identified as
+            /// interlaced. The default is `false`.
+            #[prost(bool, tag = "3")]
+            pub deinterlace_all_frames: bool,
+        }
+        /// Specify the video deinterlacing filter. The default is `yadif`.
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum DeinterlacingFilter {
+            /// Specifies the Yet Another Deinterlacing Filter Configuration.
+            #[prost(message, tag = "1")]
+            Yadif(YadifConfig),
+            /// Specifies the Bob Weaver Deinterlacing Filter Configuration.
+            #[prost(message, tag = "2")]
+            Bwdif(BwdifConfig),
+        }
+    }
 }
 /// Video stream resource.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -727,11 +816,21 @@ pub mod video_stream {
         /// The width of the video in pixels. Must be an even integer.
         /// When not specified, the width is adjusted to match the specified height
         /// and input aspect ratio. If both are omitted, the input width is used.
+        ///
+        /// For portrait videos that contain horizontal ASR and rotation metadata,
+        /// provide the width, in pixels, per the horizontal ASR. The API calculates
+        /// the height per the horizontal ASR. The API detects any rotation metadata
+        /// and swaps the requested height and width for the output.
         #[prost(int32, tag = "1")]
         pub width_pixels: i32,
         /// The height of the video in pixels. Must be an even integer.
         /// When not specified, the height is adjusted to match the specified width
         /// and input aspect ratio. If both are omitted, the input height is used.
+        ///
+        /// For portrait videos that contain horizontal ASR and rotation metadata,
+        /// provide the height, in pixels, per the horizontal ASR. The API calculates
+        /// the width per the horizontal ASR. The API detects any rotation metadata
+        /// and swaps the requested height and width for the output.
         #[prost(int32, tag = "2")]
         pub height_pixels: i32,
         /// Required. The target video frame rate in frames per second (FPS). Must be less than
@@ -870,11 +969,21 @@ pub mod video_stream {
         /// The width of the video in pixels. Must be an even integer.
         /// When not specified, the width is adjusted to match the specified height
         /// and input aspect ratio. If both are omitted, the input width is used.
+        ///
+        /// For portrait videos that contain horizontal ASR and rotation metadata,
+        /// provide the width, in pixels, per the horizontal ASR. The API calculates
+        /// the height per the horizontal ASR. The API detects any rotation metadata
+        /// and swaps the requested height and width for the output.
         #[prost(int32, tag = "1")]
         pub width_pixels: i32,
         /// The height of the video in pixels. Must be an even integer.
         /// When not specified, the height is adjusted to match the specified width
         /// and input aspect ratio. If both are omitted, the input height is used.
+        ///
+        /// For portrait videos that contain horizontal ASR and rotation metadata,
+        /// provide the height, in pixels, per the horizontal ASR. The API calculates
+        /// the width per the horizontal ASR. The API detects any rotation metadata
+        /// and swaps the requested height and width for the output.
         #[prost(int32, tag = "2")]
         pub height_pixels: i32,
         /// Required. The target video frame rate in frames per second (FPS). Must be less than
@@ -1020,11 +1129,21 @@ pub mod video_stream {
         /// The width of the video in pixels. Must be an even integer.
         /// When not specified, the width is adjusted to match the specified height
         /// and input aspect ratio. If both are omitted, the input width is used.
+        ///
+        /// For portrait videos that contain horizontal ASR and rotation metadata,
+        /// provide the width, in pixels, per the horizontal ASR. The API calculates
+        /// the height per the horizontal ASR. The API detects any rotation metadata
+        /// and swaps the requested height and width for the output.
         #[prost(int32, tag = "1")]
         pub width_pixels: i32,
         /// The height of the video in pixels. Must be an even integer.
         /// When not specified, the height is adjusted to match the specified width
         /// and input aspect ratio. If both are omitted, the input height is used.
+        ///
+        /// For portrait videos that contain horizontal ASR and rotation metadata,
+        /// provide the height, in pixels, per the horizontal ASR. The API calculates
+        /// the width per the horizontal ASR. The API detects any rotation metadata
+        /// and swaps the requested height and width for the output.
         #[prost(int32, tag = "2")]
         pub height_pixels: i32,
         /// Required. The target video frame rate in frames per second (FPS). Must be less than

@@ -857,6 +857,32 @@ pub struct AppendRowsRequest {
     /// respected.
     #[prost(string, tag = "6")]
     pub trace_id: ::prost::alloc::string::String,
+    /// A map to indicate how to interpret missing value for some fields. Missing
+    /// values are fields present in user schema but missing in rows. The key is
+    /// the field name. The value is the interpretation of missing values for the
+    /// field.
+    ///
+    /// For example, a map {'foo': NULL_VALUE, 'bar': DEFAULT_VALUE} means all
+    /// missing values in field foo are interpreted as NULL, all missing values in
+    /// field bar are interpreted as the default value of field bar in table
+    /// schema.
+    ///
+    /// If a field is not in this map and has missing values, the missing values
+    /// in this field are interpreted as NULL.
+    ///
+    /// This field only applies to the current request, it won't affect other
+    /// requests on the connection.
+    ///
+    /// Currently, field name can only be top-level column name, can't be a struct
+    /// field path like 'foo.bar'.
+    #[prost(
+        map = "string, enumeration(append_rows_request::MissingValueInterpretation)",
+        tag = "7"
+    )]
+    pub missing_value_interpretations: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        i32,
+    >,
     /// Input rows. The `writer_schema` field must be specified at the initial
     /// request and currently, it will be ignored if specified in following
     /// requests. Following requests must have data in the same format as the
@@ -881,6 +907,47 @@ pub mod append_rows_request {
         /// how default values are encoded.
         #[prost(message, optional, tag = "2")]
         pub rows: ::core::option::Option<super::ProtoRows>,
+    }
+    /// An enum to indicate how to interpret missing values. Missing values are
+    /// fields present in user schema but missing in rows. A missing value can
+    /// represent a NULL or a column default value defined in BigQuery table
+    /// schema.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum MissingValueInterpretation {
+        /// Invalid missing value interpretation. Requests with this value will be
+        /// rejected.
+        Unspecified = 0,
+        /// Missing value is interpreted as NULL.
+        NullValue = 1,
+        /// Missing value is interpreted as column default value if declared in the
+        /// table schema, NULL otherwise.
+        DefaultValue = 2,
+    }
+    impl MissingValueInterpretation {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                MissingValueInterpretation::Unspecified => {
+                    "MISSING_VALUE_INTERPRETATION_UNSPECIFIED"
+                }
+                MissingValueInterpretation::NullValue => "NULL_VALUE",
+                MissingValueInterpretation::DefaultValue => "DEFAULT_VALUE",
+            }
+        }
     }
     /// Input rows. The `writer_schema` field must be specified at the initial
     /// request and currently, it will be ignored if specified in following

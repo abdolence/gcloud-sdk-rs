@@ -240,10 +240,18 @@ pub mod subscription {
 /// destination. User subscriber clients must not connect to this subscription.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportConfig {
-    /// The desired state of this export.
+    /// The desired state of this export. Setting this to values other than
+    /// `ACTIVE` and `PAUSED` will result in an error.
     #[prost(enumeration = "export_config::State", tag = "1")]
     pub desired_state: i32,
-    /// Output only. The export statuses of each partition. This field is output only.
+    /// Output only. The current state of the export, which may be different to the desired
+    /// state due to errors.
+    #[prost(enumeration = "export_config::State", tag = "6")]
+    pub current_state: i32,
+    /// Output only. Deprecated: replaced by `current_state`.
+    ///
+    /// The export statuses of each partition.
+    #[deprecated]
     #[prost(message, repeated, tag = "4")]
     pub statuses: ::prost::alloc::vec::Vec<export_config::PartitionStatus>,
     /// Optional. The name of an optional Pub/Sub Lite topic to publish messages that can not
@@ -289,7 +297,7 @@ pub mod export_config {
         #[prost(string, tag = "1")]
         pub topic: ::prost::alloc::string::String,
     }
-    /// An export state.
+    /// The desired export state.
     #[derive(
         Clone,
         Copy,
@@ -309,6 +317,10 @@ pub mod export_config {
         Active = 1,
         /// Exporting messages is suspended.
         Paused = 2,
+        /// Messages cannot be exported due to permission denied errors. Output only.
+        PermissionDenied = 3,
+        /// Messages cannot be exported due to missing resources. Output only.
+        NotFound = 4,
     }
     impl State {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -320,6 +332,8 @@ pub mod export_config {
                 State::Unspecified => "STATE_UNSPECIFIED",
                 State::Active => "ACTIVE",
                 State::Paused => "PAUSED",
+                State::PermissionDenied => "PERMISSION_DENIED",
+                State::NotFound => "NOT_FOUND",
             }
         }
     }

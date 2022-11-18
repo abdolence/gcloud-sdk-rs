@@ -1,3 +1,37 @@
+/// Defines flags that are used to run the diagnostic tool
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DiagnosticConfig {
+    /// Required. User Cloud Storage bucket location (REQUIRED)
+    /// ## Must be formatted with path prefix (gs://$GCS_BUCKET)
+    ///
+    /// Permissions:
+    /// User Managed Notebooks:
+    /// - storage.buckets.writer: Must be given to the project's service account
+    /// attached to VM.
+    /// Google Managed Notebooks:
+    /// - storage.buckets.writer: Must be given to the project's service account or
+    /// ## user credentials attached to VM depending on authentication mode.
+    ///
+    /// Cloud Storage bucket Log file will be written to
+    /// gs://$GCS_BUCKET/$RELATIVE_PATH/$VM_DATE_$TIME.tar.gz
+    #[prost(string, tag = "1")]
+    pub gcs_bucket: ::prost::alloc::string::String,
+    /// Optional. Defines the relative storage path in the Cloud Storage bucket where the
+    /// diagnostic logs will be written: Default path will be the root directory of
+    /// the Cloud Storage bucket (gs://$GCS_BUCKET/$DATE_$TIME.tar.gz) Example of
+    /// full path where Log file will be written: gs://$GCS_BUCKET/$RELATIVE_PATH/
+    #[prost(string, tag = "2")]
+    pub relative_path: ::prost::alloc::string::String,
+    /// Optional. Enables flag to repair service for instance
+    #[prost(bool, tag = "3")]
+    pub repair_flag_enabled: bool,
+    /// Optional. Enables flag to capture packets from the instance for 30 seconds
+    #[prost(bool, tag = "4")]
+    pub packet_capture_flag_enabled: bool,
+    /// Optional. Enables flag to copy all `/home/jupyter` folder contents
+    #[prost(bool, tag = "5")]
+    pub copy_home_files_flag_enabled: bool,
+}
 /// Definition of a software environment that is used to start a notebook
 /// instance.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1806,6 +1840,60 @@ pub struct RuntimeSoftwareConfig {
     /// Output only. Bool indicating whether an newer image is available in an image family.
     #[prost(bool, optional, tag = "9")]
     pub upgradeable: ::core::option::Option<bool>,
+    /// Behavior for the post startup script.
+    #[prost(
+        enumeration = "runtime_software_config::PostStartupScriptBehavior",
+        tag = "10"
+    )]
+    pub post_startup_script_behavior: i32,
+    /// Bool indicating whether JupyterLab terminal will be available or not.
+    /// Default: False
+    #[prost(bool, optional, tag = "11")]
+    pub disable_terminal: ::core::option::Option<bool>,
+    /// Output only. version of boot image such as M100, from release label of the image.
+    #[prost(string, optional, tag = "12")]
+    pub version: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// Nested message and enum types in `RuntimeSoftwareConfig`.
+pub mod runtime_software_config {
+    /// Behavior for the post startup script.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum PostStartupScriptBehavior {
+        /// Unspecified post startup script behavior. Will run only once at creation.
+        Unspecified = 0,
+        /// Runs the post startup script provided during creation at every start.
+        RunEveryStart = 1,
+        /// Downloads and runs the provided post startup script at every start.
+        DownloadAndRunEveryStart = 2,
+    }
+    impl PostStartupScriptBehavior {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                PostStartupScriptBehavior::Unspecified => {
+                    "POST_STARTUP_SCRIPT_BEHAVIOR_UNSPECIFIED"
+                }
+                PostStartupScriptBehavior::RunEveryStart => "RUN_EVERY_START",
+                PostStartupScriptBehavior::DownloadAndRunEveryStart => {
+                    "DOWNLOAD_AND_RUN_EVERY_START"
+                }
+            }
+        }
+    }
 }
 /// Contains runtime daemon metrics, such as OS and kernels and sessions stats.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1893,8 +1981,8 @@ pub struct VirtualMachineConfig {
     ///
     /// A full URL or partial URI. Examples:
     ///
-    /// * `<https://www.googleapis.com/compute/v1/projects/\[project_id\]/regions/global/default`>
-    /// * `projects/\[project_id\]/regions/global/default`
+    /// * `<https://www.googleapis.com/compute/v1/projects/\[project_id\]/global/networks/default`>
+    /// * `projects/\[project_id\]/global/networks/default`
     ///
     /// Runtimes are managed resources inside Google Infrastructure.
     /// Runtimes support the following network configurations:
@@ -2139,6 +2227,19 @@ pub struct ResetRuntimeRequest {
     #[prost(string, tag = "2")]
     pub request_id: ::prost::alloc::string::String,
 }
+/// Request for upgrading a Managed Notebook Runtime to the latest version.
+/// option (google.api.message_visibility).restriction =
+///      "TRUSTED_TESTER,SPECIAL_TESTER";
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpgradeRuntimeRequest {
+    /// Required. Format:
+    /// `projects/{project_id}/locations/{location}/runtimes/{runtime_id}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Idempotent request UUID.
+    #[prost(string, tag = "2")]
+    pub request_id: ::prost::alloc::string::String,
+}
 /// Request for reporting a Managed Notebook Event.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReportRuntimeEventRequest {
@@ -2153,6 +2254,41 @@ pub struct ReportRuntimeEventRequest {
     /// Required. The Event to be reported.
     #[prost(message, optional, tag = "3")]
     pub event: ::core::option::Option<Event>,
+}
+/// Request for updating a Managed Notebook configuration.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateRuntimeRequest {
+    /// Required. The Runtime to be updated.
+    #[prost(message, optional, tag = "1")]
+    pub runtime: ::core::option::Option<Runtime>,
+    /// Required. Specifies the path, relative to `Runtime`, of
+    /// the field to update. For example, to change the software configuration
+    /// kernels, the `update_mask` parameter would be
+    /// specified as `software_config.kernels`,
+    /// and the `PATCH` request body would specify the new value, as follows:
+    ///
+    ///      {
+    ///        "software_config":{
+    ///          "kernels": [{
+    ///             'repository':
+    ///             'gcr.io/deeplearning-platform-release/pytorch-gpu', 'tag':
+    ///             'latest' }],
+    ///          }
+    ///      }
+    ///
+    ///
+    /// Currently, only the following fields can be updated:
+    /// - software_config.kernels
+    /// - software_config.post_startup_script
+    /// - software_config.custom_gpu_driver_path
+    /// - software_config.idle_shutdown
+    /// - software_config.idle_shutdown_timeout
+    /// - software_config.disable_terminal
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// Idempotent request UUID.
+    #[prost(string, tag = "3")]
+    pub request_id: ::prost::alloc::string::String,
 }
 /// Request for getting a new access token.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2175,6 +2311,17 @@ pub struct RefreshRuntimeTokenInternalResponse {
     /// Output only. Token expiration time.
     #[prost(message, optional, tag = "2")]
     pub expire_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Request for creating a notebook instance diagnostic file.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DiagnoseRuntimeRequest {
+    /// Required. Format:
+    /// `projects/{project_id}/locations/{location}/runtimes/{runtimes_id}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. Defines flags that are used to run the diagnostic tool
+    #[prost(message, optional, tag = "2")]
+    pub diagnostic_config: ::core::option::Option<DiagnosticConfig>,
 }
 /// Generated client implementations.
 pub mod managed_notebook_service_client {
@@ -2312,6 +2459,29 @@ pub mod managed_notebook_service_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
+        /// Update Notebook Runtime configuration.
+        pub async fn update_runtime(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateRuntimeRequest>,
+        ) -> Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.notebooks.v1.ManagedNotebookService/UpdateRuntime",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
         /// Deletes a single Runtime.
         pub async fn delete_runtime(
             &mut self,
@@ -2435,6 +2605,29 @@ pub mod managed_notebook_service_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
+        /// Upgrades a Managed Notebook Runtime to the latest version.
+        pub async fn upgrade_runtime(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpgradeRuntimeRequest>,
+        ) -> Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.notebooks.v1.ManagedNotebookService/UpgradeRuntime",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
         /// Report and process a runtime event.
         pub async fn report_runtime_event(
             &mut self,
@@ -2479,6 +2672,29 @@ pub mod managed_notebook_service_client {
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.notebooks.v1.ManagedNotebookService/RefreshRuntimeTokenInternal",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Creates a Diagnostic File and runs Diagnostic Tool given a Runtime.
+        pub async fn diagnose_runtime(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DiagnoseRuntimeRequest>,
+        ) -> Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.notebooks.v1.ManagedNotebookService/DiagnoseRuntime",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
@@ -2989,6 +3205,17 @@ pub struct ListEnvironmentsRequest {
     /// the last result.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
+}
+/// Request for creating a notebook instance diagnostic file.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DiagnoseInstanceRequest {
+    /// Required. Format:
+    /// `projects/{project_id}/locations/{location}/instances/{instance_id}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. Defines flags that are used to run the diagnostic tool
+    #[prost(message, optional, tag = "2")]
+    pub diagnostic_config: ::core::option::Option<DiagnosticConfig>,
 }
 /// Response for listing environments.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3714,6 +3941,29 @@ pub mod notebook_service_client {
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.notebooks.v1.NotebookService/RollbackInstance",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Creates a Diagnostic File and runs Diagnostic Tool given an Instance.
+        pub async fn diagnose_instance(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DiagnoseInstanceRequest>,
+        ) -> Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.notebooks.v1.NotebookService/DiagnoseInstance",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }

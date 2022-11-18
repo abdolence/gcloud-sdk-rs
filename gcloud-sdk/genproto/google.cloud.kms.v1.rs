@@ -834,6 +834,14 @@ pub mod crypto_key_version {
         EcSignSecp256k1Sha256 = 31,
         /// HMAC-SHA256 signing with a 256 bit key.
         HmacSha256 = 32,
+        /// HMAC-SHA1 signing with a 160 bit key.
+        HmacSha1 = 33,
+        /// HMAC-SHA384 signing with a 384 bit key.
+        HmacSha384 = 34,
+        /// HMAC-SHA512 signing with a 512 bit key.
+        HmacSha512 = 35,
+        /// HMAC-SHA224 signing with a 224 bit key.
+        HmacSha224 = 36,
         /// Algorithm representing symmetric encryption by an external key manager.
         ExternalSymmetricEncryption = 18,
     }
@@ -910,6 +918,10 @@ pub mod crypto_key_version {
                     "EC_SIGN_SECP256K1_SHA256"
                 }
                 CryptoKeyVersionAlgorithm::HmacSha256 => "HMAC_SHA256",
+                CryptoKeyVersionAlgorithm::HmacSha1 => "HMAC_SHA1",
+                CryptoKeyVersionAlgorithm::HmacSha384 => "HMAC_SHA384",
+                CryptoKeyVersionAlgorithm::HmacSha512 => "HMAC_SHA512",
+                CryptoKeyVersionAlgorithm::HmacSha224 => "HMAC_SHA224",
                 CryptoKeyVersionAlgorithm::ExternalSymmetricEncryption => {
                     "EXTERNAL_SYMMETRIC_ENCRYPTION"
                 }

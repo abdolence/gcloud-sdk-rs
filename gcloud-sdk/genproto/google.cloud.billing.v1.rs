@@ -1,8 +1,9 @@
-/// A billing account in [GCP Console](<https://console.cloud.google.com/>).
-/// You can assign a billing account to one or more projects.
+/// A billing account in the
+/// [Google Cloud Console](<https://console.cloud.google.com/>). You can assign a
+/// billing account to one or more projects.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BillingAccount {
-    /// The resource name of the billing account. The resource name has the form
+    /// Output only. The resource name of the billing account. The resource name has the form
     /// `billingAccounts/{billing_account_id}`. For example,
     /// `billingAccounts/012345-567890-ABCDEF` would be the resource name for
     /// billing account `012345-567890-ABCDEF`.
@@ -14,20 +15,20 @@ pub struct BillingAccount {
     #[prost(bool, tag = "2")]
     pub open: bool,
     /// The display name given to the billing account, such as `My Billing
-    /// Account`. This name is displayed in the GCP Console.
+    /// Account`. This name is displayed in the Google Cloud Console.
     #[prost(string, tag = "3")]
     pub display_name: ::prost::alloc::string::String,
     /// If this account is a
     /// \[subaccount\](<https://cloud.google.com/billing/docs/concepts>), then this
-    /// will be the resource name of the master billing account that it is being
+    /// will be the resource name of the parent billing account that it is being
     /// resold through.
     /// Otherwise this will be empty.
     #[prost(string, tag = "4")]
     pub master_billing_account: ::prost::alloc::string::String,
 }
-/// Encapsulation of billing information for a GCP Console project. A project
-/// has at most one associated billing account at a time (but a billing account
-/// can be assigned to multiple projects).
+/// Encapsulation of billing information for a Google Cloud Console project. A
+/// project has at most one associated billing account at a time (but a billing
+/// account can be assigned to multiple projects).
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProjectBillingInfo {
     /// The resource name for the `ProjectBillingInfo`; has the form
@@ -98,7 +99,7 @@ pub struct ListBillingAccountsResponse {
 pub struct CreateBillingAccountRequest {
     /// Required. The billing account resource to create.
     /// Currently CreateBillingAccount only supports subaccount creation, so
-    /// any created billing accounts must be under a provided master billing
+    /// any created billing accounts must be under a provided parent billing
     /// account.
     #[prost(message, optional, tag = "1")]
     pub billing_account: ::core::option::Option<BillingAccount>,
@@ -172,7 +173,8 @@ pub mod cloud_billing_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
-    /// Retrieves GCP Console billing accounts and associates them with projects.
+    /// Retrieves the Google Cloud Console billing accounts and associates them with
+    /// projects.
     #[derive(Debug, Clone)]
     pub struct CloudBillingClient<T> {
         inner: tonic::client::Grpc<T>,
@@ -306,15 +308,20 @@ pub mod cloud_billing_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        /// Creates a billing account.
-        /// This method can only be used to create
-        /// [billing subaccounts](https://cloud.google.com/billing/docs/concepts)
-        /// by GCP resellers.
+        /// This method creates [billing
+        /// subaccounts](https://cloud.google.com/billing/docs/concepts#subaccounts).
+        ///
+        /// Google Cloud resellers should use the
+        /// Channel Services APIs,
+        /// [accounts.customers.create](https://cloud.google.com/channel/docs/reference/rest/v1/accounts.customers/create)
+        /// and
+        /// [accounts.customers.entitlements.create](https://cloud.google.com/channel/docs/reference/rest/v1/accounts.customers.entitlements/create).
+        ///
         /// When creating a subaccount, the current authenticated user must have the
-        /// `billing.accounts.update` IAM permission on the master account, which is
+        /// `billing.accounts.update` IAM permission on the parent account, which is
         /// typically given to billing account
         /// [administrators](https://cloud.google.com/billing/docs/how-to/billing-access).
-        /// This method will return an error if the master account has not been
+        /// This method will return an error if the parent account has not been
         /// provisioned as a reseller account.
         pub async fn create_billing_account(
             &mut self,
@@ -362,9 +369,10 @@ pub mod cloud_billing_client {
             self.inner.unary(request.into_request(), path, codec).await
         }
         /// Gets the billing information for a project. The current authenticated user
-        /// must have [permission to view the
-        /// project](https://cloud.google.com/docs/permissions-overview#h.bgs0oxofvnoo
-        /// ).
+        /// must have the `resourcemanager.projects.get` permission for the project,
+        /// which can be granted by assigning the [Project
+        /// Viewer](https://cloud.google.com/iam/docs/understanding-roles#predefined_roles)
+        /// role.
         pub async fn get_project_billing_info(
             &mut self,
             request: impl tonic::IntoRequest<super::GetProjectBillingInfoRequest>,
@@ -393,7 +401,7 @@ pub mod cloud_billing_client {
         /// usage charges.
         ///
         /// *Note:* Incurred charges that have not yet been reported in the transaction
-        /// history of the GCP Console might be billed to the new billing
+        /// history of the Google Cloud Console might be billed to the new billing
         /// account, even if the charge occurred before the new billing account was
         /// assigned to the project.
         ///
@@ -571,6 +579,9 @@ pub struct Sku {
     /// This is 'Google' for first party services in Google Cloud Platform.
     #[prost(string, tag = "7")]
     pub service_provider_name: ::prost::alloc::string::String,
+    /// The geographic taxonomy for this sku.
+    #[prost(message, optional, tag = "8")]
+    pub geo_taxonomy: ::core::option::Option<GeoTaxonomy>,
 }
 /// Represents the category hierarchy of a SKU.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -637,6 +648,21 @@ pub struct PricingExpression {
     /// Example: usage_unit of "GiBy" means that usage is specified in "Gibi Byte".
     #[prost(string, tag = "1")]
     pub usage_unit: ::prost::alloc::string::String,
+    /// The recommended quantity of units for displaying pricing info. When
+    /// displaying pricing info it is recommended to display:
+    /// (unit_price * display_quantity) per display_quantity usage_unit.
+    /// This field does not affect the pricing formula and is for display purposes
+    /// only.
+    /// Example: If the unit_price is "0.0001 USD", the usage_unit is "GB" and
+    /// the display_quantity is "1000" then the recommended way of displaying the
+    /// pricing info is "0.10 USD per 1000 GB"
+    #[prost(double, tag = "2")]
+    pub display_quantity: f64,
+    /// The list of tiered rates for this pricing. The total cost is computed by
+    /// applying each of the tiered rates on usage. This repeated list is sorted
+    /// by ascending order of start_usage_amount.
+    #[prost(message, repeated, tag = "3")]
+    pub tiered_rates: ::prost::alloc::vec::Vec<pricing_expression::TierRate>,
     /// The unit of usage in human readable form.
     /// Example: "gibi byte".
     #[prost(string, tag = "4")]
@@ -656,21 +682,6 @@ pub struct PricingExpression {
     /// base_unit.
     #[prost(double, tag = "7")]
     pub base_unit_conversion_factor: f64,
-    /// The recommended quantity of units for displaying pricing info. When
-    /// displaying pricing info it is recommended to display:
-    /// (unit_price * display_quantity) per display_quantity usage_unit.
-    /// This field does not affect the pricing formula and is for display purposes
-    /// only.
-    /// Example: If the unit_price is "0.0001 USD", the usage_unit is "GB" and
-    /// the display_quantity is "1000" then the recommended way of displaying the
-    /// pricing info is "0.10 USD per 1000 GB"
-    #[prost(double, tag = "2")]
-    pub display_quantity: f64,
-    /// The list of tiered rates for this pricing. The total cost is computed by
-    /// applying each of the tiered rates on usage. This repeated list is sorted
-    /// by ascending order of start_usage_amount.
-    #[prost(message, repeated, tag = "3")]
-    pub tiered_rates: ::prost::alloc::vec::Vec<pricing_expression::TierRate>,
 }
 /// Nested message and enum types in `PricingExpression`.
 pub mod pricing_expression {
@@ -768,6 +779,59 @@ pub mod aggregation_info {
                 AggregationInterval::Unspecified => "AGGREGATION_INTERVAL_UNSPECIFIED",
                 AggregationInterval::Daily => "DAILY",
                 AggregationInterval::Monthly => "MONTHLY",
+            }
+        }
+    }
+}
+/// Encapsulates the geographic taxonomy data for a sku.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GeoTaxonomy {
+    /// The type of Geo Taxonomy: GLOBAL, REGIONAL, or MULTI_REGIONAL.
+    #[prost(enumeration = "geo_taxonomy::Type", tag = "1")]
+    pub r#type: i32,
+    /// The list of regions associated with a sku. Empty for Global skus, which are
+    /// associated with all Google Cloud regions.
+    #[prost(string, repeated, tag = "2")]
+    pub regions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Nested message and enum types in `GeoTaxonomy`.
+pub mod geo_taxonomy {
+    /// The type of Geo Taxonomy: GLOBAL, REGIONAL, or MULTI_REGIONAL.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Type {
+        /// The type is not specified.
+        Unspecified = 0,
+        /// The sku is global in nature, e.g. a license sku. Global skus are
+        /// available in all regions, and so have an empty region list.
+        Global = 1,
+        /// The sku is available in a specific region, e.g. "us-west2".
+        Regional = 2,
+        /// The sku is associated with multiple regions, e.g. "us-west2" and
+        /// "us-east1".
+        MultiRegional = 3,
+    }
+    impl Type {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Type::Unspecified => "TYPE_UNSPECIFIED",
+                Type::Global => "GLOBAL",
+                Type::Regional => "REGIONAL",
+                Type::MultiRegional => "MULTI_REGIONAL",
             }
         }
     }

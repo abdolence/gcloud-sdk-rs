@@ -77,6 +77,60 @@ pub struct ContainerImage {
     #[prost(string, tag = "2")]
     pub tag: ::prost::alloc::string::String,
 }
+/// Reservation Affinity for consuming Zonal reservation.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ReservationAffinity {
+    /// Optional. Type of reservation to consume
+    #[prost(enumeration = "reservation_affinity::Type", tag = "1")]
+    pub consume_reservation_type: i32,
+    /// Optional. Corresponds to the label key of reservation resource.
+    #[prost(string, tag = "2")]
+    pub key: ::prost::alloc::string::String,
+    /// Optional. Corresponds to the label values of reservation resource.
+    #[prost(string, repeated, tag = "3")]
+    pub values: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Nested message and enum types in `ReservationAffinity`.
+pub mod reservation_affinity {
+    /// Indicates whether to consume capacity from an reservation or not.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Type {
+        /// Default type.
+        Unspecified = 0,
+        /// Do not consume from any allocated capacity.
+        NoReservation = 1,
+        /// Consume any reservation available.
+        AnyReservation = 2,
+        /// Must consume from a specific reservation. Must specify key value fields
+        /// for specifying the reservations.
+        SpecificReservation = 3,
+    }
+    impl Type {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Type::Unspecified => "TYPE_UNSPECIFIED",
+                Type::NoReservation => "NO_RESERVATION",
+                Type::AnyReservation => "ANY_RESERVATION",
+                Type::SpecificReservation => "SPECIFIC_RESERVATION",
+            }
+        }
+    }
+}
 /// The definition of a notebook instance.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Instance {
@@ -86,15 +140,13 @@ pub struct Instance {
     pub name: ::prost::alloc::string::String,
     /// Path to a Bash script that automatically runs after a notebook instance
     /// fully boots up. The path must be a URL or
-    /// Cloud Storage path (`gs://path-to-file/file-name`).
+    /// Cloud Storage path (gs://path-to-file/file-name).
     #[prost(string, tag = "4")]
     pub post_startup_script: ::prost::alloc::string::String,
-    /// Output only. The proxy endpoint that is used to access the Jupyter
-    /// notebook.
+    /// Output only. The proxy endpoint that is used to access the Jupyter notebook.
     #[prost(string, tag = "5")]
     pub proxy_uri: ::prost::alloc::string::String,
-    /// Input only. The owner of this instance after creation. Format:
-    /// `alias@example.com`
+    /// Input only. The owner of this instance after creation. Format: `alias@example.com`
     ///
     /// Currently supports one owner only. If not specified, all of the service
     /// account users of your VM instance's service account can use
@@ -111,15 +163,14 @@ pub struct Instance {
     /// is used.
     #[prost(string, tag = "7")]
     pub service_account: ::prost::alloc::string::String,
-    /// Required. The [Compute Engine machine
-    /// type](<https://cloud.google.com/compute/docs/machine-types>) of this
+    /// Required. The [Compute Engine machine type](/compute/docs/machine-types) of this
     /// instance.
     #[prost(string, tag = "8")]
     pub machine_type: ::prost::alloc::string::String,
     /// The hardware accelerator used on this instance. If you use
     /// accelerators, make sure that your configuration has
     /// [enough vCPUs and memory to support the `machine_type` you
-    /// have selected](<https://cloud.google.com/compute/docs/gpus/#gpus-list>).
+    /// have selected](/compute/docs/gpus/#gpus-list).
     #[prost(message, optional, tag = "9")]
     pub accelerator_config: ::core::option::Option<instance::AcceleratorConfig>,
     /// Output only. The state of this instance.
@@ -135,39 +186,37 @@ pub struct Instance {
     /// If not specified, we'll automatically choose from official GPU drivers.
     #[prost(string, tag = "12")]
     pub custom_gpu_driver_path: ::prost::alloc::string::String,
-    /// Input only. The type of the boot disk attached to this instance, defaults
-    /// to standard persistent disk (`PD_STANDARD`).
+    /// Input only. The type of the boot disk attached to this instance, defaults to
+    /// standard persistent disk (`PD_STANDARD`).
     #[prost(enumeration = "instance::DiskType", tag = "13")]
     pub boot_disk_type: i32,
-    /// Input only. The size of the boot disk in GB attached to this instance, up
-    /// to a maximum of 64000&nbsp;GB (64&nbsp;TB). The minimum recommended value
-    /// is 100&nbsp;GB. If not specified, this defaults to 100.
+    /// Input only. The size of the boot disk in GB attached to this instance, up to a maximum
+    /// of 64000&nbsp;GB (64&nbsp;TB). The minimum recommended value is
+    /// 100&nbsp;GB. If not specified, this defaults to 100.
     #[prost(int64, tag = "14")]
     pub boot_disk_size_gb: i64,
-    /// Input only. The type of the data disk attached to this instance, defaults
-    /// to standard persistent disk (`PD_STANDARD`).
+    /// Input only. The type of the data disk attached to this instance, defaults to
+    /// standard persistent disk (`PD_STANDARD`).
     #[prost(enumeration = "instance::DiskType", tag = "25")]
     pub data_disk_type: i32,
-    /// Input only. The size of the data disk in GB attached to this instance, up
-    /// to a maximum of 64000&nbsp;GB (64&nbsp;TB). You can choose the size of the
-    /// data disk based on how big your notebooks and data are. If not specified,
-    /// this defaults to 100.
+    /// Input only. The size of the data disk in GB attached to this instance, up to a maximum
+    /// of 64000&nbsp;GB (64&nbsp;TB). You can choose the size of the data disk
+    /// based on how big your notebooks and data are. If not specified, this
+    /// defaults to 100.
     #[prost(int64, tag = "26")]
     pub data_disk_size_gb: i64,
-    /// Input only. If true, the data disk will not be auto deleted when deleting
-    /// the instance.
+    /// Input only. If true, the data disk will not be auto deleted when deleting the instance.
     #[prost(bool, tag = "27")]
     pub no_remove_data_disk: bool,
-    /// Input only. Disk encryption method used on the boot and data disks,
-    /// defaults to GMEK.
+    /// Input only. Disk encryption method used on the boot and data disks, defaults to GMEK.
     #[prost(enumeration = "instance::DiskEncryption", tag = "15")]
     pub disk_encryption: i32,
-    /// Input only. The KMS key used to encrypt the disks, only applicable if
-    /// disk_encryption is CMEK. Format:
+    /// Input only. The KMS key used to encrypt the disks, only applicable if disk_encryption
+    /// is CMEK.
+    /// Format:
     /// `projects/{project_id}/locations/{location}/keyRings/{key_ring_id}/cryptoKeys/{key_id}`
     ///
-    /// Learn more about [using your own encryption keys](
-    /// <https://cloud.google.com/kms/docs/quickstart>).
+    /// Learn more about [using your own encryption keys](/kms/docs/quickstart).
     #[prost(string, tag = "16")]
     pub kms_key: ::prost::alloc::string::String,
     /// If true, no public IP will be assigned to this instance.
@@ -199,6 +248,20 @@ pub struct Instance {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
+    /// Optional. The type of vNIC to be used on this interface. This may be gVNIC or
+    /// VirtioNet.
+    #[prost(enumeration = "instance::NicType", tag = "28")]
+    pub nic_type: i32,
+    /// Optional. The optional reservation affinity. Setting this field will apply
+    /// the specified [Zonal Compute
+    /// Reservation](<https://cloud.google.com/compute/docs/instances/reserving-zonal-resources>)
+    /// to this notebook instance.
+    #[prost(message, optional, tag = "29")]
+    pub reservation_affinity: ::core::option::Option<ReservationAffinity>,
+    /// Optional. Flag to enable ip forwarding or not, default false/off.
+    /// <https://cloud.google.com/vpc/docs/using-routes#canipforward>
+    #[prost(bool, tag = "31")]
+    pub can_ip_forward: bool,
     /// Output only. Instance creation time.
     #[prost(message, optional, tag = "23")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
@@ -247,7 +310,7 @@ pub mod instance {
         NvidiaTeslaP100 = 2,
         /// Accelerator type is Nvidia Tesla V100.
         NvidiaTeslaV100 = 3,
-        /// Accelerator type is Nvidia Tesla P_4.
+        /// Accelerator type is Nvidia Tesla P4.
         NvidiaTeslaP4 = 4,
         /// Accelerator type is Nvidia Tesla T4.
         NvidiaTeslaT4 = 5,
@@ -255,7 +318,7 @@ pub mod instance {
         NvidiaTeslaT4Vws = 8,
         /// Accelerator type is NVIDIA Tesla P100 Virtual Workstations.
         NvidiaTeslaP100Vws = 9,
-        /// Accelerator type is NVIDIA Tesla P_4 Virtual Workstations.
+        /// Accelerator type is NVIDIA Tesla P4 Virtual Workstations.
         NvidiaTeslaP4Vws = 10,
         /// (Coming soon) Accelerator type is TPU V2.
         TpuV2 = 6,
@@ -318,6 +381,10 @@ pub mod instance {
         Initializing = 8,
         /// The instance is getting registered.
         Registering = 9,
+        /// The instance is suspending.
+        Suspending = 10,
+        /// The instance is suspended.
+        Suspended = 11,
     }
     impl State {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -336,6 +403,8 @@ pub mod instance {
                 State::Upgrading => "UPGRADING",
                 State::Initializing => "INITIALIZING",
                 State::Registering => "REGISTERING",
+                State::Suspending => "SUSPENDING",
+                State::Suspended => "SUSPENDED",
             }
         }
     }
@@ -410,6 +479,41 @@ pub mod instance {
             }
         }
     }
+    /// The type of vNIC driver.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum NicType {
+        /// No type specified. Default should be UNSPECIFIED_NIC_TYPE.
+        UnspecifiedNicType = 0,
+        /// VIRTIO. Default in Notebooks DLVM.
+        VirtioNet = 1,
+        /// GVNIC. Alternative to VIRTIO.
+        /// <https://github.com/GoogleCloudPlatform/compute-virtual-ethernet-linux>
+        Gvnic = 2,
+    }
+    impl NicType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                NicType::UnspecifiedNicType => "UNSPECIFIED_NIC_TYPE",
+                NicType::VirtioNet => "VIRTIO_NET",
+                NicType::Gvnic => "GVNIC",
+            }
+        }
+    }
     /// Type of the environment; can be one of VM image, or container image.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Environment {
@@ -442,8 +546,7 @@ pub struct OperationMetadata {
     /// Identifies whether the user has requested cancellation
     /// of the operation. Operations that have successfully been cancelled
     /// have \[Operation.error][\] value with a
-    /// \[google.rpc.Status.code][google.rpc.Status.code\] of 1, corresponding to
-    /// `Code.CANCELLED`.
+    /// \[google.rpc.Status.code][google.rpc.Status.code\] of 1, corresponding to `Code.CANCELLED`.
     #[prost(bool, tag = "6")]
     pub requested_cancellation: bool,
     /// API version used to start the operation.
@@ -530,10 +633,10 @@ pub struct SetInstanceAcceleratorRequest {
     /// Required. Type of this accelerator.
     #[prost(enumeration = "instance::AcceleratorType", tag = "2")]
     pub r#type: i32,
-    /// Required. Count of cores of this accelerator. Note that not all
-    /// combinations of `type` and `core_count` are valid. Check [GPUs on Compute
-    /// Engine](<https://cloud.google.com/compute/docs/gpus/#gpus-list>) to find a
-    /// valid combination. TPUs are not supported.
+    /// Required. Count of cores of this accelerator. Note that not all combinations
+    /// of `type` and `core_count` are valid. Check [GPUs on
+    /// Compute Engine](<https://cloud.google.com/compute/docs/gpus/#gpus-list>) to
+    /// find a valid combination. TPUs are not supported.
     #[prost(int64, tag = "3")]
     pub core_count: i64,
 }
@@ -636,6 +739,11 @@ pub struct IsInstanceUpgradeableResponse {
     /// Additional information about upgrade.
     #[prost(string, tag = "3")]
     pub upgrade_info: ::prost::alloc::string::String,
+    /// The new image self link this instance will be upgraded to if calling the
+    /// upgrade endpoint. This field will only be populated if field upgradeable
+    /// is true.
+    #[prost(string, tag = "4")]
+    pub upgrade_image: ::prost::alloc::string::String,
 }
 /// Request for upgrading a notebook instance
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -699,10 +807,10 @@ pub struct CreateEnvironmentRequest {
     /// Required. Format: `projects/{project_id}/locations/{location}`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Required. User-defined unique ID of this environment. The `environment_id`
-    /// must be 1 to 63 characters long and contain only lowercase letters, numeric
-    /// characters, and dashes. The first character must be a lowercase letter and
-    /// the last character cannot be a dash.
+    /// Required. User-defined unique ID of this environment. The `environment_id` must
+    /// be 1 to 63 characters long and contain only lowercase letters,
+    /// numeric characters, and dashes. The first character must be a lowercase
+    /// letter and the last character cannot be a dash.
     #[prost(string, tag = "2")]
     pub environment_id: ::prost::alloc::string::String,
     /// Required. The environment to be created.
@@ -1064,6 +1172,7 @@ pub mod notebook_service_client {
             self.inner.unary(request.into_request(), path, codec).await
         }
         /// Check if a notebook instance is upgradable.
+        /// Deprecated. Please consider using v1.
         pub async fn is_instance_upgradeable(
             &mut self,
             request: impl tonic::IntoRequest<super::IsInstanceUpgradeableRequest>,
@@ -1087,6 +1196,7 @@ pub mod notebook_service_client {
             self.inner.unary(request.into_request(), path, codec).await
         }
         /// Upgrades a notebook instance to the latest version.
+        /// Deprecated. Please consider using v1.
         pub async fn upgrade_instance(
             &mut self,
             request: impl tonic::IntoRequest<super::UpgradeInstanceRequest>,
@@ -1111,6 +1221,7 @@ pub mod notebook_service_client {
         }
         /// Allows notebook instances to
         /// call this endpoint to upgrade themselves. Do not use this method directly.
+        /// Deprecated. Please consider using v1.
         pub async fn upgrade_instance_internal(
             &mut self,
             request: impl tonic::IntoRequest<super::UpgradeInstanceInternalRequest>,

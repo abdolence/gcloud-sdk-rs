@@ -48,6 +48,15 @@ pub struct Pipeline {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
+    /// The encrypted environment to pass into every action. Each action can also
+    /// specify its own encrypted environment.
+    ///
+    /// The secret must decrypt to a JSON-encoded dictionary where key-value pairs
+    /// serve as environment variable names and their values. The decoded
+    /// environment variables can overwrite the values specified by the
+    /// `environment` field.
+    #[prost(message, optional, tag = "5")]
+    pub encrypted_environment: ::core::option::Option<Secret>,
     /// The maximum amount of time to give the pipeline to complete.  This includes
     /// the time spent waiting for a worker to be allocated.  If the pipeline fails
     /// to complete before the timeout, it will be cancelled and the error code
@@ -112,6 +121,17 @@ pub struct Action {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
+    /// The encrypted environment to pass into the container. This environment is
+    /// merged with values specified in the
+    /// \[google.cloud.lifesciences.v2beta.Pipeline][google.cloud.lifesciences.v2beta.Pipeline\] message, overwriting any
+    /// duplicate values.
+    ///
+    /// The secret must decrypt to a JSON-encoded dictionary where key-value pairs
+    /// serve as environment variable names and their values. The decoded
+    /// environment variables can overwrite the values specified by the
+    /// `environment` field.
+    #[prost(message, optional, tag = "21")]
+    pub encrypted_environment: ::core::option::Option<Secret>,
     /// An optional identifier for a PID namespace to run the action inside.
     /// Multiple actions should use the same string to share a namespace.  If
     /// unspecified, a separate isolated namespace is used.
@@ -360,6 +380,10 @@ pub struct VirtualMachine {
     /// Specify either the `volumes[]` field or the `disks[]` field, but not both.
     #[prost(message, repeated, tag = "14")]
     pub volumes: ::prost::alloc::vec::Vec<Volume>,
+    /// If specified, the VM will only be allocated inside the matching
+    /// reservation. It will fail if the VM parameters don't match the reservation.
+    #[prost(string, tag = "15")]
+    pub reservation: ::prost::alloc::string::String,
 }
 /// Carries information about a Google Cloud service account.
 #[derive(Clone, PartialEq, ::prost::Message)]

@@ -121,6 +121,7 @@ pub mod finalize_mfa_enrollment_response {
     /// MFA verified enrollment information.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum AuxiliaryAuthInfo {
+        /// Auxiliary auth info specific to phone auth.
         #[prost(message, tag = "3")]
         PhoneAuthInfo(super::FinalizeMfaPhoneResponseInfo),
     }

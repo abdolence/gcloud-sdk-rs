@@ -2410,6 +2410,15 @@ pub struct BatchPredictionJob {
     /// must be provided.
     #[prost(message, optional, tag = "7")]
     pub dedicated_resources: ::core::option::Option<BatchDedicatedResources>,
+    /// The service account that the DeployedModel's container runs as. If not
+    /// specified, a system generated one will be used, which
+    /// has minimal permissions and the custom container, if used, may not have
+    /// enough permission to access other GCP resources.
+    ///
+    /// Users deploying the Model must have the `iam.serviceAccounts.actAs`
+    /// permission on this service account.
+    #[prost(string, tag = "29")]
+    pub service_account: ::prost::alloc::string::String,
     /// Immutable. Parameters configuring the batch behavior. Currently only applicable when
     /// \[dedicated_resources][google.cloud.aiplatform.v1.BatchPredictionJob.dedicated_resources\] are used (in other cases Vertex AI does
     /// the tuning itself).

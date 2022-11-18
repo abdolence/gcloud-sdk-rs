@@ -207,12 +207,12 @@ pub mod client_gateways_service_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
-    /// ## API Overview
+    /// API Overview:
     ///
     /// The `beyondcorp.googleapis.com` service implements the Google Cloud
     /// BeyondCorp API.
     ///
-    /// ## Data Model
+    /// Data Model:
     ///
     /// The ClientGatewaysService exposes the following resources:
     ///
