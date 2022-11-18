@@ -3,41 +3,43 @@
 pub struct Barcode {
     /// Format of a barcode.
     /// The supported formats are:
-    ///    CODE_128: Code 128 type.
-    ///    CODE_39: Code 39 type.
-    ///    CODE_93: Code 93 type.
-    ///    CODABAR: Codabar type.
-    ///    DATA_MATRIX: 2D Data Matrix type.
-    ///    ITF: ITF type.
-    ///    EAN_13: EAN-13 type.
-    ///    EAN_8: EAN-8 type.
-    ///    QR_CODE: 2D QR code type.
-    ///    UPC_A: UPC-A type.
-    ///    UPC_E: UPC-E type.
-    ///    PDF417: PDF417 type.
-    ///    AZTEC: 2D Aztec code type.
-    ///    DATABAR: GS1 DataBar code type.
+    ///
+    /// - `CODE_128`: Code 128 type.
+    /// - `CODE_39`: Code 39 type.
+    /// - `CODE_93`: Code 93 type.
+    /// - `CODABAR`: Codabar type.
+    /// - `DATA_MATRIX`: 2D Data Matrix type.
+    /// - `ITF`: ITF type.
+    /// - `EAN_13`: EAN-13 type.
+    /// - `EAN_8`: EAN-8 type.
+    /// - `QR_CODE`: 2D QR code type.
+    /// - `UPC_A`: UPC-A type.
+    /// - `UPC_E`: UPC-E type.
+    /// - `PDF417`: PDF417 type.
+    /// - `AZTEC`: 2D Aztec code type.
+    /// - `DATABAR`: GS1 DataBar code type.
     #[prost(string, tag = "1")]
     pub format: ::prost::alloc::string::String,
     /// Value format describes the format of the value that a barcode
     /// encodes.
     /// The supported formats are:
-    ///    CONTACT_INFO: Contact information.
-    ///    EMAIL: Email address.
-    ///    ISBN: ISBN identifier.
-    ///    PHONE: Phone number.
-    ///    PRODUCT: Product.
-    ///    SMS: SMS message.
-    ///    TEXT: Text string.
-    ///    URL: URL address.
-    ///    WIFI: Wifi information.
-    ///    GEO: Geo-localization.
-    ///    CALENDAR_EVENT: Calendar event.
-    ///    DRIVER_LICENSE: Driver's license.
+    ///
+    /// - `CONTACT_INFO`: Contact information.
+    /// - `EMAIL`: Email address.
+    /// - `ISBN`: ISBN identifier.
+    /// - `PHONE`: Phone number.
+    /// - `PRODUCT`: Product.
+    /// - `SMS`: SMS message.
+    /// - `TEXT`: Text string.
+    /// - `URL`: URL address.
+    /// - `WIFI`: Wifi information.
+    /// - `GEO`: Geo-localization.
+    /// - `CALENDAR_EVENT`: Calendar event.
+    /// - `DRIVER_LICENSE`: Driver's license.
     #[prost(string, tag = "2")]
     pub value_format: ::prost::alloc::string::String,
     /// Raw value encoded in the barcode.
-    /// For example, 'MEBKM:TITLE:Google;URL:<https://www.google.com;;'.>
+    /// For example: `'MEBKM:TITLE:Google;URL:<https://www.google.com;;'`.>
     #[prost(string, tag = "3")]
     pub raw_value: ::prost::alloc::string::String,
 }
@@ -101,9 +103,9 @@ pub struct Document {
     /// Placeholder.  Relationship among \[Document.entities][google.cloud.documentai.v1beta3.Document.entities\].
     #[prost(message, repeated, tag = "8")]
     pub entity_relations: ::prost::alloc::vec::Vec<document::EntityRelation>,
-    /// Placeholder.  A list of text corrections made to \[Document.text\].  This is
-    /// usually used for annotating corrections to OCR mistakes.  Text changes for
-    /// a given revision may not overlap with each other.
+    /// Placeholder.  A list of text corrections made to \[Document.text][google.cloud.documentai.v1beta3.Document.text\].  This
+    /// is usually used for annotating corrections to OCR mistakes.  Text changes
+    /// for a given revision may not overlap with each other.
     #[prost(message, repeated, tag = "14")]
     pub text_changes: ::prost::alloc::vec::Vec<document::TextChange>,
     /// Information about the sharding if this document is sharded part of a larger
@@ -169,6 +171,10 @@ pub mod document {
         /// Font size.
         #[prost(message, optional, tag = "7")]
         pub font_size: ::core::option::Option<style::FontSize>,
+        /// Font family such as `Arial`, `Times New Roman`.
+        /// <https://www.w3schools.com/cssref/pr_font_font-family.asp>
+        #[prost(string, tag = "8")]
+        pub font_family: ::prost::alloc::string::String,
     }
     /// Nested message and enum types in `Style`.
     pub mod style {
@@ -241,7 +247,11 @@ pub mod document {
         /// A list of detected barcodes.
         #[prost(message, repeated, tag = "15")]
         pub detected_barcodes: ::prost::alloc::vec::Vec<page::DetectedBarcode>,
+        /// Image Quality Scores.
+        #[prost(message, optional, tag = "17")]
+        pub image_quality_scores: ::core::option::Option<page::ImageQualityScores>,
         /// The history of this page.
+        #[deprecated]
         #[prost(message, optional, tag = "16")]
         pub provenance: ::core::option::Option<Provenance>,
     }
@@ -304,7 +314,7 @@ pub mod document {
             pub text_anchor: ::core::option::Option<super::TextAnchor>,
             /// Confidence of the current \[Layout][google.cloud.documentai.v1beta3.Document.Page.Layout\] within context of the object this
             /// layout is for. e.g. confidence can be for a single token, a table,
-            /// a visual element, etc. depending on context. Range [0, 1].
+            /// a visual element, etc. depending on context. Range `[0, 1]`.
             #[prost(float, tag = "2")]
             pub confidence: f32,
             /// The bounding polygon for the \[Layout][google.cloud.documentai.v1beta3.Document.Page.Layout\].
@@ -371,6 +381,7 @@ pub mod document {
             #[prost(message, repeated, tag = "2")]
             pub detected_languages: ::prost::alloc::vec::Vec<DetectedLanguage>,
             /// The history of this annotation.
+            #[deprecated]
             #[prost(message, optional, tag = "3")]
             pub provenance: ::core::option::Option<super::Provenance>,
         }
@@ -384,6 +395,7 @@ pub mod document {
             #[prost(message, repeated, tag = "2")]
             pub detected_languages: ::prost::alloc::vec::Vec<DetectedLanguage>,
             /// The  history of this annotation.
+            #[deprecated]
             #[prost(message, optional, tag = "3")]
             pub provenance: ::core::option::Option<super::Provenance>,
         }
@@ -398,6 +410,7 @@ pub mod document {
             #[prost(message, repeated, tag = "2")]
             pub detected_languages: ::prost::alloc::vec::Vec<DetectedLanguage>,
             /// The  history of this annotation.
+            #[deprecated]
             #[prost(message, optional, tag = "3")]
             pub provenance: ::core::option::Option<super::Provenance>,
         }
@@ -413,7 +426,8 @@ pub mod document {
             /// A list of detected languages together with confidence.
             #[prost(message, repeated, tag = "3")]
             pub detected_languages: ::prost::alloc::vec::Vec<DetectedLanguage>,
-            /// The  history of this annotation.
+            /// The history of this annotation.
+            #[deprecated]
             #[prost(message, optional, tag = "4")]
             pub provenance: ::core::option::Option<super::Provenance>,
         }
@@ -506,6 +520,9 @@ pub mod document {
             /// A list of detected languages together with confidence.
             #[prost(message, repeated, tag = "4")]
             pub detected_languages: ::prost::alloc::vec::Vec<DetectedLanguage>,
+            /// The history of this table.
+            #[prost(message, optional, tag = "5")]
+            pub provenance: ::core::option::Option<super::Provenance>,
         }
         /// Nested message and enum types in `Table`.
         pub mod table {
@@ -585,14 +602,49 @@ pub mod document {
         /// Detected language for a structural component.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct DetectedLanguage {
-            /// The BCP-47 language code, such as "en-US" or "sr-Latn". For more
+            /// The BCP-47 language code, such as `en-US` or `sr-Latn`. For more
             /// information, see
             /// <https://www.unicode.org/reports/tr35/#Unicode_locale_identifier.>
             #[prost(string, tag = "1")]
             pub language_code: ::prost::alloc::string::String,
-            /// Confidence of detected language. Range [0, 1].
+            /// Confidence of detected language. Range `[0, 1]`.
             #[prost(float, tag = "2")]
             pub confidence: f32,
+        }
+        /// Image Quality Scores for the page image
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct ImageQualityScores {
+            /// The overall quality score. Range `[0, 1]` where 1 is perfect quality.
+            #[prost(float, tag = "1")]
+            pub quality_score: f32,
+            /// A list of detected defects.
+            #[prost(message, repeated, tag = "2")]
+            pub detected_defects: ::prost::alloc::vec::Vec<
+                image_quality_scores::DetectedDefect,
+            >,
+        }
+        /// Nested message and enum types in `ImageQualityScores`.
+        pub mod image_quality_scores {
+            /// Image Quality Defects
+            #[derive(Clone, PartialEq, ::prost::Message)]
+            pub struct DetectedDefect {
+                /// Name of the defect type. Supported values are:
+                ///
+                /// - `quality/defect_blurry`
+                /// - `quality/defect_noisy`
+                /// - `quality/defect_dark`
+                /// - `quality/defect_faint`
+                /// - `quality/defect_text_too_small`
+                /// - `quality/defect_document_cutoff`
+                /// - `quality/defect_text_cutoff`
+                /// - `quality/defect_glare`
+                #[prost(string, tag = "1")]
+                pub r#type: ::prost::alloc::string::String,
+                /// Confidence of detected defect. Range `[0, 1]` where 1 indicates
+                /// strong confidence of that the defect exists.
+                #[prost(float, tag = "2")]
+                pub confidence: f32,
+            }
         }
     }
     /// An entity that could be a phrase in the text or a property that belongs to
@@ -607,14 +659,13 @@ pub mod document {
         /// Required. Entity type from a schema e.g. `Address`.
         #[prost(string, tag = "2")]
         pub r#type: ::prost::alloc::string::String,
-        /// Optional. Text value in the document e.g. `1600 Amphitheatre Pkwy`. If the entity
-        /// is not present in the document, this field will be empty.
+        /// Optional. Text value of the entity e.g. `1600 Amphitheatre Pkwy`.
         #[prost(string, tag = "3")]
         pub mention_text: ::prost::alloc::string::String,
         /// Optional. Deprecated.  Use `id` field instead.
         #[prost(string, tag = "4")]
         pub mention_id: ::prost::alloc::string::String,
-        /// Optional. Confidence of detected Schema entity. Range [0, 1].
+        /// Optional. Confidence of detected Schema entity. Range `[0, 1]`.
         #[prost(float, tag = "5")]
         pub confidence: f32,
         /// Optional. Represents the provenance of this entity wrt. the location on the
@@ -654,6 +705,7 @@ pub mod document {
             /// or int normalized text by default.
             ///
             /// Below are sample formats mapped to structured values.
+            ///
             /// - Money/Currency type (`money_value`) is in the ISO 4217 text format.
             /// - Date type (`date_value`) is in the ISO 8601 text format.
             /// - Datetime type (`datetime_value`) is in the ISO 8601 text format.
@@ -783,7 +835,7 @@ pub mod document {
             /// Optional. Identifies the bounding polygon of a layout element on the page.
             #[prost(message, optional, tag = "4")]
             pub bounding_poly: ::core::option::Option<super::super::BoundingPoly>,
-            /// Optional. Confidence of detected page element, if applicable. Range [0, 1].
+            /// Optional. Confidence of detected page element, if applicable. Range `[0, 1]`.
             #[prost(float, tag = "5")]
             pub confidence: f32,
         }
@@ -993,6 +1045,7 @@ pub mod document {
         #[prost(string, tag = "2")]
         pub changed_text: ::prost::alloc::string::String,
         /// The history of this annotation.
+        #[deprecated]
         #[prost(message, repeated, tag = "3")]
         pub provenance: ::prost::alloc::vec::Vec<Provenance>,
     }
@@ -1020,7 +1073,7 @@ pub struct RawDocument {
     #[prost(bytes = "vec", tag = "1")]
     pub content: ::prost::alloc::vec::Vec<u8>,
     /// An IANA MIME type (RFC6838) indicating the nature and format of the
-    /// \[content\].
+    /// \[content][google.cloud.documentai.v1beta3.RawDocument.content\].
     #[prost(string, tag = "2")]
     pub mime_type: ::prost::alloc::string::String,
 }
@@ -1060,7 +1113,7 @@ pub mod batch_documents_input_config {
     /// The source.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
-        /// The set of documents that match the specified Cloud Storage \[gcs_prefix\].
+        /// The set of documents that match the specified Cloud Storage `gcs_prefix`.
         #[prost(message, tag = "1")]
         GcsPrefix(super::GcsPrefix),
         /// The set of documents individually specified on Cloud Storage.
@@ -1084,6 +1137,11 @@ pub mod document_output_config {
         /// The Cloud Storage uri (a directory) of the output.
         #[prost(string, tag = "1")]
         pub gcs_uri: ::prost::alloc::string::String,
+        /// Specifies which fields to include in the output documents.
+        /// Only supports top level document and pages field so it must be in the
+        /// form of `{document_field_name}` or `pages.{page_field_name}`.
+        #[prost(message, optional, tag = "2")]
+        pub field_mask: ::core::option::Option<::prost_types::FieldMask>,
     }
     /// The destination of the results.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -1122,15 +1180,16 @@ pub mod document_schema {
         /// Name of the type. It must be unique within the schema file and
         /// cannot be a 'Common Type'.  Besides that we use the following naming
         /// conventions:
-        /// - *use snake_casing*
+        ///
+        /// - *use `snake_casing`*
         /// - name matching is case-insensitive
         /// - Maximum 64 characters.
         /// - Must start with a letter.
         /// - Allowed characters: ASCII letters `\[a-z0-9_-\]`.  (For backward
         ///    compatibility internal infrastructure and tooling can handle any ascii
         ///    character)
-        /// - The '/' is sometimes used to denote a property of a type.  For example
-        ///    line_item/amount.  This convention is deprecated, but will still be
+        /// - The `/` is sometimes used to denote a property of a type.  For example
+        ///    `line_item/amount`.  This convention is deprecated, but will still be
         ///    honored for backward compatibility.
         #[prost(string, tag = "1")]
         pub name: ::prost::alloc::string::String,
@@ -1247,6 +1306,175 @@ pub mod document_schema {
         pub skip_naming_validation: bool,
     }
 }
+/// An evaluation of a ProcessorVersion's performance.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Evaluation {
+    /// The resource name of the evaluation.
+    /// Format:
+    /// `projects/{project}/locations/{location}/processors/{processor}/processorVersions/{processor_version}/evaluations/{evaluation}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// The time that the evaluation was created.
+    #[prost(message, optional, tag = "2")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Counters for the documents used in the evaluation.
+    #[prost(message, optional, tag = "5")]
+    pub document_counters: ::core::option::Option<evaluation::Counters>,
+    /// Metrics for all the entities in aggregate.
+    #[prost(message, optional, tag = "3")]
+    pub all_entities_metrics: ::core::option::Option<evaluation::MultiConfidenceMetrics>,
+    /// Metrics across confidence levels, for different entities.
+    #[prost(map = "string, message", tag = "4")]
+    pub entity_metrics: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        evaluation::MultiConfidenceMetrics,
+    >,
+    /// The KMS key name used for encryption.
+    #[prost(string, tag = "6")]
+    pub kms_key_name: ::prost::alloc::string::String,
+    /// The KMS key version with which data is encrypted.
+    #[prost(string, tag = "7")]
+    pub kms_key_version_name: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `Evaluation`.
+pub mod evaluation {
+    /// Evaluation counters for the documents that were used.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Counters {
+        /// How many documents were sent for evaluation.
+        #[prost(int32, tag = "1")]
+        pub input_documents_count: i32,
+        /// How many documents were not included in the evaluation as they didn't
+        /// pass validation.
+        #[prost(int32, tag = "2")]
+        pub invalid_documents_count: i32,
+        /// How many documents were not included in the evaluation as Document AI
+        /// failed to process them.
+        #[prost(int32, tag = "3")]
+        pub failed_documents_count: i32,
+        /// How many documents were used in the evaluation.
+        #[prost(int32, tag = "4")]
+        pub evaluated_documents_count: i32,
+    }
+    /// Evaluation metrics, either in aggregate or about a specific entity.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Metrics {
+        /// The calculated precision.
+        #[prost(float, tag = "1")]
+        pub precision: f32,
+        /// The calculated recall.
+        #[prost(float, tag = "2")]
+        pub recall: f32,
+        /// The calculated f1 score.
+        #[prost(float, tag = "3")]
+        pub f1_score: f32,
+        /// The amount of occurrences in predicted documents.
+        #[prost(int32, tag = "4")]
+        pub predicted_occurrences_count: i32,
+        /// The amount of occurrences in ground truth documents.
+        #[prost(int32, tag = "5")]
+        pub ground_truth_occurrences_count: i32,
+        /// The amount of documents with a predicted occurrence.
+        #[prost(int32, tag = "10")]
+        pub predicted_document_count: i32,
+        /// The amount of documents with a ground truth occurrence.
+        #[prost(int32, tag = "11")]
+        pub ground_truth_document_count: i32,
+        /// The amount of true positives.
+        #[prost(int32, tag = "6")]
+        pub true_positives_count: i32,
+        /// The amount of false positives.
+        #[prost(int32, tag = "7")]
+        pub false_positives_count: i32,
+        /// The amount of false negatives.
+        #[prost(int32, tag = "8")]
+        pub false_negatives_count: i32,
+        /// The amount of documents that had an occurrence of this label.
+        #[prost(int32, tag = "9")]
+        pub total_documents_count: i32,
+    }
+    /// Evaluations metrics, at a specific confidence level.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ConfidenceLevelMetrics {
+        /// The confidence level.
+        #[prost(float, tag = "1")]
+        pub confidence_level: f32,
+        /// The metrics at the specific confidence level.
+        #[prost(message, optional, tag = "2")]
+        pub metrics: ::core::option::Option<Metrics>,
+    }
+    /// Metrics across multiple confidence levels.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct MultiConfidenceMetrics {
+        /// Metrics across confidence levels with fuzzy matching enabled.
+        #[prost(message, repeated, tag = "1")]
+        pub confidence_level_metrics: ::prost::alloc::vec::Vec<ConfidenceLevelMetrics>,
+        /// Metrics across confidence levels with only exact matching.
+        #[prost(message, repeated, tag = "4")]
+        pub confidence_level_metrics_exact: ::prost::alloc::vec::Vec<
+            ConfidenceLevelMetrics,
+        >,
+        /// The calculated area under the precision recall curve (AUPRC), computed by
+        /// integrating over all confidence thresholds.
+        #[prost(float, tag = "2")]
+        pub auprc: f32,
+        /// The Estimated Calibration Error (ECE) of the confidence of the predicted
+        /// entities.
+        #[prost(float, tag = "3")]
+        pub estimated_calibration_error: f32,
+        /// The AUPRC for metrics with fuzzy matching disabled, i.e., exact matching
+        /// only.
+        #[prost(float, tag = "5")]
+        pub auprc_exact: f32,
+        /// The ECE for the predicted entities with fuzzy matching disabled, i.e.,
+        /// exact matching only.
+        #[prost(float, tag = "6")]
+        pub estimated_calibration_error_exact: f32,
+        /// The metrics type for the label.
+        #[prost(enumeration = "multi_confidence_metrics::MetricsType", tag = "7")]
+        pub metrics_type: i32,
+    }
+    /// Nested message and enum types in `MultiConfidenceMetrics`.
+    pub mod multi_confidence_metrics {
+        /// A type that determines how metrics should be interpreted.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum MetricsType {
+            /// The metrics type is unspecified. By default, metrics without a
+            /// particular specification are for leaf entity types (i.e., top-level
+            /// entity types without child types, or child types which are not
+            /// parent types themselves).
+            Unspecified = 0,
+            /// Indicates whether metrics for this particular label type represent an
+            /// aggregate of metrics for other types instead of being based on actual
+            /// TP/FP/FN values for the label type. Metrics for parent (i.e., non-leaf)
+            /// entity types are an aggregate of metrics for their children.
+            Aggregate = 1,
+        }
+        impl MetricsType {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    MetricsType::Unspecified => "METRICS_TYPE_UNSPECIFIED",
+                    MetricsType::Aggregate => "AGGREGATE",
+                }
+            }
+        }
+    }
+}
 /// The common metadata for long running operations.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CommonOperationMetadata {
@@ -1327,6 +1555,9 @@ pub struct ProcessorVersion {
     /// The display name of the processor version.
     #[prost(string, tag = "2")]
     pub display_name: ::prost::alloc::string::String,
+    /// The schema of the processor version. Describes the output.
+    #[prost(message, optional, tag = "12")]
+    pub document_schema: ::core::option::Option<DocumentSchema>,
     /// The state of the processor version.
     #[prost(enumeration = "processor_version::State", tag = "6")]
     pub state: i32,
@@ -1416,7 +1647,7 @@ pub struct Processor {
     /// Format: `projects/{project}/locations/{location}/processors/{processor}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// The processor type, e.g., OCR_PROCESSOR, INVOICE_PROCESSOR, etc.
+    /// The processor type, e.g., `OCR_PROCESSOR`, `INVOICE_PROCESSOR`, etc.
     /// To get a list of processors types, see
     /// \[FetchProcessorTypes][google.cloud.documentai.v1beta3.DocumentProcessorService.FetchProcessorTypes\].
     #[prost(string, tag = "2")]
@@ -1465,12 +1696,12 @@ pub mod processor {
         Enabled = 1,
         /// The processor is disabled.
         Disabled = 2,
-        /// The processor is being enabled, will become ENABLED if successful.
+        /// The processor is being enabled, will become `ENABLED` if successful.
         Enabling = 3,
-        /// The processor is being disabled, will become DISABLED if successful.
+        /// The processor is being disabled, will become `DISABLED` if successful.
         Disabling = 4,
-        /// The processor is being created, will become either ENABLED (for
-        /// successful creation) or FAILED (for failed ones).
+        /// The processor is being created, will become either `ENABLED` (for
+        /// successful creation) or `FAILED` (for failed ones).
         /// Once a processor is in this state, it can then be used for document
         /// processing, but the feature dependencies of the processor might not be
         /// fully created yet.
@@ -1506,10 +1737,10 @@ pub mod processor {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProcessorType {
     /// The resource name of the processor type.
-    /// Format: projects/{project}/processorTypes/{processor_type}
+    /// Format: `projects/{project}/processorTypes/{processor_type}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// The type of the processor, e.g., "invoice_parsing".
+    /// The processor type, e.g., `OCR_PROCESSOR`, `INVOICE_PROCESSOR`, etc.
     #[prost(string, tag = "2")]
     pub r#type: ::prost::alloc::string::String,
     /// The processor category, used by UI to group processor types.
@@ -1556,6 +1787,8 @@ pub struct ProcessRequest {
     #[prost(bool, tag = "3")]
     pub skip_human_review: bool,
     /// Specifies which fields to include in ProcessResponse's document.
+    /// Only supports top level document and pages field so it must be in the form
+    /// of `{document_field_name}` or `pages.{page_field_name}`.
     #[prost(message, optional, tag = "6")]
     pub field_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// The document payload.
@@ -2054,6 +2287,93 @@ pub struct SetDefaultProcessorVersionMetadata {
     #[prost(message, optional, tag = "1")]
     pub common_metadata: ::core::option::Option<CommonOperationMetadata>,
 }
+/// Request message for the create processor version method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TrainProcessorVersionRequest {
+    /// Required. The parent (project, location and processor) to create the new version for.
+    /// Format: `projects/{project}/locations/{location}/processors/{processor}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The processor version to be created.
+    #[prost(message, optional, tag = "2")]
+    pub processor_version: ::core::option::Option<ProcessorVersion>,
+    /// Optional. The schema the processor version will be trained with.
+    #[prost(message, optional, tag = "10")]
+    pub document_schema: ::core::option::Option<DocumentSchema>,
+    /// Optional. The input data used to train the `ProcessorVersion`.
+    #[prost(message, optional, tag = "4")]
+    pub input_data: ::core::option::Option<train_processor_version_request::InputData>,
+    /// Optional. The processor version to use as a base for training. This processor version
+    /// must be a child of `parent`. Format:
+    /// `projects/{project}/locations/{location}/processors/{processor}/processorVersions/{processorVersion}`.
+    #[prost(string, tag = "8")]
+    pub base_processor_version: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `TrainProcessorVersionRequest`.
+pub mod train_processor_version_request {
+    /// The input data used to train a new `ProcessorVersion`.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct InputData {
+        /// The documents used for training the new version.
+        #[prost(message, optional, tag = "3")]
+        pub training_documents: ::core::option::Option<super::BatchDocumentsInputConfig>,
+        /// The documents used for testing the trained version.
+        #[prost(message, optional, tag = "4")]
+        pub test_documents: ::core::option::Option<super::BatchDocumentsInputConfig>,
+    }
+}
+/// The response for the TrainProcessorVersion method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TrainProcessorVersionResponse {
+    /// The resource name of the processor version produced by training.
+    #[prost(string, tag = "1")]
+    pub processor_version: ::prost::alloc::string::String,
+}
+/// The metadata that represents a processor version being created.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TrainProcessorVersionMetadata {
+    /// The basic metadata of the long running operation.
+    #[prost(message, optional, tag = "1")]
+    pub common_metadata: ::core::option::Option<CommonOperationMetadata>,
+    /// The training dataset validation information.
+    #[prost(message, optional, tag = "2")]
+    pub training_dataset_validation: ::core::option::Option<
+        train_processor_version_metadata::DatasetValidation,
+    >,
+    /// The test dataset validation information.
+    #[prost(message, optional, tag = "3")]
+    pub test_dataset_validation: ::core::option::Option<
+        train_processor_version_metadata::DatasetValidation,
+    >,
+}
+/// Nested message and enum types in `TrainProcessorVersionMetadata`.
+pub mod train_processor_version_metadata {
+    /// The dataset validation information.
+    /// This includes any and all errors with documents and the dataset.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct DatasetValidation {
+        /// The total number of document errors.
+        #[prost(int32, tag = "3")]
+        pub document_error_count: i32,
+        /// The total number of dataset errors.
+        #[prost(int32, tag = "4")]
+        pub dataset_error_count: i32,
+        /// Error information pertaining to specific documents. A maximum of 10
+        /// document errors will be returned.
+        /// Any document with errors will not be used throughout training.
+        #[prost(message, repeated, tag = "1")]
+        pub document_errors: ::prost::alloc::vec::Vec<
+            super::super::super::super::rpc::Status,
+        >,
+        /// Error information for the dataset as a whole. A maximum of 10 dataset
+        /// errors will be returned.
+        /// A single dataset error is terminal for training.
+        #[prost(message, repeated, tag = "2")]
+        pub dataset_errors: ::prost::alloc::vec::Vec<
+            super::super::super::super::rpc::Status,
+        >,
+    }
+}
 /// Request message for review document method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReviewDocumentRequest {
@@ -2239,6 +2559,68 @@ pub mod review_document_operation_metadata {
             }
         }
     }
+}
+/// Evaluates the given ProcessorVersion against the supplied documents.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct EvaluateProcessorVersionRequest {
+    /// Required. The resource name of the \[ProcessorVersion][google.cloud.documentai.v1beta3.ProcessorVersion\] to evaluate.
+    /// `projects/{project}/locations/{location}/processors/{processor}/processorVersions/{processorVersion}`
+    #[prost(string, tag = "1")]
+    pub processor_version: ::prost::alloc::string::String,
+    /// Optional. The documents used in the evaluation. If unspecified, use the processor's
+    /// dataset as evaluation input.
+    #[prost(message, optional, tag = "3")]
+    pub evaluation_documents: ::core::option::Option<BatchDocumentsInputConfig>,
+}
+/// Metadata of the EvaluateProcessorVersion method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct EvaluateProcessorVersionMetadata {
+    /// The basic metadata of the long running operation.
+    #[prost(message, optional, tag = "1")]
+    pub common_metadata: ::core::option::Option<CommonOperationMetadata>,
+}
+/// Metadata of the EvaluateProcessorVersion method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct EvaluateProcessorVersionResponse {
+    /// The resource name of the created evaluation.
+    #[prost(string, tag = "2")]
+    pub evaluation: ::prost::alloc::string::String,
+}
+/// Retrieves a specific Evaluation.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetEvaluationRequest {
+    /// Required. The resource name of the \[Evaluation][google.cloud.documentai.v1beta3.Evaluation\] to get.
+    /// `projects/{project}/locations/{location}/processors/{processor}/processorVersions/{processorVersion}/evaluations/{evaluation}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Retrieves a list of evaluations for a given ProcessorVersion.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListEvaluationsRequest {
+    /// Required. The resource name of the \[ProcessorVersion][google.cloud.documentai.v1beta3.ProcessorVersion\] to list evaluations for.
+    /// `projects/{project}/locations/{location}/processors/{processor}/processorVersions/{processorVersion}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// The standard list page size.
+    /// If unspecified, at most 5 evaluations will be returned.
+    /// The maximum value is 100; values above 100 will be coerced to 100.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// A page token, received from a previous `ListEvaluations` call.
+    /// Provide this to retrieve the subsequent page.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// The response from ListEvaluations.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListEvaluationsResponse {
+    /// The evaluations requested.
+    #[prost(message, repeated, tag = "1")]
+    pub evaluations: ::prost::alloc::vec::Vec<Evaluation>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// Generated client implementations.
 pub mod document_processor_service_client {
@@ -2437,6 +2819,31 @@ pub mod document_processor_service_client {
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.documentai.v1beta3.DocumentProcessorService/GetProcessor",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Trains a new processor version.
+        /// Operation metadata is returned as
+        /// cloud_documentai_core.TrainProcessorVersionMetadata.
+        pub async fn train_processor_version(
+            &mut self,
+            request: impl tonic::IntoRequest<super::TrainProcessorVersionRequest>,
+        ) -> Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.documentai.v1beta3.DocumentProcessorService/TrainProcessorVersion",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
@@ -2690,6 +3097,70 @@ pub mod document_processor_service_client {
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.documentai.v1beta3.DocumentProcessorService/ReviewDocument",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Evaluates a ProcessorVersion against annotated documents, producing an
+        /// Evaluation.
+        pub async fn evaluate_processor_version(
+            &mut self,
+            request: impl tonic::IntoRequest<super::EvaluateProcessorVersionRequest>,
+        ) -> Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.documentai.v1beta3.DocumentProcessorService/EvaluateProcessorVersion",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Retrieves a specific evaluation.
+        pub async fn get_evaluation(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetEvaluationRequest>,
+        ) -> Result<tonic::Response<super::Evaluation>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.documentai.v1beta3.DocumentProcessorService/GetEvaluation",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Retrieves a set of evaluations for a given processor version.
+        pub async fn list_evaluations(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListEvaluationsRequest>,
+        ) -> Result<tonic::Response<super::ListEvaluationsResponse>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.documentai.v1beta3.DocumentProcessorService/ListEvaluations",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }

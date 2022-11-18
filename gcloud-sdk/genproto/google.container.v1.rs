@@ -2948,6 +2948,9 @@ pub struct NodePool {
     /// Upgrade settings control disruption and speed of the upgrade.
     #[prost(message, optional, tag = "107")]
     pub upgrade_settings: ::core::option::Option<node_pool::UpgradeSettings>,
+    /// Specifies the node placement policy.
+    #[prost(message, optional, tag = "108")]
+    pub placement_policy: ::core::option::Option<node_pool::PlacementPolicy>,
     /// Output only. [Output only] Update info contains relevant information during a node
     /// pool update.
     #[prost(message, optional, tag = "109")]
@@ -3106,6 +3109,49 @@ pub mod node_pool {
                         Phase::DeletingBluePool => "DELETING_BLUE_POOL",
                         Phase::RollbackStarted => "ROLLBACK_STARTED",
                     }
+                }
+            }
+        }
+    }
+    /// PlacementPolicy defines the placement policy used by the node pool.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct PlacementPolicy {
+        /// The type of placement.
+        #[prost(enumeration = "placement_policy::Type", tag = "1")]
+        pub r#type: i32,
+    }
+    /// Nested message and enum types in `PlacementPolicy`.
+    pub mod placement_policy {
+        /// Type defines the type of placement policy.
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum Type {
+            /// TYPE_UNSPECIFIED specifies no requirements on nodes
+            /// placement.
+            Unspecified = 0,
+            /// COMPACT specifies node placement in the same availability domain to
+            /// ensure low communication latency.
+            Compact = 1,
+        }
+        impl Type {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Type::Unspecified => "TYPE_UNSPECIFIED",
+                    Type::Compact => "COMPACT",
                 }
             }
         }

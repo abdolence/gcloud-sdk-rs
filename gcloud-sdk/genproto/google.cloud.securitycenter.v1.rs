@@ -1060,6 +1060,8 @@ pub mod mitre_attack {
         AccessTokenManipulation = 33,
         /// T1548
         AbuseElevationControlMechanism = 34,
+        /// T1078.001
+        DefaultAccounts = 35,
     }
     impl Technique {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -1113,6 +1115,7 @@ pub mod mitre_attack {
                 Technique::AbuseElevationControlMechanism => {
                     "ABUSE_ELEVATION_CONTROL_MECHANISM"
                 }
+                Technique::DefaultAccounts => "DEFAULT_ACCOUNTS",
             }
         }
     }
@@ -1679,6 +1682,9 @@ pub struct Finding {
     /// Database associated with the finding.
     #[prost(message, optional, tag = "44")]
     pub database: ::core::option::Option<Database>,
+    /// File associated with the finding.
+    #[prost(message, repeated, tag = "46")]
+    pub files: ::prost::alloc::vec::Vec<File>,
 }
 /// Nested message and enum types in `Finding`.
 pub mod finding {
@@ -3315,7 +3321,7 @@ pub struct SetFindingStateRequest {
     /// Required. The relative resource name of the finding. See:
     /// <https://cloud.google.com/apis/design/resource_names#relative_resource_name>
     /// Example:
-    /// "organizations/{organization_id}/sources/{source_id}/finding/{finding_id}".
+    /// "organizations/{organization_id}/sources/{source_id}/findings/{finding_id}".
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The desired State of the finding.
@@ -3331,9 +3337,9 @@ pub struct SetMuteRequest {
     /// Required. The relative resource name of the finding. See:
     /// <https://cloud.google.com/apis/design/resource_names#relative_resource_name>
     /// Example:
-    /// "organizations/{organization_id}/sources/{source_id}/finding/{finding_id}",
-    /// "folders/{folder_id}/sources/{source_id}/finding/{finding_id}",
-    /// "projects/{project_id}/sources/{source_id}/finding/{finding_id}".
+    /// "organizations/{organization_id}/sources/{source_id}/findings/{finding_id}",
+    /// "folders/{folder_id}/sources/{source_id}/findings/{finding_id}",
+    /// "projects/{project_id}/sources/{source_id}/findings/{finding_id}".
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The desired state of the Mute.
@@ -3477,7 +3483,7 @@ pub struct UpdateBigQueryExportRequest {
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
-/// Request message for listing  BigQuery exports at a given scope e.g.
+/// Request message for listing BigQuery exports at a given scope e.g.
 /// organization, folder or project.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListBigQueryExportsRequest {
