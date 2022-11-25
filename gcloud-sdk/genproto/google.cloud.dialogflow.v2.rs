@@ -4764,7 +4764,9 @@ pub struct SentimentAnalysisResult {
     pub query_text_sentiment: ::core::option::Option<Sentiment>,
 }
 /// The sentiment, such as positive/negative feeling or association, for a unit
-/// of analysis, such as the query text.
+/// of analysis, such as the query text. See:
+/// <https://cloud.google.com/natural-language/docs/basics#interpreting_sentiment_analysis_values>
+/// for how to interpret the result.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Sentiment {
     /// Sentiment score between -1.0 (negative sentiment) and 1.0 (positive
@@ -5578,6 +5580,11 @@ pub struct AutomatedAgentReply {
     /// partial response, it can be cancelled.
     #[prost(bool, tag = "8")]
     pub allow_cancellation: bool,
+    /// The unique identifier of the current Dialogflow CX conversation page.
+    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
+    /// ID>/flows/<Flow ID>/pages/<Page ID>`.
+    #[prost(string, tag = "11")]
+    pub cx_current_page: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `AutomatedAgentReply`.
 pub mod automated_agent_reply {
