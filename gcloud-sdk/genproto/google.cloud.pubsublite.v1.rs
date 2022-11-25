@@ -248,12 +248,6 @@ pub struct ExportConfig {
     /// state due to errors.
     #[prost(enumeration = "export_config::State", tag = "6")]
     pub current_state: i32,
-    /// Output only. Deprecated: replaced by `current_state`.
-    ///
-    /// The export statuses of each partition.
-    #[deprecated]
-    #[prost(message, repeated, tag = "4")]
-    pub statuses: ::prost::alloc::vec::Vec<export_config::PartitionStatus>,
     /// Optional. The name of an optional Pub/Sub Lite topic to publish messages that can not
     /// be exported to the destination. For example, the message can not be
     /// published to the Pub/Sub service because it does not satisfy the
@@ -271,23 +265,6 @@ pub struct ExportConfig {
 }
 /// Nested message and enum types in `ExportConfig`.
 pub mod export_config {
-    /// The export status of a partition.
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct PartitionStatus {
-        /// The partition number.
-        #[prost(int64, tag = "1")]
-        pub partition: i64,
-        /// If the export for a partition is healthy and the desired state is
-        /// `ACTIVE`, the status code will be `OK` (zero). If the desired state of
-        /// the export is `PAUSED`, the status code will be `CANCELLED`.
-        ///
-        /// If the export has been suspended due to an error, the status will be
-        /// populated with an error code and details. The service will automatically
-        /// retry after a period of time, and will update the status code to `OK` if
-        /// export subsequently succeeds.
-        #[prost(message, optional, tag = "2")]
-        pub status: ::core::option::Option<super::super::super::super::rpc::Status>,
-    }
     /// Configuration for exporting to a Pub/Sub topic.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct PubSubConfig {

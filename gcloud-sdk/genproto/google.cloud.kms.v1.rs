@@ -1,4 +1,5 @@
-/// Request message for \[KeyManagementService.ListEkmConnections][\].
+/// Request message for
+/// \[EkmService.ListEkmConnections][google.cloud.kms.v1.EkmService.ListEkmConnections\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEkmConnectionsRequest {
     /// Required. The resource name of the location associated with the
@@ -32,7 +33,8 @@ pub struct ListEkmConnectionsRequest {
     #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
-/// Response message for \[KeyManagementService.ListEkmConnections][\].
+/// Response message for
+/// \[EkmService.ListEkmConnections][google.cloud.kms.v1.EkmService.ListEkmConnections\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEkmConnectionsResponse {
     /// The list of \[EkmConnections][google.cloud.kms.v1.EkmConnection\].
@@ -48,7 +50,8 @@ pub struct ListEkmConnectionsResponse {
     #[prost(int32, tag = "3")]
     pub total_size: i32,
 }
-/// Request message for \[KeyManagementService.GetEkmConnection][\].
+/// Request message for
+/// \[EkmService.GetEkmConnection][google.cloud.kms.v1.EkmService.GetEkmConnection\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetEkmConnectionRequest {
     /// Required. The \[name][google.cloud.kms.v1.EkmConnection.name\] of the
@@ -56,7 +59,8 @@ pub struct GetEkmConnectionRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Request message for \[KeyManagementService.CreateEkmConnection][\].
+/// Request message for
+/// \[EkmService.CreateEkmConnection][google.cloud.kms.v1.EkmService.CreateEkmConnection\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateEkmConnectionRequest {
     /// Required. The resource name of the location associated with the
@@ -73,7 +77,8 @@ pub struct CreateEkmConnectionRequest {
     #[prost(message, optional, tag = "3")]
     pub ekm_connection: ::core::option::Option<EkmConnection>,
 }
-/// Request message for \[KeyManagementService.UpdateEkmConnection][\].
+/// Request message for
+/// \[EkmService.UpdateEkmConnection][google.cloud.kms.v1.EkmService.UpdateEkmConnection\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateEkmConnectionRequest {
     /// Required. \[EkmConnection][google.cloud.kms.v1.EkmConnection\] with updated
@@ -152,9 +157,8 @@ pub struct EkmConnection {
     /// supported.
     #[prost(message, repeated, tag = "3")]
     pub service_resolvers: ::prost::alloc::vec::Vec<ekm_connection::ServiceResolver>,
-    /// This checksum is computed by the server based on the value of other fields,
-    /// and may be sent on update requests to ensure the client has an up-to-date
-    /// value before proceeding.
+    /// Optional. Etag of the currently stored
+    /// \[EkmConnection][google.cloud.kms.v1.EkmConnection\].
     #[prost(string, tag = "5")]
     pub etag: ::prost::alloc::string::String,
 }
@@ -182,7 +186,8 @@ pub mod ekm_connection {
         #[prost(string, tag = "3")]
         pub hostname: ::prost::alloc::string::String,
         /// Required. A list of leaf server certificates used to authenticate HTTPS
-        /// connections to the EKM replica.
+        /// connections to the EKM replica. Currently, a maximum of 10
+        /// \[Certificate][google.cloud.kms.v1.Certificate\] is supported.
         #[prost(message, repeated, tag = "4")]
         pub server_certificates: ::prost::alloc::vec::Vec<super::Certificate>,
     }
@@ -612,6 +617,9 @@ pub mod key_operation_attestation {
         Unspecified = 0,
         /// Cavium HSM attestation compressed with gzip. Note that this format is
         /// defined by Cavium and subject to change at any time.
+        ///
+        /// See
+        /// <https://www.marvell.com/products/security-solutions/nitrox-hs-adapters/software-key-attestation.html.>
         CaviumV1Compressed = 3,
         /// Cavium HSM attestation V2 compressed with gzip. This is a new format
         /// introduced in Cavium's version 3.2-08.
@@ -1229,6 +1237,30 @@ pub mod import_job {
         /// [RSA AES key wrap
         /// mechanism](<http://docs.oasis-open.org/pkcs11/pkcs11-curr/v2.40/cos01/pkcs11-curr-v2.40-cos01.html#_Toc408226908>).
         RsaOaep4096Sha1Aes256 = 2,
+        /// This ImportMethod represents the CKM_RSA_AES_KEY_WRAP key wrapping
+        /// scheme defined in the PKCS #11 standard. In summary, this involves
+        /// wrapping the raw key with an ephemeral AES key, and wrapping the
+        /// ephemeral AES key with a 3072 bit RSA key. For more details, see
+        /// [RSA AES key wrap
+        /// mechanism](<http://docs.oasis-open.org/pkcs11/pkcs11-curr/v2.40/cos01/pkcs11-curr-v2.40-cos01.html#_Toc408226908>).
+        RsaOaep3072Sha256Aes256 = 3,
+        /// This ImportMethod represents the CKM_RSA_AES_KEY_WRAP key wrapping
+        /// scheme defined in the PKCS #11 standard. In summary, this involves
+        /// wrapping the raw key with an ephemeral AES key, and wrapping the
+        /// ephemeral AES key with a 4096 bit RSA key. For more details, see
+        /// [RSA AES key wrap
+        /// mechanism](<http://docs.oasis-open.org/pkcs11/pkcs11-curr/v2.40/cos01/pkcs11-curr-v2.40-cos01.html#_Toc408226908>).
+        RsaOaep4096Sha256Aes256 = 4,
+        /// This ImportMethod represents RSAES-OAEP with a 3072 bit RSA key. The
+        /// key material to be imported is wrapped directly with the RSA key. Due
+        /// to technical limitations of RSA wrapping, this method cannot be used to
+        /// wrap RSA keys for import.
+        RsaOaep3072Sha256 = 5,
+        /// This ImportMethod represents RSAES-OAEP with a 4096 bit RSA key. The
+        /// key material to be imported is wrapped directly with the RSA key. Due
+        /// to technical limitations of RSA wrapping, this method cannot be used to
+        /// wrap RSA keys for import.
+        RsaOaep4096Sha256 = 6,
     }
     impl ImportMethod {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -1240,6 +1272,10 @@ pub mod import_job {
                 ImportMethod::Unspecified => "IMPORT_METHOD_UNSPECIFIED",
                 ImportMethod::RsaOaep3072Sha1Aes256 => "RSA_OAEP_3072_SHA1_AES_256",
                 ImportMethod::RsaOaep4096Sha1Aes256 => "RSA_OAEP_4096_SHA1_AES_256",
+                ImportMethod::RsaOaep3072Sha256Aes256 => "RSA_OAEP_3072_SHA256_AES_256",
+                ImportMethod::RsaOaep4096Sha256Aes256 => "RSA_OAEP_4096_SHA256_AES_256",
+                ImportMethod::RsaOaep3072Sha256 => "RSA_OAEP_3072_SHA256",
+                ImportMethod::RsaOaep4096Sha256 => "RSA_OAEP_4096_SHA256",
             }
         }
     }
@@ -1702,7 +1738,50 @@ pub struct ImportCryptoKeyVersionRequest {
     /// material.
     #[prost(string, tag = "4")]
     pub import_job: ::prost::alloc::string::String,
-    /// Required. The incoming wrapped key material that is to be imported.
+    /// Optional. The wrapped key material to import.
+    ///
+    /// Before wrapping, key material must be formatted. If importing symmetric key
+    /// material, the expected key material format is plain bytes. If importing
+    /// asymmetric key material, the expected key material format is PKCS#8-encoded
+    /// DER (the PrivateKeyInfo structure from RFC 5208).
+    ///
+    /// When wrapping with import methods
+    /// (\[RSA_OAEP_3072_SHA1_AES_256][google.cloud.kms.v1.ImportJob.ImportMethod.RSA_OAEP_3072_SHA1_AES_256\]
+    /// or
+    /// \[RSA_OAEP_4096_SHA1_AES_256][google.cloud.kms.v1.ImportJob.ImportMethod.RSA_OAEP_4096_SHA1_AES_256\]
+    /// or
+    /// \[RSA_OAEP_3072_SHA256_AES_256][google.cloud.kms.v1.ImportJob.ImportMethod.RSA_OAEP_3072_SHA256_AES_256\]
+    /// or
+    /// \[RSA_OAEP_4096_SHA256_AES_256][google.cloud.kms.v1.ImportJob.ImportMethod.RSA_OAEP_4096_SHA256_AES_256\]),
+    ///
+    /// this field must contain the concatenation of:
+    /// <ol>
+    ///    <li>An ephemeral AES-256 wrapping key wrapped with the
+    ///        \[public_key][google.cloud.kms.v1.ImportJob.public_key\] using
+    ///        RSAES-OAEP with SHA-1/SHA-256, MGF1 with SHA-1/SHA-256, and an empty
+    ///        label.
+    ///    </li>
+    ///    <li>The formatted key to be imported, wrapped with the ephemeral AES-256
+    ///        key using AES-KWP (RFC 5649).
+    ///    </li>
+    /// </ol>
+    ///
+    /// This format is the same as the format produced by PKCS#11 mechanism
+    /// CKM_RSA_AES_KEY_WRAP.
+    ///
+    /// When wrapping with import methods
+    /// (\[RSA_OAEP_3072_SHA256][google.cloud.kms.v1.ImportJob.ImportMethod.RSA_OAEP_3072_SHA256\]
+    /// or
+    /// \[RSA_OAEP_4096_SHA256][google.cloud.kms.v1.ImportJob.ImportMethod.RSA_OAEP_4096_SHA256\]),
+    ///
+    /// this field must contain the formatted key to be imported, wrapped with the
+    /// \[public_key][google.cloud.kms.v1.ImportJob.public_key\] using RSAES-OAEP
+    /// with SHA-256, MGF1 with SHA-256, and an empty label.
+    #[prost(bytes = "vec", tag = "8")]
+    pub wrapped_key: ::prost::alloc::vec::Vec<u8>,
+    /// This field is legacy. Use the field
+    /// \[wrapped_key][google.cloud.kms.v1.ImportCryptoKeyVersionRequest.wrapped_key\]
+    /// instead.
     #[prost(oneof = "import_crypto_key_version_request::WrappedKeyMaterial", tags = "5")]
     pub wrapped_key_material: ::core::option::Option<
         import_crypto_key_version_request::WrappedKeyMaterial,
@@ -1710,33 +1789,15 @@ pub struct ImportCryptoKeyVersionRequest {
 }
 /// Nested message and enum types in `ImportCryptoKeyVersionRequest`.
 pub mod import_crypto_key_version_request {
-    /// Required. The incoming wrapped key material that is to be imported.
+    /// This field is legacy. Use the field
+    /// \[wrapped_key][google.cloud.kms.v1.ImportCryptoKeyVersionRequest.wrapped_key\]
+    /// instead.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum WrappedKeyMaterial {
-        /// Wrapped key material produced with
-        /// \[RSA_OAEP_3072_SHA1_AES_256][google.cloud.kms.v1.ImportJob.ImportMethod.RSA_OAEP_3072_SHA1_AES_256\]
-        /// or
-        /// \[RSA_OAEP_4096_SHA1_AES_256][google.cloud.kms.v1.ImportJob.ImportMethod.RSA_OAEP_4096_SHA1_AES_256\].
-        ///
-        /// This field contains the concatenation of two wrapped keys:
-        /// <ol>
-        ///    <li>An ephemeral AES-256 wrapping key wrapped with the
-        ///        \[public_key][google.cloud.kms.v1.ImportJob.public_key\] using
-        ///        RSAES-OAEP with SHA-1/SHA-256, MGF1 with SHA-1/SHA-256, and an
-        ///        empty label.
-        ///    </li>
-        ///    <li>The key to be imported, wrapped with the ephemeral AES-256 key
-        ///        using AES-KWP (RFC 5649).
-        ///    </li>
-        /// </ol>
-        ///
-        /// If importing symmetric key material, it is expected that the unwrapped
-        /// key contains plain bytes. If importing asymmetric key material, it is
-        /// expected that the unwrapped key is in PKCS#8-encoded DER format (the
-        /// PrivateKeyInfo structure from RFC 5208).
-        ///
-        /// This format is the same as the format produced by PKCS#11 mechanism
-        /// CKM_RSA_AES_KEY_WRAP.
+        /// Optional. This field has the same meaning as
+        /// \[wrapped_key][google.cloud.kms.v1.ImportCryptoKeyVersionRequest.wrapped_key\].
+        /// Prefer to use that field in new work. Either that field or this field
+        /// (but not both) must be specified.
         #[prost(bytes, tag = "5")]
         RsaAesWrappedKey(::prost::alloc::vec::Vec<u8>),
     }

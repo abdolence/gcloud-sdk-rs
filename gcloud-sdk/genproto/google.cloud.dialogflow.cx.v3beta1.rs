@@ -9621,9 +9621,10 @@ pub mod security_settings {
         /// Retains data in interaction logging for the specified number of days.
         /// This does not apply to Cloud logging, which is owned by the user - not
         /// Dialogflow.
-        /// User must set a value lower than Dialogflow's default 365d TTL (time to
-        /// live). Setting a value higher than that has no effect. A missing value or
-        /// setting to 0 also means we use Dialogflow's default TTL.
+        /// User must set a value lower than Dialogflow's default 365d TTL (30 days
+        /// for Agent Assist traffic), higher value will be ignored and use default.
+        /// Setting a value higher than that has no effect. A missing value or
+        /// setting to 0 also means we use default TTL.
         #[prost(int32, tag = "6")]
         RetentionWindowDays(i32),
     }

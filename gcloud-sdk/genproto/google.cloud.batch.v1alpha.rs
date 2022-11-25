@@ -1,19 +1,18 @@
-/// Volume and mount parameters to be associated with a TaskSpec. A TaskSpec
-/// might describe zero, one, or multiple volumes to be mounted as part of the
-/// task.
+/// Volume describes a volume and parameters for it to be mounted to a VM.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Volume {
-    /// Mount path for the volume, e.g. /mnt/share
+    /// The mount path for the volume, e.g. /mnt/disks/share.
     #[prost(string, tag = "4")]
     pub mount_path: ::prost::alloc::string::String,
-    /// Mount options
-    /// For Google Cloud Storage, mount options are the global options supported by
-    /// gcsfuse tool. Batch will use them to mount the volume with the following
-    /// command:
-    /// "gcsfuse [global options] bucket mountpoint".
-    /// For PD, NFS, mount options are these supported by /etc/fstab. Batch will
-    /// use Fstab to mount such volumes.
-    /// <https://help.ubuntu.com/community/Fstab>
+    /// For Google Cloud Storage (GCS), mount options are the options supported by
+    /// the gcsfuse tool (<https://github.com/GoogleCloudPlatform/gcsfuse>).
+    /// For existing persistent disks, mount options provided by the
+    /// mount command (<https://man7.org/linux/man-pages/man8/mount.8.html>) except
+    /// writing are supported. This is due to restrictions of multi-writer mode
+    /// (<https://cloud.google.com/compute/docs/disks/sharing-disks-between-vms>).
+    /// For other attached disks and Network File System (NFS), mount options are
+    /// these supported by the mount command
+    /// (<https://man7.org/linux/man-pages/man8/mount.8.html>).
     #[prost(string, repeated, tag = "5")]
     pub mount_options: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The source for the volume.
@@ -25,31 +24,36 @@ pub mod volume {
     /// The source for the volume.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
-        /// An NFS source for the volume (could be a Filestore, for example).
+        /// A Network File System (NFS) volume. For example, a
+        /// Filestore file share.
         #[prost(message, tag = "1")]
         Nfs(super::Nfs),
-        /// A persistent disk source for the volume.
+        /// Deprecated: please use device_name instead.
         #[prost(message, tag = "2")]
         Pd(super::Pd),
-        /// A Google Cloud Storage source for the volume.
+        /// A Google Cloud Storage (GCS) volume.
         #[prost(message, tag = "3")]
         Gcs(super::Gcs),
-        /// Device name of an attached disk
+        /// Device name of an attached disk volume, which should align with a
+        /// device_name specified by
+        /// job.allocation_policy.instances\[0].policy.disks[i\].device_name or
+        /// defined by the given instance template in
+        /// job.allocation_policy.instances\[0\].instance_template.
         #[prost(string, tag = "6")]
         DeviceName(::prost::alloc::string::String),
     }
 }
-/// Represents an NFS server and remote path: <server>:<remote_path>
+/// Represents an NFS volume.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Nfs {
-    /// URI of the NFS server, e.g. an IP address.
+    /// The IP address of the NFS.
     #[prost(string, tag = "1")]
     pub server: ::prost::alloc::string::String,
-    /// Remote source path exported from NFS, e.g., "/share".
+    /// Remote source path exported from the NFS, e.g., "/share".
     #[prost(string, tag = "2")]
     pub remote_path: ::prost::alloc::string::String,
 }
-/// Represents a GCP persistent disk
+/// Deprecated: please use device_name instead.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Pd {
     /// PD disk name, e.g. pd-1.
@@ -66,7 +70,7 @@ pub struct Pd {
     #[prost(bool, tag = "3")]
     pub existing: bool,
 }
-/// Represents a Google Cloud Storage volume source config.
+/// Represents a Google Cloud Storage volume.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Gcs {
     /// Remote path, either a bucket name or a subdirectory of a bucket, e.g.:
@@ -839,7 +843,7 @@ pub struct AllocationPolicy {
     #[deprecated]
     #[prost(string, repeated, tag = "3")]
     pub instance_templates: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// Deprecated: please use instances\[i\].policy.provisioning_model instead.
+    /// Deprecated: please use instances\[0\].policy.provisioning_model instead.
     #[deprecated]
     #[prost(
         enumeration = "allocation_policy::ProvisioningModel",
@@ -933,7 +937,7 @@ pub mod allocation_policy {
             Snapshot(::prost::alloc::string::String),
         }
     }
-    /// A new or an existing persistent disk or a local ssd attached to a VM
+    /// A new or an existing persistent disk (PD) or a local ssd attached to a VM
     /// instance.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AttachedDisk {
@@ -957,7 +961,7 @@ pub mod allocation_policy {
             ExistingDisk(::prost::alloc::string::String),
         }
     }
-    /// Accelerator describes Compute Engine accelerators to be attached to VMs.
+    /// Accelerator describes Compute Engine accelerators to be attached to the VM.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Accelerator {
         /// The accelerator type. For example, "nvidia-tesla-t4".
@@ -995,13 +999,15 @@ pub mod allocation_policy {
         #[prost(enumeration = "ProvisioningModel", tag = "4")]
         pub provisioning_model: i32,
         /// The accelerators attached to each VM instance.
-        /// Not yet implemented.
         #[prost(message, repeated, tag = "5")]
         pub accelerators: ::prost::alloc::vec::Vec<Accelerator>,
         /// Non-boot disks to be attached for each VM created by this InstancePolicy.
-        /// New disks will be deleted when the attached VM is deleted.
+        /// New disks will be deleted when the VM is deleted.
         #[prost(message, repeated, tag = "6")]
         pub disks: ::prost::alloc::vec::Vec<AttachedDisk>,
+        /// If specified, VMs will be allocated only inside the matching reservation.
+        #[prost(string, tag = "7")]
+        pub reservation: ::prost::alloc::string::String,
     }
     /// Either an InstancePolicy or an instance template.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1224,8 +1230,9 @@ pub struct CreateJobRequest {
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// ID used to uniquely identify the Job within its parent scope.
-    /// This field should contain at most 63 characters.
-    /// Only alphanumeric characters or '-' are accepted.
+    /// This field should contain at most 63 characters and must start with
+    /// lowercase characters.
+    /// Only lowercase characters, numbers and '-' are accepted.
     /// The '-' character cannot be the first or the last one.
     /// A system generated ID will be used if the field is not set.
     ///
