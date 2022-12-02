@@ -303,6 +303,9 @@ pub struct NodeConfig {
     /// All the nodes in the node pool will be Confidential VM once enabled.
     #[prost(message, optional, tag = "35")]
     pub confidential_nodes: ::core::option::Option<ConfidentialNodes>,
+    /// Enable or disable NCCL fast socket for the node pool.
+    #[prost(message, optional, tag = "36")]
+    pub fast_socket: ::core::option::Option<FastSocket>,
     /// The resource labels for the node pool to use to annotate any related
     /// Google Compute Engine resources.
     #[prost(map = "string, string", tag = "37")]
@@ -1020,9 +1023,8 @@ pub struct BinaryAuthorization {
     #[deprecated]
     #[prost(bool, tag = "1")]
     pub enabled: bool,
-    /// Mode of operation for binauthz policy evaluation. Currently the only
-    /// options are equivalent to enable/disable. If unspecified, defaults to
-    /// DISABLED.
+    /// Mode of operation for binauthz policy evaluation. If unspecified, defaults
+    /// to DISABLED.
     #[prost(enumeration = "binary_authorization::EvaluationMode", tag = "2")]
     pub evaluation_mode: i32,
 }
@@ -2200,6 +2202,9 @@ pub struct UpdateNodePoolRequest {
     /// Enable or disable gvnic on the node pool.
     #[prost(message, optional, tag = "29")]
     pub gvnic: ::core::option::Option<VirtualNic>,
+    /// Enable or disable NCCL fast socket for the node pool.
+    #[prost(message, optional, tag = "31")]
+    pub fast_socket: ::core::option::Option<FastSocket>,
     /// Logging configuration.
     #[prost(message, optional, tag = "32")]
     pub logging_config: ::core::option::Option<NodePoolLoggingConfig>,
@@ -4752,6 +4757,13 @@ pub struct ShieldedNodes {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VirtualNic {
     /// Whether gVNIC features are enabled in the node pool.
+    #[prost(bool, tag = "1")]
+    pub enabled: bool,
+}
+/// Configuration of Fast Socket feature.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FastSocket {
+    /// Whether Fast Socket features are enabled in the node pool.
     #[prost(bool, tag = "1")]
     pub enabled: bool,
 }

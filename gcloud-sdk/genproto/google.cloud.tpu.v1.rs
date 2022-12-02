@@ -126,7 +126,7 @@ pub mod node {
         Unspecified = 0,
         /// TPU node is being created.
         Creating = 1,
-        /// TPU node has been created and is fully usable.
+        /// TPU node has been created.
         Ready = 2,
         /// TPU node is restarting.
         Restarting = 3,
@@ -712,7 +712,7 @@ pub mod tpu_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        /// Stops a node.
+        /// Stops a node, this operation is only available with single TPU nodes.
         pub async fn stop_node(
             &mut self,
             request: impl tonic::IntoRequest<super::StopNodeRequest>,

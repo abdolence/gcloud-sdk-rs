@@ -251,6 +251,51 @@ pub mod keyword_match_type_enum {
         }
     }
 }
+/// Container for enum describing the type of the listing group.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListingGroupTypeEnum {}
+/// Nested message and enum types in `ListingGroupTypeEnum`.
+pub mod listing_group_type_enum {
+    /// The type of the listing group.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ListingGroupType {
+        /// Not specified.
+        Unspecified = 0,
+        /// Used for return value only. Represents value unknown in this version.
+        Unknown = 1,
+        /// Subdivision of products along some listing dimension. These nodes
+        /// are not used by serving to target listing entries, but is purely
+        /// to define the structure of the tree.
+        Subdivision = 2,
+        /// Listing group unit that defines a bid.
+        Unit = 3,
+    }
+    impl ListingGroupType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                ListingGroupType::Unspecified => "UNSPECIFIED",
+                ListingGroupType::Unknown => "UNKNOWN",
+                ListingGroupType::Subdivision => "SUBDIVISION",
+                ListingGroupType::Unit => "UNIT",
+            }
+        }
+    }
+}
 /// Container for enum describing unit of radius in location group.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LocationGroupRadiusUnitsEnum {}
@@ -821,6 +866,143 @@ pub mod ad_group_ad_rotation_mode_enum {
                 AdGroupAdRotationMode::Unknown => "UNKNOWN",
                 AdGroupAdRotationMode::Optimize => "OPTIMIZE",
                 AdGroupAdRotationMode::RotateForever => "ROTATE_FOREVER",
+            }
+        }
+    }
+}
+/// Container for enum describing possible AdGroupCriterion engine statuses.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AdGroupCriterionEngineStatusEnum {}
+/// Nested message and enum types in `AdGroupCriterionEngineStatusEnum`.
+pub mod ad_group_criterion_engine_status_enum {
+    /// Enumerates AdGroupCriterion engine statuses.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum AdGroupCriterionEngineStatus {
+        /// Not specified.
+        Unspecified = 0,
+        /// Used for return value only. Represents value unknown in this version.
+        Unknown = 1,
+        /// Deprecated. Do not use.
+        AdGroupCriterionEligible = 2,
+        /// Baidu: Bid or quality too low to be displayed.
+        AdGroupCriterionInappropriateForCampaign = 3,
+        /// Baidu: Bid or quality too low for mobile, but eligible to display for
+        /// desktop.
+        AdGroupCriterionInvalidMobileSearch = 4,
+        /// Baidu: Bid or quality too low for desktop, but eligible to display for
+        /// mobile.
+        AdGroupCriterionInvalidPcSearch = 5,
+        /// Baidu: Bid or quality too low to be displayed.
+        AdGroupCriterionInvalidSearch = 6,
+        /// Baidu: Paused by Baidu due to low search volume.
+        AdGroupCriterionLowSearchVolume = 7,
+        /// Baidu: Mobile URL in process to be reviewed.
+        AdGroupCriterionMobileUrlUnderReview = 8,
+        /// Baidu: The landing page for one device is invalid, while the landing
+        /// page for the other device is valid.
+        AdGroupCriterionPartiallyInvalid = 9,
+        /// Baidu: Keyword has been created and paused by Baidu account management,
+        /// and is now ready for you to activate it.
+        AdGroupCriterionToBeActivated = 10,
+        /// Baidu: In process to be reviewed by Baidu. Gemini: Criterion under
+        /// review.
+        AdGroupCriterionUnderReview = 11,
+        /// Baidu: Criterion to be reviewed.
+        AdGroupCriterionNotReviewed = 12,
+        /// Deprecated. Do not use. Previously used by Gemini
+        AdGroupCriterionOnHold = 13,
+        /// Y!J : Criterion pending review
+        AdGroupCriterionPendingReview = 14,
+        /// Criterion has been paused.
+        AdGroupCriterionPaused = 15,
+        /// Criterion has been removed.
+        AdGroupCriterionRemoved = 16,
+        /// Criterion has been approved.
+        AdGroupCriterionApproved = 17,
+        /// Criterion has been disapproved.
+        AdGroupCriterionDisapproved = 18,
+        /// Criterion is active and serving.
+        AdGroupCriterionServing = 19,
+        /// Criterion has been paused since the account is paused.
+        AdGroupCriterionAccountPaused = 20,
+    }
+    impl AdGroupCriterionEngineStatus {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                AdGroupCriterionEngineStatus::Unspecified => "UNSPECIFIED",
+                AdGroupCriterionEngineStatus::Unknown => "UNKNOWN",
+                AdGroupCriterionEngineStatus::AdGroupCriterionEligible => {
+                    "AD_GROUP_CRITERION_ELIGIBLE"
+                }
+                AdGroupCriterionEngineStatus::AdGroupCriterionInappropriateForCampaign => {
+                    "AD_GROUP_CRITERION_INAPPROPRIATE_FOR_CAMPAIGN"
+                }
+                AdGroupCriterionEngineStatus::AdGroupCriterionInvalidMobileSearch => {
+                    "AD_GROUP_CRITERION_INVALID_MOBILE_SEARCH"
+                }
+                AdGroupCriterionEngineStatus::AdGroupCriterionInvalidPcSearch => {
+                    "AD_GROUP_CRITERION_INVALID_PC_SEARCH"
+                }
+                AdGroupCriterionEngineStatus::AdGroupCriterionInvalidSearch => {
+                    "AD_GROUP_CRITERION_INVALID_SEARCH"
+                }
+                AdGroupCriterionEngineStatus::AdGroupCriterionLowSearchVolume => {
+                    "AD_GROUP_CRITERION_LOW_SEARCH_VOLUME"
+                }
+                AdGroupCriterionEngineStatus::AdGroupCriterionMobileUrlUnderReview => {
+                    "AD_GROUP_CRITERION_MOBILE_URL_UNDER_REVIEW"
+                }
+                AdGroupCriterionEngineStatus::AdGroupCriterionPartiallyInvalid => {
+                    "AD_GROUP_CRITERION_PARTIALLY_INVALID"
+                }
+                AdGroupCriterionEngineStatus::AdGroupCriterionToBeActivated => {
+                    "AD_GROUP_CRITERION_TO_BE_ACTIVATED"
+                }
+                AdGroupCriterionEngineStatus::AdGroupCriterionUnderReview => {
+                    "AD_GROUP_CRITERION_UNDER_REVIEW"
+                }
+                AdGroupCriterionEngineStatus::AdGroupCriterionNotReviewed => {
+                    "AD_GROUP_CRITERION_NOT_REVIEWED"
+                }
+                AdGroupCriterionEngineStatus::AdGroupCriterionOnHold => {
+                    "AD_GROUP_CRITERION_ON_HOLD"
+                }
+                AdGroupCriterionEngineStatus::AdGroupCriterionPendingReview => {
+                    "AD_GROUP_CRITERION_PENDING_REVIEW"
+                }
+                AdGroupCriterionEngineStatus::AdGroupCriterionPaused => {
+                    "AD_GROUP_CRITERION_PAUSED"
+                }
+                AdGroupCriterionEngineStatus::AdGroupCriterionRemoved => {
+                    "AD_GROUP_CRITERION_REMOVED"
+                }
+                AdGroupCriterionEngineStatus::AdGroupCriterionApproved => {
+                    "AD_GROUP_CRITERION_APPROVED"
+                }
+                AdGroupCriterionEngineStatus::AdGroupCriterionDisapproved => {
+                    "AD_GROUP_CRITERION_DISAPPROVED"
+                }
+                AdGroupCriterionEngineStatus::AdGroupCriterionServing => {
+                    "AD_GROUP_CRITERION_SERVING"
+                }
+                AdGroupCriterionEngineStatus::AdGroupCriterionAccountPaused => {
+                    "AD_GROUP_CRITERION_ACCOUNT_PAUSED"
+                }
             }
         }
     }
@@ -1935,7 +2117,7 @@ pub mod campaign_status_enum {
         Unspecified = 0,
         /// Used for return value only. Represents value unknown in this version.
         Unknown = 1,
-        /// Campaign is currently serving ads depending on budget information.
+        /// Campaign is active and can show ads.
         Enabled = 2,
         /// Campaign has been paused by the user.
         Paused = 3,

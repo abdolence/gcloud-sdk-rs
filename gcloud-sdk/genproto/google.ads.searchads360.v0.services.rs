@@ -459,6 +459,12 @@ pub struct SearchAds360Row {
     /// The CustomerClient referenced in the query.
     #[prost(message, optional, tag = "70")]
     pub customer_client: ::core::option::Option<super::resources::CustomerClient>,
+    /// The keyword view referenced in the query.
+    #[prost(message, optional, tag = "21")]
+    pub keyword_view: ::core::option::Option<super::resources::KeywordView>,
+    /// The product group view referenced in the query.
+    #[prost(message, optional, tag = "54")]
+    pub product_group_view: ::core::option::Option<super::resources::ProductGroupView>,
     /// The metrics.
     #[prost(message, optional, tag = "4")]
     pub metrics: ::core::option::Option<super::common::Metrics>,
