@@ -202,6 +202,16 @@ pub struct DeviceInfo {
     #[prost(enumeration = "super::enums::device_enum::Device", tag = "1")]
     pub r#type: i32,
 }
+/// A listing group criterion.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListingGroupInfo {
+    /// Type of the listing group.
+    #[prost(
+        enumeration = "super::enums::listing_group_type_enum::ListingGroupType",
+        tag = "1"
+    )]
+    pub r#type: i32,
+}
 /// An age range criterion.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AgeRangeInfo {
@@ -648,7 +658,7 @@ pub struct Metrics {
     /// completes a conversion on your site without interacting with (for example,
     /// clicking on) another ad.
     #[prost(int64, optional, tag = "155")]
-    pub view_through_conversions: ::core::option::Option<i64>,
+    pub client_account_view_through_conversions: ::core::option::Option<i64>,
 }
 /// Settings for Real-Time Bidding, a feature only available for campaigns
 /// targeting the Ad Exchange network.

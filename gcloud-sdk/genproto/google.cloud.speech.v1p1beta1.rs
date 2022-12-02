@@ -274,8 +274,7 @@ pub struct RecognitionConfig {
     pub sample_rate_hertz: i32,
     /// The number of channels in the input audio data.
     /// ONLY set this for MULTI-CHANNEL recognition.
-    /// Valid values for LINEAR16 and FLAC are `1`-`8`.
-    /// Valid values for OGG_OPUS are '1'-'254'.
+    /// Valid values for LINEAR16, OGG_OPUS and FLAC are `1`-`8`.
     /// Valid value for MULAW, AMR, AMR_WB and SPEEX_WITH_HEADER_BYTE is only `1`.
     /// If `0` or omitted, defaults to one channel (mono).
     /// Note: We only recognize the first channel by default.
@@ -897,6 +896,13 @@ pub struct RecognizeResponse {
     /// When available, billed audio seconds for the corresponding request.
     #[prost(message, optional, tag = "3")]
     pub total_billed_time: ::core::option::Option<::prost_types::Duration>,
+    /// Provides information on adaptation behavior in response
+    #[prost(message, optional, tag = "7")]
+    pub speech_adaptation_info: ::core::option::Option<SpeechAdaptationInfo>,
+    /// The ID associated with the request. This is a unique ID specific only to
+    /// the given request.
+    #[prost(int64, tag = "8")]
+    pub request_id: i64,
 }
 /// The only message returned to the client by the `LongRunningRecognize` method.
 /// It contains the result as zero or more sequential `SpeechRecognitionResult`
@@ -918,6 +924,13 @@ pub struct LongRunningRecognizeResponse {
     /// If the transcript output fails this field contains the relevant error.
     #[prost(message, optional, tag = "7")]
     pub output_error: ::core::option::Option<super::super::super::rpc::Status>,
+    /// Provides information on speech adaptation behavior in response
+    #[prost(message, optional, tag = "8")]
+    pub speech_adaptation_info: ::core::option::Option<SpeechAdaptationInfo>,
+    /// The ID associated with the request. This is a unique ID specific only to
+    /// the given request.
+    #[prost(int64, tag = "9")]
+    pub request_id: i64,
 }
 /// Describes the progress of a long-running `LongRunningRecognize` call. It is
 /// included in the `metadata` field of the `Operation` returned by the
@@ -1010,6 +1023,13 @@ pub struct StreamingRecognizeResponse {
     /// Set only if this is the last response in the stream.
     #[prost(message, optional, tag = "5")]
     pub total_billed_time: ::core::option::Option<::prost_types::Duration>,
+    /// Provides information on adaptation behavior in response
+    #[prost(message, optional, tag = "9")]
+    pub speech_adaptation_info: ::core::option::Option<SpeechAdaptationInfo>,
+    /// The ID associated with the request. This is a unique ID specific only to
+    /// the given request.
+    #[prost(int64, tag = "10")]
+    pub request_id: i64,
 }
 /// Nested message and enum types in `StreamingRecognizeResponse`.
 pub mod streaming_recognize_response {
@@ -1176,6 +1196,18 @@ pub struct WordInfo {
     /// top alternative.
     #[prost(int32, tag = "5")]
     pub speaker_tag: i32,
+}
+/// Information on speech adaptation use in results
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SpeechAdaptationInfo {
+    /// Whether there was a timeout when applying speech adaptation. If true,
+    /// adaptation had no effect in the response transcript.
+    #[prost(bool, tag = "1")]
+    pub adaptation_timeout: bool,
+    /// If set, returns a message specifying which part of the speech adaptation
+    /// request timed out.
+    #[prost(string, tag = "4")]
+    pub timeout_message: ::prost::alloc::string::String,
 }
 /// Generated client implementations.
 pub mod speech_client {

@@ -101,10 +101,20 @@ pub struct AdGroupCriterion {
     /// The CPC (cost-per-click) bid.
     #[prost(int64, optional, tag = "62")]
     pub cpc_bid_micros: ::core::option::Option<i64>,
+    /// Output only. The effective CPC (cost-per-click) bid.
+    #[prost(int64, optional, tag = "66")]
+    pub effective_cpc_bid_micros: ::core::option::Option<i64>,
     /// The list of possible final URLs after all cross-domain redirects for the
     /// ad.
     #[prost(string, repeated, tag = "70")]
     pub final_urls: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Output only. The Engine Status for ad group criterion.
+    #[prost(
+        enumeration = "super::enums::ad_group_criterion_engine_status_enum::AdGroupCriterionEngineStatus",
+        optional,
+        tag = "80"
+    )]
+    pub engine_status: ::core::option::Option<i32>,
     /// URL template for appending params to final URL.
     #[prost(string, optional, tag = "72")]
     pub final_url_suffix: ::core::option::Option<::prost::alloc::string::String>,
@@ -118,7 +128,7 @@ pub struct AdGroupCriterion {
     /// The ad group criterion.
     ///
     /// Exactly one must be set.
-    #[prost(oneof = "ad_group_criterion::Criterion", tags = "27, 36, 37, 46")]
+    #[prost(oneof = "ad_group_criterion::Criterion", tags = "27, 32, 36, 37, 46")]
     pub criterion: ::core::option::Option<ad_group_criterion::Criterion>,
 }
 /// Nested message and enum types in `AdGroupCriterion`.
@@ -141,6 +151,9 @@ pub mod ad_group_criterion {
         /// Immutable. Keyword.
         #[prost(message, tag = "27")]
         Keyword(super::super::common::KeywordInfo),
+        /// Immutable. Listing group.
+        #[prost(message, tag = "32")]
+        ListingGroup(super::super::common::ListingGroupInfo),
         /// Immutable. Age range.
         #[prost(message, tag = "36")]
         AgeRange(super::super::common::AgeRangeInfo),
@@ -980,6 +993,11 @@ pub struct ConversionTrackingSetting {
     /// conversion_tracking_id. This field can only be managed through the Google
     /// Ads UI. This field is read-only.
     #[prost(int64, optional, tag = "4")]
+    pub google_ads_cross_account_conversion_tracking_id: ::core::option::Option<i64>,
+    /// Output only. The conversion tracking id of the customer's manager. This is set when the
+    /// customer is opted into cross-account conversion tracking, and it overrides
+    /// conversion_tracking_id.
+    #[prost(int64, optional, tag = "37")]
     pub cross_account_conversion_tracking_id: ::core::option::Option<i64>,
     /// Output only. Whether the customer has accepted customer data terms. If using
     /// cross-account conversion tracking, this value is inherited from the
@@ -1097,6 +1115,26 @@ pub struct CustomerManagerLink {
         tag = "5"
     )]
     pub status: i32,
+}
+/// A keyword view.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct KeywordView {
+    /// Output only. The resource name of the keyword view.
+    /// Keyword view resource names have the form:
+    ///
+    /// `customers/{customer_id}/keywordViews/{ad_group_id}~{criterion_id}`
+    #[prost(string, tag = "1")]
+    pub resource_name: ::prost::alloc::string::String,
+}
+/// A product group view.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ProductGroupView {
+    /// Output only. The resource name of the product group view.
+    /// Product group view resource names have the form:
+    ///
+    /// `customers/{customer_id}/productGroupViews/{ad_group_id}~{criterion_id}`
+    #[prost(string, tag = "1")]
+    pub resource_name: ::prost::alloc::string::String,
 }
 /// A field or resource (artifact) used by SearchAds360Service.
 #[derive(Clone, PartialEq, ::prost::Message)]

@@ -939,6 +939,8 @@ pub struct Scorecard {
     /// it in a danger state. (Danger trumps warning.)
     ///
     /// As an example, consider a scorecard with the following four thresholds:
+    ///
+    /// ```
     /// {
     ///    value: 90,
     ///    category: 'DANGER',
@@ -959,6 +961,7 @@ pub struct Scorecard {
     ///    category: 'WARNING',
     ///    trigger: 'BELOW',
     /// }
+    /// ```
     ///
     /// Then: values less than or equal to 10 would put the scorecard in a DANGER
     /// state, values greater than 10 but less than or equal to 20 a WARNING state,
