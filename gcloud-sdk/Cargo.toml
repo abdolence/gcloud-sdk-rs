@@ -1,6 +1,6 @@
 [package]
 name = "gcloud-sdk"
-version = "0.19.11"
+version = "0.19.12-alpha.0"
 authors = ["Abdulla Abdurakhmanov <me@abdolence.dev>","mechiru <u9053u6d41@gmail.com>"]
 edition = "2021"
 license = "MIT OR Apache-2.0"
