@@ -16,12 +16,13 @@ pub struct AnnotateAssessmentRequest {
     /// "projects/{project}/assessments/{assessment}".
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Optional. The annotation that will be assigned to the Event. This field can be left
-    /// empty to provide reasons that apply to an event without concluding whether
-    /// the event is legitimate or fraudulent.
+    /// Optional. The annotation that will be assigned to the Event. This field can
+    /// be left empty to provide reasons that apply to an event without concluding
+    /// whether the event is legitimate or fraudulent.
     #[prost(enumeration = "annotate_assessment_request::Annotation", tag = "2")]
     pub annotation: i32,
-    /// Optional. Optional reasons for the annotation that will be assigned to the Event.
+    /// Optional. Optional reasons for the annotation that will be assigned to the
+    /// Event.
     #[prost(
         enumeration = "annotate_assessment_request::Reason",
         repeated,
@@ -174,28 +175,147 @@ pub mod annotate_assessment_request {
 /// Empty response for AnnotateAssessment.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnnotateAssessmentResponse {}
+/// Information about a verification endpoint that can be used for 2FA.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct EndpointVerificationInfo {
+    /// Output only. Token to provide to the client to trigger endpoint
+    /// verification. It must be used within 15 minutes.
+    #[prost(string, tag = "3")]
+    pub request_token: ::prost::alloc::string::String,
+    /// Output only. Timestamp of the last successful verification for the
+    /// endpoint, if any.
+    #[prost(message, optional, tag = "4")]
+    pub last_verification_time: ::core::option::Option<::prost_types::Timestamp>,
+    #[prost(oneof = "endpoint_verification_info::Endpoint", tags = "1, 2")]
+    pub endpoint: ::core::option::Option<endpoint_verification_info::Endpoint>,
+}
+/// Nested message and enum types in `EndpointVerificationInfo`.
+pub mod endpoint_verification_info {
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Endpoint {
+        /// Email address for which to trigger a verification request.
+        #[prost(string, tag = "1")]
+        EmailAddress(::prost::alloc::string::String),
+        /// Phone number for which to trigger a verification request. Should be given
+        /// in E.164 format.
+        #[prost(string, tag = "2")]
+        PhoneNumber(::prost::alloc::string::String),
+    }
+}
+/// Information about account verification, used for identity verification.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AccountVerificationInfo {
+    /// Endpoints that can be used for identity verification.
+    #[prost(message, repeated, tag = "1")]
+    pub endpoints: ::prost::alloc::vec::Vec<EndpointVerificationInfo>,
+    /// Language code preference for the verification message, set as a IETF BCP 47
+    /// language code.
+    #[prost(string, tag = "3")]
+    pub language_code: ::prost::alloc::string::String,
+    /// Output only. Result of the latest account verification challenge.
+    #[prost(enumeration = "account_verification_info::Result", tag = "7")]
+    pub latest_verification_result: i32,
+    /// Username of the account that is being verified. Deprecated. Customers
+    /// should now provide the hashed account ID field in Event.
+    #[deprecated]
+    #[prost(string, tag = "2")]
+    pub username: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `AccountVerificationInfo`.
+pub mod account_verification_info {
+    /// Result of the account verification as contained in the verdict token issued
+    /// at the end of the verification flow.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Result {
+        /// No information about the latest account verification.
+        Unspecified = 0,
+        /// The user was successfully verified. This means the account verification
+        /// challenge was successfully completed.
+        SuccessUserVerified = 1,
+        /// The user failed the verification challenge.
+        ErrorUserNotVerified = 2,
+        /// The site is not properly onboarded to use the account verification
+        /// feature.
+        ErrorSiteOnboardingIncomplete = 3,
+        /// The recipient is not allowed for account verification. This can occur
+        /// during integration but should not occur in production.
+        ErrorRecipientNotAllowed = 4,
+        /// The recipient has already been sent too many verification codes in a
+        /// short amount of time.
+        ErrorRecipientAbuseLimitExhausted = 5,
+        /// The verification flow could not be completed due to a critical internal
+        /// error.
+        ErrorCriticalInternal = 6,
+        /// The client has exceeded their two factor request quota for this period of
+        /// time.
+        ErrorCustomerQuotaExhausted = 7,
+        /// The request cannot be processed at the time because of an incident. This
+        /// bypass can be restricted to a problematic destination email domain, a
+        /// customer, or could affect the entire service.
+        ErrorVerificationBypassed = 8,
+        /// The request parameters do not match with the token provided and cannot be
+        /// processed.
+        ErrorVerdictMismatch = 9,
+    }
+    impl Result {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Result::Unspecified => "RESULT_UNSPECIFIED",
+                Result::SuccessUserVerified => "SUCCESS_USER_VERIFIED",
+                Result::ErrorUserNotVerified => "ERROR_USER_NOT_VERIFIED",
+                Result::ErrorSiteOnboardingIncomplete => {
+                    "ERROR_SITE_ONBOARDING_INCOMPLETE"
+                }
+                Result::ErrorRecipientNotAllowed => "ERROR_RECIPIENT_NOT_ALLOWED",
+                Result::ErrorRecipientAbuseLimitExhausted => {
+                    "ERROR_RECIPIENT_ABUSE_LIMIT_EXHAUSTED"
+                }
+                Result::ErrorCriticalInternal => "ERROR_CRITICAL_INTERNAL",
+                Result::ErrorCustomerQuotaExhausted => "ERROR_CUSTOMER_QUOTA_EXHAUSTED",
+                Result::ErrorVerificationBypassed => "ERROR_VERIFICATION_BYPASSED",
+                Result::ErrorVerdictMismatch => "ERROR_VERDICT_MISMATCH",
+            }
+        }
+    }
+}
 /// Private password leak verification info.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PrivatePasswordLeakVerification {
-    /// Optional. Exactly 26-bit prefix of the SHA-256 hash of the canonicalized username. It
-    /// is used to look up password leaks associated with that hash prefix.
+    /// Optional. Exactly 26-bit prefix of the SHA-256 hash of the canonicalized
+    /// username. It is used to look up password leaks associated with that hash
+    /// prefix.
     #[prost(bytes = "vec", tag = "1")]
     pub lookup_hash_prefix: ::prost::alloc::vec::Vec<u8>,
-    /// Optional. Encrypted Scrypt hash of the canonicalized username+password. It is
-    /// re-encrypted by the server and returned through
+    /// Optional. Encrypted Scrypt hash of the canonicalized username+password. It
+    /// is re-encrypted by the server and returned through
     /// `reencrypted_user_credentials_hash`.
     #[prost(bytes = "vec", tag = "2")]
     pub encrypted_user_credentials_hash: ::prost::alloc::vec::Vec<u8>,
-    /// Output only. List of prefixes of the encrypted potential password leaks that matched the
-    /// given parameters. They must be compared with the client-side decryption
-    /// prefix of `reencrypted_user_credentials_hash`
+    /// Output only. List of prefixes of the encrypted potential password leaks
+    /// that matched the given parameters. They must be compared with the
+    /// client-side decryption prefix of `reencrypted_user_credentials_hash`
     #[prost(bytes = "vec", repeated, tag = "3")]
     pub encrypted_leak_match_prefixes: ::prost::alloc::vec::Vec<
         ::prost::alloc::vec::Vec<u8>,
     >,
-    /// Output only. Corresponds to the re-encryption of the `encrypted_user_credentials_hash`
-    /// field. It is used to match potential password leaks within
-    /// `encrypted_leak_match_prefixes`.
+    /// Output only. Corresponds to the re-encryption of the
+    /// `encrypted_user_credentials_hash` field. It is used to match potential
+    /// password leaks within `encrypted_leak_match_prefixes`.
     #[prost(bytes = "vec", tag = "4")]
     pub reencrypted_user_credentials_hash: ::prost::alloc::vec::Vec<u8>,
 }
@@ -215,6 +335,10 @@ pub struct Assessment {
     /// Output only. Properties of the provided event token.
     #[prost(message, optional, tag = "4")]
     pub token_properties: ::core::option::Option<TokenProperties>,
+    /// Account verification information for identity verification. The assessment
+    /// event must include a token and site key to use this feature.
+    #[prost(message, optional, tag = "5")]
+    pub account_verification: ::core::option::Option<AccountVerificationInfo>,
     /// Assessment returned by account defender when a hashed_account_id is
     /// provided.
     #[prost(message, optional, tag = "6")]
@@ -228,28 +352,29 @@ pub struct Assessment {
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Event {
-    /// Optional. The user response token provided by the reCAPTCHA client-side integration
-    /// on your site.
+    /// Optional. The user response token provided by the reCAPTCHA client-side
+    /// integration on your site.
     #[prost(string, tag = "1")]
     pub token: ::prost::alloc::string::String,
-    /// Optional. The site key that was used to invoke reCAPTCHA on your site and generate
-    /// the token.
+    /// Optional. The site key that was used to invoke reCAPTCHA on your site and
+    /// generate the token.
     #[prost(string, tag = "2")]
     pub site_key: ::prost::alloc::string::String,
-    /// Optional. The user agent present in the request from the user's device related to
-    /// this event.
+    /// Optional. The user agent present in the request from the user's device
+    /// related to this event.
     #[prost(string, tag = "3")]
     pub user_agent: ::prost::alloc::string::String,
-    /// Optional. The IP address in the request from the user's device related to this event.
+    /// Optional. The IP address in the request from the user's device related to
+    /// this event.
     #[prost(string, tag = "4")]
     pub user_ip_address: ::prost::alloc::string::String,
-    /// Optional. The expected action for this type of event. This should be the same action
-    /// provided at token generation time on client-side platforms already
-    /// integrated with recaptcha enterprise.
+    /// Optional. The expected action for this type of event. This should be the
+    /// same action provided at token generation time on client-side platforms
+    /// already integrated with recaptcha enterprise.
     #[prost(string, tag = "5")]
     pub expected_action: ::prost::alloc::string::String,
-    /// Optional. Unique stable hashed user identifier for the request. The identifier must
-    /// be hashed using hmac-sha256 with stable secret.
+    /// Optional. Unique stable hashed user identifier for the request. The
+    /// identifier must be hashed using hmac-sha256 with stable secret.
     #[prost(bytes = "vec", tag = "6")]
     pub hashed_account_id: ::prost::alloc::vec::Vec<u8>,
 }
@@ -333,6 +458,14 @@ pub struct TokenProperties {
     /// The hostname of the page on which the token was generated (Web keys only).
     #[prost(string, tag = "4")]
     pub hostname: ::prost::alloc::string::String,
+    /// The name of the Android package with which the token was generated (Android
+    /// keys only).
+    #[prost(string, tag = "8")]
+    pub android_package_name: ::prost::alloc::string::String,
+    /// The ID of the iOS bundle with which the token was generated (iOS keys
+    /// only).
+    #[prost(string, tag = "9")]
+    pub ios_bundle_id: ::prost::alloc::string::String,
     /// Action name provided at token generation.
     #[prost(string, tag = "5")]
     pub action: ::prost::alloc::string::String,
@@ -492,8 +625,8 @@ pub struct ListKeysResponse {
 /// The retrieve legacy secret key request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RetrieveLegacySecretKeyRequest {
-    /// Required. The public key name linked to the requested secret key in the format
-    /// "projects/{project}/keys/{key}".
+    /// Required. The public key name linked to the requested secret key in the
+    /// format "projects/{project}/keys/{key}".
     #[prost(string, tag = "1")]
     pub key: ::prost::alloc::string::String,
 }
@@ -511,8 +644,8 @@ pub struct UpdateKeyRequest {
     /// Required. The key to update.
     #[prost(message, optional, tag = "1")]
     pub key: ::core::option::Option<Key>,
-    /// Optional. The mask to control which fields of the key get updated. If the mask is not
-    /// present, all fields will be updated.
+    /// Optional. The mask to control which fields of the key get updated. If the
+    /// mask is not present, all fields will be updated.
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
@@ -531,6 +664,16 @@ pub struct MigrateKeyRequest {
     /// "projects/{project}/keys/{key}".
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
+    /// Optional. If true, skips the billing check.
+    /// A reCAPTCHA Enterprise key or migrated key behaves differently than a
+    /// reCAPTCHA (non-Enterprise version) key when you reach a quota limit (see
+    /// <https://cloud.google.com/recaptcha-enterprise/quotas#quota_limit>). To avoid
+    /// any disruption of your usage, we check that a billing account is present.
+    /// If your usage of reCAPTCHA is under the free quota, you can safely skip the
+    /// billing check and proceed with the migration. See
+    /// <https://cloud.google.com/recaptcha-enterprise/docs/billing-information.>
+    #[prost(bool, tag = "2")]
+    pub skip_billing_check: bool,
 }
 /// The get metrics request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -823,7 +966,6 @@ pub struct ScoreMetrics {
     pub overall_metrics: ::core::option::Option<ScoreDistribution>,
     /// Action-based metrics. The map key is the action name which specified by the
     /// site owners at time of the "execute" client-side call.
-    /// Populated only for SCORE keys.
     #[prost(map = "string, message", tag = "2")]
     pub action_metrics: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -857,14 +999,13 @@ pub struct ListRelatedAccountGroupMembershipsRequest {
     /// `projects/{project}/relatedaccountgroups/{relatedaccountgroup}`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Optional. The maximum number of accounts to return. The service might return fewer
-    /// than this value.
-    /// If unspecified, at most 50 accounts are returned.
-    /// The maximum value is 1000; values above 1000 are coerced to 1000.
+    /// Optional. The maximum number of accounts to return. The service might
+    /// return fewer than this value. If unspecified, at most 50 accounts are
+    /// returned. The maximum value is 1000; values above 1000 are coerced to 1000.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
-    /// Optional. A page token, received from a previous `ListRelatedAccountGroupMemberships`
-    /// call.
+    /// Optional. A page token, received from a previous
+    /// `ListRelatedAccountGroupMemberships` call.
     ///
     /// When paginating, all other parameters provided to
     /// `ListRelatedAccountGroupMemberships` must match the call that provided the
@@ -888,18 +1029,17 @@ pub struct ListRelatedAccountGroupMembershipsResponse {
 /// The request message to list related account groups.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRelatedAccountGroupsRequest {
-    /// Required. The name of the project to list related account groups from, in the format
-    /// "projects/{project}".
+    /// Required. The name of the project to list related account groups from, in
+    /// the format "projects/{project}".
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Optional. The maximum number of groups to return. The service might return fewer than
-    /// this value.
-    /// If unspecified, at most 50 groups are returned.
-    /// The maximum value is 1000; values above 1000 are coerced to 1000.
+    /// Optional. The maximum number of groups to return. The service might return
+    /// fewer than this value. If unspecified, at most 50 groups are returned. The
+    /// maximum value is 1000; values above 1000 are coerced to 1000.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
-    /// Optional. A page token, received from a previous `ListRelatedAccountGroups` call.
-    /// Provide this to retrieve the subsequent page.
+    /// Optional. A page token, received from a previous `ListRelatedAccountGroups`
+    /// call. Provide this to retrieve the subsequent page.
     ///
     /// When paginating, all other parameters provided to
     /// `ListRelatedAccountGroups` must match the call that provided the page
@@ -921,19 +1061,19 @@ pub struct ListRelatedAccountGroupsResponse {
 /// The request message to search related account group memberships.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchRelatedAccountGroupMembershipsRequest {
-    /// Required. The name of the project to search related account group memberships from.
-    /// Specify the project name in the following format: "projects/{project}".
+    /// Required. The name of the project to search related account group
+    /// memberships from. Specify the project name in the following format:
+    /// "projects/{project}".
     #[prost(string, tag = "1")]
     pub project: ::prost::alloc::string::String,
-    /// Optional. The unique stable hashed user identifier we should search connections to.
-    /// The identifier should correspond to a `hashed_account_id` provided in a
-    /// previous `CreateAssessment` or `AnnotateAssessment` call.
+    /// Optional. The unique stable hashed user identifier we should search
+    /// connections to. The identifier should correspond to a `hashed_account_id`
+    /// provided in a previous `CreateAssessment` or `AnnotateAssessment` call.
     #[prost(bytes = "vec", tag = "2")]
     pub hashed_account_id: ::prost::alloc::vec::Vec<u8>,
-    /// Optional. The maximum number of groups to return. The service might return fewer than
-    /// this value.
-    /// If unspecified, at most 50 groups are returned.
-    /// The maximum value is 1000; values above 1000 are coerced to 1000.
+    /// Optional. The maximum number of groups to return. The service might return
+    /// fewer than this value. If unspecified, at most 50 groups are returned. The
+    /// maximum value is 1000; values above 1000 are coerced to 1000.
     #[prost(int32, tag = "3")]
     pub page_size: i32,
     /// Optional. A page token, received from a previous

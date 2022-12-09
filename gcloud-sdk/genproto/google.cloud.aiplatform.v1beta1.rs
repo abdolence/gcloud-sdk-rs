@@ -4589,6 +4589,138 @@ pub struct ListDataItemsResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
+/// Request message for \[DatasetService.SearchDataItems][google.cloud.aiplatform.v1beta1.DatasetService.SearchDataItems\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SearchDataItemsRequest {
+    /// Required. The resource name of the Dataset from which to search DataItems.
+    /// Format:
+    /// `projects/{project}/locations/{location}/datasets/{dataset}`
+    #[prost(string, tag = "1")]
+    pub dataset: ::prost::alloc::string::String,
+    /// The resource name of a SavedQuery(annotation set in UI).
+    /// Format:
+    /// `projects/{project}/locations/{location}/datasets/{dataset}/savedQueries/{saved_query}`
+    /// All of the search will be done in the context of this SavedQuery.
+    #[deprecated]
+    #[prost(string, tag = "2")]
+    pub saved_query: ::prost::alloc::string::String,
+    /// The resource name of a DataLabelingJob.
+    /// Format:
+    /// `projects/{project}/locations/{location}/dataLabelingJobs/{data_labeling_job}`
+    /// If this field is set, all of the search will be done in the context of
+    /// this DataLabelingJob.
+    #[prost(string, tag = "3")]
+    pub data_labeling_job: ::prost::alloc::string::String,
+    /// An expression for filtering the DataItem that will be returned.
+    ///
+    ///    * `data_item_id` - for = or !=.
+    ///    * `labeled` - for = or !=.
+    ///    * `has_annotation(ANNOTATION_SPEC_ID)` - true only for DataItem that
+    ///      have at least one annotation with annotation_spec_id =
+    ///      `ANNOTATION_SPEC_ID` in the context of SavedQuery or DataLabelingJob.
+    ///
+    /// For example:
+    ///
+    /// * `data_item=1`
+    /// * `has_annotation(5)`
+    #[prost(string, tag = "4")]
+    pub data_item_filter: ::prost::alloc::string::String,
+    /// An expression for filtering the Annotations that will be returned per
+    /// DataItem.
+    ///    * `annotation_spec_id` - for = or !=.
+    #[deprecated]
+    #[prost(string, tag = "5")]
+    pub annotations_filter: ::prost::alloc::string::String,
+    /// An expression that specifies what Annotations will be returned per
+    /// DataItem. Annotations satisfied either of the conditions will be returned.
+    ///    * `annotation_spec_id` - for = or !=.
+    /// Must specify `saved_query_id=` - saved query id that annotations should
+    /// belong to.
+    #[prost(string, repeated, tag = "11")]
+    pub annotation_filters: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Mask specifying which fields of \[DataItemView][google.cloud.aiplatform.v1beta1.DataItemView\] to read.
+    #[prost(message, optional, tag = "6")]
+    pub field_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// If set, only up to this many of Annotations will be returned per
+    /// DataItemView. The maximum value is 1000. If not set, the maximum value will
+    /// be used.
+    #[prost(int32, tag = "7")]
+    pub annotations_limit: i32,
+    /// Requested page size. Server may return fewer results than requested.
+    /// Default and maximum page size is 100.
+    #[prost(int32, tag = "8")]
+    pub page_size: i32,
+    /// A comma-separated list of fields to order by, sorted in ascending order.
+    /// Use "desc" after a field name for descending.
+    #[deprecated]
+    #[prost(string, tag = "9")]
+    pub order_by: ::prost::alloc::string::String,
+    /// A token identifying a page of results for the server to return
+    /// Typically obtained via
+    /// \[SearchDataItemsResponse.next_page_token][google.cloud.aiplatform.v1beta1.SearchDataItemsResponse.next_page_token\] of the previous
+    /// \[DatasetService.SearchDataItems][google.cloud.aiplatform.v1beta1.DatasetService.SearchDataItems\] call.
+    #[prost(string, tag = "10")]
+    pub page_token: ::prost::alloc::string::String,
+    #[prost(oneof = "search_data_items_request::Order", tags = "12, 13")]
+    pub order: ::core::option::Option<search_data_items_request::Order>,
+}
+/// Nested message and enum types in `SearchDataItemsRequest`.
+pub mod search_data_items_request {
+    /// Expression that allows ranking results based on annotation's property.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct OrderByAnnotation {
+        /// Required. Saved query of the Annotation. Only Annotations belong to this saved
+        /// query will be considered for ordering.
+        #[prost(string, tag = "1")]
+        pub saved_query: ::prost::alloc::string::String,
+        /// A comma-separated list of annotation fields to order by, sorted in
+        /// ascending order. Use "desc" after a field name for descending. Must also
+        /// specify saved_query.
+        #[prost(string, tag = "2")]
+        pub order_by: ::prost::alloc::string::String,
+    }
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Order {
+        /// A comma-separated list of data item fields to order by, sorted in
+        /// ascending order. Use "desc" after a field name for descending.
+        #[prost(string, tag = "12")]
+        OrderByDataItem(::prost::alloc::string::String),
+        /// Expression that allows ranking results based on annotation's property.
+        #[prost(message, tag = "13")]
+        OrderByAnnotation(OrderByAnnotation),
+    }
+}
+/// Response message for \[DatasetService.SearchDataItems][google.cloud.aiplatform.v1beta1.DatasetService.SearchDataItems\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SearchDataItemsResponse {
+    /// The DataItemViews read.
+    #[prost(message, repeated, tag = "1")]
+    pub data_item_views: ::prost::alloc::vec::Vec<DataItemView>,
+    /// A token to retrieve next page of results.
+    /// Pass to \[SearchDataItemsRequest.page_token][google.cloud.aiplatform.v1beta1.SearchDataItemsRequest.page_token\] to obtain that page.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// A container for a single DataItem and Annotations on it.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DataItemView {
+    /// The DataItem.
+    #[prost(message, optional, tag = "1")]
+    pub data_item: ::core::option::Option<DataItem>,
+    /// The Annotations on the DataItem. If too many Annotations should be returned
+    /// for the DataItem, this field will be truncated per annotations_limit in
+    /// request. If it was, then the has_truncated_annotations will be set to true.
+    #[prost(message, repeated, tag = "2")]
+    pub annotations: ::prost::alloc::vec::Vec<Annotation>,
+    /// True if and only if the Annotations field has been truncated. It happens if
+    /// more Annotations for this DataItem met the request's annotation_filter than
+    /// are allowed to be returned by annotations_limit.
+    /// Note that if Annotations field is not being returned due to field mask,
+    /// then this field will not be set to true no matter how many Annotations are
+    /// there.
+    #[prost(bool, tag = "3")]
+    pub has_truncated_annotations: bool,
+}
 /// Request message for \[DatasetService.ListSavedQueries][google.cloud.aiplatform.v1beta1.DatasetService.ListSavedQueries\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSavedQueriesRequest {
@@ -4911,6 +5043,26 @@ pub mod dataset_service_client {
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.aiplatform.v1beta1.DatasetService/ListDataItems",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Searches DataItems in a Dataset.
+        pub async fn search_data_items(
+            &mut self,
+            request: impl tonic::IntoRequest<super::SearchDataItemsRequest>,
+        ) -> Result<tonic::Response<super::SearchDataItemsResponse>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.DatasetService/SearchDataItems",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
@@ -14535,6 +14687,15 @@ pub struct UploadModelRequest {
     /// Required. The Model to create.
     #[prost(message, optional, tag = "2")]
     pub model: ::core::option::Option<Model>,
+    /// Optional. The user-provided custom service account to use to do the model
+    /// upload. If empty, [Vertex AI Service
+    /// Agent](<https://cloud.google.com/vertex-ai/docs/general/access-control#service-agents>)
+    /// will be used. Users uploading the Model must have the
+    /// `iam.serviceAccounts.actAs` permission on this service account. Also, this
+    /// account must belong to the project specified in the `parent` field and have
+    /// all necessary read permissions.
+    #[prost(string, tag = "6")]
+    pub service_account: ::prost::alloc::string::String,
 }
 /// Details of \[ModelService.UploadModel][google.cloud.aiplatform.v1beta1.ModelService.UploadModel\] operation.
 #[derive(Clone, PartialEq, ::prost::Message)]
