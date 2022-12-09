@@ -480,7 +480,8 @@ pub struct ProvideValidationFeedbackRequest {
         tag = "1"
     )]
     pub conclusion: i32,
-    /// Required. The ID of the response that this feedback is for. This should be the
+    /// Required. The ID of the response that this feedback is for. This should be
+    /// the
     /// \[response_id][google.maps.addressvalidation.v1.ValidateAddressRequest.response_id\]
     /// from the first response in a series of address validation attempts.
     #[prost(string, tag = "2")]
@@ -652,7 +653,7 @@ pub mod verdict {
         /// Building-level result.
         Premise = 2,
         /// A geocode that should be very close to the building-level location of
-        /// the address. Only used for geocodes and not for addresses.
+        /// the address.
         PremiseProximity = 3,
         /// The address or geocode indicates a block. Only used in regions which
         /// have block-level addressing, such as Japan.

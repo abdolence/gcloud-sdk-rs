@@ -1,8 +1,8 @@
 /// Request message for the CreateDataPolicy method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateDataPolicyRequest {
-    /// Required. Resource name of the project that the data policy will belong to. The
-    /// format is `projects/{project_number}/locations/{location_id}`.
+    /// Required. Resource name of the project that the data policy will belong to.
+    /// The format is `projects/{project_number}/locations/{location_id}`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The data policy to create. The `name` field does not need to be
@@ -58,8 +58,8 @@ pub struct GetDataPolicyRequest {
 /// Request message for the ListDataPolicies method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDataPoliciesRequest {
-    /// Required. Resource name of the project for which to list data policies. Format is
-    /// `projects/{project_number}/locations/{location_id}`.
+    /// Required. Resource name of the project for which to list data policies.
+    /// Format is `projects/{project_number}/locations/{location_id}`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of data policies to return. Must be a value between 1
@@ -75,9 +75,9 @@ pub struct ListDataPoliciesRequest {
     /// are associated with. Currently filter only supports
     /// "policy<span></span>_tag" based filtering and OR based predicates. Sample
     /// filter can be "policy<span></span>_tag:
-    /// 'projects/1/locations/us/taxonomies/2/policyTags/3'". You may use wildcard
-    /// such as "policy<span></span>_tag:
-    /// 'projects/1/locations/us/taxonomies/2/*'".
+    /// `'projects/1/locations/us/taxonomies/2/policyTags/3'`". You may use
+    /// wildcard such as "policy<span></span>_tag:
+    /// `'projects/1/locations/us/taxonomies/2/*'`".
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
 }

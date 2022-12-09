@@ -485,11 +485,10 @@ pub struct ExfilResource {
 /// Representation of third party SIEM/SOAR fields within SCC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExternalSystem {
-    /// External System Name e.g. jira, demisto, etc.
-    ///   e.g.:
-    ///   `organizations/1234/sources/5678/findings/123456/externalSystems/jira`
-    /// `folders/1234/sources/5678/findings/123456/externalSystems/jira`
-    /// `projects/1234/sources/5678/findings/123456/externalSystems/jira`
+    /// Full resource name of the external system, for example:
+    /// "organizations/1234/sources/5678/findings/123456/externalSystems/jira",
+    /// "folders/1234/sources/5678/findings/123456/externalSystems/jira",
+    /// "projects/1234/sources/5678/findings/123456/externalSystems/jira"
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// References primary/secondary etc assignees in the external system.
@@ -661,6 +660,44 @@ pub mod indicator {
             YaraRuleSignature(YaraRuleSignature),
         }
     }
+}
+/// Kernel mode rootkit signatures.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct KernelRootkit {
+    /// Rootkit name when available.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// True if unexpected modifications of kernel code memory are present.
+    #[prost(bool, tag = "2")]
+    pub unexpected_code_modification: bool,
+    /// True if unexpected modifications of kernel read-only data memory are
+    /// present.
+    #[prost(bool, tag = "3")]
+    pub unexpected_read_only_data_modification: bool,
+    /// True if `ftrace` points are present with callbacks pointing to regions
+    /// that are not in the expected kernel or module code range.
+    #[prost(bool, tag = "4")]
+    pub unexpected_ftrace_handler: bool,
+    /// True if `kprobe` points are present with callbacks pointing to regions
+    /// that are not in the expected kernel or module code range.
+    #[prost(bool, tag = "5")]
+    pub unexpected_kprobe_handler: bool,
+    /// True if kernel code pages that are not in the expected kernel or module
+    /// code regions are present.
+    #[prost(bool, tag = "6")]
+    pub unexpected_kernel_code_pages: bool,
+    /// True if system call handlers that are are not in the expected kernel or
+    /// module code regions are present.
+    #[prost(bool, tag = "7")]
+    pub unexpected_system_call_handler: bool,
+    /// True if interrupt handlers that are are not in the expected kernel or
+    /// module code regions are present.
+    #[prost(bool, tag = "8")]
+    pub unexpected_interrupt_handler: bool,
+    /// True if unexpected processes in the scheduler run queue are present. Such
+    /// processes are in the run queue, but not in the process task list.
+    #[prost(bool, tag = "9")]
+    pub unexpected_processes_in_runqueue: bool,
 }
 /// Kubernetes related attributes.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1595,7 +1632,7 @@ pub struct Finding {
     /// Reference: <https://en.wikipedia.org/wiki/Indicator_of_compromise>
     #[prost(message, optional, tag = "18")]
     pub indicator: ::core::option::Option<Indicator>,
-    /// Represents vulnerability specific fields like cve, cvss scores etc.
+    /// Represents vulnerability-specific fields like CVE and CVS scores.
     /// CVE stands for Common Vulnerabilities and Exposures
     /// (<https://cve.mitre.org/about/>)
     #[prost(message, optional, tag = "20")]
@@ -1685,6 +1722,9 @@ pub struct Finding {
     /// File associated with the finding.
     #[prost(message, repeated, tag = "46")]
     pub files: ::prost::alloc::vec::Vec<File>,
+    /// Kernel Rootkit signature.
+    #[prost(message, optional, tag = "50")]
+    pub kernel_rootkit: ::core::option::Option<KernelRootkit>,
 }
 /// Nested message and enum types in `Finding`.
 pub mod finding {
@@ -1951,7 +1991,9 @@ pub struct NotificationConfig {
     /// The relative resource name of this notification config. See:
     /// <https://cloud.google.com/apis/design/resource_names#relative_resource_name>
     /// Example:
-    /// "organizations/{organization_id}/notificationConfigs/notify_public_bucket".
+    /// "organizations/{organization_id}/notificationConfigs/notify_public_bucket",
+    /// "folders/{folder_id}/notificationConfigs/notify_public_bucket",
+    /// or "projects/{project_id}/notificationConfigs/notify_public_bucket".
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The description of the notification config (max of 1024 characters).
@@ -2325,8 +2367,8 @@ pub struct CreateNotificationConfigRequest {
     pub parent: ::prost::alloc::string::String,
     /// Required.
     /// Unique identifier provided by the client within the parent scope.
-    /// It must be between 1 and 128 characters, and contains alphanumeric
-    /// characters, underscores or hyphens only.
+    /// It must be between 1 and 128 characters and contain alphanumeric
+    /// characters, underscores, or hyphens only.
     #[prost(string, tag = "2")]
     pub config_id: ::prost::alloc::string::String,
     /// Required. The notification config being created. The name and the service
@@ -2361,14 +2403,16 @@ pub struct DeleteMuteConfigRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteNotificationConfigRequest {
     /// Required. Name of the notification config to delete. Its format is
-    /// "organizations/\[organization_id]/notificationConfigs/[config_id\]".
+    /// "organizations/\[organization_id]/notificationConfigs/[config_id\]",
+    /// "folders/\[folder_id]/notificationConfigs/[config_id\]",
+    /// or "projects/\[project_id]/notificationConfigs/[config_id\]".
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Request message for retrieving a big query export.
+/// Request message for retrieving a BigQuery export.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetBigQueryExportRequest {
-    /// Required. Name of the big query export to retrieve. Its format is
+    /// Required. Name of the BigQuery export to retrieve. Its format is
     /// organizations/{organization}/bigQueryExports/{export_id},
     /// folders/{folder}/bigQueryExports/{export_id}, or
     /// projects/{project}/bigQueryExports/{export_id}
@@ -2389,7 +2433,9 @@ pub struct GetMuteConfigRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetNotificationConfigRequest {
     /// Required. Name of the notification config to get. Its format is
-    /// "organizations/\[organization_id]/notificationConfigs/[config_id\]".
+    /// "organizations/\[organization_id]/notificationConfigs/[config_id\]",
+    /// "folders/\[folder_id]/notificationConfigs/[config_id\]",
+    /// or "projects/\[project_id]/notificationConfigs/[config_id\]".
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -2412,7 +2458,7 @@ pub struct GetSourceRequest {
 /// Request message for grouping by assets.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GroupAssetsRequest {
-    /// Required. Name of the organization to groupBy. Its format is
+    /// Required. The name of the parent to group the assets by. Its format is
     /// "organizations/\[organization_id\], folders/\[folder_id\], or
     /// projects/\[project_id\]".
     #[prost(string, tag = "1")]
@@ -2774,9 +2820,9 @@ pub struct ListMuteConfigsResponse {
 /// Request message for listing notification configs.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNotificationConfigsRequest {
-    /// Required. Name of the organization to list notification configs. Its format
-    /// is "organizations/\[organization_id\]", "folders/\[folder_id\]", or
-    /// "projects/\[project_id\]".
+    /// Required. The name of the parent in which to list the notification
+    /// configurations. Its format is "organizations/\[organization_id\]",
+    /// "folders/\[folder_id\]", or "projects/\[project_id\]".
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The value returned by the last `ListNotificationConfigsResponse`; indicates
@@ -2832,8 +2878,8 @@ pub struct ListSourcesResponse {
 /// Request message for listing assets.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAssetsRequest {
-    /// Required. Name of the organization assets should belong to. Its format is
-    /// "organizations/\[organization_id\], folders/\[folder_id\], or
+    /// Required. The name of the parent that the listed assets belong to. Its
+    /// format is "organizations/\[organization_id\], folders/\[folder_id\], or
     /// projects/\[project_id\]".
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
@@ -3318,10 +3364,12 @@ pub mod list_findings_response {
 /// Request message for updating a finding's state.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetFindingStateRequest {
-    /// Required. The relative resource name of the finding. See:
-    /// <https://cloud.google.com/apis/design/resource_names#relative_resource_name>
-    /// Example:
-    /// "organizations/{organization_id}/sources/{source_id}/findings/{finding_id}".
+    /// Required. The [relative resource
+    /// name](<https://cloud.google.com/apis/design/resource_names#relative_resource_name>)
+    /// of the finding. Example:
+    /// "organizations/{organization_id}/sources/{source_id}/findings/{finding_id}",
+    /// "folders/{folder_id}/sources/{source_id}/findings/{finding_id}",
+    /// "projects/{project_id}/sources/{source_id}/findings/{finding_id}".
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The desired State of the finding.
@@ -3334,9 +3382,9 @@ pub struct SetFindingStateRequest {
 /// Request message for updating a finding's mute status.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetMuteRequest {
-    /// Required. The relative resource name of the finding. See:
-    /// <https://cloud.google.com/apis/design/resource_names#relative_resource_name>
-    /// Example:
+    /// Required. The [relative resource
+    /// name](<https://cloud.google.com/apis/design/resource_names#relative_resource_name>)
+    /// of the finding. Example:
     /// "organizations/{organization_id}/sources/{source_id}/findings/{finding_id}",
     /// "folders/{folder_id}/sources/{source_id}/findings/{finding_id}",
     /// "projects/{project_id}/sources/{source_id}/findings/{finding_id}".
@@ -3454,15 +3502,15 @@ pub struct UpdateSecurityMarksRequest {
     #[prost(message, optional, tag = "3")]
     pub start_time: ::core::option::Option<::prost_types::Timestamp>,
 }
-/// Request message for creating a big query export.
+/// Request message for creating a BigQuery export.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateBigQueryExportRequest {
-    /// Required. Resource name of the new big query export's parent. Its format is
-    /// "organizations/\[organization_id\]", "folders/\[folder_id\]", or
+    /// Required. The name of the parent resource of the new BigQuery export. Its
+    /// format is "organizations/\[organization_id\]", "folders/\[folder_id\]", or
     /// "projects/\[project_id\]".
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Required. The big query export being created.
+    /// Required. The BigQuery export being created.
     #[prost(message, optional, tag = "2")]
     pub big_query_export: ::core::option::Option<BigQueryExport>,
     /// Required. Unique identifier provided by the client within the parent scope.
@@ -3516,10 +3564,10 @@ pub struct ListBigQueryExportsResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-/// Request message for deleting a big query export.
+/// Request message for deleting a BigQuery export.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteBigQueryExportRequest {
-    /// Required. Name of the big query export to delete. Its format is
+    /// Required. The name of the BigQuery export to delete. Its format is
     /// organizations/{organization}/bigQueryExports/{export_id},
     /// folders/{folder}/bigQueryExports/{export_id}, or
     /// projects/{project}/bigQueryExports/{export_id}
@@ -3742,7 +3790,7 @@ pub mod security_center_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        /// Gets a big query export.
+        /// Gets a BigQuery export.
         pub async fn get_big_query_export(
             &mut self,
             request: impl tonic::IntoRequest<super::GetBigQueryExportRequest>,
@@ -4283,7 +4331,7 @@ pub mod security_center_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        /// Creates a big query export.
+        /// Creates a BigQuery export.
         pub async fn create_big_query_export(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateBigQueryExportRequest>,
@@ -4303,7 +4351,7 @@ pub mod security_center_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        /// Deletes an existing big query export.
+        /// Deletes an existing BigQuery export.
         pub async fn delete_big_query_export(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteBigQueryExportRequest>,

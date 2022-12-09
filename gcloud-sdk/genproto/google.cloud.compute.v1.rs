@@ -1352,6 +1352,31 @@ pub struct AggregatedListMachineTypesRequest {
     #[prost(bool, optional, tag = "517198390")]
     pub return_partial_success: ::core::option::Option<bool>,
 }
+/// A request message for NetworkAttachments.AggregatedList. See the method description for details.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AggregatedListNetworkAttachmentsRequest {
+    /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
+    #[prost(string, optional, tag = "336120696")]
+    pub filter: ::core::option::Option<::prost::alloc::string::String>,
+    /// Indicates whether every visible scope for each scope type (zone, region, global) should be included in the response. For new resource types added after this field, the flag has no effect as new resource types will always include every visible scope for each scope type in response. For resource types which predate this field, if this flag is omitted or false, only scopes of the scope types where the resource type is expected to be found will be included.
+    #[prost(bool, optional, tag = "391327988")]
+    pub include_all_scopes: ::core::option::Option<bool>,
+    /// The maximum number of results per page that should be returned. If the number of available results is larger than `maxResults`, Compute Engine returns a `nextPageToken` that can be used to get the next page of results in subsequent list requests. Acceptable values are `0` to `500`, inclusive. (Default: `500`)
+    #[prost(uint32, optional, tag = "54715419")]
+    pub max_results: ::core::option::Option<u32>,
+    /// Sorts list results by a certain order. By default, results are returned in alphanumerical order based on the resource name. You can also sort results in descending order based on the creation timestamp using `orderBy="creationTimestamp desc"`. This sorts results based on the `creationTimestamp` field in reverse chronological order (newest result first). Use this to sort resources like operations so that the newest operation is returned first. Currently, only sorting by `name` or `creationTimestamp desc` is supported.
+    #[prost(string, optional, tag = "160562920")]
+    pub order_by: ::core::option::Option<::prost::alloc::string::String>,
+    /// Specifies a page token to use. Set `pageToken` to the `nextPageToken` returned by a previous list request to get the next page of results.
+    #[prost(string, optional, tag = "19994697")]
+    pub page_token: ::core::option::Option<::prost::alloc::string::String>,
+    /// Project ID for this request.
+    #[prost(string, tag = "227560217")]
+    pub project: ::prost::alloc::string::String,
+    /// Opt-in for partial success behavior which provides partial results in case of failure. The default value is false.
+    #[prost(bool, optional, tag = "517198390")]
+    pub return_partial_success: ::core::option::Option<bool>,
+}
 /// A request message for NetworkEdgeSecurityServices.AggregatedList. See the method description for details.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AggregatedListNetworkEdgeSecurityServicesRequest {
@@ -3141,7 +3166,7 @@ pub struct Backend {
     /// Check the BalancingMode enum for the list of possible values.
     #[prost(string, optional, tag = "430286217")]
     pub balancing_mode: ::core::option::Option<::prost::alloc::string::String>,
-    /// A multiplier applied to the backend's target capacity of its balancing mode. The default value is 1, which means the group serves up to 100% of its configured capacity (depending on balancingMode). A setting of 0 means the group is completely drained, offering 0% of its available capacity. The valid ranges are 0.0 and \[0.1,1.0\]. You cannot configure a setting larger than 0 and smaller than 0.1. You cannot configure a setting of 0 when there is only one backend attached to the backend service.
+    /// A multiplier applied to the backend's target capacity of its balancing mode. The default value is 1, which means the group serves up to 100% of its configured capacity (depending on balancingMode). A setting of 0 means the group is completely drained, offering 0% of its available capacity. The valid ranges are 0.0 and \[0.1,1.0\]. You cannot configure a setting larger than 0 and smaller than 0.1. You cannot configure a setting of 0 when there is only one backend attached to the backend service. Not available with backends that don't support using a balancingMode. This includes backends such as global internet NEGs, regional serverless NEGs, and PSC NEGs.
     #[prost(float, optional, tag = "315958157")]
     pub capacity_scaler: ::core::option::Option<f32>,
     /// An optional description of this resource. Provide this property when you create the resource.
@@ -5781,6 +5806,22 @@ pub struct DeleteMachineImageRequest {
     #[prost(string, optional, tag = "37109963")]
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
+/// A request message for NetworkAttachments.Delete. See the method description for details.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteNetworkAttachmentRequest {
+    /// Name of the NetworkAttachment resource to delete.
+    #[prost(string, tag = "224644052")]
+    pub network_attachment: ::prost::alloc::string::String,
+    /// Project ID for this request.
+    #[prost(string, tag = "227560217")]
+    pub project: ::prost::alloc::string::String,
+    /// Name of the region of this request.
+    #[prost(string, tag = "138946292")]
+    pub region: ::prost::alloc::string::String,
+    /// An optional request ID to identify requests. Specify a unique request ID so that if you must retry your request, the server will know to ignore the request if it has already been completed. For example, consider a situation where you make an initial request and the request times out. If you make the request again with the same request ID, the server can check if original operation with the same request ID was received, and if so, will ignore the second request. This prevents clients from accidentally creating duplicate commitments. The request ID must be a valid UUID with the exception that zero UUID is not supported ( 00000000-0000-0000-0000-000000000000). end_interface: MixerMutationRequestBuilder
+    #[prost(string, optional, tag = "37109963")]
+    pub request_id: ::core::option::Option<::prost::alloc::string::String>,
+}
 /// A request message for NetworkEdgeSecurityServices.Delete. See the method description for details.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteNetworkEdgeSecurityServiceRequest {
@@ -7368,7 +7409,7 @@ pub struct ErrorInfo {
         ::prost::alloc::string::String,
         ::prost::alloc::string::String,
     >,
-    /// The reason of the error. This is a constant value that identifies the proximate cause of the error. Error reasons are unique within a particular domain of errors. This should be at most 63 characters and match /\[A-Z0-9_\]+/.
+    /// The reason of the error. This is a constant value that identifies the proximate cause of the error. Error reasons are unique within a particular domain of errors. This should be at most 63 characters and match a regular expression of `A-Z+\[A-Z0-9\]`, which represents UPPER_SNAKE_CASE.
     #[prost(string, optional, tag = "138777156")]
     pub reason: ::core::option::Option<::prost::alloc::string::String>,
 }
@@ -7874,7 +7915,7 @@ pub struct FirewallPolicy {
     /// [Output only] Type of the resource. Always compute#firewallPolicyfor firewall policies
     #[prost(string, optional, tag = "3292052")]
     pub kind: ::core::option::Option<::prost::alloc::string::String>,
-    /// Name of the resource. For Organization Firewall Policies it's a [Output Only] numeric ID allocated by GCP which uniquely identifies the Organization Firewall Policy.
+    /// Name of the resource. For Organization Firewall Policies it's a [Output Only] numeric ID allocated by Google Cloud which uniquely identifies the Organization Firewall Policy.
     #[prost(string, optional, tag = "3373707")]
     pub name: ::core::option::Option<::prost::alloc::string::String>,
     /// [Output Only] The parent of the firewall policy. This field is not applicable to network firewall policies.
@@ -8113,7 +8154,7 @@ pub struct ForwardingRule {
     /// Check the IPProtocolEnum enum for the list of possible values.
     #[prost(string, optional, tag = "488094525")]
     pub i_p_protocol: ::core::option::Option<::prost::alloc::string::String>,
-    /// This field is used along with the backend_service field for Internal TCP/UDP Load Balancing or Network Load Balancing, or with the target field for internal and external TargetInstance. You can only use one of ports and port_range, or allPorts. The three are mutually exclusive. For TCP, UDP and SCTP traffic, packets addressed to any ports will be forwarded to the target or backendService.
+    /// This field can only be used: - If IPProtocol is one of TCP, UDP, or SCTP. - By internal TCP/UDP load balancers, backend service-based network load balancers, and internal and external protocol forwarding. Set this field to true to allow packets addressed to any port or packets lacking destination port information (for example, UDP fragments after the first fragment) to be forwarded to the backends configured with this forwarding rule. The ports, port_range, and allPorts fields are mutually exclusive.
     #[prost(bool, optional, tag = "445175796")]
     pub all_ports: ::core::option::Option<bool>,
     /// This field is used along with the backend_service field for internal load balancing or with the target field for internal TargetInstance. If the field is set to TRUE, clients can access ILB from all regions. Otherwise only allows access from clients in the same region as the internal load balancer.
@@ -8173,10 +8214,10 @@ pub struct ForwardingRule {
     /// This is used in PSC consumer ForwardingRule to control whether it should try to auto-generate a DNS zone or not. Non-PSC forwarding rules do not use this field.
     #[prost(bool, optional, tag = "64546991")]
     pub no_automate_dns_zone: ::core::option::Option<bool>,
-    /// This field can be used only if: - Load balancing scheme is one of EXTERNAL, INTERNAL_SELF_MANAGED or INTERNAL_MANAGED - IPProtocol is one of TCP, UDP, or SCTP. Packets addressed to ports in the specified range will be forwarded to target or backend_service. You can only use one of ports, port_range, or allPorts. The three are mutually exclusive. Forwarding rules with the same [IPAddress, IPProtocol] pair must have disjoint ports. Some types of forwarding target have constraints on the acceptable ports. For more information, see [Port specifications](<https://cloud.google.com/load-balancing/docs/forwarding-rule-concepts#port_specifications>). @pattern: \\d+(?:-\\d+)?
+    /// This field can only be used: - If IPProtocol is one of TCP, UDP, or SCTP. - By backend service-based network load balancers, target pool-based network load balancers, internal proxy load balancers, external proxy load balancers, Traffic Director, external protocol forwarding, and Classic VPN. Some products have restrictions on what ports can be used. See port specifications for details. Only packets addressed to ports in the specified range will be forwarded to the backends configured with this forwarding rule. The ports, port_range, and allPorts fields are mutually exclusive. For external forwarding rules, two or more forwarding rules cannot use the same [IPAddress, IPProtocol] pair, and cannot have overlapping portRanges. For internal forwarding rules within the same VPC network, two or more forwarding rules cannot use the same [IPAddress, IPProtocol] pair, and cannot have overlapping portRanges. @pattern: \\d+(?:-\\d+)?
     #[prost(string, optional, tag = "217518079")]
     pub port_range: ::core::option::Option<::prost::alloc::string::String>,
-    /// The ports field is only supported when the forwarding rule references a backend_service directly. Only packets addressed to the [specified list of ports]((<https://cloud.google.com/load-balancing/docs/forwarding-rule-concepts#port_specifications>)) are forwarded to backends. You can only use one of ports and port_range, or allPorts. The three are mutually exclusive. You can specify a list of up to five ports, which can be non-contiguous. Forwarding rules with the same [IPAddress, IPProtocol] pair must have disjoint ports. @pattern: \\d+(?:-\\d+)?
+    /// This field can only be used: - If IPProtocol is one of TCP, UDP, or SCTP. - By internal TCP/UDP load balancers, backend service-based network load balancers, and internal protocol forwarding. You can specify a list of up to five ports by number, separated by commas. The ports can be contiguous or discontiguous. Only packets addressed to these ports will be forwarded to the backends configured with this forwarding rule. For external forwarding rules, two or more forwarding rules cannot use the same [IPAddress, IPProtocol] pair, and cannot share any values defined in ports. For internal forwarding rules within the same VPC network, two or more forwarding rules cannot use the same [IPAddress, IPProtocol] pair, and cannot share any values defined in ports. The ports, port_range, and allPorts fields are mutually exclusive. @pattern: \\d+(?:-\\d+)?
     #[prost(string, repeated, tag = "106854418")]
     pub ports: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// [Output Only] The PSC connection id of the PSC Forwarding Rule.
@@ -9024,6 +9065,22 @@ pub struct GetIamPolicyMachineImageRequest {
     #[prost(string, tag = "195806222")]
     pub resource: ::prost::alloc::string::String,
 }
+/// A request message for NetworkAttachments.GetIamPolicy. See the method description for details.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetIamPolicyNetworkAttachmentRequest {
+    /// Requested IAM Policy version.
+    #[prost(int32, optional, tag = "499220029")]
+    pub options_requested_policy_version: ::core::option::Option<i32>,
+    /// Project ID for this request.
+    #[prost(string, tag = "227560217")]
+    pub project: ::prost::alloc::string::String,
+    /// The name of the region for this request.
+    #[prost(string, tag = "138946292")]
+    pub region: ::prost::alloc::string::String,
+    /// Name or id of the resource for this request.
+    #[prost(string, tag = "195806222")]
+    pub resource: ::prost::alloc::string::String,
+}
 /// A request message for NetworkFirewallPolicies.GetIamPolicy. See the method description for details.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetIamPolicyNetworkFirewallPolicyRequest {
@@ -9369,6 +9426,19 @@ pub struct GetNatMappingInfoRoutersRequest {
     /// Name of the Router resource to query for Nat Mapping information of VM endpoints.
     #[prost(string, tag = "148608841")]
     pub router: ::prost::alloc::string::String,
+}
+/// A request message for NetworkAttachments.Get. See the method description for details.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetNetworkAttachmentRequest {
+    /// Name of the NetworkAttachment resource to return.
+    #[prost(string, tag = "224644052")]
+    pub network_attachment: ::prost::alloc::string::String,
+    /// Project ID for this request.
+    #[prost(string, tag = "227560217")]
+    pub project: ::prost::alloc::string::String,
+    /// Name of the region of this request.
+    #[prost(string, tag = "138946292")]
+    pub region: ::prost::alloc::string::String,
 }
 /// A request message for NetworkEdgeSecurityServices.Get. See the method description for details.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -10783,10 +10853,10 @@ pub struct HealthCheckService {
     /// Fingerprint of this resource. A hash of the contents stored in this object. This field is used in optimistic locking. This field will be ignored when inserting a HealthCheckService. An up-to-date fingerprint must be provided in order to patch/update the HealthCheckService; Otherwise, the request will fail with error 412 conditionNotMet. To see the latest fingerprint, make a get() request to retrieve the HealthCheckService.
     #[prost(string, optional, tag = "234678500")]
     pub fingerprint: ::core::option::Option<::prost::alloc::string::String>,
-    /// A list of URLs to the HealthCheck resources. Must have at least one HealthCheck, and not more than 10. HealthCheck resources must have portSpecification=USE_SERVING_PORT or portSpecification=USE_FIXED_PORT. For regional HealthCheckService, the HealthCheck must be regional and in the same region. For global HealthCheckService, HealthCheck must be global. Mix of regional and global HealthChecks is not supported. Multiple regional HealthChecks must belong to the same region. Regional HealthChecks must belong to the same region as zones of NEGs.
+    /// A list of URLs to the HealthCheck resources. Must have at least one HealthCheck, and not more than 10 for regional HealthCheckService, and not more than 1 for global HealthCheckService. HealthCheck resources must have portSpecification=USE_SERVING_PORT or portSpecification=USE_FIXED_PORT. For regional HealthCheckService, the HealthCheck must be regional and in the same region. For global HealthCheckService, HealthCheck must be global. Mix of regional and global HealthChecks is not supported. Multiple regional HealthChecks must belong to the same region. Regional HealthChecks must belong to the same region as zones of NetworkEndpointGroups. For global HealthCheckService using global INTERNET_IP_PORT NetworkEndpointGroups, the global HealthChecks must specify sourceRegions, and HealthChecks that specify sourceRegions can only be used with global INTERNET_IP_PORT NetworkEndpointGroups.
     #[prost(string, repeated, tag = "448370606")]
     pub health_checks: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// Optional. Policy for how the results from multiple health checks for the same endpoint are aggregated. Defaults to NO_AGGREGATION if unspecified. - NO_AGGREGATION. An EndpointHealth message is returned for each pair in the health check service. - AND. If any health check of an endpoint reports UNHEALTHY, then UNHEALTHY is the HealthState of the endpoint. If all health checks report HEALTHY, the HealthState of the endpoint is HEALTHY. .
+    /// Optional. Policy for how the results from multiple health checks for the same endpoint are aggregated. Defaults to NO_AGGREGATION if unspecified. - NO_AGGREGATION. An EndpointHealth message is returned for each pair in the health check service. - AND. If any health check of an endpoint reports UNHEALTHY, then UNHEALTHY is the HealthState of the endpoint. If all health checks report HEALTHY, the HealthState of the endpoint is HEALTHY. . This is only allowed with regional HealthCheckService.
     /// Check the HealthStatusAggregationPolicy enum for the list of possible values.
     #[prost(string, optional, tag = "253163129")]
     pub health_status_aggregation_policy: ::core::option::Option<
@@ -10801,7 +10871,7 @@ pub struct HealthCheckService {
     /// Name of the resource. The name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression `\[a-z]([-a-z0-9]*[a-z0-9\])?` which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash.
     #[prost(string, optional, tag = "3373707")]
     pub name: ::core::option::Option<::prost::alloc::string::String>,
-    /// A list of URLs to the NetworkEndpointGroup resources. Must not have more than 100. For regional HealthCheckService, NEGs must be in zones in the region of the HealthCheckService.
+    /// A list of URLs to the NetworkEndpointGroup resources. Must not have more than 100. For regional HealthCheckService, NEGs must be in zones in the region of the HealthCheckService. For global HealthCheckServices, the NetworkEndpointGroups must be global INTERNET_IP_PORT.
     #[prost(string, repeated, tag = "29346733")]
     pub network_endpoint_groups: ::prost::alloc::vec::Vec<
         ::prost::alloc::string::String,
@@ -10818,7 +10888,7 @@ pub struct HealthCheckService {
 }
 /// Nested message and enum types in `HealthCheckService`.
 pub mod health_check_service {
-    /// Optional. Policy for how the results from multiple health checks for the same endpoint are aggregated. Defaults to NO_AGGREGATION if unspecified. - NO_AGGREGATION. An EndpointHealth message is returned for each pair in the health check service. - AND. If any health check of an endpoint reports UNHEALTHY, then UNHEALTHY is the HealthState of the endpoint. If all health checks report HEALTHY, the HealthState of the endpoint is HEALTHY. .
+    /// Optional. Policy for how the results from multiple health checks for the same endpoint are aggregated. Defaults to NO_AGGREGATION if unspecified. - NO_AGGREGATION. An EndpointHealth message is returned for each pair in the health check service. - AND. If any health check of an endpoint reports UNHEALTHY, then UNHEALTHY is the HealthState of the endpoint. If all health checks report HEALTHY, the HealthState of the endpoint is HEALTHY. . This is only allowed with regional HealthCheckService.
     #[derive(
         Clone,
         Copy,
@@ -11992,6 +12062,22 @@ pub struct InsertMachineImageRequest {
     /// Required. Source instance that is used to create the machine image from.
     #[prost(string, optional, tag = "396315705")]
     pub source_instance: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// A request message for NetworkAttachments.Insert. See the method description for details.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct InsertNetworkAttachmentRequest {
+    /// The body resource for this request
+    #[prost(message, optional, tag = "210974745")]
+    pub network_attachment_resource: ::core::option::Option<NetworkAttachment>,
+    /// Project ID for this request.
+    #[prost(string, tag = "227560217")]
+    pub project: ::prost::alloc::string::String,
+    /// Name of the region of this request.
+    #[prost(string, tag = "138946292")]
+    pub region: ::prost::alloc::string::String,
+    /// An optional request ID to identify requests. Specify a unique request ID so that if you must retry your request, the server will know to ignore the request if it has already been completed. For example, consider a situation where you make an initial request and the request times out. If you make the request again with the same request ID, the server can check if original operation with the same request ID was received, and if so, will ignore the second request. This prevents clients from accidentally creating duplicate commitments. The request ID must be a valid UUID with the exception that zero UUID is not supported ( 00000000-0000-0000-0000-000000000000). end_interface: MixerMutationRequestBuilder
+    #[prost(string, optional, tag = "37109963")]
+    pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for NetworkEdgeSecurityServices.Insert. See the method description for details.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -15327,12 +15413,97 @@ pub struct InterconnectDiagnostics {
     /// A list of InterconnectDiagnostics.ARPEntry objects, describing individual neighbors currently seen by the Google router in the ARP cache for the Interconnect. This will be empty when the Interconnect is not bundled.
     #[prost(message, repeated, tag = "414591761")]
     pub arp_caches: ::prost::alloc::vec::Vec<InterconnectDiagnosticsArpEntry>,
+    /// The aggregation type of the bundle interface.
+    /// Check the BundleAggregationType enum for the list of possible values.
+    #[prost(string, optional, tag = "434939028")]
+    pub bundle_aggregation_type: ::core::option::Option<::prost::alloc::string::String>,
+    /// The operational status of the bundle interface.
+    /// Check the BundleOperationalStatus enum for the list of possible values.
+    #[prost(string, optional, tag = "106433500")]
+    pub bundle_operational_status: ::core::option::Option<
+        ::prost::alloc::string::String,
+    >,
     /// A list of InterconnectDiagnostics.LinkStatus objects, describing the status for each link on the Interconnect.
     #[prost(message, repeated, tag = "102977465")]
     pub links: ::prost::alloc::vec::Vec<InterconnectDiagnosticsLinkStatus>,
     /// The MAC address of the Interconnect's bundle interface.
     #[prost(string, optional, tag = "332540164")]
     pub mac_address: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// Nested message and enum types in `InterconnectDiagnostics`.
+pub mod interconnect_diagnostics {
+    /// The aggregation type of the bundle interface.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum BundleAggregationType {
+        /// A value indicating that the enum field is not set.
+        UndefinedBundleAggregationType = 0,
+        /// LACP is enabled.
+        Lacp = 27758925,
+        /// LACP is disabled.
+        Static = 50678873,
+    }
+    impl BundleAggregationType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                BundleAggregationType::UndefinedBundleAggregationType => {
+                    "UNDEFINED_BUNDLE_AGGREGATION_TYPE"
+                }
+                BundleAggregationType::Lacp => "BUNDLE_AGGREGATION_TYPE_LACP",
+                BundleAggregationType::Static => "BUNDLE_AGGREGATION_TYPE_STATIC",
+            }
+        }
+    }
+    /// The operational status of the bundle interface.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum BundleOperationalStatus {
+        /// A value indicating that the enum field is not set.
+        UndefinedBundleOperationalStatus = 0,
+        /// If bundleAggregationType is LACP: LACP is not established and/or all links in the bundle have DOWN operational status. If bundleAggregationType is STATIC: one or more links in the bundle has DOWN operational status.
+        Down = 453842693,
+        /// If bundleAggregationType is LACP: LACP is established and at least one link in the bundle has UP operational status. If bundleAggregationType is STATIC: all links in the bundle (typically just one) have UP operational status.
+        Up = 161366462,
+    }
+    impl BundleOperationalStatus {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                BundleOperationalStatus::UndefinedBundleOperationalStatus => {
+                    "UNDEFINED_BUNDLE_OPERATIONAL_STATUS"
+                }
+                BundleOperationalStatus::Down => "BUNDLE_OPERATIONAL_STATUS_DOWN",
+                BundleOperationalStatus::Up => "BUNDLE_OPERATIONAL_STATUS_UP",
+            }
+        }
+    }
 }
 /// Describing the ARP neighbor entries seen on this link
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -15466,6 +15637,10 @@ pub struct InterconnectDiagnosticsLinkStatus {
     pub google_demarc: ::core::option::Option<::prost::alloc::string::String>,
     #[prost(message, optional, tag = "361210415")]
     pub lacp_status: ::core::option::Option<InterconnectDiagnosticsLinkLacpStatus>,
+    /// The operational status of the link.
+    /// Check the OperationalStatus enum for the list of possible values.
+    #[prost(string, optional, tag = "201070847")]
+    pub operational_status: ::core::option::Option<::prost::alloc::string::String>,
     /// An InterconnectDiagnostics.LinkOpticalPower object, describing the current value and status of the received light level.
     #[prost(message, optional, tag = "244717279")]
     pub receiving_optical_power: ::core::option::Option<
@@ -15476,6 +15651,49 @@ pub struct InterconnectDiagnosticsLinkStatus {
     pub transmitting_optical_power: ::core::option::Option<
         InterconnectDiagnosticsLinkOpticalPower,
     >,
+}
+/// Nested message and enum types in `InterconnectDiagnosticsLinkStatus`.
+pub mod interconnect_diagnostics_link_status {
+    /// The operational status of the link.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum OperationalStatus {
+        /// A value indicating that the enum field is not set.
+        UndefinedOperationalStatus = 0,
+        /// The interface is unable to communicate with the remote end.
+        LinkOperationalStatusDown = 281653885,
+        /// The interface has low level communication with the remote end.
+        LinkOperationalStatusUp = 305879862,
+    }
+    impl OperationalStatus {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                OperationalStatus::UndefinedOperationalStatus => {
+                    "UNDEFINED_OPERATIONAL_STATUS"
+                }
+                OperationalStatus::LinkOperationalStatusDown => {
+                    "LINK_OPERATIONAL_STATUS_DOWN"
+                }
+                OperationalStatus::LinkOperationalStatusUp => {
+                    "LINK_OPERATIONAL_STATUS_UP"
+                }
+            }
+        }
+    }
 }
 /// Response to the list request, and contains a list of interconnects.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -16963,6 +17181,31 @@ pub struct ListManagedInstancesRegionInstanceGroupManagersRequest {
     #[prost(string, tag = "227560217")]
     pub project: ::prost::alloc::string::String,
     /// Name of the region scoping this request.
+    #[prost(string, tag = "138946292")]
+    pub region: ::prost::alloc::string::String,
+    /// Opt-in for partial success behavior which provides partial results in case of failure. The default value is false.
+    #[prost(bool, optional, tag = "517198390")]
+    pub return_partial_success: ::core::option::Option<bool>,
+}
+/// A request message for NetworkAttachments.List. See the method description for details.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListNetworkAttachmentsRequest {
+    /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
+    #[prost(string, optional, tag = "336120696")]
+    pub filter: ::core::option::Option<::prost::alloc::string::String>,
+    /// The maximum number of results per page that should be returned. If the number of available results is larger than `maxResults`, Compute Engine returns a `nextPageToken` that can be used to get the next page of results in subsequent list requests. Acceptable values are `0` to `500`, inclusive. (Default: `500`)
+    #[prost(uint32, optional, tag = "54715419")]
+    pub max_results: ::core::option::Option<u32>,
+    /// Sorts list results by a certain order. By default, results are returned in alphanumerical order based on the resource name. You can also sort results in descending order based on the creation timestamp using `orderBy="creationTimestamp desc"`. This sorts results based on the `creationTimestamp` field in reverse chronological order (newest result first). Use this to sort resources like operations so that the newest operation is returned first. Currently, only sorting by `name` or `creationTimestamp desc` is supported.
+    #[prost(string, optional, tag = "160562920")]
+    pub order_by: ::core::option::Option<::prost::alloc::string::String>,
+    /// Specifies a page token to use. Set `pageToken` to the `nextPageToken` returned by a previous list request to get the next page of results.
+    #[prost(string, optional, tag = "19994697")]
+    pub page_token: ::core::option::Option<::prost::alloc::string::String>,
+    /// Project ID for this request.
+    #[prost(string, tag = "227560217")]
+    pub project: ::prost::alloc::string::String,
+    /// Name of the region of this request.
     #[prost(string, tag = "138946292")]
     pub region: ::prost::alloc::string::String,
     /// Opt-in for partial success behavior which provides partial results in case of failure. The default value is false.
@@ -19521,6 +19764,222 @@ pub mod network {
         }
     }
 }
+/// NetworkAttachments A network attachment resource ...
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct NetworkAttachment {
+    /// [Output Only] An array of connections for all the producers connected to this network attachment.
+    #[prost(message, repeated, tag = "326078813")]
+    pub connection_endpoints: ::prost::alloc::vec::Vec<
+        NetworkAttachmentConnectedEndpoint,
+    >,
+    ///
+    /// Check the ConnectionPreference enum for the list of possible values.
+    #[prost(string, optional, tag = "285818076")]
+    pub connection_preference: ::core::option::Option<::prost::alloc::string::String>,
+    /// [Output Only] Creation timestamp in RFC3339 text format.
+    #[prost(string, optional, tag = "30525366")]
+    pub creation_timestamp: ::core::option::Option<::prost::alloc::string::String>,
+    /// An optional description of this resource. Provide this property when you create the resource.
+    #[prost(string, optional, tag = "422937596")]
+    pub description: ::core::option::Option<::prost::alloc::string::String>,
+    /// [Output Only] Fingerprint of this resource. A hash of the contents stored in this object. This field is used in optimistic locking. An up-to-date fingerprint must be provided in order to patch.
+    #[prost(string, optional, tag = "234678500")]
+    pub fingerprint: ::core::option::Option<::prost::alloc::string::String>,
+    /// [Output Only] The unique identifier for the resource type. The server generates this identifier.
+    #[prost(uint64, optional, tag = "3355")]
+    pub id: ::core::option::Option<u64>,
+    /// [Output Only] Type of the resource.
+    #[prost(string, optional, tag = "3292052")]
+    pub kind: ::core::option::Option<::prost::alloc::string::String>,
+    /// Name of the resource. Provided by the client when the resource is created. The name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression `\[a-z]([-a-z0-9]*[a-z0-9\])?` which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash.
+    #[prost(string, optional, tag = "3373707")]
+    pub name: ::core::option::Option<::prost::alloc::string::String>,
+    /// [Output Only] The URL of the network which the Network Attachment belongs to.
+    #[prost(string, optional, tag = "232872494")]
+    pub network: ::core::option::Option<::prost::alloc::string::String>,
+    /// Projects that are allowed to connect to this network attachment. The project can be specified using its id or number.
+    #[prost(string, repeated, tag = "202804523")]
+    pub producer_accept_lists: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Projects that are not allowed to connect to this network attachment. The project can be specified using its id or number.
+    #[prost(string, repeated, tag = "4112002")]
+    pub producer_reject_lists: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// [Output Only] URL of the region where the network attachment resides. This field applies only to the region resource. You must specify this field as part of the HTTP request URL. It is not settable as a field in the request body.
+    #[prost(string, optional, tag = "138946292")]
+    pub region: ::core::option::Option<::prost::alloc::string::String>,
+    /// [Output Only] Server-defined URL for the resource.
+    #[prost(string, optional, tag = "456214797")]
+    pub self_link: ::core::option::Option<::prost::alloc::string::String>,
+    /// [Output Only] Server-defined URL for this resource's resource id.
+    #[prost(string, optional, tag = "44520962")]
+    pub self_link_with_id: ::core::option::Option<::prost::alloc::string::String>,
+    /// An array of URLs where each entry is the URL of a subnet provided by the service consumer to use for endpoints in the producers that connect to this network attachment.
+    #[prost(string, repeated, tag = "415853125")]
+    pub subnetworks: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Nested message and enum types in `NetworkAttachment`.
+pub mod network_attachment {
+    ///
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ConnectionPreference {
+        /// A value indicating that the enum field is not set.
+        UndefinedConnectionPreference = 0,
+        AcceptAutomatic = 75250580,
+        AcceptManual = 373061341,
+        Invalid = 530283991,
+    }
+    impl ConnectionPreference {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                ConnectionPreference::UndefinedConnectionPreference => {
+                    "UNDEFINED_CONNECTION_PREFERENCE"
+                }
+                ConnectionPreference::AcceptAutomatic => "ACCEPT_AUTOMATIC",
+                ConnectionPreference::AcceptManual => "ACCEPT_MANUAL",
+                ConnectionPreference::Invalid => "INVALID",
+            }
+        }
+    }
+}
+/// Contains a list of NetworkAttachmentsScopedList.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct NetworkAttachmentAggregatedList {
+    /// [Output Only] Unique identifier for the resource; defined by the server.
+    #[prost(string, optional, tag = "3355")]
+    pub id: ::core::option::Option<::prost::alloc::string::String>,
+    /// A list of NetworkAttachmentsScopedList resources.
+    #[prost(map = "string, message", tag = "100526016")]
+    pub items: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        NetworkAttachmentsScopedList,
+    >,
+    #[prost(string, optional, tag = "3292052")]
+    pub kind: ::core::option::Option<::prost::alloc::string::String>,
+    /// [Output Only] This token allows you to get the next page of results for list requests. If the number of results is larger than maxResults, use the nextPageToken as a value for the query parameter pageToken in the next list request. Subsequent list requests will have their own nextPageToken to continue paging through the results.
+    #[prost(string, optional, tag = "79797525")]
+    pub next_page_token: ::core::option::Option<::prost::alloc::string::String>,
+    /// [Output Only] Server-defined URL for this resource.
+    #[prost(string, optional, tag = "456214797")]
+    pub self_link: ::core::option::Option<::prost::alloc::string::String>,
+    /// [Output Only] Informational warning message.
+    #[prost(message, optional, tag = "50704284")]
+    pub warning: ::core::option::Option<Warning>,
+}
+/// [Output Only] A connection connected to this network attachment.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct NetworkAttachmentConnectedEndpoint {
+    /// The IP address assigned to the producer instance network interface. This value will be a range in case of Serverless.
+    #[prost(string, optional, tag = "406272220")]
+    pub ip_address: ::core::option::Option<::prost::alloc::string::String>,
+    /// The project id or number of the interface to which the IP was assigned.
+    #[prost(string, optional, tag = "349783336")]
+    pub project_id_or_num: ::core::option::Option<::prost::alloc::string::String>,
+    /// Alias IP ranges from the same subnetwork
+    #[prost(string, repeated, tag = "117184788")]
+    pub secondary_ip_cidr_ranges: ::prost::alloc::vec::Vec<
+        ::prost::alloc::string::String,
+    >,
+    /// The status of a connected endpoint to this network attachment.
+    /// Check the Status enum for the list of possible values.
+    #[prost(string, optional, tag = "181260274")]
+    pub status: ::core::option::Option<::prost::alloc::string::String>,
+    /// The subnetwork used to assign the IP to the producer instance network interface.
+    #[prost(string, optional, tag = "307827694")]
+    pub subnetwork: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// Nested message and enum types in `NetworkAttachmentConnectedEndpoint`.
+pub mod network_attachment_connected_endpoint {
+    /// The status of a connected endpoint to this network attachment.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Status {
+        /// A value indicating that the enum field is not set.
+        UndefinedStatus = 0,
+        /// The consumer allows traffic from the producer to reach its VPC.
+        Accepted = 246714279,
+        /// The consumer network attachment no longer exists.
+        Closed = 380163436,
+        /// The consumer needs to take further action before traffic can be served.
+        NeedsAttention = 344491452,
+        /// The consumer neither allows nor prohibits traffic from the producer to reach its VPC.
+        Pending = 35394935,
+        /// The consumer prohibits traffic from the producer to reach its VPC.
+        Rejected = 174130302,
+        Unspecified = 42133066,
+    }
+    impl Status {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Status::UndefinedStatus => "UNDEFINED_STATUS",
+                Status::Accepted => "ACCEPTED",
+                Status::Closed => "CLOSED",
+                Status::NeedsAttention => "NEEDS_ATTENTION",
+                Status::Pending => "PENDING",
+                Status::Rejected => "REJECTED",
+                Status::Unspecified => "STATUS_UNSPECIFIED",
+            }
+        }
+    }
+}
+///
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct NetworkAttachmentList {
+    /// [Output Only] Unique identifier for the resource; defined by the server.
+    #[prost(string, optional, tag = "3355")]
+    pub id: ::core::option::Option<::prost::alloc::string::String>,
+    /// A list of NetworkAttachment resources.
+    #[prost(message, repeated, tag = "100526016")]
+    pub items: ::prost::alloc::vec::Vec<NetworkAttachment>,
+    #[prost(string, optional, tag = "3292052")]
+    pub kind: ::core::option::Option<::prost::alloc::string::String>,
+    /// [Output Only] This token allows you to get the next page of results for list requests. If the number of results is larger than maxResults, use the nextPageToken as a value for the query parameter pageToken in the next list request. Subsequent list requests will have their own nextPageToken to continue paging through the results.
+    #[prost(string, optional, tag = "79797525")]
+    pub next_page_token: ::core::option::Option<::prost::alloc::string::String>,
+    /// [Output Only] Server-defined URL for this resource.
+    #[prost(string, optional, tag = "456214797")]
+    pub self_link: ::core::option::Option<::prost::alloc::string::String>,
+    /// [Output Only] Informational warning message.
+    #[prost(message, optional, tag = "50704284")]
+    pub warning: ::core::option::Option<Warning>,
+}
+///
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct NetworkAttachmentsScopedList {
+    /// A list of NetworkAttachments contained in this scope.
+    #[prost(message, repeated, tag = "521514783")]
+    pub network_attachments: ::prost::alloc::vec::Vec<NetworkAttachment>,
+    /// Informational warning which replaces the list of network attachments when the list is empty.
+    #[prost(message, optional, tag = "50704284")]
+    pub warning: ::core::option::Option<Warning>,
+}
 /// Represents a Google Cloud Armor network edge security service resource.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NetworkEdgeSecurityService {
@@ -21241,7 +21700,7 @@ pub struct NotificationEndpointGrpcSettings {
     /// Optional. If specified, this field is used to populate the "name" field in gRPC requests.
     #[prost(string, optional, tag = "300358300")]
     pub payload_name: ::core::option::Option<::prost::alloc::string::String>,
-    /// Optional. This field is used to configure how often to send a full update of all non-healthy backends. If unspecified, full updates are not sent. If specified, must be in the range between 600 seconds to 3600 seconds. Nanos are disallowed.
+    /// Optional. This field is used to configure how often to send a full update of all non-healthy backends. If unspecified, full updates are not sent. If specified, must be in the range between 600 seconds to 3600 seconds. Nanos are disallowed. Can only be set for regional notification endpoints.
     #[prost(message, optional, tag = "478288969")]
     pub resend_interval: ::core::option::Option<Duration>,
     /// How much time (in seconds) is spent attempting notification retries until a successful response is received. Default is 30s. Limit is 20m (1200s). Must be a positive number.
@@ -22943,6 +23402,10 @@ pub struct Project {
     /// The naming prefix for daily usage reports and the Google Cloud Storage bucket where they are stored.
     #[prost(message, optional, tag = "347543874")]
     pub usage_export_location: ::core::option::Option<UsageExportLocation>,
+    /// [Output Only] Default internal DNS setting used by VMs running in this project.
+    /// Check the VmDnsSetting enum for the list of possible values.
+    #[prost(string, optional, tag = "58856370")]
+    pub vm_dns_setting: ::core::option::Option<::prost::alloc::string::String>,
     /// [Output Only] The role this project has in a shared VPC configuration. Currently, only projects with the host role, which is specified by the value HOST, are differentiated.
     /// Check the XpnProjectStatus enum for the list of possible values.
     #[prost(string, optional, tag = "228419265")]
@@ -22991,6 +23454,42 @@ pub mod project {
                 DefaultNetworkTier::StandardOverridesFixedStandard => {
                     "STANDARD_OVERRIDES_FIXED_STANDARD"
                 }
+            }
+        }
+    }
+    /// [Output Only] Default internal DNS setting used by VMs running in this project.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum VmDnsSetting {
+        /// A value indicating that the enum field is not set.
+        UndefinedVmDnsSetting = 0,
+        GlobalDefault = 345419141,
+        UnspecifiedVmDnsSetting = 35691930,
+        ZonalDefault = 368475782,
+        ZonalOnly = 521198951,
+    }
+    impl VmDnsSetting {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                VmDnsSetting::UndefinedVmDnsSetting => "UNDEFINED_VM_DNS_SETTING",
+                VmDnsSetting::GlobalDefault => "GLOBAL_DEFAULT",
+                VmDnsSetting::UnspecifiedVmDnsSetting => "UNSPECIFIED_VM_DNS_SETTING",
+                VmDnsSetting::ZonalDefault => "ZONAL_DEFAULT",
+                VmDnsSetting::ZonalOnly => "ZONAL_ONLY",
             }
         }
     }
@@ -23543,8 +24042,12 @@ pub mod quota {
         ExternalVpnGateways = 272457134,
         Firewalls = 374485843,
         ForwardingRules = 432668949,
+        GlobalExternalManagedBackendServices = 164566753,
         GlobalExternalManagedForwardingRules = 327611949,
+        GlobalExternalProxyLbBackendServices = 400256169,
         GlobalInternalAddresses = 42738332,
+        GlobalInternalManagedBackendServices = 256608303,
+        GlobalInternalTrafficDirectorBackendServices = 323514196,
         GpusAllRegions = 39387177,
         HealthChecks = 289347502,
         Images = 15562360,
@@ -23604,7 +24107,11 @@ pub mod quota {
         PublicAdvertisedPrefixes = 471371980,
         PublicDelegatedPrefixes = 532465974,
         RegionalAutoscalers = 29363772,
+        RegionalExternalManagedBackendServices = 4240989,
+        RegionalExternalNetworkLbBackendServices = 409564525,
         RegionalInstanceGroupManagers = 37543696,
+        RegionalInternalLbBackendServices = 137983760,
+        RegionalInternalManagedBackendServices = 96282539,
         Reservations = 32644647,
         ResourcePolicies = 83955297,
         Routers = 493018666,
@@ -23692,10 +24199,22 @@ pub mod quota {
                 Metric::ExternalVpnGateways => "EXTERNAL_VPN_GATEWAYS",
                 Metric::Firewalls => "FIREWALLS",
                 Metric::ForwardingRules => "FORWARDING_RULES",
+                Metric::GlobalExternalManagedBackendServices => {
+                    "GLOBAL_EXTERNAL_MANAGED_BACKEND_SERVICES"
+                }
                 Metric::GlobalExternalManagedForwardingRules => {
                     "GLOBAL_EXTERNAL_MANAGED_FORWARDING_RULES"
                 }
+                Metric::GlobalExternalProxyLbBackendServices => {
+                    "GLOBAL_EXTERNAL_PROXY_LB_BACKEND_SERVICES"
+                }
                 Metric::GlobalInternalAddresses => "GLOBAL_INTERNAL_ADDRESSES",
+                Metric::GlobalInternalManagedBackendServices => {
+                    "GLOBAL_INTERNAL_MANAGED_BACKEND_SERVICES"
+                }
+                Metric::GlobalInternalTrafficDirectorBackendServices => {
+                    "GLOBAL_INTERNAL_TRAFFIC_DIRECTOR_BACKEND_SERVICES"
+                }
                 Metric::GpusAllRegions => "GPUS_ALL_REGIONS",
                 Metric::HealthChecks => "HEALTH_CHECKS",
                 Metric::Images => "IMAGES",
@@ -23771,8 +24290,20 @@ pub mod quota {
                 Metric::PublicAdvertisedPrefixes => "PUBLIC_ADVERTISED_PREFIXES",
                 Metric::PublicDelegatedPrefixes => "PUBLIC_DELEGATED_PREFIXES",
                 Metric::RegionalAutoscalers => "REGIONAL_AUTOSCALERS",
+                Metric::RegionalExternalManagedBackendServices => {
+                    "REGIONAL_EXTERNAL_MANAGED_BACKEND_SERVICES"
+                }
+                Metric::RegionalExternalNetworkLbBackendServices => {
+                    "REGIONAL_EXTERNAL_NETWORK_LB_BACKEND_SERVICES"
+                }
                 Metric::RegionalInstanceGroupManagers => {
                     "REGIONAL_INSTANCE_GROUP_MANAGERS"
+                }
+                Metric::RegionalInternalLbBackendServices => {
+                    "REGIONAL_INTERNAL_LB_BACKEND_SERVICES"
+                }
+                Metric::RegionalInternalManagedBackendServices => {
+                    "REGIONAL_INTERNAL_MANAGED_BACKEND_SERVICES"
                 }
                 Metric::Reservations => "RESERVATIONS",
                 Metric::ResourcePolicies => "RESOURCE_POLICIES",
@@ -24802,6 +25333,12 @@ pub struct Reservation {
     /// The name of the resource, provided by the client when initially creating the resource. The resource name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression `\[a-z]([-a-z0-9]*[a-z0-9\])?` which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash.
     #[prost(string, optional, tag = "3373707")]
     pub name: ::core::option::Option<::prost::alloc::string::String>,
+    /// Resource policies to be added to this reservation. The key is defined by user, and the value is resource policy url. This is to define placement policy with reservation.
+    #[prost(map = "string, string", tag = "22220385")]
+    pub resource_policies: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
     /// [Output Only] Reserved for future use.
     #[prost(bool, optional, tag = "480964267")]
     pub satisfies_pzs: ::core::option::Option<bool>,
@@ -25119,14 +25656,14 @@ pub struct ResourceCommitment {
     /// The amount of the resource purchased (in a type-dependent unit, such as bytes). For vCPUs, this can just be an integer. For memory, this must be provided in MB. Memory must be a multiple of 256 MB, with up to 6.5GB of memory per every vCPU.
     #[prost(int64, optional, tag = "196759640")]
     pub amount: ::core::option::Option<i64>,
-    /// Type of resource for which this commitment applies. Possible values are VCPU and MEMORY
+    /// Type of resource for which this commitment applies. Possible values are VCPU, MEMORY, LOCAL_SSD, and ACCELERATOR.
     /// Check the Type enum for the list of possible values.
     #[prost(string, optional, tag = "3575610")]
     pub r#type: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Nested message and enum types in `ResourceCommitment`.
 pub mod resource_commitment {
-    /// Type of resource for which this commitment applies. Possible values are VCPU and MEMORY
+    /// Type of resource for which this commitment applies. Possible values are VCPU, MEMORY, LOCAL_SSD, and ACCELERATOR.
     #[derive(
         Clone,
         Copy,
@@ -28576,6 +29113,9 @@ pub struct ServiceAttachmentConsumerProjectLimit {
     /// The value of the limit to set.
     #[prost(uint32, optional, tag = "131403546")]
     pub connection_limit: ::core::option::Option<u32>,
+    /// The network URL for the network to set the limit for.
+    #[prost(string, optional, tag = "207194078")]
+    pub network_url: ::core::option::Option<::prost::alloc::string::String>,
     /// The project id or number for the project to set the limit for.
     #[prost(string, optional, tag = "349783336")]
     pub project_id_or_num: ::core::option::Option<::prost::alloc::string::String>,
@@ -28926,6 +29466,24 @@ pub struct SetIamPolicyMachineImageRequest {
     /// Project ID for this request.
     #[prost(string, tag = "227560217")]
     pub project: ::prost::alloc::string::String,
+    /// Name or id of the resource for this request.
+    #[prost(string, tag = "195806222")]
+    pub resource: ::prost::alloc::string::String,
+}
+/// A request message for NetworkAttachments.SetIamPolicy. See the method description for details.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SetIamPolicyNetworkAttachmentRequest {
+    /// Project ID for this request.
+    #[prost(string, tag = "227560217")]
+    pub project: ::prost::alloc::string::String,
+    /// The name of the region for this request.
+    #[prost(string, tag = "138946292")]
+    pub region: ::prost::alloc::string::String,
+    /// The body resource for this request
+    #[prost(message, optional, tag = "276489091")]
+    pub region_set_policy_request_resource: ::core::option::Option<
+        RegionSetPolicyRequest,
+    >,
     /// Name or id of the resource for this request.
     #[prost(string, tag = "195806222")]
     pub resource: ::prost::alloc::string::String,
@@ -31063,6 +31621,9 @@ pub mod stateful_policy_preserved_state_disk_device {
 /// A request message for Instances.Stop. See the method description for details.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StopInstanceRequest {
+    /// If true, discard the contents of any attached localSSD partitions. Default value is false.
+    #[prost(bool, optional, tag = "319517903")]
+    pub discard_local_ssd: ::core::option::Option<bool>,
     /// Name of the instance resource to stop.
     #[prost(string, tag = "18257045")]
     pub instance: ::prost::alloc::string::String,
@@ -31625,6 +32186,9 @@ pub mod subsetting {
 /// A request message for Instances.Suspend. See the method description for details.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SuspendInstanceRequest {
+    /// If true, discard the contents of any attached localSSD partitions. Default value is false.
+    #[prost(bool, optional, tag = "319517903")]
+    pub discard_local_ssd: ::core::option::Option<bool>,
     /// Name of the instance resource to suspend.
     #[prost(string, tag = "18257045")]
     pub instance: ::prost::alloc::string::String,
@@ -33085,6 +33649,24 @@ pub struct TestIamPermissionsMachineImageRequest {
     /// Project ID for this request.
     #[prost(string, tag = "227560217")]
     pub project: ::prost::alloc::string::String,
+    /// Name or id of the resource for this request.
+    #[prost(string, tag = "195806222")]
+    pub resource: ::prost::alloc::string::String,
+    /// The body resource for this request
+    #[prost(message, optional, tag = "439214758")]
+    pub test_permissions_request_resource: ::core::option::Option<
+        TestPermissionsRequest,
+    >,
+}
+/// A request message for NetworkAttachments.TestIamPermissions. See the method description for details.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TestIamPermissionsNetworkAttachmentRequest {
+    /// Project ID for this request.
+    #[prost(string, tag = "227560217")]
+    pub project: ::prost::alloc::string::String,
+    /// The name of the region for this request.
+    #[prost(string, tag = "138946292")]
+    pub region: ::prost::alloc::string::String,
     /// Name or id of the resource for this request.
     #[prost(string, tag = "195806222")]
     pub resource: ::prost::alloc::string::String,
@@ -42194,7 +42776,7 @@ pub mod interconnects_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
-        /// Deletes the specified interconnect.
+        /// Deletes the specified Interconnect.
         pub async fn delete(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteInterconnectRequest>,
@@ -42214,7 +42796,7 @@ pub mod interconnects_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        /// Returns the specified interconnect. Get a list of available interconnects by making a list() request.
+        /// Returns the specified Interconnect. Get a list of available Interconnects by making a list() request.
         pub async fn get(
             &mut self,
             request: impl tonic::IntoRequest<super::GetInterconnectRequest>,
@@ -42234,7 +42816,7 @@ pub mod interconnects_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        /// Returns the interconnectDiagnostics for the specified interconnect.
+        /// Returns the interconnectDiagnostics for the specified Interconnect.
         pub async fn get_diagnostics(
             &mut self,
             request: impl tonic::IntoRequest<super::GetDiagnosticsInterconnectRequest>,
@@ -42257,7 +42839,7 @@ pub mod interconnects_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        /// Creates a Interconnect in the specified project using the data included in the request.
+        /// Creates an Interconnect in the specified project using the data included in the request.
         pub async fn insert(
             &mut self,
             request: impl tonic::IntoRequest<super::InsertInterconnectRequest>,
@@ -42277,7 +42859,7 @@ pub mod interconnects_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        /// Retrieves the list of interconnect available to the specified project.
+        /// Retrieves the list of Interconnects available to the specified project.
         pub async fn list(
             &mut self,
             request: impl tonic::IntoRequest<super::ListInterconnectsRequest>,
@@ -42297,7 +42879,7 @@ pub mod interconnects_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        /// Updates the specified interconnect with the data included in the request. This method supports PATCH semantics and uses the JSON merge patch format and processing rules.
+        /// Updates the specified Interconnect with the data included in the request. This method supports PATCH semantics and uses the JSON merge patch format and processing rules.
         pub async fn patch(
             &mut self,
             request: impl tonic::IntoRequest<super::PatchInterconnectRequest>,
@@ -43004,6 +43586,245 @@ pub mod machine_types_client {
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.compute.v1.MachineTypes/List",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+    }
+}
+/// Generated client implementations.
+pub mod network_attachments_client {
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// The NetworkAttachments API.
+    #[derive(Debug, Clone)]
+    pub struct NetworkAttachmentsClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl NetworkAttachmentsClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> NetworkAttachmentsClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> NetworkAttachmentsClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+            >>::Error: Into<StdError> + Send + Sync,
+        {
+            NetworkAttachmentsClient::new(InterceptedService::new(inner, interceptor))
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Retrieves the list of all NetworkAttachment resources, regional and global, available to the specified project.
+        pub async fn aggregated_list(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::AggregatedListNetworkAttachmentsRequest,
+            >,
+        ) -> Result<
+            tonic::Response<super::NetworkAttachmentAggregatedList>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.compute.v1.NetworkAttachments/AggregatedList",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Deletes the specified NetworkAttachment in the given scope
+        pub async fn delete(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteNetworkAttachmentRequest>,
+        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.compute.v1.NetworkAttachments/Delete",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Returns the specified NetworkAttachment resource in the given scope.
+        pub async fn get(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetNetworkAttachmentRequest>,
+        ) -> Result<tonic::Response<super::NetworkAttachment>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.compute.v1.NetworkAttachments/Get",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Gets the access control policy for a resource. May be empty if no such policy or resource exists.
+        pub async fn get_iam_policy(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetIamPolicyNetworkAttachmentRequest>,
+        ) -> Result<tonic::Response<super::Policy>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.compute.v1.NetworkAttachments/GetIamPolicy",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Creates a NetworkAttachment in the specified project in the given scope using the parameters that are included in the request.
+        pub async fn insert(
+            &mut self,
+            request: impl tonic::IntoRequest<super::InsertNetworkAttachmentRequest>,
+        ) -> Result<tonic::Response<super::Operation>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.compute.v1.NetworkAttachments/Insert",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Lists the NetworkAttachments for a project in the given scope.
+        pub async fn list(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListNetworkAttachmentsRequest>,
+        ) -> Result<tonic::Response<super::NetworkAttachmentList>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.compute.v1.NetworkAttachments/List",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Sets the access control policy on the specified resource. Replaces any existing policy.
+        pub async fn set_iam_policy(
+            &mut self,
+            request: impl tonic::IntoRequest<super::SetIamPolicyNetworkAttachmentRequest>,
+        ) -> Result<tonic::Response<super::Policy>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.compute.v1.NetworkAttachments/SetIamPolicy",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Returns permissions that a caller has on the specified resource.
+        pub async fn test_iam_permissions(
+            &mut self,
+            request: impl tonic::IntoRequest<
+                super::TestIamPermissionsNetworkAttachmentRequest,
+            >,
+        ) -> Result<tonic::Response<super::TestPermissionsResponse>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.compute.v1.NetworkAttachments/TestIamPermissions",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }

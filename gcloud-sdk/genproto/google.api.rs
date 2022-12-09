@@ -731,6 +731,7 @@ impl LaunchStage {
 pub struct CommonLanguageSettings {
     /// Link to automatically generated reference documentation.  Example:
     /// <https://cloud.google.com/nodejs/docs/reference/asset/latest>
+    #[deprecated]
     #[prost(string, tag = "1")]
     pub reference_docs_uri: ::prost::alloc::string::String,
     /// The destination where API teams want this client library to be published.

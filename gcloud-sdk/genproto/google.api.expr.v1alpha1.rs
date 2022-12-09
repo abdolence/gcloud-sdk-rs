@@ -92,6 +92,14 @@ pub mod expr {
         /// The elements part of the list.
         #[prost(message, repeated, tag = "1")]
         pub elements: ::prost::alloc::vec::Vec<super::Expr>,
+        /// The indices within the elements list which are marked as optional
+        /// elements.
+        ///
+        /// When an optional-typed value is present, the value it contains
+        /// is included in the list. If the optional-typed value is absent, the list
+        /// element is omitted from the CreateList result.
+        #[prost(int32, repeated, tag = "2")]
+        pub optional_indices: ::prost::alloc::vec::Vec<i32>,
     }
     /// A map or message creation expression.
     ///
