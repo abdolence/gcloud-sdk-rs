@@ -1,4 +1,5 @@
 /// Metadata for any related URL information.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RelatedUrl {
     /// Specific URL associated with the resource.
@@ -30,6 +31,7 @@ pub struct RelatedUrl {
 /// provided payload (e.g. a `payload` field on the proto message that holds
 /// this Signature, or the canonical serialization of the proto message that
 /// holds this signature).
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Signature {
     /// The content of the signature, an opaque bytestring.
@@ -63,6 +65,7 @@ pub struct Signature {
 /// MUST match
 /// <https://github.com/secure-systems-lab/dsse/blob/master/envelope.proto.> An
 /// authenticated message of arbitrary type.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Envelope {
     #[prost(bytes = "vec", tag = "1")]
@@ -72,6 +75,7 @@ pub struct Envelope {
     #[prost(message, repeated, tag = "3")]
     pub signatures: ::prost::alloc::vec::Vec<EnvelopeSignature>,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EnvelopeSignature {
     #[prost(bytes = "vec", tag = "1")]
@@ -80,6 +84,7 @@ pub struct EnvelopeSignature {
     pub keyid: ::prost::alloc::string::String,
 }
 /// Indicates the location at which a package was found.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FileLocation {
     /// For jars that are contained inside .war files, this filepath
@@ -88,6 +93,7 @@ pub struct FileLocation {
     pub file_path: ::prost::alloc::string::String,
 }
 /// License information.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct License {
     /// Often a single license can be used to represent the licensing terms.
@@ -102,6 +108,7 @@ pub struct License {
     pub comments: ::prost::alloc::string::String,
 }
 /// Digest information.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Digest {
     /// `SHA1`, `SHA512` etc.
@@ -167,6 +174,7 @@ impl NoteKind {
 /// to attach an occurrence to a given note. It also provides a single point of
 /// lookup to find all attached attestation occurrences, even if they don't all
 /// live in the same project.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AttestationNote {
     /// Hint hints at the purpose of the attestation authority.
@@ -182,6 +190,7 @@ pub mod attestation_note {
     /// output. Note that these hints should not be used to look up authorities in
     /// security sensitive contexts, such as when looking up attestations to
     /// verify.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Hint {
         /// Required. The human readable name of this attestation authority, for
@@ -190,6 +199,7 @@ pub mod attestation_note {
         pub human_readable_name: ::prost::alloc::string::String,
     }
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Jwt {
     /// The compact encoding of a JWS, which is always three base64 encoded strings
@@ -206,6 +216,7 @@ pub struct Jwt {
 /// this attestation if you already know the authority and artifact to be
 /// verified) and intent (for which authority this attestation was intended to
 /// sign.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AttestationOccurrence {
     /// Required. The serialized payload that is verified by one or more
@@ -266,6 +277,7 @@ impl Severity {
 /// Steps taken to build the artifact.
 /// For a TaskRun, typically each container corresponds to one step in the
 /// recipe.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Recipe {
     /// URI indicating what type of recipe was performed. It determines the meaning
@@ -303,6 +315,7 @@ pub struct Recipe {
 }
 /// Indicates that the builder claims certain fields in this message to be
 /// complete.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Completeness {
     /// If true, the builder claims that recipe.arguments is complete, meaning that
@@ -319,6 +332,7 @@ pub struct Completeness {
     pub materials: bool,
 }
 /// Other properties of the build.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Metadata {
     /// Identifies the particular build invocation, which can be useful for finding
@@ -341,11 +355,13 @@ pub struct Metadata {
     #[prost(bool, tag = "5")]
     pub reproducible: bool,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BuilderConfig {
     #[prost(string, tag = "1")]
     pub id: ::prost::alloc::string::String,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InTotoProvenance {
     /// required
@@ -368,6 +384,7 @@ pub struct InTotoProvenance {
     #[prost(string, repeated, tag = "4")]
     pub materials: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SlsaProvenance {
     /// required
@@ -395,6 +412,7 @@ pub mod slsa_provenance {
     /// Steps taken to build the artifact.
     /// For a TaskRun, typically each container corresponds to one step in the
     /// recipe.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SlsaRecipe {
         /// URI indicating what type of recipe was performed. It determines the
@@ -432,6 +450,7 @@ pub mod slsa_provenance {
     }
     /// Indicates that the builder claims certain fields in this message to be
     /// complete.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SlsaCompleteness {
         /// If true, the builder claims that recipe.arguments is complete, meaning
@@ -448,6 +467,7 @@ pub mod slsa_provenance {
         pub materials: bool,
     }
     /// Other properties of the build.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SlsaMetadata {
         /// Identifies the particular build invocation, which can be useful for
@@ -470,11 +490,13 @@ pub mod slsa_provenance {
         #[prost(bool, tag = "5")]
         pub reproducible: bool,
     }
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SlsaBuilder {
         #[prost(string, tag = "1")]
         pub id: ::prost::alloc::string::String,
     }
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Material {
         #[prost(string, tag = "1")]
@@ -487,6 +509,7 @@ pub mod slsa_provenance {
     }
 }
 /// See full explanation of fields at slsa.dev/provenance/v0.2.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SlsaProvenanceZeroTwo {
     #[prost(message, optional, tag = "1")]
@@ -506,6 +529,7 @@ pub struct SlsaProvenanceZeroTwo {
 pub mod slsa_provenance_zero_two {
     /// Identifies the entity that executed the recipe, which is trusted to have
     /// correctly performed the operation and populated this provenance.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SlsaBuilder {
         #[prost(string, tag = "1")]
@@ -513,6 +537,7 @@ pub mod slsa_provenance_zero_two {
     }
     /// The collection of artifacts that influenced the build including sources,
     /// dependencies, build tools, base images, and so on.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SlsaMaterial {
         #[prost(string, tag = "1")]
@@ -524,6 +549,7 @@ pub mod slsa_provenance_zero_two {
         >,
     }
     /// Identifies the event that kicked off the build.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SlsaInvocation {
         #[prost(message, optional, tag = "1")]
@@ -535,6 +561,7 @@ pub mod slsa_provenance_zero_two {
     }
     /// Describes where the config file that kicked off the build came from.
     /// This is effectively a pointer to the source where buildConfig came from.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SlsaConfigSource {
         #[prost(string, tag = "1")]
@@ -548,6 +575,7 @@ pub mod slsa_provenance_zero_two {
         pub entry_point: ::prost::alloc::string::String,
     }
     /// Other properties of the build.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SlsaMetadata {
         #[prost(string, tag = "1")]
@@ -563,6 +591,7 @@ pub mod slsa_provenance_zero_two {
     }
     /// Indicates that the builder claims certain fields in this message to be
     /// complete.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SlsaCompleteness {
         #[prost(bool, tag = "1")]
@@ -577,6 +606,7 @@ pub mod slsa_provenance_zero_two {
 /// <https://github.com/in-toto/attestation/tree/main/spec#statement> The
 /// serialized InTotoStatement will be stored as Envelope.payload.
 /// Envelope.payloadType is always "application/vnd.in-toto+json".
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InTotoStatement {
     /// Always `<https://in-toto.io/Statement/v0.1`.>
@@ -592,6 +622,7 @@ pub struct InTotoStatement {
 }
 /// Nested message and enum types in `InTotoStatement`.
 pub mod in_toto_statement {
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Predicate {
         #[prost(message, tag = "4")]
@@ -602,6 +633,7 @@ pub mod in_toto_statement {
         SlsaProvenanceZeroTwo(super::SlsaProvenanceZeroTwo),
     }
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Subject {
     #[prost(string, tag = "1")]
@@ -618,6 +650,7 @@ pub struct Subject {
 }
 /// Provenance of a build. Contains all information needed to verify the full
 /// details about the build from source to completion.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BuildProvenance {
     /// Required. Unique identifier of the build.
@@ -667,6 +700,7 @@ pub struct BuildProvenance {
     pub builder_version: ::prost::alloc::string::String,
 }
 /// Source describes the location of the source used for the build.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Source {
     /// If provided, the input binary artifacts for the build came from this
@@ -698,6 +732,7 @@ pub struct Source {
 }
 /// Container message for hashes of byte content of files, used in source
 /// messages to verify integrity of source input to the build.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FileHashes {
     /// Required. Collection of file hashes.
@@ -705,6 +740,7 @@ pub struct FileHashes {
     pub file_hash: ::prost::alloc::vec::Vec<Hash>,
 }
 /// Container message for hash values.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Hash {
     /// Required. The type of hash that was performed, e.g. "SHA-256".
@@ -715,6 +751,7 @@ pub struct Hash {
     pub value: ::prost::alloc::vec::Vec<u8>,
 }
 /// Command describes a step performed as part of the build pipeline.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Command {
     /// Required. Name of the command, as presented on the command line, or if the
@@ -740,6 +777,7 @@ pub struct Command {
     pub wait_for: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Artifact describes a build product.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Artifact {
     /// Hash or checksum value of a binary, or Docker Registry 2.0 digest of a
@@ -760,6 +798,7 @@ pub struct Artifact {
 }
 /// A SourceContext is a reference to a tree of files. A SourceContext together
 /// with a path point to a unique revision of a single file or directory.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SourceContext {
     /// Labels with user defined metadata.
@@ -775,6 +814,7 @@ pub struct SourceContext {
 /// Nested message and enum types in `SourceContext`.
 pub mod source_context {
     /// A SourceContext can refer any one of the following types of repositories.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Context {
         /// A SourceContext referring to a revision in a Google Cloud Source Repo.
@@ -789,6 +829,7 @@ pub mod source_context {
     }
 }
 /// An alias to a repo revision.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AliasContext {
     /// The alias kind.
@@ -841,6 +882,7 @@ pub mod alias_context {
 }
 /// A CloudRepoSourceContext denotes a particular revision in a Google Cloud
 /// Source Repo.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CloudRepoSourceContext {
     /// The ID of the repo.
@@ -855,6 +897,7 @@ pub struct CloudRepoSourceContext {
 pub mod cloud_repo_source_context {
     /// A revision in a Cloud Repo can be identified by either its revision ID or
     /// its alias.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Revision {
         /// A revision ID.
@@ -866,6 +909,7 @@ pub mod cloud_repo_source_context {
     }
 }
 /// A SourceContext referring to a Gerrit project.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GerritSourceContext {
     /// The URI of a running Gerrit instance.
@@ -885,6 +929,7 @@ pub struct GerritSourceContext {
 pub mod gerrit_source_context {
     /// A revision in a Gerrit project can be identified by either its revision ID
     /// or its alias.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Revision {
         /// A revision (commit) ID.
@@ -897,6 +942,7 @@ pub mod gerrit_source_context {
 }
 /// A GitSourceContext denotes a particular revision in a third party Git
 /// repository (e.g., GitHub).
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GitSourceContext {
     /// Git repository URL.
@@ -907,6 +953,7 @@ pub struct GitSourceContext {
     pub revision_id: ::prost::alloc::string::String,
 }
 /// A unique identifier for a Cloud Repo.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RepoId {
     /// A cloud repo can be identified by either its project ID and repository name
@@ -918,6 +965,7 @@ pub struct RepoId {
 pub mod repo_id {
     /// A cloud repo can be identified by either its project ID and repository name
     /// combination, or its globally unique identifier.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Id {
         /// A combination of a project ID and a repo name.
@@ -930,6 +978,7 @@ pub mod repo_id {
 }
 /// Selects a repo using a Google Cloud Platform project ID (e.g.,
 /// winged-cargo-31) and a repo name within that project.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProjectRepoId {
     /// The ID of the project.
@@ -941,6 +990,7 @@ pub struct ProjectRepoId {
 }
 /// Note holding the version of the provider's builder and the signature of the
 /// provenance message in the build details occurrence.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BuildNote {
     /// Required. Immutable. Version of the builder which produced this build.
@@ -948,6 +998,7 @@ pub struct BuildNote {
     pub builder_version: ::prost::alloc::string::String,
 }
 /// Details of a build occurrence.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BuildOccurrence {
     /// The actual provenance for the build.
@@ -977,6 +1028,7 @@ pub struct BuildOccurrence {
     #[prost(message, optional, tag = "4")]
     pub intoto_statement: ::core::option::Option<InTotoStatement>,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ComplianceNote {
     /// The title that identifies this compliance check.
@@ -1003,6 +1055,7 @@ pub struct ComplianceNote {
 /// Nested message and enum types in `ComplianceNote`.
 pub mod compliance_note {
     /// A compliance check that is a CIS benchmark.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CisBenchmark {
         #[prost(int32, tag = "1")]
@@ -1010,6 +1063,7 @@ pub mod compliance_note {
         #[prost(enumeration = "super::Severity", tag = "2")]
         pub severity: i32,
     }
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ComplianceType {
         #[prost(message, tag = "6")]
@@ -1018,6 +1072,7 @@ pub mod compliance_note {
 }
 /// Describes the CIS benchmark version that is applicable to a given OS and
 /// os version.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ComplianceVersion {
     /// The CPE URI (<https://cpe.mitre.org/specification/>) this benchmark is
@@ -1035,6 +1090,7 @@ pub struct ComplianceVersion {
 }
 /// An indication that the compliance checks in the associated ComplianceNote
 /// were not satisfied for particular resources or a specified reason.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ComplianceOccurrence {
     #[prost(message, repeated, tag = "2")]
@@ -1047,6 +1103,7 @@ pub struct ComplianceOccurrence {
 /// display_command is a single command that can be used to display a list of
 /// non compliant files. When there is no such command, we can also iterate a
 /// list of non compliant file using 'path'.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NonCompliantFile {
     /// Empty if `display_command` is set.
@@ -1061,6 +1118,7 @@ pub struct NonCompliantFile {
 }
 /// Common Vulnerability Scoring System version 3.
 /// For details, see <https://www.first.org/cvss/specification-document>
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CvsSv3 {
     /// The base score is a function of the base metric scores.
@@ -1285,6 +1343,7 @@ pub mod cvs_sv3 {
 /// For details, see <https://www.first.org/cvss/specification-document>
 /// This is a message we will try to use for storing various versions of CVSS
 /// rather than making a separate proto for storing a specific version.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Cvss {
     /// The base score is a function of the base metric scores.
@@ -1561,6 +1620,7 @@ impl CvssVersion {
     }
 }
 /// An artifact that can be deployed in some runtime.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeploymentNote {
     /// Required. Resource URI for the artifact being deployed.
@@ -1568,6 +1628,7 @@ pub struct DeploymentNote {
     pub resource_uri: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The period during which some deployable was active in a runtime.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeploymentOccurrence {
     /// Identity of the user that triggered this deployment.
@@ -1636,6 +1697,7 @@ pub mod deployment_occurrence {
 /// A note that indicates a type of analysis a provider would perform. This note
 /// exists in a provider's project. A `Discovery` occurrence is created in a
 /// consumer's project at the start of analysis.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DiscoveryNote {
     /// Required. Immutable. The kind of analysis that is handled by this
@@ -1644,6 +1706,7 @@ pub struct DiscoveryNote {
     pub analysis_kind: i32,
 }
 /// Provides information about the analysis status of a discovered resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DiscoveryOccurrence {
     /// Whether the resource is continuously analyzed.
@@ -1679,6 +1742,7 @@ pub struct DiscoveryOccurrence {
 pub mod discovery_occurrence {
     /// Indicates which analysis completed successfully. Multiple types of
     /// analysis can be performed on a single resource.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AnalysisCompleted {
         #[prost(string, repeated, tag = "1")]
@@ -1764,6 +1828,7 @@ pub mod discovery_occurrence {
         }
     }
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DsseAttestationNote {
     /// DSSEHint hints at the purpose of the attestation authority.
@@ -1779,6 +1844,7 @@ pub mod dsse_attestation_note {
     /// output. Note that these hints should not be used to look up authorities in
     /// security sensitive contexts, such as when looking up attestations to
     /// verify.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DsseHint {
         /// Required. The human readable name of this attestation authority, for
@@ -1789,6 +1855,7 @@ pub mod dsse_attestation_note {
 }
 /// Deprecated. Prefer to use a regular Occurrence, and populate the
 /// Envelope at the top level of the Occurrence.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DsseAttestationOccurrence {
     /// If doing something security critical, make sure to verify the signatures in
@@ -1802,6 +1869,7 @@ pub struct DsseAttestationOccurrence {
 }
 /// Nested message and enum types in `DSSEAttestationOccurrence`.
 pub mod dsse_attestation_occurrence {
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum DecodedPayload {
         #[prost(message, tag = "2")]
@@ -1809,6 +1877,7 @@ pub mod dsse_attestation_occurrence {
     }
 }
 /// Layer holds metadata specific to a layer of a Docker image.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Layer {
     /// Required. The recovered Dockerfile directive used to construct this layer.
@@ -1820,6 +1889,7 @@ pub struct Layer {
     pub arguments: ::prost::alloc::string::String,
 }
 /// A set of properties that uniquely identify a given Docker image.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Fingerprint {
     /// Required. The layer ID of the final layer in the Docker image's v1
@@ -1841,6 +1911,7 @@ pub struct Fingerprint {
 /// via:
 ///    FROM <Basis.resource_url>
 /// Or an equivalent reference, e.g., a tag of the resource_url.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImageNote {
     /// Required. Immutable. The resource_url for the resource representing the
@@ -1854,6 +1925,7 @@ pub struct ImageNote {
 /// Details of the derived image portion of the DockerImage relationship. This
 /// image would be produced from a Dockerfile with FROM <DockerImage.Basis in
 /// attached Note>.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImageOccurrence {
     /// Required. The fingerprint of the derived image.
@@ -1875,6 +1947,7 @@ pub struct ImageOccurrence {
 }
 /// This represents a particular channel of distribution for a given package.
 /// E.g., Debian's jessie-backports dpkg mirror.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Distribution {
     /// The cpe_uri in [CPE format](<https://cpe.mitre.org/specification/>)
@@ -1900,6 +1973,7 @@ pub struct Distribution {
 }
 /// An occurrence of a particular package installation found within a system's
 /// filesystem. E.g., glibc was found in `/var/lib/dpkg/status`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Location {
     /// Deprecated.
@@ -1915,6 +1989,7 @@ pub struct Location {
     pub path: ::prost::alloc::string::String,
 }
 /// PackageNote represents a particular package version.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PackageNote {
     /// The name of the package.
@@ -1958,6 +2033,7 @@ pub struct PackageNote {
     pub digest: ::prost::alloc::vec::Vec<Digest>,
 }
 /// Details on how a particular software package was installed on a system.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PackageOccurrence {
     /// The name of the installed package.
@@ -1988,6 +2064,7 @@ pub struct PackageOccurrence {
     pub version: ::core::option::Option<Version>,
 }
 /// Version contains structured information about the version of a package.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Version {
     /// Used to correct mistakes in the version numbering scheme.
@@ -2085,6 +2162,7 @@ impl Architecture {
 /// version. For each package version combination (i.e. bash 4.0, bash 4.1,
 /// bash 4.1.2), there will be an Upgrade Note. For Windows, windows_update field
 /// represents the information related to the update.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpgradeNote {
     /// Required for non-Windows OS. The package this Upgrade is for.
@@ -2104,6 +2182,7 @@ pub struct UpgradeNote {
 /// The Upgrade Distribution represents metadata about the Upgrade for each
 /// operating system (CPE). Some distributions have additional metadata around
 /// updates, classifying them into various categories and severities.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpgradeDistribution {
     /// Required - The specific operating system this metadata applies to. See
@@ -2127,6 +2206,7 @@ pub struct UpgradeDistribution {
 /// operating system. The fields in this message come from the Windows Update API
 /// documented at
 /// <https://docs.microsoft.com/en-us/windows/win32/api/wuapi/nn-wuapi-iupdate.>
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WindowsUpdate {
     /// Required - The unique identifier for the update.
@@ -2155,6 +2235,7 @@ pub struct WindowsUpdate {
 /// Nested message and enum types in `WindowsUpdate`.
 pub mod windows_update {
     /// The unique identifier of the update.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Identity {
         /// The revision independent identifier of the update.
@@ -2165,6 +2246,7 @@ pub mod windows_update {
         pub revision: i32,
     }
     /// The category to which the update belongs.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Category {
         /// The identifier of the category.
@@ -2180,6 +2262,7 @@ pub mod windows_update {
 /// present in the mirror and the running system has noticed its availability).
 /// For Windows, both distribution and windows_update contain information for the
 /// Windows update.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpgradeOccurrence {
     /// Required for non-Windows OS. The package this Upgrade is for.
@@ -2199,6 +2282,7 @@ pub struct UpgradeOccurrence {
     pub windows_update: ::core::option::Option<WindowsUpdate>,
 }
 /// A security vulnerability that can be found in resources.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VulnerabilityNote {
     /// The CVSS score of this vulnerability. CVSS score is on a scale of 0 - 10
@@ -2233,6 +2317,7 @@ pub struct VulnerabilityNote {
 pub mod vulnerability_note {
     /// A detail for a distro and package affected by this vulnerability and its
     /// associated fix (if one is available).
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Detail {
         /// The distro assigned severity of this vulnerability.
@@ -2301,6 +2386,7 @@ pub mod vulnerability_note {
         #[prost(string, tag = "14")]
         pub vendor: ::prost::alloc::string::String,
     }
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct WindowsDetail {
         /// Required. The [CPE URI](<https://cpe.mitre.org/specification/>) this
@@ -2322,6 +2408,7 @@ pub mod vulnerability_note {
     }
     /// Nested message and enum types in `WindowsDetail`.
     pub mod windows_detail {
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct KnowledgeBase {
             /// The KB name (generally of the form KB\[0-9\]+ (e.g., KB123456)).
@@ -2335,6 +2422,7 @@ pub mod vulnerability_note {
     }
 }
 /// An occurrence of a severity vulnerability on a resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VulnerabilityOccurrence {
     /// The type of package; whether native or non native (e.g., ruby gems, node.js
@@ -2389,6 +2477,7 @@ pub struct VulnerabilityOccurrence {
 pub mod vulnerability_occurrence {
     /// A detail for a distro and package this vulnerability occurrence was found
     /// in and its associated fix (if one is available).
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct PackageIssue {
         /// Required. The [CPE URI](<https://cpe.mitre.org/specification/>) this
@@ -2432,6 +2521,7 @@ pub mod vulnerability_occurrence {
     }
 }
 /// An instance of an analysis type that has been found on a resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Occurrence {
     /// Output only. The name of the occurrence in the form of
@@ -2476,6 +2566,7 @@ pub struct Occurrence {
 pub mod occurrence {
     /// Required. Immutable. Describes the details of the note kind found on this
     /// resource.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Details {
         /// Describes a security vulnerability.
@@ -2512,6 +2603,7 @@ pub mod occurrence {
     }
 }
 /// A type of analysis that can be done for a resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Note {
     /// Output only. The name of the note in the form of
@@ -2552,6 +2644,7 @@ pub struct Note {
 /// Nested message and enum types in `Note`.
 pub mod note {
     /// Required. Immutable. The type of analysis this note represents.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Type {
         /// A note describing a package vulnerability.
@@ -2587,6 +2680,7 @@ pub mod note {
     }
 }
 /// Request to get an occurrence.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetOccurrenceRequest {
     /// The name of the occurrence in the form of
@@ -2595,6 +2689,7 @@ pub struct GetOccurrenceRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request to list occurrences.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListOccurrencesRequest {
     /// The name of the project to list occurrences for in the form of
@@ -2613,6 +2708,7 @@ pub struct ListOccurrencesRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response for listing occurrences.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListOccurrencesResponse {
     /// The occurrences requested.
@@ -2625,6 +2721,7 @@ pub struct ListOccurrencesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request to delete an occurrence.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteOccurrenceRequest {
     /// The name of the occurrence in the form of
@@ -2633,6 +2730,7 @@ pub struct DeleteOccurrenceRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request to create a new occurrence.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateOccurrenceRequest {
     /// The name of the project in the form of `projects/\[PROJECT_ID\]`, under which
@@ -2644,6 +2742,7 @@ pub struct CreateOccurrenceRequest {
     pub occurrence: ::core::option::Option<Occurrence>,
 }
 /// Request to update an occurrence.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateOccurrenceRequest {
     /// The name of the occurrence in the form of
@@ -2658,6 +2757,7 @@ pub struct UpdateOccurrenceRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request to get a note.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetNoteRequest {
     /// The name of the note in the form of
@@ -2666,6 +2766,7 @@ pub struct GetNoteRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request to get the note to which the specified occurrence is attached.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetOccurrenceNoteRequest {
     /// The name of the occurrence in the form of
@@ -2674,6 +2775,7 @@ pub struct GetOccurrenceNoteRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request to list notes.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNotesRequest {
     /// The name of the project to list notes for in the form of
@@ -2692,6 +2794,7 @@ pub struct ListNotesRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response for listing notes.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNotesResponse {
     /// The notes requested.
@@ -2704,6 +2807,7 @@ pub struct ListNotesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request to delete a note.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteNoteRequest {
     /// The name of the note in the form of
@@ -2712,6 +2816,7 @@ pub struct DeleteNoteRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request to create a new note.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateNoteRequest {
     /// The name of the project in the form of `projects/\[PROJECT_ID\]`, under which
@@ -2726,6 +2831,7 @@ pub struct CreateNoteRequest {
     pub note: ::core::option::Option<Note>,
 }
 /// Request to update a note.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateNoteRequest {
     /// The name of the note in the form of
@@ -2740,6 +2846,7 @@ pub struct UpdateNoteRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request to list occurrences for a note.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNoteOccurrencesRequest {
     /// The name of the note to list occurrences for in the form of
@@ -2757,6 +2864,7 @@ pub struct ListNoteOccurrencesRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response for listing occurrences for a note.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNoteOccurrencesResponse {
     /// The occurrences attached to the specified note.
@@ -2767,6 +2875,7 @@ pub struct ListNoteOccurrencesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request to create notes in batch.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchCreateNotesRequest {
     /// The name of the project in the form of `projects/\[PROJECT_ID\]`, under which
@@ -2778,6 +2887,7 @@ pub struct BatchCreateNotesRequest {
     pub notes: ::std::collections::HashMap<::prost::alloc::string::String, Note>,
 }
 /// Response for creating notes in batch.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchCreateNotesResponse {
     /// The notes that were created.
@@ -2785,6 +2895,7 @@ pub struct BatchCreateNotesResponse {
     pub notes: ::prost::alloc::vec::Vec<Note>,
 }
 /// Request to create occurrences in batch.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchCreateOccurrencesRequest {
     /// The name of the project in the form of `projects/\[PROJECT_ID\]`, under which
@@ -2796,6 +2907,7 @@ pub struct BatchCreateOccurrencesRequest {
     pub occurrences: ::prost::alloc::vec::Vec<Occurrence>,
 }
 /// Response for creating occurrences in batch.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchCreateOccurrencesResponse {
     /// The occurrences that were created.

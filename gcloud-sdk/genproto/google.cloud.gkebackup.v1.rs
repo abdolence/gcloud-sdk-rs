@@ -1,4 +1,5 @@
 /// A list of Kubernetes Namespaces
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Namespaces {
     /// A list of Kubernetes Namespaces
@@ -6,6 +7,7 @@ pub struct Namespaces {
     pub namespaces: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// A reference to a namespaced resource in Kubernetes.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NamespacedName {
     /// The Namespace of the Kubernetes resource.
@@ -16,6 +18,7 @@ pub struct NamespacedName {
     pub name: ::prost::alloc::string::String,
 }
 /// A list of namespaced Kubernetes resources.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NamespacedNames {
     /// A list of namespaced Kubernetes resources.
@@ -24,6 +27,7 @@ pub struct NamespacedNames {
 }
 /// Defined a customer managed encryption key that will be used to encrypt Backup
 /// artifacts.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EncryptionKey {
     /// Google Cloud KMS encryption key. Format:
@@ -36,6 +40,7 @@ pub struct EncryptionKey {
 /// operation itself, and an anchor for the underlying artifacts that
 /// comprise the Backup (the config backup and VolumeBackups).
 /// Next id: 28
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Backup {
     /// Output only. The fully qualified name of the Backup.
@@ -160,6 +165,7 @@ pub struct Backup {
 /// Nested message and enum types in `Backup`.
 pub mod backup {
     /// Information about the GKE cluster from which this Backup was created.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ClusterMetadata {
         /// The source cluster from which this Backup was created.
@@ -188,6 +194,7 @@ pub mod backup {
     /// Nested message and enum types in `ClusterMetadata`.
     pub mod cluster_metadata {
         /// Platform-specific version
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum PlatformVersion {
             /// GKE version
@@ -247,6 +254,7 @@ pub mod backup {
     /// Defines the "scope" of the Backup - which namespaced resources in the
     /// cluster were included in the Backup.  Inherited from the parent
     /// BackupPlan's \[backup_scope][google.cloud.gkebackup.v1.BackupPlan.BackupConfig.backup_scope\] value.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum BackupScope {
         /// Output only. If True, all namespaces were included in the Backup.
@@ -262,6 +270,7 @@ pub mod backup {
     }
 }
 /// Defines the configuration and scheduling for a "line" of Backups.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BackupPlan {
     /// Output only. The full name of the BackupPlan resource.
@@ -332,6 +341,7 @@ pub struct BackupPlan {
 /// Nested message and enum types in `BackupPlan`.
 pub mod backup_plan {
     /// RetentionPolicy defines a Backup retention policy for a BackupPlan.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct RetentionPolicy {
         /// Minimum age for Backups created via this BackupPlan (in days).
@@ -370,6 +380,7 @@ pub mod backup_plan {
     }
     /// Schedule defines scheduling parameters for automatically creating Backups
     /// via this BackupPlan.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Schedule {
         /// A standard \[cron\](<https://wikipedia.com/wiki/cron>) string that defines a
@@ -387,6 +398,7 @@ pub mod backup_plan {
     }
     /// BackupConfig defines the configuration of Backups created via this
     /// BackupPlan.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct BackupConfig {
         /// This flag specifies whether volume data should be backed up when
@@ -419,6 +431,7 @@ pub mod backup_plan {
         /// This defines the "scope" of the Backup - which namespaced
         /// resources in the cluster will be included in a Backup.
         /// Exactly one of the fields of backup_scope MUST be specified.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum BackupScope {
             /// If True, include all namespaced resources
@@ -437,6 +450,7 @@ pub mod backup_plan {
 /// Represents both a request to Restore some portion of a Backup into
 /// a target GKE cluster and a record of the restore operation itself.
 /// Next id: 18
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Restore {
     /// Output only. The full name of the Restore resource.
@@ -566,6 +580,7 @@ pub mod restore {
 }
 /// Configuration of a restore.
 /// Next id: 9
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RestoreConfig {
     /// Specifies the mechanism to be used to restore volume data.
@@ -610,6 +625,7 @@ pub mod restore_config {
     /// This is a direct map to the Kubernetes GroupKind type
     /// \[GroupKind\](<https://godoc.org/k8s.io/apimachinery/pkg/runtime/schema#GroupKind>)
     /// and is used for identifying specific "types" of resources to restore.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct GroupKind {
         /// API group string of a Kubernetes resource, e.g.
@@ -623,6 +639,7 @@ pub mod restore_config {
         pub resource_kind: ::prost::alloc::string::String,
     }
     /// Identifies the cluster-scoped resources to restore from the Backup.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ClusterResourceRestoreScope {
         /// A list of "types" of cluster-scoped resources to be restored from the
@@ -635,6 +652,7 @@ pub mod restore_config {
     /// A transformation rule to be applied against Kubernetes resources as they
     /// are selected for restoration from a Backup. A rule contains both filtering
     /// logic (which resources are subject to substitution) and substitution logic.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SubstitutionRule {
         /// (Filtering parameter) Any resource subject to substitution must be
@@ -823,6 +841,7 @@ pub mod restore_config {
     /// Specifies the namespaced resources to restore from the Backup.
     /// Only one of the entries may be specified. If not specified, NO namespaced
     /// resources will be restored.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum NamespacedResourceRestoreScope {
         /// Restore all namespaced resources in the Backup if set to "True".
@@ -843,6 +862,7 @@ pub mod restore_config {
 /// The configuration of a potential series of Restore operations to be performed
 /// against Backups belong to a particular BackupPlan.
 /// Next id: 11
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RestorePlan {
     /// Output only. The full name of the RestorePlan resource.
@@ -902,6 +922,7 @@ pub struct RestorePlan {
 /// Backup - both the record of the operation and a pointer to the underlying
 /// storage-specific artifacts.
 /// Next id: 14
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VolumeBackup {
     /// Output only. The full name of the VolumeBackup resource.
@@ -1047,6 +1068,7 @@ pub mod volume_backup {
 }
 /// Represents the operation of restoring a volume from a VolumeBackup.
 /// Next id: 13
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VolumeRestore {
     /// Output only. Full name of the VolumeRestore resource.
@@ -1177,6 +1199,7 @@ pub mod volume_restore {
     }
 }
 /// Represents the metadata of the long-running operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationMetadata {
     /// Output only. The time the operation was created.
@@ -1205,6 +1228,7 @@ pub struct OperationMetadata {
     pub api_version: ::prost::alloc::string::String,
 }
 /// Request message for CreateBackupPlan.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateBackupPlanRequest {
     /// Required. The location within which to create the BackupPlan.
@@ -1226,6 +1250,7 @@ pub struct CreateBackupPlanRequest {
     pub backup_plan_id: ::prost::alloc::string::String,
 }
 /// Request message for ListBackupPlans.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListBackupPlansRequest {
     /// Required. The location that contains the BackupPlans to list.
@@ -1256,6 +1281,7 @@ pub struct ListBackupPlansRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// Response message for ListBackupPlans.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListBackupPlansResponse {
     /// The list of BackupPlans matching the given criteria.
@@ -1273,6 +1299,7 @@ pub struct ListBackupPlansResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for GetBackupPlan.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetBackupPlanRequest {
     /// Required. Fully qualified BackupPlan name.
@@ -1281,6 +1308,7 @@ pub struct GetBackupPlanRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for UpdateBackupPlan.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateBackupPlanRequest {
     /// Required. A new version of the BackupPlan resource that contains updated fields.
@@ -1300,6 +1328,7 @@ pub struct UpdateBackupPlanRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for DeleteBackupPlan.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteBackupPlanRequest {
     /// Required. Fully qualified BackupPlan name.
@@ -1313,6 +1342,7 @@ pub struct DeleteBackupPlanRequest {
     pub etag: ::prost::alloc::string::String,
 }
 /// Request message for CreateBackup.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateBackupRequest {
     /// Required. The BackupPlan within which to create the Backup.
@@ -1334,6 +1364,7 @@ pub struct CreateBackupRequest {
     pub backup_id: ::prost::alloc::string::String,
 }
 /// Request message for ListBackups.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListBackupsRequest {
     /// Required. The BackupPlan that contains the Backups to list.
@@ -1364,6 +1395,7 @@ pub struct ListBackupsRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// Response message for ListBackups.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListBackupsResponse {
     /// The list of Backups matching the given criteria.
@@ -1376,6 +1408,7 @@ pub struct ListBackupsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for GetBackup.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetBackupRequest {
     /// Required. Full name of the Backup resource.
@@ -1384,6 +1417,7 @@ pub struct GetBackupRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for UpdateBackup.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateBackupRequest {
     /// Required. A new version of the Backup resource that contains updated fields.
@@ -1402,6 +1436,7 @@ pub struct UpdateBackupRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for DeleteBackup.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteBackupRequest {
     /// Required. Name of the Backup resource.
@@ -1420,6 +1455,7 @@ pub struct DeleteBackupRequest {
     pub force: bool,
 }
 /// Request message for ListVolumeBackups.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListVolumeBackupsRequest {
     /// Required. The Backup that contains the VolumeBackups to list.
@@ -1450,6 +1486,7 @@ pub struct ListVolumeBackupsRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// Response message for ListVolumeBackups.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListVolumeBackupsResponse {
     /// The list of VolumeBackups matching the given criteria.
@@ -1464,6 +1501,7 @@ pub struct ListVolumeBackupsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for GetVolumeBackup.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetVolumeBackupRequest {
     /// Required. Full name of the VolumeBackup resource.
@@ -1472,6 +1510,7 @@ pub struct GetVolumeBackupRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for CreateRestorePlan.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateRestorePlanRequest {
     /// Required. The location within which to create the RestorePlan.
@@ -1493,6 +1532,7 @@ pub struct CreateRestorePlanRequest {
     pub restore_plan_id: ::prost::alloc::string::String,
 }
 /// Request message for ListRestorePlans.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRestorePlansRequest {
     /// Required. The location that contains the RestorePlans to list.
@@ -1523,6 +1563,7 @@ pub struct ListRestorePlansRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// Response message for ListRestorePlans.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRestorePlansResponse {
     /// The list of RestorePlans matching the given criteria.
@@ -1540,6 +1581,7 @@ pub struct ListRestorePlansResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for GetRestorePlan.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetRestorePlanRequest {
     /// Required. Fully qualified RestorePlan name.
@@ -1548,6 +1590,7 @@ pub struct GetRestorePlanRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for UpdateRestorePlan.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateRestorePlanRequest {
     /// Required. A new version of the RestorePlan resource that contains updated fields.
@@ -1566,6 +1609,7 @@ pub struct UpdateRestorePlanRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for DeleteRestorePlan.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteRestorePlanRequest {
     /// Required. Fully qualified RestorePlan name.
@@ -1584,6 +1628,7 @@ pub struct DeleteRestorePlanRequest {
     pub force: bool,
 }
 /// Request message for CreateRestore.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateRestoreRequest {
     /// Required. The RestorePlan within which to create the Restore.
@@ -1605,6 +1650,7 @@ pub struct CreateRestoreRequest {
     pub restore_id: ::prost::alloc::string::String,
 }
 /// Request message for ListRestores.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRestoresRequest {
     /// Required. The RestorePlan that contains the Restores to list.
@@ -1635,6 +1681,7 @@ pub struct ListRestoresRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// Response message for ListRestores.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRestoresResponse {
     /// The list of Restores matching the given criteria.
@@ -1651,6 +1698,7 @@ pub struct ListRestoresResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for GetRestore.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetRestoreRequest {
     /// Required. Name of the restore resource.
@@ -1659,6 +1707,7 @@ pub struct GetRestoreRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for UpdateRestore.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateRestoreRequest {
     /// Required. A new version of the Restore resource that contains updated fields.
@@ -1677,6 +1726,7 @@ pub struct UpdateRestoreRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for DeleteRestore.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteRestoreRequest {
     /// Required. Full name of the Restore
@@ -1695,6 +1745,7 @@ pub struct DeleteRestoreRequest {
     pub force: bool,
 }
 /// Request message for ListVolumeRestores.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListVolumeRestoresRequest {
     /// Required. The Restore that contains the VolumeRestores to list.
@@ -1725,6 +1776,7 @@ pub struct ListVolumeRestoresRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// Response message for ListVolumeRestores.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListVolumeRestoresResponse {
     /// The list of VolumeRestores matching the given criteria.
@@ -1739,6 +1791,7 @@ pub struct ListVolumeRestoresResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for GetVolumeRestore.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetVolumeRestoreRequest {
     /// Required. Full name of the VolumeRestore resource.

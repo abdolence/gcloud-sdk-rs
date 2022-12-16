@@ -1,5 +1,6 @@
 /// Represents a collection of external workload identities. You can define IAM
 /// policies to grant these identities access to Google Cloud resources.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WorkloadIdentityPool {
     /// Output only. The resource name of the pool.
@@ -67,6 +68,7 @@ pub mod workload_identity_pool {
     }
 }
 /// A configuration for an external identity provider.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WorkloadIdentityPoolProvider {
     /// Output only. The resource name of the provider.
@@ -206,6 +208,7 @@ pub struct WorkloadIdentityPoolProvider {
 /// Nested message and enum types in `WorkloadIdentityPoolProvider`.
 pub mod workload_identity_pool_provider {
     /// Represents an Amazon Web Services identity provider.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Aws {
         /// Required. The AWS account ID.
@@ -213,6 +216,7 @@ pub mod workload_identity_pool_provider {
         pub account_id: ::prost::alloc::string::String,
     }
     /// Represents an OpenId Connect 1.0 identity provider.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Oidc {
         /// Required. The OIDC issuer URL.
@@ -276,6 +280,7 @@ pub mod workload_identity_pool_provider {
         }
     }
     /// Identity provider configuration types.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ProviderConfig {
         /// An Amazon Web Services identity provider.
@@ -287,6 +292,7 @@ pub mod workload_identity_pool_provider {
     }
 }
 /// Request message for ListWorkloadIdentityPools.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListWorkloadIdentityPoolsRequest {
     /// Required. The parent resource to list pools for.
@@ -306,6 +312,7 @@ pub struct ListWorkloadIdentityPoolsRequest {
     pub show_deleted: bool,
 }
 /// Response message for ListWorkloadIdentityPools.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListWorkloadIdentityPoolsResponse {
     /// A list of pools.
@@ -317,6 +324,7 @@ pub struct ListWorkloadIdentityPoolsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for GetWorkloadIdentityPool.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetWorkloadIdentityPoolRequest {
     /// Required. The name of the pool to retrieve.
@@ -324,6 +332,7 @@ pub struct GetWorkloadIdentityPoolRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for CreateWorkloadIdentityPool.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateWorkloadIdentityPoolRequest {
     /// Required. The parent resource to create the pool in. The only supported
@@ -341,6 +350,7 @@ pub struct CreateWorkloadIdentityPoolRequest {
     pub workload_identity_pool_id: ::prost::alloc::string::String,
 }
 /// Request message for UpdateWorkloadIdentityPool.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateWorkloadIdentityPoolRequest {
     /// Required. The pool to update. The `name` field is used to identify the pool.
@@ -351,6 +361,7 @@ pub struct UpdateWorkloadIdentityPoolRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for DeleteWorkloadIdentityPool.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteWorkloadIdentityPoolRequest {
     /// Required. The name of the pool to delete.
@@ -358,6 +369,7 @@ pub struct DeleteWorkloadIdentityPoolRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for UndeleteWorkloadIdentityPool.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UndeleteWorkloadIdentityPoolRequest {
     /// Required. The name of the pool to undelete.
@@ -365,6 +377,7 @@ pub struct UndeleteWorkloadIdentityPoolRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for ListWorkloadIdentityPoolProviders.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListWorkloadIdentityPoolProvidersRequest {
     /// Required. The pool to list providers for.
@@ -385,6 +398,7 @@ pub struct ListWorkloadIdentityPoolProvidersRequest {
     pub show_deleted: bool,
 }
 /// Response message for ListWorkloadIdentityPoolProviders.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListWorkloadIdentityPoolProvidersResponse {
     /// A list of providers.
@@ -398,6 +412,7 @@ pub struct ListWorkloadIdentityPoolProvidersResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for GetWorkloadIdentityPoolProvider.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetWorkloadIdentityPoolProviderRequest {
     /// Required. The name of the provider to retrieve.
@@ -405,6 +420,7 @@ pub struct GetWorkloadIdentityPoolProviderRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for CreateWorkloadIdentityPoolProvider.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateWorkloadIdentityPoolProviderRequest {
     /// Required. The pool to create this provider in.
@@ -423,6 +439,7 @@ pub struct CreateWorkloadIdentityPoolProviderRequest {
     pub workload_identity_pool_provider_id: ::prost::alloc::string::String,
 }
 /// Request message for UpdateWorkloadIdentityPoolProvider.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateWorkloadIdentityPoolProviderRequest {
     /// Required. The provider to update.
@@ -435,6 +452,7 @@ pub struct UpdateWorkloadIdentityPoolProviderRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for DeleteWorkloadIdentityPoolProvider.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteWorkloadIdentityPoolProviderRequest {
     /// Required. The name of the provider to delete.
@@ -442,6 +460,7 @@ pub struct DeleteWorkloadIdentityPoolProviderRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for UndeleteWorkloadIdentityPoolProvider.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UndeleteWorkloadIdentityPoolProviderRequest {
     /// Required. The name of the provider to undelete.
@@ -449,9 +468,11 @@ pub struct UndeleteWorkloadIdentityPoolProviderRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Metadata for long-running WorkloadIdentityPool operations.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WorkloadIdentityPoolOperationMetadata {}
 /// Metadata for long-running WorkloadIdentityPoolProvider operations.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WorkloadIdentityPoolProviderOperationMetadata {}
 /// Generated client implementations.

@@ -1,4 +1,5 @@
 /// Represents the metadata of the long-running operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationMetadata {
     /// Output only. The time the operation was created.
@@ -30,6 +31,7 @@ pub struct OperationMetadata {
 /// network connectivity management in Google Cloud. It reduces
 /// operational complexity through a simple, centralized connectivity management
 /// model. Following is the resource message of a hub.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Hub {
     /// Immutable. The name of a Hub resource.
@@ -65,6 +67,7 @@ pub struct Hub {
 /// A Spoke is an  abstraction of a network attachment being attached
 /// to a Hub. A Spoke can be underlying a VPN tunnel, a
 /// VLAN (interconnect) attachment, a Router appliance, etc.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Spoke {
     /// Immutable. The name of a Spoke resource.
@@ -111,6 +114,7 @@ pub struct Spoke {
     pub state: i32,
 }
 /// Request for \[HubService.ListHubs][google.cloud.networkconnectivity.v1alpha1.HubService.ListHubs\] method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListHubsRequest {
     /// Required. The parent resource's name.
@@ -130,6 +134,7 @@ pub struct ListHubsRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// Response for \[HubService.ListHubs][google.cloud.networkconnectivity.v1alpha1.HubService.ListHubs\] method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListHubsResponse {
     /// Hubs to be returned.
@@ -144,6 +149,7 @@ pub struct ListHubsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request for \[HubService.GetHub][google.cloud.networkconnectivity.v1alpha1.HubService.GetHub\] method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetHubRequest {
     /// Required. Name of the Hub resource to get.
@@ -151,6 +157,7 @@ pub struct GetHubRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for \[HubService.CreateHub][google.cloud.networkconnectivity.v1alpha1.HubService.CreateHub\] method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateHubRequest {
     /// Required. The parent resource's name of the Hub.
@@ -179,6 +186,7 @@ pub struct CreateHubRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request for \[HubService.UpdateHub][google.cloud.networkconnectivity.v1alpha1.HubService.UpdateHub\] method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateHubRequest {
     /// Optional. Field mask is used to specify the fields to be overwritten in the
@@ -208,6 +216,7 @@ pub struct UpdateHubRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// The request for \[HubService.DeleteHub][google.cloud.networkconnectivity.v1alpha1.HubService.DeleteHub\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteHubRequest {
     /// Required. The name of the Hub to delete.
@@ -230,6 +239,7 @@ pub struct DeleteHubRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// The request for \[HubService.ListSpokes][google.cloud.networkconnectivity.v1alpha1.HubService.ListSpokes\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSpokesRequest {
     /// Required. The parent's resource name.
@@ -249,6 +259,7 @@ pub struct ListSpokesRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// The response for \[HubService.ListSpokes][google.cloud.networkconnectivity.v1alpha1.HubService.ListSpokes\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSpokesResponse {
     /// Spokes to be returned.
@@ -263,6 +274,7 @@ pub struct ListSpokesResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The request for \[HubService.GetSpoke][google.cloud.networkconnectivity.v1alpha1.HubService.GetSpoke\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetSpokeRequest {
     /// Required. The name of Spoke resource.
@@ -270,6 +282,7 @@ pub struct GetSpokeRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request for \[HubService.CreateSpoke][google.cloud.networkconnectivity.v1alpha1.HubService.CreateSpoke\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateSpokeRequest {
     /// Required. The parent's resource name of the Spoke.
@@ -298,6 +311,7 @@ pub struct CreateSpokeRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request for \[HubService.UpdateSpoke][google.cloud.networkconnectivity.v1alpha1.HubService.UpdateSpoke\] method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateSpokeRequest {
     /// Optional. Field mask is used to specify the fields to be overwritten in the
@@ -327,6 +341,7 @@ pub struct UpdateSpokeRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// The request for \[HubService.DeleteSpoke][google.cloud.networkconnectivity.v1alpha1.HubService.DeleteSpoke\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteSpokeRequest {
     /// Required. The name of the Spoke to delete.
@@ -350,6 +365,7 @@ pub struct DeleteSpokeRequest {
 }
 /// RouterAppliance represents a Router appliance which is specified by a VM URI
 /// and a NIC address.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouterApplianceInstance {
     /// The URI of the virtual machine resource

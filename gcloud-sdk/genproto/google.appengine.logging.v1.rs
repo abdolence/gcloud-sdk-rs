@@ -1,4 +1,5 @@
 /// Application log line emitted while processing a request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LogLine {
     /// Approximate time when this log entry was made.
@@ -18,6 +19,7 @@ pub struct LogLine {
     pub source_location: ::core::option::Option<SourceLocation>,
 }
 /// Specifies a location in a source code file.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SourceLocation {
     /// Source file name. Depending on the runtime environment, this might be a
@@ -38,6 +40,7 @@ pub struct SourceLocation {
 }
 /// A reference to a particular snapshot of the source tree used to build and
 /// deploy an application.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SourceReference {
     /// Optional. A URI string identifying the repository.
@@ -51,6 +54,7 @@ pub struct SourceReference {
 }
 /// Complete log information about a single HTTP request to an App Engine
 /// application.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RequestLog {
     /// Application that handled this request.

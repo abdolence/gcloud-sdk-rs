@@ -1,4 +1,5 @@
 /// Prediction output format for Image and Text Classification.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ClassificationPredictionResult {
     /// The resource IDs of the AnnotationSpecs that had been identified.
@@ -14,6 +15,7 @@ pub struct ClassificationPredictionResult {
     pub confidences: ::prost::alloc::vec::Vec<f32>,
 }
 /// Prediction output format for Image Object Detection.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImageObjectDetectionPredictionResult {
     /// The resource IDs of the AnnotationSpecs that had been identified, ordered
@@ -38,6 +40,7 @@ pub struct ImageObjectDetectionPredictionResult {
     pub bboxes: ::prost::alloc::vec::Vec<::prost_types::ListValue>,
 }
 /// Prediction output format for Image Segmentation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImageSegmentationPredictionResult {
     /// A PNG image where each pixel in the mask represents the category in which
@@ -57,6 +60,7 @@ pub struct ImageSegmentationPredictionResult {
     pub confidence_mask: ::prost::alloc::string::String,
 }
 /// Prediction output format for Tabular Classification.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TabularClassificationPredictionResult {
     /// The name of the classes being classified, contains all possible values of
@@ -70,6 +74,7 @@ pub struct TabularClassificationPredictionResult {
     pub scores: ::prost::alloc::vec::Vec<f32>,
 }
 /// Prediction output format for Tabular Regression.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TabularRegressionPredictionResult {
     /// The regression value.
@@ -83,6 +88,7 @@ pub struct TabularRegressionPredictionResult {
     pub upper_bound: f32,
 }
 /// Prediction output format for Text Extraction.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TextExtractionPredictionResult {
     /// The resource IDs of the AnnotationSpecs that had been identified,
@@ -109,6 +115,7 @@ pub struct TextExtractionPredictionResult {
     pub confidences: ::prost::alloc::vec::Vec<f32>,
 }
 /// Prediction output format for Text Sentiment
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TextSentimentPredictionResult {
     /// The integer sentiment labels between 0 (inclusive) and sentimentMax label
@@ -120,6 +127,7 @@ pub struct TextSentimentPredictionResult {
     pub sentiment: i32,
 }
 /// Prediction output format for Video Action Recognition.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VideoActionRecognitionPredictionResult {
     /// The resource ID of the AnnotationSpec that had been identified.
@@ -146,6 +154,7 @@ pub struct VideoActionRecognitionPredictionResult {
     pub confidence: ::core::option::Option<f32>,
 }
 /// Prediction output format for Video Classification.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VideoClassificationPredictionResult {
     /// The resource ID of the AnnotationSpec that had been identified.
@@ -185,6 +194,7 @@ pub struct VideoClassificationPredictionResult {
     pub confidence: ::core::option::Option<f32>,
 }
 /// Prediction output format for Video Object Tracking.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VideoObjectTrackingPredictionResult {
     /// The resource ID of the AnnotationSpec that had been identified.
@@ -220,6 +230,7 @@ pub mod video_object_tracking_prediction_result {
     /// i.e. the rectangle over the video frame pinpointing the found
     /// AnnotationSpec. The coordinates are relative to the frame size, and the
     /// point 0,0 is in the top left of the frame.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Frame {
         /// A time (frame) of a video in which the object has been detected.

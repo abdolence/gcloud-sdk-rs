@@ -1,4 +1,5 @@
 /// A chart that displays alert policy data.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AlertChart {
     /// Required. The resource name of the alert policy. The format is:
@@ -9,6 +10,7 @@ pub struct AlertChart {
 }
 /// A widget that groups the other widgets. All widgets that are within
 /// the area spanned by the grouping widget are considered member widgets.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CollapsibleGroup {
     /// The collapsed state of the widget on first page load.
@@ -41,6 +43,7 @@ pub struct CollapsibleGroup {
 /// individual time series data is still available for later drilldown. For more
 /// details, see [Filtering and
 /// aggregation](<https://cloud.google.com/monitoring/api/v3/aggregation>).
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Aggregation {
     /// The `alignment_period` specifies a time interval, in seconds, that is used
@@ -416,6 +419,7 @@ pub mod aggregation {
 /// For example, if `ranking_method` is `METHOD_MEAN`,`direction` is `BOTTOM`,
 /// and `num_time_series` is 3, then the 3 times series with the lowest mean
 /// values will pass through the filter.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PickTimeSeriesFilter {
     /// `ranking_method` is applied to each time series independently to produce
@@ -515,6 +519,7 @@ pub mod pick_time_series_filter {
 /// A filter that ranks streams based on their statistical relation to other
 /// streams in a request.
 /// Note: This field is deprecated and completely ignored by the API.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StatisticalTimeSeriesFilter {
     /// `rankingMethod` is applied to a set of time series, and then the produced
@@ -563,6 +568,7 @@ pub mod statistical_time_series_filter {
     }
 }
 /// A filter to reduce the amount of data charted in relevant widgets.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DashboardFilter {
     /// Required. The key for the label
@@ -626,6 +632,7 @@ pub mod dashboard_filter {
         }
     }
     /// The default value used in the filter comparison
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum DefaultValue {
         /// A variable-length string value.
@@ -634,6 +641,7 @@ pub mod dashboard_filter {
     }
 }
 /// A widget that displays a stream of log.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LogsPanel {
     /// A filter that chooses which log entries to return.  See [Advanced Logs
@@ -649,6 +657,7 @@ pub struct LogsPanel {
 }
 /// TimeSeriesQuery collects the set of supported methods for querying time
 /// series data from the Stackdriver metrics API.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TimeSeriesQuery {
     /// The unit of data contained in fetched time series. If non-empty, this
@@ -665,6 +674,7 @@ pub struct TimeSeriesQuery {
 /// Nested message and enum types in `TimeSeriesQuery`.
 pub mod time_series_query {
     /// Parameters needed to obtain data for the chart.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
         /// Filter parameters to fetch time series.
@@ -685,6 +695,7 @@ pub mod time_series_query {
 /// widget. Time series data is fetched using the
 /// \[`ListTimeSeries`\](<https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.timeSeries/list>)
 /// method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TimeSeriesFilter {
     /// Required. The [monitoring filter](<https://cloud.google.com/monitoring/api/v3/filters>)
@@ -706,6 +717,7 @@ pub struct TimeSeriesFilter {
 /// Nested message and enum types in `TimeSeriesFilter`.
 pub mod time_series_filter {
     /// Selects an optional time series filter.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum OutputFilter {
         /// Ranking based time series filter.
@@ -720,6 +732,7 @@ pub mod time_series_filter {
 /// A pair of time series filters that define a ratio computation. The output
 /// time series is the pair-wise division of each aligned element from the
 /// numerator and denominator time series.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TimeSeriesFilterRatio {
     /// The numerator of the ratio.
@@ -740,6 +753,7 @@ pub struct TimeSeriesFilterRatio {
 pub mod time_series_filter_ratio {
     /// Describes a query to build the numerator or denominator of a
     /// TimeSeriesFilterRatio.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct RatioPart {
         /// Required. The [monitoring
@@ -755,6 +769,7 @@ pub mod time_series_filter_ratio {
     }
     /// Selects an optional filter that is applied to the time series after
     /// computing the ratio.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum OutputFilter {
         /// Ranking based time series filter.
@@ -767,6 +782,7 @@ pub mod time_series_filter_ratio {
     }
 }
 /// Defines a threshold for categorizing time series values.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Threshold {
     /// A label for the threshold.
@@ -924,6 +940,7 @@ impl SparkChartType {
 }
 /// A widget showing the latest value of a metric, and how this value relates to
 /// one or more thresholds.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Scorecard {
     /// Required. Fields for querying time series data from the
@@ -980,6 +997,7 @@ pub mod scorecard {
     /// A gauge chart shows where the current value sits within a pre-defined
     /// range. The upper and lower bounds should define the possible range of
     /// values for the scorecard's query (inclusive).
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct GaugeView {
         /// The lower bound for this gauge chart. The value of the chart should
@@ -995,6 +1013,7 @@ pub mod scorecard {
     /// inline in text. This message contains the configuration for a sparkChart
     /// to show up on a Scorecard, showing recent trends of the scorecard's
     /// timeseries.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SparkChartView {
         /// Required. The type of sparkchart to show in this chartView.
@@ -1010,6 +1029,7 @@ pub mod scorecard {
     }
     /// Defines the optional additional chart shown on the scorecard. If
     /// neither is included - then a default scorecard is shown.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum DataView {
         /// Will cause the scorecard to show a gauge chart.
@@ -1021,6 +1041,7 @@ pub mod scorecard {
     }
 }
 /// Table display options that can be reused.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TableDisplayOptions {
     /// Optional. This field is unused and has been replaced by
@@ -1030,6 +1051,7 @@ pub struct TableDisplayOptions {
     pub shown_columns: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// A table that displays time series data.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TimeSeriesTable {
     /// Required. The data displayed in this table.
@@ -1039,6 +1061,7 @@ pub struct TimeSeriesTable {
 /// Nested message and enum types in `TimeSeriesTable`.
 pub mod time_series_table {
     /// Groups a time series query definition with table options.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct TableDataSet {
         /// Required. Fields for querying time series data from the
@@ -1064,6 +1087,7 @@ pub mod time_series_table {
     }
 }
 /// A widget that displays textual content.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Text {
     /// The text content to be displayed.
@@ -1111,6 +1135,7 @@ pub mod text {
     }
 }
 /// A chart that displays data on a 2D (X and Y axes) plane.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct XyChart {
     /// Required. The data displayed in this chart.
@@ -1142,6 +1167,7 @@ pub struct XyChart {
 /// Nested message and enum types in `XyChart`.
 pub mod xy_chart {
     /// Groups a time series query definition with charting options.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DataSet {
         /// Required. Fields for querying time series data from the
@@ -1254,6 +1280,7 @@ pub mod xy_chart {
         }
     }
     /// A chart axis.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Axis {
         /// The label of the axis.
@@ -1302,6 +1329,7 @@ pub mod xy_chart {
     }
 }
 /// Options to control visual rendering of a chart.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ChartOptions {
     /// The chart mode.
@@ -1353,6 +1381,7 @@ pub mod chart_options {
 }
 /// Widget contains a single dashboard component and configuration of how to
 /// present the component in the dashboard.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Widget {
     /// Optional. The title of the widget.
@@ -1365,6 +1394,7 @@ pub struct Widget {
 /// Nested message and enum types in `Widget`.
 pub mod widget {
     /// Content defines the component used to populate the widget.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Content {
         /// A chart of time series data.
@@ -1396,6 +1426,7 @@ pub mod widget {
 }
 /// A basic layout divides the available space into vertical columns of equal
 /// width and arranges a list of widgets using a row-first strategy.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GridLayout {
     /// The number of columns into which the view's width is divided. If omitted
@@ -1409,6 +1440,7 @@ pub struct GridLayout {
 /// A mosaic layout divides the available space into a grid of blocks, and
 /// overlays the grid with tiles. Unlike `GridLayout`, tiles may span multiple
 /// grid blocks and can be placed at arbitrary locations in the grid.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MosaicLayout {
     /// The number of columns in the mosaic grid. The number of columns must be
@@ -1423,6 +1455,7 @@ pub struct MosaicLayout {
 pub mod mosaic_layout {
     /// A single tile in the mosaic. The placement and size of the tile are
     /// configurable.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Tile {
         /// The zero-indexed position of the tile in grid blocks relative to the
@@ -1449,6 +1482,7 @@ pub mod mosaic_layout {
 }
 /// A simplified layout that divides the available space into rows
 /// and arranges a set of widgets horizontally in each row.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RowLayout {
     /// The rows of content to display.
@@ -1458,6 +1492,7 @@ pub struct RowLayout {
 /// Nested message and enum types in `RowLayout`.
 pub mod row_layout {
     /// Defines the layout properties and content for a row.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Row {
         /// The relative weight of this row. The row weight is used to adjust the
@@ -1473,6 +1508,7 @@ pub mod row_layout {
 }
 /// A simplified layout that divides the available space into vertical columns
 /// and arranges a set of widgets vertically in each column.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ColumnLayout {
     /// The columns of content to display.
@@ -1482,6 +1518,7 @@ pub struct ColumnLayout {
 /// Nested message and enum types in `ColumnLayout`.
 pub mod column_layout {
     /// Defines the layout properties and content for a column.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Column {
         /// The relative weight of this column. The column weight is used to adjust
@@ -1497,6 +1534,7 @@ pub mod column_layout {
 }
 /// A Google Stackdriver dashboard. Dashboards define the content and layout
 /// of pages in the Stackdriver web application.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Dashboard {
     /// Immutable. The resource name of the dashboard.
@@ -1530,6 +1568,7 @@ pub struct Dashboard {
 /// Nested message and enum types in `Dashboard`.
 pub mod dashboard {
     /// A dashboard's root container element that defines the layout style.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Layout {
         /// Content is arranged with a basic layout that re-flows a simple list of
@@ -1551,6 +1590,7 @@ pub mod dashboard {
     }
 }
 /// The `CreateDashboard` request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateDashboardRequest {
     /// Required. The project on which to execute the request. The format is:
@@ -1569,6 +1609,7 @@ pub struct CreateDashboardRequest {
     pub validate_only: bool,
 }
 /// The `ListDashboards` request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDashboardsRequest {
     /// Required. The scope of the dashboards to list. The format is:
@@ -1587,6 +1628,7 @@ pub struct ListDashboardsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// The `ListDashboards` request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDashboardsResponse {
     /// The list of requested dashboards.
@@ -1599,6 +1641,7 @@ pub struct ListDashboardsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The `GetDashboard` request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetDashboardRequest {
     /// Required. The resource name of the Dashboard. The format is one of:
@@ -1610,6 +1653,7 @@ pub struct GetDashboardRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The `DeleteDashboard` request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteDashboardRequest {
     /// Required. The resource name of the Dashboard. The format is:
@@ -1619,6 +1663,7 @@ pub struct DeleteDashboardRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The `UpdateDashboard` request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateDashboardRequest {
     /// Required. The dashboard that will replace the existing dashboard.

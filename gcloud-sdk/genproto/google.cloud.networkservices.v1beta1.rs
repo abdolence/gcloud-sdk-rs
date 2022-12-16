@@ -1,4 +1,5 @@
 /// Represents the metadata of the long-running operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationMetadata {
     /// Output only. The time the operation was created.
@@ -27,6 +28,7 @@ pub struct OperationMetadata {
     pub api_version: ::prost::alloc::string::String,
 }
 /// Specification of a port-based selector.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TrafficPortSelector {
     /// Optional. A list of ports. Can be port numbers or port range
@@ -38,6 +40,7 @@ pub struct TrafficPortSelector {
 }
 /// A definition of a matcher that selects endpoints to which the policies
 /// should be applied.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EndpointMatcher {
     /// Specifies type of the matcher used for this endpoint matcher.
@@ -47,6 +50,7 @@ pub struct EndpointMatcher {
 /// Nested message and enum types in `EndpointMatcher`.
 pub mod endpoint_matcher {
     /// The matcher that is based on node metadata presented by xDS clients.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct MetadataLabelMatcher {
         /// Specifies how matching should be done.
@@ -93,6 +97,7 @@ pub mod endpoint_matcher {
     /// Nested message and enum types in `MetadataLabelMatcher`.
     pub mod metadata_label_matcher {
         /// Defines a name-pair value for a single label.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct MetadataLabels {
             /// Required. Label name presented as key in xDS Node Metadata.
@@ -143,6 +148,7 @@ pub mod endpoint_matcher {
         }
     }
     /// Specifies type of the matcher used for this endpoint matcher.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum MatcherType {
         /// The matcher is based on node metadata presented by xDS clients.
@@ -154,6 +160,7 @@ pub mod endpoint_matcher {
 /// on the endpoints that match specific criteria.
 /// For example, this resource can be used to apply "authentication config"
 /// an all endpoints that serve on port 8080.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EndpointPolicy {
     /// Required. Name of the EndpointPolicy resource. It matches pattern
@@ -249,6 +256,7 @@ pub mod endpoint_policy {
     }
 }
 /// Request used with the ListEndpointPolicies method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEndpointPoliciesRequest {
     /// Required. The project and location from which the EndpointPolicies should be
@@ -266,6 +274,7 @@ pub struct ListEndpointPoliciesRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response returned by the ListEndpointPolicies method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEndpointPoliciesResponse {
     /// List of EndpointPolicy resources.
@@ -278,6 +287,7 @@ pub struct ListEndpointPoliciesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request used with the GetEndpointPolicy method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetEndpointPolicyRequest {
     /// Required. A name of the EndpointPolicy to get. Must be in the format
@@ -286,6 +296,7 @@ pub struct GetEndpointPolicyRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request used with the CreateEndpointPolicy method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateEndpointPolicyRequest {
     /// Required. The parent resource of the EndpointPolicy. Must be in the
@@ -301,6 +312,7 @@ pub struct CreateEndpointPolicyRequest {
     pub endpoint_policy: ::core::option::Option<EndpointPolicy>,
 }
 /// Request used with the UpdateEndpointPolicy method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateEndpointPolicyRequest {
     /// Optional. Field mask is used to specify the fields to be overwritten in the
@@ -315,6 +327,7 @@ pub struct UpdateEndpointPolicyRequest {
     pub endpoint_policy: ::core::option::Option<EndpointPolicy>,
 }
 /// Request used with the DeleteEndpointPolicy method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteEndpointPolicyRequest {
     /// Required. A name of the EndpointPolicy to delete. Must be in the format

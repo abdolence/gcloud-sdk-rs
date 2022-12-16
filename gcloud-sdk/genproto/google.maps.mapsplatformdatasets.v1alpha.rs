@@ -1,4 +1,5 @@
 /// The details about the data source when it is a local file.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LocalFileSource {
     /// The file name and extension of the uploaded file.
@@ -9,6 +10,7 @@ pub struct LocalFileSource {
     pub file_format: i32,
 }
 /// The details about the data source when it is in Google Cloud Storage.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GcsSource {
     /// Source data URI. For example, `gs://my_bucket/my_object`.
@@ -53,6 +55,7 @@ impl FileFormat {
     }
 }
 /// A representation of a maps platform dataset.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Dataset {
     /// Resource name,
@@ -95,6 +98,7 @@ pub struct Dataset {
 /// Nested message and enum types in `Dataset`.
 pub mod dataset {
     /// Details about the source of the data for the dataset.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum DataSource {
         /// A local file source for the dataset for a single upload.
@@ -161,6 +165,7 @@ impl State {
     }
 }
 /// Request to create a maps dataset.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateDatasetRequest {
     /// Required. Parent project that will own the dataset.
@@ -172,6 +177,7 @@ pub struct CreateDatasetRequest {
     pub dataset: ::core::option::Option<Dataset>,
 }
 /// Request to update the metadata fields of the dataset.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateDatasetMetadataRequest {
     /// Required. The dataset to update. The dataset's name is used to identify the dataset
@@ -185,6 +191,7 @@ pub struct UpdateDatasetMetadataRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request to get the specified dataset.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetDatasetRequest {
     /// Required. Resource name. Can also fetch a specified version
@@ -204,6 +211,7 @@ pub struct GetDatasetRequest {
     pub published_usage: i32,
 }
 /// Request to list of all versions of the dataset.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDatasetVersionsRequest {
     /// Required. The name of the dataset to list all the versions for.
@@ -220,6 +228,7 @@ pub struct ListDatasetVersionsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response with list of all versions of the dataset.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDatasetVersionsResponse {
     /// All the versions of the dataset.
@@ -231,6 +240,7 @@ pub struct ListDatasetVersionsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request to list datasets for the project.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDatasetsRequest {
     /// Required. The name of the project to list all the datasets for.
@@ -247,6 +257,7 @@ pub struct ListDatasetsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response to list datasets for the project.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDatasetsResponse {
     /// All the datasets for the project.
@@ -260,6 +271,7 @@ pub struct ListDatasetsResponse {
 /// Request to delete a dataset.
 ///
 /// The dataset to be deleted.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteDatasetRequest {
     /// Required. Format: projects/${project}/datasets/{dataset_id}
@@ -271,6 +283,7 @@ pub struct DeleteDatasetRequest {
     pub force: bool,
 }
 /// Request to delete a version of a dataset.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteDatasetVersionRequest {
     /// Required. Format: projects/${project}/datasets/{dataset_id}@{version-id}

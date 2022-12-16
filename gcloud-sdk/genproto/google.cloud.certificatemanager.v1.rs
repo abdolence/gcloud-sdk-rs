@@ -1,4 +1,5 @@
 /// Request for the `ListCertificateIssuanceConfigs` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCertificateIssuanceConfigsRequest {
     /// Required. The project and location from which the certificate should be
@@ -24,6 +25,7 @@ pub struct ListCertificateIssuanceConfigsRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// Response for the `ListCertificateIssuanceConfigs` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCertificateIssuanceConfigsResponse {
     /// A list of certificate configs for the parent resource.
@@ -41,6 +43,7 @@ pub struct ListCertificateIssuanceConfigsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request for the `GetCertificateIssuanceConfig` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCertificateIssuanceConfigRequest {
     /// Required. A name of the certificate issuance config to describe. Must be in
@@ -49,6 +52,7 @@ pub struct GetCertificateIssuanceConfigRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for the `CreateCertificateIssuanceConfig` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateCertificateIssuanceConfigRequest {
     /// Required. The parent resource of the certificate issuance config. Must be
@@ -63,6 +67,7 @@ pub struct CreateCertificateIssuanceConfigRequest {
     pub certificate_issuance_config: ::core::option::Option<CertificateIssuanceConfig>,
 }
 /// Request for the `DeleteCertificateIssuanceConfig` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteCertificateIssuanceConfigRequest {
     /// Required. A name of the certificate issuance config to delete. Must be in
@@ -71,6 +76,7 @@ pub struct DeleteCertificateIssuanceConfigRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// CertificateIssuanceConfig specifies how to issue and manage a certificate.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CertificateIssuanceConfig {
     /// A user-defined name of the certificate issuance config.
@@ -115,6 +121,7 @@ pub struct CertificateIssuanceConfig {
 pub mod certificate_issuance_config {
     /// The CA that issues the workload certificate. It includes CA address, type,
     /// authentication to CA service, etc.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CertificateAuthorityConfig {
         #[prost(oneof = "certificate_authority_config::Kind", tags = "1")]
@@ -123,6 +130,7 @@ pub mod certificate_issuance_config {
     /// Nested message and enum types in `CertificateAuthorityConfig`.
     pub mod certificate_authority_config {
         /// Contains information required to contact CA service.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct CertificateAuthorityServiceConfig {
             /// Required. A CA pool resource used to issue a certificate.
@@ -131,6 +139,7 @@ pub mod certificate_issuance_config {
             #[prost(string, tag = "1")]
             pub ca_pool: ::prost::alloc::string::String,
         }
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Kind {
             /// Defines a CertificateAuthorityServiceConfig.
@@ -174,6 +183,7 @@ pub mod certificate_issuance_config {
     }
 }
 /// Request for the `ListCertificates` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCertificatesRequest {
     /// Required. The project and location from which the certificate should be
@@ -198,6 +208,7 @@ pub struct ListCertificatesRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// Response for the `ListCertificates` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCertificatesResponse {
     /// A list of certificates for the parent resource.
@@ -213,6 +224,7 @@ pub struct ListCertificatesResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request for the `GetCertificate` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCertificateRequest {
     /// Required. A name of the certificate to describe. Must be in the format
@@ -221,6 +233,7 @@ pub struct GetCertificateRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for the `CreateCertificate` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateCertificateRequest {
     /// Required. The parent resource of the certificate. Must be in the format
@@ -235,6 +248,7 @@ pub struct CreateCertificateRequest {
     pub certificate: ::core::option::Option<Certificate>,
 }
 /// Request for the `UpdateCertificate` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateCertificateRequest {
     /// Required. A definition of the certificate to update.
@@ -247,6 +261,7 @@ pub struct UpdateCertificateRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request for the `DeleteCertificate` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteCertificateRequest {
     /// Required. A name of the certificate to delete. Must be in the format
@@ -255,6 +270,7 @@ pub struct DeleteCertificateRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for the `ListCertificateMaps` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCertificateMapsRequest {
     /// Required. The project and location from which the certificate maps should
@@ -279,6 +295,7 @@ pub struct ListCertificateMapsRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// Response for the `ListCertificateMaps` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCertificateMapsResponse {
     /// A list of certificate maps for the parent resource.
@@ -294,6 +311,7 @@ pub struct ListCertificateMapsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request for the `GetCertificateMap` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCertificateMapRequest {
     /// Required. A name of the certificate map to describe. Must be in the format
@@ -302,6 +320,7 @@ pub struct GetCertificateMapRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for the `CreateCertificateMap` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateCertificateMapRequest {
     /// Required. The parent resource of the certificate map. Must be in the format
@@ -316,6 +335,7 @@ pub struct CreateCertificateMapRequest {
     pub certificate_map: ::core::option::Option<CertificateMap>,
 }
 /// Request for the `UpdateCertificateMap` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateCertificateMapRequest {
     /// Required. A definition of the certificate map to update.
@@ -328,6 +348,7 @@ pub struct UpdateCertificateMapRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request for the `DeleteCertificateMap` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteCertificateMapRequest {
     /// Required. A name of the certificate map to delete. Must be in the format
@@ -336,6 +357,7 @@ pub struct DeleteCertificateMapRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for the `ListCertificateMapEntries` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCertificateMapEntriesRequest {
     /// Required. The project, location and certificate map from which the
@@ -365,6 +387,7 @@ pub struct ListCertificateMapEntriesRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// Response for the `ListCertificateMapEntries` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCertificateMapEntriesResponse {
     /// A list of certificate map entries for the parent resource.
@@ -380,6 +403,7 @@ pub struct ListCertificateMapEntriesResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request for the `GetCertificateMapEntry` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCertificateMapEntryRequest {
     /// Required. A name of the certificate map entry to describe. Must be in the
@@ -388,6 +412,7 @@ pub struct GetCertificateMapEntryRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for the `CreateCertificateMapEntry` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateCertificateMapEntryRequest {
     /// Required. The parent resource of the certificate map entry. Must be in the
@@ -402,6 +427,7 @@ pub struct CreateCertificateMapEntryRequest {
     pub certificate_map_entry: ::core::option::Option<CertificateMapEntry>,
 }
 /// Request for the `UpdateCertificateMapEntry` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateCertificateMapEntryRequest {
     /// Required. A definition of the certificate map entry to create map entry.
@@ -414,6 +440,7 @@ pub struct UpdateCertificateMapEntryRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request for the `DeleteCertificateMapEntry` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteCertificateMapEntryRequest {
     /// Required. A name of the certificate map entry to delete. Must be in the
@@ -422,6 +449,7 @@ pub struct DeleteCertificateMapEntryRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for the `ListDnsAuthorizations` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDnsAuthorizationsRequest {
     /// Required. The project and location from which the dns authorizations should
@@ -446,6 +474,7 @@ pub struct ListDnsAuthorizationsRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// Response for the `ListDnsAuthorizations` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDnsAuthorizationsResponse {
     /// A list of dns authorizations for the parent resource.
@@ -461,6 +490,7 @@ pub struct ListDnsAuthorizationsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request for the `GetDnsAuthorization` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetDnsAuthorizationRequest {
     /// Required. A name of the dns authorization to describe. Must be in the
@@ -469,6 +499,7 @@ pub struct GetDnsAuthorizationRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for the `CreateDnsAuthorization` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateDnsAuthorizationRequest {
     /// Required. The parent resource of the dns authorization. Must be in the
@@ -483,6 +514,7 @@ pub struct CreateDnsAuthorizationRequest {
     pub dns_authorization: ::core::option::Option<DnsAuthorization>,
 }
 /// Request for the `UpdateDnsAuthorization` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateDnsAuthorizationRequest {
     /// Required. A definition of the dns authorization to update.
@@ -495,6 +527,7 @@ pub struct UpdateDnsAuthorizationRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request for the `DeleteDnsAuthorization` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteDnsAuthorizationRequest {
     /// Required. A name of the dns authorization to delete. Must be in the format
@@ -503,6 +536,7 @@ pub struct DeleteDnsAuthorizationRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Represents the metadata of the long-running operation. Output only.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationMetadata {
     /// The time the operation was created.
@@ -532,6 +566,7 @@ pub struct OperationMetadata {
     pub api_version: ::prost::alloc::string::String,
 }
 /// Defines TLS certificate.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Certificate {
     /// A user-defined name of the certificate. Certificate names must be unique
@@ -576,6 +611,7 @@ pub mod certificate {
     /// Certificate data for a SelfManaged Certificate.
     /// SelfManaged Certificates are uploaded by the user. Updating such
     /// certificates before they expire remains the user's responsibility.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SelfManagedCertificate {
         /// Input only. The PEM-encoded certificate chain.
@@ -589,6 +625,7 @@ pub mod certificate {
     /// Configuration and state of a Managed Certificate.
     /// Certificate Manager provisions and renews Managed Certificates
     /// automatically, for as long as it's authorized to do so.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ManagedCertificate {
         /// Immutable. The domains for which a managed SSL certificate will be
@@ -628,6 +665,7 @@ pub mod certificate {
     /// Nested message and enum types in `ManagedCertificate`.
     pub mod managed_certificate {
         /// Information about issues with provisioning a Managed Certificate.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct ProvisioningIssue {
             /// Output only. Reason for provisioning failures.
@@ -680,6 +718,7 @@ pub mod certificate {
         }
         /// State of the latest attempt to authorize a domain for certificate
         /// issuance.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct AuthorizationAttemptInfo {
             /// Domain name of the authorization attempt.
@@ -855,6 +894,7 @@ pub mod certificate {
             }
         }
     }
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Type {
         /// If set, defines data of a self-managed certificate.
@@ -866,6 +906,7 @@ pub mod certificate {
     }
 }
 /// Defines a collection of certificate configurations.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CertificateMap {
     /// A user-defined name of the Certificate Map. Certificate Map names must be
@@ -897,6 +938,7 @@ pub struct CertificateMap {
 /// Nested message and enum types in `CertificateMap`.
 pub mod certificate_map {
     /// Describes a Target Proxy which uses this Certificate Map.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct GclbTarget {
         /// Output only. IP configurations for this Target Proxy where the
@@ -910,6 +952,7 @@ pub mod certificate_map {
     /// Nested message and enum types in `GclbTarget`.
     pub mod gclb_target {
         /// Defines IP configuration where this Certificate Map is serving.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct IpConfig {
             /// Output only. An external IP address.
@@ -920,6 +963,7 @@ pub mod certificate_map {
             pub ports: ::prost::alloc::vec::Vec<u32>,
         }
         /// A Target Proxy to which this map is attached to.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum TargetProxy {
             /// Output only. This field returns the resource name in the following
@@ -936,6 +980,7 @@ pub mod certificate_map {
     }
 }
 /// Defines a certificate map entry.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CertificateMapEntry {
     /// A user-defined name of the Certificate Map Entry. Certificate Map Entry
@@ -1004,6 +1049,7 @@ pub mod certificate_map_entry {
             }
         }
     }
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Match {
         /// A Hostname (FQDN, e.g. `example.com`) or a wildcard hostname expression
@@ -1018,6 +1064,7 @@ pub mod certificate_map_entry {
 }
 /// A DnsAuthorization resource describes a way to perform domain authorization
 /// for certificate issuance.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DnsAuthorization {
     /// A user-defined name of the dns authorization. DnsAuthorization names must
@@ -1058,6 +1105,7 @@ pub mod dns_authorization {
     /// The structure describing the DNS Resource Record that needs to be added
     /// to DNS configuration for the authorization to be usable by
     /// certificate.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DnsResourceRecord {
         /// Output only. Fully qualified name of the DNS Resource Record.

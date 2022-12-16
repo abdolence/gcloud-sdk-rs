@@ -1,4 +1,5 @@
 /// Request message to get Google Workspace Add-ons authorization information.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAuthorizationRequest {
     /// Required. Name of the project for which to get the Google Workspace Add-ons
@@ -9,6 +10,7 @@ pub struct GetAuthorizationRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The authorization information used when invoking deployment endpoints.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Authorization {
     /// The canonical full name of this resource.
@@ -25,6 +27,7 @@ pub struct Authorization {
     pub oauth_client_id: ::prost::alloc::string::String,
 }
 /// Request message to create a deployment.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateDeploymentRequest {
     /// Required. Name of the project in which to create the deployment.
@@ -41,6 +44,7 @@ pub struct CreateDeploymentRequest {
     pub deployment: ::core::option::Option<Deployment>,
 }
 /// Request message to create or replace a deployment.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReplaceDeploymentRequest {
     /// Required. The deployment to create or replace.
@@ -48,6 +52,7 @@ pub struct ReplaceDeploymentRequest {
     pub deployment: ::core::option::Option<Deployment>,
 }
 /// Request message to get a deployment.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetDeploymentRequest {
     /// Required. The full resource name of the deployment to get.
@@ -57,6 +62,7 @@ pub struct GetDeploymentRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message to list deployments for a project.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDeploymentsRequest {
     /// Required. Name of the project in which to create the deployment.
@@ -79,6 +85,7 @@ pub struct ListDeploymentsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message to list deployments.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDeploymentsResponse {
     /// The list of deployments for the given project.
@@ -90,6 +97,7 @@ pub struct ListDeploymentsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message to delete a deployment.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteDeploymentRequest {
     /// Required. The full resource name of the deployment to delete.
@@ -103,6 +111,7 @@ pub struct DeleteDeploymentRequest {
     pub etag: ::prost::alloc::string::String,
 }
 /// Request message to install a developer mode deployment.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstallDeploymentRequest {
     /// Required. The full resource name of the deployment to install.
@@ -112,6 +121,7 @@ pub struct InstallDeploymentRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message to uninstall a developer mode deployment.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UninstallDeploymentRequest {
     /// Required. The full resource name of the deployment to install.
@@ -121,6 +131,7 @@ pub struct UninstallDeploymentRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message to get the install status of a developer mode deployment.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetInstallStatusRequest {
     /// Required. The full resource name of the deployment.
@@ -130,6 +141,7 @@ pub struct GetInstallStatusRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Developer mode install status of a deployment
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstallStatus {
     /// The canonical full resource name of the deployment install status.
@@ -142,6 +154,7 @@ pub struct InstallStatus {
     pub installed: ::core::option::Option<bool>,
 }
 /// A Google Workspace Add-on deployment
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Deployment {
     /// The deployment resource name.
@@ -162,6 +175,7 @@ pub struct Deployment {
     pub etag: ::prost::alloc::string::String,
 }
 /// A Google Workspace Add-on configuration.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddOns {
     /// Configuration that is common across all Google Workspace Add-ons.

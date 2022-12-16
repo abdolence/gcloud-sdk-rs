@@ -1,4 +1,5 @@
 /// The POSIX account information associated with a Google account.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PosixAccount {
     /// Only one POSIX account can be marked as primary.
@@ -37,6 +38,7 @@ pub struct PosixAccount {
     pub name: ::prost::alloc::string::String,
 }
 /// The SSH public key information associated with a Google account.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SshPublicKey {
     /// Public key text in SSH format, defined by

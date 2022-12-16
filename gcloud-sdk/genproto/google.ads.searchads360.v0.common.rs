@@ -4,13 +4,16 @@
 ///
 /// This bidding strategy is deprecated and cannot be created anymore. Use
 /// ManualCpc with enhanced_cpc_enabled set to true for equivalent functionality.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EnhancedCpc {}
 /// Manual bidding strategy that allows advertiser to set the bid per
 /// advertiser-specified action.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ManualCpa {}
 /// Manual click-based bidding where user pays per click.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ManualCpc {
     /// Whether bids are to be enhanced based on conversion optimizer data.
@@ -18,10 +21,12 @@ pub struct ManualCpc {
     pub enhanced_cpc_enabled: ::core::option::Option<bool>,
 }
 /// Manual impression-based bidding where user pays per thousand impressions.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ManualCpm {}
 /// An automated bidding strategy to help get the most conversions for your
 /// campaigns while spending your budget.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MaximizeConversions {
     /// Maximum bid limit that can be set by the bid strategy.
@@ -45,6 +50,7 @@ pub struct MaximizeConversions {
 }
 /// An automated bidding strategy to help get the most conversion value for your
 /// campaigns while spending your budget.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MaximizeConversionValue {
     /// The target return on ad spend (ROAS) option. If set, the bid strategy will
@@ -67,6 +73,7 @@ pub struct MaximizeConversionValue {
 }
 /// An automated bid strategy that sets bids to help get as many conversions as
 /// possible at the target cost-per-acquisition (CPA) you set.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetCpa {
     /// Average CPA target.
@@ -87,11 +94,13 @@ pub struct TargetCpa {
 }
 /// Target CPM (cost per thousand impressions) is an automated bidding strategy
 /// that sets bids to optimize performance given the target CPM you set.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetCpm {}
 /// An automated bidding strategy that sets bids so that a certain percentage of
 /// search ads are shown at the top of the first page (or other targeted
 /// location).
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetImpressionShare {
     /// The targeted location on the search results page.
@@ -113,6 +122,7 @@ pub struct TargetImpressionShare {
 /// An automated bidding strategy that sets bids based on the target fraction of
 /// auctions where the advertiser should outrank a specific competitor.
 /// This strategy is deprecated.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetOutrankShare {
     /// Maximum bid limit that can be set by the bid strategy.
@@ -122,6 +132,7 @@ pub struct TargetOutrankShare {
 }
 /// An automated bidding strategy that helps you maximize revenue while
 /// averaging a specific target return on ad spend (ROAS).
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetRoas {
     /// Required. The chosen revenue (based on conversion data) per unit of spend.
@@ -141,6 +152,7 @@ pub struct TargetRoas {
 }
 /// An automated bid strategy that sets your bids to help get as many clicks
 /// as possible within your budget.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetSpend {
     /// The spend target under which to maximize clicks.
@@ -160,6 +172,7 @@ pub struct TargetSpend {
 }
 /// A bidding strategy where bids are a fraction of the advertised price for
 /// some good or service.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PercentCpc {
     /// Maximum bid limit that can be set by the bid strategy. This is
@@ -176,6 +189,7 @@ pub struct PercentCpc {
     pub enhanced_cpc_enabled: ::core::option::Option<bool>,
 }
 /// A keyword criterion.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KeywordInfo {
     /// The text of the keyword (at most 80 characters and 10 words).
@@ -189,6 +203,7 @@ pub struct KeywordInfo {
     pub match_type: i32,
 }
 /// A location criterion.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LocationInfo {
     /// The geo target constant resource name.
@@ -196,6 +211,7 @@ pub struct LocationInfo {
     pub geo_target_constant: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A device criterion.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeviceInfo {
     /// Type of the device.
@@ -203,6 +219,7 @@ pub struct DeviceInfo {
     pub r#type: i32,
 }
 /// A listing group criterion.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListingGroupInfo {
     /// Type of the listing group.
@@ -213,6 +230,7 @@ pub struct ListingGroupInfo {
     pub r#type: i32,
 }
 /// An age range criterion.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AgeRangeInfo {
     /// Type of the age range.
@@ -220,6 +238,7 @@ pub struct AgeRangeInfo {
     pub r#type: i32,
 }
 /// A gender criterion.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenderInfo {
     /// Type of the gender.
@@ -227,6 +246,7 @@ pub struct GenderInfo {
     pub r#type: i32,
 }
 /// A language criterion.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LanguageInfo {
     /// The language constant resource name.
@@ -234,6 +254,7 @@ pub struct LanguageInfo {
     pub language_constant: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Represents a criterion for targeting webpages of an advertiser's website.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WebpageInfo {
     /// The name of the criterion that is defined by this parameter. The name value
@@ -262,6 +283,7 @@ pub struct WebpageInfo {
     pub coverage_percentage: f64,
 }
 /// Logical expression for targeting webpages of an advertiser's website.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WebpageConditionInfo {
     /// Operand of webpage targeting condition.
@@ -281,6 +303,7 @@ pub struct WebpageConditionInfo {
     pub argument: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A radius around a list of locations specified through a feed.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LocationGroupInfo {
     /// Geo target constant(s) restricting the scope of the geographic area within
@@ -308,6 +331,7 @@ pub struct LocationGroupInfo {
 }
 /// A mapping that can be used by custom parameter tags in a
 /// `tracking_url_template`, `final_urls`, or `mobile_final_urls`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomParameter {
     /// The key matching the parameter tag name.
@@ -319,9 +343,11 @@ pub struct CustomParameter {
 }
 /// A rule specifying the maximum number of times an ad (or some set of ads) can
 /// be shown to a user over a particular time period.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FrequencyCapEntry {}
 /// Metrics data.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Metrics {
     /// The percent of your ad impressions that are shown as the very first ad
@@ -662,6 +688,7 @@ pub struct Metrics {
 }
 /// Settings for Real-Time Bidding, a feature only available for campaigns
 /// targeting the Ad Exchange network.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RealTimeBiddingSetting {
     /// Whether the campaign is opted in to real-time bidding.
@@ -669,6 +696,7 @@ pub struct RealTimeBiddingSetting {
     pub opt_in: ::core::option::Option<bool>,
 }
 /// Segment only fields.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Segments {
     /// Resource name of the conversion action.
@@ -711,6 +739,7 @@ pub struct Segments {
     pub year: ::core::option::Option<i32>,
 }
 /// A generic data container.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Value {
     /// A value.
@@ -720,6 +749,7 @@ pub struct Value {
 /// Nested message and enum types in `Value`.
 pub mod value {
     /// A value.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Value {
         /// A boolean.

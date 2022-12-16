@@ -1,4 +1,5 @@
 /// The information required to auto-retrieve an SMS.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AutoRetrievalInfo {
     /// The Android app's signature hash for Google Play Service's
@@ -7,6 +8,7 @@ pub struct AutoRetrievalInfo {
     pub app_signature_hash: ::prost::alloc::string::String,
 }
 /// App Verification info for a StartMfa request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StartMfaPhoneRequestInfo {
     /// Required for enrollment. Phone number to be enrolled as MFA.
@@ -34,6 +36,7 @@ pub struct StartMfaPhoneRequestInfo {
     pub safety_net_token: ::prost::alloc::string::String,
 }
 /// Phone Verification info for a StartMfa response.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StartMfaPhoneResponseInfo {
     /// An opaque string that represents the enrollment session.
@@ -41,6 +44,7 @@ pub struct StartMfaPhoneResponseInfo {
     pub session_info: ::prost::alloc::string::String,
 }
 /// Phone Verification info for a FinalizeMfa request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FinalizeMfaPhoneRequestInfo {
     /// An opaque string that represents the enrollment session.
@@ -57,6 +61,7 @@ pub struct FinalizeMfaPhoneRequestInfo {
     pub phone_number: ::prost::alloc::string::String,
 }
 /// Phone Verification info for a FinalizeMfa response.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FinalizeMfaPhoneResponseInfo {
     /// Android only. Long-lived replacement for valid code tied to android device.
@@ -72,6 +77,7 @@ pub struct FinalizeMfaPhoneResponseInfo {
     pub phone_number: ::prost::alloc::string::String,
 }
 /// Finishes enrolling a second factor for the user.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FinalizeMfaEnrollmentRequest {
     /// Required. ID token.
@@ -94,6 +100,7 @@ pub struct FinalizeMfaEnrollmentRequest {
 /// Nested message and enum types in `FinalizeMfaEnrollmentRequest`.
 pub mod finalize_mfa_enrollment_request {
     /// MFA enrollment information to be verified.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum VerificationInfo {
         /// Verification info to authorize sending an SMS for phone verification.
@@ -102,6 +109,7 @@ pub mod finalize_mfa_enrollment_request {
     }
 }
 /// FinalizeMfaEnrollment response.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FinalizeMfaEnrollmentResponse {
     /// ID token updated to reflect MFA enrollment.
@@ -119,6 +127,7 @@ pub struct FinalizeMfaEnrollmentResponse {
 /// Nested message and enum types in `FinalizeMfaEnrollmentResponse`.
 pub mod finalize_mfa_enrollment_response {
     /// MFA verified enrollment information.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum AuxiliaryAuthInfo {
         /// Auxiliary auth info specific to phone auth.
@@ -127,6 +136,7 @@ pub mod finalize_mfa_enrollment_response {
     }
 }
 /// Sends MFA enrollment verification SMS for a user.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StartMfaEnrollmentRequest {
     /// Required. User's ID token.
@@ -145,6 +155,7 @@ pub struct StartMfaEnrollmentRequest {
 /// Nested message and enum types in `StartMfaEnrollmentRequest`.
 pub mod start_mfa_enrollment_request {
     /// MFA information by type of 2nd factor.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum EnrollmentInfo {
         /// Verification info to authorize sending an SMS for phone verification.
@@ -153,6 +164,7 @@ pub mod start_mfa_enrollment_request {
     }
 }
 /// StartMfaEnrollment response.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StartMfaEnrollmentResponse {
     /// MFA start enrollment response by 2nd factor type.
@@ -164,6 +176,7 @@ pub struct StartMfaEnrollmentResponse {
 /// Nested message and enum types in `StartMfaEnrollmentResponse`.
 pub mod start_mfa_enrollment_response {
     /// MFA start enrollment response by 2nd factor type.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum EnrollmentResponse {
         /// Verification info to authorize sending an SMS for phone verification.
@@ -172,6 +185,7 @@ pub mod start_mfa_enrollment_response {
     }
 }
 /// Withdraws MFA.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WithdrawMfaRequest {
     /// Required. User's ID token.
@@ -187,6 +201,7 @@ pub struct WithdrawMfaRequest {
     pub tenant_id: ::prost::alloc::string::String,
 }
 /// Withdraws MultiFactorAuth response.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WithdrawMfaResponse {
     /// ID token updated to reflect removal of the second factor.
@@ -335,6 +350,7 @@ pub mod account_management_service_client {
     }
 }
 /// Finalizes sign-in by verifying MFA challenge.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FinalizeMfaSignInRequest {
     /// Required. Pending credential from first factor sign-in.
@@ -353,6 +369,7 @@ pub struct FinalizeMfaSignInRequest {
 /// Nested message and enum types in `FinalizeMfaSignInRequest`.
 pub mod finalize_mfa_sign_in_request {
     /// Proof of completion of the MFA challenge.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum VerificationInfo {
         /// Proof of completion of the SMS based MFA challenge.
@@ -361,6 +378,7 @@ pub mod finalize_mfa_sign_in_request {
     }
 }
 /// FinalizeMfaSignIn response.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FinalizeMfaSignInResponse {
     /// ID token for the authenticated user.
@@ -378,6 +396,7 @@ pub struct FinalizeMfaSignInResponse {
 /// Nested message and enum types in `FinalizeMfaSignInResponse`.
 pub mod finalize_mfa_sign_in_response {
     /// MFA verified sign-in information.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum AuxiliaryAuthInfo {
         /// Extra phone auth info, including android verification proof.
@@ -386,6 +405,7 @@ pub mod finalize_mfa_sign_in_response {
     }
 }
 /// Starts multi-factor sign-in by sending the multi-factor auth challenge.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StartMfaSignInRequest {
     /// Required. Pending credential from first factor sign-in.
@@ -405,6 +425,7 @@ pub struct StartMfaSignInRequest {
 /// Nested message and enum types in `StartMfaSignInRequest`.
 pub mod start_mfa_sign_in_request {
     /// MFA information by type of 2nd factor.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum SignInInfo {
         /// Verification info to authorize sending an SMS for phone verification.
@@ -413,6 +434,7 @@ pub mod start_mfa_sign_in_request {
     }
 }
 /// StartMfaSignIn response.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StartMfaSignInResponse {
     /// MultiFactor start sign-in response by 2nd factor type.
@@ -422,6 +444,7 @@ pub struct StartMfaSignInResponse {
 /// Nested message and enum types in `StartMfaSignInResponse`.
 pub mod start_mfa_sign_in_response {
     /// MultiFactor start sign-in response by 2nd factor type.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ResponseInfo {
         /// MultiFactor sign-in session information specific to SMS-type second

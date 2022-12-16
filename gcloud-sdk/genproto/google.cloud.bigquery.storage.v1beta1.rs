@@ -1,4 +1,5 @@
 /// Arrow schema.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ArrowSchema {
     /// IPC serialized Arrow schema.
@@ -6,6 +7,7 @@ pub struct ArrowSchema {
     pub serialized_schema: ::prost::alloc::vec::Vec<u8>,
 }
 /// Arrow RecordBatch.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ArrowRecordBatch {
     /// IPC serialized Arrow RecordBatch.
@@ -16,6 +18,7 @@ pub struct ArrowRecordBatch {
     pub row_count: i64,
 }
 /// Avro schema.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AvroSchema {
     /// Json serialized schema, as described at
@@ -24,6 +27,7 @@ pub struct AvroSchema {
     pub schema: ::prost::alloc::string::String,
 }
 /// Avro rows.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AvroRows {
     /// Binary serialized rows in a block.
@@ -34,6 +38,7 @@ pub struct AvroRows {
     pub row_count: i64,
 }
 /// Options dictating how we read a table.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TableReadOptions {
     /// Optional. Names of the fields in the table that should be read. If empty,
@@ -54,6 +59,7 @@ pub struct TableReadOptions {
     pub row_restriction: ::prost::alloc::string::String,
 }
 /// Table reference that includes just the 3 strings needed to identify a table.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TableReference {
     /// The assigned project ID of the project.
@@ -67,6 +73,7 @@ pub struct TableReference {
     pub table_id: ::prost::alloc::string::String,
 }
 /// All fields in this message optional.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TableModifiers {
     /// The snapshot time of the table. If not set, interpreted as now.
@@ -74,6 +81,7 @@ pub struct TableModifiers {
     pub snapshot_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Information about a single data stream within a read session.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Stream {
     /// Name of the stream, in the form
@@ -82,6 +90,7 @@ pub struct Stream {
     pub name: ::prost::alloc::string::String,
 }
 /// Expresses a point within a given stream using an offset position.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StreamPosition {
     /// Identifier for a given Stream.
@@ -92,6 +101,7 @@ pub struct StreamPosition {
     pub offset: i64,
 }
 /// Information returned from a `CreateReadSession` request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReadSession {
     /// Unique identifier for the session, in the form
@@ -125,6 +135,7 @@ pub mod read_session {
     /// The schema for the read. If read_options.selected_fields is set, the
     /// schema may be different from the table schema as it will only contain
     /// the selected fields.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Schema {
         /// Avro schema.
@@ -137,6 +148,7 @@ pub mod read_session {
 }
 /// Creates a new read session, which may include additional options such as
 /// requested parallelism, projection filters and constraints.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateReadSessionRequest {
     /// Required. Reference to the table to read.
@@ -171,6 +183,7 @@ pub struct CreateReadSessionRequest {
     pub sharding_strategy: i32,
 }
 /// Requesting row data via `ReadRows` must provide Stream position information.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReadRowsRequest {
     /// Required. Identifier of the position in the stream to start reading from.
@@ -180,6 +193,7 @@ pub struct ReadRowsRequest {
     pub read_position: ::core::option::Option<StreamPosition>,
 }
 /// Progress information for a given Stream.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StreamStatus {
     /// Number of estimated rows in the current stream. May change over time as
@@ -207,6 +221,7 @@ pub struct StreamStatus {
     #[prost(bool, tag = "3")]
     pub is_splittable: bool,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Progress {
     /// The fraction of rows assigned to the stream that have been processed by the
@@ -228,6 +243,7 @@ pub struct Progress {
     pub at_response_end: f32,
 }
 /// Information on if the current connection is being throttled.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ThrottleStatus {
     /// How much this connection is being throttled.
@@ -237,6 +253,7 @@ pub struct ThrottleStatus {
 }
 /// Response from calling `ReadRows` may include row data, progress and
 /// throttling information.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReadRowsResponse {
     /// Number of serialized rows in the rows block. This value is recorded here,
@@ -259,6 +276,7 @@ pub struct ReadRowsResponse {
 /// Nested message and enum types in `ReadRowsResponse`.
 pub mod read_rows_response {
     /// Row data is returned in format specified during session creation.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Rows {
         /// Serialized row data in AVRO format.
@@ -271,6 +289,7 @@ pub mod read_rows_response {
 }
 /// Information needed to request additional streams for an established read
 /// session.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchCreateReadSessionStreamsRequest {
     /// Required. Must be a non-expired session obtained from a call to
@@ -285,6 +304,7 @@ pub struct BatchCreateReadSessionStreamsRequest {
 }
 /// The response from `BatchCreateReadSessionStreams` returns the stream
 /// identifiers for the newly created streams.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchCreateReadSessionStreamsResponse {
     /// Newly added streams.
@@ -292,6 +312,7 @@ pub struct BatchCreateReadSessionStreamsResponse {
     pub streams: ::prost::alloc::vec::Vec<Stream>,
 }
 /// Request information for invoking `FinalizeStream`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FinalizeStreamRequest {
     /// Required. Stream to finalize.
@@ -299,6 +320,7 @@ pub struct FinalizeStreamRequest {
     pub stream: ::core::option::Option<Stream>,
 }
 /// Request information for `SplitReadStream`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SplitReadStreamRequest {
     /// Required. Stream to split.
@@ -315,6 +337,7 @@ pub struct SplitReadStreamRequest {
     pub fraction: f32,
 }
 /// Response from `SplitReadStream`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SplitReadStreamResponse {
     /// Primary stream, which contains the beginning portion of

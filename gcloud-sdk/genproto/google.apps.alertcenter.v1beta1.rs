@@ -1,4 +1,5 @@
 /// An alert affecting a customer.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Alert {
     /// Output only. The unique identifier of the Google account of the customer.
@@ -71,6 +72,7 @@ pub struct Alert {
     pub etag: ::prost::alloc::string::String,
 }
 /// A customer feedback about an alert.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AlertFeedback {
     /// Output only. The unique identifier of the Google account of the customer.
@@ -93,6 +95,7 @@ pub struct AlertFeedback {
     pub email: ::prost::alloc::string::String,
 }
 /// An alert metadata.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AlertMetadata {
     /// Output only. The unique identifier of the Google account of the customer.
@@ -140,6 +143,7 @@ pub struct AlertMetadata {
     pub etag: ::prost::alloc::string::String,
 }
 /// Customer-level settings.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Settings {
     /// The list of notifications.
@@ -151,6 +155,7 @@ pub mod settings {
     /// Settings for callback notifications.
     /// For more details see [Google Workspace Alert
     /// Notification](<https://developers.google.com/admin-sdk/alertcenter/guides/notifications>).
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Notification {
         /// Exactly one destination to be specified.
@@ -164,6 +169,7 @@ pub mod settings {
         /// To register for notifications, the owner of the topic must grant
         /// `alerts-api-push-notifications@system.gserviceaccount.com` the
         ///   `projects.topics.publish` permission.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct CloudPubsubTopic {
             /// The `name` field of a Cloud Pubsub \[Topic\]
@@ -207,6 +213,7 @@ pub mod settings {
             }
         }
         /// Exactly one destination to be specified.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Destination {
             /// A Google Cloud Pub/sub topic destination.
@@ -216,6 +223,7 @@ pub mod settings {
     }
 }
 /// A request to perform batch delete on alerts.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchDeleteAlertsRequest {
     /// Optional. The unique identifier of the Google Workspace organization
@@ -227,6 +235,7 @@ pub struct BatchDeleteAlertsRequest {
     pub alert_id: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Response to batch delete operation on alerts.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchDeleteAlertsResponse {
     /// The successful list of alert IDs.
@@ -240,6 +249,7 @@ pub struct BatchDeleteAlertsResponse {
     >,
 }
 /// A request to perform batch undelete on alerts.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchUndeleteAlertsRequest {
     /// Optional. The unique identifier of the Google Workspace organization
@@ -251,6 +261,7 @@ pub struct BatchUndeleteAlertsRequest {
     pub alert_id: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Response to batch undelete operation on alerts.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchUndeleteAlertsResponse {
     /// The successful list of alert IDs.
@@ -264,6 +275,7 @@ pub struct BatchUndeleteAlertsResponse {
     >,
 }
 /// An alert listing request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAlertsRequest {
     /// Optional. The unique identifier of the Google Workspace organization
@@ -298,6 +310,7 @@ pub struct ListAlertsRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// Response message for an alert listing request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAlertsResponse {
     /// The list of alerts.
@@ -311,6 +324,7 @@ pub struct ListAlertsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request for a specific alert.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAlertRequest {
     /// Optional. The unique identifier of the Google Workspace organization
@@ -323,6 +337,7 @@ pub struct GetAlertRequest {
     pub alert_id: ::prost::alloc::string::String,
 }
 /// A request to mark a specific alert for deletion.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteAlertRequest {
     /// Optional. The unique identifier of the Google Workspace organization
@@ -335,6 +350,7 @@ pub struct DeleteAlertRequest {
     pub alert_id: ::prost::alloc::string::String,
 }
 /// A request to undelete a specific alert that was marked for deletion.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UndeleteAlertRequest {
     /// Optional. The unique identifier of the Google Workspace organization
@@ -347,6 +363,7 @@ pub struct UndeleteAlertRequest {
     pub alert_id: ::prost::alloc::string::String,
 }
 /// A request to create a new alert feedback.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateAlertFeedbackRequest {
     /// Optional. The unique identifier of the Google Workspace organization
@@ -362,6 +379,7 @@ pub struct CreateAlertFeedbackRequest {
     pub feedback: ::core::option::Option<AlertFeedback>,
 }
 /// An alert feedback listing request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAlertFeedbackRequest {
     /// Optional. The unique identifier of the Google Workspace organization
@@ -382,6 +400,7 @@ pub struct ListAlertFeedbackRequest {
     pub filter: ::prost::alloc::string::String,
 }
 /// Response message for an alert feedback listing request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAlertFeedbackResponse {
     /// The list of alert feedback.
@@ -390,6 +409,7 @@ pub struct ListAlertFeedbackResponse {
     pub feedback: ::prost::alloc::vec::Vec<AlertFeedback>,
 }
 /// Get the alert metadata.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAlertMetadataRequest {
     /// Optional. The unique identifier of the Google Workspace organization
@@ -402,6 +422,7 @@ pub struct GetAlertMetadataRequest {
     pub alert_id: ::prost::alloc::string::String,
 }
 /// Get the customer level settings.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetSettingsRequest {
     /// Optional. The unique identifier of the Google Workspace organization
@@ -411,6 +432,7 @@ pub struct GetSettingsRequest {
     pub customer_id: ::prost::alloc::string::String,
 }
 /// Update the customer level settings.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateSettingsRequest {
     /// Optional. The unique identifier of the Google Workspace organization

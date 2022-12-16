@@ -1,6 +1,7 @@
 /// A Google Cloud Platform account that identifies support eligibility for a
 /// Cloud resource. Currently the Cloud resource can only be an Organization
 /// but this might change in future.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SupportAccount {
     /// The resource name for a support account in format
@@ -112,6 +113,7 @@ pub mod support_account {
     }
 }
 /// A support case created by the user.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Case {
     /// The resource name for the Case in format
@@ -271,6 +273,7 @@ pub mod case {
 /// Reference to a Google internal ticket used for investigating a support case.
 /// Not every support case will have an internal ticket associated with it.
 /// A support case can have multiple tickets linked to it.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomerIssue {
     /// Unique identifier for the internal issue.
@@ -342,6 +345,7 @@ pub mod customer_issue {
 }
 /// A message that contains mapping of a user and their role under a support
 /// account.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SupportRole {
     /// Email address of user being added through this Role.
@@ -396,6 +400,7 @@ pub mod support_role {
     }
 }
 /// The comment text associated with a `Case`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Comment {
     /// Text containing a maximum of 3000 characters.
@@ -419,6 +424,7 @@ pub struct Comment {
 /// or updating a `Case`. A client should obtain the list of issue categories,
 /// component/subcomponent from this object and specify it in `Case.category`,
 /// `Case.component` and `Case.subcomponent` fields respectively.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IssueTaxonomy {
     /// Map of available categories.
@@ -437,6 +443,7 @@ pub mod issue_taxonomy {
     /// case. It also contains an embedded list of product subcomponents that have
     /// similar attributes as top-level components.
     /// (e.g., Google App Engine > Memcache).
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Component {
         /// User friendly name of this component.
@@ -455,6 +462,7 @@ pub mod issue_taxonomy {
     }
     /// Represents the category of issue (Technical or Non-Technical)
     /// reported through a support case.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Category {
         /// User friendly name of this category.

@@ -1,4 +1,5 @@
 /// Oracle database profile.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OracleProfile {
     /// Required. Hostname for the Oracle connection.
@@ -24,6 +25,7 @@ pub struct OracleProfile {
     >,
 }
 /// MySQL database profile.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MysqlProfile {
     /// Required. Hostname for the MySQL connection.
@@ -43,6 +45,7 @@ pub struct MysqlProfile {
     pub ssl_config: ::core::option::Option<MysqlSslConfig>,
 }
 /// Cloud Storage bucket profile.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GcsProfile {
     /// Required. The full project and resource path for Cloud Storage bucket including the
@@ -54,12 +57,15 @@ pub struct GcsProfile {
     pub root_path: ::prost::alloc::string::String,
 }
 /// No connectivity settings.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NoConnectivitySettings {}
 /// Static IP address connectivity.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StaticServiceIpConnectivity {}
 /// Forward SSH Tunnel connectivity.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ForwardSshTunnelConnectivity {
     /// Required. Hostname for the SSH tunnel.
@@ -81,6 +87,7 @@ pub struct ForwardSshTunnelConnectivity {
 }
 /// Nested message and enum types in `ForwardSshTunnelConnectivity`.
 pub mod forward_ssh_tunnel_connectivity {
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum AuthenticationMethod {
         /// Input only. SSH password.
@@ -93,6 +100,7 @@ pub mod forward_ssh_tunnel_connectivity {
 }
 /// The VPC Peering configuration is used to create VPC peering between
 /// Datastream and the consumer's VPC.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VpcPeeringConfig {
     /// Required. fully qualified name of the VPC Datastream will peer to.
@@ -104,6 +112,7 @@ pub struct VpcPeeringConfig {
 }
 /// The PrivateConnection resource is used to establish private connectivity
 /// between Datastream and a customer's network.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PrivateConnection {
     /// Output only. The resource's name.
@@ -174,6 +183,7 @@ pub mod private_connection {
     }
 }
 /// Private Connectivity
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PrivateConnectivity {
     #[prost(string, tag = "1")]
@@ -181,6 +191,7 @@ pub struct PrivateConnectivity {
 }
 /// The Route resource is the child of the PrivateConnection resource.
 /// It used to define a route for a PrivateConnection setup.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Route {
     /// Output only. The resource's name.
@@ -209,6 +220,7 @@ pub struct Route {
     pub destination_port: i32,
 }
 /// MySQL SSL configuration information.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MysqlSslConfig {
     /// Input only. PEM-encoded private key associated with the Client Certificate.
@@ -235,6 +247,7 @@ pub struct MysqlSslConfig {
     #[prost(bool, tag = "16")]
     pub ca_certificate_set: bool,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConnectionProfile {
     /// Output only. The resource's name.
@@ -265,6 +278,7 @@ pub struct ConnectionProfile {
 /// Nested message and enum types in `ConnectionProfile`.
 pub mod connection_profile {
     /// Connection configuration for the ConnectionProfile.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Profile {
         /// Oracle ConnectionProfile configuration.
@@ -278,6 +292,7 @@ pub mod connection_profile {
         MysqlProfile(super::MysqlProfile),
     }
     /// Connectivity options used to establish a connection to the profile.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Connectivity {
         /// No connectivity option chosen.
@@ -295,6 +310,7 @@ pub mod connection_profile {
     }
 }
 /// Oracle Column.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OracleColumn {
     /// Column name.
@@ -326,6 +342,7 @@ pub struct OracleColumn {
     pub ordinal_position: i32,
 }
 /// Oracle table.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OracleTable {
     /// Table name.
@@ -338,6 +355,7 @@ pub struct OracleTable {
     pub oracle_columns: ::prost::alloc::vec::Vec<OracleColumn>,
 }
 /// Oracle schema.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OracleSchema {
     /// Schema name.
@@ -348,6 +366,7 @@ pub struct OracleSchema {
     pub oracle_tables: ::prost::alloc::vec::Vec<OracleTable>,
 }
 /// Oracle database structure.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OracleRdbms {
     /// Oracle schemas/databases in the database server.
@@ -355,6 +374,7 @@ pub struct OracleRdbms {
     pub oracle_schemas: ::prost::alloc::vec::Vec<OracleSchema>,
 }
 /// Oracle data source configuration
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OracleSourceConfig {
     /// Oracle objects to include in the stream.
@@ -365,6 +385,7 @@ pub struct OracleSourceConfig {
     pub rejectlist: ::core::option::Option<OracleRdbms>,
 }
 /// MySQL Column.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MysqlColumn {
     /// Column name.
@@ -391,6 +412,7 @@ pub struct MysqlColumn {
     pub ordinal_position: i32,
 }
 /// MySQL table.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MysqlTable {
     /// Table name.
@@ -403,6 +425,7 @@ pub struct MysqlTable {
     pub mysql_columns: ::prost::alloc::vec::Vec<MysqlColumn>,
 }
 /// MySQL database.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MysqlDatabase {
     /// Database name.
@@ -413,6 +436,7 @@ pub struct MysqlDatabase {
     pub mysql_tables: ::prost::alloc::vec::Vec<MysqlTable>,
 }
 /// MySQL database structure
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MysqlRdbms {
     /// Mysql databases on the server
@@ -420,6 +444,7 @@ pub struct MysqlRdbms {
     pub mysql_databases: ::prost::alloc::vec::Vec<MysqlDatabase>,
 }
 /// MySQL source configuration
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MysqlSourceConfig {
     /// MySQL objects to retrieve from the source.
@@ -430,6 +455,7 @@ pub struct MysqlSourceConfig {
     pub rejectlist: ::core::option::Option<MysqlRdbms>,
 }
 /// The configuration of the stream source.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SourceConfig {
     /// Required. Source connection profile identifier.
@@ -442,6 +468,7 @@ pub struct SourceConfig {
 /// Nested message and enum types in `SourceConfig`.
 pub mod source_config {
     /// Stream configuration that is specific to the data source type.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum SourceStreamConfig {
         /// Oracle data source configuration
@@ -453,9 +480,11 @@ pub mod source_config {
     }
 }
 /// AVRO file format configuration.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AvroFileFormat {}
 /// JSON file format configuration.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct JsonFileFormat {
     /// The schema file format along JSON data files.
@@ -503,6 +532,7 @@ pub mod json_file_format {
     }
 }
 /// Google Cloud Storage destination configuration
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GcsDestinationConfig {
     /// Path inside the Cloud Storage bucket to write data to.
@@ -527,6 +557,7 @@ pub struct GcsDestinationConfig {
 /// Nested message and enum types in `GcsDestinationConfig`.
 pub mod gcs_destination_config {
     /// File Format that the data should be written in.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum FileFormat {
         /// AVRO file format configuration.
@@ -538,6 +569,7 @@ pub mod gcs_destination_config {
     }
 }
 /// The configuration of the stream destination.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DestinationConfig {
     /// Required. Destination connection profile identifier.
@@ -552,12 +584,14 @@ pub struct DestinationConfig {
 /// Nested message and enum types in `DestinationConfig`.
 pub mod destination_config {
     /// Stream configuration that is specific to the data destination type.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum DestinationStreamConfig {
         #[prost(message, tag = "100")]
         GcsDestinationConfig(super::GcsDestinationConfig),
     }
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Stream {
     /// Output only. The stream's name.
@@ -598,6 +632,7 @@ pub struct Stream {
 pub mod stream {
     /// Backfill strategy to automatically backfill the Stream's objects.
     /// Specific objects can be excluded.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct BackfillAllStrategy {
         /// List of objects to exclude.
@@ -609,6 +644,7 @@ pub mod stream {
     /// Nested message and enum types in `BackfillAllStrategy`.
     pub mod backfill_all_strategy {
         /// List of objects to exclude.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum ExcludedObjects {
             /// Oracle data source objects to avoid backfilling.
@@ -620,6 +656,7 @@ pub mod stream {
         }
     }
     /// Backfill strategy to disable automatic backfill for the Stream's objects.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct BackfillNoneStrategy {}
     /// Stream state.
@@ -679,6 +716,7 @@ pub mod stream {
         }
     }
     /// Stream backfill strategy.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum BackfillStrategy {
         /// Automatically backfill objects included in the stream source
@@ -691,6 +729,7 @@ pub mod stream {
     }
 }
 /// Represent a user-facing Error.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Error {
     /// A title that explains the reason for the error.
@@ -714,6 +753,7 @@ pub struct Error {
     >,
 }
 /// Contains the current validation results.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ValidationResult {
     /// A list of validations (includes both executed as well as not executed
@@ -721,6 +761,7 @@ pub struct ValidationResult {
     #[prost(message, repeated, tag = "1")]
     pub validations: ::prost::alloc::vec::Vec<Validation>,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Validation {
     /// A short description of the validation.
@@ -777,6 +818,7 @@ pub mod validation {
     }
 }
 /// Represent user-facing validation result message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ValidationMessage {
     /// The result of the validation.
@@ -878,6 +920,7 @@ impl SchemaFileFormat {
     }
 }
 /// Request message for 'discover' ConnectionProfile request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DiscoverConnectionProfileRequest {
     /// Required. The parent resource of the ConnectionProfile type. Must be in the
@@ -901,6 +944,7 @@ pub struct DiscoverConnectionProfileRequest {
 /// Nested message and enum types in `DiscoverConnectionProfileRequest`.
 pub mod discover_connection_profile_request {
     /// The connection profile on which to run discover.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Target {
         /// An ad-hoc ConnectionProfile configuration.
@@ -910,6 +954,7 @@ pub mod discover_connection_profile_request {
         #[prost(string, tag = "201")]
         ConnectionProfileName(::prost::alloc::string::String),
     }
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Depth {
         /// Whether to retrieve the full hierarchy of data objects (TRUE) or only the
@@ -921,6 +966,7 @@ pub mod discover_connection_profile_request {
         RecursionDepth(i32),
     }
     /// The data object to enrich with child data objects and metadata.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum DataObject {
         /// Oracle RDBMS to enrich with child data objects and metadata.
@@ -931,6 +977,7 @@ pub mod discover_connection_profile_request {
         MysqlRdbms(super::MysqlRdbms),
     }
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DiscoverConnectionProfileResponse {
     /// The data object that has been enriched by the discover API call.
@@ -945,6 +992,7 @@ pub struct DiscoverConnectionProfileResponse {
 /// Nested message and enum types in `DiscoverConnectionProfileResponse`.
 pub mod discover_connection_profile_response {
     /// The data object that has been enriched by the discover API call.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum DataObject {
         /// Enriched Oracle RDBMS object.
@@ -956,6 +1004,7 @@ pub mod discover_connection_profile_response {
     }
 }
 /// Request message for 'FetchStaticIps' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FetchStaticIpsRequest {
     /// Required. The name resource of the Response type. Must be in the
@@ -971,6 +1020,7 @@ pub struct FetchStaticIpsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for a 'FetchStaticIps' response.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FetchStaticIpsResponse {
     /// list of static ips by account
@@ -982,6 +1032,7 @@ pub struct FetchStaticIpsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for 'FetchErrors' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FetchErrorsRequest {
     /// Name of the Stream resource for which to fetch any errors.
@@ -989,12 +1040,14 @@ pub struct FetchErrorsRequest {
     pub stream: ::prost::alloc::string::String,
 }
 /// Response message for a 'FetchErrors' response.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FetchErrorsResponse {
     /// The list of errors on the Stream.
     #[prost(message, repeated, tag = "1")]
     pub errors: ::prost::alloc::vec::Vec<Error>,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListConnectionProfilesRequest {
     /// Required. The parent that owns the collection of connection profiles.
@@ -1019,6 +1072,7 @@ pub struct ListConnectionProfilesRequest {
     #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListConnectionProfilesResponse {
     /// List of connection profiles.
@@ -1032,12 +1086,14 @@ pub struct ListConnectionProfilesResponse {
     #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetConnectionProfileRequest {
     /// Required. The name of the connection profile resource to get.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateConnectionProfileRequest {
     /// Required. The parent that owns the collection of ConnectionProfiles.
@@ -1065,6 +1121,7 @@ pub struct CreateConnectionProfileRequest {
     #[prost(string, tag = "4")]
     pub request_id: ::prost::alloc::string::String,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateConnectionProfileRequest {
     /// Optional. Field mask is used to specify the fields to be overwritten in the
@@ -1093,6 +1150,7 @@ pub struct UpdateConnectionProfileRequest {
     #[prost(string, tag = "3")]
     pub request_id: ::prost::alloc::string::String,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteConnectionProfileRequest {
     /// Required. The name of the connection profile resource to delete.
@@ -1114,6 +1172,7 @@ pub struct DeleteConnectionProfileRequest {
     #[prost(string, tag = "2")]
     pub request_id: ::prost::alloc::string::String,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListStreamsRequest {
     /// Required. The parent that owns the collection of streams.
@@ -1138,6 +1197,7 @@ pub struct ListStreamsRequest {
     #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListStreamsResponse {
     /// List of streams
@@ -1151,12 +1211,14 @@ pub struct ListStreamsResponse {
     #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetStreamRequest {
     /// Required. The name of the stream resource to get.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateStreamRequest {
     /// Required. The parent that owns the collection of streams.
@@ -1191,6 +1253,7 @@ pub struct CreateStreamRequest {
     #[prost(bool, tag = "6")]
     pub force: bool,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateStreamRequest {
     /// Optional. Field mask is used to specify the fields to be overwritten in the
@@ -1226,6 +1289,7 @@ pub struct UpdateStreamRequest {
     #[prost(bool, tag = "5")]
     pub force: bool,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteStreamRequest {
     /// Required. The name of the stream resource to delete.
@@ -1248,6 +1312,7 @@ pub struct DeleteStreamRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Represents the metadata of the long-running operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationMetadata {
     /// Output only. The time the operation was created.
@@ -1278,6 +1343,7 @@ pub struct OperationMetadata {
     #[prost(message, optional, tag = "8")]
     pub validation_result: ::core::option::Option<ValidationResult>,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreatePrivateConnectionRequest {
     /// Required. The parent that owns the collection of PrivateConnections.
@@ -1305,6 +1371,7 @@ pub struct CreatePrivateConnectionRequest {
     #[prost(string, tag = "4")]
     pub request_id: ::prost::alloc::string::String,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPrivateConnectionsRequest {
     /// Required. The parent that owns the collection of private connectivity configurations.
@@ -1331,6 +1398,7 @@ pub struct ListPrivateConnectionsRequest {
     #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPrivateConnectionsResponse {
     /// List of private connectivity configurations.
@@ -1344,6 +1412,7 @@ pub struct ListPrivateConnectionsResponse {
     #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeletePrivateConnectionRequest {
     /// Required. The name of the private connectivity configuration to delete.
@@ -1369,6 +1438,7 @@ pub struct DeletePrivateConnectionRequest {
     #[prost(bool, tag = "3")]
     pub force: bool,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetPrivateConnectionRequest {
     /// Required. The name of the  private connectivity configuration to get.
@@ -1376,6 +1446,7 @@ pub struct GetPrivateConnectionRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// route creation request
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateRouteRequest {
     /// Required. The parent that owns the collection of Routes.
@@ -1404,6 +1475,7 @@ pub struct CreateRouteRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// route list request
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRoutesRequest {
     /// Required. The parent that owns the collection of Routess.
@@ -1431,6 +1503,7 @@ pub struct ListRoutesRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// route list response
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRoutesResponse {
     /// List of Routes.
@@ -1445,6 +1518,7 @@ pub struct ListRoutesResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// route deletion request
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteRouteRequest {
     /// Required. The name of the Route resource to delete.
@@ -1467,6 +1541,7 @@ pub struct DeleteRouteRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// route get request
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetRouteRequest {
     /// Required. The name of the Route resource to get.

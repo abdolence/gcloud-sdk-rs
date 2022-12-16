@@ -1,4 +1,5 @@
 /// AppConnectorInstanceConfig defines the instance config of a AppConnector.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AppConnectorInstanceConfig {
     /// Required. A monotonically increasing number generated and maintained
@@ -19,6 +20,7 @@ pub struct AppConnectorInstanceConfig {
     pub image_config: ::core::option::Option<ImageConfig>,
 }
 /// NotificationConfig defines the mechanisms to notify instance agent.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NotificationConfig {
     #[prost(oneof = "notification_config::Config", tags = "1")]
@@ -27,12 +29,14 @@ pub struct NotificationConfig {
 /// Nested message and enum types in `NotificationConfig`.
 pub mod notification_config {
     /// The configuration for Pub/Sub messaging for the AppConnector.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CloudPubSubNotificationConfig {
         /// The Pub/Sub subscription the AppConnector uses to receive notifications.
         #[prost(string, tag = "1")]
         pub pubsub_subscription: ::prost::alloc::string::String,
     }
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Config {
         /// Cloud Pub/Sub Configuration to receive notifications.
@@ -41,6 +45,7 @@ pub mod notification_config {
     }
 }
 /// ImageConfig defines the control plane images to run.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImageConfig {
     /// The initial image the remote agent will attempt to run for the control
@@ -62,6 +67,7 @@ pub struct ImageConfig {
 ///          - appconnection
 ///            - tunnel
 ///        - logagent
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResourceInfo {
     /// Required. Unique Id for the resource.
@@ -113,6 +119,7 @@ impl HealthStatus {
     }
 }
 /// Request message for BeyondCorp.ListAppConnectors.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAppConnectorsRequest {
     /// Required. The resource name of the AppConnector location using the form:
@@ -142,6 +149,7 @@ pub struct ListAppConnectorsRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// Response message for BeyondCorp.ListAppConnectors.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAppConnectorsResponse {
     /// A list of BeyondCorp AppConnectors in the project.
@@ -156,6 +164,7 @@ pub struct ListAppConnectorsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for BeyondCorp.GetAppConnector.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAppConnectorRequest {
     /// Required. BeyondCorp AppConnector name using the form:
@@ -164,6 +173,7 @@ pub struct GetAppConnectorRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for BeyondCorp.CreateAppConnector.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateAppConnectorRequest {
     /// Required. The resource project name of the AppConnector location using the
@@ -201,6 +211,7 @@ pub struct CreateAppConnectorRequest {
     pub validate_only: bool,
 }
 /// Request message for BeyondCorp.UpdateAppConnector.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateAppConnectorRequest {
     /// Required. Mask of fields to update. At least one path must be supplied in
@@ -235,6 +246,7 @@ pub struct UpdateAppConnectorRequest {
     pub validate_only: bool,
 }
 /// Request message for BeyondCorp.DeleteAppConnector.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteAppConnectorRequest {
     /// Required. BeyondCorp AppConnector name using the form:
@@ -262,6 +274,7 @@ pub struct DeleteAppConnectorRequest {
     pub validate_only: bool,
 }
 /// Request report the connector status.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReportStatusRequest {
     /// Required. BeyondCorp Connector name using the form:
@@ -296,6 +309,7 @@ pub struct ReportStatusRequest {
 /// instances. It is used to establish connectivity between the remote enterprise
 /// environment and GCP. It initiates connections to the applications and can
 /// proxy the data from users over the connection.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AppConnector {
     /// Required. Unique resource name of the AppConnector.
@@ -335,6 +349,7 @@ pub struct AppConnector {
 /// Nested message and enum types in `AppConnector`.
 pub mod app_connector {
     /// PrincipalInfo represents an Identity oneof.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct PrincipalInfo {
         #[prost(oneof = "principal_info::Type", tags = "1")]
@@ -343,12 +358,14 @@ pub mod app_connector {
     /// Nested message and enum types in `PrincipalInfo`.
     pub mod principal_info {
         /// ServiceAccount represents a GCP service account.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct ServiceAccount {
             /// Email address of the service account.
             #[prost(string, tag = "1")]
             pub email: ::prost::alloc::string::String,
         }
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Type {
             /// A GCP service account.
@@ -402,6 +419,7 @@ pub mod app_connector {
     }
 }
 /// Represents the metadata of the long-running operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AppConnectorOperationMetadata {
     /// Output only. The time the operation was created.

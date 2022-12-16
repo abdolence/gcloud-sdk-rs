@@ -1,4 +1,5 @@
 /// Represents a managed Microsoft Active Directory domain.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Domain {
     /// Required. The unique name of the domain using the form:
@@ -112,6 +113,7 @@ pub mod domain {
 }
 /// Represents a relationship between two domains. This allows a controller in
 /// one domain to authenticate a user in another domain.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Trust {
     /// Required. The fully qualified target domain name which will be in trust with the
@@ -277,6 +279,7 @@ pub mod trust {
     }
 }
 /// Represents the metadata of the long-running operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OpMetadata {
     /// Output only. The time the operation was created.
@@ -303,6 +306,7 @@ pub struct OpMetadata {
 }
 /// Request message for
 /// \[CreateMicrosoftAdDomain][google.cloud.managedidentities.v1.CreateMicrosoftAdDomain\]
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateMicrosoftAdDomainRequest {
     /// Required. The resource project name and location using the form:
@@ -329,6 +333,7 @@ pub struct CreateMicrosoftAdDomainRequest {
 }
 /// Request message for
 /// \[ResetAdminPassword][google.cloud.managedidentities.v1.ResetAdminPassword\]
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResetAdminPasswordRequest {
     /// Required. The domain resource name using the form:
@@ -338,6 +343,7 @@ pub struct ResetAdminPasswordRequest {
 }
 /// Response message for
 /// \[ResetAdminPassword][google.cloud.managedidentities.v1.ResetAdminPassword\]
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResetAdminPasswordResponse {
     /// A random password. See \[admin][google.cloud.managedidentities.v1.Domain.admin\] for more information.
@@ -346,6 +352,7 @@ pub struct ResetAdminPasswordResponse {
 }
 /// Request message for
 /// \[ListDomains][google.cloud.managedidentities.v1.ListDomains\]
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDomainsRequest {
     /// Required. The resource name of the domain location using the form:
@@ -377,6 +384,7 @@ pub struct ListDomainsRequest {
 }
 /// Response message for
 /// \[ListDomains][google.cloud.managedidentities.v1.ListDomains\]
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDomainsResponse {
     /// A list of Managed Identities Service domains in the project.
@@ -391,6 +399,7 @@ pub struct ListDomainsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for \[GetDomain][google.cloud.managedidentities.v1.GetDomain\]
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetDomainRequest {
     /// Required. The domain resource name using the form:
@@ -400,6 +409,7 @@ pub struct GetDomainRequest {
 }
 /// Request message for
 /// \[UpdateDomain][google.cloud.managedidentities.v1.UpdateDomain\]
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateDomainRequest {
     /// Required. Mask of fields to update. At least one path must be supplied in this
@@ -417,6 +427,7 @@ pub struct UpdateDomainRequest {
 }
 /// Request message for
 /// \[DeleteDomain][google.cloud.managedidentities.v1.DeleteDomain\]
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteDomainRequest {
     /// Required. The domain resource name using the form:
@@ -426,6 +437,7 @@ pub struct DeleteDomainRequest {
 }
 /// Request message for
 /// \[AttachTrust][google.cloud.managedidentities.v1.AttachTrust\]
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AttachTrustRequest {
     /// Required. The resource domain name, project name and location using the form:
@@ -438,6 +450,7 @@ pub struct AttachTrustRequest {
 }
 /// Request message for
 /// \[ReconfigureTrust][google.cloud.managedidentities.v1.ReconfigureTrust\]
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReconfigureTrustRequest {
     /// Required. The resource domain name, project name and location using the form:
@@ -457,6 +470,7 @@ pub struct ReconfigureTrustRequest {
 }
 /// Request message for
 /// \[DetachTrust][google.cloud.managedidentities.v1.DetachTrust\]
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DetachTrustRequest {
     /// Required. The resource domain name, project name, and location using the form:
@@ -469,6 +483,7 @@ pub struct DetachTrustRequest {
 }
 /// Request message for
 /// \[ValidateTrust][google.cloud.managedidentities.v1.ValidateTrust\]
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ValidateTrustRequest {
     /// Required. The resource domain name, project name, and location using the form:

@@ -1,5 +1,6 @@
 /// Represents preferences for sending email notifications for transfer run
 /// events.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EmailPreferences {
     /// If true, email notifications will be sent on transfer run failures.
@@ -7,6 +8,7 @@ pub struct EmailPreferences {
     pub enable_failure_email: bool,
 }
 /// Options customizing the data transfer schedule.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ScheduleOptions {
     /// If true, automatic scheduling of data transfer runs for this configuration
@@ -30,6 +32,7 @@ pub struct ScheduleOptions {
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Information about a user.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UserInfo {
     /// E-mail address of the user.
@@ -42,6 +45,7 @@ pub struct UserInfo {
 /// When a new transfer configuration is created, the specified
 /// `destination_dataset_id` is created when needed and shared with the
 /// appropriate data source service account.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TransferConfig {
     /// The resource name of the transfer config.
@@ -135,6 +139,7 @@ pub struct TransferConfig {
 /// Nested message and enum types in `TransferConfig`.
 pub mod transfer_config {
     /// The desination of the transfer config.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Destination {
         /// The BigQuery target dataset id.
@@ -143,6 +148,7 @@ pub mod transfer_config {
     }
 }
 /// Represents a data transfer run.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TransferRun {
     /// The resource name of the transfer run.
@@ -213,6 +219,7 @@ pub struct TransferRun {
 /// Nested message and enum types in `TransferRun`.
 pub mod transfer_run {
     /// Data transfer destination.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Destination {
         /// Output only. The BigQuery target dataset id.
@@ -221,6 +228,7 @@ pub mod transfer_run {
     }
 }
 /// Represents a user facing message for a particular data transfer run.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TransferMessage {
     /// Time when message was logged.
@@ -333,6 +341,7 @@ impl TransferState {
     }
 }
 /// A parameter used to define custom fields in a data source definition.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataSourceParameter {
     /// Parameter identifier.
@@ -437,6 +446,7 @@ pub mod data_source_parameter {
     }
 }
 /// Defines the properties and custom parameters for a data source.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataSource {
     /// Output only. Data source resource name.
@@ -593,6 +603,7 @@ pub mod data_source {
     }
 }
 /// A request to get data source info.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetDataSourceRequest {
     /// Required. The field will contain name of the resource requested, for example:
@@ -602,6 +613,7 @@ pub struct GetDataSourceRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request to list supported data sources and their data transfer settings.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDataSourcesRequest {
     /// Required. The BigQuery project id for which data sources should be returned.
@@ -621,6 +633,7 @@ pub struct ListDataSourcesRequest {
     pub page_size: i32,
 }
 /// Returns list of supported data sources and their metadata.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDataSourcesResponse {
     /// List of supported data sources and their transfer settings.
@@ -639,6 +652,7 @@ pub struct ListDataSourcesResponse {
 /// associated with the user id corresponding to the authorization info.
 /// Otherwise, the transfer configuration will be associated with the calling
 /// user.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateTransferConfigRequest {
     /// Required. The BigQuery project id where the transfer configuration should be created.
@@ -696,6 +710,7 @@ pub struct CreateTransferConfigRequest {
 }
 /// A request to update a transfer configuration. To update the user id of the
 /// transfer configuration, authorization info needs to be provided.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateTransferConfigRequest {
     /// Required. Data transfer configuration to create.
@@ -749,6 +764,7 @@ pub struct UpdateTransferConfigRequest {
     pub service_account_name: ::prost::alloc::string::String,
 }
 /// A request to get data transfer information.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetTransferConfigRequest {
     /// Required. The field will contain name of the resource requested, for example:
@@ -759,6 +775,7 @@ pub struct GetTransferConfigRequest {
 }
 /// A request to delete data transfer information. All associated transfer runs
 /// and log messages will be deleted as well.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteTransferConfigRequest {
     /// Required. The field will contain name of the resource requested, for example:
@@ -768,6 +785,7 @@ pub struct DeleteTransferConfigRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// A request to get data transfer run information.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetTransferRunRequest {
     /// Required. The field will contain name of the resource requested, for example:
@@ -777,6 +795,7 @@ pub struct GetTransferRunRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// A request to delete data transfer run information.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteTransferRunRequest {
     /// Required. The field will contain name of the resource requested, for example:
@@ -786,6 +805,7 @@ pub struct DeleteTransferRunRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// A request to list data transfers configured for a BigQuery project.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTransferConfigsRequest {
     /// Required. The BigQuery project id for which transfer configs
@@ -808,6 +828,7 @@ pub struct ListTransferConfigsRequest {
     pub page_size: i32,
 }
 /// The returned list of pipelines in the project.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTransferConfigsResponse {
     /// Output only. The stored pipeline transfer configurations.
@@ -821,6 +842,7 @@ pub struct ListTransferConfigsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// A request to list data transfer runs.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTransferRunsRequest {
     /// Required. Name of transfer configuration for which transfer runs should be retrieved.
@@ -881,6 +903,7 @@ pub mod list_transfer_runs_request {
     }
 }
 /// The returned list of pipelines in the project.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTransferRunsResponse {
     /// Output only. The stored pipeline transfer runs.
@@ -894,6 +917,7 @@ pub struct ListTransferRunsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// A request to get user facing log messages associated with data transfer run.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTransferLogsRequest {
     /// Required. Transfer run name in the form:
@@ -917,6 +941,7 @@ pub struct ListTransferLogsRequest {
     pub message_types: ::prost::alloc::vec::Vec<i32>,
 }
 /// The returned list transfer run messages.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTransferLogsResponse {
     /// Output only. The stored pipeline transfer messages.
@@ -935,6 +960,7 @@ pub struct ListTransferLogsResponse {
 /// If the data source has the Google+ authorization type, this method
 /// returns false, as it cannot be determined whether the credentials are
 /// already valid merely based on the user id.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CheckValidCredsRequest {
     /// Required. The data source in the form:
@@ -944,6 +970,7 @@ pub struct CheckValidCredsRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// A response indicating whether the credentials exist and are valid.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CheckValidCredsResponse {
     /// If set to `true`, the credentials exist and are valid.
@@ -951,6 +978,7 @@ pub struct CheckValidCredsResponse {
     pub has_valid_creds: bool,
 }
 /// A request to schedule transfer runs for a time range.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ScheduleTransferRunsRequest {
     /// Required. Transfer configuration name in the form:
@@ -968,6 +996,7 @@ pub struct ScheduleTransferRunsRequest {
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// A response to schedule transfer runs for a time range.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ScheduleTransferRunsResponse {
     /// The transfer runs that were scheduled.
@@ -975,6 +1004,7 @@ pub struct ScheduleTransferRunsResponse {
     pub runs: ::prost::alloc::vec::Vec<TransferRun>,
 }
 /// A request to start manual transfer runs.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StartManualTransferRunsRequest {
     /// Transfer configuration name in the form:
@@ -991,6 +1021,7 @@ pub struct StartManualTransferRunsRequest {
 pub mod start_manual_transfer_runs_request {
     /// A specification for a time range, this will request transfer runs with
     /// run_time between start_time (inclusive) and end_time (exclusive).
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct TimeRange {
         /// Start time of the range of transfer runs. For example,
@@ -1008,6 +1039,7 @@ pub mod start_manual_transfer_runs_request {
     }
     /// The requested time specification - this can be a time range or a specific
     /// run_time.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Time {
         /// Time range for the transfer runs that should be started.
@@ -1020,6 +1052,7 @@ pub mod start_manual_transfer_runs_request {
     }
 }
 /// A response to start manual transfer runs.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StartManualTransferRunsResponse {
     /// The transfer runs that were created.
@@ -1028,6 +1061,7 @@ pub struct StartManualTransferRunsResponse {
 }
 /// A request to enroll a set of data sources so they are visible in the
 /// BigQuery UI's `Transfer` tab.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EnrollDataSourcesRequest {
     /// The name of the project resource in the form: `projects/{project_id}`

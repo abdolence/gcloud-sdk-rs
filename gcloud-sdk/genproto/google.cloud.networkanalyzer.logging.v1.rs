@@ -1,3 +1,4 @@
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IpUtilizationInfo {
     #[prost(message, repeated, tag = "1")]
@@ -7,6 +8,7 @@ pub struct IpUtilizationInfo {
 }
 /// Nested message and enum types in `IpUtilizationInfo`.
 pub mod ip_utilization_info {
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SubnetIpUtilization {
         /// URI of subnet.
@@ -25,6 +27,7 @@ pub mod ip_utilization_info {
     }
 }
 /// Log entry that describes a report from Network Analyzer.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Report {
     /// The unique identifier of the report.
@@ -204,6 +207,7 @@ pub mod report {
             }
         }
     }
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Content {
         #[prost(message, tag = "19")]

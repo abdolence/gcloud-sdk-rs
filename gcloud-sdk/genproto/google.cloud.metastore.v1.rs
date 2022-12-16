@@ -1,4 +1,5 @@
 /// A managed metastore service that serves metadata queries.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Service {
     /// Immutable. The relative resource name of the metastore service, in the following
@@ -246,6 +247,7 @@ pub mod service {
     }
     /// Configuration properties specific to the underlying metastore service
     /// technology (the software that serves metastore queries).
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum MetastoreConfig {
         /// Configuration information specific to running Hive metastore
@@ -256,6 +258,7 @@ pub mod service {
 }
 /// Maintenance window. This specifies when Dataproc Metastore
 /// may perform system maintenance operation to the service.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MaintenanceWindow {
     /// The hour of day (0-23) when the window starts.
@@ -267,6 +270,7 @@ pub struct MaintenanceWindow {
 }
 /// Specifies configuration information specific to running Hive metastore
 /// software as the metastore service.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HiveMetastoreConfig {
     /// Immutable. The Hive metastore schema version.
@@ -291,6 +295,7 @@ pub struct HiveMetastoreConfig {
     pub kerberos_config: ::core::option::Option<KerberosConfig>,
 }
 /// Configuration information for a Kerberos principal.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KerberosConfig {
     /// A Kerberos keytab file that can be used to authenticate a service principal
@@ -309,6 +314,7 @@ pub struct KerberosConfig {
     pub krb5_config_gcs_uri: ::prost::alloc::string::String,
 }
 /// A securely stored value.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Secret {
     #[prost(oneof = "secret::Value", tags = "2")]
@@ -316,6 +322,7 @@ pub struct Secret {
 }
 /// Nested message and enum types in `Secret`.
 pub mod secret {
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Value {
         /// The relative resource name of a Secret Manager secret version, in the
@@ -327,6 +334,7 @@ pub mod secret {
     }
 }
 /// Encryption settings for the service.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EncryptionConfig {
     /// The fully qualified customer provided Cloud KMS key name to use for
@@ -337,6 +345,7 @@ pub struct EncryptionConfig {
     pub kms_key: ::prost::alloc::string::String,
 }
 /// Network configuration for the Dataproc Metastore service.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NetworkConfig {
     /// Immutable. The consumer-side network configuration for the Dataproc Metastore
@@ -347,6 +356,7 @@ pub struct NetworkConfig {
 /// Nested message and enum types in `NetworkConfig`.
 pub mod network_config {
     /// Contains information of the customer's network configurations.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Consumer {
         /// Output only. The URI of the endpoint used to access the metastore service.
@@ -357,6 +367,7 @@ pub mod network_config {
     }
     /// Nested message and enum types in `Consumer`.
     pub mod consumer {
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum VpcResource {
             /// Immutable. The subnetwork of the customer project from which an IP address is
@@ -373,6 +384,7 @@ pub mod network_config {
     }
 }
 /// Telemetry Configuration for the Dataproc Metastore service.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TelemetryConfig {
     /// The output format of the Dataproc Metastore service's logs.
@@ -416,6 +428,7 @@ pub mod telemetry_config {
     }
 }
 /// The metadata management activities of the metastore service.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MetadataManagementActivity {
     /// Output only. The latest metadata exports of the metastore service.
@@ -426,6 +439,7 @@ pub struct MetadataManagementActivity {
     pub restores: ::prost::alloc::vec::Vec<Restore>,
 }
 /// A metastore resource that imports metadata.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MetadataImport {
     /// Immutable. The relative resource name of the metadata import, of the form:
@@ -456,6 +470,7 @@ pub struct MetadataImport {
 pub mod metadata_import {
     /// A specification of the location of and metadata about a database dump from
     /// a relational database management system.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DatabaseDump {
         /// The type of the database.
@@ -546,6 +561,7 @@ pub mod metadata_import {
         }
     }
     /// The metadata to be imported.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Metadata {
         /// Immutable. A database dump from a pre-existing metastore's database.
@@ -554,6 +570,7 @@ pub mod metadata_import {
     }
 }
 /// The details of a metadata export operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MetadataExport {
     /// Output only. The time when the export started.
@@ -613,6 +630,7 @@ pub mod metadata_export {
             }
         }
     }
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Destination {
         /// Output only. A Cloud Storage URI of a folder that metadata are exported to, in the
@@ -623,6 +641,7 @@ pub mod metadata_export {
     }
 }
 /// The details of a backup resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Backup {
     /// Immutable. The relative resource name of the backup, in the following form:
@@ -696,6 +715,7 @@ pub mod backup {
     }
 }
 /// The details of a metadata restore operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Restore {
     /// Output only. The time when the restore started.
@@ -799,6 +819,7 @@ pub mod restore {
     }
 }
 /// Request message for \[DataprocMetastore.ListServices][google.cloud.metastore.v1.DataprocMetastore.ListServices\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListServicesRequest {
     /// Required. The relative resource name of the location of metastore services to
@@ -832,6 +853,7 @@ pub struct ListServicesRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// Response message for \[DataprocMetastore.ListServices][google.cloud.metastore.v1.DataprocMetastore.ListServices\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListServicesResponse {
     /// The services in the specified location.
@@ -846,6 +868,7 @@ pub struct ListServicesResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for \[DataprocMetastore.GetService][google.cloud.metastore.v1.DataprocMetastore.GetService\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetServiceRequest {
     /// Required. The relative resource name of the metastore service to retrieve, in the
@@ -856,6 +879,7 @@ pub struct GetServiceRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for \[DataprocMetastore.CreateService][google.cloud.metastore.v1.DataprocMetastore.CreateService\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateServiceRequest {
     /// Required. The relative resource name of the location in which to create a metastore
@@ -893,6 +917,7 @@ pub struct CreateServiceRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for \[DataprocMetastore.UpdateService][google.cloud.metastore.v1.DataprocMetastore.UpdateService\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateServiceRequest {
     /// Required. A field mask used to specify the fields to be overwritten in the
@@ -924,6 +949,7 @@ pub struct UpdateServiceRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for \[DataprocMetastore.DeleteService][google.cloud.metastore.v1.DataprocMetastore.DeleteService\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteServiceRequest {
     /// Required. The relative resource name of the metastore service to delete, in the
@@ -948,6 +974,7 @@ pub struct DeleteServiceRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for \[DataprocMetastore.ListMetadataImports][google.cloud.metastore.v1.DataprocMetastore.ListMetadataImports\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListMetadataImportsRequest {
     /// Required. The relative resource name of the service whose metadata imports to
@@ -981,6 +1008,7 @@ pub struct ListMetadataImportsRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// Response message for \[DataprocMetastore.ListMetadataImports][google.cloud.metastore.v1.DataprocMetastore.ListMetadataImports\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListMetadataImportsResponse {
     /// The imports in the specified service.
@@ -995,6 +1023,7 @@ pub struct ListMetadataImportsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for \[DataprocMetastore.GetMetadataImport][google.cloud.metastore.v1.DataprocMetastore.GetMetadataImport\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetMetadataImportRequest {
     /// Required. The relative resource name of the metadata import to retrieve, in the
@@ -1005,6 +1034,7 @@ pub struct GetMetadataImportRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for \[DataprocMetastore.CreateMetadataImport][google.cloud.metastore.v1.DataprocMetastore.CreateMetadataImport\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateMetadataImportRequest {
     /// Required. The relative resource name of the service in which to create a metastore
@@ -1042,6 +1072,7 @@ pub struct CreateMetadataImportRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for \[DataprocMetastore.UpdateMetadataImport][google.cloud.metastore.v1.DataprocMetastore.UpdateMetadataImport\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateMetadataImportRequest {
     /// Required. A field mask used to specify the fields to be overwritten in the
@@ -1073,6 +1104,7 @@ pub struct UpdateMetadataImportRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for \[DataprocMetastore.ListBackups][google.cloud.metastore.v1.DataprocMetastore.ListBackups\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListBackupsRequest {
     /// Required. The relative resource name of the service whose backups to
@@ -1106,6 +1138,7 @@ pub struct ListBackupsRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// Response message for \[DataprocMetastore.ListBackups][google.cloud.metastore.v1.DataprocMetastore.ListBackups\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListBackupsResponse {
     /// The backups of the specified service.
@@ -1120,6 +1153,7 @@ pub struct ListBackupsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for \[DataprocMetastore.GetBackup][google.cloud.metastore.v1.DataprocMetastore.GetBackup\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetBackupRequest {
     /// Required. The relative resource name of the backup to retrieve, in the
@@ -1130,6 +1164,7 @@ pub struct GetBackupRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for \[DataprocMetastore.CreateBackup][google.cloud.metastore.v1.DataprocMetastore.CreateBackup\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateBackupRequest {
     /// Required. The relative resource name of the service in which to create a backup
@@ -1166,6 +1201,7 @@ pub struct CreateBackupRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for \[DataprocMetastore.DeleteBackup][google.cloud.metastore.v1.DataprocMetastore.DeleteBackup\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteBackupRequest {
     /// Required. The relative resource name of the backup to delete, in the
@@ -1190,6 +1226,7 @@ pub struct DeleteBackupRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for \[DataprocMetastore.ExportMetadata][google.cloud.metastore.v1.DataprocMetastore.ExportMetadata\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportMetadataRequest {
     /// Required. The relative resource name of the metastore service to run export, in the
@@ -1222,6 +1259,7 @@ pub struct ExportMetadataRequest {
 /// Nested message and enum types in `ExportMetadataRequest`.
 pub mod export_metadata_request {
     /// Required. Destination that metadata is exported to.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Destination {
         /// A Cloud Storage URI of a folder, in the format
@@ -1232,6 +1270,7 @@ pub mod export_metadata_request {
     }
 }
 /// Request message for \[DataprocMetastore.Restore][\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RestoreServiceRequest {
     /// Required. The relative resource name of the metastore service to run restore, in the
@@ -1265,6 +1304,7 @@ pub struct RestoreServiceRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Represents the metadata of a long-running operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationMetadata {
     /// Output only. The time the operation was created.
@@ -1293,6 +1333,7 @@ pub struct OperationMetadata {
     pub api_version: ::prost::alloc::string::String,
 }
 /// Metadata about the service in a location.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LocationMetadata {
     /// The versions of Hive Metastore that can be used when creating a new
@@ -1306,6 +1347,7 @@ pub struct LocationMetadata {
 /// Nested message and enum types in `LocationMetadata`.
 pub mod location_metadata {
     /// A specification of a supported version of the Hive Metastore software.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct HiveMetastoreVersion {
         /// The semantic version of the Hive Metastore software.
@@ -1318,6 +1360,7 @@ pub mod location_metadata {
     }
 }
 /// The specification of database dump to import from or export to.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DatabaseDumpSpec {}
 /// Nested message and enum types in `DatabaseDumpSpec`.
@@ -1774,6 +1817,7 @@ pub mod dataproc_metastore_client {
     }
 }
 /// Represents a federation of multiple backend metastores.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Federation {
     /// Immutable. The relative resource name of the federation, of the
@@ -1868,6 +1912,7 @@ pub mod federation {
     }
 }
 /// Represents a backend metastore for the federation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BackendMetastore {
     /// The relative resource name of the metastore that is being federated.
@@ -1921,6 +1966,7 @@ pub mod backend_metastore {
     }
 }
 /// Request message for ListFederations.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFederationsRequest {
     /// Required. The relative resource name of the location of metastore federations
@@ -1953,6 +1999,7 @@ pub struct ListFederationsRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// Response message for ListFederations
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFederationsResponse {
     /// The services in the specified location.
@@ -1967,6 +2014,7 @@ pub struct ListFederationsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for GetFederation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetFederationRequest {
     /// Required. The relative resource name of the metastore federation to retrieve,
@@ -1977,6 +2025,7 @@ pub struct GetFederationRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for CreateFederation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateFederationRequest {
     /// Required. The relative resource name of the location in which to create a federation
@@ -2014,6 +2063,7 @@ pub struct CreateFederationRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for UpdateFederation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateFederationRequest {
     /// Required. A field mask used to specify the fields to be overwritten in the
@@ -2045,6 +2095,7 @@ pub struct UpdateFederationRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for DeleteFederation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteFederationRequest {
     /// Required. The relative resource name of the metastore federation to delete,

@@ -1,5 +1,6 @@
 /// A contiguous set of days: startDate, startDate + 1, ..., endDate. Requests
 /// are allowed up to 4 date ranges.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DateRange {
     /// The inclusive start date for the query in the format `YYYY-MM-DD`. Cannot
@@ -24,6 +25,7 @@ pub struct DateRange {
 /// Dimensions are attributes of your data. For example, the dimension city
 /// indicates the city from which an event originates. Dimension values in report
 /// responses are strings; for example, the city could be "Paris" or "New York".
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Dimension {
     /// The name of the dimension. See the [API
@@ -49,6 +51,7 @@ pub struct Dimension {
 /// dimensions. Example usages:
 /// 1) lower_case(dimension)
 /// 2) concatenate(dimension1, symbol, dimension2).
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DimensionExpression {
     /// Specify one type of dimension expression for `DimensionExpression`.
@@ -58,6 +61,7 @@ pub struct DimensionExpression {
 /// Nested message and enum types in `DimensionExpression`.
 pub mod dimension_expression {
     /// Used to convert a dimension value to a single case.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CaseExpression {
         /// Name of a dimension. The name must refer back to a name in dimensions
@@ -66,6 +70,7 @@ pub mod dimension_expression {
         pub dimension_name: ::prost::alloc::string::String,
     }
     /// Used to combine dimension values to a single dimension.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ConcatenateExpression {
         /// Names of dimensions. The names must refer back to names in the dimensions
@@ -83,6 +88,7 @@ pub mod dimension_expression {
         pub delimiter: ::prost::alloc::string::String,
     }
     /// Specify one type of dimension expression for `DimensionExpression`.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum OneExpression {
         /// Used to convert a dimension value to lower case.
@@ -99,6 +105,7 @@ pub mod dimension_expression {
 }
 /// To express dimension or metric filters. The fields in the same
 /// FilterExpression need to be either all dimensions or all metrics.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FilterExpression {
     /// Specify one type of filter expression for `FilterExpression`.
@@ -108,6 +115,7 @@ pub struct FilterExpression {
 /// Nested message and enum types in `FilterExpression`.
 pub mod filter_expression {
     /// Specify one type of filter expression for `FilterExpression`.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Expr {
         /// The FilterExpressions in and_group have an AND relationship.
@@ -126,6 +134,7 @@ pub mod filter_expression {
     }
 }
 /// A list of filter expressions.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FilterExpressionList {
     /// A list of filter expressions.
@@ -133,6 +142,7 @@ pub struct FilterExpressionList {
     pub expressions: ::prost::alloc::vec::Vec<FilterExpression>,
 }
 /// An expression to filter dimension or metric values.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Filter {
     /// The dimension name or metric name. Must be a name defined in dimensions
@@ -146,6 +156,7 @@ pub struct Filter {
 /// Nested message and enum types in `Filter`.
 pub mod filter {
     /// Specify one type of filter for `Filter`.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum OneFilter {
         /// Strings related filter.
@@ -163,6 +174,7 @@ pub mod filter {
     }
 }
 /// The filter for string
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StringFilter {
     /// The match type for this filter.
@@ -225,6 +237,7 @@ pub mod string_filter {
     }
 }
 /// The result needs to be in a list of string values.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InListFilter {
     /// The list of string values.
@@ -236,6 +249,7 @@ pub struct InListFilter {
     pub case_sensitive: bool,
 }
 /// Filters for numeric or date values.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NumericFilter {
     /// The operation type for this filter.
@@ -292,6 +306,7 @@ pub mod numeric_filter {
     }
 }
 /// To express that the result needs to be between two numbers (inclusive).
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BetweenFilter {
     /// Begins with this number.
@@ -302,6 +317,7 @@ pub struct BetweenFilter {
     pub to_value: ::core::option::Option<NumericValue>,
 }
 /// To represent a number.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NumericValue {
     /// One of a numeric value
@@ -311,6 +327,7 @@ pub struct NumericValue {
 /// Nested message and enum types in `NumericValue`.
 pub mod numeric_value {
     /// One of a numeric value
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum OneValue {
         /// Integer value
@@ -325,6 +342,7 @@ pub mod numeric_value {
 /// produce column entries within rows and DimensionHeaders. However, dimensions
 /// used exclusively within filters or expressions do not produce columns in a
 /// report; correspondingly, those dimensions do not produce headers.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DimensionHeader {
     /// The dimension's name.
@@ -335,6 +353,7 @@ pub struct DimensionHeader {
 /// report produce column entries within rows and MetricHeaders. However,
 /// metrics used exclusively within filters or expressions do not produce columns
 /// in a report; correspondingly, those metrics do not produce headers.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MetricHeader {
     /// The metric's name.
@@ -381,6 +400,7 @@ pub struct MetricHeader {
 ///    }
 /// ]
 /// ```
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Row {
     /// List of requested dimension values. In a PivotReport, dimension_values
@@ -392,6 +412,7 @@ pub struct Row {
     pub metric_values: ::prost::alloc::vec::Vec<MetricValue>,
 }
 /// The value of a dimension.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DimensionValue {
     /// One kind of dimension value
@@ -401,6 +422,7 @@ pub struct DimensionValue {
 /// Nested message and enum types in `DimensionValue`.
 pub mod dimension_value {
     /// One kind of dimension value
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum OneValue {
         /// Value as a string if the dimension type is a string.
@@ -409,6 +431,7 @@ pub mod dimension_value {
     }
 }
 /// The value of a metric.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MetricValue {
     /// One of metric value
@@ -418,6 +441,7 @@ pub struct MetricValue {
 /// Nested message and enum types in `MetricValue`.
 pub mod metric_value {
     /// One of metric value
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum OneValue {
         /// Measurement value. See MetricHeader for type.
@@ -428,6 +452,7 @@ pub mod metric_value {
 /// Current state of all quotas for this Analytics Property. If any quota for a
 /// property is exhausted, all requests to that property will return Resource
 /// Exhausted errors.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PropertyQuota {
     /// Standard Analytics Properties can use up to 25,000 tokens per day;
@@ -458,6 +483,7 @@ pub struct PropertyQuota {
     pub potentially_thresholded_requests_per_hour: ::core::option::Option<QuotaStatus>,
 }
 /// Current state for a particular quota group.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QuotaStatus {
     /// Quota consumed by this request.
@@ -468,6 +494,7 @@ pub struct QuotaStatus {
     pub remaining: i32,
 }
 /// Breakdowns add a dimension to the funnel table sub report response.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FunnelBreakdown {
     /// The dimension column added to the funnel table sub report response. The
@@ -487,6 +514,7 @@ pub struct FunnelBreakdown {
 /// `i`th funnel step row will return first event after the event that qualified
 /// the user into the `i`th funnel step but before the user achieved the `i+1`th
 /// funnel step.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FunnelNextAction {
     /// The dimension column added to the funnel visualization sub report response.
@@ -512,6 +540,7 @@ pub struct FunnelNextAction {
 /// For example, how do prospects become shoppers and then become buyers? How do
 /// one time buyers become repeat buyers? With this information, you can improve
 /// inefficient or abandoned customer journeys.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Funnel {
     /// In an open funnel, users can enter the funnel in any step, and in a closed
@@ -526,6 +555,7 @@ pub struct Funnel {
 /// Steps define the user journey you want to measure. Steps contain one or
 /// more conditions that your users must meet to be included in that step of
 /// the funnel journey.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FunnelStep {
     /// The distinctive name for this step. If unspecified, steps will be named
@@ -557,6 +587,7 @@ pub struct FunnelStep {
 }
 /// Funnel sub reports contain the dimension and metric data values. For example,
 /// 12 users reached the second step of the funnel.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FunnelSubReport {
     /// Describes dimension columns. Funnel reports always include the funnel step
@@ -579,6 +610,7 @@ pub struct FunnelSubReport {
 /// User segments are subsets of users who engaged with your site or app. For
 /// example, users who have previously purchased; users who added items to their
 /// shopping carts, but didn’t complete a purchase.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UserSegment {
     /// Defines which users are included in this segment. Optional.
@@ -590,6 +622,7 @@ pub struct UserSegment {
 }
 /// A user matches a criteria if the user's events meet the conditions in the
 /// criteria.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UserSegmentCriteria {
     /// A user matches this criteria if the user matches each of these
@@ -605,6 +638,7 @@ pub struct UserSegmentCriteria {
 }
 /// Conditions tell Analytics what data to include in or exclude from the
 /// segment.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UserSegmentConditionGroup {
     /// Data is included or excluded from the segment based on if it matches
@@ -630,6 +664,7 @@ pub struct UserSegmentConditionGroup {
 }
 /// Define conditions that must occur in a specific order for the user to be
 /// a member of the segment.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UserSegmentSequenceGroup {
     /// All sequence steps must be satisfied in the scoping for the user to
@@ -660,6 +695,7 @@ pub struct UserSegmentSequenceGroup {
 }
 /// A condition that must occur in the specified step order for this user
 /// to match the sequence.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UserSequenceStep {
     /// If true, the event satisfying this step must be the very next event
@@ -687,6 +723,7 @@ pub struct UserSequenceStep {
     pub segment_filter_expression: ::core::option::Option<SegmentFilterExpression>,
 }
 /// Specifies which users are excluded in this segment.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UserSegmentExclusion {
     /// Specifies how long an exclusion will last if a user matches the
@@ -704,6 +741,7 @@ pub struct UserSegmentExclusion {
 /// Session segments are subsets of the sessions that occurred on your site or
 /// app: for example, all the sessions that originated from a particular
 /// advertising campaign.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SessionSegment {
     /// Defines which sessions are included in this segment. Optional.
@@ -715,6 +753,7 @@ pub struct SessionSegment {
 }
 /// A session matches a criteria if the session's events meet the conditions in
 /// the criteria.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SessionSegmentCriteria {
     /// A session matches this criteria if the session matches each of these
@@ -724,6 +763,7 @@ pub struct SessionSegmentCriteria {
 }
 /// Conditions tell Analytics what data to include in or exclude from the
 /// segment.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SessionSegmentConditionGroup {
     /// Data is included or excluded from the segment based on if it matches
@@ -748,6 +788,7 @@ pub struct SessionSegmentConditionGroup {
     pub segment_filter_expression: ::core::option::Option<SegmentFilterExpression>,
 }
 /// Specifies which sessions are excluded in this segment.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SessionSegmentExclusion {
     /// Specifies how long an exclusion will last if a session matches the
@@ -765,6 +806,7 @@ pub struct SessionSegmentExclusion {
 /// Event segments are subsets of events that were triggered on your site or app.
 /// for example, all purchase events made in a particular location; app_exception
 /// events that occurred on a specific operating system.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EventSegment {
     /// Defines which events are included in this segment. Optional.
@@ -776,6 +818,7 @@ pub struct EventSegment {
 }
 /// An event matches a criteria if the event meet the conditions in the
 /// criteria.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EventSegmentCriteria {
     /// An event matches this criteria if the event matches each of these
@@ -785,6 +828,7 @@ pub struct EventSegmentCriteria {
 }
 /// Conditions tell Analytics what data to include in or exclude from the
 /// segment.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EventSegmentConditionGroup {
     /// `conditionScoping` should always be `EVENT_CRITERIA_WITHIN_SAME_EVENT`.
@@ -800,6 +844,7 @@ pub struct EventSegmentConditionGroup {
     pub segment_filter_expression: ::core::option::Option<SegmentFilterExpression>,
 }
 /// Specifies which events are excluded in this segment.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EventSegmentExclusion {
     /// `eventExclusionDuration` should always be `PERMANENTLY_EXCLUDE`.
@@ -820,6 +865,7 @@ pub struct EventSegmentExclusion {
 ///
 /// To learn more, see [GA4 Segment
 /// Builder](<https://support.google.com/analytics/answer/9304353>).
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Segment {
     /// The name for this segment. If unspecified, segments are named "Segment".
@@ -835,6 +881,7 @@ pub struct Segment {
 /// Nested message and enum types in `Segment`.
 pub mod segment {
     /// A segment is specified in one scope.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum OneSegmentScope {
         /// User segments are subsets of users who engaged with your site or app.
@@ -851,6 +898,7 @@ pub mod segment {
     }
 }
 /// Expresses combinations of segment filters.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SegmentFilterExpression {
     /// Specify one type of filter for `SegmentFilterExpression`.
@@ -860,6 +908,7 @@ pub struct SegmentFilterExpression {
 /// Nested message and enum types in `SegmentFilterExpression`.
 pub mod segment_filter_expression {
     /// Specify one type of filter for `SegmentFilterExpression`.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Expr {
         /// The SegmentFilterExpression in `andGroup` have an AND relationship.
@@ -883,6 +932,7 @@ pub mod segment_filter_expression {
     }
 }
 /// A list of segment filter expressions.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SegmentFilterExpressionList {
     /// The list of segment filter expressions
@@ -890,6 +940,7 @@ pub struct SegmentFilterExpressionList {
     pub expressions: ::prost::alloc::vec::Vec<SegmentFilterExpression>,
 }
 /// An expression to filter dimension or metric values.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SegmentFilter {
     /// The dimension name or metric name.
@@ -905,6 +956,7 @@ pub struct SegmentFilter {
 /// Nested message and enum types in `SegmentFilter`.
 pub mod segment_filter {
     /// Specify one type of filter for `Filter`.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum OneFilter {
         /// Strings related filter.
@@ -923,6 +975,7 @@ pub mod segment_filter {
 }
 /// Scopings specify how the dimensions & metrics of multiple events
 /// should be considered when evaluating a segment filter.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SegmentFilterScoping {
     /// If `atAnyPointInTime` is true, this filter evaluates to true for all
@@ -946,6 +999,7 @@ pub struct SegmentFilterScoping {
 /// filter expression is specified, only the subset of events that match both the
 /// single event name and the parameter filter expressions match this event
 /// filter.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SegmentEventFilter {
     /// This filter matches events of this single event name. Event name is
@@ -963,6 +1017,7 @@ pub struct SegmentEventFilter {
     >,
 }
 /// Expresses combinations of segment filter on parameters.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SegmentParameterFilterExpression {
     /// Specify one type of filter for `SegmentParameterFilterExpression`.
@@ -972,6 +1027,7 @@ pub struct SegmentParameterFilterExpression {
 /// Nested message and enum types in `SegmentParameterFilterExpression`.
 pub mod segment_parameter_filter_expression {
     /// Specify one type of filter for `SegmentParameterFilterExpression`.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Expr {
         /// The SegmentParameterFilterExpression in `andGroup` have an AND
@@ -993,6 +1049,7 @@ pub mod segment_parameter_filter_expression {
     }
 }
 /// A list of segment parameter filter expressions.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SegmentParameterFilterExpressionList {
     /// The list of segment parameter filter expressions.
@@ -1000,6 +1057,7 @@ pub struct SegmentParameterFilterExpressionList {
     pub expressions: ::prost::alloc::vec::Vec<SegmentParameterFilterExpression>,
 }
 /// An expression to filter parameter values in a segment.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SegmentParameterFilter {
     /// Specifies the scope for the filter.
@@ -1015,6 +1073,7 @@ pub struct SegmentParameterFilter {
 /// Nested message and enum types in `SegmentParameterFilter`.
 pub mod segment_parameter_filter {
     /// The field that is being filtered.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum OneParameter {
         /// This filter will be evaluated on the specified event parameter. Event
@@ -1042,6 +1101,7 @@ pub mod segment_parameter_filter {
         ItemParameterName(::prost::alloc::string::String),
     }
     /// Specify one type of filter.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum OneFilter {
         /// Strings related filter.
@@ -1060,6 +1120,7 @@ pub mod segment_parameter_filter {
 }
 /// Scopings specify how multiple events should be considered when evaluating a
 /// segment parameter filter.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SegmentParameterFilterScoping {
     /// Accumulates the parameter over the specified period of days before
@@ -1090,6 +1151,7 @@ pub struct SegmentParameterFilterScoping {
     pub in_any_n_day_period: ::core::option::Option<i64>,
 }
 /// Expresses combinations of funnel filters.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FunnelFilterExpression {
     /// Specify one type of filter for `FunnelFilterExpression`.
@@ -1099,6 +1161,7 @@ pub struct FunnelFilterExpression {
 /// Nested message and enum types in `FunnelFilterExpression`.
 pub mod funnel_filter_expression {
     /// Specify one type of filter for `FunnelFilterExpression`.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Expr {
         /// The FunnelFilterExpression in `andGroup` have an AND relationship.
@@ -1122,6 +1185,7 @@ pub mod funnel_filter_expression {
     }
 }
 /// A list of funnel filter expressions.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FunnelFilterExpressionList {
     /// The list of funnel filter expressions.
@@ -1129,6 +1193,7 @@ pub struct FunnelFilterExpressionList {
     pub expressions: ::prost::alloc::vec::Vec<FunnelFilterExpression>,
 }
 /// An expression to filter dimension or metric values.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FunnelFieldFilter {
     /// The dimension name or metric name.
@@ -1141,6 +1206,7 @@ pub struct FunnelFieldFilter {
 /// Nested message and enum types in `FunnelFieldFilter`.
 pub mod funnel_field_filter {
     /// Specify one type of filter.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum OneFilter {
         /// Strings related filter.
@@ -1161,6 +1227,7 @@ pub mod funnel_field_filter {
 /// filter expression is specified, only the subset of events that match both the
 /// single event name and the parameter filter expressions match this event
 /// filter.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FunnelEventFilter {
     /// This filter matches events of this single event name. Event name is
@@ -1178,6 +1245,7 @@ pub struct FunnelEventFilter {
     >,
 }
 /// Expresses combinations of funnel filters on parameters.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FunnelParameterFilterExpression {
     /// Specify one type of filter for `FunnelParameterFilterExpression`.
@@ -1187,6 +1255,7 @@ pub struct FunnelParameterFilterExpression {
 /// Nested message and enum types in `FunnelParameterFilterExpression`.
 pub mod funnel_parameter_filter_expression {
     /// Specify one type of filter for `FunnelParameterFilterExpression`.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Expr {
         /// The FunnelParameterFilterExpression in `andGroup` have an AND
@@ -1208,6 +1277,7 @@ pub mod funnel_parameter_filter_expression {
     }
 }
 /// A list of funnel parameter filter expressions.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FunnelParameterFilterExpressionList {
     /// The list of funnel parameter filter expressions.
@@ -1215,6 +1285,7 @@ pub struct FunnelParameterFilterExpressionList {
     pub expressions: ::prost::alloc::vec::Vec<FunnelParameterFilterExpression>,
 }
 /// An expression to filter parameter values in a funnel.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FunnelParameterFilter {
     /// The field that is being filtered.
@@ -1227,6 +1298,7 @@ pub struct FunnelParameterFilter {
 /// Nested message and enum types in `FunnelParameterFilter`.
 pub mod funnel_parameter_filter {
     /// The field that is being filtered.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum OneParameter {
         /// This filter will be evaluated on the specified event parameter. Event
@@ -1254,6 +1326,7 @@ pub mod funnel_parameter_filter {
         ItemParameterName(::prost::alloc::string::String),
     }
     /// Specify one type of filter.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum OneFilter {
         /// Strings related filter.
@@ -1272,6 +1345,7 @@ pub mod funnel_parameter_filter {
 }
 /// The funnel report's response metadata carries additional information about
 /// the funnel report.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FunnelResponseMetadata {
     /// If funnel report results are
@@ -1291,6 +1365,7 @@ pub struct FunnelResponseMetadata {
 /// report for a date range. Sampling is the practice of analyzing a subset of
 /// all data in order to uncover the meaningful information in the larger data
 /// set.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SamplingMetadata {
     /// The total number of events read in this sampled report for a date range.
@@ -1541,6 +1616,7 @@ impl MetricType {
     }
 }
 /// The request for a funnel report.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RunFunnelReportRequest {
     /// A Google Analytics GA4 property identifier whose events are tracked.
@@ -1661,6 +1737,7 @@ pub mod run_funnel_report_request {
 }
 /// The funnel report response contains two sub reports. The two sub reports are
 /// different combinations of dimensions and metrics.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RunFunnelReportResponse {
     /// The funnel table is a report with the funnel step, segment, breakdown

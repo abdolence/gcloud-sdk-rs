@@ -1,4 +1,5 @@
 /// Feature represents the settings and status of any Hub Feature.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Feature {
     /// Output only. The full, unique name of this Feature resource in the format
@@ -71,6 +72,7 @@ pub struct Feature {
 /// FeatureResourceState describes the state of a Feature *resource* in the
 /// GkeHub API. See `FeatureState` for the "running state" of the Feature in the
 /// Hub and across Memberships.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FeatureResourceState {
     /// The current state of the Feature resource in the Hub API.
@@ -129,6 +131,7 @@ pub mod feature_resource_state {
 /// FeatureState describes the high-level state of a Feature. It may be used to
 /// describe a Feature's state at the environ-level, or per-membershop, depending
 /// on the context.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FeatureState {
     /// The high-level, machine-readable status of this Feature.
@@ -188,6 +191,7 @@ pub mod feature_state {
     }
 }
 /// CommonFeatureSpec contains Hub-wide configuration information
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CommonFeatureSpec {
     #[prost(oneof = "common_feature_spec::FeatureSpec", tags = "102")]
@@ -195,6 +199,7 @@ pub struct CommonFeatureSpec {
 }
 /// Nested message and enum types in `CommonFeatureSpec`.
 pub mod common_feature_spec {
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum FeatureSpec {
         /// Multicluster Ingress-specific spec.
@@ -203,6 +208,7 @@ pub mod common_feature_spec {
     }
 }
 /// CommonFeatureState contains Hub-wide Feature status information.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CommonFeatureState {
     /// Output only. The "running state" of the Feature in this Hub.
@@ -211,6 +217,7 @@ pub struct CommonFeatureState {
 }
 /// MembershipFeatureSpec contains configuration information for a single
 /// Membership.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MembershipFeatureSpec {
     #[prost(oneof = "membership_feature_spec::FeatureSpec", tags = "106")]
@@ -218,6 +225,7 @@ pub struct MembershipFeatureSpec {
 }
 /// Nested message and enum types in `MembershipFeatureSpec`.
 pub mod membership_feature_spec {
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum FeatureSpec {
         /// Config Management-specific spec.
@@ -227,6 +235,7 @@ pub mod membership_feature_spec {
 }
 /// MembershipFeatureState contains Feature status information for a single
 /// Membership.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MembershipFeatureState {
     /// The high-level state of this Feature for a single membership.
@@ -237,6 +246,7 @@ pub struct MembershipFeatureState {
 }
 /// Nested message and enum types in `MembershipFeatureState`.
 pub mod membership_feature_state {
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum FeatureState {
         /// Config Management-specific state.
@@ -245,6 +255,7 @@ pub mod membership_feature_state {
     }
 }
 /// Membership contains information about a member cluster.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Membership {
     /// Output only. The full, unique name of this Membership resource in the format
@@ -316,6 +327,7 @@ pub struct Membership {
 /// Nested message and enum types in `Membership`.
 pub mod membership {
     /// Type of resource represented by this Membership
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Type {
         /// Optional. Endpoint information to reach this member.
@@ -325,6 +337,7 @@ pub mod membership {
 }
 /// MembershipEndpoint contains information needed to contact a Kubernetes API,
 /// endpoint and any additional Kubernetes metadata.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MembershipEndpoint {
     /// Optional. GKE-specific information. Only present if this Membership is a GKE cluster.
@@ -347,6 +360,7 @@ pub struct MembershipEndpoint {
 /// KubernetesResource contains the YAML manifests and configuration for
 /// Membership Kubernetes resources in the cluster. After CreateMembership or
 /// UpdateMembership, these resources should be re-applied in the cluster.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KubernetesResource {
     /// Input only. The YAML representation of the Membership CR. This field is ignored for GKE
@@ -382,6 +396,7 @@ pub struct KubernetesResource {
     pub resource_options: ::core::option::Option<ResourceOptions>,
 }
 /// ResourceOptions represent options for Kubernetes resource generation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResourceOptions {
     /// Optional. The Connect agent version to use for connect_resources. Defaults to the
@@ -403,6 +418,7 @@ pub struct ResourceOptions {
 }
 /// ResourceManifest represents a single Kubernetes resource to be applied to
 /// the cluster.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResourceManifest {
     /// YAML manifest of the resource.
@@ -417,6 +433,7 @@ pub struct ResourceManifest {
     pub cluster_scoped: bool,
 }
 /// GkeCluster contains information specific to GKE clusters.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GkeCluster {
     /// Immutable. Self-link of the GCP resource for the GKE cluster. For example:
@@ -429,6 +446,7 @@ pub struct GkeCluster {
 }
 /// KubernetesMetadata provides informational metadata for Memberships
 /// representing Kubernetes clusters.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KubernetesMetadata {
     /// Output only. Kubernetes API server version string as reported by `/version`.
@@ -457,6 +475,7 @@ pub struct KubernetesMetadata {
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// MembershipState describes the state of a Membership resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MembershipState {
     /// Output only. The current state of the Membership resource.
@@ -512,6 +531,7 @@ pub mod membership_state {
 /// Authority encodes how Google will recognize identities from this Membership.
 /// See the workload identity documentation for more details:
 /// <https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity>
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Authority {
     /// Optional. A JSON Web Token (JWT) issuer URI. `issuer` must start with `<https://`> and
@@ -547,6 +567,7 @@ pub struct Authority {
     pub oidc_jwks: ::prost::alloc::vec::Vec<u8>,
 }
 /// Request message for `GkeHub.ListMemberships` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListMembershipsRequest {
     /// Required. The parent (project and location) where the Memberships will be listed.
@@ -591,6 +612,7 @@ pub struct ListMembershipsRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// Response message for the `GkeHub.ListMemberships` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListMembershipsResponse {
     /// The list of matching Memberships.
@@ -606,6 +628,7 @@ pub struct ListMembershipsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for `GkeHub.GetMembership` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetMembershipRequest {
     /// Required. The Membership resource name in the format
@@ -614,6 +637,7 @@ pub struct GetMembershipRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for the `GkeHub.CreateMembership` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateMembershipRequest {
     /// Required. The parent (project and location) where the Memberships will be created.
@@ -651,6 +675,7 @@ pub struct CreateMembershipRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for `GkeHub.DeleteMembership` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteMembershipRequest {
     /// Required. The Membership resource name in the format
@@ -674,6 +699,7 @@ pub struct DeleteMembershipRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for `GkeHub.UpdateMembership` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateMembershipRequest {
     /// Required. The Membership resource name in the format
@@ -712,6 +738,7 @@ pub struct UpdateMembershipRequest {
 /// Request message for `GkeHub.GenerateConnectManifest`
 /// method.
 /// .
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateConnectManifestRequest {
     /// Required. The Membership resource name the Agent will associate with, in the format
@@ -749,6 +776,7 @@ pub struct GenerateConnectManifestRequest {
 }
 /// GenerateConnectManifestResponse contains manifest information for
 /// installing/upgrading a Connect agent.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateConnectManifestResponse {
     /// The ordered list of Kubernetes resources that need to be applied to the
@@ -758,6 +786,7 @@ pub struct GenerateConnectManifestResponse {
 }
 /// ConnectAgentResource represents a Kubernetes resource manifest for Connect
 /// Agent deployment.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConnectAgentResource {
     /// Kubernetes type of the resource.
@@ -769,6 +798,7 @@ pub struct ConnectAgentResource {
 }
 /// TypeMeta is the type information needed for content unmarshalling of
 /// Kubernetes resources in the manifest.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TypeMeta {
     /// Kind of the resource (e.g. Deployment).
@@ -779,6 +809,7 @@ pub struct TypeMeta {
     pub api_version: ::prost::alloc::string::String,
 }
 /// Request message for `GkeHub.ListFeatures` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFeaturesRequest {
     /// Required. The parent (project and location) where the Features will be listed.
@@ -819,6 +850,7 @@ pub struct ListFeaturesRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// Response message for the `GkeHub.ListFeatures` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFeaturesResponse {
     /// The list of matching Features
@@ -831,6 +863,7 @@ pub struct ListFeaturesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for `GkeHub.GetFeature` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetFeatureRequest {
     /// Required. The Feature resource name in the format
@@ -839,6 +872,7 @@ pub struct GetFeatureRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for the `GkeHub.CreateFeature` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateFeatureRequest {
     /// Required. The parent (project and location) where the Feature will be created.
@@ -868,6 +902,7 @@ pub struct CreateFeatureRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for `GkeHub.DeleteFeature` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteFeatureRequest {
     /// Required. The Feature resource name in the format
@@ -896,6 +931,7 @@ pub struct DeleteFeatureRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for `GkeHub.UpdateFeature` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateFeatureRequest {
     /// Required. The Feature resource name in the format
@@ -932,6 +968,7 @@ pub struct UpdateFeatureRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Represents the metadata of the long-running operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationMetadata {
     /// Output only. The time the operation was created.

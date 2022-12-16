@@ -1,4 +1,5 @@
 /// An entry for an Access Control list.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AclEntry {
     /// The allowlisted value for the access control list.
@@ -17,6 +18,7 @@ pub struct AclEntry {
     pub kind: ::prost::alloc::string::String,
 }
 /// An Admin API warning message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ApiWarning {
     /// Code to uniquely identify the warning type.
@@ -65,6 +67,7 @@ pub mod api_warning {
 }
 /// We currently only support backup retention by specifying the number
 /// of backups we will retain.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BackupRetentionSettings {
     /// The unit that 'retained_backups' represents.
@@ -111,6 +114,7 @@ pub mod backup_retention_settings {
     }
 }
 /// Database instance backup configuration.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BackupConfiguration {
     /// Start time for the daily backup configuration in UTC timezone in the 24
@@ -145,6 +149,7 @@ pub struct BackupConfiguration {
     pub transaction_log_retention_days: ::core::option::Option<i32>,
 }
 /// Backup context.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BackupContext {
     /// The identifier of the backup.
@@ -155,6 +160,7 @@ pub struct BackupContext {
     pub kind: ::prost::alloc::string::String,
 }
 /// Represents a SQL database on the Cloud SQL instance.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Database {
     /// This is always **sql#database**.
@@ -189,6 +195,7 @@ pub struct Database {
 }
 /// Nested message and enum types in `Database`.
 pub mod database {
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum DatabaseDetails {
         #[prost(message, tag = "9")]
@@ -196,6 +203,7 @@ pub mod database {
     }
 }
 /// Represents a Sql Server database on the Cloud SQL instance.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlServerDatabaseDetails {
     /// The version of SQL Server with which the database is to be made compatible
@@ -206,6 +214,7 @@ pub struct SqlServerDatabaseDetails {
     pub recovery_model: ::prost::alloc::string::String,
 }
 /// Database flags for Cloud SQL instances.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DatabaseFlags {
     /// The name of the flag. These flags are passed at instance startup, so
@@ -222,6 +231,7 @@ pub struct DatabaseFlags {
     pub value: ::prost::alloc::string::String,
 }
 /// MySQL-specific external server sync settings.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MySqlSyncConfig {
     /// Flags to use for the initial dump.
@@ -230,6 +240,7 @@ pub struct MySqlSyncConfig {
 }
 /// Initial sync flags for certain Cloud SQL APIs.
 /// Currently used for the MySQL external server initial dump.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SyncFlags {
     /// The name of the flag.
@@ -241,6 +252,7 @@ pub struct SyncFlags {
     pub value: ::prost::alloc::string::String,
 }
 /// Reference to another Cloud SQL instance.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceReference {
     /// The name of the Cloud SQL instance being referenced.
@@ -257,6 +269,7 @@ pub struct InstanceReference {
 }
 /// Read-replica configuration for connecting to the on-premises primary
 /// instance.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DemoteMasterConfiguration {
     /// This is always **sql#demoteMasterConfiguration**.
@@ -274,6 +287,7 @@ pub struct DemoteMasterConfiguration {
     >,
 }
 /// Read-replica configuration specific to MySQL databases.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DemoteMasterMySqlReplicaConfiguration {
     /// This is always **sql#demoteMasterMysqlReplicaConfiguration**.
@@ -298,6 +312,7 @@ pub struct DemoteMasterMySqlReplicaConfiguration {
     pub ca_certificate: ::prost::alloc::string::String,
 }
 /// Database instance export context.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportContext {
     /// The path to the file in Google Cloud Storage where the export will be
@@ -343,6 +358,7 @@ pub struct ExportContext {
 }
 /// Nested message and enum types in `ExportContext`.
 pub mod export_context {
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SqlCsvExportOptions {
         /// The select query used to extract the data.
@@ -364,6 +380,7 @@ pub mod export_context {
         #[prost(string, tag = "6")]
         pub lines_terminated_by: ::prost::alloc::string::String,
     }
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SqlExportOptions {
         /// Tables to export, or that were exported, from the specified database. If
@@ -382,6 +399,7 @@ pub mod export_context {
     /// Nested message and enum types in `SqlExportOptions`.
     pub mod sql_export_options {
         /// Options for exporting from MySQL.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct MysqlExportOptions {
             /// Option to include SQL statement required to set up replication.
@@ -398,6 +416,7 @@ pub mod export_context {
     }
 }
 /// Database instance import context.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportContext {
     /// Path to the import file in Cloud Storage, in the form
@@ -431,6 +450,7 @@ pub struct ImportContext {
 }
 /// Nested message and enum types in `ImportContext`.
 pub mod import_context {
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SqlCsvImportOptions {
         /// The table to which CSV data is imported.
@@ -456,6 +476,7 @@ pub mod import_context {
         #[prost(string, tag = "8")]
         pub lines_terminated_by: ::prost::alloc::string::String,
     }
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SqlBakImportOptions {
         #[prost(message, optional, tag = "1")]
@@ -465,6 +486,7 @@ pub mod import_context {
     }
     /// Nested message and enum types in `SqlBakImportOptions`.
     pub mod sql_bak_import_options {
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct EncryptionOptions {
             /// Path to the Certificate (.cer) in Cloud Storage, in the form
@@ -484,6 +506,7 @@ pub mod import_context {
     }
 }
 /// IP Management configuration.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IpConfiguration {
     /// Whether the instance is assigned a public IP address or not.
@@ -517,6 +540,7 @@ pub struct IpConfiguration {
 /// Note that if the preferred location is not available, the instance will be
 /// located as close as possible within the region. Only one location may be
 /// specified.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LocationPreference {
     /// The App Engine application to follow, it must be in the same region as the
@@ -539,6 +563,7 @@ pub struct LocationPreference {
 }
 /// Maintenance window. This specifies when a Cloud SQL instance is
 /// restarted for system maintenance purposes.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MaintenanceWindow {
     /// hour of day - 0 to 23.
@@ -558,6 +583,7 @@ pub struct MaintenanceWindow {
 }
 /// Deny maintenance Periods. This specifies a date range during when all CSA
 /// rollout will be denied.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DenyMaintenancePeriod {
     /// "deny maintenance period" start date. If the year of the start date is
@@ -579,6 +605,7 @@ pub struct DenyMaintenancePeriod {
 }
 /// Insights configuration. This specifies when Cloud SQL Insights feature is
 /// enabled and optional configuration.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsightsConfig {
     /// Whether Query Insights feature is enabled.
@@ -603,6 +630,7 @@ pub struct InsightsConfig {
     pub query_plans_per_minute: ::core::option::Option<i32>,
 }
 /// Read-replica configuration specific to MySQL databases.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MySqlReplicaConfiguration {
     /// Path to a SQL dump file in Google Cloud Storage from which the replica
@@ -647,6 +675,7 @@ pub struct MySqlReplicaConfiguration {
     pub kind: ::prost::alloc::string::String,
 }
 /// Disk encryption configuration for an instance.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DiskEncryptionConfiguration {
     /// Resource name of KMS key for disk encryption
@@ -657,6 +686,7 @@ pub struct DiskEncryptionConfiguration {
     pub kind: ::prost::alloc::string::String,
 }
 /// Disk encryption status for an instance.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DiskEncryptionStatus {
     /// KMS key version used to encrypt the Cloud SQL instance resource
@@ -667,6 +697,7 @@ pub struct DiskEncryptionStatus {
     pub kind: ::prost::alloc::string::String,
 }
 /// Database instance IP Mapping.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IpMapping {
     /// The type of this IP address. A **PRIMARY** address is a public address that
@@ -688,6 +719,7 @@ pub struct IpMapping {
 /// An Operation resource.&nbsp;For successful operations that return an
 /// Operation resource, only the fields relevant to the operation are populated
 /// in the resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Operation {
     /// This is always **sql#operation**.
@@ -935,6 +967,7 @@ pub mod operation {
     }
 }
 /// Database instance operation error.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationError {
     /// This is always **sql#operationError**.
@@ -948,6 +981,7 @@ pub struct OperationError {
     pub message: ::prost::alloc::string::String,
 }
 /// Database instance operation errors list wrapper.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationErrors {
     /// This is always **sql#operationErrors**.
@@ -958,6 +992,7 @@ pub struct OperationErrors {
     pub errors: ::prost::alloc::vec::Vec<OperationError>,
 }
 /// Database instance settings.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Settings {
     /// The version of instance settings. This is a required field for update
@@ -1118,6 +1153,7 @@ pub mod settings {
     }
 }
 /// SslCerts Resource
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SslCert {
     /// This is always **sql#sslCert**.
@@ -1153,6 +1189,7 @@ pub struct SslCert {
     pub self_link: ::prost::alloc::string::String,
 }
 /// SslCertDetail.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SslCertDetail {
     /// The public information about the cert.
@@ -1164,6 +1201,7 @@ pub struct SslCertDetail {
     pub cert_private_key: ::prost::alloc::string::String,
 }
 /// Active Directory configuration, relevant only for Cloud SQL for SQL Server.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlActiveDirectoryConfig {
     /// This is always sql#activeDirectoryConfig.
@@ -1174,6 +1212,7 @@ pub struct SqlActiveDirectoryConfig {
     pub domain: ::prost::alloc::string::String,
 }
 /// SQL Server specific audit configuration.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlServerAuditConfig {
     /// This is always sql#sqlServerAuditConfig
@@ -1469,6 +1508,7 @@ impl SqlUpdateTrack {
     }
 }
 /// Backup runs delete request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlBackupRunsDeleteRequest {
     /// The ID of the backup run to delete. To find a backup run ID, use the
@@ -1484,6 +1524,7 @@ pub struct SqlBackupRunsDeleteRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// Backup runs get request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlBackupRunsGetRequest {
     /// The ID of this backup run.
@@ -1497,6 +1538,7 @@ pub struct SqlBackupRunsGetRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// Backup runs insert request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlBackupRunsInsertRequest {
     /// Cloud SQL instance ID. This does not include the project ID.
@@ -1509,6 +1551,7 @@ pub struct SqlBackupRunsInsertRequest {
     pub body: ::core::option::Option<BackupRun>,
 }
 /// Backup runs list request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlBackupRunsListRequest {
     /// Cloud SQL instance ID, or "-" for all instances. This does not include
@@ -1527,6 +1570,7 @@ pub struct SqlBackupRunsListRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A BackupRun resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BackupRun {
     /// This is always **sql#backupRun**.
@@ -1592,6 +1636,7 @@ pub struct BackupRun {
     pub backup_kind: i32,
 }
 /// Backup run list results.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BackupRunsListResponse {
     /// This is always **sql#backupRunsList**.
@@ -1856,6 +1901,7 @@ pub mod sql_backup_runs_service_client {
     }
 }
 /// Connect settings retrieval request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetConnectSettingsRequest {
     /// Cloud SQL instance ID. This does not include the project ID.
@@ -1869,6 +1915,7 @@ pub struct GetConnectSettingsRequest {
     pub read_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Connect settings retrieval response.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConnectSettings {
     /// This is always `sql#connectSettings`.
@@ -1903,6 +1950,7 @@ pub struct ConnectSettings {
     pub backend_type: i32,
 }
 /// Ephemeral certificate creation request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateEphemeralCertRequest {
     /// Cloud SQL instance ID. This does not include the project ID.
@@ -1922,6 +1970,7 @@ pub struct GenerateEphemeralCertRequest {
     pub read_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Ephemeral certificate creation request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateEphemeralCertResponse {
     /// Generated cert
@@ -2047,6 +2096,7 @@ pub mod sql_connect_service_client {
     }
 }
 /// Database delete request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlDatabasesDeleteRequest {
     /// Name of the database to be deleted in the instance.
@@ -2060,6 +2110,7 @@ pub struct SqlDatabasesDeleteRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// Database get request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlDatabasesGetRequest {
     /// Name of the database in the instance.
@@ -2073,6 +2124,7 @@ pub struct SqlDatabasesGetRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// Database insert request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlDatabasesInsertRequest {
     /// Database instance ID. This does not include the project ID.
@@ -2085,6 +2137,7 @@ pub struct SqlDatabasesInsertRequest {
     pub body: ::core::option::Option<Database>,
 }
 /// Database list request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlDatabasesListRequest {
     /// Cloud SQL instance ID. This does not include the project ID.
@@ -2095,6 +2148,7 @@ pub struct SqlDatabasesListRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// Database update request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlDatabasesUpdateRequest {
     /// Name of the database to be updated in the instance.
@@ -2110,6 +2164,7 @@ pub struct SqlDatabasesUpdateRequest {
     pub body: ::core::option::Option<Database>,
 }
 /// Database list response.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DatabasesListResponse {
     /// This is always **sql#databasesList**.
@@ -2316,6 +2371,7 @@ pub mod sql_databases_service_client {
     }
 }
 /// Flags list request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlFlagsListRequest {
     /// Database type and version you want to retrieve flags for. By default, this
@@ -2324,6 +2380,7 @@ pub struct SqlFlagsListRequest {
     pub database_version: ::prost::alloc::string::String,
 }
 /// Flags list response.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FlagsListResponse {
     /// This is always **sql#flagsList**.
@@ -2334,6 +2391,7 @@ pub struct FlagsListResponse {
     pub items: ::prost::alloc::vec::Vec<Flag>,
 }
 /// A flag resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Flag {
     /// This is the name of the flag. Flag names always use underscores, not
@@ -2579,6 +2637,7 @@ pub mod sql_instance_names_service_client {
     }
 }
 /// Instance add server CA request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlInstancesAddServerCaRequest {
     /// Cloud SQL instance ID. This does not include the project ID.
@@ -2589,6 +2648,7 @@ pub struct SqlInstancesAddServerCaRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// Instance clone request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlInstancesCloneRequest {
     /// The ID of the Cloud SQL instance to be cloned (source). This does not
@@ -2602,6 +2662,7 @@ pub struct SqlInstancesCloneRequest {
     pub body: ::core::option::Option<InstancesCloneRequest>,
 }
 /// Instance delete request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlInstancesDeleteRequest {
     /// Cloud SQL instance ID. This does not include the project ID.
@@ -2612,6 +2673,7 @@ pub struct SqlInstancesDeleteRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// Instance demote master request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlInstancesDemoteMasterRequest {
     /// Cloud SQL instance name.
@@ -2624,6 +2686,7 @@ pub struct SqlInstancesDemoteMasterRequest {
     pub body: ::core::option::Option<InstancesDemoteMasterRequest>,
 }
 /// Instance export request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlInstancesExportRequest {
     /// Cloud SQL instance ID. This does not include the project ID.
@@ -2636,6 +2699,7 @@ pub struct SqlInstancesExportRequest {
     pub body: ::core::option::Option<InstancesExportRequest>,
 }
 /// Instance failover request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlInstancesFailoverRequest {
     /// Cloud SQL instance ID. This does not include the project ID.
@@ -2648,6 +2712,7 @@ pub struct SqlInstancesFailoverRequest {
     pub body: ::core::option::Option<InstancesFailoverRequest>,
 }
 /// Instance get request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlInstancesGetRequest {
     /// Database instance ID. This does not include the project ID.
@@ -2658,6 +2723,7 @@ pub struct SqlInstancesGetRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// Instance import request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlInstancesImportRequest {
     /// Cloud SQL instance ID. This does not include the project ID.
@@ -2670,6 +2736,7 @@ pub struct SqlInstancesImportRequest {
     pub body: ::core::option::Option<InstancesImportRequest>,
 }
 /// Instance insert request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlInstancesInsertRequest {
     /// Project ID of the project to which the newly created Cloud SQL instances
@@ -2680,6 +2747,7 @@ pub struct SqlInstancesInsertRequest {
     pub body: ::core::option::Option<DatabaseInstance>,
 }
 /// Instance list request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlInstancesListRequest {
     /// A filter expression that filters resources listed in the response.
@@ -2705,6 +2773,7 @@ pub struct SqlInstancesListRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// Instance list server CAs request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlInstancesListServerCasRequest {
     /// Cloud SQL instance ID. This does not include the project ID.
@@ -2715,6 +2784,7 @@ pub struct SqlInstancesListServerCasRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// Instance patch request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlInstancesPatchRequest {
     /// Cloud SQL instance ID. This does not include the project ID.
@@ -2727,6 +2797,7 @@ pub struct SqlInstancesPatchRequest {
     pub body: ::core::option::Option<DatabaseInstance>,
 }
 /// Instance promote replica request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlInstancesPromoteReplicaRequest {
     /// Cloud SQL read replica instance name.
@@ -2737,6 +2808,7 @@ pub struct SqlInstancesPromoteReplicaRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// Instance reset SSL config request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlInstancesResetSslConfigRequest {
     /// Cloud SQL instance ID. This does not include the project ID.
@@ -2747,6 +2819,7 @@ pub struct SqlInstancesResetSslConfigRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// Instance restart request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlInstancesRestartRequest {
     /// Cloud SQL instance ID. This does not include the project ID.
@@ -2757,6 +2830,7 @@ pub struct SqlInstancesRestartRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// Instance restore backup request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlInstancesRestoreBackupRequest {
     /// Cloud SQL instance ID. This does not include the project ID.
@@ -2769,6 +2843,7 @@ pub struct SqlInstancesRestoreBackupRequest {
     pub body: ::core::option::Option<InstancesRestoreBackupRequest>,
 }
 /// Instance rotate server CA request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlInstancesRotateServerCaRequest {
     /// Cloud SQL instance ID. This does not include the project ID.
@@ -2781,6 +2856,7 @@ pub struct SqlInstancesRotateServerCaRequest {
     pub body: ::core::option::Option<InstancesRotateServerCaRequest>,
 }
 /// Instance start replica request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlInstancesStartReplicaRequest {
     /// Cloud SQL read replica instance name.
@@ -2791,6 +2867,7 @@ pub struct SqlInstancesStartReplicaRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// Instance stop replica request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlInstancesStopReplicaRequest {
     /// Cloud SQL read replica instance name.
@@ -2801,6 +2878,7 @@ pub struct SqlInstancesStopReplicaRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// Instance truncate log request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlInstancesTruncateLogRequest {
     /// Cloud SQL instance ID. This does not include the project ID.
@@ -2813,6 +2891,7 @@ pub struct SqlInstancesTruncateLogRequest {
     pub body: ::core::option::Option<InstancesTruncateLogRequest>,
 }
 /// Instance update request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlInstancesUpdateRequest {
     /// Cloud SQL instance ID. This does not include the project ID.
@@ -2825,6 +2904,7 @@ pub struct SqlInstancesUpdateRequest {
     pub body: ::core::option::Option<DatabaseInstance>,
 }
 /// Instance reschedule maintenance request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlInstancesRescheduleMaintenanceRequest {
     /// Cloud SQL instance ID. This does not include the project ID.
@@ -2837,6 +2917,7 @@ pub struct SqlInstancesRescheduleMaintenanceRequest {
     pub body: ::core::option::Option<SqlInstancesRescheduleMaintenanceRequestBody>,
 }
 /// Instance verify external sync settings request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlInstancesVerifyExternalSyncSettingsRequest {
     /// Cloud SQL instance ID. This does not include the project ID.
@@ -2902,6 +2983,7 @@ pub mod sql_instances_verify_external_sync_settings_request {
             }
         }
     }
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum SyncConfig {
         /// Optional. MySQL-specific settings for start external sync.
@@ -2910,6 +2992,7 @@ pub mod sql_instances_verify_external_sync_settings_request {
     }
 }
 /// Instance start external sync request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlInstancesStartExternalSyncRequest {
     /// Cloud SQL instance ID. This does not include the project ID.
@@ -2934,6 +3017,7 @@ pub struct SqlInstancesStartExternalSyncRequest {
 }
 /// Nested message and enum types in `SqlInstancesStartExternalSyncRequest`.
 pub mod sql_instances_start_external_sync_request {
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum SyncConfig {
         /// MySQL-specific settings for start external sync.
@@ -2942,6 +3026,7 @@ pub mod sql_instances_start_external_sync_request {
     }
 }
 /// Instance create ephemeral certificate request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlInstancesCreateEphemeralCertRequest {
     /// Cloud SQL instance ID. This does not include the project ID.
@@ -2954,6 +3039,7 @@ pub struct SqlInstancesCreateEphemeralCertRequest {
     pub body: ::core::option::Option<SslCertsCreateEphemeralRequest>,
 }
 /// Database instance clone request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstancesCloneRequest {
     /// Contains details about the clone operation.
@@ -2961,6 +3047,7 @@ pub struct InstancesCloneRequest {
     pub clone_context: ::core::option::Option<CloneContext>,
 }
 /// Database demote primary instance request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstancesDemoteMasterRequest {
     /// Contains details about the demoteMaster operation.
@@ -2968,6 +3055,7 @@ pub struct InstancesDemoteMasterRequest {
     pub demote_master_context: ::core::option::Option<DemoteMasterContext>,
 }
 /// Database instance export request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstancesExportRequest {
     /// Contains details about the export operation.
@@ -2975,6 +3063,7 @@ pub struct InstancesExportRequest {
     pub export_context: ::core::option::Option<ExportContext>,
 }
 /// Instance failover request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstancesFailoverRequest {
     /// Failover Context.
@@ -2982,6 +3071,7 @@ pub struct InstancesFailoverRequest {
     pub failover_context: ::core::option::Option<FailoverContext>,
 }
 /// SslCerts create ephemeral certificate request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SslCertsCreateEphemeralRequest {
     /// PEM encoded public key to include in the signed certificate.
@@ -2992,6 +3082,7 @@ pub struct SslCertsCreateEphemeralRequest {
     pub access_token: ::prost::alloc::string::String,
 }
 /// Database instance import request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstancesImportRequest {
     /// Contains details about the import operation.
@@ -2999,6 +3090,7 @@ pub struct InstancesImportRequest {
     pub import_context: ::core::option::Option<ImportContext>,
 }
 /// Database instances list response.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstancesListResponse {
     /// This is always **sql#instancesList**.
@@ -3016,6 +3108,7 @@ pub struct InstancesListResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Instances ListServerCas response.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstancesListServerCasResponse {
     /// List of server CA certificates for the instance.
@@ -3028,6 +3121,7 @@ pub struct InstancesListServerCasResponse {
     pub kind: ::prost::alloc::string::String,
 }
 /// Database instance restore backup request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstancesRestoreBackupRequest {
     /// Parameters required to perform the restore backup operation.
@@ -3035,6 +3129,7 @@ pub struct InstancesRestoreBackupRequest {
     pub restore_backup_context: ::core::option::Option<RestoreBackupContext>,
 }
 /// Rotate server CA request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstancesRotateServerCaRequest {
     /// Contains details about the rotate server CA operation.
@@ -3042,6 +3137,7 @@ pub struct InstancesRotateServerCaRequest {
     pub rotate_server_ca_context: ::core::option::Option<RotateServerCaContext>,
 }
 /// Instance truncate log request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstancesTruncateLogRequest {
     /// Contains details about the truncate log operation.
@@ -3049,6 +3145,7 @@ pub struct InstancesTruncateLogRequest {
     pub truncate_log_context: ::core::option::Option<TruncateLogContext>,
 }
 /// Instance verify external sync settings response.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlInstancesVerifyExternalSyncSettingsResponse {
     /// This is always **sql#migrationSettingErrorList**.
@@ -3062,6 +3159,7 @@ pub struct SqlInstancesVerifyExternalSyncSettingsResponse {
     pub warnings: ::prost::alloc::vec::Vec<SqlExternalSyncSettingError>,
 }
 /// Database instance clone context.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CloneContext {
     /// This is always **sql#cloneContext**.
@@ -3084,6 +3182,7 @@ pub struct CloneContext {
     pub point_in_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Binary log coordinates.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BinLogCoordinates {
     /// Name of the binary log file for a Cloud SQL instance.
@@ -3097,6 +3196,7 @@ pub struct BinLogCoordinates {
     pub kind: ::prost::alloc::string::String,
 }
 /// A Cloud SQL instance resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DatabaseInstance {
     /// This is always **sql#instance**.
@@ -3270,6 +3370,7 @@ pub struct DatabaseInstance {
 }
 /// Nested message and enum types in `DatabaseInstance`.
 pub mod database_instance {
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SqlFailoverReplica {
         /// The name of the failover replica. If specified at instance creation, a
@@ -3284,6 +3385,7 @@ pub mod database_instance {
         pub available: ::core::option::Option<bool>,
     }
     /// Any scheduled maintenance for this instance.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SqlScheduledMaintenance {
         /// The start time of any upcoming scheduled maintenance for this instance.
@@ -3300,6 +3402,7 @@ pub mod database_instance {
         pub schedule_deadline_time: ::core::option::Option<::prost_types::Timestamp>,
     }
     /// This message wraps up the information written by out-of-disk detection job.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SqlOutOfDiskReport {
         /// This field represents the state generated by the proactive database
@@ -3413,6 +3516,7 @@ pub mod database_instance {
     }
 }
 /// Reschedule options for maintenance windows.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlInstancesRescheduleMaintenanceRequestBody {
     /// Required. The type of the reschedule the user wants.
@@ -3423,6 +3527,7 @@ pub struct SqlInstancesRescheduleMaintenanceRequestBody {
 }
 /// Nested message and enum types in `SqlInstancesRescheduleMaintenanceRequestBody`.
 pub mod sql_instances_reschedule_maintenance_request_body {
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Reschedule {
         /// Required. The type of the reschedule.
@@ -3473,6 +3578,7 @@ pub mod sql_instances_reschedule_maintenance_request_body {
     }
 }
 /// Database instance demote primary instance context.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DemoteMasterContext {
     /// This is always **sql#demoteMasterContext**.
@@ -3500,6 +3606,7 @@ pub struct DemoteMasterContext {
     pub skip_replication_setup: bool,
 }
 /// Database instance failover context.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FailoverContext {
     /// The current settings version of this instance. Request will be rejected if
@@ -3512,6 +3619,7 @@ pub struct FailoverContext {
 }
 /// Database instance restore from backup context.
 /// Backup context contains source instance id and project id.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RestoreBackupContext {
     /// This is always **sql#restoreBackupContext**.
@@ -3528,6 +3636,7 @@ pub struct RestoreBackupContext {
     pub project: ::prost::alloc::string::String,
 }
 /// Instance rotate server CA context.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RotateServerCaContext {
     /// This is always **sql#rotateServerCaContext**.
@@ -3539,6 +3648,7 @@ pub struct RotateServerCaContext {
     pub next_version: ::prost::alloc::string::String,
 }
 /// Database Instance truncate log context.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TruncateLogContext {
     /// This is always **sql#truncateLogContext**.
@@ -3550,6 +3660,7 @@ pub struct TruncateLogContext {
     pub log_type: ::prost::alloc::string::String,
 }
 /// External primary instance migration setting error/warning.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlExternalSyncSettingError {
     /// Can be **sql#externalSyncSettingError** or
@@ -3715,6 +3826,7 @@ pub mod sql_external_sync_setting_error {
     }
 }
 /// On-premises instance configuration.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OnPremisesConfiguration {
     /// The host and port of the on-premises instance in host:port format
@@ -3747,6 +3859,7 @@ pub struct OnPremisesConfiguration {
     pub source_instance: ::core::option::Option<InstanceReference>,
 }
 /// Read-replica configuration for connecting to the primary instance.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReplicaConfiguration {
     /// This is always **sql#replicaConfiguration**.
@@ -4442,6 +4555,7 @@ pub mod sql_instances_service_client {
     }
 }
 /// Operations get request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlOperationsGetRequest {
     /// Instance operation ID.
@@ -4452,6 +4566,7 @@ pub struct SqlOperationsGetRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// Operations list request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlOperationsListRequest {
     /// Cloud SQL instance ID. This does not include the project ID.
@@ -4469,6 +4584,7 @@ pub struct SqlOperationsListRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// Operations list response.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationsListResponse {
     /// This is always **sql#operationsList**.
@@ -4595,6 +4711,7 @@ pub mod sql_operations_service_client {
         }
     }
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlSslCertsDeleteRequest {
     /// Cloud SQL instance ID. This does not include the project ID.
@@ -4607,6 +4724,7 @@ pub struct SqlSslCertsDeleteRequest {
     #[prost(string, tag = "3")]
     pub sha1_fingerprint: ::prost::alloc::string::String,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlSslCertsGetRequest {
     /// Cloud SQL instance ID. This does not include the project ID.
@@ -4619,6 +4737,7 @@ pub struct SqlSslCertsGetRequest {
     #[prost(string, tag = "3")]
     pub sha1_fingerprint: ::prost::alloc::string::String,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlSslCertsInsertRequest {
     /// Cloud SQL instance ID. This does not include the project ID.
@@ -4630,6 +4749,7 @@ pub struct SqlSslCertsInsertRequest {
     #[prost(message, optional, tag = "100")]
     pub body: ::core::option::Option<SslCertsInsertRequest>,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlSslCertsListRequest {
     /// Cloud SQL instance ID. This does not include the project ID.
@@ -4640,6 +4760,7 @@ pub struct SqlSslCertsListRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// SslCerts insert request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SslCertsInsertRequest {
     /// User supplied name.  Must be a distinct name from the other certificates
@@ -4648,6 +4769,7 @@ pub struct SslCertsInsertRequest {
     pub common_name: ::prost::alloc::string::String,
 }
 /// SslCert insert response.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SslCertsInsertResponse {
     /// This is always **sql#sslCertsInsert**.
@@ -4666,6 +4788,7 @@ pub struct SslCertsInsertResponse {
     pub client_cert: ::core::option::Option<SslCertDetail>,
 }
 /// SslCerts list response.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SslCertsListResponse {
     /// This is always **sql#sslCertsList**.
@@ -4833,6 +4956,7 @@ pub mod sql_ssl_certs_service_client {
     }
 }
 /// Tiers list request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlTiersListRequest {
     /// Project ID of the project for which to list tiers.
@@ -4840,6 +4964,7 @@ pub struct SqlTiersListRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// Tiers list response.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TiersListResponse {
     /// This is always **sql#tiersList**.
@@ -4850,6 +4975,7 @@ pub struct TiersListResponse {
     pub items: ::prost::alloc::vec::Vec<Tier>,
 }
 /// A Google Cloud SQL service tier resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Tier {
     /// An identifier for the machine type, for example, db-custom-1-3840. For
@@ -4963,6 +5089,7 @@ pub mod sql_tiers_service_client {
         }
     }
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlUsersDeleteRequest {
     /// Host of the user in the instance.
@@ -4978,6 +5105,7 @@ pub struct SqlUsersDeleteRequest {
     #[prost(string, tag = "4")]
     pub project: ::prost::alloc::string::String,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlUsersInsertRequest {
     /// Database instance ID. This does not include the project ID.
@@ -4989,6 +5117,7 @@ pub struct SqlUsersInsertRequest {
     #[prost(message, optional, tag = "100")]
     pub body: ::core::option::Option<User>,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlUsersListRequest {
     /// Database instance ID. This does not include the project ID.
@@ -4998,6 +5127,7 @@ pub struct SqlUsersListRequest {
     #[prost(string, tag = "2")]
     pub project: ::prost::alloc::string::String,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlUsersUpdateRequest {
     /// Optional. Host of the user in the instance.
@@ -5016,6 +5146,7 @@ pub struct SqlUsersUpdateRequest {
     pub body: ::core::option::Option<User>,
 }
 /// A Cloud SQL user resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct User {
     /// This is always **sql#user**.
@@ -5093,6 +5224,7 @@ pub mod user {
         }
     }
     /// User details for specific database type
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum UserDetails {
         #[prost(message, tag = "9")]
@@ -5100,6 +5232,7 @@ pub mod user {
     }
 }
 /// Represents a Sql Server user on the Cloud SQL instance.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlServerUserDetails {
     /// If the user has been disabled
@@ -5110,6 +5243,7 @@ pub struct SqlServerUserDetails {
     pub server_roles: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// User list response.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UsersListResponse {
     /// This is always **sql#usersList**.

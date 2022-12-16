@@ -1,4 +1,5 @@
 /// Client information.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ClientInfo {
     /// Application ID, such as the package name on Android and the bundle

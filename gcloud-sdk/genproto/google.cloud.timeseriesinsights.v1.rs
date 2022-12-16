@@ -1,4 +1,5 @@
 /// Mapping of BigQuery columns to timestamp, group_id and dimensions.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BigqueryMapping {
     /// The column which should be used as the event timestamps. If not specified
@@ -22,6 +23,7 @@ pub struct BigqueryMapping {
 /// A data source consists of multiple \[Event][google.cloud.timeseriesinsights.v1.Event\] objects stored on
 /// Cloud Storage.  Each Event should be in JSON format, with one Event
 /// per line, also known as JSON Lines format.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataSource {
     /// Data source URI.
@@ -37,6 +39,7 @@ pub struct DataSource {
     pub bq_mapping: ::core::option::Option<BigqueryMapping>,
 }
 /// A collection of data sources sent for processing.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataSet {
     /// The dataset name, which will be used for querying, status and unload
@@ -118,6 +121,7 @@ pub mod data_set {
     }
 }
 /// Represents an event dimension.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EventDimension {
     /// Dimension name.
@@ -140,6 +144,7 @@ pub mod event_dimension {
     ///
     /// **NOTE**: All entries of the dimension `name` must have the same `value`
     /// type.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Value {
         /// String representation.
@@ -180,6 +185,7 @@ pub mod event_dimension {
 /// * Group ID *cannot* be queried.
 /// * Group ID does *not* correspond to a user ID or the like. If a user ID is of
 ///    interest to be queried, use a user ID `dimension` instead.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Event {
     /// Event dimensions.
@@ -196,6 +202,7 @@ pub struct Event {
     pub event_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Appends events to an existing DataSet.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AppendEventsRequest {
     /// Events to be appended.
@@ -222,6 +229,7 @@ pub struct AppendEventsRequest {
     pub dataset: ::prost::alloc::string::String,
 }
 /// Response for an AppendEvents RPC.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AppendEventsResponse {
     /// Dropped events; empty if all events are successfully added.
@@ -229,6 +237,7 @@ pub struct AppendEventsResponse {
     pub dropped_events: ::prost::alloc::vec::Vec<Event>,
 }
 /// Create a DataSet request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateDataSetRequest {
     /// Required. Client project name which will own this DataSet in the format of
@@ -240,6 +249,7 @@ pub struct CreateDataSetRequest {
     pub dataset: ::core::option::Option<DataSet>,
 }
 /// Unload DataSet request from the serving system.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteDataSetRequest {
     /// Required. Dataset name in the format of "projects/{project}/datasets/{dataset}"
@@ -247,6 +257,7 @@ pub struct DeleteDataSetRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// List the DataSets created by the current project.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDataSetsRequest {
     /// Required. Project owning the DataSet in the format of "projects/{project}".
@@ -260,6 +271,7 @@ pub struct ListDataSetsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Created DataSets list response.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDataSetsResponse {
     /// The list of created DataSets.
@@ -270,6 +282,7 @@ pub struct ListDataSetsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// A categorical dimension fixed to a certain value.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PinnedDimension {
     /// The name of the dimension for which we are fixing its value.
@@ -288,6 +301,7 @@ pub mod pinned_dimension {
     ///
     /// **NOTE**: The `value` type must match that in the data with the same
     /// `dimension` as name.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Value {
         /// A string value. This can be used for \[dimensions][google.cloud.timeseriesinsights.v1.EventDimension\], which
@@ -302,6 +316,7 @@ pub mod pinned_dimension {
 }
 /// Parameters that control the sensitivity and other options for the time series
 /// forecast.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ForecastParams {
     /// Optional. Penalize variations between the actual and forecasted values smaller than
@@ -398,6 +413,7 @@ pub mod forecast_params {
     }
 }
 /// A point in a time series.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TimeseriesPoint {
     /// The timestamp of this point.
@@ -413,6 +429,7 @@ pub struct TimeseriesPoint {
     pub value: ::core::option::Option<f64>,
 }
 /// A time series.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Timeseries {
     /// The points in this time series, ordered by their timestamp.
@@ -420,6 +437,7 @@ pub struct Timeseries {
     pub point: ::prost::alloc::vec::Vec<TimeseriesPoint>,
 }
 /// Forecast result for a given slice.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EvaluatedSlice {
     /// Values for all categorical dimensions that uniquely identify this slice.
@@ -516,6 +534,7 @@ pub struct EvaluatedSlice {
 }
 /// Parameters that control how we slice the dataset and, optionally, filter
 /// slices that have some specific values on some dimensions (pinned dimensions).
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SlicingParams {
     /// Required. Dimensions over which we will group the events in slices. The names
@@ -568,6 +587,7 @@ pub struct SlicingParams {
     pub pinned_dimensions: ::prost::alloc::vec::Vec<PinnedDimension>,
 }
 /// Parameters that control how we construct the time series for each slice.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TimeseriesParams {
     /// Required. How long should we go in the past when fetching the timeline used for
@@ -723,6 +743,7 @@ pub mod timeseries_params {
     }
 }
 /// Request for performing a query against a loaded DataSet.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryDataSetRequest {
     /// Required. Loaded DataSet to be queried in the format of
@@ -776,6 +797,7 @@ pub struct QueryDataSetRequest {
     pub return_timeseries: bool,
 }
 /// Response for a query executed by the system.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryDataSetResponse {
     /// Loaded DataSet that was queried.
@@ -790,6 +812,7 @@ pub struct QueryDataSetResponse {
     pub slices: ::prost::alloc::vec::Vec<EvaluatedSlice>,
 }
 /// Request for evaluateSlice.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EvaluateSliceRequest {
     /// Required. Loaded DataSet to be queried in the format of
@@ -816,6 +839,7 @@ pub struct EvaluateSliceRequest {
     pub forecast_params: ::core::option::Option<ForecastParams>,
 }
 /// Request for evaluateTimeseries.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EvaluateTimeseriesRequest {
     /// Required. Client project name in the format of 'projects/{project}'.

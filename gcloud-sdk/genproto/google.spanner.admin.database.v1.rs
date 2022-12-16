@@ -1,5 +1,6 @@
 /// Encapsulates progress related information for a Cloud Spanner long
 /// running operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationProgress {
     /// Percent completion of the operation.
@@ -15,6 +16,7 @@ pub struct OperationProgress {
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Encryption configuration for a Cloud Spanner database.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EncryptionConfig {
     /// The Cloud KMS key to be used for encrypting and decrypting
@@ -24,6 +26,7 @@ pub struct EncryptionConfig {
     pub kms_key_name: ::prost::alloc::string::String,
 }
 /// Encryption information for a Cloud Spanner database or backup.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EncryptionInfo {
     /// Output only. The type of encryption.
@@ -108,6 +111,7 @@ impl DatabaseDialect {
     }
 }
 /// A backup of a Cloud Spanner database.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Backup {
     /// Required for the \[CreateBackup][google.spanner.admin.database.v1.DatabaseAdmin.CreateBackup\] operation.
@@ -228,6 +232,7 @@ pub mod backup {
     }
 }
 /// The request for \[CreateBackup][google.spanner.admin.database.v1.DatabaseAdmin.CreateBackup\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateBackupRequest {
     /// Required. The name of the instance in which the backup will be
@@ -256,6 +261,7 @@ pub struct CreateBackupRequest {
 }
 /// Metadata type for the operation returned by
 /// \[CreateBackup][google.spanner.admin.database.v1.DatabaseAdmin.CreateBackup\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateBackupMetadata {
     /// The name of the backup being created.
@@ -284,6 +290,7 @@ pub struct CreateBackupMetadata {
     pub cancel_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// The request for \[CopyBackup][google.spanner.admin.database.v1.DatabaseAdmin.CopyBackup\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CopyBackupRequest {
     /// Required. The name of the destination instance that will contain the backup copy.
@@ -320,6 +327,7 @@ pub struct CopyBackupRequest {
 }
 /// Metadata type for the google.longrunning.Operation returned by
 /// \[CopyBackup][google.spanner.admin.database.v1.DatabaseAdmin.CopyBackup\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CopyBackupMetadata {
     /// The name of the backup being created through the copy operation.
@@ -352,6 +360,7 @@ pub struct CopyBackupMetadata {
     pub cancel_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// The request for \[UpdateBackup][google.spanner.admin.database.v1.DatabaseAdmin.UpdateBackup\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateBackupRequest {
     /// Required. The backup to update. `backup.name`, and the fields to be updated
@@ -369,6 +378,7 @@ pub struct UpdateBackupRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The request for \[GetBackup][google.spanner.admin.database.v1.DatabaseAdmin.GetBackup\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetBackupRequest {
     /// Required. Name of the backup.
@@ -378,6 +388,7 @@ pub struct GetBackupRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request for \[DeleteBackup][google.spanner.admin.database.v1.DatabaseAdmin.DeleteBackup\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteBackupRequest {
     /// Required. Name of the backup to delete.
@@ -387,6 +398,7 @@ pub struct DeleteBackupRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request for \[ListBackups][google.spanner.admin.database.v1.DatabaseAdmin.ListBackups\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListBackupsRequest {
     /// Required. The instance to list backups from.  Values are of the
@@ -442,6 +454,7 @@ pub struct ListBackupsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// The response for \[ListBackups][google.spanner.admin.database.v1.DatabaseAdmin.ListBackups\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListBackupsResponse {
     /// The list of matching backups. Backups returned are ordered by `create_time`
@@ -456,6 +469,7 @@ pub struct ListBackupsResponse {
 }
 /// The request for
 /// \[ListBackupOperations][google.spanner.admin.database.v1.DatabaseAdmin.ListBackupOperations\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListBackupOperationsRequest {
     /// Required. The instance of the backup operations. Values are of
@@ -543,6 +557,7 @@ pub struct ListBackupOperationsRequest {
 }
 /// The response for
 /// \[ListBackupOperations][google.spanner.admin.database.v1.DatabaseAdmin.ListBackupOperations\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListBackupOperationsResponse {
     /// The list of matching backup [long-running
@@ -565,6 +580,7 @@ pub struct ListBackupOperationsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Information about a backup.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BackupInfo {
     /// Name of the backup.
@@ -586,6 +602,7 @@ pub struct BackupInfo {
     pub source_database: ::prost::alloc::string::String,
 }
 /// Encryption configuration for the backup to create.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateBackupEncryptionConfig {
     /// Required. The encryption type of the backup.
@@ -647,6 +664,7 @@ pub mod create_backup_encryption_config {
     }
 }
 /// Encryption configuration for the copied backup.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CopyBackupEncryptionConfig {
     /// Required. The encryption type of the backup.
@@ -709,6 +727,7 @@ pub mod copy_backup_encryption_config {
     }
 }
 /// Information about the database restore.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RestoreInfo {
     /// The type of the restore source.
@@ -721,6 +740,7 @@ pub struct RestoreInfo {
 /// Nested message and enum types in `RestoreInfo`.
 pub mod restore_info {
     /// Information about the source used to restore the database.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum SourceInfo {
         /// Information about the backup used to restore the database. The backup
@@ -730,6 +750,7 @@ pub mod restore_info {
     }
 }
 /// A Cloud Spanner database.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Database {
     /// Required. The name of the database. Values are of the form
@@ -841,6 +862,7 @@ pub mod database {
     }
 }
 /// The request for \[ListDatabases][google.spanner.admin.database.v1.DatabaseAdmin.ListDatabases\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDatabasesRequest {
     /// Required. The instance whose databases should be listed.
@@ -858,6 +880,7 @@ pub struct ListDatabasesRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// The response for \[ListDatabases][google.spanner.admin.database.v1.DatabaseAdmin.ListDatabases\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDatabasesResponse {
     /// Databases that matched the request.
@@ -870,6 +893,7 @@ pub struct ListDatabasesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request for \[CreateDatabase][google.spanner.admin.database.v1.DatabaseAdmin.CreateDatabase\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateDatabaseRequest {
     /// Required. The name of the instance that will serve the new database.
@@ -900,6 +924,7 @@ pub struct CreateDatabaseRequest {
 }
 /// Metadata type for the operation returned by
 /// \[CreateDatabase][google.spanner.admin.database.v1.DatabaseAdmin.CreateDatabase\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateDatabaseMetadata {
     /// The database being created.
@@ -907,6 +932,7 @@ pub struct CreateDatabaseMetadata {
     pub database: ::prost::alloc::string::String,
 }
 /// The request for \[GetDatabase][google.spanner.admin.database.v1.DatabaseAdmin.GetDatabase\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetDatabaseRequest {
     /// Required. The name of the requested database. Values are of the form
@@ -930,6 +956,7 @@ pub struct GetDatabaseRequest {
 /// progress. See the
 /// \[operation_id][google.spanner.admin.database.v1.UpdateDatabaseDdlRequest.operation_id\] field for more
 /// details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateDatabaseDdlRequest {
     /// Required. The database to update.
@@ -962,6 +989,7 @@ pub struct UpdateDatabaseDdlRequest {
 }
 /// Metadata type for the operation returned by
 /// \[UpdateDatabaseDdl][google.spanner.admin.database.v1.DatabaseAdmin.UpdateDatabaseDdl\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateDatabaseDdlMetadata {
     /// The database being modified.
@@ -993,6 +1021,7 @@ pub struct UpdateDatabaseDdlMetadata {
     pub progress: ::prost::alloc::vec::Vec<OperationProgress>,
 }
 /// The request for \[DropDatabase][google.spanner.admin.database.v1.DatabaseAdmin.DropDatabase\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DropDatabaseRequest {
     /// Required. The database to be dropped.
@@ -1000,6 +1029,7 @@ pub struct DropDatabaseRequest {
     pub database: ::prost::alloc::string::String,
 }
 /// The request for \[GetDatabaseDdl][google.spanner.admin.database.v1.DatabaseAdmin.GetDatabaseDdl\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetDatabaseDdlRequest {
     /// Required. The database whose schema we wish to get.
@@ -1009,6 +1039,7 @@ pub struct GetDatabaseDdlRequest {
     pub database: ::prost::alloc::string::String,
 }
 /// The response for \[GetDatabaseDdl][google.spanner.admin.database.v1.DatabaseAdmin.GetDatabaseDdl\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetDatabaseDdlResponse {
     /// A list of formatted DDL statements defining the schema of the database
@@ -1018,6 +1049,7 @@ pub struct GetDatabaseDdlResponse {
 }
 /// The request for
 /// \[ListDatabaseOperations][google.spanner.admin.database.v1.DatabaseAdmin.ListDatabaseOperations\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDatabaseOperationsRequest {
     /// Required. The instance of the database operations.
@@ -1081,6 +1113,7 @@ pub struct ListDatabaseOperationsRequest {
 }
 /// The response for
 /// \[ListDatabaseOperations][google.spanner.admin.database.v1.DatabaseAdmin.ListDatabaseOperations\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDatabaseOperationsResponse {
     /// The list of matching database [long-running
@@ -1100,6 +1133,7 @@ pub struct ListDatabaseOperationsResponse {
 }
 /// The request for
 /// \[RestoreDatabase][google.spanner.admin.database.v1.DatabaseAdmin.RestoreDatabase\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RestoreDatabaseRequest {
     /// Required. The name of the instance in which to create the
@@ -1130,6 +1164,7 @@ pub struct RestoreDatabaseRequest {
 /// Nested message and enum types in `RestoreDatabaseRequest`.
 pub mod restore_database_request {
     /// Required. The source from which to restore.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
         /// Name of the backup from which to restore.  Values are of the form
@@ -1139,6 +1174,7 @@ pub mod restore_database_request {
     }
 }
 /// Encryption configuration for the restored database.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RestoreDatabaseEncryptionConfig {
     /// Required. The encryption type of the restored database.
@@ -1203,6 +1239,7 @@ pub mod restore_database_encryption_config {
 }
 /// Metadata type for the long-running operation returned by
 /// \[RestoreDatabase][google.spanner.admin.database.v1.DatabaseAdmin.RestoreDatabase\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RestoreDatabaseMetadata {
     /// Name of the database being created and restored to.
@@ -1251,6 +1288,7 @@ pub struct RestoreDatabaseMetadata {
 pub mod restore_database_metadata {
     /// Information about the source used to restore the database, as specified by
     /// `source` in \[RestoreDatabaseRequest][google.spanner.admin.database.v1.RestoreDatabaseRequest\].
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum SourceInfo {
         /// Information about the backup used to restore the database.
@@ -1262,6 +1300,7 @@ pub mod restore_database_metadata {
 /// of optimizations performed on a newly restored database. This long-running
 /// operation is automatically created by the system after the successful
 /// completion of a database restore, and cannot be cancelled.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OptimizeRestoredDatabaseMetadata {
     /// Name of the restored database being optimized.
@@ -1272,6 +1311,7 @@ pub struct OptimizeRestoredDatabaseMetadata {
     pub progress: ::core::option::Option<OperationProgress>,
 }
 /// A Cloud Spanner database role.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DatabaseRole {
     /// Required. The name of the database role. Values are of the form
@@ -1283,6 +1323,7 @@ pub struct DatabaseRole {
     pub name: ::prost::alloc::string::String,
 }
 /// The request for \[ListDatabaseRoles][google.spanner.admin.database.v1.DatabaseAdmin.ListDatabaseRoles\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDatabaseRolesRequest {
     /// Required. The database whose roles should be listed.
@@ -1301,6 +1342,7 @@ pub struct ListDatabaseRolesRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// The response for \[ListDatabaseRoles][google.spanner.admin.database.v1.DatabaseAdmin.ListDatabaseRoles\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDatabaseRolesResponse {
     /// Database roles that matched the request.

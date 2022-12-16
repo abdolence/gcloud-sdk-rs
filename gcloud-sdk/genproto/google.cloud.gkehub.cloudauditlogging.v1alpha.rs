@@ -1,4 +1,5 @@
 /// **Cloud Audit Logging**: Spec for Audit Logging Allowlisting.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FeatureSpec {
     /// Service account that should be allowlisted to send the audit logs; eg

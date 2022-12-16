@@ -1,4 +1,5 @@
 /// A deny rule in an IAM deny policy.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DenyRule {
     /// The identities that are prevented from using one or more permissions on
@@ -83,6 +84,7 @@ pub struct DenyRule {
     pub denial_condition: ::core::option::Option<super::super::r#type::Expr>,
 }
 /// Data for an IAM policy.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Policy {
     /// Immutable. The resource name of the `Policy`, which must be unique. Format:
@@ -144,6 +146,7 @@ pub struct Policy {
     pub managing_authority: ::prost::alloc::string::String,
 }
 /// A single rule in a `Policy`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PolicyRule {
     /// A user-specified description of the rule. This value can be up to 256
@@ -155,6 +158,7 @@ pub struct PolicyRule {
 }
 /// Nested message and enum types in `PolicyRule`.
 pub mod policy_rule {
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Kind {
         /// A rule for a deny policy.
@@ -163,6 +167,7 @@ pub mod policy_rule {
     }
 }
 /// Request message for `ListPolicies`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPoliciesRequest {
     /// Required. The resource that the policy is attached to, along with the kind of policy
@@ -189,6 +194,7 @@ pub struct ListPoliciesRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for `ListPolicies`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPoliciesResponse {
     /// Metadata for the policies that are attached to the resource.
@@ -200,6 +206,7 @@ pub struct ListPoliciesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for `GetPolicy`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetPolicyRequest {
     /// Required. The resource name of the policy to retrieve. Format:
@@ -216,6 +223,7 @@ pub struct GetPolicyRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for `CreatePolicy`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreatePolicyRequest {
     /// Required. The resource that the policy is attached to, along with the kind of policy
@@ -242,6 +250,7 @@ pub struct CreatePolicyRequest {
     pub policy_id: ::prost::alloc::string::String,
 }
 /// Request message for `UpdatePolicy`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdatePolicyRequest {
     /// Required. The policy to update.
@@ -253,6 +262,7 @@ pub struct UpdatePolicyRequest {
     pub policy: ::core::option::Option<Policy>,
 }
 /// Request message for `DeletePolicy`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeletePolicyRequest {
     /// Required. The resource name of the policy to delete. Format:
@@ -277,6 +287,7 @@ pub struct DeletePolicyRequest {
     pub etag: ::prost::alloc::string::String,
 }
 /// Metadata for long-running `Policy` operations.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PolicyOperationMetadata {
     /// Timestamp when the `google.longrunning.Operation` was created.

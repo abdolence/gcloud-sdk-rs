@@ -2,6 +2,7 @@
 /// The deployment field must be populated. The profile_type specifies the list
 /// of profile types supported by the agent. The creation call will hang until a
 /// profile of one of these types needs to be collected.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateProfileRequest {
     /// Parent project to create the profile in.
@@ -16,6 +17,7 @@ pub struct CreateProfileRequest {
 }
 /// CreateOfflineProfileRequest describes a profile resource offline creation
 /// request. Profile field must be set.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateOfflineProfileRequest {
     /// Parent project to create the profile in.
@@ -26,6 +28,7 @@ pub struct CreateOfflineProfileRequest {
     pub profile: ::core::option::Option<Profile>,
 }
 /// UpdateProfileRequest contains the profile to update.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateProfileRequest {
     /// Profile to update
@@ -39,6 +42,7 @@ pub struct UpdateProfileRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Profile resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Profile {
     /// Output only. Opaque, server-assigned, unique ID for this profile.
@@ -74,6 +78,7 @@ pub struct Profile {
     >,
 }
 /// Deployment contains the deployment identification information.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Deployment {
     /// Project ID is the ID of a cloud project.

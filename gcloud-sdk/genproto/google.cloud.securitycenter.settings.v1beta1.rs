@@ -1,4 +1,5 @@
 /// Billing settings
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BillingSettings {
     /// Output only. Billing tier selected by customer
@@ -70,6 +71,7 @@ impl BillingType {
     }
 }
 /// Component Settings for Security Command Center
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ComponentSettings {
     /// The relative resource name of the component settings.
@@ -113,6 +115,7 @@ pub struct ComponentSettings {
 /// Nested message and enum types in `ComponentSettings`.
 pub mod component_settings {
     /// Settings for each detector.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DetectorSettings {
         /// ENABLE to enable component, DISABLE to disable and INHERIT to inherit
@@ -121,6 +124,7 @@ pub mod component_settings {
         pub state: i32,
     }
     /// Component specific settings.  This must match the component value.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum SpecificSettings {
         /// Container Threate Detection specific settings
@@ -142,15 +146,19 @@ pub mod component_settings {
     }
 }
 /// User specified settings for Web Security Scanner
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WebSecurityScanner {}
 /// User specified settings for KTD
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ContainerThreatDetectionSettings {}
 /// User specified settings for ETD
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EventThreatDetectionSettings {}
 /// User specified settings for Security Health Analytics
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SecurityHealthAnalyticsSettings {
     /// Settings for "NON_ORG_IAM_MEMBER" scanner.
@@ -167,6 +175,7 @@ pub struct SecurityHealthAnalyticsSettings {
 /// Nested message and enum types in `SecurityHealthAnalyticsSettings`.
 pub mod security_health_analytics_settings {
     /// Settings for "NON_ORG_IAM_MEMBER" scanner.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct NonOrgIamMemberSettings {
         /// User emails ending in the provided identities are allowed to have IAM
@@ -186,6 +195,7 @@ pub mod security_health_analytics_settings {
         >,
     }
     /// Settings for "ADMIN_SERVICE_ACCOUNT" scanner.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AdminServiceAccountSettings {
         /// User-created service accounts ending in the provided identities are
@@ -241,6 +251,7 @@ impl ComponentEnablementState {
 /// their subscribed billing tier.
 ///
 /// Defines a detector, its billing tier and any applicable labels.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Detector {
     /// Output only. Detector Identifier
@@ -262,6 +273,7 @@ pub struct Detector {
     pub detector_labels: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Sink Settings for Security Command Center
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SinkSettings {
     /// The resource name of the project to send logs to. This project must be
@@ -273,6 +285,7 @@ pub struct SinkSettings {
     pub logging_sink_project: ::prost::alloc::string::String,
 }
 /// Common configuration settings for all of Security Center.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Settings {
     /// The relative resource name of the settings resource.
@@ -324,6 +337,7 @@ pub struct Settings {
 /// Nested message and enum types in `Settings`.
 pub mod settings {
     /// The DetectorGroupSettings define the configuration for a detector group.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DetectorGroupSettings {
         /// The state determines if the group is enabled or not.
@@ -385,6 +399,7 @@ pub mod settings {
     }
 }
 /// Request message for GetServiceAccount.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetServiceAccountRequest {
     /// Required. The relative resource name of the service account resource.
@@ -395,6 +410,7 @@ pub struct GetServiceAccountRequest {
 }
 /// An organization-level service account to be used by threat detection
 /// components.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ServiceAccount {
     /// The relative resource name of the service account resource.
@@ -410,6 +426,7 @@ pub struct ServiceAccount {
     pub service_account: ::prost::alloc::string::String,
 }
 /// Request message for GetSettings.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetSettingsRequest {
     /// Required. The name of the settings to retrieve.
@@ -424,6 +441,7 @@ pub struct GetSettingsRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for UpdateSettings.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateSettingsRequest {
     /// Required. The settings to update.
@@ -443,6 +461,7 @@ pub struct UpdateSettingsRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for ResetSettings.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResetSettingsRequest {
     /// Required. The name of the settings to reset.
@@ -461,6 +480,7 @@ pub struct ResetSettingsRequest {
     pub etag: ::prost::alloc::string::String,
 }
 /// Request message for BatchGetSettings.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchGetSettingsRequest {
     /// Required. The relative resource name of the organization shared by all of the
@@ -482,6 +502,7 @@ pub struct BatchGetSettingsRequest {
     pub names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Response message for BatchGetSettings.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchGetSettingsResponse {
     /// Settings requested.
@@ -489,6 +510,7 @@ pub struct BatchGetSettingsResponse {
     pub settings: ::prost::alloc::vec::Vec<Settings>,
 }
 /// Request message for CalculateEffectiveSettings.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CalculateEffectiveSettingsRequest {
     /// Required. The name of the effective settings to retrieve.
@@ -503,6 +525,7 @@ pub struct CalculateEffectiveSettingsRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for BatchGetEffectiveSettings.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchCalculateEffectiveSettingsRequest {
     /// Required. The relative resource name of the organization shared by all of the
@@ -517,6 +540,7 @@ pub struct BatchCalculateEffectiveSettingsRequest {
     pub requests: ::prost::alloc::vec::Vec<CalculateEffectiveSettingsRequest>,
 }
 /// Response message for BatchGetEffectiveSettings.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchCalculateEffectiveSettingsResponse {
     /// Settings requested.
@@ -524,6 +548,7 @@ pub struct BatchCalculateEffectiveSettingsResponse {
     pub settings: ::prost::alloc::vec::Vec<Settings>,
 }
 /// Request message for GetComponentSettings.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetComponentSettingsRequest {
     /// Required. The component settings to retrieve.
@@ -539,6 +564,7 @@ pub struct GetComponentSettingsRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for UpdateComponentSettings.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateComponentSettingsRequest {
     /// Required. The component settings to update.
@@ -558,6 +584,7 @@ pub struct UpdateComponentSettingsRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for ResetComponentSettings.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResetComponentSettingsRequest {
     /// Required. The component settings to reset.
@@ -577,6 +604,7 @@ pub struct ResetComponentSettingsRequest {
     pub etag: ::prost::alloc::string::String,
 }
 /// Request message for CalculateEffectiveComponentSettings.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CalculateEffectiveComponentSettingsRequest {
     /// Required. The effective component settings to retrieve.
@@ -592,6 +620,7 @@ pub struct CalculateEffectiveComponentSettingsRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for ListDetectors.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDetectorsRequest {
     /// Required. The parent, which owns this collection of detectors.
@@ -626,6 +655,7 @@ pub struct ListDetectorsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for ListDetectors.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDetectorsResponse {
     /// The detectors from the specified organization.
@@ -637,6 +667,7 @@ pub struct ListDetectorsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for ListComponents.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListComponentsRequest {
     /// Required. The parent, which owns this collection of components.
@@ -658,6 +689,7 @@ pub struct ListComponentsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for ListComponents.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListComponentsResponse {
     /// The components from the specified organization.

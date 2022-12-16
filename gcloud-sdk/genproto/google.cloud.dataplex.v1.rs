@@ -6,6 +6,7 @@
 /// admins with tools to organize, secure and manage their data at scale, and
 /// provides data scientists and data engineers an integrated experience to
 /// easily search, discover, analyze and transform data and associated metadata.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Lake {
     /// Output only. The relative resource name of the lake, of the form:
@@ -15,8 +16,8 @@ pub struct Lake {
     /// Optional. User friendly display name.
     #[prost(string, tag = "2")]
     pub display_name: ::prost::alloc::string::String,
-    /// Output only. System generated globally unique ID for the lake. This ID will be
-    /// different if the lake is deleted and re-created with the same name.
+    /// Output only. System generated globally unique ID for the lake. This ID will
+    /// be different if the lake is deleted and re-created with the same name.
     #[prost(string, tag = "3")]
     pub uid: ::prost::alloc::string::String,
     /// Output only. The time when the lake was created.
@@ -37,8 +38,9 @@ pub struct Lake {
     /// Output only. Current state of the lake.
     #[prost(enumeration = "State", tag = "8")]
     pub state: i32,
-    /// Output only. Service account associated with this lake. This service account must be
-    /// authorized to access or operate on resources managed by the lake.
+    /// Output only. Service account associated with this lake. This service
+    /// account must be authorized to access or operate on resources managed by the
+    /// lake.
     #[prost(string, tag = "9")]
     pub service_account: ::prost::alloc::string::String,
     /// Optional. Settings to manage lake and Dataproc Metastore service instance
@@ -55,6 +57,7 @@ pub struct Lake {
 /// Nested message and enum types in `Lake`.
 pub mod lake {
     /// Settings to manage association of Dataproc Metastore with a lake.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Metastore {
         /// Optional. A relative reference to the Dataproc Metastore
@@ -65,6 +68,7 @@ pub mod lake {
         pub service: ::prost::alloc::string::String,
     }
     /// Status of Lake and Dataproc Metastore service instance association.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct MetastoreStatus {
         /// Current state of association.
@@ -125,6 +129,7 @@ pub mod lake {
     }
 }
 /// Aggregated status of the underlying assets of a lake or zone.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AssetStatus {
     /// Last update time of the status.
@@ -142,6 +147,7 @@ pub struct AssetStatus {
 /// be used to map to organizational structure or represent stages of data
 /// readiness from raw to curated. It provides managing behavior that is shared
 /// or inherited by all contained assets.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Zone {
     /// Output only. The relative resource name of the zone, of the form:
@@ -151,8 +157,8 @@ pub struct Zone {
     /// Optional. User friendly display name.
     #[prost(string, tag = "2")]
     pub display_name: ::prost::alloc::string::String,
-    /// Output only. System generated globally unique ID for the zone. This ID will be
-    /// different if the zone is deleted and re-created with the same name.
+    /// Output only. System generated globally unique ID for the zone. This ID will
+    /// be different if the zone is deleted and re-created with the same name.
     #[prost(string, tag = "3")]
     pub uid: ::prost::alloc::string::String,
     /// Output only. The time when the zone was created.
@@ -176,11 +182,12 @@ pub struct Zone {
     /// Required. Immutable. The type of the zone.
     #[prost(enumeration = "zone::Type", tag = "9")]
     pub r#type: i32,
-    /// Optional. Specification of the discovery feature applied to data in this zone.
+    /// Optional. Specification of the discovery feature applied to data in this
+    /// zone.
     #[prost(message, optional, tag = "103")]
     pub discovery_spec: ::core::option::Option<zone::DiscoverySpec>,
-    /// Required. Specification of the resources that are referenced by the assets within
-    /// this zone.
+    /// Required. Specification of the resources that are referenced by the assets
+    /// within this zone.
     #[prost(message, optional, tag = "104")]
     pub resource_spec: ::core::option::Option<zone::ResourceSpec>,
     /// Output only. Aggregated status of the underlying assets of the zone.
@@ -190,10 +197,11 @@ pub struct Zone {
 /// Nested message and enum types in `Zone`.
 pub mod zone {
     /// Settings for resources attached as assets within a zone.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ResourceSpec {
-        /// Required. Immutable. The location type of the resources that are allowed to be attached to the
-        /// assets within this zone.
+        /// Required. Immutable. The location type of the resources that are allowed
+        /// to be attached to the assets within this zone.
         #[prost(enumeration = "resource_spec::LocationType", tag = "1")]
         pub location_type: i32,
     }
@@ -235,21 +243,22 @@ pub mod zone {
         }
     }
     /// Settings to manage the metadata discovery and publishing in a zone.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DiscoverySpec {
         /// Required. Whether discovery is enabled.
         #[prost(bool, tag = "1")]
         pub enabled: bool,
-        /// Optional. The list of patterns to apply for selecting data to include during
-        /// discovery if only a subset of the data should considered. For Cloud
-        /// Storage bucket assets, these are interpreted as glob patterns used to
-        /// match object names. For BigQuery dataset assets, these are
-        /// interpreted as patterns to match table names.
+        /// Optional. The list of patterns to apply for selecting data to include
+        /// during discovery if only a subset of the data should considered. For
+        /// Cloud Storage bucket assets, these are interpreted as glob patterns used
+        /// to match object names. For BigQuery dataset assets, these are interpreted
+        /// as patterns to match table names.
         #[prost(string, repeated, tag = "2")]
         pub include_patterns: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-        /// Optional. The list of patterns to apply for selecting data to exclude during
-        /// discovery.  For Cloud Storage bucket assets, these are interpreted as
-        /// glob patterns used to match object names. For BigQuery dataset assets,
+        /// Optional. The list of patterns to apply for selecting data to exclude
+        /// during discovery.  For Cloud Storage bucket assets, these are interpreted
+        /// as glob patterns used to match object names. For BigQuery dataset assets,
         /// these are interpreted as patterns to match table names.
         #[prost(string, repeated, tag = "3")]
         pub exclude_patterns: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
@@ -266,13 +275,15 @@ pub mod zone {
     /// Nested message and enum types in `DiscoverySpec`.
     pub mod discovery_spec {
         /// Describe CSV and similar semi-structured data formats.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct CsvOptions {
-            /// Optional. The number of rows to interpret as header rows that should be skipped
-            /// when reading data rows.
+            /// Optional. The number of rows to interpret as header rows that should be
+            /// skipped when reading data rows.
             #[prost(int32, tag = "1")]
             pub header_rows: i32,
-            /// Optional. The delimiter being used to separate values. This defaults to ','.
+            /// Optional. The delimiter being used to separate values. This defaults to
+            /// ','.
             #[prost(string, tag = "2")]
             pub delimiter: ::prost::alloc::string::String,
             /// Optional. The character encoding of the data. The default is UTF-8.
@@ -284,6 +295,7 @@ pub mod zone {
             pub disable_type_inference: bool,
         }
         /// Describe JSON data format.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct JsonOptions {
             /// Optional. The character encoding of the data. The default is UTF-8.
@@ -296,17 +308,18 @@ pub mod zone {
             pub disable_type_inference: bool,
         }
         /// Determines when discovery is triggered.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Trigger {
-            /// Optional. Cron schedule (<https://en.wikipedia.org/wiki/Cron>) for running
-            /// discovery periodically. Successive discovery runs must be scheduled at
-            /// least 60 minutes apart.
-            /// The default value is to run discovery every 60 minutes.
-            /// To explicitly set a timezone to the cron tab, apply a prefix in the
-            /// cron tab: "CRON_TZ=${IANA_TIME_ZONE}" or TZ=${IANA_TIME_ZONE}".
-            /// The ${IANA_TIME_ZONE} may only be a valid string from IANA time zone
-            /// database. For example, "CRON_TZ=America/New_York 1 * * * *", or
-            /// "TZ=America/New_York 1 * * * *".
+            /// Optional. Cron schedule (<https://en.wikipedia.org/wiki/Cron>) for
+            /// running discovery periodically. Successive discovery runs must be
+            /// scheduled at least 60 minutes apart. The default value is to run
+            /// discovery every 60 minutes. To explicitly set a timezone to the cron
+            /// tab, apply a prefix in the cron tab: "CRON_TZ=${IANA_TIME_ZONE}" or
+            /// TZ=${IANA_TIME_ZONE}". The ${IANA_TIME_ZONE} may only be a valid string
+            /// from IANA time zone database. For example,
+            /// `CRON_TZ=America/New_York 1 * * * *`,
+            /// or `TZ=America/New_York 1 * * * *`.
             #[prost(string, tag = "10")]
             Schedule(::prost::alloc::string::String),
         }
@@ -351,6 +364,7 @@ pub mod zone {
     }
 }
 /// Action represents an issue requiring administrator action for resolution.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Action {
     /// The category of issue associated with the action.
@@ -394,17 +408,20 @@ pub struct Action {
 /// Nested message and enum types in `Action`.
 pub mod action {
     /// Action details for resource references in assets that cannot be located.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct MissingResource {}
     /// Action details for unauthorized resource issues raised to indicate that the
     /// service account associated with the lake instance is not authorized to
     /// access or manage the resource associated with an asset.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct UnauthorizedResource {}
     /// Failed to apply security policy to the managed resource(s) under a
     /// lake, zone or an asset. For a lake or zone resource, one or more underlying
     /// assets has a failure applying security policy to the associated managed
     /// resource.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct FailedSecurityPolicyApply {
         /// Resource name of one of the assets with failing security policy
@@ -413,6 +430,7 @@ pub mod action {
         pub asset: ::prost::alloc::string::String,
     }
     /// Action details for invalid or unsupported data files detected by discovery.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct InvalidDataFormat {
         /// The list of data locations sampled and used for format/schema
@@ -429,6 +447,7 @@ pub mod action {
         pub new_format: ::prost::alloc::string::String,
     }
     /// Action details for incompatible schemas detected by discovery.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct IncompatibleDataSchema {
         /// The name of the table containing invalid data.
@@ -491,6 +510,7 @@ pub mod action {
         }
     }
     /// Action details for invalid or unsupported partitions detected by discovery.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct InvalidDataPartition {
         /// The issue type of InvalidDataPartition.
@@ -535,9 +555,11 @@ pub mod action {
         }
     }
     /// Action details for absence of data detected by discovery.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct MissingData {}
     /// Action details for invalid data arrangement.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct InvalidDataOrganization {}
     /// The category of issues.
@@ -578,6 +600,7 @@ pub mod action {
         }
     }
     /// Additional details about the action based on the action category.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Details {
         /// Details for issues related to invalid or unsupported data formats.
@@ -610,6 +633,7 @@ pub mod action {
 }
 /// An asset represents a cloud resource that is being managed within a lake as a
 /// member of a zone.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Asset {
     /// Output only. The relative resource name of the asset, of the form:
@@ -619,8 +643,9 @@ pub struct Asset {
     /// Optional. User friendly display name.
     #[prost(string, tag = "2")]
     pub display_name: ::prost::alloc::string::String,
-    /// Output only. System generated globally unique ID for the asset. This ID will be
-    /// different if the asset is deleted and re-created with the same name.
+    /// Output only. System generated globally unique ID for the asset. This ID
+    /// will be different if the asset is deleted and re-created with the same
+    /// name.
     #[prost(string, tag = "3")]
     pub uid: ::prost::alloc::string::String,
     /// Output only. The time when the asset was created.
@@ -647,16 +672,17 @@ pub struct Asset {
     /// Output only. Status of the resource referenced by this asset.
     #[prost(message, optional, tag = "101")]
     pub resource_status: ::core::option::Option<asset::ResourceStatus>,
-    /// Output only. Status of the security policy applied to resource referenced by this asset.
+    /// Output only. Status of the security policy applied to resource referenced
+    /// by this asset.
     #[prost(message, optional, tag = "103")]
     pub security_status: ::core::option::Option<asset::SecurityStatus>,
-    /// Optional. Specification of the discovery feature applied to data referenced by this
-    /// asset.
-    /// When this spec is left unset, the asset will use the spec set on the parent
-    /// zone.
+    /// Optional. Specification of the discovery feature applied to data referenced
+    /// by this asset. When this spec is left unset, the asset will use the spec
+    /// set on the parent zone.
     #[prost(message, optional, tag = "106")]
     pub discovery_spec: ::core::option::Option<asset::DiscoverySpec>,
-    /// Output only. Status of the discovery feature applied to data referenced by this asset.
+    /// Output only. Status of the discovery feature applied to data referenced by
+    /// this asset.
     #[prost(message, optional, tag = "107")]
     pub discovery_status: ::core::option::Option<asset::DiscoveryStatus>,
 }
@@ -664,6 +690,7 @@ pub struct Asset {
 pub mod asset {
     /// Security policy status of the asset. Data security policy, i.e., readers,
     /// writers & owners, should be specified in the lake/zone/asset IAM policy.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SecurityStatus {
         /// The current state of the security policy applied to the attached
@@ -720,21 +747,22 @@ pub mod asset {
         }
     }
     /// Settings to manage the metadata discovery and publishing for an asset.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DiscoverySpec {
         /// Optional. Whether discovery is enabled.
         #[prost(bool, tag = "1")]
         pub enabled: bool,
-        /// Optional. The list of patterns to apply for selecting data to include during
-        /// discovery if only a subset of the data should considered.  For Cloud
-        /// Storage bucket assets, these are interpreted as glob patterns used to
-        /// match object names. For BigQuery dataset assets, these are interpreted as
-        /// patterns to match table names.
+        /// Optional. The list of patterns to apply for selecting data to include
+        /// during discovery if only a subset of the data should considered.  For
+        /// Cloud Storage bucket assets, these are interpreted as glob patterns used
+        /// to match object names. For BigQuery dataset assets, these are interpreted
+        /// as patterns to match table names.
         #[prost(string, repeated, tag = "2")]
         pub include_patterns: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-        /// Optional. The list of patterns to apply for selecting data to exclude during
-        /// discovery.  For Cloud Storage bucket assets, these are interpreted as
-        /// glob patterns used to match object names. For BigQuery dataset assets,
+        /// Optional. The list of patterns to apply for selecting data to exclude
+        /// during discovery.  For Cloud Storage bucket assets, these are interpreted
+        /// as glob patterns used to match object names. For BigQuery dataset assets,
         /// these are interpreted as patterns to match table names.
         #[prost(string, repeated, tag = "3")]
         pub exclude_patterns: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
@@ -751,13 +779,15 @@ pub mod asset {
     /// Nested message and enum types in `DiscoverySpec`.
     pub mod discovery_spec {
         /// Describe CSV and similar semi-structured data formats.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct CsvOptions {
-            /// Optional. The number of rows to interpret as header rows that should be skipped
-            /// when reading data rows.
+            /// Optional. The number of rows to interpret as header rows that should be
+            /// skipped when reading data rows.
             #[prost(int32, tag = "1")]
             pub header_rows: i32,
-            /// Optional. The delimiter being used to separate values. This defaults to ','.
+            /// Optional. The delimiter being used to separate values. This defaults to
+            /// ','.
             #[prost(string, tag = "2")]
             pub delimiter: ::prost::alloc::string::String,
             /// Optional. The character encoding of the data. The default is UTF-8.
@@ -769,6 +799,7 @@ pub mod asset {
             pub disable_type_inference: bool,
         }
         /// Describe JSON data format.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct JsonOptions {
             /// Optional. The character encoding of the data. The default is UTF-8.
@@ -781,26 +812,28 @@ pub mod asset {
             pub disable_type_inference: bool,
         }
         /// Determines when discovery is triggered.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Trigger {
-            /// Optional. Cron schedule (<https://en.wikipedia.org/wiki/Cron>) for running
-            /// discovery periodically. Successive discovery runs must be scheduled at
-            /// least 60 minutes apart.
-            /// The default value is to run discovery every 60 minutes.
-            /// To explicitly set a timezone to the cron tab, apply a prefix in the
-            /// cron tab: "CRON_TZ=${IANA_TIME_ZONE}" or TZ=${IANA_TIME_ZONE}".
-            /// The ${IANA_TIME_ZONE} may only be a valid string from IANA time zone
-            /// database. For example, "CRON_TZ=America/New_York 1 * * * *", or
-            /// "TZ=America/New_York 1 * * * *".
+            /// Optional. Cron schedule (<https://en.wikipedia.org/wiki/Cron>) for
+            /// running discovery periodically. Successive discovery runs must be
+            /// scheduled at least 60 minutes apart. The default value is to run
+            /// discovery every 60 minutes. To explicitly set a timezone to the cron
+            /// tab, apply a prefix in the cron tab: "CRON_TZ=${IANA_TIME_ZONE}" or
+            /// TZ=${IANA_TIME_ZONE}". The ${IANA_TIME_ZONE} may only be a valid string
+            /// from IANA time zone database. For example,
+            /// `CRON_TZ=America/New_York 1 * * * *`,
+            /// or `TZ=America/New_York 1 * * * *`.
             #[prost(string, tag = "10")]
             Schedule(::prost::alloc::string::String),
         }
     }
     /// Identifies the cloud resource that is referenced by this asset.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ResourceSpec {
-        /// Immutable. Relative name of the cloud resource that contains the data that is
-        /// being managed within a lake. For example:
+        /// Immutable. Relative name of the cloud resource that contains the data
+        /// that is being managed within a lake. For example:
         ///    `projects/{project_number}/buckets/{bucket_id}`
         ///    `projects/{project_number}/datasets/{dataset_id}`
         #[prost(string, tag = "1")]
@@ -847,6 +880,7 @@ pub mod asset {
         }
     }
     /// Status of the resource referenced by an asset.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ResourceStatus {
         /// The current state of the managed resource.
@@ -897,6 +931,7 @@ pub mod asset {
         }
     }
     /// Status of discovery for an asset.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DiscoveryStatus {
         /// The current status of the discovery feature.
@@ -921,6 +956,7 @@ pub mod asset {
     /// Nested message and enum types in `DiscoveryStatus`.
     pub mod discovery_status {
         /// The aggregated data statistics for the asset reported by discovery.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Stats {
             /// The count of data items within the referenced resource.
@@ -1011,6 +1047,7 @@ impl State {
 }
 /// Environment represents a user-visible compute infrastructure for analytics
 /// within a lake.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Environment {
     /// Output only. The relative resource name of the environment, of the form:
@@ -1020,8 +1057,9 @@ pub struct Environment {
     /// Optional. User friendly display name.
     #[prost(string, tag = "2")]
     pub display_name: ::prost::alloc::string::String,
-    /// Output only. System generated globally unique ID for the environment. This ID will be
-    /// different if the environment is deleted and re-created with the same name.
+    /// Output only. System generated globally unique ID for the environment. This
+    /// ID will be different if the environment is deleted and re-created with the
+    /// same name.
     #[prost(string, tag = "3")]
     pub uid: ::prost::alloc::string::String,
     /// Output only. Environment creation time.
@@ -1051,13 +1089,15 @@ pub struct Environment {
     /// Output only. Status of sessions created for this environment.
     #[prost(message, optional, tag = "102")]
     pub session_status: ::core::option::Option<environment::SessionStatus>,
-    /// Output only. URI Endpoints to access sessions associated with the Environment.
+    /// Output only. URI Endpoints to access sessions associated with the
+    /// Environment.
     #[prost(message, optional, tag = "200")]
     pub endpoints: ::core::option::Option<environment::Endpoints>,
 }
 /// Nested message and enum types in `Environment`.
 pub mod environment {
     /// Configuration for the underlying infrastructure used to run workloads.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct InfrastructureSpec {
         /// Hardware config
@@ -1070,12 +1110,14 @@ pub mod environment {
     /// Nested message and enum types in `InfrastructureSpec`.
     pub mod infrastructure_spec {
         /// Compute resources associated with the analyze interactive workloads.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct ComputeResources {
             /// Optional. Size in GB of the disk. Default is 100 GB.
             #[prost(int32, tag = "1")]
             pub disk_size_gb: i32,
-            /// Optional. Total number of nodes in the sessions created for this environment.
+            /// Optional. Total number of nodes in the sessions created for this
+            /// environment.
             #[prost(int32, tag = "2")]
             pub node_count: i32,
             /// Optional. Max configurable nodes.
@@ -1084,6 +1126,7 @@ pub mod environment {
             pub max_node_count: i32,
         }
         /// Software Runtime Configuration to run Analyze.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct OsImageRuntime {
             /// Required. Dataplex Image version.
@@ -1101,10 +1144,10 @@ pub mod environment {
             pub python_packages: ::prost::alloc::vec::Vec<
                 ::prost::alloc::string::String,
             >,
-            /// Optional. Spark properties to provide configuration for use in sessions created
-            /// for this environment. The properties to set on daemon config files.
-            /// Property keys are specified in `prefix:property` format.
-            /// The prefix must be "spark".
+            /// Optional. Spark properties to provide configuration for use in sessions
+            /// created for this environment. The properties to set on daemon config
+            /// files. Property keys are specified in `prefix:property` format. The
+            /// prefix must be "spark".
             #[prost(map = "string, string", tag = "4")]
             pub properties: ::std::collections::HashMap<
                 ::prost::alloc::string::String,
@@ -1112,6 +1155,7 @@ pub mod environment {
             >,
         }
         /// Hardware config
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Resources {
             /// Optional. Compute resources needed for analyze interactive workloads.
@@ -1119,34 +1163,39 @@ pub mod environment {
             Compute(ComputeResources),
         }
         /// Software config
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Runtime {
-            /// Required. Software Runtime Configuration for analyze interactive workloads.
+            /// Required. Software Runtime Configuration for analyze interactive
+            /// workloads.
             #[prost(message, tag = "100")]
             OsImage(OsImageRuntime),
         }
     }
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SessionSpec {
         /// Optional. The idle time configuration of the session. The session will be
         /// auto-terminated at the end of this period.
         #[prost(message, optional, tag = "1")]
         pub max_idle_duration: ::core::option::Option<::prost_types::Duration>,
-        /// Optional. If True, this causes sessions to be pre-created and available for faster
-        /// startup to enable interactive exploration use-cases. This defaults to
-        /// False to avoid additional billed charges.
-        /// These can only be set to True for the environment with name set to
-        /// "default", and with default configuration.
+        /// Optional. If True, this causes sessions to be pre-created and available
+        /// for faster startup to enable interactive exploration use-cases. This
+        /// defaults to False to avoid additional billed charges. These can only be
+        /// set to True for the environment with name set to "default", and with
+        /// default configuration.
         #[prost(bool, tag = "2")]
         pub enable_fast_startup: bool,
     }
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SessionStatus {
-        /// Output only. Queries over sessions to mark whether the environment is currently
-        /// active or not
+        /// Output only. Queries over sessions to mark whether the environment is
+        /// currently active or not
         #[prost(bool, tag = "1")]
         pub active: bool,
     }
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Endpoints {
         /// Output only. URI to serve notebook APIs
@@ -1158,19 +1207,21 @@ pub mod environment {
     }
 }
 /// Content represents a user-visible notebook or a sql script
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Content {
     /// Output only. The relative resource name of the content, of the form:
     /// projects/{project_id}/locations/{location_id}/lakes/{lake_id}/content/{content_id}
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Output only. System generated globally unique ID for the content. This ID will be
-    /// different if the content is deleted and re-created with the same name.
+    /// Output only. System generated globally unique ID for the content. This ID
+    /// will be different if the content is deleted and re-created with the same
+    /// name.
     #[prost(string, tag = "2")]
     pub uid: ::prost::alloc::string::String,
-    /// Required. The path for the Content file, represented as directory structure.
-    /// Unique within a lake.
-    /// Limited to alphanumerics, hyphens, underscores, dots and slashes.
+    /// Required. The path for the Content file, represented as directory
+    /// structure. Unique within a lake. Limited to alphanumerics, hyphens,
+    /// underscores, dots and slashes.
     #[prost(string, tag = "3")]
     pub path: ::prost::alloc::string::String,
     /// Output only. Content creation time.
@@ -1197,6 +1248,7 @@ pub struct Content {
 /// Nested message and enum types in `Content`.
 pub mod content {
     /// Configuration for the Sql Script content.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SqlScript {
         /// Required. Query Engine to be used for the Sql Query.
@@ -1238,6 +1290,7 @@ pub mod content {
         }
     }
     /// Configuration for Notebook content.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Notebook {
         /// Required. Kernel Type of the notebook.
@@ -1279,12 +1332,14 @@ pub mod content {
         }
     }
     /// Only returned in `GetContent` requests and not in `ListContent` request.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Data {
         /// Required. Content data in string format.
         #[prost(string, tag = "9")]
         DataText(::prost::alloc::string::String),
     }
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Content {
         /// Sql Script related configurations.
@@ -1296,6 +1351,7 @@ pub mod content {
     }
 }
 /// Represents an active analyze session running for a user.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Session {
     /// Output only. The relative resource name of the content, of the form:
@@ -1312,6 +1368,7 @@ pub struct Session {
     pub state: i32,
 }
 /// Create content request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateContentRequest {
     /// Required. The resource name of the parent lake:
@@ -1327,6 +1384,7 @@ pub struct CreateContentRequest {
     pub validate_only: bool,
 }
 /// Update content request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateContentRequest {
     /// Required. Mask of fields to update.
@@ -1342,6 +1400,7 @@ pub struct UpdateContentRequest {
     pub validate_only: bool,
 }
 /// Delete content request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteContentRequest {
     /// Required. The resource name of the content:
@@ -1350,19 +1409,20 @@ pub struct DeleteContentRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// List content request. Returns the BASIC Content view.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListContentRequest {
     /// Required. The resource name of the parent lake:
     /// projects/{project_id}/locations/{location_id}/lakes/{lake_id}
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Optional. Maximum number of content to return. The service may return fewer than
-    /// this value. If unspecified, at most 10 content will be returned. The
+    /// Optional. Maximum number of content to return. The service may return fewer
+    /// than this value. If unspecified, at most 10 content will be returned. The
     /// maximum value is 1000; values above 1000 will be coerced to 1000.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
-    /// Optional. Page token received from a previous `ListContent` call. Provide this
-    /// to retrieve the subsequent page. When paginating, all other parameters
+    /// Optional. Page token received from a previous `ListContent` call. Provide
+    /// this to retrieve the subsequent page. When paginating, all other parameters
     /// provided to `ListContent` must match the call that provided the page
     /// token.
     #[prost(string, tag = "3")]
@@ -1380,6 +1440,7 @@ pub struct ListContentRequest {
     pub filter: ::prost::alloc::string::String,
 }
 /// List content response.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListContentResponse {
     /// Content under the given parent lake.
@@ -1391,6 +1452,7 @@ pub struct ListContentResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Get content request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetContentRequest {
     /// Required. The resource name of the content:
@@ -1708,6 +1770,7 @@ pub mod content_service_client {
     }
 }
 /// The payload associated with Discovery data processing.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DiscoveryEvent {
     /// The log message.
@@ -1735,6 +1798,7 @@ pub struct DiscoveryEvent {
 /// Nested message and enum types in `DiscoveryEvent`.
 pub mod discovery_event {
     /// Details about configuration events.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ConfigDetails {
         /// A list of discovery configuration parameters in effect.
@@ -1748,6 +1812,7 @@ pub mod discovery_event {
         >,
     }
     /// Details about the entity.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct EntityDetails {
         /// The name of the entity resource.
@@ -1759,6 +1824,7 @@ pub mod discovery_event {
         pub r#type: i32,
     }
     /// Details about the partition.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct PartitionDetails {
         /// The name to the partition resource.
@@ -1780,6 +1846,7 @@ pub mod discovery_event {
         >,
     }
     /// Details about the action.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ActionDetails {
         /// The type of action.
@@ -1871,6 +1938,7 @@ pub mod discovery_event {
         }
     }
     /// Additional details about the event.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Details {
         /// Details about discovery configuration in effect.
@@ -1889,6 +1957,7 @@ pub mod discovery_event {
 }
 /// The payload associated with Job logs that contains events describing jobs
 /// that have run within a Lake.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct JobEvent {
     /// The log message.
@@ -2029,6 +2098,7 @@ pub mod job_event {
 }
 /// These messages contain information about sessions within an environment.
 /// The monitored resource is 'Environment'.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SessionEvent {
     /// The log message.
@@ -2061,6 +2131,7 @@ pub struct SessionEvent {
 /// Nested message and enum types in `SessionEvent`.
 pub mod session_event {
     /// Execution details of the query.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct QueryDetail {
         /// The unique Query id identifying the query.
@@ -2161,6 +2232,7 @@ pub mod session_event {
         }
     }
     /// Additional information about the Query metadata.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Detail {
         /// The execution details of the query.
@@ -2169,6 +2241,7 @@ pub mod session_event {
     }
 }
 /// Create a metadata entity request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateEntityRequest {
     /// Required. The resource name of the parent zone:
@@ -2187,6 +2260,7 @@ pub struct CreateEntityRequest {
 /// The exiting entity will be fully replaced by the entity in the request.
 /// The entity ID is mutable. To modify the ID, use the current entity ID in the
 /// request URL and specify the new ID in the request body.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateEntityRequest {
     /// Required. Update description.
@@ -2198,18 +2272,20 @@ pub struct UpdateEntityRequest {
     pub validate_only: bool,
 }
 /// Delete a metadata entity request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteEntityRequest {
     /// Required. The resource name of the entity:
     /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}/entities/{entity_id}`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Required. The etag associated with the entity, which can be retrieved with a
-    /// \[GetEntity][\] request.
+    /// Required. The etag associated with the entity, which can be retrieved with
+    /// a \[GetEntity][\] request.
     #[prost(string, tag = "2")]
     pub etag: ::prost::alloc::string::String,
 }
 /// List metadata entities request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEntitiesRequest {
     /// Required. The resource name of the parent zone:
@@ -2219,9 +2295,10 @@ pub struct ListEntitiesRequest {
     /// Required. Specify the entity view to make a partial list request.
     #[prost(enumeration = "list_entities_request::EntityView", tag = "2")]
     pub view: i32,
-    /// Optional. Maximum number of entities to return. The service may return fewer than
-    /// this value. If unspecified, 100 entities will be returned by default. The
-    /// maximum value is 500; larger values will will be truncated to 500.
+    /// Optional. Maximum number of entities to return. The service may return
+    /// fewer than this value. If unspecified, 100 entities will be returned by
+    /// default. The maximum value is 500; larger values will will be truncated to
+    /// 500.
     #[prost(int32, tag = "3")]
     pub page_size: i32,
     /// Optional. Page token received from a previous `ListEntities` call. Provide
@@ -2230,8 +2307,8 @@ pub struct ListEntitiesRequest {
     /// page token.
     #[prost(string, tag = "4")]
     pub page_token: ::prost::alloc::string::String,
-    /// Optional. The following filter parameters can be added to the URL to limit the
-    /// entities returned by the API:
+    /// Optional. The following filter parameters can be added to the URL to limit
+    /// the entities returned by the API:
     ///
     /// - Entity ID: ?filter="id=entityID"
     /// - Asset ID: ?filter="asset=assetID"
@@ -2280,6 +2357,7 @@ pub mod list_entities_request {
     }
 }
 /// List metadata entities response.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEntitiesResponse {
     /// Entities in the specified parent zone.
@@ -2291,6 +2369,7 @@ pub struct ListEntitiesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Get metadata entity request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetEntityRequest {
     /// Required. The resource name of the entity:
@@ -2343,25 +2422,27 @@ pub mod get_entity_request {
     }
 }
 /// List metadata partitions request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPartitionsRequest {
     /// Required. The resource name of the parent entity:
     /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}/entities/{entity_id}`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Optional. Maximum number of partitions to return. The service may return fewer than
-    /// this value. If unspecified, 100 partitions will be returned by default. The
-    /// maximum page size is 500; larger values will will be truncated to 500.
+    /// Optional. Maximum number of partitions to return. The service may return
+    /// fewer than this value. If unspecified, 100 partitions will be returned by
+    /// default. The maximum page size is 500; larger values will will be truncated
+    /// to 500.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
-    /// Optional. Page token received from a previous `ListPartitions` call. Provide
-    /// this to retrieve the subsequent page. When paginating, all other parameters
-    /// provided to `ListPartitions` must match the call that provided the
-    /// page token.
+    /// Optional. Page token received from a previous `ListPartitions` call.
+    /// Provide this to retrieve the subsequent page. When paginating, all other
+    /// parameters provided to `ListPartitions` must match the call that provided
+    /// the page token.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
-    /// Optional. Filter the partitions returned to the caller using a key value pair
-    /// expression. Supported operators and syntax:
+    /// Optional. Filter the partitions returned to the caller using a key value
+    /// pair expression. Supported operators and syntax:
     ///
     /// - logic operators: AND, OR
     /// - comparison operators: <, >, >=, <= ,=, !=
@@ -2383,6 +2464,7 @@ pub struct ListPartitionsRequest {
     pub filter: ::prost::alloc::string::String,
 }
 /// Create metadata partition request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreatePartitionRequest {
     /// Required. The resource name of the parent zone:
@@ -2398,6 +2480,7 @@ pub struct CreatePartitionRequest {
     pub validate_only: bool,
 }
 /// Delete metadata partition request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeletePartitionRequest {
     /// Required. The resource name of the partition.
@@ -2413,6 +2496,7 @@ pub struct DeletePartitionRequest {
     pub etag: ::prost::alloc::string::String,
 }
 /// List metadata partitions response.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPartitionsResponse {
     /// Partitions under the specified parent entity.
@@ -2424,6 +2508,7 @@ pub struct ListPartitionsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Get metadata partition request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetPartitionRequest {
     /// Required. The resource name of the partition:
@@ -2434,6 +2519,7 @@ pub struct GetPartitionRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Represents tables and fileset metadata contained within a zone.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Entity {
     /// Output only. The resource name of the entity, of the form:
@@ -2443,8 +2529,8 @@ pub struct Entity {
     /// Optional. Display name must be shorter than or equal to 256 characters.
     #[prost(string, tag = "2")]
     pub display_name: ::prost::alloc::string::String,
-    /// Optional. User friendly longer description text. Must be shorter than or equal to
-    /// 1024 characters.
+    /// Optional. User friendly longer description text. Must be shorter than or
+    /// equal to 1024 characters.
     #[prost(string, tag = "3")]
     pub description: ::prost::alloc::string::String,
     /// Output only. The time when the entity was created.
@@ -2461,15 +2547,16 @@ pub struct Entity {
     /// characters.
     #[prost(string, tag = "7")]
     pub id: ::prost::alloc::string::String,
-    /// Optional. The etag associated with the entity, which can be retrieved with a
-    /// \[GetEntity][\] request. Required for update and delete requests.
+    /// Optional. The etag associated with the entity, which can be retrieved with
+    /// a \[GetEntity][\] request. Required for update and delete requests.
     #[prost(string, tag = "8")]
     pub etag: ::prost::alloc::string::String,
     /// Required. Immutable. The type of entity.
     #[prost(enumeration = "entity::Type", tag = "10")]
     pub r#type: i32,
-    /// Required. Immutable. The ID of the asset associated with the storage location containing the
-    /// entity data. The entity must be with in the same zone with the asset.
+    /// Required. Immutable. The ID of the asset associated with the storage
+    /// location containing the entity data. The entity must be with in the same
+    /// zone with the asset.
     #[prost(string, tag = "11")]
     pub asset: ::prost::alloc::string::String,
     /// Required. Immutable. The storage path of the entity data.
@@ -2479,9 +2566,9 @@ pub struct Entity {
     /// `projects/project_id/datasets/dataset_id/tables/table_id`.
     #[prost(string, tag = "12")]
     pub data_path: ::prost::alloc::string::String,
-    /// Optional. The set of items within the data path constituting the data in the entity,
-    /// represented as a glob path.
-    /// Example: `gs://bucket/path/to/data/**/*.csv`.
+    /// Optional. The set of items within the data path constituting the data in
+    /// the entity, represented as a glob path. Example:
+    /// `gs://bucket/path/to/data/**/*.csv`.
     #[prost(string, tag = "13")]
     pub data_path_pattern: ::prost::alloc::string::String,
     /// Output only. The name of the associated Data Catalog entry.
@@ -2506,6 +2593,7 @@ pub struct Entity {
 /// Nested message and enum types in `Entity`.
 pub mod entity {
     /// Provides compatibility information for various metadata stores.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CompatibilityStatus {
         /// Output only. Whether this entity is compatible with Hive Metastore.
@@ -2518,14 +2606,15 @@ pub mod entity {
     /// Nested message and enum types in `CompatibilityStatus`.
     pub mod compatibility_status {
         /// Provides compatibility information for a specific metadata store.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Compatibility {
-            /// Output only. Whether the entity is compatible and can be represented in the metadata
-            /// store.
+            /// Output only. Whether the entity is compatible and can be represented in
+            /// the metadata store.
             #[prost(bool, tag = "1")]
             pub compatible: bool,
-            /// Output only. Provides additional detail if the entity is incompatible with the
-            /// metadata store.
+            /// Output only. Provides additional detail if the entity is incompatible
+            /// with the metadata store.
             #[prost(string, tag = "2")]
             pub reason: ::prost::alloc::string::String,
         }
@@ -2566,6 +2655,7 @@ pub mod entity {
     }
 }
 /// Represents partition metadata contained within entity instances.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Partition {
     /// Output only. Partition values used in the HTTP URL must be
@@ -2575,13 +2665,13 @@ pub struct Partition {
     /// The name field in the response retains the encoded format.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Required. Immutable. The set of values representing the partition, which correspond to the
-    /// partition schema defined in the parent entity.
+    /// Required. Immutable. The set of values representing the partition, which
+    /// correspond to the partition schema defined in the parent entity.
     #[prost(string, repeated, tag = "2")]
     pub values: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// Required. Immutable. The location of the entity data within the partition, for example,
-    /// `gs://bucket/path/to/entity/key1=value1/key2=value2`.
-    /// Or `projects/<project_id>/datasets/<dataset_id>/tables/<table_id>`
+    /// Required. Immutable. The location of the entity data within the partition,
+    /// for example, `gs://bucket/path/to/entity/key1=value1/key2=value2`. Or
+    /// `projects/<project_id>/datasets/<dataset_id>/tables/<table_id>`
     #[prost(string, tag = "3")]
     pub location: ::prost::alloc::string::String,
     /// Optional. The etag for this partition.
@@ -2590,10 +2680,11 @@ pub struct Partition {
     pub etag: ::prost::alloc::string::String,
 }
 /// Schema information describing the structure and layout of the data.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Schema {
-    /// Required. Set to `true` if user-managed or `false` if managed by Dataplex. The
-    /// default is `false` (managed by Dataplex).
+    /// Required. Set to `true` if user-managed or `false` if managed by Dataplex.
+    /// The default is `false` (managed by Dataplex).
     ///
     /// - Set to `false`to enable Dataplex discovery to update the schema.
     ///    including new data discovery, schema inference, and schema evolution.
@@ -2611,17 +2702,19 @@ pub struct Schema {
     /// **Note:** BigQuery SchemaFields are immutable.
     #[prost(message, repeated, tag = "2")]
     pub fields: ::prost::alloc::vec::Vec<schema::SchemaField>,
-    /// Optional. The sequence of fields describing the partition structure in entities.
-    /// If this field is empty, there are no partitions within the data.
+    /// Optional. The sequence of fields describing the partition structure in
+    /// entities. If this field is empty, there are no partitions within the data.
     #[prost(message, repeated, tag = "3")]
     pub partition_fields: ::prost::alloc::vec::Vec<schema::PartitionField>,
-    /// Optional. The structure of paths containing partition data within the entity.
+    /// Optional. The structure of paths containing partition data within the
+    /// entity.
     #[prost(enumeration = "schema::PartitionStyle", tag = "4")]
     pub partition_style: i32,
 }
 /// Nested message and enum types in `Schema`.
 pub mod schema {
     /// Represents a column field within a table schema.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SchemaField {
         /// Required. The name of the field. Must contain only letters, numbers and
@@ -2629,8 +2722,8 @@ pub mod schema {
         /// and must begin with a letter or underscore.
         #[prost(string, tag = "1")]
         pub name: ::prost::alloc::string::String,
-        /// Optional. User friendly field description. Must be less than or equal to 1024
-        /// characters.
+        /// Optional. User friendly field description. Must be less than or equal to
+        /// 1024 characters.
         #[prost(string, tag = "2")]
         pub description: ::prost::alloc::string::String,
         /// Required. The type of field.
@@ -2647,11 +2740,12 @@ pub mod schema {
     /// have up to 20 partition fields, but only the first 10 partitions have the
     /// filtering ability due to performance consideration. **Note:**
     /// Partition fields are immutable.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct PartitionField {
-        /// Required. Partition field name must consist of letters, numbers, and underscores
-        /// only, with a maximum of length of 256 characters,
-        /// and must begin with a letter or underscore..
+        /// Required. Partition field name must consist of letters, numbers, and
+        /// underscores only, with a maximum of length of 256 characters, and must
+        /// begin with a letter or underscore..
         #[prost(string, tag = "1")]
         pub name: ::prost::alloc::string::String,
         /// Required. Immutable. The type of field.
@@ -2804,10 +2898,11 @@ pub mod schema {
     }
 }
 /// Describes the format of the data within its storage location.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StorageFormat {
-    /// Output only. The data format associated with the stored data, which represents
-    /// content type values. The value is inferred from mime type.
+    /// Output only. The data format associated with the stored data, which
+    /// represents content type values. The value is inferred from mime type.
     #[prost(enumeration = "storage_format::Format", tag = "1")]
     pub format: i32,
     /// Optional. The compression type associated with the stored data.
@@ -2837,14 +2932,15 @@ pub struct StorageFormat {
 /// Nested message and enum types in `StorageFormat`.
 pub mod storage_format {
     /// Describes CSV and similar semi-structured data formats.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CsvOptions {
-        /// Optional. The character encoding of the data. Accepts "US-ASCII", "UTF-8", and
-        /// "ISO-8859-1". Defaults to UTF-8 if unspecified.
+        /// Optional. The character encoding of the data. Accepts "US-ASCII",
+        /// "UTF-8", and "ISO-8859-1". Defaults to UTF-8 if unspecified.
         #[prost(string, tag = "1")]
         pub encoding: ::prost::alloc::string::String,
-        /// Optional. The number of rows to interpret as header rows that should be skipped
-        /// when reading data rows. Defaults to 0.
+        /// Optional. The number of rows to interpret as header rows that should be
+        /// skipped when reading data rows. Defaults to 0.
         #[prost(int32, tag = "2")]
         pub header_rows: i32,
         /// Optional. The delimiter used to separate values. Defaults to ','.
@@ -2857,10 +2953,11 @@ pub mod storage_format {
         pub quote: ::prost::alloc::string::String,
     }
     /// Describes JSON data format.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct JsonOptions {
-        /// Optional. The character encoding of the data. Accepts "US-ASCII", "UTF-8" and
-        /// "ISO-8859-1". Defaults to UTF-8 if not specified.
+        /// Optional. The character encoding of the data. Accepts "US-ASCII", "UTF-8"
+        /// and "ISO-8859-1". Defaults to UTF-8 if not specified.
         #[prost(string, tag = "1")]
         pub encoding: ::prost::alloc::string::String,
     }
@@ -2963,6 +3060,7 @@ pub mod storage_format {
         }
     }
     /// Additional format-specific options.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Options {
         /// Optional. Additional information about CSV formatted data.
@@ -3251,6 +3349,7 @@ pub mod metadata_service_client {
     }
 }
 /// A task represents a user-visible job.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Task {
     /// Output only. The relative resource name of the task, of the form:
@@ -3258,8 +3357,8 @@ pub struct Task {
     /// tasks/{task_id}.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Output only. System generated globally unique ID for the task. This ID will be
-    /// different if the task is deleted and re-created with the same name.
+    /// Output only. System generated globally unique ID for the task. This ID will
+    /// be different if the task is deleted and re-created with the same name.
     #[prost(string, tag = "2")]
     pub uid: ::prost::alloc::string::String,
     /// Output only. The time when the task was created.
@@ -3299,6 +3398,7 @@ pub struct Task {
 /// Nested message and enum types in `Task`.
 pub mod task {
     /// Configuration for the underlying infrastructure used to run workloads.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct InfrastructureSpec {
         /// Hardware config.
@@ -3314,6 +3414,7 @@ pub mod task {
     /// Nested message and enum types in `InfrastructureSpec`.
     pub mod infrastructure_spec {
         /// Batch compute resources associated with the task.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct BatchComputeResources {
             /// Optional. Total number of job executors.
@@ -3327,6 +3428,7 @@ pub mod task {
             pub max_executors_count: i32,
         }
         /// Container Image Runtime Configuration used with Batch execution.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct ContainerImageRuntime {
             /// Optional. Container image to use.
@@ -3344,12 +3446,10 @@ pub mod task {
             pub python_packages: ::prost::alloc::vec::Vec<
                 ::prost::alloc::string::String,
             >,
-            /// Optional. Override to common configuration of open source components installed on
-            /// the Dataproc cluster.
-            /// The properties to set on daemon config files.
-            /// Property keys are specified in `prefix:property` format, for example
-            /// `core:hadoop.tmp.dir`.
-            /// For more information, see [Cluster
+            /// Optional. Override to common configuration of open source components
+            /// installed on the Dataproc cluster. The properties to set on daemon
+            /// config files. Property keys are specified in `prefix:property` format,
+            /// for example `core:hadoop.tmp.dir`. For more information, see [Cluster
             /// properties](<https://cloud.google.com/dataproc/docs/concepts/cluster-properties>).
             #[prost(map = "string, string", tag = "4")]
             pub properties: ::std::collections::HashMap<
@@ -3358,6 +3458,7 @@ pub mod task {
             >,
         }
         /// Cloud VPC Network used to run the infrastructure.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct VpcNetwork {
             /// Optional. List of network tags to apply to the job.
@@ -3370,10 +3471,11 @@ pub mod task {
         /// Nested message and enum types in `VpcNetwork`.
         pub mod vpc_network {
             /// The Cloud VPC network identifier.
+            #[allow(clippy::derive_partial_eq_without_eq)]
             #[derive(Clone, PartialEq, ::prost::Oneof)]
             pub enum NetworkName {
-                /// Optional. The Cloud VPC network in which the job is run. By default, the Cloud
-                /// VPC network named Default within the project is used.
+                /// Optional. The Cloud VPC network in which the job is run. By default,
+                /// the Cloud VPC network named Default within the project is used.
                 #[prost(string, tag = "1")]
                 Network(::prost::alloc::string::String),
                 /// Optional. The Cloud VPC sub-network in which the job is run.
@@ -3382,6 +3484,7 @@ pub mod task {
             }
         }
         /// Hardware config.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Resources {
             /// Compute resources needed for a Task when using Dataproc Serverless.
@@ -3389,6 +3492,7 @@ pub mod task {
             Batch(BatchComputeResources),
         }
         /// Software config.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Runtime {
             /// Container Image Runtime Configuration.
@@ -3396,6 +3500,7 @@ pub mod task {
             ContainerImage(ContainerImageRuntime),
         }
         /// Networking config.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Network {
             /// Vpc network.
@@ -3404,6 +3509,7 @@ pub mod task {
         }
     }
     /// Task scheduling and trigger settings.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct TriggerSpec {
         /// Required. Immutable. Trigger type of the user-specified Task.
@@ -3464,21 +3570,23 @@ pub mod task {
             }
         }
         /// Trigger only applies for RECURRING tasks.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Trigger {
-            /// Optional. Cron schedule (<https://en.wikipedia.org/wiki/Cron>) for running
-            /// tasks periodically.
-            /// To explicitly set a timezone to the cron tab, apply a prefix in the
-            /// cron tab: "CRON_TZ=${IANA_TIME_ZONE}" or "TZ=${IANA_TIME_ZONE}".
-            /// The ${IANA_TIME_ZONE} may only be a valid string from IANA time zone
-            /// database. For example, "CRON_TZ=America/New_York 1 * * * *", or
-            /// "TZ=America/New_York 1 * * * *".
+            /// Optional. Cron schedule (<https://en.wikipedia.org/wiki/Cron>) for
+            /// running tasks periodically. To explicitly set a timezone to the cron
+            /// tab, apply a prefix in the cron tab: "CRON_TZ=${IANA_TIME_ZONE}" or
+            /// "TZ=${IANA_TIME_ZONE}". The ${IANA_TIME_ZONE} may only be a valid
+            /// string from IANA time zone database. For example,
+            /// `CRON_TZ=America/New_York 1 * * * *`,
+            /// or `TZ=America/New_York 1 * * * *`.
             /// This field is required for RECURRING tasks.
             #[prost(string, tag = "100")]
             Schedule(::prost::alloc::string::String),
         }
     }
     /// Execution related settings, like retry and service_account.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ExecutionSpec {
         /// Optional. The arguments to pass to the task.
@@ -3503,9 +3611,10 @@ pub mod task {
         /// used.
         #[prost(string, tag = "5")]
         pub service_account: ::prost::alloc::string::String,
-        /// Optional. The project in which jobs are run. By default, the project containing the
-        /// Lake is used. If a project is provided, the
-        /// \[ExecutionSpec.service_account][google.cloud.dataplex.v1.Task.ExecutionSpec.service_account\] must belong to this project.
+        /// Optional. The project in which jobs are run. By default, the project
+        /// containing the Lake is used. If a project is provided, the
+        /// \[ExecutionSpec.service_account][google.cloud.dataplex.v1.Task.ExecutionSpec.service_account\]
+        /// must belong to this project.
         #[prost(string, tag = "7")]
         pub project: ::prost::alloc::string::String,
         /// Optional. The maximum duration after which the job execution is expired.
@@ -3517,15 +3626,16 @@ pub mod task {
         pub kms_key: ::prost::alloc::string::String,
     }
     /// User-specified config for running a Spark task.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SparkTaskConfig {
-        /// Optional. Cloud Storage URIs of files to be placed in the working directory of each
-        /// executor.
+        /// Optional. Cloud Storage URIs of files to be placed in the working
+        /// directory of each executor.
         #[prost(string, repeated, tag = "3")]
         pub file_uris: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-        /// Optional. Cloud Storage URIs of archives to be extracted into the working directory
-        /// of each executor. Supported file types: .jar, .tar, .tar.gz, .tgz, and
-        /// .zip.
+        /// Optional. Cloud Storage URIs of archives to be extracted into the working
+        /// directory of each executor. Supported file types: .jar, .tar, .tar.gz,
+        /// .tgz, and .zip.
         #[prost(string, repeated, tag = "4")]
         pub archive_uris: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         /// Optional. Infrastructure specification for the execution.
@@ -3542,6 +3652,7 @@ pub mod task {
         /// Required. The specification of the main method to call to drive the
         /// job. Specify either the jar file that contains the main class or the
         /// main class name.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Driver {
             /// The Cloud Storage URI of the jar file that contains the main class.
@@ -3575,28 +3686,30 @@ pub mod task {
         }
     }
     /// Config for running scheduled notebooks.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct NotebookTaskConfig {
-        /// Required. Path to input notebook. This can be the Cloud Storage URI of the notebook
-        /// file or the path to a Notebook Content. The execution args are accessible
-        /// as environment variables
+        /// Required. Path to input notebook. This can be the Cloud Storage URI of
+        /// the notebook file or the path to a Notebook Content. The execution args
+        /// are accessible as environment variables
         /// (`TASK_key=value`).
         #[prost(string, tag = "4")]
         pub notebook: ::prost::alloc::string::String,
         /// Optional. Infrastructure specification for the execution.
         #[prost(message, optional, tag = "3")]
         pub infrastructure_spec: ::core::option::Option<InfrastructureSpec>,
-        /// Optional. Cloud Storage URIs of files to be placed in the working directory of each
-        /// executor.
+        /// Optional. Cloud Storage URIs of files to be placed in the working
+        /// directory of each executor.
         #[prost(string, repeated, tag = "5")]
         pub file_uris: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-        /// Optional. Cloud Storage URIs of archives to be extracted into the working directory
-        /// of each executor. Supported file types: .jar, .tar, .tar.gz, .tgz, and
-        /// .zip.
+        /// Optional. Cloud Storage URIs of archives to be extracted into the working
+        /// directory of each executor. Supported file types: .jar, .tar, .tar.gz,
+        /// .tgz, and .zip.
         #[prost(string, repeated, tag = "6")]
         pub archive_uris: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
     /// Status of the task execution (e.g. Jobs).
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ExecutionStatus {
         /// Output only. Last update time of the status.
@@ -3607,6 +3720,7 @@ pub mod task {
         pub latest_job: ::core::option::Option<super::Job>,
     }
     /// Task template specific user-specified config.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Config {
         /// Config related to running custom Spark tasks.
@@ -3618,6 +3732,7 @@ pub mod task {
     }
 }
 /// A job represents an instance of a task.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Job {
     /// Output only. The relative resource name of the job, of the form:
@@ -3643,7 +3758,8 @@ pub struct Job {
     /// Output only. The underlying service running a job.
     #[prost(enumeration = "job::Service", tag = "7")]
     pub service: i32,
-    /// Output only. The full resource name for the job run under a particular service.
+    /// Output only. The full resource name for the job run under a particular
+    /// service.
     #[prost(string, tag = "8")]
     pub service_job: ::prost::alloc::string::String,
     /// Output only. Additional information about the current state.
@@ -3729,6 +3845,7 @@ pub mod job {
     }
 }
 /// Create lake request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateLakeRequest {
     /// Required. The resource name of the lake location, of the form:
@@ -3755,6 +3872,7 @@ pub struct CreateLakeRequest {
     pub validate_only: bool,
 }
 /// Update lake request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateLakeRequest {
     /// Required. Mask of fields to update.
@@ -3770,6 +3888,7 @@ pub struct UpdateLakeRequest {
     pub validate_only: bool,
 }
 /// Delete lake request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteLakeRequest {
     /// Required. The resource name of the lake:
@@ -3778,6 +3897,7 @@ pub struct DeleteLakeRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// List lakes request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListLakesRequest {
     /// Required. The resource name of the lake location, of the form:
@@ -3785,13 +3905,13 @@ pub struct ListLakesRequest {
     /// where `location_id` refers to a GCP region.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Optional. Maximum number of Lakes to return. The service may return fewer than this
-    /// value. If unspecified, at most 10 lakes will be returned. The maximum
-    /// value is 1000; values above 1000 will be coerced to 1000.
+    /// Optional. Maximum number of Lakes to return. The service may return fewer
+    /// than this value. If unspecified, at most 10 lakes will be returned. The
+    /// maximum value is 1000; values above 1000 will be coerced to 1000.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
-    /// Optional. Page token received from a previous `ListLakes` call. Provide this to
-    /// retrieve the subsequent page. When paginating, all other parameters
+    /// Optional. Page token received from a previous `ListLakes` call. Provide
+    /// this to retrieve the subsequent page. When paginating, all other parameters
     /// provided to `ListLakes` must match the call that provided the page token.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
@@ -3803,6 +3923,7 @@ pub struct ListLakesRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// List lakes response.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListLakesResponse {
     /// Lakes under the given parent location.
@@ -3817,25 +3938,27 @@ pub struct ListLakesResponse {
     pub unreachable_locations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// List lake actions request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListLakeActionsRequest {
     /// Required. The resource name of the parent lake:
     /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Optional. Maximum number of actions to return. The service may return fewer than this
-    /// value. If unspecified, at most 10 actions will be returned. The maximum
-    /// value is 1000; values above 1000 will be coerced to 1000.
+    /// Optional. Maximum number of actions to return. The service may return fewer
+    /// than this value. If unspecified, at most 10 actions will be returned. The
+    /// maximum value is 1000; values above 1000 will be coerced to 1000.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
-    /// Optional. Page token received from a previous `ListLakeActions` call. Provide this to
-    /// retrieve the subsequent page. When paginating, all other parameters
-    /// provided to `ListLakeActions` must match the call that provided the page
-    /// token.
+    /// Optional. Page token received from a previous `ListLakeActions` call.
+    /// Provide this to retrieve the subsequent page. When paginating, all other
+    /// parameters provided to `ListLakeActions` must match the call that provided
+    /// the page token.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
 /// List actions response.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListActionsResponse {
     /// Actions under the given parent lake/zone/asset.
@@ -3847,6 +3970,7 @@ pub struct ListActionsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Get lake request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetLakeRequest {
     /// Required. The resource name of the lake:
@@ -3855,6 +3979,7 @@ pub struct GetLakeRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Create zone request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateZoneRequest {
     /// Required. The resource name of the parent lake:
@@ -3881,6 +4006,7 @@ pub struct CreateZoneRequest {
     pub validate_only: bool,
 }
 /// Update zone request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateZoneRequest {
     /// Required. Mask of fields to update.
@@ -3896,6 +4022,7 @@ pub struct UpdateZoneRequest {
     pub validate_only: bool,
 }
 /// Delete zone request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteZoneRequest {
     /// Required. The resource name of the zone:
@@ -3904,19 +4031,20 @@ pub struct DeleteZoneRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// List zones request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListZonesRequest {
     /// Required. The resource name of the parent lake:
     /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Optional. Maximum number of zones to return. The service may return fewer than this
-    /// value. If unspecified, at most 10 zones will be returned. The maximum
-    /// value is 1000; values above 1000 will be coerced to 1000.
+    /// Optional. Maximum number of zones to return. The service may return fewer
+    /// than this value. If unspecified, at most 10 zones will be returned. The
+    /// maximum value is 1000; values above 1000 will be coerced to 1000.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
-    /// Optional. Page token received from a previous `ListZones` call. Provide this to
-    /// retrieve the subsequent page. When paginating, all other parameters
+    /// Optional. Page token received from a previous `ListZones` call. Provide
+    /// this to retrieve the subsequent page. When paginating, all other parameters
     /// provided to `ListZones` must match the call that provided the page token.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
@@ -3928,6 +4056,7 @@ pub struct ListZonesRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// List zones response.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListZonesResponse {
     /// Zones under the given parent lake.
@@ -3939,25 +4068,27 @@ pub struct ListZonesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// List zone actions request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListZoneActionsRequest {
     /// Required. The resource name of the parent zone:
     /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Optional. Maximum number of actions to return. The service may return fewer than this
-    /// value. If unspecified, at most 10 actions will be returned. The maximum
-    /// value is 1000; values above 1000 will be coerced to 1000.
+    /// Optional. Maximum number of actions to return. The service may return fewer
+    /// than this value. If unspecified, at most 10 actions will be returned. The
+    /// maximum value is 1000; values above 1000 will be coerced to 1000.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
-    /// Optional. Page token received from a previous `ListZoneActions` call. Provide this to
-    /// retrieve the subsequent page. When paginating, all other parameters
-    /// provided to `ListZoneActions` must match the call that provided the page
-    /// token.
+    /// Optional. Page token received from a previous `ListZoneActions` call.
+    /// Provide this to retrieve the subsequent page. When paginating, all other
+    /// parameters provided to `ListZoneActions` must match the call that provided
+    /// the page token.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
 /// Get zone request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetZoneRequest {
     /// Required. The resource name of the zone:
@@ -3966,6 +4097,7 @@ pub struct GetZoneRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Create asset request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateAssetRequest {
     /// Required. The resource name of the parent zone:
@@ -3991,6 +4123,7 @@ pub struct CreateAssetRequest {
     pub validate_only: bool,
 }
 /// Update asset request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateAssetRequest {
     /// Required. Mask of fields to update.
@@ -4006,6 +4139,7 @@ pub struct UpdateAssetRequest {
     pub validate_only: bool,
 }
 /// Delete asset request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteAssetRequest {
     /// Required. The resource name of the asset:
@@ -4014,19 +4148,20 @@ pub struct DeleteAssetRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// List assets request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAssetsRequest {
     /// Required. The resource name of the parent zone:
     /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Optional. Maximum number of asset to return. The service may return fewer than
-    /// this value. If unspecified, at most 10 assets will be returned. The
+    /// Optional. Maximum number of asset to return. The service may return fewer
+    /// than this value. If unspecified, at most 10 assets will be returned. The
     /// maximum value is 1000; values above 1000 will be coerced to 1000.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
-    /// Optional. Page token received from a previous `ListAssets` call. Provide this to
-    /// retrieve the subsequent page. When paginating, all other parameters
+    /// Optional. Page token received from a previous `ListAssets` call. Provide
+    /// this to retrieve the subsequent page. When paginating, all other parameters
     /// provided to `ListAssets` must match the call that provided the page
     /// token.
     #[prost(string, tag = "3")]
@@ -4039,6 +4174,7 @@ pub struct ListAssetsRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// List assets response.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAssetsResponse {
     /// Asset under the given parent zone.
@@ -4050,25 +4186,27 @@ pub struct ListAssetsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// List asset actions request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAssetActionsRequest {
     /// Required. The resource name of the parent asset:
     /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}/assets/{asset_id}`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Optional. Maximum number of actions to return. The service may return fewer than this
-    /// value. If unspecified, at most 10 actions will be returned. The maximum
-    /// value is 1000; values above 1000 will be coerced to 1000.
+    /// Optional. Maximum number of actions to return. The service may return fewer
+    /// than this value. If unspecified, at most 10 actions will be returned. The
+    /// maximum value is 1000; values above 1000 will be coerced to 1000.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
-    /// Optional. Page token received from a previous `ListAssetActions` call. Provide this
-    /// to retrieve the subsequent page. When paginating, all other parameters
-    /// provided to `ListAssetActions` must match the call that provided the page
-    /// token.
+    /// Optional. Page token received from a previous `ListAssetActions` call.
+    /// Provide this to retrieve the subsequent page. When paginating, all other
+    /// parameters provided to `ListAssetActions` must match the call that provided
+    /// the page token.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
 /// Get asset request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAssetRequest {
     /// Required. The resource name of the asset:
@@ -4077,6 +4215,7 @@ pub struct GetAssetRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Represents the metadata of a long-running operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationMetadata {
     /// Output only. The time the operation was created.
@@ -4096,8 +4235,9 @@ pub struct OperationMetadata {
     pub status_message: ::prost::alloc::string::String,
     /// Output only. Identifies whether the user has requested cancellation
     /// of the operation. Operations that have successfully been cancelled
-    /// have \[Operation.error][\] value with a \[google.rpc.Status.code][google.rpc.Status.code\] of 1,
-    /// corresponding to `Code.CANCELLED`.
+    /// have \[Operation.error][\] value with a
+    /// \[google.rpc.Status.code][google.rpc.Status.code\] of 1, corresponding to
+    /// `Code.CANCELLED`.
     #[prost(bool, tag = "6")]
     pub requested_cancellation: bool,
     /// Output only. API version used to start the operation.
@@ -4105,6 +4245,7 @@ pub struct OperationMetadata {
     pub api_version: ::prost::alloc::string::String,
 }
 /// Create task request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateTaskRequest {
     /// Required. The resource name of the parent lake:
@@ -4123,6 +4264,7 @@ pub struct CreateTaskRequest {
     pub validate_only: bool,
 }
 /// Update task request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateTaskRequest {
     /// Required. Mask of fields to update.
@@ -4138,6 +4280,7 @@ pub struct UpdateTaskRequest {
     pub validate_only: bool,
 }
 /// Delete task request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteTaskRequest {
     /// Required. The resource name of the task:
@@ -4146,19 +4289,20 @@ pub struct DeleteTaskRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// List tasks request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTasksRequest {
     /// Required. The resource name of the parent lake:
     /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Optional. Maximum number of tasks to return. The service may return fewer than this
-    /// value. If unspecified, at most 10 tasks will be returned. The maximum
-    /// value is 1000; values above 1000 will be coerced to 1000.
+    /// Optional. Maximum number of tasks to return. The service may return fewer
+    /// than this value. If unspecified, at most 10 tasks will be returned. The
+    /// maximum value is 1000; values above 1000 will be coerced to 1000.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
-    /// Optional. Page token received from a previous `ListZones` call. Provide this to
-    /// retrieve the subsequent page. When paginating, all other parameters
+    /// Optional. Page token received from a previous `ListZones` call. Provide
+    /// this to retrieve the subsequent page. When paginating, all other parameters
     /// provided to `ListZones` must match the call that provided the page token.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
@@ -4170,6 +4314,7 @@ pub struct ListTasksRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// List tasks response.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTasksResponse {
     /// Tasks under the given parent lake.
@@ -4184,6 +4329,7 @@ pub struct ListTasksResponse {
     pub unreachable_locations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Get task request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetTaskRequest {
     /// Required. The resource name of the task:
@@ -4192,6 +4338,7 @@ pub struct GetTaskRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Get job request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetJobRequest {
     /// Required. The resource name of the job:
@@ -4200,25 +4347,27 @@ pub struct GetJobRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// List jobs request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListJobsRequest {
     /// Required. The resource name of the parent environment:
     /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/tasks/{task_id}`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Optional. Maximum number of jobs to return. The service may return fewer than
-    /// this value. If unspecified, at most 10 jobs will be returned. The
+    /// Optional. Maximum number of jobs to return. The service may return fewer
+    /// than this value. If unspecified, at most 10 jobs will be returned. The
     /// maximum value is 1000; values above 1000 will be coerced to 1000.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
-    /// Optional. Page token received from a previous `ListJobs` call. Provide this to
-    /// retrieve the subsequent page. When paginating, all other parameters
+    /// Optional. Page token received from a previous `ListJobs` call. Provide this
+    /// to retrieve the subsequent page. When paginating, all other parameters
     /// provided to `ListJobs` must match the call that provided the page
     /// token.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
 /// List jobs response.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListJobsResponse {
     /// Jobs under a given task.
@@ -4230,6 +4379,7 @@ pub struct ListJobsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Cancel task jobs.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CancelJobRequest {
     /// Required. The resource name of the job:
@@ -4238,6 +4388,7 @@ pub struct CancelJobRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Create environment request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateEnvironmentRequest {
     /// Required. The resource name of the parent lake:
@@ -4261,6 +4412,7 @@ pub struct CreateEnvironmentRequest {
     pub validate_only: bool,
 }
 /// Update environment request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateEnvironmentRequest {
     /// Required. Mask of fields to update.
@@ -4276,6 +4428,7 @@ pub struct UpdateEnvironmentRequest {
     pub validate_only: bool,
 }
 /// Delete environment request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteEnvironmentRequest {
     /// Required. The resource name of the environment:
@@ -4284,21 +4437,23 @@ pub struct DeleteEnvironmentRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// List environments request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEnvironmentsRequest {
     /// Required. The resource name of the parent lake:
     /// `projects/{project_id}/locations/{location_id}/lakes/{lake_id}`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Optional. Maximum number of environments to return. The service may return fewer than
-    /// this value. If unspecified, at most 10 environments will be returned. The
-    /// maximum value is 1000; values above 1000 will be coerced to 1000.
+    /// Optional. Maximum number of environments to return. The service may return
+    /// fewer than this value. If unspecified, at most 10 environments will be
+    /// returned. The maximum value is 1000; values above 1000 will be coerced to
+    /// 1000.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
-    /// Optional. Page token received from a previous `ListEnvironments` call. Provide this
-    /// to retrieve the subsequent page. When paginating, all other parameters
-    /// provided to `ListEnvironments` must match the call that provided the page
-    /// token.
+    /// Optional. Page token received from a previous `ListEnvironments` call.
+    /// Provide this to retrieve the subsequent page. When paginating, all other
+    /// parameters provided to `ListEnvironments` must match the call that provided
+    /// the page token.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
     /// Optional. Filter request.
@@ -4309,6 +4464,7 @@ pub struct ListEnvironmentsRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// List environments response.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEnvironmentsResponse {
     /// Environments under the given parent lake.
@@ -4320,6 +4476,7 @@ pub struct ListEnvironmentsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Get environment request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetEnvironmentRequest {
     /// Required. The resource name of the environment:
@@ -4328,36 +4485,38 @@ pub struct GetEnvironmentRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// List sessions request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSessionsRequest {
     /// Required. The resource name of the parent environment:
     /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/environment/{environment_id}`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Optional. Maximum number of sessions to return. The service may return fewer than
-    /// this value. If unspecified, at most 10 sessions will be returned. The
-    /// maximum value is 1000; values above 1000 will be coerced to 1000.
+    /// Optional. Maximum number of sessions to return. The service may return
+    /// fewer than this value. If unspecified, at most 10 sessions will be
+    /// returned. The maximum value is 1000; values above 1000 will be coerced to
+    /// 1000.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
-    /// Optional. Page token received from a previous `ListSessions` call. Provide this to
-    /// retrieve the subsequent page. When paginating, all other parameters
+    /// Optional. Page token received from a previous `ListSessions` call. Provide
+    /// this to retrieve the subsequent page. When paginating, all other parameters
     /// provided to `ListSessions` must match the call that provided the page
     /// token.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
-    /// Optional. Filter request. The following `mode` filter is supported to return only the
-    /// sessions belonging to the requester when the mode is USER and return
-    /// sessions of all the users when the mode is ADMIN. When no filter is sent
-    /// default to USER mode.
-    /// NOTE: When the mode is ADMIN, the requester should have
-    /// `dataplex.environments.listAllSessions` permission to list all sessions,
-    /// in absence of the permission, the request fails.
+    /// Optional. Filter request. The following `mode` filter is supported to
+    /// return only the sessions belonging to the requester when the mode is USER
+    /// and return sessions of all the users when the mode is ADMIN. When no filter
+    /// is sent default to USER mode. NOTE: When the mode is ADMIN, the requester
+    /// should have `dataplex.environments.listAllSessions` permission to list all
+    /// sessions, in absence of the permission, the request fails.
     ///
     /// mode = ADMIN | USER
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
 }
 /// List sessions response.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSessionsResponse {
     /// Sessions under a given environment.

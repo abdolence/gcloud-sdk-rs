@@ -1,4 +1,5 @@
 /// Pull target.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PullTarget {}
 /// The pull message contains data that can be used by the caller of
@@ -6,6 +7,7 @@ pub struct PullTarget {}
 ///
 /// This proto can only be used for tasks in a queue which has
 /// \[pull_target][google.cloud.tasks.v2beta2.Queue.pull_target\] set.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PullMessage {
     /// A data payload consumed by the worker to execute the task.
@@ -46,6 +48,7 @@ pub struct PullMessage {
 /// and the following scope:
 ///
 /// `<https://www.googleapis.com/auth/cloud-platform`>
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AppEngineHttpTarget {
     /// Overrides for the
@@ -121,6 +124,7 @@ pub struct AppEngineHttpTarget {
 /// the queue's dispatches. Unlike other types of task targets, a `429` (Too Many
 /// Requests) response from an app handler does not cause traffic congestion
 /// control to throttle the queue.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AppEngineHttpRequest {
     /// The HTTP method to use for the request. The default is POST.
@@ -219,6 +223,7 @@ pub struct AppEngineHttpRequest {
 /// routing](<https://cloud.google.com/appengine/docs/standard/python/how-requests-are-routed>),
 /// and [App Engine Flex request
 /// routing](<https://cloud.google.com/appengine/docs/flexible/python/how-requests-are-routed>).
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AppEngineRouting {
     /// App service.
@@ -372,6 +377,7 @@ impl HttpMethod {
 /// A queue is a container of related tasks. Queues are configured to manage
 /// how those tasks are dispatched. Configurable properties include rate limits,
 /// retry options, target types, and others.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Queue {
     /// Caller-specified and required in \[CreateQueue][google.cloud.tasks.v2beta2.CloudTasks.CreateQueue\],
@@ -559,6 +565,7 @@ pub mod queue {
     /// The queue's target.
     ///
     /// The target applies to all tasks in the queue.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum TargetType {
         /// App Engine HTTP target.
@@ -580,6 +587,7 @@ pub mod queue {
 ///
 /// Note: The debugging command, \[RunTask][google.cloud.tasks.v2beta2.CloudTasks.RunTask\], will run a task
 /// even if the queue has reached its \[RateLimits][google.cloud.tasks.v2beta2.RateLimits\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RateLimits {
     /// The maximum rate at which tasks are dispatched from this queue.
@@ -659,6 +667,7 @@ pub struct RateLimits {
 /// Retry config.
 ///
 /// These settings determine how a failed task attempt is retried.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RetryConfig {
     /// If positive, `max_retry_duration` specifies the time limit for
@@ -776,6 +785,7 @@ pub mod retry_config {
     /// This field has the same meaning as
     /// [task_retry_limit in
     /// queue.yaml/xml](<https://cloud.google.com/appengine/docs/standard/python/config/queueref#retry_parameters>).
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum NumAttempts {
         /// The maximum number of attempts for a task.
@@ -791,6 +801,7 @@ pub mod retry_config {
     }
 }
 /// Statistics for a queue.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueueStats {
     /// Output only. An estimation of the number of tasks in the queue, that is, the tasks in
@@ -820,6 +831,7 @@ pub struct QueueStats {
     pub effective_execution_rate: f64,
 }
 /// A unit of scheduled work.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Task {
     /// Optionally caller-specified in \[CreateTask][google.cloud.tasks.v2beta2.CloudTasks.CreateTask\].
@@ -933,6 +945,7 @@ pub mod task {
     ///
     /// The task's payload is used by the task's target to process the task.
     /// A payload is valid only if it is compatible with the queue's target.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum PayloadType {
         /// App Engine HTTP request that is sent to the task's target. Can
@@ -952,6 +965,7 @@ pub mod task {
     }
 }
 /// Status of the task.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TaskStatus {
     /// Output only. The number of attempts dispatched.
@@ -980,6 +994,7 @@ pub struct TaskStatus {
     pub last_attempt_status: ::core::option::Option<AttemptStatus>,
 }
 /// The status of a task attempt.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AttemptStatus {
     /// Output only. The time that this attempt was scheduled.
@@ -1005,6 +1020,7 @@ pub struct AttemptStatus {
     pub response_status: ::core::option::Option<super::super::super::rpc::Status>,
 }
 /// Request message for \[ListQueues][google.cloud.tasks.v2beta2.CloudTasks.ListQueues\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListQueuesRequest {
     /// Required. The location name.
@@ -1051,6 +1067,7 @@ pub struct ListQueuesRequest {
     pub read_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Response message for \[ListQueues][google.cloud.tasks.v2beta2.CloudTasks.ListQueues\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListQueuesResponse {
     /// The list of queues.
@@ -1069,6 +1086,7 @@ pub struct ListQueuesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for \[GetQueue][google.cloud.tasks.v2beta2.CloudTasks.GetQueue\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetQueueRequest {
     /// Required. The resource name of the queue. For example:
@@ -1083,6 +1101,7 @@ pub struct GetQueueRequest {
     pub read_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for \[CreateQueue][google.cloud.tasks.v2beta2.CloudTasks.CreateQueue\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateQueueRequest {
     /// Required. The location name in which the queue will be created.
@@ -1100,6 +1119,7 @@ pub struct CreateQueueRequest {
     pub queue: ::core::option::Option<Queue>,
 }
 /// Request message for \[UpdateQueue][google.cloud.tasks.v2beta2.CloudTasks.UpdateQueue\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateQueueRequest {
     /// Required. The queue to create or update.
@@ -1118,6 +1138,7 @@ pub struct UpdateQueueRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for \[DeleteQueue][google.cloud.tasks.v2beta2.CloudTasks.DeleteQueue\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteQueueRequest {
     /// Required. The queue name. For example:
@@ -1126,6 +1147,7 @@ pub struct DeleteQueueRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for \[PurgeQueue][google.cloud.tasks.v2beta2.CloudTasks.PurgeQueue\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PurgeQueueRequest {
     /// Required. The queue name. For example:
@@ -1134,6 +1156,7 @@ pub struct PurgeQueueRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for \[PauseQueue][google.cloud.tasks.v2beta2.CloudTasks.PauseQueue\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PauseQueueRequest {
     /// Required. The queue name. For example:
@@ -1142,6 +1165,7 @@ pub struct PauseQueueRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for \[ResumeQueue][google.cloud.tasks.v2beta2.CloudTasks.ResumeQueue\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResumeQueueRequest {
     /// Required. The queue name. For example:
@@ -1150,6 +1174,7 @@ pub struct ResumeQueueRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for listing tasks using \[ListTasks][google.cloud.tasks.v2beta2.CloudTasks.ListTasks\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTasksRequest {
     /// Required. The queue name. For example:
@@ -1193,6 +1218,7 @@ pub struct ListTasksRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for listing tasks using \[ListTasks][google.cloud.tasks.v2beta2.CloudTasks.ListTasks\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTasksResponse {
     /// The list of tasks.
@@ -1209,6 +1235,7 @@ pub struct ListTasksResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for getting a task using \[GetTask][google.cloud.tasks.v2beta2.CloudTasks.GetTask\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetTaskRequest {
     /// Required. The task name. For example:
@@ -1231,6 +1258,7 @@ pub struct GetTaskRequest {
     pub response_view: i32,
 }
 /// Request message for \[CreateTask][google.cloud.tasks.v2beta2.CloudTasks.CreateTask\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateTaskRequest {
     /// Required. The queue name. For example:
@@ -1291,6 +1319,7 @@ pub struct CreateTaskRequest {
 }
 /// Request message for deleting a task using
 /// \[DeleteTask][google.cloud.tasks.v2beta2.CloudTasks.DeleteTask\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteTaskRequest {
     /// Required. The task name. For example:
@@ -1299,6 +1328,7 @@ pub struct DeleteTaskRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for leasing tasks using \[LeaseTasks][google.cloud.tasks.v2beta2.CloudTasks.LeaseTasks\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LeaseTasksRequest {
     /// Required. The queue name. For example:
@@ -1385,6 +1415,7 @@ pub struct LeaseTasksRequest {
     pub filter: ::prost::alloc::string::String,
 }
 /// Response message for leasing tasks using \[LeaseTasks][google.cloud.tasks.v2beta2.CloudTasks.LeaseTasks\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LeaseTasksResponse {
     /// The leased tasks.
@@ -1393,6 +1424,7 @@ pub struct LeaseTasksResponse {
 }
 /// Request message for acknowledging a task using
 /// \[AcknowledgeTask][google.cloud.tasks.v2beta2.CloudTasks.AcknowledgeTask\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AcknowledgeTaskRequest {
     /// Required. The task name. For example:
@@ -1409,6 +1441,7 @@ pub struct AcknowledgeTaskRequest {
 }
 /// Request message for renewing a lease using
 /// \[RenewLease][google.cloud.tasks.v2beta2.CloudTasks.RenewLease\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RenewLeaseRequest {
     /// Required. The task name. For example:
@@ -1446,6 +1479,7 @@ pub struct RenewLeaseRequest {
 }
 /// Request message for canceling a lease using
 /// \[CancelLease][google.cloud.tasks.v2beta2.CloudTasks.CancelLease\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CancelLeaseRequest {
     /// Required. The task name. For example:
@@ -1476,6 +1510,7 @@ pub struct CancelLeaseRequest {
 }
 /// Request message for forcing a task to run now using
 /// \[RunTask][google.cloud.tasks.v2beta2.CloudTasks.RunTask\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RunTaskRequest {
     /// Required. The task name. For example:

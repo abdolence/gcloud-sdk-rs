@@ -1,4 +1,5 @@
 /// The representation of a key managed by the API Keys API.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Key {
     /// Output only. The resource name of the key.
@@ -53,6 +54,7 @@ pub struct Key {
     pub etag: ::prost::alloc::string::String,
 }
 /// Describes the restrictions on the key.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Restrictions {
     /// A restriction for a specific service and optionally one or
@@ -72,6 +74,7 @@ pub mod restrictions {
     /// The websites, IP addresses, Android apps, or iOS apps (the clients) that
     /// are allowed to use the key. You can specify only one type of client
     /// restrictions per key.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ClientRestrictions {
         /// The HTTP referrers (websites) that are allowed to use the key.
@@ -89,6 +92,7 @@ pub mod restrictions {
     }
 }
 /// The HTTP referrers (websites) that are allowed to use the key.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BrowserKeyRestrictions {
     /// A list of regular expressions for the referrer URLs that are allowed
@@ -97,6 +101,7 @@ pub struct BrowserKeyRestrictions {
     pub allowed_referrers: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The IP addresses of callers that are allowed to use the key.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ServerKeyRestrictions {
     /// A list of the caller IP addresses that are allowed to make API calls
@@ -105,6 +110,7 @@ pub struct ServerKeyRestrictions {
     pub allowed_ips: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The Android apps that are allowed to use the key.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AndroidKeyRestrictions {
     /// A list of Android applications that are allowed to make API calls with
@@ -113,6 +119,7 @@ pub struct AndroidKeyRestrictions {
     pub allowed_applications: ::prost::alloc::vec::Vec<AndroidApplication>,
 }
 /// Identifier of an Android application for key use.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AndroidApplication {
     /// The SHA1 fingerprint of the application. For example, both sha1 formats are
@@ -126,6 +133,7 @@ pub struct AndroidApplication {
     pub package_name: ::prost::alloc::string::String,
 }
 /// The iOS apps that are allowed to use the key.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IosKeyRestrictions {
     /// A list of bundle IDs that are allowed when making API calls with this key.
@@ -134,6 +142,7 @@ pub struct IosKeyRestrictions {
 }
 /// A restriction for a specific service and optionally one or multiple
 /// specific methods. Both fields are case insensitive.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ApiTarget {
     /// The service for this restriction. It should be the canonical
@@ -154,6 +163,7 @@ pub struct ApiTarget {
     pub methods: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for `CreateKey` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateKeyRequest {
     /// Required. The project in which the API key is created.
@@ -177,6 +187,7 @@ pub struct CreateKeyRequest {
     pub key_id: ::prost::alloc::string::String,
 }
 /// Request message for `ListKeys` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListKeysRequest {
     /// Required. Lists all API keys associated with this project.
@@ -194,6 +205,7 @@ pub struct ListKeysRequest {
     pub show_deleted: bool,
 }
 /// Response message for `ListKeys` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListKeysResponse {
     /// A list of API keys.
@@ -204,6 +216,7 @@ pub struct ListKeysResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for `GetKey` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetKeyRequest {
     /// Required. The resource name of the API key to get.
@@ -211,6 +224,7 @@ pub struct GetKeyRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for `GetKeyString` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetKeyStringRequest {
     /// Required. The resource name of the API key to be retrieved.
@@ -218,6 +232,7 @@ pub struct GetKeyStringRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Response message for `GetKeyString` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetKeyStringResponse {
     /// An encrypted and signed value of the key.
@@ -225,6 +240,7 @@ pub struct GetKeyStringResponse {
     pub key_string: ::prost::alloc::string::String,
 }
 /// Request message for `UpdateKey` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateKeyRequest {
     /// Required. Set the `name` field to the resource name of the API key to be
@@ -243,6 +259,7 @@ pub struct UpdateKeyRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for `DeleteKey` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteKeyRequest {
     /// Required. The resource name of the API key to be deleted.
@@ -254,6 +271,7 @@ pub struct DeleteKeyRequest {
     pub etag: ::prost::alloc::string::String,
 }
 /// Request message for `UndeleteKey` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UndeleteKeyRequest {
     /// Required. The resource name of the API key to be undeleted.
@@ -261,6 +279,7 @@ pub struct UndeleteKeyRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for `LookupKey` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LookupKeyRequest {
     /// Required. Finds the project that owns the key string value.
@@ -268,6 +287,7 @@ pub struct LookupKeyRequest {
     pub key_string: ::prost::alloc::string::String,
 }
 /// Response message for `LookupKey` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LookupKeyResponse {
     /// The project that owns the key with the value specified in the request.

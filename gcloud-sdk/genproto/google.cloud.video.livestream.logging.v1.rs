@@ -1,4 +1,5 @@
 /// Logs of activities related to the Channels.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ChannelActivity {
     /// Message is for more details of the log and instructions to users.
@@ -11,6 +12,7 @@ pub struct ChannelActivity {
 /// Nested message and enum types in `ChannelActivity`.
 pub mod channel_activity {
     /// Different types of the logs.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ActivityType {
         /// The channel streaming state changes.
@@ -31,6 +33,7 @@ pub mod channel_activity {
     }
 }
 /// StreamingStateChange records when the channel streaming state changes.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StreamingStateChange {
     /// New streaming state of the channel.
@@ -41,6 +44,7 @@ pub struct StreamingStateChange {
     pub previous_state: i32,
 }
 /// StreamingError records when an error happens with the video pipeline.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StreamingError {
     /// A description of the reason for the streaming error.
@@ -48,6 +52,7 @@ pub struct StreamingError {
     pub error: ::core::option::Option<super::super::super::super::super::rpc::Status>,
 }
 /// InputAccept records when the channel has accepted an input stream.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InputAccept {
     /// ID of the input stream.
@@ -61,6 +66,7 @@ pub struct InputAccept {
     pub input_stream_property: ::core::option::Option<InputStreamProperty>,
 }
 /// InputError records when an error happens with the input stream.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InputError {
     /// ID of the input stream.
@@ -78,6 +84,7 @@ pub struct InputError {
     pub error: ::core::option::Option<super::super::super::super::super::rpc::Status>,
 }
 /// Properties of the input stream.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InputStreamProperty {
     /// Properties of the video streams.
@@ -88,6 +95,7 @@ pub struct InputStreamProperty {
     pub audio_streams: ::prost::alloc::vec::Vec<AudioStream>,
 }
 /// Properties of the video stream.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VideoStream {
     /// Index of this video stream.
@@ -98,6 +106,7 @@ pub struct VideoStream {
     pub video_format: ::core::option::Option<VideoFormat>,
 }
 /// Properties of the video format.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VideoFormat {
     /// Video codec used in this video stream.
@@ -114,6 +123,7 @@ pub struct VideoFormat {
     pub frame_rate: f64,
 }
 /// Properties of the audio stream.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AudioStream {
     /// Index of this audio stream.
@@ -124,6 +134,7 @@ pub struct AudioStream {
     pub audio_format: ::core::option::Option<AudioFormat>,
 }
 /// Properties of the audio format.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AudioFormat {
     /// Audio codec used in this audio stream.
@@ -137,6 +148,7 @@ pub struct AudioFormat {
     pub channel_layout: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// InputDisconnect records when an input stream disconnects.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InputDisconnect {
     /// ID of the input stream.

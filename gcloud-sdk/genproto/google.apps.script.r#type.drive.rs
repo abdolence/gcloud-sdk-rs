@@ -1,4 +1,5 @@
 /// Drive add-on manifest.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DriveAddOnManifest {
     /// If present, this overrides the configuration from
@@ -12,6 +13,7 @@ pub struct DriveAddOnManifest {
 }
 /// A generic extension point with common features, e.g. something that simply
 /// needs a corresponding run function to work.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DriveExtensionPoint {
     /// Required. The endpoint to execute when this extension point is

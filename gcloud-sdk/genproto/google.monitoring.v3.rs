@@ -1,4 +1,5 @@
 /// A single strongly-typed value.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TypedValue {
     /// The typed value field.
@@ -8,6 +9,7 @@ pub struct TypedValue {
 /// Nested message and enum types in `TypedValue`.
 pub mod typed_value {
     /// The typed value field.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Value {
         /// A Boolean value: `true` or `false`.
@@ -57,6 +59,7 @@ pub mod typed_value {
 ///    start time of a new interval is the same as the end time of the previous
 ///    interval, then data written at the new start time could overwrite data
 ///    written at the previous end time.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TimeInterval {
     /// Required. The end of the time interval.
@@ -94,6 +97,7 @@ pub struct TimeInterval {
 /// individual time series data is still available for later drilldown. For more
 /// details, see [Filtering and
 /// aggregation](<https://cloud.google.com/monitoring/api/v3/aggregation>).
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Aggregation {
     /// The `alignment_period` specifies a time interval, in seconds, that is used
@@ -537,6 +541,7 @@ impl ServiceTier {
     }
 }
 /// Describes a change made to a configuration.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MutationRecord {
     /// When the change occurred.
@@ -550,6 +555,7 @@ pub struct MutationRecord {
 /// considered to be "unhealthy" and the ways to notify people or services about
 /// this state. For an overview of alert policies, see
 /// [Introduction to Alerting](<https://cloud.google.com/monitoring/alerts/>).
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AlertPolicy {
     /// Required if the policy exists. The resource name for this policy. The
@@ -642,6 +648,7 @@ pub struct AlertPolicy {
 pub mod alert_policy {
     /// A content string and a MIME type that describes the content string's
     /// format.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Documentation {
         /// The text of the documentation, interpreted according to `mime_type`.
@@ -660,6 +667,7 @@ pub mod alert_policy {
     /// A condition is a true/false test that determines when an alerting policy
     /// should open an incident. If a condition evaluates to true, it signifies
     /// that something is wrong.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Condition {
         /// Required if the condition exists. The unique resource name for this
@@ -702,6 +710,7 @@ pub mod alert_policy {
     pub mod condition {
         /// Specifies how many time series must fail a predicate to trigger a
         /// condition. If not specified, then a `{count: 1}` trigger is used.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Trigger {
             /// A type of trigger.
@@ -711,6 +720,7 @@ pub mod alert_policy {
         /// Nested message and enum types in `Trigger`.
         pub mod trigger {
             /// A type of trigger.
+            #[allow(clippy::derive_partial_eq_without_eq)]
             #[derive(Clone, PartialEq, ::prost::Oneof)]
             pub enum Type {
                 /// The absolute number of time series that must fail
@@ -725,6 +735,7 @@ pub mod alert_policy {
         }
         /// A condition type that compares a collection of time series
         /// against a threshold.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct MetricThreshold {
             /// Required. A \[filter\](<https://cloud.google.com/monitoring/api/v3/filters>) that
@@ -818,6 +829,7 @@ pub mod alert_policy {
         /// a set of monitored resources. The predicate is considered in violation
         /// when a time series for the specified metric of a monitored
         /// resource does not include any data in the specified `duration`.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct MetricAbsence {
             /// Required. A \[filter\](<https://cloud.google.com/monitoring/api/v3/filters>) that
@@ -865,6 +877,7 @@ pub mod alert_policy {
         /// project](<https://cloud.google.com/monitoring/api/v3#project_name>)
         /// satisfies the given filter. Logs from other projects in the metrics
         /// scope are not evaluated.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct LogMatch {
             /// Required. A logs-based filter. See [Advanced Logs
@@ -891,6 +904,7 @@ pub mod alert_policy {
         }
         /// A condition type that allows alert policies to be defined using
         /// [Monitoring Query Language](<https://cloud.google.com/monitoring/mql>).
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct MonitoringQueryLanguageCondition {
             /// [Monitoring Query Language](<https://cloud.google.com/monitoring/mql>)
@@ -967,6 +981,7 @@ pub mod alert_policy {
             }
         }
         /// Only one of the following condition types will be specified.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Condition {
             /// A condition that compares a time series against a threshold.
@@ -988,6 +1003,7 @@ pub mod alert_policy {
     }
     /// Control over how the notification channels in `notification_channels`
     /// are notified when this alert fires.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AlertStrategy {
         /// Required for alert policies with a `LogMatch` condition.
@@ -1006,6 +1022,7 @@ pub mod alert_policy {
     pub mod alert_strategy {
         /// Control over the rate of notifications sent to this alert policy's
         /// notification channels.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct NotificationRateLimit {
             /// Not more than one notification per `period`.
@@ -1060,6 +1077,7 @@ pub mod alert_policy {
     }
 }
 /// The protocol for the `CreateAlertPolicy` request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateAlertPolicyRequest {
     /// Required. The \[project\](<https://cloud.google.com/monitoring/api/v3#project_name>) in
@@ -1083,6 +1101,7 @@ pub struct CreateAlertPolicyRequest {
     pub alert_policy: ::core::option::Option<AlertPolicy>,
 }
 /// The protocol for the `GetAlertPolicy` request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAlertPolicyRequest {
     /// Required. The alerting policy to retrieve. The format is:
@@ -1092,6 +1111,7 @@ pub struct GetAlertPolicyRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The protocol for the `ListAlertPolicies` request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAlertPoliciesRequest {
     /// Required. The \[project\](<https://cloud.google.com/monitoring/api/v3#project_name>)
@@ -1131,6 +1151,7 @@ pub struct ListAlertPoliciesRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// The protocol for the `ListAlertPolicies` response.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAlertPoliciesResponse {
     /// The returned alert policies.
@@ -1147,6 +1168,7 @@ pub struct ListAlertPoliciesResponse {
     pub total_size: i32,
 }
 /// The protocol for the `UpdateAlertPolicy` request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateAlertPolicyRequest {
     /// Optional. A list of alerting policy field names. If this field is not
@@ -1180,6 +1202,7 @@ pub struct UpdateAlertPolicyRequest {
     pub alert_policy: ::core::option::Option<AlertPolicy>,
 }
 /// The protocol for the `DeleteAlertPolicy` request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteAlertPolicyRequest {
     /// Required. The alerting policy to delete. The format is:
@@ -1389,6 +1412,7 @@ pub mod alert_policy_service_client {
 /// exemplar-to-exemplar and from distribution-to-distribution in the same
 /// stream, and there may be duplicates.  It is up to clients to resolve any
 /// ambiguities.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DroppedLabels {
     /// Map from label to its value, for all labels dropped in any aggregation.
@@ -1424,6 +1448,7 @@ pub struct DroppedLabels {
 /// The monitored resources contained in a group can change at any moment,
 /// depending on what resources exist and what filters are associated with the
 /// group and its ancestors.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Group {
     /// Output only. The name of this group. The format is:
@@ -1455,6 +1480,7 @@ pub struct Group {
     pub is_cluster: bool,
 }
 /// The `ListGroup` request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListGroupsRequest {
     /// Required. The \[project\](<https://cloud.google.com/monitoring/api/v3#project_name>)
@@ -1482,6 +1508,7 @@ pub mod list_groups_request {
     /// An optional filter consisting of a single group name.  The filters limit
     /// the groups returned based on their parent-child relationship with the
     /// specified group. If no filter is specified, all groups are returned.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Filter {
         /// A group name. The format is:
@@ -1514,6 +1541,7 @@ pub mod list_groups_request {
     }
 }
 /// The `ListGroups` response.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListGroupsResponse {
     /// The groups that match the specified filters.
@@ -1526,6 +1554,7 @@ pub struct ListGroupsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The `GetGroup` request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetGroupRequest {
     /// Required. The group to retrieve. The format is:
@@ -1535,6 +1564,7 @@ pub struct GetGroupRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The `CreateGroup` request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateGroupRequest {
     /// Required. The \[project\](<https://cloud.google.com/monitoring/api/v3#project_name>) in
@@ -1552,6 +1582,7 @@ pub struct CreateGroupRequest {
     pub validate_only: bool,
 }
 /// The `UpdateGroup` request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateGroupRequest {
     /// Required. The new definition of the group.  All fields of the existing group,
@@ -1564,6 +1595,7 @@ pub struct UpdateGroupRequest {
 }
 /// The `DeleteGroup` request. The default behavior is to be able to delete a
 /// single group without any descendants.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteGroupRequest {
     /// Required. The group to delete. The format is:
@@ -1578,6 +1610,7 @@ pub struct DeleteGroupRequest {
     pub recursive: bool,
 }
 /// The `ListGroupMembers` request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListGroupMembersRequest {
     /// Required. The group whose members are listed. The format is:
@@ -1611,6 +1644,7 @@ pub struct ListGroupMembersRequest {
     pub interval: ::core::option::Option<TimeInterval>,
 }
 /// The `ListGroupMembers` response.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListGroupMembersResponse {
     /// A set of monitored resources in the group.
@@ -1830,6 +1864,7 @@ pub mod group_service_client {
     }
 }
 /// A single data point in a time series.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Point {
     /// The time interval to which the data point applies.  For `GAUGE` metrics,
@@ -1851,6 +1886,7 @@ pub struct Point {
 /// of a metric. A time series is identified by a combination of a
 /// fully-specified monitored resource and a fully-specified metric.
 /// This type is used for both listing and creating time series.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TimeSeries {
     /// The associated metric. A fully-specified metric used to identify the time
@@ -1904,6 +1940,7 @@ pub struct TimeSeries {
     pub unit: ::prost::alloc::string::String,
 }
 /// A descriptor for the labels and points in a time series.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TimeSeriesDescriptor {
     /// Descriptors for the labels.
@@ -1918,6 +1955,7 @@ pub struct TimeSeriesDescriptor {
 /// Nested message and enum types in `TimeSeriesDescriptor`.
 pub mod time_series_descriptor {
     /// A descriptor for the value columns in a data point.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ValueDescriptor {
         /// The value key.
@@ -1945,6 +1983,7 @@ pub mod time_series_descriptor {
 }
 /// Represents the values of a time series associated with a
 /// TimeSeriesDescriptor.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TimeSeriesData {
     /// The values of the labels in the time series identifier, given in the same
@@ -1962,6 +2001,7 @@ pub mod time_series_data {
     /// A point's value columns and time interval. Each point has one or more
     /// point values corresponding to the entries in `point_descriptors` field in
     /// the TimeSeriesDescriptor associated with this object.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct PointData {
         /// The values that make up the point.
@@ -1973,6 +2013,7 @@ pub mod time_series_data {
     }
 }
 /// A label value.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LabelValue {
     /// The label value can be a bool, int64, or string.
@@ -1982,6 +2023,7 @@ pub struct LabelValue {
 /// Nested message and enum types in `LabelValue`.
 pub mod label_value {
     /// The label value can be a bool, int64, or string.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Value {
         /// A bool label value.
@@ -1996,6 +2038,7 @@ pub mod label_value {
     }
 }
 /// An error associated with a query in the time series query language format.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryError {
     /// The location of the time series query language text that this error applies
@@ -2026,6 +2069,7 @@ pub struct QueryError {
 ///    }
 ///
 /// refers to the part of the text: "fox".
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TextLocator {
     /// The source of the text. The source may be a field in the request, in which
@@ -2061,6 +2105,7 @@ pub struct TextLocator {
 /// Nested message and enum types in `TextLocator`.
 pub mod text_locator {
     /// The position of a byte within the text.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Position {
         /// The line, starting with 1, where the byte is positioned.
@@ -2073,6 +2118,7 @@ pub mod text_locator {
     }
 }
 /// The `ListMonitoredResourceDescriptors` request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListMonitoredResourceDescriptorsRequest {
     /// Required. The \[project\](<https://cloud.google.com/monitoring/api/v3#project_name>) on
@@ -2099,6 +2145,7 @@ pub struct ListMonitoredResourceDescriptorsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// The `ListMonitoredResourceDescriptors` response.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListMonitoredResourceDescriptorsResponse {
     /// The monitored resource descriptors that are available to this project
@@ -2114,6 +2161,7 @@ pub struct ListMonitoredResourceDescriptorsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The `GetMonitoredResourceDescriptor` request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetMonitoredResourceDescriptorRequest {
     /// Required. The monitored resource descriptor to get.  The format is:
@@ -2126,6 +2174,7 @@ pub struct GetMonitoredResourceDescriptorRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The `ListMetricDescriptors` request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListMetricDescriptorsRequest {
     /// Required. The \[project\](<https://cloud.google.com/monitoring/api/v3#project_name>) on
@@ -2154,6 +2203,7 @@ pub struct ListMetricDescriptorsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// The `ListMetricDescriptors` response.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListMetricDescriptorsResponse {
     /// The metric descriptors that are available to the project
@@ -2169,6 +2219,7 @@ pub struct ListMetricDescriptorsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The `GetMetricDescriptor` request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetMetricDescriptorRequest {
     /// Required. The metric descriptor on which to execute the request. The format is:
@@ -2181,6 +2232,7 @@ pub struct GetMetricDescriptorRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The `CreateMetricDescriptor` request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateMetricDescriptorRequest {
     /// Required. The \[project\](<https://cloud.google.com/monitoring/api/v3#project_name>) on
@@ -2195,6 +2247,7 @@ pub struct CreateMetricDescriptorRequest {
     pub metric_descriptor: ::core::option::Option<super::super::api::MetricDescriptor>,
 }
 /// The `DeleteMetricDescriptor` request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteMetricDescriptorRequest {
     /// Required. The metric descriptor on which to execute the request. The format is:
@@ -2207,6 +2260,7 @@ pub struct DeleteMetricDescriptorRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The `ListTimeSeries` request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTimeSeriesRequest {
     /// Required. The \[project\](<https://cloud.google.com/monitoring/api/v3#project_name>),
@@ -2299,6 +2353,7 @@ pub mod list_time_series_request {
     }
 }
 /// The `ListTimeSeries` response.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTimeSeriesResponse {
     /// One or more time series that match the filter included in the request.
@@ -2323,6 +2378,7 @@ pub struct ListTimeSeriesResponse {
     pub unit: ::prost::alloc::string::String,
 }
 /// The `CreateTimeSeries` request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateTimeSeriesRequest {
     /// Required. The \[project\](<https://cloud.google.com/monitoring/api/v3#project_name>) on
@@ -2342,6 +2398,7 @@ pub struct CreateTimeSeriesRequest {
     pub time_series: ::prost::alloc::vec::Vec<TimeSeries>,
 }
 /// DEPRECATED. Used to hold per-time-series error status.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateTimeSeriesError {
     /// DEPRECATED. Time series ID that resulted in the `status` error.
@@ -2354,6 +2411,7 @@ pub struct CreateTimeSeriesError {
     pub status: ::core::option::Option<super::super::rpc::Status>,
 }
 /// Summary of the result of a failed request to write data to a time series.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateTimeSeriesSummary {
     /// The number of points in the request.
@@ -2369,6 +2427,7 @@ pub struct CreateTimeSeriesSummary {
 /// Nested message and enum types in `CreateTimeSeriesSummary`.
 pub mod create_time_series_summary {
     /// Detailed information about an error category.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Error {
         /// The status of the requested write operation.
@@ -2380,6 +2439,7 @@ pub mod create_time_series_summary {
     }
 }
 /// The `QueryTimeSeries` request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryTimeSeriesRequest {
     /// Required. The \[project\](<https://cloud.google.com/monitoring/api/v3#project_name>) on
@@ -2403,6 +2463,7 @@ pub struct QueryTimeSeriesRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// The `QueryTimeSeries` response.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryTimeSeriesResponse {
     /// The descriptor for the time series data.
@@ -2423,6 +2484,7 @@ pub struct QueryTimeSeriesResponse {
     pub partial_errors: ::prost::alloc::vec::Vec<super::super::rpc::Status>,
 }
 /// This is an error detail intended to be used with INVALID_ARGUMENT errors.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryErrorList {
     /// Errors in parsing the time series query language text. The number of errors
@@ -2725,6 +2787,7 @@ pub mod metric_service_client {
 /// A description of a notification channel. The descriptor includes
 /// the properties of the channel and the set of labels or fields that
 /// must be specified to configure channels of a given type.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NotificationChannelDescriptor {
     /// The full REST resource name for this descriptor. The format is:
@@ -2769,6 +2832,7 @@ pub struct NotificationChannelDescriptor {
 /// include email, SMS, and third-party messaging applications. Fields
 /// containing sensitive information like authentication tokens or
 /// contact info are only partially populated on retrieval.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NotificationChannel {
     /// The type of the notification channel. This field matches the
@@ -2902,6 +2966,7 @@ pub mod notification_channel {
     }
 }
 /// The `ListNotificationChannelDescriptors` request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNotificationChannelDescriptorsRequest {
     /// Required. The REST resource name of the parent from which to retrieve
@@ -2929,6 +2994,7 @@ pub struct ListNotificationChannelDescriptorsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// The `ListNotificationChannelDescriptors` response.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNotificationChannelDescriptorsResponse {
     /// The monitored resource descriptors supported for the specified
@@ -2943,6 +3009,7 @@ pub struct ListNotificationChannelDescriptorsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The `GetNotificationChannelDescriptor` response.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetNotificationChannelDescriptorRequest {
     /// Required. The channel type for which to execute the request. The format is:
@@ -2952,6 +3019,7 @@ pub struct GetNotificationChannelDescriptorRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The `CreateNotificationChannel` request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateNotificationChannelRequest {
     /// Required. The \[project\](<https://cloud.google.com/monitoring/api/v3#project_name>) on
@@ -2970,6 +3038,7 @@ pub struct CreateNotificationChannelRequest {
     pub notification_channel: ::core::option::Option<NotificationChannel>,
 }
 /// The `ListNotificationChannels` request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNotificationChannelsRequest {
     /// Required. The \[project\](<https://cloud.google.com/monitoring/api/v3#project_name>) on
@@ -3012,6 +3081,7 @@ pub struct ListNotificationChannelsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// The `ListNotificationChannels` response.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNotificationChannelsResponse {
     /// The notification channels defined for the specified project.
@@ -3029,6 +3099,7 @@ pub struct ListNotificationChannelsResponse {
     pub total_size: i32,
 }
 /// The `GetNotificationChannel` request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetNotificationChannelRequest {
     /// Required. The channel for which to execute the request. The format is:
@@ -3038,6 +3109,7 @@ pub struct GetNotificationChannelRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The `UpdateNotificationChannel` request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateNotificationChannelRequest {
     /// The fields to update.
@@ -3051,6 +3123,7 @@ pub struct UpdateNotificationChannelRequest {
     pub notification_channel: ::core::option::Option<NotificationChannel>,
 }
 /// The `DeleteNotificationChannel` request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteNotificationChannelRequest {
     /// Required. The channel for which to execute the request. The format is:
@@ -3066,6 +3139,7 @@ pub struct DeleteNotificationChannelRequest {
     pub force: bool,
 }
 /// The `SendNotificationChannelVerificationCode` request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SendNotificationChannelVerificationCodeRequest {
     /// Required. The notification channel to which to send a verification code.
@@ -3073,6 +3147,7 @@ pub struct SendNotificationChannelVerificationCodeRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The `GetNotificationChannelVerificationCode` request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetNotificationChannelVerificationCodeRequest {
     /// Required. The notification channel for which a verification code is to be generated
@@ -3093,6 +3168,7 @@ pub struct GetNotificationChannelVerificationCodeRequest {
     pub expire_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// The `GetNotificationChannelVerificationCode` request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetNotificationChannelVerificationCodeResponse {
     /// The verification code, which may be used to verify other channels
@@ -3108,6 +3184,7 @@ pub struct GetNotificationChannelVerificationCodeResponse {
     pub expire_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// The `VerifyNotificationChannel` request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VerifyNotificationChannelRequest {
     /// Required. The notification channel to verify.
@@ -3548,6 +3625,7 @@ pub mod query_service_client {
 /// (\[Wikipedia\](<https://en.wikipedia.org/wiki/Service-orientation>)). In
 /// Cloud Monitoring, a `Service` acts as the root resource under which
 /// operational aspects of the service are accessible.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Service {
     /// Resource name for this Service. The format is:
@@ -3580,9 +3658,11 @@ pub struct Service {
 pub mod service {
     /// Custom view of service telemetry. Currently a place-holder pending final
     /// design.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Custom {}
     /// App Engine service. Learn more at <https://cloud.google.com/appengine.>
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AppEngine {
         /// The ID of the App Engine module underlying this service. Corresponds to
@@ -3592,6 +3672,7 @@ pub mod service {
         pub module_id: ::prost::alloc::string::String,
     }
     /// Cloud Endpoints service. Learn more at <https://cloud.google.com/endpoints.>
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CloudEndpoints {
         /// The name of the Cloud Endpoints service underlying this service.
@@ -3603,6 +3684,7 @@ pub mod service {
     /// Istio service scoped to a single Kubernetes cluster. Learn more at
     /// <https://istio.io.> Clusters running OSS Istio will have their services
     /// ingested as this type.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ClusterIstio {
         /// The location of the Kubernetes cluster in which this Istio service is
@@ -3626,6 +3708,7 @@ pub mod service {
     }
     /// Istio service scoped to an Istio mesh. Anthos clusters running ASM < 1.6.8
     /// will have their services ingested as this type.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct MeshIstio {
         /// Identifier for the mesh in which this Istio service is defined.
@@ -3643,6 +3726,7 @@ pub mod service {
     }
     /// Canonical service scoped to an Istio mesh. Anthos clusters running ASM >=
     /// 1.6.8 will have their services ingested as this type.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct IstioCanonicalService {
         /// Identifier for the Istio mesh in which this canonical service is defined.
@@ -3664,6 +3748,7 @@ pub mod service {
         pub canonical_service: ::prost::alloc::string::String,
     }
     /// Configuration for how to query telemetry on a Service.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Telemetry {
         /// The full name of the resource that defines this service. Formatted as
@@ -3672,6 +3757,7 @@ pub mod service {
         pub resource_name: ::prost::alloc::string::String,
     }
     /// REQUIRED. Service-identifying atoms specifying the underlying service.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Identifier {
         /// Custom service type.
@@ -3702,6 +3788,7 @@ pub mod service {
 /// use SLIs defined in a number of different manners. Typical SLOs might include
 /// "99% of requests in each rolling week have latency below 200 milliseconds" or
 /// "99.5% of requests in each calendar month return successfully."
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ServiceLevelObjective {
     /// Resource name for this `ServiceLevelObjective`. The format is:
@@ -3780,6 +3867,7 @@ pub mod service_level_objective {
         }
     }
     /// The time period over which the objective will be evaluated.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Period {
         /// A rolling time period, semantically "in the past `<rolling_period>`".
@@ -3806,6 +3894,7 @@ pub mod service_level_objective {
 /// of concerns, a single Service-Level Indicator measures performance for only
 /// one aspect of service quality, such as fraction of successful queries or
 /// fast-enough queries.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ServiceLevelIndicator {
     /// Service level indicators can be grouped by whether the "unit" of service
@@ -3819,6 +3908,7 @@ pub mod service_level_indicator {
     /// Service level indicators can be grouped by whether the "unit" of service
     /// being measured is based on counts of good requests or on counts of good
     /// time windows
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Type {
         /// Basic SLI on a well-known service type.
@@ -3838,6 +3928,7 @@ pub mod service_level_indicator {
 /// `service_resource.labels` and `metric_labels` are used to construct a
 /// monitoring filter to filter that metric down to just the data relevant to
 /// this service.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BasicSli {
     /// OPTIONAL: The set of RPCs to which this SLI is relevant. Telemetry from
@@ -3868,9 +3959,11 @@ pub struct BasicSli {
 /// Nested message and enum types in `BasicSli`.
 pub mod basic_sli {
     /// Future parameters for the availability SLI.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AvailabilityCriteria {}
     /// Parameters for a latency threshold SLI.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct LatencyCriteria {
         /// Good service is defined to be the count of requests made to this service
@@ -3879,6 +3972,7 @@ pub mod basic_sli {
         pub threshold: ::core::option::Option<::prost_types::Duration>,
     }
     /// This SLI can be evaluated on the basis of availability or latency.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum SliCriteria {
         /// Good service is defined to be the count of requests made to this service
@@ -3892,6 +3986,7 @@ pub mod basic_sli {
     }
 }
 /// Range of numerical values within `min` and `max`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Range {
     /// Range minimum.
@@ -3903,6 +3998,7 @@ pub struct Range {
 }
 /// Service Level Indicators for which atomic units of service are counted
 /// directly.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RequestBasedSli {
     /// The means to compute a ratio of `good_service` to `total_service`.
@@ -3912,6 +4008,7 @@ pub struct RequestBasedSli {
 /// Nested message and enum types in `RequestBasedSli`.
 pub mod request_based_sli {
     /// The means to compute a ratio of `good_service` to `total_service`.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Method {
         /// `good_total_ratio` is used when the ratio of `good_service` to
@@ -3932,6 +4029,7 @@ pub mod request_based_sli {
 /// DELTA` or `MetricKind = CUMULATIVE`. The `TimeSeriesRatio` must specify
 /// exactly two of good, bad, and total, and the relationship `good_service +
 /// bad_service = total_service` will be assumed.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TimeSeriesRatio {
     /// A [monitoring filter](<https://cloud.google.com/monitoring/api/v3/filters>)
@@ -3959,6 +4057,7 @@ pub struct TimeSeriesRatio {
 /// DISTRIBUTION` and `MetricKind = DELTA` or `MetricKind = CUMULATIVE`. The
 /// computed `good_service` will be the estimated count of values in the
 /// `Distribution` that fall within the specified `min` and `max`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DistributionCut {
     /// A [monitoring filter](<https://cloud.google.com/monitoring/api/v3/filters>)
@@ -3974,6 +4073,7 @@ pub struct DistributionCut {
 /// A `WindowsBasedSli` defines `good_service` as the count of time windows for
 /// which the provided service was of good quality. Criteria for determining
 /// if service was good are embedded in the `window_criterion`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WindowsBasedSli {
     /// Duration over which window quality is evaluated. Must be an integer
@@ -3988,6 +4088,7 @@ pub struct WindowsBasedSli {
 pub mod windows_based_sli {
     /// A `PerformanceThreshold` is used when each window is good when that window
     /// has a sufficiently high `performance`.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct PerformanceThreshold {
         /// If window `performance >= threshold`, the window is counted as good.
@@ -4002,6 +4103,7 @@ pub mod windows_based_sli {
     pub mod performance_threshold {
         /// The means, either a request-based SLI or a basic SLI, by which to compute
         /// performance over a window.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Type {
             /// `RequestBasedSli` to evaluate to judge window quality.
@@ -4016,6 +4118,7 @@ pub mod windows_based_sli {
     /// single `TimeSeries` satisfies `range.min <= x <= range.max`. The provided
     /// `TimeSeries` must have `ValueType = INT64` or `ValueType = DOUBLE` and
     /// `MetricKind = GAUGE`.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct MetricRange {
         /// A [monitoring filter](<https://cloud.google.com/monitoring/api/v3/filters>)
@@ -4028,6 +4131,7 @@ pub mod windows_based_sli {
         pub range: ::core::option::Option<super::Range>,
     }
     /// The criterion to use for evaluating window goodness.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum WindowCriterion {
         /// A [monitoring filter](<https://cloud.google.com/monitoring/api/v3/filters>)
@@ -4049,6 +4153,7 @@ pub mod windows_based_sli {
     }
 }
 /// The `CreateService` request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateServiceRequest {
     /// Required. Resource \[name\](<https://cloud.google.com/monitoring/api/v3#project_name>) of
@@ -4066,6 +4171,7 @@ pub struct CreateServiceRequest {
     pub service: ::core::option::Option<Service>,
 }
 /// The `GetService` request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetServiceRequest {
     /// Required. Resource name of the `Service`. The format is:
@@ -4075,6 +4181,7 @@ pub struct GetServiceRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The `ListServices` request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListServicesRequest {
     /// Required. Resource name of the parent containing the listed services, either a
@@ -4117,6 +4224,7 @@ pub struct ListServicesRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// The `ListServices` response.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListServicesResponse {
     /// The `Service`s matching the specified filter.
@@ -4129,6 +4237,7 @@ pub struct ListServicesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The `UpdateService` request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateServiceRequest {
     /// Required. The `Service` to draw updates from.
@@ -4140,6 +4249,7 @@ pub struct UpdateServiceRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The `DeleteService` request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteServiceRequest {
     /// Required. Resource name of the `Service` to delete. The format is:
@@ -4149,6 +4259,7 @@ pub struct DeleteServiceRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The `CreateServiceLevelObjective` request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateServiceLevelObjectiveRequest {
     /// Required. Resource name of the parent `Service`. The format is:
@@ -4168,6 +4279,7 @@ pub struct CreateServiceLevelObjectiveRequest {
     pub service_level_objective: ::core::option::Option<ServiceLevelObjective>,
 }
 /// The `GetServiceLevelObjective` request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetServiceLevelObjectiveRequest {
     /// Required. Resource name of the `ServiceLevelObjective` to get. The format is:
@@ -4183,6 +4295,7 @@ pub struct GetServiceLevelObjectiveRequest {
     pub view: i32,
 }
 /// The `ListServiceLevelObjectives` request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListServiceLevelObjectivesRequest {
     /// Required. Resource name of the parent containing the listed SLOs, either a
@@ -4212,6 +4325,7 @@ pub struct ListServiceLevelObjectivesRequest {
     pub view: i32,
 }
 /// The `ListServiceLevelObjectives` response.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListServiceLevelObjectivesResponse {
     /// The `ServiceLevelObjective`s matching the specified filter.
@@ -4224,6 +4338,7 @@ pub struct ListServiceLevelObjectivesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The `UpdateServiceLevelObjective` request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateServiceLevelObjectiveRequest {
     /// Required. The `ServiceLevelObjective` to draw updates from.
@@ -4235,6 +4350,7 @@ pub struct UpdateServiceLevelObjectiveRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The `DeleteServiceLevelObjective` request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteServiceLevelObjectiveRequest {
     /// Required. Resource name of the `ServiceLevelObjective` to delete. The format is:
@@ -4530,6 +4646,7 @@ pub mod service_monitoring_service_client {
 /// It contains the name of a span with format:
 ///
 ///      projects/\[PROJECT_ID_OR_NUMBER]/traces/[TRACE_ID]/spans/[SPAN_ID\]
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SpanContext {
     /// The resource name of the span. The format is:
@@ -4546,6 +4663,7 @@ pub struct SpanContext {
 }
 /// An internal checker allows Uptime checks to run on private/internal GCP
 /// resources.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InternalChecker {
     /// A unique resource name for this InternalChecker. The format is:
@@ -4626,6 +4744,7 @@ pub mod internal_checker {
 }
 /// This message configures which resources and services to monitor for
 /// availability.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UptimeCheckConfig {
     /// A unique resource name for this Uptime check configuration. The format is:
@@ -4696,6 +4815,7 @@ pub struct UptimeCheckConfig {
 pub mod uptime_check_config {
     /// The resource submessage for group checks. It can be used instead of a
     /// monitored resource, when multiple resources are being monitored.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ResourceGroup {
         /// The group of resources being monitored. Should be only the `\[GROUP_ID\]`,
@@ -4708,6 +4828,7 @@ pub mod uptime_check_config {
         pub resource_type: i32,
     }
     /// Information involved in an HTTP/HTTPS Uptime check request.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct HttpCheck {
         /// The HTTP request method to use for the check. If set to
@@ -4788,6 +4909,7 @@ pub mod uptime_check_config {
         /// URL that requires a username and password. Currently, only
         /// [Basic HTTP authentication](<https://tools.ietf.org/html/rfc7617>) is
         /// supported in Uptime checks.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct BasicAuthentication {
             /// The username to use when authenticating with the HTTP server.
@@ -4865,6 +4987,7 @@ pub mod uptime_check_config {
         }
     }
     /// Information required for a TCP Uptime check request.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct TcpCheck {
         /// The TCP port on the server against which to run the check. Will be
@@ -4878,6 +5001,7 @@ pub mod uptime_check_config {
     /// first 4&nbsp;MB of an HTTP or HTTPS check's response (and the first
     /// 1&nbsp;MB of a TCP check's response) are examined for purposes of content
     /// matching.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ContentMatcher {
         /// String or regex content to match. Maximum 1024 bytes. An empty `content`
@@ -4946,6 +5070,7 @@ pub mod uptime_check_config {
         }
     }
     /// The resource the check is checking. Required.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Resource {
         /// The [monitored
@@ -4965,6 +5090,7 @@ pub mod uptime_check_config {
         ResourceGroup(ResourceGroup),
     }
     /// The type of Uptime check request.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum CheckRequestType {
         /// Contains information needed to make an HTTP or HTTPS check.
@@ -4977,6 +5103,7 @@ pub mod uptime_check_config {
 }
 /// Contains the region, location, and list of IP
 /// addresses where checkers in the location run from.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UptimeCheckIp {
     /// A broad region category in which the IP address is located.
@@ -5058,6 +5185,7 @@ impl GroupResourceType {
     }
 }
 /// The protocol for the `ListUptimeCheckConfigs` request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListUptimeCheckConfigsRequest {
     /// Required. The
@@ -5080,6 +5208,7 @@ pub struct ListUptimeCheckConfigsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// The protocol for the `ListUptimeCheckConfigs` response.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListUptimeCheckConfigsResponse {
     /// The returned Uptime check configurations.
@@ -5098,6 +5227,7 @@ pub struct ListUptimeCheckConfigsResponse {
     pub total_size: i32,
 }
 /// The protocol for the `GetUptimeCheckConfig` request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetUptimeCheckConfigRequest {
     /// Required. The Uptime check configuration to retrieve. The format is:
@@ -5107,6 +5237,7 @@ pub struct GetUptimeCheckConfigRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The protocol for the `CreateUptimeCheckConfig` request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateUptimeCheckConfigRequest {
     /// Required. The
@@ -5121,6 +5252,7 @@ pub struct CreateUptimeCheckConfigRequest {
     pub uptime_check_config: ::core::option::Option<UptimeCheckConfig>,
 }
 /// The protocol for the `UpdateUptimeCheckConfig` request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateUptimeCheckConfigRequest {
     /// Optional. If present, only the listed fields in the current Uptime check
@@ -5144,6 +5276,7 @@ pub struct UpdateUptimeCheckConfigRequest {
     pub uptime_check_config: ::core::option::Option<UptimeCheckConfig>,
 }
 /// The protocol for the `DeleteUptimeCheckConfig` request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteUptimeCheckConfigRequest {
     /// Required. The Uptime check configuration to delete. The format is:
@@ -5153,6 +5286,7 @@ pub struct DeleteUptimeCheckConfigRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The protocol for the `ListUptimeCheckIps` request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListUptimeCheckIpsRequest {
     /// The maximum number of results to return in a single response. The server
@@ -5170,6 +5304,7 @@ pub struct ListUptimeCheckIpsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// The protocol for the `ListUptimeCheckIps` response.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListUptimeCheckIpsResponse {
     /// The returned list of IP addresses (including region and location) that the

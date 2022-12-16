@@ -1,5 +1,6 @@
 /// The full representation of a Service that is managed by
 /// Google Service Management.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ManagedService {
     /// The name of the service. See the
@@ -12,6 +13,7 @@ pub struct ManagedService {
     pub producer_project_id: ::prost::alloc::string::String,
 }
 /// The metadata associated with a long running operation resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationMetadata {
     /// The full name of the resources that this operation is directly
@@ -31,6 +33,7 @@ pub struct OperationMetadata {
 /// Nested message and enum types in `OperationMetadata`.
 pub mod operation_metadata {
     /// Represents the status of one operation step.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Step {
         /// The short description of the step.
@@ -86,6 +89,7 @@ pub mod operation_metadata {
     }
 }
 /// Represents a diagnostic message (error or warning)
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Diagnostic {
     /// File name and line number of the error or warning.
@@ -134,6 +138,7 @@ pub mod diagnostic {
 }
 /// Represents a source file which is used to generate the service configuration
 /// defined by `google.api.Service`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConfigSource {
     /// A unique ID for a specific instance of this message, typically assigned
@@ -147,6 +152,7 @@ pub struct ConfigSource {
     pub files: ::prost::alloc::vec::Vec<ConfigFile>,
 }
 /// Generic specification of a source configuration file
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConfigFile {
     /// The file name of the configuration file (full or relative path).
@@ -215,6 +221,7 @@ pub mod config_file {
     }
 }
 /// Represents a service configuration with its name and id.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConfigRef {
     /// Resource name of a service config. It must have the following
@@ -226,6 +233,7 @@ pub struct ConfigRef {
 ///
 /// It contains a list of ConfigChanges based on the comparison between
 /// two service configurations.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ChangeReport {
     /// List of changes between two service configurations.
@@ -239,6 +247,7 @@ pub struct ChangeReport {
 /// A rollout resource that defines how service configuration versions are pushed
 /// to control plane systems. Typically, you create a new version of the
 /// service config, and then create a Rollout to push the service config.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Rollout {
     /// Optional. Unique identifier of this Rollout. Must be no longer than 63
@@ -304,6 +313,7 @@ pub mod rollout {
     ///          }
     ///        }
     ///      }
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct TrafficPercentStrategy {
         /// Maps service configuration IDs to their corresponding traffic percentage.
@@ -317,6 +327,7 @@ pub mod rollout {
     }
     /// Strategy used to delete a service. This strategy is a placeholder only
     /// used by the system generated rollout to delete a service.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DeleteServiceStrategy {}
     /// Status of a Rollout.
@@ -370,6 +381,7 @@ pub mod rollout {
     /// Strategy that defines which versions of service configurations should be
     /// pushed
     /// and how they should be used at runtime.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Strategy {
         /// Google Service Control selects service configurations based on
@@ -383,6 +395,7 @@ pub mod rollout {
     }
 }
 /// Request message for `ListServices` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListServicesRequest {
     /// Include services produced by the specified project.
@@ -406,6 +419,7 @@ pub struct ListServicesRequest {
     pub consumer_id: ::prost::alloc::string::String,
 }
 /// Response message for `ListServices` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListServicesResponse {
     /// The returned services will only have the name field set.
@@ -416,6 +430,7 @@ pub struct ListServicesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for `GetService` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetServiceRequest {
     /// Required. The name of the service.  See the `ServiceManager` overview for
@@ -424,6 +439,7 @@ pub struct GetServiceRequest {
     pub service_name: ::prost::alloc::string::String,
 }
 /// Request message for CreateService method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateServiceRequest {
     /// Required. Initial values for the service resource.
@@ -431,6 +447,7 @@ pub struct CreateServiceRequest {
     pub service: ::core::option::Option<ManagedService>,
 }
 /// Request message for DeleteService method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteServiceRequest {
     /// Required. The name of the service.  See the
@@ -440,6 +457,7 @@ pub struct DeleteServiceRequest {
     pub service_name: ::prost::alloc::string::String,
 }
 /// Request message for UndeleteService method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UndeleteServiceRequest {
     /// Required. The name of the service. See the
@@ -449,6 +467,7 @@ pub struct UndeleteServiceRequest {
     pub service_name: ::prost::alloc::string::String,
 }
 /// Response message for UndeleteService method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UndeleteServiceResponse {
     /// Revived service resource.
@@ -456,6 +475,7 @@ pub struct UndeleteServiceResponse {
     pub service: ::core::option::Option<ManagedService>,
 }
 /// Request message for GetServiceConfig method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetServiceConfigRequest {
     /// Required. The name of the service.  See the
@@ -511,6 +531,7 @@ pub mod get_service_config_request {
     }
 }
 /// Request message for ListServiceConfigs method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListServiceConfigsRequest {
     /// Required. The name of the service.  See the
@@ -527,6 +548,7 @@ pub struct ListServiceConfigsRequest {
     pub page_size: i32,
 }
 /// Response message for ListServiceConfigs method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListServiceConfigsResponse {
     /// The list of service configuration resources.
@@ -537,6 +559,7 @@ pub struct ListServiceConfigsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for CreateServiceConfig method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateServiceConfigRequest {
     /// Required. The name of the service.  See the
@@ -549,6 +572,7 @@ pub struct CreateServiceConfigRequest {
     pub service_config: ::core::option::Option<super::super::Service>,
 }
 /// Request message for SubmitConfigSource method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SubmitConfigSourceRequest {
     /// Required. The name of the service.  See the
@@ -566,6 +590,7 @@ pub struct SubmitConfigSourceRequest {
     pub validate_only: bool,
 }
 /// Response message for SubmitConfigSource method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SubmitConfigSourceResponse {
     /// The generated service configuration.
@@ -573,6 +598,7 @@ pub struct SubmitConfigSourceResponse {
     pub service_config: ::core::option::Option<super::super::Service>,
 }
 /// Request message for 'CreateServiceRollout'
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateServiceRolloutRequest {
     /// Required. The name of the service.  See the
@@ -585,6 +611,7 @@ pub struct CreateServiceRolloutRequest {
     pub rollout: ::core::option::Option<Rollout>,
 }
 /// Request message for 'ListServiceRollouts'
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListServiceRolloutsRequest {
     /// Required. The name of the service.  See the
@@ -611,6 +638,7 @@ pub struct ListServiceRolloutsRequest {
     pub filter: ::prost::alloc::string::String,
 }
 /// Response message for ListServiceRollouts method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListServiceRolloutsResponse {
     /// The list of rollout resources.
@@ -621,6 +649,7 @@ pub struct ListServiceRolloutsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for GetServiceRollout method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetServiceRolloutRequest {
     /// Required. The name of the service.  See the
@@ -633,6 +662,7 @@ pub struct GetServiceRolloutRequest {
     pub rollout_id: ::prost::alloc::string::String,
 }
 /// Request message for GenerateConfigReport method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateConfigReportRequest {
     /// Required. Service configuration for which we want to generate the report.
@@ -651,6 +681,7 @@ pub struct GenerateConfigReportRequest {
     pub old_config: ::core::option::Option<::prost_types::Any>,
 }
 /// Response message for GenerateConfigReport method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateConfigReportResponse {
     /// Name of the service this report belongs to.

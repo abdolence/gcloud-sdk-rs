@@ -1,5 +1,6 @@
 /// Provenance of a build. Contains all information needed to verify the full
 /// details about the build from source to completion.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BuildProvenance {
     /// Required. Unique identifier of the build.
@@ -49,6 +50,7 @@ pub struct BuildProvenance {
     pub builder_version: ::prost::alloc::string::String,
 }
 /// Source describes the location of the source used for the build.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Source {
     /// If provided, the input binary artifacts for the build came from this
@@ -80,6 +82,7 @@ pub struct Source {
 }
 /// Container message for hashes of byte content of files, used in source
 /// messages to verify integrity of source input to the build.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FileHashes {
     /// Required. Collection of file hashes.
@@ -87,6 +90,7 @@ pub struct FileHashes {
     pub file_hash: ::prost::alloc::vec::Vec<Hash>,
 }
 /// Container message for hash values.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Hash {
     /// Required. The type of hash that was performed.
@@ -131,6 +135,7 @@ pub mod hash {
     }
 }
 /// Command describes a step performed as part of the build pipeline.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Command {
     /// Required. Name of the command, as presented on the command line, or if the
@@ -156,6 +161,7 @@ pub struct Command {
     pub wait_for: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Artifact describes a build product.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Artifact {
     /// Hash or checksum value of a binary, or Docker Registry 2.0 digest of a

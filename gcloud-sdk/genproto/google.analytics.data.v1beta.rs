@@ -1,5 +1,6 @@
 /// A contiguous set of days: startDate, startDate + 1, ..., endDate. Requests
 /// are allowed up to 4 date ranges.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DateRange {
     /// The inclusive start date for the query in the format `YYYY-MM-DD`. Cannot
@@ -23,6 +24,7 @@ pub struct DateRange {
 }
 /// A contiguous set of minutes: startMinutesAgo, startMinutesAgo + 1, ...,
 /// endMinutesAgo. Requests are allowed up to 2 minute ranges.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MinuteRange {
     /// The inclusive start minute for the query as a number of minutes before now.
@@ -57,6 +59,7 @@ pub struct MinuteRange {
 /// indicates the city from which an event originates. Dimension values in report
 /// responses are strings; for example, the city could be "Paris" or "New York".
 /// Requests are allowed up to 9 dimensions.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Dimension {
     /// The name of the dimension. See the [API
@@ -82,6 +85,7 @@ pub struct Dimension {
 /// dimensions. Example usages:
 /// 1) lower_case(dimension)
 /// 2) concatenate(dimension1, symbol, dimension2).
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DimensionExpression {
     /// Specify one type of dimension expression for `DimensionExpression`.
@@ -91,6 +95,7 @@ pub struct DimensionExpression {
 /// Nested message and enum types in `DimensionExpression`.
 pub mod dimension_expression {
     /// Used to convert a dimension value to a single case.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CaseExpression {
         /// Name of a dimension. The name must refer back to a name in dimensions
@@ -99,6 +104,7 @@ pub mod dimension_expression {
         pub dimension_name: ::prost::alloc::string::String,
     }
     /// Used to combine dimension values to a single dimension.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ConcatenateExpression {
         /// Names of dimensions. The names must refer back to names in the dimensions
@@ -116,6 +122,7 @@ pub mod dimension_expression {
         pub delimiter: ::prost::alloc::string::String,
     }
     /// Specify one type of dimension expression for `DimensionExpression`.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum OneExpression {
         /// Used to convert a dimension value to lower case.
@@ -133,6 +140,7 @@ pub mod dimension_expression {
 /// The quantitative measurements of a report. For example, the metric
 /// `eventCount` is the total number of events. Requests are allowed up to 10
 /// metrics.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Metric {
     /// The name of the metric. See the [API
@@ -161,6 +169,7 @@ pub struct Metric {
 }
 /// To express dimension or metric filters. The fields in the same
 /// FilterExpression need to be either all dimensions or all metrics.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FilterExpression {
     /// Specify one type of filter expression for `FilterExpression`.
@@ -170,6 +179,7 @@ pub struct FilterExpression {
 /// Nested message and enum types in `FilterExpression`.
 pub mod filter_expression {
     /// Specify one type of filter expression for `FilterExpression`.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Expr {
         /// The FilterExpressions in and_group have an AND relationship.
@@ -188,6 +198,7 @@ pub mod filter_expression {
     }
 }
 /// A list of filter expressions.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FilterExpressionList {
     /// A list of filter expressions.
@@ -195,6 +206,7 @@ pub struct FilterExpressionList {
     pub expressions: ::prost::alloc::vec::Vec<FilterExpression>,
 }
 /// An expression to filter dimension or metric values.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Filter {
     /// The dimension name or metric name.
@@ -212,6 +224,7 @@ pub struct Filter {
 /// Nested message and enum types in `Filter`.
 pub mod filter {
     /// The filter for string
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct StringFilter {
         /// The match type for this filter.
@@ -274,6 +287,7 @@ pub mod filter {
         }
     }
     /// The result needs to be in a list of string values.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct InListFilter {
         /// The list of string values.
@@ -285,6 +299,7 @@ pub mod filter {
         pub case_sensitive: bool,
     }
     /// Filters for numeric or date values.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct NumericFilter {
         /// The operation type for this filter.
@@ -341,6 +356,7 @@ pub mod filter {
         }
     }
     /// To express that the result needs to be between two numbers (inclusive).
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct BetweenFilter {
         /// Begins with this number.
@@ -351,6 +367,7 @@ pub mod filter {
         pub to_value: ::core::option::Option<super::NumericValue>,
     }
     /// Specify one type of filter for `Filter`.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum OneFilter {
         /// Strings related filter.
@@ -370,6 +387,7 @@ pub mod filter {
 /// Order bys define how rows will be sorted in the response. For example,
 /// ordering rows by descending event count is one ordering, and ordering rows by
 /// the event name string is a different ordering.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OrderBy {
     /// If true, sorts by descending order.
@@ -382,6 +400,7 @@ pub struct OrderBy {
 /// Nested message and enum types in `OrderBy`.
 pub mod order_by {
     /// Sorts by metric values.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct MetricOrderBy {
         /// A metric name in the request to order by.
@@ -389,6 +408,7 @@ pub mod order_by {
         pub metric_name: ::prost::alloc::string::String,
     }
     /// Sorts by dimension values.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DimensionOrderBy {
         /// A dimension name in the request to order by.
@@ -446,6 +466,7 @@ pub mod order_by {
         }
     }
     /// Sorts by a pivot column group.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct PivotOrderBy {
         /// In the response to order by, order rows by this column. Must be a metric
@@ -477,6 +498,7 @@ pub mod order_by {
         ///      ---------|----------|----------------|----------|----------------
         ///        Canada |    3     |       1        |     4    |        1
         ///      ---------|----------|----------------|----------|----------------
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct PivotSelection {
             /// Must be a dimension name from the request.
@@ -488,6 +510,7 @@ pub mod order_by {
         }
     }
     /// Specify one type of order by for `OrderBy`.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum OneOrderBy {
         /// Sorts results by a metric's values.
@@ -502,6 +525,7 @@ pub mod order_by {
     }
 }
 /// Describes the visible dimension columns and rows in the report response.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Pivot {
     /// Dimension names for visible columns in the report response. Including
@@ -550,6 +574,7 @@ pub struct Pivot {
 /// retained 60% of this cohort after three weeks and 25% of this cohort after
 /// six weeks. These two percentages can be calculated by the metric
 /// `cohortActiveUsers/cohortTotalUsers` and will be separate rows in the report.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CohortSpec {
     /// Defines the selection criteria to group users into cohorts.
@@ -569,6 +594,7 @@ pub struct CohortSpec {
 /// Defines a cohort selection criteria. A cohort is a group of users who share
 /// a common characteristic. For example, users with the same `firstSessionDate`
 /// belong to the same cohort.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Cohort {
     /// Assigns a name to this cohort. The dimension `cohort` is valued to this
@@ -602,6 +628,7 @@ pub struct Cohort {
 }
 /// Configures the extended reporting date range for a cohort report. Specifies
 /// an offset duration to follow the cohorts over.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CohortsRange {
     /// Required. The granularity used to interpret the `startOffset` and
@@ -684,6 +711,7 @@ pub mod cohorts_range {
     }
 }
 /// Optional settings of a cohort report.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CohortReportSettings {
     /// If true, accumulates the result from first touch day to the end day. Not
@@ -692,6 +720,7 @@ pub struct CohortReportSettings {
     pub accumulate: bool,
 }
 /// Response's metadata carrying additional information about the report content.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResponseMetaData {
     /// If true, indicates some buckets of dimension combinations are rolled into
@@ -742,6 +771,7 @@ pub mod response_meta_data {
     /// The schema restrictions actively enforced in creating this report. To learn
     /// more, see [Access and data-restriction
     /// management](<https://support.google.com/analytics/answer/10851388>).
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SchemaRestrictionResponse {
         /// All restrictions actively enforced in creating the report. For example,
@@ -756,6 +786,7 @@ pub mod response_meta_data {
     /// Nested message and enum types in `SchemaRestrictionResponse`.
     pub mod schema_restriction_response {
         /// A metric actively restricted in creating the report.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct ActiveMetricRestriction {
             /// The name of the restricted metric.
@@ -775,6 +806,7 @@ pub mod response_meta_data {
 /// produce column entries within rows and DimensionHeaders. However, dimensions
 /// used exclusively within filters or expressions do not produce columns in a
 /// report; correspondingly, those dimensions do not produce headers.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DimensionHeader {
     /// The dimension's name.
@@ -785,6 +817,7 @@ pub struct DimensionHeader {
 /// report produce column entries within rows and MetricHeaders. However,
 /// metrics used exclusively within filters or expressions do not produce columns
 /// in a report; correspondingly, those metrics do not produce headers.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MetricHeader {
     /// The metric's name.
@@ -795,6 +828,7 @@ pub struct MetricHeader {
     pub r#type: i32,
 }
 /// Dimensions' values in a single pivot.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PivotHeader {
     /// The size is the same as the cardinality of the corresponding dimension
@@ -808,6 +842,7 @@ pub struct PivotHeader {
     pub row_count: i32,
 }
 /// Summarizes dimension values from a row for this pivot.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PivotDimensionHeader {
     /// Values of multiple dimensions in a pivot.
@@ -851,6 +886,7 @@ pub struct PivotDimensionHeader {
 ///    }
 /// ]
 /// ```
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Row {
     /// List of requested dimension values. In a PivotReport, dimension_values
@@ -862,6 +898,7 @@ pub struct Row {
     pub metric_values: ::prost::alloc::vec::Vec<MetricValue>,
 }
 /// The value of a dimension.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DimensionValue {
     /// One kind of dimension value
@@ -871,6 +908,7 @@ pub struct DimensionValue {
 /// Nested message and enum types in `DimensionValue`.
 pub mod dimension_value {
     /// One kind of dimension value
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum OneValue {
         /// Value as a string if the dimension type is a string.
@@ -879,6 +917,7 @@ pub mod dimension_value {
     }
 }
 /// The value of a metric.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MetricValue {
     /// One of metric value
@@ -888,6 +927,7 @@ pub struct MetricValue {
 /// Nested message and enum types in `MetricValue`.
 pub mod metric_value {
     /// One of metric value
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum OneValue {
         /// Measurement value. See MetricHeader for type.
@@ -896,6 +936,7 @@ pub mod metric_value {
     }
 }
 /// To represent a number.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NumericValue {
     /// One of a numeric value
@@ -905,6 +946,7 @@ pub struct NumericValue {
 /// Nested message and enum types in `NumericValue`.
 pub mod numeric_value {
     /// One of a numeric value
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum OneValue {
         /// Integer value
@@ -918,6 +960,7 @@ pub mod numeric_value {
 /// Current state of all quotas for this Analytics Property. If any quota for a
 /// property is exhausted, all requests to that property will return Resource
 /// Exhausted errors.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PropertyQuota {
     /// Standard Analytics Properties can use up to 25,000 tokens per day;
@@ -956,6 +999,7 @@ pub struct PropertyQuota {
     pub tokens_per_project_per_hour: ::core::option::Option<QuotaStatus>,
 }
 /// Current state for a particular quota group.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QuotaStatus {
     /// Quota consumed by this request.
@@ -966,6 +1010,7 @@ pub struct QuotaStatus {
     pub remaining: i32,
 }
 /// Explains a dimension.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DimensionMetadata {
     /// This dimension's name. Useable in \[Dimension\](#Dimension)'s `name`. For
@@ -994,6 +1039,7 @@ pub struct DimensionMetadata {
     pub category: ::prost::alloc::string::String,
 }
 /// Explains a metric.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MetricMetadata {
     /// A metric name. Useable in \[Metric\](#Metric)'s `name`. For example,
@@ -1079,6 +1125,7 @@ pub mod metric_metadata {
     }
 }
 /// The compatibility for a single dimension.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DimensionCompatibility {
     /// The dimension metadata contains the API name for this compatibility
@@ -1092,6 +1139,7 @@ pub struct DimensionCompatibility {
     pub compatibility: ::core::option::Option<i32>,
 }
 /// The compatibility for a single metric.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MetricCompatibility {
     /// The metric metadata contains the API name for this compatibility
@@ -1243,6 +1291,7 @@ impl Compatibility {
 /// metrics. Check compatibility provides a preview of the compatibility of a
 /// report; fields shared with the `runReport` request should be the same values
 /// as in your `runReport` request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CheckCompatibilityRequest {
     /// A Google Analytics GA4 property identifier whose events are tracked. To
@@ -1280,6 +1329,7 @@ pub struct CheckCompatibilityRequest {
     pub compatibility_filter: i32,
 }
 /// The compatibility response with the compatibility of each dimension & metric.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CheckCompatibilityResponse {
     /// The compatibility of each dimension.
@@ -1290,6 +1340,7 @@ pub struct CheckCompatibilityResponse {
     pub metric_compatibilities: ::prost::alloc::vec::Vec<MetricCompatibility>,
 }
 /// The dimensions and metrics currently accepted in reporting methods.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Metadata {
     /// Resource name of this metadata.
@@ -1303,6 +1354,7 @@ pub struct Metadata {
     pub metrics: ::prost::alloc::vec::Vec<MetricMetadata>,
 }
 /// The request to generate a report.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RunReportRequest {
     /// A Google Analytics GA4 property identifier whose events are tracked.
@@ -1389,6 +1441,7 @@ pub struct RunReportRequest {
     pub return_property_quota: bool,
 }
 /// The response report table corresponding to a request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RunReportResponse {
     /// Describes dimension columns. The number of DimensionHeaders and ordering of
@@ -1434,6 +1487,7 @@ pub struct RunReportResponse {
     pub kind: ::prost::alloc::string::String,
 }
 /// The request to generate a pivot report.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RunPivotReportRequest {
     /// A Google Analytics GA4 property identifier whose events are tracked.
@@ -1496,6 +1550,7 @@ pub struct RunPivotReportRequest {
     pub return_property_quota: bool,
 }
 /// The response pivot report table corresponding to a pivot request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RunPivotReportResponse {
     /// Summarizes the columns and rows created by a pivot. Each pivot in the
@@ -1566,6 +1621,7 @@ pub struct RunPivotReportResponse {
     pub kind: ::prost::alloc::string::String,
 }
 /// The batch request containing multiple report requests.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchRunReportsRequest {
     /// A Google Analytics GA4 property identifier whose events are tracked.
@@ -1585,6 +1641,7 @@ pub struct BatchRunReportsRequest {
     pub requests: ::prost::alloc::vec::Vec<RunReportRequest>,
 }
 /// The batch response containing multiple reports.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchRunReportsResponse {
     /// Individual responses. Each response has a separate report request.
@@ -1597,6 +1654,7 @@ pub struct BatchRunReportsResponse {
     pub kind: ::prost::alloc::string::String,
 }
 /// The batch request containing multiple pivot report requests.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchRunPivotReportsRequest {
     /// A Google Analytics GA4 property identifier whose events are tracked.
@@ -1616,6 +1674,7 @@ pub struct BatchRunPivotReportsRequest {
     pub requests: ::prost::alloc::vec::Vec<RunPivotReportRequest>,
 }
 /// The batch response containing multiple pivot reports.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchRunPivotReportsResponse {
     /// Individual responses. Each response has a separate pivot report request.
@@ -1628,6 +1687,7 @@ pub struct BatchRunPivotReportsResponse {
     pub kind: ::prost::alloc::string::String,
 }
 /// Request for a property's dimension and metric metadata.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetMetadataRequest {
     /// Required. The resource name of the metadata to retrieve. This name field is
@@ -1645,6 +1705,7 @@ pub struct GetMetadataRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request to generate a realtime report.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RunRealtimeReportRequest {
     /// A Google Analytics GA4 property identifier whose events are tracked.
@@ -1699,6 +1760,7 @@ pub struct RunRealtimeReportRequest {
     pub minute_ranges: ::prost::alloc::vec::Vec<MinuteRange>,
 }
 /// The response realtime report table corresponding to a request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RunRealtimeReportResponse {
     /// Describes dimension columns. The number of DimensionHeaders and ordering of

@@ -1,5 +1,6 @@
 /// ReplicationCycle contains information about the current replication cycle
 /// status.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReplicationCycle {
     /// The time the replication cycle has started.
@@ -10,6 +11,7 @@ pub struct ReplicationCycle {
     pub progress_percent: i32,
 }
 /// ReplicationSync contain information about the last replica sync to the cloud.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReplicationSync {
     /// The most updated snapshot created time in the source that finished
@@ -19,6 +21,7 @@ pub struct ReplicationSync {
 }
 /// MigratingVm describes the VM that will be migrated from a Source environment
 /// and its replication state.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MigratingVm {
     /// Output only. The identifier of the MigratingVm.
@@ -164,6 +167,7 @@ pub mod migrating_vm {
     }
     /// The default configuration of the target VM that will be created in GCP as a
     /// result of the migration.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum TargetVmDefaults {
         /// Details of the target VM in Compute Engine.
@@ -181,6 +185,7 @@ pub mod migrating_vm {
 /// for its work, not its products, which means once it is finished, it will
 /// never touch the instance it created. It will only delete it in case of the
 /// CloneJob being cancelled or upon failure to clone.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CloneJob {
     /// Output only. The time the clone job was created (as an API call, not when
@@ -260,6 +265,7 @@ pub mod clone_job {
         }
     }
     /// Details of the VM to create as the target of this clone job.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum TargetVmDetails {
         /// Output only. Details of the target VM in Compute Engine.
@@ -270,6 +276,7 @@ pub mod clone_job {
 /// CutoverJob message describes a cutover of a migrating VM. The CutoverJob is
 /// the operation of shutting down the VM, creating a snapshot and
 /// clonning the VM using the replicated snapshot.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CutoverJob {
     /// Output only. The time the cutover job was created (as an API call, not when
@@ -356,6 +363,7 @@ pub mod cutover_job {
         }
     }
     /// Details of the VM to create as the target of this cutover job.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum TargetVmDetails {
         /// Output only. Details of the target VM in Compute Engine.
@@ -364,6 +372,7 @@ pub mod cutover_job {
     }
 }
 /// Request message for 'CreateCloneJob' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateCloneJobRequest {
     /// Required. The Clone's parent.
@@ -392,6 +401,7 @@ pub struct CreateCloneJobRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for 'CancelCloneJob' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CancelCloneJobRequest {
     /// Required. The clone job id
@@ -399,9 +409,11 @@ pub struct CancelCloneJobRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Response message for 'CancelCloneJob' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CancelCloneJobResponse {}
 /// Request message for 'ListCloneJobsRequest' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCloneJobsRequest {
     /// Required. The parent, which owns this collection of source VMs.
@@ -428,6 +440,7 @@ pub struct ListCloneJobsRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// Response message for 'ListCloneJobs' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCloneJobsResponse {
     /// Output only. The list of clone jobs response.
@@ -442,6 +455,7 @@ pub struct ListCloneJobsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for 'GetCloneJob' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCloneJobRequest {
     /// Required. The name of the CloneJob.
@@ -450,6 +464,7 @@ pub struct GetCloneJobRequest {
 }
 /// Source message describes a specific vm migration Source resource. It contains
 /// the source environment information.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Source {
     /// Output only. The Source name.
@@ -475,6 +490,7 @@ pub struct Source {
 }
 /// Nested message and enum types in `Source`.
 pub mod source {
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum SourceDetails {
         /// Vmware type source details.
@@ -484,6 +500,7 @@ pub mod source {
 }
 /// VmwareSourceDetails message describes a specific source details for the
 /// vmware source type.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VmwareSourceDetails {
     /// The credentials username.
@@ -503,6 +520,7 @@ pub struct VmwareSourceDetails {
 /// DatacenterConnector message describes a connector between the Source and GCP,
 /// which is installed on a vmware datacenter (an OVA vm installed by the user)
 /// to connect the Datacenter to GCP and support vm migration data transfer.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DatacenterConnector {
     /// Output only. The time the connector was created (as an API call, not when
@@ -607,6 +625,7 @@ pub mod datacenter_connector {
     }
 }
 /// UpgradeStatus contains information about upgradeAppliance operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpgradeStatus {
     /// The version to upgrade to.
@@ -666,6 +685,7 @@ pub mod upgrade_status {
     }
 }
 /// Holds informatiom about the available versions for upgrade.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AvailableUpdates {
     /// The newest deployable version of the appliance.
@@ -680,6 +700,7 @@ pub struct AvailableUpdates {
     pub in_place_update: ::core::option::Option<ApplianceVersion>,
 }
 /// Describes an appliance version.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ApplianceVersion {
     /// The appliance version.
@@ -696,6 +717,7 @@ pub struct ApplianceVersion {
     pub release_notes_uri: ::prost::alloc::string::String,
 }
 /// Request message for 'ListSources' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSourcesRequest {
     /// Required. The parent, which owns this collection of sources.
@@ -722,6 +744,7 @@ pub struct ListSourcesRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// Response message for 'ListSources' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSourcesResponse {
     /// Output only. The list of sources response.
@@ -736,6 +759,7 @@ pub struct ListSourcesResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for 'GetSource' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetSourceRequest {
     /// Required. The Source name.
@@ -743,6 +767,7 @@ pub struct GetSourceRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for 'CreateSource' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateSourceRequest {
     /// Required. The Source's parent.
@@ -771,6 +796,7 @@ pub struct CreateSourceRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Update message for 'UpdateSources' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateSourceRequest {
     /// Field mask is used to specify the fields to be overwritten in the
@@ -800,6 +826,7 @@ pub struct UpdateSourceRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for 'DeleteSource' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteSourceRequest {
     /// Required. The Source name.
@@ -823,6 +850,7 @@ pub struct DeleteSourceRequest {
 }
 /// Request message for
 /// \[fetchInventory][google.cloud.vmmigration.v1.VmMigration.FetchInventory\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FetchInventoryRequest {
     /// Required. The name of the Source.
@@ -834,6 +862,7 @@ pub struct FetchInventoryRequest {
     pub force_refresh: bool,
 }
 /// VmwareVmDetails describes a VM in vCenter.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VmwareVmDetails {
     /// The VM's id in the source (note that this is not the MigratingVm's id).
@@ -951,6 +980,7 @@ pub mod vmware_vm_details {
     }
 }
 /// VmwareVmsDetails describes VMs in vCenter.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VmwareVmsDetails {
     /// The details of the vmware VMs.
@@ -959,6 +989,7 @@ pub struct VmwareVmsDetails {
 }
 /// Response message for
 /// \[fetchInventory][google.cloud.vmmigration.v1.VmMigration.FetchInventory\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FetchInventoryResponse {
     /// Output only. The timestamp when the source was last queried (if the result
@@ -970,6 +1001,7 @@ pub struct FetchInventoryResponse {
 }
 /// Nested message and enum types in `FetchInventoryResponse`.
 pub mod fetch_inventory_response {
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum SourceVms {
         /// The description of the VMs in a Source of type Vmware.
@@ -979,6 +1011,7 @@ pub mod fetch_inventory_response {
 }
 /// Utilization report details the utilization (CPU, memory, etc.) of selected
 /// source VMs.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UtilizationReport {
     /// Output only. The report unique name.
@@ -1098,6 +1131,7 @@ pub mod utilization_report {
     }
 }
 /// Utilization information of a single VM.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VmUtilizationInfo {
     /// The VM's ID in the source.
@@ -1111,6 +1145,7 @@ pub struct VmUtilizationInfo {
 }
 /// Nested message and enum types in `VmUtilizationInfo`.
 pub mod vm_utilization_info {
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum VmDetails {
         /// The description of the VM in a Source of type Vmware.
@@ -1119,6 +1154,7 @@ pub mod vm_utilization_info {
     }
 }
 /// Utilization metrics values for a single VM.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VmUtilizationMetrics {
     /// Max CPU usage, percent.
@@ -1149,6 +1185,7 @@ pub struct VmUtilizationMetrics {
     pub network_throughput_average_kbps: i64,
 }
 /// Request message for 'ListUtilizationReports' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListUtilizationReportsRequest {
     /// Required. The Utilization Reports parent.
@@ -1179,6 +1216,7 @@ pub struct ListUtilizationReportsRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// Response message for 'ListUtilizationReports' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListUtilizationReportsResponse {
     /// Output only. The list of reports.
@@ -1193,6 +1231,7 @@ pub struct ListUtilizationReportsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for 'GetUtilizationReport' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetUtilizationReportRequest {
     /// Required. The Utilization Report name.
@@ -1204,6 +1243,7 @@ pub struct GetUtilizationReportRequest {
     pub view: i32,
 }
 /// Request message for 'CreateUtilizationReport' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateUtilizationReportRequest {
     /// Required. The Utilization Report's parent.
@@ -1237,6 +1277,7 @@ pub struct CreateUtilizationReportRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for 'DeleteUtilizationReport' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteUtilizationReportRequest {
     /// Required. The Utilization Report name.
@@ -1259,6 +1300,7 @@ pub struct DeleteUtilizationReportRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Response message for 'ListDatacenterConnectors' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDatacenterConnectorsResponse {
     /// Output only. The list of sources response.
@@ -1273,6 +1315,7 @@ pub struct ListDatacenterConnectorsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for 'GetDatacenterConnector' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetDatacenterConnectorRequest {
     /// Required. The name of the DatacenterConnector.
@@ -1280,6 +1323,7 @@ pub struct GetDatacenterConnectorRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for 'CreateDatacenterConnector' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateDatacenterConnectorRequest {
     /// Required. The DatacenterConnector's parent.
@@ -1311,6 +1355,7 @@ pub struct CreateDatacenterConnectorRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for 'DeleteDatacenterConnector' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteDatacenterConnectorRequest {
     /// Required. The DatacenterConnector name.
@@ -1333,6 +1378,7 @@ pub struct DeleteDatacenterConnectorRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for 'UpgradeAppliance' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpgradeApplianceRequest {
     /// Required. The DatacenterConnector name.
@@ -1355,9 +1401,11 @@ pub struct UpgradeApplianceRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Response message for 'UpgradeAppliance' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpgradeApplianceResponse {}
 /// Request message for 'ListDatacenterConnectors' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDatacenterConnectorsRequest {
     /// Required. The parent, which owns this collection of connectors.
@@ -1386,6 +1434,7 @@ pub struct ListDatacenterConnectorsRequest {
 }
 /// ComputeEngineTargetDefaults is a collection of details for creating a VM in a
 /// target Compute Engine project.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ComputeEngineTargetDefaults {
     /// The name of the VM to create.
@@ -1453,6 +1502,7 @@ pub struct ComputeEngineTargetDefaults {
 }
 /// ComputeEngineTargetDetails is a collection of details for creating a VM in a
 /// target Compute Engine project.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ComputeEngineTargetDetails {
     /// The name of the VM to create.
@@ -1518,6 +1568,7 @@ pub struct ComputeEngineTargetDetails {
     pub hostname: ::prost::alloc::string::String,
 }
 /// NetworkInterface represents a NIC of a VM.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NetworkInterface {
     /// The network to connect the NIC to.
@@ -1536,6 +1587,7 @@ pub struct NetworkInterface {
     pub external_ip: ::prost::alloc::string::String,
 }
 /// AppliedLicense holds the license data returned by adaptation module report.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AppliedLicense {
     /// The license type that was used in OS adaptation.
@@ -1588,6 +1640,7 @@ pub mod applied_license {
 /// Node Affinity: the configuration of desired nodes onto which this Instance
 /// could be scheduled. Based on
 /// <https://cloud.google.com/compute/docs/reference/rest/v1/instances/setScheduling>
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SchedulingNodeAffinity {
     /// The label key of Node resource to reference.
@@ -1641,6 +1694,7 @@ pub mod scheduling_node_affinity {
 }
 /// Scheduling information for VM on maintenance/restart behaviour and
 /// node allocation in sole tenant nodes.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ComputeScheduling {
     /// How the instance should behave when the host machine undergoes
@@ -1739,6 +1793,7 @@ pub mod compute_scheduling {
     }
 }
 /// A policy for scheduling replications.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SchedulePolicy {
     /// The idle duration between replication stages.
@@ -1751,6 +1806,7 @@ pub struct SchedulePolicy {
     pub skip_os_adaptation: bool,
 }
 /// Request message for 'CreateMigratingVm' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateMigratingVmRequest {
     /// Required. The MigratingVm's parent.
@@ -1779,6 +1835,7 @@ pub struct CreateMigratingVmRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for 'LisMigratingVmsRequest' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListMigratingVmsRequest {
     /// Required. The parent, which owns this collection of MigratingVms.
@@ -1808,6 +1865,7 @@ pub struct ListMigratingVmsRequest {
     pub view: i32,
 }
 /// Response message for 'ListMigratingVms' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListMigratingVmsResponse {
     /// Output only. The list of Migrating VMs response.
@@ -1822,6 +1880,7 @@ pub struct ListMigratingVmsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for 'GetMigratingVm' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetMigratingVmRequest {
     /// Required. The name of the MigratingVm.
@@ -1832,6 +1891,7 @@ pub struct GetMigratingVmRequest {
     pub view: i32,
 }
 /// Request message for 'UpdateMigratingVm' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateMigratingVmRequest {
     /// Field mask is used to specify the fields to be overwritten in the
@@ -1861,6 +1921,7 @@ pub struct UpdateMigratingVmRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for 'DeleteMigratingVm' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteMigratingVmRequest {
     /// Required. The name of the MigratingVm.
@@ -1868,6 +1929,7 @@ pub struct DeleteMigratingVmRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for 'StartMigrationRequest' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StartMigrationRequest {
     /// Required. The name of the MigratingVm.
@@ -1875,9 +1937,11 @@ pub struct StartMigrationRequest {
     pub migrating_vm: ::prost::alloc::string::String,
 }
 /// Response message for 'StartMigration' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StartMigrationResponse {}
 /// Request message for 'PauseMigration' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PauseMigrationRequest {
     /// Required. The name of the MigratingVm.
@@ -1885,9 +1949,11 @@ pub struct PauseMigrationRequest {
     pub migrating_vm: ::prost::alloc::string::String,
 }
 /// Response message for 'PauseMigration' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PauseMigrationResponse {}
 /// Request message for 'ResumeMigration' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResumeMigrationRequest {
     /// Required. The name of the MigratingVm.
@@ -1895,9 +1961,11 @@ pub struct ResumeMigrationRequest {
     pub migrating_vm: ::prost::alloc::string::String,
 }
 /// Response message for 'ResumeMigration' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResumeMigrationResponse {}
 /// Request message for 'FinalizeMigration' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FinalizeMigrationRequest {
     /// Required. The name of the MigratingVm.
@@ -1905,10 +1973,12 @@ pub struct FinalizeMigrationRequest {
     pub migrating_vm: ::prost::alloc::string::String,
 }
 /// Response message for 'FinalizeMigration' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FinalizeMigrationResponse {}
 /// TargetProject message represents a target Compute Engine project for a
 /// migration or a clone.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetProject {
     /// Output only. The name of the target project.
@@ -1929,6 +1999,7 @@ pub struct TargetProject {
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Request message for 'GetTargetProject' call.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetTargetProjectRequest {
     /// Required. The TargetProject name.
@@ -1936,6 +2007,7 @@ pub struct GetTargetProjectRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for 'ListTargetProjects' call.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTargetProjectsRequest {
     /// Required. The parent, which owns this collection of targets.
@@ -1962,6 +2034,7 @@ pub struct ListTargetProjectsRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// Response message for 'ListTargetProjects' call.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTargetProjectsResponse {
     /// Output only. The list of target response.
@@ -1976,6 +2049,7 @@ pub struct ListTargetProjectsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for 'CreateTargetProject' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateTargetProjectRequest {
     /// Required. The TargetProject's parent.
@@ -2004,6 +2078,7 @@ pub struct CreateTargetProjectRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Update message for 'UpdateTargetProject' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateTargetProjectRequest {
     /// Field mask is used to specify the fields to be overwritten in the
@@ -2033,6 +2108,7 @@ pub struct UpdateTargetProjectRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for 'DeleteTargetProject' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteTargetProjectRequest {
     /// Required. The TargetProject name.
@@ -2056,6 +2132,7 @@ pub struct DeleteTargetProjectRequest {
 }
 /// Describes message for 'Group' resource. The Group is a collections of several
 /// MigratingVms.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Group {
     /// Output only. The Group name.
@@ -2075,6 +2152,7 @@ pub struct Group {
     pub display_name: ::prost::alloc::string::String,
 }
 /// Request message for 'ListGroups' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListGroupsRequest {
     /// Required. The parent, which owns this collection of groups.
@@ -2101,6 +2179,7 @@ pub struct ListGroupsRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// Response message for 'ListGroups' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListGroupsResponse {
     /// Output only. The list of groups response.
@@ -2115,6 +2194,7 @@ pub struct ListGroupsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for 'GetGroup' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetGroupRequest {
     /// Required. The group name.
@@ -2122,6 +2202,7 @@ pub struct GetGroupRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for 'CreateGroup' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateGroupRequest {
     /// Required. The Group's parent.
@@ -2150,6 +2231,7 @@ pub struct CreateGroupRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Update message for 'UpdateGroups' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateGroupRequest {
     /// Field mask is used to specify the fields to be overwritten in the
@@ -2179,6 +2261,7 @@ pub struct UpdateGroupRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for 'DeleteGroup' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteGroupRequest {
     /// Required. The Group name.
@@ -2201,6 +2284,7 @@ pub struct DeleteGroupRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for 'AddGroupMigration' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddGroupMigrationRequest {
     /// Required. The full path name of the Group to add to.
@@ -2211,9 +2295,11 @@ pub struct AddGroupMigrationRequest {
     pub migrating_vm: ::prost::alloc::string::String,
 }
 /// Response message for 'AddGroupMigration' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddGroupMigrationResponse {}
 /// Request message for 'RemoveMigration' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RemoveGroupMigrationRequest {
     /// Required. The name of the Group.
@@ -2224,9 +2310,11 @@ pub struct RemoveGroupMigrationRequest {
     pub migrating_vm: ::prost::alloc::string::String,
 }
 /// Response message for 'RemoveMigration' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RemoveGroupMigrationResponse {}
 /// Request message for 'CreateCutoverJob' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateCutoverJobRequest {
     /// Required. The Cutover's parent.
@@ -2255,6 +2343,7 @@ pub struct CreateCutoverJobRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for 'CancelCutoverJob' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CancelCutoverJobRequest {
     /// Required. The cutover job id
@@ -2262,9 +2351,11 @@ pub struct CancelCutoverJobRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Response message for 'CancelCutoverJob' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CancelCutoverJobResponse {}
 /// Request message for 'ListCutoverJobsRequest' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCutoverJobsRequest {
     /// Required. The parent, which owns this collection of migrating VMs.
@@ -2291,6 +2382,7 @@ pub struct ListCutoverJobsRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// Response message for 'ListCutoverJobs' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCutoverJobsResponse {
     /// Output only. The list of cutover jobs response.
@@ -2305,6 +2397,7 @@ pub struct ListCutoverJobsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for 'GetCutoverJob' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCutoverJobRequest {
     /// Required. The name of the CutoverJob.
@@ -2312,6 +2405,7 @@ pub struct GetCutoverJobRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Represents the metadata of the long-running operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationMetadata {
     /// Output only. The time the operation was created.
@@ -2343,6 +2437,7 @@ pub struct OperationMetadata {
 /// Represents migration resource error information that can be used with
 /// google.rpc.Status message. MigrationError is used to present the user with
 /// error information in migration operations.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MigrationError {
     /// Output only. The error code.

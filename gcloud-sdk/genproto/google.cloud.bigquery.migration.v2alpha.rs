@@ -1,4 +1,5 @@
 /// Assessment task config.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AssessmentTaskDetails {
     /// Required. The Cloud Storage path for assessment input files.
@@ -17,6 +18,7 @@ pub struct AssessmentTaskDetails {
     pub data_source: ::prost::alloc::string::String,
 }
 /// Details for an assessment task orchestration result.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AssessmentOrchestrationResultDetails {
     /// Optional. The version used for the output table schemas.
@@ -24,6 +26,7 @@ pub struct AssessmentOrchestrationResultDetails {
     pub output_tables_schema_version: ::prost::alloc::string::String,
 }
 /// Provides details for errors and the corresponding resources.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResourceErrorDetail {
     /// Required. Information about the resource where the error is located.
@@ -42,6 +45,7 @@ pub struct ResourceErrorDetail {
 }
 /// Provides details for errors, e.g. issues that where encountered when
 /// processing a subtask.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ErrorDetail {
     /// Optional. The exact location within the resource (if applicable).
@@ -52,6 +56,7 @@ pub struct ErrorDetail {
     pub error_info: ::core::option::Option<super::super::super::super::rpc::ErrorInfo>,
 }
 /// Holds information about where the error is located.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ErrorLocation {
     /// Optional. If applicable, denotes the line where the error occurred. A zero value
@@ -64,6 +69,7 @@ pub struct ErrorLocation {
     pub column: i32,
 }
 /// The metrics object for a SubTask.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TimeSeries {
     /// Required. The name of the metric.
@@ -100,6 +106,7 @@ pub struct TimeSeries {
     pub points: ::prost::alloc::vec::Vec<Point>,
 }
 /// A single data point in a time series.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Point {
     /// The time interval to which the data point applies.  For `GAUGE` metrics,
@@ -120,6 +127,7 @@ pub struct Point {
 /// A time interval extending just after a start time through an end time.
 /// If the start time is the same as the end time, then the interval
 /// represents a single point in time.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TimeInterval {
     /// Optional. The beginning of the time interval.  The default value
@@ -132,6 +140,7 @@ pub struct TimeInterval {
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// A single strongly-typed value.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TypedValue {
     /// The typed value field.
@@ -141,6 +150,7 @@ pub struct TypedValue {
 /// Nested message and enum types in `TypedValue`.
 pub mod typed_value {
     /// The typed value field.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Value {
         /// A Boolean value: `true` or `false`.
@@ -163,6 +173,7 @@ pub mod typed_value {
     }
 }
 /// Mapping between an input and output file to be translated in a subtask.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TranslationFileMapping {
     /// The Cloud Storage path for a file to translation in a subtask.
@@ -174,6 +185,7 @@ pub struct TranslationFileMapping {
 }
 /// The translation task config to capture necessary settings for a translation
 /// task and subtask.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TranslationTaskDetails {
     /// The Cloud Storage path for translation input files.
@@ -319,6 +331,7 @@ pub mod translation_task_details {
         }
     }
     /// The language specific settings for the translation task.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum LanguageOptions {
         /// The Teradata SQL specific settings for the translation task.
@@ -330,6 +343,7 @@ pub mod translation_task_details {
     }
 }
 /// The filter applied to fields of translation details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Filter {
     /// The list of prefixes used to exclude processing for input files.
@@ -339,6 +353,7 @@ pub struct Filter {
     >,
 }
 /// Settings related to SQL identifiers.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IdentifierSettings {
     /// The setting to control output queries' identifier case.
@@ -425,9 +440,11 @@ pub mod identifier_settings {
     }
 }
 /// Teradata SQL specific translation task related settings.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TeradataOptions {}
 /// BTEQ translation task related settings.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BteqOptions {
     /// Specifies the project and dataset in BigQuery that will be used for
@@ -448,6 +465,7 @@ pub struct BteqOptions {
     >,
 }
 /// Reference to a BigQuery dataset.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DatasetReference {
     /// A unique ID for this dataset, without the project name. The ID
@@ -461,6 +479,7 @@ pub struct DatasetReference {
 }
 /// A migration workflow which specifies what needs to be done for an EDW
 /// migration.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MigrationWorkflow {
     /// Output only. Immutable. The unique identifier for the migration workflow. The ID is
@@ -540,6 +559,7 @@ pub mod migration_workflow {
 }
 /// A single task for a migration which has details about the configuration of
 /// the task.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MigrationTask {
     /// Output only. Immutable. The unique identifier for the migration task. The ID is server-generated.
@@ -624,6 +644,7 @@ pub mod migration_task {
         }
     }
     /// The details of the task.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum TaskDetails {
         /// Task configuration for Assessment.
@@ -637,6 +658,7 @@ pub mod migration_task {
 /// A subtask for a migration which carries details about the configuration of
 /// the subtask. The content of the details should not matter to the end user,
 /// but is a contract between the subtask creator and subtask worker.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MigrationSubtask {
     /// Output only. Immutable. The resource name for the migration subtask. The ID is
@@ -731,6 +753,7 @@ pub mod migration_subtask {
 }
 /// Additional information from the orchestrator when it is done with the
 /// task orchestration.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MigrationTaskOrchestrationResult {
     /// Details specific to the task type.
@@ -740,6 +763,7 @@ pub struct MigrationTaskOrchestrationResult {
 /// Nested message and enum types in `MigrationTaskOrchestrationResult`.
 pub mod migration_task_orchestration_result {
     /// Details specific to the task type.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Details {
         /// Details specific to assessment task types.
@@ -748,6 +772,7 @@ pub mod migration_task_orchestration_result {
     }
 }
 /// Request to create a migration workflow resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateMigrationWorkflowRequest {
     /// Required. The name of the project to which this migration workflow belongs.
@@ -759,6 +784,7 @@ pub struct CreateMigrationWorkflowRequest {
     pub migration_workflow: ::core::option::Option<MigrationWorkflow>,
 }
 /// A request to get a previously created migration workflow.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetMigrationWorkflowRequest {
     /// Required. The unique identifier for the migration workflow.
@@ -770,6 +796,7 @@ pub struct GetMigrationWorkflowRequest {
     pub read_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// A request to list previously created migration workflows.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListMigrationWorkflowsRequest {
     /// Required. The project and location of the migration workflows to list.
@@ -792,6 +819,7 @@ pub struct ListMigrationWorkflowsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response object for a `ListMigrationWorkflows` call.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListMigrationWorkflowsResponse {
     /// The migration workflows for the specified project / location.
@@ -803,6 +831,7 @@ pub struct ListMigrationWorkflowsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// A request to delete a previously created migration workflow.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteMigrationWorkflowRequest {
     /// Required. The unique identifier for the migration workflow.
@@ -811,6 +840,7 @@ pub struct DeleteMigrationWorkflowRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// A request to start a previously created migration workflow.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StartMigrationWorkflowRequest {
     /// Required. The unique identifier for the migration workflow.
@@ -819,6 +849,7 @@ pub struct StartMigrationWorkflowRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// A request to get a previously created migration subtasks.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetMigrationSubtaskRequest {
     /// Required. The unique identifier for the migration subtask.
@@ -830,6 +861,7 @@ pub struct GetMigrationSubtaskRequest {
     pub read_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// A request to list previously created migration subtasks.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListMigrationSubtasksRequest {
     /// Required. The migration task of the subtasks to list.
@@ -857,6 +889,7 @@ pub struct ListMigrationSubtasksRequest {
     pub filter: ::prost::alloc::string::String,
 }
 /// Response object for a `ListMigrationSubtasks` call.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListMigrationSubtasksResponse {
     /// The migration subtasks for the specified task.
@@ -1089,6 +1122,7 @@ pub mod migration_service_client {
     }
 }
 /// The request of translating a SQL query to Standard SQL.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TranslateQueryRequest {
     /// Required. The name of the project to which this translation request belongs.
@@ -1142,6 +1176,7 @@ pub mod translate_query_request {
     }
 }
 /// The response of translating a SQL query to Standard SQL.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TranslateQueryResponse {
     /// Output only. Immutable. The unique identifier for the SQL translation job.
@@ -1161,6 +1196,7 @@ pub struct TranslateQueryResponse {
 }
 /// Structured error object capturing the error message and the location in the
 /// source text where the error occurs.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlTranslationErrorDetail {
     /// Specifies the row from the source text where the error occurred.
@@ -1174,6 +1210,7 @@ pub struct SqlTranslationErrorDetail {
     pub message: ::prost::alloc::string::String,
 }
 /// The detailed error object if the SQL translation job fails.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlTranslationError {
     /// The type of SQL translation error.
@@ -1228,6 +1265,7 @@ pub mod sql_translation_error {
 }
 /// The detailed warning object if the SQL translation job is completed but not
 /// semantically correct.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlTranslationWarning {
     /// Specifies the details of the warning, including the warning message and

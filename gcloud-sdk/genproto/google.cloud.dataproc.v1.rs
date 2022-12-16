@@ -1,4 +1,5 @@
 /// Describes an autoscaling policy for Dataproc cluster autoscaler.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AutoscalingPolicy {
     /// Required. The policy id.
@@ -48,6 +49,7 @@ pub struct AutoscalingPolicy {
 /// Nested message and enum types in `AutoscalingPolicy`.
 pub mod autoscaling_policy {
     /// Autoscaling algorithm for policy.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Algorithm {
         #[prost(message, tag = "3")]
@@ -55,6 +57,7 @@ pub mod autoscaling_policy {
     }
 }
 /// Basic algorithm for autoscaling.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BasicAutoscalingAlgorithm {
     /// Optional. Duration between scaling events. A scaling period starts after
@@ -68,6 +71,7 @@ pub struct BasicAutoscalingAlgorithm {
 }
 /// Nested message and enum types in `BasicAutoscalingAlgorithm`.
 pub mod basic_autoscaling_algorithm {
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Config {
         /// Required. YARN autoscaling configuration.
@@ -76,6 +80,7 @@ pub mod basic_autoscaling_algorithm {
     }
 }
 /// Basic autoscaling configurations for YARN.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BasicYarnAutoscalingConfig {
     /// Required. Timeout for YARN graceful decommissioning of Node Managers.
@@ -131,6 +136,7 @@ pub struct BasicYarnAutoscalingConfig {
 }
 /// Configuration for the size bounds of an instance group, including its
 /// proportional size to other groups.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceGroupAutoscalingPolicyConfig {
     /// Optional. Minimum number of instances for this group.
@@ -169,6 +175,7 @@ pub struct InstanceGroupAutoscalingPolicyConfig {
     pub weight: i32,
 }
 /// A request to create an autoscaling policy.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateAutoscalingPolicyRequest {
     /// Required. The "resource name" of the region or location, as described
@@ -188,6 +195,7 @@ pub struct CreateAutoscalingPolicyRequest {
     pub policy: ::core::option::Option<AutoscalingPolicy>,
 }
 /// A request to fetch an autoscaling policy.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAutoscalingPolicyRequest {
     /// Required. The "resource name" of the autoscaling policy, as described
@@ -204,6 +212,7 @@ pub struct GetAutoscalingPolicyRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// A request to update an autoscaling policy.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateAutoscalingPolicyRequest {
     /// Required. The updated autoscaling policy.
@@ -213,6 +222,7 @@ pub struct UpdateAutoscalingPolicyRequest {
 /// A request to delete an autoscaling policy.
 ///
 /// Autoscaling policies in use by one or more clusters will not be deleted.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteAutoscalingPolicyRequest {
     /// Required. The "resource name" of the autoscaling policy, as described
@@ -229,6 +239,7 @@ pub struct DeleteAutoscalingPolicyRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// A request to list autoscaling policies in a project.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAutoscalingPoliciesRequest {
     /// Required. The "resource name" of the region or location, as described
@@ -253,6 +264,7 @@ pub struct ListAutoscalingPoliciesRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// A response to a request to list autoscaling policies in a project.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAutoscalingPoliciesResponse {
     /// Output only. Autoscaling policies list.
@@ -446,6 +458,7 @@ pub mod autoscaling_policy_service_client {
     }
 }
 /// Runtime configuration for a workload.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RuntimeConfig {
     /// Optional. Version of the batch runtime.
@@ -464,6 +477,7 @@ pub struct RuntimeConfig {
     >,
 }
 /// Environment configuration for a workload.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EnvironmentConfig {
     /// Optional. Execution configuration for a workload.
@@ -474,6 +488,7 @@ pub struct EnvironmentConfig {
     pub peripherals_config: ::core::option::Option<PeripheralsConfig>,
 }
 /// Execution configuration for a workload.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExecutionConfig {
     /// Optional. Service account that used to execute workload.
@@ -492,6 +507,7 @@ pub struct ExecutionConfig {
 /// Nested message and enum types in `ExecutionConfig`.
 pub mod execution_config {
     /// Network configuration for workload execution.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Network {
         /// Optional. Network URI to connect workload to.
@@ -503,6 +519,7 @@ pub mod execution_config {
     }
 }
 /// Spark History Server configuration for the workload.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SparkHistoryServerConfig {
     /// Optional. Resource name of an existing Dataproc Cluster to act as a Spark History
@@ -515,6 +532,7 @@ pub struct SparkHistoryServerConfig {
     pub dataproc_cluster: ::prost::alloc::string::String,
 }
 /// Auxiliary services configuration for a workload.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PeripheralsConfig {
     /// Optional. Resource name of an existing Dataproc Metastore service.
@@ -529,6 +547,7 @@ pub struct PeripheralsConfig {
     pub spark_history_server_config: ::core::option::Option<SparkHistoryServerConfig>,
 }
 /// Runtime information about workload execution.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RuntimeInfo {
     /// Output only. Map of remote access endpoints (such as web interfaces and APIs) to their
@@ -546,6 +565,7 @@ pub struct RuntimeInfo {
     pub diagnostic_output_uri: ::prost::alloc::string::String,
 }
 /// The cluster's GKE config.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GkeClusterConfig {
     /// Optional. A target GKE cluster to deploy to. It must be in the same project and
@@ -562,6 +582,7 @@ pub struct GkeClusterConfig {
     pub node_pool_target: ::prost::alloc::vec::Vec<GkeNodePoolTarget>,
 }
 /// The configuration for running the Dataproc cluster on Kubernetes.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KubernetesClusterConfig {
     /// Optional. A namespace within the Kubernetes cluster to deploy into. If this namespace
@@ -578,6 +599,7 @@ pub struct KubernetesClusterConfig {
 }
 /// Nested message and enum types in `KubernetesClusterConfig`.
 pub mod kubernetes_cluster_config {
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Config {
         /// Required. The configuration for running the Dataproc cluster on GKE.
@@ -586,6 +608,7 @@ pub mod kubernetes_cluster_config {
     }
 }
 /// The software configuration for this Dataproc cluster running on Kubernetes.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KubernetesSoftwareConfig {
     /// The components that should be installed in this Dataproc cluster. The key
@@ -614,6 +637,7 @@ pub struct KubernetesSoftwareConfig {
     >,
 }
 /// GKE NodePools that Dataproc workloads run on.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GkeNodePoolTarget {
     /// Required. The target GKE NodePool.
@@ -691,6 +715,7 @@ pub mod gke_node_pool_target {
 }
 /// The configuration of a GKE NodePool used by a [Dataproc-on-GKE
 /// cluster](<https://cloud.google.com/dataproc/docs/concepts/jobs/dataproc-gke#create-a-dataproc-on-gke-cluster>).
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GkeNodePoolConfig {
     /// Optional. The node pool configuration.
@@ -716,6 +741,7 @@ pub struct GkeNodePoolConfig {
 /// Nested message and enum types in `GkeNodePoolConfig`.
 pub mod gke_node_pool_config {
     /// Parameters that describe cluster nodes.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct GkeNodeConfig {
         /// Optional. The name of a Compute Engine [machine
@@ -746,6 +772,7 @@ pub mod gke_node_pool_config {
     }
     /// A GkeNodeConfigAcceleratorConfig represents a Hardware Accelerator request
     /// for a NodePool.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct GkeNodePoolAcceleratorConfig {
         /// The number of accelerator cards exposed to an instance.
@@ -757,6 +784,7 @@ pub mod gke_node_pool_config {
     }
     /// GkeNodePoolAutoscaling contains information the cluster autoscaler needs to
     /// adjust the size of the node pool to the current cluster usage.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct GkeNodePoolAutoscalingConfig {
         /// The minimum number of nodes in the NodePool. Must be >= 0 and <=
@@ -853,6 +881,7 @@ impl FailureAction {
     }
 }
 /// A request to create a batch workload.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateBatchRequest {
     /// Required. The parent resource where this batch will be created.
@@ -883,6 +912,7 @@ pub struct CreateBatchRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// A request to get the resource representation for a batch workload.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetBatchRequest {
     /// Required. The name of the batch to retrieve.
@@ -890,6 +920,7 @@ pub struct GetBatchRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// A request to list batch workloads in a project.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListBatchesRequest {
     /// Required. The parent, which owns this collection of batches.
@@ -906,6 +937,7 @@ pub struct ListBatchesRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// A list of batch workloads.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListBatchesResponse {
     /// The batches from the specified collection.
@@ -917,6 +949,7 @@ pub struct ListBatchesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// A request to delete a batch workload.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteBatchRequest {
     /// Required. The name of the batch resource to delete.
@@ -924,6 +957,7 @@ pub struct DeleteBatchRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// A representation of a batch workload in the service.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Batch {
     /// Output only. The resource name of the batch.
@@ -983,6 +1017,7 @@ pub struct Batch {
 /// Nested message and enum types in `Batch`.
 pub mod batch {
     /// Historical state information.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct StateHistory {
         /// Output only. The state of the batch at this point in history.
@@ -1042,6 +1077,7 @@ pub mod batch {
         }
     }
     /// The application/framework-specific portion of the batch configuration.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum BatchConfig {
         /// Optional. PySpark batch config.
@@ -1062,6 +1098,7 @@ pub mod batch {
 /// [Apache
 /// PySpark](<https://spark.apache.org/docs/latest/api/python/getting_started/quickstart.html>)
 /// batch workload.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PySparkBatch {
     /// Required. The HCFS URI of the main Python file to use as the Spark driver. Must
@@ -1093,6 +1130,7 @@ pub struct PySparkBatch {
 }
 /// A configuration for running an [Apache Spark](<http://spark.apache.org/>)
 /// batch workload.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SparkBatch {
     /// Optional. The arguments to pass to the driver. Do not include arguments
@@ -1128,6 +1166,7 @@ pub mod spark_batch {
     /// main class name. To pass both a main jar and a main class in that jar, add
     /// the jar to `jar_file_uris`, and then specify the main class
     /// name in `main_class`.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Driver {
         /// Optional. The HCFS URI of the jar file that contains the main class.
@@ -1142,6 +1181,7 @@ pub mod spark_batch {
 /// A configuration for running an
 /// [Apache SparkR](<https://spark.apache.org/docs/latest/sparkr.html>)
 /// batch workload.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SparkRBatch {
     /// Required. The HCFS URI of the main R file to use as the driver.
@@ -1165,6 +1205,7 @@ pub struct SparkRBatch {
 }
 /// A configuration for running
 /// [Apache Spark SQL](<http://spark.apache.org/sql/>) queries as a batch workload.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SparkSqlBatch {
     /// Required. The HCFS URI of the script that contains Spark SQL queries to execute.
@@ -1339,13 +1380,16 @@ pub mod batch_controller_client {
 }
 /// Describes the identifying information, config, and status of
 /// a Dataproc cluster
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Cluster {
     /// Required. The Google Cloud Platform project ID that the cluster belongs to.
     #[prost(string, tag = "1")]
     pub project_id: ::prost::alloc::string::String,
-    /// Required. The cluster name. Cluster names within a project must be
-    /// unique. Names of deleted clusters can be reused.
+    /// Required. The cluster name, which must be unique within a project.
+    /// The name must start with a lowercase letter, and can contain
+    /// up to 51 lowercase letters, numbers, and hyphens. It cannot end
+    /// with a hyphen. The name of a deleted cluster can be reused.
     #[prost(string, tag = "2")]
     pub cluster_name: ::prost::alloc::string::String,
     /// Optional. The cluster config for a cluster of Compute Engine Instances.
@@ -1353,13 +1397,15 @@ pub struct Cluster {
     /// when clusters are updated.
     #[prost(message, optional, tag = "3")]
     pub config: ::core::option::Option<ClusterConfig>,
-    /// Optional. The virtual cluster config, used when creating a Dataproc cluster that
-    /// does not directly control the underlying compute resources, for example,
-    /// when creating a [Dataproc-on-GKE
-    /// cluster](<https://cloud.google.com/dataproc/docs/concepts/jobs/dataproc-gke#create-a-dataproc-on-gke-cluster>).
-    /// Note that Dataproc may set default values, and values may change when
-    /// clusters are updated. Exactly one of config or virtualClusterConfig must be
-    /// specified.
+    /// Optional. The virtual cluster config is used when creating a Dataproc
+    /// cluster that does not directly control the underlying compute resources,
+    /// for example, when creating a [Dataproc-on-GKE
+    /// cluster](<https://cloud.google.com/dataproc/docs/guides/dpgke/dataproc-gke>).
+    /// Dataproc may set default values, and values may change when
+    /// clusters are updated. Exactly one of
+    /// \[config][google.cloud.dataproc.v1.Cluster.config\] or
+    /// \[virtual_cluster_config][google.cloud.dataproc.v1.Cluster.virtual_cluster_config\]
+    /// must be specified.
     #[prost(message, optional, tag = "10")]
     pub virtual_cluster_config: ::core::option::Option<VirtualClusterConfig>,
     /// Optional. The labels to associate with this cluster.
@@ -1392,6 +1438,7 @@ pub struct Cluster {
     pub metrics: ::core::option::Option<ClusterMetrics>,
 }
 /// The cluster config.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ClusterConfig {
     /// Optional. A Cloud Storage bucket used to stage job
@@ -1407,15 +1454,13 @@ pub struct ClusterConfig {
     /// a Cloud Storage bucket.**
     #[prost(string, tag = "1")]
     pub config_bucket: ::prost::alloc::string::String,
-    /// Optional. A Cloud Storage bucket used to store ephemeral cluster and jobs data,
-    /// such as Spark and MapReduce history files.
-    /// If you do not specify a temp bucket,
-    /// Dataproc will determine a Cloud Storage location (US,
-    /// ASIA, or EU) for your cluster's temp bucket according to the
-    /// Compute Engine zone where your cluster is deployed, and then create
-    /// and manage this project-level, per-location bucket. The default bucket has
-    /// a TTL of 90 days, but you can use any TTL (or none) if you specify a
-    /// bucket (see
+    /// Optional. A Cloud Storage bucket used to store ephemeral cluster and jobs
+    /// data, such as Spark and MapReduce history files. If you do not specify a
+    /// temp bucket, Dataproc will determine a Cloud Storage location (US, ASIA, or
+    /// EU) for your cluster's temp bucket according to the Compute Engine zone
+    /// where your cluster is deployed, and then create and manage this
+    /// project-level, per-location bucket. The default bucket has a TTL of 90
+    /// days, but you can use any TTL (or none) if you specify a bucket (see
     /// [Dataproc staging and temp
     /// buckets](<https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/staging-bucket>)).
     /// **This field requires a Cloud Storage bucket name, not a `gs://...` URI to
@@ -1478,13 +1523,17 @@ pub struct ClusterConfig {
     /// Optional. The config for Dataproc metrics.
     #[prost(message, optional, tag = "23")]
     pub dataproc_metric_config: ::core::option::Option<DataprocMetricConfig>,
+    /// Optional. The node group settings.
+    #[prost(message, repeated, tag = "25")]
+    pub auxiliary_node_groups: ::prost::alloc::vec::Vec<AuxiliaryNodeGroup>,
 }
-/// Dataproc cluster config for a cluster that does not directly control the
+/// The Dataproc cluster config for a cluster that does not directly control the
 /// underlying compute resources, such as a [Dataproc-on-GKE
-/// cluster](<https://cloud.google.com/dataproc/docs/concepts/jobs/dataproc-gke#create-a-dataproc-on-gke-cluster>).
+/// cluster](<https://cloud.google.com/dataproc/docs/guides/dpgke/dataproc-gke>).
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VirtualClusterConfig {
-    /// Optional. A Storage bucket used to stage job
+    /// Optional. A Cloud Storage bucket used to stage job
     /// dependencies, config files, and job driver console output.
     /// If you do not specify a staging bucket, Cloud
     /// Dataproc will determine a Cloud Storage location (US,
@@ -1507,14 +1556,17 @@ pub struct VirtualClusterConfig {
 }
 /// Nested message and enum types in `VirtualClusterConfig`.
 pub mod virtual_cluster_config {
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum InfrastructureConfig {
-        /// Required. The configuration for running the Dataproc cluster on Kubernetes.
+        /// Required. The configuration for running the Dataproc cluster on
+        /// Kubernetes.
         #[prost(message, tag = "6")]
         KubernetesClusterConfig(super::KubernetesClusterConfig),
     }
 }
 /// Auxiliary services configuration for a Cluster.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AuxiliaryServicesConfig {
     /// Optional. The Hive Metastore configuration for this workload.
@@ -1525,6 +1577,7 @@ pub struct AuxiliaryServicesConfig {
     pub spark_history_server_config: ::core::option::Option<SparkHistoryServerConfig>,
 }
 /// Endpoint config for this cluster
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EndpointConfig {
     /// Output only. The map of port descriptions to URLs. Will only be populated
@@ -1540,6 +1593,7 @@ pub struct EndpointConfig {
     pub enable_http_port_access: bool,
 }
 /// Autoscaling Policy config associated with the cluster.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AutoscalingConfig {
     /// Optional. The autoscaling policy used by the cluster.
@@ -1555,6 +1609,7 @@ pub struct AutoscalingConfig {
     pub policy_uri: ::prost::alloc::string::String,
 }
 /// Encryption settings for the cluster.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EncryptionConfig {
     /// Optional. The Cloud KMS key name to use for PD disk encryption for all
@@ -1564,6 +1619,7 @@ pub struct EncryptionConfig {
 }
 /// Common config settings for resources of Compute Engine cluster
 /// instances, applicable to all instances in the cluster.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GceClusterConfig {
     /// Optional. The zone where the Compute Engine cluster will be located.
@@ -1661,7 +1717,8 @@ pub struct GceClusterConfig {
     /// Optional. Node Group Affinity for sole-tenant clusters.
     #[prost(message, optional, tag = "13")]
     pub node_group_affinity: ::core::option::Option<NodeGroupAffinity>,
-    /// Optional. Shielded Instance Config for clusters using [Compute Engine Shielded
+    /// Optional. Shielded Instance Config for clusters using [Compute Engine
+    /// Shielded
     /// VMs](<https://cloud.google.com/security/shielded-cloud/shielded-vm>).
     #[prost(message, optional, tag = "14")]
     pub shielded_instance_config: ::core::option::Option<ShieldedInstanceConfig>,
@@ -1691,7 +1748,8 @@ pub mod gce_cluster_config {
     #[repr(i32)]
     pub enum PrivateIpv6GoogleAccess {
         /// If unspecified, Compute Engine default behavior will apply, which
-        /// is the same as \[INHERIT_FROM_SUBNETWORK][google.cloud.dataproc.v1.GceClusterConfig.PrivateIpv6GoogleAccess.INHERIT_FROM_SUBNETWORK\].
+        /// is the same as
+        /// \[INHERIT_FROM_SUBNETWORK][google.cloud.dataproc.v1.GceClusterConfig.PrivateIpv6GoogleAccess.INHERIT_FROM_SUBNETWORK\].
         Unspecified = 0,
         /// Private access to and from Google Services configuration
         /// inherited from the subnetwork configuration. This is the
@@ -1724,6 +1782,9 @@ pub mod gce_cluster_config {
     }
 }
 /// Node Group Affinity for clusters using sole-tenant node groups.
+/// **The Dataproc `NodeGroupAffinity` resource is not related to the
+/// Dataproc \[NodeGroup][google.cloud.dataproc.v1.NodeGroup\] resource.**
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NodeGroupAffinity {
     /// Required. The URI of a
@@ -1741,6 +1802,7 @@ pub struct NodeGroupAffinity {
 }
 /// Shielded Instance Config for clusters using [Compute Engine Shielded
 /// VMs](<https://cloud.google.com/security/shielded-cloud/shielded-vm>).
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ShieldedInstanceConfig {
     /// Optional. Defines whether instances have Secure Boot enabled.
@@ -1755,14 +1817,17 @@ pub struct ShieldedInstanceConfig {
 }
 /// Confidential Instance Config for clusters using [Confidential
 /// VMs](<https://cloud.google.com/compute/confidential-vm/docs>)
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConfidentialInstanceConfig {
-    /// Optional. Defines whether the instance should have confidential compute enabled.
+    /// Optional. Defines whether the instance should have confidential compute
+    /// enabled.
     #[prost(bool, tag = "1")]
     pub enable_confidential_compute: bool,
 }
 /// The config settings for Compute Engine resources in
 /// an instance group, such as a master or worker group.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceGroupConfig {
     /// Optional. The number of VM instances in the instance group.
@@ -1845,10 +1910,7 @@ pub struct InstanceGroupConfig {
 }
 /// Nested message and enum types in `InstanceGroupConfig`.
 pub mod instance_group_config {
-    /// Controls the use of
-    /// [preemptible instances]
-    /// (<https://cloud.google.com/compute/docs/instances/preemptible>)
-    /// within the group.
+    /// Controls the use of preemptible instances within the group.
     #[derive(
         Clone,
         Copy,
@@ -1870,9 +1932,12 @@ pub mod instance_group_config {
         /// This option is allowed for all instance groups and is the only valid
         /// value for Master and Worker instance groups.
         NonPreemptible = 1,
-        /// Instances are preemptible.
+        /// Instances are \[preemptible\]
+        /// (<https://cloud.google.com/compute/docs/instances/preemptible>).
         ///
-        /// This option is allowed only for secondary worker groups.
+        /// This option is allowed only for [secondary worker]
+        /// (<https://cloud.google.com/dataproc/docs/concepts/compute/secondary-vms>)
+        /// groups.
         Preemptible = 2,
     }
     impl Preemptibility {
@@ -1890,6 +1955,7 @@ pub mod instance_group_config {
     }
 }
 /// Specifies the resources used to actively manage an instance group.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ManagedGroupConfig {
     /// Output only. The name of the Instance Template used for the Managed
@@ -1903,6 +1969,7 @@ pub struct ManagedGroupConfig {
 /// Specifies the type and number of accelerator cards attached to the instances
 /// of an instance. See [GPUs on Compute
 /// Engine](<https://cloud.google.com/compute/docs/gpus/>).
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AcceleratorConfig {
     /// Full URL, partial URI, or short name of the accelerator type resource to
@@ -1928,6 +1995,7 @@ pub struct AcceleratorConfig {
     pub accelerator_count: i32,
 }
 /// Specifies the config of disk options for a group of VM instances.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DiskConfig {
     /// Optional. Type of the boot disk (default is "pd-standard").
@@ -1940,7 +2008,7 @@ pub struct DiskConfig {
     /// Optional. Size in GB of the boot disk (default is 500GB).
     #[prost(int32, tag = "1")]
     pub boot_disk_size_gb: i32,
-    /// Optional. Number of attached SSDs, from 0 to 4 (default is 0).
+    /// Optional. Number of attached SSDs, from 0 to 8 (default is 0).
     /// If SSDs are not attached, the boot disk is used to store runtime logs and
     /// \[HDFS\](<https://hadoop.apache.org/docs/r1.2.1/hdfs_user_guide.html>) data.
     /// If one or more SSDs are attached, this runtime bulk
@@ -1956,8 +2024,88 @@ pub struct DiskConfig {
     #[prost(string, tag = "4")]
     pub local_ssd_interface: ::prost::alloc::string::String,
 }
+/// Node group identification and configuration information.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AuxiliaryNodeGroup {
+    /// Required. Node group configuration.
+    #[prost(message, optional, tag = "1")]
+    pub node_group: ::core::option::Option<NodeGroup>,
+    /// Optional. A node group ID. Generated if not specified.
+    ///
+    /// The ID must contain only letters (a-z, A-Z), numbers (0-9),
+    /// underscores (_), and hyphens (-). Cannot begin or end with underscore
+    /// or hyphen. Must consist of from 3 to 33 characters.
+    #[prost(string, tag = "2")]
+    pub node_group_id: ::prost::alloc::string::String,
+}
+/// Dataproc Node Group.
+/// **The Dataproc `NodeGroup` resource is not related to the
+/// Dataproc \[NodeGroupAffinity][google.cloud.dataproc.v1.NodeGroupAffinity\]
+/// resource.**
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct NodeGroup {
+    /// The Node group [resource name](<https://aip.dev/122>).
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. Node group roles.
+    #[prost(enumeration = "node_group::Role", repeated, packed = "false", tag = "2")]
+    pub roles: ::prost::alloc::vec::Vec<i32>,
+    /// Optional. The node group instance group configuration.
+    #[prost(message, optional, tag = "3")]
+    pub node_group_config: ::core::option::Option<InstanceGroupConfig>,
+    /// Optional. Node group labels.
+    ///
+    /// * Label **keys** must consist of from 1 to 63 characters and conform to
+    ///    [RFC 1035](<https://www.ietf.org/rfc/rfc1035.txt>).
+    /// * Label **values** can be empty. If specified, they must consist of from
+    ///    1 to 63 characters and conform to [RFC 1035]
+    ///    (<https://www.ietf.org/rfc/rfc1035.txt>).
+    /// * The node group must have no more than 32 labels.
+    #[prost(map = "string, string", tag = "4")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+}
+/// Nested message and enum types in `NodeGroup`.
+pub mod node_group {
+    /// Node group roles.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Role {
+        /// Required unspecified role.
+        Unspecified = 0,
+        /// Job drivers run on the node group.
+        Driver = 1,
+    }
+    impl Role {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Role::Unspecified => "ROLE_UNSPECIFIED",
+                Role::Driver => "DRIVER",
+            }
+        }
+    }
+}
 /// Specifies an executable to run on a fully configured node and a
 /// timeout period for executable completion.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NodeInitializationAction {
     /// Required. Cloud Storage URI of executable file.
@@ -1974,6 +2122,7 @@ pub struct NodeInitializationAction {
     pub execution_timeout: ::core::option::Option<::prost_types::Duration>,
 }
 /// The status of a cluster and its instances.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ClusterStatus {
     /// Output only. The cluster's state.
@@ -2096,6 +2245,7 @@ pub mod cluster_status {
     }
 }
 /// Security related configuration, including encryption, Kerberos, etc.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SecurityConfig {
     /// Optional. Kerberos related configuration.
@@ -2107,10 +2257,11 @@ pub struct SecurityConfig {
     pub identity_config: ::core::option::Option<IdentityConfig>,
 }
 /// Specifies Kerberos related configuration.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KerberosConfig {
-    /// Optional. Flag to indicate whether to Kerberize the cluster (default: false). Set
-    /// this field to true to enable Kerberos on a cluster.
+    /// Optional. Flag to indicate whether to Kerberize the cluster (default:
+    /// false). Set this field to true to enable Kerberos on a cluster.
     #[prost(bool, tag = "1")]
     pub enable_kerberos: bool,
     /// Optional. The Cloud Storage URI of a KMS encrypted file containing the root
@@ -2179,6 +2330,7 @@ pub struct KerberosConfig {
 }
 /// Identity related configuration, including service account based
 /// secure multi-tenancy user mappings.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IdentityConfig {
     /// Required. Map of user to service account.
@@ -2189,6 +2341,7 @@ pub struct IdentityConfig {
     >,
 }
 /// Specifies the selection and config of software inside the cluster.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SoftwareConfig {
     /// Optional. The version of software inside the cluster. It must be one of the
@@ -2228,6 +2381,7 @@ pub struct SoftwareConfig {
     pub optional_components: ::prost::alloc::vec::Vec<i32>,
 }
 /// Specifies the cluster auto-delete schedule configuration.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LifecycleConfig {
     /// Optional. The duration to keep the cluster alive while idling (when no jobs
@@ -2252,9 +2406,11 @@ pub struct LifecycleConfig {
 pub mod lifecycle_config {
     /// Either the exact time the cluster should be deleted at or
     /// the cluster maximum age.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Ttl {
-        /// Optional. The time when cluster will be auto-deleted (see JSON representation of
+        /// Optional. The time when cluster will be auto-deleted (see JSON
+        /// representation of
         /// \[Timestamp\](<https://developers.google.com/protocol-buffers/docs/proto3#json>)).
         #[prost(message, tag = "2")]
         AutoDeleteTime(::prost_types::Timestamp),
@@ -2267,6 +2423,7 @@ pub mod lifecycle_config {
     }
 }
 /// Specifies a Metastore configuration.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MetastoreConfig {
     /// Required. Resource name of an existing Dataproc Metastore service.
@@ -2278,6 +2435,7 @@ pub struct MetastoreConfig {
     pub dataproc_metastore_service: ::prost::alloc::string::String,
 }
 /// Dataproc metric config.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataprocMetricConfig {
     /// Required. Metrics sources to enable.
@@ -2287,6 +2445,7 @@ pub struct DataprocMetricConfig {
 /// Nested message and enum types in `DataprocMetricConfig`.
 pub mod dataproc_metric_config {
     /// A Dataproc OSS metric.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Metric {
         /// Required. Default metrics are collected unless `metricOverrides` are
@@ -2383,6 +2542,7 @@ pub mod dataproc_metric_config {
 ///
 /// **Beta Feature**: This report is available for testing purposes only. It may
 /// be changed before final release.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ClusterMetrics {
     /// The HDFS metrics.
@@ -2393,6 +2553,7 @@ pub struct ClusterMetrics {
     pub yarn_metrics: ::std::collections::HashMap<::prost::alloc::string::String, i64>,
 }
 /// A request to create a cluster.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateClusterRequest {
     /// Required. The ID of the Google Cloud Platform project that the cluster
@@ -2405,11 +2566,12 @@ pub struct CreateClusterRequest {
     /// Required. The cluster to create.
     #[prost(message, optional, tag = "2")]
     pub cluster: ::core::option::Option<Cluster>,
-    /// Optional. A unique ID used to identify the request. If the server receives two
+    /// Optional. A unique ID used to identify the request. If the server receives
+    /// two
     /// \[CreateClusterRequest\](<https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1#google.cloud.dataproc.v1.CreateClusterRequest>)s
     /// with the same id, then the second request will be ignored and the
-    /// first \[google.longrunning.Operation][google.longrunning.Operation\] created and stored in the backend
-    /// is returned.
+    /// first \[google.longrunning.Operation][google.longrunning.Operation\] created
+    /// and stored in the backend is returned.
     ///
     /// It is recommended to always set this value to a
     /// \[UUID\](<https://en.wikipedia.org/wiki/Universally_unique_identifier>).
@@ -2423,6 +2585,7 @@ pub struct CreateClusterRequest {
     pub action_on_failed_primary_workers: i32,
 }
 /// A request to update a cluster.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateClusterRequest {
     /// Required. The ID of the Google Cloud Platform project the
@@ -2506,8 +2669,8 @@ pub struct UpdateClusterRequest {
     /// receives two
     /// \[UpdateClusterRequest\](<https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1#google.cloud.dataproc.v1.UpdateClusterRequest>)s
     /// with the same id, then the second request will be ignored and the
-    /// first \[google.longrunning.Operation][google.longrunning.Operation\] created and stored in the
-    /// backend is returned.
+    /// first \[google.longrunning.Operation][google.longrunning.Operation\] created
+    /// and stored in the backend is returned.
     ///
     /// It is recommended to always set this value to a
     /// \[UUID\](<https://en.wikipedia.org/wiki/Universally_unique_identifier>).
@@ -2518,6 +2681,7 @@ pub struct UpdateClusterRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// A request to stop a cluster.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StopClusterRequest {
     /// Required. The ID of the Google Cloud Platform project the
@@ -2538,8 +2702,8 @@ pub struct StopClusterRequest {
     /// receives two
     /// \[StopClusterRequest\](<https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1#google.cloud.dataproc.v1.StopClusterRequest>)s
     /// with the same id, then the second request will be ignored and the
-    /// first \[google.longrunning.Operation][google.longrunning.Operation\] created and stored in the
-    /// backend is returned.
+    /// first \[google.longrunning.Operation][google.longrunning.Operation\] created
+    /// and stored in the backend is returned.
     ///
     /// Recommendation: Set this value to a
     /// \[UUID\](<https://en.wikipedia.org/wiki/Universally_unique_identifier>).
@@ -2550,6 +2714,7 @@ pub struct StopClusterRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// A request to start a cluster.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StartClusterRequest {
     /// Required. The ID of the Google Cloud Platform project the
@@ -2570,8 +2735,8 @@ pub struct StartClusterRequest {
     /// receives two
     /// \[StartClusterRequest\](<https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1#google.cloud.dataproc.v1.StartClusterRequest>)s
     /// with the same id, then the second request will be ignored and the
-    /// first \[google.longrunning.Operation][google.longrunning.Operation\] created and stored in the
-    /// backend is returned.
+    /// first \[google.longrunning.Operation][google.longrunning.Operation\] created
+    /// and stored in the backend is returned.
     ///
     /// Recommendation: Set this value to a
     /// \[UUID\](<https://en.wikipedia.org/wiki/Universally_unique_identifier>).
@@ -2582,6 +2747,7 @@ pub struct StartClusterRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// A request to delete a cluster.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteClusterRequest {
     /// Required. The ID of the Google Cloud Platform project that the cluster
@@ -2602,8 +2768,8 @@ pub struct DeleteClusterRequest {
     /// receives two
     /// \[DeleteClusterRequest\](<https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1#google.cloud.dataproc.v1.DeleteClusterRequest>)s
     /// with the same id, then the second request will be ignored and the
-    /// first \[google.longrunning.Operation][google.longrunning.Operation\] created and stored in the
-    /// backend is returned.
+    /// first \[google.longrunning.Operation][google.longrunning.Operation\] created
+    /// and stored in the backend is returned.
     ///
     /// It is recommended to always set this value to a
     /// \[UUID\](<https://en.wikipedia.org/wiki/Universally_unique_identifier>).
@@ -2614,6 +2780,7 @@ pub struct DeleteClusterRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request to get the resource representation for a cluster in a project.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetClusterRequest {
     /// Required. The ID of the Google Cloud Platform project that the cluster
@@ -2628,6 +2795,7 @@ pub struct GetClusterRequest {
     pub cluster_name: ::prost::alloc::string::String,
 }
 /// A request to list the clusters in a project.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListClustersRequest {
     /// Required. The ID of the Google Cloud Platform project that the cluster
@@ -2666,6 +2834,7 @@ pub struct ListClustersRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// The list of all clusters in a project.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListClustersResponse {
     /// Output only. The clusters in the project.
@@ -2678,6 +2847,7 @@ pub struct ListClustersResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// A request to collect cluster diagnostic information.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DiagnoseClusterRequest {
     /// Required. The ID of the Google Cloud Platform project that the cluster
@@ -2692,6 +2862,7 @@ pub struct DiagnoseClusterRequest {
     pub cluster_name: ::prost::alloc::string::String,
 }
 /// The location of diagnostic output.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DiagnoseClusterResults {
     /// Output only. The Cloud Storage URI of the diagnostic output.
@@ -2701,6 +2872,7 @@ pub struct DiagnoseClusterResults {
     pub output_uri: ::prost::alloc::string::String,
 }
 /// Reservation Affinity for consuming Zonal reservation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReservationAffinity {
     /// Optional. Type of reservation to consume
@@ -2852,7 +3024,8 @@ pub mod cluster_controller_client {
         /// Updates a cluster in a project. The returned
         /// [Operation.metadata][google.longrunning.Operation.metadata] will be
         /// [ClusterOperationMetadata](https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1#clusteroperationmetadata).
-        /// The cluster must be in a [`RUNNING`][google.cloud.dataproc.v1.ClusterStatus.State] state or an error
+        /// The cluster must be in a
+        /// [`RUNNING`][google.cloud.dataproc.v1.ClusterStatus.State] state or an error
         /// is returned.
         pub async fn update_cluster(
             &mut self,
@@ -3019,6 +3192,7 @@ pub mod cluster_controller_client {
     }
 }
 /// The runtime logging config of the job.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LoggingConfig {
     /// The per-package log levels for the driver. This may include
@@ -3093,6 +3267,7 @@ pub mod logging_config {
 /// MapReduce](<https://hadoop.apache.org/docs/current/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html>)
 /// jobs on [Apache Hadoop
 /// YARN](<https://hadoop.apache.org/docs/r2.7.1/hadoop-yarn/hadoop-yarn-site/YARN.html>).
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HadoopJob {
     /// Optional. The arguments to pass to the driver. Do not
@@ -3140,6 +3315,7 @@ pub mod hadoop_job {
     /// either the jar file that contains the main class or the main class name.
     /// To specify both, add the jar file to `jar_file_uris`, and then specify
     /// the main class name in this property.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Driver {
         /// The HCFS URI of the jar file containing the main class.
@@ -3155,8 +3331,9 @@ pub mod hadoop_job {
         MainClass(::prost::alloc::string::String),
     }
 }
-/// A Dataproc job for running [Apache Spark](<http://spark.apache.org/>)
+/// A Dataproc job for running [Apache Spark](<https://spark.apache.org/>)
 /// applications on YARN.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SparkJob {
     /// Optional. The arguments to pass to the driver. Do not include arguments,
@@ -3204,6 +3381,7 @@ pub mod spark_job {
     /// name. To pass both a main jar and a main class in that jar, add the jar to
     /// `CommonJob.jar_file_uris`, and then specify the main class name in
     /// `main_class`.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Driver {
         /// The HCFS URI of the jar file that contains the main class.
@@ -3219,6 +3397,7 @@ pub mod spark_job {
 /// [Apache
 /// PySpark](<https://spark.apache.org/docs/0.9.0/python-programming-guide.html>)
 /// applications on YARN.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PySparkJob {
     /// Required. The HCFS URI of the main Python file to use as the driver. Must
@@ -3261,6 +3440,7 @@ pub struct PySparkJob {
     pub logging_config: ::core::option::Option<LoggingConfig>,
 }
 /// A list of queries to run on a cluster.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryList {
     /// Required. The queries to execute. You do not need to end a query expression
@@ -3282,6 +3462,7 @@ pub struct QueryList {
 }
 /// A Dataproc job for running [Apache Hive](<https://hive.apache.org/>)
 /// queries on YARN.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HiveJob {
     /// Optional. Whether to continue executing queries if a query fails.
@@ -3319,6 +3500,7 @@ pub struct HiveJob {
 pub mod hive_job {
     /// Required. The sequence of Hive queries to execute, specified as either
     /// an HCFS file URI or a list of queries.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Queries {
         /// The HCFS URI of the script that contains Hive queries.
@@ -3330,7 +3512,8 @@ pub mod hive_job {
     }
 }
 /// A Dataproc job for running [Apache Spark
-/// SQL](<http://spark.apache.org/sql/>) queries.
+/// SQL](<https://spark.apache.org/sql/>) queries.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SparkSqlJob {
     /// Optional. Mapping of query variable names to values (equivalent to the
@@ -3363,6 +3546,7 @@ pub struct SparkSqlJob {
 pub mod spark_sql_job {
     /// Required. The sequence of Spark SQL queries to execute, specified as
     /// either an HCFS file URI or as a list of queries.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Queries {
         /// The HCFS URI of the script that contains SQL queries.
@@ -3375,6 +3559,7 @@ pub mod spark_sql_job {
 }
 /// A Dataproc job for running [Apache Pig](<https://pig.apache.org/>)
 /// queries on YARN.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PigJob {
     /// Optional. Whether to continue executing queries if a query fails.
@@ -3414,6 +3599,7 @@ pub struct PigJob {
 pub mod pig_job {
     /// Required. The sequence of Pig queries to execute, specified as an HCFS
     /// file URI or a list of queries.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Queries {
         /// The HCFS URI of the script that contains the Pig queries.
@@ -3427,6 +3613,7 @@ pub mod pig_job {
 /// A Dataproc job for running
 /// [Apache SparkR](<https://spark.apache.org/docs/latest/sparkr.html>)
 /// applications on YARN.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SparkRJob {
     /// Required. The HCFS URI of the main R file to use as the driver.
@@ -3465,6 +3652,7 @@ pub struct SparkRJob {
 /// Component](<https://cloud.google.com/dataproc/docs/concepts/components/presto>)
 /// must be enabled when the cluster is created to submit a Presto job to the
 /// cluster.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PrestoJob {
     /// Optional. Whether to continue executing queries if a query fails.
@@ -3499,6 +3687,7 @@ pub struct PrestoJob {
 pub mod presto_job {
     /// Required. The sequence of Presto queries to execute, specified as
     /// either an HCFS file URI or as a list of queries.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Queries {
         /// The HCFS URI of the script that contains SQL queries.
@@ -3510,6 +3699,7 @@ pub mod presto_job {
     }
 }
 /// Dataproc job config.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct JobPlacement {
     /// Required. The name of the cluster where the job will be submitted.
@@ -3519,7 +3709,8 @@ pub struct JobPlacement {
     /// the job is submitted.
     #[prost(string, tag = "2")]
     pub cluster_uuid: ::prost::alloc::string::String,
-    /// Optional. Cluster labels to identify a cluster where the job will be submitted.
+    /// Optional. Cluster labels to identify a cluster where the job will be
+    /// submitted.
     #[prost(map = "string, string", tag = "3")]
     pub cluster_labels: ::std::collections::HashMap<
         ::prost::alloc::string::String,
@@ -3527,6 +3718,7 @@ pub struct JobPlacement {
     >,
 }
 /// Dataproc job status.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct JobStatus {
     /// Output only. A state message specifying the overall job state.
@@ -3655,10 +3847,11 @@ pub mod job_status {
     }
 }
 /// Encapsulates the full scoping used to reference a job.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct JobReference {
-    /// Optional. The ID of the Google Cloud Platform project that the job belongs to. If
-    /// specified, must match the request project ID.
+    /// Optional. The ID of the Google Cloud Platform project that the job belongs
+    /// to. If specified, must match the request project ID.
     #[prost(string, tag = "1")]
     pub project_id: ::prost::alloc::string::String,
     /// Optional. The job ID, which must be unique within the project.
@@ -3675,6 +3868,7 @@ pub struct JobReference {
 ///
 /// **Beta Feature**: This report is available for testing purposes only. It may
 /// be changed before final release.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct YarnApplication {
     /// Required. The application name.
@@ -3750,6 +3944,7 @@ pub mod yarn_application {
     }
 }
 /// A Dataproc job resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Job {
     /// Optional. The fully qualified reference to the job, which can be used to
@@ -3805,12 +4000,15 @@ pub struct Job {
     /// may be reused over time.
     #[prost(string, tag = "22")]
     pub job_uuid: ::prost::alloc::string::String,
-    /// Output only. Indicates whether the job is completed. If the value is `false`,
-    /// the job is still in progress. If `true`, the job is completed, and
+    /// Output only. Indicates whether the job is completed. If the value is
+    /// `false`, the job is still in progress. If `true`, the job is completed, and
     /// `status.state` field will indicate if it was successful, failed,
     /// or cancelled.
     #[prost(bool, tag = "24")]
     pub done: bool,
+    /// Optional. Driver scheduling configuration.
+    #[prost(message, optional, tag = "27")]
+    pub driver_scheduling_config: ::core::option::Option<DriverSchedulingConfig>,
     /// Required. The application/framework-specific portion of the job.
     #[prost(oneof = "job::TypeJob", tags = "3, 4, 5, 6, 7, 21, 12, 23")]
     pub type_job: ::core::option::Option<job::TypeJob>,
@@ -3818,6 +4016,7 @@ pub struct Job {
 /// Nested message and enum types in `Job`.
 pub mod job {
     /// Required. The application/framework-specific portion of the job.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum TypeJob {
         /// Optional. Job is a Hadoop job.
@@ -3846,38 +4045,50 @@ pub mod job {
         PrestoJob(super::PrestoJob),
     }
 }
+/// Driver scheduling configuration.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DriverSchedulingConfig {
+    /// Required. The amount of memory in MB the driver is requesting.
+    #[prost(int32, tag = "1")]
+    pub memory_mb: i32,
+    /// Required. The number of vCPUs the driver is requesting.
+    #[prost(int32, tag = "2")]
+    pub vcores: i32,
+}
 /// Job scheduling options.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct JobScheduling {
     /// Optional. Maximum number of times per hour a driver may be restarted as
     /// a result of driver exiting with non-zero code before job is
     /// reported failed.
     ///
-    /// A job may be reported as thrashing if driver exits with non-zero code
-    /// 4 times within 10 minute window.
+    /// A job may be reported as thrashing if the driver exits with a non-zero code
+    /// four times within a 10-minute window.
     ///
     /// Maximum value is 10.
     ///
-    /// **Note:** Currently, this restartable job option is
-    /// not supported in Dataproc
-    /// [workflow
-    /// template](<https://cloud.google.com/dataproc/docs/concepts/workflows/using-workflows#adding_jobs_to_a_template>)
-    /// jobs.
+    /// **Note:** This restartable job option is not supported in Dataproc
+    /// [workflow templates]
+    /// (<https://cloud.google.com/dataproc/docs/concepts/workflows/using-workflows#adding_jobs_to_a_template>).
     #[prost(int32, tag = "1")]
     pub max_failures_per_hour: i32,
-    /// Optional. Maximum number of times in total a driver may be restarted as a result of
-    /// driver exiting with non-zero code before job is reported failed.
+    /// Optional. Maximum total number of times a driver may be restarted as a
+    /// result of the driver exiting with a non-zero code. After the maximum number
+    /// is reached, the job will be reported as failed.
+    ///
     /// Maximum value is 240.
     ///
     /// **Note:** Currently, this restartable job option is
     /// not supported in Dataproc
     /// [workflow
-    /// template](<https://cloud.google.com/dataproc/docs/concepts/workflows/using-workflows#adding_jobs_to_a_template>)
-    /// jobs.
+    /// templates](<https://cloud.google.com/dataproc/docs/concepts/workflows/using-workflows#adding_jobs_to_a_template>).
     #[prost(int32, tag = "2")]
     pub max_failures_total: i32,
 }
 /// A request to submit a job.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SubmitJobRequest {
     /// Required. The ID of the Google Cloud Platform project that the job
@@ -3906,6 +4117,7 @@ pub struct SubmitJobRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Job Operation metadata.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct JobMetadata {
     /// Output only. The job id.
@@ -3922,6 +4134,7 @@ pub struct JobMetadata {
     pub start_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// A request to get the resource representation for a job in a project.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetJobRequest {
     /// Required. The ID of the Google Cloud Platform project that the job
@@ -3936,6 +4149,7 @@ pub struct GetJobRequest {
     pub job_id: ::prost::alloc::string::String,
 }
 /// A request to list jobs in a project.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListJobsRequest {
     /// Required. The ID of the Google Cloud Platform project that the job
@@ -4018,6 +4232,7 @@ pub mod list_jobs_request {
     }
 }
 /// A request to update a job.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateJobRequest {
     /// Required. The ID of the Google Cloud Platform project that the job
@@ -4043,6 +4258,7 @@ pub struct UpdateJobRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// A list of jobs in a project.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListJobsResponse {
     /// Output only. Jobs list.
@@ -4055,6 +4271,7 @@ pub struct ListJobsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// A request to cancel a job.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CancelJobRequest {
     /// Required. The ID of the Google Cloud Platform project that the job
@@ -4069,6 +4286,7 @@ pub struct CancelJobRequest {
     pub job_id: ::prost::alloc::string::String,
 }
 /// A request to delete a job.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteJobRequest {
     /// Required. The ID of the Google Cloud Platform project that the job
@@ -4302,7 +4520,238 @@ pub mod job_controller_client {
         }
     }
 }
+/// A request to create a node group.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateNodeGroupRequest {
+    /// Required. The parent resource where this node group will be created.
+    /// Format: `projects/{project}/regions/{region}/clusters/{cluster}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The node group to create.
+    #[prost(message, optional, tag = "2")]
+    pub node_group: ::core::option::Option<NodeGroup>,
+    /// Optional. An optional node group ID. Generated if not specified.
+    ///
+    /// The ID must contain only letters (a-z, A-Z), numbers (0-9),
+    /// underscores (_), and hyphens (-). Cannot begin or end with underscore
+    /// or hyphen. Must consist of from 3 to 33 characters.
+    #[prost(string, tag = "4")]
+    pub node_group_id: ::prost::alloc::string::String,
+    /// Optional. A unique ID used to identify the request. If the server receives
+    /// two
+    /// \[CreateNodeGroupRequest\](<https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1#google.cloud.dataproc.v1.CreateNodeGroupRequests>)
+    /// with the same ID, the second request is ignored and the
+    /// first \[google.longrunning.Operation][google.longrunning.Operation\] created
+    /// and stored in the backend is returned.
+    ///
+    /// Recommendation: Set this value to a
+    /// \[UUID\](<https://en.wikipedia.org/wiki/Universally_unique_identifier>).
+    ///
+    /// The ID must contain only letters (a-z, A-Z), numbers (0-9),
+    /// underscores (_), and hyphens (-). The maximum length is 40 characters.
+    #[prost(string, tag = "3")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// A request to resize a node group.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ResizeNodeGroupRequest {
+    /// Required. The name of the node group to resize.
+    /// Format:
+    /// `projects/{project}/regions/{region}/clusters/{cluster}/nodeGroups/{nodeGroup}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The number of running instances for the node group to maintain.
+    /// The group adds or removes instances to maintain the number of instances
+    /// specified by this parameter.
+    #[prost(int32, tag = "2")]
+    pub size: i32,
+    /// Optional. A unique ID used to identify the request. If the server receives
+    /// two
+    /// \[ResizeNodeGroupRequest\](<https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1#google.cloud.dataproc.v1.ResizeNodeGroupRequests>)
+    /// with the same ID, the second request is ignored and the
+    /// first \[google.longrunning.Operation][google.longrunning.Operation\] created
+    /// and stored in the backend is returned.
+    ///
+    /// Recommendation: Set this value to a
+    /// \[UUID\](<https://en.wikipedia.org/wiki/Universally_unique_identifier>).
+    ///
+    /// The ID must contain only letters (a-z, A-Z), numbers (0-9),
+    /// underscores (_), and hyphens (-). The maximum length is 40 characters.
+    #[prost(string, tag = "3")]
+    pub request_id: ::prost::alloc::string::String,
+    /// Optional. Timeout for graceful YARN decommissioning. [Graceful
+    /// decommissioning]
+    /// (<https://cloud.google.com/dataproc/docs/concepts/configuring-clusters/scaling-clusters#graceful_decommissioning>)
+    /// allows the removal of nodes from the Compute Engine node group
+    /// without interrupting jobs in progress. This timeout specifies how long to
+    /// wait for jobs in progress to finish before forcefully removing nodes (and
+    /// potentially interrupting jobs). Default timeout is 0 (for forceful
+    /// decommission), and the maximum allowed timeout is 1 day. (see JSON
+    /// representation of
+    /// \[Duration\](<https://developers.google.com/protocol-buffers/docs/proto3#json>)).
+    ///
+    /// Only supported on Dataproc image versions 1.2 and higher.
+    #[prost(message, optional, tag = "4")]
+    pub graceful_decommission_timeout: ::core::option::Option<::prost_types::Duration>,
+}
+/// A request to get a node group .
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetNodeGroupRequest {
+    /// Required. The name of the node group to retrieve.
+    /// Format:
+    /// `projects/{project}/regions/{region}/clusters/{cluster}/nodeGroups/{nodeGroup}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Generated client implementations.
+pub mod node_group_controller_client {
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// The `NodeGroupControllerService` provides methods to manage node groups
+    /// of Compute Engine managed instances.
+    #[derive(Debug, Clone)]
+    pub struct NodeGroupControllerClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl NodeGroupControllerClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> NodeGroupControllerClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> NodeGroupControllerClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+            >>::Error: Into<StdError> + Send + Sync,
+        {
+            NodeGroupControllerClient::new(InterceptedService::new(inner, interceptor))
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Creates a node group in a cluster. The returned
+        /// [Operation.metadata][google.longrunning.Operation.metadata] is
+        /// [NodeGroupOperationMetadata](https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1#nodegroupoperationmetadata).
+        pub async fn create_node_group(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateNodeGroupRequest>,
+        ) -> Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataproc.v1.NodeGroupController/CreateNodeGroup",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Resizes a node group in a cluster. The returned
+        /// [Operation.metadata][google.longrunning.Operation.metadata] is
+        /// [NodeGroupOperationMetadata](https://cloud.google.com/dataproc/docs/reference/rpc/google.cloud.dataproc.v1#nodegroupoperationmetadata).
+        pub async fn resize_node_group(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ResizeNodeGroupRequest>,
+        ) -> Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataproc.v1.NodeGroupController/ResizeNodeGroup",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Gets the resource representation for a node group in a
+        /// cluster.
+        pub async fn get_node_group(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetNodeGroupRequest>,
+        ) -> Result<tonic::Response<super::NodeGroup>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataproc.v1.NodeGroupController/GetNodeGroup",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+    }
+}
 /// Metadata describing the Batch operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchOperationMetadata {
     /// Name of the batch for the operation.
@@ -4368,6 +4817,7 @@ pub mod batch_operation_metadata {
     }
 }
 /// The status of the operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ClusterOperationStatus {
     /// Output only. A message containing the operation state.
@@ -4424,6 +4874,7 @@ pub mod cluster_operation_status {
     }
 }
 /// Metadata describing the operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ClusterOperationMetadata {
     /// Output only. Name of the cluster for the operation.
@@ -4454,7 +4905,88 @@ pub struct ClusterOperationMetadata {
     #[prost(string, repeated, tag = "14")]
     pub warnings: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+/// Metadata describing the node group operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct NodeGroupOperationMetadata {
+    /// Output only. Node group ID for the operation.
+    #[prost(string, tag = "1")]
+    pub node_group_id: ::prost::alloc::string::String,
+    /// Output only. Cluster UUID associated with the node group operation.
+    #[prost(string, tag = "2")]
+    pub cluster_uuid: ::prost::alloc::string::String,
+    /// Output only. Current operation status.
+    #[prost(message, optional, tag = "3")]
+    pub status: ::core::option::Option<ClusterOperationStatus>,
+    /// Output only. The previous operation status.
+    #[prost(message, repeated, tag = "4")]
+    pub status_history: ::prost::alloc::vec::Vec<ClusterOperationStatus>,
+    /// The operation type.
+    #[prost(
+        enumeration = "node_group_operation_metadata::NodeGroupOperationType",
+        tag = "5"
+    )]
+    pub operation_type: i32,
+    /// Output only. Short description of operation.
+    #[prost(string, tag = "6")]
+    pub description: ::prost::alloc::string::String,
+    /// Output only. Labels associated with the operation.
+    #[prost(map = "string, string", tag = "7")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Output only. Errors encountered during operation execution.
+    #[prost(string, repeated, tag = "8")]
+    pub warnings: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Nested message and enum types in `NodeGroupOperationMetadata`.
+pub mod node_group_operation_metadata {
+    /// Operation type for node group resources.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum NodeGroupOperationType {
+        /// Node group operation type is unknown.
+        Unspecified = 0,
+        /// Create node group operation type.
+        Create = 1,
+        /// Update node group operation type.
+        Update = 2,
+        /// Delete node group operation type.
+        Delete = 3,
+        /// Resize node group operation type.
+        Resize = 4,
+    }
+    impl NodeGroupOperationType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                NodeGroupOperationType::Unspecified => {
+                    "NODE_GROUP_OPERATION_TYPE_UNSPECIFIED"
+                }
+                NodeGroupOperationType::Create => "CREATE",
+                NodeGroupOperationType::Update => "UPDATE",
+                NodeGroupOperationType::Delete => "DELETE",
+                NodeGroupOperationType::Resize => "RESIZE",
+            }
+        }
+    }
+}
 /// A Dataproc workflow template resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WorkflowTemplate {
     #[prost(string, tag = "2")]
@@ -4532,6 +5064,7 @@ pub struct WorkflowTemplate {
 /// Specifies workflow execution target.
 ///
 /// Either `managed_cluster` or `cluster_selector` is required.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WorkflowTemplatePlacement {
     /// Required. Specifies where workflow executes; either on a managed
@@ -4543,6 +5076,7 @@ pub struct WorkflowTemplatePlacement {
 pub mod workflow_template_placement {
     /// Required. Specifies where workflow executes; either on a managed
     /// cluster or an existing cluster chosen by labels.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Placement {
         /// A cluster that is managed by the workflow.
@@ -4557,6 +5091,7 @@ pub mod workflow_template_placement {
     }
 }
 /// Cluster that is managed by the workflow.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ManagedCluster {
     /// Required. The cluster name prefix. A unique cluster name will be formed by
@@ -4587,6 +5122,7 @@ pub struct ManagedCluster {
     >,
 }
 /// A selector that chooses target cluster for jobs based on metadata.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ClusterSelector {
     /// Optional. The zone where workflow process executes. This parameter does not
@@ -4605,6 +5141,7 @@ pub struct ClusterSelector {
     >,
 }
 /// A job executed by the workflow.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OrderedJob {
     /// Required. The step id. The id must be unique among all jobs
@@ -4649,6 +5186,7 @@ pub struct OrderedJob {
 /// Nested message and enum types in `OrderedJob`.
 pub mod ordered_job {
     /// Required. The job definition.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum JobType {
         /// Optional. Job is a Hadoop job.
@@ -4686,6 +5224,7 @@ pub mod ordered_job {
 /// - Script variables
 /// - Main class (in HadoopJob and SparkJob)
 /// - Zone (in ClusterSelector)
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TemplateParameter {
     /// Required. Parameter name.
@@ -4752,6 +5291,7 @@ pub struct TemplateParameter {
     pub validation: ::core::option::Option<ParameterValidation>,
 }
 /// Configuration for parameter validation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ParameterValidation {
     /// Required. The type of validation to be performed.
@@ -4761,6 +5301,7 @@ pub struct ParameterValidation {
 /// Nested message and enum types in `ParameterValidation`.
 pub mod parameter_validation {
     /// Required. The type of validation to be performed.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ValidationType {
         /// Validation based on regular expressions.
@@ -4772,6 +5313,7 @@ pub mod parameter_validation {
     }
 }
 /// Validation based on regular expressions.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegexValidation {
     /// Required. RE2 regular expressions used to validate the parameter's value.
@@ -4781,6 +5323,7 @@ pub struct RegexValidation {
     pub regexes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Validation based on a list of allowed values.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ValueValidation {
     /// Required. List of allowed values for the parameter.
@@ -4788,6 +5331,7 @@ pub struct ValueValidation {
     pub values: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// A Dataproc workflow template resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WorkflowMetadata {
     /// Output only. The resource name of the workflow template as described
@@ -4890,6 +5434,7 @@ pub mod workflow_metadata {
     }
 }
 /// The cluster operation triggered by a workflow.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ClusterOperation {
     /// Output only. The id of the cluster operation.
@@ -4903,6 +5448,7 @@ pub struct ClusterOperation {
     pub done: bool,
 }
 /// The workflow graph.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WorkflowGraph {
     /// Output only. The workflow nodes.
@@ -4910,6 +5456,7 @@ pub struct WorkflowGraph {
     pub nodes: ::prost::alloc::vec::Vec<WorkflowNode>,
 }
 /// The workflow node.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WorkflowNode {
     /// Output only. The name of the node.
@@ -4976,6 +5523,7 @@ pub mod workflow_node {
     }
 }
 /// A request to create a workflow template.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateWorkflowTemplateRequest {
     /// Required. The resource name of the region or location, as described
@@ -4995,6 +5543,7 @@ pub struct CreateWorkflowTemplateRequest {
     pub template: ::core::option::Option<WorkflowTemplate>,
 }
 /// A request to fetch a workflow template.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetWorkflowTemplateRequest {
     /// Required. The resource name of the workflow template, as described
@@ -5017,6 +5566,7 @@ pub struct GetWorkflowTemplateRequest {
     pub version: i32,
 }
 /// A request to instantiate a workflow template.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstantiateWorkflowTemplateRequest {
     /// Required. The resource name of the workflow template, as described
@@ -5059,6 +5609,7 @@ pub struct InstantiateWorkflowTemplateRequest {
     >,
 }
 /// A request to instantiate an inline workflow template.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstantiateInlineWorkflowTemplateRequest {
     /// Required. The resource name of the region or location, as described
@@ -5089,6 +5640,7 @@ pub struct InstantiateInlineWorkflowTemplateRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// A request to update a workflow template.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateWorkflowTemplateRequest {
     /// Required. The updated workflow template.
@@ -5098,6 +5650,7 @@ pub struct UpdateWorkflowTemplateRequest {
     pub template: ::core::option::Option<WorkflowTemplate>,
 }
 /// A request to list workflow templates in a project.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListWorkflowTemplatesRequest {
     /// Required. The resource name of the region or location, as described
@@ -5121,6 +5674,7 @@ pub struct ListWorkflowTemplatesRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// A response to a request to list workflow templates in a project.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListWorkflowTemplatesResponse {
     /// Output only. WorkflowTemplates list.
@@ -5135,6 +5689,7 @@ pub struct ListWorkflowTemplatesResponse {
 /// A request to delete a workflow template.
 ///
 /// Currently started workflows will remain running.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteWorkflowTemplateRequest {
     /// Required. The resource name of the workflow template, as described

@@ -1,4 +1,5 @@
 /// Network configuration for the instance.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NetworkConfig {
     /// The name of the Google Compute Engine
@@ -61,6 +62,7 @@ pub mod network_config {
     }
 }
 /// File share configuration for the instance.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FileShareConfig {
     /// The name of the file share (must be 16 characters or less).
@@ -83,6 +85,7 @@ pub struct FileShareConfig {
 pub mod file_share_config {
     /// The source that this file share has been restored from. Empty if the file
     /// share is created from scratch.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
         /// The resource name of the backup, in the format
@@ -93,6 +96,7 @@ pub mod file_share_config {
     }
 }
 /// NFS export options specifications.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NfsExportOptions {
     /// List of either an IPv4 addresses in the format
@@ -200,6 +204,7 @@ pub mod nfs_export_options {
     }
 }
 /// A Cloud Filestore instance.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Instance {
     /// Output only. The resource name of the instance, in the format
@@ -345,6 +350,7 @@ pub mod instance {
     }
 }
 /// CreateInstanceRequest creates an instance.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateInstanceRequest {
     /// Required. The instance's project and location, in the format
@@ -361,6 +367,7 @@ pub struct CreateInstanceRequest {
     pub instance: ::core::option::Option<Instance>,
 }
 /// GetInstanceRequest gets the state of an instance.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetInstanceRequest {
     /// Required. The instance resource name, in the format
@@ -369,6 +376,7 @@ pub struct GetInstanceRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// UpdateInstanceRequest updates the settings of an instance.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateInstanceRequest {
     /// Mask of fields to update.  At least one path must be supplied in this
@@ -386,6 +394,7 @@ pub struct UpdateInstanceRequest {
 }
 /// RestoreInstanceRequest restores an existing instances's file share from a
 /// backup.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RestoreInstanceRequest {
     /// Required. The resource name of the instance, in the format
@@ -401,6 +410,7 @@ pub struct RestoreInstanceRequest {
 }
 /// Nested message and enum types in `RestoreInstanceRequest`.
 pub mod restore_instance_request {
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
         /// The resource name of the backup, in the format
@@ -410,6 +420,7 @@ pub mod restore_instance_request {
     }
 }
 /// DeleteInstanceRequest deletes an instance.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteInstanceRequest {
     /// Required. The instance resource name, in the format
@@ -418,6 +429,7 @@ pub struct DeleteInstanceRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// ListInstancesRequest lists instances.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListInstancesRequest {
     /// Required. The project and location for which to retrieve instance
@@ -442,6 +454,7 @@ pub struct ListInstancesRequest {
     pub filter: ::prost::alloc::string::String,
 }
 /// ListInstancesResponse is the result of ListInstancesRequest.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListInstancesResponse {
     /// A list of instances in the project for the specified location.
@@ -461,6 +474,7 @@ pub struct ListInstancesResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// A Cloud Filestore backup.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Backup {
     /// Output only. The resource name of the backup, in the format
@@ -557,6 +571,7 @@ pub mod backup {
     }
 }
 /// CreateBackupRequest creates a backup.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateBackupRequest {
     /// Required. The backup's project and location, in the format
@@ -578,6 +593,7 @@ pub struct CreateBackupRequest {
     pub backup_id: ::prost::alloc::string::String,
 }
 /// DeleteBackupRequest deletes a backup.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteBackupRequest {
     /// Required. The backup resource name, in the format
@@ -586,6 +602,7 @@ pub struct DeleteBackupRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// UpdateBackupRequest updates description and/or labels for a backup.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateBackupRequest {
     /// Required. A [backup resource]\[google.cloud.filestore.v1.Backup\]
@@ -597,6 +614,7 @@ pub struct UpdateBackupRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// GetBackupRequest gets the state of a backup.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetBackupRequest {
     /// Required. The backup resource name, in the format
@@ -605,6 +623,7 @@ pub struct GetBackupRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// ListBackupsRequest lists backups.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListBackupsRequest {
     /// Required. The project and location for which to retrieve backup
@@ -630,6 +649,7 @@ pub struct ListBackupsRequest {
     pub filter: ::prost::alloc::string::String,
 }
 /// ListBackupsResponse is the result of ListBackupsRequest.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListBackupsResponse {
     /// A list of backups in the project for the specified location.

@@ -1,4 +1,5 @@
 /// The short version of cluster configuration for Cloud logging.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ClusterSize {
     /// The number of primary workers in the cluster.
@@ -10,6 +11,7 @@ pub struct ClusterSize {
 }
 /// The main proto that will be converted to JSON format and then written to
 /// Logging.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AutoscalerLog {
     /// The current Autoscaler status.
@@ -21,6 +23,7 @@ pub struct AutoscalerLog {
     pub recommendation: ::core::option::Option<AutoscalerRecommendation>,
 }
 /// The Autoscaler's status, including its state and other details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AutoscalerStatus {
     /// The high-level Autoscaler state.
@@ -38,6 +41,7 @@ pub struct AutoscalerStatus {
 }
 /// The inputs, outputs, and detailed explanation of the Autoscaling
 /// recommendation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AutoscalerRecommendation {
     /// The autoscaling algorithm inputs.
@@ -50,6 +54,7 @@ pub struct AutoscalerRecommendation {
 /// Nested message and enum types in `AutoscalerRecommendation`.
 pub mod autoscaler_recommendation {
     /// The input values for the Autoscaling recommendation alogirthm.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Inputs {
         /// The metrics collected by the Dataproc agent running on the cluster.
@@ -70,6 +75,7 @@ pub mod autoscaler_recommendation {
         pub max_worker_counts: ::core::option::Option<super::ClusterSize>,
     }
     /// Autoscaler recommendations.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Outputs {
         /// The high-level autoscaling decision, such as SCALE_UP, SCALE_DOWN,

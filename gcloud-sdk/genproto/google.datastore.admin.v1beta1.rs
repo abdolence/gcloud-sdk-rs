@@ -1,4 +1,5 @@
 /// Metadata common to all Datastore Admin operations.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CommonMetadata {
     /// The time that work began on the operation.
@@ -77,6 +78,7 @@ pub mod common_metadata {
     }
 }
 /// Measures the progress of a particular metric.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Progress {
     /// The amount of work that has been completed. Note that this may be greater
@@ -90,6 +92,7 @@ pub struct Progress {
 }
 /// The request for
 /// \[google.datastore.admin.v1beta1.DatastoreAdmin.ExportEntities][google.datastore.admin.v1beta1.DatastoreAdmin.ExportEntities\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportEntitiesRequest {
     /// Project ID against which to make the request.
@@ -127,6 +130,7 @@ pub struct ExportEntitiesRequest {
 }
 /// The request for
 /// \[google.datastore.admin.v1beta1.DatastoreAdmin.ImportEntities][google.datastore.admin.v1beta1.DatastoreAdmin.ImportEntities\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportEntitiesRequest {
     /// Project ID against which to make the request.
@@ -162,6 +166,7 @@ pub struct ImportEntitiesRequest {
 }
 /// The response for
 /// \[google.datastore.admin.v1beta1.DatastoreAdmin.ExportEntities][google.datastore.admin.v1beta1.DatastoreAdmin.ExportEntities\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportEntitiesResponse {
     /// Location of the output metadata file. This can be used to begin an import
@@ -172,6 +177,7 @@ pub struct ExportEntitiesResponse {
     pub output_url: ::prost::alloc::string::String,
 }
 /// Metadata for ExportEntities operations.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportEntitiesMetadata {
     /// Metadata common to all Datastore Admin operations.
@@ -195,6 +201,7 @@ pub struct ExportEntitiesMetadata {
     pub output_url_prefix: ::prost::alloc::string::String,
 }
 /// Metadata for ImportEntities operations.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportEntitiesMetadata {
     /// Metadata common to all Datastore Admin operations.
@@ -235,6 +242,7 @@ pub struct ImportEntitiesMetadata {
 ///
 /// The entire Baz namespace:
 ///    kinds=[], namespace_ids=\['Baz'\]
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EntityFilter {
     /// If empty, then this represents all kinds.

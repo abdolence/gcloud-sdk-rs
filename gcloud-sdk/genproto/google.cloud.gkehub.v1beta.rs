@@ -1,4 +1,5 @@
 /// Feature represents the settings and status of any Hub Feature.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Feature {
     /// Output only. The full, unique name of this Feature resource in the format
@@ -71,6 +72,7 @@ pub struct Feature {
 /// FeatureResourceState describes the state of a Feature *resource* in the
 /// GkeHub API. See `FeatureState` for the "running state" of the Feature in the
 /// Hub and across Memberships.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FeatureResourceState {
     /// The current state of the Feature resource in the Hub API.
@@ -129,6 +131,7 @@ pub mod feature_resource_state {
 /// FeatureState describes the high-level state of a Feature. It may be used to
 /// describe a Feature's state at the environ-level, or per-membershop, depending
 /// on the context.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FeatureState {
     /// The high-level, machine-readable status of this Feature.
@@ -188,6 +191,7 @@ pub mod feature_state {
     }
 }
 /// CommonFeatureSpec contains Hub-wide configuration information
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CommonFeatureSpec {
     #[prost(oneof = "common_feature_spec::FeatureSpec", tags = "102")]
@@ -195,6 +199,7 @@ pub struct CommonFeatureSpec {
 }
 /// Nested message and enum types in `CommonFeatureSpec`.
 pub mod common_feature_spec {
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum FeatureSpec {
         /// Multicluster Ingress-specific spec.
@@ -203,6 +208,7 @@ pub mod common_feature_spec {
     }
 }
 /// CommonFeatureState contains Hub-wide Feature status information.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CommonFeatureState {
     /// Output only. The "running state" of the Feature in this Hub.
@@ -211,6 +217,7 @@ pub struct CommonFeatureState {
 }
 /// MembershipFeatureSpec contains configuration information for a single
 /// Membership.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MembershipFeatureSpec {
     #[prost(oneof = "membership_feature_spec::FeatureSpec", tags = "106")]
@@ -218,6 +225,7 @@ pub struct MembershipFeatureSpec {
 }
 /// Nested message and enum types in `MembershipFeatureSpec`.
 pub mod membership_feature_spec {
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum FeatureSpec {
         /// Config Management-specific spec.
@@ -227,6 +235,7 @@ pub mod membership_feature_spec {
 }
 /// MembershipFeatureState contains Feature status information for a single
 /// Membership.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MembershipFeatureState {
     /// The high-level state of this Feature for a single membership.
@@ -237,6 +246,7 @@ pub struct MembershipFeatureState {
 }
 /// Nested message and enum types in `MembershipFeatureState`.
 pub mod membership_feature_state {
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum FeatureState {
         /// Metering-specific spec.
@@ -248,6 +258,7 @@ pub mod membership_feature_state {
     }
 }
 /// Request message for `GkeHub.ListFeatures` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFeaturesRequest {
     /// The parent (project and location) where the Features will be listed.
@@ -288,6 +299,7 @@ pub struct ListFeaturesRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// Response message for the `GkeHub.ListFeatures` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFeaturesResponse {
     /// The list of matching Features
@@ -300,6 +312,7 @@ pub struct ListFeaturesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for `GkeHub.GetFeature` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetFeatureRequest {
     /// The Feature resource name in the format
@@ -308,6 +321,7 @@ pub struct GetFeatureRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for the `GkeHub.CreateFeature` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateFeatureRequest {
     /// The parent (project and location) where the Feature will be created.
@@ -337,6 +351,7 @@ pub struct CreateFeatureRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for `GkeHub.DeleteFeature` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteFeatureRequest {
     /// The Feature resource name in the format
@@ -365,6 +380,7 @@ pub struct DeleteFeatureRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for `GkeHub.UpdateFeature` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateFeatureRequest {
     /// The Feature resource name in the format
@@ -401,6 +417,7 @@ pub struct UpdateFeatureRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Represents the metadata of the long-running operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationMetadata {
     /// Output only. The time the operation was created.

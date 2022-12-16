@@ -3,6 +3,7 @@
 ///
 /// A \[Secret][google.cloud.secretmanager.v1.Secret\] is made up of zero or more \[SecretVersions][google.cloud.secretmanager.v1.SecretVersion\] that
 /// represent the secret data.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Secret {
     /// Output only. The resource name of the \[Secret][google.cloud.secretmanager.v1.Secret\] in the format `projects/*/secrets/*`.
@@ -80,6 +81,7 @@ pub mod secret {
     /// Conditions](<https://cloud.google.com/secret-manager/docs/access-control#conditions>)
     /// is recommended for granting time-based permissions because the operation
     /// can be reversed.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Expiration {
         /// Optional. Timestamp in UTC when the \[Secret][google.cloud.secretmanager.v1.Secret\] is scheduled to expire. This is
@@ -92,6 +94,7 @@ pub mod secret {
     }
 }
 /// A secret version resource in the Secret Manager API.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SecretVersion {
     /// Output only. The resource name of the \[SecretVersion][google.cloud.secretmanager.v1.SecretVersion\] in the
@@ -168,6 +171,7 @@ pub mod secret_version {
     }
 }
 /// A policy that defines the replication and encryption configuration of data.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Replication {
     /// The replication policy for this secret.
@@ -178,6 +182,7 @@ pub struct Replication {
 pub mod replication {
     /// A replication policy that replicates the \[Secret][google.cloud.secretmanager.v1.Secret\] payload without any
     /// restrictions.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Automatic {
         /// Optional. The customer-managed encryption configuration of the \[Secret][google.cloud.secretmanager.v1.Secret\]. If no
@@ -193,6 +198,7 @@ pub mod replication {
     }
     /// A replication policy that replicates the \[Secret][google.cloud.secretmanager.v1.Secret\] payload into the
     /// locations specified in \[Secret.replication.user_managed.replicas][\]
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct UserManaged {
         /// Required. The list of Replicas for this \[Secret][google.cloud.secretmanager.v1.Secret\].
@@ -204,6 +210,7 @@ pub mod replication {
     /// Nested message and enum types in `UserManaged`.
     pub mod user_managed {
         /// Represents a Replica for this \[Secret][google.cloud.secretmanager.v1.Secret\].
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Replica {
             /// The canonical IDs of the location to replicate data.
@@ -224,6 +231,7 @@ pub mod replication {
         }
     }
     /// The replication policy for this secret.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Replication {
         /// The \[Secret][google.cloud.secretmanager.v1.Secret\] will automatically be replicated without any restrictions.
@@ -236,6 +244,7 @@ pub mod replication {
 }
 /// Configuration for encrypting secret payloads using customer-managed
 /// encryption keys (CMEK).
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomerManagedEncryption {
     /// Required. The resource name of the Cloud KMS CryptoKey used to encrypt secret
@@ -253,6 +262,7 @@ pub struct CustomerManagedEncryption {
     pub kms_key_name: ::prost::alloc::string::String,
 }
 /// The replication status of a \[SecretVersion][google.cloud.secretmanager.v1.SecretVersion\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReplicationStatus {
     /// The replication status of the \[SecretVersion][google.cloud.secretmanager.v1.SecretVersion\].
@@ -267,6 +277,7 @@ pub mod replication_status {
     ///
     /// Only populated if the parent \[Secret][google.cloud.secretmanager.v1.Secret\] has an automatic replication
     /// policy.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AutomaticStatus {
         /// Output only. The customer-managed encryption status of the \[SecretVersion][google.cloud.secretmanager.v1.SecretVersion\]. Only
@@ -281,6 +292,7 @@ pub mod replication_status {
     ///
     /// Only populated if the parent \[Secret][google.cloud.secretmanager.v1.Secret\] has a user-managed replication
     /// policy.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct UserManagedStatus {
         /// Output only. The list of replica statuses for the \[SecretVersion][google.cloud.secretmanager.v1.SecretVersion\].
@@ -290,6 +302,7 @@ pub mod replication_status {
     /// Nested message and enum types in `UserManagedStatus`.
     pub mod user_managed_status {
         /// Describes the status of a user-managed replica for the \[SecretVersion][google.cloud.secretmanager.v1.SecretVersion\].
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct ReplicaStatus {
             /// Output only. The canonical ID of the replica location.
@@ -305,6 +318,7 @@ pub mod replication_status {
         }
     }
     /// The replication status of the \[SecretVersion][google.cloud.secretmanager.v1.SecretVersion\].
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ReplicationStatus {
         /// Describes the replication status of a \[SecretVersion][google.cloud.secretmanager.v1.SecretVersion\] with
@@ -324,6 +338,7 @@ pub mod replication_status {
     }
 }
 /// Describes the status of customer-managed encryption.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomerManagedEncryptionStatus {
     /// Required. The resource name of the Cloud KMS CryptoKeyVersion used to encrypt the
@@ -334,6 +349,7 @@ pub struct CustomerManagedEncryptionStatus {
 }
 /// A Pub/Sub topic which Secret Manager will publish to when control plane
 /// events occur on this secret.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Topic {
     /// Required. The resource name of the Pub/Sub topic that will be published to, in the
@@ -345,6 +361,7 @@ pub struct Topic {
 /// The rotation time and period for a \[Secret][google.cloud.secretmanager.v1.Secret\]. At next_rotation_time, Secret
 /// Manager will send a Pub/Sub notification to the topics configured on the
 /// Secret. \[Secret.topics][google.cloud.secretmanager.v1.Secret.topics\] must be set to configure rotation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Rotation {
     /// Optional. Timestamp in UTC at which the \[Secret][google.cloud.secretmanager.v1.Secret\] is scheduled to rotate. Cannot be
@@ -364,6 +381,7 @@ pub struct Rotation {
     pub rotation_period: ::core::option::Option<::prost_types::Duration>,
 }
 /// Request message for \[SecretManagerService.ListSecrets][google.cloud.secretmanager.v1.SecretManagerService.ListSecrets\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSecretsRequest {
     /// Required. The resource name of the project associated with the
@@ -388,6 +406,7 @@ pub struct ListSecretsRequest {
     pub filter: ::prost::alloc::string::String,
 }
 /// Response message for \[SecretManagerService.ListSecrets][google.cloud.secretmanager.v1.SecretManagerService.ListSecrets\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSecretsResponse {
     /// The list of \[Secrets][google.cloud.secretmanager.v1.Secret\] sorted in reverse by create_time (newest
@@ -403,6 +422,7 @@ pub struct ListSecretsResponse {
     pub total_size: i32,
 }
 /// Request message for \[SecretManagerService.CreateSecret][google.cloud.secretmanager.v1.SecretManagerService.CreateSecret\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateSecretRequest {
     /// Required. The resource name of the project to associate with the
@@ -421,6 +441,7 @@ pub struct CreateSecretRequest {
     pub secret: ::core::option::Option<Secret>,
 }
 /// Request message for \[SecretManagerService.AddSecretVersion][google.cloud.secretmanager.v1.SecretManagerService.AddSecretVersion\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddSecretVersionRequest {
     /// Required. The resource name of the \[Secret][google.cloud.secretmanager.v1.Secret\] to associate with the
@@ -432,6 +453,7 @@ pub struct AddSecretVersionRequest {
     pub payload: ::core::option::Option<crate::proto_ext::secretmanager::SecretPayload>,
 }
 /// Request message for \[SecretManagerService.GetSecret][google.cloud.secretmanager.v1.SecretManagerService.GetSecret\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetSecretRequest {
     /// Required. The resource name of the \[Secret][google.cloud.secretmanager.v1.Secret\], in the format `projects/*/secrets/*`.
@@ -439,6 +461,7 @@ pub struct GetSecretRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for \[SecretManagerService.ListSecretVersions][google.cloud.secretmanager.v1.SecretManagerService.ListSecretVersions\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSecretVersionsRequest {
     /// Required. The resource name of the \[Secret][google.cloud.secretmanager.v1.Secret\] associated with the
@@ -464,6 +487,7 @@ pub struct ListSecretVersionsRequest {
     pub filter: ::prost::alloc::string::String,
 }
 /// Response message for \[SecretManagerService.ListSecretVersions][google.cloud.secretmanager.v1.SecretManagerService.ListSecretVersions\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSecretVersionsResponse {
     /// The list of \[SecretVersions][google.cloud.secretmanager.v1.SecretVersion\] sorted in reverse by
@@ -479,6 +503,7 @@ pub struct ListSecretVersionsResponse {
     pub total_size: i32,
 }
 /// Request message for \[SecretManagerService.GetSecretVersion][google.cloud.secretmanager.v1.SecretManagerService.GetSecretVersion\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetSecretVersionRequest {
     /// Required. The resource name of the \[SecretVersion][google.cloud.secretmanager.v1.SecretVersion\] in the format
@@ -490,6 +515,7 @@ pub struct GetSecretVersionRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for \[SecretManagerService.UpdateSecret][google.cloud.secretmanager.v1.SecretManagerService.UpdateSecret\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateSecretRequest {
     /// Required. \[Secret][google.cloud.secretmanager.v1.Secret\] with updated field values.
@@ -500,6 +526,7 @@ pub struct UpdateSecretRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for \[SecretManagerService.AccessSecretVersion][google.cloud.secretmanager.v1.SecretManagerService.AccessSecretVersion\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AccessSecretVersionRequest {
     /// Required. The resource name of the \[SecretVersion][google.cloud.secretmanager.v1.SecretVersion\] in the format
@@ -511,6 +538,7 @@ pub struct AccessSecretVersionRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Response message for \[SecretManagerService.AccessSecretVersion][google.cloud.secretmanager.v1.SecretManagerService.AccessSecretVersion\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AccessSecretVersionResponse {
     /// The resource name of the \[SecretVersion][google.cloud.secretmanager.v1.SecretVersion\] in the format
@@ -522,6 +550,7 @@ pub struct AccessSecretVersionResponse {
     pub payload: ::core::option::Option<crate::proto_ext::secretmanager::SecretPayload>,
 }
 /// Request message for \[SecretManagerService.DeleteSecret][google.cloud.secretmanager.v1.SecretManagerService.DeleteSecret\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteSecretRequest {
     /// Required. The resource name of the \[Secret][google.cloud.secretmanager.v1.Secret\] to delete in the format
@@ -535,6 +564,7 @@ pub struct DeleteSecretRequest {
     pub etag: ::prost::alloc::string::String,
 }
 /// Request message for \[SecretManagerService.DisableSecretVersion][google.cloud.secretmanager.v1.SecretManagerService.DisableSecretVersion\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DisableSecretVersionRequest {
     /// Required. The resource name of the \[SecretVersion][google.cloud.secretmanager.v1.SecretVersion\] to disable in the format
@@ -548,6 +578,7 @@ pub struct DisableSecretVersionRequest {
     pub etag: ::prost::alloc::string::String,
 }
 /// Request message for \[SecretManagerService.EnableSecretVersion][google.cloud.secretmanager.v1.SecretManagerService.EnableSecretVersion\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EnableSecretVersionRequest {
     /// Required. The resource name of the \[SecretVersion][google.cloud.secretmanager.v1.SecretVersion\] to enable in the format
@@ -561,6 +592,7 @@ pub struct EnableSecretVersionRequest {
     pub etag: ::prost::alloc::string::String,
 }
 /// Request message for \[SecretManagerService.DestroySecretVersion][google.cloud.secretmanager.v1.SecretManagerService.DestroySecretVersion\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DestroySecretVersionRequest {
     /// Required. The resource name of the \[SecretVersion][google.cloud.secretmanager.v1.SecretVersion\] to destroy in the format

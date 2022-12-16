@@ -1,4 +1,5 @@
 /// Log message used to send to Platform Logging.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IngestDetailsLog {
     /// Identification of the successfully accepted request.

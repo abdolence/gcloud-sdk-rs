@@ -1,4 +1,5 @@
 /// Request message for TablesService.GetTable.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetTableRequest {
     /// Required. The name of the table to retrieve.
@@ -7,6 +8,7 @@ pub struct GetTableRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for TablesService.ListTables.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTablesRequest {
     /// The maximum number of tables to return. The service may return fewer than
@@ -25,6 +27,7 @@ pub struct ListTablesRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for TablesService.ListTables.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTablesResponse {
     /// The list of tables.
@@ -36,6 +39,7 @@ pub struct ListTablesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for TablesService.GetWorkspace.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetWorkspaceRequest {
     /// Required. The name of the workspace to retrieve.
@@ -44,6 +48,7 @@ pub struct GetWorkspaceRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for TablesService.ListWorkspaces.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListWorkspacesRequest {
     /// The maximum number of workspaces to return. The service may return fewer
@@ -62,6 +67,7 @@ pub struct ListWorkspacesRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for TablesService.ListWorkspaces.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListWorkspacesResponse {
     /// The list of workspaces.
@@ -73,6 +79,7 @@ pub struct ListWorkspacesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for TablesService.GetRow.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetRowRequest {
     /// Required. The name of the row to retrieve.
@@ -85,6 +92,7 @@ pub struct GetRowRequest {
     pub view: i32,
 }
 /// Request message for TablesService.ListRows.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRowsRequest {
     /// Required. The parent table.
@@ -116,6 +124,7 @@ pub struct ListRowsRequest {
     pub filter: ::prost::alloc::string::String,
 }
 /// Response message for TablesService.ListRows.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRowsResponse {
     /// The rows from the specified table.
@@ -127,6 +136,7 @@ pub struct ListRowsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for TablesService.CreateRow.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateRowRequest {
     /// Required. The parent table where this row will be created.
@@ -142,6 +152,7 @@ pub struct CreateRowRequest {
     pub view: i32,
 }
 /// Request message for TablesService.BatchCreateRows.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchCreateRowsRequest {
     /// Required. The parent table where the rows will be created.
@@ -155,6 +166,7 @@ pub struct BatchCreateRowsRequest {
     pub requests: ::prost::alloc::vec::Vec<CreateRowRequest>,
 }
 /// Response message for TablesService.BatchCreateRows.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchCreateRowsResponse {
     /// The created rows.
@@ -162,6 +174,7 @@ pub struct BatchCreateRowsResponse {
     pub rows: ::prost::alloc::vec::Vec<Row>,
 }
 /// Request message for TablesService.UpdateRow.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateRowRequest {
     /// Required. The row to update.
@@ -176,6 +189,7 @@ pub struct UpdateRowRequest {
     pub view: i32,
 }
 /// Request message for TablesService.BatchUpdateRows.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchUpdateRowsRequest {
     /// Required. The parent table shared by all rows being updated.
@@ -189,6 +203,7 @@ pub struct BatchUpdateRowsRequest {
     pub requests: ::prost::alloc::vec::Vec<UpdateRowRequest>,
 }
 /// Response message for TablesService.BatchUpdateRows.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchUpdateRowsResponse {
     /// The updated rows.
@@ -196,6 +211,7 @@ pub struct BatchUpdateRowsResponse {
     pub rows: ::prost::alloc::vec::Vec<Row>,
 }
 /// Request message for TablesService.DeleteRow
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteRowRequest {
     /// Required. The name of the row to delete.
@@ -204,6 +220,7 @@ pub struct DeleteRowRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for TablesService.BatchDeleteRows
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchDeleteRowsRequest {
     /// Required. The parent table shared by all rows being deleted.
@@ -218,6 +235,7 @@ pub struct BatchDeleteRowsRequest {
     pub names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// A single table.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Table {
     /// The resource name of the table.
@@ -233,6 +251,7 @@ pub struct Table {
     pub columns: ::prost::alloc::vec::Vec<ColumnDescription>,
 }
 /// Details on a column in the table.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ColumnDescription {
     /// column name
@@ -268,6 +287,7 @@ pub struct ColumnDescription {
     pub lookup_details: ::core::option::Option<LookupDetails>,
 }
 /// A single item in a labeled column.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LabeledItem {
     /// Display string as entered by user.
@@ -278,6 +298,7 @@ pub struct LabeledItem {
     pub id: ::prost::alloc::string::String,
 }
 /// Details about a relationship column.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RelationshipDetails {
     /// The name of the table this relationship is linked to.
@@ -286,6 +307,7 @@ pub struct RelationshipDetails {
 }
 /// Details about a lookup column whose value comes from the associated
 /// relationship.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LookupDetails {
     /// The name of the relationship column associated with the lookup.
@@ -296,6 +318,7 @@ pub struct LookupDetails {
     pub relationship_column_id: ::prost::alloc::string::String,
 }
 /// A single row in a table.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Row {
     /// The resource name of the row.
@@ -313,6 +336,7 @@ pub struct Row {
     >,
 }
 /// A single workspace.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Workspace {
     /// The resource name of the workspace.

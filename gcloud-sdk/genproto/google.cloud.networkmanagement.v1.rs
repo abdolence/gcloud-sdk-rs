@@ -9,6 +9,7 @@
 ///    |---------------------Trace----------------------|
 ///    Step1(State) Step2(State) ---  StepN(State(final))
 /// ```
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Trace {
     /// Derived from the source and destination endpoints definition specified by
@@ -28,6 +29,7 @@ pub struct Trace {
 }
 /// A simulated forwarding path is composed of multiple steps.
 /// Each step has a well-defined state and an associated configuration.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Step {
     /// A description of the step. Usually this is a summary of the state.
@@ -166,6 +168,7 @@ pub mod step {
     /// has no permission to view the configuration in this step, for non-final
     /// states a special state is populated (VIEWER_PERMISSION_MISSING), and for
     /// final state the configuration is cleared.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum StepInfo {
         /// Display information of a Compute Engine instance.
@@ -219,6 +222,7 @@ pub mod step {
     }
 }
 /// For display only. Metadata associated with a Compute Engine instance.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceInfo {
     /// Name of a Compute Engine instance.
@@ -248,6 +252,7 @@ pub struct InstanceInfo {
     pub service_account: ::prost::alloc::string::String,
 }
 /// For display only. Metadata associated with a Compute Engine network.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NetworkInfo {
     /// Name of a Compute Engine network.
@@ -262,6 +267,7 @@ pub struct NetworkInfo {
 }
 /// For display only. Metadata associated with a VPC firewall rule, an implied
 /// VPC firewall rule, or a hierarchical firewall policy rule.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FirewallInfo {
     /// The display name of the VPC firewall rule. This field is not applicable
@@ -351,6 +357,7 @@ pub mod firewall_info {
     }
 }
 /// For display only. Metadata associated with a Compute Engine route.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouteInfo {
     /// Type of route.
@@ -502,6 +509,7 @@ pub mod route_info {
     }
 }
 /// For display only. Metadata associated with a Compute Engine forwarding rule.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ForwardingRuleInfo {
     /// Name of a Compute Engine forwarding rule.
@@ -527,6 +535,7 @@ pub struct ForwardingRuleInfo {
     pub network_uri: ::prost::alloc::string::String,
 }
 /// For display only. Metadata associated with a load balancer.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LoadBalancerInfo {
     /// Type of the load balancer.
@@ -626,6 +635,7 @@ pub mod load_balancer_info {
     }
 }
 /// For display only. Metadata associated with a specific load balancer backend.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LoadBalancerBackend {
     /// Name of a Compute Engine instance or network endpoint.
@@ -693,6 +703,7 @@ pub mod load_balancer_backend {
     }
 }
 /// For display only. Metadata associated with a Compute Engine VPN gateway.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VpnGatewayInfo {
     /// Name of a VPN gateway.
@@ -717,6 +728,7 @@ pub struct VpnGatewayInfo {
     pub region: ::prost::alloc::string::String,
 }
 /// For display only. Metadata associated with a Compute Engine VPN tunnel.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VpnTunnelInfo {
     /// Name of a VPN tunnel.
@@ -791,6 +803,7 @@ pub mod vpn_tunnel_info {
 /// For display only. The specification of the endpoints for the test.
 /// EndpointInfo is derived from source and destination Endpoint and validated
 /// by the backend data plane model.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EndpointInfo {
     /// Source IP address.
@@ -816,6 +829,7 @@ pub struct EndpointInfo {
     pub destination_network_uri: ::prost::alloc::string::String,
 }
 /// Details of the final state "deliver" and associated resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeliverInfo {
     /// Target type where the packet is delivered to.
@@ -872,6 +886,7 @@ pub mod deliver_info {
     }
 }
 /// Details of the final state "forward" and associated resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ForwardInfo {
     /// Target type where this packet is forwarded to.
@@ -931,6 +946,7 @@ pub mod forward_info {
     }
 }
 /// Details of the final state "abort" and associated resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AbortInfo {
     /// Causes that the analysis is aborted.
@@ -1039,6 +1055,7 @@ pub mod abort_info {
     }
 }
 /// Details of the final state "drop" and associated resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DropInfo {
     /// Cause that the packet is dropped.
@@ -1179,6 +1196,7 @@ pub mod drop_info {
 }
 /// For display only. Metadata associated with a Google Kubernetes Engine (GKE)
 /// cluster master.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GkeMasterInfo {
     /// URI of a GKE cluster.
@@ -1195,6 +1213,7 @@ pub struct GkeMasterInfo {
     pub external_ip: ::prost::alloc::string::String,
 }
 /// For display only. Metadata associated with a Cloud SQL instance.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CloudSqlInstanceInfo {
     /// Name of a Cloud SQL instance.
@@ -1218,6 +1237,7 @@ pub struct CloudSqlInstanceInfo {
     pub region: ::prost::alloc::string::String,
 }
 /// A Connectivity Test for a network reachability analysis.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConnectivityTest {
     /// Required. Unique name of the resource using the form:
@@ -1301,6 +1321,7 @@ pub struct ConnectivityTest {
     pub reachability_details: ::core::option::Option<ReachabilityDetails>,
 }
 /// Source or destination of the Connectivity Test.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Endpoint {
     /// The IP address of the endpoint, which can be an external or internal IP.
@@ -1385,6 +1406,7 @@ pub mod endpoint {
     }
 }
 /// Results of the configuration analysis from the last run of the test.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReachabilityDetails {
     /// The overall result of the test's configuration analysis.
@@ -1462,6 +1484,7 @@ pub mod reachability_details {
     }
 }
 /// Request for the `ListConnectivityTests` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListConnectivityTestsRequest {
     /// Required. The parent resource of the Connectivity Tests:
@@ -1499,6 +1522,7 @@ pub struct ListConnectivityTestsRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// Response for the `ListConnectivityTests` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListConnectivityTestsResponse {
     /// List of Connectivity Tests.
@@ -1512,6 +1536,7 @@ pub struct ListConnectivityTestsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request for the `GetConnectivityTest` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetConnectivityTestRequest {
     /// Required. `ConnectivityTest` resource name using the form:
@@ -1520,6 +1545,7 @@ pub struct GetConnectivityTestRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for the `CreateConnectivityTest` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateConnectivityTestRequest {
     /// Required. The parent resource of the Connectivity Test to create:
@@ -1541,6 +1567,7 @@ pub struct CreateConnectivityTestRequest {
     pub resource: ::core::option::Option<ConnectivityTest>,
 }
 /// Request for the `UpdateConnectivityTest` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateConnectivityTestRequest {
     /// Required. Mask of fields to update. At least one path must be supplied in
@@ -1552,6 +1579,7 @@ pub struct UpdateConnectivityTestRequest {
     pub resource: ::core::option::Option<ConnectivityTest>,
 }
 /// Request for the `DeleteConnectivityTest` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteConnectivityTestRequest {
     /// Required. Connectivity Test resource name using the form:
@@ -1560,6 +1588,7 @@ pub struct DeleteConnectivityTestRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for the `RerunConnectivityTest` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RerunConnectivityTestRequest {
     /// Required. Connectivity Test resource name using the form:
@@ -1568,6 +1597,7 @@ pub struct RerunConnectivityTestRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Metadata describing an \[Operation][google.longrunning.Operation\]
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationMetadata {
     /// The time the operation was created.

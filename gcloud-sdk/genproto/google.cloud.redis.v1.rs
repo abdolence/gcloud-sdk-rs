@@ -1,4 +1,5 @@
 /// Node specific properties.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NodeInfo {
     /// Output only. Node identifying string. e.g. 'node-0', 'node-1'
@@ -9,6 +10,7 @@ pub struct NodeInfo {
     pub zone: ::prost::alloc::string::String,
 }
 /// A Memorystore for Redis instance.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Instance {
     /// Required. Unique name of the resource in this scope including project and
@@ -387,6 +389,7 @@ pub mod instance {
     }
 }
 /// Request for \[RescheduleMaintenance][google.cloud.redis.v1.CloudRedis.RescheduleMaintenance\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RescheduleMaintenanceRequest {
     /// Required. Redis instance resource name using the form:
@@ -445,6 +448,7 @@ pub mod reschedule_maintenance_request {
     }
 }
 /// Maintenance policy for an instance.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MaintenancePolicy {
     /// Output only. The time when the policy was created.
@@ -465,6 +469,7 @@ pub struct MaintenancePolicy {
 }
 /// Time window in which disruptive maintenance updates occur. Non-disruptive
 /// updates can occur inside or outside this window.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WeeklyMaintenanceWindow {
     /// Required. The day of week that maintenance updates occur.
@@ -479,6 +484,7 @@ pub struct WeeklyMaintenanceWindow {
 }
 /// Upcoming maintenance schedule. If no maintenance is scheduled, fields are not
 /// populated.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MaintenanceSchedule {
     /// Output only. The start time of any upcoming scheduled maintenance for this instance.
@@ -497,6 +503,7 @@ pub struct MaintenanceSchedule {
     pub schedule_deadline_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Request for \[ListInstances][google.cloud.redis.v1.CloudRedis.ListInstances\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListInstancesRequest {
     /// Required. The resource name of the instance location using the form:
@@ -519,6 +526,7 @@ pub struct ListInstancesRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response for \[ListInstances][google.cloud.redis.v1.CloudRedis.ListInstances\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListInstancesResponse {
     /// A list of Redis instances in the project in the specified location,
@@ -543,6 +551,7 @@ pub struct ListInstancesResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request for \[GetInstance][google.cloud.redis.v1.CloudRedis.GetInstance\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetInstanceRequest {
     /// Required. Redis instance resource name using the form:
@@ -552,6 +561,7 @@ pub struct GetInstanceRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for \[GetInstanceAuthString][google.cloud.redis.v1.CloudRedis.GetInstanceAuthString\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetInstanceAuthStringRequest {
     /// Required. Redis instance resource name using the form:
@@ -561,6 +571,7 @@ pub struct GetInstanceAuthStringRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Instance AUTH string details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceAuthString {
     /// AUTH string set on the instance.
@@ -568,6 +579,7 @@ pub struct InstanceAuthString {
     pub auth_string: ::prost::alloc::string::String,
 }
 /// Request for \[CreateInstance][google.cloud.redis.v1.CloudRedis.CreateInstance\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateInstanceRequest {
     /// Required. The resource name of the instance location using the form:
@@ -590,6 +602,7 @@ pub struct CreateInstanceRequest {
     pub instance: ::core::option::Option<Instance>,
 }
 /// Request for \[UpdateInstance][google.cloud.redis.v1.CloudRedis.UpdateInstance\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateInstanceRequest {
     /// Required. Mask of fields to update. At least one path must be supplied in
@@ -609,6 +622,7 @@ pub struct UpdateInstanceRequest {
     pub instance: ::core::option::Option<Instance>,
 }
 /// Request for \[UpgradeInstance][google.cloud.redis.v1.CloudRedis.UpgradeInstance\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpgradeInstanceRequest {
     /// Required. Redis instance resource name using the form:
@@ -621,6 +635,7 @@ pub struct UpgradeInstanceRequest {
     pub redis_version: ::prost::alloc::string::String,
 }
 /// Request for \[DeleteInstance][google.cloud.redis.v1.CloudRedis.DeleteInstance\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteInstanceRequest {
     /// Required. Redis instance resource name using the form:
@@ -630,6 +645,7 @@ pub struct DeleteInstanceRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The Cloud Storage location for the input content
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GcsSource {
     /// Required. Source data URI. (e.g. 'gs://my_bucket/my_object').
@@ -637,6 +653,7 @@ pub struct GcsSource {
     pub uri: ::prost::alloc::string::String,
 }
 /// The input content
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InputConfig {
     /// Required. Specify source location of input data
@@ -646,6 +663,7 @@ pub struct InputConfig {
 /// Nested message and enum types in `InputConfig`.
 pub mod input_config {
     /// Required. Specify source location of input data
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
         /// Google Cloud Storage location where input content is located.
@@ -654,6 +672,7 @@ pub mod input_config {
     }
 }
 /// Request for \[Import][google.cloud.redis.v1.CloudRedis.ImportInstance\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportInstanceRequest {
     /// Required. Redis instance resource name using the form:
@@ -666,6 +685,7 @@ pub struct ImportInstanceRequest {
     pub input_config: ::core::option::Option<InputConfig>,
 }
 /// The Cloud Storage location for the output content
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GcsDestination {
     /// Required. Data destination URI (e.g.
@@ -674,6 +694,7 @@ pub struct GcsDestination {
     pub uri: ::prost::alloc::string::String,
 }
 /// The output content
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OutputConfig {
     /// Required. Specify destination location of output data
@@ -683,6 +704,7 @@ pub struct OutputConfig {
 /// Nested message and enum types in `OutputConfig`.
 pub mod output_config {
     /// Required. Specify destination location of output data
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Destination {
         /// Google Cloud Storage destination for output content.
@@ -691,6 +713,7 @@ pub mod output_config {
     }
 }
 /// Request for \[Export][google.cloud.redis.v1.CloudRedis.ExportInstance\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportInstanceRequest {
     /// Required. Redis instance resource name using the form:
@@ -703,6 +726,7 @@ pub struct ExportInstanceRequest {
     pub output_config: ::core::option::Option<OutputConfig>,
 }
 /// Request for \[Failover][google.cloud.redis.v1.CloudRedis.FailoverInstance\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FailoverInstanceRequest {
     /// Required. Redis instance resource name using the form:
@@ -757,6 +781,7 @@ pub mod failover_instance_request {
     }
 }
 /// Represents the v1 metadata of the long-running operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationMetadata {
     /// Creation timestamp.
@@ -785,6 +810,7 @@ pub struct OperationMetadata {
 /// given location where a Redis instance may be created. All fields are output
 /// only. It is returned as content of the
 /// `google.cloud.location.Location.metadata` field.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LocationMetadata {
     /// Output only. The set of available zones in the location. The map is keyed
@@ -799,9 +825,11 @@ pub struct LocationMetadata {
 }
 /// Defines specific information for a particular zone. Currently empty and
 /// reserved for future use only.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ZoneMetadata {}
 /// TlsCertificate Resource
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TlsCertificate {
     /// Serial number, as extracted from the certificate.

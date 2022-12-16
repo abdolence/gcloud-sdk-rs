@@ -1,4 +1,5 @@
 /// Request for creating a workload.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateWorkloadRequest {
     /// Required. The resource name of the new Workload's parent.
@@ -16,6 +17,7 @@ pub struct CreateWorkloadRequest {
     pub external_id: ::prost::alloc::string::String,
 }
 /// Request for Updating a workload.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateWorkloadRequest {
     /// Required. The workload to update.
@@ -29,6 +31,7 @@ pub struct UpdateWorkloadRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request for restricting list of available resources in Workload environment.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RestrictAllowedResourcesRequest {
     /// Required. The resource name of the Workload. This is the workloads's
@@ -87,9 +90,11 @@ pub mod restrict_allowed_resources_request {
     }
 }
 /// Response for restricting the list of allowed resources.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RestrictAllowedResourcesResponse {}
 /// Request for deleting a Workload.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteWorkloadRequest {
     /// Required. The `name` field is used to identify the workload.
@@ -103,6 +108,7 @@ pub struct DeleteWorkloadRequest {
     pub etag: ::prost::alloc::string::String,
 }
 /// Request for fetching a workload.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetWorkloadRequest {
     /// Required. The resource name of the Workload to fetch. This is the workloads's
@@ -115,6 +121,7 @@ pub struct GetWorkloadRequest {
 }
 /// A request to analyze a hypothetical move of a source project or project-based
 /// workload to a target (destination) folder-based workload.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnalyzeWorkloadMoveRequest {
     /// Required. The resource ID of the folder-based destination workload. This workload is
@@ -139,6 +146,7 @@ pub struct AnalyzeWorkloadMoveRequest {
 pub mod analyze_workload_move_request {
     /// The resource type to be moved to the destination workload. It can be either
     /// an existing project or a project-based workload.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ProjectOrWorkloadResource {
         /// The source type is a project-based workload. Specify the workloads's
@@ -159,6 +167,7 @@ pub mod analyze_workload_move_request {
     }
 }
 /// A response that includes the analysis of the hypothetical resource move.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnalyzeWorkloadMoveResponse {
     /// A list of blockers that should be addressed before moving the source
@@ -167,6 +176,7 @@ pub struct AnalyzeWorkloadMoveResponse {
     pub blockers: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request for fetching workloads in an organization.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListWorkloadsRequest {
     /// Required. Parent Resource to list workloads from.
@@ -187,6 +197,7 @@ pub struct ListWorkloadsRequest {
     pub filter: ::prost::alloc::string::String,
 }
 /// Response of ListWorkloads endpoint.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListWorkloadsResponse {
     /// List of Workloads under a given parent.
@@ -198,6 +209,7 @@ pub struct ListWorkloadsResponse {
 }
 /// An Workload object for managing highly regulated workloads of cloud
 /// customers.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Workload {
     /// Optional. The resource name of the workload.
@@ -297,6 +309,7 @@ pub struct Workload {
 /// Nested message and enum types in `Workload`.
 pub mod workload {
     /// Represent the resources that are children of this Workload.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ResourceInfo {
         /// Resource identifier.
@@ -352,6 +365,7 @@ pub mod workload {
         }
     }
     /// Settings specific to the Key Management Service.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct KmsSettings {
         /// Required. Input only. Immutable. The time at which the Key Management Service will automatically create a
@@ -365,6 +379,7 @@ pub mod workload {
         pub rotation_period: ::core::option::Option<::prost_types::Duration>,
     }
     /// Settings specific to resources needed for IL4.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Il4Settings {
         /// Input only. Immutable. Settings used to create a CMEK crypto key.
@@ -372,6 +387,7 @@ pub mod workload {
         pub kms_settings: ::core::option::Option<KmsSettings>,
     }
     /// Settings specific to resources needed for CJIS.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CjisSettings {
         /// Input only. Immutable. Settings used to create a CMEK crypto key.
@@ -379,6 +395,7 @@ pub mod workload {
         pub kms_settings: ::core::option::Option<KmsSettings>,
     }
     /// Settings specific to resources needed for FedRAMP High.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct FedrampHighSettings {
         /// Input only. Immutable. Settings used to create a CMEK crypto key.
@@ -386,6 +403,7 @@ pub mod workload {
         pub kms_settings: ::core::option::Option<KmsSettings>,
     }
     /// Settings specific to resources needed for FedRAMP Moderate.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct FedrampModerateSettings {
         /// Input only. Immutable. Settings used to create a CMEK crypto key.
@@ -393,6 +411,7 @@ pub mod workload {
         pub kms_settings: ::core::option::Option<KmsSettings>,
     }
     /// Represent the custom settings for the resources to be created.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ResourceSettings {
         /// Resource identifier.
@@ -414,6 +433,7 @@ pub mod workload {
         pub display_name: ::prost::alloc::string::String,
     }
     /// Signed Access Approvals (SAA) enrollment response.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SaaEnrollmentResponse {
         /// Indicates SAA enrollment status of a given workload.
@@ -611,6 +631,7 @@ pub mod workload {
         }
     }
     /// Settings specific to the selected \[compliance_regime\]
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ComplianceRegimeSettings {
         /// Input only. Immutable. Settings specific to resources needed for IL4.
@@ -628,6 +649,7 @@ pub mod workload {
     }
 }
 /// Operation metadata to give request details of CreateWorkload.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateWorkloadOperationMetadata {
     /// Optional. Time when the operation was created.

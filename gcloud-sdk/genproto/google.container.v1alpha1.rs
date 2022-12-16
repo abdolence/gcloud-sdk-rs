@@ -1,4 +1,5 @@
 /// Parameters that describe the nodes in a cluster.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NodeConfig {
     /// The name of a Google Compute Engine [machine
@@ -114,6 +115,7 @@ pub struct NodeConfig {
 ///
 /// For more information, including usage and the valid values, see:
 /// <https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/>
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NodeTaint {
     /// Key for taint.
@@ -169,6 +171,7 @@ pub mod node_taint {
 /// The authentication information for accessing the master endpoint.
 /// Authentication can be done using HTTP basic auth or using client
 /// certificates.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MasterAuth {
     /// The username to use for HTTP basic authentication to the master endpoint.
@@ -200,6 +203,7 @@ pub struct MasterAuth {
     pub client_key: ::prost::alloc::string::String,
 }
 /// Configuration for client certificates on the cluster.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ClientCertificateConfig {
     /// Issue a client certificate.
@@ -208,6 +212,7 @@ pub struct ClientCertificateConfig {
 }
 /// Configuration for the addons that can be automatically spun up in the
 /// cluster, enabling additional functionality.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddonsConfig {
     /// Configuration for the HTTP (L7) load balancing controller addon, which
@@ -230,6 +235,7 @@ pub struct AddonsConfig {
 }
 /// Configuration options for the HTTP (L7) load balancing controller addon,
 /// which makes it easy to set up HTTP load balancers for services in a cluster.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HttpLoadBalancing {
     /// Whether the HTTP Load Balancing controller is enabled in the cluster.
@@ -241,6 +247,7 @@ pub struct HttpLoadBalancing {
 /// Configuration options for the horizontal pod autoscaling feature, which
 /// increases or decreases the number of replica pods a replication controller
 /// has based on the resource usage of the existing pods.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HorizontalPodAutoscaling {
     /// Whether the Horizontal Pod Autoscaling feature is enabled in the cluster.
@@ -250,6 +257,7 @@ pub struct HorizontalPodAutoscaling {
     pub disabled: bool,
 }
 /// Configuration for the Kubernetes Dashboard.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KubernetesDashboard {
     /// Whether the Kubernetes Dashboard is enabled for this cluster.
@@ -259,6 +267,7 @@ pub struct KubernetesDashboard {
 /// Configuration for NetworkPolicy. This only tracks whether the addon
 /// is enabled or not on the Master, it does not track whether network policy
 /// is enabled for the nodes.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NetworkPolicyConfig {
     /// Whether NetworkPolicy is enabled for this cluster.
@@ -269,6 +278,7 @@ pub struct NetworkPolicyConfig {
 /// master authorized networks will disallow all external traffic to access
 /// Kubernetes master through HTTPS except traffic from the given CIDR blocks,
 /// Google Compute Engine Public IPs and Google Prod IPs.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MasterAuthorizedNetworksConfig {
     /// Whether or not master authorized networks is enabled.
@@ -284,6 +294,7 @@ pub struct MasterAuthorizedNetworksConfig {
 /// Nested message and enum types in `MasterAuthorizedNetworksConfig`.
 pub mod master_authorized_networks_config {
     /// CidrBlock contains an optional name and one CIDR block.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CidrBlock {
         /// display_name is an optional field for users to identify CIDR blocks.
@@ -296,6 +307,7 @@ pub mod master_authorized_networks_config {
 }
 /// Configuration options for the NetworkPolicy feature.
 /// <https://kubernetes.io/docs/concepts/services-networking/networkpolicies/>
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NetworkPolicy {
     /// The selected network policy provider.
@@ -340,6 +352,7 @@ pub mod network_policy {
     }
 }
 /// Configuration for controlling how IPs are allocated in the cluster.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IpAllocationPolicy {
     /// Whether alias IPs will be used for pod IPs in the cluster.
@@ -434,6 +447,7 @@ pub struct IpAllocationPolicy {
     pub services_ipv4_cidr_block: ::prost::alloc::string::String,
 }
 /// Configuration for the PodSecurityPolicy feature.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PodSecurityPolicyConfig {
     /// Enable the PodSecurityPolicy controller for this cluster. If enabled, pods
@@ -442,6 +456,7 @@ pub struct PodSecurityPolicyConfig {
     pub enabled: bool,
 }
 /// A Google Container Engine cluster.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Cluster {
     /// The name of this cluster. The name must be unique within this project
@@ -677,6 +692,7 @@ pub mod cluster {
 /// ClusterUpdate describes an update to the cluster. Exactly one update can
 /// be applied to a cluster with each request, so at most one field can be
 /// provided.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ClusterUpdate {
     /// The Kubernetes version to change the nodes to (typically an
@@ -737,6 +753,7 @@ pub struct ClusterUpdate {
 }
 /// This operation resource represents operations that may have happened or are
 /// happening on the cluster. All fields are output only.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Operation {
     /// The server-assigned ID for the operation.
@@ -901,6 +918,7 @@ pub mod operation {
     }
 }
 /// CreateClusterRequest creates a cluster.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateClusterRequest {
     /// The Google Developers Console [project ID or project
@@ -924,6 +942,7 @@ pub struct CreateClusterRequest {
     pub parent: ::prost::alloc::string::String,
 }
 /// GetClusterRequest gets the settings of a cluster.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetClusterRequest {
     /// The Google Developers Console [project ID or project
@@ -947,6 +966,7 @@ pub struct GetClusterRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// UpdateClusterRequest updates the settings of a cluster.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateClusterRequest {
     /// The Google Developers Console [project ID or project
@@ -973,6 +993,7 @@ pub struct UpdateClusterRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// SetNodePoolVersionRequest updates the version of a node pool.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateNodePoolRequest {
     /// The Google Developers Console [project ID or project
@@ -1008,6 +1029,7 @@ pub struct UpdateNodePoolRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// SetNodePoolAutoscalingRequest sets the autoscaler settings of a node pool.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetNodePoolAutoscalingRequest {
     /// The Google Developers Console [project ID or project
@@ -1039,6 +1061,7 @@ pub struct SetNodePoolAutoscalingRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// SetLoggingServiceRequest sets the logging service of a cluster.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetLoggingServiceRequest {
     /// The Google Developers Console [project ID or project
@@ -1068,6 +1091,7 @@ pub struct SetLoggingServiceRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// SetMonitoringServiceRequest sets the monitoring service of a cluster.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetMonitoringServiceRequest {
     /// The Google Developers Console [project ID or project
@@ -1098,6 +1122,7 @@ pub struct SetMonitoringServiceRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// SetAddonsRequest sets the addons associated with the cluster.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetAddonsConfigRequest {
     /// The Google Developers Console [project ID or project
@@ -1125,6 +1150,7 @@ pub struct SetAddonsConfigRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// SetLocationsRequest sets the locations of the cluster.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetLocationsRequest {
     /// The Google Developers Console [project ID or project
@@ -1157,6 +1183,7 @@ pub struct SetLocationsRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// UpdateMasterRequest updates the master of the cluster.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateMasterRequest {
     /// The Google Developers Console [project ID or project
@@ -1184,6 +1211,7 @@ pub struct UpdateMasterRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// SetMasterAuthRequest updates the admin password of a cluster.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetMasterAuthRequest {
     /// The Google Developers Console [project ID or project
@@ -1256,6 +1284,7 @@ pub mod set_master_auth_request {
     }
 }
 /// DeleteClusterRequest deletes a cluster.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteClusterRequest {
     /// The Google Developers Console [project ID or project
@@ -1279,6 +1308,7 @@ pub struct DeleteClusterRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// ListClustersRequest lists clusters.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListClustersRequest {
     /// The Google Developers Console [project ID or project
@@ -1299,6 +1329,7 @@ pub struct ListClustersRequest {
     pub parent: ::prost::alloc::string::String,
 }
 /// ListClustersResponse is the result of ListClustersRequest.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListClustersResponse {
     /// A list of clusters in the project in the specified zone, or
@@ -1311,6 +1342,7 @@ pub struct ListClustersResponse {
     pub missing_zones: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// GetOperationRequest gets a single operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetOperationRequest {
     /// The Google Developers Console [project ID or project
@@ -1334,6 +1366,7 @@ pub struct GetOperationRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// ListOperationsRequest lists operations.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListOperationsRequest {
     /// The Google Developers Console [project ID or project
@@ -1353,6 +1386,7 @@ pub struct ListOperationsRequest {
     pub parent: ::prost::alloc::string::String,
 }
 /// CancelOperationRequest cancels a single operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CancelOperationRequest {
     /// The Google Developers Console [project ID or project
@@ -1375,6 +1409,7 @@ pub struct CancelOperationRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// ListOperationsResponse is the result of ListOperationsRequest.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListOperationsResponse {
     /// A list of operations in the project in the specified zone.
@@ -1386,6 +1421,7 @@ pub struct ListOperationsResponse {
     pub missing_zones: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Gets the current Container Engine service configuration.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetServerConfigRequest {
     /// The Google Developers Console [project ID or project
@@ -1404,6 +1440,7 @@ pub struct GetServerConfigRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Container Engine service configuration.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ServerConfig {
     /// Version of Kubernetes the service deploys by default.
@@ -1423,6 +1460,7 @@ pub struct ServerConfig {
     pub valid_master_versions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// CreateNodePoolRequest creates a node pool for a cluster.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateNodePoolRequest {
     /// The Google Developers Console [project ID or project
@@ -1449,6 +1487,7 @@ pub struct CreateNodePoolRequest {
     pub parent: ::prost::alloc::string::String,
 }
 /// DeleteNodePoolRequest deletes a node pool for a cluster.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteNodePoolRequest {
     /// The Google Developers Console [project ID or project
@@ -1476,6 +1515,7 @@ pub struct DeleteNodePoolRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// ListNodePoolsRequest lists the node pool(s) for a cluster.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNodePoolsRequest {
     /// The Google Developers Console [project ID or project
@@ -1499,6 +1539,7 @@ pub struct ListNodePoolsRequest {
     pub parent: ::prost::alloc::string::String,
 }
 /// GetNodePoolRequest retrieves a node pool for a cluster.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetNodePoolRequest {
     /// The Google Developers Console [project ID or project
@@ -1531,6 +1572,7 @@ pub struct GetNodePoolRequest {
 /// of Kubernetes labels applied to them, which may be used to reference them
 /// during pod scheduling. They may also be resized up or down, to accommodate
 /// the workload.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NodePool {
     /// The name of the node pool.
@@ -1629,6 +1671,7 @@ pub mod node_pool {
 }
 /// NodeManagement defines the set of node management services turned on for the
 /// node pool.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NodeManagement {
     /// Whether the nodes will be automatically upgraded.
@@ -1643,6 +1686,7 @@ pub struct NodeManagement {
 }
 /// AutoUpgradeOptions defines the set of options for the user to control how
 /// the Auto Upgrades will proceed.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AutoUpgradeOptions {
     /// [Output only] This field is set when upgrades are about to commence
@@ -1656,6 +1700,7 @@ pub struct AutoUpgradeOptions {
     pub description: ::prost::alloc::string::String,
 }
 /// MaintenancePolicy defines the maintenance policy to be used for the cluster.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MaintenancePolicy {
     /// Specifies the maintenance window in which maintenance may be performed.
@@ -1663,6 +1708,7 @@ pub struct MaintenancePolicy {
     pub window: ::core::option::Option<MaintenanceWindow>,
 }
 /// MaintenanceWindow defines the maintenance window to be used for the cluster.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MaintenanceWindow {
     /// Unimplemented, reserved for future use.
@@ -1674,6 +1720,7 @@ pub struct MaintenanceWindow {
 pub mod maintenance_window {
     /// Unimplemented, reserved for future use.
     /// HourlyMaintenanceWindow hourly_maintenance_window = 1;
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Policy {
         /// DailyMaintenanceWindow specifies a daily maintenance operation window.
@@ -1682,6 +1729,7 @@ pub mod maintenance_window {
     }
 }
 /// Time window specified for daily maintenance operations.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DailyMaintenanceWindow {
     /// Time within the maintenance window to start the maintenance operations.
@@ -1695,6 +1743,7 @@ pub struct DailyMaintenanceWindow {
 }
 /// SetNodePoolManagementRequest sets the node management properties of a node
 /// pool.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetNodePoolManagementRequest {
     /// The Google Developers Console [project ID or project
@@ -1727,6 +1776,7 @@ pub struct SetNodePoolManagementRequest {
 }
 /// SetNodePoolSizeRequest sets the size a node
 /// pool.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetNodePoolSizeRequest {
     /// The Google Developers Console [project ID or project
@@ -1759,6 +1809,7 @@ pub struct SetNodePoolSizeRequest {
 /// RollbackNodePoolUpgradeRequest rollbacks the previously Aborted or Failed
 /// NodePool upgrade. This will be an no-op if the last upgrade successfully
 /// completed.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RollbackNodePoolUpgradeRequest {
     /// The Google Developers Console [project ID or project
@@ -1787,6 +1838,7 @@ pub struct RollbackNodePoolUpgradeRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// ListNodePoolsResponse is the result of ListNodePoolsRequest.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNodePoolsResponse {
     /// A list of node pools for a cluster.
@@ -1795,6 +1847,7 @@ pub struct ListNodePoolsResponse {
 }
 /// NodePoolAutoscaling contains information required by cluster autoscaler to
 /// adjust the size of the node pool to the current cluster usage.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NodePoolAutoscaling {
     /// Is autoscaling enabled for this node pool.
@@ -1812,6 +1865,7 @@ pub struct NodePoolAutoscaling {
 /// SetLabelsRequest sets the Google Cloud Platform labels on a Google Container
 /// Engine cluster, which will in turn set them for Google Compute Engine
 /// resources used by that cluster
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetLabelsRequest {
     /// The Google Developers Console [project ID or project
@@ -1850,6 +1904,7 @@ pub struct SetLabelsRequest {
 }
 /// SetLegacyAbacRequest enables or disables the ABAC authorization mechanism for
 /// a cluster.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetLegacyAbacRequest {
     /// The Google Developers Console [project ID or project
@@ -1877,6 +1932,7 @@ pub struct SetLegacyAbacRequest {
 }
 /// StartIPRotationRequest creates a new IP for the cluster and then performs
 /// a node upgrade on each node pool to point to the new IP.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StartIpRotationRequest {
     /// The Google Developers Console [project ID or project
@@ -1900,6 +1956,7 @@ pub struct StartIpRotationRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// CompleteIPRotationRequest moves the cluster master back into single-IP mode.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CompleteIpRotationRequest {
     /// The Google Developers Console [project ID or project
@@ -1923,6 +1980,7 @@ pub struct CompleteIpRotationRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// AcceleratorConfig represents a Hardware Accelerator request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AcceleratorConfig {
     /// The number of the accelerator cards exposed to an instance.
@@ -1934,6 +1992,7 @@ pub struct AcceleratorConfig {
     pub accelerator_type: ::prost::alloc::string::String,
 }
 /// SetNetworkPolicyRequest enables/disables network policy for a cluster.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetNetworkPolicyRequest {
     /// The Google Developers Console [project ID or project
@@ -1961,6 +2020,7 @@ pub struct SetNetworkPolicyRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// SetMaintenancePolicyRequest sets the maintenance policy for a cluster.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetMaintenancePolicyRequest {
     /// The Google Developers Console [project ID or project

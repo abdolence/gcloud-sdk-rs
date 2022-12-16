@@ -1,4 +1,5 @@
 /// The access log entry definition of online prediction.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OnlinePredictionLogEntry {
     /// The resource name of the endpoint as referred to in the original request.

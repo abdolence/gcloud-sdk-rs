@@ -1,4 +1,5 @@
 /// Third-party device definition.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Device {
     /// Third-party device ID.
@@ -60,6 +61,7 @@ pub struct Device {
     pub notification_supported_by_agent: bool,
 }
 /// Identifiers used to describe the device.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeviceNames {
     /// Primary name of the device, generally provided by the user.
@@ -74,6 +76,7 @@ pub struct DeviceNames {
     pub default_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Device information.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeviceInfo {
     /// Device manufacturer.
@@ -90,6 +93,7 @@ pub struct DeviceInfo {
     pub sw_version: ::prost::alloc::string::String,
 }
 /// Alternate third-party device ID.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AgentOtherDeviceId {
     /// Project ID for your smart home Action.
@@ -102,6 +106,7 @@ pub struct AgentOtherDeviceId {
 /// Request type for the
 /// \[`RequestSyncDevices`\](#google.home.graph.v1.HomeGraphApiService.RequestSyncDevices)
 /// call.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RequestSyncDevicesRequest {
     /// Required. Third-party user ID.
@@ -119,6 +124,7 @@ pub struct RequestSyncDevicesRequest {
 ///
 /// Intentionally empty upon success. An HTTP response code is returned
 /// with more details upon failure.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RequestSyncDevicesResponse {}
 /// Request type for the
@@ -147,6 +153,7 @@ pub struct RequestSyncDevicesResponse {}
 ///    }
 /// }
 /// ```
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReportStateAndNotificationRequest {
     /// Request ID used for debugging.
@@ -173,6 +180,7 @@ pub struct ReportStateAndNotificationRequest {
 /// Response type for the
 /// \[`ReportStateAndNotification`\](#google.home.graph.v1.HomeGraphApiService.ReportStateAndNotification)
 /// call.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReportStateAndNotificationResponse {
     /// Request ID copied from
@@ -181,6 +189,7 @@ pub struct ReportStateAndNotificationResponse {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Payload containing the state and notification information for devices.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StateAndNotificationPayload {
     /// The devices for updating state and sending notifications.
@@ -188,6 +197,7 @@ pub struct StateAndNotificationPayload {
     pub devices: ::core::option::Option<ReportStateAndNotificationDevice>,
 }
 /// The states and notifications specific to a device.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReportStateAndNotificationDevice {
     /// States of devices to update. See the **Device STATES** section
@@ -204,6 +214,7 @@ pub struct ReportStateAndNotificationDevice {
 /// Request type for the
 /// \[`DeleteAgentUser`\](#google.home.graph.v1.HomeGraphApiService.DeleteAgentUser)
 /// call.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteAgentUserRequest {
     /// Request ID used for debugging.
@@ -215,6 +226,7 @@ pub struct DeleteAgentUserRequest {
 }
 /// Request type for the
 /// \[`Query`\](#google.home.graph.v1.HomeGraphApiService.Query) call.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryRequest {
     /// Request ID used for debugging.
@@ -229,6 +241,7 @@ pub struct QueryRequest {
     pub inputs: ::prost::alloc::vec::Vec<QueryRequestInput>,
 }
 /// Device ID inputs to \[QueryRequest][google.home.graph.v1.QueryRequest\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryRequestInput {
     /// Payload containing third-party device IDs.
@@ -236,6 +249,7 @@ pub struct QueryRequestInput {
     pub payload: ::core::option::Option<QueryRequestPayload>,
 }
 /// Payload containing device IDs.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryRequestPayload {
     /// Third-party device IDs for which to get the device states.
@@ -243,6 +257,7 @@ pub struct QueryRequestPayload {
     pub devices: ::prost::alloc::vec::Vec<AgentDeviceId>,
 }
 /// Third-party device ID for one device.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AgentDeviceId {
     /// Third-party device ID.
@@ -278,6 +293,7 @@ pub struct AgentDeviceId {
 ///    }
 /// }
 /// ```
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryResponse {
     /// Request ID used for debugging. Copied from the request.
@@ -288,6 +304,7 @@ pub struct QueryResponse {
     pub payload: ::core::option::Option<QueryResponsePayload>,
 }
 /// Payload containing device states information.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryResponsePayload {
     /// States of the devices. Map of third-party device ID to struct of device
@@ -300,6 +317,7 @@ pub struct QueryResponsePayload {
 }
 /// Request type for the \[`Sync`\](#google.home.graph.v1.HomeGraphApiService.Sync)
 /// call.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SyncRequest {
     /// Request ID used for debugging.
@@ -348,6 +366,7 @@ pub struct SyncRequest {
 ///    }
 /// }
 /// ```
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SyncResponse {
     /// Request ID used for debugging. Copied from the request.
@@ -358,6 +377,7 @@ pub struct SyncResponse {
     pub payload: ::core::option::Option<SyncResponsePayload>,
 }
 /// Payload containing device information.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SyncResponsePayload {
     /// Third-party user ID

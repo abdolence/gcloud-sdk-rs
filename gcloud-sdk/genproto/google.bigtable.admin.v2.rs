@@ -1,5 +1,6 @@
 /// Encapsulates progress related information for a Cloud Bigtable long
 /// running operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationProgress {
     /// Percent completion of the operation.
@@ -42,6 +43,7 @@ impl StorageType {
 /// the resources that serve them.
 /// All tables in an instance are served from all
 /// \[Clusters][google.bigtable.admin.v2.Cluster\] in the instance.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Instance {
     /// The unique name of the instance. Values are of the form
@@ -163,6 +165,7 @@ pub mod instance {
     }
 }
 /// The Autoscaling targets for a Cluster. These determine the recommended nodes.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AutoscalingTargets {
     /// The cpu utilization that the Autoscaler should be trying to achieve.
@@ -181,6 +184,7 @@ pub struct AutoscalingTargets {
     pub storage_utilization_gib_per_node: i32,
 }
 /// Limits for the number of nodes a Cluster can autoscale up/down to.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AutoscalingLimits {
     /// Required. Minimum number of nodes to scale down to.
@@ -193,6 +197,7 @@ pub struct AutoscalingLimits {
 /// A resizable group of nodes in a particular cloud location, capable
 /// of serving all \[Tables][google.bigtable.admin.v2.Table\] in the parent
 /// \[Instance][google.bigtable.admin.v2.Instance\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Cluster {
     /// The unique name of the cluster. Values are of the form
@@ -225,6 +230,7 @@ pub struct Cluster {
 /// Nested message and enum types in `Cluster`.
 pub mod cluster {
     /// Autoscaling config for a cluster.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ClusterAutoscalingConfig {
         /// Required. Autoscaling limits for this cluster.
@@ -235,6 +241,7 @@ pub mod cluster {
         pub autoscaling_targets: ::core::option::Option<super::AutoscalingTargets>,
     }
     /// Configuration for a cluster.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ClusterConfig {
         /// Autoscaling configuration for this cluster.
@@ -243,6 +250,7 @@ pub mod cluster {
     }
     /// Cloud Key Management Service (Cloud KMS) settings for a CMEK-protected
     /// cluster.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct EncryptionConfig {
         /// Describes the Cloud KMS encryption key that will be used to protect the
@@ -305,6 +313,7 @@ pub mod cluster {
             }
         }
     }
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Config {
         /// Configuration for this cluster.
@@ -314,6 +323,7 @@ pub mod cluster {
 }
 /// A configuration object describing how Cloud Bigtable should treat traffic
 /// from a particular end user application.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AppProfile {
     /// The unique name of the app profile. Values are of the form
@@ -345,6 +355,7 @@ pub mod app_profile {
     /// transient errors or delays. Clusters in a region are considered
     /// equidistant. Choosing this option sacrifices read-your-writes consistency
     /// to improve availability.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct MultiClusterRoutingUseAny {
         /// The set of clusters to route to. The order is ignored; clusters will be
@@ -355,6 +366,7 @@ pub mod app_profile {
     /// Unconditionally routes all read/write requests to a specific cluster.
     /// This option preserves read-your-writes consistency but does not improve
     /// availability.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SingleClusterRouting {
         /// The cluster to which read/write requests should be routed.
@@ -368,6 +380,7 @@ pub mod app_profile {
     }
     /// The routing policy for all read/write requests that use this app profile.
     /// A value must be explicitly set.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum RoutingPolicy {
         /// Use a multi-cluster routing policy.
@@ -383,6 +396,7 @@ pub mod app_profile {
 /// <https://cloud.google.com/bigtable/docs/performance#optimization.>
 /// A Hot tablet is a tablet that exhibits high average cpu usage during the time
 /// interval from start time to end time.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HotTablet {
     /// The unique name of the hot tablet. Values are of the form
@@ -413,6 +427,7 @@ pub struct HotTablet {
     pub node_cpu_usage_percent: f32,
 }
 /// Request message for BigtableInstanceAdmin.CreateInstance.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateInstanceRequest {
     /// Required. The unique name of the project in which to create the new instance.
@@ -437,6 +452,7 @@ pub struct CreateInstanceRequest {
     pub clusters: ::std::collections::HashMap<::prost::alloc::string::String, Cluster>,
 }
 /// Request message for BigtableInstanceAdmin.GetInstance.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetInstanceRequest {
     /// Required. The unique name of the requested instance. Values are of the form
@@ -445,6 +461,7 @@ pub struct GetInstanceRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for BigtableInstanceAdmin.ListInstances.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListInstancesRequest {
     /// Required. The unique name of the project for which a list of instances is requested.
@@ -456,6 +473,7 @@ pub struct ListInstancesRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for BigtableInstanceAdmin.ListInstances.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListInstancesResponse {
     /// The list of requested instances.
@@ -474,6 +492,7 @@ pub struct ListInstancesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for BigtableInstanceAdmin.PartialUpdateInstance.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PartialUpdateInstanceRequest {
     /// Required. The Instance which will (partially) replace the current value.
@@ -485,6 +504,7 @@ pub struct PartialUpdateInstanceRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for BigtableInstanceAdmin.DeleteInstance.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteInstanceRequest {
     /// Required. The unique name of the instance to be deleted.
@@ -493,6 +513,7 @@ pub struct DeleteInstanceRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for BigtableInstanceAdmin.CreateCluster.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateClusterRequest {
     /// Required. The unique name of the instance in which to create the new cluster.
@@ -511,6 +532,7 @@ pub struct CreateClusterRequest {
     pub cluster: ::core::option::Option<Cluster>,
 }
 /// Request message for BigtableInstanceAdmin.GetCluster.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetClusterRequest {
     /// Required. The unique name of the requested cluster. Values are of the form
@@ -519,6 +541,7 @@ pub struct GetClusterRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for BigtableInstanceAdmin.ListClusters.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListClustersRequest {
     /// Required. The unique name of the instance for which a list of clusters is requested.
@@ -532,6 +555,7 @@ pub struct ListClustersRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for BigtableInstanceAdmin.ListClusters.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListClustersResponse {
     /// The list of requested clusters.
@@ -549,6 +573,7 @@ pub struct ListClustersResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for BigtableInstanceAdmin.DeleteCluster.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteClusterRequest {
     /// Required. The unique name of the cluster to be deleted. Values are of the form
@@ -557,6 +582,7 @@ pub struct DeleteClusterRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The metadata for the Operation returned by CreateInstance.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateInstanceMetadata {
     /// The request that prompted the initiation of this CreateInstance operation.
@@ -570,6 +596,7 @@ pub struct CreateInstanceMetadata {
     pub finish_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// The metadata for the Operation returned by UpdateInstance.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateInstanceMetadata {
     /// The request that prompted the initiation of this UpdateInstance operation.
@@ -583,6 +610,7 @@ pub struct UpdateInstanceMetadata {
     pub finish_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// The metadata for the Operation returned by CreateCluster.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateClusterMetadata {
     /// The request that prompted the initiation of this CreateCluster operation.
@@ -611,6 +639,7 @@ pub struct CreateClusterMetadata {
 /// Nested message and enum types in `CreateClusterMetadata`.
 pub mod create_cluster_metadata {
     /// Progress info for copying a table's data to the new cluster.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct TableProgress {
         /// Estimate of the size of the table to be copied.
@@ -669,6 +698,7 @@ pub mod create_cluster_metadata {
     }
 }
 /// The metadata for the Operation returned by UpdateCluster.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateClusterMetadata {
     /// The request that prompted the initiation of this UpdateCluster operation.
@@ -682,6 +712,7 @@ pub struct UpdateClusterMetadata {
     pub finish_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// The metadata for the Operation returned by PartialUpdateCluster.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PartialUpdateClusterMetadata {
     /// The time at which the original request was received.
@@ -695,6 +726,7 @@ pub struct PartialUpdateClusterMetadata {
     pub original_request: ::core::option::Option<PartialUpdateClusterRequest>,
 }
 /// Request message for BigtableInstanceAdmin.PartialUpdateCluster.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PartialUpdateClusterRequest {
     /// Required. The Cluster which contains the partial updates to be applied, subject to
@@ -706,6 +738,7 @@ pub struct PartialUpdateClusterRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for BigtableInstanceAdmin.CreateAppProfile.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateAppProfileRequest {
     /// Required. The unique name of the instance in which to create the new app profile.
@@ -727,6 +760,7 @@ pub struct CreateAppProfileRequest {
     pub ignore_warnings: bool,
 }
 /// Request message for BigtableInstanceAdmin.GetAppProfile.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAppProfileRequest {
     /// Required. The unique name of the requested app profile. Values are of the form
@@ -735,6 +769,7 @@ pub struct GetAppProfileRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for BigtableInstanceAdmin.ListAppProfiles.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAppProfilesRequest {
     /// Required. The unique name of the instance for which a list of app profiles is
@@ -760,6 +795,7 @@ pub struct ListAppProfilesRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for BigtableInstanceAdmin.ListAppProfiles.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAppProfilesResponse {
     /// The list of requested app profiles.
@@ -778,6 +814,7 @@ pub struct ListAppProfilesResponse {
     pub failed_locations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for BigtableInstanceAdmin.UpdateAppProfile.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateAppProfileRequest {
     /// Required. The app profile which will (partially) replace the current value.
@@ -792,6 +829,7 @@ pub struct UpdateAppProfileRequest {
     pub ignore_warnings: bool,
 }
 /// Request message for BigtableInstanceAdmin.DeleteAppProfile.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteAppProfileRequest {
     /// Required. The unique name of the app profile to be deleted. Values are of the form
@@ -803,9 +841,11 @@ pub struct DeleteAppProfileRequest {
     pub ignore_warnings: bool,
 }
 /// The metadata for the Operation returned by UpdateAppProfile.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateAppProfileMetadata {}
 /// Request message for BigtableInstanceAdmin.ListHotTablets.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListHotTabletsRequest {
     /// Required. The cluster name to list hot tablets.
@@ -840,6 +880,7 @@ pub struct ListHotTabletsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for BigtableInstanceAdmin.ListHotTablets.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListHotTabletsResponse {
     /// List of hot tablets in the tables of the requested cluster that fall
@@ -1418,6 +1459,7 @@ pub mod bigtable_instance_admin_client {
     }
 }
 /// Information about a table restore.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RestoreInfo {
     /// The type of the restore source.
@@ -1430,6 +1472,7 @@ pub struct RestoreInfo {
 /// Nested message and enum types in `RestoreInfo`.
 pub mod restore_info {
     /// Information about the source used to restore the table.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum SourceInfo {
         /// Information about the backup used to restore the table. The backup
@@ -1440,6 +1483,7 @@ pub mod restore_info {
 }
 /// A collection of user data indexed by row, column, and timestamp.
 /// Each table is served using the resources of its parent cluster.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Table {
     /// The unique name of the table. Values are of the form
@@ -1486,6 +1530,7 @@ pub struct Table {
 /// Nested message and enum types in `Table`.
 pub mod table {
     /// The state of a table's data in a particular cluster.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ClusterState {
         /// Output only. The state of replication for the table in this cluster.
@@ -1632,6 +1677,7 @@ pub mod table {
     }
 }
 /// A set of columns within a table which share a common configuration.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ColumnFamily {
     /// Garbage collection rule specified as a protobuf.
@@ -1644,6 +1690,7 @@ pub struct ColumnFamily {
     pub gc_rule: ::core::option::Option<GcRule>,
 }
 /// Rule for determining which cells to delete during garbage collection.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GcRule {
     /// Garbage collection rules.
@@ -1653,6 +1700,7 @@ pub struct GcRule {
 /// Nested message and enum types in `GcRule`.
 pub mod gc_rule {
     /// A GcRule which deletes cells matching all of the given rules.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Intersection {
         /// Only delete cells which would be deleted by every element of `rules`.
@@ -1660,6 +1708,7 @@ pub mod gc_rule {
         pub rules: ::prost::alloc::vec::Vec<super::GcRule>,
     }
     /// A GcRule which deletes cells matching any of the given rules.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Union {
         /// Delete cells which would be deleted by any element of `rules`.
@@ -1667,6 +1716,7 @@ pub mod gc_rule {
         pub rules: ::prost::alloc::vec::Vec<super::GcRule>,
     }
     /// Garbage collection rules.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Rule {
         /// Delete all cells in a column except the most recent N.
@@ -1689,6 +1739,7 @@ pub mod gc_rule {
 /// If this resource is protected with customer managed encryption, the in-use
 /// Cloud Key Management Service (Cloud KMS) key version is specified along with
 /// its status.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EncryptionInfo {
     /// Output only. The type of encryption used to protect this resource.
@@ -1757,6 +1808,7 @@ pub mod encryption_info {
 /// feature is not currently available to most Cloud Bigtable customers. This
 /// feature might be changed in backward-incompatible ways and is not recommended
 /// for production use. It is not subject to any SLA or deprecation policy.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Snapshot {
     /// Output only. The unique name of the snapshot.
@@ -1828,6 +1880,7 @@ pub mod snapshot {
     }
 }
 /// A backup of a Cloud Bigtable table.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Backup {
     /// A globally unique identifier for the backup which cannot be
@@ -1913,6 +1966,7 @@ pub mod backup {
     }
 }
 /// Information about a backup.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BackupInfo {
     /// Output only. Name of the backup.
@@ -1953,6 +2007,7 @@ impl RestoreSourceType {
 }
 /// The request for
 /// \[RestoreTable][google.bigtable.admin.v2.BigtableTableAdmin.RestoreTable\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RestoreTableRequest {
     /// Required. The name of the instance in which to create the restored
@@ -1973,6 +2028,7 @@ pub struct RestoreTableRequest {
 /// Nested message and enum types in `RestoreTableRequest`.
 pub mod restore_table_request {
     /// Required. The source from which to restore.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
         /// Name of the backup from which to restore.  Values are of the form
@@ -1983,6 +2039,7 @@ pub mod restore_table_request {
 }
 /// Metadata type for the long-running operation returned by
 /// \[RestoreTable][google.bigtable.admin.v2.BigtableTableAdmin.RestoreTable\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RestoreTableMetadata {
     /// Name of the table being created and restored to.
@@ -2015,6 +2072,7 @@ pub struct RestoreTableMetadata {
 pub mod restore_table_metadata {
     /// Information about the source used to restore the table, as specified by
     /// `source` in \[RestoreTableRequest][google.bigtable.admin.v2.RestoreTableRequest\].
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum SourceInfo {
         #[prost(message, tag = "3")]
@@ -2025,6 +2083,7 @@ pub mod restore_table_metadata {
 /// of optimizations performed on a newly restored table. This long-running
 /// operation is automatically created by the system after the successful
 /// completion of a table restore, and cannot be cancelled.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OptimizeRestoredTableMetadata {
     /// Name of the restored table being optimized.
@@ -2036,6 +2095,7 @@ pub struct OptimizeRestoredTableMetadata {
 }
 /// Request message for
 /// \[google.bigtable.admin.v2.BigtableTableAdmin.CreateTable][google.bigtable.admin.v2.BigtableTableAdmin.CreateTable\]
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateTableRequest {
     /// Required. The unique name of the instance in which to create the table.
@@ -2072,6 +2132,7 @@ pub struct CreateTableRequest {
 /// Nested message and enum types in `CreateTableRequest`.
 pub mod create_table_request {
     /// An initial split point for a newly created table.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Split {
         /// Row key to use as an initial tablet boundary.
@@ -2086,6 +2147,7 @@ pub mod create_table_request {
 /// feature is not currently available to most Cloud Bigtable customers. This
 /// feature might be changed in backward-incompatible ways and is not recommended
 /// for production use. It is not subject to any SLA or deprecation policy.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateTableFromSnapshotRequest {
     /// Required. The unique name of the instance in which to create the table.
@@ -2105,6 +2167,7 @@ pub struct CreateTableFromSnapshotRequest {
 }
 /// Request message for
 /// \[google.bigtable.admin.v2.BigtableTableAdmin.DropRowRange][google.bigtable.admin.v2.BigtableTableAdmin.DropRowRange\]
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DropRowRangeRequest {
     /// Required. The unique name of the table on which to drop a range of rows.
@@ -2119,6 +2182,7 @@ pub struct DropRowRangeRequest {
 /// Nested message and enum types in `DropRowRangeRequest`.
 pub mod drop_row_range_request {
     /// Delete all rows or by prefix.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Target {
         /// Delete all rows that start with this row key prefix. Prefix cannot be
@@ -2132,6 +2196,7 @@ pub mod drop_row_range_request {
 }
 /// Request message for
 /// \[google.bigtable.admin.v2.BigtableTableAdmin.ListTables][google.bigtable.admin.v2.BigtableTableAdmin.ListTables\]
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTablesRequest {
     /// Required. The unique name of the instance for which tables should be listed.
@@ -2159,6 +2224,7 @@ pub struct ListTablesRequest {
 }
 /// Response message for
 /// \[google.bigtable.admin.v2.BigtableTableAdmin.ListTables][google.bigtable.admin.v2.BigtableTableAdmin.ListTables\]
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTablesResponse {
     /// The tables present in the requested instance.
@@ -2172,6 +2238,7 @@ pub struct ListTablesResponse {
 }
 /// Request message for
 /// \[google.bigtable.admin.v2.BigtableTableAdmin.GetTable][google.bigtable.admin.v2.BigtableTableAdmin.GetTable\]
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetTableRequest {
     /// Required. The unique name of the requested table.
@@ -2186,6 +2253,7 @@ pub struct GetTableRequest {
 }
 /// The request for
 /// \[UpdateTable][google.bigtable.admin.v2.BigtableTableAdmin.UpdateTable\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateTableRequest {
     /// Required. The table to update.
@@ -2205,6 +2273,7 @@ pub struct UpdateTableRequest {
 }
 /// Metadata type for the operation returned by
 /// \[UpdateTable][google.bigtable.admin.v2.BigtableTableAdmin.UpdateTable\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateTableMetadata {
     /// The name of the table being updated.
@@ -2219,6 +2288,7 @@ pub struct UpdateTableMetadata {
 }
 /// Request message for
 /// \[google.bigtable.admin.v2.BigtableTableAdmin.DeleteTable][google.bigtable.admin.v2.BigtableTableAdmin.DeleteTable\]
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteTableRequest {
     /// Required. The unique name of the table to be deleted.
@@ -2229,6 +2299,7 @@ pub struct DeleteTableRequest {
 }
 /// Request message for
 /// \[google.bigtable.admin.v2.BigtableTableAdmin.UndeleteTable][google.bigtable.admin.v2.BigtableTableAdmin.UndeleteTable\]
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UndeleteTableRequest {
     /// Required. The unique name of the table to be restored.
@@ -2239,6 +2310,7 @@ pub struct UndeleteTableRequest {
 }
 /// Metadata type for the operation returned by
 /// \[google.bigtable.admin.v2.BigtableTableAdmin.UndeleteTable][google.bigtable.admin.v2.BigtableTableAdmin.UndeleteTable\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UndeleteTableMetadata {
     /// The name of the table being restored.
@@ -2253,6 +2325,7 @@ pub struct UndeleteTableMetadata {
 }
 /// Request message for
 /// \[google.bigtable.admin.v2.BigtableTableAdmin.ModifyColumnFamilies][google.bigtable.admin.v2.BigtableTableAdmin.ModifyColumnFamilies\]
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ModifyColumnFamiliesRequest {
     /// Required. The unique name of the table whose families should be modified.
@@ -2272,6 +2345,7 @@ pub struct ModifyColumnFamiliesRequest {
 /// Nested message and enum types in `ModifyColumnFamiliesRequest`.
 pub mod modify_column_families_request {
     /// A create, update, or delete of a particular column family.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Modification {
         /// The ID of the column family to be modified.
@@ -2284,6 +2358,7 @@ pub mod modify_column_families_request {
     /// Nested message and enum types in `Modification`.
     pub mod modification {
         /// Column family modifications.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Mod {
             /// Create a new column family with the specified schema, or fail if
@@ -2303,6 +2378,7 @@ pub mod modify_column_families_request {
 }
 /// Request message for
 /// \[google.bigtable.admin.v2.BigtableTableAdmin.GenerateConsistencyToken][google.bigtable.admin.v2.BigtableTableAdmin.GenerateConsistencyToken\]
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateConsistencyTokenRequest {
     /// Required. The unique name of the Table for which to create a consistency token.
@@ -2313,6 +2389,7 @@ pub struct GenerateConsistencyTokenRequest {
 }
 /// Response message for
 /// \[google.bigtable.admin.v2.BigtableTableAdmin.GenerateConsistencyToken][google.bigtable.admin.v2.BigtableTableAdmin.GenerateConsistencyToken\]
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateConsistencyTokenResponse {
     /// The generated consistency token.
@@ -2321,6 +2398,7 @@ pub struct GenerateConsistencyTokenResponse {
 }
 /// Request message for
 /// \[google.bigtable.admin.v2.BigtableTableAdmin.CheckConsistency][google.bigtable.admin.v2.BigtableTableAdmin.CheckConsistency\]
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CheckConsistencyRequest {
     /// Required. The unique name of the Table for which to check replication consistency.
@@ -2334,6 +2412,7 @@ pub struct CheckConsistencyRequest {
 }
 /// Response message for
 /// \[google.bigtable.admin.v2.BigtableTableAdmin.CheckConsistency][google.bigtable.admin.v2.BigtableTableAdmin.CheckConsistency\]
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CheckConsistencyResponse {
     /// True only if the token is consistent. A token is consistent if replication
@@ -2348,6 +2427,7 @@ pub struct CheckConsistencyResponse {
 /// feature is not currently available to most Cloud Bigtable customers. This
 /// feature might be changed in backward-incompatible ways and is not recommended
 /// for production use. It is not subject to any SLA or deprecation policy.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SnapshotTableRequest {
     /// Required. The unique name of the table to have the snapshot taken.
@@ -2383,6 +2463,7 @@ pub struct SnapshotTableRequest {
 /// feature is not currently available to most Cloud Bigtable customers. This
 /// feature might be changed in backward-incompatible ways and is not recommended
 /// for production use. It is not subject to any SLA or deprecation policy.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetSnapshotRequest {
     /// Required. The unique name of the requested snapshot.
@@ -2398,6 +2479,7 @@ pub struct GetSnapshotRequest {
 /// feature is not currently available to most Cloud Bigtable customers. This
 /// feature might be changed in backward-incompatible ways and is not recommended
 /// for production use. It is not subject to any SLA or deprecation policy.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSnapshotsRequest {
     /// Required. The unique name of the cluster for which snapshots should be listed.
@@ -2422,6 +2504,7 @@ pub struct ListSnapshotsRequest {
 /// feature is not currently available to most Cloud Bigtable customers. This
 /// feature might be changed in backward-incompatible ways and is not recommended
 /// for production use. It is not subject to any SLA or deprecation policy.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSnapshotsResponse {
     /// The snapshots present in the requested cluster.
@@ -2440,6 +2523,7 @@ pub struct ListSnapshotsResponse {
 /// feature is not currently available to most Cloud Bigtable customers. This
 /// feature might be changed in backward-incompatible ways and is not recommended
 /// for production use. It is not subject to any SLA or deprecation policy.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteSnapshotRequest {
     /// Required. The unique name of the snapshot to be deleted.
@@ -2454,6 +2538,7 @@ pub struct DeleteSnapshotRequest {
 /// feature is not currently available to most Cloud Bigtable customers. This
 /// feature might be changed in backward-incompatible ways and is not recommended
 /// for production use. It is not subject to any SLA or deprecation policy.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SnapshotTableMetadata {
     /// The request that prompted the initiation of this SnapshotTable operation.
@@ -2472,6 +2557,7 @@ pub struct SnapshotTableMetadata {
 /// feature is not currently available to most Cloud Bigtable customers. This
 /// feature might be changed in backward-incompatible ways and is not recommended
 /// for production use. It is not subject to any SLA or deprecation policy.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateTableFromSnapshotMetadata {
     /// The request that prompted the initiation of this CreateTableFromSnapshot
@@ -2486,6 +2572,7 @@ pub struct CreateTableFromSnapshotMetadata {
     pub finish_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// The request for \[CreateBackup][google.bigtable.admin.v2.BigtableTableAdmin.CreateBackup\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateBackupRequest {
     /// Required. This must be one of the clusters in the instance in which this
@@ -2507,6 +2594,7 @@ pub struct CreateBackupRequest {
 }
 /// Metadata type for the operation returned by
 /// \[CreateBackup][google.bigtable.admin.v2.BigtableTableAdmin.CreateBackup\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateBackupMetadata {
     /// The name of the backup being created.
@@ -2523,6 +2611,7 @@ pub struct CreateBackupMetadata {
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// The request for \[UpdateBackup][google.bigtable.admin.v2.BigtableTableAdmin.UpdateBackup\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateBackupRequest {
     /// Required. The backup to update. `backup.name`, and the fields to be updated
@@ -2540,6 +2629,7 @@ pub struct UpdateBackupRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The request for \[GetBackup][google.bigtable.admin.v2.BigtableTableAdmin.GetBackup\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetBackupRequest {
     /// Required. Name of the backup.
@@ -2549,6 +2639,7 @@ pub struct GetBackupRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request for \[DeleteBackup][google.bigtable.admin.v2.BigtableTableAdmin.DeleteBackup\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteBackupRequest {
     /// Required. Name of the backup to delete.
@@ -2558,6 +2649,7 @@ pub struct DeleteBackupRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request for \[ListBackups][google.bigtable.admin.v2.BigtableTableAdmin.ListBackups\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListBackupsRequest {
     /// Required. The cluster to list backups from.  Values are of the
@@ -2634,6 +2726,7 @@ pub struct ListBackupsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// The response for \[ListBackups][google.bigtable.admin.v2.BigtableTableAdmin.ListBackups\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListBackupsResponse {
     /// The list of matching backups.

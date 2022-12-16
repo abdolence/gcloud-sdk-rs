@@ -16,6 +16,7 @@
 ///    cause new restrictions on existing metadata related to the label are
 ///    rejected.
 /// * Disabled—When disabled, the configured `DisabledPolicy` takes effect.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Lifecycle {
     /// Output only. The state of the object associated with this lifecycle.
@@ -34,6 +35,7 @@ pub struct Lifecycle {
 pub mod lifecycle {
     /// The policy that governs how to treat a disabled label, field, or selection
     /// choice in different contexts.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DisabledPolicy {
         /// Whether to hide this disabled object in the search menu for Drive items.
@@ -99,6 +101,7 @@ pub mod lifecycle {
     }
 }
 /// Information about a user.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UserInfo {
     /// The identifier for this user that can be used with the People API to get
@@ -108,6 +111,7 @@ pub struct UserInfo {
     pub person: ::prost::alloc::string::String,
 }
 /// Badge status of the label.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BadgeConfig {
     /// The color of the badge. When not specified, no badge is rendered.
@@ -122,6 +126,7 @@ pub struct BadgeConfig {
 }
 /// The color derived from BadgeConfig and changed to the closest recommended
 /// supported color.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BadgeColors {
     /// Output only. Badge background that pairs with the foreground.
@@ -140,6 +145,7 @@ pub struct BadgeColors {
 }
 /// Contains information about whether a label component should be considered
 /// locked.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LockStatus {
     /// Output only. Indicates whether this label component is the (direct) target
@@ -151,6 +157,7 @@ pub struct LockStatus {
 }
 /// Describes violations in a request to create or update a Label or its
 /// Fields.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InvalidArgument {
     /// Describes all violations in a client request.
@@ -160,6 +167,7 @@ pub struct InvalidArgument {
 /// Nested message and enum types in `InvalidArgument`.
 pub mod invalid_argument {
     /// Describes the Field in which the violation occurred.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct FieldViolation {
         /// The path to the field where this violation occurred. This path is
@@ -230,6 +238,7 @@ pub mod invalid_argument {
     }
 }
 /// Describes what preconditions have failed.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PreconditionFailure {
     /// Describes all violations in a client request.
@@ -239,6 +248,7 @@ pub struct PreconditionFailure {
 /// Nested message and enum types in `PreconditionFailure`.
 pub mod precondition_failure {
     /// Specific failure reason.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Violation {
         /// The path to the field where this violation occurred. This path is
@@ -331,6 +341,7 @@ pub mod precondition_failure {
 }
 /// Normalized internal-only message that identifies the exact exception that
 /// caused the error on the server.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExceptionDetail {
     /// The type of exception that occurred.
@@ -460,6 +471,7 @@ impl ExceptionType {
 /// Defines a field that has a display name, data type, and other
 /// configuration options. This field defines the kind of metadata that may be
 /// set on a Drive item.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Field {
     /// Output only. The key of a field, unique within a label or library.
@@ -523,6 +535,7 @@ pub struct Field {
 /// Nested message and enum types in `Field`.
 pub mod field {
     /// The basic properties of the field.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Properties {
         /// Required. The display text to show in the UI identifying this field.
@@ -537,6 +550,7 @@ pub mod field {
         pub insert_before_field: ::prost::alloc::string::String,
     }
     /// UI display hints for rendering a field.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DisplayHints {
         /// Whether the field should be shown as required in the UI.
@@ -555,6 +569,7 @@ pub mod field {
         pub shown_in_apply: bool,
     }
     /// The capabilities related to this field when editing the field.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SchemaCapabilities {
         /// Whether the user can change this field.
@@ -575,6 +590,7 @@ pub mod field {
         pub can_enable: bool,
     }
     /// The capabilities related to this field on applied metadata.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AppliedCapabilities {
         /// Whether the user can read related applied metadata on items.
@@ -588,6 +604,7 @@ pub mod field {
         pub can_write: bool,
     }
     /// Options for a multi-valued variant of an associated field type.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ListOptions {
         /// Maximum number of entries permitted.
@@ -595,6 +612,7 @@ pub mod field {
         pub max_entries: i32,
     }
     /// Options for the Text field type.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct TextOptions {
         /// Output only. The minimum valid length of values for the text field.
@@ -605,6 +623,7 @@ pub mod field {
         pub max_length: i32,
     }
     /// Options for the Integer field type.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct IntegerOptions {
         /// Output only. The minimum valid value for the integer field.
@@ -615,6 +634,7 @@ pub mod field {
         pub max_value: i64,
     }
     /// Options for the date field type.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DateOptions {
         /// Localized date formatting option. Field values are rendered in
@@ -677,6 +697,7 @@ pub mod field {
         }
     }
     /// Options for the selection field type.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SelectionOptions {
         /// When specified, indicates this field supports a list of values.
@@ -691,6 +712,7 @@ pub mod field {
     /// Nested message and enum types in `SelectionOptions`.
     pub mod selection_options {
         /// Selection field choice.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Choice {
             /// The unique value of the choice.
@@ -751,6 +773,7 @@ pub mod field {
         /// Nested message and enum types in `Choice`.
         pub mod choice {
             /// Basic properties of the choice.
+            #[allow(clippy::derive_partial_eq_without_eq)]
             #[derive(Clone, PartialEq, ::prost::Message)]
             pub struct Properties {
                 /// Required. The display text to show in the UI identifying this field.
@@ -771,6 +794,7 @@ pub mod field {
                 pub insert_before_choice: ::prost::alloc::string::String,
             }
             /// UI display hints for rendering an option.
+            #[allow(clippy::derive_partial_eq_without_eq)]
             #[derive(Clone, PartialEq, ::prost::Message)]
             pub struct DisplayHints {
                 /// Whether the option should be shown in the UI as disabled.
@@ -806,6 +830,7 @@ pub mod field {
                 pub badge_priority: i64,
             }
             /// The capabilities related to this choice when editing the choice.
+            #[allow(clippy::derive_partial_eq_without_eq)]
             #[derive(Clone, PartialEq, ::prost::Message)]
             pub struct SchemaCapabilities {
                 /// Whether the user can update this choice.
@@ -822,6 +847,7 @@ pub mod field {
                 pub can_enable: bool,
             }
             /// The capabilities related to this choice on applied metadata.
+            #[allow(clippy::derive_partial_eq_without_eq)]
             #[derive(Clone, PartialEq, ::prost::Message)]
             pub struct AppliedCapabilities {
                 /// Whether the user can read related applied metadata on items.
@@ -837,6 +863,7 @@ pub mod field {
         }
     }
     /// Options for the user field type.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct UserOptions {
         /// When specified, indicates that this field supports a list of values.
@@ -846,6 +873,7 @@ pub mod field {
     }
     /// The data type and options of this field.
     /// Once published, the data type cannot be changed.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Type {
         /// Text field options.
@@ -869,6 +897,7 @@ pub mod field {
 /// organize and search across items. Labels can be simple strings, or can
 /// contain fields that describe additional metadata that can be further used to
 /// organize and search Drive items.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Label {
     /// Output only. Resource name of the label. Will be in the form of either:
@@ -951,6 +980,7 @@ pub struct Label {
 /// Nested message and enum types in `Label`.
 pub mod label {
     /// Basic properties of the label.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Properties {
         /// Required. Title of the label.
@@ -961,6 +991,7 @@ pub mod label {
         pub description: ::prost::alloc::string::String,
     }
     /// UI display hints for rendering the label.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DisplayHints {
         /// Whether the label should be shown in the UI as disabled.
@@ -979,6 +1010,7 @@ pub mod label {
         pub priority: i64,
     }
     /// The capabilities a user has on this label's applied metadata.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AppliedCapabilities {
         /// Whether the user can read applied metadata related to this label.
@@ -992,6 +1024,7 @@ pub mod label {
         pub can_remove: bool,
     }
     /// The capabilities related to this label when editing the label.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SchemaCapabilities {
         /// Whether the user can change this label.
@@ -1012,6 +1045,7 @@ pub mod label {
         pub can_enable: bool,
     }
     /// Behavior of this label when it's applied to Drive items.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AppliedLabelPolicy {
         /// Indicates how the applied label and field values should be copied when
@@ -1102,6 +1136,7 @@ pub mod label {
 }
 /// The permission that applies to a principal (user, group, audience) on a
 /// label.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LabelPermission {}
 /// Nested message and enum types in `LabelPermission`.
@@ -1152,6 +1187,7 @@ pub mod label_permission {
     }
 }
 /// Request to get a label by resource name.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetLabelRequest {
     /// Required. Label resource name.
@@ -1178,6 +1214,7 @@ pub struct GetLabelRequest {
     pub view: i32,
 }
 /// Request to list labels available to the current user.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListLabelsRequest {
     /// Whether to include only published labels in the results.
@@ -1209,6 +1246,7 @@ pub struct ListLabelsRequest {
 }
 /// Nested message and enum types in `ListLabelsRequest`.
 pub mod list_labels_request {
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Access {
         /// Set to `true` in order to use the user's admin credentials. This will
@@ -1223,6 +1261,7 @@ pub mod list_labels_request {
     }
 }
 /// Response for listing Labels.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListLabelsResponse {
     /// Labels.

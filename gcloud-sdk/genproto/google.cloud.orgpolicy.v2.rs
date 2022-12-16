@@ -12,6 +12,7 @@
 /// `Constraints` have a default behavior determined by the `constraint_default`
 /// field, which is the enforcement behavior that is used in the absence of a
 /// `policy` being defined or inherited for the resource in question.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Constraint {
     /// Immutable. The resource name of the Constraint. Must be in one of
@@ -47,6 +48,7 @@ pub struct Constraint {
 pub mod constraint {
     /// A `Constraint` that allows or disallows a list of string values, which are
     /// configured by an Organization's policy administrator with a `Policy`.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ListConstraint {
         /// Indicates whether values grouped into categories can be used in
@@ -66,6 +68,7 @@ pub mod constraint {
     /// For example a constraint `constraints/compute.disableSerialPortAccess`.
     /// If it is enforced on a VM instance, serial port connections will not be
     /// opened to that instance.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct BooleanConstraint {}
     /// Specifies the default behavior in the absence of any `Policy` for the
@@ -111,6 +114,7 @@ pub mod constraint {
     /// The type of restrictions for this `Constraint`.
     ///
     /// Immutable after creation.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ConstraintType {
         /// Defines this constraint as being a ListConstraint.
@@ -123,6 +127,7 @@ pub mod constraint {
 }
 /// Defines a Cloud Organization `Policy` which is used to specify `Constraints`
 /// for configurations of Cloud Platform resources.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Policy {
     /// Immutable. The resource name of the Policy. Must be one of the following
@@ -149,6 +154,7 @@ pub struct Policy {
 }
 /// Similar to PolicySpec but with an extra 'launch' field for launch reference.
 /// The PolicySpec here is specific for dry-run/darklaunch.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AlternatePolicySpec {
     /// Reference to the launch that will be used while audit logging and to
@@ -162,6 +168,7 @@ pub struct AlternatePolicySpec {
 }
 /// Defines a Cloud Organization `PolicySpec` which is used to specify
 /// `Constraints` for configurations of Cloud Platform resources.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PolicySpec {
     /// An opaque tag indicating the current version of the `Policy`, used for
@@ -213,6 +220,7 @@ pub struct PolicySpec {
 /// Nested message and enum types in `PolicySpec`.
 pub mod policy_spec {
     /// A rule used to express this policy.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct PolicyRule {
         /// A condition which determines whether this rule is used
@@ -249,6 +257,7 @@ pub mod policy_spec {
         ///      - "organizations/<organization-id>", e.g. "organizations/1234"
         /// The `supports_under` field of the associated `Constraint`  defines
         /// whether ancestry prefixes can be used.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct StringValues {
             /// List of values allowed at this resource.
@@ -258,6 +267,7 @@ pub mod policy_spec {
             #[prost(string, repeated, tag = "2")]
             pub denied_values: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         }
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Kind {
             /// List of values to be used for this PolicyRule. This field can be set
@@ -282,6 +292,7 @@ pub mod policy_spec {
 }
 /// The request sent to the \[ListConstraints\]
 /// \[google.cloud.orgpolicy.v2.OrgPolicy.ListConstraints\] method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListConstraintsRequest {
     /// Required. The Cloud resource that parents the constraint. Must be in one of the
@@ -304,6 +315,7 @@ pub struct ListConstraintsRequest {
 }
 /// The response returned from the \[ListConstraints\]
 /// \[google.cloud.orgpolicy.v2.OrgPolicy.ListConstraints\] method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListConstraintsResponse {
     /// The collection of constraints that are available on the targeted resource.
@@ -315,6 +327,7 @@ pub struct ListConstraintsResponse {
 }
 /// The request sent to the \[ListPolicies\]
 /// \[google.cloud.orgpolicy.v2.OrgPolicy.ListPolicies\] method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPoliciesRequest {
     /// Required. The target Cloud resource that parents the set of constraints and policies
@@ -339,6 +352,7 @@ pub struct ListPoliciesRequest {
 /// The response returned from the \[ListPolicies\]
 /// \[google.cloud.orgpolicy.v2.OrgPolicy.ListPolicies\] method. It will be empty
 /// if no `Policies` are set on the resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPoliciesResponse {
     /// All `Policies` that exist on the resource. It will be empty if no
@@ -352,6 +366,7 @@ pub struct ListPoliciesResponse {
 }
 /// The request sent to the \[GetPolicy\]
 /// \[google.cloud.orgpolicy.v2.OrgPolicy.GetPolicy\] method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetPolicyRequest {
     /// Required. Resource name of the policy. See `Policy` for naming requirements.
@@ -360,6 +375,7 @@ pub struct GetPolicyRequest {
 }
 /// The request sent to the \[GetEffectivePolicy\]
 /// \[google.cloud.orgpolicy.v2.OrgPolicy.GetEffectivePolicy\] method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetEffectivePolicyRequest {
     /// Required. The effective policy to compute. See `Policy` for naming rules.
@@ -368,6 +384,7 @@ pub struct GetEffectivePolicyRequest {
 }
 /// The request sent to the \[CreatePolicyRequest\]
 /// \[google.cloud.orgpolicy.v2.OrgPolicy.CreatePolicy\] method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreatePolicyRequest {
     /// Required. The Cloud resource that will parent the new Policy. Must be in one of the
@@ -384,6 +401,7 @@ pub struct CreatePolicyRequest {
 }
 /// The request sent to the \[UpdatePolicyRequest\]
 /// \[google.cloud.orgpolicy.v2.OrgPolicy.UpdatePolicy\] method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdatePolicyRequest {
     /// Required. `Policy` to update.
@@ -392,6 +410,7 @@ pub struct UpdatePolicyRequest {
 }
 /// The request sent to the \[DeletePolicy\]
 /// \[google.cloud.orgpolicy.v2.OrgPolicy.DeletePolicy\] method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeletePolicyRequest {
     /// Required. Name of the policy to delete.

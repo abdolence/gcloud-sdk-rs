@@ -1,3 +1,4 @@
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EncryptionConfiguration {
     /// Optional. Describes the Cloud KMS encryption key that will be used to
@@ -7,6 +8,7 @@ pub struct EncryptionConfiguration {
     pub kms_key_name: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Id path of a model.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ModelReference {
     /// Required. The ID of the project containing this model.
@@ -31,6 +33,7 @@ pub struct ModelReference {
 ///       {name="x", type={type_kind="STRING"}},
 ///       {name="y", type={type_kind="ARRAY", array_element_type="DATE"}}
 ///     ]}}
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StandardSqlDataType {
     /// Required. The top level type of this field.
@@ -119,6 +122,7 @@ pub mod standard_sql_data_type {
             }
         }
     }
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum SubType {
         /// The type of the array's elements, if type_kind = "ARRAY".
@@ -130,6 +134,7 @@ pub mod standard_sql_data_type {
     }
 }
 /// A field or a column.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StandardSqlField {
     /// Optional. The name of this field. Can be absent for struct fields.
@@ -141,18 +146,21 @@ pub struct StandardSqlField {
     #[prost(message, optional, tag = "2")]
     pub r#type: ::core::option::Option<StandardSqlDataType>,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StandardSqlStructType {
     #[prost(message, repeated, tag = "1")]
     pub fields: ::prost::alloc::vec::Vec<StandardSqlField>,
 }
 /// A table type
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StandardSqlTableType {
     /// The columns in this table type
     #[prost(message, repeated, tag = "1")]
     pub columns: ::prost::alloc::vec::Vec<StandardSqlField>,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TableReference {
     /// Required. The ID of the project containing this table.
@@ -181,6 +189,7 @@ pub struct TableReference {
     #[prost(string, repeated, tag = "6")]
     pub table_id_alternative: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Model {
     /// Output only. A hash of this resource.
@@ -249,6 +258,7 @@ pub struct Model {
 }
 /// Nested message and enum types in `Model`.
 pub mod model {
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SeasonalPeriod {}
     /// Nested message and enum types in `SeasonalPeriod`.
@@ -298,6 +308,7 @@ pub mod model {
             }
         }
     }
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct KmeansEnums {}
     /// Nested message and enum types in `KmeansEnums`.
@@ -346,6 +357,7 @@ pub mod model {
     }
     /// Evaluation metrics for regression and explicit feedback type matrix
     /// factorization models.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct RegressionMetrics {
         /// Mean absolute error.
@@ -370,6 +382,7 @@ pub mod model {
     /// unweighted average is taken of those values. When micro-averaged, the
     /// metric is calculated globally by counting the total number of correctly
     /// predicted rows.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AggregateClassificationMetrics {
         /// Precision is the fraction of actual positive predictions that had
@@ -404,6 +417,7 @@ pub mod model {
         pub roc_auc: ::core::option::Option<f64>,
     }
     /// Evaluation metrics for binary classification/classifier models.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct BinaryClassificationMetrics {
         /// Aggregate classification metrics.
@@ -426,6 +440,7 @@ pub mod model {
     /// Nested message and enum types in `BinaryClassificationMetrics`.
     pub mod binary_classification_metrics {
         /// Confusion matrix for binary classification models.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct BinaryConfusionMatrix {
             /// Threshold value used when computing each of the following metric.
@@ -460,6 +475,7 @@ pub mod model {
         }
     }
     /// Evaluation metrics for multi-class classification/classifier models.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct MultiClassClassificationMetrics {
         /// Aggregate classification metrics.
@@ -476,6 +492,7 @@ pub mod model {
     /// Nested message and enum types in `MultiClassClassificationMetrics`.
     pub mod multi_class_classification_metrics {
         /// Confusion matrix for multi-class classification models.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct ConfusionMatrix {
             /// Confidence threshold used when computing the entries of the
@@ -489,6 +506,7 @@ pub mod model {
         /// Nested message and enum types in `ConfusionMatrix`.
         pub mod confusion_matrix {
             /// A single entry in the confusion matrix.
+            #[allow(clippy::derive_partial_eq_without_eq)]
             #[derive(Clone, PartialEq, ::prost::Message)]
             pub struct Entry {
                 /// The predicted label. For confidence_threshold > 0, we will
@@ -501,6 +519,7 @@ pub mod model {
                 pub item_count: ::core::option::Option<i64>,
             }
             /// A single row in the confusion matrix.
+            #[allow(clippy::derive_partial_eq_without_eq)]
             #[derive(Clone, PartialEq, ::prost::Message)]
             pub struct Row {
                 /// The original label of this row.
@@ -513,6 +532,7 @@ pub mod model {
         }
     }
     /// Evaluation metrics for clustering models.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ClusteringMetrics {
         /// Davies-Bouldin index.
@@ -528,6 +548,7 @@ pub mod model {
     /// Nested message and enum types in `ClusteringMetrics`.
     pub mod clustering_metrics {
         /// Message containing the information about one cluster.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Cluster {
             /// Centroid id.
@@ -543,6 +564,7 @@ pub mod model {
         /// Nested message and enum types in `Cluster`.
         pub mod cluster {
             /// Representative value of a single feature within the cluster.
+            #[allow(clippy::derive_partial_eq_without_eq)]
             #[derive(Clone, PartialEq, ::prost::Message)]
             pub struct FeatureValue {
                 /// The feature column name.
@@ -554,6 +576,7 @@ pub mod model {
             /// Nested message and enum types in `FeatureValue`.
             pub mod feature_value {
                 /// Representative value of a categorical feature.
+                #[allow(clippy::derive_partial_eq_without_eq)]
                 #[derive(Clone, PartialEq, ::prost::Message)]
                 pub struct CategoricalValue {
                     /// Counts of all categories for the categorical feature. If there are
@@ -568,6 +591,7 @@ pub mod model {
                 /// Nested message and enum types in `CategoricalValue`.
                 pub mod categorical_value {
                     /// Represents the count of a single category within the cluster.
+                    #[allow(clippy::derive_partial_eq_without_eq)]
                     #[derive(Clone, PartialEq, ::prost::Message)]
                     pub struct CategoryCount {
                         /// The name of category.
@@ -579,6 +603,7 @@ pub mod model {
                         pub count: ::core::option::Option<i64>,
                     }
                 }
+                #[allow(clippy::derive_partial_eq_without_eq)]
                 #[derive(Clone, PartialEq, ::prost::Oneof)]
                 pub enum Value {
                     /// The numerical feature value. This is the centroid value for this
@@ -594,6 +619,7 @@ pub mod model {
     }
     /// Evaluation metrics used by weighted-ALS models specified by
     /// feedback_type=implicit.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct RankingMetrics {
         /// Calculates a precision per user for all the items by ranking them and
@@ -617,6 +643,7 @@ pub mod model {
         pub average_rank: ::core::option::Option<f64>,
     }
     /// Model evaluation metrics for ARIMA forecasting models.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ArimaForecastingMetrics {
         /// Non-seasonal order.
@@ -656,6 +683,7 @@ pub mod model {
     /// Nested message and enum types in `ArimaForecastingMetrics`.
     pub mod arima_forecasting_metrics {
         /// Model evaluation metrics for a single ARIMA forecasting model.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct ArimaSingleModelForecastingMetrics {
             /// Non-seasonal order.
@@ -708,6 +736,7 @@ pub mod model {
     /// Evaluation metrics of a model. These are either computed on all training
     /// data or just the eval data based on whether eval data was used during
     /// training. These are not present for imported models.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct EvaluationMetrics {
         #[prost(oneof = "evaluation_metrics::Metrics", tags = "1, 2, 3, 4, 5, 6")]
@@ -715,6 +744,7 @@ pub mod model {
     }
     /// Nested message and enum types in `EvaluationMetrics`.
     pub mod evaluation_metrics {
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Metrics {
             /// Populated for regression models and explicit feedback type matrix
@@ -740,6 +770,7 @@ pub mod model {
     }
     /// Data split result. This contains references to the training and evaluation
     /// data tables that were used to train the model.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DataSplitResult {
         /// Table reference of the training data after split.
@@ -750,6 +781,7 @@ pub mod model {
         pub evaluation_table: ::core::option::Option<super::TableReference>,
     }
     /// Arima order, can be used for both non-seasonal and seasonal parts.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ArimaOrder {
         /// Order of the autoregressive part.
@@ -763,6 +795,7 @@ pub mod model {
         pub q: i64,
     }
     /// ARIMA model fitting metrics.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ArimaFittingMetrics {
         /// Log-likelihood.
@@ -777,6 +810,7 @@ pub mod model {
     }
     /// Global explanations containing the top most important features
     /// after training.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct GlobalExplanation {
         /// A list of the top global explanations. Sorted by absolute value of
@@ -792,6 +826,7 @@ pub mod model {
     /// Nested message and enum types in `GlobalExplanation`.
     pub mod global_explanation {
         /// Explanation for a single feature.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Explanation {
             /// Full name of the feature. For non-numerical features, will be
@@ -805,6 +840,7 @@ pub mod model {
         }
     }
     /// Information about a single training query run for the model.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct TrainingRun {
         /// Options that were used for this training run, includes
@@ -834,6 +870,7 @@ pub mod model {
     /// Nested message and enum types in `TrainingRun`.
     pub mod training_run {
         /// Options used in model training.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct TrainingOptions {
             /// The maximum number of iterations in training. Used only for iterative
@@ -1021,6 +1058,7 @@ pub mod model {
             pub adjust_step_changes: ::core::option::Option<bool>,
         }
         /// Information about a single iteration of the training run.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct IterationResult {
             /// Index of the iteration, 0 based.
@@ -1047,6 +1085,7 @@ pub mod model {
         /// Nested message and enum types in `IterationResult`.
         pub mod iteration_result {
             /// Information about a single cluster for clustering model.
+            #[allow(clippy::derive_partial_eq_without_eq)]
             #[derive(Clone, PartialEq, ::prost::Message)]
             pub struct ClusterInfo {
                 /// Centroid id.
@@ -1062,6 +1101,7 @@ pub mod model {
             }
             /// (Auto-)arima fitting result. Wrap everything in ArimaResult for easier
             /// refactoring if we want to use model-specific iteration results.
+            #[allow(clippy::derive_partial_eq_without_eq)]
             #[derive(Clone, PartialEq, ::prost::Message)]
             pub struct ArimaResult {
                 /// This message is repeated because there are multiple arima models
@@ -1082,6 +1122,7 @@ pub mod model {
             /// Nested message and enum types in `ArimaResult`.
             pub mod arima_result {
                 /// Arima coefficients.
+                #[allow(clippy::derive_partial_eq_without_eq)]
                 #[derive(Clone, PartialEq, ::prost::Message)]
                 pub struct ArimaCoefficients {
                     /// Auto-regressive coefficients, an array of double.
@@ -1095,6 +1136,7 @@ pub mod model {
                     pub intercept_coefficient: f64,
                 }
                 /// Arima model information.
+                #[allow(clippy::derive_partial_eq_without_eq)]
                 #[derive(Clone, PartialEq, ::prost::Message)]
                 pub struct ArimaModelInfo {
                     /// Non-seasonal order.
@@ -1713,6 +1755,7 @@ pub mod model {
         }
     }
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetModelRequest {
     /// Required. Project ID of the requested model.
@@ -1725,6 +1768,7 @@ pub struct GetModelRequest {
     #[prost(string, tag = "3")]
     pub model_id: ::prost::alloc::string::String,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchModelRequest {
     /// Required. Project ID of the model to patch.
@@ -1742,6 +1786,7 @@ pub struct PatchModelRequest {
     #[prost(message, optional, tag = "4")]
     pub model: ::core::option::Option<Model>,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteModelRequest {
     /// Required. Project ID of the model to delete.
@@ -1754,6 +1799,7 @@ pub struct DeleteModelRequest {
     #[prost(string, tag = "3")]
     pub model_id: ::prost::alloc::string::String,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListModelsRequest {
     /// Required. Project ID of the models to list.
@@ -1771,6 +1817,7 @@ pub struct ListModelsRequest {
     #[prost(string, tag = "4")]
     pub page_token: ::prost::alloc::string::String,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListModelsResponse {
     /// Models in the requested dataset. Only the following fields are populated:

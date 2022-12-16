@@ -1,4 +1,5 @@
 /// Definition of a Serverless VPC Access connector.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Connector {
     /// The resource name in the format `projects/*/locations/*/connectors/*`.
@@ -39,6 +40,7 @@ pub struct Connector {
 /// Nested message and enum types in `Connector`.
 pub mod connector {
     /// The subnet in which to house the connector
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Subnet {
         /// Subnet name (relative, not fully qualified).
@@ -98,6 +100,7 @@ pub mod connector {
     }
 }
 /// Request for creating a Serverless VPC Access connector.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateConnectorRequest {
     /// Required. The project and location in which the configuration should be created,
@@ -112,6 +115,7 @@ pub struct CreateConnectorRequest {
     pub connector: ::core::option::Option<Connector>,
 }
 /// Request for getting a Serverless VPC Access connector.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetConnectorRequest {
     /// Required. Name of a Serverless VPC Access connector to get.
@@ -119,6 +123,7 @@ pub struct GetConnectorRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for listing Serverless VPC Access connectors in a location.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListConnectorsRequest {
     /// Required. The project and location from which the routes should be listed.
@@ -132,6 +137,7 @@ pub struct ListConnectorsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response for listing Serverless VPC Access connectors.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListConnectorsResponse {
     /// List of Serverless VPC Access connectors.
@@ -142,6 +148,7 @@ pub struct ListConnectorsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request for deleting a Serverless VPC Access connector.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteConnectorRequest {
     /// Required. Name of a Serverless VPC Access connector to delete.
@@ -149,6 +156,7 @@ pub struct DeleteConnectorRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Metadata for google.longrunning.Operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationMetadata {
     /// Output only. Method that initiated the operation e.g.

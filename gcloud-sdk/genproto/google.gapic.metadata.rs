@@ -1,5 +1,6 @@
 /// Metadata about a GAPIC library for a specific combination of API, version, and
 /// computer language.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GapicMetadata {
     /// Schema version of this proto. Current value: 1.0
@@ -40,6 +41,7 @@ pub mod gapic_metadata {
     ///
     /// The key name is the transport, lower-cased with no separators
     /// (e.g. "grpc", "rest").
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ServiceForTransport {
         #[prost(map = "string, message", tag = "1")]
@@ -49,6 +51,7 @@ pub mod gapic_metadata {
         >,
     }
     /// Information about a specific client implementing a proto-defined service.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ServiceAsClient {
         /// The name of the library client formatted as it appears in the source code
@@ -70,6 +73,7 @@ pub mod gapic_metadata {
     /// List of GAPIC client methods implementing the proto-defined RPC
     /// for the transport and service specified in the containing
     /// structures.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct MethodList {
         /// List of methods for a specific proto-service client in the

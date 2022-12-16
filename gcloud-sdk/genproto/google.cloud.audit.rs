@@ -1,4 +1,5 @@
 /// Common audit log format for Google Cloud Platform API operations.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AuditLog {
     /// The name of the API service performing the operation. For example,
@@ -84,6 +85,7 @@ pub struct AuditLog {
     pub service_data: ::core::option::Option<::prost_types::Any>,
 }
 /// Authentication information for the operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AuthenticationInfo {
     /// The email address of the authenticated user (or service account on behalf
@@ -126,6 +128,7 @@ pub struct AuthenticationInfo {
     pub principal_subject: ::prost::alloc::string::String,
 }
 /// Authorization information for the operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AuthorizationInfo {
     /// The resource being accessed, as a REST-style or cloud resource string.
@@ -155,6 +158,7 @@ pub struct AuthorizationInfo {
     >,
 }
 /// Metadata about the request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RequestMetadata {
     /// The IP address of the caller.
@@ -215,6 +219,7 @@ pub struct RequestMetadata {
     >,
 }
 /// Location information about a resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResourceLocation {
     /// The locations of a resource after the execution of the operation.
@@ -239,6 +244,7 @@ pub struct ResourceLocation {
     pub original_locations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Identity delegation history of an authenticated service account.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ServiceAccountDelegationInfo {
     /// A string representing the principal_subject associated with the identity.
@@ -257,6 +263,7 @@ pub struct ServiceAccountDelegationInfo {
 /// Nested message and enum types in `ServiceAccountDelegationInfo`.
 pub mod service_account_delegation_info {
     /// First party identity principal.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct FirstPartyPrincipal {
         /// The email address of a Google account.
@@ -267,6 +274,7 @@ pub mod service_account_delegation_info {
         pub service_metadata: ::core::option::Option<::prost_types::Struct>,
     }
     /// Third party identity principal.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ThirdPartyPrincipal {
         /// Metadata about third party identity.
@@ -275,6 +283,7 @@ pub mod service_account_delegation_info {
     }
     /// Entity that creates credentials for service account and assumes its
     /// identity for authentication.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Authority {
         /// First party (Google) identity as the real authority.
@@ -286,6 +295,7 @@ pub mod service_account_delegation_info {
     }
 }
 /// Information related to policy violations for this request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PolicyViolationInfo {
     /// Indicates the orgpolicy violations for this resource.
@@ -293,6 +303,7 @@ pub struct PolicyViolationInfo {
     pub org_policy_violation_info: ::core::option::Option<OrgPolicyViolationInfo>,
 }
 /// Represents OrgPolicy Violation information.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OrgPolicyViolationInfo {
     /// Optional. Resource payload that is currently in scope and is subjected to orgpolicy
@@ -321,6 +332,7 @@ pub struct OrgPolicyViolationInfo {
     pub violation_info: ::prost::alloc::vec::Vec<ViolationInfo>,
 }
 /// Provides information about the Policy violation info for this request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ViolationInfo {
     /// Optional. Constraint name
@@ -380,6 +392,7 @@ pub mod violation_info {
 }
 /// Audit log format for BigQuery cloud audit logs metadata.
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BigQueryAuditMetadata {
     /// First party (Google) application specific metadata.
@@ -397,6 +410,7 @@ pub struct BigQueryAuditMetadata {
 /// Nested message and enum types in `BigQueryAuditMetadata`.
 pub mod big_query_audit_metadata {
     /// Job insertion event.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct JobInsertion {
         /// Job metadata.
@@ -444,6 +458,7 @@ pub mod big_query_audit_metadata {
         }
     }
     /// Job state change event.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct JobChange {
         /// Job state before the job state change.
@@ -457,6 +472,7 @@ pub mod big_query_audit_metadata {
         pub job: ::core::option::Option<Job>,
     }
     /// Job deletion event.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct JobDeletion {
         /// Job URI.
@@ -503,6 +519,7 @@ pub mod big_query_audit_metadata {
         }
     }
     /// Dataset creation event.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DatasetCreation {
         /// Dataset metadata.
@@ -556,6 +573,7 @@ pub mod big_query_audit_metadata {
         }
     }
     /// Dataset change event.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DatasetChange {
         /// Dataset metadata after the change.
@@ -612,6 +630,7 @@ pub mod big_query_audit_metadata {
         }
     }
     /// Dataset deletion event.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DatasetDeletion {
         /// Describes how the dataset was deleted.
@@ -662,6 +681,7 @@ pub mod big_query_audit_metadata {
         }
     }
     /// Table creation event.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct TableCreation {
         /// Table metadata.
@@ -719,6 +739,7 @@ pub mod big_query_audit_metadata {
         }
     }
     /// Model creation event.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ModelCreation {
         /// Model metadata.
@@ -768,6 +789,7 @@ pub mod big_query_audit_metadata {
         }
     }
     /// Routine creation event.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct RoutineCreation {
         /// Created routine.
@@ -820,6 +842,7 @@ pub mod big_query_audit_metadata {
         }
     }
     /// Table data read event.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct TableDataRead {
         /// List of the accessed fields. Entire list is truncated if the record size
@@ -906,6 +929,7 @@ pub mod big_query_audit_metadata {
         }
     }
     /// Table metadata change event.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct TableChange {
         /// Updated table metadata.
@@ -965,6 +989,7 @@ pub mod big_query_audit_metadata {
         }
     }
     /// Model metadata change event.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ModelMetadataChange {
         /// Updated model.
@@ -1018,6 +1043,7 @@ pub mod big_query_audit_metadata {
         }
     }
     /// Routine change event.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct RoutineChange {
         /// Updated routine.
@@ -1070,6 +1096,7 @@ pub mod big_query_audit_metadata {
         }
     }
     /// Table data change event.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct TableDataChange {
         /// Number of deleted rows.
@@ -1140,6 +1167,7 @@ pub mod big_query_audit_metadata {
         }
     }
     /// Model data change event.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ModelDataChange {
         /// Describes how the model data was changed.
@@ -1186,6 +1214,7 @@ pub mod big_query_audit_metadata {
         }
     }
     /// Model data read event.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ModelDataRead {
         /// Describes how the model data was read.
@@ -1232,6 +1261,7 @@ pub mod big_query_audit_metadata {
         }
     }
     /// Table deletion event.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct TableDeletion {
         /// Describes how table was deleted.
@@ -1285,6 +1315,7 @@ pub mod big_query_audit_metadata {
         }
     }
     /// Model deletion event.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ModelDeletion {
         /// Describes how the model was deleted.
@@ -1338,6 +1369,7 @@ pub mod big_query_audit_metadata {
         }
     }
     /// Routine deletion event.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct RoutineDeletion {
         /// Deleted routine.
@@ -1391,6 +1423,7 @@ pub mod big_query_audit_metadata {
         }
     }
     /// Row access policy creation event.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct RowAccessPolicyCreation {
         /// The row access policy created by this event.
@@ -1403,6 +1436,7 @@ pub mod big_query_audit_metadata {
         pub job_name: ::prost::alloc::string::String,
     }
     /// Row access policy change event.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct RowAccessPolicyChange {
         /// The row access policy that was changed by this event.
@@ -1415,6 +1449,7 @@ pub mod big_query_audit_metadata {
         pub job_name: ::prost::alloc::string::String,
     }
     /// Row access policy deletion event.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct RowAccessPolicyDeletion {
         /// The row access policies that were deleted. At present, only populated
@@ -1432,6 +1467,7 @@ pub mod big_query_audit_metadata {
         pub all_row_access_policies_dropped: bool,
     }
     /// Unlink linked dataset from its source dataset event
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct UnlinkDataset {
         /// The linked dataset URI which is unlinked from its source.
@@ -1483,6 +1519,7 @@ pub mod big_query_audit_metadata {
         }
     }
     /// BigQuery job.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Job {
         /// Job URI.
@@ -1503,6 +1540,7 @@ pub mod big_query_audit_metadata {
     /// Job configuration.
     /// See the \[Jobs\](<https://cloud.google.com/bigquery/docs/reference/v2/jobs>)
     /// API resource for more details on individual fields.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct JobConfig {
         /// Job type.
@@ -1521,6 +1559,7 @@ pub mod big_query_audit_metadata {
     /// Nested message and enum types in `JobConfig`.
     pub mod job_config {
         /// Query job configuration.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Query {
             /// The SQL query to run. Truncated if exceeds 50K.
@@ -1595,6 +1634,7 @@ pub mod big_query_audit_metadata {
             }
         }
         /// Load job configuration.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Load {
             /// URIs for the data to be imported. Entire list is truncated if exceeds
@@ -1628,6 +1668,7 @@ pub mod big_query_audit_metadata {
             >,
         }
         /// Extract job configuration.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Extract {
             /// URIs where extracted data should be written. Entire list is truncated
@@ -1644,6 +1685,7 @@ pub mod big_query_audit_metadata {
         }
         /// Nested message and enum types in `Extract`.
         pub mod extract {
+            #[allow(clippy::derive_partial_eq_without_eq)]
             #[derive(Clone, PartialEq, ::prost::Oneof)]
             pub enum Source {
                 /// The source table.
@@ -1655,6 +1697,7 @@ pub mod big_query_audit_metadata {
             }
         }
         /// Table copy job configuration.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct TableCopy {
             /// Source tables. Entire list is truncated if exceeds 50K.
@@ -1729,6 +1772,7 @@ pub mod big_query_audit_metadata {
             }
         }
         /// Job configuration information.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Config {
             /// Query job information.
@@ -1746,6 +1790,7 @@ pub mod big_query_audit_metadata {
         }
     }
     /// Definition of an external data source used in a query.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct TableDefinition {
         /// Name of the table, used in queries.
@@ -1756,6 +1801,7 @@ pub mod big_query_audit_metadata {
         pub source_uris: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
     /// Status of a job.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct JobStatus {
         /// State of the job.
@@ -1770,6 +1816,7 @@ pub mod big_query_audit_metadata {
         pub errors: ::prost::alloc::vec::Vec<super::super::super::rpc::Status>,
     }
     /// Job statistics.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct JobStats {
         /// Job creation time.
@@ -1799,6 +1846,7 @@ pub mod big_query_audit_metadata {
     /// Nested message and enum types in `JobStats`.
     pub mod job_stats {
         /// Query job statistics.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Query {
             /// Total bytes processed by the query job.
@@ -1833,6 +1881,7 @@ pub mod big_query_audit_metadata {
             pub cache_hit: bool,
         }
         /// Load job statistics.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Load {
             /// Total bytes loaded by the import job.
@@ -1840,6 +1889,7 @@ pub mod big_query_audit_metadata {
             pub total_output_bytes: i64,
         }
         /// Extract job statistics.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Extract {
             /// Total bytes exported by the extract job.
@@ -1847,6 +1897,7 @@ pub mod big_query_audit_metadata {
             pub total_input_bytes: i64,
         }
         /// Job resource usage breakdown by reservation.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct ReservationResourceUsage {
             /// Reservation name or "unreserved" for on-demand resources usage.
@@ -1857,6 +1908,7 @@ pub mod big_query_audit_metadata {
             pub slot_ms: i64,
         }
         /// Statistics specific to the job type.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Extended {
             /// Query job statistics.
@@ -1871,6 +1923,7 @@ pub mod big_query_audit_metadata {
         }
     }
     /// BigQuery table.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Table {
         /// Table URI.
@@ -1908,6 +1961,7 @@ pub mod big_query_audit_metadata {
         pub encryption: ::core::option::Option<EncryptionInfo>,
     }
     /// Trained BigQuery ML model.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Model {
         /// Model URI.
@@ -1932,6 +1986,7 @@ pub mod big_query_audit_metadata {
         pub encryption: ::core::option::Option<EncryptionInfo>,
     }
     /// User Defined Function (UDF) or Stored Procedure.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Routine {
         /// Routine URI.
@@ -1948,6 +2003,7 @@ pub mod big_query_audit_metadata {
         pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     }
     /// User-provided metadata for an entity, for e.g. dataset, table or model.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct EntityInfo {
         /// A short name for the entity.
@@ -1964,6 +2020,7 @@ pub mod big_query_audit_metadata {
         >,
     }
     /// View definition.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct TableViewDefinition {
         /// SQL query defining the view. Truncated if exceeds 40K.
@@ -1974,6 +2031,7 @@ pub mod big_query_audit_metadata {
         pub query_truncated: bool,
     }
     /// BigQuery dataset.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Dataset {
         /// Dataset URI.
@@ -2006,6 +2064,7 @@ pub mod big_query_audit_metadata {
         pub default_collation: ::prost::alloc::string::String,
     }
     /// An access control list.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct BigQueryAcl {
         /// IAM policy for the resource.
@@ -2018,6 +2077,7 @@ pub mod big_query_audit_metadata {
         pub authorized_views: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
     /// Encryption properties for a table or a job
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct EncryptionInfo {
         /// Cloud kms key identifier.
@@ -2028,6 +2088,7 @@ pub mod big_query_audit_metadata {
         pub kms_key_name: ::prost::alloc::string::String,
     }
     /// BigQuery row access policy.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct RowAccessPolicy {
         /// Row access policy URI.
@@ -2038,6 +2099,7 @@ pub mod big_query_audit_metadata {
         pub row_access_policy_name: ::prost::alloc::string::String,
     }
     /// First party (Google) application specific request metadata.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct FirstPartyAppMetadata {
         #[prost(oneof = "first_party_app_metadata::Metadata", tags = "1")]
@@ -2045,6 +2107,7 @@ pub mod big_query_audit_metadata {
     }
     /// Nested message and enum types in `FirstPartyAppMetadata`.
     pub mod first_party_app_metadata {
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Metadata {
             /// Google Sheets metadata.
@@ -2053,6 +2116,7 @@ pub mod big_query_audit_metadata {
         }
     }
     /// Google Sheets specific request metadata.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SheetsMetadata {
         /// The ID of the spreadsheet from which the request is sent.
@@ -2346,6 +2410,7 @@ pub mod big_query_audit_metadata {
         }
     }
     /// BigQuery event information.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Event {
         /// Job insertion event.

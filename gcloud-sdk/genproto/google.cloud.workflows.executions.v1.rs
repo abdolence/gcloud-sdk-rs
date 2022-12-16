@@ -1,5 +1,6 @@
 /// A running instance of a
 /// \[Workflow\](/workflows/docs/reference/rest/v1/projects.locations.workflows).
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Execution {
     /// Output only. The resource name of the execution.
@@ -43,6 +44,7 @@ pub struct Execution {
 /// Nested message and enum types in `Execution`.
 pub mod execution {
     /// A single stack element (frame) where an error occurred.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct StackTraceElement {
         /// The step the error occurred at.
@@ -60,6 +62,7 @@ pub mod execution {
         /// Position contains source position information about the stack trace
         /// element such as line number, column number and length of the code block
         /// in bytes.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Position {
             /// The source code line number the current instruction was generated from.
@@ -75,6 +78,7 @@ pub mod execution {
         }
     }
     /// A collection of stack elements (frames) where an error occurred.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct StackTrace {
         /// An array of stack elements.
@@ -82,6 +86,7 @@ pub mod execution {
         pub elements: ::prost::alloc::vec::Vec<StackTraceElement>,
     }
     /// Error describes why the execution was abnormally terminated.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Error {
         /// Error message and data returned represented as a JSON string.
@@ -175,6 +180,7 @@ pub mod execution {
 /// Request for the
 /// \[ListExecutions][\]
 /// method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListExecutionsRequest {
     /// Required. Name of the workflow for which the executions should be listed.
@@ -203,6 +209,7 @@ pub struct ListExecutionsRequest {
 /// Response for the
 /// \[ListExecutions][google.cloud.workflows.executions.v1.Executions.ListExecutions\]
 /// method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListExecutionsResponse {
     /// The executions which match the request.
@@ -216,6 +223,7 @@ pub struct ListExecutionsResponse {
 /// Request for the
 /// \[CreateExecution][google.cloud.workflows.executions.v1.Executions.CreateExecution\]
 /// method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateExecutionRequest {
     /// Required. Name of the workflow for which an execution should be created.
@@ -230,6 +238,7 @@ pub struct CreateExecutionRequest {
 /// Request for the
 /// \[GetExecution][google.cloud.workflows.executions.v1.Executions.GetExecution\]
 /// method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetExecutionRequest {
     /// Required. Name of the execution to be retrieved.
@@ -245,6 +254,7 @@ pub struct GetExecutionRequest {
 /// Request for the
 /// \[CancelExecution][google.cloud.workflows.executions.v1.Executions.CancelExecution\]
 /// method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CancelExecutionRequest {
     /// Required. Name of the execution to be cancelled.

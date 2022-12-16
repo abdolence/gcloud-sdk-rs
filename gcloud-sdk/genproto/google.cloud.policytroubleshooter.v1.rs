@@ -1,4 +1,5 @@
 /// Information about the member, resource, and permission to check.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AccessTuple {
     /// Required. The member, or principal, whose access you want to check, in the form of
@@ -29,6 +30,7 @@ pub struct AccessTuple {
 }
 /// Details about how a specific IAM \[Policy][google.iam.v1.Policy\] contributed
 /// to the access check.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExplainedPolicy {
     /// Indicates whether _this policy_ provides the specified permission to the
@@ -74,6 +76,7 @@ pub struct ExplainedPolicy {
 }
 /// Details about how a binding in a policy affects a member's ability to use a
 /// permission.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BindingExplanation {
     /// Required. Indicates whether _this binding_ provides the specified permission to the
@@ -141,6 +144,7 @@ pub struct BindingExplanation {
 /// Nested message and enum types in `BindingExplanation`.
 pub mod binding_explanation {
     /// Details about whether the binding includes the member.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AnnotatedMembership {
         /// Indicates whether the binding includes the member.
@@ -297,6 +301,7 @@ impl HeuristicRelevance {
     }
 }
 /// Request for \[TroubleshootIamPolicy][google.cloud.policytroubleshooter.v1.IamChecker.TroubleshootIamPolicy\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TroubleshootIamPolicyRequest {
     /// The information to use for checking whether a member has a permission for a
@@ -305,6 +310,7 @@ pub struct TroubleshootIamPolicyRequest {
     pub access_tuple: ::core::option::Option<AccessTuple>,
 }
 /// Response for \[TroubleshootIamPolicy][google.cloud.policytroubleshooter.v1.IamChecker.TroubleshootIamPolicy\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TroubleshootIamPolicyResponse {
     /// Indicates whether the member has the specified permission for the specified

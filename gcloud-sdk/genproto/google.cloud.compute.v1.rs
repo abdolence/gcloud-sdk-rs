@@ -2,6 +2,7 @@
 /// Messages
 ///
 /// A request message for InstanceGroupManagers.AbandonInstances. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AbandonInstancesInstanceGroupManagerRequest {
     /// The name of the managed instance group.
@@ -23,6 +24,7 @@ pub struct AbandonInstancesInstanceGroupManagerRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for RegionInstanceGroupManagers.AbandonInstances. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AbandonInstancesRegionInstanceGroupManagerRequest {
     /// Name of the managed instance group.
@@ -44,6 +46,7 @@ pub struct AbandonInstancesRegionInstanceGroupManagerRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A specification of the type and number of accelerator cards attached to the instance.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AcceleratorConfig {
     /// The number of the guest accelerator cards exposed to this instance.
@@ -54,6 +57,7 @@ pub struct AcceleratorConfig {
     pub accelerator_type: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Represents an Accelerator Type resource. Google Cloud Platform provides graphics processing units (accelerators) that you can add to VM instances to improve or accelerate performance when working with intensive workloads. For more information, read GPUs on Compute Engine.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AcceleratorType {
     /// [Output Only] Creation timestamp in RFC3339 text format.
@@ -85,6 +89,7 @@ pub struct AcceleratorType {
     pub zone: ::core::option::Option<::prost::alloc::string::String>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AcceleratorTypeAggregatedList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -113,6 +118,7 @@ pub struct AcceleratorTypeAggregatedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Contains a list of accelerator types.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AcceleratorTypeList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -135,6 +141,7 @@ pub struct AcceleratorTypeList {
     pub warning: ::core::option::Option<Warning>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AcceleratorTypesScopedList {
     /// [Output Only] A list of accelerator types contained in this scope.
@@ -145,6 +152,7 @@ pub struct AcceleratorTypesScopedList {
     pub warning: ::core::option::Option<Warning>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Accelerators {
     /// Number of accelerator cards exposed to the guest.
@@ -155,6 +163,7 @@ pub struct Accelerators {
     pub guest_accelerator_type: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// An access configuration attached to an instance's network interface. Only one access config per instance is supported.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AccessConfig {
     /// The first IPv6 address of the external IPv6 range associated with this instance, prefix length is stored in externalIpv6PrefixLength in ipv6AccessConfig. The field is output only, an IPv6 address from a subnetwork associated with the instance will be allocated dynamically.
@@ -265,6 +274,7 @@ pub mod access_config {
     }
 }
 /// A request message for Instances.AddAccessConfig. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddAccessConfigInstanceRequest {
     /// The body resource for this request
@@ -287,6 +297,7 @@ pub struct AddAccessConfigInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for FirewallPolicies.AddAssociation. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddAssociationFirewallPolicyRequest {
     /// Name of the firewall policy to update.
@@ -305,6 +316,7 @@ pub struct AddAssociationFirewallPolicyRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for NetworkFirewallPolicies.AddAssociation. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddAssociationNetworkFirewallPolicyRequest {
     /// Name of the firewall policy to update.
@@ -326,6 +338,7 @@ pub struct AddAssociationNetworkFirewallPolicyRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionNetworkFirewallPolicies.AddAssociation. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddAssociationRegionNetworkFirewallPolicyRequest {
     /// Name of the firewall policy to update.
@@ -350,6 +363,7 @@ pub struct AddAssociationRegionNetworkFirewallPolicyRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for TargetPools.AddHealthCheck. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddHealthCheckTargetPoolRequest {
     /// Project ID for this request.
@@ -371,6 +385,7 @@ pub struct AddHealthCheckTargetPoolRequest {
     >,
 }
 /// A request message for TargetPools.AddInstance. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddInstanceTargetPoolRequest {
     /// Project ID for this request.
@@ -392,6 +407,7 @@ pub struct AddInstanceTargetPoolRequest {
     >,
 }
 /// A request message for InstanceGroups.AddInstances. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddInstancesInstanceGroupRequest {
     /// The name of the instance group where you are adding instances.
@@ -413,6 +429,7 @@ pub struct AddInstancesInstanceGroupRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for NodeGroups.AddNodes. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddNodesNodeGroupRequest {
     /// Name of the NodeGroup resource.
@@ -434,6 +451,7 @@ pub struct AddNodesNodeGroupRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for Networks.AddPeering. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddPeeringNetworkRequest {
     /// Name of the network resource to add peering to.
@@ -452,6 +470,7 @@ pub struct AddPeeringNetworkRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Disks.AddResourcePolicies. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddResourcePoliciesDiskRequest {
     /// The disk name for this request.
@@ -473,6 +492,7 @@ pub struct AddResourcePoliciesDiskRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for Instances.AddResourcePolicies. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddResourcePoliciesInstanceRequest {
     /// The instance name for this request.
@@ -494,6 +514,7 @@ pub struct AddResourcePoliciesInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for RegionDisks.AddResourcePolicies. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddResourcePoliciesRegionDiskRequest {
     /// The disk name for this request.
@@ -515,6 +536,7 @@ pub struct AddResourcePoliciesRegionDiskRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for FirewallPolicies.AddRule. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddRuleFirewallPolicyRequest {
     /// Name of the firewall policy to update.
@@ -528,6 +550,7 @@ pub struct AddRuleFirewallPolicyRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for NetworkFirewallPolicies.AddRule. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddRuleNetworkFirewallPolicyRequest {
     /// Name of the firewall policy to update.
@@ -550,6 +573,7 @@ pub struct AddRuleNetworkFirewallPolicyRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionNetworkFirewallPolicies.AddRule. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddRuleRegionNetworkFirewallPolicyRequest {
     /// Name of the firewall policy to update.
@@ -575,6 +599,7 @@ pub struct AddRuleRegionNetworkFirewallPolicyRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for SecurityPolicies.AddRule. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddRuleSecurityPolicyRequest {
     /// Project ID for this request.
@@ -591,6 +616,7 @@ pub struct AddRuleSecurityPolicyRequest {
     pub validate_only: ::core::option::Option<bool>,
 }
 /// A request message for BackendBuckets.AddSignedUrlKey. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddSignedUrlKeyBackendBucketRequest {
     /// Name of the BackendBucket resource to which the Signed URL Key should be added. The name should conform to RFC1035.
@@ -607,6 +633,7 @@ pub struct AddSignedUrlKeyBackendBucketRequest {
     pub signed_url_key_resource: ::core::option::Option<SignedUrlKey>,
 }
 /// A request message for BackendServices.AddSignedUrlKey. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddSignedUrlKeyBackendServiceRequest {
     /// Name of the BackendService resource to which the Signed URL Key should be added. The name should conform to RFC1035.
@@ -623,6 +650,7 @@ pub struct AddSignedUrlKeyBackendServiceRequest {
     pub signed_url_key_resource: ::core::option::Option<SignedUrlKey>,
 }
 /// Represents an IP Address resource. Google Compute Engine has two IP Address resources: * [Global (external and internal)](<https://cloud.google.com/compute/docs/reference/rest/v1/globalAddresses>) * [Regional (external and internal)](<https://cloud.google.com/compute/docs/reference/rest/v1/addresses>) For more information, see Reserving a static external IP address.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Address {
     /// The static IP address represented by this resource.
@@ -927,6 +955,7 @@ pub mod address {
     }
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddressAggregatedList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -955,6 +984,7 @@ pub struct AddressAggregatedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Contains a list of addresses.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddressList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -977,6 +1007,7 @@ pub struct AddressList {
     pub warning: ::core::option::Option<Warning>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddressesScopedList {
     /// [Output Only] A list of addresses contained in this scope.
@@ -987,6 +1018,7 @@ pub struct AddressesScopedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Specifies options for controlling advanced machine features. Options that would traditionally be configured in a BIOS belong here. Features that require operating system support may have corresponding entries in the GuestOsFeatures of an Image (e.g., whether or not the OS in the Image supports nested virtualization being enabled or disabled).
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AdvancedMachineFeatures {
     /// Whether to enable nested virtualization or not (default is false).
@@ -1003,6 +1035,7 @@ pub struct AdvancedMachineFeatures {
     pub visible_core_count: ::core::option::Option<i32>,
 }
 /// A request message for AcceleratorTypes.AggregatedList. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AggregatedListAcceleratorTypesRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -1028,6 +1061,7 @@ pub struct AggregatedListAcceleratorTypesRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for Addresses.AggregatedList. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AggregatedListAddressesRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -1053,6 +1087,7 @@ pub struct AggregatedListAddressesRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for Autoscalers.AggregatedList. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AggregatedListAutoscalersRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -1078,6 +1113,7 @@ pub struct AggregatedListAutoscalersRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for BackendServices.AggregatedList. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AggregatedListBackendServicesRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -1103,6 +1139,7 @@ pub struct AggregatedListBackendServicesRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for DiskTypes.AggregatedList. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AggregatedListDiskTypesRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -1128,6 +1165,7 @@ pub struct AggregatedListDiskTypesRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for Disks.AggregatedList. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AggregatedListDisksRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -1153,6 +1191,7 @@ pub struct AggregatedListDisksRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for ForwardingRules.AggregatedList. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AggregatedListForwardingRulesRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -1178,6 +1217,7 @@ pub struct AggregatedListForwardingRulesRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for GlobalOperations.AggregatedList. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AggregatedListGlobalOperationsRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -1203,6 +1243,7 @@ pub struct AggregatedListGlobalOperationsRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for HealthChecks.AggregatedList. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AggregatedListHealthChecksRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -1228,6 +1269,7 @@ pub struct AggregatedListHealthChecksRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for InstanceGroupManagers.AggregatedList. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AggregatedListInstanceGroupManagersRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -1253,6 +1295,7 @@ pub struct AggregatedListInstanceGroupManagersRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for InstanceGroups.AggregatedList. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AggregatedListInstanceGroupsRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -1278,6 +1321,7 @@ pub struct AggregatedListInstanceGroupsRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for Instances.AggregatedList. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AggregatedListInstancesRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -1303,6 +1347,7 @@ pub struct AggregatedListInstancesRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for InterconnectAttachments.AggregatedList. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AggregatedListInterconnectAttachmentsRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -1328,6 +1373,7 @@ pub struct AggregatedListInterconnectAttachmentsRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for MachineTypes.AggregatedList. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AggregatedListMachineTypesRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -1353,6 +1399,7 @@ pub struct AggregatedListMachineTypesRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for NetworkAttachments.AggregatedList. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AggregatedListNetworkAttachmentsRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -1378,6 +1425,7 @@ pub struct AggregatedListNetworkAttachmentsRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for NetworkEdgeSecurityServices.AggregatedList. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AggregatedListNetworkEdgeSecurityServicesRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -1403,6 +1451,7 @@ pub struct AggregatedListNetworkEdgeSecurityServicesRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for NetworkEndpointGroups.AggregatedList. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AggregatedListNetworkEndpointGroupsRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -1428,6 +1477,7 @@ pub struct AggregatedListNetworkEndpointGroupsRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for NodeGroups.AggregatedList. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AggregatedListNodeGroupsRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -1453,6 +1503,7 @@ pub struct AggregatedListNodeGroupsRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for NodeTemplates.AggregatedList. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AggregatedListNodeTemplatesRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -1478,6 +1529,7 @@ pub struct AggregatedListNodeTemplatesRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for NodeTypes.AggregatedList. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AggregatedListNodeTypesRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -1503,6 +1555,7 @@ pub struct AggregatedListNodeTypesRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for PacketMirrorings.AggregatedList. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AggregatedListPacketMirroringsRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -1528,6 +1581,7 @@ pub struct AggregatedListPacketMirroringsRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for PublicDelegatedPrefixes.AggregatedList. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AggregatedListPublicDelegatedPrefixesRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -1553,6 +1607,7 @@ pub struct AggregatedListPublicDelegatedPrefixesRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for RegionCommitments.AggregatedList. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AggregatedListRegionCommitmentsRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -1578,6 +1633,7 @@ pub struct AggregatedListRegionCommitmentsRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for Reservations.AggregatedList. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AggregatedListReservationsRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -1603,6 +1659,7 @@ pub struct AggregatedListReservationsRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for ResourcePolicies.AggregatedList. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AggregatedListResourcePoliciesRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -1628,6 +1685,7 @@ pub struct AggregatedListResourcePoliciesRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for Routers.AggregatedList. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AggregatedListRoutersRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -1653,6 +1711,7 @@ pub struct AggregatedListRoutersRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for SecurityPolicies.AggregatedList. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AggregatedListSecurityPoliciesRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -1678,6 +1737,7 @@ pub struct AggregatedListSecurityPoliciesRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for ServiceAttachments.AggregatedList. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AggregatedListServiceAttachmentsRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -1703,6 +1763,7 @@ pub struct AggregatedListServiceAttachmentsRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for SslCertificates.AggregatedList. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AggregatedListSslCertificatesRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -1728,6 +1789,7 @@ pub struct AggregatedListSslCertificatesRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for SslPolicies.AggregatedList. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AggregatedListSslPoliciesRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -1753,6 +1815,7 @@ pub struct AggregatedListSslPoliciesRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for Subnetworks.AggregatedList. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AggregatedListSubnetworksRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -1778,6 +1841,7 @@ pub struct AggregatedListSubnetworksRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for TargetHttpProxies.AggregatedList. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AggregatedListTargetHttpProxiesRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -1803,6 +1867,7 @@ pub struct AggregatedListTargetHttpProxiesRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for TargetHttpsProxies.AggregatedList. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AggregatedListTargetHttpsProxiesRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -1828,6 +1893,7 @@ pub struct AggregatedListTargetHttpsProxiesRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for TargetInstances.AggregatedList. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AggregatedListTargetInstancesRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -1853,6 +1919,7 @@ pub struct AggregatedListTargetInstancesRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for TargetPools.AggregatedList. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AggregatedListTargetPoolsRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -1878,6 +1945,7 @@ pub struct AggregatedListTargetPoolsRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for TargetTcpProxies.AggregatedList. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AggregatedListTargetTcpProxiesRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -1903,6 +1971,7 @@ pub struct AggregatedListTargetTcpProxiesRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for TargetVpnGateways.AggregatedList. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AggregatedListTargetVpnGatewaysRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -1928,6 +1997,7 @@ pub struct AggregatedListTargetVpnGatewaysRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for UrlMaps.AggregatedList. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AggregatedListUrlMapsRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -1953,6 +2023,7 @@ pub struct AggregatedListUrlMapsRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for VpnGateways.AggregatedList. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AggregatedListVpnGatewaysRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -1978,6 +2049,7 @@ pub struct AggregatedListVpnGatewaysRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for VpnTunnels.AggregatedList. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AggregatedListVpnTunnelsRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -2003,6 +2075,7 @@ pub struct AggregatedListVpnTunnelsRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// An alias IP range attached to an instance's network interface.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AliasIpRange {
     /// The IP alias ranges to allocate for this interface. This IP CIDR range must belong to the specified subnetwork and cannot contain IP addresses reserved by system or used by other network interfaces. This range may be a single IP address (such as 10.2.3.4), a netmask (such as /24) or a CIDR-formatted string (such as 10.1.2.0/24).
@@ -2013,6 +2086,7 @@ pub struct AliasIpRange {
     pub subnetwork_range_name: ::core::option::Option<::prost::alloc::string::String>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AllocationSpecificSkuAllocationAllocatedInstancePropertiesReservedDisk {
     /// Specifies the size of the disk in base-2 GB.
@@ -2059,6 +2133,7 @@ pub mod allocation_specific_sku_allocation_allocated_instance_properties_reserve
     }
 }
 /// Properties of the SKU instances being reserved. Next ID: 9
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AllocationSpecificSkuAllocationReservedInstanceProperties {
     /// Specifies accelerator type and count.
@@ -2080,6 +2155,7 @@ pub struct AllocationSpecificSkuAllocationReservedInstanceProperties {
     pub min_cpu_platform: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// This reservation type allows to pre allocate specific instance configuration. Next ID: 6
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AllocationSpecificSkuReservation {
     /// [Output Only] Indicates how many instances are actually usable currently.
@@ -2098,6 +2174,7 @@ pub struct AllocationSpecificSkuReservation {
     >,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Allowed {
     /// The IP protocol to which this rule applies. The protocol type is required when creating a firewall rule. This value can either be one of the following well known protocol strings (tcp, udp, icmp, esp, ah, ipip, sctp) or the IP protocol number.
@@ -2108,6 +2185,7 @@ pub struct Allowed {
     pub ports: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// A request message for InstanceGroupManagers.ApplyUpdatesToInstances. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ApplyUpdatesToInstancesInstanceGroupManagerRequest {
     /// The name of the managed instance group, should conform to RFC1035.
@@ -2126,6 +2204,7 @@ pub struct ApplyUpdatesToInstancesInstanceGroupManagerRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for RegionInstanceGroupManagers.ApplyUpdatesToInstances. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ApplyUpdatesToInstancesRegionInstanceGroupManagerRequest {
     /// The name of the managed instance group, should conform to RFC1035.
@@ -2144,6 +2223,7 @@ pub struct ApplyUpdatesToInstancesRegionInstanceGroupManagerRequest {
     >,
 }
 /// A request message for Instances.AttachDisk. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AttachDiskInstanceRequest {
     /// The body resource for this request
@@ -2166,6 +2246,7 @@ pub struct AttachDiskInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for GlobalNetworkEndpointGroups.AttachNetworkEndpoints. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AttachNetworkEndpointsGlobalNetworkEndpointGroupRequest {
     /// The body resource for this request
@@ -2184,6 +2265,7 @@ pub struct AttachNetworkEndpointsGlobalNetworkEndpointGroupRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for NetworkEndpointGroups.AttachNetworkEndpoints. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AttachNetworkEndpointsNetworkEndpointGroupRequest {
     /// The name of the network endpoint group where you are attaching network endpoints to. It should comply with RFC1035.
@@ -2205,6 +2287,7 @@ pub struct AttachNetworkEndpointsNetworkEndpointGroupRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// An instance-attached disk resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AttachedDisk {
     /// [Output Only] The architecture of the attached disk. Valid values are ARM64 or X86_64.
@@ -2402,6 +2485,7 @@ pub mod attached_disk {
     }
 }
 /// [Input Only] Specifies the parameters for a new disk that will be created alongside the new instance. Use initialization parameters to create boot disks or local SSDs attached to the new instance. This field is persisted and returned for instanceTemplate and not returned in the context of instance. This property is mutually exclusive with the source property; you can only define one or the other, but not both.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AttachedDiskInitializeParams {
     /// The architecture of the attached disk. Valid values are arm64 or x86_64.
@@ -2538,6 +2622,7 @@ pub mod attached_disk_initialize_params {
     }
 }
 /// Specifies the audit configuration for a service. The configuration determines which permission types are logged, and what identities, if any, are exempted from logging. An AuditConfig must have one or more AuditLogConfigs. If there are AuditConfigs for both `allServices` and a specific service, the union of the two AuditConfigs is used for that service: the log_types specified in each AuditConfig are enabled, and the exempted_members in each AuditLogConfig are exempted. Example Policy with multiple AuditConfigs: { "audit_configs": [ { "service": "allServices", "audit_log_configs": [ { "log_type": "DATA_READ", "exempted_members": [ "user:jose@example.com" ] }, { "log_type": "DATA_WRITE" }, { "log_type": "ADMIN_READ" } ] }, { "service": "sampleservice.googleapis.com", "audit_log_configs": [ { "log_type": "DATA_READ" }, { "log_type": "DATA_WRITE", "exempted_members": [ "user:aliya@example.com" ] } ] } ] } For sampleservice, this policy enables DATA_READ, DATA_WRITE and ADMIN_READ logging. It also exempts jose@example.com from DATA_READ logging, and aliya@example.com from DATA_WRITE logging.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AuditConfig {
     /// The configuration for logging of each type of permission.
@@ -2551,6 +2636,7 @@ pub struct AuditConfig {
     pub service: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Provides the configuration for logging a type of permissions. Example: { "audit_log_configs": [ { "log_type": "DATA_READ", "exempted_members": [ "user:jose@example.com" ] }, { "log_type": "DATA_WRITE" } ] } This enables 'DATA_READ' and 'DATA_WRITE' logging, while exempting jose@example.com from DATA_READ logging.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AuditLogConfig {
     /// Specifies the identities that do not cause logging for this type of permission. Follows the same format of Binding.members.
@@ -2608,6 +2694,7 @@ pub mod audit_log_config {
     }
 }
 /// This is deprecated and has no effect. Do not use.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AuthorizationLoggingOptions {
     /// This is deprecated and has no effect. Do not use.
@@ -2662,6 +2749,7 @@ pub mod authorization_logging_options {
     }
 }
 /// Represents an Autoscaler resource. Google Compute Engine has two Autoscaler resources: * \[Zonal\](/compute/docs/reference/rest/v1/autoscalers) * \[Regional\](/compute/docs/reference/rest/v1/regionAutoscalers) Use autoscalers to automatically add or delete instances from a managed instance group according to your defined autoscaling policy. For more information, read Autoscaling Groups of Instances. For zonal managed instance groups resource, use the autoscaler resource. For regional managed instance groups, use the regionAutoscalers resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Autoscaler {
     /// The configuration parameters for the autoscaling algorithm. You can define one or more signals for an autoscaler: cpuUtilization, customMetricUtilizations, and loadBalancingUtilization. If none of these are specified, the default will be to autoscale based on cpuUtilization to 0.6 or 60%.
@@ -2755,6 +2843,7 @@ pub mod autoscaler {
     }
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AutoscalerAggregatedList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -2783,6 +2872,7 @@ pub struct AutoscalerAggregatedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Contains a list of Autoscaler resources.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AutoscalerList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -2805,6 +2895,7 @@ pub struct AutoscalerList {
     pub warning: ::core::option::Option<Warning>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AutoscalerStatusDetails {
     /// The status message.
@@ -2918,6 +3009,7 @@ pub mod autoscaler_status_details {
     }
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AutoscalersScopedList {
     /// [Output Only] A list of autoscalers contained in this scope.
@@ -2928,6 +3020,7 @@ pub struct AutoscalersScopedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Cloud Autoscaler policy.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AutoscalingPolicy {
     /// The number of seconds that the autoscaler waits before it starts collecting information from a new instance. This prevents the autoscaler from collecting information when the instance is initializing, during which the collected usage would not be reliable. The default time autoscaler waits is 60 seconds. Virtual machine initialization times might vary because of numerous factors. We recommend that you test how long an instance may take to initialize. To do this, create an instance and time the startup process.
@@ -3009,6 +3102,7 @@ pub mod autoscaling_policy {
     }
 }
 /// CPU utilization policy.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AutoscalingPolicyCpuUtilization {
     /// Indicates whether predictive autoscaling based on CPU metric is enabled. Valid values are: * NONE (default). No predictive method is used. The autoscaler scales the group to meet current demand based on real-time metrics. * OPTIMIZE_AVAILABILITY. Predictive autoscaling improves availability by monitoring daily and weekly load patterns and scaling out ahead of anticipated demand.
@@ -3059,6 +3153,7 @@ pub mod autoscaling_policy_cpu_utilization {
     }
 }
 /// Custom utilization metric policy.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AutoscalingPolicyCustomMetricUtilization {
     /// A filter string, compatible with a Stackdriver Monitoring filter string for TimeSeries.list API call. This filter is used to select a specific TimeSeries for the purpose of autoscaling and to determine whether the metric is exporting per-instance or per-group data. For the filter to be valid for autoscaling purposes, the following rules apply: - You can only use the AND operator for joining selectors. - You can only use direct equality comparison operator (=) without any functions for each selector. - You can specify the metric in both the filter string and in the metric field. However, if specified in both places, the metric must be identical. - The monitored resource type determines what kind of values are expected for the metric. If it is a gce_instance, the autoscaler expects the metric to include a separate TimeSeries for each instance in a group. In such a case, you cannot filter on resource labels. If the resource type is any other value, the autoscaler expects this metric to contain values that apply to the entire autoscaled instance group and resource label filtering can be performed to point autoscaler at the correct TimeSeries to scale upon. This is called a *per-group metric* for the purpose of autoscaling. If not specified, the type defaults to gce_instance. Try to provide a filter that is selective enough to pick just one TimeSeries for the autoscaled group or for each of the instances (if you are using gce_instance resource type). If multiple TimeSeries are returned upon the query execution, the autoscaler will sum their respective values to obtain its scaling value.
@@ -3121,6 +3216,7 @@ pub mod autoscaling_policy_custom_metric_utilization {
     }
 }
 /// Configuration parameters of autoscaling based on load balancing.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AutoscalingPolicyLoadBalancingUtilization {
     /// Fraction of backend capacity utilization (set in HTTP(S) load balancing configuration) that the autoscaler maintains. Must be a positive float value. If not defined, the default is 0.8.
@@ -3128,6 +3224,7 @@ pub struct AutoscalingPolicyLoadBalancingUtilization {
     pub utilization_target: ::core::option::Option<f64>,
 }
 /// Configuration that allows for slower scale in so that even if Autoscaler recommends an abrupt scale in of a MIG, it will be throttled as specified by the parameters below.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AutoscalingPolicyScaleInControl {
     /// Maximum allowed number (or %) of VMs that can be deducted from the peak recommendation during the window autoscaler looks at when computing recommendations. Possibly all these VMs can be deleted at once so user service needs to be prepared to lose that many VMs in one step.
@@ -3138,6 +3235,7 @@ pub struct AutoscalingPolicyScaleInControl {
     pub time_window_sec: ::core::option::Option<i32>,
 }
 /// Scaling based on user-defined schedule. The message describes a single scaling schedule. A scaling schedule changes the minimum number of VM instances an autoscaler can recommend, which can trigger scaling out.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AutoscalingPolicyScalingSchedule {
     /// A description of a scaling schedule.
@@ -3160,6 +3258,7 @@ pub struct AutoscalingPolicyScalingSchedule {
     pub time_zone: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Message containing information of one individual backend.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Backend {
     /// Specifies how to determine whether the backend of a load balancer can handle additional traffic or is fully loaded. For usage guidelines, see Connection balancing mode. Backends must use compatible balancing modes. For more information, see Supported balancing modes and target capacity settings and Restrictions and guidance for instance groups. Note: Currently, if you use the API to configure incompatible balancing modes, the configuration might be accepted even though it has no impact and is ignored. Specifically, Backend.maxUtilization is ignored when Backend.balancingMode is RATE. In the future, this incompatible combination will be rejected.
@@ -3241,6 +3340,7 @@ pub mod backend {
     }
 }
 /// Represents a Cloud Storage Bucket resource. This Cloud Storage bucket resource is referenced by a URL map of a load balancer. For more information, read Backend Buckets.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BackendBucket {
     /// Cloud Storage bucket name.
@@ -3321,6 +3421,7 @@ pub mod backend_bucket {
     }
 }
 /// Message containing Cloud CDN configuration for a backend bucket.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BackendBucketCdnPolicy {
     /// Bypass the cache when the specified request headers are matched - e.g. Pragma or Authorization headers. Up to 5 headers can be specified. The cache is bypassed for all cdnPolicy.cacheMode settings.
@@ -3408,6 +3509,7 @@ pub mod backend_bucket_cdn_policy {
     }
 }
 /// Bypass the cache when the specified request headers are present, e.g. Pragma or Authorization headers. Values are case insensitive. The presence of such a header overrides the cache_mode setting.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BackendBucketCdnPolicyBypassCacheOnRequestHeader {
     /// The header field name to match on when bypassing cache. Values are case-insensitive.
@@ -3415,6 +3517,7 @@ pub struct BackendBucketCdnPolicyBypassCacheOnRequestHeader {
     pub header_name: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Message containing what to include in the cache key for a request for Cloud CDN.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BackendBucketCdnPolicyCacheKeyPolicy {
     /// Allows HTTP request headers (by name) to be used in the cache key.
@@ -3425,6 +3528,7 @@ pub struct BackendBucketCdnPolicyCacheKeyPolicy {
     pub query_string_whitelist: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Specify CDN TTLs for response error codes.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BackendBucketCdnPolicyNegativeCachingPolicy {
     /// The HTTP status code to define a TTL against. Only HTTP status codes 300, 301, 302, 307, 308, 404, 405, 410, 421, 451 and 501 are can be specified as values, and you cannot specify a status code more than once.
@@ -3435,6 +3539,7 @@ pub struct BackendBucketCdnPolicyNegativeCachingPolicy {
     pub ttl: ::core::option::Option<i32>,
 }
 /// Contains a list of BackendBucket resources.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BackendBucketList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -3457,6 +3562,7 @@ pub struct BackendBucketList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Represents a Backend Service resource. A backend service defines how Google Cloud load balancers distribute traffic. The backend service configuration contains a set of values, such as the protocol used to connect to backends, various distribution and session settings, health checks, and timeouts. These settings provide fine-grained control over how your load balancer behaves. Most of the settings have default values that allow for easy configuration if you need to get started quickly. Backend services in Google Compute Engine can be either regionally or globally scoped. * \[Global\](<https://cloud.google.com/compute/docs/reference/rest/v1/backendServices>) * \[Regional\](<https://cloud.google.com/compute/docs/reference/rest/v1/regionBackendServices>) For more information, see Backend Services.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BackendService {
     /// Lifetime of cookies in seconds. This setting is applicable to external and internal HTTP(S) load balancers and Traffic Director and requires GENERATED_COOKIE or HTTP_COOKIE session affinity. If set to 0, the cookie is non-persistent and lasts only until the end of the browser session (or equivalent). The maximum allowed value is two weeks (1,209,600). Not supported when the backend service is referenced by a URL map that is bound to target gRPC proxy that has validateForProxyless field set to true.
@@ -3824,6 +3930,7 @@ pub mod backend_service {
     }
 }
 /// Contains a list of BackendServicesScopedList.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BackendServiceAggregatedList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -3852,6 +3959,7 @@ pub struct BackendServiceAggregatedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Message containing Cloud CDN configuration for a backend service.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BackendServiceCdnPolicy {
     /// Bypass the cache when the specified request headers are matched - e.g. Pragma or Authorization headers. Up to 5 headers can be specified. The cache is bypassed for all cdnPolicy.cacheMode settings.
@@ -3939,6 +4047,7 @@ pub mod backend_service_cdn_policy {
     }
 }
 /// Bypass the cache when the specified request headers are present, e.g. Pragma or Authorization headers. Values are case insensitive. The presence of such a header overrides the cache_mode setting.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BackendServiceCdnPolicyBypassCacheOnRequestHeader {
     /// The header field name to match on when bypassing cache. Values are case-insensitive.
@@ -3946,6 +4055,7 @@ pub struct BackendServiceCdnPolicyBypassCacheOnRequestHeader {
     pub header_name: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Specify CDN TTLs for response error codes.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BackendServiceCdnPolicyNegativeCachingPolicy {
     /// The HTTP status code to define a TTL against. Only HTTP status codes 300, 301, 302, 307, 308, 404, 405, 410, 421, 451 and 501 are can be specified as values, and you cannot specify a status code more than once.
@@ -3956,6 +4066,7 @@ pub struct BackendServiceCdnPolicyNegativeCachingPolicy {
     pub ttl: ::core::option::Option<i32>,
 }
 /// Connection Tracking configuration for this BackendService.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BackendServiceConnectionTrackingPolicy {
     /// Specifies connection persistence when backends are unhealthy. The default value is DEFAULT_FOR_PROTOCOL. If set to DEFAULT_FOR_PROTOCOL, the existing connections persist on unhealthy backends only for connection-oriented protocols (TCP and SCTP) and only if the Tracking Mode is PER_CONNECTION (default tracking mode) or the Session Affinity is configured for 5-tuple. They do not persist for UDP. If set to NEVER_PERSIST, after a backend becomes unhealthy, the existing connections on the unhealthy backend are never persisted on the unhealthy backend. They are always diverted to newly selected healthy backends (unless all backends are unhealthy). If set to ALWAYS_PERSIST, existing connections always persist on unhealthy backends regardless of protocol and session affinity. It is generally not recommended to use this mode overriding the default. For more details, see [Connection Persistence for Network Load Balancing](<https://cloud.google.com/load-balancing/docs/network/networklb-backend-service#connection-persistence>) and [Connection Persistence for Internal TCP/UDP Load Balancing](<https://cloud.google.com/load-balancing/docs/internal#connection-persistence>).
@@ -4053,6 +4164,7 @@ pub mod backend_service_connection_tracking_policy {
     }
 }
 /// For load balancers that have configurable failover: [Internal TCP/UDP Load Balancing](<https://cloud.google.com/load-balancing/docs/internal/failover-overview>) and [external TCP/UDP Load Balancing](<https://cloud.google.com/load-balancing/docs/network/networklb-failover-overview>). On failover or failback, this field indicates whether connection draining will be honored. Google Cloud has a fixed connection draining timeout of 10 minutes. A setting of true terminates existing TCP connections to the active pool during failover and failback, immediately draining traffic. A setting of false allows existing TCP connections to persist, even on VMs no longer in the active pool, for up to the duration of the connection draining timeout (10 minutes).
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BackendServiceFailoverPolicy {
     /// This can be set to true only if the protocol is TCP. The default is false.
@@ -4066,6 +4178,7 @@ pub struct BackendServiceFailoverPolicy {
     pub failover_ratio: ::core::option::Option<f32>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BackendServiceGroupHealth {
     /// Metadata defined as annotations on the network endpoint group.
@@ -4082,6 +4195,7 @@ pub struct BackendServiceGroupHealth {
     pub kind: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Identity-Aware Proxy
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BackendServiceIap {
     /// Whether the serving infrastructure will authenticate and authorize all incoming requests. If true, the oauth2ClientId and oauth2ClientSecret fields must be non-empty.
@@ -4100,6 +4214,7 @@ pub struct BackendServiceIap {
     >,
 }
 /// Contains a list of BackendService resources.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BackendServiceList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -4122,6 +4237,7 @@ pub struct BackendServiceList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Container for either a built-in LB policy supported by gRPC or Envoy or a custom one implemented by the end user.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BackendServiceLocalityLoadBalancingPolicyConfig {
     #[prost(message, optional, tag = "4818368")]
@@ -4134,6 +4250,7 @@ pub struct BackendServiceLocalityLoadBalancingPolicyConfig {
     >,
 }
 /// The configuration for a custom policy implemented by the user and deployed with the client.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BackendServiceLocalityLoadBalancingPolicyConfigCustomPolicy {
     /// An optional, arbitrary JSON object with configuration data, understood by a locally installed custom policy implementation.
@@ -4144,6 +4261,7 @@ pub struct BackendServiceLocalityLoadBalancingPolicyConfigCustomPolicy {
     pub name: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// The configuration for a built-in load balancing policy.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BackendServiceLocalityLoadBalancingPolicyConfigPolicy {
     /// The name of a locality load balancer policy to be used. The value should be one of the predefined ones as supported by localityLbPolicy, although at the moment only ROUND_ROBIN is supported. This field should only be populated when the customPolicy field is not used. Note that specifying the same policy more than once for a backend is not a valid configuration and will be rejected.
@@ -4203,6 +4321,7 @@ pub mod backend_service_locality_load_balancing_policy_config_policy {
     }
 }
 /// The available logging options for the load balancer traffic served by this backend service.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BackendServiceLogConfig {
     /// Denotes whether to enable logging for the load balancer traffic served by this backend service. The default value is false.
@@ -4213,12 +4332,14 @@ pub struct BackendServiceLogConfig {
     pub sample_rate: ::core::option::Option<f32>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BackendServiceReference {
     #[prost(string, optional, tag = "306946058")]
     pub backend_service: ::core::option::Option<::prost::alloc::string::String>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BackendServicesScopedList {
     /// A list of BackendServices contained in this scope.
@@ -4229,6 +4350,7 @@ pub struct BackendServicesScopedList {
     pub warning: ::core::option::Option<Warning>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BfdPacket {
     /// The Authentication Present bit of the BFD packet. This is specified in section 4.1 of RFC5880
@@ -4378,6 +4500,7 @@ pub mod bfd_packet {
     }
 }
 /// Next free: 15
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BfdStatus {
     /// The BFD session initialization mode for this BGP peer. If set to ACTIVE, the Cloud Router will initiate the BFD session for this BGP peer. If set to PASSIVE, the Cloud Router will wait for the peer router to initiate the BFD session for this BGP peer. If set to DISABLED, BFD is disabled for this BGP peer.
@@ -4548,6 +4671,7 @@ pub mod bfd_status {
     }
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BfdStatusPacketCounts {
     /// Number of packets received since the beginning of the current BFD session.
@@ -4564,6 +4688,7 @@ pub struct BfdStatusPacketCounts {
     pub num_tx: ::core::option::Option<u32>,
 }
 /// Associates `members`, or principals, with a `role`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Binding {
     /// This is deprecated and has no effect. Do not use.
@@ -4580,6 +4705,7 @@ pub struct Binding {
     pub role: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Instances.BulkInsert. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BulkInsertInstanceRequest {
     /// The body resource for this request
@@ -4598,6 +4724,7 @@ pub struct BulkInsertInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A transient resource used in compute.instances.bulkInsert and compute.regionInstances.bulkInsert . This resource is not persisted anywhere, it is used only for processing the requests.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BulkInsertInstanceResource {
     /// The maximum number of instances to create.
@@ -4626,6 +4753,7 @@ pub struct BulkInsertInstanceResource {
     pub source_instance_template: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Per-instance properties to be set on individual instances. To be extended in the future.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BulkInsertInstanceResourcePerInstanceProperties {
     /// This field is only temporary. It will be removed. Do not use it.
@@ -4633,6 +4761,7 @@ pub struct BulkInsertInstanceResourcePerInstanceProperties {
     pub name: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionInstances.BulkInsert. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BulkInsertRegionInstanceRequest {
     /// The body resource for this request
@@ -4651,6 +4780,7 @@ pub struct BulkInsertRegionInstanceRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CacheInvalidationRule {
     /// If set, this invalidation rule will only apply to requests with a Host header matching host.
@@ -4660,6 +4790,7 @@ pub struct CacheInvalidationRule {
     pub path: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Message containing what to include in the cache key for a request for Cloud CDN.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CacheKeyPolicy {
     /// If true, requests to different hosts will be cached separately.
@@ -4685,6 +4816,7 @@ pub struct CacheKeyPolicy {
     pub query_string_whitelist: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Settings controlling the volume of requests, connections and retries to this backend service.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CircuitBreakers {
     /// The maximum number of connections to the backend service. If not specified, there is no limit. Not supported when the backend service is referenced by a URL map that is bound to target gRPC proxy that has validateForProxyless field set to true.
@@ -4704,6 +4836,7 @@ pub struct CircuitBreakers {
     pub max_retries: ::core::option::Option<i32>,
 }
 /// A request message for FirewallPolicies.CloneRules. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CloneRulesFirewallPolicyRequest {
     /// Name of the firewall policy to update.
@@ -4717,6 +4850,7 @@ pub struct CloneRulesFirewallPolicyRequest {
     pub source_firewall_policy: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for NetworkFirewallPolicies.CloneRules. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CloneRulesNetworkFirewallPolicyRequest {
     /// Name of the firewall policy to update.
@@ -4733,6 +4867,7 @@ pub struct CloneRulesNetworkFirewallPolicyRequest {
     pub source_firewall_policy: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionNetworkFirewallPolicies.CloneRules. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CloneRulesRegionNetworkFirewallPolicyRequest {
     /// Name of the firewall policy to update.
@@ -4752,6 +4887,7 @@ pub struct CloneRulesRegionNetworkFirewallPolicyRequest {
     pub source_firewall_policy: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Represents a regional Commitment resource. Creating a commitment resource means that you are purchasing a committed use contract with an explicit start and end time. You can create commitments based on vCPUs and memory usage and receive discounted rates. For full details, read Signing Up for Committed Use Discounts.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Commitment {
     /// Specifies whether to enable automatic renewal for the commitment. The default value is false if not specified. The field can be updated until the day of the commitment expiration at 12:00am PST. If the field is set to true, the commitment will be automatically renewed for either one or three years according to the terms of the existing commitment.
@@ -4981,6 +5117,7 @@ pub mod commitment {
     }
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CommitmentAggregatedList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -5009,6 +5146,7 @@ pub struct CommitmentAggregatedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Contains a list of Commitment resources.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CommitmentList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -5031,6 +5169,7 @@ pub struct CommitmentList {
     pub warning: ::core::option::Option<Warning>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CommitmentsScopedList {
     /// [Output Only] A list of commitments contained in this scope.
@@ -5041,6 +5180,7 @@ pub struct CommitmentsScopedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// This is deprecated and has no effect. Do not use.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Condition {
     /// This is deprecated and has no effect. Do not use.
@@ -5205,6 +5345,7 @@ pub mod condition {
     }
 }
 /// A set of Confidential Instance options.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConfidentialInstanceConfig {
     /// Defines whether the instance should have confidential compute enabled.
@@ -5212,6 +5353,7 @@ pub struct ConfidentialInstanceConfig {
     pub enable_confidential_compute: ::core::option::Option<bool>,
 }
 /// Message containing connection draining configuration.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConnectionDraining {
     /// Configures a duration timeout for existing requests on a removed backend instance. For supported load balancers and protocols, as described in Enabling connection draining.
@@ -5219,6 +5361,7 @@ pub struct ConnectionDraining {
     pub draining_timeout_sec: ::core::option::Option<i32>,
 }
 /// This message defines settings for a consistent hash style load balancer.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConsistentHashLoadBalancerSettings {
     /// Hash is based on HTTP Cookie. This field describes a HTTP cookie that will be used as the hash key for the consistent hash load balancer. If the cookie is not present, it will be generated. This field is applicable if the sessionAffinity is set to HTTP_COOKIE. Not supported when the backend service is referenced by a URL map that is bound to target gRPC proxy that has validateForProxyless field set to true.
@@ -5234,6 +5377,7 @@ pub struct ConsistentHashLoadBalancerSettings {
     pub minimum_ring_size: ::core::option::Option<i64>,
 }
 /// The information about the HTTP Cookie on which the hash function is based for load balancing policies that use a consistent hash.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConsistentHashLoadBalancerSettingsHttpCookie {
     /// Name of the cookie.
@@ -5247,6 +5391,7 @@ pub struct ConsistentHashLoadBalancerSettingsHttpCookie {
     pub ttl: ::core::option::Option<Duration>,
 }
 /// The specification for allowing client-side cross-origin requests. For more information about the W3C recommendation for cross-origin resource sharing (CORS), see Fetch API Living Standard.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CorsPolicy {
     /// In response to a preflight request, setting this to true indicates that the actual request can include user credentials. This field translates to the Access-Control-Allow-Credentials header. Default is false.
@@ -5275,6 +5420,7 @@ pub struct CorsPolicy {
     pub max_age: ::core::option::Option<i32>,
 }
 /// A request message for InstanceGroupManagers.CreateInstances. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateInstancesInstanceGroupManagerRequest {
     /// The name of the managed instance group. It should conform to RFC1035.
@@ -5296,6 +5442,7 @@ pub struct CreateInstancesInstanceGroupManagerRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for RegionInstanceGroupManagers.CreateInstances. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateInstancesRegionInstanceGroupManagerRequest {
     /// The name of the managed instance group. It should conform to RFC1035.
@@ -5317,6 +5464,7 @@ pub struct CreateInstancesRegionInstanceGroupManagerRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Disks.CreateSnapshot. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateSnapshotDiskRequest {
     /// Name of the persistent disk to snapshot.
@@ -5339,6 +5487,7 @@ pub struct CreateSnapshotDiskRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for RegionDisks.CreateSnapshot. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateSnapshotRegionDiskRequest {
     /// Name of the regional persistent disk to snapshot.
@@ -5358,6 +5507,7 @@ pub struct CreateSnapshotRegionDiskRequest {
     pub snapshot_resource: ::core::option::Option<Snapshot>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomerEncryptionKey {
     /// The name of the encryption key that is stored in Google Cloud KMS. For example: "kmsKeyName": "projects/kms_project_id/locations/region/keyRings/ key_region/cryptoKeys/key
@@ -5377,6 +5527,7 @@ pub struct CustomerEncryptionKey {
     pub sha256: ::core::option::Option<::prost::alloc::string::String>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomerEncryptionKeyProtectedDisk {
     /// Decrypts data associated with the disk with a customer-supplied encryption key.
@@ -5387,6 +5538,7 @@ pub struct CustomerEncryptionKeyProtectedDisk {
     pub source: ::core::option::Option<::prost::alloc::string::String>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Data {
     /// [Output Only] A key that provides more detail on the warning being returned. For example, for warnings where there are no results in a list request for a particular zone, this key might be scope and the key value might be the zone name. Other examples might be a key indicating a deprecated resource and a suggested replacement, or a warning about invalid network settings (for example, if an instance attempts to perform IP forwarding but is not enabled for IP forwarding).
@@ -5397,6 +5549,7 @@ pub struct Data {
     pub value: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Instances.DeleteAccessConfig. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteAccessConfigInstanceRequest {
     /// The name of the access config to delete.
@@ -5419,6 +5572,7 @@ pub struct DeleteAccessConfigInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for Addresses.Delete. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteAddressRequest {
     /// Name of the address resource to delete.
@@ -5435,6 +5589,7 @@ pub struct DeleteAddressRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Autoscalers.Delete. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteAutoscalerRequest {
     /// Name of the autoscaler to delete.
@@ -5451,6 +5606,7 @@ pub struct DeleteAutoscalerRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for BackendBuckets.Delete. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteBackendBucketRequest {
     /// Name of the BackendBucket resource to delete.
@@ -5464,6 +5620,7 @@ pub struct DeleteBackendBucketRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for BackendServices.Delete. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteBackendServiceRequest {
     /// Name of the BackendService resource to delete.
@@ -5477,6 +5634,7 @@ pub struct DeleteBackendServiceRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Disks.Delete. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteDiskRequest {
     /// Name of the persistent disk to delete.
@@ -5493,6 +5651,7 @@ pub struct DeleteDiskRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for ExternalVpnGateways.Delete. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteExternalVpnGatewayRequest {
     /// Name of the externalVpnGateways to delete.
@@ -5506,6 +5665,7 @@ pub struct DeleteExternalVpnGatewayRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for FirewallPolicies.Delete. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteFirewallPolicyRequest {
     /// Name of the firewall policy to delete.
@@ -5516,6 +5676,7 @@ pub struct DeleteFirewallPolicyRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Firewalls.Delete. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteFirewallRequest {
     /// Name of the firewall rule to delete.
@@ -5529,6 +5690,7 @@ pub struct DeleteFirewallRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for ForwardingRules.Delete. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteForwardingRuleRequest {
     /// Name of the ForwardingRule resource to delete.
@@ -5545,6 +5707,7 @@ pub struct DeleteForwardingRuleRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for GlobalAddresses.Delete. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteGlobalAddressRequest {
     /// Name of the address resource to delete.
@@ -5558,6 +5721,7 @@ pub struct DeleteGlobalAddressRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for GlobalForwardingRules.Delete. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteGlobalForwardingRuleRequest {
     /// Name of the ForwardingRule resource to delete.
@@ -5571,6 +5735,7 @@ pub struct DeleteGlobalForwardingRuleRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for GlobalNetworkEndpointGroups.Delete. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteGlobalNetworkEndpointGroupRequest {
     /// The name of the network endpoint group to delete. It should comply with RFC1035.
@@ -5584,6 +5749,7 @@ pub struct DeleteGlobalNetworkEndpointGroupRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for GlobalOperations.Delete. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteGlobalOperationRequest {
     /// Name of the Operations resource to delete.
@@ -5594,9 +5760,11 @@ pub struct DeleteGlobalOperationRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A response message for GlobalOperations.Delete. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteGlobalOperationResponse {}
 /// A request message for GlobalOrganizationOperations.Delete. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteGlobalOrganizationOperationRequest {
     /// Name of the Operations resource to delete.
@@ -5607,9 +5775,11 @@ pub struct DeleteGlobalOrganizationOperationRequest {
     pub parent_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A response message for GlobalOrganizationOperations.Delete. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteGlobalOrganizationOperationResponse {}
 /// A request message for GlobalPublicDelegatedPrefixes.Delete. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteGlobalPublicDelegatedPrefixeRequest {
     /// Project ID for this request.
@@ -5623,6 +5793,7 @@ pub struct DeleteGlobalPublicDelegatedPrefixeRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for HealthChecks.Delete. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteHealthCheckRequest {
     /// Name of the HealthCheck resource to delete.
@@ -5636,6 +5807,7 @@ pub struct DeleteHealthCheckRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Images.Delete. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteImageRequest {
     /// Name of the image resource to delete.
@@ -5649,6 +5821,7 @@ pub struct DeleteImageRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for InstanceGroupManagers.Delete. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteInstanceGroupManagerRequest {
     /// The name of the managed instance group to delete.
@@ -5665,6 +5838,7 @@ pub struct DeleteInstanceGroupManagerRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for InstanceGroups.Delete. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteInstanceGroupRequest {
     /// The name of the instance group to delete.
@@ -5681,6 +5855,7 @@ pub struct DeleteInstanceGroupRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for Instances.Delete. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteInstanceRequest {
     /// Name of the instance resource to delete.
@@ -5697,6 +5872,7 @@ pub struct DeleteInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for InstanceTemplates.Delete. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteInstanceTemplateRequest {
     /// The name of the instance template to delete.
@@ -5710,6 +5886,7 @@ pub struct DeleteInstanceTemplateRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for InstanceGroupManagers.DeleteInstances. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteInstancesInstanceGroupManagerRequest {
     /// The name of the managed instance group.
@@ -5731,6 +5908,7 @@ pub struct DeleteInstancesInstanceGroupManagerRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for RegionInstanceGroupManagers.DeleteInstances. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteInstancesRegionInstanceGroupManagerRequest {
     /// Name of the managed instance group.
@@ -5752,6 +5930,7 @@ pub struct DeleteInstancesRegionInstanceGroupManagerRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for InterconnectAttachments.Delete. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteInterconnectAttachmentRequest {
     /// Name of the interconnect attachment to delete.
@@ -5768,6 +5947,7 @@ pub struct DeleteInterconnectAttachmentRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Interconnects.Delete. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteInterconnectRequest {
     /// Name of the interconnect to delete.
@@ -5781,6 +5961,7 @@ pub struct DeleteInterconnectRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Licenses.Delete. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteLicenseRequest {
     /// Name of the license resource to delete.
@@ -5794,6 +5975,7 @@ pub struct DeleteLicenseRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for MachineImages.Delete. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteMachineImageRequest {
     /// The name of the machine image to delete.
@@ -5807,6 +5989,7 @@ pub struct DeleteMachineImageRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for NetworkAttachments.Delete. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteNetworkAttachmentRequest {
     /// Name of the NetworkAttachment resource to delete.
@@ -5823,6 +6006,7 @@ pub struct DeleteNetworkAttachmentRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for NetworkEdgeSecurityServices.Delete. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteNetworkEdgeSecurityServiceRequest {
     /// Name of the network edge security service to delete.
@@ -5839,6 +6023,7 @@ pub struct DeleteNetworkEdgeSecurityServiceRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for NetworkEndpointGroups.Delete. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteNetworkEndpointGroupRequest {
     /// The name of the network endpoint group to delete. It should comply with RFC1035.
@@ -5855,6 +6040,7 @@ pub struct DeleteNetworkEndpointGroupRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for NetworkFirewallPolicies.Delete. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteNetworkFirewallPolicyRequest {
     /// Name of the firewall policy to delete.
@@ -5868,6 +6054,7 @@ pub struct DeleteNetworkFirewallPolicyRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Networks.Delete. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteNetworkRequest {
     /// Name of the network to delete.
@@ -5881,6 +6068,7 @@ pub struct DeleteNetworkRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for NodeGroups.Delete. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteNodeGroupRequest {
     /// Name of the NodeGroup resource to delete.
@@ -5897,6 +6085,7 @@ pub struct DeleteNodeGroupRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for NodeTemplates.Delete. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteNodeTemplateRequest {
     /// Name of the NodeTemplate resource to delete.
@@ -5913,6 +6102,7 @@ pub struct DeleteNodeTemplateRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for NodeGroups.DeleteNodes. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteNodesNodeGroupRequest {
     /// Name of the NodeGroup resource whose nodes will be deleted.
@@ -5934,6 +6124,7 @@ pub struct DeleteNodesNodeGroupRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for PacketMirrorings.Delete. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeletePacketMirroringRequest {
     /// Name of the PacketMirroring resource to delete.
@@ -5950,6 +6141,7 @@ pub struct DeletePacketMirroringRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for InstanceGroupManagers.DeletePerInstanceConfigs. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeletePerInstanceConfigsInstanceGroupManagerRequest {
     /// The name of the managed instance group. It should conform to RFC1035.
@@ -5968,6 +6160,7 @@ pub struct DeletePerInstanceConfigsInstanceGroupManagerRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for RegionInstanceGroupManagers.DeletePerInstanceConfigs. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeletePerInstanceConfigsRegionInstanceGroupManagerRequest {
     /// The name of the managed instance group. It should conform to RFC1035.
@@ -5986,6 +6179,7 @@ pub struct DeletePerInstanceConfigsRegionInstanceGroupManagerRequest {
     >,
 }
 /// A request message for PublicAdvertisedPrefixes.Delete. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeletePublicAdvertisedPrefixeRequest {
     /// Project ID for this request.
@@ -5999,6 +6193,7 @@ pub struct DeletePublicAdvertisedPrefixeRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for PublicDelegatedPrefixes.Delete. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeletePublicDelegatedPrefixeRequest {
     /// Project ID for this request.
@@ -6015,6 +6210,7 @@ pub struct DeletePublicDelegatedPrefixeRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionAutoscalers.Delete. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteRegionAutoscalerRequest {
     /// Name of the autoscaler to delete.
@@ -6031,6 +6227,7 @@ pub struct DeleteRegionAutoscalerRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionBackendServices.Delete. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteRegionBackendServiceRequest {
     /// Name of the BackendService resource to delete.
@@ -6047,6 +6244,7 @@ pub struct DeleteRegionBackendServiceRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionDisks.Delete. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteRegionDiskRequest {
     /// Name of the regional persistent disk to delete.
@@ -6063,6 +6261,7 @@ pub struct DeleteRegionDiskRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionHealthChecks.Delete. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteRegionHealthCheckRequest {
     /// Name of the HealthCheck resource to delete.
@@ -6079,6 +6278,7 @@ pub struct DeleteRegionHealthCheckRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionHealthCheckServices.Delete. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteRegionHealthCheckServiceRequest {
     /// Name of the HealthCheckService to delete. The name must be 1-63 characters long, and comply with RFC1035.
@@ -6095,6 +6295,7 @@ pub struct DeleteRegionHealthCheckServiceRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionInstanceGroupManagers.Delete. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteRegionInstanceGroupManagerRequest {
     /// Name of the managed instance group to delete.
@@ -6111,6 +6312,7 @@ pub struct DeleteRegionInstanceGroupManagerRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionNetworkEndpointGroups.Delete. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteRegionNetworkEndpointGroupRequest {
     /// The name of the network endpoint group to delete. It should comply with RFC1035.
@@ -6127,6 +6329,7 @@ pub struct DeleteRegionNetworkEndpointGroupRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionNetworkFirewallPolicies.Delete. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteRegionNetworkFirewallPolicyRequest {
     /// Name of the firewall policy to delete.
@@ -6143,6 +6346,7 @@ pub struct DeleteRegionNetworkFirewallPolicyRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionNotificationEndpoints.Delete. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteRegionNotificationEndpointRequest {
     /// Name of the NotificationEndpoint resource to delete.
@@ -6159,6 +6363,7 @@ pub struct DeleteRegionNotificationEndpointRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionOperations.Delete. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteRegionOperationRequest {
     /// Name of the Operations resource to delete.
@@ -6172,9 +6377,11 @@ pub struct DeleteRegionOperationRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A response message for RegionOperations.Delete. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteRegionOperationResponse {}
 /// A request message for RegionSecurityPolicies.Delete. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteRegionSecurityPolicyRequest {
     /// Project ID for this request.
@@ -6191,6 +6398,7 @@ pub struct DeleteRegionSecurityPolicyRequest {
     pub security_policy: ::prost::alloc::string::String,
 }
 /// A request message for RegionSslCertificates.Delete. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteRegionSslCertificateRequest {
     /// Project ID for this request.
@@ -6207,6 +6415,7 @@ pub struct DeleteRegionSslCertificateRequest {
     pub ssl_certificate: ::prost::alloc::string::String,
 }
 /// A request message for RegionSslPolicies.Delete. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteRegionSslPolicyRequest {
     /// Project ID for this request.
@@ -6223,6 +6432,7 @@ pub struct DeleteRegionSslPolicyRequest {
     pub ssl_policy: ::prost::alloc::string::String,
 }
 /// A request message for RegionTargetHttpProxies.Delete. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteRegionTargetHttpProxyRequest {
     /// Project ID for this request.
@@ -6239,6 +6449,7 @@ pub struct DeleteRegionTargetHttpProxyRequest {
     pub target_http_proxy: ::prost::alloc::string::String,
 }
 /// A request message for RegionTargetHttpsProxies.Delete. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteRegionTargetHttpsProxyRequest {
     /// Project ID for this request.
@@ -6255,6 +6466,7 @@ pub struct DeleteRegionTargetHttpsProxyRequest {
     pub target_https_proxy: ::prost::alloc::string::String,
 }
 /// A request message for RegionTargetTcpProxies.Delete. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteRegionTargetTcpProxyRequest {
     /// Project ID for this request.
@@ -6271,6 +6483,7 @@ pub struct DeleteRegionTargetTcpProxyRequest {
     pub target_tcp_proxy: ::prost::alloc::string::String,
 }
 /// A request message for RegionUrlMaps.Delete. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteRegionUrlMapRequest {
     /// Project ID for this request.
@@ -6287,6 +6500,7 @@ pub struct DeleteRegionUrlMapRequest {
     pub url_map: ::prost::alloc::string::String,
 }
 /// A request message for Reservations.Delete. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteReservationRequest {
     /// Project ID for this request.
@@ -6303,6 +6517,7 @@ pub struct DeleteReservationRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for ResourcePolicies.Delete. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteResourcePolicyRequest {
     /// Project ID for this request.
@@ -6319,6 +6534,7 @@ pub struct DeleteResourcePolicyRequest {
     pub resource_policy: ::prost::alloc::string::String,
 }
 /// A request message for Routes.Delete. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteRouteRequest {
     /// Project ID for this request.
@@ -6332,6 +6548,7 @@ pub struct DeleteRouteRequest {
     pub route: ::prost::alloc::string::String,
 }
 /// A request message for Routers.Delete. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteRouterRequest {
     /// Project ID for this request.
@@ -6348,6 +6565,7 @@ pub struct DeleteRouterRequest {
     pub router: ::prost::alloc::string::String,
 }
 /// A request message for SecurityPolicies.Delete. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteSecurityPolicyRequest {
     /// Project ID for this request.
@@ -6361,6 +6579,7 @@ pub struct DeleteSecurityPolicyRequest {
     pub security_policy: ::prost::alloc::string::String,
 }
 /// A request message for ServiceAttachments.Delete. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteServiceAttachmentRequest {
     /// Project ID for this request.
@@ -6377,6 +6596,7 @@ pub struct DeleteServiceAttachmentRequest {
     pub service_attachment: ::prost::alloc::string::String,
 }
 /// A request message for BackendBuckets.DeleteSignedUrlKey. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteSignedUrlKeyBackendBucketRequest {
     /// Name of the BackendBucket resource to which the Signed URL Key should be added. The name should conform to RFC1035.
@@ -6393,6 +6613,7 @@ pub struct DeleteSignedUrlKeyBackendBucketRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for BackendServices.DeleteSignedUrlKey. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteSignedUrlKeyBackendServiceRequest {
     /// Name of the BackendService resource to which the Signed URL Key should be added. The name should conform to RFC1035.
@@ -6409,6 +6630,7 @@ pub struct DeleteSignedUrlKeyBackendServiceRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Snapshots.Delete. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteSnapshotRequest {
     /// Project ID for this request.
@@ -6422,6 +6644,7 @@ pub struct DeleteSnapshotRequest {
     pub snapshot: ::prost::alloc::string::String,
 }
 /// A request message for SslCertificates.Delete. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteSslCertificateRequest {
     /// Project ID for this request.
@@ -6435,6 +6658,7 @@ pub struct DeleteSslCertificateRequest {
     pub ssl_certificate: ::prost::alloc::string::String,
 }
 /// A request message for SslPolicies.Delete. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteSslPolicyRequest {
     /// Project ID for this request.
@@ -6448,6 +6672,7 @@ pub struct DeleteSslPolicyRequest {
     pub ssl_policy: ::prost::alloc::string::String,
 }
 /// A request message for Subnetworks.Delete. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteSubnetworkRequest {
     /// Project ID for this request.
@@ -6464,6 +6689,7 @@ pub struct DeleteSubnetworkRequest {
     pub subnetwork: ::prost::alloc::string::String,
 }
 /// A request message for TargetGrpcProxies.Delete. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteTargetGrpcProxyRequest {
     /// Project ID for this request.
@@ -6477,6 +6703,7 @@ pub struct DeleteTargetGrpcProxyRequest {
     pub target_grpc_proxy: ::prost::alloc::string::String,
 }
 /// A request message for TargetHttpProxies.Delete. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteTargetHttpProxyRequest {
     /// Project ID for this request.
@@ -6490,6 +6717,7 @@ pub struct DeleteTargetHttpProxyRequest {
     pub target_http_proxy: ::prost::alloc::string::String,
 }
 /// A request message for TargetHttpsProxies.Delete. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteTargetHttpsProxyRequest {
     /// Project ID for this request.
@@ -6503,6 +6731,7 @@ pub struct DeleteTargetHttpsProxyRequest {
     pub target_https_proxy: ::prost::alloc::string::String,
 }
 /// A request message for TargetInstances.Delete. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteTargetInstanceRequest {
     /// Project ID for this request.
@@ -6519,6 +6748,7 @@ pub struct DeleteTargetInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for TargetPools.Delete. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteTargetPoolRequest {
     /// Project ID for this request.
@@ -6535,6 +6765,7 @@ pub struct DeleteTargetPoolRequest {
     pub target_pool: ::prost::alloc::string::String,
 }
 /// A request message for TargetSslProxies.Delete. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteTargetSslProxyRequest {
     /// Project ID for this request.
@@ -6548,6 +6779,7 @@ pub struct DeleteTargetSslProxyRequest {
     pub target_ssl_proxy: ::prost::alloc::string::String,
 }
 /// A request message for TargetTcpProxies.Delete. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteTargetTcpProxyRequest {
     /// Project ID for this request.
@@ -6561,6 +6793,7 @@ pub struct DeleteTargetTcpProxyRequest {
     pub target_tcp_proxy: ::prost::alloc::string::String,
 }
 /// A request message for TargetVpnGateways.Delete. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteTargetVpnGatewayRequest {
     /// Project ID for this request.
@@ -6577,6 +6810,7 @@ pub struct DeleteTargetVpnGatewayRequest {
     pub target_vpn_gateway: ::prost::alloc::string::String,
 }
 /// A request message for UrlMaps.Delete. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteUrlMapRequest {
     /// Project ID for this request.
@@ -6590,6 +6824,7 @@ pub struct DeleteUrlMapRequest {
     pub url_map: ::prost::alloc::string::String,
 }
 /// A request message for VpnGateways.Delete. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteVpnGatewayRequest {
     /// Project ID for this request.
@@ -6606,6 +6841,7 @@ pub struct DeleteVpnGatewayRequest {
     pub vpn_gateway: ::prost::alloc::string::String,
 }
 /// A request message for VpnTunnels.Delete. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteVpnTunnelRequest {
     /// Project ID for this request.
@@ -6622,6 +6858,7 @@ pub struct DeleteVpnTunnelRequest {
     pub vpn_tunnel: ::prost::alloc::string::String,
 }
 /// A request message for ZoneOperations.Delete. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteZoneOperationRequest {
     /// Name of the Operations resource to delete.
@@ -6635,9 +6872,11 @@ pub struct DeleteZoneOperationRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A response message for ZoneOperations.Delete. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteZoneOperationResponse {}
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Denied {
     /// The IP protocol to which this rule applies. The protocol type is required when creating a firewall rule. This value can either be one of the following well known protocol strings (tcp, udp, icmp, esp, ah, ipip, sctp) or the IP protocol number.
@@ -6648,6 +6887,7 @@ pub struct Denied {
     pub ports: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// A request message for Images.Deprecate. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeprecateImageRequest {
     /// The body resource for this request
@@ -6664,6 +6904,7 @@ pub struct DeprecateImageRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Deprecation status for a public resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeprecationStatus {
     /// An optional RFC3339 timestamp on or after which the state of this resource is intended to change to DELETED. This is only informational and the status will not change unless the client explicitly changes it.
@@ -6723,6 +6964,7 @@ pub mod deprecation_status {
     }
 }
 /// A request message for Instances.DetachDisk. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DetachDiskInstanceRequest {
     /// The device name of the disk to detach. Make a get() request on the instance to view currently attached disks and device names.
@@ -6742,6 +6984,7 @@ pub struct DetachDiskInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for GlobalNetworkEndpointGroups.DetachNetworkEndpoints. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DetachNetworkEndpointsGlobalNetworkEndpointGroupRequest {
     /// The body resource for this request
@@ -6760,6 +7003,7 @@ pub struct DetachNetworkEndpointsGlobalNetworkEndpointGroupRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for NetworkEndpointGroups.DetachNetworkEndpoints. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DetachNetworkEndpointsNetworkEndpointGroupRequest {
     /// The name of the network endpoint group where you are removing network endpoints. It should comply with RFC1035.
@@ -6781,6 +7025,7 @@ pub struct DetachNetworkEndpointsNetworkEndpointGroupRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for Projects.DisableXpnHost. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DisableXpnHostProjectRequest {
     /// Project ID for this request.
@@ -6791,6 +7036,7 @@ pub struct DisableXpnHostProjectRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Projects.DisableXpnResource. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DisableXpnResourceProjectRequest {
     /// Project ID for this request.
@@ -6806,6 +7052,7 @@ pub struct DisableXpnResourceProjectRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Represents a Persistent Disk resource. Google Compute Engine has two Disk resources: * \[Zonal\](/compute/docs/reference/rest/v1/disks) * \[Regional\](/compute/docs/reference/rest/v1/regionDisks) Persistent disks are required for running your VM instances. Create both boot and non-boot (data) persistent disks. For more information, read Persistent Disks. For more storage options, read Storage options. The disks resource represents a zonal persistent disk. For more information, read Zonal persistent disks. The regionDisks resource represents a regional persistent disk. For more information, read Regional resources.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Disk {
     /// The architecture of the disk. Valid values are ARM64 or X86_64.
@@ -7012,6 +7259,7 @@ pub mod disk {
     }
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DiskAggregatedList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -7040,6 +7288,7 @@ pub struct DiskAggregatedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// A specification of the desired way to instantiate a disk in the instance template when its created from a source instance.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DiskInstantiationConfig {
     /// Specifies whether the disk will be auto-deleted when the instance is deleted (but not when the disk is detached from the instance).
@@ -7109,6 +7358,7 @@ pub mod disk_instantiation_config {
     }
 }
 /// A list of Disk resources.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DiskList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -7131,6 +7381,7 @@ pub struct DiskList {
     pub warning: ::core::option::Option<Warning>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DiskMoveRequest {
     /// The URL of the destination zone to move the disk. This can be a full or partial URL. For example, the following are all valid URLs to a zone: - <https://www.googleapis.com/compute/v1/projects/project/zones/zone> - projects/project/zones/zone - zones/zone
@@ -7141,6 +7392,7 @@ pub struct DiskMoveRequest {
     pub target_disk: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Additional disk params.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DiskParams {
     /// Resource manager tags to be bound to the disk. Tag keys and values have the same definition as resource manager tags. Keys must be in the format `tagKeys/{tag_key_id}`, and values are in the format `tagValues/456`. The field is ignored (both PUT & PATCH) when empty.
@@ -7151,6 +7403,7 @@ pub struct DiskParams {
     >,
 }
 /// Represents a Disk Type resource. Google Compute Engine has two Disk Type resources: * \[Regional\](/compute/docs/reference/rest/v1/regionDiskTypes) * \[Zonal\](/compute/docs/reference/rest/v1/diskTypes) You can choose from a variety of disk types based on your needs. For more information, read Storage options. The diskTypes resource represents disk types for a zonal persistent disk. For more information, read Zonal persistent disks. The regionDiskTypes resource represents disk types for a regional persistent disk. For more information, read Regional persistent disks.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DiskType {
     /// [Output Only] Creation timestamp in RFC3339 text format.
@@ -7188,6 +7441,7 @@ pub struct DiskType {
     pub zone: ::core::option::Option<::prost::alloc::string::String>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DiskTypeAggregatedList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -7216,6 +7470,7 @@ pub struct DiskTypeAggregatedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Contains a list of disk types.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DiskTypeList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -7238,6 +7493,7 @@ pub struct DiskTypeList {
     pub warning: ::core::option::Option<Warning>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DiskTypesScopedList {
     /// [Output Only] A list of disk types contained in this scope.
@@ -7248,6 +7504,7 @@ pub struct DiskTypesScopedList {
     pub warning: ::core::option::Option<Warning>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DisksAddResourcePoliciesRequest {
     /// Full or relative path to the resource policy to be added to this disk. You can only specify one resource policy.
@@ -7255,6 +7512,7 @@ pub struct DisksAddResourcePoliciesRequest {
     pub resource_policies: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DisksRemoveResourcePoliciesRequest {
     /// Resource policies to be removed from this disk.
@@ -7262,6 +7520,7 @@ pub struct DisksRemoveResourcePoliciesRequest {
     pub resource_policies: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DisksResizeRequest {
     /// The new size of the persistent disk, which is specified in GB.
@@ -7269,6 +7528,7 @@ pub struct DisksResizeRequest {
     pub size_gb: ::core::option::Option<i64>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DisksScopedList {
     /// [Output Only] A list of disks contained in this scope.
@@ -7279,6 +7539,7 @@ pub struct DisksScopedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// A set of Display Device options
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DisplayDevice {
     /// Defines whether the instance has Display enabled.
@@ -7286,6 +7547,7 @@ pub struct DisplayDevice {
     pub enable_display: ::core::option::Option<bool>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DistributionPolicy {
     /// The distribution shape to which the group converges either proactively or on resize events (depending on the value set in updatePolicy.instanceRedistributionType).
@@ -7337,6 +7599,7 @@ pub mod distribution_policy {
     }
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DistributionPolicyZoneConfiguration {
     /// The URL of the zone. The zone must exist in the region where the managed instance group is located.
@@ -7344,6 +7607,7 @@ pub struct DistributionPolicyZoneConfiguration {
     pub zone: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A Duration represents a fixed-length span of time represented as a count of seconds and fractions of seconds at nanosecond resolution. It is independent of any calendar and concepts like "day" or "month". Range is approximately 10,000 years.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Duration {
     /// Span of time that's a fraction of a second at nanosecond resolution. Durations less than one second are represented with a 0 `seconds` field and a positive `nanos` field. Must be from 0 to 999,999,999 inclusive.
@@ -7354,6 +7618,7 @@ pub struct Duration {
     pub seconds: ::core::option::Option<i64>,
 }
 /// A request message for Projects.EnableXpnHost. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EnableXpnHostProjectRequest {
     /// Project ID for this request.
@@ -7364,6 +7629,7 @@ pub struct EnableXpnHostProjectRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Projects.EnableXpnResource. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EnableXpnResourceProjectRequest {
     /// Project ID for this request.
@@ -7379,6 +7645,7 @@ pub struct EnableXpnResourceProjectRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// [Output Only] If errors are generated during processing of the operation, this field will be populated.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Error {
     /// [Output Only] The array of errors encountered while processing this operation.
@@ -7386,6 +7653,7 @@ pub struct Error {
     pub errors: ::prost::alloc::vec::Vec<Errors>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ErrorDetails {
     #[prost(message, optional, tag = "25251973")]
@@ -7398,6 +7666,7 @@ pub struct ErrorDetails {
     pub quota_info: ::core::option::Option<QuotaExceededInfo>,
 }
 /// Describes the cause of the error with structured details. Example of an error when contacting the "pubsub.googleapis.com" API when it is not enabled: { "reason": "API_DISABLED" "domain": "googleapis.com" "metadata": { "resource": "projects/123", "service": "pubsub.googleapis.com" } } This response indicates that the pubsub.googleapis.com API is not enabled. Example of an error that is returned when attempting to create a Spanner instance in a region that is out of stock: { "reason": "STOCKOUT" "domain": "spanner.googleapis.com", "metadata": { "availableRegions": "us-central1,us-east2" } }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ErrorInfo {
     /// The logical grouping to which the "reason" belongs. The error domain is typically the registered service name of the tool or product that generates the error. Example: "pubsub.googleapis.com". If the error is generated by some common infrastructure, the error domain must be a globally unique value that identifies the infrastructure. For Google API infrastructure, the error domain is "googleapis.com".
@@ -7414,6 +7683,7 @@ pub struct ErrorInfo {
     pub reason: ::core::option::Option<::prost::alloc::string::String>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Errors {
     /// [Output Only] The error type identifier for this error.
@@ -7430,6 +7700,7 @@ pub struct Errors {
     pub message: ::core::option::Option<::prost::alloc::string::String>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExchangedPeeringRoute {
     /// The destination range of the route.
@@ -7490,6 +7761,7 @@ pub mod exchanged_peering_route {
     }
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExchangedPeeringRoutesList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -7512,6 +7784,7 @@ pub struct ExchangedPeeringRoutesList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// A request message for Subnetworks.ExpandIpCidrRange. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExpandIpCidrRangeSubnetworkRequest {
     /// Project ID for this request.
@@ -7533,6 +7806,7 @@ pub struct ExpandIpCidrRangeSubnetworkRequest {
     >,
 }
 /// Represents a textual expression in the Common Expression Language (CEL) syntax. CEL is a C-like expression language. The syntax and semantics of CEL are documented at <https://github.com/google/cel-spec.> Example (Comparison): title: "Summary size limit" description: "Determines if a summary is less than 100 chars" expression: "document.summary.size() < 100" Example (Equality): title: "Requestor is owner" description: "Determines if requestor is the document owner" expression: "document.owner == request.auth.claims.email" Example (Logic): title: "Public documents" description: "Determine whether the document should be publicly visible" expression: "document.type != 'private' && document.type != 'internal'" Example (Data Manipulation): title: "Notification string" description: "Create a notification string with a timestamp." expression: "'New message received at ' + string(document.create_time)" The exact variables and functions that may be referenced within an expression are determined by the service that evaluates it. See the service documentation for additional information.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Expr {
     /// Optional. Description of the expression. This is a longer text which describes the expression, e.g. when hovered over it in a UI.
@@ -7549,6 +7823,7 @@ pub struct Expr {
     pub title: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Represents an external VPN gateway. External VPN gateway is the on-premises VPN gateway(s) or another cloud provider's VPN gateway that connects to your Google Cloud VPN gateway. To create a highly available VPN from Google Cloud Platform to your VPN gateway or another cloud provider's VPN gateway, you must create a external VPN gateway resource with information about the other gateway. For more information about using external VPN gateways, see Creating an HA VPN gateway and tunnel pair to a peer VPN.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExternalVpnGateway {
     /// [Output Only] Creation timestamp in RFC3339 text format.
@@ -7629,6 +7904,7 @@ pub mod external_vpn_gateway {
     }
 }
 /// The interface for the external VPN gateway.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExternalVpnGatewayInterface {
     /// The numeric ID of this interface. The allowed input values for this id for different redundancy types of external VPN gateway: - SINGLE_IP_INTERNALLY_REDUNDANT - 0 - TWO_IPS_REDUNDANCY - 0, 1 - FOUR_IPS_REDUNDANCY - 0, 1, 2, 3
@@ -7639,6 +7915,7 @@ pub struct ExternalVpnGatewayInterface {
     pub ip_address: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Response to the list request, and contains a list of externalVpnGateways.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExternalVpnGatewayList {
     #[prost(string, optional, tag = "3123477")]
@@ -7663,6 +7940,7 @@ pub struct ExternalVpnGatewayList {
     pub warning: ::core::option::Option<Warning>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FileContentBuffer {
     /// The raw content in the secure keys file.
@@ -7711,6 +7989,7 @@ pub mod file_content_buffer {
     }
 }
 /// Represents a Firewall Rule resource. Firewall rules allow or deny ingress traffic to, and egress traffic from your instances. For more information, read Firewall rules.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Firewall {
     /// The list of ALLOW rules specified by this firewall. Each rule specifies a protocol and port-range tuple that describes a permitted connection.
@@ -7814,6 +8093,7 @@ pub mod firewall {
     }
 }
 /// Contains a list of firewalls.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FirewallList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -7836,6 +8116,7 @@ pub struct FirewallList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// The available logging options for a firewall rule.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FirewallLogConfig {
     /// This field denotes whether to enable logging for a particular firewall rule.
@@ -7882,6 +8163,7 @@ pub mod firewall_log_config {
     }
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FirewallPoliciesListAssociationsResponse {
     /// A list of associations.
@@ -7892,6 +8174,7 @@ pub struct FirewallPoliciesListAssociationsResponse {
     pub kind: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Represents a Firewall Policy resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FirewallPolicy {
     /// A list of associations that belong to this firewall policy.
@@ -7941,6 +8224,7 @@ pub struct FirewallPolicy {
     pub short_name: ::core::option::Option<::prost::alloc::string::String>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FirewallPolicyAssociation {
     /// The target that the firewall policy is attached to.
@@ -7960,6 +8244,7 @@ pub struct FirewallPolicyAssociation {
     pub short_name: ::core::option::Option<::prost::alloc::string::String>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FirewallPolicyList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -7979,6 +8264,7 @@ pub struct FirewallPolicyList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Represents a rule that describes one or more match conditions along with the action to be taken when traffic matches this condition (allow or deny).
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FirewallPolicyRule {
     /// The Action to perform when the client connection triggers the rule. Can currently be either "allow" or "deny()" where valid values for status are 403, 404, and 502.
@@ -8060,6 +8346,7 @@ pub mod firewall_policy_rule {
     }
 }
 /// Represents a match condition that incoming traffic is evaluated against. Exactly one field must be specified.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FirewallPolicyRuleMatcher {
     /// CIDR IP address range. Maximum number of destination CIDR IP ranges allowed is 5000.
@@ -8076,6 +8363,7 @@ pub struct FirewallPolicyRuleMatcher {
     pub src_secure_tags: ::prost::alloc::vec::Vec<FirewallPolicyRuleSecureTag>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FirewallPolicyRuleMatcherLayer4Config {
     /// The IP protocol to which this rule applies. The protocol type is required when creating a firewall rule. This value can either be one of the following well known protocol strings (tcp, udp, icmp, esp, ah, ipip, sctp), or the IP protocol number.
@@ -8086,6 +8374,7 @@ pub struct FirewallPolicyRuleMatcherLayer4Config {
     pub ports: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FirewallPolicyRuleSecureTag {
     /// Name of the secure tag, created with TagManager's TagValue API.
@@ -8132,6 +8421,7 @@ pub mod firewall_policy_rule_secure_tag {
     }
 }
 /// Encapsulates numeric value that can be either absolute or relative.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FixedOrPercent {
     /// [Output Only] Absolute value of VM instances calculated based on the specific mode. - If the value is fixed, then the calculated value is equal to the fixed value. - If the value is a percent, then the calculated value is percent/100 * targetSize. For example, the calculated value of a 80% of a managed instance group with 150 instances would be (80/100 * 150) = 120 VM instances. If there is a remainder, the number is rounded.
@@ -8145,6 +8435,7 @@ pub struct FixedOrPercent {
     pub percent: ::core::option::Option<i32>,
 }
 /// Represents a Forwarding Rule resource. Forwarding rule resources in Google Cloud can be either regional or global in scope: * \[Global\](<https://cloud.google.com/compute/docs/reference/rest/v1/globalForwardingRules>) * \[Regional\](<https://cloud.google.com/compute/docs/reference/rest/v1/forwardingRules>) A forwarding rule and its corresponding IP address represent the frontend configuration of a Google Cloud Platform load balancer. Forwarding rules can also reference target instances and Cloud VPN Classic gateways (targetVpnGateway). For more information, read Forwarding rule concepts and Using protocol forwarding.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ForwardingRule {
     /// IP address for which this forwarding rule accepts traffic. When a client sends traffic to this IP address, the forwarding rule directs the traffic to the referenced target or backendService. While creating a forwarding rule, specifying an IPAddress is required under the following circumstances: - When the target is set to targetGrpcProxy and validateForProxyless is set to true, the IPAddress should be set to 0.0.0.0. - When the target is a Private Service Connect Google APIs bundle, you must specify an IPAddress. Otherwise, you can optionally specify an IP address that references an existing static (reserved) IP address resource. When omitted, Google Cloud assigns an ephemeral IP address. Use one of the following formats to specify an IP address while creating a forwarding rule: * IP address number, as in `100.1.2.3` * IPv6 address range, as in `2600:1234::/96` * Full resource URL, as in <https://www.googleapis.com/compute/v1/projects/> project_id/regions/region/addresses/address-name * Partial URL or by name, as in: - projects/project_id/regions/region/addresses/address-name - regions/region/addresses/address-name - global/addresses/address-name - address-name The forwarding rule's target or backendService, and in most cases, also the loadBalancingScheme, determine the type of IP address that you can use. For detailed information, see [IP address specifications](<https://cloud.google.com/load-balancing/docs/forwarding-rule-concepts#ip_address_specifications>). When reading an IPAddress, the API always returns the IP address number.
@@ -8462,6 +8753,7 @@ pub mod forwarding_rule {
     }
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ForwardingRuleAggregatedList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -8490,6 +8782,7 @@ pub struct ForwardingRuleAggregatedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Contains a list of ForwardingRule resources.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ForwardingRuleList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -8512,12 +8805,14 @@ pub struct ForwardingRuleList {
     pub warning: ::core::option::Option<Warning>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ForwardingRuleReference {
     #[prost(string, optional, tag = "269964030")]
     pub forwarding_rule: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Describes the auto-registration of the Forwarding Rule to Service Directory. The region and project of the Service Directory resource generated from this registration will be the same as this Forwarding Rule.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ForwardingRuleServiceDirectoryRegistration {
     /// Service Directory namespace to register the forwarding rule under.
@@ -8531,6 +8826,7 @@ pub struct ForwardingRuleServiceDirectoryRegistration {
     pub service_directory_region: ::core::option::Option<::prost::alloc::string::String>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ForwardingRulesScopedList {
     /// A list of forwarding rules contained in this scope.
@@ -8541,6 +8837,7 @@ pub struct ForwardingRulesScopedList {
     pub warning: ::core::option::Option<Warning>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GrpcHealthCheck {
     /// The gRPC service name for the health check. This field is optional. The value of grpc_service_name has the following meanings by convention: - Empty service_name means the overall status of all services at the backend. - Non-empty service_name means the health of that gRPC service, as defined by the owner of the service. The grpc_service_name can only be ASCII.
@@ -8600,6 +8897,7 @@ pub mod grpc_health_check {
     }
 }
 /// A request message for AcceleratorTypes.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAcceleratorTypeRequest {
     /// Name of the accelerator type to return.
@@ -8613,6 +8911,7 @@ pub struct GetAcceleratorTypeRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for Addresses.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAddressRequest {
     /// Name of the address resource to return.
@@ -8626,6 +8925,7 @@ pub struct GetAddressRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for FirewallPolicies.GetAssociation. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAssociationFirewallPolicyRequest {
     /// Name of the firewall policy to which the queried rule belongs.
@@ -8636,6 +8936,7 @@ pub struct GetAssociationFirewallPolicyRequest {
     pub name: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for NetworkFirewallPolicies.GetAssociation. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAssociationNetworkFirewallPolicyRequest {
     /// Name of the firewall policy to which the queried association belongs.
@@ -8649,6 +8950,7 @@ pub struct GetAssociationNetworkFirewallPolicyRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for RegionNetworkFirewallPolicies.GetAssociation. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAssociationRegionNetworkFirewallPolicyRequest {
     /// Name of the firewall policy to which the queried association belongs.
@@ -8665,6 +8967,7 @@ pub struct GetAssociationRegionNetworkFirewallPolicyRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for Autoscalers.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAutoscalerRequest {
     /// Name of the autoscaler to return.
@@ -8678,6 +8981,7 @@ pub struct GetAutoscalerRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for BackendBuckets.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetBackendBucketRequest {
     /// Name of the BackendBucket resource to return.
@@ -8688,6 +8992,7 @@ pub struct GetBackendBucketRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for BackendServices.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetBackendServiceRequest {
     /// Name of the BackendService resource to return.
@@ -8698,6 +9003,7 @@ pub struct GetBackendServiceRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for Interconnects.GetDiagnostics. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetDiagnosticsInterconnectRequest {
     /// Name of the interconnect resource to query.
@@ -8708,6 +9014,7 @@ pub struct GetDiagnosticsInterconnectRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for Disks.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetDiskRequest {
     /// Name of the persistent disk to return.
@@ -8721,6 +9028,7 @@ pub struct GetDiskRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for DiskTypes.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetDiskTypeRequest {
     /// Name of the disk type to return.
@@ -8734,6 +9042,7 @@ pub struct GetDiskTypeRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for Instances.GetEffectiveFirewalls. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetEffectiveFirewallsInstanceRequest {
     /// Name of the instance scoping this request.
@@ -8750,6 +9059,7 @@ pub struct GetEffectiveFirewallsInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for Networks.GetEffectiveFirewalls. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetEffectiveFirewallsNetworkRequest {
     /// Name of the network for this request.
@@ -8760,6 +9070,7 @@ pub struct GetEffectiveFirewallsNetworkRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for RegionNetworkFirewallPolicies.GetEffectiveFirewalls. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetEffectiveFirewallsRegionNetworkFirewallPolicyRequest {
     /// Network reference
@@ -8773,6 +9084,7 @@ pub struct GetEffectiveFirewallsRegionNetworkFirewallPolicyRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for ExternalVpnGateways.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetExternalVpnGatewayRequest {
     /// Name of the externalVpnGateway to return.
@@ -8783,6 +9095,7 @@ pub struct GetExternalVpnGatewayRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for FirewallPolicies.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetFirewallPolicyRequest {
     /// Name of the firewall policy to get.
@@ -8790,6 +9103,7 @@ pub struct GetFirewallPolicyRequest {
     pub firewall_policy: ::prost::alloc::string::String,
 }
 /// A request message for Firewalls.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetFirewallRequest {
     /// Name of the firewall rule to return.
@@ -8800,6 +9114,7 @@ pub struct GetFirewallRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for ForwardingRules.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetForwardingRuleRequest {
     /// Name of the ForwardingRule resource to return.
@@ -8813,6 +9128,7 @@ pub struct GetForwardingRuleRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for Images.GetFromFamily. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetFromFamilyImageRequest {
     /// Name of the image family to search for.
@@ -8823,6 +9139,7 @@ pub struct GetFromFamilyImageRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for GlobalAddresses.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetGlobalAddressRequest {
     /// Name of the address resource to return.
@@ -8833,6 +9150,7 @@ pub struct GetGlobalAddressRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for GlobalForwardingRules.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetGlobalForwardingRuleRequest {
     /// Name of the ForwardingRule resource to return.
@@ -8843,6 +9161,7 @@ pub struct GetGlobalForwardingRuleRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for GlobalNetworkEndpointGroups.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetGlobalNetworkEndpointGroupRequest {
     /// The name of the network endpoint group. It should comply with RFC1035.
@@ -8853,6 +9172,7 @@ pub struct GetGlobalNetworkEndpointGroupRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for GlobalOperations.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetGlobalOperationRequest {
     /// Name of the Operations resource to return.
@@ -8863,6 +9183,7 @@ pub struct GetGlobalOperationRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for GlobalOrganizationOperations.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetGlobalOrganizationOperationRequest {
     /// Name of the Operations resource to return.
@@ -8873,6 +9194,7 @@ pub struct GetGlobalOrganizationOperationRequest {
     pub parent_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for GlobalPublicDelegatedPrefixes.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetGlobalPublicDelegatedPrefixeRequest {
     /// Project ID for this request.
@@ -8883,6 +9205,7 @@ pub struct GetGlobalPublicDelegatedPrefixeRequest {
     pub public_delegated_prefix: ::prost::alloc::string::String,
 }
 /// A request message for Instances.GetGuestAttributes. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetGuestAttributesInstanceRequest {
     /// Name of the instance scoping this request.
@@ -8902,6 +9225,7 @@ pub struct GetGuestAttributesInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for BackendServices.GetHealth. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetHealthBackendServiceRequest {
     /// Name of the BackendService resource to which the queried instance belongs.
@@ -8916,6 +9240,7 @@ pub struct GetHealthBackendServiceRequest {
     >,
 }
 /// A request message for HealthChecks.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetHealthCheckRequest {
     /// Name of the HealthCheck resource to return.
@@ -8926,6 +9251,7 @@ pub struct GetHealthCheckRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for RegionBackendServices.GetHealth. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetHealthRegionBackendServiceRequest {
     /// Name of the BackendService resource for which to get health.
@@ -8943,6 +9269,7 @@ pub struct GetHealthRegionBackendServiceRequest {
     >,
 }
 /// A request message for TargetPools.GetHealth. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetHealthTargetPoolRequest {
     /// The body resource for this request
@@ -8959,6 +9286,7 @@ pub struct GetHealthTargetPoolRequest {
     pub target_pool: ::prost::alloc::string::String,
 }
 /// A request message for BackendServices.GetIamPolicy. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetIamPolicyBackendServiceRequest {
     /// Requested IAM Policy version.
@@ -8972,6 +9300,7 @@ pub struct GetIamPolicyBackendServiceRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for Disks.GetIamPolicy. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetIamPolicyDiskRequest {
     /// Requested IAM Policy version.
@@ -8988,6 +9317,7 @@ pub struct GetIamPolicyDiskRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for FirewallPolicies.GetIamPolicy. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetIamPolicyFirewallPolicyRequest {
     /// Requested IAM Policy version.
@@ -8998,6 +9328,7 @@ pub struct GetIamPolicyFirewallPolicyRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for Images.GetIamPolicy. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetIamPolicyImageRequest {
     /// Requested IAM Policy version.
@@ -9011,6 +9342,7 @@ pub struct GetIamPolicyImageRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for Instances.GetIamPolicy. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetIamPolicyInstanceRequest {
     /// Requested IAM Policy version.
@@ -9027,6 +9359,7 @@ pub struct GetIamPolicyInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for InstanceTemplates.GetIamPolicy. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetIamPolicyInstanceTemplateRequest {
     /// Requested IAM Policy version.
@@ -9040,6 +9373,7 @@ pub struct GetIamPolicyInstanceTemplateRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for Licenses.GetIamPolicy. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetIamPolicyLicenseRequest {
     /// Requested IAM Policy version.
@@ -9053,6 +9387,7 @@ pub struct GetIamPolicyLicenseRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for MachineImages.GetIamPolicy. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetIamPolicyMachineImageRequest {
     /// Requested IAM Policy version.
@@ -9066,6 +9401,7 @@ pub struct GetIamPolicyMachineImageRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for NetworkAttachments.GetIamPolicy. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetIamPolicyNetworkAttachmentRequest {
     /// Requested IAM Policy version.
@@ -9082,6 +9418,7 @@ pub struct GetIamPolicyNetworkAttachmentRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for NetworkFirewallPolicies.GetIamPolicy. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetIamPolicyNetworkFirewallPolicyRequest {
     /// Requested IAM Policy version.
@@ -9095,6 +9432,7 @@ pub struct GetIamPolicyNetworkFirewallPolicyRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for NodeGroups.GetIamPolicy. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetIamPolicyNodeGroupRequest {
     /// Requested IAM Policy version.
@@ -9111,6 +9449,7 @@ pub struct GetIamPolicyNodeGroupRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for NodeTemplates.GetIamPolicy. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetIamPolicyNodeTemplateRequest {
     /// Requested IAM Policy version.
@@ -9127,6 +9466,7 @@ pub struct GetIamPolicyNodeTemplateRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for RegionBackendServices.GetIamPolicy. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetIamPolicyRegionBackendServiceRequest {
     /// Requested IAM Policy version.
@@ -9143,6 +9483,7 @@ pub struct GetIamPolicyRegionBackendServiceRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for RegionDisks.GetIamPolicy. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetIamPolicyRegionDiskRequest {
     /// Requested IAM Policy version.
@@ -9159,6 +9500,7 @@ pub struct GetIamPolicyRegionDiskRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for RegionNetworkFirewallPolicies.GetIamPolicy. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetIamPolicyRegionNetworkFirewallPolicyRequest {
     /// Requested IAM Policy version.
@@ -9175,6 +9517,7 @@ pub struct GetIamPolicyRegionNetworkFirewallPolicyRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for Reservations.GetIamPolicy. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetIamPolicyReservationRequest {
     /// Requested IAM Policy version.
@@ -9191,6 +9534,7 @@ pub struct GetIamPolicyReservationRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for ResourcePolicies.GetIamPolicy. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetIamPolicyResourcePolicyRequest {
     /// Requested IAM Policy version.
@@ -9207,6 +9551,7 @@ pub struct GetIamPolicyResourcePolicyRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for ServiceAttachments.GetIamPolicy. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetIamPolicyServiceAttachmentRequest {
     /// Requested IAM Policy version.
@@ -9223,6 +9568,7 @@ pub struct GetIamPolicyServiceAttachmentRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for Snapshots.GetIamPolicy. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetIamPolicySnapshotRequest {
     /// Requested IAM Policy version.
@@ -9236,6 +9582,7 @@ pub struct GetIamPolicySnapshotRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for Subnetworks.GetIamPolicy. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetIamPolicySubnetworkRequest {
     /// Requested IAM Policy version.
@@ -9252,6 +9599,7 @@ pub struct GetIamPolicySubnetworkRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for ImageFamilyViews.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetImageFamilyViewRequest {
     /// Name of the image family to search for.
@@ -9265,6 +9613,7 @@ pub struct GetImageFamilyViewRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for Images.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetImageRequest {
     /// Name of the image resource to return.
@@ -9275,6 +9624,7 @@ pub struct GetImageRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for InstanceGroupManagers.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetInstanceGroupManagerRequest {
     /// The name of the managed instance group.
@@ -9288,6 +9638,7 @@ pub struct GetInstanceGroupManagerRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for InstanceGroups.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetInstanceGroupRequest {
     /// The name of the instance group.
@@ -9301,6 +9652,7 @@ pub struct GetInstanceGroupRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for Instances.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetInstanceRequest {
     /// Name of the instance resource to return.
@@ -9314,6 +9666,7 @@ pub struct GetInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for InstanceTemplates.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetInstanceTemplateRequest {
     /// The name of the instance template.
@@ -9324,6 +9677,7 @@ pub struct GetInstanceTemplateRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for InterconnectAttachments.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetInterconnectAttachmentRequest {
     /// Name of the interconnect attachment to return.
@@ -9337,6 +9691,7 @@ pub struct GetInterconnectAttachmentRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for InterconnectLocations.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetInterconnectLocationRequest {
     /// Name of the interconnect location to return.
@@ -9347,6 +9702,7 @@ pub struct GetInterconnectLocationRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for Interconnects.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetInterconnectRequest {
     /// Name of the interconnect to return.
@@ -9357,6 +9713,7 @@ pub struct GetInterconnectRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for LicenseCodes.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetLicenseCodeRequest {
     /// Number corresponding to the License code resource to return.
@@ -9367,6 +9724,7 @@ pub struct GetLicenseCodeRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for Licenses.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetLicenseRequest {
     /// Name of the License resource to return.
@@ -9377,6 +9735,7 @@ pub struct GetLicenseRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for MachineImages.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetMachineImageRequest {
     /// The name of the machine image.
@@ -9387,6 +9746,7 @@ pub struct GetMachineImageRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for MachineTypes.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetMachineTypeRequest {
     /// Name of the machine type to return.
@@ -9400,6 +9760,7 @@ pub struct GetMachineTypeRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for Routers.GetNatMappingInfo. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetNatMappingInfoRoutersRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -9428,6 +9789,7 @@ pub struct GetNatMappingInfoRoutersRequest {
     pub router: ::prost::alloc::string::String,
 }
 /// A request message for NetworkAttachments.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetNetworkAttachmentRequest {
     /// Name of the NetworkAttachment resource to return.
@@ -9441,6 +9803,7 @@ pub struct GetNetworkAttachmentRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for NetworkEdgeSecurityServices.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetNetworkEdgeSecurityServiceRequest {
     /// Name of the network edge security service to get.
@@ -9454,6 +9817,7 @@ pub struct GetNetworkEdgeSecurityServiceRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for NetworkEndpointGroups.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetNetworkEndpointGroupRequest {
     /// The name of the network endpoint group. It should comply with RFC1035.
@@ -9467,6 +9831,7 @@ pub struct GetNetworkEndpointGroupRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for NetworkFirewallPolicies.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetNetworkFirewallPolicyRequest {
     /// Name of the firewall policy to get.
@@ -9477,6 +9842,7 @@ pub struct GetNetworkFirewallPolicyRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for Networks.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetNetworkRequest {
     /// Name of the network to return.
@@ -9487,6 +9853,7 @@ pub struct GetNetworkRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for NodeGroups.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetNodeGroupRequest {
     /// Name of the node group to return.
@@ -9500,6 +9867,7 @@ pub struct GetNodeGroupRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for NodeTemplates.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetNodeTemplateRequest {
     /// Name of the node template to return.
@@ -9513,6 +9881,7 @@ pub struct GetNodeTemplateRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for NodeTypes.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetNodeTypeRequest {
     /// Name of the node type to return.
@@ -9526,6 +9895,7 @@ pub struct GetNodeTypeRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for PacketMirrorings.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetPacketMirroringRequest {
     /// Name of the PacketMirroring resource to return.
@@ -9539,6 +9909,7 @@ pub struct GetPacketMirroringRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for Projects.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetProjectRequest {
     /// Project ID for this request.
@@ -9546,6 +9917,7 @@ pub struct GetProjectRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for PublicAdvertisedPrefixes.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetPublicAdvertisedPrefixeRequest {
     /// Project ID for this request.
@@ -9556,6 +9928,7 @@ pub struct GetPublicAdvertisedPrefixeRequest {
     pub public_advertised_prefix: ::prost::alloc::string::String,
 }
 /// A request message for PublicDelegatedPrefixes.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetPublicDelegatedPrefixeRequest {
     /// Project ID for this request.
@@ -9569,6 +9942,7 @@ pub struct GetPublicDelegatedPrefixeRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for RegionAutoscalers.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetRegionAutoscalerRequest {
     /// Name of the autoscaler to return.
@@ -9582,6 +9956,7 @@ pub struct GetRegionAutoscalerRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for RegionBackendServices.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetRegionBackendServiceRequest {
     /// Name of the BackendService resource to return.
@@ -9595,6 +9970,7 @@ pub struct GetRegionBackendServiceRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for RegionCommitments.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetRegionCommitmentRequest {
     /// Name of the commitment to return.
@@ -9608,6 +9984,7 @@ pub struct GetRegionCommitmentRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for RegionDisks.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetRegionDiskRequest {
     /// Name of the regional persistent disk to return.
@@ -9621,6 +9998,7 @@ pub struct GetRegionDiskRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for RegionDiskTypes.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetRegionDiskTypeRequest {
     /// Name of the disk type to return.
@@ -9634,6 +10012,7 @@ pub struct GetRegionDiskTypeRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for RegionHealthChecks.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetRegionHealthCheckRequest {
     /// Name of the HealthCheck resource to return.
@@ -9647,6 +10026,7 @@ pub struct GetRegionHealthCheckRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for RegionHealthCheckServices.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetRegionHealthCheckServiceRequest {
     /// Name of the HealthCheckService to update. The name must be 1-63 characters long, and comply with RFC1035.
@@ -9660,6 +10040,7 @@ pub struct GetRegionHealthCheckServiceRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for RegionInstanceGroupManagers.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetRegionInstanceGroupManagerRequest {
     /// Name of the managed instance group to return.
@@ -9673,6 +10054,7 @@ pub struct GetRegionInstanceGroupManagerRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for RegionInstanceGroups.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetRegionInstanceGroupRequest {
     /// Name of the instance group resource to return.
@@ -9686,6 +10068,7 @@ pub struct GetRegionInstanceGroupRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for RegionNetworkEndpointGroups.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetRegionNetworkEndpointGroupRequest {
     /// The name of the network endpoint group. It should comply with RFC1035.
@@ -9699,6 +10082,7 @@ pub struct GetRegionNetworkEndpointGroupRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for RegionNetworkFirewallPolicies.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetRegionNetworkFirewallPolicyRequest {
     /// Name of the firewall policy to get.
@@ -9712,6 +10096,7 @@ pub struct GetRegionNetworkFirewallPolicyRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for RegionNotificationEndpoints.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetRegionNotificationEndpointRequest {
     /// Name of the NotificationEndpoint resource to return.
@@ -9725,6 +10110,7 @@ pub struct GetRegionNotificationEndpointRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for RegionOperations.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetRegionOperationRequest {
     /// Name of the Operations resource to return.
@@ -9738,6 +10124,7 @@ pub struct GetRegionOperationRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for Regions.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetRegionRequest {
     /// Project ID for this request.
@@ -9748,6 +10135,7 @@ pub struct GetRegionRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for RegionSecurityPolicies.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetRegionSecurityPolicyRequest {
     /// Project ID for this request.
@@ -9761,6 +10149,7 @@ pub struct GetRegionSecurityPolicyRequest {
     pub security_policy: ::prost::alloc::string::String,
 }
 /// A request message for RegionSslCertificates.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetRegionSslCertificateRequest {
     /// Project ID for this request.
@@ -9774,6 +10163,7 @@ pub struct GetRegionSslCertificateRequest {
     pub ssl_certificate: ::prost::alloc::string::String,
 }
 /// A request message for RegionSslPolicies.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetRegionSslPolicyRequest {
     /// Project ID for this request.
@@ -9787,6 +10177,7 @@ pub struct GetRegionSslPolicyRequest {
     pub ssl_policy: ::prost::alloc::string::String,
 }
 /// A request message for RegionTargetHttpProxies.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetRegionTargetHttpProxyRequest {
     /// Project ID for this request.
@@ -9800,6 +10191,7 @@ pub struct GetRegionTargetHttpProxyRequest {
     pub target_http_proxy: ::prost::alloc::string::String,
 }
 /// A request message for RegionTargetHttpsProxies.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetRegionTargetHttpsProxyRequest {
     /// Project ID for this request.
@@ -9813,6 +10205,7 @@ pub struct GetRegionTargetHttpsProxyRequest {
     pub target_https_proxy: ::prost::alloc::string::String,
 }
 /// A request message for RegionTargetTcpProxies.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetRegionTargetTcpProxyRequest {
     /// Project ID for this request.
@@ -9826,6 +10219,7 @@ pub struct GetRegionTargetTcpProxyRequest {
     pub target_tcp_proxy: ::prost::alloc::string::String,
 }
 /// A request message for RegionUrlMaps.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetRegionUrlMapRequest {
     /// Project ID for this request.
@@ -9839,6 +10233,7 @@ pub struct GetRegionUrlMapRequest {
     pub url_map: ::prost::alloc::string::String,
 }
 /// A request message for Reservations.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetReservationRequest {
     /// Project ID for this request.
@@ -9852,6 +10247,7 @@ pub struct GetReservationRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for ResourcePolicies.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetResourcePolicyRequest {
     /// Project ID for this request.
@@ -9865,6 +10261,7 @@ pub struct GetResourcePolicyRequest {
     pub resource_policy: ::prost::alloc::string::String,
 }
 /// A request message for Routes.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetRouteRequest {
     /// Project ID for this request.
@@ -9875,6 +10272,7 @@ pub struct GetRouteRequest {
     pub route: ::prost::alloc::string::String,
 }
 /// A request message for Routers.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetRouterRequest {
     /// Project ID for this request.
@@ -9888,6 +10286,7 @@ pub struct GetRouterRequest {
     pub router: ::prost::alloc::string::String,
 }
 /// A request message for Routers.GetRouterStatus. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetRouterStatusRouterRequest {
     /// Project ID for this request.
@@ -9901,6 +10300,7 @@ pub struct GetRouterStatusRouterRequest {
     pub router: ::prost::alloc::string::String,
 }
 /// A request message for FirewallPolicies.GetRule. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetRuleFirewallPolicyRequest {
     /// Name of the firewall policy to which the queried rule belongs.
@@ -9911,6 +10311,7 @@ pub struct GetRuleFirewallPolicyRequest {
     pub priority: ::core::option::Option<i32>,
 }
 /// A request message for NetworkFirewallPolicies.GetRule. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetRuleNetworkFirewallPolicyRequest {
     /// Name of the firewall policy to which the queried rule belongs.
@@ -9924,6 +10325,7 @@ pub struct GetRuleNetworkFirewallPolicyRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for RegionNetworkFirewallPolicies.GetRule. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetRuleRegionNetworkFirewallPolicyRequest {
     /// Name of the firewall policy to which the queried rule belongs.
@@ -9940,6 +10342,7 @@ pub struct GetRuleRegionNetworkFirewallPolicyRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for SecurityPolicies.GetRule. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetRuleSecurityPolicyRequest {
     /// The priority of the rule to get from the security policy.
@@ -9953,6 +10356,7 @@ pub struct GetRuleSecurityPolicyRequest {
     pub security_policy: ::prost::alloc::string::String,
 }
 /// A request message for Instances.GetScreenshot. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetScreenshotInstanceRequest {
     /// Name of the instance scoping this request.
@@ -9966,6 +10370,7 @@ pub struct GetScreenshotInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for SecurityPolicies.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetSecurityPolicyRequest {
     /// Project ID for this request.
@@ -9976,6 +10381,7 @@ pub struct GetSecurityPolicyRequest {
     pub security_policy: ::prost::alloc::string::String,
 }
 /// A request message for Instances.GetSerialPortOutput. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetSerialPortOutputInstanceRequest {
     /// Name of the instance for this request.
@@ -9995,6 +10401,7 @@ pub struct GetSerialPortOutputInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for ServiceAttachments.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetServiceAttachmentRequest {
     /// Project ID for this request.
@@ -10008,6 +10415,7 @@ pub struct GetServiceAttachmentRequest {
     pub service_attachment: ::prost::alloc::string::String,
 }
 /// A request message for Instances.GetShieldedInstanceIdentity. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetShieldedInstanceIdentityInstanceRequest {
     /// Name or id of the instance scoping this request.
@@ -10021,6 +10429,7 @@ pub struct GetShieldedInstanceIdentityInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for Snapshots.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetSnapshotRequest {
     /// Project ID for this request.
@@ -10031,6 +10440,7 @@ pub struct GetSnapshotRequest {
     pub snapshot: ::prost::alloc::string::String,
 }
 /// A request message for SslCertificates.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetSslCertificateRequest {
     /// Project ID for this request.
@@ -10041,6 +10451,7 @@ pub struct GetSslCertificateRequest {
     pub ssl_certificate: ::prost::alloc::string::String,
 }
 /// A request message for SslPolicies.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetSslPolicyRequest {
     /// Project ID for this request.
@@ -10051,6 +10462,7 @@ pub struct GetSslPolicyRequest {
     pub ssl_policy: ::prost::alloc::string::String,
 }
 /// A request message for VpnGateways.GetStatus. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetStatusVpnGatewayRequest {
     /// Project ID for this request.
@@ -10064,6 +10476,7 @@ pub struct GetStatusVpnGatewayRequest {
     pub vpn_gateway: ::prost::alloc::string::String,
 }
 /// A request message for Subnetworks.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetSubnetworkRequest {
     /// Project ID for this request.
@@ -10077,6 +10490,7 @@ pub struct GetSubnetworkRequest {
     pub subnetwork: ::prost::alloc::string::String,
 }
 /// A request message for TargetGrpcProxies.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetTargetGrpcProxyRequest {
     /// Project ID for this request.
@@ -10087,6 +10501,7 @@ pub struct GetTargetGrpcProxyRequest {
     pub target_grpc_proxy: ::prost::alloc::string::String,
 }
 /// A request message for TargetHttpProxies.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetTargetHttpProxyRequest {
     /// Project ID for this request.
@@ -10097,6 +10512,7 @@ pub struct GetTargetHttpProxyRequest {
     pub target_http_proxy: ::prost::alloc::string::String,
 }
 /// A request message for TargetHttpsProxies.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetTargetHttpsProxyRequest {
     /// Project ID for this request.
@@ -10107,6 +10523,7 @@ pub struct GetTargetHttpsProxyRequest {
     pub target_https_proxy: ::prost::alloc::string::String,
 }
 /// A request message for TargetInstances.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetTargetInstanceRequest {
     /// Project ID for this request.
@@ -10120,6 +10537,7 @@ pub struct GetTargetInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for TargetPools.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetTargetPoolRequest {
     /// Project ID for this request.
@@ -10133,6 +10551,7 @@ pub struct GetTargetPoolRequest {
     pub target_pool: ::prost::alloc::string::String,
 }
 /// A request message for TargetSslProxies.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetTargetSslProxyRequest {
     /// Project ID for this request.
@@ -10143,6 +10562,7 @@ pub struct GetTargetSslProxyRequest {
     pub target_ssl_proxy: ::prost::alloc::string::String,
 }
 /// A request message for TargetTcpProxies.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetTargetTcpProxyRequest {
     /// Project ID for this request.
@@ -10153,6 +10573,7 @@ pub struct GetTargetTcpProxyRequest {
     pub target_tcp_proxy: ::prost::alloc::string::String,
 }
 /// A request message for TargetVpnGateways.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetTargetVpnGatewayRequest {
     /// Project ID for this request.
@@ -10166,6 +10587,7 @@ pub struct GetTargetVpnGatewayRequest {
     pub target_vpn_gateway: ::prost::alloc::string::String,
 }
 /// A request message for UrlMaps.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetUrlMapRequest {
     /// Project ID for this request.
@@ -10176,6 +10598,7 @@ pub struct GetUrlMapRequest {
     pub url_map: ::prost::alloc::string::String,
 }
 /// A request message for VpnGateways.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetVpnGatewayRequest {
     /// Project ID for this request.
@@ -10189,6 +10612,7 @@ pub struct GetVpnGatewayRequest {
     pub vpn_gateway: ::prost::alloc::string::String,
 }
 /// A request message for VpnTunnels.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetVpnTunnelRequest {
     /// Project ID for this request.
@@ -10202,6 +10626,7 @@ pub struct GetVpnTunnelRequest {
     pub vpn_tunnel: ::prost::alloc::string::String,
 }
 /// A request message for Projects.GetXpnHost. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetXpnHostProjectRequest {
     /// Project ID for this request.
@@ -10209,6 +10634,7 @@ pub struct GetXpnHostProjectRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for Projects.GetXpnResources. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetXpnResourcesProjectsRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -10231,6 +10657,7 @@ pub struct GetXpnResourcesProjectsRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for ZoneOperations.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetZoneOperationRequest {
     /// Name of the Operations resource to return.
@@ -10244,6 +10671,7 @@ pub struct GetZoneOperationRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for Zones.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetZoneRequest {
     /// Project ID for this request.
@@ -10254,6 +10682,7 @@ pub struct GetZoneRequest {
     pub zone: ::prost::alloc::string::String,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GlobalNetworkEndpointGroupsAttachEndpointsRequest {
     /// The list of network endpoints to be attached.
@@ -10261,6 +10690,7 @@ pub struct GlobalNetworkEndpointGroupsAttachEndpointsRequest {
     pub network_endpoints: ::prost::alloc::vec::Vec<NetworkEndpoint>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GlobalNetworkEndpointGroupsDetachEndpointsRequest {
     /// The list of network endpoints to be detached.
@@ -10268,6 +10698,7 @@ pub struct GlobalNetworkEndpointGroupsDetachEndpointsRequest {
     pub network_endpoints: ::prost::alloc::vec::Vec<NetworkEndpoint>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GlobalOrganizationSetPolicyRequest {
     /// Flatten Policy to create a backward compatible wire-format. Deprecated. Use 'policy' to specify bindings.
@@ -10281,6 +10712,7 @@ pub struct GlobalOrganizationSetPolicyRequest {
     pub policy: ::core::option::Option<Policy>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GlobalSetLabelsRequest {
     /// The fingerprint of the previous set of labels for this resource, used to detect conflicts. The fingerprint is initially generated by Compute Engine and changes after every request to modify or update labels. You must always provide an up-to-date fingerprint hash when updating or changing labels, otherwise the request will fail with error 412 conditionNotMet. Make a get() request to the resource to get the latest fingerprint.
@@ -10294,6 +10726,7 @@ pub struct GlobalSetLabelsRequest {
     >,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GlobalSetPolicyRequest {
     /// Flatten Policy to create a backward compatible wire-format. Deprecated. Use 'policy' to specify bindings.
@@ -10307,6 +10740,7 @@ pub struct GlobalSetPolicyRequest {
     pub policy: ::core::option::Option<Policy>,
 }
 /// A guest attributes entry.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GuestAttributes {
     /// [Output Only] Type of the resource. Always compute#guestAttributes for guest attributes entry.
@@ -10329,6 +10763,7 @@ pub struct GuestAttributes {
     pub variable_value: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A guest attributes namespace/key/value entry.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GuestAttributesEntry {
     /// Key for the guest attribute entry.
@@ -10342,12 +10777,14 @@ pub struct GuestAttributesEntry {
     pub value: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Array of guest attribute namespace/key/value tuples.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GuestAttributesValue {
     #[prost(message, repeated, tag = "100526016")]
     pub items: ::prost::alloc::vec::Vec<GuestAttributesEntry>,
 }
 /// Guest OS features.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GuestOsFeature {
     /// The ID of a supported feature. To add multiple values, use commas to separate values. Set to one or more of the following values: - VIRTIO_SCSI_MULTIQUEUE - WINDOWS - MULTI_IP_SUBNET - UEFI_COMPATIBLE - GVNIC - SEV_CAPABLE - SUSPEND_RESUME_COMPATIBLE - SEV_SNP_CAPABLE For more information, see Enabling guest operating system features.
@@ -10403,6 +10840,7 @@ pub mod guest_os_feature {
     }
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Http2HealthCheck {
     /// The value of the host header in the HTTP/2 health check request. If left empty (default value), the host header is set to the destination IP address to which health check packets are sent. The destination IP address depends on the type of load balancer. For details, see: <https://cloud.google.com/load-balancing/docs/health-check-concepts#hc-packet-dest>
@@ -10504,6 +10942,7 @@ pub mod http2_health_check {
     }
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HttpHealthCheck {
     /// The value of the host header in the HTTP health check request. If left empty (default value), the host header is set to the destination IP address to which health check packets are sent. The destination IP address depends on the type of load balancer. For details, see: <https://cloud.google.com/load-balancing/docs/health-check-concepts#hc-packet-dest>
@@ -10605,6 +11044,7 @@ pub mod http_health_check {
     }
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HttpsHealthCheck {
     /// The value of the host header in the HTTPS health check request. If left empty (default value), the host header is set to the destination IP address to which health check packets are sent. The destination IP address depends on the type of load balancer. For details, see: <https://cloud.google.com/load-balancing/docs/health-check-concepts#hc-packet-dest>
@@ -10706,6 +11146,7 @@ pub mod https_health_check {
     }
 }
 /// Represents a Health Check resource. Google Compute Engine has two Health Check resources: * \[Global\](/compute/docs/reference/rest/v1/healthChecks) * \[Regional\](/compute/docs/reference/rest/v1/regionHealthChecks) Internal HTTP(S) load balancers must use regional health checks (`compute.v1.regionHealthChecks`). Traffic Director must use global health checks (`compute.v1.HealthChecks`). Internal TCP/UDP load balancers can use either regional or global health checks (`compute.v1.regionHealthChecks` or `compute.v1.HealthChecks`). External HTTP(S), TCP proxy, and SSL proxy load balancers as well as managed instance group auto-healing must use global health checks (`compute.v1.HealthChecks`). Backend service-based network load balancers must use regional health checks (`compute.v1.regionHealthChecks`). Target pool-based network load balancers must use legacy HTTP health checks (`compute.v1.httpHealthChecks`). For more information, see Health checks overview.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HealthCheck {
     /// How often (in seconds) to send a health check. The default value is 5 seconds.
@@ -10807,6 +11248,7 @@ pub mod health_check {
     }
 }
 /// Contains a list of HealthCheck resources.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HealthCheckList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -10829,6 +11271,7 @@ pub struct HealthCheckList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Configuration of logging on a health check. If logging is enabled, logs will be exported to Stackdriver.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HealthCheckLogConfig {
     /// Indicates whether or not to export logs. This is false by default, which means no health check logging will be done.
@@ -10836,12 +11279,14 @@ pub struct HealthCheckLogConfig {
     pub enable: ::core::option::Option<bool>,
 }
 /// A full or valid partial URL to a health check. For example, the following are valid URLs: - <https://www.googleapis.com/compute/beta/projects/project-id/global/httpHealthChecks/health-check> - projects/project-id/global/httpHealthChecks/health-check - global/httpHealthChecks/health-check
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HealthCheckReference {
     #[prost(string, optional, tag = "308876645")]
     pub health_check: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Represents a Health-Check as a Service resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HealthCheckService {
     /// [Output Only] Creation timestamp in RFC3339 text format.
@@ -10926,12 +11371,14 @@ pub mod health_check_service {
     }
 }
 /// A full or valid partial URL to a health check service. For example, the following are valid URLs: - <https://www.googleapis.com/compute/beta/projects/project-id/regions/us-west1/healthCheckServices/health-check-service> - projects/project-id/regions/us-west1/healthCheckServices/health-check-service - regions/us-west1/healthCheckServices/health-check-service
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HealthCheckServiceReference {
     #[prost(string, optional, tag = "408374747")]
     pub health_check_service: ::core::option::Option<::prost::alloc::string::String>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HealthCheckServicesList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -10954,6 +11401,7 @@ pub struct HealthCheckServicesList {
     pub warning: ::core::option::Option<Warning>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HealthChecksAggregatedList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -10982,6 +11430,7 @@ pub struct HealthChecksAggregatedList {
     pub warning: ::core::option::Option<Warning>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HealthChecksScopedList {
     /// A list of HealthChecks contained in this scope.
@@ -10992,6 +11441,7 @@ pub struct HealthChecksScopedList {
     pub warning: ::core::option::Option<Warning>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HealthStatus {
     /// Metadata defined as annotations for network endpoint.
@@ -11102,6 +11552,7 @@ pub mod health_status {
     }
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HealthStatusForNetworkEndpoint {
     /// URL of the backend service associated with the health state of the network endpoint.
@@ -11161,6 +11612,7 @@ pub mod health_status_for_network_endpoint {
     }
 }
 /// Provides links to documentation or for performing an out of band action. For example, if a quota check failed with an error indicating the calling project hasn't enabled the accessed service, this can contain a URL pointing directly to the right place in the developer console to flip the bit.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Help {
     /// URL(s) pointing to additional information on handling the current error.
@@ -11168,6 +11620,7 @@ pub struct Help {
     pub links: ::prost::alloc::vec::Vec<HelpLink>,
 }
 /// Describes a URL link.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HelpLink {
     /// Describes what the link offers.
@@ -11178,6 +11631,7 @@ pub struct HelpLink {
     pub url: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// UrlMaps A host-matching rule for a URL. If matched, will use the named PathMatcher to select the BackendService.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HostRule {
     /// An optional description of this resource. Provide this property when you create the resource.
@@ -11191,6 +11645,7 @@ pub struct HostRule {
     pub path_matcher: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Specification for how requests are aborted as part of fault injection.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HttpFaultAbort {
     /// The HTTP status code used to abort the request. The value must be from 200 to 599 inclusive. For gRPC protocol, the gRPC status code is mapped to HTTP status code according to this mapping table. HTTP status 200 is mapped to gRPC status UNKNOWN. Injecting an OK status is currently not supported by Traffic Director.
@@ -11201,6 +11656,7 @@ pub struct HttpFaultAbort {
     pub percentage: ::core::option::Option<f64>,
 }
 /// Specifies the delay introduced by the load balancer before forwarding the request to the backend service as part of fault injection.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HttpFaultDelay {
     /// Specifies the value of the fixed delay interval.
@@ -11211,6 +11667,7 @@ pub struct HttpFaultDelay {
     pub percentage: ::core::option::Option<f64>,
 }
 /// The specification for fault injection introduced into traffic to test the resiliency of clients to backend service failure. As part of fault injection, when clients send requests to a backend service, delays can be introduced by the load balancer on a percentage of requests before sending those request to the backend service. Similarly requests from clients can be aborted by the load balancer for a percentage of requests.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HttpFaultInjection {
     /// The specification for how client requests are aborted as part of fault injection.
@@ -11221,6 +11678,7 @@ pub struct HttpFaultInjection {
     pub delay: ::core::option::Option<HttpFaultDelay>,
 }
 /// The request and response header transformations that take effect before the request is passed along to the selected backendService.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HttpHeaderAction {
     /// Headers to add to a matching request before forwarding the request to the backendService.
@@ -11241,6 +11699,7 @@ pub struct HttpHeaderAction {
     >,
 }
 /// matchRule criteria for request header matches.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HttpHeaderMatch {
     /// The value should exactly match contents of exactMatch. Only one of exactMatch, prefixMatch, suffixMatch, regexMatch, presentMatch or rangeMatch must be set.
@@ -11269,6 +11728,7 @@ pub struct HttpHeaderMatch {
     pub suffix_match: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Specification determining how headers are added to requests or responses.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HttpHeaderOption {
     /// The name of the header.
@@ -11282,6 +11742,7 @@ pub struct HttpHeaderOption {
     pub replace: ::core::option::Option<bool>,
 }
 /// HttpRouteRuleMatch criteria for a request's query parameter.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HttpQueryParameterMatch {
     /// The queryParameterMatch matches if the value of the parameter exactly matches the contents of exactMatch. Only one of presentMatch, exactMatch, or regexMatch must be set.
@@ -11298,6 +11759,7 @@ pub struct HttpQueryParameterMatch {
     pub regex_match: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Specifies settings for an HTTP redirect.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HttpRedirectAction {
     /// The host that is used in the redirect response instead of the one that was supplied in the request. The value must be from 1 to 255 characters.
@@ -11371,6 +11833,7 @@ pub mod http_redirect_action {
     }
 }
 /// The retry policy associates with HttpRouteRule
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HttpRetryPolicy {
     /// Specifies the allowed number retries. This number must be > 0. If not specified, defaults to 1.
@@ -11384,6 +11847,7 @@ pub struct HttpRetryPolicy {
     pub retry_conditions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HttpRouteAction {
     /// The specification for allowing client-side cross-origin requests. For more information about the W3C recommendation for cross-origin resource sharing (CORS), see Fetch API Living Standard. Not supported when the URL map is bound to a target gRPC proxy.
@@ -11412,6 +11876,7 @@ pub struct HttpRouteAction {
     pub weighted_backend_services: ::prost::alloc::vec::Vec<WeightedBackendService>,
 }
 /// The HttpRouteRule setting specifies how to match an HTTP request and the corresponding routing action that load balancing proxies perform.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HttpRouteRule {
     /// The short description conveying the intent of this routeRule. The description can have a maximum length of 1024 characters.
@@ -11437,6 +11902,7 @@ pub struct HttpRouteRule {
     pub url_redirect: ::core::option::Option<HttpRedirectAction>,
 }
 /// HttpRouteRuleMatch specifies a set of criteria for matching requests to an HttpRouteRule. All specified criteria must be satisfied for a match to occur.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HttpRouteRuleMatch {
     /// For satisfying the matchRule condition, the path of the request must exactly match the value specified in fullPathMatch after removing any query parameters and anchor that may be part of the original URL. fullPathMatch must be from 1 to 1024 characters. Only one of prefixMatch, fullPathMatch or regexMatch must be specified.
@@ -11462,6 +11928,7 @@ pub struct HttpRouteRuleMatch {
     pub regex_match: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Represents an Image resource. You can use images to create boot disks for your VM instances. For more information, read Images.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Image {
     /// The architecture of the image. Valid values are ARM64 or X86_64.
@@ -11678,6 +12145,7 @@ pub mod image {
     }
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImageFamilyView {
     /// The latest image that is part of the specified image family in the requested location, and that is not deprecated.
@@ -11685,6 +12153,7 @@ pub struct ImageFamilyView {
     pub image: ::core::option::Option<Image>,
 }
 /// Contains a list of images.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImageList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -11707,6 +12176,7 @@ pub struct ImageList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Initial State for shielded instance, these are public keys which are safe to store in public
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InitialStateConfig {
     /// The Key Database (db).
@@ -11723,6 +12193,7 @@ pub struct InitialStateConfig {
     pub pk: ::core::option::Option<FileContentBuffer>,
 }
 /// A request message for Addresses.Insert. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertAddressRequest {
     /// The body resource for this request
@@ -11739,6 +12210,7 @@ pub struct InsertAddressRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Autoscalers.Insert. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertAutoscalerRequest {
     /// The body resource for this request
@@ -11755,6 +12227,7 @@ pub struct InsertAutoscalerRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for BackendBuckets.Insert. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertBackendBucketRequest {
     /// The body resource for this request
@@ -11768,6 +12241,7 @@ pub struct InsertBackendBucketRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for BackendServices.Insert. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertBackendServiceRequest {
     /// The body resource for this request
@@ -11781,6 +12255,7 @@ pub struct InsertBackendServiceRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Disks.Insert. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertDiskRequest {
     /// The body resource for this request
@@ -11800,6 +12275,7 @@ pub struct InsertDiskRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for ExternalVpnGateways.Insert. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertExternalVpnGatewayRequest {
     /// The body resource for this request
@@ -11813,6 +12289,7 @@ pub struct InsertExternalVpnGatewayRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for FirewallPolicies.Insert. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertFirewallPolicyRequest {
     /// The body resource for this request
@@ -11826,6 +12303,7 @@ pub struct InsertFirewallPolicyRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Firewalls.Insert. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertFirewallRequest {
     /// The body resource for this request
@@ -11839,6 +12317,7 @@ pub struct InsertFirewallRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for ForwardingRules.Insert. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertForwardingRuleRequest {
     /// The body resource for this request
@@ -11855,6 +12334,7 @@ pub struct InsertForwardingRuleRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for GlobalAddresses.Insert. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertGlobalAddressRequest {
     /// The body resource for this request
@@ -11868,6 +12348,7 @@ pub struct InsertGlobalAddressRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for GlobalForwardingRules.Insert. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertGlobalForwardingRuleRequest {
     /// The body resource for this request
@@ -11881,6 +12362,7 @@ pub struct InsertGlobalForwardingRuleRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for GlobalNetworkEndpointGroups.Insert. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertGlobalNetworkEndpointGroupRequest {
     /// The body resource for this request
@@ -11894,6 +12376,7 @@ pub struct InsertGlobalNetworkEndpointGroupRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for GlobalPublicDelegatedPrefixes.Insert. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertGlobalPublicDelegatedPrefixeRequest {
     /// Project ID for this request.
@@ -11907,6 +12390,7 @@ pub struct InsertGlobalPublicDelegatedPrefixeRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for HealthChecks.Insert. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertHealthCheckRequest {
     /// The body resource for this request
@@ -11920,6 +12404,7 @@ pub struct InsertHealthCheckRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Images.Insert. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertImageRequest {
     /// Force image creation if true.
@@ -11936,6 +12421,7 @@ pub struct InsertImageRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for InstanceGroupManagers.Insert. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertInstanceGroupManagerRequest {
     /// The body resource for this request
@@ -11952,6 +12438,7 @@ pub struct InsertInstanceGroupManagerRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for InstanceGroups.Insert. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertInstanceGroupRequest {
     /// The body resource for this request
@@ -11968,6 +12455,7 @@ pub struct InsertInstanceGroupRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for Instances.Insert. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertInstanceRequest {
     /// The body resource for this request
@@ -11990,6 +12478,7 @@ pub struct InsertInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for InstanceTemplates.Insert. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertInstanceTemplateRequest {
     /// The body resource for this request
@@ -12003,6 +12492,7 @@ pub struct InsertInstanceTemplateRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for InterconnectAttachments.Insert. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertInterconnectAttachmentRequest {
     /// The body resource for this request
@@ -12022,6 +12512,7 @@ pub struct InsertInterconnectAttachmentRequest {
     pub validate_only: ::core::option::Option<bool>,
 }
 /// A request message for Interconnects.Insert. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertInterconnectRequest {
     /// The body resource for this request
@@ -12035,6 +12526,7 @@ pub struct InsertInterconnectRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Licenses.Insert. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertLicenseRequest {
     /// The body resource for this request
@@ -12048,6 +12540,7 @@ pub struct InsertLicenseRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for MachineImages.Insert. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertMachineImageRequest {
     /// The body resource for this request
@@ -12064,6 +12557,7 @@ pub struct InsertMachineImageRequest {
     pub source_instance: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for NetworkAttachments.Insert. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertNetworkAttachmentRequest {
     /// The body resource for this request
@@ -12080,6 +12574,7 @@ pub struct InsertNetworkAttachmentRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for NetworkEdgeSecurityServices.Insert. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertNetworkEdgeSecurityServiceRequest {
     /// The body resource for this request
@@ -12101,6 +12596,7 @@ pub struct InsertNetworkEdgeSecurityServiceRequest {
     pub validate_only: ::core::option::Option<bool>,
 }
 /// A request message for NetworkEndpointGroups.Insert. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertNetworkEndpointGroupRequest {
     /// The body resource for this request
@@ -12117,6 +12613,7 @@ pub struct InsertNetworkEndpointGroupRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for NetworkFirewallPolicies.Insert. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertNetworkFirewallPolicyRequest {
     /// The body resource for this request
@@ -12130,6 +12627,7 @@ pub struct InsertNetworkFirewallPolicyRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Networks.Insert. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertNetworkRequest {
     /// The body resource for this request
@@ -12143,6 +12641,7 @@ pub struct InsertNetworkRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for NodeGroups.Insert. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertNodeGroupRequest {
     /// Initial count of nodes in the node group.
@@ -12162,6 +12661,7 @@ pub struct InsertNodeGroupRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for NodeTemplates.Insert. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertNodeTemplateRequest {
     /// The body resource for this request
@@ -12178,6 +12678,7 @@ pub struct InsertNodeTemplateRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for PacketMirrorings.Insert. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertPacketMirroringRequest {
     /// The body resource for this request
@@ -12194,6 +12695,7 @@ pub struct InsertPacketMirroringRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for PublicAdvertisedPrefixes.Insert. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertPublicAdvertisedPrefixeRequest {
     /// Project ID for this request.
@@ -12209,6 +12711,7 @@ pub struct InsertPublicAdvertisedPrefixeRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for PublicDelegatedPrefixes.Insert. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertPublicDelegatedPrefixeRequest {
     /// Project ID for this request.
@@ -12225,6 +12728,7 @@ pub struct InsertPublicDelegatedPrefixeRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionAutoscalers.Insert. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertRegionAutoscalerRequest {
     /// The body resource for this request
@@ -12241,6 +12745,7 @@ pub struct InsertRegionAutoscalerRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionBackendServices.Insert. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertRegionBackendServiceRequest {
     /// The body resource for this request
@@ -12257,6 +12762,7 @@ pub struct InsertRegionBackendServiceRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionCommitments.Insert. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertRegionCommitmentRequest {
     /// The body resource for this request
@@ -12273,6 +12779,7 @@ pub struct InsertRegionCommitmentRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionDisks.Insert. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertRegionDiskRequest {
     /// The body resource for this request
@@ -12292,6 +12799,7 @@ pub struct InsertRegionDiskRequest {
     pub source_image: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionHealthChecks.Insert. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertRegionHealthCheckRequest {
     /// The body resource for this request
@@ -12308,6 +12816,7 @@ pub struct InsertRegionHealthCheckRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionHealthCheckServices.Insert. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertRegionHealthCheckServiceRequest {
     /// The body resource for this request
@@ -12324,6 +12833,7 @@ pub struct InsertRegionHealthCheckServiceRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionInstanceGroupManagers.Insert. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertRegionInstanceGroupManagerRequest {
     /// The body resource for this request
@@ -12340,6 +12850,7 @@ pub struct InsertRegionInstanceGroupManagerRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionNetworkEndpointGroups.Insert. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertRegionNetworkEndpointGroupRequest {
     /// The body resource for this request
@@ -12356,6 +12867,7 @@ pub struct InsertRegionNetworkEndpointGroupRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionNetworkFirewallPolicies.Insert. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertRegionNetworkFirewallPolicyRequest {
     /// The body resource for this request
@@ -12372,6 +12884,7 @@ pub struct InsertRegionNetworkFirewallPolicyRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionNotificationEndpoints.Insert. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertRegionNotificationEndpointRequest {
     /// The body resource for this request
@@ -12388,6 +12901,7 @@ pub struct InsertRegionNotificationEndpointRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionSecurityPolicies.Insert. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertRegionSecurityPolicyRequest {
     /// Project ID for this request.
@@ -12407,6 +12921,7 @@ pub struct InsertRegionSecurityPolicyRequest {
     pub validate_only: ::core::option::Option<bool>,
 }
 /// A request message for RegionSslCertificates.Insert. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertRegionSslCertificateRequest {
     /// Project ID for this request.
@@ -12423,6 +12938,7 @@ pub struct InsertRegionSslCertificateRequest {
     pub ssl_certificate_resource: ::core::option::Option<SslCertificate>,
 }
 /// A request message for RegionSslPolicies.Insert. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertRegionSslPolicyRequest {
     /// Project ID for this request.
@@ -12439,6 +12955,7 @@ pub struct InsertRegionSslPolicyRequest {
     pub ssl_policy_resource: ::core::option::Option<SslPolicy>,
 }
 /// A request message for RegionTargetHttpProxies.Insert. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertRegionTargetHttpProxyRequest {
     /// Project ID for this request.
@@ -12455,6 +12972,7 @@ pub struct InsertRegionTargetHttpProxyRequest {
     pub target_http_proxy_resource: ::core::option::Option<TargetHttpProxy>,
 }
 /// A request message for RegionTargetHttpsProxies.Insert. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertRegionTargetHttpsProxyRequest {
     /// Project ID for this request.
@@ -12471,6 +12989,7 @@ pub struct InsertRegionTargetHttpsProxyRequest {
     pub target_https_proxy_resource: ::core::option::Option<TargetHttpsProxy>,
 }
 /// A request message for RegionTargetTcpProxies.Insert. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertRegionTargetTcpProxyRequest {
     /// Project ID for this request.
@@ -12487,6 +13006,7 @@ pub struct InsertRegionTargetTcpProxyRequest {
     pub target_tcp_proxy_resource: ::core::option::Option<TargetTcpProxy>,
 }
 /// A request message for RegionUrlMaps.Insert. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertRegionUrlMapRequest {
     /// Project ID for this request.
@@ -12503,6 +13023,7 @@ pub struct InsertRegionUrlMapRequest {
     pub url_map_resource: ::core::option::Option<UrlMap>,
 }
 /// A request message for Reservations.Insert. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertReservationRequest {
     /// Project ID for this request.
@@ -12519,6 +13040,7 @@ pub struct InsertReservationRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for ResourcePolicies.Insert. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertResourcePolicyRequest {
     /// Project ID for this request.
@@ -12535,6 +13057,7 @@ pub struct InsertResourcePolicyRequest {
     pub resource_policy_resource: ::core::option::Option<ResourcePolicy>,
 }
 /// A request message for Routes.Insert. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertRouteRequest {
     /// Project ID for this request.
@@ -12548,6 +13071,7 @@ pub struct InsertRouteRequest {
     pub route_resource: ::core::option::Option<Route>,
 }
 /// A request message for Routers.Insert. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertRouterRequest {
     /// Project ID for this request.
@@ -12564,6 +13088,7 @@ pub struct InsertRouterRequest {
     pub router_resource: ::core::option::Option<Router>,
 }
 /// A request message for SecurityPolicies.Insert. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertSecurityPolicyRequest {
     /// Project ID for this request.
@@ -12580,6 +13105,7 @@ pub struct InsertSecurityPolicyRequest {
     pub validate_only: ::core::option::Option<bool>,
 }
 /// A request message for ServiceAttachments.Insert. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertServiceAttachmentRequest {
     /// Project ID for this request.
@@ -12596,6 +13122,7 @@ pub struct InsertServiceAttachmentRequest {
     pub service_attachment_resource: ::core::option::Option<ServiceAttachment>,
 }
 /// A request message for Snapshots.Insert. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertSnapshotRequest {
     /// Project ID for this request.
@@ -12609,6 +13136,7 @@ pub struct InsertSnapshotRequest {
     pub snapshot_resource: ::core::option::Option<Snapshot>,
 }
 /// A request message for SslCertificates.Insert. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertSslCertificateRequest {
     /// Project ID for this request.
@@ -12622,6 +13150,7 @@ pub struct InsertSslCertificateRequest {
     pub ssl_certificate_resource: ::core::option::Option<SslCertificate>,
 }
 /// A request message for SslPolicies.Insert. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertSslPolicyRequest {
     /// Project ID for this request.
@@ -12635,6 +13164,7 @@ pub struct InsertSslPolicyRequest {
     pub ssl_policy_resource: ::core::option::Option<SslPolicy>,
 }
 /// A request message for Subnetworks.Insert. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertSubnetworkRequest {
     /// Project ID for this request.
@@ -12651,6 +13181,7 @@ pub struct InsertSubnetworkRequest {
     pub subnetwork_resource: ::core::option::Option<Subnetwork>,
 }
 /// A request message for TargetGrpcProxies.Insert. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertTargetGrpcProxyRequest {
     /// Project ID for this request.
@@ -12664,6 +13195,7 @@ pub struct InsertTargetGrpcProxyRequest {
     pub target_grpc_proxy_resource: ::core::option::Option<TargetGrpcProxy>,
 }
 /// A request message for TargetHttpProxies.Insert. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertTargetHttpProxyRequest {
     /// Project ID for this request.
@@ -12677,6 +13209,7 @@ pub struct InsertTargetHttpProxyRequest {
     pub target_http_proxy_resource: ::core::option::Option<TargetHttpProxy>,
 }
 /// A request message for TargetHttpsProxies.Insert. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertTargetHttpsProxyRequest {
     /// Project ID for this request.
@@ -12690,6 +13223,7 @@ pub struct InsertTargetHttpsProxyRequest {
     pub target_https_proxy_resource: ::core::option::Option<TargetHttpsProxy>,
 }
 /// A request message for TargetInstances.Insert. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertTargetInstanceRequest {
     /// Project ID for this request.
@@ -12706,6 +13240,7 @@ pub struct InsertTargetInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for TargetPools.Insert. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertTargetPoolRequest {
     /// Project ID for this request.
@@ -12722,6 +13257,7 @@ pub struct InsertTargetPoolRequest {
     pub target_pool_resource: ::core::option::Option<TargetPool>,
 }
 /// A request message for TargetSslProxies.Insert. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertTargetSslProxyRequest {
     /// Project ID for this request.
@@ -12735,6 +13271,7 @@ pub struct InsertTargetSslProxyRequest {
     pub target_ssl_proxy_resource: ::core::option::Option<TargetSslProxy>,
 }
 /// A request message for TargetTcpProxies.Insert. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertTargetTcpProxyRequest {
     /// Project ID for this request.
@@ -12748,6 +13285,7 @@ pub struct InsertTargetTcpProxyRequest {
     pub target_tcp_proxy_resource: ::core::option::Option<TargetTcpProxy>,
 }
 /// A request message for TargetVpnGateways.Insert. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertTargetVpnGatewayRequest {
     /// Project ID for this request.
@@ -12764,6 +13302,7 @@ pub struct InsertTargetVpnGatewayRequest {
     pub target_vpn_gateway_resource: ::core::option::Option<TargetVpnGateway>,
 }
 /// A request message for UrlMaps.Insert. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertUrlMapRequest {
     /// Project ID for this request.
@@ -12777,6 +13316,7 @@ pub struct InsertUrlMapRequest {
     pub url_map_resource: ::core::option::Option<UrlMap>,
 }
 /// A request message for VpnGateways.Insert. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertVpnGatewayRequest {
     /// Project ID for this request.
@@ -12793,6 +13333,7 @@ pub struct InsertVpnGatewayRequest {
     pub vpn_gateway_resource: ::core::option::Option<VpnGateway>,
 }
 /// A request message for VpnTunnels.Insert. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertVpnTunnelRequest {
     /// Project ID for this request.
@@ -12809,6 +13350,7 @@ pub struct InsertVpnTunnelRequest {
     pub vpn_tunnel_resource: ::core::option::Option<VpnTunnel>,
 }
 /// Represents an Instance resource. An instance is a virtual machine that is hosted on Google Cloud Platform. For more information, read Virtual Machine Instances.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Instance {
     /// Controls for advanced machine-related behavior features.
@@ -13102,6 +13644,7 @@ pub mod instance {
     }
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceAggregatedList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -13130,6 +13673,7 @@ pub struct InstanceAggregatedList {
     pub warning: ::core::option::Option<Warning>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceConsumptionData {
     /// Resources consumed by the instance.
@@ -13140,6 +13684,7 @@ pub struct InstanceConsumptionData {
     pub instance: ::core::option::Option<::prost::alloc::string::String>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceConsumptionInfo {
     /// The number of virtual CPUs that are available to the instance.
@@ -13156,6 +13701,7 @@ pub struct InstanceConsumptionInfo {
     pub min_node_cpus: ::core::option::Option<i32>,
 }
 /// Represents an Instance Group resource. Instance Groups can be used to configure a target for load balancing. Instance groups can either be managed or unmanaged. To create managed instance groups, use the instanceGroupManager or regionInstanceGroupManager resource instead. Use zonal unmanaged instance groups if you need to apply load balancing to groups of heterogeneous instances or if you need to manage the instances yourself. You cannot create regional unmanaged instance groups. For more information, read Instance groups.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceGroup {
     /// [Output Only] The creation timestamp for this instance group in RFC3339 text format.
@@ -13199,6 +13745,7 @@ pub struct InstanceGroup {
     pub zone: ::core::option::Option<::prost::alloc::string::String>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceGroupAggregatedList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -13227,6 +13774,7 @@ pub struct InstanceGroupAggregatedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// A list of InstanceGroup resources.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceGroupList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -13249,6 +13797,7 @@ pub struct InstanceGroupList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Represents a Managed Instance Group resource. An instance group is a collection of VM instances that you can manage as a single entity. For more information, read Instance groups. For zonal Managed Instance Group, use the instanceGroupManagers resource. For regional Managed Instance Group, use the regionInstanceGroupManagers resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceGroupManager {
     /// The autohealing policy for this managed instance group. You can specify only one value.
@@ -13366,6 +13915,7 @@ pub mod instance_group_manager {
     }
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceGroupManagerActionsSummary {
     /// [Output Only] The total number of instances in the managed instance group that are scheduled to be abandoned. Abandoning an instance removes it from the managed instance group without deleting it.
@@ -13409,6 +13959,7 @@ pub struct InstanceGroupManagerActionsSummary {
     pub verifying: ::core::option::Option<i32>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceGroupManagerAggregatedList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -13437,6 +13988,7 @@ pub struct InstanceGroupManagerAggregatedList {
     pub warning: ::core::option::Option<Warning>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceGroupManagerAutoHealingPolicy {
     /// The URL for the health check that signals autohealing.
@@ -13447,6 +13999,7 @@ pub struct InstanceGroupManagerAutoHealingPolicy {
     pub initial_delay_sec: ::core::option::Option<i32>,
 }
 /// [Output Only] A list of managed instance groups.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceGroupManagerList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -13469,6 +14022,7 @@ pub struct InstanceGroupManagerList {
     pub warning: ::core::option::Option<Warning>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceGroupManagerStatus {
     /// [Output Only] The URL of the Autoscaler that targets this instance group manager.
@@ -13485,6 +14039,7 @@ pub struct InstanceGroupManagerStatus {
     pub version_target: ::core::option::Option<InstanceGroupManagerStatusVersionTarget>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceGroupManagerStatusStateful {
     /// [Output Only] A bit indicating whether the managed instance group has stateful configuration, that is, if you have configured any items in a stateful policy or in per-instance configs. The group might report that it has no stateful configuration even when there is still some preserved state on a managed instance, for example, if you have deleted all PICs but not yet applied those deletions.
@@ -13497,6 +14052,7 @@ pub struct InstanceGroupManagerStatusStateful {
     >,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceGroupManagerStatusStatefulPerInstanceConfigs {
     /// A bit indicating if all of the group's per-instance configurations (listed in the output of a listPerInstanceConfigs API call) have status EFFECTIVE or there are no per-instance-configs.
@@ -13504,6 +14060,7 @@ pub struct InstanceGroupManagerStatusStatefulPerInstanceConfigs {
     pub all_effective: ::core::option::Option<bool>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceGroupManagerStatusVersionTarget {
     /// [Output Only] A bit indicating whether version target has been reached in this managed instance group, i.e. all instances are in their target version. Instances' target version are specified by version field on Instance Group Manager.
@@ -13511,6 +14068,7 @@ pub struct InstanceGroupManagerStatusVersionTarget {
     pub is_reached: ::core::option::Option<bool>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceGroupManagerUpdatePolicy {
     /// The instance redistribution policy for regional managed instance groups. Valid values are: - PROACTIVE (default): The group attempts to maintain an even distribution of VM instances across zones in the region. - NONE: For non-autoscaled groups, proactive redistribution is disabled.
@@ -13718,6 +14276,7 @@ pub mod instance_group_manager_update_policy {
     }
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceGroupManagerVersion {
     /// The URL of the instance template that is specified for this managed instance group. The group uses this template to create new instances in the managed instance group until the `targetSize` for this version is reached. The templates for existing instances in the group do not change unless you run recreateInstances, run applyUpdatesToInstances, or set the group's updatePolicy.type to PROACTIVE; in those cases, existing instances are updated until the `targetSize` for this version is reached.
@@ -13731,6 +14290,7 @@ pub struct InstanceGroupManagerVersion {
     pub target_size: ::core::option::Option<FixedOrPercent>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceGroupManagersAbandonInstancesRequest {
     /// The URLs of one or more instances to abandon. This can be a full URL or a partial URL, such as zones/\[ZONE]/instances/[INSTANCE_NAME\].
@@ -13738,6 +14298,7 @@ pub struct InstanceGroupManagersAbandonInstancesRequest {
     pub instances: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// InstanceGroupManagers.applyUpdatesToInstances
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceGroupManagersApplyUpdatesRequest {
     /// Flag to update all instances instead of specified list of ���instances���. If the flag is set to true then the instances may not be specified in the request.
@@ -13829,6 +14390,7 @@ pub mod instance_group_managers_apply_updates_request {
     }
 }
 /// InstanceGroupManagers.createInstances
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceGroupManagersCreateInstancesRequest {
     /// \[Required\] List of specifications of per-instance configs.
@@ -13836,6 +14398,7 @@ pub struct InstanceGroupManagersCreateInstancesRequest {
     pub instances: ::prost::alloc::vec::Vec<PerInstanceConfig>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceGroupManagersDeleteInstancesRequest {
     /// The URLs of one or more instances to delete. This can be a full URL or a partial URL, such as zones/\[ZONE]/instances/[INSTANCE_NAME\].
@@ -13846,6 +14409,7 @@ pub struct InstanceGroupManagersDeleteInstancesRequest {
     pub skip_instances_on_validation_error: ::core::option::Option<bool>,
 }
 /// InstanceGroupManagers.deletePerInstanceConfigs
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceGroupManagersDeletePerInstanceConfigsReq {
     /// The list of instance names for which we want to delete per-instance configs on this managed instance group.
@@ -13853,6 +14417,7 @@ pub struct InstanceGroupManagersDeletePerInstanceConfigsReq {
     pub names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceGroupManagersListErrorsResponse {
     /// [Output Only] The list of errors of the managed instance group.
@@ -13863,6 +14428,7 @@ pub struct InstanceGroupManagersListErrorsResponse {
     pub next_page_token: ::core::option::Option<::prost::alloc::string::String>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceGroupManagersListManagedInstancesResponse {
     /// [Output Only] The list of instances in the managed instance group.
@@ -13873,6 +14439,7 @@ pub struct InstanceGroupManagersListManagedInstancesResponse {
     pub next_page_token: ::core::option::Option<::prost::alloc::string::String>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceGroupManagersListPerInstanceConfigsResp {
     /// [Output Only] The list of PerInstanceConfig.
@@ -13886,6 +14453,7 @@ pub struct InstanceGroupManagersListPerInstanceConfigsResp {
     pub warning: ::core::option::Option<Warning>,
 }
 /// InstanceGroupManagers.patchPerInstanceConfigs
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceGroupManagersPatchPerInstanceConfigsReq {
     /// The list of per-instance configurations to insert or patch on this managed instance group.
@@ -13893,6 +14461,7 @@ pub struct InstanceGroupManagersPatchPerInstanceConfigsReq {
     pub per_instance_configs: ::prost::alloc::vec::Vec<PerInstanceConfig>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceGroupManagersRecreateInstancesRequest {
     /// The URLs of one or more instances to recreate. This can be a full URL or a partial URL, such as zones/\[ZONE]/instances/[INSTANCE_NAME\].
@@ -13900,6 +14469,7 @@ pub struct InstanceGroupManagersRecreateInstancesRequest {
     pub instances: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceGroupManagersScopedList {
     /// [Output Only] The list of managed instance groups that are contained in the specified project and zone.
@@ -13910,6 +14480,7 @@ pub struct InstanceGroupManagersScopedList {
     pub warning: ::core::option::Option<Warning>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceGroupManagersSetInstanceTemplateRequest {
     /// The URL of the instance template that is specified for this managed instance group. The group uses this template to create all new instances in the managed instance group. The templates for existing instances in the group do not change unless you run recreateInstances, run applyUpdatesToInstances, or set the group's updatePolicy.type to PROACTIVE.
@@ -13917,6 +14488,7 @@ pub struct InstanceGroupManagersSetInstanceTemplateRequest {
     pub instance_template: ::core::option::Option<::prost::alloc::string::String>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceGroupManagersSetTargetPoolsRequest {
     /// The fingerprint of the target pools information. Use this optional property to prevent conflicts when multiple users change the target pools settings concurrently. Obtain the fingerprint with the instanceGroupManagers.get method. Then, include the fingerprint in your request to ensure that you do not overwrite changes that were applied from another concurrent request.
@@ -13927,6 +14499,7 @@ pub struct InstanceGroupManagersSetTargetPoolsRequest {
     pub target_pools: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// InstanceGroupManagers.updatePerInstanceConfigs
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceGroupManagersUpdatePerInstanceConfigsReq {
     /// The list of per-instance configurations to insert or patch on this managed instance group.
@@ -13934,6 +14507,7 @@ pub struct InstanceGroupManagersUpdatePerInstanceConfigsReq {
     pub per_instance_configs: ::prost::alloc::vec::Vec<PerInstanceConfig>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceGroupsAddInstancesRequest {
     /// The list of instances to add to the instance group.
@@ -13941,6 +14515,7 @@ pub struct InstanceGroupsAddInstancesRequest {
     pub instances: ::prost::alloc::vec::Vec<InstanceReference>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceGroupsListInstances {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -13963,6 +14538,7 @@ pub struct InstanceGroupsListInstances {
     pub warning: ::core::option::Option<Warning>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceGroupsListInstancesRequest {
     /// A filter for the state of the instances in the instance group. Valid options are ALL or RUNNING. If you do not specify this parameter the list includes all instances regardless of their state.
@@ -14008,6 +14584,7 @@ pub mod instance_groups_list_instances_request {
     }
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceGroupsRemoveInstancesRequest {
     /// The list of instances to remove from the instance group.
@@ -14015,6 +14592,7 @@ pub struct InstanceGroupsRemoveInstancesRequest {
     pub instances: ::prost::alloc::vec::Vec<InstanceReference>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceGroupsScopedList {
     /// [Output Only] The list of instance groups that are contained in this scope.
@@ -14025,6 +14603,7 @@ pub struct InstanceGroupsScopedList {
     pub warning: ::core::option::Option<Warning>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceGroupsSetNamedPortsRequest {
     /// The fingerprint of the named ports information for this instance group. Use this optional property to prevent conflicts when multiple users change the named ports settings concurrently. Obtain the fingerprint with the instanceGroups.get method. Then, include the fingerprint in your request to ensure that you do not overwrite changes that were applied from another concurrent request. A request with an incorrect fingerprint will fail with error 412 conditionNotMet.
@@ -14035,6 +14614,7 @@ pub struct InstanceGroupsSetNamedPortsRequest {
     pub named_ports: ::prost::alloc::vec::Vec<NamedPort>,
 }
 /// Contains a list of instances.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -14057,6 +14637,7 @@ pub struct InstanceList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Contains a list of instance referrers.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceListReferrers {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -14079,6 +14660,7 @@ pub struct InstanceListReferrers {
     pub warning: ::core::option::Option<Warning>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceManagedByIgmError {
     /// [Output Only] Contents of the error.
@@ -14094,6 +14676,7 @@ pub struct InstanceManagedByIgmError {
     pub timestamp: ::core::option::Option<::prost::alloc::string::String>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceManagedByIgmErrorInstanceActionDetails {
     /// [Output Only] Action that managed instance group was executing on the instance when the error occurred. Possible values:
@@ -14178,6 +14761,7 @@ pub mod instance_managed_by_igm_error_instance_action_details {
     }
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceManagedByIgmErrorManagedInstanceError {
     /// [Output Only] Error code.
@@ -14188,6 +14772,7 @@ pub struct InstanceManagedByIgmErrorManagedInstanceError {
     pub message: ::core::option::Option<::prost::alloc::string::String>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceMoveRequest {
     /// The URL of the destination zone to move the instance. This can be a full or partial URL. For example, the following are all valid URLs to a zone: - <https://www.googleapis.com/compute/v1/projects/project/zones/zone> - projects/project/zones/zone - zones/zone
@@ -14198,6 +14783,7 @@ pub struct InstanceMoveRequest {
     pub target_instance: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Additional instance params.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceParams {
     /// Resource manager tags to be bound to the instance. Tag keys and values have the same definition as resource manager tags. Keys must be in the format `tagKeys/{tag_key_id}`, and values are in the format `tagValues/456`. The field is ignored (both PUT & PATCH) when empty.
@@ -14208,6 +14794,7 @@ pub struct InstanceParams {
     >,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceProperties {
     /// Controls for advanced machine-related behavior features. Note that for MachineImage, this is not supported yet.
@@ -14376,6 +14963,7 @@ pub mod instance_properties {
     }
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceReference {
     /// The URL for a specific instance. @required compute.instancegroups.addInstances/removeInstances
@@ -14383,6 +14971,7 @@ pub struct InstanceReference {
     pub instance: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Represents an Instance Template resource. You can use instance templates to create VM instances and managed instance groups. For more information, read Instance Templates.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceTemplate {
     /// [Output Only] The creation timestamp for this instance template in RFC3339 text format.
@@ -14414,6 +15003,7 @@ pub struct InstanceTemplate {
     pub source_instance_params: ::core::option::Option<SourceInstanceParams>,
 }
 /// A list of instance templates.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceTemplateList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -14436,6 +15026,7 @@ pub struct InstanceTemplateList {
     pub warning: ::core::option::Option<Warning>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceWithNamedPorts {
     /// [Output Only] The URL of the instance.
@@ -14511,6 +15102,7 @@ pub mod instance_with_named_ports {
     }
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstancesAddResourcePoliciesRequest {
     /// Resource policies to be added to this instance.
@@ -14518,6 +15110,7 @@ pub struct InstancesAddResourcePoliciesRequest {
     pub resource_policies: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstancesGetEffectiveFirewallsResponse {
     /// Effective firewalls from firewall policies.
@@ -14530,6 +15123,7 @@ pub struct InstancesGetEffectiveFirewallsResponse {
     pub firewalls: ::prost::alloc::vec::Vec<Firewall>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstancesGetEffectiveFirewallsResponseEffectiveFirewallPolicy {
     /// [Output Only] Deprecated, please use short name instead. The display name of the firewall policy.
@@ -14589,6 +15183,7 @@ pub mod instances_get_effective_firewalls_response_effective_firewall_policy {
     }
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstancesRemoveResourcePoliciesRequest {
     /// Resource policies to be removed from this instance.
@@ -14596,6 +15191,7 @@ pub struct InstancesRemoveResourcePoliciesRequest {
     pub resource_policies: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstancesScopedList {
     /// [Output Only] A list of instances contained in this scope.
@@ -14606,6 +15202,7 @@ pub struct InstancesScopedList {
     pub warning: ::core::option::Option<Warning>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstancesSetLabelsRequest {
     /// Fingerprint of the previous set of labels for this resource, used to prevent conflicts. Provide the latest fingerprint value when making a request to add or change labels.
@@ -14618,6 +15215,7 @@ pub struct InstancesSetLabelsRequest {
     >,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstancesSetMachineResourcesRequest {
     /// A list of the type and count of accelerator cards attached to the instance.
@@ -14625,6 +15223,7 @@ pub struct InstancesSetMachineResourcesRequest {
     pub guest_accelerators: ::prost::alloc::vec::Vec<AcceleratorConfig>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstancesSetMachineTypeRequest {
     /// Full or partial URL of the machine type resource. See Machine Types for a full list of machine types. For example: zones/us-central1-f/machineTypes/n1-standard-1
@@ -14632,6 +15231,7 @@ pub struct InstancesSetMachineTypeRequest {
     pub machine_type: ::core::option::Option<::prost::alloc::string::String>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstancesSetMinCpuPlatformRequest {
     /// Minimum cpu/platform this instance should be started at.
@@ -14639,6 +15239,7 @@ pub struct InstancesSetMinCpuPlatformRequest {
     pub min_cpu_platform: ::core::option::Option<::prost::alloc::string::String>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstancesSetServiceAccountRequest {
     /// Email address of the service account.
@@ -14649,6 +15250,7 @@ pub struct InstancesSetServiceAccountRequest {
     pub scopes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstancesStartWithEncryptionKeyRequest {
     /// Array of disks associated with this instance that are protected with a customer-supplied encryption key. In order to start the instance, the disk url and its corresponding key must be provided. If the disk is not protected with a customer-supplied encryption key it should not be specified.
@@ -14656,6 +15258,7 @@ pub struct InstancesStartWithEncryptionKeyRequest {
     pub disks: ::prost::alloc::vec::Vec<CustomerEncryptionKeyProtectedDisk>,
 }
 /// HttpRouteRuleMatch criteria for field values that must stay within the specified integer range.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Int64RangeMatch {
     /// The end of the range (exclusive) in signed long integer format.
@@ -14666,6 +15269,7 @@ pub struct Int64RangeMatch {
     pub range_start: ::core::option::Option<i64>,
 }
 /// Represents an Interconnect resource. An Interconnect resource is a dedicated connection between the GCP network and your on-premises network. For more information, read the Dedicated Interconnect Overview.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Interconnect {
     /// Administrative status of the interconnect. When this is set to true, the Interconnect is functional and can carry traffic. When set to false, no packets can be carried over the interconnect and no BGP routes are exchanged over it. By default, the status is set to true.
@@ -14891,6 +15495,7 @@ pub mod interconnect {
     }
 }
 /// Represents an Interconnect Attachment (VLAN) resource. You can use Interconnect attachments (VLANS) to connect your Virtual Private Cloud networks to your on-premises networks through an Interconnect. For more information, read Creating VLAN Attachments.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InterconnectAttachment {
     /// Determines whether this Attachment will carry packets. Not present for PARTNER_PROVIDER.
@@ -15315,6 +15920,7 @@ pub mod interconnect_attachment {
     }
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InterconnectAttachmentAggregatedList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -15343,6 +15949,7 @@ pub struct InterconnectAttachmentAggregatedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Response to the list request, and contains a list of interconnect attachments.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InterconnectAttachmentList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -15365,6 +15972,7 @@ pub struct InterconnectAttachmentList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Informational metadata about Partner attachments from Partners to display to customers. These fields are propagated from PARTNER_PROVIDER attachments to their corresponding PARTNER attachments.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InterconnectAttachmentPartnerMetadata {
     /// Plain text name of the Interconnect this attachment is connected to, as displayed in the Partner's portal. For instance "Chicago 1". This value may be validated to match approved Partner values.
@@ -15378,6 +15986,7 @@ pub struct InterconnectAttachmentPartnerMetadata {
     pub portal_url: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Information for an interconnect attachment when this belongs to an interconnect of type DEDICATED.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InterconnectAttachmentPrivateInfo {
     /// [Output Only] 802.1q encapsulation tag to be used for traffic between Google and the customer, going to and from this network and region.
@@ -15385,6 +15994,7 @@ pub struct InterconnectAttachmentPrivateInfo {
     pub tag8021q: ::core::option::Option<u32>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InterconnectAttachmentsScopedList {
     /// A list of interconnect attachments contained in this scope.
@@ -15395,6 +16005,7 @@ pub struct InterconnectAttachmentsScopedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Describes a single physical circuit between the Customer and Google. CircuitInfo objects are created by Google, so all fields are output only.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InterconnectCircuitInfo {
     /// Customer-side demarc ID for this circuit.
@@ -15408,6 +16019,7 @@ pub struct InterconnectCircuitInfo {
     pub google_demarc_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Diagnostics information about interconnect, contains detailed and current technical information about Google's side of the connection.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InterconnectDiagnostics {
     /// A list of InterconnectDiagnostics.ARPEntry objects, describing individual neighbors currently seen by the Google router in the ARP cache for the Interconnect. This will be empty when the Interconnect is not bundled.
@@ -15506,6 +16118,7 @@ pub mod interconnect_diagnostics {
     }
 }
 /// Describing the ARP neighbor entries seen on this link
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InterconnectDiagnosticsArpEntry {
     /// The IP address of this ARP neighbor.
@@ -15516,6 +16129,7 @@ pub struct InterconnectDiagnosticsArpEntry {
     pub mac_address: ::core::option::Option<::prost::alloc::string::String>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InterconnectDiagnosticsLinkLacpStatus {
     /// System ID of the port on Google's side of the LACP exchange.
@@ -15567,6 +16181,7 @@ pub mod interconnect_diagnostics_link_lacp_status {
     }
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InterconnectDiagnosticsLinkOpticalPower {
     /// The status of the current value when compared to the warning and alarm levels for the receiving or transmitting transceiver. Possible states include: - OK: The value has not crossed a warning threshold. - LOW_WARNING: The value has crossed below the low warning threshold. - HIGH_WARNING: The value has crossed above the high warning threshold. - LOW_ALARM: The value has crossed below the low alarm threshold. - HIGH_ALARM: The value has crossed above the high alarm threshold.
@@ -15624,6 +16239,7 @@ pub mod interconnect_diagnostics_link_optical_power {
     }
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InterconnectDiagnosticsLinkStatus {
     /// A list of InterconnectDiagnostics.ARPEntry objects, describing the ARP neighbor entries seen on this link. This will be empty if the link is bundled
@@ -15696,6 +16312,7 @@ pub mod interconnect_diagnostics_link_status {
     }
 }
 /// Response to the list request, and contains a list of interconnects.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InterconnectList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -15718,6 +16335,7 @@ pub struct InterconnectList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Represents an Interconnect Attachment (VLAN) Location resource. You can use this resource to find location details about an Interconnect attachment (VLAN). For more information about interconnect attachments, read Creating VLAN Attachments.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InterconnectLocation {
     /// [Output Only] The postal address of the Point of Presence, each line in the address is separated by a newline character.
@@ -15859,6 +16477,7 @@ pub mod interconnect_location {
     }
 }
 /// Response to the list request, and contains a list of interconnect locations.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InterconnectLocationList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -15881,6 +16500,7 @@ pub struct InterconnectLocationList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Information about any potential InterconnectAttachments between an Interconnect at a specific InterconnectLocation, and a specific Cloud Region.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InterconnectLocationRegionInfo {
     /// Expected round-trip time in milliseconds, from this InterconnectLocation to a VM in this region.
@@ -15940,6 +16560,7 @@ pub mod interconnect_location_region_info {
     }
 }
 /// Description of a planned outage on this Interconnect.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InterconnectOutageNotification {
     /// If issue_type is IT_PARTIAL_OUTAGE, a list of the Google-side circuit IDs that will be affected.
@@ -16091,12 +16712,14 @@ pub mod interconnect_outage_notification {
     }
 }
 /// Response for the InterconnectsGetDiagnosticsRequest.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InterconnectsGetDiagnosticsResponse {
     #[prost(message, optional, tag = "139315229")]
     pub result: ::core::option::Option<InterconnectDiagnostics>,
 }
 /// A request message for UrlMaps.InvalidateCache. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InvalidateCacheUrlMapRequest {
     /// The body resource for this request
@@ -16113,6 +16736,7 @@ pub struct InvalidateCacheUrlMapRequest {
     pub url_map: ::prost::alloc::string::String,
 }
 /// Metadata
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Items {
     /// Key for the metadata entry. Keys must conform to the following regexp: \[a-zA-Z0-9-_\]+, and be less than 128 bytes in length. This is reflected as part of a URL in the metadata server. Additionally, to avoid ambiguity, keys must not conflict with any other metadata keys for the project.
@@ -16123,6 +16747,7 @@ pub struct Items {
     pub value: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Represents a License resource. A License represents billing and aggregate usage data for public and marketplace images. *Caution* This resource is intended for use only by third-party partners who are creating Cloud Marketplace images.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct License {
     /// [Output Only] Deprecated. This field no longer reflects whether a license charges a usage fee.
@@ -16156,6 +16781,7 @@ pub struct License {
     pub transferable: ::core::option::Option<bool>,
 }
 /// Represents a License Code resource. A License Code is a unique identifier used to represent a license resource. *Caution* This resource is intended for use only by third-party partners who are creating Cloud Marketplace images.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LicenseCode {
     /// [Output Only] Creation timestamp in RFC3339 text format.
@@ -16233,6 +16859,7 @@ pub mod license_code {
     }
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LicenseCodeLicenseAlias {
     /// [Output Only] Description of this License Code.
@@ -16243,6 +16870,7 @@ pub struct LicenseCodeLicenseAlias {
     pub self_link: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Commitment for a particular license resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LicenseResourceCommitment {
     /// The number of licenses purchased.
@@ -16256,6 +16884,7 @@ pub struct LicenseResourceCommitment {
     pub license: ::core::option::Option<::prost::alloc::string::String>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LicenseResourceRequirements {
     /// Minimum number of guest cpus required to use the Instance. Enforced at Instance creation and Instance start.
@@ -16266,6 +16895,7 @@ pub struct LicenseResourceRequirements {
     pub min_memory_mb: ::core::option::Option<i32>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LicensesListResponse {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -16285,6 +16915,7 @@ pub struct LicensesListResponse {
     pub warning: ::core::option::Option<Warning>,
 }
 /// A request message for AcceleratorTypes.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAcceleratorTypesRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -16310,6 +16941,7 @@ pub struct ListAcceleratorTypesRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for Addresses.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAddressesRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -16335,6 +16967,7 @@ pub struct ListAddressesRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for FirewallPolicies.ListAssociations. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAssociationsFirewallPolicyRequest {
     /// The target resource to list associations. It is an organization, or a folder.
@@ -16342,6 +16975,7 @@ pub struct ListAssociationsFirewallPolicyRequest {
     pub target_resource: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Autoscalers.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAutoscalersRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -16367,6 +17001,7 @@ pub struct ListAutoscalersRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for RegionSslPolicies.ListAvailableFeatures. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAvailableFeaturesRegionSslPoliciesRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -16392,6 +17027,7 @@ pub struct ListAvailableFeaturesRegionSslPoliciesRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for SslPolicies.ListAvailableFeatures. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAvailableFeaturesSslPoliciesRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -16414,6 +17050,7 @@ pub struct ListAvailableFeaturesSslPoliciesRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for BackendBuckets.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListBackendBucketsRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -16436,6 +17073,7 @@ pub struct ListBackendBucketsRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for BackendServices.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListBackendServicesRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -16458,6 +17096,7 @@ pub struct ListBackendServicesRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for DiskTypes.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDiskTypesRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -16483,6 +17122,7 @@ pub struct ListDiskTypesRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for Disks.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDisksRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -16508,6 +17148,7 @@ pub struct ListDisksRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for InstanceGroupManagers.ListErrors. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListErrorsInstanceGroupManagersRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -16536,6 +17177,7 @@ pub struct ListErrorsInstanceGroupManagersRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for RegionInstanceGroupManagers.ListErrors. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListErrorsRegionInstanceGroupManagersRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -16564,6 +17206,7 @@ pub struct ListErrorsRegionInstanceGroupManagersRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for ExternalVpnGateways.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListExternalVpnGatewaysRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -16586,6 +17229,7 @@ pub struct ListExternalVpnGatewaysRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for FirewallPolicies.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFirewallPoliciesRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -16608,6 +17252,7 @@ pub struct ListFirewallPoliciesRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for Firewalls.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFirewallsRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -16630,6 +17275,7 @@ pub struct ListFirewallsRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for ForwardingRules.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListForwardingRulesRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -16655,6 +17301,7 @@ pub struct ListForwardingRulesRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for GlobalAddresses.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListGlobalAddressesRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -16677,6 +17324,7 @@ pub struct ListGlobalAddressesRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for GlobalForwardingRules.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListGlobalForwardingRulesRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -16699,6 +17347,7 @@ pub struct ListGlobalForwardingRulesRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for GlobalNetworkEndpointGroups.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListGlobalNetworkEndpointGroupsRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -16721,6 +17370,7 @@ pub struct ListGlobalNetworkEndpointGroupsRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for GlobalOperations.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListGlobalOperationsRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -16743,6 +17393,7 @@ pub struct ListGlobalOperationsRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for GlobalOrganizationOperations.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListGlobalOrganizationOperationsRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -16765,6 +17416,7 @@ pub struct ListGlobalOrganizationOperationsRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for GlobalPublicDelegatedPrefixes.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListGlobalPublicDelegatedPrefixesRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -16787,6 +17439,7 @@ pub struct ListGlobalPublicDelegatedPrefixesRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for HealthChecks.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListHealthChecksRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -16809,6 +17462,7 @@ pub struct ListHealthChecksRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for Images.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListImagesRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -16831,6 +17485,7 @@ pub struct ListImagesRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for InstanceGroupManagers.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListInstanceGroupManagersRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -16856,6 +17511,7 @@ pub struct ListInstanceGroupManagersRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for InstanceGroups.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListInstanceGroupsRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -16881,6 +17537,7 @@ pub struct ListInstanceGroupsRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for InstanceTemplates.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListInstanceTemplatesRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -16903,6 +17560,7 @@ pub struct ListInstanceTemplatesRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for InstanceGroups.ListInstances. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListInstancesInstanceGroupsRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -16936,6 +17594,7 @@ pub struct ListInstancesInstanceGroupsRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for RegionInstanceGroups.ListInstances. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListInstancesRegionInstanceGroupsRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -16969,6 +17628,7 @@ pub struct ListInstancesRegionInstanceGroupsRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for Instances.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListInstancesRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -16994,6 +17654,7 @@ pub struct ListInstancesRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for InterconnectAttachments.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListInterconnectAttachmentsRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -17019,6 +17680,7 @@ pub struct ListInterconnectAttachmentsRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for InterconnectLocations.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListInterconnectLocationsRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -17041,6 +17703,7 @@ pub struct ListInterconnectLocationsRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for Interconnects.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListInterconnectsRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -17063,6 +17726,7 @@ pub struct ListInterconnectsRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for Licenses.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListLicensesRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -17085,6 +17749,7 @@ pub struct ListLicensesRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for MachineImages.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListMachineImagesRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -17107,6 +17772,7 @@ pub struct ListMachineImagesRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for MachineTypes.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListMachineTypesRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -17132,6 +17798,7 @@ pub struct ListMachineTypesRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for InstanceGroupManagers.ListManagedInstances. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListManagedInstancesInstanceGroupManagersRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -17160,6 +17827,7 @@ pub struct ListManagedInstancesInstanceGroupManagersRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for RegionInstanceGroupManagers.ListManagedInstances. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListManagedInstancesRegionInstanceGroupManagersRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -17188,6 +17856,7 @@ pub struct ListManagedInstancesRegionInstanceGroupManagersRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for NetworkAttachments.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNetworkAttachmentsRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -17213,6 +17882,7 @@ pub struct ListNetworkAttachmentsRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for NetworkEndpointGroups.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNetworkEndpointGroupsRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -17238,6 +17908,7 @@ pub struct ListNetworkEndpointGroupsRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for GlobalNetworkEndpointGroups.ListNetworkEndpoints. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNetworkEndpointsGlobalNetworkEndpointGroupsRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -17263,6 +17934,7 @@ pub struct ListNetworkEndpointsGlobalNetworkEndpointGroupsRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for NetworkEndpointGroups.ListNetworkEndpoints. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNetworkEndpointsNetworkEndpointGroupsRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -17296,6 +17968,7 @@ pub struct ListNetworkEndpointsNetworkEndpointGroupsRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for NetworkFirewallPolicies.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNetworkFirewallPoliciesRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -17318,6 +17991,7 @@ pub struct ListNetworkFirewallPoliciesRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for Networks.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNetworksRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -17340,6 +18014,7 @@ pub struct ListNetworksRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for NodeGroups.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNodeGroupsRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -17365,6 +18040,7 @@ pub struct ListNodeGroupsRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for NodeTemplates.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNodeTemplatesRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -17390,6 +18066,7 @@ pub struct ListNodeTemplatesRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for NodeTypes.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNodeTypesRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -17415,6 +18092,7 @@ pub struct ListNodeTypesRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for NodeGroups.ListNodes. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNodesNodeGroupsRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -17443,6 +18121,7 @@ pub struct ListNodesNodeGroupsRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for PacketMirrorings.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPacketMirroringsRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -17468,6 +18147,7 @@ pub struct ListPacketMirroringsRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for Networks.ListPeeringRoutes. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPeeringRoutesNetworksRequest {
     /// The direction of the exchanged routes.
@@ -17540,6 +18220,7 @@ pub mod list_peering_routes_networks_request {
     }
 }
 /// A request message for InstanceGroupManagers.ListPerInstanceConfigs. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPerInstanceConfigsInstanceGroupManagersRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -17568,6 +18249,7 @@ pub struct ListPerInstanceConfigsInstanceGroupManagersRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for RegionInstanceGroupManagers.ListPerInstanceConfigs. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPerInstanceConfigsRegionInstanceGroupManagersRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -17596,6 +18278,7 @@ pub struct ListPerInstanceConfigsRegionInstanceGroupManagersRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for SecurityPolicies.ListPreconfiguredExpressionSets. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPreconfiguredExpressionSetsSecurityPoliciesRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -17618,6 +18301,7 @@ pub struct ListPreconfiguredExpressionSetsSecurityPoliciesRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for PublicAdvertisedPrefixes.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPublicAdvertisedPrefixesRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -17640,6 +18324,7 @@ pub struct ListPublicAdvertisedPrefixesRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for PublicDelegatedPrefixes.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPublicDelegatedPrefixesRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -17665,6 +18350,7 @@ pub struct ListPublicDelegatedPrefixesRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for Instances.ListReferrers. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListReferrersInstancesRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -17693,6 +18379,7 @@ pub struct ListReferrersInstancesRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for RegionAutoscalers.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRegionAutoscalersRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -17718,6 +18405,7 @@ pub struct ListRegionAutoscalersRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for RegionBackendServices.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRegionBackendServicesRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -17743,6 +18431,7 @@ pub struct ListRegionBackendServicesRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for RegionCommitments.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRegionCommitmentsRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -17768,6 +18457,7 @@ pub struct ListRegionCommitmentsRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for RegionDiskTypes.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRegionDiskTypesRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -17793,6 +18483,7 @@ pub struct ListRegionDiskTypesRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for RegionDisks.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRegionDisksRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -17818,6 +18509,7 @@ pub struct ListRegionDisksRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for RegionHealthCheckServices.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRegionHealthCheckServicesRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -17843,6 +18535,7 @@ pub struct ListRegionHealthCheckServicesRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for RegionHealthChecks.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRegionHealthChecksRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -17868,6 +18561,7 @@ pub struct ListRegionHealthChecksRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for RegionInstanceGroupManagers.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRegionInstanceGroupManagersRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -17893,6 +18587,7 @@ pub struct ListRegionInstanceGroupManagersRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for RegionInstanceGroups.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRegionInstanceGroupsRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -17918,6 +18613,7 @@ pub struct ListRegionInstanceGroupsRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for RegionNetworkEndpointGroups.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRegionNetworkEndpointGroupsRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -17943,6 +18639,7 @@ pub struct ListRegionNetworkEndpointGroupsRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for RegionNetworkFirewallPolicies.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRegionNetworkFirewallPoliciesRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -17968,6 +18665,7 @@ pub struct ListRegionNetworkFirewallPoliciesRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for RegionNotificationEndpoints.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRegionNotificationEndpointsRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -17993,6 +18691,7 @@ pub struct ListRegionNotificationEndpointsRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for RegionOperations.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRegionOperationsRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -18018,6 +18717,7 @@ pub struct ListRegionOperationsRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for RegionSecurityPolicies.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRegionSecurityPoliciesRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -18043,6 +18743,7 @@ pub struct ListRegionSecurityPoliciesRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for RegionSslCertificates.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRegionSslCertificatesRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -18068,6 +18769,7 @@ pub struct ListRegionSslCertificatesRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for RegionSslPolicies.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRegionSslPoliciesRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -18093,6 +18795,7 @@ pub struct ListRegionSslPoliciesRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for RegionTargetHttpProxies.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRegionTargetHttpProxiesRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -18118,6 +18821,7 @@ pub struct ListRegionTargetHttpProxiesRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for RegionTargetHttpsProxies.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRegionTargetHttpsProxiesRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -18143,6 +18847,7 @@ pub struct ListRegionTargetHttpsProxiesRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for RegionTargetTcpProxies.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRegionTargetTcpProxiesRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -18168,6 +18873,7 @@ pub struct ListRegionTargetTcpProxiesRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for RegionUrlMaps.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRegionUrlMapsRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -18193,6 +18899,7 @@ pub struct ListRegionUrlMapsRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for Regions.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRegionsRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -18215,6 +18922,7 @@ pub struct ListRegionsRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for Reservations.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListReservationsRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -18240,6 +18948,7 @@ pub struct ListReservationsRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for ResourcePolicies.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListResourcePoliciesRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -18265,6 +18974,7 @@ pub struct ListResourcePoliciesRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for Routers.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRoutersRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -18290,6 +19000,7 @@ pub struct ListRoutersRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for Routes.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRoutesRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -18312,6 +19023,7 @@ pub struct ListRoutesRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for SecurityPolicies.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSecurityPoliciesRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -18334,6 +19046,7 @@ pub struct ListSecurityPoliciesRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for ServiceAttachments.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListServiceAttachmentsRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -18359,6 +19072,7 @@ pub struct ListServiceAttachmentsRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for Snapshots.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSnapshotsRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -18381,6 +19095,7 @@ pub struct ListSnapshotsRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for SslCertificates.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSslCertificatesRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -18403,6 +19118,7 @@ pub struct ListSslCertificatesRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for SslPolicies.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSslPoliciesRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -18425,6 +19141,7 @@ pub struct ListSslPoliciesRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for Subnetworks.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSubnetworksRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -18450,6 +19167,7 @@ pub struct ListSubnetworksRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for TargetGrpcProxies.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTargetGrpcProxiesRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -18472,6 +19190,7 @@ pub struct ListTargetGrpcProxiesRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for TargetHttpProxies.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTargetHttpProxiesRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -18494,6 +19213,7 @@ pub struct ListTargetHttpProxiesRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for TargetHttpsProxies.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTargetHttpsProxiesRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -18516,6 +19236,7 @@ pub struct ListTargetHttpsProxiesRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for TargetInstances.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTargetInstancesRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -18541,6 +19262,7 @@ pub struct ListTargetInstancesRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for TargetPools.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTargetPoolsRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -18566,6 +19288,7 @@ pub struct ListTargetPoolsRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for TargetSslProxies.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTargetSslProxiesRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -18588,6 +19311,7 @@ pub struct ListTargetSslProxiesRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for TargetTcpProxies.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTargetTcpProxiesRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -18610,6 +19334,7 @@ pub struct ListTargetTcpProxiesRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for TargetVpnGateways.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTargetVpnGatewaysRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -18635,6 +19360,7 @@ pub struct ListTargetVpnGatewaysRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for UrlMaps.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListUrlMapsRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -18657,6 +19383,7 @@ pub struct ListUrlMapsRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for Subnetworks.ListUsable. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListUsableSubnetworksRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -18679,6 +19406,7 @@ pub struct ListUsableSubnetworksRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for VpnGateways.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListVpnGatewaysRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -18704,6 +19432,7 @@ pub struct ListVpnGatewaysRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for VpnTunnels.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListVpnTunnelsRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -18729,6 +19458,7 @@ pub struct ListVpnTunnelsRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for Projects.ListXpnHosts. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListXpnHostsProjectsRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -18756,6 +19486,7 @@ pub struct ListXpnHostsProjectsRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 /// A request message for ZoneOperations.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListZoneOperationsRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -18781,6 +19512,7 @@ pub struct ListZoneOperationsRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for Zones.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListZonesRequest {
     /// A filter expression that filters resources listed in the response. Most Compute resources support two types of filter expressions: expressions that support regular expressions and expressions that follow API improvement proposal AIP-160. If you want to use AIP-160, your expression must specify the field name, an operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The operator must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you are filtering Compute Engine instances, you can exclude instances named `example-instance` by specifying `name != example-instance`. The `:` operator can be used with string fields to match substrings. For non-string fields it is equivalent to the `=` operator. The `:*` comparison can be used to test whether a key has been defined. For example, to find all objects with `owner` label use: ``` labels.owner:* ``` You can also filter nested fields. For example, you could specify `scheduling.automaticRestart = false` to include instances only if they are not scheduled for automatic restarts. You can use filtering on nested fields to filter based on resource labels. To filter on multiple expressions, provide each separate expression within parentheses. For example: ``` (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND` expression. However, you can include `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel Broadwell") AND (scheduling.automaticRestart = true) ``` If you want to use a regular expression, use the `eq` (equal) or `ne` (not equal) operator against a single un-parenthesized expression with or without quotes or against multiple parenthesized expressions. Examples: `fieldname eq unquoted literal` `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"` `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is interpreted as a regular expression using Google RE2 library syntax. The literal value must match the entire field. For example, to filter for instances that do not end with name "instance", you would use `name ne .*instance`.
@@ -18803,6 +19535,7 @@ pub struct ListZonesRequest {
     pub return_partial_success: ::core::option::Option<bool>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LocalDisk {
     /// Specifies the number of such disks.
@@ -18816,6 +19549,7 @@ pub struct LocalDisk {
     pub disk_type: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Provides a localized error message that is safe to return to the user which can be attached to an RPC error.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LocalizedMessage {
     /// The locale used following the specification defined at <https://www.rfc-editor.org/rfc/bcp/bcp47.txt.> Examples are: "en-US", "fr-CH", "es-MX"
@@ -18826,6 +19560,7 @@ pub struct LocalizedMessage {
     pub message: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Configuration for location policy among multiple possible locations (e.g. preferences for zone selection among zones in a single region).
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LocationPolicy {
     /// Location configurations mapped by location name. Currently only zone names are supported and must be represented as valid internal URLs, such as zones/us-central1-a.
@@ -18880,6 +19615,7 @@ pub mod location_policy {
     }
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LocationPolicyLocation {
     /// Constraints that the caller requires on the result distribution in this zone.
@@ -18931,6 +19667,7 @@ pub mod location_policy_location {
     }
 }
 /// Per-zone constraints on location policy for this zone.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LocationPolicyLocationConstraints {
     /// Maximum number of items that are allowed to be placed in this zone. The value must be non-negative.
@@ -18938,6 +19675,7 @@ pub struct LocationPolicyLocationConstraints {
     pub max_count: ::core::option::Option<i32>,
 }
 /// This is deprecated and has no effect. Do not use.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LogConfig {
     /// This is deprecated and has no effect. Do not use.
@@ -18951,6 +19689,7 @@ pub struct LogConfig {
     pub data_access: ::core::option::Option<LogConfigDataAccessOptions>,
 }
 /// This is deprecated and has no effect. Do not use.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LogConfigCloudAuditOptions {
     /// This is deprecated and has no effect. Do not use.
@@ -19004,6 +19743,7 @@ pub mod log_config_cloud_audit_options {
     }
 }
 /// This is deprecated and has no effect. Do not use.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LogConfigCounterOptions {
     /// This is deprecated and has no effect. Do not use.
@@ -19017,6 +19757,7 @@ pub struct LogConfigCounterOptions {
     pub metric: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// This is deprecated and has no effect. Do not use.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LogConfigCounterOptionsCustomField {
     /// This is deprecated and has no effect. Do not use.
@@ -19027,6 +19768,7 @@ pub struct LogConfigCounterOptionsCustomField {
     pub value: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// This is deprecated and has no effect. Do not use.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LogConfigDataAccessOptions {
     /// This is deprecated and has no effect. Do not use.
@@ -19072,6 +19814,7 @@ pub mod log_config_data_access_options {
     }
 }
 /// Represents a machine image resource. A machine image is a Compute Engine resource that stores all the configuration, metadata, permissions, and data from one or more disks required to create a Virtual machine (VM) instance. For more information, see Machine images.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MachineImage {
     /// [Output Only] The creation timestamp for this machine image in RFC3339 text format.
@@ -19169,6 +19912,7 @@ pub mod machine_image {
     }
 }
 /// A list of machine images.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MachineImageList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -19191,6 +19935,7 @@ pub struct MachineImageList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Represents a Machine Type resource. You can use specific machine types for your VM instances based on performance and pricing requirements. For more information, read Machine Types.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MachineType {
     /// [Output Only] A list of accelerator configurations assigned to this machine type.
@@ -19243,6 +19988,7 @@ pub struct MachineType {
     pub zone: ::core::option::Option<::prost::alloc::string::String>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MachineTypeAggregatedList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -19271,6 +20017,7 @@ pub struct MachineTypeAggregatedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Contains a list of machine types.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MachineTypeList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -19293,6 +20040,7 @@ pub struct MachineTypeList {
     pub warning: ::core::option::Option<Warning>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MachineTypesScopedList {
     /// [Output Only] A list of machine types contained in this scope.
@@ -19303,6 +20051,7 @@ pub struct MachineTypesScopedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// A Managed Instance resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ManagedInstance {
     /// [Output Only] The current action that the managed instance group has scheduled for the instance. Possible values: - NONE The instance is running, and the managed instance group does not have any scheduled actions for this instance. - CREATING The managed instance group is creating this instance. If the group fails to create this instance, it will try again until it is successful. - CREATING_WITHOUT_RETRIES The managed instance group is attempting to create this instance only once. If the group fails to create this instance, it does not try again and the group's targetSize value is decreased instead. - RECREATING The managed instance group is recreating this instance. - DELETING The managed instance group is permanently deleting this instance. - ABANDONING The managed instance group is abandoning this instance. The instance will be removed from the instance group and from any target pools that are associated with this group. - RESTARTING The managed instance group is restarting the instance. - REFRESHING The managed instance group is applying configuration changes to the instance without stopping it. For example, the group can update the target pool list for an instance without stopping that instance. - VERIFYING The managed instance group has created the instance and it is in the process of being verified.
@@ -19462,6 +20211,7 @@ pub mod managed_instance {
     }
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ManagedInstanceInstanceHealth {
     /// [Output Only] The current detailed instance health state.
@@ -19521,6 +20271,7 @@ pub mod managed_instance_instance_health {
     }
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ManagedInstanceLastAttempt {
     /// [Output Only] Encountered errors during the last attempt to create or delete the instance.
@@ -19528,6 +20279,7 @@ pub struct ManagedInstanceLastAttempt {
     pub errors: ::core::option::Option<Errors>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ManagedInstanceVersion {
     /// [Output Only] The intended template of the instance. This field is empty when current_action is one of { DELETING, ABANDONING }.
@@ -19538,6 +20290,7 @@ pub struct ManagedInstanceVersion {
     pub name: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A metadata key/value entry.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Metadata {
     /// Specifies a fingerprint for this request, which is essentially a hash of the metadata's contents and used for optimistic locking. The fingerprint is initially generated by Compute Engine and changes after every request to modify or update metadata. You must always provide an up-to-date fingerprint hash in order to update or change metadata, otherwise the request will fail with error 412 conditionNotMet. To see the latest fingerprint, make a get() request to retrieve the resource.
@@ -19551,6 +20304,7 @@ pub struct Metadata {
     pub kind: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Opaque filter criteria used by load balancers to restrict routing configuration to a limited set of load balancing proxies. Proxies and sidecars involved in load balancing would typically present metadata to the load balancers that need to match criteria specified here. If a match takes place, the relevant configuration is made available to those proxies. For each metadataFilter in this list, if its filterMatchCriteria is set to MATCH_ANY, at least one of the filterLabels must match the corresponding label provided in the metadata. If its filterMatchCriteria is set to MATCH_ALL, then all of its filterLabels must match with corresponding labels provided in the metadata. An example for using metadataFilters would be: if load balancing involves Envoys, they receive routing configuration when values in metadataFilters match values supplied in of their XDS requests to loadbalancers.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MetadataFilter {
     /// The list of label value pairs that must match labels in the provided metadata based on filterMatchCriteria This list must not be empty and can have at the most 64 entries.
@@ -19604,6 +20358,7 @@ pub mod metadata_filter {
     }
 }
 /// MetadataFilter label name value pairs that are expected to match corresponding labels presented as metadata to the load balancer.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MetadataFilterLabelMatch {
     /// Name of metadata label. The name can have a maximum length of 1024 characters and must be at least 1 character long.
@@ -19614,6 +20369,7 @@ pub struct MetadataFilterLabelMatch {
     pub value: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Projects.MoveDisk. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MoveDiskProjectRequest {
     /// The body resource for this request
@@ -19627,6 +20383,7 @@ pub struct MoveDiskProjectRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for FirewallPolicies.Move. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MoveFirewallPolicyRequest {
     /// Name of the firewall policy to update.
@@ -19640,6 +20397,7 @@ pub struct MoveFirewallPolicyRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Projects.MoveInstance. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MoveInstanceProjectRequest {
     /// The body resource for this request
@@ -19653,6 +20411,7 @@ pub struct MoveInstanceProjectRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// The named port. For example: <"http", 80>.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NamedPort {
     /// The name for this named port. The name must be 1-63 characters long, and comply with RFC1035.
@@ -19663,6 +20422,7 @@ pub struct NamedPort {
     pub port: ::core::option::Option<i32>,
 }
 /// Represents a VPC Network resource. Networks connect resources to each other and to the internet. For more information, read Virtual Private Cloud (VPC) Network.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Network {
     /// Deprecated in favor of subnet mode networks. The range of internal addresses that are legal on this network. This range is a CIDR specification, for example: 192.168.0.0/16. Provided by the client when the network is created.
@@ -19765,6 +20525,7 @@ pub mod network {
     }
 }
 /// NetworkAttachments A network attachment resource ...
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NetworkAttachment {
     /// [Output Only] An array of connections for all the producers connected to this network attachment.
@@ -19856,6 +20617,7 @@ pub mod network_attachment {
     }
 }
 /// Contains a list of NetworkAttachmentsScopedList.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NetworkAttachmentAggregatedList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -19880,6 +20642,7 @@ pub struct NetworkAttachmentAggregatedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// [Output Only] A connection connected to this network attachment.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NetworkAttachmentConnectedEndpoint {
     /// The IP address assigned to the producer instance network interface. This value will be a range in case of Serverless.
@@ -19950,6 +20713,7 @@ pub mod network_attachment_connected_endpoint {
     }
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NetworkAttachmentList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -19971,6 +20735,7 @@ pub struct NetworkAttachmentList {
     pub warning: ::core::option::Option<Warning>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NetworkAttachmentsScopedList {
     /// A list of NetworkAttachments contained in this scope.
@@ -19981,6 +20746,7 @@ pub struct NetworkAttachmentsScopedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Represents a Google Cloud Armor network edge security service resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NetworkEdgeSecurityService {
     /// [Output Only] Creation timestamp in RFC3339 text format.
@@ -20015,6 +20781,7 @@ pub struct NetworkEdgeSecurityService {
     pub self_link_with_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NetworkEdgeSecurityServiceAggregatedList {
     #[prost(string, optional, tag = "3123477")]
@@ -20045,6 +20812,7 @@ pub struct NetworkEdgeSecurityServiceAggregatedList {
     pub warning: ::core::option::Option<Warning>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NetworkEdgeSecurityServicesScopedList {
     /// A list of NetworkEdgeSecurityServices contained in this scope.
@@ -20057,6 +20825,7 @@ pub struct NetworkEdgeSecurityServicesScopedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// The network endpoint.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NetworkEndpoint {
     /// Metadata defined as annotations on the network endpoint.
@@ -20079,6 +20848,7 @@ pub struct NetworkEndpoint {
     pub port: ::core::option::Option<i32>,
 }
 /// Represents a collection of network endpoints. A network endpoint group (NEG) defines how a set of endpoints should be reached, whether they are reachable, and where they are located. For more information about using NEGs, see Setting up external HTTP(S) Load Balancing with internet NEGs, Setting up zonal NEGs, or Setting up external HTTP(S) Load Balancing with serverless NEGs.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NetworkEndpointGroup {
     /// Metadata defined as annotations on the network endpoint group.
@@ -20197,6 +20967,7 @@ pub mod network_endpoint_group {
     }
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NetworkEndpointGroupAggregatedList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -20225,6 +20996,7 @@ pub struct NetworkEndpointGroupAggregatedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Configuration for an App Engine network endpoint group (NEG). The service is optional, may be provided explicitly or in the URL mask. The version is optional and can only be provided explicitly or in the URL mask when service is present. Note: App Engine service must be in the same project and located in the same region as the Serverless NEG.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NetworkEndpointGroupAppEngine {
     /// Optional serving service. The service name is case-sensitive and must be 1-63 characters long. Example value: "default", "my-service".
@@ -20238,6 +21010,7 @@ pub struct NetworkEndpointGroupAppEngine {
     pub version: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Configuration for a Cloud Function network endpoint group (NEG). The function must be provided explicitly or in the URL mask. Note: Cloud Function must be in the same project and located in the same region as the Serverless NEG.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NetworkEndpointGroupCloudFunction {
     /// A user-defined name of the Cloud Function. The function name is case-sensitive and must be 1-63 characters long. Example value: "func1".
@@ -20248,6 +21021,7 @@ pub struct NetworkEndpointGroupCloudFunction {
     pub url_mask: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Configuration for a Cloud Run network endpoint group (NEG). The service must be provided explicitly or in the URL mask. The tag is optional, may be provided explicitly or in the URL mask. Note: Cloud Run service must be in the same project and located in the same region as the Serverless NEG.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NetworkEndpointGroupCloudRun {
     /// Cloud Run service is the main resource of Cloud Run. The service must be 1-63 characters long, and comply with RFC1035. Example value: "run-service".
@@ -20261,6 +21035,7 @@ pub struct NetworkEndpointGroupCloudRun {
     pub url_mask: ::core::option::Option<::prost::alloc::string::String>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NetworkEndpointGroupList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -20283,6 +21058,7 @@ pub struct NetworkEndpointGroupList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// All data that is specifically relevant to only network endpoint groups of type PRIVATE_SERVICE_CONNECT.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NetworkEndpointGroupPscData {
     /// [Output Only] Address allocated from given subnetwork for PSC. This IP address acts as a VIP for a PSC NEG, allowing it to act as an endpoint in L7 PSC-XLB.
@@ -20347,6 +21123,7 @@ pub mod network_endpoint_group_psc_data {
     }
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NetworkEndpointGroupsAttachEndpointsRequest {
     /// The list of network endpoints to be attached.
@@ -20354,6 +21131,7 @@ pub struct NetworkEndpointGroupsAttachEndpointsRequest {
     pub network_endpoints: ::prost::alloc::vec::Vec<NetworkEndpoint>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NetworkEndpointGroupsDetachEndpointsRequest {
     /// The list of network endpoints to be detached.
@@ -20361,6 +21139,7 @@ pub struct NetworkEndpointGroupsDetachEndpointsRequest {
     pub network_endpoints: ::prost::alloc::vec::Vec<NetworkEndpoint>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NetworkEndpointGroupsListEndpointsRequest {
     /// Optional query parameter for showing the health status of each network endpoint. Valid options are SKIP or SHOW. If you don't specify this parameter, the health status of network endpoints will not be provided.
@@ -20406,6 +21185,7 @@ pub mod network_endpoint_groups_list_endpoints_request {
     }
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NetworkEndpointGroupsListNetworkEndpoints {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -20425,6 +21205,7 @@ pub struct NetworkEndpointGroupsListNetworkEndpoints {
     pub warning: ::core::option::Option<Warning>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NetworkEndpointGroupsScopedList {
     /// [Output Only] The list of network endpoint groups that are contained in this scope.
@@ -20435,6 +21216,7 @@ pub struct NetworkEndpointGroupsScopedList {
     pub warning: ::core::option::Option<Warning>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NetworkEndpointWithHealthStatus {
     /// [Output only] The health status of network endpoint;
@@ -20445,6 +21227,7 @@ pub struct NetworkEndpointWithHealthStatus {
     pub network_endpoint: ::core::option::Option<NetworkEndpoint>,
 }
 /// A network interface resource attached to an instance.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NetworkInterface {
     /// An array of configurations for this interface. Currently, only one access config, ONE_TO_ONE_NAT, is supported. If there are no accessConfigs specified, then this instance will have no external internet access.
@@ -20611,6 +21394,7 @@ pub mod network_interface {
     }
 }
 /// Contains a list of networks.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NetworkList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -20633,6 +21417,7 @@ pub struct NetworkList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// A network peering attached to a network resource. The message includes the peering name, peer network, peering state, and a flag indicating whether Google Compute Engine should automatically create routes for the peering.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NetworkPeering {
     /// This field will be deprecated soon. Use the exchange_subnet_routes field instead. Indicates whether full mesh connectivity is created and managed automatically between peered networks. Currently this field should always be true since Google Compute Engine will automatically create and manage subnetwork routes between two networks when peering state is ACTIVE.
@@ -20746,6 +21531,7 @@ pub mod network_peering {
     }
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NetworkPerformanceConfig {
     ///
@@ -20793,6 +21579,7 @@ pub mod network_performance_config {
     }
 }
 /// A routing configuration attached to a network resource. The message includes the list of routers associated with the network, and a flag indicating the type of routing behavior to enforce network-wide.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NetworkRoutingConfig {
     /// The network-wide routing mode to use. If set to REGIONAL, this network's Cloud Routers will only advertise routes with subnets of this network in the same region as the router. If set to GLOBAL, this network's Cloud Routers will advertise routes with all subnets of this network, across regions.
@@ -20836,6 +21623,7 @@ pub mod network_routing_config {
     }
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NetworksAddPeeringRequest {
     /// This field will be deprecated soon. Use exchange_subnet_routes in network_peering instead. Indicates whether full mesh connectivity is created and managed automatically between peered networks. Currently this field should always be true since Google Compute Engine will automatically create and manage subnetwork routes between two networks when peering state is ACTIVE.
@@ -20852,6 +21640,7 @@ pub struct NetworksAddPeeringRequest {
     pub peer_network: ::core::option::Option<::prost::alloc::string::String>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NetworksGetEffectiveFirewallsResponse {
     /// Effective firewalls from firewall policy.
@@ -20864,6 +21653,7 @@ pub struct NetworksGetEffectiveFirewallsResponse {
     pub firewalls: ::prost::alloc::vec::Vec<Firewall>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NetworksGetEffectiveFirewallsResponseEffectiveFirewallPolicy {
     /// [Output Only] Deprecated, please use short name instead. The display name of the firewall policy.
@@ -20921,6 +21711,7 @@ pub mod networks_get_effective_firewalls_response_effective_firewall_policy {
     }
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NetworksRemovePeeringRequest {
     /// Name of the peering, which should conform to RFC1035.
@@ -20928,12 +21719,14 @@ pub struct NetworksRemovePeeringRequest {
     pub name: ::core::option::Option<::prost::alloc::string::String>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NetworksUpdatePeeringRequest {
     #[prost(message, optional, tag = "328926767")]
     pub network_peering: ::core::option::Option<NetworkPeering>,
 }
 /// Represents a sole-tenant Node Group resource. A sole-tenant node is a physical server that is dedicated to hosting VM instances only for your specific project. Use sole-tenant nodes to keep your instances physically separated from instances in other projects, or to group your instances together on the same host hardware. For more information, read Sole-tenant nodes.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NodeGroup {
     /// Specifies how autoscaling should behave.
@@ -21066,6 +21859,7 @@ pub mod node_group {
     }
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NodeGroupAggregatedList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -21094,6 +21888,7 @@ pub struct NodeGroupAggregatedList {
     pub warning: ::core::option::Option<Warning>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NodeGroupAutoscalingPolicy {
     /// The maximum number of nodes that the group should have. Must be set if autoscaling is enabled. Maximum value allowed is 100.
@@ -21150,6 +21945,7 @@ pub mod node_group_autoscaling_policy {
     }
 }
 /// Contains a list of nodeGroups.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NodeGroupList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -21172,6 +21968,7 @@ pub struct NodeGroupList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Time window specified for daily maintenance operations. GCE's internal maintenance will be performed within this window.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NodeGroupMaintenanceWindow {
     /// [Output only] A predetermined duration for the window, automatically chosen to be the smallest possible in the given scenario.
@@ -21182,6 +21979,7 @@ pub struct NodeGroupMaintenanceWindow {
     pub start_time: ::core::option::Option<::prost::alloc::string::String>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NodeGroupNode {
     /// Accelerators for this node.
@@ -21304,6 +22102,7 @@ pub mod node_group_node {
     }
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NodeGroupsAddNodesRequest {
     /// Count of additional nodes to be added to the node group.
@@ -21311,6 +22110,7 @@ pub struct NodeGroupsAddNodesRequest {
     pub additional_node_count: ::core::option::Option<i32>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NodeGroupsDeleteNodesRequest {
     /// Names of the nodes to delete.
@@ -21318,6 +22118,7 @@ pub struct NodeGroupsDeleteNodesRequest {
     pub nodes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NodeGroupsListNodes {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -21340,6 +22141,7 @@ pub struct NodeGroupsListNodes {
     pub warning: ::core::option::Option<Warning>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NodeGroupsScopedList {
     /// [Output Only] A list of node groups contained in this scope.
@@ -21350,6 +22152,7 @@ pub struct NodeGroupsScopedList {
     pub warning: ::core::option::Option<Warning>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NodeGroupsSetNodeTemplateRequest {
     /// Full or partial URL of the node template resource to be updated for this node group.
@@ -21357,6 +22160,7 @@ pub struct NodeGroupsSetNodeTemplateRequest {
     pub node_template: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Represent a sole-tenant Node Template resource. You can use a template to define properties for nodes in a node group. For more information, read Creating node groups and instances.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NodeTemplate {
     #[prost(message, repeated, tag = "269577064")]
@@ -21491,6 +22295,7 @@ pub mod node_template {
     }
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NodeTemplateAggregatedList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -21519,6 +22324,7 @@ pub struct NodeTemplateAggregatedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Contains a list of node templates.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NodeTemplateList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -21541,6 +22347,7 @@ pub struct NodeTemplateList {
     pub warning: ::core::option::Option<Warning>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NodeTemplateNodeTypeFlexibility {
     #[prost(string, optional, tag = "3060683")]
@@ -21551,6 +22358,7 @@ pub struct NodeTemplateNodeTypeFlexibility {
     pub memory: ::core::option::Option<::prost::alloc::string::String>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NodeTemplatesScopedList {
     /// [Output Only] A list of node templates contained in this scope.
@@ -21561,6 +22369,7 @@ pub struct NodeTemplatesScopedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Represent a sole-tenant Node Type resource. Each node within a node group must have a node type. A node type specifies the total amount of cores and memory for that node. Currently, the only available node type is n1-node-96-624 node type that has 96 vCPUs and 624 GB of memory, available in multiple zones. For more information read Node types.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NodeType {
     /// [Output Only] The CPU platform used by this node type.
@@ -21601,6 +22410,7 @@ pub struct NodeType {
     pub zone: ::core::option::Option<::prost::alloc::string::String>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NodeTypeAggregatedList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -21629,6 +22439,7 @@ pub struct NodeTypeAggregatedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Contains a list of node types.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NodeTypeList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -21651,6 +22462,7 @@ pub struct NodeTypeList {
     pub warning: ::core::option::Option<Warning>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NodeTypesScopedList {
     /// [Output Only] A list of node types contained in this scope.
@@ -21661,6 +22473,7 @@ pub struct NodeTypesScopedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Represents a notification endpoint. A notification endpoint resource defines an endpoint to receive notifications when there are status changes detected by the associated health check service. For more information, see Health checks overview.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NotificationEndpoint {
     /// [Output Only] Creation timestamp in RFC3339 text format.
@@ -21689,6 +22502,7 @@ pub struct NotificationEndpoint {
     pub self_link: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Represents a gRPC setting that describes one gRPC notification endpoint and the retry duration attempting to send notification to this endpoint.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NotificationEndpointGrpcSettings {
     /// Optional. If specified, this field is used to set the authority header by the sender of notifications. See <https://tools.ietf.org/html/rfc7540#section-8.1.2.3>
@@ -21708,6 +22522,7 @@ pub struct NotificationEndpointGrpcSettings {
     pub retry_duration_sec: ::core::option::Option<u32>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NotificationEndpointList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -21730,6 +22545,7 @@ pub struct NotificationEndpointList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Represents an Operation resource. Google Compute Engine has three Operation resources: * \[Global\](/compute/docs/reference/rest/v1/globalOperations) * \[Regional\](/compute/docs/reference/rest/v1/regionOperations) * \[Zonal\](/compute/docs/reference/rest/v1/zoneOperations) You can use an operation resource to manage asynchronous API requests. For more information, read Handling API responses. Operations can be global, regional or zonal. - For global operations, use the `globalOperations` resource. - For regional operations, use the `regionOperations` resource. - For zonal operations, use the `zonalOperations` resource. For more information, read Global, Regional, and Zonal Resources.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Operation {
     /// [Output Only] The value of `requestId` if you provided it in the request. Not present otherwise.
@@ -21843,6 +22659,7 @@ pub mod operation {
     }
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationAggregatedList {
     /// [Output Only] The unique identifier for the resource. This identifier is defined by the server.
@@ -21871,6 +22688,7 @@ pub struct OperationAggregatedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Contains a list of Operation resources.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationList {
     /// [Output Only] The unique identifier for the resource. This identifier is defined by the server.
@@ -21893,6 +22711,7 @@ pub struct OperationList {
     pub warning: ::core::option::Option<Warning>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationsScopedList {
     /// [Output Only] A list of operations contained in this scope.
@@ -21903,6 +22722,7 @@ pub struct OperationsScopedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Settings controlling the eviction of unhealthy hosts from the load balancing pool for the backend service.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OutlierDetection {
     /// The base time that a host is ejected for. The real ejection time is equal to the base ejection time multiplied by the number of times the host has been ejected. Defaults to 30000ms or 30s.
@@ -21940,6 +22760,7 @@ pub struct OutlierDetection {
     pub success_rate_stdev_factor: ::core::option::Option<i32>,
 }
 /// Next free: 7
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PacketIntervals {
     /// Average observed inter-packet interval in milliseconds.
@@ -22043,6 +22864,7 @@ pub mod packet_intervals {
     }
 }
 /// Represents a Packet Mirroring resource. Packet Mirroring clones the traffic of specified instances in your Virtual Private Cloud (VPC) network and forwards it to a collector destination, such as an instance group of an internal TCP/UDP load balancer, for analysis or examination. For more information about setting up Packet Mirroring, see Using Packet Mirroring.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PacketMirroring {
     /// The Forwarding Rule resource of type loadBalancingScheme=INTERNAL that will be used as collector for mirrored traffic. The specified forwarding rule must have isMirroringCollector set to true.
@@ -22122,6 +22944,7 @@ pub mod packet_mirroring {
     }
 }
 /// Contains a list of packetMirrorings.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PacketMirroringAggregatedList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -22150,6 +22973,7 @@ pub struct PacketMirroringAggregatedList {
     pub warning: ::core::option::Option<Warning>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PacketMirroringFilter {
     /// Protocols that apply as filter on mirrored traffic. If no protocols are specified, all traffic that matches the specified CIDR ranges is mirrored. If neither cidrRanges nor IPProtocols is specified, all traffic is mirrored.
@@ -22204,6 +23028,7 @@ pub mod packet_mirroring_filter {
     }
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PacketMirroringForwardingRuleInfo {
     /// [Output Only] Unique identifier for the forwarding rule; defined by the server.
@@ -22214,6 +23039,7 @@ pub struct PacketMirroringForwardingRuleInfo {
     pub url: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Contains a list of PacketMirroring resources.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PacketMirroringList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -22236,6 +23062,7 @@ pub struct PacketMirroringList {
     pub warning: ::core::option::Option<Warning>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PacketMirroringMirroredResourceInfo {
     /// A set of virtual machine instances that are being mirrored. They must live in zones contained in the same region as this packetMirroring. Note that this config will apply only to those network interfaces of the Instances that belong to the network specified in this packetMirroring. You may specify a maximum of 50 Instances.
@@ -22253,6 +23080,7 @@ pub struct PacketMirroringMirroredResourceInfo {
     pub tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PacketMirroringMirroredResourceInfoInstanceInfo {
     /// [Output Only] Unique identifier for the instance; defined by the server.
@@ -22263,6 +23091,7 @@ pub struct PacketMirroringMirroredResourceInfoInstanceInfo {
     pub url: ::core::option::Option<::prost::alloc::string::String>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PacketMirroringMirroredResourceInfoSubnetInfo {
     /// [Output Only] Unique identifier for the subnetwork; defined by the server.
@@ -22273,6 +23102,7 @@ pub struct PacketMirroringMirroredResourceInfoSubnetInfo {
     pub url: ::core::option::Option<::prost::alloc::string::String>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PacketMirroringNetworkInfo {
     /// [Output Only] Unique identifier for the network; defined by the server.
@@ -22283,6 +23113,7 @@ pub struct PacketMirroringNetworkInfo {
     pub url: ::core::option::Option<::prost::alloc::string::String>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PacketMirroringsScopedList {
     /// A list of packetMirrorings contained in this scope.
@@ -22293,6 +23124,7 @@ pub struct PacketMirroringsScopedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// A request message for Autoscalers.Patch. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchAutoscalerRequest {
     /// Name of the autoscaler to patch.
@@ -22312,6 +23144,7 @@ pub struct PatchAutoscalerRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for BackendBuckets.Patch. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchBackendBucketRequest {
     /// Name of the BackendBucket resource to patch.
@@ -22328,6 +23161,7 @@ pub struct PatchBackendBucketRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for BackendServices.Patch. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchBackendServiceRequest {
     /// Name of the BackendService resource to patch.
@@ -22344,6 +23178,7 @@ pub struct PatchBackendServiceRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for FirewallPolicies.Patch. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchFirewallPolicyRequest {
     /// Name of the firewall policy to update.
@@ -22357,6 +23192,7 @@ pub struct PatchFirewallPolicyRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Firewalls.Patch. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchFirewallRequest {
     /// Name of the firewall rule to patch.
@@ -22373,6 +23209,7 @@ pub struct PatchFirewallRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for ForwardingRules.Patch. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchForwardingRuleRequest {
     /// Name of the ForwardingRule resource to patch.
@@ -22392,6 +23229,7 @@ pub struct PatchForwardingRuleRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for GlobalForwardingRules.Patch. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchGlobalForwardingRuleRequest {
     /// Name of the ForwardingRule resource to patch.
@@ -22408,6 +23246,7 @@ pub struct PatchGlobalForwardingRuleRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for GlobalPublicDelegatedPrefixes.Patch. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchGlobalPublicDelegatedPrefixeRequest {
     /// Project ID for this request.
@@ -22424,6 +23263,7 @@ pub struct PatchGlobalPublicDelegatedPrefixeRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for HealthChecks.Patch. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchHealthCheckRequest {
     /// Name of the HealthCheck resource to patch.
@@ -22440,6 +23280,7 @@ pub struct PatchHealthCheckRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Images.Patch. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchImageRequest {
     /// Name of the image resource to patch.
@@ -22456,6 +23297,7 @@ pub struct PatchImageRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for InstanceGroupManagers.Patch. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchInstanceGroupManagerRequest {
     /// The name of the instance group manager.
@@ -22475,6 +23317,7 @@ pub struct PatchInstanceGroupManagerRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for InterconnectAttachments.Patch. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchInterconnectAttachmentRequest {
     /// Name of the interconnect attachment to patch.
@@ -22494,6 +23337,7 @@ pub struct PatchInterconnectAttachmentRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Interconnects.Patch. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchInterconnectRequest {
     /// Name of the interconnect to update.
@@ -22510,6 +23354,7 @@ pub struct PatchInterconnectRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for NetworkEdgeSecurityServices.Patch. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchNetworkEdgeSecurityServiceRequest {
     /// Name of the network edge security service to update.
@@ -22536,6 +23381,7 @@ pub struct PatchNetworkEdgeSecurityServiceRequest {
     pub update_mask: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for NetworkFirewallPolicies.Patch. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchNetworkFirewallPolicyRequest {
     /// Name of the firewall policy to update.
@@ -22552,6 +23398,7 @@ pub struct PatchNetworkFirewallPolicyRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Networks.Patch. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchNetworkRequest {
     /// Name of the network to update.
@@ -22568,6 +23415,7 @@ pub struct PatchNetworkRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for NodeGroups.Patch. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchNodeGroupRequest {
     /// Name of the NodeGroup resource to update.
@@ -22587,6 +23435,7 @@ pub struct PatchNodeGroupRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for PacketMirrorings.Patch. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchPacketMirroringRequest {
     /// Name of the PacketMirroring resource to patch.
@@ -22606,6 +23455,7 @@ pub struct PatchPacketMirroringRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for InstanceGroupManagers.PatchPerInstanceConfigs. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchPerInstanceConfigsInstanceGroupManagerRequest {
     /// The name of the managed instance group. It should conform to RFC1035.
@@ -22627,6 +23477,7 @@ pub struct PatchPerInstanceConfigsInstanceGroupManagerRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for RegionInstanceGroupManagers.PatchPerInstanceConfigs. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchPerInstanceConfigsRegionInstanceGroupManagerRequest {
     /// The name of the managed instance group. It should conform to RFC1035.
@@ -22648,6 +23499,7 @@ pub struct PatchPerInstanceConfigsRegionInstanceGroupManagerRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for PublicAdvertisedPrefixes.Patch. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchPublicAdvertisedPrefixeRequest {
     /// Project ID for this request.
@@ -22666,6 +23518,7 @@ pub struct PatchPublicAdvertisedPrefixeRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for PublicDelegatedPrefixes.Patch. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchPublicDelegatedPrefixeRequest {
     /// Project ID for this request.
@@ -22685,6 +23538,7 @@ pub struct PatchPublicDelegatedPrefixeRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionAutoscalers.Patch. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchRegionAutoscalerRequest {
     /// Name of the autoscaler to patch.
@@ -22704,6 +23558,7 @@ pub struct PatchRegionAutoscalerRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionBackendServices.Patch. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchRegionBackendServiceRequest {
     /// Name of the BackendService resource to patch.
@@ -22723,6 +23578,7 @@ pub struct PatchRegionBackendServiceRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionHealthChecks.Patch. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchRegionHealthCheckRequest {
     /// Name of the HealthCheck resource to patch.
@@ -22742,6 +23598,7 @@ pub struct PatchRegionHealthCheckRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionHealthCheckServices.Patch. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchRegionHealthCheckServiceRequest {
     /// Name of the HealthCheckService to update. The name must be 1-63 characters long, and comply with RFC1035.
@@ -22761,6 +23618,7 @@ pub struct PatchRegionHealthCheckServiceRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionInstanceGroupManagers.Patch. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchRegionInstanceGroupManagerRequest {
     /// The name of the instance group manager.
@@ -22780,6 +23638,7 @@ pub struct PatchRegionInstanceGroupManagerRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionNetworkFirewallPolicies.Patch. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchRegionNetworkFirewallPolicyRequest {
     /// Name of the firewall policy to update.
@@ -22799,6 +23658,7 @@ pub struct PatchRegionNetworkFirewallPolicyRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionSecurityPolicies.Patch. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchRegionSecurityPolicyRequest {
     /// Project ID for this request.
@@ -22818,6 +23678,7 @@ pub struct PatchRegionSecurityPolicyRequest {
     pub security_policy_resource: ::core::option::Option<SecurityPolicy>,
 }
 /// A request message for RegionSslPolicies.Patch. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchRegionSslPolicyRequest {
     /// Project ID for this request.
@@ -22837,6 +23698,7 @@ pub struct PatchRegionSslPolicyRequest {
     pub ssl_policy_resource: ::core::option::Option<SslPolicy>,
 }
 /// A request message for RegionTargetHttpsProxies.Patch. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchRegionTargetHttpsProxyRequest {
     /// Project ID for this request.
@@ -22856,6 +23718,7 @@ pub struct PatchRegionTargetHttpsProxyRequest {
     pub target_https_proxy_resource: ::core::option::Option<TargetHttpsProxy>,
 }
 /// A request message for RegionUrlMaps.Patch. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchRegionUrlMapRequest {
     /// Project ID for this request.
@@ -22875,6 +23738,7 @@ pub struct PatchRegionUrlMapRequest {
     pub url_map_resource: ::core::option::Option<UrlMap>,
 }
 /// A request message for Routers.Patch. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchRouterRequest {
     /// Project ID for this request.
@@ -22894,6 +23758,7 @@ pub struct PatchRouterRequest {
     pub router_resource: ::core::option::Option<Router>,
 }
 /// A request message for FirewallPolicies.PatchRule. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchRuleFirewallPolicyRequest {
     /// Name of the firewall policy to update.
@@ -22910,6 +23775,7 @@ pub struct PatchRuleFirewallPolicyRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for NetworkFirewallPolicies.PatchRule. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchRuleNetworkFirewallPolicyRequest {
     /// Name of the firewall policy to update.
@@ -22929,6 +23795,7 @@ pub struct PatchRuleNetworkFirewallPolicyRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionNetworkFirewallPolicies.PatchRule. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchRuleRegionNetworkFirewallPolicyRequest {
     /// Name of the firewall policy to update.
@@ -22951,6 +23818,7 @@ pub struct PatchRuleRegionNetworkFirewallPolicyRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for SecurityPolicies.PatchRule. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchRuleSecurityPolicyRequest {
     /// The priority of the rule to patch.
@@ -22970,6 +23838,7 @@ pub struct PatchRuleSecurityPolicyRequest {
     pub validate_only: ::core::option::Option<bool>,
 }
 /// A request message for SecurityPolicies.Patch. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchSecurityPolicyRequest {
     /// Project ID for this request.
@@ -22986,6 +23855,7 @@ pub struct PatchSecurityPolicyRequest {
     pub security_policy_resource: ::core::option::Option<SecurityPolicy>,
 }
 /// A request message for ServiceAttachments.Patch. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchServiceAttachmentRequest {
     /// Project ID for this request.
@@ -23005,6 +23875,7 @@ pub struct PatchServiceAttachmentRequest {
     pub service_attachment_resource: ::core::option::Option<ServiceAttachment>,
 }
 /// A request message for SslPolicies.Patch. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchSslPolicyRequest {
     /// Project ID for this request.
@@ -23021,6 +23892,7 @@ pub struct PatchSslPolicyRequest {
     pub ssl_policy_resource: ::core::option::Option<SslPolicy>,
 }
 /// A request message for Subnetworks.Patch. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchSubnetworkRequest {
     /// The drain timeout specifies the upper bound in seconds on the amount of time allowed to drain connections from the current ACTIVE subnetwork to the current BACKUP subnetwork. The drain timeout is only applicable when the following conditions are true: - the subnetwork being patched has purpose = INTERNAL_HTTPS_LOAD_BALANCER - the subnetwork being patched has role = BACKUP - the patch request is setting the role to ACTIVE. Note that after this patch operation the roles of the ACTIVE and BACKUP subnetworks will be swapped.
@@ -23043,6 +23915,7 @@ pub struct PatchSubnetworkRequest {
     pub subnetwork_resource: ::core::option::Option<Subnetwork>,
 }
 /// A request message for TargetGrpcProxies.Patch. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchTargetGrpcProxyRequest {
     /// Project ID for this request.
@@ -23059,6 +23932,7 @@ pub struct PatchTargetGrpcProxyRequest {
     pub target_grpc_proxy_resource: ::core::option::Option<TargetGrpcProxy>,
 }
 /// A request message for TargetHttpProxies.Patch. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchTargetHttpProxyRequest {
     /// Project ID for this request.
@@ -23075,6 +23949,7 @@ pub struct PatchTargetHttpProxyRequest {
     pub target_http_proxy_resource: ::core::option::Option<TargetHttpProxy>,
 }
 /// A request message for TargetHttpsProxies.Patch. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchTargetHttpsProxyRequest {
     /// Project ID for this request.
@@ -23091,6 +23966,7 @@ pub struct PatchTargetHttpsProxyRequest {
     pub target_https_proxy_resource: ::core::option::Option<TargetHttpsProxy>,
 }
 /// A request message for UrlMaps.Patch. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchUrlMapRequest {
     /// Project ID for this request.
@@ -23107,6 +23983,7 @@ pub struct PatchUrlMapRequest {
     pub url_map_resource: ::core::option::Option<UrlMap>,
 }
 /// A matcher for the path portion of the URL. The BackendService from the longest-matched rule will serve the URL. If no rule was matched, the default service is used.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PathMatcher {
     /// defaultRouteAction takes effect when none of the pathRules or routeRules match. The load balancer performs advanced routing actions, such as URL rewrites and header transformations, before forwarding the request to the selected backend. If defaultRouteAction specifies any weightedBackendServices, defaultService must not be set. Conversely if defaultService is set, defaultRouteAction cannot contain any weightedBackendServices. Only one of defaultRouteAction or defaultUrlRedirect must be set. URL maps for Classic external HTTP(S) load balancers only support the urlRewrite action within a path matcher's defaultRouteAction.
@@ -23135,6 +24012,7 @@ pub struct PathMatcher {
     pub route_rules: ::prost::alloc::vec::Vec<HttpRouteRule>,
 }
 /// A path-matching rule for a URL. If matched, will use the specified BackendService to handle the traffic arriving at this URL.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PathRule {
     /// The list of path patterns to match. Each must start with / and the only place a * is allowed is at the end following a /. The string fed to the path matcher does not include any text after the first ? or #, and those chars are not allowed here.
@@ -23151,6 +24029,7 @@ pub struct PathRule {
     pub url_redirect: ::core::option::Option<HttpRedirectAction>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PerInstanceConfig {
     /// Fingerprint of this per-instance config. This field can be used in optimistic locking. It is ignored when inserting a per-instance config. An up-to-date fingerprint must be provided in order to update an existing per-instance configuration or the field needs to be unset.
@@ -23217,6 +24096,7 @@ pub mod per_instance_config {
     }
 }
 /// An Identity and Access Management (IAM) policy, which specifies access controls for Google Cloud resources. A `Policy` is a collection of `bindings`. A `binding` binds one or more `members`, or principals, to a single `role`. Principals can be user accounts, service accounts, Google groups, and domains (such as G Suite). A `role` is a named list of permissions; each `role` can be an IAM predefined role or a user-created custom role. For some types of Google Cloud resources, a `binding` can also specify a `condition`, which is a logical expression that allows access to a resource only if the expression evaluates to `true`. A condition can add constraints based on attributes of the request, the resource, or both. To learn which resources support conditions in their IAM policies, see the [IAM documentation](<https://cloud.google.com/iam/help/conditions/resource-policies>). **JSON example:** { "bindings": [ { "role": "roles/resourcemanager.organizationAdmin", "members": [ "user:mike@example.com", "group:admins@example.com", "domain:google.com", "serviceAccount:my-project-id@appspot.gserviceaccount.com" ] }, { "role": "roles/resourcemanager.organizationViewer", "members": [ "user:eve@example.com" ], "condition": { "title": "expirable access", "description": "Does not grant access after Sep 2020", "expression": "request.time < timestamp('2020-10-01T00:00:00.000Z')", } } ], "etag": "BwWWja0YfJA=", "version": 3 } **YAML example:** bindings: - members: - user:mike@example.com - group:admins@example.com - domain:google.com - serviceAccount:my-project-id@appspot.gserviceaccount.com role: roles/resourcemanager.organizationAdmin - members: - user:eve@example.com role: roles/resourcemanager.organizationViewer condition: title: expirable access description: Does not grant access after Sep 2020 expression: request.time < timestamp('2020-10-01T00:00:00.000Z') etag: BwWWja0YfJA= version: 3 For a description of IAM and its features, see the [IAM documentation](<https://cloud.google.com/iam/docs/>).
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Policy {
     /// Specifies cloud audit logging configuration for this policy.
@@ -23238,6 +24118,7 @@ pub struct Policy {
     pub version: ::core::option::Option<i32>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PreconfiguredWafSet {
     /// List of entities that are currently supported for WAF rules.
@@ -23245,6 +24126,7 @@ pub struct PreconfiguredWafSet {
     pub expression_sets: ::prost::alloc::vec::Vec<WafExpressionSet>,
 }
 /// Preserved state for a given instance.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PreservedState {
     /// Preserved disks defined for this instance. This map is keyed with the device names of the disks.
@@ -23261,6 +24143,7 @@ pub struct PreservedState {
     >,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PreservedStatePreservedDisk {
     /// These stateful disks will never be deleted during autohealing, update, instance recreate operations. This flag is used to configure if the disk should be deleted after it is no longer used by the group, e.g. when the given instance or the whole MIG is deleted. Note: disks attached in READ_ONLY mode cannot be auto-deleted.
@@ -23347,6 +24230,7 @@ pub mod preserved_state_preserved_disk {
     }
 }
 /// A request message for Routers.Preview. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PreviewRouterRequest {
     /// Project ID for this request.
@@ -23363,6 +24247,7 @@ pub struct PreviewRouterRequest {
     pub router_resource: ::core::option::Option<Router>,
 }
 /// Represents a Project resource. A project is used to organize resources in a Google Cloud Platform environment. For more information, read about the Resource Hierarchy.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Project {
     /// Metadata key/value pairs available to all instances contained in this project. See Custom metadata for more information.
@@ -23531,6 +24416,7 @@ pub mod project {
     }
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProjectsDisableXpnResourceRequest {
     /// Service resource (a.k.a service project) ID.
@@ -23538,6 +24424,7 @@ pub struct ProjectsDisableXpnResourceRequest {
     pub xpn_resource: ::core::option::Option<XpnResourceId>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProjectsEnableXpnResourceRequest {
     /// Service resource (a.k.a service project) ID.
@@ -23545,6 +24432,7 @@ pub struct ProjectsEnableXpnResourceRequest {
     pub xpn_resource: ::core::option::Option<XpnResourceId>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProjectsGetXpnResources {
     /// [Output Only] Type of resource. Always compute#projectsGetXpnResources for lists of service resources (a.k.a service projects)
@@ -23558,6 +24446,7 @@ pub struct ProjectsGetXpnResources {
     pub resources: ::prost::alloc::vec::Vec<XpnResourceId>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProjectsListXpnHostsRequest {
     /// Optional organization ID managed by Cloud Resource Manager, for which to list shared VPC host projects. If not specified, the organization will be inferred from the project.
@@ -23565,6 +24454,7 @@ pub struct ProjectsListXpnHostsRequest {
     pub organization: ::core::option::Option<::prost::alloc::string::String>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProjectsSetDefaultNetworkTierRequest {
     /// Default network tier to be set.
@@ -23618,6 +24508,7 @@ pub mod projects_set_default_network_tier_request {
     }
 }
 /// A public advertised prefix represents an aggregated IP prefix or netblock which customers bring to cloud. The IP prefix is a single unit of route advertisement and is announced globally to the internet.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PublicAdvertisedPrefix {
     /// [Output Only] Creation timestamp in RFC3339 text format.
@@ -23715,6 +24606,7 @@ pub mod public_advertised_prefix {
     }
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PublicAdvertisedPrefixList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -23737,6 +24629,7 @@ pub struct PublicAdvertisedPrefixList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Represents a CIDR range which can be used to assign addresses.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PublicAdvertisedPrefixPublicDelegatedPrefix {
     /// The IP address range of the public delegated prefix
@@ -23756,6 +24649,7 @@ pub struct PublicAdvertisedPrefixPublicDelegatedPrefix {
     pub status: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A PublicDelegatedPrefix resource represents an IP block within a PublicAdvertisedPrefix that is configured within a single cloud scope (global or region). IPs in the block can be allocated to resources within that scope. Public delegated prefixes may be further broken up into smaller IP blocks in the same scope as the parent block.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PublicDelegatedPrefix {
     /// [Output Only] Creation timestamp in RFC3339 text format.
@@ -23845,6 +24739,7 @@ pub mod public_delegated_prefix {
     }
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PublicDelegatedPrefixAggregatedList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -23873,6 +24768,7 @@ pub struct PublicDelegatedPrefixAggregatedList {
     pub warning: ::core::option::Option<Warning>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PublicDelegatedPrefixList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -23895,6 +24791,7 @@ pub struct PublicDelegatedPrefixList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Represents a sub PublicDelegatedPrefix.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PublicDelegatedPrefixPublicDelegatedSubPrefix {
     /// Name of the project scoping this PublicDelegatedSubPrefix.
@@ -23956,6 +24853,7 @@ pub mod public_delegated_prefix_public_delegated_sub_prefix {
     }
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PublicDelegatedPrefixesScopedList {
     /// [Output Only] A list of PublicDelegatedPrefixes contained in this scope.
@@ -23966,6 +24864,7 @@ pub struct PublicDelegatedPrefixesScopedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// A quotas entry.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Quota {
     /// [Output Only] Quota limit for this metric.
@@ -24344,6 +25243,7 @@ pub mod quota {
     }
 }
 /// Additional details for quota exceeded error for resource quota.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QuotaExceededInfo {
     /// The map holding related quota dimensions.
@@ -24363,6 +25263,7 @@ pub struct QuotaExceededInfo {
     pub metric_name: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// The parameters of the raw disk image.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RawDisk {
     /// The format used to encode and transmit the block device, which should be TAR. This is just a container and transmission format and not a runtime format. Provided by the client when the disk image is created.
@@ -24410,6 +25311,7 @@ pub mod raw_disk {
     }
 }
 /// A request message for InstanceGroupManagers.RecreateInstances. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RecreateInstancesInstanceGroupManagerRequest {
     /// The name of the managed instance group.
@@ -24431,6 +25333,7 @@ pub struct RecreateInstancesInstanceGroupManagerRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for RegionInstanceGroupManagers.RecreateInstances. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RecreateInstancesRegionInstanceGroupManagerRequest {
     /// Name of the managed instance group.
@@ -24452,6 +25355,7 @@ pub struct RecreateInstancesRegionInstanceGroupManagerRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Represents a reference to a resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Reference {
     /// [Output Only] Type of the resource. Always compute#reference for references.
@@ -24468,6 +25372,7 @@ pub struct Reference {
     pub target: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Represents a Region resource. A region is a geographical area where a resource is located. For more information, read Regions and Zones.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Region {
     /// [Output Only] Creation timestamp in RFC3339 text format.
@@ -24541,6 +25446,7 @@ pub mod region {
     }
 }
 /// Contains a list of autoscalers.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegionAutoscalerList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -24563,6 +25469,7 @@ pub struct RegionAutoscalerList {
     pub warning: ::core::option::Option<Warning>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegionDiskTypeList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -24585,6 +25492,7 @@ pub struct RegionDiskTypeList {
     pub warning: ::core::option::Option<Warning>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegionDisksAddResourcePoliciesRequest {
     /// Resource policies to be added to this disk.
@@ -24592,6 +25500,7 @@ pub struct RegionDisksAddResourcePoliciesRequest {
     pub resource_policies: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegionDisksRemoveResourcePoliciesRequest {
     /// Resource policies to be removed from this disk.
@@ -24599,6 +25508,7 @@ pub struct RegionDisksRemoveResourcePoliciesRequest {
     pub resource_policies: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegionDisksResizeRequest {
     /// The new size of the regional persistent disk, which is specified in GB.
@@ -24606,6 +25516,7 @@ pub struct RegionDisksResizeRequest {
     pub size_gb: ::core::option::Option<i64>,
 }
 /// Contains a list of InstanceGroup resources.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegionInstanceGroupList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -24628,6 +25539,7 @@ pub struct RegionInstanceGroupList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// RegionInstanceGroupManagers.deletePerInstanceConfigs
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegionInstanceGroupManagerDeleteInstanceConfigReq {
     /// The list of instance names for which we want to delete per-instance configs on this managed instance group.
@@ -24635,6 +25547,7 @@ pub struct RegionInstanceGroupManagerDeleteInstanceConfigReq {
     pub names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Contains a list of managed instance groups.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegionInstanceGroupManagerList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -24657,6 +25570,7 @@ pub struct RegionInstanceGroupManagerList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// RegionInstanceGroupManagers.patchPerInstanceConfigs
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegionInstanceGroupManagerPatchInstanceConfigReq {
     /// The list of per-instance configurations to insert or patch on this managed instance group.
@@ -24664,6 +25578,7 @@ pub struct RegionInstanceGroupManagerPatchInstanceConfigReq {
     pub per_instance_configs: ::prost::alloc::vec::Vec<PerInstanceConfig>,
 }
 /// RegionInstanceGroupManagers.updatePerInstanceConfigs
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegionInstanceGroupManagerUpdateInstanceConfigReq {
     /// The list of per-instance configurations to insert or patch on this managed instance group.
@@ -24671,6 +25586,7 @@ pub struct RegionInstanceGroupManagerUpdateInstanceConfigReq {
     pub per_instance_configs: ::prost::alloc::vec::Vec<PerInstanceConfig>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegionInstanceGroupManagersAbandonInstancesRequest {
     /// The URLs of one or more instances to abandon. This can be a full URL or a partial URL, such as zones/\[ZONE]/instances/[INSTANCE_NAME\].
@@ -24678,6 +25594,7 @@ pub struct RegionInstanceGroupManagersAbandonInstancesRequest {
     pub instances: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// RegionInstanceGroupManagers.applyUpdatesToInstances
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegionInstanceGroupManagersApplyUpdatesRequest {
     /// Flag to update all instances instead of specified list of ���instances���. If the flag is set to true then the instances may not be specified in the request.
@@ -24769,6 +25686,7 @@ pub mod region_instance_group_managers_apply_updates_request {
     }
 }
 /// RegionInstanceGroupManagers.createInstances
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegionInstanceGroupManagersCreateInstancesRequest {
     /// \[Required\] List of specifications of per-instance configs.
@@ -24776,6 +25694,7 @@ pub struct RegionInstanceGroupManagersCreateInstancesRequest {
     pub instances: ::prost::alloc::vec::Vec<PerInstanceConfig>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegionInstanceGroupManagersDeleteInstancesRequest {
     /// The URLs of one or more instances to delete. This can be a full URL or a partial URL, such as zones/\[ZONE]/instances/[INSTANCE_NAME\].
@@ -24786,6 +25705,7 @@ pub struct RegionInstanceGroupManagersDeleteInstancesRequest {
     pub skip_instances_on_validation_error: ::core::option::Option<bool>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegionInstanceGroupManagersListErrorsResponse {
     /// [Output Only] The list of errors of the managed instance group.
@@ -24796,6 +25716,7 @@ pub struct RegionInstanceGroupManagersListErrorsResponse {
     pub next_page_token: ::core::option::Option<::prost::alloc::string::String>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegionInstanceGroupManagersListInstanceConfigsResp {
     /// [Output Only] The list of PerInstanceConfig.
@@ -24809,6 +25730,7 @@ pub struct RegionInstanceGroupManagersListInstanceConfigsResp {
     pub warning: ::core::option::Option<Warning>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegionInstanceGroupManagersListInstancesResponse {
     /// A list of managed instances.
@@ -24819,6 +25741,7 @@ pub struct RegionInstanceGroupManagersListInstancesResponse {
     pub next_page_token: ::core::option::Option<::prost::alloc::string::String>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegionInstanceGroupManagersRecreateRequest {
     /// The URLs of one or more instances to recreate. This can be a full URL or a partial URL, such as zones/\[ZONE]/instances/[INSTANCE_NAME\].
@@ -24826,6 +25749,7 @@ pub struct RegionInstanceGroupManagersRecreateRequest {
     pub instances: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegionInstanceGroupManagersSetTargetPoolsRequest {
     /// Fingerprint of the target pools information, which is a hash of the contents. This field is used for optimistic locking when you update the target pool entries. This field is optional.
@@ -24836,6 +25760,7 @@ pub struct RegionInstanceGroupManagersSetTargetPoolsRequest {
     pub target_pools: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegionInstanceGroupManagersSetTemplateRequest {
     /// URL of the InstanceTemplate resource from which all new instances will be created.
@@ -24843,6 +25768,7 @@ pub struct RegionInstanceGroupManagersSetTemplateRequest {
     pub instance_template: ::core::option::Option<::prost::alloc::string::String>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegionInstanceGroupsListInstances {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -24865,6 +25791,7 @@ pub struct RegionInstanceGroupsListInstances {
     pub warning: ::core::option::Option<Warning>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegionInstanceGroupsListInstancesRequest {
     /// Instances in which state should be returned. Valid options are: 'ALL', 'RUNNING'. By default, it lists all instances.
@@ -24913,6 +25840,7 @@ pub mod region_instance_groups_list_instances_request {
     }
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegionInstanceGroupsSetNamedPortsRequest {
     /// The fingerprint of the named ports information for this instance group. Use this optional property to prevent conflicts when multiple users change the named ports settings concurrently. Obtain the fingerprint with the instanceGroups.get method. Then, include the fingerprint in your request to ensure that you do not overwrite changes that were applied from another concurrent request.
@@ -24923,6 +25851,7 @@ pub struct RegionInstanceGroupsSetNamedPortsRequest {
     pub named_ports: ::prost::alloc::vec::Vec<NamedPort>,
 }
 /// Contains a list of region resources.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegionList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -24945,6 +25874,7 @@ pub struct RegionList {
     pub warning: ::core::option::Option<Warning>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegionNetworkFirewallPoliciesGetEffectiveFirewallsResponse {
     /// Effective firewalls from firewall policy.
@@ -24957,6 +25887,7 @@ pub struct RegionNetworkFirewallPoliciesGetEffectiveFirewallsResponse {
     pub firewalls: ::prost::alloc::vec::Vec<Firewall>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegionNetworkFirewallPoliciesGetEffectiveFirewallsResponseEffectiveFirewallPolicy {
     /// [Output Only] The display name of the firewall policy.
@@ -25013,6 +25944,7 @@ pub mod region_network_firewall_policies_get_effective_firewalls_response_effect
     }
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegionSetLabelsRequest {
     /// The fingerprint of the previous set of labels for this resource, used to detect conflicts. The fingerprint is initially generated by Compute Engine and changes after every request to modify or update labels. You must always provide an up-to-date fingerprint hash in order to update or change labels. Make a get() request to the resource to get the latest fingerprint.
@@ -25026,6 +25958,7 @@ pub struct RegionSetLabelsRequest {
     >,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegionSetPolicyRequest {
     /// Flatten Policy to create a backwacd compatible wire-format. Deprecated. Use 'policy' to specify bindings.
@@ -25039,6 +25972,7 @@ pub struct RegionSetPolicyRequest {
     pub policy: ::core::option::Option<Policy>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegionTargetHttpsProxiesSetSslCertificatesRequest {
     /// New set of SslCertificate resources to associate with this TargetHttpsProxy resource.
@@ -25046,6 +25980,7 @@ pub struct RegionTargetHttpsProxiesSetSslCertificatesRequest {
     pub ssl_certificates: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegionUrlMapsValidateRequest {
     /// Content of the UrlMap to be validated.
@@ -25053,6 +25988,7 @@ pub struct RegionUrlMapsValidateRequest {
     pub resource: ::core::option::Option<UrlMap>,
 }
 /// A request message for FirewallPolicies.RemoveAssociation. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RemoveAssociationFirewallPolicyRequest {
     /// Name of the firewall policy to update.
@@ -25066,6 +26002,7 @@ pub struct RemoveAssociationFirewallPolicyRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for NetworkFirewallPolicies.RemoveAssociation. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RemoveAssociationNetworkFirewallPolicyRequest {
     /// Name of the firewall policy to update.
@@ -25082,6 +26019,7 @@ pub struct RemoveAssociationNetworkFirewallPolicyRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionNetworkFirewallPolicies.RemoveAssociation. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RemoveAssociationRegionNetworkFirewallPolicyRequest {
     /// Name of the firewall policy to update.
@@ -25101,6 +26039,7 @@ pub struct RemoveAssociationRegionNetworkFirewallPolicyRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for TargetPools.RemoveHealthCheck. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RemoveHealthCheckTargetPoolRequest {
     /// Project ID for this request.
@@ -25122,6 +26061,7 @@ pub struct RemoveHealthCheckTargetPoolRequest {
     >,
 }
 /// A request message for TargetPools.RemoveInstance. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RemoveInstanceTargetPoolRequest {
     /// Project ID for this request.
@@ -25143,6 +26083,7 @@ pub struct RemoveInstanceTargetPoolRequest {
     >,
 }
 /// A request message for InstanceGroups.RemoveInstances. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RemoveInstancesInstanceGroupRequest {
     /// The name of the instance group where the specified instances will be removed.
@@ -25164,6 +26105,7 @@ pub struct RemoveInstancesInstanceGroupRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for Networks.RemovePeering. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RemovePeeringNetworkRequest {
     /// Name of the network resource to remove peering from.
@@ -25182,6 +26124,7 @@ pub struct RemovePeeringNetworkRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Disks.RemoveResourcePolicies. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RemoveResourcePoliciesDiskRequest {
     /// The disk name for this request.
@@ -25203,6 +26146,7 @@ pub struct RemoveResourcePoliciesDiskRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for Instances.RemoveResourcePolicies. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RemoveResourcePoliciesInstanceRequest {
     /// The instance name for this request.
@@ -25224,6 +26168,7 @@ pub struct RemoveResourcePoliciesInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for RegionDisks.RemoveResourcePolicies. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RemoveResourcePoliciesRegionDiskRequest {
     /// The disk name for this request.
@@ -25245,6 +26190,7 @@ pub struct RemoveResourcePoliciesRegionDiskRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for FirewallPolicies.RemoveRule. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RemoveRuleFirewallPolicyRequest {
     /// Name of the firewall policy to update.
@@ -25258,6 +26204,7 @@ pub struct RemoveRuleFirewallPolicyRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for NetworkFirewallPolicies.RemoveRule. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RemoveRuleNetworkFirewallPolicyRequest {
     /// Name of the firewall policy to update.
@@ -25274,6 +26221,7 @@ pub struct RemoveRuleNetworkFirewallPolicyRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionNetworkFirewallPolicies.RemoveRule. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RemoveRuleRegionNetworkFirewallPolicyRequest {
     /// Name of the firewall policy to update.
@@ -25293,6 +26241,7 @@ pub struct RemoveRuleRegionNetworkFirewallPolicyRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for SecurityPolicies.RemoveRule. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RemoveRuleSecurityPolicyRequest {
     /// The priority of the rule to remove from the security policy.
@@ -25306,6 +26255,7 @@ pub struct RemoveRuleSecurityPolicyRequest {
     pub security_policy: ::prost::alloc::string::String,
 }
 /// A policy that specifies how requests intended for the route's backends are shadowed to a separate mirrored backend service. The load balancer doesn't wait for responses from the shadow service. Before sending traffic to the shadow service, the host or authority header is suffixed with -shadow.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RequestMirrorPolicy {
     /// The full or partial URL to the BackendService resource being mirrored to. The backend service configured for a mirroring policy must reference backends that are of the same type as the original backend service matched in the URL map. Serverless NEG backends are not currently supported as a mirrored backend service.
@@ -25313,6 +26263,7 @@ pub struct RequestMirrorPolicy {
     pub backend_service: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Represents a reservation resource. A reservation ensures that capacity is held in a specific zone even if the reserved VMs are not running. For more information, read Reserving zonal resources.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Reservation {
     /// [Output Only] Full or partial URL to a parent commitment. This field displays for reservations that are tied to a commitment.
@@ -25408,6 +26359,7 @@ pub mod reservation {
     }
 }
 /// Specifies the reservations that this instance can consume from.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReservationAffinity {
     /// Specifies the type of reservation from which this instance can consume resources: ANY_RESERVATION (default), SPECIFIC_RESERVATION, or NO_RESERVATION. See Consuming reserved instances for examples.
@@ -25466,6 +26418,7 @@ pub mod reservation_affinity {
     }
 }
 /// Contains a list of reservations.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReservationAggregatedList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -25494,6 +26447,7 @@ pub struct ReservationAggregatedList {
     pub warning: ::core::option::Option<Warning>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReservationList {
     /// [Output Only] The unique identifier for the resource. This identifier is defined by the server.
@@ -25516,6 +26470,7 @@ pub struct ReservationList {
     pub warning: ::core::option::Option<Warning>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReservationsResizeRequest {
     /// Number of allocated resources can be resized with minimum = 1 and maximum = 1000.
@@ -25523,6 +26478,7 @@ pub struct ReservationsResizeRequest {
     pub specific_sku_count: ::core::option::Option<i64>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReservationsScopedList {
     /// A list of reservations contained in this scope.
@@ -25533,6 +26489,7 @@ pub struct ReservationsScopedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// A request message for Instances.Reset. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResetInstanceRequest {
     /// Name of the instance scoping this request.
@@ -25549,6 +26506,7 @@ pub struct ResetInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for Disks.Resize. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResizeDiskRequest {
     /// The name of the persistent disk.
@@ -25568,6 +26526,7 @@ pub struct ResizeDiskRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for InstanceGroupManagers.Resize. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResizeInstanceGroupManagerRequest {
     /// The name of the managed instance group.
@@ -25587,6 +26546,7 @@ pub struct ResizeInstanceGroupManagerRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for RegionDisks.Resize. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResizeRegionDiskRequest {
     /// Name of the regional persistent disk.
@@ -25608,6 +26568,7 @@ pub struct ResizeRegionDiskRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionInstanceGroupManagers.Resize. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResizeRegionInstanceGroupManagerRequest {
     /// Name of the managed instance group.
@@ -25627,6 +26588,7 @@ pub struct ResizeRegionInstanceGroupManagerRequest {
     pub size: i32,
 }
 /// A request message for Reservations.Resize. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResizeReservationRequest {
     /// Project ID for this request.
@@ -25648,6 +26610,7 @@ pub struct ResizeReservationRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// Commitment for a particular resource (a Commitment is composed of one or more of these).
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResourceCommitment {
     /// Name of the accelerator type resource. Applicable only when the type is ACCELERATOR.
@@ -25703,6 +26666,7 @@ pub mod resource_commitment {
     }
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResourceGroupReference {
     /// A URI referencing one of the instance groups or network endpoint groups listed in the backend service.
@@ -25710,6 +26674,7 @@ pub struct ResourceGroupReference {
     pub group: ::core::option::Option<::prost::alloc::string::String>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResourcePoliciesScopedList {
     /// A list of resourcePolicies contained in this scope.
@@ -25720,6 +26685,7 @@ pub struct ResourcePoliciesScopedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Represents a Resource Policy resource. You can use resource policies to schedule actions for some Compute Engine resources. For example, you can use them to schedule persistent disk snapshots.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResourcePolicy {
     /// [Output Only] Creation timestamp in RFC3339 text format.
@@ -25810,6 +26776,7 @@ pub mod resource_policy {
     }
 }
 /// Contains a list of resourcePolicies.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResourcePolicyAggregatedList {
     #[prost(string, optional, tag = "3123477")]
@@ -25840,6 +26807,7 @@ pub struct ResourcePolicyAggregatedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Time window specified for daily operations.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResourcePolicyDailyCycle {
     /// Defines a schedule with units measured in days. The value determines how many days pass between the start of each cycle.
@@ -25853,6 +26821,7 @@ pub struct ResourcePolicyDailyCycle {
     pub start_time: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A GroupPlacementPolicy specifies resource placement configuration. It specifies the failure bucket separation as well as network locality
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResourcePolicyGroupPlacementPolicy {
     /// The number of availability domains to spread instances across. If two instances are in different availability domain, they are not in the same low latency network.
@@ -25902,6 +26871,7 @@ pub mod resource_policy_group_placement_policy {
     }
 }
 /// Time window specified for hourly operations.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResourcePolicyHourlyCycle {
     /// [Output only] Duration of the time window, automatically chosen to be smallest possible in the given scenario.
@@ -25915,6 +26885,7 @@ pub struct ResourcePolicyHourlyCycle {
     pub start_time: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// An InstanceSchedulePolicy specifies when and how frequent certain operations are performed on the instance.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResourcePolicyInstanceSchedulePolicy {
     /// The expiration time of the schedule. The timestamp is an RFC3339 string.
@@ -25938,6 +26909,7 @@ pub struct ResourcePolicyInstanceSchedulePolicy {
     >,
 }
 /// Schedule for an instance operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResourcePolicyInstanceSchedulePolicySchedule {
     /// Specifies the frequency for the operation, using the unix-cron format.
@@ -25945,6 +26917,7 @@ pub struct ResourcePolicyInstanceSchedulePolicySchedule {
     pub schedule: ::core::option::Option<::prost::alloc::string::String>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResourcePolicyList {
     #[prost(string, optional, tag = "3123477")]
@@ -25969,6 +26942,7 @@ pub struct ResourcePolicyList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Contains output only fields. Use this sub-message for all output fields set on ResourcePolicy. The internal structure of this "status" field should mimic the structure of ResourcePolicy proto specification.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResourcePolicyResourceStatus {
     /// [Output Only] Specifies a set of output values reffering to the instance_schedule_policy system status. This field should have the same name as corresponding policy field.
@@ -25978,6 +26952,7 @@ pub struct ResourcePolicyResourceStatus {
     >,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResourcePolicyResourceStatusInstanceSchedulePolicyStatus {
     /// [Output Only] The last time the schedule successfully ran. The timestamp is an RFC3339 string.
@@ -25988,6 +26963,7 @@ pub struct ResourcePolicyResourceStatusInstanceSchedulePolicyStatus {
     pub next_run_start_time: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A snapshot schedule policy specifies when and how frequently snapshots are to be created for the target disk. Also specifies how many and how long these scheduled snapshots should be retained.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResourcePolicySnapshotSchedulePolicy {
     /// Retention policy applied to snapshots created by this resource policy.
@@ -26005,6 +26981,7 @@ pub struct ResourcePolicySnapshotSchedulePolicy {
     >,
 }
 /// Policy for retention of scheduled snapshots.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResourcePolicySnapshotSchedulePolicyRetentionPolicy {
     /// Maximum age of the snapshot that is allowed to be kept.
@@ -26057,6 +27034,7 @@ pub mod resource_policy_snapshot_schedule_policy_retention_policy {
     }
 }
 /// A schedule for disks where the schedueled operations are performed.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResourcePolicySnapshotSchedulePolicySchedule {
     #[prost(message, optional, tag = "86159869")]
@@ -26067,6 +27045,7 @@ pub struct ResourcePolicySnapshotSchedulePolicySchedule {
     pub weekly_schedule: ::core::option::Option<ResourcePolicyWeeklyCycle>,
 }
 /// Specified snapshot properties for scheduled snapshots created by this policy.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResourcePolicySnapshotSchedulePolicySnapshotProperties {
     /// Chain name that the snapshot is created in.
@@ -26086,6 +27065,7 @@ pub struct ResourcePolicySnapshotSchedulePolicySnapshotProperties {
     pub storage_locations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Time window specified for weekly operations.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResourcePolicyWeeklyCycle {
     /// Up to 7 intervals/windows, one for each day of the week.
@@ -26093,6 +27073,7 @@ pub struct ResourcePolicyWeeklyCycle {
     pub day_of_weeks: ::prost::alloc::vec::Vec<ResourcePolicyWeeklyCycleDayOfWeek>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResourcePolicyWeeklyCycleDayOfWeek {
     /// Defines a schedule that runs on specific days of the week. Specify one or more days. The following options are available: MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY.
@@ -26154,6 +27135,7 @@ pub mod resource_policy_weekly_cycle_day_of_week {
     }
 }
 /// Contains output only fields. Use this sub-message for actual values set on Instance attributes as compared to the value requested by the user (intent) in their instance CRUD calls.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResourceStatus {
     /// [Output Only] An opaque ID of the host on which the VM is running.
@@ -26161,6 +27143,7 @@ pub struct ResourceStatus {
     pub physical_host: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Instances.Resume. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResumeInstanceRequest {
     /// Name of the instance resource to resume.
@@ -26177,6 +27160,7 @@ pub struct ResumeInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// Represents a Route resource. A route defines a path from VM instances in the VPC network to a specific destination. This destination can be inside or outside the VPC network. For more information, read the Routes overview.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Route {
     /// [Output Only] AS path.
@@ -26325,6 +27309,7 @@ pub mod route {
     }
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouteAsPath {
     /// [Output Only] The AS numbers of the AS Path.
@@ -26377,6 +27362,7 @@ pub mod route_as_path {
     }
 }
 /// Contains a list of Route resources.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouteList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -26399,6 +27385,7 @@ pub struct RouteList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Represents a Cloud Router resource. For more information about Cloud Router, read the Cloud Router overview.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Router {
     /// BGP information specific to this router.
@@ -26445,6 +27432,7 @@ pub struct Router {
     pub self_link: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Description-tagged IP ranges for the router to advertise.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouterAdvertisedIpRange {
     /// User-specified description for the IP range.
@@ -26455,6 +27443,7 @@ pub struct RouterAdvertisedIpRange {
     pub range: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Contains a list of routers.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouterAggregatedList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -26483,6 +27472,7 @@ pub struct RouterAggregatedList {
     pub warning: ::core::option::Option<Warning>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouterBgp {
     /// User-specified flag to indicate which mode to use for advertisement. The options are DEFAULT or CUSTOM.
@@ -26572,6 +27562,7 @@ pub mod router_bgp {
     }
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouterBgpPeer {
     /// User-specified flag to indicate which mode to use for advertisement.
@@ -26771,6 +27762,7 @@ pub mod router_bgp_peer {
     }
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouterBgpPeerBfd {
     /// The minimum interval, in milliseconds, between BFD control packets received from the peer router. The actual value is negotiated between the two routers and is equal to the greater of this value and the transmit interval of the other router. If set, this value must be between 1000 and 30000. The default is 1000.
@@ -26829,6 +27821,7 @@ pub mod router_bgp_peer_bfd {
     }
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouterInterface {
     /// IP address and range of the interface. The IP range must be in the RFC3927 link-local IP address space. The value must be a CIDR-formatted string, for example: 169.254.0.1/30. NOTE: Do not truncate the address as it represents the IP address of the interface.
@@ -26897,6 +27890,7 @@ pub mod router_interface {
     }
 }
 /// Contains a list of Router resources.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouterList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -26919,6 +27913,7 @@ pub struct RouterList {
     pub warning: ::core::option::Option<Warning>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouterMd5AuthenticationKey {
     /// [Input only] Value of the key. For patch and update calls, it can be skipped to copy the value from the previous configuration. This is allowed if the key with the same name existed before the operation. Maximum length is 80 characters. Can only contain printable ASCII characters.
@@ -26929,6 +27924,7 @@ pub struct RouterMd5AuthenticationKey {
     pub name: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Represents a Nat resource. It enables the VMs within the specified subnetworks to access Internet without external IP addresses. It specifies a list of subnetworks (and the ranges within) that want to use NAT. Customers can also provide the external IPs that would be used for NAT. GCP would auto-allocate ephemeral IPs if no external IPs are provided.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouterNat {
     /// A list of URLs of the IP resources to be drained. These IPs must be valid static external IPs that have been assigned to the NAT. These IPs should be used for updating/patching a NAT only.
@@ -27107,6 +28103,7 @@ pub mod router_nat {
     }
 }
 /// Configuration of logging on a NAT.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouterNatLogConfig {
     /// Indicates whether or not to export logs. This is false by default.
@@ -27158,6 +28155,7 @@ pub mod router_nat_log_config {
     }
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouterNatRule {
     /// The action to be enforced for traffic that matches this rule.
@@ -27174,6 +28172,7 @@ pub struct RouterNatRule {
     pub rule_number: ::core::option::Option<u32>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouterNatRuleAction {
     /// A list of URLs of the IP resources used for this NAT rule. These IP addresses must be valid static external IP addresses assigned to the project. This field is used for public NAT.
@@ -27184,6 +28183,7 @@ pub struct RouterNatRuleAction {
     pub source_nat_drain_ips: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Defines the IP ranges that want to use NAT for a subnetwork.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouterNatSubnetworkToNat {
     /// URL for the subnetwork resource that will use NAT.
@@ -27246,6 +28246,7 @@ pub mod router_nat_subnetwork_to_nat {
     }
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouterStatus {
     /// Best routes for this router's network.
@@ -27263,6 +28264,7 @@ pub struct RouterStatus {
     pub network: ::core::option::Option<::prost::alloc::string::String>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouterStatusBgpPeerStatus {
     /// Routes that were advertised to the remote BGP peer
@@ -27393,6 +28395,7 @@ pub mod router_status_bgp_peer_status {
     }
 }
 /// Status of a NAT contained in this router.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouterStatusNatStatus {
     /// A list of IPs auto-allocated for NAT. Example: ["1.1.1.1", "129.2.16.89"]
@@ -27430,6 +28433,7 @@ pub struct RouterStatusNatStatus {
     pub user_allocated_nat_ips: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Status of a NAT Rule contained in this NAT.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouterStatusNatStatusNatRuleStatus {
     /// A list of active IPs for NAT. Example: ["1.1.1.1", "179.12.26.133"].
@@ -27449,6 +28453,7 @@ pub struct RouterStatusNatStatusNatRuleStatus {
     pub rule_number: ::core::option::Option<i32>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouterStatusResponse {
     /// Type of resource.
@@ -27458,6 +28463,7 @@ pub struct RouterStatusResponse {
     pub result: ::core::option::Option<RouterStatus>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RoutersPreviewResponse {
     /// Preview of given router.
@@ -27465,6 +28471,7 @@ pub struct RoutersPreviewResponse {
     pub resource: ::core::option::Option<Router>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RoutersScopedList {
     /// A list of routers contained in this scope.
@@ -27475,6 +28482,7 @@ pub struct RoutersScopedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// This is deprecated and has no effect. Do not use.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Rule {
     /// This is deprecated and has no effect. Do not use.
@@ -27550,6 +28558,7 @@ pub mod rule {
     }
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SslHealthCheck {
     /// The TCP port number to which the health check prober sends packets. The default value is 443. Valid values are 1 through 65535.
@@ -27648,6 +28657,7 @@ pub mod ssl_health_check {
     }
 }
 /// DEPRECATED: Please use compute#savedDisk instead. An instance-attached disk resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SavedAttachedDisk {
     /// Specifies whether the disk will be auto-deleted when the instance is deleted (but not when the disk is detached from the instance).
@@ -27839,6 +28849,7 @@ pub mod saved_attached_disk {
     }
 }
 /// An instance-attached disk resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SavedDisk {
     /// [Output Only] The architecture of the attached disk.
@@ -27934,6 +28945,7 @@ pub mod saved_disk {
     }
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ScalingScheduleStatus {
     /// [Output Only] The last time the scaling schedule became active. Note: this is a timestamp when a schedule actually became active, not when it was planned to do so. The timestamp is in RFC3339 text format.
@@ -27991,6 +29003,7 @@ pub mod scaling_schedule_status {
     }
 }
 /// Sets the scheduling options for an Instance.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Scheduling {
     /// Specifies whether the instance should be automatically restarted if it is terminated by Compute Engine (not terminated by a user). You can only set the automatic restart option for standard instances. Preemptible instances cannot be automatically restarted. By default, this is set to true so an instance is automatically restarted if it is terminated by Compute Engine.
@@ -28140,6 +29153,7 @@ pub mod scheduling {
     }
 }
 /// Node Affinity: the configuration of desired nodes onto which this Instance could be scheduled.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SchedulingNodeAffinity {
     /// Corresponds to the label key of Node resource.
@@ -28193,6 +29207,7 @@ pub mod scheduling_node_affinity {
     }
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ScratchDisks {
     /// Size of the scratch disk, defined in GB.
@@ -28200,6 +29215,7 @@ pub struct ScratchDisks {
     pub disk_gb: ::core::option::Option<i32>,
 }
 /// An instance's screenshot.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Screenshot {
     /// [Output Only] The Base64-encoded screenshot data.
@@ -28210,6 +29226,7 @@ pub struct Screenshot {
     pub kind: ::core::option::Option<::prost::alloc::string::String>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SecurityPoliciesAggregatedList {
     #[prost(string, optional, tag = "3123477")]
@@ -28240,12 +29257,14 @@ pub struct SecurityPoliciesAggregatedList {
     pub warning: ::core::option::Option<Warning>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SecurityPoliciesListPreconfiguredExpressionSetsResponse {
     #[prost(message, optional, tag = "536200826")]
     pub preconfigured_expression_sets: ::core::option::Option<SecurityPoliciesWafConfig>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SecurityPoliciesScopedList {
     /// A list of SecurityPolicies contained in this scope.
@@ -28256,12 +29275,14 @@ pub struct SecurityPoliciesScopedList {
     pub warning: ::core::option::Option<Warning>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SecurityPoliciesWafConfig {
     #[prost(message, optional, tag = "74899924")]
     pub waf_rules: ::core::option::Option<PreconfiguredWafSet>,
 }
 /// Represents a Google Cloud Armor security policy resource. Only external backend services that use load balancers can reference a security policy. For more information, see Google Cloud Armor security policy overview.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SecurityPolicy {
     #[prost(message, optional, tag = "150240735")]
@@ -28350,6 +29371,7 @@ pub mod security_policy {
     }
 }
 /// Configuration options for Cloud Armor Adaptive Protection (CAAP).
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SecurityPolicyAdaptiveProtectionConfig {
     /// If set to true, enables Cloud Armor Machine Learning.
@@ -28359,6 +29381,7 @@ pub struct SecurityPolicyAdaptiveProtectionConfig {
     >,
 }
 /// Configuration options for L7 DDoS detection.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfig {
     /// If set to true, enables CAAP for L7 DDoS detection.
@@ -28405,6 +29428,7 @@ pub mod security_policy_adaptive_protection_config_layer7_ddos_defense_config {
     }
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SecurityPolicyAdvancedOptionsConfig {
     /// Custom configuration to apply the JSON parsing. Only applicable when json_parsing is set to STANDARD.
@@ -28489,6 +29513,7 @@ pub mod security_policy_advanced_options_config {
     }
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SecurityPolicyAdvancedOptionsConfigJsonCustomConfig {
     /// A list of custom Content-Type header values to apply the JSON parsing. As per RFC 1341, a Content-Type header value has the following format: Content-Type := type "/" subtype *[";" parameter] When configuring a custom Content-Type header value, only the type/subtype needs to be specified, and the parameters should be excluded.
@@ -28496,6 +29521,7 @@ pub struct SecurityPolicyAdvancedOptionsConfigJsonCustomConfig {
     pub content_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SecurityPolicyDdosProtectionConfig {
     ///
@@ -28539,6 +29565,7 @@ pub mod security_policy_ddos_protection_config {
     }
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SecurityPolicyList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -28558,6 +29585,7 @@ pub struct SecurityPolicyList {
     pub warning: ::core::option::Option<Warning>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SecurityPolicyRecaptchaOptionsConfig {
     /// An optional field to supply a reCAPTCHA site key to be used for all the rules using the redirect action with the type of GOOGLE_RECAPTCHA under the security policy. The specified site key needs to be created from the reCAPTCHA API. The user is responsible for the validity of the specified site key. If not specified, a Google-managed site key is used.
@@ -28565,12 +29593,14 @@ pub struct SecurityPolicyRecaptchaOptionsConfig {
     pub redirect_site_key: ::core::option::Option<::prost::alloc::string::String>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SecurityPolicyReference {
     #[prost(string, optional, tag = "171082513")]
     pub security_policy: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Represents a rule that describes one or more match conditions along with the action to be taken when traffic matches this condition (allow or deny).
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SecurityPolicyRule {
     /// The Action to perform when the rule is matched. The following are the valid actions: - allow: allow access to target. - deny(): deny access to target, returns the HTTP response code specified (valid values are 403, 404, and 502). - rate_based_ban: limit client traffic to the configured threshold and ban the client if the traffic exceeds the threshold. Configure parameters for this action in RateLimitOptions. Requires rate_limit_options to be set. - redirect: redirect to a different target. This can either be an internal reCAPTCHA redirect, or an external URL-based redirect via a 302 response. Parameters for this action can be configured via redirectOptions. - throttle: limit client traffic to the configured threshold. Configure parameters for this action in rateLimitOptions. Requires rate_limit_options to be set for this.
@@ -28602,6 +29632,7 @@ pub struct SecurityPolicyRule {
     pub redirect_options: ::core::option::Option<SecurityPolicyRuleRedirectOptions>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SecurityPolicyRuleHttpHeaderAction {
     /// The list of request headers to add or overwrite if they're already present.
@@ -28611,6 +29642,7 @@ pub struct SecurityPolicyRuleHttpHeaderAction {
     >,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SecurityPolicyRuleHttpHeaderActionHttpHeaderOption {
     /// The name of the header to set.
@@ -28621,6 +29653,7 @@ pub struct SecurityPolicyRuleHttpHeaderActionHttpHeaderOption {
     pub header_value: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Represents a match condition that incoming traffic is evaluated against. Exactly one field must be specified.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SecurityPolicyRuleMatcher {
     /// The configuration options available when specifying versioned_expr. This field must be specified if versioned_expr is specified and cannot be specified if versioned_expr is not specified.
@@ -28669,6 +29702,7 @@ pub mod security_policy_rule_matcher {
     }
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SecurityPolicyRuleMatcherConfig {
     /// CIDR IP address range. Maximum number of src_ip_ranges allowed is 10.
@@ -28676,6 +29710,7 @@ pub struct SecurityPolicyRuleMatcherConfig {
     pub src_ip_ranges: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SecurityPolicyRuleRateLimitOptions {
     /// Can only be specified if the action for the rule is "rate_based_ban". If specified, determines the time (in seconds) the traffic will continue to be banned by the rate limit after the rate falls below the threshold.
@@ -28758,6 +29793,7 @@ pub mod security_policy_rule_rate_limit_options {
     }
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SecurityPolicyRuleRateLimitOptionsThreshold {
     /// Number of HTTP(S) requests for calculating the threshold.
@@ -28768,6 +29804,7 @@ pub struct SecurityPolicyRuleRateLimitOptionsThreshold {
     pub interval_sec: ::core::option::Option<i32>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SecurityPolicyRuleRedirectOptions {
     /// Target for the redirect action. This is required if the type is EXTERNAL_302 and cannot be specified for GOOGLE_RECAPTCHA.
@@ -28814,6 +29851,7 @@ pub mod security_policy_rule_redirect_options {
     }
 }
 /// The authentication and authorization settings for a BackendService.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SecuritySettings {
     /// Optional. A URL referring to a networksecurity.ClientTlsPolicy resource that describes how clients should authenticate with this service's backends. clientTlsPolicy only applies to a global BackendService with the loadBalancingScheme set to INTERNAL_SELF_MANAGED. If left blank, communications are not encrypted. Note: This field currently has no impact.
@@ -28824,6 +29862,7 @@ pub struct SecuritySettings {
     pub subject_alt_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// A request message for Instances.SendDiagnosticInterrupt. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SendDiagnosticInterruptInstanceRequest {
     /// Name of the instance scoping this request.
@@ -28837,9 +29876,11 @@ pub struct SendDiagnosticInterruptInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A response message for Instances.SendDiagnosticInterrupt. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SendDiagnosticInterruptInstanceResponse {}
 /// An instance serial console output.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SerialPortOutput {
     /// [Output Only] The contents of the console output.
@@ -28859,6 +29900,7 @@ pub struct SerialPortOutput {
     pub start: ::core::option::Option<i64>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ServerBinding {
     ///
@@ -28906,6 +29948,7 @@ pub mod server_binding {
     }
 }
 /// A service account.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ServiceAccount {
     /// Email address of the service account.
@@ -28916,6 +29959,7 @@ pub struct ServiceAccount {
     pub scopes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Represents a ServiceAttachment resource. A service attachment represents a service that a producer has exposed. It encapsulates the load balancer which fronts the service runs and a list of NAT IP ranges that the producers uses to represent the consumers connecting to the service. next tag = 20
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ServiceAttachment {
     /// [Output Only] An array of connections for all the consumers connected to this service attachment.
@@ -29018,6 +30062,7 @@ pub mod service_attachment {
     }
 }
 /// Contains a list of ServiceAttachmentsScopedList.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ServiceAttachmentAggregatedList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -29046,6 +30091,7 @@ pub struct ServiceAttachmentAggregatedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// [Output Only] A connection connected to this service attachment.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ServiceAttachmentConnectedEndpoint {
     /// The url of a connected endpoint.
@@ -29108,6 +30154,7 @@ pub mod service_attachment_connected_endpoint {
     }
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ServiceAttachmentConsumerProjectLimit {
     /// The value of the limit to set.
@@ -29121,6 +30168,7 @@ pub struct ServiceAttachmentConsumerProjectLimit {
     pub project_id_or_num: ::core::option::Option<::prost::alloc::string::String>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ServiceAttachmentList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -29143,6 +30191,7 @@ pub struct ServiceAttachmentList {
     pub warning: ::core::option::Option<Warning>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ServiceAttachmentsScopedList {
     /// A list of ServiceAttachments contained in this scope.
@@ -29153,6 +30202,7 @@ pub struct ServiceAttachmentsScopedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// A request message for TargetSslProxies.SetBackendService. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetBackendServiceTargetSslProxyRequest {
     /// Project ID for this request.
@@ -29171,6 +30221,7 @@ pub struct SetBackendServiceTargetSslProxyRequest {
     pub target_ssl_proxy: ::prost::alloc::string::String,
 }
 /// A request message for TargetTcpProxies.SetBackendService. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetBackendServiceTargetTcpProxyRequest {
     /// Project ID for this request.
@@ -29189,6 +30240,7 @@ pub struct SetBackendServiceTargetTcpProxyRequest {
     pub target_tcp_proxy: ::prost::alloc::string::String,
 }
 /// A request message for TargetPools.SetBackup. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetBackupTargetPoolRequest {
     /// New failoverRatio value for the target pool.
@@ -29211,6 +30263,7 @@ pub struct SetBackupTargetPoolRequest {
     pub target_reference_resource: ::core::option::Option<TargetReference>,
 }
 /// A request message for TargetHttpsProxies.SetCertificateMap. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetCertificateMapTargetHttpsProxyRequest {
     /// Project ID for this request.
@@ -29229,6 +30282,7 @@ pub struct SetCertificateMapTargetHttpsProxyRequest {
     pub target_https_proxy: ::prost::alloc::string::String,
 }
 /// A request message for TargetSslProxies.SetCertificateMap. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetCertificateMapTargetSslProxyRequest {
     /// Project ID for this request.
@@ -29247,6 +30301,7 @@ pub struct SetCertificateMapTargetSslProxyRequest {
     pub target_ssl_proxy: ::prost::alloc::string::String,
 }
 /// A request message for Projects.SetCommonInstanceMetadata. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetCommonInstanceMetadataProjectRequest {
     /// The body resource for this request
@@ -29260,6 +30315,7 @@ pub struct SetCommonInstanceMetadataProjectRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Projects.SetDefaultNetworkTier. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetDefaultNetworkTierProjectRequest {
     /// Project ID for this request.
@@ -29275,6 +30331,7 @@ pub struct SetDefaultNetworkTierProjectRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Instances.SetDeletionProtection. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetDeletionProtectionInstanceRequest {
     /// Whether the resource should be protected against deletion.
@@ -29294,6 +30351,7 @@ pub struct SetDeletionProtectionInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for Instances.SetDiskAutoDelete. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetDiskAutoDeleteInstanceRequest {
     /// Whether to auto-delete the disk when the instance is deleted.
@@ -29316,6 +30374,7 @@ pub struct SetDiskAutoDeleteInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for BackendBuckets.SetEdgeSecurityPolicy. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetEdgeSecurityPolicyBackendBucketRequest {
     /// Name of the BackendService resource to which the security policy should be set. The name should conform to RFC1035.
@@ -29334,6 +30393,7 @@ pub struct SetEdgeSecurityPolicyBackendBucketRequest {
     >,
 }
 /// A request message for BackendServices.SetEdgeSecurityPolicy. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetEdgeSecurityPolicyBackendServiceRequest {
     /// Name of the BackendService resource to which the edge security policy should be set. The name should conform to RFC1035.
@@ -29352,6 +30412,7 @@ pub struct SetEdgeSecurityPolicyBackendServiceRequest {
     >,
 }
 /// A request message for BackendServices.SetIamPolicy. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetIamPolicyBackendServiceRequest {
     /// The body resource for this request
@@ -29367,6 +30428,7 @@ pub struct SetIamPolicyBackendServiceRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for Disks.SetIamPolicy. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetIamPolicyDiskRequest {
     /// Project ID for this request.
@@ -29383,6 +30445,7 @@ pub struct SetIamPolicyDiskRequest {
     pub zone_set_policy_request_resource: ::core::option::Option<ZoneSetPolicyRequest>,
 }
 /// A request message for FirewallPolicies.SetIamPolicy. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetIamPolicyFirewallPolicyRequest {
     /// The body resource for this request
@@ -29395,6 +30458,7 @@ pub struct SetIamPolicyFirewallPolicyRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for Images.SetIamPolicy. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetIamPolicyImageRequest {
     /// The body resource for this request
@@ -29410,6 +30474,7 @@ pub struct SetIamPolicyImageRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for Instances.SetIamPolicy. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetIamPolicyInstanceRequest {
     /// Project ID for this request.
@@ -29426,6 +30491,7 @@ pub struct SetIamPolicyInstanceRequest {
     pub zone_set_policy_request_resource: ::core::option::Option<ZoneSetPolicyRequest>,
 }
 /// A request message for InstanceTemplates.SetIamPolicy. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetIamPolicyInstanceTemplateRequest {
     /// The body resource for this request
@@ -29441,6 +30507,7 @@ pub struct SetIamPolicyInstanceTemplateRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for Licenses.SetIamPolicy. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetIamPolicyLicenseRequest {
     /// The body resource for this request
@@ -29456,6 +30523,7 @@ pub struct SetIamPolicyLicenseRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for MachineImages.SetIamPolicy. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetIamPolicyMachineImageRequest {
     /// The body resource for this request
@@ -29471,6 +30539,7 @@ pub struct SetIamPolicyMachineImageRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for NetworkAttachments.SetIamPolicy. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetIamPolicyNetworkAttachmentRequest {
     /// Project ID for this request.
@@ -29489,6 +30558,7 @@ pub struct SetIamPolicyNetworkAttachmentRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for NetworkFirewallPolicies.SetIamPolicy. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetIamPolicyNetworkFirewallPolicyRequest {
     /// The body resource for this request
@@ -29504,6 +30574,7 @@ pub struct SetIamPolicyNetworkFirewallPolicyRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for NodeGroups.SetIamPolicy. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetIamPolicyNodeGroupRequest {
     /// Project ID for this request.
@@ -29520,6 +30591,7 @@ pub struct SetIamPolicyNodeGroupRequest {
     pub zone_set_policy_request_resource: ::core::option::Option<ZoneSetPolicyRequest>,
 }
 /// A request message for NodeTemplates.SetIamPolicy. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetIamPolicyNodeTemplateRequest {
     /// Project ID for this request.
@@ -29538,6 +30610,7 @@ pub struct SetIamPolicyNodeTemplateRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for RegionBackendServices.SetIamPolicy. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetIamPolicyRegionBackendServiceRequest {
     /// Project ID for this request.
@@ -29556,6 +30629,7 @@ pub struct SetIamPolicyRegionBackendServiceRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for RegionDisks.SetIamPolicy. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetIamPolicyRegionDiskRequest {
     /// Project ID for this request.
@@ -29574,6 +30648,7 @@ pub struct SetIamPolicyRegionDiskRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for RegionNetworkFirewallPolicies.SetIamPolicy. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetIamPolicyRegionNetworkFirewallPolicyRequest {
     /// Project ID for this request.
@@ -29592,6 +30667,7 @@ pub struct SetIamPolicyRegionNetworkFirewallPolicyRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for Reservations.SetIamPolicy. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetIamPolicyReservationRequest {
     /// Project ID for this request.
@@ -29608,6 +30684,7 @@ pub struct SetIamPolicyReservationRequest {
     pub zone_set_policy_request_resource: ::core::option::Option<ZoneSetPolicyRequest>,
 }
 /// A request message for ResourcePolicies.SetIamPolicy. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetIamPolicyResourcePolicyRequest {
     /// Project ID for this request.
@@ -29626,6 +30703,7 @@ pub struct SetIamPolicyResourcePolicyRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for ServiceAttachments.SetIamPolicy. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetIamPolicyServiceAttachmentRequest {
     /// Project ID for this request.
@@ -29644,6 +30722,7 @@ pub struct SetIamPolicyServiceAttachmentRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for Snapshots.SetIamPolicy. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetIamPolicySnapshotRequest {
     /// The body resource for this request
@@ -29659,6 +30738,7 @@ pub struct SetIamPolicySnapshotRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for Subnetworks.SetIamPolicy. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetIamPolicySubnetworkRequest {
     /// Project ID for this request.
@@ -29677,6 +30757,7 @@ pub struct SetIamPolicySubnetworkRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for InstanceGroupManagers.SetInstanceTemplate. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetInstanceTemplateInstanceGroupManagerRequest {
     /// The name of the managed instance group.
@@ -29698,6 +30779,7 @@ pub struct SetInstanceTemplateInstanceGroupManagerRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for RegionInstanceGroupManagers.SetInstanceTemplate. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetInstanceTemplateRegionInstanceGroupManagerRequest {
     /// The name of the managed instance group.
@@ -29719,6 +30801,7 @@ pub struct SetInstanceTemplateRegionInstanceGroupManagerRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Addresses.SetLabels. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetLabelsAddressRequest {
     /// Project ID for this request.
@@ -29740,6 +30823,7 @@ pub struct SetLabelsAddressRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for Disks.SetLabels. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetLabelsDiskRequest {
     /// Project ID for this request.
@@ -29759,6 +30843,7 @@ pub struct SetLabelsDiskRequest {
     pub zone_set_labels_request_resource: ::core::option::Option<ZoneSetLabelsRequest>,
 }
 /// A request message for ExternalVpnGateways.SetLabels. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetLabelsExternalVpnGatewayRequest {
     /// The body resource for this request
@@ -29774,6 +30859,7 @@ pub struct SetLabelsExternalVpnGatewayRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for ForwardingRules.SetLabels. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetLabelsForwardingRuleRequest {
     /// Project ID for this request.
@@ -29795,6 +30881,7 @@ pub struct SetLabelsForwardingRuleRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for GlobalAddresses.SetLabels. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetLabelsGlobalAddressRequest {
     /// The body resource for this request
@@ -29810,6 +30897,7 @@ pub struct SetLabelsGlobalAddressRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for GlobalForwardingRules.SetLabels. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetLabelsGlobalForwardingRuleRequest {
     /// The body resource for this request
@@ -29825,6 +30913,7 @@ pub struct SetLabelsGlobalForwardingRuleRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for Images.SetLabels. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetLabelsImageRequest {
     /// The body resource for this request
@@ -29840,6 +30929,7 @@ pub struct SetLabelsImageRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for Instances.SetLabels. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetLabelsInstanceRequest {
     /// Name of the instance scoping this request.
@@ -29861,6 +30951,7 @@ pub struct SetLabelsInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for InterconnectAttachments.SetLabels. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetLabelsInterconnectAttachmentRequest {
     /// Project ID for this request.
@@ -29882,6 +30973,7 @@ pub struct SetLabelsInterconnectAttachmentRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for Interconnects.SetLabels. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetLabelsInterconnectRequest {
     /// The body resource for this request
@@ -29897,6 +30989,7 @@ pub struct SetLabelsInterconnectRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for RegionDisks.SetLabels. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetLabelsRegionDiskRequest {
     /// Project ID for this request.
@@ -29918,6 +31011,7 @@ pub struct SetLabelsRegionDiskRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for SecurityPolicies.SetLabels. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetLabelsSecurityPolicyRequest {
     /// The body resource for this request
@@ -29933,6 +31027,7 @@ pub struct SetLabelsSecurityPolicyRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for Snapshots.SetLabels. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetLabelsSnapshotRequest {
     /// The body resource for this request
@@ -29948,6 +31043,7 @@ pub struct SetLabelsSnapshotRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for TargetVpnGateways.SetLabels. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetLabelsTargetVpnGatewayRequest {
     /// Project ID for this request.
@@ -29969,6 +31065,7 @@ pub struct SetLabelsTargetVpnGatewayRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for VpnGateways.SetLabels. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetLabelsVpnGatewayRequest {
     /// Project ID for this request.
@@ -29990,6 +31087,7 @@ pub struct SetLabelsVpnGatewayRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for VpnTunnels.SetLabels. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetLabelsVpnTunnelRequest {
     /// Project ID for this request.
@@ -30011,6 +31109,7 @@ pub struct SetLabelsVpnTunnelRequest {
     pub resource: ::prost::alloc::string::String,
 }
 /// A request message for Instances.SetMachineResources. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetMachineResourcesInstanceRequest {
     /// Name of the instance scoping this request.
@@ -30032,6 +31131,7 @@ pub struct SetMachineResourcesInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for Instances.SetMachineType. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetMachineTypeInstanceRequest {
     /// Name of the instance scoping this request.
@@ -30053,6 +31153,7 @@ pub struct SetMachineTypeInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for Instances.SetMetadata. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetMetadataInstanceRequest {
     /// Name of the instance scoping this request.
@@ -30072,6 +31173,7 @@ pub struct SetMetadataInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for Instances.SetMinCpuPlatform. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetMinCpuPlatformInstanceRequest {
     /// Name of the instance scoping this request.
@@ -30093,6 +31195,7 @@ pub struct SetMinCpuPlatformInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for InstanceGroups.SetNamedPorts. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetNamedPortsInstanceGroupRequest {
     /// The name of the instance group where the named ports are updated.
@@ -30114,6 +31217,7 @@ pub struct SetNamedPortsInstanceGroupRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for RegionInstanceGroups.SetNamedPorts. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetNamedPortsRegionInstanceGroupRequest {
     /// The name of the regional instance group where the named ports are updated.
@@ -30135,6 +31239,7 @@ pub struct SetNamedPortsRegionInstanceGroupRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for NodeGroups.SetNodeTemplate. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetNodeTemplateNodeGroupRequest {
     /// Name of the NodeGroup resource to update.
@@ -30156,6 +31261,7 @@ pub struct SetNodeTemplateNodeGroupRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for Subnetworks.SetPrivateIpGoogleAccess. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetPrivateIpGoogleAccessSubnetworkRequest {
     /// Project ID for this request.
@@ -30177,6 +31283,7 @@ pub struct SetPrivateIpGoogleAccessSubnetworkRequest {
     >,
 }
 /// A request message for TargetSslProxies.SetProxyHeader. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetProxyHeaderTargetSslProxyRequest {
     /// Project ID for this request.
@@ -30195,6 +31302,7 @@ pub struct SetProxyHeaderTargetSslProxyRequest {
     pub target_ssl_proxy: ::prost::alloc::string::String,
 }
 /// A request message for TargetTcpProxies.SetProxyHeader. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetProxyHeaderTargetTcpProxyRequest {
     /// Project ID for this request.
@@ -30213,6 +31321,7 @@ pub struct SetProxyHeaderTargetTcpProxyRequest {
     pub target_tcp_proxy: ::prost::alloc::string::String,
 }
 /// A request message for TargetHttpsProxies.SetQuicOverride. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetQuicOverrideTargetHttpsProxyRequest {
     /// Project ID for this request.
@@ -30231,6 +31340,7 @@ pub struct SetQuicOverrideTargetHttpsProxyRequest {
     pub target_https_proxy: ::prost::alloc::string::String,
 }
 /// A request message for Instances.SetScheduling. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetSchedulingInstanceRequest {
     /// Instance name for this request.
@@ -30250,6 +31360,7 @@ pub struct SetSchedulingInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for BackendServices.SetSecurityPolicy. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetSecurityPolicyBackendServiceRequest {
     /// Name of the BackendService resource to which the security policy should be set. The name should conform to RFC1035.
@@ -30268,6 +31379,7 @@ pub struct SetSecurityPolicyBackendServiceRequest {
     >,
 }
 /// A request message for Instances.SetServiceAccount. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetServiceAccountInstanceRequest {
     /// Name of the instance resource to start.
@@ -30289,6 +31401,7 @@ pub struct SetServiceAccountInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for Instances.SetShieldedInstanceIntegrityPolicy. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetShieldedInstanceIntegrityPolicyInstanceRequest {
     /// Name or id of the instance scoping this request.
@@ -30310,6 +31423,7 @@ pub struct SetShieldedInstanceIntegrityPolicyInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for RegionTargetHttpsProxies.SetSslCertificates. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetSslCertificatesRegionTargetHttpsProxyRequest {
     /// Project ID for this request.
@@ -30331,6 +31445,7 @@ pub struct SetSslCertificatesRegionTargetHttpsProxyRequest {
     pub target_https_proxy: ::prost::alloc::string::String,
 }
 /// A request message for TargetHttpsProxies.SetSslCertificates. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetSslCertificatesTargetHttpsProxyRequest {
     /// Project ID for this request.
@@ -30349,6 +31464,7 @@ pub struct SetSslCertificatesTargetHttpsProxyRequest {
     pub target_https_proxy: ::prost::alloc::string::String,
 }
 /// A request message for TargetSslProxies.SetSslCertificates. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetSslCertificatesTargetSslProxyRequest {
     /// Project ID for this request.
@@ -30367,6 +31483,7 @@ pub struct SetSslCertificatesTargetSslProxyRequest {
     pub target_ssl_proxy: ::prost::alloc::string::String,
 }
 /// A request message for TargetHttpsProxies.SetSslPolicy. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetSslPolicyTargetHttpsProxyRequest {
     /// Project ID for this request.
@@ -30383,6 +31500,7 @@ pub struct SetSslPolicyTargetHttpsProxyRequest {
     pub target_https_proxy: ::prost::alloc::string::String,
 }
 /// A request message for TargetSslProxies.SetSslPolicy. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetSslPolicyTargetSslProxyRequest {
     /// Project ID for this request.
@@ -30399,6 +31517,7 @@ pub struct SetSslPolicyTargetSslProxyRequest {
     pub target_ssl_proxy: ::prost::alloc::string::String,
 }
 /// A request message for Instances.SetTags. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetTagsInstanceRequest {
     /// Name of the instance scoping this request.
@@ -30418,6 +31537,7 @@ pub struct SetTagsInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for ForwardingRules.SetTarget. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetTargetForwardingRuleRequest {
     /// Name of the ForwardingRule resource in which target is to be set.
@@ -30437,6 +31557,7 @@ pub struct SetTargetForwardingRuleRequest {
     pub target_reference_resource: ::core::option::Option<TargetReference>,
 }
 /// A request message for GlobalForwardingRules.SetTarget. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetTargetGlobalForwardingRuleRequest {
     /// Name of the ForwardingRule resource in which target is to be set.
@@ -30453,6 +31574,7 @@ pub struct SetTargetGlobalForwardingRuleRequest {
     pub target_reference_resource: ::core::option::Option<TargetReference>,
 }
 /// A request message for InstanceGroupManagers.SetTargetPools. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetTargetPoolsInstanceGroupManagerRequest {
     /// The name of the managed instance group.
@@ -30474,6 +31596,7 @@ pub struct SetTargetPoolsInstanceGroupManagerRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for RegionInstanceGroupManagers.SetTargetPools. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetTargetPoolsRegionInstanceGroupManagerRequest {
     /// Name of the managed instance group.
@@ -30495,6 +31618,7 @@ pub struct SetTargetPoolsRegionInstanceGroupManagerRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionTargetHttpProxies.SetUrlMap. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetUrlMapRegionTargetHttpProxyRequest {
     /// Project ID for this request.
@@ -30514,6 +31638,7 @@ pub struct SetUrlMapRegionTargetHttpProxyRequest {
     pub url_map_reference_resource: ::core::option::Option<UrlMapReference>,
 }
 /// A request message for RegionTargetHttpsProxies.SetUrlMap. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetUrlMapRegionTargetHttpsProxyRequest {
     /// Project ID for this request.
@@ -30533,6 +31658,7 @@ pub struct SetUrlMapRegionTargetHttpsProxyRequest {
     pub url_map_reference_resource: ::core::option::Option<UrlMapReference>,
 }
 /// A request message for TargetHttpProxies.SetUrlMap. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetUrlMapTargetHttpProxyRequest {
     /// Project ID for this request.
@@ -30549,6 +31675,7 @@ pub struct SetUrlMapTargetHttpProxyRequest {
     pub url_map_reference_resource: ::core::option::Option<UrlMapReference>,
 }
 /// A request message for TargetHttpsProxies.SetUrlMap. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetUrlMapTargetHttpsProxyRequest {
     /// Project ID for this request.
@@ -30565,6 +31692,7 @@ pub struct SetUrlMapTargetHttpsProxyRequest {
     pub url_map_reference_resource: ::core::option::Option<UrlMapReference>,
 }
 /// A request message for Projects.SetUsageExportBucket. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetUsageExportBucketProjectRequest {
     /// Project ID for this request.
@@ -30578,6 +31706,7 @@ pub struct SetUsageExportBucketProjectRequest {
     pub usage_export_location_resource: ::core::option::Option<UsageExportLocation>,
 }
 /// The share setting for reservations and sole tenancy node groups.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ShareSettings {
     /// A map of project id and project config. This is only valid when share_type's value is SPECIFIC_PROJECTS.
@@ -30635,6 +31764,7 @@ pub mod share_settings {
     }
 }
 /// Config for each project in the share settings.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ShareSettingsProjectConfig {
     /// The project ID, should be same as the key of this project config in the parent map.
@@ -30642,6 +31772,7 @@ pub struct ShareSettingsProjectConfig {
     pub project_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A set of Shielded Instance options.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ShieldedInstanceConfig {
     /// Defines whether the instance has integrity monitoring enabled. Enabled by default.
@@ -30655,6 +31786,7 @@ pub struct ShieldedInstanceConfig {
     pub enable_vtpm: ::core::option::Option<bool>,
 }
 /// A Shielded Instance Identity.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ShieldedInstanceIdentity {
     /// An Endorsement Key (EK) made by the RSA 2048 algorithm issued to the Shielded Instance's vTPM.
@@ -30668,6 +31800,7 @@ pub struct ShieldedInstanceIdentity {
     pub signing_key: ::core::option::Option<ShieldedInstanceIdentityEntry>,
 }
 /// A Shielded Instance Identity Entry.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ShieldedInstanceIdentityEntry {
     /// A PEM-encoded X.509 certificate. This field can be empty.
@@ -30678,6 +31811,7 @@ pub struct ShieldedInstanceIdentityEntry {
     pub ek_pub: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// The policy describes the baseline against which Instance boot integrity is measured.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ShieldedInstanceIntegrityPolicy {
     /// Updates the integrity policy baseline using the measurements from the VM instance's most recent boot.
@@ -30685,6 +31819,7 @@ pub struct ShieldedInstanceIntegrityPolicy {
     pub update_auto_learn_policy: ::core::option::Option<bool>,
 }
 /// Represents a customer-supplied Signing Key used by Cloud CDN Signed URLs
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SignedUrlKey {
     /// Name of the key. The name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression `\[a-z]([-a-z0-9]*[a-z0-9\])?` which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash.
@@ -30695,6 +31830,7 @@ pub struct SignedUrlKey {
     pub key_value: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Instances.SimulateMaintenanceEvent. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SimulateMaintenanceEventInstanceRequest {
     /// Name of the instance scoping this request.
@@ -30708,6 +31844,7 @@ pub struct SimulateMaintenanceEventInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// Represents a Persistent Disk Snapshot resource. You can use snapshots to back up data on a regular interval. For more information, read Creating persistent disk snapshots.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Snapshot {
     /// [Output Only] The architecture of the snapshot. Valid values are ARM64 or X86_64.
@@ -30959,6 +32096,7 @@ pub mod snapshot {
     }
 }
 /// Contains a list of Snapshot resources.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SnapshotList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -30981,6 +32119,7 @@ pub struct SnapshotList {
     pub warning: ::core::option::Option<Warning>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SourceDiskEncryptionKey {
     /// The customer-supplied encryption key of the source disk. Required if the source disk is protected by a customer-supplied encryption key.
@@ -30991,6 +32130,7 @@ pub struct SourceDiskEncryptionKey {
     pub source_disk: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A specification of the parameters to use when creating the instance template from a source instance.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SourceInstanceParams {
     /// Attached disks configuration. If not provided, defaults are applied: For boot disk and any other R/W disks, new custom images will be created from each disk. For read-only disks, they will be attached in read-only mode. Local SSD disks will be created as blank volumes.
@@ -30998,6 +32138,7 @@ pub struct SourceInstanceParams {
     pub disk_configs: ::prost::alloc::vec::Vec<DiskInstantiationConfig>,
 }
 /// DEPRECATED: Please use compute#instanceProperties instead. New properties will not be added to this field.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SourceInstanceProperties {
     /// Enables instances created based on this machine image to send packets with source IP addresses other than their own and receive packets with destination IP addresses other than their own. If these instances will be used as an IP gateway or it will be set as the next-hop in a Route resource, specify true. If unsure, leave this set to false. See the Enable IP forwarding documentation for more information.
@@ -31094,6 +32235,7 @@ pub mod source_instance_properties {
     }
 }
 /// Represents an SSL Certificate resource. Google Compute Engine has two SSL Certificate resources: * \[Global\](/compute/docs/reference/rest/v1/sslCertificates) * \[Regional\](/compute/docs/reference/rest/v1/regionSslCertificates) The sslCertificates are used by: - external HTTPS load balancers - SSL proxy load balancers The regionSslCertificates are used by internal HTTPS load balancers. Optionally, certificate file contents that you upload can contain a set of up to five PEM-encoded certificates. The API call creates an object (sslCertificate) that holds this data. You can use SSL keys and certificates to secure connections to a load balancer. For more information, read Creating and using SSL certificates, SSL certificates quotas and limits, and Troubleshooting SSL certificates.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SslCertificate {
     /// A value read into memory from a certificate file. The certificate file must be in PEM format. The certificate chain must be no greater than 5 certs long. The chain must include at least one intermediate cert.
@@ -31182,6 +32324,7 @@ pub mod ssl_certificate {
     }
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SslCertificateAggregatedList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -31210,6 +32353,7 @@ pub struct SslCertificateAggregatedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Contains a list of SslCertificate resources.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SslCertificateList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -31232,6 +32376,7 @@ pub struct SslCertificateList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Configuration and status of a managed SSL certificate.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SslCertificateManagedSslCertificate {
     /// [Output only] Detailed statuses of the domains specified for managed certificate resource.
@@ -31301,6 +32446,7 @@ pub mod ssl_certificate_managed_ssl_certificate {
     }
 }
 /// Configuration and status of a self-managed SSL certificate.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SslCertificateSelfManagedSslCertificate {
     /// A local certificate file. The certificate must be in PEM format. The certificate chain must be no greater than 5 certs long. The chain must include at least one intermediate cert.
@@ -31311,6 +32457,7 @@ pub struct SslCertificateSelfManagedSslCertificate {
     pub private_key: ::core::option::Option<::prost::alloc::string::String>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SslCertificatesScopedList {
     /// List of SslCertificates contained in this scope.
@@ -31321,6 +32468,7 @@ pub struct SslCertificatesScopedList {
     pub warning: ::core::option::Option<Warning>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SslPoliciesAggregatedList {
     #[prost(string, optional, tag = "3123477")]
@@ -31351,6 +32499,7 @@ pub struct SslPoliciesAggregatedList {
     pub warning: ::core::option::Option<Warning>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SslPoliciesList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -31373,12 +32522,14 @@ pub struct SslPoliciesList {
     pub warning: ::core::option::Option<Warning>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SslPoliciesListAvailableFeaturesResponse {
     #[prost(string, repeated, tag = "246211645")]
     pub features: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SslPoliciesScopedList {
     /// A list of SslPolicies contained in this scope.
@@ -31389,6 +32540,7 @@ pub struct SslPoliciesScopedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Represents an SSL Policy resource. Use SSL policies to control the SSL features, such as versions and cipher suites, offered by an HTTPS or SSL Proxy load balancer. For more information, read SSL Policy Concepts.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SslPolicy {
     /// [Output Only] Creation timestamp in RFC3339 text format.
@@ -31514,6 +32666,7 @@ pub mod ssl_policy {
     }
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SslPolicyReference {
     /// URL of the SSL policy resource. Set this to empty string to clear any existing SSL policy associated with the target proxy resource.
@@ -31521,6 +32674,7 @@ pub struct SslPolicyReference {
     pub ssl_policy: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Instances.Start. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StartInstanceRequest {
     /// Name of the instance resource to start.
@@ -31537,6 +32691,7 @@ pub struct StartInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for Instances.StartWithEncryptionKey. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StartWithEncryptionKeyInstanceRequest {
     /// Name of the instance resource to start.
@@ -31558,12 +32713,14 @@ pub struct StartWithEncryptionKeyInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StatefulPolicy {
     #[prost(message, optional, tag = "2634026")]
     pub preserved_state: ::core::option::Option<StatefulPolicyPreservedState>,
 }
 /// Configuration of preserved resources.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StatefulPolicyPreservedState {
     /// Disks created on the instances that will be preserved on instance delete, update, etc. This map is keyed with the device names of the disks.
@@ -31574,6 +32731,7 @@ pub struct StatefulPolicyPreservedState {
     >,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StatefulPolicyPreservedStateDiskDevice {
     /// These stateful disks will never be deleted during autohealing, update or VM instance recreate operations. This flag is used to configure if the disk should be deleted after it is no longer used by the group, e.g. when the given instance or the whole group is deleted. Note: disks attached in READ_ONLY mode cannot be auto-deleted.
@@ -31619,6 +32777,7 @@ pub mod stateful_policy_preserved_state_disk_device {
     }
 }
 /// A request message for Instances.Stop. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StopInstanceRequest {
     /// If true, discard the contents of any attached localSSD partitions. Default value is false.
@@ -31638,6 +32797,7 @@ pub struct StopInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// Represents a Subnetwork resource. A subnetwork (also known as a subnet) is a logical partition of a Virtual Private Cloud network with one primary IP range and zero or more secondary IP ranges. For more information, read Virtual Private Cloud (VPC) Network.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Subnetwork {
     /// [Output Only] Creation timestamp in RFC3339 text format.
@@ -31953,6 +33113,7 @@ pub mod subnetwork {
     }
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SubnetworkAggregatedList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -31981,6 +33142,7 @@ pub struct SubnetworkAggregatedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Contains a list of Subnetwork resources.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SubnetworkList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -32003,6 +33165,7 @@ pub struct SubnetworkList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// The available logging options for this subnetwork.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SubnetworkLogConfig {
     /// Can only be specified if VPC flow logging for this subnetwork is enabled. Toggles the aggregation interval for collecting flow logs. Increasing the interval time will reduce the amount of generated flow logs for long lasting connections. Default is an interval of 5 seconds per connection.
@@ -32106,6 +33269,7 @@ pub mod subnetwork_log_config {
     }
 }
 /// Represents a secondary IP range of a subnetwork.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SubnetworkSecondaryRange {
     /// The range of IP addresses belonging to this subnetwork secondary range. Provide this property when you create the subnetwork. Ranges must be unique and non-overlapping with all primary and secondary IP ranges within a network. Only IPv4 is supported. The range can be any range listed in the Valid ranges list.
@@ -32116,6 +33280,7 @@ pub struct SubnetworkSecondaryRange {
     pub range_name: ::core::option::Option<::prost::alloc::string::String>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SubnetworksExpandIpCidrRangeRequest {
     /// The IP (in CIDR format or netmask) of internal addresses that are legal on this Subnetwork. This range should be disjoint from other subnetworks within this network. This range can only be larger than (i.e. a superset of) the range previously defined before the update.
@@ -32123,6 +33288,7 @@ pub struct SubnetworksExpandIpCidrRangeRequest {
     pub ip_cidr_range: ::core::option::Option<::prost::alloc::string::String>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SubnetworksScopedList {
     /// A list of subnetworks contained in this scope.
@@ -32133,12 +33299,14 @@ pub struct SubnetworksScopedList {
     pub warning: ::core::option::Option<Warning>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SubnetworksSetPrivateIpGoogleAccessRequest {
     #[prost(bool, optional, tag = "421491790")]
     pub private_ip_google_access: ::core::option::Option<bool>,
 }
 /// Subsetting configuration for this BackendService. Currently this is applicable only for Internal TCP/UDP load balancing, Internal HTTP(S) load balancing and Traffic Director.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Subsetting {
     ///
@@ -32184,6 +33352,7 @@ pub mod subsetting {
     }
 }
 /// A request message for Instances.Suspend. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SuspendInstanceRequest {
     /// If true, discard the contents of any attached localSSD partitions. Default value is false.
@@ -32203,6 +33372,7 @@ pub struct SuspendInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for Networks.SwitchToCustomMode. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SwitchToCustomModeNetworkRequest {
     /// Name of the network to be updated.
@@ -32216,6 +33386,7 @@ pub struct SwitchToCustomModeNetworkRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TcpHealthCheck {
     /// The TCP port number to which the health check prober sends packets. The default value is 80. Valid values are 1 through 65535.
@@ -32314,6 +33485,7 @@ pub mod tcp_health_check {
     }
 }
 /// A set of instance tags.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Tags {
     /// Specifies a fingerprint for this request, which is essentially a hash of the tags' contents and used for optimistic locking. The fingerprint is initially generated by Compute Engine and changes after every request to modify or update tags. You must always provide an up-to-date fingerprint hash in order to update or change tags. To see the latest fingerprint, make get() request to the instance.
@@ -32324,6 +33496,7 @@ pub struct Tags {
     pub items: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Represents a Target gRPC Proxy resource. A target gRPC proxy is a component of load balancers intended for load balancing gRPC traffic. Only global forwarding rules with load balancing scheme INTERNAL_SELF_MANAGED can reference a target gRPC proxy. The target gRPC Proxy references a URL map that specifies how traffic is routed to gRPC backend services.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetGrpcProxy {
     /// [Output Only] Creation timestamp in RFC3339 text format.
@@ -32358,6 +33531,7 @@ pub struct TargetGrpcProxy {
     pub validate_for_proxyless: ::core::option::Option<bool>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetGrpcProxyList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -32380,6 +33554,7 @@ pub struct TargetGrpcProxyList {
     pub warning: ::core::option::Option<Warning>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetHttpProxiesScopedList {
     /// A list of TargetHttpProxies contained in this scope.
@@ -32390,6 +33565,7 @@ pub struct TargetHttpProxiesScopedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Represents a Target HTTP Proxy resource. Google Compute Engine has two Target HTTP Proxy resources: * \[Global\](/compute/docs/reference/rest/v1/targetHttpProxies) * \[Regional\](/compute/docs/reference/rest/v1/regionTargetHttpProxies) A target HTTP proxy is a component of GCP HTTP load balancers. * targetHttpProxies are used by external HTTP load balancers and Traffic Director. * regionTargetHttpProxies are used by internal HTTP load balancers. Forwarding rules reference a target HTTP proxy, and the target proxy then references a URL map. For more information, read Using Target Proxies and Forwarding rule concepts.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetHttpProxy {
     /// [Output Only] Creation timestamp in RFC3339 text format.
@@ -32424,6 +33600,7 @@ pub struct TargetHttpProxy {
     pub url_map: ::core::option::Option<::prost::alloc::string::String>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetHttpProxyAggregatedList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -32449,6 +33626,7 @@ pub struct TargetHttpProxyAggregatedList {
     pub unreachables: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// A list of TargetHttpProxy resources.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetHttpProxyList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -32471,6 +33649,7 @@ pub struct TargetHttpProxyList {
     pub warning: ::core::option::Option<Warning>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetHttpsProxiesScopedList {
     /// A list of TargetHttpsProxies contained in this scope.
@@ -32481,6 +33660,7 @@ pub struct TargetHttpsProxiesScopedList {
     pub warning: ::core::option::Option<Warning>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetHttpsProxiesSetCertificateMapRequest {
     /// URL of the Certificate Map to associate with this TargetHttpsProxy.
@@ -32488,6 +33668,7 @@ pub struct TargetHttpsProxiesSetCertificateMapRequest {
     pub certificate_map: ::core::option::Option<::prost::alloc::string::String>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetHttpsProxiesSetQuicOverrideRequest {
     /// QUIC policy for the TargetHttpsProxy resource.
@@ -32536,6 +33717,7 @@ pub mod target_https_proxies_set_quic_override_request {
     }
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetHttpsProxiesSetSslCertificatesRequest {
     /// New set of SslCertificate resources to associate with this TargetHttpsProxy resource. At least one SSL certificate must be specified. Currently, you may specify up to 15 SSL certificates.
@@ -32543,6 +33725,7 @@ pub struct TargetHttpsProxiesSetSslCertificatesRequest {
     pub ssl_certificates: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Represents a Target HTTPS Proxy resource. Google Compute Engine has two Target HTTPS Proxy resources: * \[Global\](/compute/docs/reference/rest/v1/targetHttpsProxies) * \[Regional\](/compute/docs/reference/rest/v1/regionTargetHttpsProxies) A target HTTPS proxy is a component of GCP HTTPS load balancers. * targetHttpsProxies are used by external HTTPS load balancers. * regionTargetHttpsProxies are used by internal HTTPS load balancers. Forwarding rules reference a target HTTPS proxy, and the target proxy then references a URL map. For more information, read Using Target Proxies and Forwarding rule concepts.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetHttpsProxy {
     /// Optional. A URL referring to a networksecurity.AuthorizationPolicy resource that describes how the proxy should authorize inbound traffic. If left blank, access will not be restricted by an authorization policy. Refer to the AuthorizationPolicy resource for additional details. authorizationPolicy only applies to a global TargetHttpsProxy attached to globalForwardingRules with the loadBalancingScheme set to INTERNAL_SELF_MANAGED. Note: This field currently has no impact.
@@ -32636,6 +33819,7 @@ pub mod target_https_proxy {
     }
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetHttpsProxyAggregatedList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -32664,6 +33848,7 @@ pub struct TargetHttpsProxyAggregatedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Contains a list of TargetHttpsProxy resources.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetHttpsProxyList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -32686,6 +33871,7 @@ pub struct TargetHttpsProxyList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Represents a Target Instance resource. You can use a target instance to handle traffic for one or more forwarding rules, which is ideal for forwarding protocol traffic that is managed by a single source. For example, ESP, AH, TCP, or UDP. For more information, read Target instances.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetInstance {
     /// [Output Only] Creation timestamp in RFC3339 text format.
@@ -32755,6 +33941,7 @@ pub mod target_instance {
     }
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetInstanceAggregatedList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -32783,6 +33970,7 @@ pub struct TargetInstanceAggregatedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Contains a list of TargetInstance resources.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetInstanceList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -32805,6 +33993,7 @@ pub struct TargetInstanceList {
     pub warning: ::core::option::Option<Warning>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetInstancesScopedList {
     /// A list of target instances contained in this scope.
@@ -32815,6 +34004,7 @@ pub struct TargetInstancesScopedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Represents a Target Pool resource. Target pools are used for network TCP/UDP load balancing. A target pool references member instances, an associated legacy HttpHealthCheck resource, and, optionally, a backup target pool. For more information, read Using target pools.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetPool {
     /// The server-defined URL for the resource. This field is applicable only when the containing target pool is serving a forwarding rule as the primary pool, and its failoverRatio field is properly set to a value between [0, 1]. backupPool and failoverRatio together define the fallback behavior of the primary target pool: if the ratio of the healthy instances in the primary pool is at or below failoverRatio, traffic arriving at the load-balanced IP will be directed to the backup pool. In case where failoverRatio and backupPool are not set, or all the instances in the backup pool are unhealthy, the traffic will be directed back to the primary pool in the "force" mode, where traffic will be spread to the healthy instances with the best effort, or to all instances when no instance is healthy.
@@ -32911,6 +34101,7 @@ pub mod target_pool {
     }
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetPoolAggregatedList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -32939,6 +34130,7 @@ pub struct TargetPoolAggregatedList {
     pub warning: ::core::option::Option<Warning>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetPoolInstanceHealth {
     #[prost(message, repeated, tag = "380545845")]
@@ -32948,6 +34140,7 @@ pub struct TargetPoolInstanceHealth {
     pub kind: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Contains a list of TargetPool resources.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetPoolList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -32970,6 +34163,7 @@ pub struct TargetPoolList {
     pub warning: ::core::option::Option<Warning>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetPoolsAddHealthCheckRequest {
     /// The HttpHealthCheck to add to the target pool.
@@ -32977,6 +34171,7 @@ pub struct TargetPoolsAddHealthCheckRequest {
     pub health_checks: ::prost::alloc::vec::Vec<HealthCheckReference>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetPoolsAddInstanceRequest {
     /// A full or partial URL to an instance to add to this target pool. This can be a full or partial URL. For example, the following are valid URLs: - <https://www.googleapis.com/compute/v1/projects/project-id/zones/zone> /instances/instance-name - projects/project-id/zones/zone/instances/instance-name - zones/zone/instances/instance-name
@@ -32984,6 +34179,7 @@ pub struct TargetPoolsAddInstanceRequest {
     pub instances: ::prost::alloc::vec::Vec<InstanceReference>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetPoolsRemoveHealthCheckRequest {
     /// Health check URL to be removed. This can be a full or valid partial URL. For example, the following are valid URLs: - <https://www.googleapis.com/compute/beta/projects/project> /global/httpHealthChecks/health-check - projects/project/global/httpHealthChecks/health-check - global/httpHealthChecks/health-check
@@ -32991,6 +34187,7 @@ pub struct TargetPoolsRemoveHealthCheckRequest {
     pub health_checks: ::prost::alloc::vec::Vec<HealthCheckReference>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetPoolsRemoveInstanceRequest {
     /// URLs of the instances to be removed from target pool.
@@ -32998,6 +34195,7 @@ pub struct TargetPoolsRemoveInstanceRequest {
     pub instances: ::prost::alloc::vec::Vec<InstanceReference>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetPoolsScopedList {
     /// A list of target pools contained in this scope.
@@ -33008,12 +34206,14 @@ pub struct TargetPoolsScopedList {
     pub warning: ::core::option::Option<Warning>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetReference {
     #[prost(string, optional, tag = "192835985")]
     pub target: ::core::option::Option<::prost::alloc::string::String>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetSslProxiesSetBackendServiceRequest {
     /// The URL of the new BackendService resource for the targetSslProxy.
@@ -33021,6 +34221,7 @@ pub struct TargetSslProxiesSetBackendServiceRequest {
     pub service: ::core::option::Option<::prost::alloc::string::String>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetSslProxiesSetCertificateMapRequest {
     /// URL of the Certificate Map to associate with this TargetSslProxy.
@@ -33028,6 +34229,7 @@ pub struct TargetSslProxiesSetCertificateMapRequest {
     pub certificate_map: ::core::option::Option<::prost::alloc::string::String>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetSslProxiesSetProxyHeaderRequest {
     /// The new type of proxy header to append before sending data to the backend. NONE or PROXY_V1 are allowed.
@@ -33071,6 +34273,7 @@ pub mod target_ssl_proxies_set_proxy_header_request {
     }
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetSslProxiesSetSslCertificatesRequest {
     /// New set of URLs to SslCertificate resources to associate with this TargetSslProxy. At least one SSL certificate must be specified. Currently, you may specify up to 15 SSL certificates.
@@ -33078,6 +34281,7 @@ pub struct TargetSslProxiesSetSslCertificatesRequest {
     pub ssl_certificates: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Represents a Target SSL Proxy resource. A target SSL proxy is a component of a SSL Proxy load balancer. Global forwarding rules reference a target SSL proxy, and the target proxy then references an external backend service. For more information, read Using Target Proxies.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetSslProxy {
     /// URL of a certificate map that identifies a certificate map associated with the given target proxy. This field can only be set for global target proxies. If set, sslCertificates will be ignored.
@@ -33151,6 +34355,7 @@ pub mod target_ssl_proxy {
     }
 }
 /// Contains a list of TargetSslProxy resources.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetSslProxyList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -33173,6 +34378,7 @@ pub struct TargetSslProxyList {
     pub warning: ::core::option::Option<Warning>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetTcpProxiesScopedList {
     /// A list of TargetTcpProxies contained in this scope.
@@ -33183,6 +34389,7 @@ pub struct TargetTcpProxiesScopedList {
     pub warning: ::core::option::Option<Warning>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetTcpProxiesSetBackendServiceRequest {
     /// The URL of the new BackendService resource for the targetTcpProxy.
@@ -33190,6 +34397,7 @@ pub struct TargetTcpProxiesSetBackendServiceRequest {
     pub service: ::core::option::Option<::prost::alloc::string::String>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetTcpProxiesSetProxyHeaderRequest {
     /// The new type of proxy header to append before sending data to the backend. NONE or PROXY_V1 are allowed.
@@ -33233,6 +34441,7 @@ pub mod target_tcp_proxies_set_proxy_header_request {
     }
 }
 /// Represents a Target TCP Proxy resource. A target TCP proxy is a component of a TCP Proxy load balancer. Global forwarding rules reference target TCP proxy, and the target proxy then references an external backend service. For more information, read TCP Proxy Load Balancing overview.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetTcpProxy {
     /// [Output Only] Creation timestamp in RFC3339 text format.
@@ -33303,6 +34512,7 @@ pub mod target_tcp_proxy {
     }
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetTcpProxyAggregatedList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -33331,6 +34541,7 @@ pub struct TargetTcpProxyAggregatedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Contains a list of TargetTcpProxy resources.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetTcpProxyList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -33353,6 +34564,7 @@ pub struct TargetTcpProxyList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Represents a Target VPN Gateway resource. The target VPN gateway resource represents a Classic Cloud VPN gateway. For more information, read the the Cloud VPN Overview.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetVpnGateway {
     /// [Output Only] Creation timestamp in RFC3339 text format.
@@ -33430,6 +34642,7 @@ pub mod target_vpn_gateway {
     }
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetVpnGatewayAggregatedList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -33458,6 +34671,7 @@ pub struct TargetVpnGatewayAggregatedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Contains a list of TargetVpnGateway resources.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetVpnGatewayList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -33480,6 +34694,7 @@ pub struct TargetVpnGatewayList {
     pub warning: ::core::option::Option<Warning>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetVpnGatewaysScopedList {
     /// [Output Only] A list of target VPN gateways contained in this scope.
@@ -33490,6 +34705,7 @@ pub struct TargetVpnGatewaysScopedList {
     pub warning: ::core::option::Option<Warning>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TestFailure {
     /// The actual output URL evaluated by a load balancer containing the scheme, host, path and query parameters.
@@ -33521,6 +34737,7 @@ pub struct TestFailure {
     pub path: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Disks.TestIamPermissions. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TestIamPermissionsDiskRequest {
     /// Project ID for this request.
@@ -33539,6 +34756,7 @@ pub struct TestIamPermissionsDiskRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for ExternalVpnGateways.TestIamPermissions. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TestIamPermissionsExternalVpnGatewayRequest {
     /// Project ID for this request.
@@ -33554,6 +34772,7 @@ pub struct TestIamPermissionsExternalVpnGatewayRequest {
     >,
 }
 /// A request message for FirewallPolicies.TestIamPermissions. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TestIamPermissionsFirewallPolicyRequest {
     /// Name or id of the resource for this request.
@@ -33566,6 +34785,7 @@ pub struct TestIamPermissionsFirewallPolicyRequest {
     >,
 }
 /// A request message for Images.TestIamPermissions. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TestIamPermissionsImageRequest {
     /// Project ID for this request.
@@ -33581,6 +34801,7 @@ pub struct TestIamPermissionsImageRequest {
     >,
 }
 /// A request message for Instances.TestIamPermissions. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TestIamPermissionsInstanceRequest {
     /// Project ID for this request.
@@ -33599,6 +34820,7 @@ pub struct TestIamPermissionsInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for InstanceTemplates.TestIamPermissions. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TestIamPermissionsInstanceTemplateRequest {
     /// Project ID for this request.
@@ -33614,6 +34836,7 @@ pub struct TestIamPermissionsInstanceTemplateRequest {
     >,
 }
 /// A request message for LicenseCodes.TestIamPermissions. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TestIamPermissionsLicenseCodeRequest {
     /// Project ID for this request.
@@ -33629,6 +34852,7 @@ pub struct TestIamPermissionsLicenseCodeRequest {
     >,
 }
 /// A request message for Licenses.TestIamPermissions. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TestIamPermissionsLicenseRequest {
     /// Project ID for this request.
@@ -33644,6 +34868,7 @@ pub struct TestIamPermissionsLicenseRequest {
     >,
 }
 /// A request message for MachineImages.TestIamPermissions. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TestIamPermissionsMachineImageRequest {
     /// Project ID for this request.
@@ -33659,6 +34884,7 @@ pub struct TestIamPermissionsMachineImageRequest {
     >,
 }
 /// A request message for NetworkAttachments.TestIamPermissions. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TestIamPermissionsNetworkAttachmentRequest {
     /// Project ID for this request.
@@ -33677,6 +34903,7 @@ pub struct TestIamPermissionsNetworkAttachmentRequest {
     >,
 }
 /// A request message for NetworkEndpointGroups.TestIamPermissions. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TestIamPermissionsNetworkEndpointGroupRequest {
     /// Project ID for this request.
@@ -33695,6 +34922,7 @@ pub struct TestIamPermissionsNetworkEndpointGroupRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for NetworkFirewallPolicies.TestIamPermissions. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TestIamPermissionsNetworkFirewallPolicyRequest {
     /// Project ID for this request.
@@ -33710,6 +34938,7 @@ pub struct TestIamPermissionsNetworkFirewallPolicyRequest {
     >,
 }
 /// A request message for NodeGroups.TestIamPermissions. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TestIamPermissionsNodeGroupRequest {
     /// Project ID for this request.
@@ -33728,6 +34957,7 @@ pub struct TestIamPermissionsNodeGroupRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for NodeTemplates.TestIamPermissions. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TestIamPermissionsNodeTemplateRequest {
     /// Project ID for this request.
@@ -33746,6 +34976,7 @@ pub struct TestIamPermissionsNodeTemplateRequest {
     >,
 }
 /// A request message for PacketMirrorings.TestIamPermissions. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TestIamPermissionsPacketMirroringRequest {
     /// Project ID for this request.
@@ -33764,6 +34995,7 @@ pub struct TestIamPermissionsPacketMirroringRequest {
     >,
 }
 /// A request message for RegionDisks.TestIamPermissions. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TestIamPermissionsRegionDiskRequest {
     /// Project ID for this request.
@@ -33782,6 +35014,7 @@ pub struct TestIamPermissionsRegionDiskRequest {
     >,
 }
 /// A request message for RegionNetworkFirewallPolicies.TestIamPermissions. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TestIamPermissionsRegionNetworkFirewallPolicyRequest {
     /// Project ID for this request.
@@ -33800,6 +35033,7 @@ pub struct TestIamPermissionsRegionNetworkFirewallPolicyRequest {
     >,
 }
 /// A request message for Reservations.TestIamPermissions. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TestIamPermissionsReservationRequest {
     /// Project ID for this request.
@@ -33818,6 +35052,7 @@ pub struct TestIamPermissionsReservationRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for ResourcePolicies.TestIamPermissions. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TestIamPermissionsResourcePolicyRequest {
     /// Project ID for this request.
@@ -33836,6 +35071,7 @@ pub struct TestIamPermissionsResourcePolicyRequest {
     >,
 }
 /// A request message for ServiceAttachments.TestIamPermissions. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TestIamPermissionsServiceAttachmentRequest {
     /// Project ID for this request.
@@ -33854,6 +35090,7 @@ pub struct TestIamPermissionsServiceAttachmentRequest {
     >,
 }
 /// A request message for Snapshots.TestIamPermissions. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TestIamPermissionsSnapshotRequest {
     /// Project ID for this request.
@@ -33869,6 +35106,7 @@ pub struct TestIamPermissionsSnapshotRequest {
     >,
 }
 /// A request message for Subnetworks.TestIamPermissions. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TestIamPermissionsSubnetworkRequest {
     /// Project ID for this request.
@@ -33887,6 +35125,7 @@ pub struct TestIamPermissionsSubnetworkRequest {
     >,
 }
 /// A request message for VpnGateways.TestIamPermissions. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TestIamPermissionsVpnGatewayRequest {
     /// Project ID for this request.
@@ -33905,6 +35144,7 @@ pub struct TestIamPermissionsVpnGatewayRequest {
     >,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TestPermissionsRequest {
     /// The set of permissions to check for the 'resource'. Permissions with wildcards (such as '*' or 'storage.*') are not allowed.
@@ -33912,6 +35152,7 @@ pub struct TestPermissionsRequest {
     pub permissions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TestPermissionsResponse {
     /// A subset of `TestPermissionsRequest.permissions` that the caller is allowed.
@@ -33919,6 +35160,7 @@ pub struct TestPermissionsResponse {
     pub permissions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Uint128 {
     #[prost(uint64, optional, tag = "3202466")]
@@ -33927,6 +35169,7 @@ pub struct Uint128 {
     pub low: ::core::option::Option<u64>,
 }
 /// A request message for Instances.UpdateAccessConfig. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateAccessConfigInstanceRequest {
     /// The body resource for this request
@@ -33949,6 +35192,7 @@ pub struct UpdateAccessConfigInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for Autoscalers.Update. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateAutoscalerRequest {
     /// Name of the autoscaler to update.
@@ -33968,6 +35212,7 @@ pub struct UpdateAutoscalerRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for BackendBuckets.Update. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateBackendBucketRequest {
     /// Name of the BackendBucket resource to update.
@@ -33984,6 +35229,7 @@ pub struct UpdateBackendBucketRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for BackendServices.Update. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateBackendServiceRequest {
     /// Name of the BackendService resource to update.
@@ -34000,6 +35246,7 @@ pub struct UpdateBackendServiceRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Instances.UpdateDisplayDevice. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateDisplayDeviceInstanceRequest {
     /// The body resource for this request
@@ -34019,6 +35266,7 @@ pub struct UpdateDisplayDeviceInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for Firewalls.Update. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateFirewallRequest {
     /// Name of the firewall rule to update.
@@ -34035,6 +35283,7 @@ pub struct UpdateFirewallRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for HealthChecks.Update. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateHealthCheckRequest {
     /// Name of the HealthCheck resource to update.
@@ -34051,6 +35300,7 @@ pub struct UpdateHealthCheckRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Instances.Update. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateInstanceRequest {
     /// Name of the instance resource to update.
@@ -34151,6 +35401,7 @@ pub mod update_instance_request {
     }
 }
 /// A request message for Instances.UpdateNetworkInterface. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateNetworkInterfaceInstanceRequest {
     /// The instance name for this request.
@@ -34173,6 +35424,7 @@ pub struct UpdateNetworkInterfaceInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for Networks.UpdatePeering. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdatePeeringNetworkRequest {
     /// Name of the network resource which the updated peering is belonging to.
@@ -34191,6 +35443,7 @@ pub struct UpdatePeeringNetworkRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for InstanceGroupManagers.UpdatePerInstanceConfigs. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdatePerInstanceConfigsInstanceGroupManagerRequest {
     /// The name of the managed instance group. It should conform to RFC1035.
@@ -34212,6 +35465,7 @@ pub struct UpdatePerInstanceConfigsInstanceGroupManagerRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for RegionInstanceGroupManagers.UpdatePerInstanceConfigs. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdatePerInstanceConfigsRegionInstanceGroupManagerRequest {
     /// The name of the managed instance group. It should conform to RFC1035.
@@ -34233,6 +35487,7 @@ pub struct UpdatePerInstanceConfigsRegionInstanceGroupManagerRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionAutoscalers.Update. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateRegionAutoscalerRequest {
     /// Name of the autoscaler to update.
@@ -34252,6 +35507,7 @@ pub struct UpdateRegionAutoscalerRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionBackendServices.Update. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateRegionBackendServiceRequest {
     /// Name of the BackendService resource to update.
@@ -34271,6 +35527,7 @@ pub struct UpdateRegionBackendServiceRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionCommitments.Update. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateRegionCommitmentRequest {
     /// Name of the commitment for which auto renew is being updated.
@@ -34295,6 +35552,7 @@ pub struct UpdateRegionCommitmentRequest {
     pub update_mask: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionHealthChecks.Update. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateRegionHealthCheckRequest {
     /// Name of the HealthCheck resource to update.
@@ -34314,6 +35572,7 @@ pub struct UpdateRegionHealthCheckRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionUrlMaps.Update. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateRegionUrlMapRequest {
     /// Project ID for this request.
@@ -34333,6 +35592,7 @@ pub struct UpdateRegionUrlMapRequest {
     pub url_map_resource: ::core::option::Option<UrlMap>,
 }
 /// A request message for Reservations.Update. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateReservationRequest {
     #[prost(string, optional, tag = "106438894")]
@@ -34357,6 +35617,7 @@ pub struct UpdateReservationRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for Routers.Update. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateRouterRequest {
     /// Project ID for this request.
@@ -34376,6 +35637,7 @@ pub struct UpdateRouterRequest {
     pub router_resource: ::core::option::Option<Router>,
 }
 /// A request message for Instances.UpdateShieldedInstanceConfig. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateShieldedInstanceConfigInstanceRequest {
     /// Name or id of the instance scoping this request.
@@ -34397,6 +35659,7 @@ pub struct UpdateShieldedInstanceConfigInstanceRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// A request message for UrlMaps.Update. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateUrlMapRequest {
     /// Project ID for this request.
@@ -34413,6 +35676,7 @@ pub struct UpdateUrlMapRequest {
     pub url_map_resource: ::core::option::Option<UrlMap>,
 }
 /// Represents a URL Map resource. Compute Engine has two URL Map resources: * \[Global\](/compute/docs/reference/rest/v1/urlMaps) * \[Regional\](/compute/docs/reference/rest/v1/regionUrlMaps) A URL map resource is a component of certain types of cloud load balancers and Traffic Director: * urlMaps are used by external HTTP(S) load balancers and Traffic Director. * regionUrlMaps are used by internal HTTP(S) load balancers. For a list of supported URL map features by the load balancer type, see the Load balancing features: Routing and traffic management table. For a list of supported URL map features for Traffic Director, see the Traffic Director features: Routing and traffic management table. This resource defines mappings from hostnames and URL paths to either a backend service or a backend bucket. To use the global urlMaps resource, the backend service must have a loadBalancingScheme of either EXTERNAL or INTERNAL_SELF_MANAGED. To use the regionUrlMaps resource, the backend service must have a loadBalancingScheme of INTERNAL_MANAGED. For more information, read URL Map Concepts.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UrlMap {
     /// [Output Only] Creation timestamp in RFC3339 text format.
@@ -34462,6 +35726,7 @@ pub struct UrlMap {
     pub tests: ::prost::alloc::vec::Vec<UrlMapTest>,
 }
 /// Contains a list of UrlMap resources.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UrlMapList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -34484,12 +35749,14 @@ pub struct UrlMapList {
     pub warning: ::core::option::Option<Warning>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UrlMapReference {
     #[prost(string, optional, tag = "367020684")]
     pub url_map: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Message for the expected URL mappings.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UrlMapTest {
     /// Description of this test case.
@@ -34515,6 +35782,7 @@ pub struct UrlMapTest {
     pub service: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// HTTP headers used in UrlMapTests.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UrlMapTestHeader {
     /// Header name.
@@ -34525,6 +35793,7 @@ pub struct UrlMapTestHeader {
     pub value: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Message representing the validation result for a UrlMap.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UrlMapValidationResult {
     #[prost(string, repeated, tag = "310147300")]
@@ -34539,6 +35808,7 @@ pub struct UrlMapValidationResult {
     pub test_passed: ::core::option::Option<bool>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UrlMapsAggregatedList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -34567,6 +35837,7 @@ pub struct UrlMapsAggregatedList {
     pub warning: ::core::option::Option<Warning>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UrlMapsScopedList {
     /// A list of UrlMaps contained in this scope.
@@ -34577,6 +35848,7 @@ pub struct UrlMapsScopedList {
     pub warning: ::core::option::Option<Warning>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UrlMapsValidateRequest {
     /// Specifies the load balancer type(s) this validation request is for. Use EXTERNAL_MANAGED for HTTP/HTTPS External Global Load Balancer with Advanced Traffic Management. Use EXTERNAL for Classic HTTP/HTTPS External Global Load Balancer. Other load balancer types are not supported. For more information, refer to Choosing a load balancer. If unspecified, the load balancing scheme will be inferred from the backend service resources this URL map references. If that can not be inferred (for example, this URL map only references backend buckets, or this Url map is for rewrites and redirects only and doesn't reference any backends), EXTERNAL will be used as the default type. If specified, the scheme(s) must not conflict with the load balancing scheme of the backend service resources this Url map references.
@@ -34632,12 +35904,14 @@ pub mod url_maps_validate_request {
     }
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UrlMapsValidateResponse {
     #[prost(message, optional, tag = "139315229")]
     pub result: ::core::option::Option<UrlMapValidationResult>,
 }
 /// The spec for modifying the path before sending the request to the matched backend service.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UrlRewrite {
     /// Before forwarding the request to the selected service, the request's host header is replaced with contents of hostRewrite. The value must be from 1 to 255 characters.
@@ -34648,6 +35922,7 @@ pub struct UrlRewrite {
     pub path_prefix_rewrite: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Subnetwork which the current user has compute.subnetworks.use permission on.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UsableSubnetwork {
     /// [Output Only] The external IPv6 address range that is assigned to this subnetwork.
@@ -34834,6 +36109,7 @@ pub mod usable_subnetwork {
     }
 }
 /// Secondary IP range of a usable subnetwork.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UsableSubnetworkSecondaryRange {
     /// The range of IP addresses belonging to this subnetwork secondary range.
@@ -34844,6 +36120,7 @@ pub struct UsableSubnetworkSecondaryRange {
     pub range_name: ::core::option::Option<::prost::alloc::string::String>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UsableSubnetworksAggregatedList {
     /// [Output Only] The unique identifier for the resource. This identifier is defined by the server.
@@ -34866,6 +36143,7 @@ pub struct UsableSubnetworksAggregatedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// The location in Cloud Storage and naming method of the daily usage report. Contains bucket_name and report_name prefix.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UsageExportLocation {
     /// The name of an existing bucket in Cloud Storage where the usage report object is stored. The Google Service Account is granted write access to this bucket. This can either be the bucket name by itself, such as example-bucket, or the bucket name with gs:// or <https://storage.googleapis.com/> in front of it, such as gs://example-bucket.
@@ -34876,6 +36154,7 @@ pub struct UsageExportLocation {
     pub report_name_prefix: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionUrlMaps.Validate. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ValidateRegionUrlMapRequest {
     /// Project ID for this request.
@@ -34894,6 +36173,7 @@ pub struct ValidateRegionUrlMapRequest {
     pub url_map: ::prost::alloc::string::String,
 }
 /// A request message for UrlMaps.Validate. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ValidateUrlMapRequest {
     /// Project ID for this request.
@@ -34909,6 +36189,7 @@ pub struct ValidateUrlMapRequest {
     >,
 }
 /// Contain information of Nat mapping for a VM endpoint (i.e., NIC).
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VmEndpointNatMappings {
     /// Name of the VM instance which the endpoint belongs to
@@ -34920,6 +36201,7 @@ pub struct VmEndpointNatMappings {
     >,
 }
 /// Contain information of Nat mapping for an interface of this endpoint.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VmEndpointNatMappingsInterfaceNatMappings {
     /// List of all drain IP:port-range mappings assigned to this interface. These ranges are inclusive, that is, both the first and the last ports can be used for NAT. Example: ["2.2.2.2:12345-12355", "1.1.1.1:2234-2234"].
@@ -34949,6 +36231,7 @@ pub struct VmEndpointNatMappingsInterfaceNatMappings {
     pub source_virtual_ip: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Contains information of NAT Mappings provided by a NAT Rule.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VmEndpointNatMappingsInterfaceNatMappingsNatRuleMappings {
     /// List of all drain IP:port-range mappings assigned to this interface by this rule. These ranges are inclusive, that is, both the first and the last ports can be used for NAT. Example: ["2.2.2.2:12345-12355", "1.1.1.1:2234-2234"].
@@ -34970,6 +36253,7 @@ pub struct VmEndpointNatMappingsInterfaceNatMappingsNatRuleMappings {
     pub rule_number: ::core::option::Option<i32>,
 }
 /// Contains a list of VmEndpointNatMappings.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VmEndpointNatMappingsList {
     /// [Output Only] The unique identifier for the resource. This identifier is defined by the server.
@@ -34992,6 +36276,7 @@ pub struct VmEndpointNatMappingsList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Represents a HA VPN gateway. HA VPN is a high-availability (HA) Cloud VPN solution that lets you securely connect your on-premises network to your Google Cloud Virtual Private Cloud network through an IPsec VPN connection in a single region. For more information about Cloud HA VPN solutions, see Cloud VPN topologies .
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VpnGateway {
     /// [Output Only] Creation timestamp in RFC3339 text format.
@@ -35073,6 +36358,7 @@ pub mod vpn_gateway {
     }
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VpnGatewayAggregatedList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -35101,6 +36387,7 @@ pub struct VpnGatewayAggregatedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Contains a list of VpnGateway resources.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VpnGatewayList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -35123,6 +36410,7 @@ pub struct VpnGatewayList {
     pub warning: ::core::option::Option<Warning>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VpnGatewayStatus {
     /// List of VPN connection for this VpnGateway.
@@ -35130,6 +36418,7 @@ pub struct VpnGatewayStatus {
     pub vpn_connections: ::prost::alloc::vec::Vec<VpnGatewayStatusVpnConnection>,
 }
 /// Describes the high availability requirement state for the VPN connection between this Cloud VPN gateway and a peer gateway.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VpnGatewayStatusHighAvailabilityRequirementState {
     /// Indicates the high availability requirement state for the VPN connection. Valid values are CONNECTION_REDUNDANCY_MET, CONNECTION_REDUNDANCY_NOT_MET.
@@ -35213,6 +36502,7 @@ pub mod vpn_gateway_status_high_availability_requirement_state {
     }
 }
 /// Contains some information about a VPN tunnel.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VpnGatewayStatusTunnel {
     /// The VPN gateway interface this VPN tunnel is associated with.
@@ -35226,6 +36516,7 @@ pub struct VpnGatewayStatusTunnel {
     pub tunnel_url: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A VPN connection contains all VPN tunnels connected from this VpnGateway to the same peer gateway. The peer gateway could either be a external VPN gateway or GCP VPN gateway.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VpnGatewayStatusVpnConnection {
     /// URL reference to the peer external VPN gateways to which the VPN tunnels in this VPN connection are connected. This field is mutually exclusive with peer_gcp_gateway.
@@ -35242,6 +36533,7 @@ pub struct VpnGatewayStatusVpnConnection {
     pub tunnels: ::prost::alloc::vec::Vec<VpnGatewayStatusTunnel>,
 }
 /// A VPN gateway interface.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VpnGatewayVpnGatewayInterface {
     /// [Output Only] Numeric identifier for this VPN interface associated with the VPN gateway.
@@ -35255,12 +36547,14 @@ pub struct VpnGatewayVpnGatewayInterface {
     pub ip_address: ::core::option::Option<::prost::alloc::string::String>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VpnGatewaysGetStatusResponse {
     #[prost(message, optional, tag = "139315229")]
     pub result: ::core::option::Option<VpnGatewayStatus>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VpnGatewaysScopedList {
     /// [Output Only] A list of VPN gateways contained in this scope.
@@ -35271,6 +36565,7 @@ pub struct VpnGatewaysScopedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Represents a Cloud VPN Tunnel resource. For more information about VPN, read the the Cloud VPN Overview.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VpnTunnel {
     /// [Output Only] Creation timestamp in RFC3339 text format.
@@ -35414,6 +36709,7 @@ pub mod vpn_tunnel {
     }
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VpnTunnelAggregatedList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -35442,6 +36738,7 @@ pub struct VpnTunnelAggregatedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Contains a list of VpnTunnel resources.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VpnTunnelList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -35464,6 +36761,7 @@ pub struct VpnTunnelList {
     pub warning: ::core::option::Option<Warning>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VpnTunnelsScopedList {
     /// A list of VPN tunnels contained in this scope.
@@ -35474,6 +36772,7 @@ pub struct VpnTunnelsScopedList {
     pub warning: ::core::option::Option<Warning>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WafExpressionSet {
     /// A list of alternate IDs. The format should be: - E.g. XSS-stable Generic suffix like "stable" is particularly useful if a policy likes to avail newer set of expressions without having to change the policy. A given alias name can't be used for more than one entity set.
@@ -35487,6 +36786,7 @@ pub struct WafExpressionSet {
     pub id: ::core::option::Option<::prost::alloc::string::String>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WafExpressionSetExpression {
     /// Expression ID should uniquely identify the origin of the expression. E.g. owasp-crs-v020901-id973337 identifies Owasp core rule set version 2.9.1 rule id 973337. The ID could be used to determine the individual attack definition that has been detected. It could also be used to exclude it from the policy in case of false positive. required
@@ -35494,6 +36794,7 @@ pub struct WafExpressionSetExpression {
     pub id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for GlobalOperations.Wait. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WaitGlobalOperationRequest {
     /// Name of the Operations resource to return.
@@ -35504,6 +36805,7 @@ pub struct WaitGlobalOperationRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// A request message for RegionOperations.Wait. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WaitRegionOperationRequest {
     /// Name of the Operations resource to return.
@@ -35517,6 +36819,7 @@ pub struct WaitRegionOperationRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for ZoneOperations.Wait. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WaitZoneOperationRequest {
     /// Name of the Operations resource to return.
@@ -35530,6 +36833,7 @@ pub struct WaitZoneOperationRequest {
     pub zone: ::prost::alloc::string::String,
 }
 /// [Output Only] Informational warning message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Warning {
     /// [Output Only] A warning code, if applicable. For example, Compute Engine returns NO_RESULTS_ON_PAGE if there are no results in the response.
@@ -35664,6 +36968,7 @@ pub mod warning {
     }
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Warnings {
     /// [Output Only] A warning code, if applicable. For example, Compute Engine returns NO_RESULTS_ON_PAGE if there are no results in the response.
@@ -35798,6 +37103,7 @@ pub mod warnings {
     }
 }
 /// In contrast to a single BackendService in HttpRouteAction to which all matching traffic is directed to, WeightedBackendService allows traffic to be split across multiple backend services. The volume of traffic for each backend service is proportional to the weight specified in each WeightedBackendService
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WeightedBackendService {
     /// The full or partial URL to the default BackendService resource. Before forwarding the request to backendService, the load balancer applies any relevant headerActions specified as part of this backendServiceWeight.
@@ -35811,6 +37117,7 @@ pub struct WeightedBackendService {
     pub weight: ::core::option::Option<u32>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct XpnHostList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -35833,6 +37140,7 @@ pub struct XpnHostList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Service resource (a.k.a service project) ID.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct XpnResourceId {
     /// The ID of the service resource. In the case of projects, this field supports project id (e.g., my-project-123) and project number (e.g. 12345678).
@@ -35879,6 +37187,7 @@ pub mod xpn_resource_id {
     }
 }
 /// Represents a Zone resource. A zone is a deployment area. These deployment areas are subsets of a region. For example the zone us-east1-a is located in the us-east1 region. For more information, read Regions and Zones.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Zone {
     /// [Output Only] Available cpu/platform selections for the zone.
@@ -35954,6 +37263,7 @@ pub mod zone {
     }
 }
 /// Contains a list of zone resources.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ZoneList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -35976,6 +37286,7 @@ pub struct ZoneList {
     pub warning: ::core::option::Option<Warning>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ZoneSetLabelsRequest {
     /// The fingerprint of the previous set of labels for this resource, used to detect conflicts. The fingerprint is initially generated by Compute Engine and changes after every request to modify or update labels. You must always provide an up-to-date fingerprint hash in order to update or change labels. Make a get() request to the resource to get the latest fingerprint.
@@ -35989,6 +37300,7 @@ pub struct ZoneSetLabelsRequest {
     >,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ZoneSetPolicyRequest {
     /// Flatten Policy to create a backwacd compatible wire-format. Deprecated. Use 'policy' to specify bindings.

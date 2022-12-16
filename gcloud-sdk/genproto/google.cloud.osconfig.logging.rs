@@ -1,3 +1,4 @@
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchJobCompletedLog {
     /// The patch job name. For example:
@@ -33,6 +34,7 @@ pub mod patch_job_completed_log {
     /// affects. Contains counts of instances in different states. These states map
     /// to InstancePatchState. List patch job instance details to see the specific
     /// states of each instance.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct InstanceDetailsSummary {
         /// Number of instances pending patch job.

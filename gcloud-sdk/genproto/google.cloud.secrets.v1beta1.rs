@@ -3,6 +3,7 @@
 ///
 /// A \[Secret][google.cloud.secrets.v1beta1.Secret\] is made up of zero or more \[SecretVersions][google.cloud.secrets.v1beta1.SecretVersion\] that
 /// represent the secret data.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Secret {
     /// Output only. The resource name of the \[Secret][google.cloud.secrets.v1beta1.Secret\] in the format `projects/*/secrets/*`.
@@ -34,6 +35,7 @@ pub struct Secret {
     >,
 }
 /// A secret version resource in the Secret Manager API.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SecretVersion {
     /// Output only. The resource name of the \[SecretVersion][google.cloud.secrets.v1beta1.SecretVersion\] in the
@@ -99,6 +101,7 @@ pub mod secret_version {
     }
 }
 /// A policy that defines the replication configuration of data.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Replication {
     /// The replication policy for this secret.
@@ -109,10 +112,12 @@ pub struct Replication {
 pub mod replication {
     /// A replication policy that replicates the \[Secret][google.cloud.secrets.v1beta1.Secret\] payload without any
     /// restrictions.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Automatic {}
     /// A replication policy that replicates the \[Secret][google.cloud.secrets.v1beta1.Secret\] payload into the
     /// locations specified in \[Secret.replication.user_managed.replicas][\]
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct UserManaged {
         /// Required. The list of Replicas for this \[Secret][google.cloud.secrets.v1beta1.Secret\].
@@ -124,6 +129,7 @@ pub mod replication {
     /// Nested message and enum types in `UserManaged`.
     pub mod user_managed {
         /// Represents a Replica for this \[Secret][google.cloud.secrets.v1beta1.Secret\].
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Replica {
             /// The canonical IDs of the location to replicate data.
@@ -133,6 +139,7 @@ pub mod replication {
         }
     }
     /// The replication policy for this secret.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Replication {
         /// The \[Secret][google.cloud.secrets.v1beta1.Secret\] will automatically be replicated without any restrictions.
@@ -145,6 +152,7 @@ pub mod replication {
 }
 /// A secret payload resource in the Secret Manager API. This contains the
 /// sensitive secret data that is associated with a \[SecretVersion][google.cloud.secrets.v1beta1.SecretVersion\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SecretPayload {
     /// The secret data. Must be no larger than 64KiB.
@@ -152,6 +160,7 @@ pub struct SecretPayload {
     pub data: ::prost::alloc::vec::Vec<u8>,
 }
 /// Request message for \[SecretManagerService.ListSecrets][google.cloud.secrets.v1beta1.SecretManagerService.ListSecrets\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSecretsRequest {
     /// Required. The resource name of the project associated with the
@@ -169,6 +178,7 @@ pub struct ListSecretsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for \[SecretManagerService.ListSecrets][google.cloud.secrets.v1beta1.SecretManagerService.ListSecrets\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSecretsResponse {
     /// The list of \[Secrets][google.cloud.secrets.v1beta1.Secret\] sorted in reverse by create_time (newest
@@ -184,6 +194,7 @@ pub struct ListSecretsResponse {
     pub total_size: i32,
 }
 /// Request message for \[SecretManagerService.CreateSecret][google.cloud.secrets.v1beta1.SecretManagerService.CreateSecret\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateSecretRequest {
     /// Required. The resource name of the project to associate with the
@@ -202,6 +213,7 @@ pub struct CreateSecretRequest {
     pub secret: ::core::option::Option<Secret>,
 }
 /// Request message for \[SecretManagerService.AddSecretVersion][google.cloud.secrets.v1beta1.SecretManagerService.AddSecretVersion\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddSecretVersionRequest {
     /// Required. The resource name of the \[Secret][google.cloud.secrets.v1beta1.Secret\] to associate with the
@@ -213,6 +225,7 @@ pub struct AddSecretVersionRequest {
     pub payload: ::core::option::Option<SecretPayload>,
 }
 /// Request message for \[SecretManagerService.GetSecret][google.cloud.secrets.v1beta1.SecretManagerService.GetSecret\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetSecretRequest {
     /// Required. The resource name of the \[Secret][google.cloud.secrets.v1beta1.Secret\], in the format `projects/*/secrets/*`.
@@ -220,6 +233,7 @@ pub struct GetSecretRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for \[SecretManagerService.ListSecretVersions][google.cloud.secrets.v1beta1.SecretManagerService.ListSecretVersions\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSecretVersionsRequest {
     /// Required. The resource name of the \[Secret][google.cloud.secrets.v1beta1.Secret\] associated with the
@@ -238,6 +252,7 @@ pub struct ListSecretVersionsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for \[SecretManagerService.ListSecretVersions][google.cloud.secrets.v1beta1.SecretManagerService.ListSecretVersions\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSecretVersionsResponse {
     /// The list of \[SecretVersions][google.cloud.secrets.v1beta1.SecretVersion\] sorted in reverse by
@@ -253,6 +268,7 @@ pub struct ListSecretVersionsResponse {
     pub total_size: i32,
 }
 /// Request message for \[SecretManagerService.GetSecretVersion][google.cloud.secrets.v1beta1.SecretManagerService.GetSecretVersion\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetSecretVersionRequest {
     /// Required. The resource name of the \[SecretVersion][google.cloud.secrets.v1beta1.SecretVersion\] in the format
@@ -263,6 +279,7 @@ pub struct GetSecretVersionRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for \[SecretManagerService.UpdateSecret][google.cloud.secrets.v1beta1.SecretManagerService.UpdateSecret\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateSecretRequest {
     /// Required. \[Secret][google.cloud.secrets.v1beta1.Secret\] with updated field values.
@@ -273,6 +290,7 @@ pub struct UpdateSecretRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for \[SecretManagerService.AccessSecretVersion][google.cloud.secrets.v1beta1.SecretManagerService.AccessSecretVersion\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AccessSecretVersionRequest {
     /// Required. The resource name of the \[SecretVersion][google.cloud.secrets.v1beta1.SecretVersion\] in the format
@@ -281,6 +299,7 @@ pub struct AccessSecretVersionRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Response message for \[SecretManagerService.AccessSecretVersion][google.cloud.secrets.v1beta1.SecretManagerService.AccessSecretVersion\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AccessSecretVersionResponse {
     /// The resource name of the \[SecretVersion][google.cloud.secrets.v1beta1.SecretVersion\] in the format
@@ -292,6 +311,7 @@ pub struct AccessSecretVersionResponse {
     pub payload: ::core::option::Option<SecretPayload>,
 }
 /// Request message for \[SecretManagerService.DeleteSecret][google.cloud.secrets.v1beta1.SecretManagerService.DeleteSecret\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteSecretRequest {
     /// Required. The resource name of the \[Secret][google.cloud.secrets.v1beta1.Secret\] to delete in the format
@@ -300,6 +320,7 @@ pub struct DeleteSecretRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for \[SecretManagerService.DisableSecretVersion][google.cloud.secrets.v1beta1.SecretManagerService.DisableSecretVersion\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DisableSecretVersionRequest {
     /// Required. The resource name of the \[SecretVersion][google.cloud.secrets.v1beta1.SecretVersion\] to disable in the format
@@ -308,6 +329,7 @@ pub struct DisableSecretVersionRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for \[SecretManagerService.EnableSecretVersion][google.cloud.secrets.v1beta1.SecretManagerService.EnableSecretVersion\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EnableSecretVersionRequest {
     /// Required. The resource name of the \[SecretVersion][google.cloud.secrets.v1beta1.SecretVersion\] to enable in the format
@@ -316,6 +338,7 @@ pub struct EnableSecretVersionRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for \[SecretManagerService.DestroySecretVersion][google.cloud.secrets.v1beta1.SecretManagerService.DestroySecretVersion\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DestroySecretVersionRequest {
     /// Required. The resource name of the \[SecretVersion][google.cloud.secrets.v1beta1.SecretVersion\] to destroy in the format

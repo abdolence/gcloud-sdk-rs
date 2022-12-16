@@ -33,6 +33,7 @@
 ///          "longitude": -73.70018
 ///      }
 /// }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Viewport {
     /// Required. The low point of the viewport.

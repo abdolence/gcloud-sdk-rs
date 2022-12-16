@@ -16,6 +16,7 @@
 /// For more information, read reserved IP address.
 ///
 /// (== resource_for {$api_version}.addresses ==) (== resource_for {$api_version}.globalAddresses ==)
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Address {
     /// The static IP address represented by this resource.
@@ -261,6 +262,7 @@ pub mod address {
     }
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddressAggregatedList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -286,6 +288,7 @@ pub struct AddressAggregatedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// Contains a list of addresses.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddressList {
     /// [Output Only] Unique identifier for the resource; defined by the server.
@@ -308,6 +311,7 @@ pub struct AddressList {
     pub warning: ::core::option::Option<Warning>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddressesScopedList {
     /// [Output Only] A list of addresses contained in this scope.
@@ -318,6 +322,7 @@ pub struct AddressesScopedList {
     pub warning: ::core::option::Option<Warning>,
 }
 /// A request message for Addresses.AggregatedList. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AggregatedListAddressesRequest {
     /// A filter expression that filters resources listed in the response. The expression must specify the field name, a comparison operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The comparison operator must be either `=`, `!=`, `>`, or `<`.
@@ -350,6 +355,7 @@ pub struct AggregatedListAddressesRequest {
     pub project: ::prost::alloc::string::String,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Data {
     /// [Output Only] A key that provides more detail on the warning being returned. For example, for warnings where there are no results in a list request for a particular zone, this key might be scope and the key value might be the zone name. Other examples might be a key indicating a deprecated resource and a suggested replacement, or a warning about invalid network settings (for example, if an instance attempts to perform IP forwarding but is not enabled for IP forwarding).
@@ -360,6 +366,7 @@ pub struct Data {
     pub value: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Addresses.Delete. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteAddressRequest {
     /// Name of the address resource to delete.
@@ -380,6 +387,7 @@ pub struct DeleteAddressRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// [Output Only] If errors are generated during processing of the operation, this field will be populated.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Error {
     /// [Output Only] The array of errors encountered while processing this operation.
@@ -387,6 +395,7 @@ pub struct Error {
     pub errors: ::prost::alloc::vec::Vec<Errors>,
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Errors {
     /// [Output Only] The error type identifier for this error.
@@ -400,6 +409,7 @@ pub struct Errors {
     pub message: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for RegionOperations.Get. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetRegionOperationRequest {
     /// Name of the Operations resource to return.
@@ -413,6 +423,7 @@ pub struct GetRegionOperationRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// A request message for Addresses.Insert. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertAddressRequest {
     /// The body resource for this request
@@ -433,6 +444,7 @@ pub struct InsertAddressRequest {
     pub request_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A request message for Addresses.List. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAddressesRequest {
     /// A filter expression that filters resources listed in the response. The expression must specify the field name, a comparison operator, and the value that you want to use for filtering. The value must be a string, a number, or a boolean. The comparison operator must be either =, !=, >, or <.
@@ -478,6 +490,7 @@ pub struct ListAddressesRequest {
 /// - For zonal operations, use the zoneOperations resource.
 ///
 /// For more information, read  Global, Regional, and Zonal Resources. (== resource_for {$api_version}.globalOperations ==) (== resource_for {$api_version}.regionOperations ==) (== resource_for {$api_version}.zoneOperations ==)
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Operation {
     /// [Output Only] The value of `requestId` if you provided it in the request. Not present otherwise.
@@ -588,6 +601,7 @@ pub mod operation {
     }
 }
 /// A request message for RegionOperations.Wait. See the method description for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WaitRegionOperationRequest {
     /// Name of the Operations resource to return.
@@ -601,6 +615,7 @@ pub struct WaitRegionOperationRequest {
     pub region: ::prost::alloc::string::String,
 }
 /// [Output Only] Informational warning message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Warning {
     /// [Output Only] A warning code, if applicable. For example, Compute Engine returns NO_RESULTS_ON_PAGE if there are no results in the response.
@@ -697,6 +712,7 @@ pub mod warning {
     }
 }
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Warnings {
     /// [Output Only] A warning code, if applicable. For example, Compute Engine returns NO_RESULTS_ON_PAGE if there are no results in the response.

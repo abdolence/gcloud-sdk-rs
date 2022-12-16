@@ -2,6 +2,7 @@
 /// Note: `Table.schema` has been deprecated in favor of `Table.schemaJson`.
 /// `Table.schema` may continue to be present in your logs during this
 /// transition.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AuditData {
     /// A job completion event.
@@ -20,6 +21,7 @@ pub struct AuditData {
 /// Nested message and enum types in `AuditData`.
 pub mod audit_data {
     /// Request data for each BigQuery method.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Request {
         /// Table insert request.
@@ -56,6 +58,7 @@ pub mod audit_data {
         ),
     }
     /// Response data for each BigQuery method.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Response {
         /// Table insert response.
@@ -89,6 +92,7 @@ pub mod audit_data {
     }
 }
 /// Table insert request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TableInsertRequest {
     /// The new table.
@@ -96,6 +100,7 @@ pub struct TableInsertRequest {
     pub resource: ::core::option::Option<Table>,
 }
 /// Table update request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TableUpdateRequest {
     /// The table to be updated.
@@ -103,6 +108,7 @@ pub struct TableUpdateRequest {
     pub resource: ::core::option::Option<Table>,
 }
 /// Table insert response.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TableInsertResponse {
     /// Final state of the inserted table.
@@ -110,6 +116,7 @@ pub struct TableInsertResponse {
     pub resource: ::core::option::Option<Table>,
 }
 /// Table update response.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TableUpdateResponse {
     /// Final state of the updated table.
@@ -117,6 +124,7 @@ pub struct TableUpdateResponse {
     pub resource: ::core::option::Option<Table>,
 }
 /// Dataset list request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DatasetListRequest {
     /// Whether to list all datasets, including hidden ones.
@@ -124,6 +132,7 @@ pub struct DatasetListRequest {
     pub list_all: bool,
 }
 /// Dataset insert request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DatasetInsertRequest {
     /// The dataset to be inserted.
@@ -131,6 +140,7 @@ pub struct DatasetInsertRequest {
     pub resource: ::core::option::Option<Dataset>,
 }
 /// Dataset insert response.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DatasetInsertResponse {
     /// Final state of the inserted dataset.
@@ -138,6 +148,7 @@ pub struct DatasetInsertResponse {
     pub resource: ::core::option::Option<Dataset>,
 }
 /// Dataset update request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DatasetUpdateRequest {
     /// The dataset to be updated.
@@ -145,6 +156,7 @@ pub struct DatasetUpdateRequest {
     pub resource: ::core::option::Option<Dataset>,
 }
 /// Dataset update response.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DatasetUpdateResponse {
     /// Final state of the updated dataset.
@@ -152,6 +164,7 @@ pub struct DatasetUpdateResponse {
     pub resource: ::core::option::Option<Dataset>,
 }
 /// Job insert request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct JobInsertRequest {
     /// Job insert request.
@@ -159,6 +172,7 @@ pub struct JobInsertRequest {
     pub resource: ::core::option::Option<Job>,
 }
 /// Job insert response.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct JobInsertResponse {
     /// Job insert response.
@@ -166,6 +180,7 @@ pub struct JobInsertResponse {
     pub resource: ::core::option::Option<Job>,
 }
 /// Job query request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct JobQueryRequest {
     /// The query.
@@ -185,6 +200,7 @@ pub struct JobQueryRequest {
     pub dry_run: bool,
 }
 /// Job query response.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct JobQueryResponse {
     /// The total number of rows in the full query result set.
@@ -195,6 +211,7 @@ pub struct JobQueryResponse {
     pub job: ::core::option::Option<Job>,
 }
 /// Job getQueryResults request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct JobGetQueryResultsRequest {
     /// Maximum number of results to return.
@@ -205,6 +222,7 @@ pub struct JobGetQueryResultsRequest {
     pub start_row: u64,
 }
 /// Job getQueryResults response.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct JobGetQueryResultsResponse {
     /// Total number of results in query results.
@@ -217,6 +235,7 @@ pub struct JobGetQueryResultsResponse {
     pub job: ::core::option::Option<Job>,
 }
 /// Job getQueryDone response.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct JobQueryDoneResponse {
     /// The job and status information.
@@ -225,6 +244,7 @@ pub struct JobQueryDoneResponse {
     pub job: ::core::option::Option<Job>,
 }
 /// Query job completed event.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct JobCompletedEvent {
     /// Name of the event.
@@ -236,6 +256,7 @@ pub struct JobCompletedEvent {
 }
 /// Table data read event. Only present for tables, not views, and is only
 /// included in the log record for the project that owns the table.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TableDataReadEvent {
     /// Name of the accessed table.
@@ -248,6 +269,7 @@ pub struct TableDataReadEvent {
     pub referenced_fields: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Table data-list request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TableDataListRequest {
     /// Starting row offset.
@@ -263,6 +285,7 @@ pub struct TableDataListRequest {
 /// Note: `Table.schema` has been deprecated in favor of `Table.schemaJson`.
 /// `Table.schema` may continue to be present in your logs during this
 /// transition.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Table {
     /// The name of the table.
@@ -297,6 +320,7 @@ pub struct Table {
     pub encryption: ::core::option::Option<EncryptionInfo>,
 }
 /// User-provided metadata for a table.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TableInfo {
     /// A short name for the table, such as`"Analytics Data - Jan 2011"`.
@@ -314,6 +338,7 @@ pub struct TableInfo {
     >,
 }
 /// Describes a virtual table defined by a SQL query.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TableViewDefinition {
     /// SQL query defining the view.
@@ -323,6 +348,7 @@ pub struct TableViewDefinition {
 /// BigQuery dataset information.
 /// See the \[Dataset\](/bigquery/docs/reference/v2/datasets) API resource
 /// for more details on individual fields.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Dataset {
     /// The name of the dataset.
@@ -348,6 +374,7 @@ pub struct Dataset {
     pub default_table_expire_duration: ::core::option::Option<::prost_types::Duration>,
 }
 /// User-provided metadata for a dataset.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DatasetInfo {
     /// A short name for the dataset, such as`"Analytics Data 2011"`.
@@ -365,6 +392,7 @@ pub struct DatasetInfo {
     >,
 }
 /// An access control list.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BigQueryAcl {
     /// Access control entry list.
@@ -374,6 +402,7 @@ pub struct BigQueryAcl {
 /// Nested message and enum types in `BigQueryAcl`.
 pub mod big_query_acl {
     /// Access control entry.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Entry {
         /// The granted role, which can be `READER`, `WRITER`, or `OWNER`.
@@ -398,6 +427,7 @@ pub mod big_query_acl {
     }
 }
 /// Describes a job.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Job {
     /// Job name.
@@ -416,6 +446,7 @@ pub struct Job {
 /// Job configuration information.
 /// See the \[Jobs\](/bigquery/docs/reference/v2/jobs) API resource
 /// for more details on individual fields.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct JobConfiguration {
     /// If true, don't actually run the job. Just check that it would run.
@@ -434,6 +465,7 @@ pub struct JobConfiguration {
 /// Nested message and enum types in `JobConfiguration`.
 pub mod job_configuration {
     /// Describes a query job, which executes a SQL-like query.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Query {
         /// The SQL query to run.
@@ -471,6 +503,7 @@ pub mod job_configuration {
     }
     /// Describes a load job, which loads data from an external source via
     /// the  import pipeline.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Load {
         /// URIs for the data to be imported. Only Google Cloud Storage URIs are
@@ -498,6 +531,7 @@ pub mod job_configuration {
     }
     /// Describes an extract job, which exports data to an external source
     /// via the  export pipeline.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Extract {
         /// Google Cloud Storage URIs where extracted data should be written.
@@ -508,6 +542,7 @@ pub mod job_configuration {
         pub source_table: ::core::option::Option<super::TableName>,
     }
     /// Describes a copy job, which copies an existing table to another table.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct TableCopy {
         /// Source tables.
@@ -530,6 +565,7 @@ pub mod job_configuration {
         pub destination_table_encryption: ::core::option::Option<super::EncryptionInfo>,
     }
     /// Job configuration information.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Configuration {
         /// Query job information.
@@ -547,6 +583,7 @@ pub mod job_configuration {
     }
 }
 /// Describes an external data source used in a query.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TableDefinition {
     /// Name of the table, used in queries.
@@ -557,6 +594,7 @@ pub struct TableDefinition {
     pub source_uris: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Running state of a job.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct JobStatus {
     /// State of a job: `PENDING`, `RUNNING`, or `DONE`.
@@ -573,6 +611,7 @@ pub struct JobStatus {
     >,
 }
 /// Job statistics that may change after a job starts.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct JobStatistics {
     /// Time when the job was created.
@@ -631,6 +670,7 @@ pub struct JobStatistics {
 /// Nested message and enum types in `JobStatistics`.
 pub mod job_statistics {
     /// Job resource usage breakdown by reservation.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ReservationResourceUsage {
         /// Reservation name or "unreserved" for on-demand resources usage.
@@ -642,6 +682,7 @@ pub mod job_statistics {
     }
 }
 /// The fully-qualified name for a dataset.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DatasetName {
     /// The project ID.
@@ -652,6 +693,7 @@ pub struct DatasetName {
     pub dataset_id: ::prost::alloc::string::String,
 }
 /// The fully-qualified name for a table.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TableName {
     /// The project ID.
@@ -665,6 +707,7 @@ pub struct TableName {
     pub table_id: ::prost::alloc::string::String,
 }
 /// The fully-qualified name for a job.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct JobName {
     /// The project ID.
@@ -678,6 +721,7 @@ pub struct JobName {
     pub location: ::prost::alloc::string::String,
 }
 /// Describes encryption properties for a table or a job
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EncryptionInfo {
     /// unique identifier for cloud kms key

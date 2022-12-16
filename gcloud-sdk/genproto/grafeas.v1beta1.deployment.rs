@@ -1,4 +1,5 @@
 /// An artifact that can be deployed in some runtime.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Deployable {
     /// Required. Resource URI for the artifact being deployed.
@@ -6,6 +7,7 @@ pub struct Deployable {
     pub resource_uri: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Details of a deployment occurrence.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Details {
     /// Required. Deployment history for the resource.
@@ -13,6 +15,7 @@ pub struct Details {
     pub deployment: ::core::option::Option<Deployment>,
 }
 /// The period during which some deployable was active in a runtime.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Deployment {
     /// Identity of the user that triggered this deployment.

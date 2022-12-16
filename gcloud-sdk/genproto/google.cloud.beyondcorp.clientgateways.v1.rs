@@ -1,4 +1,5 @@
 /// Message describing ClientGateway object.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ClientGateway {
     /// Required. name of resource. The name is ignored during creation.
@@ -73,6 +74,7 @@ pub mod client_gateway {
     }
 }
 /// Message for requesting list of ClientGateways.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListClientGatewaysRequest {
     /// Required. Parent value for ListClientGatewaysRequest.
@@ -93,6 +95,7 @@ pub struct ListClientGatewaysRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// Message for response to listing ClientGateways.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListClientGatewaysResponse {
     /// The list of ClientGateway.
@@ -106,6 +109,7 @@ pub struct ListClientGatewaysResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Message for getting a ClientGateway.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetClientGatewayRequest {
     /// Required. Name of the resource
@@ -113,6 +117,7 @@ pub struct GetClientGatewayRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Message for creating a ClientGateway.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateClientGatewayRequest {
     /// Required. Value for parent.
@@ -148,6 +153,7 @@ pub struct CreateClientGatewayRequest {
     pub validate_only: bool,
 }
 /// Message for deleting a ClientGateway
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteClientGatewayRequest {
     /// Required. Name of the resource
@@ -174,6 +180,7 @@ pub struct DeleteClientGatewayRequest {
     pub validate_only: bool,
 }
 /// Represents the metadata of the long-running operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ClientGatewayOperationMetadata {
     /// Output only. The time the operation was created.

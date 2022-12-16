@@ -1,4 +1,5 @@
 /// Video annotation request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnnotateVideoRequest {
     /// Input video location. Currently, only
@@ -39,6 +40,7 @@ pub struct AnnotateVideoRequest {
     pub location_id: ::prost::alloc::string::String,
 }
 /// Video context and/or feature-specific parameters.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VideoContext {
     /// Video segments to annotate. The segments may overlap and are not required
@@ -62,6 +64,7 @@ pub struct VideoContext {
     pub text_detection_config: ::core::option::Option<TextDetectionConfig>,
 }
 /// Config for LABEL_DETECTION.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LabelDetectionConfig {
     /// What labels should be detected with LABEL_DETECTION, in addition to
@@ -81,6 +84,7 @@ pub struct LabelDetectionConfig {
     pub model: ::prost::alloc::string::String,
 }
 /// Config for SHOT_CHANGE_DETECTION.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ShotChangeDetectionConfig {
     /// Model to use for shot change detection.
@@ -90,6 +94,7 @@ pub struct ShotChangeDetectionConfig {
     pub model: ::prost::alloc::string::String,
 }
 /// Config for EXPLICIT_CONTENT_DETECTION.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExplicitContentDetectionConfig {
     /// Model to use for explicit content detection.
@@ -99,6 +104,7 @@ pub struct ExplicitContentDetectionConfig {
     pub model: ::prost::alloc::string::String,
 }
 /// Config for TEXT_DETECTION.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TextDetectionConfig {
     /// Language hint can be specified if the language to be detected is known a
@@ -110,6 +116,7 @@ pub struct TextDetectionConfig {
     pub language_hints: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Video segment.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VideoSegment {
     /// Time-offset, relative to the beginning of the video,
@@ -122,6 +129,7 @@ pub struct VideoSegment {
     pub end_time_offset: ::core::option::Option<::prost_types::Duration>,
 }
 /// Video segment level annotation results for label detection.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LabelSegment {
     /// Video segment where a label was detected.
@@ -132,6 +140,7 @@ pub struct LabelSegment {
     pub confidence: f32,
 }
 /// Video frame level annotation results for label detection.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LabelFrame {
     /// Time-offset, relative to the beginning of the video, corresponding to the
@@ -143,6 +152,7 @@ pub struct LabelFrame {
     pub confidence: f32,
 }
 /// Detected entity from video analysis.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Entity {
     /// Opaque entity ID. Some IDs may be available in
@@ -158,6 +168,7 @@ pub struct Entity {
     pub language_code: ::prost::alloc::string::String,
 }
 /// Label annotation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LabelAnnotation {
     /// Detected entity.
@@ -177,6 +188,7 @@ pub struct LabelAnnotation {
     pub frames: ::prost::alloc::vec::Vec<LabelFrame>,
 }
 /// Video frame level annotation results for explicit content.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExplicitContentFrame {
     /// Time-offset, relative to the beginning of the video, corresponding to the
@@ -190,6 +202,7 @@ pub struct ExplicitContentFrame {
 /// Explicit content annotation (based on per-frame visual signals only).
 /// If no explicit content has been detected in a frame, no annotations are
 /// present for that frame.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExplicitContentAnnotation {
     /// All video frames where explicit content was detected.
@@ -199,6 +212,7 @@ pub struct ExplicitContentAnnotation {
 /// Normalized bounding box.
 /// The normalized vertex coordinates are relative to the original image.
 /// Range: [0, 1].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NormalizedBoundingBox {
     /// Left X coordinate.
@@ -215,6 +229,7 @@ pub struct NormalizedBoundingBox {
     pub bottom: f32,
 }
 /// Annotation results for a single video.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VideoAnnotationResults {
     /// Video file location in
@@ -255,6 +270,7 @@ pub struct VideoAnnotationResults {
 /// Video annotation response. Included in the `response`
 /// field of the `Operation` returned by the `GetOperation`
 /// call of the `google::longrunning::Operations` service.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnnotateVideoResponse {
     /// Annotation results for all videos specified in `AnnotateVideoRequest`.
@@ -262,6 +278,7 @@ pub struct AnnotateVideoResponse {
     pub annotation_results: ::prost::alloc::vec::Vec<VideoAnnotationResults>,
 }
 /// Annotation progress for a single video.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VideoAnnotationProgress {
     /// Video file location in
@@ -282,6 +299,7 @@ pub struct VideoAnnotationProgress {
 /// Video annotation progress. Included in the `metadata`
 /// field of the `Operation` returned by the `GetOperation`
 /// call of the `google::longrunning::Operations` service.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnnotateVideoProgress {
     /// Progress metadata for all videos specified in `AnnotateVideoRequest`.
@@ -291,6 +309,7 @@ pub struct AnnotateVideoProgress {
 /// A vertex represents a 2D point in the image.
 /// NOTE: the normalized vertex coordinates are relative to the original image
 /// and range from 0 to 1.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NormalizedVertex {
     /// X coordinate.
@@ -317,6 +336,7 @@ pub struct NormalizedVertex {
 /// and the vertex order will still be (0, 1, 2, 3). Note that values can be less
 /// than 0, or greater than 1 due to trignometric calculations for location of
 /// the box.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NormalizedBoundingPoly {
     /// Normalized vertices of the bounding polygon.
@@ -324,6 +344,7 @@ pub struct NormalizedBoundingPoly {
     pub vertices: ::prost::alloc::vec::Vec<NormalizedVertex>,
 }
 /// Video segment level annotation results for text detection.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TextSegment {
     /// Video segment where a text snippet was detected.
@@ -340,6 +361,7 @@ pub struct TextSegment {
 /// Video frame level annotation results for text annotation (OCR).
 /// Contains information regarding timestamp and bounding box locations for the
 /// frames containing detected OCR text snippets.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TextFrame {
     /// Bounding polygon of the detected text for this frame.
@@ -352,6 +374,7 @@ pub struct TextFrame {
 /// Annotations related to one detected OCR text snippet. This will contain the
 /// corresponding text, confidence value, and frame level information for each
 /// detection.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TextAnnotation {
     /// The detected text.
@@ -363,6 +386,7 @@ pub struct TextAnnotation {
 }
 /// Video frame level annotations for object detection and tracking. This field
 /// stores per frame location, time offset, and confidence.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ObjectTrackingFrame {
     /// The normalized bounding box location of this object track for the frame.
@@ -373,6 +397,7 @@ pub struct ObjectTrackingFrame {
     pub time_offset: ::core::option::Option<::prost_types::Duration>,
 }
 /// Annotations corresponding to one tracked object.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ObjectTrackingAnnotation {
     /// Entity to specify the object category that this track is labeled as.
@@ -393,6 +418,7 @@ pub struct ObjectTrackingAnnotation {
 pub mod object_tracking_annotation {
     /// Different representation of tracking info in non-streaming batch
     /// and streaming modes.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum TrackInfo {
         /// Non-streaming batch mode ONLY.

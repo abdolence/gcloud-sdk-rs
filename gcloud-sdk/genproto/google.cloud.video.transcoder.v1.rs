@@ -1,4 +1,5 @@
 /// Transcoding job resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Job {
     /// The resource name of the job.
@@ -102,6 +103,7 @@ pub mod job {
     /// `job_config`, the API selects `templateId`; this template ID is set to
     /// `preset/web-hd` by default. When you use a `template_id` to create a job,
     /// the `Job.config` is populated by the `JobTemplate.config`.<br>
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum JobConfig {
         /// Input only. Specify the `template_id` to use for populating `Job.config`. The default
@@ -120,6 +122,7 @@ pub mod job {
     }
 }
 /// Transcoding job template resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct JobTemplate {
     /// The resource name of the job template.
@@ -139,6 +142,7 @@ pub struct JobTemplate {
     >,
 }
 /// Job configuration
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct JobConfig {
     /// List of input assets stored in Cloud Storage.
@@ -176,6 +180,7 @@ pub struct JobConfig {
     pub overlays: ::prost::alloc::vec::Vec<Overlay>,
 }
 /// Input asset.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Input {
     /// A unique key for this input. Must be specified when using advanced
@@ -194,6 +199,7 @@ pub struct Input {
     pub preprocessing_config: ::core::option::Option<PreprocessingConfig>,
 }
 /// Location of output file(s) in a Cloud Storage bucket.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Output {
     /// URI for the output file(s). For example, `gs://my-bucket/outputs/`.
@@ -204,6 +210,7 @@ pub struct Output {
     pub uri: ::prost::alloc::string::String,
 }
 /// Edit atom.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EditAtom {
     /// A unique key for this atom. Must be specified when using advanced
@@ -225,6 +232,7 @@ pub struct EditAtom {
     pub start_time_offset: ::core::option::Option<::prost_types::Duration>,
 }
 /// Ad break.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AdBreak {
     /// Start time in seconds for the ad break, relative to the output file
@@ -235,6 +243,7 @@ pub struct AdBreak {
 /// Encoding of an input file such as an audio, video, or text track.
 /// Elementary streams must be packaged before
 /// mapping and sharing between different output formats.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ElementaryStream {
     /// A unique key for this elementary stream.
@@ -247,6 +256,7 @@ pub struct ElementaryStream {
 /// Nested message and enum types in `ElementaryStream`.
 pub mod elementary_stream {
     /// Encoding of an audio, video, or text track.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ElementaryStream {
         /// Encoding of a video stream.
@@ -261,6 +271,7 @@ pub mod elementary_stream {
     }
 }
 /// Multiplexing settings for output stream.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MuxStream {
     /// A unique key for this multiplexed stream. HLS media manifests will be
@@ -296,6 +307,7 @@ pub struct MuxStream {
     pub segment_settings: ::core::option::Option<SegmentSettings>,
 }
 /// Manifest configuration.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Manifest {
     /// The name of the generated file. The default is `manifest` with the
@@ -351,6 +363,7 @@ pub mod manifest {
     }
 }
 /// A Pub/Sub destination.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PubsubDestination {
     /// The name of the Pub/Sub topic to publish job completion notification
@@ -359,6 +372,7 @@ pub struct PubsubDestination {
     pub topic: ::prost::alloc::string::String,
 }
 /// Sprite sheet configuration.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SpriteSheet {
     /// Format type. The default is `jpeg`.
@@ -427,6 +441,7 @@ pub struct SpriteSheet {
 /// Nested message and enum types in `SpriteSheet`.
 pub mod sprite_sheet {
     /// Specify either total number of sprites or interval to create sprites.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ExtractionStrategy {
         /// Total number of sprites. Create the specified number of sprites
@@ -441,6 +456,7 @@ pub mod sprite_sheet {
     }
 }
 /// Overlay configuration.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Overlay {
     /// Image overlay.
@@ -454,6 +470,7 @@ pub struct Overlay {
 /// Nested message and enum types in `Overlay`.
 pub mod overlay {
     /// 2D normalized coordinates. Default: `{0.0, 0.0}`
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct NormalizedCoordinate {
         /// Normalized x coordinate.
@@ -464,6 +481,7 @@ pub mod overlay {
         pub y: f64,
     }
     /// Overlaid jpeg image.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Image {
         /// Required. URI of the JPEG image in Cloud Storage. For example,
@@ -482,6 +500,7 @@ pub mod overlay {
         pub alpha: f64,
     }
     /// Display static overlay object.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AnimationStatic {
         /// Normalized coordinates based on output video resolution. Valid
@@ -496,6 +515,7 @@ pub mod overlay {
         pub start_time_offset: ::core::option::Option<::prost_types::Duration>,
     }
     /// Display overlay object with fade animation.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AnimationFade {
         /// Required. Type of fade animation: `FADE_IN` or `FADE_OUT`.
@@ -519,6 +539,7 @@ pub mod overlay {
     /// End previous overlay animation from the video. Without AnimationEnd, the
     /// overlay object will keep the state of previous animation until the end of
     /// the video.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AnimationEnd {
         /// The time to end overlay object, in seconds. Default: 0
@@ -526,6 +547,7 @@ pub mod overlay {
         pub start_time_offset: ::core::option::Option<::prost_types::Duration>,
     }
     /// Animation types.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Animation {
         /// Animations can be static or fade, or they can end the previous animation.
@@ -535,6 +557,7 @@ pub mod overlay {
     /// Nested message and enum types in `Animation`.
     pub mod animation {
         /// Animations can be static or fade, or they can end the previous animation.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum AnimationType {
             /// Display static overlay object.
@@ -584,6 +607,7 @@ pub mod overlay {
     }
 }
 /// Preprocessing configurations.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PreprocessingConfig {
     /// Color preprocessing configuration.
@@ -613,6 +637,7 @@ pub mod preprocessing_config {
     /// Color preprocessing configuration.
     ///
     /// **Note:** This configuration is not supported.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Color {
         /// Control color saturation of the video. Enter a value between -1 and 1,
@@ -634,6 +659,7 @@ pub mod preprocessing_config {
     /// Denoise preprocessing configuration.
     ///
     /// **Note:** This configuration is not supported.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Denoise {
         /// Set strength of the denoise. Enter a value between 0 and 1. The higher
@@ -652,6 +678,7 @@ pub mod preprocessing_config {
     /// Deblock preprocessing configuration.
     ///
     /// **Note:** This configuration is not supported.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Deblock {
         /// Set strength of the deblocker. Enter a value between 0 and 1. The higher
@@ -664,6 +691,7 @@ pub mod preprocessing_config {
         pub enabled: bool,
     }
     /// Audio preprocessing configuration.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Audio {
         /// Specify audio loudness normalization in loudness units relative to full
@@ -692,6 +720,7 @@ pub mod preprocessing_config {
     }
     /// Video cropping configuration for the input video. The cropped input video
     /// is scaled to match the output resolution.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Crop {
         /// The number of pixels to crop from the top. The default is 0.
@@ -709,6 +738,7 @@ pub mod preprocessing_config {
     }
     /// Pad filter configuration for the input video. The padded input video
     /// is scaled after padding with black to match the output resolution.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Pad {
         /// The number of pixels to add to the top. The default is 0.
@@ -725,6 +755,7 @@ pub mod preprocessing_config {
         pub right_pixels: i32,
     }
     /// Deinterlace configuration for input video.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Deinterlace {
         /// Specify the video deinterlacing filter. The default is `yadif`.
@@ -736,6 +767,7 @@ pub mod preprocessing_config {
     /// Nested message and enum types in `Deinterlace`.
     pub mod deinterlace {
         /// Yet Another Deinterlacing Filter Configuration.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct YadifConfig {
             /// Specifies the deinterlacing mode to adopt.
@@ -765,6 +797,7 @@ pub mod preprocessing_config {
             pub deinterlace_all_frames: bool,
         }
         /// Bob Weaver Deinterlacing Filter Configuration.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct BwdifConfig {
             /// Specifies the deinterlacing mode to adopt.
@@ -790,6 +823,7 @@ pub mod preprocessing_config {
             pub deinterlace_all_frames: bool,
         }
         /// Specify the video deinterlacing filter. The default is `yadif`.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum DeinterlacingFilter {
             /// Specifies the Yet Another Deinterlacing Filter Configuration.
@@ -802,6 +836,7 @@ pub mod preprocessing_config {
     }
 }
 /// Video stream resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VideoStream {
     /// Codec settings can be h264, h265, or vp9.
@@ -811,6 +846,7 @@ pub struct VideoStream {
 /// Nested message and enum types in `VideoStream`.
 pub mod video_stream {
     /// H264 codec settings.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct H264CodecSettings {
         /// The width of the video in pixels. Must be an even integer.
@@ -948,6 +984,7 @@ pub mod video_stream {
     /// Nested message and enum types in `H264CodecSettings`.
     pub mod h264_codec_settings {
         /// GOP mode can be either by frame count or duration.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum GopMode {
             /// Select the GOP size based on the specified frame count. Must be greater
@@ -964,6 +1001,7 @@ pub mod video_stream {
         }
     }
     /// H265 codec settings.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct H265CodecSettings {
         /// The width of the video in pixels. Must be an even integer.
@@ -1108,6 +1146,7 @@ pub mod video_stream {
     /// Nested message and enum types in `H265CodecSettings`.
     pub mod h265_codec_settings {
         /// GOP mode can be either by frame count or duration.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum GopMode {
             /// Select the GOP size based on the specified frame count. Must be greater
@@ -1124,6 +1163,7 @@ pub mod video_stream {
         }
     }
     /// VP9 codec settings.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Vp9CodecSettings {
         /// The width of the video in pixels. Must be an even integer.
@@ -1209,6 +1249,7 @@ pub mod video_stream {
     /// Nested message and enum types in `Vp9CodecSettings`.
     pub mod vp9_codec_settings {
         /// GOP mode can be either by frame count or duration.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum GopMode {
             /// Select the GOP size based on the specified frame count. Must be greater
@@ -1225,6 +1266,7 @@ pub mod video_stream {
         }
     }
     /// Codec settings can be h264, h265, or vp9.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum CodecSettings {
         /// H264 codec settings.
@@ -1239,6 +1281,7 @@ pub mod video_stream {
     }
 }
 /// Audio stream resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AudioStream {
     /// The codec for this audio stream. The default is `aac`.
@@ -1283,6 +1326,7 @@ pub struct AudioStream {
 /// Nested message and enum types in `AudioStream`.
 pub mod audio_stream {
     /// The mapping for the `Job.edit_list` atoms with audio `EditAtom.inputs`.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AudioMapping {
         /// Required. The `EditAtom.key` that references the atom with audio inputs in the
@@ -1308,6 +1352,7 @@ pub mod audio_stream {
     }
 }
 /// Encoding of a text stream. For example, closed captions or subtitles.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TextStream {
     /// The codec for this text stream. The default is `webvtt`.
@@ -1328,6 +1373,7 @@ pub struct TextStream {
 /// Nested message and enum types in `TextStream`.
 pub mod text_stream {
     /// The mapping for the `Job.edit_list` atoms with text `EditAtom.inputs`.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct TextMapping {
         /// Required. The `EditAtom.key` that references atom with text inputs in the
@@ -1343,6 +1389,7 @@ pub mod text_stream {
     }
 }
 /// Segment settings for `ts`, `fmp4` and `vtt`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SegmentSettings {
     /// Duration of the segments in seconds. The default is `6.0s`. Note that
@@ -1356,6 +1403,7 @@ pub struct SegmentSettings {
     pub individual_segments: bool,
 }
 /// Request message for `TranscoderService.CreateJob`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateJobRequest {
     /// Required. The parent location to create and process this job.
@@ -1368,6 +1416,7 @@ pub struct CreateJobRequest {
 }
 /// Request message for `TranscoderService.ListJobs`.
 /// The parent location from which to retrieve the collection of jobs.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListJobsRequest {
     /// Required. Format: `projects/{project}/locations/{location}`
@@ -1390,6 +1439,7 @@ pub struct ListJobsRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// Request message for `TranscoderService.GetJob`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetJobRequest {
     /// Required. The name of the job to retrieve.
@@ -1398,6 +1448,7 @@ pub struct GetJobRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for `TranscoderService.DeleteJob`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteJobRequest {
     /// Required. The name of the job to delete.
@@ -1410,6 +1461,7 @@ pub struct DeleteJobRequest {
     pub allow_missing: bool,
 }
 /// Response message for `TranscoderService.ListJobs`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListJobsResponse {
     /// List of jobs in the specified region.
@@ -1423,6 +1475,7 @@ pub struct ListJobsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for `TranscoderService.CreateJobTemplate`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateJobTemplateRequest {
     /// Required. The parent location to create this job template.
@@ -1441,6 +1494,7 @@ pub struct CreateJobTemplateRequest {
     pub job_template_id: ::prost::alloc::string::String,
 }
 /// Request message for `TranscoderService.ListJobTemplates`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListJobTemplatesRequest {
     /// Required. The parent location from which to retrieve the collection of job templates.
@@ -1464,6 +1518,7 @@ pub struct ListJobTemplatesRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// Request message for `TranscoderService.GetJobTemplate`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetJobTemplateRequest {
     /// Required. The name of the job template to retrieve.
@@ -1473,6 +1528,7 @@ pub struct GetJobTemplateRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for `TranscoderService.DeleteJobTemplate`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteJobTemplateRequest {
     /// Required. The name of the job template to delete.
@@ -1485,6 +1541,7 @@ pub struct DeleteJobTemplateRequest {
     pub allow_missing: bool,
 }
 /// Response message for `TranscoderService.ListJobTemplates`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListJobTemplatesResponse {
     /// List of job templates in the specified region.

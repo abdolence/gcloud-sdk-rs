@@ -1,6 +1,7 @@
 /// TestMatrix captures all details about a test. It contains the environment
 /// configuration, test specification, test executions and overall state and
 /// outcome.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TestMatrix {
     /// Output only. Unique id set by the service.
@@ -59,6 +60,7 @@ pub struct TestMatrix {
     pub fail_fast: bool,
 }
 /// A single test executed in a single environment.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TestExecution {
     /// Output only. Unique id set by the service.
@@ -94,6 +96,7 @@ pub struct TestExecution {
     pub test_details: ::core::option::Option<TestDetails>,
 }
 /// A description of how to run the test.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TestSpecification {
     /// Max time a test execution is allowed to run before it is
@@ -117,6 +120,7 @@ pub struct TestSpecification {
 /// Nested message and enum types in `TestSpecification`.
 pub mod test_specification {
     /// Test setup requirements.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Setup {
         /// Test setup requirements for Android e.g. files to install, bootstrap
@@ -128,6 +132,7 @@ pub mod test_specification {
         IosTestSetup(super::IosTestSetup),
     }
     /// Required. The type of test to run.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Test {
         /// An Android instrumentation test.
@@ -147,6 +152,7 @@ pub mod test_specification {
         IosTestLoop(super::IosTestLoop),
     }
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SystraceSetup {
     /// Systrace duration in seconds.
@@ -155,6 +161,7 @@ pub struct SystraceSetup {
     pub duration_seconds: i32,
 }
 /// A description of how to set up the Android device prior to running the test.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TestSetup {
     /// List of files to push to the device before starting the test.
@@ -198,6 +205,7 @@ pub struct TestSetup {
     pub dont_autogrant_permissions: bool,
 }
 /// A description of how to set up an iOS device prior to running the test.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IosTestSetup {
     /// The network traffic profile used for running the test.
@@ -222,6 +230,7 @@ pub struct IosTestSetup {
     pub pull_directories: ::prost::alloc::vec::Vec<IosDeviceFile>,
 }
 /// A key-value pair passed as an environment variable to the test.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EnvironmentVariable {
     /// Key for the environment variable.
@@ -232,6 +241,7 @@ pub struct EnvironmentVariable {
     pub value: ::prost::alloc::string::String,
 }
 /// Identifies an account and how to log into it.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Account {
     /// Required. The type of account, based what it's for (e.g. Google) and what
@@ -243,6 +253,7 @@ pub struct Account {
 pub mod account {
     /// Required. The type of account, based what it's for (e.g. Google) and what
     /// its login mechanism is (e.g. username and password).
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum AccountType {
         /// An automatic google login account.
@@ -257,9 +268,11 @@ pub mod account {
 /// Many applications show their full set of functionalities when an account is
 /// present on the device. Logging into the device with these generated accounts
 /// allows testing more functionalities.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GoogleAuto {}
 /// An Android package file to install.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Apk {
     /// The path to an APK to be installed on the device before the test begins.
@@ -274,6 +287,7 @@ pub struct Apk {
 /// a base module directory, zero or more dynamic feature module directories.
 /// <p>See <https://developer.android.com/guide/app-bundle/build> for guidance on
 /// building App Bundles.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AppBundle {
     /// Required. Bundle location information.
@@ -283,6 +297,7 @@ pub struct AppBundle {
 /// Nested message and enum types in `AppBundle`.
 pub mod app_bundle {
     /// Required. Bundle location information.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Bundle {
         /// .aab file representing the app bundle under test.
@@ -291,6 +306,7 @@ pub mod app_bundle {
     }
 }
 /// A single device file description.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeviceFile {
     /// Required.
@@ -300,6 +316,7 @@ pub struct DeviceFile {
 /// Nested message and enum types in `DeviceFile`.
 pub mod device_file {
     /// Required.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum DeviceFile {
         /// A reference to an opaque binary blob file.
@@ -311,6 +328,7 @@ pub mod device_file {
     }
 }
 /// An opaque binary blob file to install on the device before the test starts.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ObbFile {
     /// Required. OBB file name which must conform to the format as specified by
@@ -326,6 +344,7 @@ pub struct ObbFile {
     pub obb: ::core::option::Option<FileReference>,
 }
 /// A file or directory to install on the device before the test starts.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegularFile {
     /// Required. The source file.
@@ -352,6 +371,7 @@ pub struct RegularFile {
     pub device_path: ::prost::alloc::string::String,
 }
 /// A file or directory to install on the device before the test starts.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IosDeviceFile {
     /// The source file
@@ -370,6 +390,7 @@ pub struct IosDeviceFile {
 /// A test of an Android Application with a Test Loop.
 /// The intent \<intent-name\> will be implicitly added, since Games is the only
 /// user of this api, for the time being.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AndroidTestLoop {
     /// The java package for the application under test.
@@ -397,6 +418,7 @@ pub struct AndroidTestLoop {
 /// Nested message and enum types in `AndroidTestLoop`.
 pub mod android_test_loop {
     /// Required. The Android package to test.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum AppUnderTest {
         /// The APK for the application under test.
@@ -413,6 +435,7 @@ pub mod android_test_loop {
 /// etc). This test type accepts a zip file containing the .xctestrun file and
 /// the corresponding contents of the Build/Products directory that contains all
 /// the binaries needed to run the tests.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IosXcTest {
     /// Required. The .zip containing the .xctestrun file and the contents of the
@@ -444,6 +467,7 @@ pub struct IosXcTest {
 /// A test of an iOS application that implements one or more game loop scenarios.
 /// This test type accepts an archived application (.ipa file) and a list of
 /// integer scenarios that will be executed on the app sequentially.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IosTestLoop {
     /// Required. The .ipa of the application to test.
@@ -466,6 +490,7 @@ pub struct IosTestLoop {
 ///
 /// See <<http://developer.android.com/tools/testing/testing_android.html>> for
 /// more information on types of Android tests.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AndroidInstrumentationTest {
     /// Required. The APK containing the test code to be executed.
@@ -520,6 +545,7 @@ pub struct AndroidInstrumentationTest {
 /// Nested message and enum types in `AndroidInstrumentationTest`.
 pub mod android_instrumentation_test {
     /// Required.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum AppUnderTest {
         /// The APK for the application under test.
@@ -533,6 +559,7 @@ pub mod android_instrumentation_test {
 /// A test of an android application that explores the application on a virtual
 /// or physical Android Device, finding culprits and crashes as it goes.
 /// Next tag: 30
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AndroidRoboTest {
     /// The java package for the application under test.
@@ -575,6 +602,7 @@ pub struct AndroidRoboTest {
 /// Nested message and enum types in `AndroidRoboTest`.
 pub mod android_robo_test {
     /// Required.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum AppUnderTest {
         /// The APK for the application under test.
@@ -587,6 +615,7 @@ pub mod android_robo_test {
 }
 /// Directs Robo to interact with a specific UI element if it is encountered
 /// during the crawl. Currently, Robo can perform text entry or element click.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RoboDirective {
     /// Required. The android resource name of the target UI element.
@@ -608,6 +637,7 @@ pub struct RoboDirective {
     pub action_type: i32,
 }
 /// Message for specifying the start activities to crawl.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RoboStartingIntent {
     /// Timeout in seconds for each intent.
@@ -620,6 +650,7 @@ pub struct RoboStartingIntent {
 /// Nested message and enum types in `RoboStartingIntent`.
 pub mod robo_starting_intent {
     /// Required. Intent details to start an activity.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum StartingIntent {
         /// An intent that starts the main launcher activity.
@@ -631,9 +662,11 @@ pub mod robo_starting_intent {
     }
 }
 /// Specifies an intent that starts the main launcher activity.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LauncherActivityIntent {}
 /// A starting intent specified by an action, uri, and categories.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StartActivityIntent {
     /// Action name.
@@ -648,6 +681,7 @@ pub struct StartActivityIntent {
     pub categories: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The matrix of environments in which the test is to be executed.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EnvironmentMatrix {
     /// Required. The environment matrix.
@@ -659,6 +693,7 @@ pub struct EnvironmentMatrix {
 /// Nested message and enum types in `EnvironmentMatrix`.
 pub mod environment_matrix {
     /// Required. The environment matrix.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum EnvironmentMatrix {
         /// A matrix of Android devices.
@@ -674,6 +709,7 @@ pub mod environment_matrix {
     }
 }
 /// A list of Android device configurations in which the test is to be executed.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AndroidDeviceList {
     /// Required. A list of Android devices.
@@ -681,6 +717,7 @@ pub struct AndroidDeviceList {
     pub android_devices: ::prost::alloc::vec::Vec<AndroidDevice>,
 }
 /// A list of iOS device configurations in which the test is to be executed.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IosDeviceList {
     /// Required. A list of iOS devices.
@@ -693,6 +730,7 @@ pub struct IosDeviceList {
 ///
 /// Only supported permutations will be instantiated.  Invalid permutations
 /// (e.g., incompatible models/versions) are ignored.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AndroidMatrix {
     /// Required. The ids of the set of Android device to be used.
@@ -713,6 +751,7 @@ pub struct AndroidMatrix {
     pub orientations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Information about the client which invoked the test.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ClientInfo {
     /// Required. Client name, such as gcloud.
@@ -724,6 +763,7 @@ pub struct ClientInfo {
 }
 /// Key-value pair of detailed information about the client which invoked the
 /// test. Examples: {'Version', '1.0'}, {'Release Track', 'BETA'}.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ClientInfoDetail {
     /// Required. The key of detailed client information.
@@ -734,6 +774,7 @@ pub struct ClientInfoDetail {
     pub value: ::prost::alloc::string::String,
 }
 /// Locations where the results of running the test are stored.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResultStorage {
     /// Required.
@@ -753,6 +794,7 @@ pub struct ResultStorage {
     pub results_url: ::prost::alloc::string::String,
 }
 /// Represents a tool results history resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ToolResultsHistory {
     /// Required. The cloud project that owns the tool results history.
@@ -765,6 +807,7 @@ pub struct ToolResultsHistory {
 /// Represents a tool results execution resource.
 ///
 /// This has the results of a TestMatrix.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ToolResultsExecution {
     /// Output only. The cloud project that owns the tool results execution.
@@ -780,6 +823,7 @@ pub struct ToolResultsExecution {
 /// Represents a tool results step resource.
 ///
 /// This has the results of a TestExecution.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ToolResultsStep {
     /// Output only. The cloud project that owns the tool results step.
@@ -796,6 +840,7 @@ pub struct ToolResultsStep {
     pub step_id: ::prost::alloc::string::String,
 }
 /// A storage location within Google cloud storage (GCS).
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GoogleCloudStorage {
     /// Required. The path to a directory in GCS that will
@@ -806,6 +851,7 @@ pub struct GoogleCloudStorage {
     pub gcs_path: ::prost::alloc::string::String,
 }
 /// A reference to a file, used for user inputs.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FileReference {
     /// Required. The file reference.
@@ -815,6 +861,7 @@ pub struct FileReference {
 /// Nested message and enum types in `FileReference`.
 pub mod file_reference {
     /// Required. The file reference.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum File {
         /// A path to a file in Google Cloud Storage.
@@ -825,6 +872,7 @@ pub mod file_reference {
     }
 }
 /// The environment in which the test is run.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Environment {
     /// Required. The environment.
@@ -834,6 +882,7 @@ pub struct Environment {
 /// Nested message and enum types in `Environment`.
 pub mod environment {
     /// Required. The environment.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Environment {
         /// An Android device which must be used with an Android test.
@@ -845,6 +894,7 @@ pub mod environment {
     }
 }
 /// A single Android device.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AndroidDevice {
     /// Required. The id of the Android device to be used.
@@ -865,6 +915,7 @@ pub struct AndroidDevice {
     pub orientation: ::prost::alloc::string::String,
 }
 /// A single iOS device.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IosDevice {
     /// Required. The id of the iOS device to be used.
@@ -885,6 +936,7 @@ pub struct IosDevice {
     pub orientation: ::prost::alloc::string::String,
 }
 /// Additional details about the progress of the running test.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TestDetails {
     /// Output only. Human-readable, detailed descriptions of the test's progress.
@@ -900,6 +952,7 @@ pub struct TestDetails {
     pub error_message: ::prost::alloc::string::String,
 }
 /// Details behind an invalid request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InvalidRequestDetail {
     /// The reason behind the error.
@@ -953,6 +1006,7 @@ pub mod invalid_request_detail {
     }
 }
 /// Options for enabling sharding.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ShardingOption {
     #[prost(oneof = "sharding_option::Option", tags = "1, 2")]
@@ -960,6 +1014,7 @@ pub struct ShardingOption {
 }
 /// Nested message and enum types in `ShardingOption`.
 pub mod sharding_option {
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Option {
         /// Uniformly shards test cases given a total number of shards.
@@ -976,6 +1031,7 @@ pub mod sharding_option {
 /// For Instrumentation test, it will be translated to "-e numShard" "-e
 /// shardIndex" AndroidJUnitRunner arguments. With uniform sharding enabled,
 /// specifying these sharding arguments via environment_variables is invalid.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UniformSharding {
     /// Required. Total number of shards. When any physical devices are selected,
@@ -989,6 +1045,7 @@ pub struct UniformSharding {
 ///
 /// With manual sharding enabled, specifying test targets via
 /// environment_variables or in InstrumentationTest is invalid.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ManualSharding {
     /// Required. Group of packages, classes, and/or test methods to be run for
@@ -999,6 +1056,7 @@ pub struct ManualSharding {
     pub test_targets_for_shard: ::prost::alloc::vec::Vec<TestTargetsForShard>,
 }
 /// Test targets for a shard.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TestTargetsForShard {
     /// Group of packages, classes, and/or test methods to be run for each shard.
@@ -1010,6 +1068,7 @@ pub struct TestTargetsForShard {
     pub test_targets: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Output only. Details about the shard.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Shard {
     /// Output only. The index of the shard among all the shards.
@@ -1023,6 +1082,7 @@ pub struct Shard {
     pub test_targets_for_shard: ::core::option::Option<TestTargetsForShard>,
 }
 /// Request to submit a matrix of tests for execution.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateTestMatrixRequest {
     /// The GCE project under which this job will run.
@@ -1041,6 +1101,7 @@ pub struct CreateTestMatrixRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request to get the Test Matrix with the given id.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetTestMatrixRequest {
     /// Cloud project that owns the test matrix.
@@ -1051,6 +1112,7 @@ pub struct GetTestMatrixRequest {
     pub test_matrix_id: ::prost::alloc::string::String,
 }
 /// Request to stop running all of the tests in the specified matrix.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CancelTestMatrixRequest {
     /// Cloud project that owns the test.
@@ -1061,6 +1123,7 @@ pub struct CancelTestMatrixRequest {
     pub test_matrix_id: ::prost::alloc::string::String,
 }
 /// Response containing the current state of the specified test matrix.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CancelTestMatrixResponse {
     /// The current rolled-up state of the test matrix.
@@ -1572,6 +1635,7 @@ pub mod test_execution_service_client {
 }
 /// Android application details based on application manifest and apk archive
 /// contents.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ApkDetail {
     #[prost(message, optional, tag = "1")]
@@ -1579,6 +1643,7 @@ pub struct ApkDetail {
 }
 /// An Android app manifest. See
 /// <http://developer.android.com/guide/topics/manifest/manifest-intro.html>
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ApkManifest {
     /// Full Java-style package name for this application, e.g.
@@ -1605,6 +1670,7 @@ pub struct ApkManifest {
 }
 /// The <intent-filter> section of an <activity> tag.
 /// <https://developer.android.com/guide/topics/manifest/intent-filter-element.html>
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IntentFilter {
     /// The android:name value of the <action> tag.
@@ -1618,6 +1684,7 @@ pub struct IntentFilter {
     pub mime_type: ::prost::alloc::string::String,
 }
 /// A request to get the details of an Android application APK.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetApkDetailsRequest {
     /// The APK to be parsed for details.
@@ -1625,6 +1692,7 @@ pub struct GetApkDetailsRequest {
     pub location: ::core::option::Option<FileReference>,
 }
 /// Response containing the details of the specified Android application APK.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetApkDetailsResponse {
     /// Details of the Android APK.
@@ -1727,6 +1795,7 @@ pub mod application_detail_service_client {
     }
 }
 /// A single device IP block
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeviceIpBlock {
     /// An IP address block in CIDR notation eg: 34.68.194.64/29
@@ -1740,6 +1809,7 @@ pub struct DeviceIpBlock {
     pub added_date: ::core::option::Option<super::super::super::r#type::Date>,
 }
 /// Request to list the currently supported values for an environment type.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetTestEnvironmentCatalogRequest {
     /// Required. The type of environment that should be listed.
@@ -1799,6 +1869,7 @@ pub mod get_test_environment_catalog_request {
     }
 }
 /// A description of a test environment.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TestEnvironmentCatalog {
     /// Output only.
@@ -1813,6 +1884,7 @@ pub struct TestEnvironmentCatalog {
 /// Nested message and enum types in `TestEnvironmentCatalog`.
 pub mod test_environment_catalog {
     /// Output only.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum EnvironmentCatalog {
         /// Supported Android devices.
@@ -1833,6 +1905,7 @@ pub mod test_environment_catalog {
     }
 }
 /// List of IP blocks used by the Firebase Test Lab
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeviceIpBlockCatalog {
     /// The device IP blocks used by Firebase Test Lab
@@ -1840,6 +1913,7 @@ pub struct DeviceIpBlockCatalog {
     pub ip_blocks: ::prost::alloc::vec::Vec<DeviceIpBlock>,
 }
 /// The currently supported Android devices.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AndroidDeviceCatalog {
     /// The set of supported Android device models.
@@ -1853,6 +1927,7 @@ pub struct AndroidDeviceCatalog {
     pub runtime_configuration: ::core::option::Option<AndroidRuntimeConfiguration>,
 }
 /// Android configuration that can be selected at the time a test is run.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AndroidRuntimeConfiguration {
     /// The set of available locales.
@@ -1863,6 +1938,7 @@ pub struct AndroidRuntimeConfiguration {
     pub orientations: ::prost::alloc::vec::Vec<Orientation>,
 }
 /// A description of an Android device tests may be run on.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AndroidModel {
     /// The unique opaque id for this model.
@@ -1927,6 +2003,7 @@ pub struct AndroidModel {
     pub thumbnail_url: ::prost::alloc::string::String,
 }
 /// A version of the Android OS.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AndroidVersion {
     /// An opaque id for this Android version.
@@ -1958,6 +2035,7 @@ pub struct AndroidVersion {
 }
 /// Data about the relative number of devices running a
 /// given configuration of the Android platform.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Distribution {
     /// Output only. The time this distribution was measured.
@@ -1969,6 +2047,7 @@ pub struct Distribution {
     pub market_share: f64,
 }
 /// The currently supported iOS devices.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IosDeviceCatalog {
     /// The set of supported iOS device models.
@@ -1985,6 +2064,7 @@ pub struct IosDeviceCatalog {
     pub runtime_configuration: ::core::option::Option<IosRuntimeConfiguration>,
 }
 /// iOS configuration that can be selected at the time a test is run.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IosRuntimeConfiguration {
     /// The set of available locales.
@@ -1995,6 +2075,7 @@ pub struct IosRuntimeConfiguration {
     pub orientations: ::prost::alloc::vec::Vec<Orientation>,
 }
 /// A description of an iOS device tests may be run on.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IosModel {
     /// The unique opaque id for this model.
@@ -2031,6 +2112,7 @@ pub struct IosModel {
     pub form_factor: i32,
 }
 /// An iOS version.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IosVersion {
     /// An opaque id for this iOS version.
@@ -2056,6 +2138,7 @@ pub struct IosVersion {
     >,
 }
 /// A location/region designation for language.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Locale {
     /// The id for this locale.
@@ -2076,6 +2159,7 @@ pub struct Locale {
     pub tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Screen orientation of the device.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Orientation {
     /// The id for this orientation.
@@ -2092,6 +2176,7 @@ pub struct Orientation {
     pub tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// An Xcode version that an iOS version is compatible with.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct XcodeVersion {
     /// The id for this version.
@@ -2103,11 +2188,13 @@ pub struct XcodeVersion {
     #[prost(string, repeated, tag = "2")]
     pub tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NetworkConfigurationCatalog {
     #[prost(message, repeated, tag = "1")]
     pub configurations: ::prost::alloc::vec::Vec<NetworkConfiguration>,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NetworkConfiguration {
     /// The unique opaque id for this network traffic configuration.
@@ -2121,6 +2208,7 @@ pub struct NetworkConfiguration {
     pub down_rule: ::core::option::Option<TrafficRule>,
 }
 /// Network emulation parameters.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TrafficRule {
     /// Packet delay, must be >= 0.
@@ -2140,6 +2228,7 @@ pub struct TrafficRule {
     pub burst: f32,
 }
 /// The currently provided software environment on the devices under test.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProvidedSoftwareCatalog {
     /// A string representing the current version of Android Test Orchestrator

@@ -1,4 +1,5 @@
 /// Container for a live session's ad tag detail.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LiveAdTagDetail {
     /// The resource name in the form of
@@ -10,6 +11,7 @@ pub struct LiveAdTagDetail {
     pub ad_requests: ::prost::alloc::vec::Vec<AdRequest>,
 }
 /// Information related to the details for one ad tag.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VodAdTagDetail {
     /// The name of the ad tag detail for the specified VOD session, in the form of
@@ -21,6 +23,7 @@ pub struct VodAdTagDetail {
     pub ad_requests: ::prost::alloc::vec::Vec<AdRequest>,
 }
 /// Details of an ad request to an ad server.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AdRequest {
     /// The ad tag URI processed with integrated macros.
@@ -34,6 +37,7 @@ pub struct AdRequest {
     pub response_metadata: ::core::option::Option<ResponseMetadata>,
 }
 /// Metadata for an ad request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RequestMetadata {
     /// The HTTP headers of the ad request.
@@ -41,6 +45,7 @@ pub struct RequestMetadata {
     pub headers: ::core::option::Option<::prost_types::Struct>,
 }
 /// Metadata for the response of an ad request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResponseMetadata {
     /// Error message received when making the ad request.
@@ -65,6 +70,7 @@ pub struct ResponseMetadata {
 /// Configuration for a CDN key. Used by the Video Stitcher
 /// to sign URIs for fetching video manifests and signing
 /// media segments for playback.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CdnKey {
     /// The resource name of the CDN key, in the form of
@@ -82,6 +88,7 @@ pub struct CdnKey {
 /// Nested message and enum types in `CdnKey`.
 pub mod cdn_key {
     /// Configuration associated with the CDN key.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum CdnKeyConfig {
         /// The configuration for a Google Cloud CDN key.
@@ -96,6 +103,7 @@ pub mod cdn_key {
     }
 }
 /// Configuration for a Google Cloud CDN key.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GoogleCdnKey {
     /// Input only. Secret for this Google Cloud CDN key.
@@ -106,6 +114,7 @@ pub struct GoogleCdnKey {
     pub key_name: ::prost::alloc::string::String,
 }
 /// Configuration for an Akamai CDN key.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AkamaiCdnKey {
     /// Input only. Token key for the Akamai CDN edge configuration.
@@ -113,6 +122,7 @@ pub struct AkamaiCdnKey {
     pub token_key: ::prost::alloc::vec::Vec<u8>,
 }
 /// Configuration for a Media CDN key.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MediaCdnKey {
     /// Input only. 64-byte ed25519 private key for this Media CDN key.
@@ -123,6 +133,7 @@ pub struct MediaCdnKey {
     pub key_name: ::prost::alloc::string::String,
 }
 /// Describes an event and a trigger URI.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Event {
     /// Describes the event that occurred.
@@ -243,6 +254,7 @@ pub mod event {
 }
 /// Indicates a time in which a list of events should be triggered
 /// during media playback.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProgressEvent {
     /// The time when the following tracking events occurs. The time is in
@@ -257,6 +269,7 @@ pub struct ProgressEvent {
     pub events: ::prost::alloc::vec::Vec<Event>,
 }
 /// Metadata for companion ads.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CompanionAds {
     /// Indicates how many of the companions should be displayed with the ad.
@@ -307,6 +320,7 @@ pub mod companion_ads {
     }
 }
 /// Metadata for a companion.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Companion {
     /// The API necessary to communicate with the creative if available.
@@ -345,6 +359,7 @@ pub struct Companion {
 /// Nested message and enum types in `Companion`.
 pub mod companion {
     /// Ad resource associated with the companion ad.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum AdResource {
         /// The IFrame ad resource associated with the companion ad.
@@ -359,6 +374,7 @@ pub mod companion {
     }
 }
 /// Metadata for an HTML ad resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HtmlAdResource {
     /// The HTML to display for the ad resource.
@@ -366,6 +382,7 @@ pub struct HtmlAdResource {
     pub html_source: ::prost::alloc::string::String,
 }
 /// Metadata for an IFrame ad resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IframeAdResource {
     /// URI source for an IFrame to display for the ad resource.
@@ -373,6 +390,7 @@ pub struct IframeAdResource {
     pub uri: ::prost::alloc::string::String,
 }
 /// Metadata for a static ad resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StaticAdResource {
     /// URI to the static file for the ad resource.
@@ -383,6 +401,7 @@ pub struct StaticAdResource {
     pub creative_type: ::prost::alloc::string::String,
 }
 /// Metadata for a VOD session.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VodSession {
     /// Output only. The name of the VOD session, in the form of
@@ -434,6 +453,7 @@ pub struct VodSession {
     pub asset_id: ::prost::alloc::string::String,
 }
 /// Describes what was stitched into a VOD session's manifest.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Interstitials {
     /// List of ad breaks ordered by time.
@@ -444,6 +464,7 @@ pub struct Interstitials {
     pub session_content: ::core::option::Option<VodSessionContent>,
 }
 /// Metadata for an inserted ad in a VOD session.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VodSessionAd {
     /// Duration in seconds of the ad.
@@ -461,6 +482,7 @@ pub struct VodSessionAd {
     pub activity_events: ::prost::alloc::vec::Vec<Event>,
 }
 /// Metadata for the entire stitched content in a VOD session.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VodSessionContent {
     /// The total duration in seconds of the content including the ads stitched
@@ -469,6 +491,7 @@ pub struct VodSessionContent {
     pub duration: ::core::option::Option<::prost_types::Duration>,
 }
 /// Metadata for an inserted ad break.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VodSessionAdBreak {
     /// List of events that are expected to be triggered, ordered by time.
@@ -485,6 +508,7 @@ pub struct VodSessionAdBreak {
     pub start_time_offset: ::core::option::Option<::prost_types::Duration>,
 }
 /// Metadata for a live session.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LiveSession {
     /// Output only. The name of the live session, in the form of
@@ -588,6 +612,7 @@ pub mod live_session {
     }
 }
 /// Metadata of an ad tag.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AdTag {
     /// Ad tag URI template.
@@ -595,6 +620,7 @@ pub struct AdTag {
     pub uri: ::prost::alloc::string::String,
 }
 /// Options for manifest generation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ManifestOptions {
     /// If specified, the output manifest will only return renditions matching the
@@ -644,6 +670,7 @@ pub mod manifest_options {
     }
 }
 /// Filters for a video or muxed redition.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RenditionFilter {
     /// Bitrate in bits per second for the rendition. If set, only renditions with
@@ -656,6 +683,7 @@ pub struct RenditionFilter {
     pub codecs: ::prost::alloc::string::String,
 }
 /// Slate object
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Slate {
     /// Output only. The name of the slate, in the form of
@@ -668,6 +696,7 @@ pub struct Slate {
     pub uri: ::prost::alloc::string::String,
 }
 /// Detailed information related to the interstitial of a VOD session.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VodStitchDetail {
     /// The name of the stitch detail in the specified VOD session, in the form of
@@ -679,6 +708,7 @@ pub struct VodStitchDetail {
     pub ad_stitch_details: ::prost::alloc::vec::Vec<AdStitchDetail>,
 }
 /// Metadata for a stitched ad.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AdStitchDetail {
     /// Required. The ad break ID of the processed ad.
@@ -701,6 +731,7 @@ pub struct AdStitchDetail {
     >,
 }
 /// Request message for VideoStitcherService.createCdnKey.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateCdnKeyRequest {
     /// Required. The project in which the CDN key should be created, in the form of
@@ -720,6 +751,7 @@ pub struct CreateCdnKeyRequest {
     pub cdn_key_id: ::prost::alloc::string::String,
 }
 /// Request message for VideoStitcherService.listCdnKeys.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCdnKeysRequest {
     /// Required. The project that contains the list of CDN keys, in the form of
@@ -741,6 +773,7 @@ pub struct ListCdnKeysRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// Response message for VideoStitcher.ListCdnKeys.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCdnKeysResponse {
     /// List of CDN keys.
@@ -754,6 +787,7 @@ pub struct ListCdnKeysResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for VideoStitcherService.getCdnKey.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCdnKeyRequest {
     /// Required. The name of the CDN key to be retrieved, in the form of
@@ -762,6 +796,7 @@ pub struct GetCdnKeyRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for VideoStitcherService.deleteCdnKey.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteCdnKeyRequest {
     /// Required. The name of the CDN key to be deleted, in the form of
@@ -770,6 +805,7 @@ pub struct DeleteCdnKeyRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for VideoStitcherService.updateCdnKey.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateCdnKeyRequest {
     /// Required. The CDN key resource which replaces the resource on the server.
@@ -782,6 +818,7 @@ pub struct UpdateCdnKeyRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for VideoStitcherService.createVodSession
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateVodSessionRequest {
     /// Required. The project and location in which the VOD session should be created, in the
@@ -793,6 +830,7 @@ pub struct CreateVodSessionRequest {
     pub vod_session: ::core::option::Option<VodSession>,
 }
 /// Request message for VideoStitcherService.getVodSession
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetVodSessionRequest {
     /// Required. The name of the VOD session to be retrieved, in the form of
@@ -801,6 +839,7 @@ pub struct GetVodSessionRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for VideoStitcherService.listVodStitchDetails.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListVodStitchDetailsRequest {
     /// Required. The VOD session where the stitch details belong to, in the form of
@@ -815,6 +854,7 @@ pub struct ListVodStitchDetailsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for VideoStitcherService.listVodStitchDetails.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListVodStitchDetailsResponse {
     /// A List of stitch Details.
@@ -825,6 +865,7 @@ pub struct ListVodStitchDetailsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for VideoStitcherService.getVodStitchDetail.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetVodStitchDetailRequest {
     /// Required. The name of the stitch detail in the specified VOD session, in the form of
@@ -833,6 +874,7 @@ pub struct GetVodStitchDetailRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for VideoStitcherService.listVodAdTagDetails.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListVodAdTagDetailsRequest {
     /// Required. The VOD session which the ad tag details belong to, in the form of
@@ -847,6 +889,7 @@ pub struct ListVodAdTagDetailsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for VideoStitcherService.listVodAdTagDetails.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListVodAdTagDetailsResponse {
     /// A List of ad tag details.
@@ -857,6 +900,7 @@ pub struct ListVodAdTagDetailsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for VideoStitcherService.getVodAdTagDetail
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetVodAdTagDetailRequest {
     /// Required. The name of the ad tag detail for the specified VOD session, in the form of
@@ -865,6 +909,7 @@ pub struct GetVodAdTagDetailRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for VideoStitcherService.listLiveAdTagDetails.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListLiveAdTagDetailsRequest {
     /// Required. The resource parent in the form of
@@ -879,6 +924,7 @@ pub struct ListLiveAdTagDetailsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for VideoStitcherService.listLiveAdTagDetails.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListLiveAdTagDetailsResponse {
     /// A list of live session ad tag details.
@@ -889,6 +935,7 @@ pub struct ListLiveAdTagDetailsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for VideoStitcherService.getLiveAdTagDetail
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetLiveAdTagDetailRequest {
     /// Required. The resource name in the form of
@@ -897,6 +944,7 @@ pub struct GetLiveAdTagDetailRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for VideoStitcherService.createSlate.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateSlateRequest {
     /// Required. The project in which the slate should be created, in the form of
@@ -914,6 +962,7 @@ pub struct CreateSlateRequest {
     pub slate: ::core::option::Option<Slate>,
 }
 /// Request message for VideoStitcherService.getSlate.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetSlateRequest {
     /// Required. The name of the slate to be retrieved, of the slate, in the form of
@@ -922,6 +971,7 @@ pub struct GetSlateRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for VideoStitcherService.listSlates.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSlatesRequest {
     /// Required. The project to list slates, in the form of `projects/{project_number}`.
@@ -942,6 +992,7 @@ pub struct ListSlatesRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// Response message for VideoStitcherService.listSlates.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSlatesResponse {
     /// The list of slates
@@ -955,6 +1006,7 @@ pub struct ListSlatesResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for VideoStitcherService.updateSlate.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateSlateRequest {
     /// Required. The resource with updated fields.
@@ -965,6 +1017,7 @@ pub struct UpdateSlateRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for VideoStitcherService.deleteSlate.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteSlateRequest {
     /// Required. The name of the slate to be deleted, in the form of
@@ -973,6 +1026,7 @@ pub struct DeleteSlateRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for VideoStitcherService.createLiveSession.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateLiveSessionRequest {
     /// Required. The project and location in which the live session should be created,
@@ -984,6 +1038,7 @@ pub struct CreateLiveSessionRequest {
     pub live_session: ::core::option::Option<LiveSession>,
 }
 /// Request message for VideoStitcherService.getSession.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetLiveSessionRequest {
     /// Required. The name of the live session, in the form of

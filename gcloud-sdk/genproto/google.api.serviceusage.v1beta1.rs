@@ -1,4 +1,5 @@
 /// A service that is available for use by the consumer.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Service {
     /// The resource name of the consumer and service.
@@ -24,6 +25,7 @@ pub struct Service {
     pub state: i32,
 }
 /// The configuration of the service.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ServiceConfig {
     /// The DNS address at which this service is available.
@@ -68,6 +70,7 @@ pub struct ServiceConfig {
     pub monitoring: ::core::option::Option<super::super::Monitoring>,
 }
 /// The operation metadata returned for the batchend services operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationMetadata {
     /// The full name of the resources that this operation is directly
@@ -76,6 +79,7 @@ pub struct OperationMetadata {
     pub resource_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Consumer quota settings for a quota metric.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConsumerQuotaMetric {
     /// The resource name of the quota settings on this metric for this consumer.
@@ -118,6 +122,7 @@ pub struct ConsumerQuotaMetric {
     pub unit: ::prost::alloc::string::String,
 }
 /// Consumer quota settings for a quota limit.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConsumerQuotaLimit {
     /// The resource name of the quota limit.
@@ -156,6 +161,7 @@ pub struct ConsumerQuotaLimit {
     pub quota_buckets: ::prost::alloc::vec::Vec<QuotaBucket>,
 }
 /// A quota bucket is a quota provisioning unit for a specific set of dimensions.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QuotaBucket {
     /// The effective limit of this quota bucket. Equal to default_limit if there
@@ -193,6 +199,7 @@ pub struct QuotaBucket {
     >,
 }
 /// A quota override
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QuotaOverride {
     /// The resource name of the override.
@@ -258,6 +265,7 @@ pub struct QuotaOverride {
     pub admin_override_ancestor: ::prost::alloc::string::String,
 }
 /// Import data embedded in the request message
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OverrideInlineSource {
     /// The overrides to create.
@@ -268,6 +276,7 @@ pub struct OverrideInlineSource {
     pub overrides: ::prost::alloc::vec::Vec<QuotaOverride>,
 }
 /// Quota policy created by quota administrator.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AdminQuotaPolicy {
     /// The resource name of the policy.
@@ -320,6 +329,7 @@ pub struct AdminQuotaPolicy {
 }
 /// Service identity for a service. This is the identity that service producer
 /// should use to access consumer resources.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ServiceIdentity {
     /// The email address of the service account that a service producer would use
@@ -418,6 +428,7 @@ impl QuotaSafetyCheck {
     }
 }
 /// Request message for the `EnableService` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EnableServiceRequest {
     /// Name of the consumer and service to enable the service on.
@@ -435,6 +446,7 @@ pub struct EnableServiceRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for the `DisableService` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DisableServiceRequest {
     /// Name of the consumer and service to disable the service on.
@@ -448,6 +460,7 @@ pub struct DisableServiceRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for the `GetService` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetServiceRequest {
     /// Name of the consumer and service to get the `ConsumerState` for.
@@ -459,6 +472,7 @@ pub struct GetServiceRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for the `ListServices` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListServicesRequest {
     /// Parent to search for services on.
@@ -483,6 +497,7 @@ pub struct ListServicesRequest {
     pub filter: ::prost::alloc::string::String,
 }
 /// Response message for the `ListServices` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListServicesResponse {
     /// The available services for the requested project.
@@ -494,6 +509,7 @@ pub struct ListServicesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for the `BatchEnableServices` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchEnableServicesRequest {
     /// Parent to enable services on.
@@ -523,6 +539,7 @@ pub struct BatchEnableServicesRequest {
     pub service_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for ListConsumerQuotaMetrics
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListConsumerQuotaMetricsRequest {
     /// Parent of the quotas resource.
@@ -545,6 +562,7 @@ pub struct ListConsumerQuotaMetricsRequest {
     pub view: i32,
 }
 /// Response message for ListConsumerQuotaMetrics
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListConsumerQuotaMetricsResponse {
     /// Quota settings for the consumer, organized by quota metric.
@@ -556,6 +574,7 @@ pub struct ListConsumerQuotaMetricsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for GetConsumerQuotaMetric
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetConsumerQuotaMetricRequest {
     /// The resource name of the quota limit.
@@ -569,6 +588,7 @@ pub struct GetConsumerQuotaMetricRequest {
     pub view: i32,
 }
 /// Request message for GetConsumerQuotaLimit
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetConsumerQuotaLimitRequest {
     /// The resource name of the quota limit.
@@ -582,6 +602,7 @@ pub struct GetConsumerQuotaLimitRequest {
     pub view: i32,
 }
 /// Request message for CreateAdminOverride.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateAdminOverrideRequest {
     /// The resource name of the parent quota limit, returned by a
@@ -607,6 +628,7 @@ pub struct CreateAdminOverrideRequest {
     pub force_only: ::prost::alloc::vec::Vec<i32>,
 }
 /// Request message for UpdateAdminOverride.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateAdminOverrideRequest {
     /// The resource name of the override to update.
@@ -636,6 +658,7 @@ pub struct UpdateAdminOverrideRequest {
     pub force_only: ::prost::alloc::vec::Vec<i32>,
 }
 /// Request message for DeleteAdminOverride.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteAdminOverrideRequest {
     /// The resource name of the override to delete.
@@ -657,6 +680,7 @@ pub struct DeleteAdminOverrideRequest {
     pub force_only: ::prost::alloc::vec::Vec<i32>,
 }
 /// Request message for ListAdminOverrides
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAdminOverridesRequest {
     /// The resource name of the parent quota limit, returned by a
@@ -675,6 +699,7 @@ pub struct ListAdminOverridesRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for ListAdminOverrides.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAdminOverridesResponse {
     /// Admin overrides on this limit.
@@ -686,6 +711,7 @@ pub struct ListAdminOverridesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Response message for BatchCreateAdminOverrides
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchCreateAdminOverridesResponse {
     /// The overrides that were created.
@@ -693,6 +719,7 @@ pub struct BatchCreateAdminOverridesResponse {
     pub overrides: ::prost::alloc::vec::Vec<QuotaOverride>,
 }
 /// Request message for ImportAdminOverrides
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportAdminOverridesRequest {
     /// The resource name of the consumer.
@@ -719,6 +746,7 @@ pub struct ImportAdminOverridesRequest {
 /// Nested message and enum types in `ImportAdminOverridesRequest`.
 pub mod import_admin_overrides_request {
     /// Source of import data
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
         /// The import data is specified in the request message itself
@@ -727,6 +755,7 @@ pub mod import_admin_overrides_request {
     }
 }
 /// Response message for ImportAdminOverrides
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportAdminOverridesResponse {
     /// The overrides that were created from the imported data.
@@ -736,9 +765,11 @@ pub struct ImportAdminOverridesResponse {
 /// Metadata message that provides information such as progress,
 /// partial failures, and similar information on each GetOperation call
 /// of LRO returned by ImportAdminOverrides.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportAdminOverridesMetadata {}
 /// Request message for CreateConsumerOverride.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateConsumerOverrideRequest {
     /// The resource name of the parent quota limit, returned by a
@@ -764,6 +795,7 @@ pub struct CreateConsumerOverrideRequest {
     pub force_only: ::prost::alloc::vec::Vec<i32>,
 }
 /// Request message for UpdateConsumerOverride.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateConsumerOverrideRequest {
     /// The resource name of the override to update.
@@ -793,6 +825,7 @@ pub struct UpdateConsumerOverrideRequest {
     pub force_only: ::prost::alloc::vec::Vec<i32>,
 }
 /// Request message for DeleteConsumerOverride.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteConsumerOverrideRequest {
     /// The resource name of the override to delete.
@@ -814,6 +847,7 @@ pub struct DeleteConsumerOverrideRequest {
     pub force_only: ::prost::alloc::vec::Vec<i32>,
 }
 /// Request message for ListConsumerOverrides
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListConsumerOverridesRequest {
     /// The resource name of the parent quota limit, returned by a
@@ -832,6 +866,7 @@ pub struct ListConsumerOverridesRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for ListConsumerOverrides.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListConsumerOverridesResponse {
     /// Consumer overrides on this limit.
@@ -843,6 +878,7 @@ pub struct ListConsumerOverridesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Response message for BatchCreateConsumerOverrides
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchCreateConsumerOverridesResponse {
     /// The overrides that were created.
@@ -850,6 +886,7 @@ pub struct BatchCreateConsumerOverridesResponse {
     pub overrides: ::prost::alloc::vec::Vec<QuotaOverride>,
 }
 /// Request message for ImportConsumerOverrides
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportConsumerOverridesRequest {
     /// The resource name of the consumer.
@@ -876,6 +913,7 @@ pub struct ImportConsumerOverridesRequest {
 /// Nested message and enum types in `ImportConsumerOverridesRequest`.
 pub mod import_consumer_overrides_request {
     /// Source of import data
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
         /// The import data is specified in the request message itself
@@ -884,6 +922,7 @@ pub mod import_consumer_overrides_request {
     }
 }
 /// Response message for ImportConsumerOverrides
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportConsumerOverridesResponse {
     /// The overrides that were created from the imported data.
@@ -893,9 +932,11 @@ pub struct ImportConsumerOverridesResponse {
 /// Metadata message that provides information such as progress,
 /// partial failures, and similar information on each GetOperation call
 /// of LRO returned by ImportConsumerOverrides.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportConsumerOverridesMetadata {}
 /// Response message for ImportAdminQuotaPolicies
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportAdminQuotaPoliciesResponse {
     /// The policies that were created from the imported data.
@@ -905,24 +946,29 @@ pub struct ImportAdminQuotaPoliciesResponse {
 /// Metadata message that provides information such as progress,
 /// partial failures, and similar information on each GetOperation call
 /// of LRO returned by ImportAdminQuotaPolicies.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportAdminQuotaPoliciesMetadata {}
 /// Metadata message that provides information such as progress,
 /// partial failures, and similar information on each GetOperation call
 /// of LRO returned by CreateAdminQuotaPolicy.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateAdminQuotaPolicyMetadata {}
 /// Metadata message that provides information such as progress,
 /// partial failures, and similar information on each GetOperation call
 /// of LRO returned by UpdateAdminQuotaPolicy.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateAdminQuotaPolicyMetadata {}
 /// Metadata message that provides information such as progress,
 /// partial failures, and similar information on each GetOperation call
 /// of LRO returned by DeleteAdminQuotaPolicy.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteAdminQuotaPolicyMetadata {}
 /// Request message for generating service identity.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateServiceIdentityRequest {
     /// Name of the consumer and service to generate an identity for.
@@ -936,6 +982,7 @@ pub struct GenerateServiceIdentityRequest {
     pub parent: ::prost::alloc::string::String,
 }
 /// Response message for getting service identity.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetServiceIdentityResponse {
     /// Service identity that service producer can use to access consumer
@@ -983,6 +1030,7 @@ pub mod get_service_identity_response {
     }
 }
 /// Metadata for the `GetServiceIdentity` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetServiceIdentityMetadata {}
 /// Generated client implementations.

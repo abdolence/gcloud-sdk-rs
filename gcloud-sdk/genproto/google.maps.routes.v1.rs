@@ -1,4 +1,5 @@
 /// Encapsulates an encoded polyline.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Polyline {
     /// Encapsulates the type of polyline. Defaults to encoded_polyline.
@@ -8,6 +9,7 @@ pub struct Polyline {
 /// Nested message and enum types in `Polyline`.
 pub mod polyline {
     /// Encapsulates the type of polyline. Defaults to encoded_polyline.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum PolylineType {
         /// The string encoding of the polyline using the [polyline encoding
@@ -408,6 +410,7 @@ impl VehicleEmissionType {
 }
 /// Encapsulates a waypoint. Waypoints mark both the beginning and end of a
 /// route, and include intermediate stops along the route.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Waypoint {
     /// Marks this waypoint as a milestone rather a stopping point. For
@@ -444,6 +447,7 @@ pub struct Waypoint {
 /// Nested message and enum types in `Waypoint`.
 pub mod waypoint {
     /// Different ways to represent a location.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum LocationType {
         /// A point specified using geographic coordinates, including an optional
@@ -456,6 +460,7 @@ pub mod waypoint {
     }
 }
 /// Encapsulates a location (a geographic point, and an optional heading).
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Location {
     /// The waypoint's geographic coordinates.
@@ -470,6 +475,7 @@ pub struct Location {
     pub heading: ::core::option::Option<i32>,
 }
 /// ComputeRoutes request message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ComputeRoutesRequest {
     /// Required. Origin waypoint.
@@ -541,6 +547,7 @@ pub struct ComputeRoutesRequest {
 }
 /// Encapsulates a set of optional conditions to satisfy when calculating the
 /// routes.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouteModifiers {
     /// Specifies whether to avoid toll roads where reasonable. Preference will be
@@ -576,6 +583,7 @@ pub struct RouteModifiers {
 }
 /// Encapsulates the vehicle information, such as the license plate last
 /// character.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VehicleInfo {
     /// Specifies the license plate last character. Could be a digit or a letter.
@@ -681,6 +689,7 @@ impl Units {
     }
 }
 /// ComputeCustomRoutes request message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ComputeCustomRoutesRequest {
     /// Required. Origin waypoint.
@@ -739,6 +748,7 @@ pub struct ComputeCustomRoutesRequest {
     pub units: i32,
 }
 /// Encapsulates an objective to optimize for by ComputeCustomRoutes.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouteObjective {
     /// Optional. Specifies the custom data layer being used to affect generated routes.
@@ -756,6 +766,7 @@ pub struct RouteObjective {
 /// Nested message and enum types in `RouteObjective`.
 pub mod route_objective {
     /// Encapsulates a RateCard route objective.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct RateCard {
         /// Optional. Cost per minute.
@@ -771,6 +782,7 @@ pub mod route_objective {
     /// Nested message and enum types in `RateCard`.
     pub mod rate_card {
         /// Encapsulates the cost used in the rate card.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct MonetaryCost {
             /// Required. The cost value in local currency inferred from the request.
@@ -780,6 +792,7 @@ pub mod route_objective {
     }
     /// Customized data layer that customers use to generated route annotations or
     /// influence the generated route.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CustomLayer {
         /// Required. A dataset that the customer uploaded in advance.
@@ -791,6 +804,7 @@ pub mod route_objective {
         /// Information about a dataset that customers uploaded in advance. The
         /// dataset information will be used for generating route annotations or to
         /// influence routing.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct DatasetInfo {
             /// Required. ID of a customer uploaded dataset for which will be used to annotate or
@@ -801,6 +815,7 @@ pub mod route_objective {
         }
     }
     /// The route objective.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Objective {
         /// The RateCard objective.
@@ -810,6 +825,7 @@ pub mod route_objective {
 }
 /// Encapsulates a route, which consists of a series of connected road segments
 /// that join beginning, ending, and intermediate waypoints.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Route {
     /// A collection of legs (path segments between waypoints) that make-up the
@@ -864,6 +880,7 @@ pub struct Route {
 }
 /// Encapsulates the additional information that the user should be informed
 /// about, such as possible traffic zone restriction etc.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouteTravelAdvisory {
     /// The traffic restriction that applies to the route. A vehicle that is
@@ -897,6 +914,7 @@ pub struct RouteTravelAdvisory {
 }
 /// Encapsulates the additional information that the user should be informed
 /// about, such as possible traffic zone restriction etc. on a route leg.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouteLegTravelAdvisory {
     /// Encapsulates information about tolls on the specific RouteLeg.
@@ -925,6 +943,7 @@ pub struct RouteLegTravelAdvisory {
 }
 /// Encapsulates the additional information that the user should be informed
 /// about, such as possible traffic zone restriction on a leg step.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouteLegStepTravelAdvisory {
     /// Speed reading intervals detailing traffic density. Applicable in case of
@@ -942,6 +961,7 @@ pub struct RouteLegStepTravelAdvisory {
 }
 /// Encapsulates the traffic restriction applied to the route. As of October
 /// 2019, only Jakarta, Indonesia takes into consideration.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TrafficRestriction {
     /// The restriction based on the vehicle's license plate last character. If
@@ -952,6 +972,7 @@ pub struct TrafficRestriction {
     >,
 }
 /// Encapsulates the license plate last character restriction.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LicensePlateLastCharacterRestriction {
     /// The allowed last character of a license plate of a vehicle. Only vehicles
@@ -963,6 +984,7 @@ pub struct LicensePlateLastCharacterRestriction {
     >,
 }
 /// Encapsulates a segment between non-`via` waypoints.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouteLeg {
     /// The travel distance of the route leg, in meters.
@@ -1003,6 +1025,7 @@ pub struct RouteLeg {
     pub travel_advisory: ::core::option::Option<RouteLegTravelAdvisory>,
 }
 /// Encapsulates toll information on a `Route` or on a `RouteLeg`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TollInfo {
     /// The monetary amount of tolls for the corresponding Route or RouteLeg.
@@ -1016,6 +1039,7 @@ pub struct TollInfo {
 }
 /// Encapsulates a segment of a `RouteLeg`. A step corresponds to a single
 /// navigation instruction. Route legs are made up of steps.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouteLegStep {
     /// The travel distance of this step, in meters. In some circumstances, this
@@ -1044,6 +1068,7 @@ pub struct RouteLegStep {
     #[prost(message, optional, tag = "7")]
     pub travel_advisory: ::core::option::Option<RouteLegStepTravelAdvisory>,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NavigationInstruction {
     /// Encapsulates the navigation instructions for the current step (e.g., turn
@@ -1058,6 +1083,7 @@ pub struct NavigationInstruction {
 /// Given a path with points P_0, P_1, ... , P_N (zero-based index), the
 /// SpeedReadingInterval defines an interval and describes its traffic using the
 /// following categories.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SpeedReadingInterval {
     /// The starting index of this interval in the polyline.
@@ -1114,6 +1140,7 @@ pub mod speed_reading_interval {
 }
 /// Encapsulates statistics about the time spent and distance travelled in a
 /// custom area.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomLayerInfo {
     /// Encapsulates information about areas in the custom layer on the Route.
@@ -1125,6 +1152,7 @@ pub struct CustomLayerInfo {
 /// Nested message and enum types in `CustomLayerInfo`.
 pub mod custom_layer_info {
     /// Encapsulates areas related information on a `Route` or on a `RouteLeg`.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AreaInfo {
         /// ID of an area inside a customer provided dataset. An area represents a
@@ -1221,6 +1249,7 @@ impl Maneuver {
 /// Encapsulates a custom route computed based on the route objective specified
 /// by the customer. CustomRoute contains a route and a route token, which can be
 /// passed to NavSDK to reconstruct the custom route for turn by turn navigation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomRoute {
     /// The route considered 'best' for the input route objective.
@@ -1237,6 +1266,7 @@ pub struct CustomRoute {
 /// Information related to how and why a fallback result was used. If this field
 /// is set, then it means the server used a different routing mode from your
 /// preferred mode as fallback.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FallbackInfo {
     /// Routing mode used for the response. If fallback was triggered, the mode
@@ -1305,6 +1335,7 @@ impl FallbackRoutingMode {
     }
 }
 /// ComputeCustomRoutes response message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ComputeCustomRoutesResponse {
     /// The ‘best’ routes for the input route objective.
@@ -1337,6 +1368,7 @@ pub mod compute_custom_routes_response {
     /// the customer, it might fallback to another objective.
     /// fallback_route_objective is used to communicate the fallback route
     /// objective.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct FallbackInfo {
         /// Routing mode used for the response. If fallback was triggered, the mode
@@ -1398,6 +1430,7 @@ pub mod compute_custom_routes_response {
     }
 }
 /// ComputeRouteMatrix request message
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ComputeRouteMatrixRequest {
     /// Required. Array of origins, which determines the rows of the response matrix.
@@ -1434,6 +1467,7 @@ pub struct ComputeRouteMatrixRequest {
     pub departure_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// A single origin for ComputeRouteMatrixRequest
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouteMatrixOrigin {
     /// Required. Origin waypoint
@@ -1444,6 +1478,7 @@ pub struct RouteMatrixOrigin {
     pub route_modifiers: ::core::option::Option<RouteModifiers>,
 }
 /// A single destination for ComputeRouteMatrixRequest
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouteMatrixDestination {
     /// Required. Destination waypoint
@@ -1451,6 +1486,7 @@ pub struct RouteMatrixDestination {
     pub waypoint: ::core::option::Option<Waypoint>,
 }
 /// ComputeRoutes the response message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ComputeRoutesResponse {
     /// Contains an array of computed routes (up to three) when you specify
@@ -1469,6 +1505,7 @@ pub struct ComputeRoutesResponse {
 }
 /// Encapsulates route information computed for an origin/destination pair in the
 /// ComputeRouteMatrix API. This proto can be streamed to the client.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouteMatrixElement {
     /// Zero-based index of the origin in the request.

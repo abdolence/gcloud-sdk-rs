@@ -1,6 +1,7 @@
 /// A Cloud Firestore Database.
 /// Currently only one database is allowed per cloud project; this database
 /// must have a `database_id` of '(default)'.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Database {
     /// The resource name of the Database.
@@ -168,6 +169,7 @@ pub mod database {
 }
 /// Cloud Firestore indexes enable simple and complex queries against
 /// documents in a database.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Index {
     /// Output only. A server defined name for this index.
@@ -207,6 +209,7 @@ pub mod index {
     /// A field in an index.
     /// The field_path describes which field is indexed, the value_mode describes
     /// how the field value is indexed.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct IndexField {
         /// Can be __name__.
@@ -286,6 +289,7 @@ pub mod index {
             }
         }
         /// How the field value is indexed.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum ValueMode {
             /// Indicates that this field supports ordering by the specified order or
@@ -393,6 +397,7 @@ pub mod index {
 ///
 /// Fields are grouped by their "Collection Group", which represent all
 /// collections in the database with the same id.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Field {
     /// Required. A field name of the form
@@ -438,6 +443,7 @@ pub struct Field {
 /// Nested message and enum types in `Field`.
 pub mod field {
     /// The index configuration for this field.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct IndexConfig {
         /// The indexes supported for this field.
@@ -467,6 +473,7 @@ pub mod field {
     /// Storing a timestamp value into a TTL-enabled field will be treated as
     /// the document's absolute expiration time. Using any other data type or
     /// leaving the field absent will disable the TTL for the individual document.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct TtlConfig {
         /// Output only. The state of the TTL configuration.
@@ -522,6 +529,7 @@ pub mod field {
     }
 }
 /// A request to list the Firestore Databases in all locations for a project.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDatabasesRequest {
     /// Required. A parent name of the form
@@ -530,6 +538,7 @@ pub struct ListDatabasesRequest {
     pub parent: ::prost::alloc::string::String,
 }
 /// The list of databases for a project.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDatabasesResponse {
     /// The databases in the project.
@@ -537,6 +546,7 @@ pub struct ListDatabasesResponse {
     pub databases: ::prost::alloc::vec::Vec<Database>,
 }
 /// The request for \[FirestoreAdmin.GetDatabase][google.firestore.admin.v1.FirestoreAdmin.GetDatabase\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetDatabaseRequest {
     /// Required. A name of the form
@@ -545,6 +555,7 @@ pub struct GetDatabaseRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request for \[FirestoreAdmin.UpdateDatabase][google.firestore.admin.v1.FirestoreAdmin.UpdateDatabase\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateDatabaseRequest {
     /// Required. The database to update.
@@ -555,9 +566,11 @@ pub struct UpdateDatabaseRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Metadata related to the update database operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateDatabaseMetadata {}
 /// The request for \[FirestoreAdmin.CreateIndex][google.firestore.admin.v1.FirestoreAdmin.CreateIndex\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateIndexRequest {
     /// Required. A parent name of the form
@@ -569,6 +582,7 @@ pub struct CreateIndexRequest {
     pub index: ::core::option::Option<Index>,
 }
 /// The request for \[FirestoreAdmin.ListIndexes][google.firestore.admin.v1.FirestoreAdmin.ListIndexes\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListIndexesRequest {
     /// Required. A parent name of the form
@@ -588,6 +602,7 @@ pub struct ListIndexesRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// The response for \[FirestoreAdmin.ListIndexes][google.firestore.admin.v1.FirestoreAdmin.ListIndexes\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListIndexesResponse {
     /// The requested indexes.
@@ -599,6 +614,7 @@ pub struct ListIndexesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request for \[FirestoreAdmin.GetIndex][google.firestore.admin.v1.FirestoreAdmin.GetIndex\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetIndexRequest {
     /// Required. A name of the form
@@ -607,6 +623,7 @@ pub struct GetIndexRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request for \[FirestoreAdmin.DeleteIndex][google.firestore.admin.v1.FirestoreAdmin.DeleteIndex\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteIndexRequest {
     /// Required. A name of the form
@@ -615,6 +632,7 @@ pub struct DeleteIndexRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request for \[FirestoreAdmin.UpdateField][google.firestore.admin.v1.FirestoreAdmin.UpdateField\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateFieldRequest {
     /// Required. The field to be updated.
@@ -626,6 +644,7 @@ pub struct UpdateFieldRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The request for \[FirestoreAdmin.GetField][google.firestore.admin.v1.FirestoreAdmin.GetField\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetFieldRequest {
     /// Required. A name of the form
@@ -634,6 +653,7 @@ pub struct GetFieldRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request for \[FirestoreAdmin.ListFields][google.firestore.admin.v1.FirestoreAdmin.ListFields\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFieldsRequest {
     /// Required. A parent name of the form
@@ -657,6 +677,7 @@ pub struct ListFieldsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// The response for \[FirestoreAdmin.ListFields][google.firestore.admin.v1.FirestoreAdmin.ListFields\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFieldsResponse {
     /// The requested fields.
@@ -668,6 +689,7 @@ pub struct ListFieldsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request for \[FirestoreAdmin.ExportDocuments][google.firestore.admin.v1.FirestoreAdmin.ExportDocuments\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportDocumentsRequest {
     /// Required. Database to export. Should be of the form:
@@ -689,6 +711,7 @@ pub struct ExportDocumentsRequest {
     pub output_uri_prefix: ::prost::alloc::string::String,
 }
 /// The request for \[FirestoreAdmin.ImportDocuments][google.firestore.admin.v1.FirestoreAdmin.ImportDocuments\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportDocumentsRequest {
     /// Required. Database to import into. Should be of the form:
@@ -1095,10 +1118,12 @@ pub mod firestore_admin_client {
     }
 }
 /// The metadata message for \[google.cloud.location.Location.metadata][google.cloud.location.Location.metadata\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LocationMetadata {}
 /// Metadata for \[google.longrunning.Operation][google.longrunning.Operation\] results from
 /// \[FirestoreAdmin.CreateIndex][google.firestore.admin.v1.FirestoreAdmin.CreateIndex\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IndexOperationMetadata {
     /// The time this operation started.
@@ -1124,6 +1149,7 @@ pub struct IndexOperationMetadata {
 }
 /// Metadata for \[google.longrunning.Operation][google.longrunning.Operation\] results from
 /// \[FirestoreAdmin.UpdateField][google.firestore.admin.v1.FirestoreAdmin.UpdateField\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FieldOperationMetadata {
     /// The time this operation started.
@@ -1161,6 +1187,7 @@ pub struct FieldOperationMetadata {
 /// Nested message and enum types in `FieldOperationMetadata`.
 pub mod field_operation_metadata {
     /// Information about an index configuration change.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct IndexConfigDelta {
         /// Specifies how the index is changing.
@@ -1208,6 +1235,7 @@ pub mod field_operation_metadata {
         }
     }
     /// Information about an TTL configuration change.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct TtlConfigDelta {
         /// Specifies how the TTL configuration is changing.
@@ -1254,6 +1282,7 @@ pub mod field_operation_metadata {
 }
 /// Metadata for \[google.longrunning.Operation][google.longrunning.Operation\] results from
 /// \[FirestoreAdmin.ExportDocuments][google.firestore.admin.v1.FirestoreAdmin.ExportDocuments\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportDocumentsMetadata {
     /// The time this operation started.
@@ -1281,6 +1310,7 @@ pub struct ExportDocumentsMetadata {
 }
 /// Metadata for \[google.longrunning.Operation][google.longrunning.Operation\] results from
 /// \[FirestoreAdmin.ImportDocuments][google.firestore.admin.v1.FirestoreAdmin.ImportDocuments\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportDocumentsMetadata {
     /// The time this operation started.
@@ -1307,6 +1337,7 @@ pub struct ImportDocumentsMetadata {
     pub input_uri_prefix: ::prost::alloc::string::String,
 }
 /// Returned in the \[google.longrunning.Operation][google.longrunning.Operation\] response field.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportDocumentsResponse {
     /// Location of the output files. This can be used to begin an import
@@ -1318,6 +1349,7 @@ pub struct ExportDocumentsResponse {
 /// Describes the progress of the operation.
 /// Unit of work is generic and must be interpreted based on where \[Progress][google.firestore.admin.v1.Progress\]
 /// is used.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Progress {
     /// The amount of work estimated.

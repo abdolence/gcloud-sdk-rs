@@ -1,4 +1,5 @@
 /// The type of the parameter.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ValueType {
     #[prost(oneof = "value_type::Value", tags = "1, 2, 3, 4, 5, 6, 7, 8, 9")]
@@ -6,6 +7,7 @@ pub struct ValueType {
 }
 /// Nested message and enum types in `ValueType`.
 pub mod value_type {
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Value {
         /// String.
@@ -38,6 +40,7 @@ pub mod value_type {
     }
 }
 /// This message only contains a field of string array.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StringParameterArray {
     /// String array.
@@ -45,6 +48,7 @@ pub struct StringParameterArray {
     pub string_values: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// This message only contains a field of integer array.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IntParameterArray {
     /// Integer array.
@@ -52,6 +56,7 @@ pub struct IntParameterArray {
     pub int_values: ::prost::alloc::vec::Vec<i64>,
 }
 /// This message only contains a field of double number array.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DoubleParameterArray {
     /// Double number array.
@@ -59,6 +64,7 @@ pub struct DoubleParameterArray {
     pub double_values: ::prost::alloc::vec::Vec<f64>,
 }
 /// This message only contains a field of boolean array.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BooleanParameterArray {
     /// Boolean array.
@@ -67,6 +73,7 @@ pub struct BooleanParameterArray {
 }
 /// This message is used for processing and persisting (when applicable) key
 /// value pair parameters for each event in the event bus.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EventParameter {
     /// Key is used to retrieve the corresponding parameter value. This should be
@@ -142,6 +149,7 @@ impl Product {
 /// The task configuration details. This is not the implementation of Task.
 /// There might be multiple TaskConfigs for the same Task.
 /// (-- Next available id: 12 --)
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TaskConfig {
     /// Optional. The name for the task.
@@ -281,6 +289,7 @@ pub mod task_config {
 }
 /// Policy that dictates the behavior for the task after it completes
 /// successfully.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SuccessPolicy {
     /// State to which the execution snapshot status will be set if the task
@@ -330,6 +339,7 @@ pub mod success_policy {
 /// Policy that defines the task retry logic and failure type. If no
 /// FailurePolicy is defined for a task, all its dependent tasks will not be
 /// executed (i.e, a `retry_strategy` of NONE will be applied).
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FailurePolicy {
     /// Defines what happens to the task upon failure.
@@ -426,6 +436,7 @@ pub mod failure_policy {
 }
 /// The task that is next in line to be executed, if the
 /// condition specified evaluated to true.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NextTask {
     /// ID of the next task.
@@ -443,6 +454,7 @@ pub struct NextTask {
 }
 /// Log entry to log execution info for the monitored resource
 /// `integrations.googleapis.com/IntegrationVersion`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExecutionInfo {
     /// Auto-generated primary key.
@@ -536,6 +548,7 @@ pub mod execution_info {
 }
 /// Contains the details of the execution info of this event: this includes
 /// the tasks execution details plus the event execution statistics.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EventExecutionDetails {
     /// The execution state of this event.
@@ -613,6 +626,7 @@ pub mod event_execution_details {
     }
 }
 /// Contains the snapshot of the event execution for a given checkpoint.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EventExecutionSnapshot {
     /// Indicates "right after which checkpoint task's execution" this snapshot
@@ -649,6 +663,7 @@ pub struct EventExecutionSnapshot {
 /// Nested message and enum types in `EventExecutionSnapshot`.
 pub mod event_execution_snapshot {
     /// Metadata for the event/task retry.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct EventExecutionSnapshotMetadata {
         /// The task number associated with this snapshot. Could be empty.
@@ -666,6 +681,7 @@ pub mod event_execution_snapshot {
     }
 }
 /// Contains the details of the execution of this task.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TaskExecutionDetails {
     /// Pointer to the task config it used for execution.
@@ -755,6 +771,7 @@ pub mod task_execution_details {
     }
 }
 /// Status for the execution attempt.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AttemptStats {
     /// The start time of the event execution for current attempt. This could be
@@ -766,6 +783,7 @@ pub struct AttemptStats {
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// An error, warning, or information message associated with an integration.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ErrorDetail {
     /// The full text of the error message, including any parameters that were
@@ -778,6 +796,7 @@ pub struct ErrorDetail {
     pub task_number: i32,
 }
 /// Contains the combined condition calculation results.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConditionResult {
     /// the current task number.

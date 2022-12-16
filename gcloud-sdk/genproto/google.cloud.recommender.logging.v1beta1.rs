@@ -1,4 +1,5 @@
 /// Log content of an action on a recommendation. This includes Mark* actions.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ActionLog {
     /// Required. User that executed this action. Eg, foo@gmail.com
@@ -22,6 +23,7 @@ pub struct ActionLog {
     pub recommendation_name: ::prost::alloc::string::String,
 }
 /// Log content of an action on an insight. This includes Mark* actions.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsightActionLog {
     /// Required. User that executed this action. Eg, foo@gmail.com

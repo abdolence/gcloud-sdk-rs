@@ -1,4 +1,5 @@
 /// The device resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Device {
     /// The user-defined device identifier. The device ID must be unique
@@ -106,6 +107,7 @@ pub struct Device {
     pub gateway_config: ::core::option::Option<GatewayConfig>,
 }
 /// Gateway-related configuration and state.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GatewayConfig {
     /// Indicates whether the device is a gateway.
@@ -124,6 +126,7 @@ pub struct GatewayConfig {
     pub last_accessed_gateway_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// A container for a group of devices.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeviceRegistry {
     /// The identifier of this device registry. For example, `myRegistry`.
@@ -179,6 +182,7 @@ pub struct DeviceRegistry {
     pub credentials: ::prost::alloc::vec::Vec<RegistryCredential>,
 }
 /// The configuration of MQTT for a device registry.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MqttConfig {
     /// If enabled, allows connections using the MQTT protocol. Otherwise, MQTT
@@ -187,6 +191,7 @@ pub struct MqttConfig {
     pub mqtt_enabled_state: i32,
 }
 /// The configuration of the HTTP bridge for a device registry.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HttpConfig {
     /// If enabled, allows devices to use DeviceService via the HTTP protocol.
@@ -195,6 +200,7 @@ pub struct HttpConfig {
     pub http_enabled_state: i32,
 }
 /// The configuration for forwarding telemetry events.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EventNotificationConfig {
     /// If the subfolder name matches this string exactly, this configuration will
@@ -209,6 +215,7 @@ pub struct EventNotificationConfig {
     pub pubsub_topic_name: ::prost::alloc::string::String,
 }
 /// The configuration for notification of new states received from the device.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StateNotificationConfig {
     /// A Cloud Pub/Sub topic name. For example,
@@ -217,6 +224,7 @@ pub struct StateNotificationConfig {
     pub pubsub_topic_name: ::prost::alloc::string::String,
 }
 /// A server-stored registry credential used to validate device credentials.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegistryCredential {
     /// The credential data. Reserved for expansion in the future.
@@ -226,6 +234,7 @@ pub struct RegistryCredential {
 /// Nested message and enum types in `RegistryCredential`.
 pub mod registry_credential {
     /// The credential data. Reserved for expansion in the future.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Credential {
         /// A public key certificate used to verify the device credentials.
@@ -234,6 +243,7 @@ pub mod registry_credential {
     }
 }
 /// Details of an X.509 certificate. For informational purposes only.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct X509CertificateDetails {
     /// The entity that signed the certificate.
@@ -256,6 +266,7 @@ pub struct X509CertificateDetails {
     pub public_key_type: ::prost::alloc::string::String,
 }
 /// A public key certificate format and data.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PublicKeyCertificate {
     /// The certificate format.
@@ -269,6 +280,7 @@ pub struct PublicKeyCertificate {
     pub x509_details: ::core::option::Option<X509CertificateDetails>,
 }
 /// A server-stored device credential used for authentication.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeviceCredential {
     /// \[Optional\] The time at which this credential becomes invalid. This
@@ -283,6 +295,7 @@ pub struct DeviceCredential {
 /// Nested message and enum types in `DeviceCredential`.
 pub mod device_credential {
     /// The credential data. Reserved for expansion in the future.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Credential {
         /// A public key used to verify the signature of JSON Web Tokens (JWTs).
@@ -301,6 +314,7 @@ pub mod device_credential {
     }
 }
 /// A public key format and data.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PublicKeyCredential {
     /// The format of the key.
@@ -311,6 +325,7 @@ pub struct PublicKeyCredential {
     pub key: ::prost::alloc::string::String,
 }
 /// The device configuration. Eventually delivered to devices.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeviceConfig {
     /// [Output only] The version of this update. The version number is assigned by
@@ -339,6 +354,7 @@ pub struct DeviceConfig {
     pub binary_data: ::prost::alloc::vec::Vec<u8>,
 }
 /// The device state, as reported by the device.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeviceState {
     /// [Output only] The time at which this state version was updated in Cloud
@@ -566,6 +582,7 @@ impl PublicKeyFormat {
     }
 }
 /// Request for `CreateDeviceRegistry`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateDeviceRegistryRequest {
     /// Required. The project and cloud region where this device registry must be created.
@@ -579,6 +596,7 @@ pub struct CreateDeviceRegistryRequest {
     pub device_registry: ::core::option::Option<DeviceRegistry>,
 }
 /// Request for `GetDeviceRegistry`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetDeviceRegistryRequest {
     /// Required. The name of the device registry. For example,
@@ -587,6 +605,7 @@ pub struct GetDeviceRegistryRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for `DeleteDeviceRegistry`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteDeviceRegistryRequest {
     /// Required. The name of the device registry. For example,
@@ -595,6 +614,7 @@ pub struct DeleteDeviceRegistryRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for `UpdateDeviceRegistry`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateDeviceRegistryRequest {
     /// Required. The new values for the device registry. The `id` field must be empty, and
@@ -611,6 +631,7 @@ pub struct UpdateDeviceRegistryRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request for `ListDeviceRegistries`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDeviceRegistriesRequest {
     /// Required. The project and cloud region path. For example,
@@ -630,6 +651,7 @@ pub struct ListDeviceRegistriesRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response for `ListDeviceRegistries`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDeviceRegistriesResponse {
     /// The registries that matched the query.
@@ -642,6 +664,7 @@ pub struct ListDeviceRegistriesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request for `CreateDevice`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateDeviceRequest {
     /// Required. The name of the device registry where this device should be created.
@@ -656,6 +679,7 @@ pub struct CreateDeviceRequest {
     pub device: ::core::option::Option<Device>,
 }
 /// Request for `GetDevice`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetDeviceRequest {
     /// Required. The name of the device. For example,
@@ -670,6 +694,7 @@ pub struct GetDeviceRequest {
     pub field_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request for `UpdateDevice`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateDeviceRequest {
     /// Required. The new values for the device. The `id` and `num_id` fields must
@@ -686,6 +711,7 @@ pub struct UpdateDeviceRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request for `DeleteDevice`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteDeviceRequest {
     /// Required. The name of the device. For example,
@@ -695,6 +721,7 @@ pub struct DeleteDeviceRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for `ListDevices`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDevicesRequest {
     /// Required. The device registry path. Required. For example,
@@ -731,6 +758,7 @@ pub struct ListDevicesRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Options for limiting the list based on gateway type and associations.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GatewayListOptions {
     /// If not set, all devices and gateways are returned. If set, the list is
@@ -742,6 +770,7 @@ pub struct GatewayListOptions {
 pub mod gateway_list_options {
     /// If not set, all devices and gateways are returned. If set, the list is
     /// filtered based on gateway type and associations.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Filter {
         /// If `GATEWAY` is specified, only gateways are returned. If `NON_GATEWAY`
@@ -764,6 +793,7 @@ pub mod gateway_list_options {
     }
 }
 /// Response for `ListDevices`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDevicesResponse {
     /// The devices that match the request.
@@ -775,6 +805,7 @@ pub struct ListDevicesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request for `ModifyCloudToDeviceConfig`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ModifyCloudToDeviceConfigRequest {
     /// Required. The name of the device. For example,
@@ -794,6 +825,7 @@ pub struct ModifyCloudToDeviceConfigRequest {
     pub binary_data: ::prost::alloc::vec::Vec<u8>,
 }
 /// Request for `ListDeviceConfigVersions`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDeviceConfigVersionsRequest {
     /// Required. The name of the device. For example,
@@ -808,6 +840,7 @@ pub struct ListDeviceConfigVersionsRequest {
     pub num_versions: i32,
 }
 /// Response for `ListDeviceConfigVersions`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDeviceConfigVersionsResponse {
     /// The device configuration for the last few versions. Versions are listed
@@ -816,6 +849,7 @@ pub struct ListDeviceConfigVersionsResponse {
     pub device_configs: ::prost::alloc::vec::Vec<DeviceConfig>,
 }
 /// Request for `ListDeviceStates`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDeviceStatesRequest {
     /// Required. The name of the device. For example,
@@ -830,6 +864,7 @@ pub struct ListDeviceStatesRequest {
     pub num_states: i32,
 }
 /// Response for `ListDeviceStates`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDeviceStatesResponse {
     /// The last few device states. States are listed in descending order of server
@@ -838,6 +873,7 @@ pub struct ListDeviceStatesResponse {
     pub device_states: ::prost::alloc::vec::Vec<DeviceState>,
 }
 /// Request for `SendCommandToDevice`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SendCommandToDeviceRequest {
     /// Required. The name of the device. For example,
@@ -857,9 +893,11 @@ pub struct SendCommandToDeviceRequest {
     pub subfolder: ::prost::alloc::string::String,
 }
 /// Response for `SendCommandToDevice`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SendCommandToDeviceResponse {}
 /// Request for `BindDeviceToGateway`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BindDeviceToGatewayRequest {
     /// Required. The name of the registry. For example,
@@ -877,9 +915,11 @@ pub struct BindDeviceToGatewayRequest {
     pub device_id: ::prost::alloc::string::String,
 }
 /// Response for `BindDeviceToGateway`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BindDeviceToGatewayResponse {}
 /// Request for `UnbindDeviceFromGateway`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UnbindDeviceFromGatewayRequest {
     /// Required. The name of the registry. For example,
@@ -897,6 +937,7 @@ pub struct UnbindDeviceFromGatewayRequest {
     pub device_id: ::prost::alloc::string::String,
 }
 /// Response for `UnbindDeviceFromGateway`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UnbindDeviceFromGatewayResponse {}
 /// Generated client implementations.

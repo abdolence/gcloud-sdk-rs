@@ -1,5 +1,6 @@
 /// **Multi-cluster Ingress**: The configuration for the MultiClusterIngress
 /// feature.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FeatureSpec {
     /// Fully-qualified Membership name which hosts the MultiClusterIngress CRD.

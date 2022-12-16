@@ -3,6 +3,7 @@
 /// specified otherwise, this must conform to the
 /// <a href="<http://www.unoosa.org/pdf/icg/2012/template/WGS_84.pdf">WGS84>
 /// standard</a>. Values must be within normalized ranges.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LatLng {
     /// The latitude in degrees. It must be in the range [-90.0, +90.0].
@@ -25,6 +26,7 @@ pub struct LatLng {
 ///
 /// Related types are \[google.type.TimeOfDay][google.type.TimeOfDay\] and
 /// `google.protobuf.Timestamp`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Date {
     /// Year of the date. Must be from 1 to 9999, or 0 to specify a date without
@@ -65,6 +67,7 @@ pub struct Date {
 ///
 /// This type is more flexible than some applications may want. Make sure to
 /// document and validate your application's limitations.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DateTime {
     /// Optional. Year of date. Must be from 1 to 9999, or 0 if specifying a
@@ -109,6 +112,7 @@ pub mod date_time {
     /// in the future (for example, a country modifies their DST start/end dates,
     /// and future DateTimes in the affected range had already been stored).
     /// If omitted, the DateTime is considered to be in local time.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum TimeOffset {
         /// UTC offset. Must be whole seconds, between -18 hours and +18 hours.
@@ -123,6 +127,7 @@ pub mod date_time {
 }
 /// Represents a time zone from the
 /// [IANA Time Zone Database](<https://www.iana.org/time-zones>).
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TimeZone {
     /// IANA Time Zone Database time zone, e.g. "America/New_York".
@@ -256,6 +261,7 @@ pub struct TimeZone {
 ///      };
 ///
 ///      // ...
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Color {
     /// The amount of red in the color as a value in the interval [0, 1].
@@ -312,6 +318,7 @@ pub struct Color {
 /// The exact variables and functions that may be referenced within an expression
 /// are determined by the service that evaluates it. See the service
 /// documentation for additional information.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Expr {
     /// Textual representation of an expression in Common Expression Language
@@ -333,6 +340,7 @@ pub struct Expr {
     pub location: ::prost::alloc::string::String,
 }
 /// Represents an amount of money with its currency type.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Money {
     /// The three-letter currency code defined in ISO 4217.
@@ -357,6 +365,7 @@ pub struct Money {
 /// The start must be less than or equal to the end.
 /// When the start equals the end, the interval is empty (matches no time).
 /// When both start and end are unspecified, the interval matches any time.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Interval {
     /// Optional. Inclusive start of the interval.
@@ -389,6 +398,7 @@ pub struct Interval {
 ///
 /// For more guidance on how to use this schema, please see:
 /// <https://support.google.com/business/answer/6397478>
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PostalAddress {
     /// The schema revision of the `PostalAddress`. This must be set to 0, which is
@@ -490,6 +500,7 @@ pub struct PostalAddress {
 /// \[BigDecimal\]:
 /// <https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/math/BigDecimal.html>
 /// \[decimal.Decimal\]: <https://docs.python.org/3/library/decimal.html>
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Decimal {
     /// The decimal value, as a string.
@@ -598,6 +609,7 @@ impl DayOfWeek {
 /// or are specified elsewhere. An API may choose to allow leap seconds. Related
 /// types are \[google.type.Date][google.type.Date\] and
 /// `google.protobuf.Timestamp`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TimeOfDay {
     /// Hours of day in 24 hour format. Should be from 0 to 23. An API may choose
@@ -661,6 +673,7 @@ impl CalendarPeriod {
     }
 }
 /// Represents a fraction in terms of a numerator divided by a denominator.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Fraction {
     /// The numerator in the fraction, e.g. 2 in 2/3.
@@ -672,6 +685,7 @@ pub struct Fraction {
     pub denominator: i64,
 }
 /// Localized variant of a text in a particular language.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LocalizedText {
     /// Localized string in the language corresponding to `language_code' below.
@@ -764,6 +778,7 @@ impl Month {
 ///
 ///   Reference(s):
 ///    - <https://github.com/google/libphonenumber>
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PhoneNumber {
     /// The phone number's extension. The extension is not standardized in ITU
@@ -794,6 +809,7 @@ pub mod phone_number {
     /// dialable, which means the same short code can exist in different regions,
     /// with different usage and pricing, even if those regions share the same
     /// country calling code (e.g. US and CA).
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ShortCode {
         /// Required. The BCP-47 region code of the location where calls to this
@@ -811,6 +827,7 @@ pub mod phone_number {
     /// Required.  Either a regular number, or a short code.  New fields may be
     /// added to the oneof below in the future, so clients should ignore phone
     /// numbers for which none of the fields they coded against are set.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Kind {
         /// The phone number, represented as a leading plus sign ('+'), followed by a
@@ -894,6 +911,7 @@ pub mod phone_number {
 /// kept positive, which can be achieved by changing all the signs when `w` is
 /// negative.
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Quaternion {
     /// The x component.

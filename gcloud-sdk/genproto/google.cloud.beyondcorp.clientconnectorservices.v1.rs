@@ -1,4 +1,5 @@
 /// Message describing ClientConnectorService object.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ClientConnectorService {
     /// Required. Name of resource. The name is ignored during creation.
@@ -31,6 +32,7 @@ pub struct ClientConnectorService {
 pub mod client_connector_service {
     /// Settings of how to connect to the ClientGateway.
     /// One of the following options should be set.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Ingress {
         #[prost(oneof = "ingress::IngressConfig", tags = "1")]
@@ -39,6 +41,7 @@ pub mod client_connector_service {
     /// Nested message and enum types in `Ingress`.
     pub mod ingress {
         /// The basic ingress config for ClientGateways.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Config {
             /// Required. Immutable. The transport protocol used between the client and
@@ -54,6 +57,7 @@ pub mod client_connector_service {
             /// The setting used to configure ClientGateways.
             /// It is adding routes to the client's routing table
             /// after the connection is established.
+            #[allow(clippy::derive_partial_eq_without_eq)]
             #[derive(Clone, PartialEq, ::prost::Message)]
             pub struct DestinationRoute {
                 /// Required. The network address of the subnet
@@ -99,6 +103,7 @@ pub mod client_connector_service {
                 }
             }
         }
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum IngressConfig {
             /// The basic ingress config for ClientGateways.
@@ -107,6 +112,7 @@ pub mod client_connector_service {
         }
     }
     /// The details of the egress info. One of the following options should be set.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Egress {
         #[prost(oneof = "egress::DestinationType", tags = "1")]
@@ -115,12 +121,14 @@ pub mod client_connector_service {
     /// Nested message and enum types in `Egress`.
     pub mod egress {
         /// The peered VPC owned by the consumer project.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct PeeredVpc {
             /// Required. The name of the peered VPC owned by the consumer project.
             #[prost(string, tag = "1")]
             pub network_vpc: ::prost::alloc::string::String,
         }
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum DestinationType {
             /// A VPC from the consumer project.
@@ -178,6 +186,7 @@ pub mod client_connector_service {
     }
 }
 /// Message for requesting list of ClientConnectorServices.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListClientConnectorServicesRequest {
     /// Required. Parent value for ListClientConnectorServicesRequest.
@@ -198,6 +207,7 @@ pub struct ListClientConnectorServicesRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// Message for response to listing ClientConnectorServices.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListClientConnectorServicesResponse {
     /// The list of ClientConnectorService.
@@ -211,6 +221,7 @@ pub struct ListClientConnectorServicesResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Message for getting a ClientConnectorService.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetClientConnectorServiceRequest {
     /// Required. Name of the resource.
@@ -218,6 +229,7 @@ pub struct GetClientConnectorServiceRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Message for creating a ClientConnectorService.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateClientConnectorServiceRequest {
     /// Required. Value for parent.
@@ -256,6 +268,7 @@ pub struct CreateClientConnectorServiceRequest {
     pub validate_only: bool,
 }
 /// Message for updating a ClientConnectorService
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateClientConnectorServiceRequest {
     /// Required. Field mask is used to specify the fields to be overwritten in the
@@ -294,6 +307,7 @@ pub struct UpdateClientConnectorServiceRequest {
     pub allow_missing: bool,
 }
 /// Message for deleting a ClientConnectorService.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteClientConnectorServiceRequest {
     /// Required. Name of the resource.
@@ -320,6 +334,7 @@ pub struct DeleteClientConnectorServiceRequest {
     pub validate_only: bool,
 }
 /// Represents the metadata of the long-running operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ClientConnectorServiceOperationMetadata {
     /// Output only. The time the operation was created.

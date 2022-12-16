@@ -1,4 +1,5 @@
 /// Represents the input to API methods.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Document {
     /// Required. If the type is not set or is `TYPE_UNSPECIFIED`,
@@ -102,6 +103,7 @@ pub mod document {
     }
     /// The source of the document: a string containing the content or a
     /// Google Cloud Storage URI.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
         /// The content of the input in string format.
@@ -117,6 +119,7 @@ pub mod document {
     }
 }
 /// Represents a sentence in the input document.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Sentence {
     /// The sentence text.
@@ -131,6 +134,7 @@ pub struct Sentence {
 /// Represents a phrase in the text that is a known entity, such as
 /// a person, an organization, or location. The API associates information, such
 /// as salience and mentions, with entities.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Entity {
     /// The representative name for the entity.
@@ -273,6 +277,7 @@ pub mod entity {
     }
 }
 /// Represents the smallest syntactic building block of the text.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Token {
     /// The token text.
@@ -291,6 +296,7 @@ pub struct Token {
 /// Represents the feeling associated with the entire text or entities in
 /// the text.
 /// Next ID: 6
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Sentiment {
     /// A non-negative number in the [0, +inf) range, which represents
@@ -304,6 +310,7 @@ pub struct Sentiment {
     pub score: f32,
 }
 /// Represents part of speech information for a token.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PartOfSpeech {
     /// The part of speech tag.
@@ -900,6 +907,7 @@ pub mod part_of_speech {
     }
 }
 /// Represents dependency parse tree information for a token.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DependencyEdge {
     /// Represents the head of this token in the dependency tree.
@@ -1192,6 +1200,7 @@ pub mod dependency_edge {
 }
 /// Represents a mention for an entity in the text. Currently, proper noun
 /// mentions are supported.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EntityMention {
     /// The mention text.
@@ -1245,6 +1254,7 @@ pub mod entity_mention {
     }
 }
 /// Represents an output piece of text.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TextSpan {
     /// The content of the output text.
@@ -1256,6 +1266,7 @@ pub struct TextSpan {
     pub begin_offset: i32,
 }
 /// Represents a category returned from the text classifier.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ClassificationCategory {
     /// The name of the category representing the document, from the [predefined
@@ -1268,6 +1279,7 @@ pub struct ClassificationCategory {
     pub confidence: f32,
 }
 /// Model options available for classification requests.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ClassificationModelOptions {
     /// If this field is not set, then the `v1_model` will be used by default.
@@ -1277,9 +1289,11 @@ pub struct ClassificationModelOptions {
 /// Nested message and enum types in `ClassificationModelOptions`.
 pub mod classification_model_options {
     /// Options for the V1 model.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct V1Model {}
     /// Options for the V2 model.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct V2Model {
         /// The content categories used for classification.
@@ -1327,6 +1341,7 @@ pub mod classification_model_options {
         }
     }
     /// If this field is not set, then the `v1_model` will be used by default.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ModelType {
         /// Setting this field will use the V1 model and V1 content categories
@@ -1341,6 +1356,7 @@ pub mod classification_model_options {
     }
 }
 /// The sentiment analysis request message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnalyzeSentimentRequest {
     /// Required. Input document.
@@ -1352,6 +1368,7 @@ pub struct AnalyzeSentimentRequest {
     pub encoding_type: i32,
 }
 /// The sentiment analysis response message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnalyzeSentimentResponse {
     /// The overall sentiment of the input document.
@@ -1367,6 +1384,7 @@ pub struct AnalyzeSentimentResponse {
     pub sentences: ::prost::alloc::vec::Vec<Sentence>,
 }
 /// The entity-level sentiment analysis request message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnalyzeEntitySentimentRequest {
     /// Required. Input document.
@@ -1377,6 +1395,7 @@ pub struct AnalyzeEntitySentimentRequest {
     pub encoding_type: i32,
 }
 /// The entity-level sentiment analysis response message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnalyzeEntitySentimentResponse {
     /// The recognized entities in the input document with associated sentiments.
@@ -1389,6 +1408,7 @@ pub struct AnalyzeEntitySentimentResponse {
     pub language: ::prost::alloc::string::String,
 }
 /// The entity analysis request message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnalyzeEntitiesRequest {
     /// Required. Input document.
@@ -1399,6 +1419,7 @@ pub struct AnalyzeEntitiesRequest {
     pub encoding_type: i32,
 }
 /// The entity analysis response message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnalyzeEntitiesResponse {
     /// The recognized entities in the input document.
@@ -1411,6 +1432,7 @@ pub struct AnalyzeEntitiesResponse {
     pub language: ::prost::alloc::string::String,
 }
 /// The syntax analysis request message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnalyzeSyntaxRequest {
     /// Required. Input document.
@@ -1421,6 +1443,7 @@ pub struct AnalyzeSyntaxRequest {
     pub encoding_type: i32,
 }
 /// The syntax analysis response message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnalyzeSyntaxResponse {
     /// Sentences in the input document.
@@ -1436,6 +1459,7 @@ pub struct AnalyzeSyntaxResponse {
     pub language: ::prost::alloc::string::String,
 }
 /// The document classification request message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ClassifyTextRequest {
     /// Required. Input document.
@@ -1447,6 +1471,7 @@ pub struct ClassifyTextRequest {
     pub classification_model_options: ::core::option::Option<ClassificationModelOptions>,
 }
 /// The document classification response message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ClassifyTextResponse {
     /// Categories representing the input document.
@@ -1455,6 +1480,7 @@ pub struct ClassifyTextResponse {
 }
 /// The request message for the text annotation API, which can perform multiple
 /// analysis types (sentiment, entities, and syntax) in one call.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnnotateTextRequest {
     /// Required. Input document.
@@ -1472,6 +1498,7 @@ pub mod annotate_text_request {
     /// All available features for sentiment, syntax, and semantic analysis.
     /// Setting each one to true will enable that specific analysis for the input.
     /// Next ID: 11
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Features {
         /// Extract syntax information.
@@ -1501,6 +1528,7 @@ pub mod annotate_text_request {
     }
 }
 /// The text annotations response message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnnotateTextResponse {
     /// Sentences in the input document. Populated if the user enables

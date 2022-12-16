@@ -1,4 +1,5 @@
 /// The schema for settings.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Setting {
     /// The resource name of the setting. Must be in one of the following forms:
@@ -41,6 +42,7 @@ pub struct Setting {
     pub etag: ::prost::alloc::string::String,
 }
 /// Metadata about a setting which is not editable by the end user.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SettingMetadata {
     /// The human readable name for this setting.
@@ -108,6 +110,7 @@ pub mod setting_metadata {
     }
 }
 /// The data in a setting value.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Value {
     /// Selects the data type and associated value.
@@ -119,6 +122,7 @@ pub mod value {
     /// A string set value that can hold a set of strings. The maximum length of
     /// each string is 200 characters and there can be a maximum of 50 strings in
     /// the string set.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct StringSet {
         /// The strings in the set
@@ -128,6 +132,7 @@ pub mod value {
     /// A enum value that can hold any enum type setting values.
     /// Each enum type is represented by a number, this representation
     /// is stored in the definitions.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct EnumValue {
         /// The value of this enum
@@ -135,6 +140,7 @@ pub mod value {
         pub value: ::prost::alloc::string::String,
     }
     /// Selects the data type and associated value.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Value {
         /// Defines this value as being a boolean value.
@@ -152,6 +158,7 @@ pub mod value {
     }
 }
 /// The request for ListSettings.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSettingsRequest {
     /// Required. The Cloud resource that parents the setting. Must be in one of the
@@ -174,6 +181,7 @@ pub struct ListSettingsRequest {
     pub view: i32,
 }
 /// The response from ListSettings.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSettingsResponse {
     /// A list of settings that are available at the specified Cloud resource.
@@ -184,6 +192,7 @@ pub struct ListSettingsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request for GetSetting.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetSettingRequest {
     /// Required. The name of the setting to get. See \[Setting][google.cloud.resourcesettings.v1.Setting\] for naming
@@ -195,6 +204,7 @@ pub struct GetSettingRequest {
     pub view: i32,
 }
 /// The request for UpdateSetting.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateSettingRequest {
     /// Required. The setting to update. See \[Setting][google.cloud.resourcesettings.v1.Setting\] for field requirements.

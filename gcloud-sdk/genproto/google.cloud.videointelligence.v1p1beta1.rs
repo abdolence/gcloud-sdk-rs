@@ -1,4 +1,5 @@
 /// Video annotation request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnnotateVideoRequest {
     /// Input video location. Currently, only
@@ -41,6 +42,7 @@ pub struct AnnotateVideoRequest {
     pub location_id: ::prost::alloc::string::String,
 }
 /// Video context and/or feature-specific parameters.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VideoContext {
     /// Video segments to annotate. The segments may overlap and are not required
@@ -64,6 +66,7 @@ pub struct VideoContext {
     pub speech_transcription_config: ::core::option::Option<SpeechTranscriptionConfig>,
 }
 /// Config for LABEL_DETECTION.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LabelDetectionConfig {
     /// What labels should be detected with LABEL_DETECTION, in addition to
@@ -83,6 +86,7 @@ pub struct LabelDetectionConfig {
     pub model: ::prost::alloc::string::String,
 }
 /// Config for SHOT_CHANGE_DETECTION.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ShotChangeDetectionConfig {
     /// Model to use for shot change detection.
@@ -92,6 +96,7 @@ pub struct ShotChangeDetectionConfig {
     pub model: ::prost::alloc::string::String,
 }
 /// Config for EXPLICIT_CONTENT_DETECTION.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExplicitContentDetectionConfig {
     /// Model to use for explicit content detection.
@@ -101,6 +106,7 @@ pub struct ExplicitContentDetectionConfig {
     pub model: ::prost::alloc::string::String,
 }
 /// Video segment.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VideoSegment {
     /// Time-offset, relative to the beginning of the video,
@@ -113,6 +119,7 @@ pub struct VideoSegment {
     pub end_time_offset: ::core::option::Option<::prost_types::Duration>,
 }
 /// Video segment level annotation results for label detection.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LabelSegment {
     /// Video segment where a label was detected.
@@ -123,6 +130,7 @@ pub struct LabelSegment {
     pub confidence: f32,
 }
 /// Video frame level annotation results for label detection.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LabelFrame {
     /// Time-offset, relative to the beginning of the video, corresponding to the
@@ -134,6 +142,7 @@ pub struct LabelFrame {
     pub confidence: f32,
 }
 /// Detected entity from video analysis.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Entity {
     /// Opaque entity ID. Some IDs may be available in
@@ -149,6 +158,7 @@ pub struct Entity {
     pub language_code: ::prost::alloc::string::String,
 }
 /// Label annotation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LabelAnnotation {
     /// Detected entity.
@@ -168,6 +178,7 @@ pub struct LabelAnnotation {
     pub frames: ::prost::alloc::vec::Vec<LabelFrame>,
 }
 /// Video frame level annotation results for explicit content.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExplicitContentFrame {
     /// Time-offset, relative to the beginning of the video, corresponding to the
@@ -181,6 +192,7 @@ pub struct ExplicitContentFrame {
 /// Explicit content annotation (based on per-frame visual signals only).
 /// If no explicit content has been detected in a frame, no annotations are
 /// present for that frame.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExplicitContentAnnotation {
     /// All video frames where explicit content was detected.
@@ -188,6 +200,7 @@ pub struct ExplicitContentAnnotation {
     pub frames: ::prost::alloc::vec::Vec<ExplicitContentFrame>,
 }
 /// Annotation results for a single video.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VideoAnnotationResults {
     /// Output only. Video file location in
@@ -223,6 +236,7 @@ pub struct VideoAnnotationResults {
 /// Video annotation response. Included in the `response`
 /// field of the `Operation` returned by the `GetOperation`
 /// call of the `google::longrunning::Operations` service.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnnotateVideoResponse {
     /// Annotation results for all videos specified in `AnnotateVideoRequest`.
@@ -230,6 +244,7 @@ pub struct AnnotateVideoResponse {
     pub annotation_results: ::prost::alloc::vec::Vec<VideoAnnotationResults>,
 }
 /// Annotation progress for a single video.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VideoAnnotationProgress {
     /// Output only. Video file location in
@@ -250,6 +265,7 @@ pub struct VideoAnnotationProgress {
 /// Video annotation progress. Included in the `metadata`
 /// field of the `Operation` returned by the `GetOperation`
 /// call of the `google::longrunning::Operations` service.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnnotateVideoProgress {
     /// Progress metadata for all videos specified in `AnnotateVideoRequest`.
@@ -257,6 +273,7 @@ pub struct AnnotateVideoProgress {
     pub annotation_progress: ::prost::alloc::vec::Vec<VideoAnnotationProgress>,
 }
 /// Config for SPEECH_TRANSCRIPTION.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SpeechTranscriptionConfig {
     /// Required. *Required* The language of the supplied audio as a
@@ -297,6 +314,7 @@ pub struct SpeechTranscriptionConfig {
 }
 /// Provides "hints" to the speech recognizer to favor specific words and phrases
 /// in the results.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SpeechContext {
     /// Optional. A list of strings containing words and phrases "hints" so that
@@ -309,6 +327,7 @@ pub struct SpeechContext {
     pub phrases: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// A speech recognition result corresponding to a portion of the audio.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SpeechTranscription {
     /// May contain one or more recognition hypotheses (up to the maximum specified
@@ -319,6 +338,7 @@ pub struct SpeechTranscription {
     pub alternatives: ::prost::alloc::vec::Vec<SpeechRecognitionAlternative>,
 }
 /// Alternative hypotheses (a.k.a. n-best list).
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SpeechRecognitionAlternative {
     /// Output only. Transcript text representing the words that the user spoke.
@@ -339,6 +359,7 @@ pub struct SpeechRecognitionAlternative {
 /// Word-specific information for recognized words. Word information is only
 /// included in the response when certain request parameters are set, such
 /// as `enable_word_time_offsets`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WordInfo {
     /// Output only. Time offset relative to the beginning of the audio, and

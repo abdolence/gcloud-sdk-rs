@@ -1,4 +1,5 @@
 /// Datastore composite index definition.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Index {
     /// Output only. Project ID.
@@ -23,6 +24,7 @@ pub struct Index {
 /// Nested message and enum types in `Index`.
 pub mod index {
     /// A property of an index.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct IndexedProperty {
         /// Required. The property name to index.
@@ -160,6 +162,7 @@ pub mod index {
 /// An event signifying a change in state of a [migration from Cloud Datastore to
 /// Cloud Firestore in Datastore
 /// mode](<https://cloud.google.com/datastore/docs/upgrade-to-firestore>).
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MigrationStateEvent {
     /// The new state of the migration.
@@ -169,6 +172,7 @@ pub struct MigrationStateEvent {
 /// An event signifying the start of a new step in a [migration from Cloud
 /// Datastore to Cloud Firestore in Datastore
 /// mode](<https://cloud.google.com/datastore/docs/upgrade-to-firestore>).
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MigrationProgressEvent {
     /// The step that is starting.
@@ -184,6 +188,7 @@ pub struct MigrationProgressEvent {
 /// Nested message and enum types in `MigrationProgressEvent`.
 pub mod migration_progress_event {
     /// Details for the `PREPARE` step.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct PrepareStepDetails {
         /// The concurrency mode this database will use when it reaches the
@@ -192,6 +197,7 @@ pub mod migration_progress_event {
         pub concurrency_mode: i32,
     }
     /// Details for the `REDIRECT_WRITES` step.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct RedirectWritesStepDetails {
         /// Ths concurrency mode for this database.
@@ -238,6 +244,7 @@ pub mod migration_progress_event {
         }
     }
     /// Details about this step.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum StepDetails {
         /// Details for the `PREPARE` step.
@@ -320,6 +327,7 @@ impl MigrationStep {
     }
 }
 /// Metadata common to all Datastore Admin operations.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CommonMetadata {
     /// The time that work began on the operation.
@@ -398,6 +406,7 @@ pub mod common_metadata {
     }
 }
 /// Measures the progress of a particular metric.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Progress {
     /// The amount of work that has been completed. Note that this may be greater
@@ -411,6 +420,7 @@ pub struct Progress {
 }
 /// The request for
 /// \[google.datastore.admin.v1.DatastoreAdmin.ExportEntities][google.datastore.admin.v1.DatastoreAdmin.ExportEntities\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportEntitiesRequest {
     /// Required. Project ID against which to make the request.
@@ -448,6 +458,7 @@ pub struct ExportEntitiesRequest {
 }
 /// The request for
 /// \[google.datastore.admin.v1.DatastoreAdmin.ImportEntities][google.datastore.admin.v1.DatastoreAdmin.ImportEntities\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportEntitiesRequest {
     /// Required. Project ID against which to make the request.
@@ -483,6 +494,7 @@ pub struct ImportEntitiesRequest {
 }
 /// The response for
 /// \[google.datastore.admin.v1.DatastoreAdmin.ExportEntities][google.datastore.admin.v1.DatastoreAdmin.ExportEntities\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportEntitiesResponse {
     /// Location of the output metadata file. This can be used to begin an import
@@ -493,6 +505,7 @@ pub struct ExportEntitiesResponse {
     pub output_url: ::prost::alloc::string::String,
 }
 /// Metadata for ExportEntities operations.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportEntitiesMetadata {
     /// Metadata common to all Datastore Admin operations.
@@ -516,6 +529,7 @@ pub struct ExportEntitiesMetadata {
     pub output_url_prefix: ::prost::alloc::string::String,
 }
 /// Metadata for ImportEntities operations.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportEntitiesMetadata {
     /// Metadata common to all Datastore Admin operations.
@@ -554,6 +568,7 @@ pub struct ImportEntitiesMetadata {
 ///
 /// The entire Baz namespace:
 ///    kinds=[], namespace_ids=\['Baz'\]
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EntityFilter {
     /// If empty, then this represents all kinds.
@@ -571,6 +586,7 @@ pub struct EntityFilter {
 }
 /// The request for
 /// \[google.datastore.admin.v1.DatastoreAdmin.CreateIndex][google.datastore.admin.v1.DatastoreAdmin.CreateIndex\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateIndexRequest {
     /// Project ID against which to make the request.
@@ -583,6 +599,7 @@ pub struct CreateIndexRequest {
 }
 /// The request for
 /// \[google.datastore.admin.v1.DatastoreAdmin.DeleteIndex][google.datastore.admin.v1.DatastoreAdmin.DeleteIndex\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteIndexRequest {
     /// Project ID against which to make the request.
@@ -593,6 +610,7 @@ pub struct DeleteIndexRequest {
     pub index_id: ::prost::alloc::string::String,
 }
 /// The request for \[google.datastore.admin.v1.DatastoreAdmin.GetIndex][google.datastore.admin.v1.DatastoreAdmin.GetIndex\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetIndexRequest {
     /// Project ID against which to make the request.
@@ -604,6 +622,7 @@ pub struct GetIndexRequest {
 }
 /// The request for
 /// \[google.datastore.admin.v1.DatastoreAdmin.ListIndexes][google.datastore.admin.v1.DatastoreAdmin.ListIndexes\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListIndexesRequest {
     /// Project ID against which to make the request.
@@ -621,6 +640,7 @@ pub struct ListIndexesRequest {
 }
 /// The response for
 /// \[google.datastore.admin.v1.DatastoreAdmin.ListIndexes][google.datastore.admin.v1.DatastoreAdmin.ListIndexes\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListIndexesResponse {
     /// The indexes.
@@ -631,6 +651,7 @@ pub struct ListIndexesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Metadata for Index operations.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IndexOperationMetadata {
     /// Metadata common to all Datastore Admin operations.
@@ -651,6 +672,7 @@ pub struct IndexOperationMetadata {
 ///
 /// This singleton resource can be accessed at:
 /// "projects/{project_id}/operations/datastore-firestore-migration"
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DatastoreFirestoreMigrationMetadata {
     /// The current state of migration from Cloud Datastore to Cloud Firestore in

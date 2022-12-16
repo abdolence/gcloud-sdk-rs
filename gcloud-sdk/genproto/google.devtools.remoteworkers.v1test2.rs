@@ -33,6 +33,7 @@
 /// Keys are not context sensitive.
 ///
 /// See <http://goo.gl/NurY8g> for more information on the Worker message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Worker {
     /// A list of devices; the first device is the primary device. See the `Device`
@@ -70,6 +71,7 @@ pub struct Worker {
 /// Nested message and enum types in `Worker`.
 pub mod worker {
     /// A global property; see the `properties` field for more information.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Property {
         /// For general information on keys, see the documentation to `Worker`.
@@ -90,6 +92,7 @@ pub mod worker {
     }
     /// A configuration request or report; see the `configs` field for more
     /// information.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Config {
         /// For general information on keys, see the documentation to `Worker`.
@@ -110,6 +113,7 @@ pub mod worker {
 }
 /// Any device, including computers, phones, accelerators (e.g. GPUs), etc. All
 /// names must be unique.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Device {
     /// The handle can be thought of as the "name" of the device, and must be
@@ -139,6 +143,7 @@ pub struct Device {
 /// Nested message and enum types in `Device`.
 pub mod device {
     /// A device property; see `properties` for more information.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Property {
         /// For general information on keys, see the documentation to `Worker`.
@@ -166,6 +171,7 @@ pub mod device {
 /// hardware), which is the reverse of real life, but more natural from the point
 /// of the view of this API, which communicates solely with the bot and not
 /// directly with the underlying worker.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BotSession {
     /// The bot session name, as selected by the server. Output only during a call
@@ -233,6 +239,7 @@ pub struct BotSession {
 /// The server will remove COMPLETED leases from time to time, after which the
 /// bot shouldn't report on them any more (the server will ignore superfluous
 /// COMPLETED records).
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Lease {
     /// A short string uniquely identifing the lease within this bot session.
@@ -294,6 +301,7 @@ pub struct Lease {
 ///
 /// This message is heavily based on Swarming administration tasks from the LUCI
 /// project (<http://github.com/luci/luci-py/appengine/swarming>).
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AdminTemp {
     /// The admin action; see `Command` for legal values.
@@ -351,6 +359,7 @@ pub mod admin_temp {
     }
 }
 /// Request message for CreateBotSession.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateBotSessionRequest {
     /// Required. The farm resource.
@@ -362,6 +371,7 @@ pub struct CreateBotSessionRequest {
     pub bot_session: ::core::option::Option<BotSession>,
 }
 /// Request message for UpdateBotSession.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateBotSessionRequest {
     /// Required. The bot session name. Must match bot_session.name.
@@ -600,6 +610,7 @@ pub mod bots_client {
 }
 /// Describes a shell-style task to execute, suitable for providing as the Bots
 /// interface's `Lease.payload` field.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CommandTask {
     /// The inputs to the task.
@@ -615,6 +626,7 @@ pub struct CommandTask {
 /// Nested message and enum types in `CommandTask`.
 pub mod command_task {
     /// Describes the inputs to a shell-style task.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Inputs {
         /// The command itself to run (e.g., argv).
@@ -661,6 +673,7 @@ pub mod command_task {
     /// Nested message and enum types in `Inputs`.
     pub mod inputs {
         /// An environment variable required by this task.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct EnvironmentVariable {
             /// The envvar name.
@@ -672,6 +685,7 @@ pub mod command_task {
         }
     }
     /// Describes the expected outputs of the command.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Outputs {
         /// A list of expected files, relative to the execution root. All paths
@@ -698,6 +712,7 @@ pub mod command_task {
         pub stderr_destination: ::prost::alloc::string::String,
     }
     /// Describes the timeouts associated with this task.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Timeouts {
         /// This specifies the maximum time that the task can run, excluding the
@@ -723,6 +738,7 @@ pub mod command_task {
 }
 /// DEPRECATED - use CommandResult instead.
 /// Describes the actual outputs from the task.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CommandOutputs {
     /// exit_code is only fully reliable if the status' code is OK. If the task
@@ -741,6 +757,7 @@ pub struct CommandOutputs {
 /// DEPRECATED - use CommandResult instead.
 /// Can be used as part of CompleteRequest.metadata, or are part of a more
 /// sophisticated message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CommandOverhead {
     /// The elapsed time between calling Accept and Complete. The server will also
@@ -755,6 +772,7 @@ pub struct CommandOverhead {
 }
 /// All information about the execution of a command, suitable for providing as
 /// the Bots interface's `Lease.result` field.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CommandResult {
     /// An overall status for the command. For example, if the command timed out,
@@ -794,6 +812,7 @@ pub struct CommandResult {
 }
 /// The metadata for a file. Similar to the equivalent message in the Remote
 /// Execution API.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FileMetadata {
     /// The path of this file. If this message is part of the
@@ -817,6 +836,7 @@ pub struct FileMetadata {
 }
 /// The metadata for a directory. Similar to the equivalent message in the Remote
 /// Execution API.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DirectoryMetadata {
     /// The path of the directory, as in
@@ -837,6 +857,7 @@ pub struct DirectoryMetadata {
 /// In the context of the RWAPI, a Digest will virtually always refer to the
 /// contents of a file or a directory. The latter is represented by the
 /// byte-encoded Directory message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Digest {
     /// A string-encoded hash (eg "1a2b3c", not the byte array [0x1a, 0x2b, 0x3c])
@@ -851,6 +872,7 @@ pub struct Digest {
     pub size_bytes: i64,
 }
 /// Describes a blob of binary content with its digest.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Blob {
     /// The digest of the blob. This should be verified by the receiver.
@@ -862,6 +884,7 @@ pub struct Blob {
 }
 /// The contents of a directory. Similar to the equivalent message in the Remote
 /// Execution API.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Directory {
     /// The files in this directory

@@ -1,4 +1,5 @@
 /// Log content of an event related to a runtime.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RuntimeEvent {
     /// Required. Type of event.

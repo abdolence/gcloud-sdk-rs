@@ -1,4 +1,5 @@
 /// Represents the metadata of the long-running operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationMetadata {
     /// Output only. The time the operation was created.
@@ -31,6 +32,7 @@ pub struct OperationMetadata {
 /// use the data transfer feature, the resources associated with those spokes
 /// must all reside in the same VPC network. Spokes that do not use data
 /// transfer can be associated with any VPC network in your project.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Hub {
     /// Immutable. The name of the hub. Hub names must be unique. They use the
@@ -72,6 +74,7 @@ pub struct Hub {
 }
 /// RoutingVPC contains information about the VPC networks associated
 /// with the spokes of a Network Connectivity Center hub.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RoutingVpc {
     /// The URI of the VPC network.
@@ -94,6 +97,7 @@ pub struct RoutingVpc {
 /// * linked_vpn_tunnels
 /// * linked_interconnect_attachments
 /// * linked_router_appliance_instances
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Spoke {
     /// Immutable. The name of the spoke. Spoke names must be unique. They use the
@@ -146,6 +150,7 @@ pub struct Spoke {
 /// Request for
 /// \[HubService.ListHubs][google.cloud.networkconnectivity.v1.HubService.ListHubs\]
 /// method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListHubsRequest {
     /// Required. The parent resource's name.
@@ -167,6 +172,7 @@ pub struct ListHubsRequest {
 /// Response for
 /// \[HubService.ListHubs][google.cloud.networkconnectivity.v1.HubService.ListHubs\]
 /// method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListHubsResponse {
     /// The requested hubs.
@@ -183,6 +189,7 @@ pub struct ListHubsResponse {
 /// Request for
 /// \[HubService.GetHub][google.cloud.networkconnectivity.v1.HubService.GetHub\]
 /// method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetHubRequest {
     /// Required. The name of the hub resource to get.
@@ -192,6 +199,7 @@ pub struct GetHubRequest {
 /// Request for
 /// \[HubService.CreateHub][google.cloud.networkconnectivity.v1.HubService.CreateHub\]
 /// method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateHubRequest {
     /// Required. The parent resource.
@@ -223,6 +231,7 @@ pub struct CreateHubRequest {
 /// Request for
 /// \[HubService.UpdateHub][google.cloud.networkconnectivity.v1.HubService.UpdateHub\]
 /// method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateHubRequest {
     /// Optional. In the case of an update to an existing hub, field mask is used
@@ -254,6 +263,7 @@ pub struct UpdateHubRequest {
 }
 /// The request for
 /// \[HubService.DeleteHub][google.cloud.networkconnectivity.v1.HubService.DeleteHub\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteHubRequest {
     /// Required. The name of the hub to delete.
@@ -278,6 +288,7 @@ pub struct DeleteHubRequest {
 }
 /// The request for
 /// \[HubService.ListSpokes][google.cloud.networkconnectivity.v1.HubService.ListSpokes\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSpokesRequest {
     /// Required. The parent resource.
@@ -298,6 +309,7 @@ pub struct ListSpokesRequest {
 }
 /// The response for
 /// \[HubService.ListSpokes][google.cloud.networkconnectivity.v1.HubService.ListSpokes\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSpokesResponse {
     /// The requested spokes.
@@ -313,6 +325,7 @@ pub struct ListSpokesResponse {
 }
 /// The request for
 /// \[HubService.GetSpoke][google.cloud.networkconnectivity.v1.HubService.GetSpoke\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetSpokeRequest {
     /// Required. The name of the spoke resource.
@@ -321,6 +334,7 @@ pub struct GetSpokeRequest {
 }
 /// The request for
 /// \[HubService.CreateSpoke][google.cloud.networkconnectivity.v1.HubService.CreateSpoke\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateSpokeRequest {
     /// Required. The parent resource.
@@ -352,6 +366,7 @@ pub struct CreateSpokeRequest {
 /// Request for
 /// \[HubService.UpdateSpoke][google.cloud.networkconnectivity.v1.HubService.UpdateSpoke\]
 /// method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateSpokeRequest {
     /// Optional. In the case of an update to an existing spoke, field mask is used
@@ -383,6 +398,7 @@ pub struct UpdateSpokeRequest {
 }
 /// The request for
 /// \[HubService.DeleteSpoke][google.cloud.networkconnectivity.v1.HubService.DeleteSpoke\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteSpokeRequest {
     /// Required. The name of the spoke to delete.
@@ -409,6 +425,7 @@ pub struct DeleteSpokeRequest {
 /// redundant HA VPN tunnels that all advertise the same prefixes to Google
 /// Cloud. Alternatively, in a passive/active configuration, all tunnels
 /// should be capable of advertising the same prefixes.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LinkedVpnTunnels {
     /// The URIs of linked VPN tunnel resources.
@@ -427,6 +444,7 @@ pub struct LinkedVpnTunnels {
 /// be redundant attachments that all advertise the same prefixes to Google
 /// Cloud. Alternatively, in active/passive configurations, all attachments
 /// should be capable of advertising the same prefixes.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LinkedInterconnectAttachments {
     /// The URIs of linked interconnect attachment resources
@@ -445,6 +463,7 @@ pub struct LinkedInterconnectAttachments {
 /// appliance instances to receive data from the same set of sites outside of
 /// Google Cloud, we recommend that you associate those instances with the same
 /// spoke.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LinkedRouterApplianceInstances {
     /// The list of router appliance instances.
@@ -464,6 +483,7 @@ pub struct LinkedRouterApplianceInstances {
 /// that acts as a BGP speaker. A router appliance instance is specified by the
 /// URI of the VM and the internal IP address of one of the VM's network
 /// interfaces.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouterApplianceInstance {
     /// The URI of the VM.
@@ -474,6 +494,7 @@ pub struct RouterApplianceInstance {
     pub ip_address: ::prost::alloc::string::String,
 }
 /// Metadata about locations
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LocationMetadata {
     /// List of supported features
@@ -834,6 +855,7 @@ pub mod hub_service_client {
 /// source IP, protocol and more. A PBR always take precedence when it conflicts
 /// with other types of routes.
 /// Next id: 19
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PolicyBasedRoute {
     /// Immutable. A unique name of the resource in the form of
@@ -892,6 +914,7 @@ pub struct PolicyBasedRoute {
 /// Nested message and enum types in `PolicyBasedRoute`.
 pub mod policy_based_route {
     /// VM instances to which this policy based route applies to.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct VirtualMachine {
         /// Optional. A list of VM instance tags to which this policy based route applies to.
@@ -901,6 +924,7 @@ pub mod policy_based_route {
         pub tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
     /// InterconnectAttachment to which this route applies to.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct InterconnectAttachment {
         /// Optional. Cloud region to install this policy based route on interconnect
@@ -909,6 +933,7 @@ pub mod policy_based_route {
         pub region: ::prost::alloc::string::String,
     }
     /// Filter matches L4 traffic.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Filter {
         /// Optional. The IP protocol that this policy based route applies to. Valid values are
@@ -963,6 +988,7 @@ pub mod policy_based_route {
         }
     }
     /// Informational warning message.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Warnings {
         /// Output only. A warning code, if applicable.
@@ -1027,6 +1053,7 @@ pub mod policy_based_route {
     /// Target specifies network endpoints to which this policy based route applies
     /// to. If none of the target is specified, the PBR will be installed on all
     /// network endpoints (e.g. VMs, VPNs, and Interconnects) in the VPC.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Target {
         /// Optional. VM instances to which this policy based route applies to.
@@ -1036,6 +1063,7 @@ pub mod policy_based_route {
         #[prost(message, tag = "9")]
         InterconnectAttachment(InterconnectAttachment),
     }
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum NextHop {
         /// Optional. The IP of a global access enabled L4 ILB that should be the next hop to
@@ -1046,6 +1074,7 @@ pub mod policy_based_route {
     }
 }
 /// Request for \[PolicyBasedRouting.ListPolicyBasedRoutes][\] method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPolicyBasedRoutesRequest {
     /// Required. The parent resource's name.
@@ -1065,6 +1094,7 @@ pub struct ListPolicyBasedRoutesRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// Response for \[PolicyBasedRouting.ListPolicyBasedRoutes][\] method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPolicyBasedRoutesResponse {
     /// Policy based routes to be returned.
@@ -1079,6 +1109,7 @@ pub struct ListPolicyBasedRoutesResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request for \[PolicyBasedRouting.GetPolicyBasedRoute][\] method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetPolicyBasedRouteRequest {
     /// Required. Name of the PolicyBasedRoute resource to get.
@@ -1086,6 +1117,7 @@ pub struct GetPolicyBasedRouteRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for \[PolicyBasedRouting.CreatePolicyBasedRoute][\] method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreatePolicyBasedRouteRequest {
     /// Required. The parent resource's name of the PolicyBasedRoute.
@@ -1114,6 +1146,7 @@ pub struct CreatePolicyBasedRouteRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request for \[PolicyBasedRouting.DeletePolicyBasedRoute][\] method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeletePolicyBasedRouteRequest {
     /// Required. Name of the PolicyBasedRoute resource to delete.

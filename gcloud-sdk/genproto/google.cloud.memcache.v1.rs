@@ -1,4 +1,5 @@
 /// A Memorystore for Memcached instance
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Instance {
     /// Required. Unique name of the resource in this scope including project and
@@ -89,6 +90,7 @@ pub struct Instance {
 /// Nested message and enum types in `Instance`.
 pub mod instance {
     /// Configuration for a Memcached Node.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct NodeConfig {
         /// Required. Number of cpus per Memcached node.
@@ -98,6 +100,7 @@ pub mod instance {
         #[prost(int32, tag = "2")]
         pub memory_size_mb: i32,
     }
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Node {
         /// Output only. Identifier of the Memcached node. The node id does not
@@ -164,6 +167,7 @@ pub mod instance {
             }
         }
     }
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct InstanceMessage {
         /// A code that correspond to one type of user-facing message.
@@ -252,6 +256,7 @@ pub mod instance {
     }
 }
 /// Maintenance policy per instance.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MaintenancePolicy {
     /// Output only. The time when the policy was created.
@@ -271,6 +276,7 @@ pub struct MaintenancePolicy {
     pub weekly_maintenance_window: ::prost::alloc::vec::Vec<WeeklyMaintenanceWindow>,
 }
 /// Time window specified for weekly operations.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WeeklyMaintenanceWindow {
     /// Required. Allows to define schedule that runs specified day of the week.
@@ -284,6 +290,7 @@ pub struct WeeklyMaintenanceWindow {
     pub duration: ::core::option::Option<::prost_types::Duration>,
 }
 /// Upcoming maintenance schedule.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MaintenanceSchedule {
     /// Output only. The start time of any upcoming scheduled maintenance for this instance.
@@ -298,6 +305,7 @@ pub struct MaintenanceSchedule {
     pub schedule_deadline_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Request for \[RescheduleMaintenance][google.cloud.memcache.v1.CloudMemcache.RescheduleMaintenance\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RescheduleMaintenanceRequest {
     /// Required. Memcache instance resource name using the form:
@@ -356,6 +364,7 @@ pub mod reschedule_maintenance_request {
     }
 }
 /// Request for \[ListInstances][google.cloud.memcache.v1.CloudMemcache.ListInstances\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListInstancesRequest {
     /// Required. The resource name of the instance location using the form:
@@ -384,6 +393,7 @@ pub struct ListInstancesRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// Response for \[ListInstances][google.cloud.memcache.v1.CloudMemcache.ListInstances\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListInstancesResponse {
     /// A list of Memcached instances in the project in the specified location,
@@ -402,6 +412,7 @@ pub struct ListInstancesResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request for \[GetInstance][google.cloud.memcache.v1.CloudMemcache.GetInstance\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetInstanceRequest {
     /// Required. Memcached instance resource name in the format:
@@ -411,6 +422,7 @@ pub struct GetInstanceRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for \[CreateInstance][google.cloud.memcache.v1.CloudMemcache.CreateInstance\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateInstanceRequest {
     /// Required. The resource name of the instance location using the form:
@@ -435,6 +447,7 @@ pub struct CreateInstanceRequest {
     pub instance: ::core::option::Option<Instance>,
 }
 /// Request for \[UpdateInstance][google.cloud.memcache.v1.CloudMemcache.UpdateInstance\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateInstanceRequest {
     /// Required. Mask of fields to update.
@@ -448,6 +461,7 @@ pub struct UpdateInstanceRequest {
     pub instance: ::core::option::Option<Instance>,
 }
 /// Request for \[DeleteInstance][google.cloud.memcache.v1.CloudMemcache.DeleteInstance\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteInstanceRequest {
     /// Required. Memcached instance resource name in the format:
@@ -457,6 +471,7 @@ pub struct DeleteInstanceRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for \[ApplyParameters][google.cloud.memcache.v1.CloudMemcache.ApplyParameters\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ApplyParametersRequest {
     /// Required. Resource name of the Memcached instance for which parameter group updates
@@ -473,6 +488,7 @@ pub struct ApplyParametersRequest {
     pub apply_all: bool,
 }
 /// Request for \[UpdateParameters][google.cloud.memcache.v1.CloudMemcache.UpdateParameters\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateParametersRequest {
     /// Required. Resource name of the Memcached instance for which the parameters should be
@@ -486,6 +502,7 @@ pub struct UpdateParametersRequest {
     #[prost(message, optional, tag = "3")]
     pub parameters: ::core::option::Option<MemcacheParameters>,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MemcacheParameters {
     /// Output only. The unique ID associated with this set of parameters. Users
@@ -503,6 +520,7 @@ pub struct MemcacheParameters {
     >,
 }
 /// Represents the metadata of a long-running operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationMetadata {
     /// Output only. Time when the operation was created.
@@ -531,6 +549,7 @@ pub struct OperationMetadata {
     pub api_version: ::prost::alloc::string::String,
 }
 /// Metadata for the given \[google.cloud.location.Location][google.cloud.location.Location\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LocationMetadata {
     /// Output only. The set of available zones in the location. The map is keyed
@@ -542,6 +561,7 @@ pub struct LocationMetadata {
         ZoneMetadata,
     >,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ZoneMetadata {}
 /// Memcached versions supported by our service.

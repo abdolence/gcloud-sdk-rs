@@ -1,5 +1,6 @@
 /// A report submitted by a player about a playable location that is considered
 /// inappropriate for use in the game.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PlayerReport {
     /// Required. The name of the playable location.
@@ -75,6 +76,7 @@ pub mod player_report {
     }
 }
 /// Encapsulates impression event details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Impression {
     /// Required. The name of the playable location.
@@ -157,6 +159,7 @@ pub mod impression {
 /// The response specifies how long you can expect the playable locations to
 /// last. Once they expire, you should query the `samplePlayableLocations` API
 /// again to get a fresh view of the real world.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SamplePlayableLocationsRequest {
     /// Required. Specifies the area to search within for playable locations.
@@ -171,6 +174,7 @@ pub struct SamplePlayableLocationsRequest {
 /// Response for the
 /// \[SamplePlayableLocations][google.maps.playablelocations.v3.PlayableLocations.SamplePlayableLocations\]
 /// method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SamplePlayableLocationsResponse {
     /// Each PlayableLocation object corresponds to a game_object_type specified
@@ -192,6 +196,7 @@ pub struct SamplePlayableLocationsResponse {
     pub ttl: ::core::option::Option<::prost_types::Duration>,
 }
 /// A request for logging your player's bad location reports.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LogPlayerReportsRequest {
     /// Required. Player reports. The maximum number of player reports that you can
@@ -217,9 +222,11 @@ pub struct LogPlayerReportsRequest {
 /// method.
 ///
 /// This method returns no data upon success.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LogPlayerReportsResponse {}
 /// A request for logging impressions.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LogImpressionsRequest {
     /// Required. Impression event details. The maximum number of impression
@@ -243,6 +250,7 @@ pub struct LogImpressionsRequest {
 /// A response for the
 /// \[LogImpressions][google.maps.playablelocations.v3.PlayableLocations.LogImpressions\]
 /// method. This method returns no data upon success.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LogImpressionsResponse {}
 /// Generated client implementations.

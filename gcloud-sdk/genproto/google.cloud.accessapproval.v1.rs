@@ -1,4 +1,5 @@
 /// Home office and physical location of the principal.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AccessLocations {
     /// The "home office" location of the principal. A two-letter country code
@@ -34,6 +35,7 @@ pub struct AccessLocations {
     #[prost(string, tag = "2")]
     pub principal_physical_location_country: ::prost::alloc::string::String,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AccessReason {
     /// Type of access justification.
@@ -107,6 +109,7 @@ pub mod access_reason {
     }
 }
 /// Information about the digital signature of the resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SignatureInfo {
     /// The digital signature.
@@ -119,6 +122,7 @@ pub struct SignatureInfo {
 /// Nested message and enum types in `SignatureInfo`.
 pub mod signature_info {
     /// How this signature may be verified.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum VerificationInfo {
         /// The public key for the Google default signing, encoded in PEM format. The
@@ -132,6 +136,7 @@ pub mod signature_info {
     }
 }
 /// A decision that has been made to approve access to a resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ApproveDecision {
     /// The time at which approval was granted.
@@ -151,6 +156,7 @@ pub struct ApproveDecision {
     pub auto_approved: bool,
 }
 /// A decision that has been made to dismiss an approval request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DismissDecision {
     /// The time at which the approval request was dismissed.
@@ -163,6 +169,7 @@ pub struct DismissDecision {
     pub implicit: bool,
 }
 /// The properties associated with the resource of the request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResourceProperties {
     /// Whether an approval will exclude the descendants of the resource being
@@ -171,6 +178,7 @@ pub struct ResourceProperties {
     pub excludes_descendants: bool,
 }
 /// A request for the customer to approve access to a resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ApprovalRequest {
     /// The resource name of the request. Format is
@@ -209,6 +217,7 @@ pub struct ApprovalRequest {
 /// Nested message and enum types in `ApprovalRequest`.
 pub mod approval_request {
     /// The current decision on the approval request.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Decision {
         /// Access was approved.
@@ -220,6 +229,7 @@ pub mod approval_request {
     }
 }
 /// Represents the enrollment of a cloud resource into a specific service.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EnrolledService {
     /// The product for which Access Approval will be enrolled. Allowed values are
@@ -291,6 +301,7 @@ pub struct EnrolledService {
     pub enrollment_level: i32,
 }
 /// Settings on a Project/Folder/Organization related to Access Approval.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AccessApprovalSettings {
     /// The resource name of the settings. Format is one of:
@@ -349,6 +360,7 @@ pub struct AccessApprovalSettings {
     pub invalid_key_version: bool,
 }
 /// Access Approval service account related to a project/folder/organization.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AccessApprovalServiceAccount {
     /// The resource name of the Access Approval service account. Format is one of:
@@ -363,6 +375,7 @@ pub struct AccessApprovalServiceAccount {
     pub account_email: ::prost::alloc::string::String,
 }
 /// Request to list approval requests.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListApprovalRequestsMessage {
     /// The parent resource. This may be "projects/{project}",
@@ -391,6 +404,7 @@ pub struct ListApprovalRequestsMessage {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response to listing of ApprovalRequest objects.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListApprovalRequestsResponse {
     /// Approval request details.
@@ -401,6 +415,7 @@ pub struct ListApprovalRequestsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request to get an approval request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetApprovalRequestMessage {
     /// The name of the approval request to retrieve.
@@ -410,6 +425,7 @@ pub struct GetApprovalRequestMessage {
     pub name: ::prost::alloc::string::String,
 }
 /// Request to approve an ApprovalRequest.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ApproveApprovalRequestMessage {
     /// Name of the approval request to approve.
@@ -420,6 +436,7 @@ pub struct ApproveApprovalRequestMessage {
     pub expire_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Request to dismiss an approval request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DismissApprovalRequestMessage {
     /// Name of the ApprovalRequest to dismiss.
@@ -427,6 +444,7 @@ pub struct DismissApprovalRequestMessage {
     pub name: ::prost::alloc::string::String,
 }
 /// Request to invalidate an existing approval.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InvalidateApprovalRequestMessage {
     /// Name of the ApprovalRequest to invalidate.
@@ -434,6 +452,7 @@ pub struct InvalidateApprovalRequestMessage {
     pub name: ::prost::alloc::string::String,
 }
 /// Request to get access approval settings.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAccessApprovalSettingsMessage {
     /// The name of the AccessApprovalSettings to retrieve.
@@ -442,6 +461,7 @@ pub struct GetAccessApprovalSettingsMessage {
     pub name: ::prost::alloc::string::String,
 }
 /// Request to update access approval settings.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateAccessApprovalSettingsMessage {
     /// The new AccessApprovalSettings.
@@ -461,6 +481,7 @@ pub struct UpdateAccessApprovalSettingsMessage {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request to delete access approval settings.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteAccessApprovalSettingsMessage {
     /// Name of the AccessApprovalSettings to delete.
@@ -468,6 +489,7 @@ pub struct DeleteAccessApprovalSettingsMessage {
     pub name: ::prost::alloc::string::String,
 }
 /// Request to get an Access Approval service account.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAccessApprovalServiceAccountMessage {
     /// Name of the AccessApprovalServiceAccount to retrieve.

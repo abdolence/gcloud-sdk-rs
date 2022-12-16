@@ -1,4 +1,5 @@
 /// The response for \[Commit][google.spanner.v1.Spanner.Commit\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CommitResponse {
     /// The Cloud Spanner timestamp at which the transaction committed.
@@ -13,6 +14,7 @@ pub struct CommitResponse {
 /// Nested message and enum types in `CommitResponse`.
 pub mod commit_response {
     /// Additional statistics about a commit.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CommitStats {
         /// The total number of mutations for the transaction. Knowing the
@@ -114,6 +116,7 @@ pub mod commit_response {
 ///
 /// Note that 100 is passed as the start, and 1 is passed as the end,
 /// because `Key` is a descending column in the schema.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KeyRange {
     /// The start key must be provided. It can be either closed or open.
@@ -126,6 +129,7 @@ pub struct KeyRange {
 /// Nested message and enum types in `KeyRange`.
 pub mod key_range {
     /// The start key must be provided. It can be either closed or open.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum StartKeyType {
         /// If the start is closed, then the range includes all rows whose
@@ -138,6 +142,7 @@ pub mod key_range {
         StartOpen(::prost_types::ListValue),
     }
     /// The end key must be provided. It can be either closed or open.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum EndKeyType {
         /// If the end is closed, then the range includes all rows whose
@@ -157,6 +162,7 @@ pub mod key_range {
 /// If the same key is specified multiple times in the set (for example
 /// if two ranges, two keys, or a key and a range overlap), Cloud Spanner
 /// behaves as if the key were only specified once.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KeySet {
     /// A list of specific keys. Entries in `keys` should have exactly as
@@ -178,6 +184,7 @@ pub struct KeySet {
 /// A modification to one or more Cloud Spanner rows.  Mutations can be
 /// applied to a Cloud Spanner database by sending them in a
 /// \[Commit][google.spanner.v1.Spanner.Commit\] call.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Mutation {
     /// Required. The operation to perform.
@@ -188,6 +195,7 @@ pub struct Mutation {
 pub mod mutation {
     /// Arguments to \[insert][google.spanner.v1.Mutation.insert\], \[update][google.spanner.v1.Mutation.update\], \[insert_or_update][google.spanner.v1.Mutation.insert_or_update\], and
     /// \[replace][google.spanner.v1.Mutation.replace\] operations.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Write {
         /// Required. The table whose rows will be written.
@@ -212,6 +220,7 @@ pub mod mutation {
         pub values: ::prost::alloc::vec::Vec<::prost_types::ListValue>,
     }
     /// Arguments to \[delete][google.spanner.v1.Mutation.delete\] operations.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Delete {
         /// Required. The table whose rows will be deleted.
@@ -227,6 +236,7 @@ pub mod mutation {
         pub key_set: ::core::option::Option<super::KeySet>,
     }
     /// Required. The operation to perform.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Operation {
         /// Insert new rows in a table. If any of the rows already exist,
@@ -264,6 +274,7 @@ pub mod mutation {
     }
 }
 /// Node information for nodes appearing in a \[QueryPlan.plan_nodes][google.spanner.v1.QueryPlan.plan_nodes\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PlanNode {
     /// The `PlanNode`'s index in [node list]\[google.spanner.v1.QueryPlan.plan_nodes\].
@@ -306,6 +317,7 @@ pub struct PlanNode {
 pub mod plan_node {
     /// Metadata associated with a parent-child relationship appearing in a
     /// \[PlanNode][google.spanner.v1.PlanNode\].
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ChildLink {
         /// The node to which the link points.
@@ -330,6 +342,7 @@ pub mod plan_node {
     }
     /// Condensed representation of a node and its subtree. Only present for
     /// `SCALAR` \[PlanNode(s)][google.spanner.v1.PlanNode\].
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ShortRepresentation {
         /// A string representation of the expression subtree rooted at this node.
@@ -385,6 +398,7 @@ pub mod plan_node {
     }
 }
 /// Contains an ordered list of nodes appearing in the query plan.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryPlan {
     /// The nodes in the query plan. Plan nodes are returned in pre-order starting
@@ -717,6 +731,7 @@ pub struct QueryPlan {
 /// Given the above, Partitioned DML is good fit for large, database-wide,
 /// operations that are idempotent, such as deleting old rows from a very large
 /// table.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TransactionOptions {
     /// Required. The type of transaction.
@@ -727,6 +742,7 @@ pub struct TransactionOptions {
 pub mod transaction_options {
     /// Message type to initiate a read-write transaction. Currently this
     /// transaction type has no options.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ReadWrite {
         /// Read lock mode for the transaction.
@@ -780,9 +796,11 @@ pub mod transaction_options {
         }
     }
     /// Message type to initiate a Partitioned DML transaction.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct PartitionedDml {}
     /// Message type to initiate a read-only transaction.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ReadOnly {
         /// If true, the Cloud Spanner-selected read timestamp is included in
@@ -797,6 +815,7 @@ pub mod transaction_options {
     /// Nested message and enum types in `ReadOnly`.
     pub mod read_only {
         /// How to choose the timestamp for the read-only transaction.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum TimestampBound {
             /// Read at a timestamp where all previously committed transactions
@@ -860,6 +879,7 @@ pub mod transaction_options {
         }
     }
     /// Required. The type of transaction.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Mode {
         /// Transaction may write.
@@ -886,6 +906,7 @@ pub mod transaction_options {
     }
 }
 /// A transaction.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Transaction {
     /// `id` may be used to identify the transaction in subsequent
@@ -913,6 +934,7 @@ pub struct Transaction {
 ///
 /// See \[TransactionOptions][google.spanner.v1.TransactionOptions\] for more
 /// information about transactions.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TransactionSelector {
     /// If no fields are set, the default is a single use transaction
@@ -924,6 +946,7 @@ pub struct TransactionSelector {
 pub mod transaction_selector {
     /// If no fields are set, the default is a single use transaction
     /// with strong concurrency.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Selector {
         /// Execute the read or SQL query in a temporary transaction.
@@ -944,6 +967,7 @@ pub mod transaction_selector {
 }
 /// `Type` indicates the type of a Cloud Spanner value, as might be stored in a
 /// table cell or returned from an SQL query.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Type {
     /// Required. The \[TypeCode][google.spanner.v1.TypeCode\] for this type.
@@ -967,6 +991,7 @@ pub struct Type {
     pub type_annotation: i32,
 }
 /// `StructType` defines the fields of a \[STRUCT][google.spanner.v1.TypeCode.STRUCT\] type.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StructType {
     /// The list of fields that make up this struct. Order is
@@ -981,6 +1006,7 @@ pub struct StructType {
 /// Nested message and enum types in `StructType`.
 pub mod struct_type {
     /// Message representing a single field of a struct.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Field {
         /// The name of the field. For reads, this is the column name. For
@@ -1121,6 +1147,7 @@ impl TypeAnnotationCode {
 }
 /// Results from \[Read][google.spanner.v1.Spanner.Read\] or
 /// \[ExecuteSql][google.spanner.v1.Spanner.ExecuteSql\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResultSet {
     /// Metadata about the result set, such as row type information.
@@ -1148,6 +1175,7 @@ pub struct ResultSet {
 /// Partial results from a streaming read or SQL query. Streaming reads and
 /// SQL queries better tolerate large result sets, large rows, and large
 /// values, but are a little trickier to consume.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PartialResultSet {
     /// Metadata about the result set, such as row type information.
@@ -1251,6 +1279,7 @@ pub struct PartialResultSet {
     pub stats: ::core::option::Option<ResultSetStats>,
 }
 /// Metadata about a \[ResultSet][google.spanner.v1.ResultSet\] or \[PartialResultSet][google.spanner.v1.PartialResultSet\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResultSetMetadata {
     /// Indicates the field names and types for the rows in the result
@@ -1281,6 +1310,7 @@ pub struct ResultSetMetadata {
     pub undeclared_parameters: ::core::option::Option<StructType>,
 }
 /// Additional statistics about a \[ResultSet][google.spanner.v1.ResultSet\] or \[PartialResultSet][google.spanner.v1.PartialResultSet\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResultSetStats {
     /// \[QueryPlan][google.spanner.v1.QueryPlan\] for the query associated with this result.
@@ -1304,6 +1334,7 @@ pub struct ResultSetStats {
 /// Nested message and enum types in `ResultSetStats`.
 pub mod result_set_stats {
     /// The number of rows modified by the DML statement.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum RowCount {
         /// Standard DML returns an exact count of rows that were modified.
@@ -1316,6 +1347,7 @@ pub mod result_set_stats {
     }
 }
 /// The request for \[CreateSession][google.spanner.v1.Spanner.CreateSession\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateSessionRequest {
     /// Required. The database in which the new session is created.
@@ -1326,6 +1358,7 @@ pub struct CreateSessionRequest {
     pub session: ::core::option::Option<Session>,
 }
 /// The request for \[BatchCreateSessions][google.spanner.v1.Spanner.BatchCreateSessions\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchCreateSessionsRequest {
     /// Required. The database in which the new sessions are created.
@@ -1343,6 +1376,7 @@ pub struct BatchCreateSessionsRequest {
     pub session_count: i32,
 }
 /// The response for \[BatchCreateSessions][google.spanner.v1.Spanner.BatchCreateSessions\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchCreateSessionsResponse {
     /// The freshly created sessions.
@@ -1350,6 +1384,7 @@ pub struct BatchCreateSessionsResponse {
     pub session: ::prost::alloc::vec::Vec<Session>,
 }
 /// A session in the Cloud Spanner API.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Session {
     /// Output only. The name of the session. This is always system-assigned.
@@ -1381,6 +1416,7 @@ pub struct Session {
     pub creator_role: ::prost::alloc::string::String,
 }
 /// The request for \[GetSession][google.spanner.v1.Spanner.GetSession\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetSessionRequest {
     /// Required. The name of the session to retrieve.
@@ -1388,6 +1424,7 @@ pub struct GetSessionRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request for \[ListSessions][google.spanner.v1.Spanner.ListSessions\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSessionsRequest {
     /// Required. The database in which to list sessions.
@@ -1416,6 +1453,7 @@ pub struct ListSessionsRequest {
     pub filter: ::prost::alloc::string::String,
 }
 /// The response for \[ListSessions][google.spanner.v1.Spanner.ListSessions\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSessionsResponse {
     /// The list of requested sessions.
@@ -1428,6 +1466,7 @@ pub struct ListSessionsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request for \[DeleteSession][google.spanner.v1.Spanner.DeleteSession\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteSessionRequest {
     /// Required. The name of the session to delete.
@@ -1435,6 +1474,7 @@ pub struct DeleteSessionRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Common request options for various APIs.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RequestOptions {
     /// Priority for the request.
@@ -1523,6 +1563,7 @@ pub mod request_options {
 }
 /// The request for \[ExecuteSql][google.spanner.v1.Spanner.ExecuteSql\] and
 /// \[ExecuteStreamingSql][google.spanner.v1.Spanner.ExecuteStreamingSql\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExecuteSqlRequest {
     /// Required. The session in which the SQL query should be performed.
@@ -1609,6 +1650,7 @@ pub struct ExecuteSqlRequest {
 /// Nested message and enum types in `ExecuteSqlRequest`.
 pub mod execute_sql_request {
     /// Query optimizer configuration.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct QueryOptions {
         /// An option to control the selection of optimizer version.
@@ -1700,6 +1742,7 @@ pub mod execute_sql_request {
     }
 }
 /// The request for \[ExecuteBatchDml][google.spanner.v1.Spanner.ExecuteBatchDml\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExecuteBatchDmlRequest {
     /// Required. The session in which the DML statements should be performed.
@@ -1737,6 +1780,7 @@ pub struct ExecuteBatchDmlRequest {
 /// Nested message and enum types in `ExecuteBatchDmlRequest`.
 pub mod execute_batch_dml_request {
     /// A single DML statement.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Statement {
         /// Required. The DML string.
@@ -1795,6 +1839,7 @@ pub mod execute_batch_dml_request {
 /// * Response: 2 \[ResultSet][google.spanner.v1.ResultSet\] messages, and a syntax error (`INVALID_ARGUMENT`)
 ///    status. The number of \[ResultSet][google.spanner.v1.ResultSet\] messages indicates that the third
 ///    statement failed, and the fourth and fifth statements were not executed.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExecuteBatchDmlResponse {
     /// One \[ResultSet][google.spanner.v1.ResultSet\] for each statement in the request that ran successfully,
@@ -1813,6 +1858,7 @@ pub struct ExecuteBatchDmlResponse {
 }
 /// Options for a PartitionQueryRequest and
 /// PartitionReadRequest.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PartitionOptions {
     /// **Note:** This hint is currently ignored by PartitionQuery and
@@ -1835,6 +1881,7 @@ pub struct PartitionOptions {
     pub max_partitions: i64,
 }
 /// The request for \[PartitionQuery][google.spanner.v1.Spanner.PartitionQuery\]
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PartitionQueryRequest {
     /// Required. The session used to create the partitions.
@@ -1885,6 +1932,7 @@ pub struct PartitionQueryRequest {
     pub partition_options: ::core::option::Option<PartitionOptions>,
 }
 /// The request for \[PartitionRead][google.spanner.v1.Spanner.PartitionRead\]
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PartitionReadRequest {
     /// Required. The session used to create the partitions.
@@ -1921,6 +1969,7 @@ pub struct PartitionReadRequest {
 }
 /// Information returned for each partition returned in a
 /// PartitionResponse.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Partition {
     /// This token can be passed to Read, StreamingRead, ExecuteSql, or
@@ -1931,6 +1980,7 @@ pub struct Partition {
 }
 /// The response for \[PartitionQuery][google.spanner.v1.Spanner.PartitionQuery\]
 /// or \[PartitionRead][google.spanner.v1.Spanner.PartitionRead\]
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PartitionResponse {
     /// Partitions created by this request.
@@ -1942,6 +1992,7 @@ pub struct PartitionResponse {
 }
 /// The request for \[Read][google.spanner.v1.Spanner.Read\] and
 /// \[StreamingRead][google.spanner.v1.Spanner.StreamingRead\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReadRequest {
     /// Required. The session in which the read should be performed.
@@ -2001,6 +2052,7 @@ pub struct ReadRequest {
     pub request_options: ::core::option::Option<RequestOptions>,
 }
 /// The request for \[BeginTransaction][google.spanner.v1.Spanner.BeginTransaction\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BeginTransactionRequest {
     /// Required. The session in which the transaction runs.
@@ -2018,6 +2070,7 @@ pub struct BeginTransactionRequest {
     pub request_options: ::core::option::Option<RequestOptions>,
 }
 /// The request for \[Commit][google.spanner.v1.Spanner.Commit\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CommitRequest {
     /// Required. The session in which the transaction to be committed is running.
@@ -2043,6 +2096,7 @@ pub struct CommitRequest {
 /// Nested message and enum types in `CommitRequest`.
 pub mod commit_request {
     /// Required. The transaction in which to commit.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Transaction {
         /// Commit a previously-started transaction.
@@ -2062,6 +2116,7 @@ pub mod commit_request {
     }
 }
 /// The request for \[Rollback][google.spanner.v1.Spanner.Rollback\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RollbackRequest {
     /// Required. The session in which the transaction to roll back is running.

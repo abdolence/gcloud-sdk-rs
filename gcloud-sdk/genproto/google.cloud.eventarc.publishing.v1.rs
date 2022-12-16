@@ -1,4 +1,5 @@
 /// The request message for the PublishChannelConnectionEvents method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PublishChannelConnectionEventsRequest {
     /// The channel_connection that the events are published from. For example:
@@ -18,9 +19,11 @@ pub struct PublishChannelConnectionEventsRequest {
     pub text_events: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The response message for the PublishChannelConnectionEvents method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PublishChannelConnectionEventsResponse {}
 /// The request message for the PublishEvents method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PublishEventsRequest {
     /// The full name of the channel to publish to. For example:
@@ -40,6 +43,7 @@ pub struct PublishEventsRequest {
     pub text_events: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The response message for the PublishEvents method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PublishEventsResponse {}
 /// Generated client implementations.

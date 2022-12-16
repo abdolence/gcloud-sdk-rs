@@ -1,5 +1,6 @@
 /// A request to the SnapToRoads method, requesting that a sequence of points be
 /// snapped to road segments.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SnapToRoadsRequest {
     /// The path to be snapped as a series of lat, lng points. Specified as
@@ -18,6 +19,7 @@ pub struct SnapToRoadsRequest {
     pub travel_mode: i32,
 }
 /// A snapped point object, representing the result of snapping.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SnappedPoint {
     /// The lat,lng of the snapped location.
@@ -35,6 +37,7 @@ pub struct SnappedPoint {
 }
 /// The response from the SnapToRoads method, returning a sequence of snapped
 /// points.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SnapToRoadsResponse {
     /// A list of snapped points.
@@ -47,6 +50,7 @@ pub struct SnapToRoadsResponse {
 }
 /// A request to the ListNearestRoads method, requesting that a sequence of
 /// points be snapped individually to the road segment that each is closest to.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNearestRoadsRequest {
     /// The points to be snapped as a series of lat, lng points. Specified as
@@ -59,6 +63,7 @@ pub struct ListNearestRoadsRequest {
 }
 /// The response from the ListNearestRoads method, returning a list of snapped
 /// points.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNearestRoadsResponse {
     /// A list of snapped points.

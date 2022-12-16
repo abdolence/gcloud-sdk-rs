@@ -1,4 +1,5 @@
 /// Request to get a vulnerability summary for some set of occurrences.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetVulnerabilityOccurrencesSummaryRequest {
     /// Required. The name of the project to get a vulnerability summary for in the form of
@@ -11,6 +12,7 @@ pub struct GetVulnerabilityOccurrencesSummaryRequest {
 }
 /// A summary of how many vulnerability occurrences there are per resource and
 /// severity type.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VulnerabilityOccurrencesSummary {
     /// A listing by resource of the number of fixable and total vulnerabilities.
@@ -22,6 +24,7 @@ pub struct VulnerabilityOccurrencesSummary {
 /// Nested message and enum types in `VulnerabilityOccurrencesSummary`.
 pub mod vulnerability_occurrences_summary {
     /// Per resource and severity counts of fixable and total vulnerabilities.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct FixableTotalByDigest {
         /// The affected resource.

@@ -1,4 +1,5 @@
 /// Encodes a query saved in the bundle.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BundledQuery {
     /// The parent resource name.
@@ -43,6 +44,7 @@ pub mod bundled_query {
         }
     }
     /// The query to run.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum QueryType {
         /// A structured query.
@@ -52,6 +54,7 @@ pub mod bundled_query {
 }
 /// A Query associated with a name, created as part of the bundle file, and can be read
 /// by client SDKs once the bundle containing them is loaded.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NamedQuery {
     /// Name of the query, such that client can use the name to load this query
@@ -68,6 +71,7 @@ pub struct NamedQuery {
     pub read_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Metadata describing a Firestore document saved in the bundle.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BundledDocumentMetadata {
     /// The document key of a bundled document.
@@ -84,6 +88,7 @@ pub struct BundledDocumentMetadata {
     pub queries: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Metadata describing the bundle file/stream.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BundleMetadata {
     /// The ID of the bundle.
@@ -107,6 +112,7 @@ pub struct BundleMetadata {
 /// Only one `BundleMetadata` is expected, and it should be the first element.
 /// The named queries follow after `metadata`. Every `document_metadata` is
 /// immediately followed by a `document`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BundleElement {
     #[prost(oneof = "bundle_element::ElementType", tags = "1, 2, 3, 4")]
@@ -114,6 +120,7 @@ pub struct BundleElement {
 }
 /// Nested message and enum types in `BundleElement`.
 pub mod bundle_element {
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ElementType {
         #[prost(message, tag = "1")]

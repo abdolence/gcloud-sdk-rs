@@ -1,4 +1,5 @@
 /// The standard metadata of a cloud resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StandardResourceMetadata {
     /// The full resource name. For example:
@@ -48,6 +49,7 @@ pub struct StandardResourceMetadata {
     pub network_tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The result for a IAM Policy search.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IamPolicySearchResult {
     /// The [full resource
@@ -76,6 +78,7 @@ pub struct IamPolicySearchResult {
 /// Nested message and enum types in `IamPolicySearchResult`.
 pub mod iam_policy_search_result {
     /// Explanation about the IAM policy search result.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Explanation {
         /// The map from roles to their included permission matching the permission
@@ -91,6 +94,7 @@ pub mod iam_policy_search_result {
     }
 }
 /// IAM permissions
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Permissions {
     /// A list of permissions. A sample permission string: "compute.disk.get".
@@ -98,6 +102,7 @@ pub struct Permissions {
     pub permissions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Search all resources request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchAllResourcesRequest {
     /// Required. The relative name of an asset. The search is limited to the resources
@@ -135,6 +140,7 @@ pub struct SearchAllResourcesRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// Search all resources response.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchAllResourcesResponse {
     /// A list of resource that match the search query.
@@ -147,6 +153,7 @@ pub struct SearchAllResourcesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Search all IAM policies request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchAllIamPoliciesRequest {
     /// Required. The relative name of an asset. The search is limited to the resources
@@ -177,6 +184,7 @@ pub struct SearchAllIamPoliciesRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Search all IAM policies response.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchAllIamPoliciesResponse {
     /// A list of IamPolicy that match the search query. Related information such

@@ -1,4 +1,5 @@
 /// The request for \[ConnectionService.CreateConnection][google.cloud.bigquery.connection.v1beta1.ConnectionService.CreateConnection\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateConnectionRequest {
     /// Required. Parent resource name.
@@ -13,6 +14,7 @@ pub struct CreateConnectionRequest {
     pub connection: ::core::option::Option<Connection>,
 }
 /// The request for \[ConnectionService.GetConnection][google.cloud.bigquery.connection.v1beta1.ConnectionService.GetConnection\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetConnectionRequest {
     /// Required. Name of the requested connection, for example:
@@ -21,6 +23,7 @@ pub struct GetConnectionRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request for \[ConnectionService.ListConnections][google.cloud.bigquery.connection.v1beta1.ConnectionService.ListConnections\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListConnectionsRequest {
     /// Required. Parent resource name.
@@ -35,6 +38,7 @@ pub struct ListConnectionsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// The response for \[ConnectionService.ListConnections][google.cloud.bigquery.connection.v1beta1.ConnectionService.ListConnections\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListConnectionsResponse {
     /// Next page token.
@@ -45,6 +49,7 @@ pub struct ListConnectionsResponse {
     pub connections: ::prost::alloc::vec::Vec<Connection>,
 }
 /// The request for \[ConnectionService.UpdateConnection][google.cloud.bigquery.connection.v1beta1.ConnectionService.UpdateConnection\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateConnectionRequest {
     /// Required. Name of the connection to update, for example:
@@ -59,6 +64,7 @@ pub struct UpdateConnectionRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The request for \[ConnectionService.UpdateConnectionCredential][google.cloud.bigquery.connection.v1beta1.ConnectionService.UpdateConnectionCredential\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateConnectionCredentialRequest {
     /// Required. Name of the connection, for example:
@@ -70,6 +76,7 @@ pub struct UpdateConnectionCredentialRequest {
     pub credential: ::core::option::Option<ConnectionCredential>,
 }
 /// The request for \[ConnectionService.DeleteConnectionRequest][\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteConnectionRequest {
     /// Required. Name of the deleted connection, for example:
@@ -79,6 +86,7 @@ pub struct DeleteConnectionRequest {
 }
 /// Configuration parameters to establish connection with an external data
 /// source, except the credential attributes.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Connection {
     /// The resource name of the connection in the form of:
@@ -107,6 +115,7 @@ pub struct Connection {
 /// Nested message and enum types in `Connection`.
 pub mod connection {
     /// Properties specific to the underlying data source.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Properties {
         /// Cloud SQL properties.
@@ -115,6 +124,7 @@ pub mod connection {
     }
 }
 /// Credential to use with a connection.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConnectionCredential {
     /// Credential specific to the underlying data source.
@@ -124,6 +134,7 @@ pub struct ConnectionCredential {
 /// Nested message and enum types in `ConnectionCredential`.
 pub mod connection_credential {
     /// Credential specific to the underlying data source.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Credential {
         /// Credential for Cloud SQL database.
@@ -132,6 +143,7 @@ pub mod connection_credential {
     }
 }
 /// Connection properties specific to the Cloud SQL.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CloudSqlProperties {
     /// Cloud SQL instance ID in the form `project:location:instance`.
@@ -192,6 +204,7 @@ pub mod cloud_sql_properties {
     }
 }
 /// Credential info for the Cloud SQL.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CloudSqlCredential {
     /// The username for the credential.

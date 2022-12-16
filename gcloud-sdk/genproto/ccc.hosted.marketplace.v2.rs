@@ -1,3 +1,4 @@
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomerLicense {
     /// The type of API resource. This is always appsmarket#customerLicense.
@@ -26,6 +27,7 @@ pub struct CustomerLicense {
 }
 /// Nested message and enum types in `CustomerLicense`.
 pub mod customer_license {
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Editions {
         /// (Deprecated)
@@ -42,6 +44,7 @@ pub mod customer_license {
         pub assigned_seats: i32,
     }
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LicenseNotification {
     /// The ID of the license notification.
@@ -75,6 +78,7 @@ pub struct LicenseNotification {
 }
 /// Nested message and enum types in `LicenseNotification`.
 pub mod license_notification {
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Deletes {
         #[prost(string, tag = "1")]
@@ -84,6 +88,7 @@ pub mod license_notification {
         #[prost(string, tag = "901")]
         pub edition_id: ::prost::alloc::string::String,
     }
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Expiries {
         #[prost(string, tag = "1")]
@@ -93,6 +98,7 @@ pub mod license_notification {
         #[prost(string, tag = "701")]
         pub edition_id: ::prost::alloc::string::String,
     }
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Provisions {
         #[prost(string, tag = "1")]
@@ -105,6 +111,7 @@ pub mod license_notification {
         #[prost(int64, tag = "602")]
         pub seat_count: i64,
     }
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Reassignments {
         #[prost(string, tag = "1")]
@@ -120,6 +127,7 @@ pub mod license_notification {
         pub edition_id: ::prost::alloc::string::String,
     }
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LicenseNotificationList {
     #[prost(string, tag = "1")]
@@ -138,6 +146,7 @@ pub struct LicenseNotificationList {
     #[prost(string, tag = "100602")]
     pub next_page_token: ::prost::alloc::string::String,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UserLicense {
     /// The type of API resource. This is always appsmarket#userLicense.
@@ -173,6 +182,7 @@ pub struct UserLicense {
     #[prost(string, tag = "102")]
     pub user_id: ::prost::alloc::string::String,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomerLicenseGetRequest {
     /// Application Id
@@ -182,6 +192,7 @@ pub struct CustomerLicenseGetRequest {
     #[prost(string, tag = "2")]
     pub customer_id: ::prost::alloc::string::String,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LicenseNotificationListRequest {
     /// Application Id
@@ -195,6 +206,7 @@ pub struct LicenseNotificationListRequest {
     #[prost(uint64, tag = "4")]
     pub timestamp: u64,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UserLicenseGetRequest {
     /// Application Id

@@ -1,5 +1,6 @@
 /// Describes a vehicle attribute as a key-value pair. The "key:value" string
 /// length cannot exceed 256 characters.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeliveryVehicleAttribute {
     /// The attribute's key. Keys may not contain the colon character (:).
@@ -10,6 +11,7 @@ pub struct DeliveryVehicleAttribute {
     pub value: ::prost::alloc::string::String,
 }
 /// The location, speed, and heading of a vehicle at a point in time.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeliveryVehicleLocation {
     /// The location of the vehicle.
@@ -204,6 +206,7 @@ impl DeliveryVehicleNavigationStatus {
 /// the `DeliveryVehicle.current_route_segment` field in the gRPC API and the
 /// `DeliveryVehicle.currentRouteSegment` field in the REST API refer to the same
 /// field.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeliveryVehicle {
     /// The unique name of this Delivery Vehicle.
@@ -295,6 +298,7 @@ pub struct DeliveryVehicle {
     pub attributes: ::prost::alloc::vec::Vec<DeliveryVehicleAttribute>,
 }
 /// A location with any additional identifiers.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LocationInfo {
     /// The location's coordinates.
@@ -306,6 +310,7 @@ pub struct LocationInfo {
 /// Represents a Vehicle’s travel segment - from its previous stop to the
 /// current stop. If it is the first active stop, then it is from the
 /// Vehicle’s current location to this stop.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VehicleJourneySegment {
     /// Specifies the stop location, along with the Tasks associated with
@@ -355,6 +360,7 @@ pub struct VehicleJourneySegment {
     >,
 }
 /// Describes a point where a Vehicle stops to perform one or more Tasks.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VehicleStop {
     /// Required. The location of the stop. Note that the locations in the Tasks might not
@@ -375,6 +381,7 @@ pub struct VehicleStop {
 /// Nested message and enum types in `VehicleStop`.
 pub mod vehicle_stop {
     /// Additional information about the Task performed at this stop.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct TaskInfo {
         /// The Task ID. This field won't be populated in the response of either a
@@ -433,6 +440,7 @@ pub mod vehicle_stop {
     }
 }
 /// A RequestHeader contains fields common to all Delivery RPC requests.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeliveryRequestHeader {
     /// The BCP-47 language code, such as en-US or sr-Latn. For more information,
@@ -571,6 +579,7 @@ pub mod delivery_request_header {
 /// the `Task.journey_sharing_info` field in the gRPC API and the
 /// `DeliveryVehicle.journeySharingInfo` field in the REST API refer to the same
 /// field.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Task {
     /// Must be in the format `providers/{provider}/tasks/{task}`.
@@ -636,6 +645,7 @@ pub struct Task {
 /// Nested message and enum types in `Task`.
 pub mod task {
     /// Journey sharing specific fields.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct JourneySharingInfo {
         /// Tracking information for the stops that the assigned vehicle will make
@@ -825,6 +835,7 @@ pub mod task {
     }
 }
 /// The `CreateDeliveryVehicle` request message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateDeliveryVehicleRequest {
     /// Optional. The standard Delivery API request header.
@@ -858,6 +869,7 @@ pub struct CreateDeliveryVehicleRequest {
 }
 /// The `GetDeliveryVehicle` request message.
 /// Next id: 4
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetDeliveryVehicleRequest {
     /// Optional. The standard Delivery API request header.
@@ -871,6 +883,7 @@ pub struct GetDeliveryVehicleRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The `ListDeliveryVehicles` request message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDeliveryVehiclesRequest {
     /// Optional. The standard Delivery API request header.
@@ -923,6 +936,7 @@ pub struct ListDeliveryVehiclesRequest {
     >,
 }
 /// The `ListDeliveryVehicles` response message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDeliveryVehiclesResponse {
     /// The set of delivery vehicles that meet the requested filtering criteria.
@@ -942,6 +956,7 @@ pub struct ListDeliveryVehiclesResponse {
     pub total_size: i64,
 }
 /// The `UpdateDeliveryVehicle` request message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateDeliveryVehicleRequest {
     /// Optional. The standard Delivery API request header.
@@ -960,6 +975,7 @@ pub struct UpdateDeliveryVehicleRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The `BatchCreateTask` request message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchCreateTasksRequest {
     /// Optional. The standard Delivery API request header.
@@ -981,6 +997,7 @@ pub struct BatchCreateTasksRequest {
     pub requests: ::prost::alloc::vec::Vec<CreateTaskRequest>,
 }
 /// The `BatchCreateTask` response message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchCreateTasksResponse {
     /// The created Tasks.
@@ -988,6 +1005,7 @@ pub struct BatchCreateTasksResponse {
     pub tasks: ::prost::alloc::vec::Vec<Task>,
 }
 /// The `CreateTask` request message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateTaskRequest {
     /// Optional. The standard Delivery API request header.
@@ -1026,6 +1044,7 @@ pub struct CreateTaskRequest {
     pub task: ::core::option::Option<Task>,
 }
 /// The `GetTask` request message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetTaskRequest {
     /// Optional. The standard Delivery API request header.
@@ -1037,6 +1056,7 @@ pub struct GetTaskRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The `SearchTasks` request message that contains the `tracking_id`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchTasksRequest {
     /// Optional. The standard Delivery API request header.
@@ -1073,6 +1093,7 @@ pub struct SearchTasksRequest {
 }
 /// The `SearchTasks` response. It contains the set of Tasks that meet the search
 /// criteria in the `SearchTasksRequest`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchTasksResponse {
     /// The set of Tasks for the requested `tracking_id`. A successful response can
@@ -1087,6 +1108,7 @@ pub struct SearchTasksResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The `UpdateTask` request message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateTaskRequest {
     /// Optional. The standard Delivery API request header.
@@ -1119,6 +1141,7 @@ pub struct UpdateTaskRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The `ListTasks` request message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTasksRequest {
     /// Optional. The standard Delivery API request header.
@@ -1152,6 +1175,7 @@ pub struct ListTasksRequest {
 }
 /// The `ListTasks` response that contains the set of Tasks that meet the filter
 /// criteria in the `ListTasksRequest`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTasksResponse {
     /// The set of Tasks that meet the requested filtering criteria. When no filter

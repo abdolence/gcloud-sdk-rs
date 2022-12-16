@@ -1,5 +1,6 @@
 /// Logged during a workflow execution if the customer has requested call
 /// logging.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EngineCallLog {
     /// The execution ID of the execution where the call occurred.
@@ -23,6 +24,7 @@ pub struct EngineCallLog {
 /// Nested message and enum types in `EngineCallLog`.
 pub mod engine_call_log {
     /// Information about an argument to a called function.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CallArg {
         /// A function argument, serialized to a string. This may be truncated for
@@ -31,6 +33,7 @@ pub mod engine_call_log {
         pub argument: ::prost::alloc::string::String,
     }
     /// Information about the start of a call.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Begun {
         /// The arguments passed to the function. Only one of 'args' and 'named_args'
@@ -48,6 +51,7 @@ pub mod engine_call_log {
         >,
     }
     /// Information about the end of a successful call.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Succeeded {
         /// The time when the call started.
@@ -59,6 +63,7 @@ pub mod engine_call_log {
         pub response: ::prost::alloc::string::String,
     }
     /// Information about the end of a failed call.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ExceptionRaised {
         /// The time when the call started.
@@ -73,6 +78,7 @@ pub mod engine_call_log {
         pub origin: ::prost::alloc::string::String,
     }
     /// Information about an exception which was handled.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ExceptionHandled {
         /// The time when the call started.
@@ -126,6 +132,7 @@ pub mod engine_call_log {
             }
         }
     }
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Details {
         /// Appears at the start of a call.
@@ -143,6 +150,7 @@ pub mod engine_call_log {
     }
 }
 /// Logged during the lifetime of Workflow Execution.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExecutionsSystemLog {
     /// Human readable contents of the log in English. The size limit is 5 kB.
@@ -161,6 +169,7 @@ pub struct ExecutionsSystemLog {
 /// Nested message and enum types in `ExecutionsSystemLog`.
 pub mod executions_system_log {
     /// Detailed information about the start of the execution.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Start {
         /// The execution input argument.
@@ -168,6 +177,7 @@ pub mod executions_system_log {
         pub argument: ::prost::alloc::string::String,
     }
     /// Detailed information about the successful finish of the execution.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Success {
         /// The final result of the execution.
@@ -175,6 +185,7 @@ pub mod executions_system_log {
         pub result: ::prost::alloc::string::String,
     }
     /// Detailed information about the execution failure.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Failure {
         /// The exception message, e.g. "division by zero". The size limit is 1 kB.
@@ -227,6 +238,7 @@ pub mod executions_system_log {
         }
     }
     /// Detailed log information.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Details {
         /// Appears only in the log created when the execution has started.

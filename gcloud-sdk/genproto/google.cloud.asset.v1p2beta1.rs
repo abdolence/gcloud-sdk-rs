@@ -1,5 +1,6 @@
 /// Temporal asset. In addition to the asset, the temporal asset includes the
 /// status of the asset and valid from and to time of it.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TemporalAsset {
     /// The time window when the asset data and state was observed.
@@ -13,6 +14,7 @@ pub struct TemporalAsset {
     pub asset: ::core::option::Option<Asset>,
 }
 /// A time window of (start_time, end_time].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TimeWindow {
     /// Start time of the time window (exclusive).
@@ -25,6 +27,7 @@ pub struct TimeWindow {
 }
 /// Cloud asset. This includes all Google Cloud Platform resources,
 /// Cloud IAM policies, and other non-GCP assets.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Asset {
     /// The full name of the asset. For example:
@@ -54,6 +57,7 @@ pub struct Asset {
     pub ancestors: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Representation of a cloud resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Resource {
     /// The API version. Example: "v1".
@@ -97,6 +101,7 @@ pub struct Resource {
     pub data: ::core::option::Option<::prost_types::Struct>,
 }
 /// Create asset feed request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateFeedRequest {
     /// Required. The name of the project/folder/organization where this feed
@@ -119,6 +124,7 @@ pub struct CreateFeedRequest {
     pub feed: ::core::option::Option<Feed>,
 }
 /// Get asset feed request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetFeedRequest {
     /// Required. The name of the Feed and it must be in the format of:
@@ -129,6 +135,7 @@ pub struct GetFeedRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// List asset feeds request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFeedsRequest {
     /// Required. The parent project/folder/organization whose feeds are to be
@@ -137,6 +144,7 @@ pub struct ListFeedsRequest {
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFeedsResponse {
     /// A list of feeds.
@@ -144,6 +152,7 @@ pub struct ListFeedsResponse {
     pub feeds: ::prost::alloc::vec::Vec<Feed>,
 }
 /// Update asset feed request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateFeedRequest {
     /// Required. The new values of feed details. It must match an existing feed and the
@@ -159,6 +168,7 @@ pub struct UpdateFeedRequest {
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteFeedRequest {
     /// Required. The name of the feed and it must be in the format of:
@@ -169,6 +179,7 @@ pub struct DeleteFeedRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Output configuration for export assets destination.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OutputConfig {
     /// Asset export destination.
@@ -178,6 +189,7 @@ pub struct OutputConfig {
 /// Nested message and enum types in `OutputConfig`.
 pub mod output_config {
     /// Asset export destination.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Destination {
         /// Destination on Cloud Storage.
@@ -186,6 +198,7 @@ pub mod output_config {
     }
 }
 /// A Cloud Storage location.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GcsDestination {
     /// Required.
@@ -195,6 +208,7 @@ pub struct GcsDestination {
 /// Nested message and enum types in `GcsDestination`.
 pub mod gcs_destination {
     /// Required.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ObjectUri {
         /// The uri of the Cloud Storage object. It's the same uri that is used by
@@ -207,6 +221,7 @@ pub mod gcs_destination {
     }
 }
 /// A Cloud Pubsub destination.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PubsubDestination {
     /// The name of the Cloud Pub/Sub topic to publish to.
@@ -215,6 +230,7 @@ pub struct PubsubDestination {
     pub topic: ::prost::alloc::string::String,
 }
 /// Output configuration for asset feed destination.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FeedOutputConfig {
     /// Asset feed destination.
@@ -224,6 +240,7 @@ pub struct FeedOutputConfig {
 /// Nested message and enum types in `FeedOutputConfig`.
 pub mod feed_output_config {
     /// Asset feed destination.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Destination {
         /// Destination on Cloud Pubsub.
@@ -236,6 +253,7 @@ pub mod feed_output_config {
 /// The asset feed must be created within a project, organization, or
 /// folder. Supported destinations are:
 /// Cloud Pub/Sub topics.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Feed {
     /// Required. The format will be

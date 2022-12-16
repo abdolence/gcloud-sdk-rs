@@ -1,5 +1,6 @@
 /// Network configuration in the consumer project
 /// with which the peering has to be done.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NetworkConfig {
     /// Required. Management CIDR used by VMware management appliances.
@@ -27,6 +28,7 @@ pub struct NetworkConfig {
     pub management_ip_address_layout_version: i32,
 }
 /// Information about the type and number of nodes associated with the cluster.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NodeTypeConfig {
     /// Required. The number of nodes of this type in the cluster
@@ -40,6 +42,7 @@ pub struct NodeTypeConfig {
     pub custom_core_count: i32,
 }
 /// Represents a private cloud resource. Private clouds are zonal resources.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PrivateCloud {
     /// Output only. The resource name of this private cloud.
@@ -95,6 +98,7 @@ pub struct PrivateCloud {
 /// Nested message and enum types in `PrivateCloud`.
 pub mod private_cloud {
     /// Management cluster configuration.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ManagementCluster {
         /// Required. The user-provided identifier of the new `Cluster`.
@@ -166,6 +170,7 @@ pub mod private_cloud {
     }
 }
 /// Request message for \[VmwareEngine.ListPrivateClouds][google.cloud.vmwareengine.v1.VmwareEngine.ListPrivateClouds\]
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPrivateCloudsRequest {
     /// Required. The resource name of the private cloud to be queried for
@@ -225,6 +230,7 @@ pub struct ListPrivateCloudsRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// Response message for \[VmwareEngine.ListPrivateClouds][google.cloud.vmwareengine.v1.VmwareEngine.ListPrivateClouds\]
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPrivateCloudsResponse {
     /// A list of private clouds.
@@ -240,6 +246,7 @@ pub struct ListPrivateCloudsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for \[VmwareEngine.GetPrivateCloud][google.cloud.vmwareengine.v1.VmwareEngine.GetPrivateCloud\]
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetPrivateCloudRequest {
     /// Required. The resource name of the private cloud to retrieve.
@@ -251,6 +258,7 @@ pub struct GetPrivateCloudRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for \[VmwareEngine.CreatePrivateCloud][google.cloud.vmwareengine.v1.VmwareEngine.CreatePrivateCloud\]
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreatePrivateCloudRequest {
     /// Required. The resource name of the location to create the new
@@ -286,6 +294,7 @@ pub struct CreatePrivateCloudRequest {
     pub validate_only: bool,
 }
 /// Request message for \[VmwareEngine.UpdatePrivateCloud][google.cloud.vmwareengine.v1.VmwareEngine.UpdatePrivateCloud\]
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdatePrivateCloudRequest {
     /// Required. Private cloud description.
@@ -304,6 +313,7 @@ pub struct UpdatePrivateCloudRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for \[VmwareEngine.DeletePrivateCloud][google.cloud.vmwareengine.v1.VmwareEngine.DeletePrivateCloud\]
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeletePrivateCloudRequest {
     /// Required. The resource name of the private cloud to delete.
@@ -335,6 +345,7 @@ pub struct DeletePrivateCloudRequest {
     pub delay_hours: ::core::option::Option<i32>,
 }
 /// Request message for \[VmwareEngine.UndeletePrivateCloud][google.cloud.vmwareengine.v1.VmwareEngine.UndeletePrivateCloud\]
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UndeletePrivateCloudRequest {
     /// Required. The resource name of the private cloud scheduled for deletion.
@@ -350,6 +361,7 @@ pub struct UndeletePrivateCloudRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// A cluster in a private cloud.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Cluster {
     /// Output only. The resource name of this cluster.
@@ -433,6 +445,7 @@ pub mod cluster {
     }
 }
 /// Request message for \[VmwareEngine.ListClusters][google.cloud.vmwareengine.v1.VmwareEngine.ListClusters\]
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListClustersRequest {
     /// Required. The resource name of the private cloud to query for clusters.
@@ -480,6 +493,7 @@ pub struct ListClustersRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// Response message for \[VmwareEngine.ListClusters][google.cloud.vmwareengine.v1.VmwareEngine.ListClusters\]
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListClustersResponse {
     /// A list of private cloud clusters.
@@ -495,6 +509,7 @@ pub struct ListClustersResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for \[VmwareEngine.GetCluster][google.cloud.vmwareengine.v1.VmwareEngine.GetCluster\]
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetClusterRequest {
     /// Required. The cluster resource name to retrieve.
@@ -506,6 +521,7 @@ pub struct GetClusterRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for \[VmwareEngine.CreateCluster][google.cloud.vmwareengine.v1.VmwareEngine.CreateCluster\]
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateClusterRequest {
     /// Required. The resource name of the private cloud to create a new cluster
@@ -541,6 +557,7 @@ pub struct CreateClusterRequest {
     pub validate_only: bool,
 }
 /// Request message for \[VmwareEngine.UpdateCluster][google.cloud.vmwareengine.v1.VmwareEngine.UpdateCluster\]
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateClusterRequest {
     /// Required. Field mask is used to specify the fields to be overwritten in the
@@ -563,6 +580,7 @@ pub struct UpdateClusterRequest {
     pub validate_only: bool,
 }
 /// Request message for \[VmwareEngine.DeleteCluster][google.cloud.vmwareengine.v1.VmwareEngine.DeleteCluster\]
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteClusterRequest {
     /// Required. The resource name of the cluster to delete.
@@ -579,6 +597,7 @@ pub struct DeleteClusterRequest {
 }
 /// Subnet in a private cloud. Either `management` subnets (such as vMotion) that
 /// are read-only, or `userDefined`, which can also be updated.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Subnet {
     /// Output only. The resource name of this subnet.
@@ -646,6 +665,7 @@ pub mod subnet {
     }
 }
 /// Request message for \[VmwareEngine.ListSubnets][google.cloud.vmwareengine.v1.VmwareEngine.ListSubnets\]
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSubnetsRequest {
     /// Required. The resource name of the private cloud to be queried for
@@ -671,6 +691,7 @@ pub struct ListSubnetsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for \[VmwareEngine.ListSubnets][google.cloud.vmwareengine.v1.VmwareEngine.ListSubnets\]
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSubnetsResponse {
     /// A list of subnets.
@@ -682,6 +703,7 @@ pub struct ListSubnetsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Represents the metadata of the long-running operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationMetadata {
     /// Output only. The time the operation was created.
@@ -711,6 +733,7 @@ pub struct OperationMetadata {
     pub api_version: ::prost::alloc::string::String,
 }
 /// Describes node type.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NodeType {
     /// Output only. The resource name of this node type.
@@ -745,6 +768,7 @@ pub struct NodeType {
     pub available_custom_core_counts: ::prost::alloc::vec::Vec<i32>,
 }
 /// Request message for \[VmwareEngine.ListNodeTypes][google.cloud.vmwareengine.v1.VmwareEngine.ListNodeTypes\]
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNodeTypesRequest {
     /// Required. The resource name of the location to be queried for node types.
@@ -796,6 +820,7 @@ pub struct ListNodeTypesRequest {
     pub filter: ::prost::alloc::string::String,
 }
 /// Response message for \[VmwareEngine.ListNodeTypes][google.cloud.vmwareengine.v1.VmwareEngine.ListNodeTypes\]
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNodeTypesResponse {
     /// A list of Node Types.
@@ -811,6 +836,7 @@ pub struct ListNodeTypesResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for \[VmwareEngine.GetNodeType][google.cloud.vmwareengine.v1.VmwareEngine.GetNodeType\]
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetNodeTypeRequest {
     /// Required. The resource name of the node type to retrieve.
@@ -822,6 +848,7 @@ pub struct GetNodeTypeRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Credentials for a private cloud.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Credentials {
     /// Initial username.
@@ -832,6 +859,7 @@ pub struct Credentials {
     pub password: ::prost::alloc::string::String,
 }
 /// Request message for \[VmwareEngine.ShowNsxCredentials][google.cloud.vmwareengine.v1.VmwareEngine.ShowNsxCredentials\]
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ShowNsxCredentialsRequest {
     /// Required. The resource name of the private cloud
@@ -844,6 +872,7 @@ pub struct ShowNsxCredentialsRequest {
     pub private_cloud: ::prost::alloc::string::String,
 }
 /// Request message for \[VmwareEngine.ShowVcenterCredentials][google.cloud.vmwareengine.v1.VmwareEngine.ShowVcenterCredentials\]
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ShowVcenterCredentialsRequest {
     /// Required. The resource name of the private cloud
@@ -856,6 +885,7 @@ pub struct ShowVcenterCredentialsRequest {
     pub private_cloud: ::prost::alloc::string::String,
 }
 /// Request message for \[VmwareEngine.ResetNsxCredentials][google.cloud.vmwareengine.v1.VmwareEngine.ResetNsxCredentials\]
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResetNsxCredentialsRequest {
     /// Required. The resource name of the private cloud
@@ -884,6 +914,7 @@ pub struct ResetNsxCredentialsRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for \[VmwareEngine.ResetVcenterCredentials][google.cloud.vmwareengine.v1.VmwareEngine.ResetVcenterCredentials\]
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResetVcenterCredentialsRequest {
     /// Required. The resource name of the private cloud
@@ -912,6 +943,7 @@ pub struct ResetVcenterCredentialsRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Response message for \[VmwareEngine.ListHcxActivationKeys][google.cloud.vmwareengine.v1.VmwareEngine.ListHcxActivationKeys\]
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListHcxActivationKeysResponse {
     /// List of HCX activation keys.
@@ -931,6 +963,7 @@ pub struct ListHcxActivationKeysResponse {
 /// and you should always verify active keys.
 /// Use \[VmwareEngine.ListHcxActivationKeys][google.cloud.vmwareengine.v1.VmwareEngine.ListHcxActivationKeys\] to retrieve existing keys
 /// and \[VmwareEngine.CreateHcxActivationKey][google.cloud.vmwareengine.v1.VmwareEngine.CreateHcxActivationKey\] to create new ones.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HcxActivationKey {
     /// Output only. The resource name of this HcxActivationKey.
@@ -994,6 +1027,7 @@ pub mod hcx_activation_key {
     }
 }
 /// Request message for \[VmwareEngine.ListHcxActivationKeys][google.cloud.vmwareengine.v1.VmwareEngine.ListHcxActivationKeys\]
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListHcxActivationKeysRequest {
     /// Required. The resource name of the private cloud
@@ -1020,6 +1054,7 @@ pub struct ListHcxActivationKeysRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Request message for \[VmwareEngine.GetHcxActivationKeys][\]
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetHcxActivationKeyRequest {
     /// Required. The resource name of the HCX activation key to retrieve.
@@ -1031,6 +1066,7 @@ pub struct GetHcxActivationKeyRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for \[VmwareEngine.CreateHcxActivationKey][google.cloud.vmwareengine.v1.VmwareEngine.CreateHcxActivationKey\]
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateHcxActivationKeyRequest {
     /// Required. The resource name of the private cloud to create the key for.
@@ -1075,6 +1111,7 @@ pub struct CreateHcxActivationKeyRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Details about a HCX Cloud Manager appliance.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Hcx {
     /// Internal IP address of the appliance.
@@ -1128,6 +1165,7 @@ pub mod hcx {
     }
 }
 /// Details about a NSX Manager appliance.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Nsx {
     /// Internal IP address of the appliance.
@@ -1181,6 +1219,7 @@ pub mod nsx {
     }
 }
 /// Details about a vCenter Server management appliance.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Vcenter {
     /// Internal IP address of the appliance.
@@ -1239,6 +1278,7 @@ pub mod vcenter {
 /// network, which might span across regions. For a given region, a network
 /// policy applies to all private clouds in the VMware Engine network associated
 /// with the policy.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NetworkPolicy {
     /// Output only. The resource name of this network policy.
@@ -1292,6 +1332,7 @@ pub mod network_policy {
     /// VMware workloads. For example, whether the VMware workloads in the
     /// private clouds governed by a network policy can access or be accessed from
     /// the internet.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct NetworkService {
         /// True if the service is enabled; false otherwise.
@@ -1345,6 +1386,7 @@ pub mod network_policy {
     }
 }
 /// Request message for \[VmwareEngine.ListNetworkPolicies][google.cloud.vmwareengine.v1.VmwareEngine.ListNetworkPolicies\]
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNetworkPoliciesRequest {
     /// Required. The resource name of the location (region) to query for
@@ -1403,6 +1445,7 @@ pub struct ListNetworkPoliciesRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// Response message for \[VmwareEngine.ListNetworkPolicies][google.cloud.vmwareengine.v1.VmwareEngine.ListNetworkPolicies\]
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNetworkPoliciesResponse {
     /// A list of network policies.
@@ -1418,6 +1461,7 @@ pub struct ListNetworkPoliciesResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for \[VmwareEngine.GetNetworkPolicy][google.cloud.vmwareengine.v1.VmwareEngine.GetNetworkPolicy\]
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetNetworkPolicyRequest {
     /// Required. The resource name of the network policy to retrieve.
@@ -1429,6 +1473,7 @@ pub struct GetNetworkPolicyRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for \[VmwareEngine.UpdateNetworkPolicy][google.cloud.vmwareengine.v1.VmwareEngine.UpdateNetworkPolicy\]
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateNetworkPolicyRequest {
     /// Required. Network policy description.
@@ -1459,6 +1504,7 @@ pub struct UpdateNetworkPolicyRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for \[VmwareEngine.CreateNetworkPolicy][google.cloud.vmwareengine.v1.VmwareEngine.CreateNetworkPolicy\]
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateNetworkPolicyRequest {
     /// Required. The resource name of the location (region)
@@ -1504,6 +1550,7 @@ pub struct CreateNetworkPolicyRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for \[VmwareEngine.DeleteNetworkPolicy][google.cloud.vmwareengine.v1.VmwareEngine.DeleteNetworkPolicy\]
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteNetworkPolicyRequest {
     /// Required. The resource name of the network policy to delete.
@@ -1532,6 +1579,7 @@ pub struct DeleteNetworkPolicyRequest {
 }
 /// VMware Engine network resource that provides connectivity for VMware Engine
 /// private clouds.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VmwareEngineNetwork {
     /// Output only. The resource name of the VMware Engine network.
@@ -1575,6 +1623,7 @@ pub struct VmwareEngineNetwork {
 pub mod vmware_engine_network {
     /// Represents a VMware Engine VPC network that is managed by a
     /// VMware Engine network resource.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct VpcNetwork {
         /// Output only. Type of VPC network (INTRANET, INTERNET, or
@@ -1707,6 +1756,7 @@ pub mod vmware_engine_network {
     }
 }
 /// Request message for \[VmwareEngine.CreateVmwareEngineNetwork][google.cloud.vmwareengine.v1.VmwareEngine.CreateVmwareEngineNetwork\]
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateVmwareEngineNetworkRequest {
     /// Required. The resource name of the location to create the new VMware Engine
@@ -1755,6 +1805,7 @@ pub struct CreateVmwareEngineNetworkRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for \[VmwareEngine.UpdateVmwareEngineNetwork][google.cloud.vmwareengine.v1.VmwareEngine.UpdateVmwareEngineNetwork\]
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateVmwareEngineNetworkRequest {
     /// Required. VMware Engine network description.
@@ -1786,6 +1837,7 @@ pub struct UpdateVmwareEngineNetworkRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for \[VmwareEngine.DeleteVmwareEngineNetwork][google.cloud.vmwareengine.v1.VmwareEngine.DeleteVmwareEngineNetwork\]
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteVmwareEngineNetworkRequest {
     /// Required. The resource name of the VMware Engine network to be deleted.
@@ -1819,6 +1871,7 @@ pub struct DeleteVmwareEngineNetworkRequest {
     pub etag: ::prost::alloc::string::String,
 }
 /// Request message for \[VmwareEngine.GetVmwareEngineNetwork][google.cloud.vmwareengine.v1.VmwareEngine.GetVmwareEngineNetwork\]
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetVmwareEngineNetworkRequest {
     /// Required. The resource name of the VMware Engine network to retrieve.
@@ -1830,6 +1883,7 @@ pub struct GetVmwareEngineNetworkRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for \[VmwareEngine.ListVmwareEngineNetworks][google.cloud.vmwareengine.v1.VmwareEngine.ListVmwareEngineNetworks\]
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListVmwareEngineNetworksRequest {
     /// Required. The resource name of the location to query for
@@ -1887,6 +1941,7 @@ pub struct ListVmwareEngineNetworksRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// Response message for \[VmwareEngine.ListVmwareEngineNetworks][google.cloud.vmwareengine.v1.VmwareEngine.ListVmwareEngineNetworks\]
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListVmwareEngineNetworksResponse {
     /// A list of VMware Engine networks.

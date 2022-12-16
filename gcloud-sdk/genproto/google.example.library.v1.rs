@@ -1,4 +1,5 @@
 /// A single book in the library.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Book {
     /// The resource name of the book.
@@ -17,6 +18,7 @@ pub struct Book {
     pub read: bool,
 }
 /// A Shelf contains a collection of books with a theme.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Shelf {
     /// The resource name of the shelf.
@@ -29,6 +31,7 @@ pub struct Shelf {
     pub theme: ::prost::alloc::string::String,
 }
 /// Request message for LibraryService.CreateShelf.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateShelfRequest {
     /// The shelf to create.
@@ -36,6 +39,7 @@ pub struct CreateShelfRequest {
     pub shelf: ::core::option::Option<Shelf>,
 }
 /// Request message for LibraryService.GetShelf.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetShelfRequest {
     /// The name of the shelf to retrieve.
@@ -43,6 +47,7 @@ pub struct GetShelfRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for LibraryService.ListShelves.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListShelvesRequest {
     /// Requested page size. Server may return fewer shelves than requested.
@@ -57,6 +62,7 @@ pub struct ListShelvesRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for LibraryService.ListShelves.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListShelvesResponse {
     /// The list of shelves.
@@ -71,6 +77,7 @@ pub struct ListShelvesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for LibraryService.DeleteShelf.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteShelfRequest {
     /// The name of the shelf to delete.
@@ -79,6 +86,7 @@ pub struct DeleteShelfRequest {
 }
 /// Describes the shelf being removed (other_shelf_name) and updated
 /// (name) in this merge.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MergeShelvesRequest {
     /// The name of the shelf we're adding books to.
@@ -89,6 +97,7 @@ pub struct MergeShelvesRequest {
     pub other_shelf: ::prost::alloc::string::String,
 }
 /// Request message for LibraryService.CreateBook.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateBookRequest {
     /// The name of the shelf in which the book is created.
@@ -99,6 +108,7 @@ pub struct CreateBookRequest {
     pub book: ::core::option::Option<Book>,
 }
 /// Request message for LibraryService.GetBook.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetBookRequest {
     /// The name of the book to retrieve.
@@ -106,6 +116,7 @@ pub struct GetBookRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for LibraryService.ListBooks.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListBooksRequest {
     /// The name of the shelf whose books we'd like to list.
@@ -123,6 +134,7 @@ pub struct ListBooksRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for LibraryService.ListBooks.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListBooksResponse {
     /// The list of books.
@@ -137,6 +149,7 @@ pub struct ListBooksResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for LibraryService.UpdateBook.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateBookRequest {
     /// The name of the book to update.
@@ -147,6 +160,7 @@ pub struct UpdateBookRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for LibraryService.DeleteBook.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteBookRequest {
     /// The name of the book to delete.
@@ -155,6 +169,7 @@ pub struct DeleteBookRequest {
 }
 /// Describes what book to move (name) and what shelf we're moving it
 /// to (other_shelf_name).
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MoveBookRequest {
     /// The name of the book to move.

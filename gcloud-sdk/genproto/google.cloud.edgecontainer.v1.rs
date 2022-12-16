@@ -1,4 +1,5 @@
 /// A Google Distributed Cloud Edge Kubernetes cluster.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Cluster {
     /// Required. The resource name of the cluster.
@@ -41,6 +42,7 @@ pub struct Cluster {
     pub maintenance_policy: ::core::option::Option<MaintenancePolicy>,
 }
 /// Cluster-wide networking configuration.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ClusterNetworking {
     /// Required. All pods in the cluster are assigned an RFC1918 IPv4 address from these
@@ -63,6 +65,7 @@ pub struct ClusterNetworking {
 /// Fleets are a Google Cloud concept for logically organizing clusters,
 /// letting you use and manage multi-cluster capabilities and apply
 /// consistent policies across your systems.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Fleet {
     /// Required. The name of the Fleet host project where this cluster will be registered.
@@ -79,6 +82,7 @@ pub struct Fleet {
     pub membership: ::prost::alloc::string::String,
 }
 /// A user principal for an RBAC policy.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ClusterUser {
     /// Required. An active Google username.
@@ -86,6 +90,7 @@ pub struct ClusterUser {
     pub username: ::prost::alloc::string::String,
 }
 /// RBAC policy that will be applied and managed by GEC.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Authorization {
     /// Required. User that will be granted the cluster-admin role on the cluster, providing
@@ -96,6 +101,7 @@ pub struct Authorization {
 }
 /// A set of Kubernetes nodes in a cluster with common configuration and
 /// specification.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NodePool {
     /// Required. The resource name of the node pool.
@@ -133,6 +139,7 @@ pub struct NodePool {
 /// Nested message and enum types in `NodePool`.
 pub mod node_pool {
     /// Configuration for CMEK support for edge machine local disk encryption.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct LocalDiskEncryption {
         /// Immutable. The Cloud KMS CryptoKey e.g.
@@ -160,6 +167,7 @@ pub mod node_pool {
 }
 /// A Google Distributed Cloud Edge machine capable of acting as a Kubernetes
 /// node.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Machine {
     /// Required. The resource name of the machine.
@@ -192,6 +200,7 @@ pub struct Machine {
     pub disabled: bool,
 }
 /// A VPN connection .
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VpnConnection {
     /// Required. The resource name of VPN connection
@@ -240,6 +249,7 @@ pub struct VpnConnection {
 /// Nested message and enum types in `VpnConnection`.
 pub mod vpn_connection {
     /// Project detail of the VPC network.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct VpcProject {
         /// The project of the VPC to connect to. If not specified, it is the same as
@@ -256,6 +266,7 @@ pub mod vpn_connection {
         pub service_account: ::prost::alloc::string::String,
     }
     /// The created connection details.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Details {
         /// The state of this connection.
@@ -274,6 +285,7 @@ pub mod vpn_connection {
     /// Nested message and enum types in `Details`.
     pub mod details {
         /// The Cloud Router info.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct CloudRouter {
             /// The created Cloud Router name.
@@ -281,6 +293,7 @@ pub mod vpn_connection {
             pub name: ::prost::alloc::string::String,
         }
         /// The Cloud VPN info.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct CloudVpn {
             /// The created Cloud VPN gateway name.
@@ -361,6 +374,7 @@ pub mod vpn_connection {
     }
 }
 /// Metadata for a given \[google.cloud.location.Location][google.cloud.location.Location\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LocationMetadata {
     /// The set of available Google Distributed Cloud Edge zones in the location.
@@ -372,6 +386,7 @@ pub struct LocationMetadata {
     >,
 }
 /// A Google Distributed Cloud Edge zone where edge machines are located.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ZoneMetadata {
     /// Quota for resources in this zone.
@@ -379,6 +394,7 @@ pub struct ZoneMetadata {
     pub quota: ::prost::alloc::vec::Vec<Quota>,
 }
 /// Represents quota for Edge Container resources.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Quota {
     /// Name of the quota metric.
@@ -392,6 +408,7 @@ pub struct Quota {
     pub usage: f64,
 }
 /// Maintenance policy configuration.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MaintenancePolicy {
     /// Specifies the maintenance window in which maintenance may be performed.
@@ -399,6 +416,7 @@ pub struct MaintenancePolicy {
     pub window: ::core::option::Option<MaintenanceWindow>,
 }
 /// Maintenance window configuration
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MaintenanceWindow {
     /// Configuration of a recurring maintenance window.
@@ -406,6 +424,7 @@ pub struct MaintenanceWindow {
     pub recurring_window: ::core::option::Option<RecurringTimeWindow>,
 }
 /// Represents an arbitrary window of time that recurs.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RecurringTimeWindow {
     /// The window of the first recurrence.
@@ -418,6 +437,7 @@ pub struct RecurringTimeWindow {
     pub recurrence: ::prost::alloc::string::String,
 }
 /// Represents an arbitrary window of time.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TimeWindow {
     /// The time that the window first starts.
@@ -455,6 +475,7 @@ impl KmsKeyState {
     }
 }
 /// Long-running operation metadata for Edge Container API methods.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationMetadata {
     /// The time the operation was created.
@@ -483,6 +504,7 @@ pub struct OperationMetadata {
     pub api_version: ::prost::alloc::string::String,
 }
 /// Lists clusters in a location.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListClustersRequest {
     /// Required. The parent location, which owns this collection of clusters.
@@ -503,6 +525,7 @@ pub struct ListClustersRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// List of clusters in a location.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListClustersResponse {
     /// Clusters in the location.
@@ -516,6 +539,7 @@ pub struct ListClustersResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Gets a cluster.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetClusterRequest {
     /// Required. The resource name of the cluster.
@@ -523,6 +547,7 @@ pub struct GetClusterRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Creates a cluster.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateClusterRequest {
     /// Required. The parent location where this cluster will be created.
@@ -541,6 +566,7 @@ pub struct CreateClusterRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Updates a cluster.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateClusterRequest {
     /// Field mask is used to specify the fields to be overwritten in the
@@ -560,6 +586,7 @@ pub struct UpdateClusterRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Deletes a cluster.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteClusterRequest {
     /// Required. The resource name of the cluster.
@@ -572,6 +599,7 @@ pub struct DeleteClusterRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Generates an access token for a cluster.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateAccessTokenRequest {
     /// Required. The resource name of the cluster.
@@ -579,6 +607,7 @@ pub struct GenerateAccessTokenRequest {
     pub cluster: ::prost::alloc::string::String,
 }
 /// An access token for a cluster.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateAccessTokenResponse {
     /// Output only. Access token to authenticate to k8s api-server.
@@ -589,6 +618,7 @@ pub struct GenerateAccessTokenResponse {
     pub expire_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Lists node pools in a cluster.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNodePoolsRequest {
     /// Required. The parent cluster, which owns this collection of node pools.
@@ -608,6 +638,7 @@ pub struct ListNodePoolsRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// List of node pools in a cluster.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNodePoolsResponse {
     /// Node pools in the cluster.
@@ -621,6 +652,7 @@ pub struct ListNodePoolsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Gets a node pool.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetNodePoolRequest {
     /// Required. The resource name of the node pool.
@@ -628,6 +660,7 @@ pub struct GetNodePoolRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Creates a node pool.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateNodePoolRequest {
     /// Required. The parent cluster where this node pool will be created.
@@ -646,6 +679,7 @@ pub struct CreateNodePoolRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Updates a node pool.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateNodePoolRequest {
     /// Field mask is used to specify the fields to be overwritten in the
@@ -665,6 +699,7 @@ pub struct UpdateNodePoolRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Deletes a node pool.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteNodePoolRequest {
     /// Required. The resource name of the node pool.
@@ -677,6 +712,7 @@ pub struct DeleteNodePoolRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Lists machines in a site.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListMachinesRequest {
     /// Required. The parent site, which owns this collection of machines.
@@ -696,6 +732,7 @@ pub struct ListMachinesRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// List of machines in a site.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListMachinesResponse {
     /// Machines in the site.
@@ -709,6 +746,7 @@ pub struct ListMachinesResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Gets a machine.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetMachineRequest {
     /// Required. The resource name of the machine.
@@ -716,6 +754,7 @@ pub struct GetMachineRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Lists VPN connections.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListVpnConnectionsRequest {
     /// Required. The parent location, which owns this collection of VPN connections.
@@ -735,6 +774,7 @@ pub struct ListVpnConnectionsRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// List of VPN connections in a location.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListVpnConnectionsResponse {
     /// VpnConnections in the location.
@@ -748,6 +788,7 @@ pub struct ListVpnConnectionsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Gets a VPN connection.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetVpnConnectionRequest {
     /// Required. The resource name of the vpn connection.
@@ -755,6 +796,7 @@ pub struct GetVpnConnectionRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Creates a VPN connection.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateVpnConnectionRequest {
     /// Required. The parent location where this vpn connection will be created.
@@ -773,6 +815,7 @@ pub struct CreateVpnConnectionRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Deletes a vpn connection.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteVpnConnectionRequest {
     /// Required. The resource name of the vpn connection.

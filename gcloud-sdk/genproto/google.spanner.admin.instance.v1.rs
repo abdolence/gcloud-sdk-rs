@@ -1,5 +1,6 @@
 /// Encapsulates progress related information for a Cloud Spanner long
 /// running instance operations.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationProgress {
     /// Percent completion of the operation.
@@ -14,6 +15,7 @@ pub struct OperationProgress {
     #[prost(message, optional, tag = "3")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReplicaInfo {
     /// The location of the serving resources, e.g. "us-central1".
@@ -90,6 +92,7 @@ pub mod replica_info {
 }
 /// A possible configuration for a Cloud Spanner instance. Configurations
 /// define the geographic placement of nodes and their replication.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceConfig {
     /// A unique identifier for the instance configuration.  Values
@@ -241,6 +244,7 @@ pub mod instance_config {
     }
 }
 /// An isolated set of Cloud Spanner resources on which databases can be hosted.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Instance {
     /// Required. A unique identifier for the instance, which cannot be changed
@@ -363,6 +367,7 @@ pub mod instance {
 }
 /// The request for
 /// \[ListInstanceConfigs][google.spanner.admin.instance.v1.InstanceAdmin.ListInstanceConfigs\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListInstanceConfigsRequest {
     /// Required. The name of the project for which a list of supported instance
@@ -383,6 +388,7 @@ pub struct ListInstanceConfigsRequest {
 }
 /// The response for
 /// \[ListInstanceConfigs][google.spanner.admin.instance.v1.InstanceAdmin.ListInstanceConfigs\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListInstanceConfigsResponse {
     /// The list of requested instance configurations.
@@ -396,6 +402,7 @@ pub struct ListInstanceConfigsResponse {
 }
 /// The request for
 /// \[GetInstanceConfigRequest][google.spanner.admin.instance.v1.InstanceAdmin.GetInstanceConfig\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetInstanceConfigRequest {
     /// Required. The name of the requested instance configuration. Values are of
@@ -405,6 +412,7 @@ pub struct GetInstanceConfigRequest {
 }
 /// The request for
 /// \[CreateInstanceConfigRequest][InstanceAdmin.CreateInstanceConfigRequest\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateInstanceConfigRequest {
     /// Required. The name of the project in which to create the instance config.
@@ -431,6 +439,7 @@ pub struct CreateInstanceConfigRequest {
 }
 /// The request for
 /// \[UpdateInstanceConfigRequest][InstanceAdmin.UpdateInstanceConfigRequest\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateInstanceConfigRequest {
     /// Required. The user instance config to update, which must always include the
@@ -456,6 +465,7 @@ pub struct UpdateInstanceConfigRequest {
 }
 /// The request for
 /// \[DeleteInstanceConfigRequest][InstanceAdmin.DeleteInstanceConfigRequest\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteInstanceConfigRequest {
     /// Required. The name of the instance configuration to be deleted.
@@ -479,6 +489,7 @@ pub struct DeleteInstanceConfigRequest {
 }
 /// The request for
 /// \[ListInstanceConfigOperations][google.spanner.admin.instance.v1.InstanceAdmin.ListInstanceConfigOperations\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListInstanceConfigOperationsRequest {
     /// Required. The project of the instance config operations.
@@ -544,6 +555,7 @@ pub struct ListInstanceConfigOperationsRequest {
 }
 /// The response for
 /// \[ListInstanceConfigOperations][google.spanner.admin.instance.v1.InstanceAdmin.ListInstanceConfigOperations\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListInstanceConfigOperationsResponse {
     /// The list of matching instance config [long-running
@@ -563,6 +575,7 @@ pub struct ListInstanceConfigOperationsResponse {
 }
 /// The request for
 /// \[GetInstance][google.spanner.admin.instance.v1.InstanceAdmin.GetInstance\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetInstanceRequest {
     /// Required. The name of the requested instance. Values are of the form
@@ -578,6 +591,7 @@ pub struct GetInstanceRequest {
 }
 /// The request for
 /// \[CreateInstance][google.spanner.admin.instance.v1.InstanceAdmin.CreateInstance\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateInstanceRequest {
     /// Required. The name of the project in which to create the instance. Values
@@ -596,6 +610,7 @@ pub struct CreateInstanceRequest {
 }
 /// The request for
 /// \[ListInstances][google.spanner.admin.instance.v1.InstanceAdmin.ListInstances\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListInstancesRequest {
     /// Required. The name of the project for which a list of instances is
@@ -636,6 +651,7 @@ pub struct ListInstancesRequest {
 }
 /// The response for
 /// \[ListInstances][google.spanner.admin.instance.v1.InstanceAdmin.ListInstances\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListInstancesResponse {
     /// The list of requested instances.
@@ -649,6 +665,7 @@ pub struct ListInstancesResponse {
 }
 /// The request for
 /// \[UpdateInstance][google.spanner.admin.instance.v1.InstanceAdmin.UpdateInstance\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateInstanceRequest {
     /// Required. The instance to update, which must always include the instance
@@ -667,6 +684,7 @@ pub struct UpdateInstanceRequest {
 }
 /// The request for
 /// \[DeleteInstance][google.spanner.admin.instance.v1.InstanceAdmin.DeleteInstance\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteInstanceRequest {
     /// Required. The name of the instance to be deleted. Values are of the form
@@ -676,6 +694,7 @@ pub struct DeleteInstanceRequest {
 }
 /// Metadata type for the operation returned by
 /// \[CreateInstance][google.spanner.admin.instance.v1.InstanceAdmin.CreateInstance\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateInstanceMetadata {
     /// The instance being created.
@@ -697,6 +716,7 @@ pub struct CreateInstanceMetadata {
 }
 /// Metadata type for the operation returned by
 /// \[UpdateInstance][google.spanner.admin.instance.v1.InstanceAdmin.UpdateInstance\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateInstanceMetadata {
     /// The desired end state of the update.
@@ -718,6 +738,7 @@ pub struct UpdateInstanceMetadata {
 }
 /// Metadata type for the operation returned by
 /// \[CreateInstanceConfig][google.spanner.admin.instance.v1.InstanceAdmin.CreateInstanceConfig\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateInstanceConfigMetadata {
     /// The target instance config end state.
@@ -734,6 +755,7 @@ pub struct CreateInstanceConfigMetadata {
 }
 /// Metadata type for the operation returned by
 /// \[UpdateInstanceConfig][google.spanner.admin.instance.v1.InstanceAdmin.UpdateInstanceConfig\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateInstanceConfigMetadata {
     /// The desired instance config after updating.

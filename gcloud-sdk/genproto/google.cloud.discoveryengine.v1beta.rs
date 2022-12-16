@@ -1,5 +1,6 @@
 /// A custom attribute that is not explicitly modeled in a resource, e.g.
 /// \[UserEvent][google.cloud.discoveryengine.v1beta.UserEvent\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomAttribute {
     /// The textual values of this custom attribute. For example, `["yellow",
@@ -25,6 +26,7 @@ pub struct CustomAttribute {
     pub numbers: ::prost::alloc::vec::Vec<f64>,
 }
 /// Information of an end user.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UserInfo {
     /// Highly recommended for logged-in users. Unique identifier for logged-in
@@ -55,6 +57,7 @@ pub struct UserInfo {
 }
 /// Document captures all raw metadata information of items to be recommended or
 /// searched.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Document {
     /// Immutable. The full resource name of the document.
@@ -94,6 +97,7 @@ pub mod document {
     /// \[struct_data][google.cloud.discoveryengine.v1beta.Document.struct_data\] or
     /// \[json_data][google.cloud.discoveryengine.v1beta.Document.json_data\] should
     /// be provided otherwise an INVALID_ARGUMENT error is thrown.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Data {
         /// The structured JSON data for the document. It should conform to the
@@ -108,6 +112,7 @@ pub mod document {
 }
 /// UserEvent captures all metadata information DiscoveryEngine API needs to know
 /// about how end users interact with customers' website.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UserEvent {
     /// Required. User event type. Allowed values are:
@@ -303,6 +308,7 @@ pub struct UserEvent {
     pub media_info: ::core::option::Option<MediaInfo>,
 }
 /// Detailed page information.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PageInfo {
     /// A unique ID of a web page view.
@@ -347,6 +353,7 @@ pub struct PageInfo {
     pub referrer_uri: ::prost::alloc::string::String,
 }
 /// Detailed search information.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchInfo {
     /// The user's search query.
@@ -394,6 +401,7 @@ pub struct SearchInfo {
 }
 /// Detailed completion information including completion attribution token and
 /// clicked completion info.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CompletionInfo {
     /// End user selected \[CompleteQueryResponse.CompletionResult.suggestion][\].
@@ -405,6 +413,7 @@ pub struct CompletionInfo {
     pub selected_position: i32,
 }
 /// A transaction represents the entire purchase transaction.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TransactionInfo {
     /// Required. Total non-zero value associated with the transaction. This value
@@ -456,6 +465,7 @@ pub struct TransactionInfo {
     pub discount_value: ::core::option::Option<f32>,
 }
 /// Detailed document information associated with a user event.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DocumentInfo {
     /// Quantity of the Document associated with the user event. Defaults to 1.
@@ -497,6 +507,7 @@ pub mod document_info {
     /// specified, then the provided values (default values allowed) for
     /// <location>, <data_store_id>, and <branch_id> are used when annotating with
     /// the stored Document.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum DocumentDescriptor {
         /// Required. The Document resource ID.
@@ -509,6 +520,7 @@ pub mod document_info {
     }
 }
 /// Detailed panel information associated with a user event.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PanelInfo {
     /// Required. The panel ID.
@@ -531,6 +543,7 @@ pub struct PanelInfo {
     pub total_panels: ::core::option::Option<i32>,
 }
 /// Media-specific user event information.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MediaInfo {
     /// The media progress time in seconds, if applicable.
@@ -551,6 +564,7 @@ pub struct MediaInfo {
 }
 /// Google Cloud Storage location for input content.
 /// format.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GcsSource {
     /// Required. Google Cloud Storage URIs to input files. URI can be up to
@@ -576,6 +590,7 @@ pub struct GcsSource {
     pub data_schema: ::prost::alloc::string::String,
 }
 /// BigQuery source import data from.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BigQuerySource {
     /// The project ID (can be project # or ID) that the BigQuery source is in with
@@ -617,6 +632,7 @@ pub struct BigQuerySource {
 pub mod big_query_source {
     /// BigQuery table partition info. Leave this empty if the BigQuery table
     /// is not partitioned.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Partition {
         /// BigQuery time partitioned table's _PARTITIONDATE in YYYY-MM-DD format.
@@ -625,6 +641,7 @@ pub mod big_query_source {
     }
 }
 /// Configuration of destination for Import related errors.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportErrorConfig {
     /// Required. Errors destination.
@@ -634,6 +651,7 @@ pub struct ImportErrorConfig {
 /// Nested message and enum types in `ImportErrorConfig`.
 pub mod import_error_config {
     /// Required. Errors destination.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Destination {
         /// Google Cloud Storage prefix for import errors. This must be an empty,
@@ -645,6 +663,7 @@ pub mod import_error_config {
     }
 }
 /// Request message for the ImportUserEvents request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportUserEventsRequest {
     /// Required. Parent DataStore resource name, of the form
@@ -662,6 +681,7 @@ pub struct ImportUserEventsRequest {
 /// Nested message and enum types in `ImportUserEventsRequest`.
 pub mod import_user_events_request {
     /// The inline source for the input config for ImportUserEvents method.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct InlineSource {
         /// Required. A list of user events to import. Recommended max of 10k items.
@@ -669,6 +689,7 @@ pub mod import_user_events_request {
         pub user_events: ::prost::alloc::vec::Vec<super::UserEvent>,
     }
     /// The desired input source of the user event data.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
         /// Required. The Inline source for the input content for UserEvents.
@@ -685,6 +706,7 @@ pub mod import_user_events_request {
 /// Response of the ImportUserEventsRequest. If the long running
 /// operation was successful, then this message is returned by the
 /// google.longrunning.Operations.response field if the operation was successful.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportUserEventsResponse {
     /// A sample of errors encountered while processing the request.
@@ -704,6 +726,7 @@ pub struct ImportUserEventsResponse {
 }
 /// Metadata related to the progress of the Import operation. This will be
 /// returned by the google.longrunning.Operation.metadata field.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportUserEventsMetadata {
     /// Operation create time.
@@ -722,6 +745,7 @@ pub struct ImportUserEventsMetadata {
 }
 /// Metadata related to the progress of the ImportDocuments operation. This will
 /// be returned by the google.longrunning.Operation.metadata field.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportDocumentsMetadata {
     /// Operation create time.
@@ -739,6 +763,7 @@ pub struct ImportDocumentsMetadata {
     pub failure_count: i64,
 }
 /// Request message for Import methods.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportDocumentsRequest {
     /// Required. The parent branch resource name, such as
@@ -761,6 +786,7 @@ pub struct ImportDocumentsRequest {
 /// Nested message and enum types in `ImportDocumentsRequest`.
 pub mod import_documents_request {
     /// The inline source for the input config for ImportDocuments method.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct InlineSource {
         /// Required. A list of documents to update/create. Each document must have a
@@ -806,6 +832,7 @@ pub mod import_documents_request {
         }
     }
     /// Required. The source of the input.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
         /// The Inline source for the input content for documents.
@@ -823,6 +850,7 @@ pub mod import_documents_request {
 /// \[ImportDocumentsRequest][google.cloud.discoveryengine.v1beta.ImportDocumentsRequest\].
 /// If the long running operation is done, then this message is returned by the
 /// google.longrunning.Operations.response field if the operation was successful.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportDocumentsResponse {
     /// A sample of errors encountered while processing the request.
@@ -835,6 +863,7 @@ pub struct ImportDocumentsResponse {
 /// Request message for
 /// \[DocumentService.GetDocument][google.cloud.discoveryengine.v1beta.DocumentService.GetDocument\]
 /// method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetDocumentRequest {
     /// Required. Full resource name of
@@ -853,6 +882,7 @@ pub struct GetDocumentRequest {
 /// Request message for
 /// \[DocumentService.ListDocuments][google.cloud.discoveryengine.v1beta.DocumentService.ListDocuments\]
 /// method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDocumentsRequest {
     /// Required. The parent branch resource name, such as
@@ -888,6 +918,7 @@ pub struct ListDocumentsRequest {
 /// Response message for
 /// \[DocumentService.ListDocuments][google.cloud.discoveryengine.v1beta.DocumentService.ListDocuments\]
 /// method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDocumentsResponse {
     /// The \[Document][google.cloud.discoveryengine.v1beta.Document\]s.
@@ -903,6 +934,7 @@ pub struct ListDocumentsResponse {
 /// Request message for
 /// \[DocumentService.CreateDocument][google.cloud.discoveryengine.v1beta.DocumentService.CreateDocument\]
 /// method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateDocumentRequest {
     /// Required. The parent resource name, such as
@@ -936,6 +968,7 @@ pub struct CreateDocumentRequest {
 /// Request message for
 /// \[DocumentService.UpdateDocument][google.cloud.discoveryengine.v1beta.DocumentService.UpdateDocument\]
 /// method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateDocumentRequest {
     /// Required. The document to update/create.
@@ -960,6 +993,7 @@ pub struct UpdateDocumentRequest {
 /// Request message for
 /// \[DocumentService.DeleteDocument][google.cloud.discoveryengine.v1beta.DocumentService.DeleteDocument\]
 /// method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteDocumentRequest {
     /// Required. Full resource name of
@@ -1179,6 +1213,7 @@ pub mod document_service_client {
     }
 }
 /// Request message for Recommend method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RecommendRequest {
     /// Required. Full resource name of the format:
@@ -1291,6 +1326,7 @@ pub struct RecommendRequest {
     >,
 }
 /// Response message for Recommend method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RecommendResponse {
     /// A list of recommended Documents. The order represents the ranking (from the
@@ -1317,6 +1353,7 @@ pub struct RecommendResponse {
 pub mod recommend_response {
     /// RecommendationResult represents a generic recommendation result with
     /// associated metadata.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct RecommendationResult {
         /// Resource ID of the recommended Document.
@@ -1433,6 +1470,7 @@ pub mod recommendation_service_client {
     }
 }
 /// Request message for WriteUserEvent method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WriteUserEventRequest {
     /// Required. The parent DataStore resource name, such as
@@ -1444,6 +1482,7 @@ pub struct WriteUserEventRequest {
     pub user_event: ::core::option::Option<UserEvent>,
 }
 /// Request message for CollectUserEvent method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CollectUserEventRequest {
     /// Required. The parent DataStore resource name, such as

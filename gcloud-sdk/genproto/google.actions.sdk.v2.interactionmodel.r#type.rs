@@ -1,6 +1,7 @@
 /// A reference to a class which is used to declare the type of a field or return
 /// value. Enums are also a type of class that can be referenced using
 /// ClassReference.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ClassReference {
     /// Required. Name of a built-in type or custom type of the parameter. Examples:
@@ -14,6 +15,7 @@ pub struct ClassReference {
 /// Elements that will be displayed on the canvas once a particular type's entity
 /// is extracted from a query. Only relevant for canvas enabled apps.
 /// **This message is localizable.**
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EntityDisplay {
     /// Optional. Title of the icon.
@@ -25,6 +27,7 @@ pub struct EntityDisplay {
 }
 /// Type that matches any text if surrounding words context is close to provided
 /// training examples.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FreeTextType {
     /// Optional. Elements that will be displayed on the canvas once an entity is extracted
@@ -34,6 +37,7 @@ pub struct FreeTextType {
 }
 /// Type that matches text by regular expressions.
 /// **This message is localizable.**
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegularExpressionType {
     /// Required. Named map of entities which each contain Regex strings.
@@ -47,6 +51,7 @@ pub struct RegularExpressionType {
 pub mod regular_expression_type {
     /// Represents an entity object that contains the regular expression that is
     /// used for comparison.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Entity {
         /// Optional. Elements that will be displayed on the canvas once an entity is
@@ -62,6 +67,7 @@ pub mod regular_expression_type {
     }
 }
 /// Type that matches text by set of synonyms.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SynonymType {
     /// Optional. The match type for the synonym.
@@ -83,6 +89,7 @@ pub struct SynonymType {
 pub mod synonym_type {
     /// Represents a synonym entity field that contains the details of a single
     /// entry inside the type.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Entity {
         /// Optional. The entity display details.
@@ -136,6 +143,7 @@ pub mod synonym_type {
 /// assigned to slots in a scene or parameters of an intent's training phrases.
 /// Practically, Types can be thought of as enums.
 /// Note, type name is specified in the name of the file.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Type {
     /// Set of exceptional words/phrases that shouldn't be matched by type.
@@ -151,6 +159,7 @@ pub struct Type {
 /// Nested message and enum types in `Type`.
 pub mod r#type {
     /// Selection of sub type based on the type of matching to be done.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum SubType {
         /// Synonyms type, which is essentially an enum.

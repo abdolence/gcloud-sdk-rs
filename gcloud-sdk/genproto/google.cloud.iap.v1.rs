@@ -1,4 +1,5 @@
 /// The request to ListTunnelDestGroups.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTunnelDestGroupsRequest {
     /// Required. Google Cloud Project ID and location.
@@ -23,6 +24,7 @@ pub struct ListTunnelDestGroupsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// The response from ListTunnelDestGroups.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTunnelDestGroupsResponse {
     /// TunnelDestGroup existing in the project.
@@ -34,6 +36,7 @@ pub struct ListTunnelDestGroupsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request to CreateTunnelDestGroup.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateTunnelDestGroupRequest {
     /// Required. Google Cloud Project ID and location.
@@ -53,6 +56,7 @@ pub struct CreateTunnelDestGroupRequest {
     pub tunnel_dest_group_id: ::prost::alloc::string::String,
 }
 /// The request to GetTunnelDestGroup.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetTunnelDestGroupRequest {
     /// Required. Name of the TunnelDestGroup to be fetched.
@@ -62,6 +66,7 @@ pub struct GetTunnelDestGroupRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request to DeleteTunnelDestGroup.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteTunnelDestGroupRequest {
     /// Required. Name of the TunnelDestGroup to delete.
@@ -71,6 +76,7 @@ pub struct DeleteTunnelDestGroupRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request to UpdateTunnelDestGroup.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateTunnelDestGroupRequest {
     /// Required. The new values for the TunnelDestGroup.
@@ -83,6 +89,7 @@ pub struct UpdateTunnelDestGroupRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// A TunnelDestGroup.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TunnelDestGroup {
     /// Required. Immutable. Identifier for the TunnelDestGroup. Must be unique within the
@@ -97,6 +104,7 @@ pub struct TunnelDestGroup {
     pub fqdns: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The request sent to GetIapSettings.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetIapSettingsRequest {
     /// Required. The resource name for which to retrieve the settings.
@@ -106,6 +114,7 @@ pub struct GetIapSettingsRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request sent to UpdateIapSettings.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateIapSettingsRequest {
     /// Required. The new values for the IAP settings to be updated.
@@ -120,6 +129,7 @@ pub struct UpdateIapSettingsRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The IAP configurable settings.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IapSettings {
     /// Required. The resource name of the IAP protected resource.
@@ -133,6 +143,7 @@ pub struct IapSettings {
     pub application_settings: ::core::option::Option<ApplicationSettings>,
 }
 /// Access related settings for IAP protected apps.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AccessSettings {
     /// GCIP claims and endpoint configurations for 3p identity providers.
@@ -149,6 +160,7 @@ pub struct AccessSettings {
     pub reauth_settings: ::core::option::Option<ReauthSettings>,
 }
 /// Allows customers to configure tenant_id for GCIP instance per-app.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GcipSettings {
     /// GCIP tenant ids that are linked to the IAP resource.
@@ -167,6 +179,7 @@ pub struct GcipSettings {
 }
 /// Allows customers to configure HTTP request paths that'll allow HTTP OPTIONS
 /// call to bypass authentication and authorization.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CorsSettings {
     /// Configuration to allow HTTP OPTIONS calls to skip authorization. If
@@ -176,6 +189,7 @@ pub struct CorsSettings {
 }
 /// Configuration for OAuth login&consent flow behavior as well as for OAuth
 /// Credentials.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OAuthSettings {
     /// Domain hint to send as hd=? parameter in OAuth request flow. Enables
@@ -187,6 +201,7 @@ pub struct OAuthSettings {
     pub login_hint: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Configuration for IAP reauthentication policies.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReauthSettings {
     /// Reauth method required by the policy.
@@ -281,6 +296,7 @@ pub mod reauth_settings {
     }
 }
 /// Wrapper over application specific settings for IAP.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ApplicationSettings {
     /// Settings to configure IAP's behavior for a CSM mesh.
@@ -298,6 +314,7 @@ pub struct ApplicationSettings {
 /// RCTokens are IAP generated JWTs that can be verified at the application. The
 /// RCToken is primarily used for ISTIO deployments, and can be scoped to a
 /// single mesh by configuring the audience field accordingly
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CsmSettings {
     /// Audience claim set in the generated RCToken. This value is not validated by
@@ -309,6 +326,7 @@ pub struct CsmSettings {
 /// IAP allows customers to define a custom URI to use as the error page when
 /// access is denied to users. If IAP prevents access to this page, the default
 /// IAP error page will be displayed instead.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AccessDeniedPageSettings {
     /// The URI to be redirected to when access is denied.
@@ -320,6 +338,7 @@ pub struct AccessDeniedPageSettings {
     pub generate_troubleshooting_uri: ::core::option::Option<bool>,
 }
 /// The request sent to ListBrands.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListBrandsRequest {
     /// Required. GCP Project number/id.
@@ -328,6 +347,7 @@ pub struct ListBrandsRequest {
     pub parent: ::prost::alloc::string::String,
 }
 /// Response message for ListBrands.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListBrandsResponse {
     /// Brands existing in the project.
@@ -335,6 +355,7 @@ pub struct ListBrandsResponse {
     pub brands: ::prost::alloc::vec::Vec<Brand>,
 }
 /// The request sent to CreateBrand.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateBrandRequest {
     /// Required. GCP Project number/id under which the brand is to be created.
@@ -346,6 +367,7 @@ pub struct CreateBrandRequest {
     pub brand: ::core::option::Option<Brand>,
 }
 /// The request sent to GetBrand.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetBrandRequest {
     /// Required. Name of the brand to be fetched.
@@ -354,6 +376,7 @@ pub struct GetBrandRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request sent to ListIdentityAwareProxyClients.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListIdentityAwareProxyClientsRequest {
     /// Required. Full brand path.
@@ -376,6 +399,7 @@ pub struct ListIdentityAwareProxyClientsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for ListIdentityAwareProxyClients.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListIdentityAwareProxyClientsResponse {
     /// Clients existing in the brand.
@@ -387,6 +411,7 @@ pub struct ListIdentityAwareProxyClientsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request sent to CreateIdentityAwareProxyClient.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateIdentityAwareProxyClientRequest {
     /// Required. Path to create the client in.
@@ -400,6 +425,7 @@ pub struct CreateIdentityAwareProxyClientRequest {
     pub identity_aware_proxy_client: ::core::option::Option<IdentityAwareProxyClient>,
 }
 /// The request sent to GetIdentityAwareProxyClient.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetIdentityAwareProxyClientRequest {
     /// Required. Name of the Identity Aware Proxy client to be fetched.
@@ -409,6 +435,7 @@ pub struct GetIdentityAwareProxyClientRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request sent to ResetIdentityAwareProxyClientSecret.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResetIdentityAwareProxyClientSecretRequest {
     /// Required. Name of the Identity Aware Proxy client to that will have its
@@ -418,6 +445,7 @@ pub struct ResetIdentityAwareProxyClientSecretRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request sent to DeleteIdentityAwareProxyClient.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteIdentityAwareProxyClientRequest {
     /// Required. Name of the Identity Aware Proxy client to be deleted.
@@ -428,6 +456,7 @@ pub struct DeleteIdentityAwareProxyClientRequest {
 }
 /// OAuth brand data.
 /// NOTE: Only contains a portion of the data that describes a brand.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Brand {
     /// Output only. Identifier of the brand.
@@ -447,6 +476,7 @@ pub struct Brand {
     pub org_internal_only: bool,
 }
 /// Contains the data that describes an Identity Aware Proxy owned client.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IdentityAwareProxyClient {
     /// Output only. Unique identifier of the OAuth client.

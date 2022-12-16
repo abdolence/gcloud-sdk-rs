@@ -1,5 +1,6 @@
 /// A vertex represents a 2D point in the image.
 /// NOTE: the vertex coordinates are in the same scale as the original image.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Vertex {
     /// X coordinate.
@@ -12,6 +13,7 @@ pub struct Vertex {
 /// A vertex represents a 2D point in the image.
 /// NOTE: the normalized vertex coordinates are relative to the original image
 /// and range from 0 to 1.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NormalizedVertex {
     /// X coordinate.
@@ -22,6 +24,7 @@ pub struct NormalizedVertex {
     pub y: f32,
 }
 /// A bounding polygon for the detected image annotation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BoundingPoly {
     /// The bounding polygon vertices.
@@ -34,6 +37,7 @@ pub struct BoundingPoly {
 /// A 3D position in the image, used primarily for Face detection landmarks.
 /// A valid Position must have both x and y coordinates.
 /// The position coordinates are in the same scale as the original image.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Position {
     /// X coordinate.
@@ -47,6 +51,7 @@ pub struct Position {
     pub z: f32,
 }
 /// Parameters for a celebrity recognition request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FaceRecognitionParams {
     /// The resource names for one or more
@@ -58,6 +63,7 @@ pub struct FaceRecognitionParams {
     pub celebrity_set: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// A Celebrity is a group of Faces with an identity.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Celebrity {
     /// The resource name of the preloaded Celebrity. Has the format
@@ -72,6 +78,7 @@ pub struct Celebrity {
     pub description: ::prost::alloc::string::String,
 }
 /// Information about a face's identity.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FaceRecognitionResult {
     /// The \[Celebrity][google.cloud.vision.v1p4beta1.Celebrity\] that this face was
@@ -83,6 +90,7 @@ pub struct FaceRecognitionResult {
     pub confidence: f32,
 }
 /// A Product contains ReferenceImages.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Product {
     /// The resource name of the product.
@@ -126,6 +134,7 @@ pub struct Product {
 /// Nested message and enum types in `Product`.
 pub mod product {
     /// A product label represented as a key-value pair.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct KeyValue {
         /// The key of the label attached to the product. Cannot be empty and cannot
@@ -141,6 +150,7 @@ pub mod product {
 /// A ProductSet contains Products. A ProductSet can contain a maximum of 1
 /// million reference images. If the limit is exceeded, periodic indexing will
 /// fail.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProductSet {
     /// The resource name of the ProductSet.
@@ -172,6 +182,7 @@ pub struct ProductSet {
 }
 /// A `ReferenceImage` represents a product image and its associated metadata,
 /// such as bounding boxes.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReferenceImage {
     /// The resource name of the reference image.
@@ -200,6 +211,7 @@ pub struct ReferenceImage {
     pub bounding_polys: ::prost::alloc::vec::Vec<BoundingPoly>,
 }
 /// Request message for the `CreateProduct` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateProductRequest {
     /// Required. The project in which the Product should be created.
@@ -219,6 +231,7 @@ pub struct CreateProductRequest {
     pub product_id: ::prost::alloc::string::String,
 }
 /// Request message for the `ListProducts` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListProductsRequest {
     /// Required. The project OR ProductSet from which Products should be listed.
@@ -235,6 +248,7 @@ pub struct ListProductsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for the `ListProducts` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListProductsResponse {
     /// List of products.
@@ -246,6 +260,7 @@ pub struct ListProductsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for the `GetProduct` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetProductRequest {
     /// Required. Resource name of the Product to get.
@@ -256,6 +271,7 @@ pub struct GetProductRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for the `UpdateProduct` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateProductRequest {
     /// Required. The Product resource which replaces the one on the server.
@@ -271,6 +287,7 @@ pub struct UpdateProductRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for the `DeleteProduct` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteProductRequest {
     /// Required. Resource name of product to delete.
@@ -281,6 +298,7 @@ pub struct DeleteProductRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for the `CreateProductSet` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateProductSetRequest {
     /// Required. The project in which the ProductSet should be created.
@@ -299,6 +317,7 @@ pub struct CreateProductSetRequest {
     pub product_set_id: ::prost::alloc::string::String,
 }
 /// Request message for the `ListProductSets` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListProductSetsRequest {
     /// Required. The project from which ProductSets should be listed.
@@ -314,6 +333,7 @@ pub struct ListProductSetsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for the `ListProductSets` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListProductSetsResponse {
     /// List of ProductSets.
@@ -325,6 +345,7 @@ pub struct ListProductSetsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for the `GetProductSet` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetProductSetRequest {
     /// Required. Resource name of the ProductSet to get.
@@ -335,6 +356,7 @@ pub struct GetProductSetRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for the `UpdateProductSet` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateProductSetRequest {
     /// Required. The ProductSet resource which replaces the one on the server.
@@ -348,6 +370,7 @@ pub struct UpdateProductSetRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for the `DeleteProductSet` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteProductSetRequest {
     /// Required. Resource name of the ProductSet to delete.
@@ -358,6 +381,7 @@ pub struct DeleteProductSetRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for the `CreateReferenceImage` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateReferenceImageRequest {
     /// Required. Resource name of the product in which to create the reference
@@ -379,6 +403,7 @@ pub struct CreateReferenceImageRequest {
     pub reference_image_id: ::prost::alloc::string::String,
 }
 /// Request message for the `ListReferenceImages` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListReferenceImagesRequest {
     /// Required. Resource name of the product containing the reference images.
@@ -398,6 +423,7 @@ pub struct ListReferenceImagesRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for the `ListReferenceImages` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListReferenceImagesResponse {
     /// The list of reference images.
@@ -411,6 +437,7 @@ pub struct ListReferenceImagesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for the `GetReferenceImage` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetReferenceImageRequest {
     /// Required. The resource name of the ReferenceImage to get.
@@ -422,6 +449,7 @@ pub struct GetReferenceImageRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for the `DeleteReferenceImage` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteReferenceImageRequest {
     /// Required. The resource name of the reference image to delete.
@@ -433,6 +461,7 @@ pub struct DeleteReferenceImageRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for the `AddProductToProductSet` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddProductToProductSetRequest {
     /// Required. The resource name for the ProductSet to modify.
@@ -449,6 +478,7 @@ pub struct AddProductToProductSetRequest {
     pub product: ::prost::alloc::string::String,
 }
 /// Request message for the `RemoveProductFromProductSet` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RemoveProductFromProductSetRequest {
     /// Required. The resource name for the ProductSet to modify.
@@ -466,6 +496,7 @@ pub struct RemoveProductFromProductSetRequest {
     pub product: ::prost::alloc::string::String,
 }
 /// Request message for the `ListProductsInProductSet` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListProductsInProductSetRequest {
     /// Required. The ProductSet resource for which to retrieve Products.
@@ -482,6 +513,7 @@ pub struct ListProductsInProductSetRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for the `ListProductsInProductSet` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListProductsInProductSetResponse {
     /// The list of Products.
@@ -494,6 +526,7 @@ pub struct ListProductsInProductSetResponse {
 }
 /// The Google Cloud Storage location for a csv file which preserves a list of
 /// ImportProductSetRequests in each line.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportProductSetsGcsSource {
     /// The Google Cloud Storage URI of the input csv file.
@@ -563,6 +596,7 @@ pub struct ImportProductSetsGcsSource {
     pub csv_file_uri: ::prost::alloc::string::String,
 }
 /// The input content for the `ImportProductSets` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportProductSetsInputConfig {
     /// The source of the input.
@@ -572,6 +606,7 @@ pub struct ImportProductSetsInputConfig {
 /// Nested message and enum types in `ImportProductSetsInputConfig`.
 pub mod import_product_sets_input_config {
     /// The source of the input.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
         /// The Google Cloud Storage location for a csv file which preserves a list
@@ -581,6 +616,7 @@ pub mod import_product_sets_input_config {
     }
 }
 /// Request message for the `ImportProductSets` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportProductSetsRequest {
     /// Required. The project in which the ProductSets should be imported.
@@ -599,6 +635,7 @@ pub struct ImportProductSetsRequest {
 /// method in the returned
 /// \[google.longrunning.Operation.response][google.longrunning.Operation.response\]
 /// field.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportProductSetsResponse {
     /// The list of reference_images that are imported successfully.
@@ -617,6 +654,7 @@ pub struct ImportProductSetsResponse {
 ///
 /// This is included in the `metadata` field of the `Operation` returned by the
 /// `GetOperation` call of the `google::longrunning::Operations` service.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchOperationMetadata {
     /// The current state of the batch operation.
@@ -678,6 +716,7 @@ pub mod batch_operation_metadata {
     }
 }
 /// Config to control which ProductSet contains the Products to be deleted.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProductSetPurgeConfig {
     /// The ProductSet that contains the Products to delete. If a Product is a
@@ -687,6 +726,7 @@ pub struct ProductSetPurgeConfig {
     pub product_set_id: ::prost::alloc::string::String,
 }
 /// Request message for the `PurgeProducts` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PurgeProductsRequest {
     /// Required. The project and location in which the Products should be deleted.
@@ -705,6 +745,7 @@ pub struct PurgeProductsRequest {
 /// Nested message and enum types in `PurgeProductsRequest`.
 pub mod purge_products_request {
     /// The Products to delete.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Target {
         /// Specify which ProductSet contains the Products to be deleted.
@@ -1332,6 +1373,7 @@ pub mod product_search_client {
     }
 }
 /// Parameters for a product search request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProductSearchParams {
     /// The bounding polygon around the area of interest in the image.
@@ -1367,6 +1409,7 @@ pub struct ProductSearchParams {
     pub filter: ::prost::alloc::string::String,
 }
 /// Results for a product search request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProductSearchResults {
     /// Timestamp of the index which provided these results. Products added to the
@@ -1389,6 +1432,7 @@ pub struct ProductSearchResults {
 /// Nested message and enum types in `ProductSearchResults`.
 pub mod product_search_results {
     /// Information about a product.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Result {
         /// The Product.
@@ -1404,6 +1448,7 @@ pub mod product_search_results {
         pub image: ::prost::alloc::string::String,
     }
     /// Prediction for what the object in the bounding box is.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ObjectAnnotation {
         /// Object ID that should align with EntityAnnotation mid.
@@ -1423,6 +1468,7 @@ pub mod product_search_results {
     }
     /// Information about the products similar to a single product in a query
     /// image.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct GroupedResult {
         /// The bounding polygon around the product detected in the query image.
@@ -1444,6 +1490,7 @@ pub mod product_search_results {
 /// to the
 /// \[TextAnnotation.TextProperty][google.cloud.vision.v1p4beta1.TextAnnotation.TextProperty\]
 /// message definition below for more detail.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TextAnnotation {
     /// List of pages detected by OCR.
@@ -1456,6 +1503,7 @@ pub struct TextAnnotation {
 /// Nested message and enum types in `TextAnnotation`.
 pub mod text_annotation {
     /// Detected language for a structural component.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DetectedLanguage {
         /// The BCP-47 language code, such as "en-US" or "sr-Latn". For more
@@ -1468,6 +1516,7 @@ pub mod text_annotation {
         pub confidence: f32,
     }
     /// Detected start or end of a structural component.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DetectedBreak {
         /// Detected break type.
@@ -1525,6 +1574,7 @@ pub mod text_annotation {
         }
     }
     /// Additional information detected on the structural component.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct TextProperty {
         /// A list of detected languages together with confidence.
@@ -1536,6 +1586,7 @@ pub mod text_annotation {
     }
 }
 /// Detected page from OCR.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Page {
     /// Additional information detected on the page.
@@ -1557,6 +1608,7 @@ pub struct Page {
     pub confidence: f32,
 }
 /// Logical element on the page.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Block {
     /// Additional information detected for the block.
@@ -1641,6 +1693,7 @@ pub mod block {
     }
 }
 /// Structural unit of text representing a number of words in certain order.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Paragraph {
     /// Additional information detected for the paragraph.
@@ -1671,6 +1724,7 @@ pub struct Paragraph {
     pub confidence: f32,
 }
 /// A word representation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Word {
     /// Additional information detected for the word.
@@ -1702,6 +1756,7 @@ pub struct Word {
     pub confidence: f32,
 }
 /// A single symbol representation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Symbol {
     /// Additional information detected for the symbol.
@@ -1732,6 +1787,7 @@ pub struct Symbol {
     pub confidence: f32,
 }
 /// Relevant information for the image from the Internet.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WebDetection {
     /// Deduced entities from similar images on the Internet.
@@ -1760,6 +1816,7 @@ pub struct WebDetection {
 /// Nested message and enum types in `WebDetection`.
 pub mod web_detection {
     /// Entity deduced from similar images on the Internet.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct WebEntity {
         /// Opaque entity ID.
@@ -1774,6 +1831,7 @@ pub mod web_detection {
         pub description: ::prost::alloc::string::String,
     }
     /// Metadata for online images.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct WebImage {
         /// The result image URL.
@@ -1784,6 +1842,7 @@ pub mod web_detection {
         pub score: f32,
     }
     /// Metadata for web pages.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct WebPage {
         /// The result web page URL.
@@ -1807,6 +1866,7 @@ pub mod web_detection {
         pub partial_matching_images: ::prost::alloc::vec::Vec<WebImage>,
     }
     /// Label to provide extra metadata for the web detection.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct WebLabel {
         /// Label for extra metadata.
@@ -1822,6 +1882,7 @@ pub mod web_detection {
 /// The type of Google Cloud Vision API detection to perform, and the maximum
 /// number of results to return for that type. Multiple `Feature` objects can
 /// be specified in the `features` list.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Feature {
     /// The feature type.
@@ -1911,6 +1972,7 @@ pub mod feature {
     }
 }
 /// External image source (Google Cloud Storage or web URL image location).
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImageSource {
     /// **Use `image_uri` instead.**
@@ -1942,6 +2004,7 @@ pub struct ImageSource {
     pub image_uri: ::prost::alloc::string::String,
 }
 /// Client image to perform Google Cloud Vision API tasks over.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Image {
     /// Image content, represented as a stream of bytes.
@@ -1956,6 +2019,7 @@ pub struct Image {
     pub source: ::core::option::Option<ImageSource>,
 }
 /// A face annotation object contains the results of face detection.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FaceAnnotation {
     /// The bounding polygon around the face. The coordinates of the bounding box
@@ -2030,6 +2094,7 @@ pub struct FaceAnnotation {
 /// Nested message and enum types in `FaceAnnotation`.
 pub mod face_annotation {
     /// A face-specific landmark (for example, a face feature).
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Landmark {
         /// Face landmark type.
@@ -2177,6 +2242,7 @@ pub mod face_annotation {
     }
 }
 /// Detected entity location information.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LocationInfo {
     /// lat/long location coordinates.
@@ -2184,6 +2250,7 @@ pub struct LocationInfo {
     pub lat_lng: ::core::option::Option<super::super::super::r#type::LatLng>,
 }
 /// A `Property` consists of a user-supplied name/value pair.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Property {
     /// Name of the property.
@@ -2197,6 +2264,7 @@ pub struct Property {
     pub uint64_value: u64,
 }
 /// Set of detected entity features.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EntityAnnotation {
     /// Opaque entity ID. Some IDs may be available in
@@ -2246,6 +2314,7 @@ pub struct EntityAnnotation {
     pub properties: ::prost::alloc::vec::Vec<Property>,
 }
 /// Set of detected objects with bounding boxes.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LocalizedObjectAnnotation {
     /// Object ID that should align with EntityAnnotation mid.
@@ -2269,6 +2338,7 @@ pub struct LocalizedObjectAnnotation {
 /// Set of features pertaining to the image, computed by computer vision
 /// methods over safe-search verticals (for example, adult, spoof, medical,
 /// violence).
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SafeSearchAnnotation {
     /// Represents the adult content likelihood for the image. Adult content may
@@ -2295,6 +2365,7 @@ pub struct SafeSearchAnnotation {
     pub racy: i32,
 }
 /// Rectangle determined by min and max `LatLng` pairs.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LatLongRect {
     /// Min lat/long pair.
@@ -2306,6 +2377,7 @@ pub struct LatLongRect {
 }
 /// Color information consists of RGB channels, score, and the fraction of
 /// the image that the color occupies in the image.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ColorInfo {
     /// RGB components of the color.
@@ -2320,6 +2392,7 @@ pub struct ColorInfo {
     pub pixel_fraction: f32,
 }
 /// Set of dominant colors and their corresponding scores.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DominantColorsAnnotation {
     /// RGB color values with their score and pixel fraction.
@@ -2327,6 +2400,7 @@ pub struct DominantColorsAnnotation {
     pub colors: ::prost::alloc::vec::Vec<ColorInfo>,
 }
 /// Stores image properties, such as dominant colors.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImageProperties {
     /// If present, dominant colors completed successfully.
@@ -2334,6 +2408,7 @@ pub struct ImageProperties {
     pub dominant_colors: ::core::option::Option<DominantColorsAnnotation>,
 }
 /// Single crop hint that is used to generate a new crop when serving an image.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CropHint {
     /// The bounding polygon for the crop region. The coordinates of the bounding
@@ -2349,6 +2424,7 @@ pub struct CropHint {
     pub importance_fraction: f32,
 }
 /// Set of crop hints that are used to generate new crops when serving images.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CropHintsAnnotation {
     /// Crop hint results.
@@ -2356,6 +2432,7 @@ pub struct CropHintsAnnotation {
     pub crop_hints: ::prost::alloc::vec::Vec<CropHint>,
 }
 /// Parameters for crop hints annotation request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CropHintsParams {
     /// Aspect ratios in floats, representing the ratio of the width to the height
@@ -2368,6 +2445,7 @@ pub struct CropHintsParams {
     pub aspect_ratios: ::prost::alloc::vec::Vec<f32>,
 }
 /// Parameters for web detection request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WebDetectionParams {
     /// Whether to include results derived from the geo information in the image.
@@ -2376,6 +2454,7 @@ pub struct WebDetectionParams {
 }
 /// Parameters for text detections. This is used to control TEXT_DETECTION and
 /// DOCUMENT_TEXT_DETECTION features.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TextDetectionParams {
     /// By default, Cloud Vision API only includes confidence score for
@@ -2388,6 +2467,7 @@ pub struct TextDetectionParams {
     pub advanced_ocr_options: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Image context and/or feature-specific parameters.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImageContext {
     /// Not used.
@@ -2421,6 +2501,7 @@ pub struct ImageContext {
 }
 /// Request for performing Google Cloud Vision API tasks over a user-provided
 /// image, with user-requested features, and with context information.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnnotateImageRequest {
     /// The image to be processed.
@@ -2435,6 +2516,7 @@ pub struct AnnotateImageRequest {
 }
 /// If an image was produced from a file (e.g. a PDF), this message gives
 /// information about the source of that image.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImageAnnotationContext {
     /// The URI of the file used to produce the image.
@@ -2446,6 +2528,7 @@ pub struct ImageAnnotationContext {
     pub page_number: i32,
 }
 /// Response to an image annotation request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnnotateImageResponse {
     /// If present, face detection has completed successfully.
@@ -2501,6 +2584,7 @@ pub struct AnnotateImageResponse {
     pub context: ::core::option::Option<ImageAnnotationContext>,
 }
 /// Multiple image annotation requests are batched into a single service call.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchAnnotateImagesRequest {
     /// Required. Individual image annotation requests for this batch.
@@ -2508,6 +2592,7 @@ pub struct BatchAnnotateImagesRequest {
     pub requests: ::prost::alloc::vec::Vec<AnnotateImageRequest>,
 }
 /// Response to a batch image annotation request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchAnnotateImagesResponse {
     /// Individual responses to image annotation requests within the batch.
@@ -2515,6 +2600,7 @@ pub struct BatchAnnotateImagesResponse {
     pub responses: ::prost::alloc::vec::Vec<AnnotateImageResponse>,
 }
 /// A request to annotate one single file, e.g. a PDF, TIFF or GIF file.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnnotateFileRequest {
     /// Required. Information about the input file.
@@ -2545,6 +2631,7 @@ pub struct AnnotateFileRequest {
 }
 /// Response to a single file annotation request. A file may contain one or more
 /// images, which individually have their own responses.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnnotateFileResponse {
     /// Information about the file for which this response is generated.
@@ -2563,6 +2650,7 @@ pub struct AnnotateFileResponse {
     pub error: ::core::option::Option<super::super::super::rpc::Status>,
 }
 /// A list of requests to annotate files using the BatchAnnotateFiles API.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchAnnotateFilesRequest {
     /// Required. The list of file annotation requests. Right now we support only
@@ -2571,6 +2659,7 @@ pub struct BatchAnnotateFilesRequest {
     pub requests: ::prost::alloc::vec::Vec<AnnotateFileRequest>,
 }
 /// A list of file annotation responses.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchAnnotateFilesResponse {
     /// The list of file annotation responses, each response corresponding to each
@@ -2579,6 +2668,7 @@ pub struct BatchAnnotateFilesResponse {
     pub responses: ::prost::alloc::vec::Vec<AnnotateFileResponse>,
 }
 /// An offline file annotation request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AsyncAnnotateFileRequest {
     /// Required. Information about the input file.
@@ -2595,6 +2685,7 @@ pub struct AsyncAnnotateFileRequest {
     pub output_config: ::core::option::Option<OutputConfig>,
 }
 /// The response for a single offline file annotation request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AsyncAnnotateFileResponse {
     /// The output location and metadata from AsyncAnnotateFileRequest.
@@ -2602,6 +2693,7 @@ pub struct AsyncAnnotateFileResponse {
     pub output_config: ::core::option::Option<OutputConfig>,
 }
 /// Request for async image annotation for a list of images.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AsyncBatchAnnotateImagesRequest {
     /// Required. Individual image annotation requests for this batch.
@@ -2612,6 +2704,7 @@ pub struct AsyncBatchAnnotateImagesRequest {
     pub output_config: ::core::option::Option<OutputConfig>,
 }
 /// Response to an async batch image annotation request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AsyncBatchAnnotateImagesResponse {
     /// The output location and metadata from AsyncBatchAnnotateImagesRequest.
@@ -2620,6 +2713,7 @@ pub struct AsyncBatchAnnotateImagesResponse {
 }
 /// Multiple async file annotation requests are batched into a single service
 /// call.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AsyncBatchAnnotateFilesRequest {
     /// Required. Individual async file annotation requests for this batch.
@@ -2627,6 +2721,7 @@ pub struct AsyncBatchAnnotateFilesRequest {
     pub requests: ::prost::alloc::vec::Vec<AsyncAnnotateFileRequest>,
 }
 /// Response to an async batch file annotation request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AsyncBatchAnnotateFilesResponse {
     /// The list of file annotation responses, one for each request in
@@ -2635,6 +2730,7 @@ pub struct AsyncBatchAnnotateFilesResponse {
     pub responses: ::prost::alloc::vec::Vec<AsyncAnnotateFileResponse>,
 }
 /// The desired input location and metadata.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InputConfig {
     /// The Google Cloud Storage location to read the input from.
@@ -2654,6 +2750,7 @@ pub struct InputConfig {
     pub mime_type: ::prost::alloc::string::String,
 }
 /// The desired output location and metadata.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OutputConfig {
     /// The Google Cloud Storage location to write the output(s) to.
@@ -2674,6 +2771,7 @@ pub struct OutputConfig {
     pub batch_size: i32,
 }
 /// The Google Cloud Storage location where the input will be read from.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GcsSource {
     /// Google Cloud Storage URI for the input file. This must only be a
@@ -2682,6 +2780,7 @@ pub struct GcsSource {
     pub uri: ::prost::alloc::string::String,
 }
 /// The Google Cloud Storage location where the output will be written to.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GcsDestination {
     /// Google Cloud Storage URI prefix where the results will be stored. Results
@@ -2710,6 +2809,7 @@ pub struct GcsDestination {
     pub uri: ::prost::alloc::string::String,
 }
 /// Contains metadata for the BatchAnnotateImages operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationMetadata {
     /// Current state of the batch operation.

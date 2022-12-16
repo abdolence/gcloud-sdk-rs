@@ -1,6 +1,7 @@
 /// An annotation set is a logical grouping of annotations that share consistent
 /// type information and provenance. Examples of annotation sets include 'all
 /// genes from refseq', and 'all variant annotations from ClinVar'.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnnotationSet {
     /// The server-generated annotation set ID, unique across all annotation sets.
@@ -37,6 +38,7 @@ pub struct AnnotationSet {
 /// sample or individual (though a client could choose to use annotations in
 /// this way). Example canonical annotation types are `GENE` and
 /// `VARIANT`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Annotation {
     /// The server-generated annotation ID, unique across all annotations.
@@ -82,6 +84,7 @@ pub struct Annotation {
 }
 /// Nested message and enum types in `Annotation`.
 pub mod annotation {
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Value {
         /// A variant annotation, which describes the effect of a variant on the
@@ -98,6 +101,7 @@ pub mod annotation {
         Transcript(super::Transcript),
     }
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VariantAnnotation {
     /// Type has been adapted from ClinVar's list of variant types.
@@ -132,6 +136,7 @@ pub struct VariantAnnotation {
 }
 /// Nested message and enum types in `VariantAnnotation`.
 pub mod variant_annotation {
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ClinicalCondition {
         /// A set of names for the condition.
@@ -321,6 +326,7 @@ pub mod variant_annotation {
 }
 /// A transcript represents the assertion that a particular region of the
 /// reference genome may be transcribed as RNA.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Transcript {
     /// The annotation ID of the gene from which this transcript is transcribed.
@@ -360,6 +366,7 @@ pub struct Transcript {
 }
 /// Nested message and enum types in `Transcript`.
 pub mod transcript {
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Exon {
         /// The start position of the exon on this annotation's reference sequence,
@@ -388,6 +395,7 @@ pub mod transcript {
         #[prost(message, optional, tag = "3")]
         pub frame: ::core::option::Option<i32>,
     }
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CodingSequence {
         /// The start of the coding sequence on this annotation's reference sequence,
@@ -402,6 +410,7 @@ pub mod transcript {
         pub end: i64,
     }
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExternalId {
     /// The name of the source of this data.
@@ -411,18 +420,21 @@ pub struct ExternalId {
     #[prost(string, tag = "2")]
     pub id: ::prost::alloc::string::String,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateAnnotationSetRequest {
     /// The annotation set to create.
     #[prost(message, optional, tag = "1")]
     pub annotation_set: ::core::option::Option<AnnotationSet>,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAnnotationSetRequest {
     /// The ID of the annotation set to be retrieved.
     #[prost(string, tag = "1")]
     pub annotation_set_id: ::prost::alloc::string::String,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateAnnotationSetRequest {
     /// The ID of the annotation set to be updated.
@@ -439,12 +451,14 @@ pub struct UpdateAnnotationSetRequest {
     #[prost(message, optional, tag = "3")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteAnnotationSetRequest {
     /// The ID of the annotation set to be deleted.
     #[prost(string, tag = "1")]
     pub annotation_set_id: ::prost::alloc::string::String,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchAnnotationSetsRequest {
     /// Required. The dataset IDs to search within. Caller must have `READ` access
@@ -473,6 +487,7 @@ pub struct SearchAnnotationSetsRequest {
     #[prost(int32, tag = "6")]
     pub page_size: i32,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchAnnotationSetsResponse {
     /// The matching annotation sets.
@@ -484,12 +499,14 @@ pub struct SearchAnnotationSetsResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateAnnotationRequest {
     /// The annotation to be created.
     #[prost(message, optional, tag = "1")]
     pub annotation: ::core::option::Option<Annotation>,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchCreateAnnotationsRequest {
     /// The annotations to be created. At most 4096 can be specified in a single
@@ -506,6 +523,7 @@ pub struct BatchCreateAnnotationsRequest {
     #[prost(string, tag = "2")]
     pub request_id: ::prost::alloc::string::String,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchCreateAnnotationsResponse {
     /// The resulting per-annotation entries, ordered consistently with the
@@ -515,6 +533,7 @@ pub struct BatchCreateAnnotationsResponse {
 }
 /// Nested message and enum types in `BatchCreateAnnotationsResponse`.
 pub mod batch_create_annotations_response {
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Entry {
         /// The creation status.
@@ -525,12 +544,14 @@ pub mod batch_create_annotations_response {
         pub annotation: ::core::option::Option<super::Annotation>,
     }
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAnnotationRequest {
     /// The ID of the annotation to be retrieved.
     #[prost(string, tag = "1")]
     pub annotation_id: ::prost::alloc::string::String,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateAnnotationRequest {
     /// The ID of the annotation to be updated.
@@ -548,12 +569,14 @@ pub struct UpdateAnnotationRequest {
     #[prost(message, optional, tag = "3")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteAnnotationRequest {
     /// The ID of the annotation to be deleted.
     #[prost(string, tag = "1")]
     pub annotation_id: ::prost::alloc::string::String,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchAnnotationsRequest {
     /// Required. The annotation sets to search within. The caller must have
@@ -590,6 +613,7 @@ pub struct SearchAnnotationsRequest {
 /// Nested message and enum types in `SearchAnnotationsRequest`.
 pub mod search_annotations_request {
     /// Required. `reference_id` or `reference_name` must be set.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Reference {
         /// The ID of the reference to query.
@@ -601,6 +625,7 @@ pub mod search_annotations_request {
         ReferenceName(::prost::alloc::string::String),
     }
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchAnnotationsResponse {
     /// The matching annotations.
@@ -1009,6 +1034,7 @@ pub mod annotation_service_v1_client {
     }
 }
 /// A single CIGAR operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CigarUnit {
     #[prost(enumeration = "cigar_unit::Operation", tag = "1")]
@@ -1111,6 +1137,7 @@ pub mod cigar_unit {
 ///
 /// For more genomics resource definitions, see [Fundamentals of Google
 /// Genomics](<https://cloud.google.com/genomics/fundamentals-of-google-genomics>)
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Dataset {
     /// The server-generated dataset ID, unique across all datasets.
@@ -1127,6 +1154,7 @@ pub struct Dataset {
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// The dataset list request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDatasetsRequest {
     /// Required. The Google Cloud project ID to list datasets for.
@@ -1143,6 +1171,7 @@ pub struct ListDatasetsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// The dataset list response.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDatasetsResponse {
     /// The list of matching Datasets.
@@ -1154,12 +1183,14 @@ pub struct ListDatasetsResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateDatasetRequest {
     /// The dataset to be created. Must contain projectId and name.
     #[prost(message, optional, tag = "1")]
     pub dataset: ::core::option::Option<Dataset>,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateDatasetRequest {
     /// The ID of the dataset to be updated.
@@ -1175,18 +1206,21 @@ pub struct UpdateDatasetRequest {
     #[prost(message, optional, tag = "3")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteDatasetRequest {
     /// The ID of the dataset to be deleted.
     #[prost(string, tag = "1")]
     pub dataset_id: ::prost::alloc::string::String,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UndeleteDatasetRequest {
     /// The ID of the dataset to be undeleted.
     #[prost(string, tag = "1")]
     pub dataset_id: ::prost::alloc::string::String,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetDatasetRequest {
     /// The ID of the dataset.
@@ -1516,6 +1550,7 @@ pub mod dataset_service_v1_client {
     }
 }
 /// Metadata describing an \[Operation][google.longrunning.Operation\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationMetadata {
     /// The Google Cloud Project in which the job is scoped.
@@ -1556,6 +1591,7 @@ pub struct OperationMetadata {
     >,
 }
 /// An event that occurred during an \[Operation][google.longrunning.Operation\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationEvent {
     /// Optional time of when event started.
@@ -1573,6 +1609,7 @@ pub struct OperationEvent {
 /// already known reference. For now, represents a genomic position as a
 /// reference name, a base number on that reference (0-based), and a
 /// determination of forward or reverse strand.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Position {
     /// The name of the reference in whatever reference set is being used.
@@ -1587,6 +1624,7 @@ pub struct Position {
     pub reverse_strand: bool,
 }
 /// A 0-based half-open genomic coordinate range for search requests.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Range {
     /// The reference sequence name, for example `chr1`,
@@ -1602,6 +1640,7 @@ pub struct Range {
 }
 /// A linear alignment can be represented by one CIGAR string. Describes the
 /// mapped position and local alignment of the read to the reference.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LinearAlignment {
     /// The position of this alignment.
@@ -1701,6 +1740,7 @@ pub struct LinearAlignment {
 ///        cigarStr += c.operationLength + cigarMap\[c.operation\]
 ///      }
 ///      return cigarStr
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Read {
     /// The server-generated read ID, unique across all reads. This is different
@@ -1798,6 +1838,7 @@ pub struct Read {
     >,
 }
 /// A read group is all the data that's processed the same way by the sequencer.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReadGroup {
     /// The server-generated read group ID, unique for all read groups.
@@ -1843,6 +1884,7 @@ pub struct ReadGroup {
 }
 /// Nested message and enum types in `ReadGroup`.
 pub mod read_group {
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Experiment {
         /// A client-supplied library identifier; a library is a collection of DNA
@@ -1864,6 +1906,7 @@ pub mod read_group {
         #[prost(string, tag = "4")]
         pub instrument_model: ::prost::alloc::string::String,
     }
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Program {
         /// The command line used to run this program.
@@ -1896,6 +1939,7 @@ pub mod read_group {
 ///
 /// For more genomics resource definitions, see [Fundamentals of Google
 /// Genomics](<https://cloud.google.com/genomics/fundamentals-of-google-genomics>)
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReadGroupSet {
     /// The server-generated read group set ID, unique for all read group sets.
@@ -1926,6 +1970,7 @@ pub struct ReadGroupSet {
     >,
 }
 /// The read group set search request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchReadGroupSetsRequest {
     /// Restricts this query to read group sets within the given datasets. At least
@@ -1947,6 +1992,7 @@ pub struct SearchReadGroupSetsRequest {
     pub page_size: i32,
 }
 /// The read group set search response.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchReadGroupSetsResponse {
     /// The list of matching read group sets.
@@ -1959,6 +2005,7 @@ pub struct SearchReadGroupSetsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The read group set import request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportReadGroupSetsRequest {
     /// Required. The ID of the dataset these read group sets will belong to. The
@@ -2036,6 +2083,7 @@ pub mod import_read_group_sets_request {
     }
 }
 /// The read group set import response.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportReadGroupSetsResponse {
     /// IDs of the read group sets that were created.
@@ -2043,6 +2091,7 @@ pub struct ImportReadGroupSetsResponse {
     pub read_group_set_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The read group set export request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportReadGroupSetRequest {
     /// Required. The Google Cloud project ID that owns this
@@ -2064,6 +2113,7 @@ pub struct ExportReadGroupSetRequest {
     #[prost(string, repeated, tag = "4")]
     pub reference_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateReadGroupSetRequest {
     /// The ID of the read group set to be updated. The caller must have WRITE
@@ -2084,6 +2134,7 @@ pub struct UpdateReadGroupSetRequest {
     #[prost(message, optional, tag = "3")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteReadGroupSetRequest {
     /// The ID of the read group set to be deleted. The caller must have WRITE
@@ -2091,12 +2142,14 @@ pub struct DeleteReadGroupSetRequest {
     #[prost(string, tag = "1")]
     pub read_group_set_id: ::prost::alloc::string::String,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetReadGroupSetRequest {
     /// The ID of the read group set.
     #[prost(string, tag = "1")]
     pub read_group_set_id: ::prost::alloc::string::String,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCoverageBucketsRequest {
     /// Required. The ID of the read group set over which coverage is requested.
@@ -2136,6 +2189,7 @@ pub struct ListCoverageBucketsRequest {
 }
 /// A bucket over which read coverage has been precomputed. A bucket corresponds
 /// to a specific range of the reference sequence.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CoverageBucket {
     /// The genomic coordinate range spanned by this bucket.
@@ -2146,6 +2200,7 @@ pub struct CoverageBucket {
     #[prost(float, tag = "2")]
     pub mean_coverage: f32,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCoverageBucketsResponse {
     /// The length of each coverage bucket in base pairs. Note that buckets at the
@@ -2167,6 +2222,7 @@ pub struct ListCoverageBucketsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The read search request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchReadsRequest {
     /// The IDs of the read groups sets within which to search for reads. All
@@ -2204,6 +2260,7 @@ pub struct SearchReadsRequest {
     pub page_size: i32,
 }
 /// The read search response.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchReadsResponse {
     /// The list of matching alignments sorted by mapped genomic coordinate,
@@ -2219,6 +2276,7 @@ pub struct SearchReadsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The stream reads request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StreamReadsRequest {
     /// The Google Cloud project ID which will be billed
@@ -2266,6 +2324,7 @@ pub struct StreamReadsRequest {
     #[prost(int32, tag = "7")]
     pub total_shards: i32,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StreamReadsResponse {
     #[prost(message, repeated, tag = "1")]
@@ -2693,6 +2752,7 @@ pub mod read_service_v1_client {
 ///
 /// For more genomics resource definitions, see [Fundamentals of Google
 /// Genomics](<https://cloud.google.com/genomics/fundamentals-of-google-genomics>)
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Reference {
     /// The server-generated reference ID, unique across all references.
@@ -2729,6 +2789,7 @@ pub struct Reference {
 ///
 /// For more genomics resource definitions, see [Fundamentals of Google
 /// Genomics](<https://cloud.google.com/genomics/fundamentals-of-google-genomics>)
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReferenceSet {
     /// The server-generated reference set ID, unique across all reference sets.
@@ -2766,6 +2827,7 @@ pub struct ReferenceSet {
     #[prost(string, repeated, tag = "8")]
     pub source_accessions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchReferenceSetsRequest {
     /// If present, return reference sets for which the
@@ -2792,6 +2854,7 @@ pub struct SearchReferenceSetsRequest {
     #[prost(int32, tag = "5")]
     pub page_size: i32,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchReferenceSetsResponse {
     /// The matching references sets.
@@ -2803,12 +2866,14 @@ pub struct SearchReferenceSetsResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetReferenceSetRequest {
     /// The ID of the reference set.
     #[prost(string, tag = "1")]
     pub reference_set_id: ::prost::alloc::string::String,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchReferencesRequest {
     /// If present, return references for which the
@@ -2834,6 +2899,7 @@ pub struct SearchReferencesRequest {
     #[prost(int32, tag = "5")]
     pub page_size: i32,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchReferencesResponse {
     /// The matching references.
@@ -2845,12 +2911,14 @@ pub struct SearchReferencesResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetReferenceRequest {
     /// The ID of the reference.
     #[prost(string, tag = "1")]
     pub reference_id: ::prost::alloc::string::String,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListBasesRequest {
     /// The ID of the reference.
@@ -2874,6 +2942,7 @@ pub struct ListBasesRequest {
     #[prost(int32, tag = "5")]
     pub page_size: i32,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListBasesResponse {
     /// The offset position (0-based) of the given `sequence` from the
@@ -3100,6 +3169,7 @@ pub mod reference_service_v1_client {
 /// These data include a top level key and either a single value string (value)
 /// or a list of key-value pairs (info.)
 /// Value and info are mutually exclusive.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VariantSetMetadata {
     /// The top-level key.
@@ -3176,6 +3246,7 @@ pub mod variant_set_metadata {
 ///
 /// For more genomics resource definitions, see [Fundamentals of Google
 /// Genomics](<https://cloud.google.com/genomics/fundamentals-of-google-genomics>)
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VariantSet {
     /// The dataset to which this variant set belongs.
@@ -3222,6 +3293,7 @@ pub struct VariantSet {
 /// to the occurrence of a SNP named rs1234 in a sample named NA12345. A call
 /// belongs to a call set, which contains related calls typically from one
 /// sample.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Variant {
     /// The ID of the variant set this variant belongs to.
@@ -3281,6 +3353,7 @@ pub struct Variant {
 /// variant. It may include associated information such as quality and phasing.
 /// For example, a call might assign a probability of 0.32 to the occurrence of
 /// a SNP named rs1234 in a call set with the name NA12345.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VariantCall {
     /// The ID of the call set this variant call belongs to.
@@ -3331,6 +3404,7 @@ pub struct VariantCall {
 ///
 /// For more genomics resource definitions, see [Fundamentals of Google
 /// Genomics](<https://cloud.google.com/genomics/fundamentals-of-google-genomics>)
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CallSet {
     /// The server-generated call set ID, unique across all call sets.
@@ -3362,6 +3436,7 @@ pub struct CallSet {
 }
 /// ReferenceBound records an upper bound for the starting coordinate of
 /// variants in a particular reference.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReferenceBound {
     /// The name of the reference associated with this reference bound.
@@ -3373,6 +3448,7 @@ pub struct ReferenceBound {
     pub upper_bound: i64,
 }
 /// The variant data import request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportVariantsRequest {
     /// Required. The variant set to which variant data should be imported.
@@ -3445,6 +3521,7 @@ pub mod import_variants_request {
     }
 }
 /// The variant data import response.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportVariantsResponse {
     /// IDs of the call sets created during the import.
@@ -3452,6 +3529,7 @@ pub struct ImportVariantsResponse {
     pub call_set_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The CreateVariantSet request
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateVariantSetRequest {
     /// Required. The variant set to be created. Must have a valid `datasetId`.
@@ -3459,6 +3537,7 @@ pub struct CreateVariantSetRequest {
     pub variant_set: ::core::option::Option<VariantSet>,
 }
 /// The variant data export request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportVariantSetRequest {
     /// Required. The ID of the variant set that contains variant data which
@@ -3520,6 +3599,7 @@ pub mod export_variant_set_request {
     }
 }
 /// The variant set request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetVariantSetRequest {
     /// Required. The ID of the variant set.
@@ -3527,6 +3607,7 @@ pub struct GetVariantSetRequest {
     pub variant_set_id: ::prost::alloc::string::String,
 }
 /// The search variant sets request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchVariantSetsRequest {
     /// Exactly one dataset ID must be provided here. Only variant sets which
@@ -3544,6 +3625,7 @@ pub struct SearchVariantSetsRequest {
     pub page_size: i32,
 }
 /// The search variant sets response.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchVariantSetsResponse {
     /// The variant sets belonging to the requested dataset.
@@ -3556,12 +3638,14 @@ pub struct SearchVariantSetsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The delete variant set request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteVariantSetRequest {
     /// The ID of the variant set to be deleted.
     #[prost(string, tag = "1")]
     pub variant_set_id: ::prost::alloc::string::String,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateVariantSetRequest {
     /// The ID of the variant to be updated (must already exist).
@@ -3583,6 +3667,7 @@ pub struct UpdateVariantSetRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The variant search request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchVariantsRequest {
     /// At most one variant set ID must be provided. Only variants from this
@@ -3626,6 +3711,7 @@ pub struct SearchVariantsRequest {
     pub max_calls: i32,
 }
 /// The variant search response.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchVariantsResponse {
     /// The list of matching Variants.
@@ -3637,12 +3723,14 @@ pub struct SearchVariantsResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateVariantRequest {
     /// The variant to be created.
     #[prost(message, optional, tag = "1")]
     pub variant: ::core::option::Option<Variant>,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateVariantRequest {
     /// The ID of the variant to be updated.
@@ -3658,18 +3746,21 @@ pub struct UpdateVariantRequest {
     #[prost(message, optional, tag = "3")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteVariantRequest {
     /// The ID of the variant to be deleted.
     #[prost(string, tag = "1")]
     pub variant_id: ::prost::alloc::string::String,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetVariantRequest {
     /// The ID of the variant.
     #[prost(string, tag = "1")]
     pub variant_id: ::prost::alloc::string::String,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MergeVariantsRequest {
     /// The destination variant set.
@@ -3687,6 +3778,7 @@ pub struct MergeVariantsRequest {
     >,
 }
 /// The call set search request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchCallSetsRequest {
     /// Restrict the query to call sets within the given variant sets. At least one
@@ -3708,6 +3800,7 @@ pub struct SearchCallSetsRequest {
     pub page_size: i32,
 }
 /// The call set search response.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchCallSetsResponse {
     /// The list of matching call sets.
@@ -3719,12 +3812,14 @@ pub struct SearchCallSetsResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateCallSetRequest {
     /// The call set to be created.
     #[prost(message, optional, tag = "1")]
     pub call_set: ::core::option::Option<CallSet>,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateCallSetRequest {
     /// The ID of the call set to be updated.
@@ -3740,12 +3835,14 @@ pub struct UpdateCallSetRequest {
     #[prost(message, optional, tag = "3")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteCallSetRequest {
     /// The ID of the call set to be deleted.
     #[prost(string, tag = "1")]
     pub call_set_id: ::prost::alloc::string::String,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCallSetRequest {
     /// The ID of the call set.
@@ -3753,6 +3850,7 @@ pub struct GetCallSetRequest {
     pub call_set_id: ::prost::alloc::string::String,
 }
 /// The stream variants request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StreamVariantsRequest {
     /// The Google Cloud project ID which will be billed
@@ -3779,6 +3877,7 @@ pub struct StreamVariantsRequest {
     #[prost(int64, tag = "6")]
     pub end: i64,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StreamVariantsResponse {
     #[prost(message, repeated, tag = "1")]

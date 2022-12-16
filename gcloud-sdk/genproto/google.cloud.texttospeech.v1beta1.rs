@@ -1,4 +1,5 @@
 /// The top-level message sent by the client for the `ListVoices` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListVoicesRequest {
     /// Optional. Recommended.
@@ -13,6 +14,7 @@ pub struct ListVoicesRequest {
     pub language_code: ::prost::alloc::string::String,
 }
 /// The message returned to the client by the `ListVoices` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListVoicesResponse {
     /// The list of voices.
@@ -20,6 +22,7 @@ pub struct ListVoicesResponse {
     pub voices: ::prost::alloc::vec::Vec<Voice>,
 }
 /// Description of a voice supported by the TTS service.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Voice {
     /// The languages that this voice supports, expressed as
@@ -38,6 +41,7 @@ pub struct Voice {
     pub natural_sample_rate_hertz: i32,
 }
 /// The top-level message sent by the client for the `SynthesizeSpeech` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SynthesizeSpeechRequest {
     /// Required. The Synthesizer requires either plain text or SSML as input.
@@ -95,6 +99,7 @@ pub mod synthesize_speech_request {
 /// supplied. Supplying both or neither returns
 /// \[google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT\]. The input size is limited to 5000
 /// bytes.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SynthesisInput {
     /// The input source, which is either plain text or SSML.
@@ -104,6 +109,7 @@ pub struct SynthesisInput {
 /// Nested message and enum types in `SynthesisInput`.
 pub mod synthesis_input {
     /// The input source, which is either plain text or SSML.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum InputSource {
         /// The raw text to be synthesized.
@@ -118,6 +124,7 @@ pub mod synthesis_input {
     }
 }
 /// Description of which voice to use for a synthesis request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VoiceSelectionParams {
     /// Required. The language (and potentially also the region) of the voice expressed as a
@@ -151,6 +158,7 @@ pub struct VoiceSelectionParams {
     pub custom_voice: ::core::option::Option<CustomVoiceParams>,
 }
 /// Description of audio data to be synthesized.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AudioConfig {
     /// Required. The format of the audio byte stream.
@@ -196,6 +204,7 @@ pub struct AudioConfig {
     pub effects_profile_id: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Description of the custom voice to be synthesized.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomVoiceParams {
     /// Required. The name of the AutoML model that synthesizes the custom voice.
@@ -248,6 +257,7 @@ pub mod custom_voice_params {
     }
 }
 /// The message returned to the client by the `SynthesizeSpeech` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SynthesizeSpeechResponse {
     /// The audio data bytes encoded as specified in the request, including the
@@ -267,6 +277,7 @@ pub struct SynthesizeSpeechResponse {
 }
 /// This contains a mapping between a certain point in the input text and a
 /// corresponding time in the output audio.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Timepoint {
     /// Timepoint name as received from the client within `<mark>` tag.
@@ -466,10 +477,11 @@ pub mod text_to_speech_client {
 }
 /// The top-level message sent by the client for the
 /// `SynthesizeLongAudio` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SynthesizeLongAudioRequest {
     /// The resource states of the request in the form of
-    /// projects/*/locations/*/voices/*.
+    /// `projects/*/locations/*/voices/*`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The Synthesizer requires either plain text or SSML as input.
@@ -488,9 +500,11 @@ pub struct SynthesizeLongAudioRequest {
     pub voice: ::core::option::Option<VoiceSelectionParams>,
 }
 /// The message returned to the client by the `SynthesizeLongAudio` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SynthesizeLongAudioResponse {}
 /// Metadata for response returned by the `SynthesizeLongAudio` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SynthesizeLongAudioMetadata {
     /// Time when the request was received.

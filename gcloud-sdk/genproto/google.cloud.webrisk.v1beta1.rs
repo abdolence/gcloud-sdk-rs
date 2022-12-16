@@ -1,4 +1,5 @@
 /// Describes an API diff request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ComputeThreatListDiffRequest {
     /// The ThreatList to update.
@@ -17,6 +18,7 @@ pub struct ComputeThreatListDiffRequest {
 /// Nested message and enum types in `ComputeThreatListDiffRequest`.
 pub mod compute_threat_list_diff_request {
     /// The constraints for this diff.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Constraints {
         /// The maximum size in number of entries. The diff will not contain more
@@ -34,6 +36,7 @@ pub mod compute_threat_list_diff_request {
         pub supported_compressions: ::prost::alloc::vec::Vec<i32>,
     }
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ComputeThreatListDiffResponse {
     /// The type of response. This may indicate that an action must be taken by the
@@ -66,6 +69,7 @@ pub struct ComputeThreatListDiffResponse {
 /// Nested message and enum types in `ComputeThreatListDiffResponse`.
 pub mod compute_threat_list_diff_response {
     /// The expected state of a client's local database.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Checksum {
         /// The SHA256 hash of the client state; that is, of the sorted list of all
@@ -111,6 +115,7 @@ pub mod compute_threat_list_diff_response {
     }
 }
 /// Request to check URI entries against threatLists.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchUrisRequest {
     /// Required. The URI to be checked for matches.
@@ -120,6 +125,7 @@ pub struct SearchUrisRequest {
     #[prost(enumeration = "ThreatType", repeated, packed = "false", tag = "2")]
     pub threat_types: ::prost::alloc::vec::Vec<i32>,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchUrisResponse {
     /// The threat list matches. This may be empty if the URI is on no list.
@@ -129,6 +135,7 @@ pub struct SearchUrisResponse {
 /// Nested message and enum types in `SearchUrisResponse`.
 pub mod search_uris_response {
     /// Contains threat information on a matching uri.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ThreatUri {
         /// The ThreatList this threat belongs to.
@@ -141,6 +148,7 @@ pub mod search_uris_response {
     }
 }
 /// Request to return full hashes matched by the provided hash prefixes.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchHashesRequest {
     /// A hash prefix, consisting of the most significant 4-32 bytes of a SHA256
@@ -151,6 +159,7 @@ pub struct SearchHashesRequest {
     #[prost(enumeration = "ThreatType", repeated, packed = "false", tag = "2")]
     pub threat_types: ::prost::alloc::vec::Vec<i32>,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchHashesResponse {
     /// The full hashes that matched the requested prefixes.
@@ -165,6 +174,7 @@ pub struct SearchHashesResponse {
 /// Nested message and enum types in `SearchHashesResponse`.
 pub mod search_hashes_response {
     /// Contains threat information on a matching hash.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ThreatHash {
         /// The ThreatList this threat belongs to.
@@ -183,6 +193,7 @@ pub mod search_hashes_response {
 }
 /// Contains the set of entries to add to a local database.
 /// May contain a combination of compressed and raw data in a single response.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ThreatEntryAdditions {
     /// The raw SHA256-formatted entries.
@@ -196,6 +207,7 @@ pub struct ThreatEntryAdditions {
     pub rice_hashes: ::core::option::Option<RiceDeltaEncoding>,
 }
 /// Contains the set of entries to remove from a local database.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ThreatEntryRemovals {
     /// The raw removal indices for a local list.
@@ -209,6 +221,7 @@ pub struct ThreatEntryRemovals {
     pub rice_indices: ::core::option::Option<RiceDeltaEncoding>,
 }
 /// A set of raw indices to remove from a local list.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RawIndices {
     /// The indices to remove from a lexicographically-sorted local list.
@@ -223,6 +236,7 @@ pub struct RawIndices {
 /// Used for sending ThreatEntryAdditons to clients that do not support
 /// compression, or when sending non-4-byte hashes to clients that do support
 /// compression.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RawHashes {
     /// The number of bytes for each prefix encoded below.  This field can be
@@ -237,6 +251,7 @@ pub struct RawHashes {
 }
 /// The Rice-Golomb encoded data. Used for sending compressed 4-byte hashes or
 /// compressed removal indices.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RiceDeltaEncoding {
     /// The offset of the first entry in the encoded data, or, if only a single

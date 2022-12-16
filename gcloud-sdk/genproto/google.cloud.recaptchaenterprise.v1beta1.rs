@@ -1,4 +1,5 @@
 /// The create assessment request message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateAssessmentRequest {
     /// Required. The name of the project in which the assessment will be created,
@@ -10,6 +11,7 @@ pub struct CreateAssessmentRequest {
     pub assessment: ::core::option::Option<Assessment>,
 }
 /// The request message to annotate an Assessment.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnnotateAssessmentRequest {
     /// Required. The resource name of the Assessment, in the format
@@ -151,9 +153,11 @@ pub mod annotate_assessment_request {
     }
 }
 /// Empty response for AnnotateAssessment.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnnotateAssessmentResponse {}
 /// Password leak verification info.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PasswordLeakVerification {
     /// Optional. Scrypt hash of the username+password that the customer wants to verify
@@ -170,6 +174,7 @@ pub struct PasswordLeakVerification {
     pub canonicalized_username: ::prost::alloc::string::String,
 }
 /// A recaptcha assessment resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Assessment {
     /// Output only. The resource name for the Assessment in the format
@@ -256,6 +261,7 @@ pub mod assessment {
         }
     }
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Event {
     /// Optional. The user response token provided by the reCAPTCHA client-side integration
@@ -283,6 +289,7 @@ pub struct Event {
     #[prost(bytes = "vec", tag = "6")]
     pub hashed_account_id: ::prost::alloc::vec::Vec<u8>,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TokenProperties {
     /// Whether the provided user response token is valid. When valid = false, the
@@ -362,6 +369,7 @@ pub mod token_properties {
     }
 }
 /// Account Defender risk assessment.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AccountDefenderAssessment {
     /// Labels for this request.

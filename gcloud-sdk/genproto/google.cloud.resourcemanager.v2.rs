@@ -1,5 +1,6 @@
 /// A Folder in an Organization's resource hierarchy, used to
 /// organize that Organization's resources.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Folder {
     /// Output only. The resource name of the Folder.
@@ -71,6 +72,7 @@ pub mod folder {
     }
 }
 /// The ListFolders request message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFoldersRequest {
     /// Required. The resource name of the Organization or Folder whose Folders are
@@ -94,6 +96,7 @@ pub struct ListFoldersRequest {
     pub show_deleted: bool,
 }
 /// The ListFolders response message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFoldersResponse {
     /// A possibly paginated list of Folders that are direct descendants of
@@ -106,6 +109,7 @@ pub struct ListFoldersResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request message for searching folders.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchFoldersRequest {
     /// Optional. The maximum number of folders to return in the response.
@@ -142,6 +146,7 @@ pub struct SearchFoldersRequest {
     pub query: ::prost::alloc::string::String,
 }
 /// The response message for searching folders.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchFoldersResponse {
     /// A possibly paginated folder search results.
@@ -154,6 +159,7 @@ pub struct SearchFoldersResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The GetFolder request message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetFolderRequest {
     /// Required. The resource name of the Folder to retrieve.
@@ -162,6 +168,7 @@ pub struct GetFolderRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The CreateFolder request message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateFolderRequest {
     /// Required. The resource name of the new Folder's parent.
@@ -174,6 +181,7 @@ pub struct CreateFolderRequest {
     pub folder: ::core::option::Option<Folder>,
 }
 /// The MoveFolder request message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MoveFolderRequest {
     /// Required. The resource name of the Folder to move.
@@ -187,6 +195,7 @@ pub struct MoveFolderRequest {
     pub destination_parent: ::prost::alloc::string::String,
 }
 /// The request message for updating a folder's display name.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateFolderRequest {
     /// Required. The new definition of the Folder. It must include a
@@ -200,6 +209,7 @@ pub struct UpdateFolderRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The DeleteFolder request message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteFolderRequest {
     /// Required. The resource name of the Folder to be deleted.
@@ -212,6 +222,7 @@ pub struct DeleteFolderRequest {
     pub recursive_delete: bool,
 }
 /// The UndeleteFolder request message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UndeleteFolderRequest {
     /// Required. The resource name of the Folder to undelete.
@@ -220,6 +231,7 @@ pub struct UndeleteFolderRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Metadata describing a long running folder operation
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FolderOperation {
     /// The display name of the folder.
