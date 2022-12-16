@@ -1,4 +1,5 @@
 /// Request message for DeleteBucket.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteBucketRequest {
     /// Required. Name of a bucket to delete.
@@ -13,6 +14,7 @@ pub struct DeleteBucketRequest {
     pub if_metageneration_not_match: ::core::option::Option<i64>,
 }
 /// Request message for GetBucket.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetBucketRequest {
     /// Required. Name of a bucket.
@@ -33,6 +35,7 @@ pub struct GetBucketRequest {
     pub read_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for CreateBucket.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateBucketRequest {
     /// Required. The project to which this bucket will belong.
@@ -61,6 +64,7 @@ pub struct CreateBucketRequest {
     pub predefined_default_object_acl: ::prost::alloc::string::String,
 }
 /// Request message for ListBuckets.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListBucketsRequest {
     /// Required. The project whose buckets we are listing.
@@ -87,6 +91,7 @@ pub struct ListBucketsRequest {
     pub read_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The result of a call to Buckets.ListBuckets
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListBucketsResponse {
     /// The list of items.
@@ -98,6 +103,7 @@ pub struct ListBucketsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for LockBucketRetentionPolicyRequest.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LockBucketRetentionPolicyRequest {
     /// Required. Name of a bucket.
@@ -109,6 +115,7 @@ pub struct LockBucketRetentionPolicyRequest {
     pub if_metageneration_match: i64,
 }
 /// Request for UpdateBucket method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateBucketRequest {
     /// Required. The bucket to update.
@@ -147,6 +154,7 @@ pub struct UpdateBucketRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for DeleteNotification.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteNotificationRequest {
     /// Required. The parent bucket of the notification.
@@ -154,6 +162,7 @@ pub struct DeleteNotificationRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for GetNotification.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetNotificationRequest {
     /// Required. The parent bucket of the notification.
@@ -163,6 +172,7 @@ pub struct GetNotificationRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for CreateNotification.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateNotificationRequest {
     /// Required. The bucket to which this notification belongs.
@@ -173,6 +183,7 @@ pub struct CreateNotificationRequest {
     pub notification: ::core::option::Option<Notification>,
 }
 /// Request message for ListNotifications.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNotificationsRequest {
     /// Required. Name of a Google Cloud Storage bucket.
@@ -193,6 +204,7 @@ pub struct ListNotificationsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// The result of a call to Notifications.ListNotifications
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNotificationsResponse {
     /// The list of items.
@@ -204,6 +216,7 @@ pub struct ListNotificationsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for ComposeObject.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ComposeObjectRequest {
     /// Required. Properties of the resulting object.
@@ -243,6 +256,7 @@ pub struct ComposeObjectRequest {
 /// Nested message and enum types in `ComposeObjectRequest`.
 pub mod compose_object_request {
     /// Description of a source object for a composition request.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SourceObject {
         /// Required. The source object's name. All source objects must reside in the
@@ -261,6 +275,7 @@ pub mod compose_object_request {
     /// Nested message and enum types in `SourceObject`.
     pub mod source_object {
         /// Preconditions for a source object of a composition request.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct ObjectPreconditions {
             /// Only perform the composition if the generation of the source object
@@ -273,6 +288,7 @@ pub mod compose_object_request {
 }
 /// Message for deleting an object.
 /// `bucket` and `object` **must** be set.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteObjectRequest {
     /// Required. Name of the bucket in which the object resides.
@@ -312,6 +328,7 @@ pub struct DeleteObjectRequest {
 }
 /// Message for canceling an in-progress resumable upload.
 /// `upload_id` **must** be set.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CancelResumableWriteRequest {
     /// Required. The upload_id of the resumable upload to cancel. This should be
@@ -321,9 +338,11 @@ pub struct CancelResumableWriteRequest {
 }
 /// Empty response message for canceling an in-progress resumable upload, will be
 /// extended as needed.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CancelResumableWriteResponse {}
 /// Request message for ReadObject.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReadObjectRequest {
     /// Required. The name of the bucket containing the object to read.
@@ -387,6 +406,7 @@ pub struct ReadObjectRequest {
     pub read_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for GetObject.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetObjectRequest {
     /// Required. Name of the bucket in which the object resides.
@@ -429,6 +449,7 @@ pub struct GetObjectRequest {
     pub read_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Response message for ReadObject.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReadObjectResponse {
     /// A portion of the data for the object. The service **may** leave `data`
@@ -453,6 +474,7 @@ pub struct ReadObjectResponse {
     pub metadata: ::core::option::Option<Object>,
 }
 /// Describes an attempt to insert an object, possibly over multiple requests.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WriteObjectSpec {
     /// Required. Destination object, including its name and its metadata.
@@ -495,6 +517,7 @@ pub struct WriteObjectSpec {
     pub object_size: ::core::option::Option<i64>,
 }
 /// Request message for WriteObject.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WriteObjectRequest {
     /// Required. The offset from the beginning of the object at which the data
@@ -539,6 +562,7 @@ pub struct WriteObjectRequest {
 /// Nested message and enum types in `WriteObjectRequest`.
 pub mod write_object_request {
     /// The first message of each stream should set one of the following.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum FirstMessage {
         /// For resumable uploads. This should be the `upload_id` returned from a
@@ -551,6 +575,7 @@ pub mod write_object_request {
         WriteObjectSpec(super::WriteObjectSpec),
     }
     /// A portion of the data for the object.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Data {
         /// The data to insert. If a crc32c checksum is provided that doesn't match
@@ -560,6 +585,7 @@ pub mod write_object_request {
     }
 }
 /// Response message for WriteObject.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WriteObjectResponse {
     /// The response will set one of the following.
@@ -569,6 +595,7 @@ pub struct WriteObjectResponse {
 /// Nested message and enum types in `WriteObjectResponse`.
 pub mod write_object_response {
     /// The response will set one of the following.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum WriteStatus {
         /// The total number of bytes that have been processed for the given object
@@ -582,6 +609,7 @@ pub mod write_object_response {
     }
 }
 /// Request message for ListObjects.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListObjectsRequest {
     /// Required. Name of the bucket in which to look for objects.
@@ -639,6 +667,7 @@ pub struct ListObjectsRequest {
     pub lexicographic_end: ::prost::alloc::string::String,
 }
 /// Request object for `QueryWriteStatus`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryWriteStatusRequest {
     /// Required. The name of the resume token for the object whose write status is
@@ -650,6 +679,7 @@ pub struct QueryWriteStatusRequest {
     pub common_object_request_params: ::core::option::Option<CommonObjectRequestParams>,
 }
 /// Response object for `QueryWriteStatus`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryWriteStatusResponse {
     /// The response will set one of the following.
@@ -659,6 +689,7 @@ pub struct QueryWriteStatusResponse {
 /// Nested message and enum types in `QueryWriteStatusResponse`.
 pub mod query_write_status_response {
     /// The response will set one of the following.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum WriteStatus {
         /// The total number of bytes that have been processed for the given object
@@ -681,6 +712,7 @@ pub mod query_write_status_response {
 /// should be provided in the encryption_algorithm, encryption_key_bytes, and
 /// encryption_key_sha256_bytes fields of the
 /// common_object_request_params.customer_encryption field.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RewriteObjectRequest {
     /// Required. Immutable. The name of the destination object.
@@ -802,6 +834,7 @@ pub struct RewriteObjectRequest {
     pub object_checksums: ::core::option::Option<ObjectChecksums>,
 }
 /// A rewrite response.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RewriteResponse {
     /// The total bytes written so far, which can be used to provide a waiting user
@@ -826,6 +859,7 @@ pub struct RewriteResponse {
     pub resource: ::core::option::Option<Object>,
 }
 /// Request message StartResumableWrite.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StartResumableWriteRequest {
     /// Required. The destination bucket, object, and metadata, as well as any
@@ -843,6 +877,7 @@ pub struct StartResumableWriteRequest {
     pub object_checksums: ::core::option::Option<ObjectChecksums>,
 }
 /// Response object for `StartResumableWrite`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StartResumableWriteResponse {
     /// The upload_id of the newly started resumable write operation. This
@@ -851,6 +886,7 @@ pub struct StartResumableWriteResponse {
     pub upload_id: ::prost::alloc::string::String,
 }
 /// Request message for UpdateObject.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateObjectRequest {
     /// Required. The object to update.
@@ -901,6 +937,7 @@ pub struct UpdateObjectRequest {
     pub common_object_request_params: ::core::option::Option<CommonObjectRequestParams>,
 }
 /// Request message for GetServiceAccount.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetServiceAccountRequest {
     /// Required. Project ID, in the format of "projects/<projectIdentifier>".
@@ -909,6 +946,7 @@ pub struct GetServiceAccountRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// Request message for CreateHmacKey.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateHmacKeyRequest {
     /// Required. The project that the HMAC-owning service account lives in, in the
@@ -921,6 +959,7 @@ pub struct CreateHmacKeyRequest {
     pub service_account_email: ::prost::alloc::string::String,
 }
 /// Create hmac response.  The only time the secret for an HMAC will be returned.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateHmacKeyResponse {
     /// Key metadata.
@@ -932,6 +971,7 @@ pub struct CreateHmacKeyResponse {
     pub secret_key_bytes: ::prost::alloc::vec::Vec<u8>,
 }
 /// Request object to delete a given HMAC key.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteHmacKeyRequest {
     /// Required. The identifying key for the HMAC to delete.
@@ -944,6 +984,7 @@ pub struct DeleteHmacKeyRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// Request object to get metadata on a given HMAC key.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetHmacKeyRequest {
     /// Required. The identifying key for the HMAC to delete.
@@ -956,6 +997,7 @@ pub struct GetHmacKeyRequest {
     pub project: ::prost::alloc::string::String,
 }
 /// Request to fetch a list of HMAC keys under a given project.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListHmacKeysRequest {
     /// Required. The project to list HMAC keys for, in the format of
@@ -977,6 +1019,7 @@ pub struct ListHmacKeysRequest {
     pub show_deleted_keys: bool,
 }
 /// Hmac key list response with next page information.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListHmacKeysResponse {
     /// The list of items.
@@ -991,6 +1034,7 @@ pub struct ListHmacKeysResponse {
 /// HmacKeyMetadata.state is required and the only writable field in
 /// UpdateHmacKey operation. Specifying fields other than state will result in an
 /// error.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateHmacKeyRequest {
     /// Required. The HMAC key to update.
@@ -1006,6 +1050,7 @@ pub struct UpdateHmacKeyRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Parameters that can be passed to any object request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CommonObjectRequestParams {
     /// Encryption algorithm used with the Customer-Supplied Encryption Keys
@@ -1022,6 +1067,7 @@ pub struct CommonObjectRequestParams {
     pub encryption_key_sha256_bytes: ::prost::alloc::vec::Vec<u8>,
 }
 /// Shared constants.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ServiceConstants {}
 /// Nested message and enum types in `ServiceConstants`.
@@ -1132,6 +1178,7 @@ pub mod service_constants {
     }
 }
 /// A bucket.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Bucket {
     /// Immutable. The name of the bucket.
@@ -1287,6 +1334,7 @@ pub struct Bucket {
 /// Nested message and enum types in `Bucket`.
 pub mod bucket {
     /// Billing properties of a bucket.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Billing {
         /// When set to true, Requester Pays is enabled for this bucket.
@@ -1297,6 +1345,7 @@ pub mod bucket {
     /// For more on Cloud Storage and CORS, see
     /// <https://cloud.google.com/storage/docs/cross-origin.>
     /// For more on CORS in general, see <https://tools.ietf.org/html/rfc6454.>
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Cors {
         /// The list of Origins eligible to receive CORS response headers. See
@@ -1321,6 +1370,7 @@ pub mod bucket {
         pub max_age_seconds: i32,
     }
     /// Encryption properties of a bucket.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Encryption {
         /// The name of the Cloud KMS key that will be used to encrypt objects
@@ -1329,6 +1379,7 @@ pub mod bucket {
         pub default_kms_key: ::prost::alloc::string::String,
     }
     /// Bucket restriction options.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct IamConfig {
         /// Bucket restriction options currently enforced on the bucket.
@@ -1345,6 +1396,7 @@ pub mod bucket {
     pub mod iam_config {
         /// Settings for Uniform Bucket level access.
         /// See <https://cloud.google.com/storage/docs/uniform-bucket-level-access.>
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct UniformBucketLevelAccess {
             /// If set, access checks only use bucket-level IAM policies or above.
@@ -1360,6 +1412,7 @@ pub mod bucket {
     }
     /// Lifecycle properties of a bucket.
     /// For more information, see <https://cloud.google.com/storage/docs/lifecycle.>
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Lifecycle {
         /// A lifecycle management rule, which is made of an action to take and the
@@ -1371,6 +1424,7 @@ pub mod bucket {
     pub mod lifecycle {
         /// A lifecycle Rule, combining an action to take on an object and a
         /// condition which will trigger that action.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Rule {
             /// The action to take.
@@ -1383,6 +1437,7 @@ pub mod bucket {
         /// Nested message and enum types in `Rule`.
         pub mod rule {
             /// An action to take on an object.
+            #[allow(clippy::derive_partial_eq_without_eq)]
             #[derive(Clone, PartialEq, ::prost::Message)]
             pub struct Action {
                 /// Type of the action. Currently, only `Delete`, `SetStorageClass`, and
@@ -1395,6 +1450,7 @@ pub mod bucket {
                 pub storage_class: ::prost::alloc::string::String,
             }
             /// A condition of an object which triggers some action.
+            #[allow(clippy::derive_partial_eq_without_eq)]
             #[derive(Clone, PartialEq, ::prost::Message)]
             pub struct Condition {
                 /// Age of an object (in days). This condition is satisfied when an
@@ -1468,6 +1524,7 @@ pub mod bucket {
         }
     }
     /// Logging-related properties of a bucket.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Logging {
         /// The destination bucket where the current bucket's logs should be placed,
@@ -1479,6 +1536,7 @@ pub mod bucket {
         pub log_object_prefix: ::prost::alloc::string::String,
     }
     /// Retention policy properties of a bucket.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct RetentionPolicy {
         /// Server-determined value that indicates the time from which policy was
@@ -1505,6 +1563,7 @@ pub mod bucket {
     /// Properties of a bucket related to versioning.
     /// For more on Cloud Storage versioning, see
     /// <https://cloud.google.com/storage/docs/object-versioning.>
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Versioning {
         /// While set to true, versioning is fully enabled for this bucket.
@@ -1514,6 +1573,7 @@ pub mod bucket {
     /// Properties of a bucket related to accessing the contents as a static
     /// website. For more on hosting a static website via Cloud Storage, see
     /// <https://cloud.google.com/storage/docs/hosting-static-website.>
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Website {
         /// If the requested object path is missing, the service will ensure the path
@@ -1533,6 +1593,7 @@ pub mod bucket {
     /// Configuration for Custom Dual Regions.  It should specify precisely two
     /// eligible regions within the same Multiregion. More information on regions
     /// may be found \[<https://cloud.google.com/storage/docs/locations][here\].>
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CustomPlacementConfig {
         /// List of locations to use for data placement.
@@ -1540,6 +1601,7 @@ pub mod bucket {
         pub data_locations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
     /// Configuration for a bucket's Autoclass feature.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Autoclass {
         /// Enables Autoclass.
@@ -1554,6 +1616,7 @@ pub mod bucket {
     }
 }
 /// An access-control entry.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BucketAccessControl {
     /// The access permission for the entity.
@@ -1607,6 +1670,7 @@ pub struct BucketAccessControl {
 }
 /// Message used to convey content being read or written, along with an optional
 /// checksum.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ChecksummedData {
     /// The data.
@@ -1617,6 +1681,7 @@ pub struct ChecksummedData {
     pub crc32c: ::core::option::Option<u32>,
 }
 /// Message used for storing full (not subrange) object checksums.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ObjectChecksums {
     /// CRC32C digest of the object data. Computed by the Cloud Storage service for
@@ -1636,6 +1701,7 @@ pub struct ObjectChecksums {
     pub md5_hash: ::prost::alloc::vec::Vec<u8>,
 }
 /// Hmac Key Metadata, which includes all information other than the secret.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HmacKeyMetadata {
     /// Immutable. Resource name ID of the key in the format
@@ -1669,6 +1735,7 @@ pub struct HmacKeyMetadata {
     pub etag: ::prost::alloc::string::String,
 }
 /// A directive to publish Pub/Sub notifications upon changes to a bucket.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Notification {
     /// Required. The resource name of this notification.
@@ -1708,6 +1775,7 @@ pub struct Notification {
 }
 /// Describes the Customer-Supplied Encryption Key mechanism used to store an
 /// Object's data at rest.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomerEncryption {
     /// The encryption algorithm.
@@ -1719,6 +1787,7 @@ pub struct CustomerEncryption {
     pub key_sha256_bytes: ::prost::alloc::vec::Vec<u8>,
 }
 /// An object.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Object {
     /// Immutable. The name of this object. Nearly any sequence of unicode
@@ -1879,6 +1948,7 @@ pub struct Object {
     pub custom_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// An access-control entry.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ObjectAccessControl {
     /// The access permission for the entity.
@@ -1931,6 +2001,7 @@ pub struct ObjectAccessControl {
     pub project_team: ::core::option::Option<ProjectTeam>,
 }
 /// The result of a call to Objects.ListObjects
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListObjectsResponse {
     /// The list of items.
@@ -1946,6 +2017,7 @@ pub struct ListObjectsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Represents the Viewers, Editors, or Owners of a given project.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProjectTeam {
     /// The project number.
@@ -1958,6 +2030,7 @@ pub struct ProjectTeam {
 /// A service account, owned by Cloud Storage, which may be used when taking
 /// action on behalf of a given project, for example to publish Pub/Sub
 /// notifications or to retrieve security keys.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ServiceAccount {
     /// The ID of the notification.
@@ -1965,6 +2038,7 @@ pub struct ServiceAccount {
     pub email_address: ::prost::alloc::string::String,
 }
 /// The owner of a specific resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Owner {
     /// The entity, in the form `user-`*userId*.
@@ -1975,6 +2049,7 @@ pub struct Owner {
     pub entity_id: ::prost::alloc::string::String,
 }
 /// Specifies a requested range of bytes to download.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ContentRange {
     /// The starting offset of the object data.

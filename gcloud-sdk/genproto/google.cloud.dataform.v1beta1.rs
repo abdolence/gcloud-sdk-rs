@@ -1,4 +1,5 @@
 /// Represents a Dataform Git repository.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Repository {
     /// Output only. The repository's name.
@@ -11,6 +12,7 @@ pub struct Repository {
 /// Nested message and enum types in `Repository`.
 pub mod repository {
     /// Controls Git remote configuration for a repository.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct GitRemoteSettings {
         /// Required. The Git remote's URL.
@@ -71,6 +73,7 @@ pub mod repository {
     }
 }
 /// `ListRepositories` request message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRepositoriesRequest {
     /// Required. The location in which to list repositories. Must be in the format
@@ -99,6 +102,7 @@ pub struct ListRepositoriesRequest {
     pub filter: ::prost::alloc::string::String,
 }
 /// `ListRepositories` response message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRepositoriesResponse {
     /// List of repositories.
@@ -113,6 +117,7 @@ pub struct ListRepositoriesResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// `GetRepository` request message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetRepositoryRequest {
     /// Required. The repository's name.
@@ -120,6 +125,7 @@ pub struct GetRepositoryRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// `CreateRepository` request message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateRepositoryRequest {
     /// Required. The location in which to create the repository. Must be in the format
@@ -135,6 +141,7 @@ pub struct CreateRepositoryRequest {
     pub repository_id: ::prost::alloc::string::String,
 }
 /// `UpdateRepository` request message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateRepositoryRequest {
     /// Optional. Specifies the fields to be updated in the repository. If left unset,
@@ -146,6 +153,7 @@ pub struct UpdateRepositoryRequest {
     pub repository: ::core::option::Option<Repository>,
 }
 /// `DeleteRepository` request message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteRepositoryRequest {
     /// Required. The repository's name.
@@ -158,6 +166,7 @@ pub struct DeleteRepositoryRequest {
     pub force: bool,
 }
 /// `FetchRemoteBranches` request message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FetchRemoteBranchesRequest {
     /// Required. The repository's name.
@@ -165,6 +174,7 @@ pub struct FetchRemoteBranchesRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// `FetchRemoteBranches` response message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FetchRemoteBranchesResponse {
     /// The remote repository's branch names.
@@ -172,6 +182,7 @@ pub struct FetchRemoteBranchesResponse {
     pub branches: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Represents a Dataform Git workspace.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Workspace {
     /// Output only. The workspace's name.
@@ -179,6 +190,7 @@ pub struct Workspace {
     pub name: ::prost::alloc::string::String,
 }
 /// `ListWorkspaces` request message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListWorkspacesRequest {
     /// Required. The repository in which to list workspaces. Must be in the
@@ -207,6 +219,7 @@ pub struct ListWorkspacesRequest {
     pub filter: ::prost::alloc::string::String,
 }
 /// `ListWorkspaces` response message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListWorkspacesResponse {
     /// List of workspaces.
@@ -221,6 +234,7 @@ pub struct ListWorkspacesResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// `GetWorkspace` request message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetWorkspaceRequest {
     /// Required. The workspace's name.
@@ -228,6 +242,7 @@ pub struct GetWorkspaceRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// `CreateWorkspace` request message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateWorkspaceRequest {
     /// Required. The repository in which to create the workspace. Must be in the format
@@ -243,6 +258,7 @@ pub struct CreateWorkspaceRequest {
     pub workspace_id: ::prost::alloc::string::String,
 }
 /// `DeleteWorkspace` request message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteWorkspaceRequest {
     /// Required. The workspace resource's name.
@@ -250,6 +266,7 @@ pub struct DeleteWorkspaceRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Represents the author of a Git commit.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CommitAuthor {
     /// Required. The commit author's name.
@@ -260,6 +277,7 @@ pub struct CommitAuthor {
     pub email_address: ::prost::alloc::string::String,
 }
 /// `PullGitCommits` request message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PullGitCommitsRequest {
     /// Required. The workspace's name.
@@ -275,6 +293,7 @@ pub struct PullGitCommitsRequest {
     pub author: ::core::option::Option<CommitAuthor>,
 }
 /// `PushGitCommits` request message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PushGitCommitsRequest {
     /// Required. The workspace's name.
@@ -286,6 +305,7 @@ pub struct PushGitCommitsRequest {
     pub remote_branch: ::prost::alloc::string::String,
 }
 /// `FetchFileGitStatuses` request message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FetchFileGitStatusesRequest {
     /// Required. The workspace's name.
@@ -293,6 +313,7 @@ pub struct FetchFileGitStatusesRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// `FetchFileGitStatuses` response message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FetchFileGitStatusesResponse {
     /// A list of all files which have uncommitted Git changes. There will only be
@@ -305,6 +326,7 @@ pub struct FetchFileGitStatusesResponse {
 /// Nested message and enum types in `FetchFileGitStatusesResponse`.
 pub mod fetch_file_git_statuses_response {
     /// Represents the Git state of a file with uncommitted changes.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct UncommittedFileChange {
         /// The file's full path including filename, relative to the workspace root.
@@ -359,6 +381,7 @@ pub mod fetch_file_git_statuses_response {
     }
 }
 /// `FetchGitAheadBehind` request message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FetchGitAheadBehindRequest {
     /// Required. The workspace's name.
@@ -371,6 +394,7 @@ pub struct FetchGitAheadBehindRequest {
     pub remote_branch: ::prost::alloc::string::String,
 }
 /// `FetchGitAheadBehind` response message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FetchGitAheadBehindResponse {
     /// The number of commits in the remote branch that are not in the workspace.
@@ -381,6 +405,7 @@ pub struct FetchGitAheadBehindResponse {
     pub commits_behind: i32,
 }
 /// `CommitWorkspaceChanges` request message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CommitWorkspaceChangesRequest {
     /// Required. The workspace's name.
@@ -398,6 +423,7 @@ pub struct CommitWorkspaceChangesRequest {
     pub paths: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// `ResetWorkspaceChanges` request message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResetWorkspaceChangesRequest {
     /// Required. The workspace's name.
@@ -412,6 +438,7 @@ pub struct ResetWorkspaceChangesRequest {
     pub clean: bool,
 }
 /// `FetchFileDiff` request message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FetchFileDiffRequest {
     /// Required. The workspace's name.
@@ -422,6 +449,7 @@ pub struct FetchFileDiffRequest {
     pub path: ::prost::alloc::string::String,
 }
 /// `FetchFileDiff` response message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FetchFileDiffResponse {
     /// The raw formatted Git diff for the file.
@@ -429,6 +457,7 @@ pub struct FetchFileDiffResponse {
     pub formatted_diff: ::prost::alloc::string::String,
 }
 /// `QueryDirectoryContents` request message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryDirectoryContentsRequest {
     /// Required. The workspace's name.
@@ -453,6 +482,7 @@ pub struct QueryDirectoryContentsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// `QueryDirectoryContents` response message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryDirectoryContentsResponse {
     /// List of entries in the directory.
@@ -468,6 +498,7 @@ pub struct QueryDirectoryContentsResponse {
 /// Nested message and enum types in `QueryDirectoryContentsResponse`.
 pub mod query_directory_contents_response {
     /// Represents a single entry in a workspace directory.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DirectoryEntry {
         #[prost(oneof = "directory_entry::Entry", tags = "1, 2")]
@@ -475,6 +506,7 @@ pub mod query_directory_contents_response {
     }
     /// Nested message and enum types in `DirectoryEntry`.
     pub mod directory_entry {
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Entry {
             /// A file in the directory.
@@ -487,6 +519,7 @@ pub mod query_directory_contents_response {
     }
 }
 /// `MakeDirectory` request message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MakeDirectoryRequest {
     /// Required. The workspace's name.
@@ -498,9 +531,11 @@ pub struct MakeDirectoryRequest {
     pub path: ::prost::alloc::string::String,
 }
 /// `MakeDirectory` response message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MakeDirectoryResponse {}
 /// `RemoveDirectory` request message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RemoveDirectoryRequest {
     /// Required. The workspace's name.
@@ -512,6 +547,7 @@ pub struct RemoveDirectoryRequest {
     pub path: ::prost::alloc::string::String,
 }
 /// `MoveDirectory` request message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MoveDirectoryRequest {
     /// Required. The workspace's name.
@@ -527,9 +563,11 @@ pub struct MoveDirectoryRequest {
     pub new_path: ::prost::alloc::string::String,
 }
 /// `MoveDirectory` response message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MoveDirectoryResponse {}
 /// `ReadFile` request message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReadFileRequest {
     /// Required. The workspace's name.
@@ -540,6 +578,7 @@ pub struct ReadFileRequest {
     pub path: ::prost::alloc::string::String,
 }
 /// `ReadFile` response message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReadFileResponse {
     /// The file's contents.
@@ -547,6 +586,7 @@ pub struct ReadFileResponse {
     pub file_contents: ::prost::alloc::vec::Vec<u8>,
 }
 /// `RemoveFile` request message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RemoveFileRequest {
     /// Required. The workspace's name.
@@ -557,6 +597,7 @@ pub struct RemoveFileRequest {
     pub path: ::prost::alloc::string::String,
 }
 /// `MoveFile` request message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MoveFileRequest {
     /// Required. The workspace's name.
@@ -570,9 +611,11 @@ pub struct MoveFileRequest {
     pub new_path: ::prost::alloc::string::String,
 }
 /// `MoveFile` response message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MoveFileResponse {}
 /// `WriteFile` request message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WriteFileRequest {
     /// Required. The workspace's name.
@@ -586,9 +629,11 @@ pub struct WriteFileRequest {
     pub contents: ::prost::alloc::vec::Vec<u8>,
 }
 /// `WriteFile` response message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WriteFileResponse {}
 /// `InstallNpmPackages` request message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstallNpmPackagesRequest {
     /// Required. The workspace's name.
@@ -596,9 +641,11 @@ pub struct InstallNpmPackagesRequest {
     pub workspace: ::prost::alloc::string::String,
 }
 /// `InstallNpmPackages` response message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstallNpmPackagesResponse {}
 /// Represents the result of compiling a Dataform project.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CompilationResult {
     /// Output only. The compilation result's name.
@@ -624,6 +671,7 @@ pub struct CompilationResult {
 /// Nested message and enum types in `CompilationResult`.
 pub mod compilation_result {
     /// Configures various aspects of Dataform code compilation.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CodeCompilationConfig {
         /// Optional. The default database (Google Cloud project ID).
@@ -660,6 +708,7 @@ pub mod compilation_result {
         pub table_prefix: ::prost::alloc::string::String,
     }
     /// An error encountered when attempting to compile a Dataform project.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CompilationError {
         /// Output only. The error's top level message.
@@ -676,6 +725,7 @@ pub mod compilation_result {
         #[prost(message, optional, tag = "4")]
         pub action_target: ::core::option::Option<super::Target>,
     }
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
         /// Immutable. Git commit/tag/branch name at which the repository should be compiled.
@@ -693,6 +743,7 @@ pub mod compilation_result {
     }
 }
 /// `ListCompilationResults` request message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCompilationResultsRequest {
     /// Required. The repository in which to list compilation results. Must be in the
@@ -713,6 +764,7 @@ pub struct ListCompilationResultsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// `ListCompilationResults` response message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCompilationResultsResponse {
     /// List of compilation results.
@@ -727,6 +779,7 @@ pub struct ListCompilationResultsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// `GetCompilationResult` request message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCompilationResultRequest {
     /// Required. The compilation result's name.
@@ -734,6 +787,7 @@ pub struct GetCompilationResultRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// `CreateCompilationResult` request message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateCompilationResultRequest {
     /// Required. The repository in which to create the compilation result. Must be in the
@@ -746,6 +800,7 @@ pub struct CreateCompilationResultRequest {
 }
 /// Represents an action identifier. If the action writes output, the output
 /// will be written to the referenced database object.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Target {
     /// The action's database (Google Cloud project ID) .
@@ -759,6 +814,7 @@ pub struct Target {
     pub name: ::prost::alloc::string::String,
 }
 /// Describes a relation and its columns.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RelationDescriptor {
     /// A text description of the relation.
@@ -777,6 +833,7 @@ pub struct RelationDescriptor {
 /// Nested message and enum types in `RelationDescriptor`.
 pub mod relation_descriptor {
     /// Describes a column.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ColumnDescriptor {
         /// The identifier for the column. Each entry in `path` represents one level
@@ -794,6 +851,7 @@ pub mod relation_descriptor {
     }
 }
 /// Represents a single Dataform action in a compilation result.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CompilationResultAction {
     /// This action's identifier. Unique within the compilation result.
@@ -815,6 +873,7 @@ pub struct CompilationResultAction {
 /// Nested message and enum types in `CompilationResultAction`.
 pub mod compilation_result_action {
     /// Represents a database relation.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Relation {
         /// A list of actions that this action depends on.
@@ -875,6 +934,7 @@ pub mod compilation_result_action {
     /// Nested message and enum types in `Relation`.
     pub mod relation {
         /// Contains settings for relations of type `INCREMENTAL_TABLE`.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct IncrementalTableConfig {
             /// The SELECT query which returns rows which should be inserted into the
@@ -952,6 +1012,7 @@ pub mod compilation_result_action {
         }
     }
     /// Represents a list of arbitrary database operations.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Operations {
         /// A list of actions that this action depends on.
@@ -977,6 +1038,7 @@ pub mod compilation_result_action {
     }
     /// Represents an assertion upon a SQL query which is required return zero
     /// rows.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Assertion {
         /// A list of actions that this action depends on.
@@ -1003,6 +1065,7 @@ pub mod compilation_result_action {
     }
     /// Represents a relation which is not managed by Dataform but which may be
     /// referenced by Dataform actions.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Declaration {
         /// Descriptor for the relation and its columns. Used as documentation only,
@@ -1010,6 +1073,7 @@ pub mod compilation_result_action {
         #[prost(message, optional, tag = "1")]
         pub relation_descriptor: ::core::option::Option<super::RelationDescriptor>,
     }
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum CompiledObject {
         /// The database relation created/updated by this action.
@@ -1027,6 +1091,7 @@ pub mod compilation_result_action {
     }
 }
 /// `QueryCompilationResultActions` request message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryCompilationResultActionsRequest {
     /// Required. The compilation result's name.
@@ -1051,6 +1116,7 @@ pub struct QueryCompilationResultActionsRequest {
     pub filter: ::prost::alloc::string::String,
 }
 /// `QueryCompilationResultActions` response message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryCompilationResultActionsResponse {
     /// List of compilation result actions.
@@ -1062,6 +1128,7 @@ pub struct QueryCompilationResultActionsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Represents a single invocation of a compilation result.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WorkflowInvocation {
     /// Output only. The workflow invocation's name.
@@ -1086,6 +1153,7 @@ pub mod workflow_invocation {
     /// Includes various configuration options for this workflow invocation.
     /// If both `included_targets` and `included_tags` are unset, all actions
     /// will be included.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct InvocationConfig {
         /// Immutable. The set of action identifiers to include.
@@ -1152,6 +1220,7 @@ pub mod workflow_invocation {
     }
 }
 /// `ListWorkflowInvocations` request message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListWorkflowInvocationsRequest {
     /// Required. The parent resource of the WorkflowInvocation type. Must be in the
@@ -1172,6 +1241,7 @@ pub struct ListWorkflowInvocationsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// `ListWorkflowInvocations` response message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListWorkflowInvocationsResponse {
     /// List of workflow invocations.
@@ -1186,6 +1256,7 @@ pub struct ListWorkflowInvocationsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// `GetWorkflowInvocation` request message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetWorkflowInvocationRequest {
     /// Required. The workflow invocation resource's name.
@@ -1193,6 +1264,7 @@ pub struct GetWorkflowInvocationRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// `CreateWorkflowInvocation` request message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateWorkflowInvocationRequest {
     /// Required. The repository in which to create the workflow invocation. Must be in the
@@ -1204,6 +1276,7 @@ pub struct CreateWorkflowInvocationRequest {
     pub workflow_invocation: ::core::option::Option<WorkflowInvocation>,
 }
 /// `DeleteWorkflowInvocation` request message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteWorkflowInvocationRequest {
     /// Required. The workflow invocation resource's name.
@@ -1211,6 +1284,7 @@ pub struct DeleteWorkflowInvocationRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// `CancelWorkflowInvocation` request message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CancelWorkflowInvocationRequest {
     /// Required. The workflow invocation resource's name.
@@ -1218,6 +1292,7 @@ pub struct CancelWorkflowInvocationRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Represents a single action in a workflow invocation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WorkflowInvocationAction {
     /// Output only. This action's identifier. Unique within the workflow invocation.
@@ -1249,6 +1324,7 @@ pub struct WorkflowInvocationAction {
 /// Nested message and enum types in `WorkflowInvocationAction`.
 pub mod workflow_invocation_action {
     /// Represents a workflow action that will run against BigQuery.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct BigQueryAction {
         /// Output only. The generated BigQuery SQL script that will be executed.
@@ -1305,6 +1381,7 @@ pub mod workflow_invocation_action {
     }
 }
 /// `QueryWorkflowInvocationActions` request message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryWorkflowInvocationActionsRequest {
     /// Required. The workflow invocation's name.
@@ -1325,6 +1402,7 @@ pub struct QueryWorkflowInvocationActionsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// `QueryWorkflowInvocationActions` response message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryWorkflowInvocationActionsResponse {
     /// List of workflow invocation actions.

@@ -1,4 +1,5 @@
 /// Properties customizing the appearance and execution of a Gmail add-on.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GmailAddOnManifest {
     /// Defines an endpoint that will be executed in contexts that don't
@@ -36,6 +37,7 @@ pub struct GmailAddOnManifest {
 }
 /// An action that is always available in the add-on toolbar menu regardless of
 /// message context.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UniversalAction {
     /// Required. User-visible text describing the action, for example, "Add a new
@@ -51,6 +53,7 @@ pub struct UniversalAction {
 pub mod universal_action {
     /// The type of the action determines the behavior of Gmail when the user
     /// invokes the action.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ActionType {
         /// A link that is opened by Gmail when the user triggers the action.
@@ -64,6 +67,7 @@ pub mod universal_action {
     }
 }
 /// A trigger that activates when user is composing an email.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ComposeTrigger {
     /// Defines the set of actions for compose time add-on. These are actions
@@ -117,6 +121,7 @@ pub mod compose_trigger {
 /// Defines a trigger that fires when the open email meets a specific criteria.
 /// When the trigger fires, it executes a specific endpoint, usually
 /// in order to create new cards and update the UI.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ContextualTrigger {
     /// Required. The name of the endpoint to call when a message matches the
@@ -132,6 +137,7 @@ pub struct ContextualTrigger {
 pub mod contextual_trigger {
     /// The type of trigger determines the conditions Gmail uses to show the
     /// add-on.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Trigger {
         /// UnconditionalTriggers are executed when any mail message is opened.
@@ -140,5 +146,6 @@ pub mod contextual_trigger {
     }
 }
 /// A trigger that fires when any email message is opened.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UnconditionalTrigger {}

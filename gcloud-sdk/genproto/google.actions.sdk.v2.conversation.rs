@@ -1,4 +1,5 @@
 /// Represents an intent.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Intent {
     /// Required. The name of the last matched intent.
@@ -19,6 +20,7 @@ pub struct Intent {
     pub query: ::prost::alloc::string::String,
 }
 /// Represents a value for intent parameter.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IntentParameterValue {
     /// Required. Original text value extracted from user utterance.
@@ -35,6 +37,7 @@ pub struct IntentParameterValue {
 /// This can be used in conjunction with the "first_simple" field in the
 /// containing prompt to speak to the user in addition to displaying a
 /// interactive canvas response. The maximum size of the response is 50k bytes.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Canvas {
     /// URL of the interactive canvas web app to load. If not set, the url from
@@ -59,6 +62,7 @@ pub struct Canvas {
     pub enable_full_screen: bool,
 }
 /// An image displayed in the card.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Image {
     /// The source url of the image. Images can be JPG, PNG and GIF (animated and
@@ -127,6 +131,7 @@ pub mod image {
     }
 }
 /// Link content.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Link {
     /// Name of the link
@@ -137,6 +142,7 @@ pub struct Link {
     pub open: ::core::option::Option<OpenUrl>,
 }
 /// Action taken when a user opens a link.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OpenUrl {
     /// The url field which could be any of:
@@ -170,6 +176,7 @@ impl UrlHint {
     }
 }
 /// A basic card for displaying some information, e.g. an image and/or text.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Card {
     /// Overall title of the card.
@@ -197,6 +204,7 @@ pub struct Card {
     pub button: ::core::option::Option<Link>,
 }
 /// A card for presenting a collection of options to select from.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Collection {
     /// Title of the collection. Optional.
@@ -215,6 +223,7 @@ pub struct Collection {
 /// Nested message and enum types in `Collection`.
 pub mod collection {
     /// An item in the collection
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CollectionItem {
         /// Required. The NLU key that matches the entry key name in the associated
@@ -224,6 +233,7 @@ pub mod collection {
     }
 }
 /// A card for presenting a list of options to select from.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct List {
     /// Title of the list. Optional.
@@ -239,6 +249,7 @@ pub struct List {
 /// Nested message and enum types in `List`.
 pub mod list {
     /// An item in the list
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ListItem {
         /// Required. The NLU key that matches the entry key name in the associated
@@ -249,6 +260,7 @@ pub mod list {
 }
 /// Represents one media object.
 /// Contains information about the media, such as name, description, url, etc.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Media {
     /// Media type.
@@ -342,6 +354,7 @@ pub mod media {
     }
 }
 /// Represents a single media object
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MediaObject {
     /// Name of this media object.
@@ -358,6 +371,7 @@ pub struct MediaObject {
     pub image: ::core::option::Option<MediaImage>,
 }
 /// Image to show with the media card.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MediaImage {
     /// Image.
@@ -367,6 +381,7 @@ pub struct MediaImage {
 /// Nested message and enum types in `MediaImage`.
 pub mod media_image {
     /// Image.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Image {
         /// A large image, such as the cover of the album, etc.
@@ -379,6 +394,7 @@ pub mod media_image {
     }
 }
 /// A table card for displaying a table of text.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Table {
     /// Overall title of the table. Optional but must be set if subtitle is set.
@@ -405,6 +421,7 @@ pub struct Table {
     pub button: ::core::option::Option<Link>,
 }
 /// Describes a column in a table.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TableColumn {
     /// Header text for the column.
@@ -456,6 +473,7 @@ pub mod table_column {
     }
 }
 /// Describes a cell in a row.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TableCell {
     /// Text content of the cell.
@@ -463,6 +481,7 @@ pub struct TableCell {
     pub text: ::prost::alloc::string::String,
 }
 /// Describes a row in the table.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TableRow {
     /// Cells in this row. The first 3 cells are guaranteed to be shown but
@@ -475,6 +494,7 @@ pub struct TableRow {
     pub divider: bool,
 }
 /// Content to be shown.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Content {
     /// Content.
@@ -484,6 +504,7 @@ pub struct Content {
 /// Nested message and enum types in `Content`.
 pub mod content {
     /// Content.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Content {
         /// A basic card.
@@ -510,6 +531,7 @@ pub mod content {
     }
 }
 /// Represents a simple prompt to be send to a user.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Simple {
     /// Optional. Represents the speech to be spoken to the user. Can be SSML or
@@ -527,6 +549,7 @@ pub struct Simple {
     pub text: ::prost::alloc::string::String,
 }
 /// Input suggestion to be presented to the user.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Suggestion {
     /// Required. The text shown in the suggestion chip. When tapped, this text will be
@@ -537,6 +560,7 @@ pub struct Suggestion {
     pub title: ::prost::alloc::string::String,
 }
 /// Represent a response to a user.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Prompt {
     /// Optional. Mode for how this messages should be merged with previously
@@ -592,6 +616,7 @@ pub struct Prompt {
     pub canvas: ::core::option::Option<Canvas>,
 }
 /// Represents a slot.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Slot {
     /// The mode of the slot (required or optional). Can be set by developer.

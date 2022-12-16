@@ -1,6 +1,7 @@
 /// Information related to how and why a fallback result was used. If this field
 /// is set, then it means the server used a different routing mode from your
 /// preferred mode as fallback.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FallbackInfo {
     /// Routing mode used for the response. If fallback was triggered, the mode
@@ -69,6 +70,7 @@ impl FallbackRoutingMode {
     }
 }
 /// Encapsulates a location (a geographic point, and an optional heading).
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Location {
     /// The waypoint's geographic coordinates.
@@ -157,6 +159,7 @@ impl Maneuver {
 }
 /// Encapsulates navigation instructions for a
 /// \[RouteLegStep][google.maps.routing.v2.RouteLegStep\]
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NavigationInstruction {
     /// Encapsulates the navigation instructions for the current step (e.g., turn
@@ -168,6 +171,7 @@ pub struct NavigationInstruction {
     pub instructions: ::prost::alloc::string::String,
 }
 /// Encapsulates an encoded polyline.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Polyline {
     /// Encapsulates the type of polyline. Defaults to encoded_polyline.
@@ -177,6 +181,7 @@ pub struct Polyline {
 /// Nested message and enum types in `Polyline`.
 pub mod polyline {
     /// Encapsulates the type of polyline. Defaults to encoded_polyline.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum PolylineType {
         /// The string encoding of the polyline using the [polyline encoding
@@ -279,6 +284,7 @@ impl RouteLabel {
 /// Given a path with points P_0, P_1, ... , P_N (zero-based index), the
 /// SpeedReadingInterval defines an interval and describes its traffic using the
 /// following categories.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SpeedReadingInterval {
     /// The starting index of this interval in the polyline.
@@ -332,6 +338,7 @@ pub mod speed_reading_interval {
     }
 }
 /// Encapsulates toll information on a `Route` or on a `RouteLeg`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TollInfo {
     /// The monetary amount of tolls for the corresponding Route or RouteLeg.
@@ -345,6 +352,7 @@ pub struct TollInfo {
 }
 /// Encapsulates a route, which consists of a series of connected road segments
 /// that join beginning, ending, and intermediate waypoints.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Route {
     /// Labels for the `Route` that are useful to identify specific properties
@@ -395,11 +403,16 @@ pub struct Route {
     /// and in the event of rerouting honor the original intention when Routes
     /// ComputeRoutes is called. Customers should treat this token as an
     /// opaque blob.
+    /// NOTE: `Route.route_token` is only available for requests that have set
+    /// `ComputeRoutesRequest.routing_preference` to `TRAFFIC_AWARE` or
+    /// `TRAFFIC_AWARE_OPTIMAL`. `Route.route_token` is also not supported for
+    /// requests that have Via waypoints.
     #[prost(string, tag = "12")]
     pub route_token: ::prost::alloc::string::String,
 }
 /// Encapsulates the additional information that the user should be informed
 /// about, such as possible traffic zone restriction etc.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouteTravelAdvisory {
     /// Encapsulates information about tolls on the Route.
@@ -427,6 +440,7 @@ pub struct RouteTravelAdvisory {
 }
 /// Encapsulates the additional information that the user should be informed
 /// about, such as possible traffic zone restriction etc. on a route leg.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouteLegTravelAdvisory {
     /// Encapsulates information about tolls on the specific RouteLeg.
@@ -451,6 +465,7 @@ pub struct RouteLegTravelAdvisory {
 }
 /// Encapsulates the additional information that the user should be informed
 /// about, such as possible traffic zone restriction on a leg step.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouteLegStepTravelAdvisory {
     /// Speed reading intervals detailing traffic density. Applicable in case of
@@ -467,6 +482,7 @@ pub struct RouteLegStepTravelAdvisory {
     pub speed_reading_intervals: ::prost::alloc::vec::Vec<SpeedReadingInterval>,
 }
 /// Encapsulates a segment between non-`via` waypoints.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouteLeg {
     /// The travel distance of the route leg, in meters.
@@ -508,6 +524,7 @@ pub struct RouteLeg {
 }
 /// Encapsulates a segment of a `RouteLeg`. A step corresponds to a single
 /// navigation instruction. Route legs are made up of steps.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouteLegStep {
     /// The travel distance of this step, in meters. In some circumstances, this
@@ -889,6 +906,7 @@ impl VehicleEmissionType {
 }
 /// Encapsulates the vehicle information, such as the license plate last
 /// character.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VehicleInfo {
     /// Describes the vehicle's emission type.
@@ -898,6 +916,7 @@ pub struct VehicleInfo {
 }
 /// Encapsulates a set of optional conditions to satisfy when calculating the
 /// routes.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouteModifiers {
     /// Specifies whether to avoid toll roads where reasonable. Preference will be
@@ -932,6 +951,10 @@ pub struct RouteModifiers {
     pub toll_passes: ::prost::alloc::vec::Vec<i32>,
 }
 /// A set of values used to specify the mode of travel.
+/// NOTE: WALK, BICYCLE, and TWO_WHEELER routes are in beta and might sometimes
+/// be missing clear sidewalks, pedestrian paths, or bicycling paths.
+/// You must display this warning to the user for all walking, bicycling, and
+/// two-wheel routes that you display in your app.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum RouteTravelMode {
@@ -1029,6 +1052,7 @@ impl Units {
 }
 /// Encapsulates a waypoint. Waypoints mark both the beginning and end of a
 /// route, and include intermediate stops along the route.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Waypoint {
     /// Marks this waypoint as a milestone rather a stopping point. For
@@ -1066,6 +1090,7 @@ pub struct Waypoint {
 /// Nested message and enum types in `Waypoint`.
 pub mod waypoint {
     /// Different ways to represent a location.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum LocationType {
         /// A point specified using geographic coordinates, including an optional
@@ -1078,6 +1103,7 @@ pub mod waypoint {
     }
 }
 /// ComputeRoutes request message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ComputeRoutesRequest {
     /// Required. Origin waypoint.
@@ -1097,10 +1123,8 @@ pub struct ComputeRoutesRequest {
     /// Optional. Specifies how to compute the route. The server
     /// attempts to use the selected routing preference to compute the route. If
     ///   the routing preference results in an error or an extra long latency, then
-    /// an error is returned. In the future, we might implement a fallback
-    /// mechanism to use a different option when the preferred option does not give
-    /// a valid result. You can specify this option only when the `travel_mode` is
-    /// `DRIVE` or `TWO_WHEELER`, otherwise the request fails.
+    /// an error is returned. You can specify this option only when the
+    /// `travel_mode` is `DRIVE` or `TWO_WHEELER`, otherwise the request fails.
     #[prost(enumeration = "RoutingPreference", tag = "5")]
     pub routing_preference: i32,
     /// Optional. Specifies your preference for the quality of the polyline.
@@ -1114,7 +1138,8 @@ pub struct ComputeRoutesRequest {
     /// time that has already occurred, then the request fails.
     #[prost(message, optional, tag = "7")]
     pub departure_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Optional. Specifies whether to calculate alternate routes in addition to the route.
+    /// Optional. Specifies whether to calculate alternate routes in addition to
+    /// the route.
     #[prost(bool, tag = "8")]
     pub compute_alternative_routes: bool,
     /// Optional. A set of conditions to satisfy that affect the way routes are
@@ -1136,12 +1161,11 @@ pub struct ComputeRoutesRequest {
     /// units are inferred from the location of the request.
     #[prost(enumeration = "Units", tag = "11")]
     pub units: i32,
-    /// Optional. Specifies what reference routes to calculate as part of the request in
-    /// addition to the default route.
-    /// A reference route is a route with a different route calculation objective
-    /// than the default route. For example an FUEL_EFFICIENT reference route
-    /// calculation takes into account various parameters that would generate an
-    /// optimal fuel efficient route.
+    /// Optional. Specifies what reference routes to calculate as part of the
+    /// request in addition to the default route. A reference route is a route with
+    /// a different route calculation objective than the default route. For example
+    /// an FUEL_EFFICIENT reference route calculation takes into account various
+    /// parameters that would generate an optimal fuel efficient route.
     #[prost(
         enumeration = "compute_routes_request::ReferenceRoute",
         repeated,
@@ -1186,6 +1210,7 @@ pub mod compute_routes_request {
     }
 }
 /// ComputeRoutes the response message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ComputeRoutesResponse {
     /// Contains an array of computed routes (up to three) when you specify
@@ -1203,10 +1228,11 @@ pub struct ComputeRoutesResponse {
     pub fallback_info: ::core::option::Option<FallbackInfo>,
 }
 /// ComputeRouteMatrix request message
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ComputeRouteMatrixRequest {
-    /// Required. Array of origins, which determines the rows of the response matrix.
-    /// Several size restrictions apply to the cardinality of origins and
+    /// Required. Array of origins, which determines the rows of the response
+    /// matrix. Several size restrictions apply to the cardinality of origins and
     /// destinations:
     ///
     /// * The number of elements (origins × destinations) must be no greater than
@@ -1217,28 +1243,28 @@ pub struct ComputeRouteMatrixRequest {
     /// must be no greater than 50.
     #[prost(message, repeated, tag = "1")]
     pub origins: ::prost::alloc::vec::Vec<RouteMatrixOrigin>,
-    /// Required. Array of destinations, which determines the columns of the response matrix.
+    /// Required. Array of destinations, which determines the columns of the
+    /// response matrix.
     #[prost(message, repeated, tag = "2")]
     pub destinations: ::prost::alloc::vec::Vec<RouteMatrixDestination>,
     /// Optional. Specifies the mode of transportation.
     #[prost(enumeration = "RouteTravelMode", tag = "3")]
     pub travel_mode: i32,
-    /// Optional. Specifies how to compute the route. The server attempts to use the selected
-    /// routing preference to compute the route. If the routing preference results
-    /// in an error or an extra long latency, an error is returned. In the future,
-    /// we might implement a fallback mechanism to use a different option when the
-    /// preferred option does not give a valid result. You can specify this option
-    /// only when the `travel_mode` is `DRIVE` or `TWO_WHEELER`, otherwise the
-    /// request fails.
+    /// Optional. Specifies how to compute the route. The server attempts to use
+    /// the selected routing preference to compute the route. If the routing
+    /// preference results in an error or an extra long latency, an error is
+    /// returned. You can specify this option only when the `travel_mode` is
+    /// `DRIVE` or `TWO_WHEELER`, otherwise the request fails.
     #[prost(enumeration = "RoutingPreference", tag = "4")]
     pub routing_preference: i32,
-    /// Optional. The departure time. If you don't set this value, this defaults to the time
-    /// that you made the request. If you set this value to a time that has already
-    /// occurred, the request fails.
+    /// Optional. The departure time. If you don't set this value, this defaults to
+    /// the time that you made the request. If you set this value to a time that
+    /// has already occurred, the request fails.
     #[prost(message, optional, tag = "5")]
     pub departure_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// A single origin for ComputeRouteMatrixRequest
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouteMatrixOrigin {
     /// Required. Origin waypoint
@@ -1249,6 +1275,7 @@ pub struct RouteMatrixOrigin {
     pub route_modifiers: ::core::option::Option<RouteModifiers>,
 }
 /// A single destination for ComputeRouteMatrixRequest
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouteMatrixDestination {
     /// Required. Destination waypoint
@@ -1257,6 +1284,7 @@ pub struct RouteMatrixDestination {
 }
 /// Encapsulates route information computed for an origin/destination pair in the
 /// ComputeRouteMatrix API. This proto can be streamed to the client.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RouteMatrixElement {
     /// Zero-based index of the origin in the request.

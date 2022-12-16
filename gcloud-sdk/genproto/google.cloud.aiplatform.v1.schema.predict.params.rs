@@ -1,4 +1,5 @@
 /// Prediction model parameters for Image Classification.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImageClassificationPredictionParams {
     /// The Model only returns predictions with at least this confidence score.
@@ -12,6 +13,7 @@ pub struct ImageClassificationPredictionParams {
     pub max_predictions: i32,
 }
 /// Prediction model parameters for Image Object Detection.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImageObjectDetectionPredictionParams {
     /// The Model only returns predictions with at least this confidence score.
@@ -25,6 +27,7 @@ pub struct ImageObjectDetectionPredictionParams {
     pub max_predictions: i32,
 }
 /// Prediction model parameters for Image Segmentation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImageSegmentationPredictionParams {
     /// When the model predicts category of pixels of the image, it will only
@@ -35,6 +38,7 @@ pub struct ImageSegmentationPredictionParams {
     pub confidence_threshold: f32,
 }
 /// Prediction model parameters for Video Action Recognition.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VideoActionRecognitionPredictionParams {
     /// The Model only returns predictions with at least this confidence score.
@@ -48,6 +52,7 @@ pub struct VideoActionRecognitionPredictionParams {
     pub max_predictions: i32,
 }
 /// Prediction model parameters for Video Classification.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VideoClassificationPredictionParams {
     /// The Model only returns predictions with at least this confidence score.
@@ -86,6 +91,7 @@ pub struct VideoClassificationPredictionParams {
     pub one_sec_interval_classification: bool,
 }
 /// Prediction model parameters for Video Object Tracking.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VideoObjectTrackingPredictionParams {
     /// The Model only returns predictions with at least this confidence score.

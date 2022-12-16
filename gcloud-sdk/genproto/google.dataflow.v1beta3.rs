@@ -1,4 +1,5 @@
 /// Describes the environment in which a Dataflow Job runs.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Environment {
     /// The prefix of the resources the system should use for temporary
@@ -104,6 +105,7 @@ pub struct Environment {
 /// might use this to install jars containing the user's code and all of the
 /// various dependencies (libraries, data files, etc.) required in order
 /// for that code to run.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Package {
     /// The name of the package.
@@ -119,6 +121,7 @@ pub struct Package {
     pub location: ::prost::alloc::string::String,
 }
 /// Describes the data disk used by a workflow job.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Disk {
     /// Size of disk in GB.  If zero or unspecified, the service will
@@ -150,6 +153,7 @@ pub struct Disk {
     pub mount_point: ::prost::alloc::string::String,
 }
 /// Provides data to pass through to the worker harness.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WorkerSettings {
     /// The base URL for accessing Google Cloud APIs.
@@ -190,6 +194,7 @@ pub struct WorkerSettings {
     pub temp_storage_prefix: ::prost::alloc::string::String,
 }
 /// Taskrunner configuration settings.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TaskRunnerSettings {
     /// The UNIX user ID on the worker VM to use for tasks launched by
@@ -277,6 +282,7 @@ pub struct TaskRunnerSettings {
     pub streaming_worker_main_class: ::prost::alloc::string::String,
 }
 /// Settings for WorkerPool autoscaling.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AutoscalingSettings {
     /// The algorithm to use for autoscaling.
@@ -287,6 +293,7 @@ pub struct AutoscalingSettings {
     pub max_num_workers: i32,
 }
 /// Defines a SDK harness container for executing Dataflow pipelines.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SdkHarnessContainerImage {
     /// A docker container image that resides in Google Container Registry.
@@ -313,6 +320,7 @@ pub struct SdkHarnessContainerImage {
 /// computations required by a job.  Note that a workflow job may use
 /// multiple pools, in order to match the various computational
 /// requirements of the various stages of the job.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WorkerPool {
     /// The kind of the worker pool; currently only `harness` and `shuffle`
@@ -423,6 +431,7 @@ pub struct WorkerPool {
     pub sdk_harness_container_images: ::prost::alloc::vec::Vec<SdkHarnessContainerImage>,
 }
 /// Describes any options that have an effect on the debugging of pipelines.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DebugOptions {
     /// When true, enables the logging of the literal hot key to the user's Cloud
@@ -620,6 +629,7 @@ impl ShuffleMode {
     }
 }
 /// Represents a Pubsub snapshot.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PubsubSnapshotMetadata {
     /// The name of the Pubsub topic.
@@ -633,6 +643,7 @@ pub struct PubsubSnapshotMetadata {
     pub expire_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Represents a snapshot of a job.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Snapshot {
     /// The unique ID of this snapshot.
@@ -668,6 +679,7 @@ pub struct Snapshot {
     pub region: ::prost::alloc::string::String,
 }
 /// Request to get information about a snapshot
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetSnapshotRequest {
     /// The ID of the Cloud Platform project that the snapshot belongs to.
@@ -681,6 +693,7 @@ pub struct GetSnapshotRequest {
     pub location: ::prost::alloc::string::String,
 }
 /// Request to delete a snapshot.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteSnapshotRequest {
     /// The ID of the Cloud Platform project that the snapshot belongs to.
@@ -694,9 +707,11 @@ pub struct DeleteSnapshotRequest {
     pub location: ::prost::alloc::string::String,
 }
 /// Response from deleting a snapshot.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteSnapshotResponse {}
 /// Request to list snapshots.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSnapshotsRequest {
     /// The project ID to list snapshots for.
@@ -710,6 +725,7 @@ pub struct ListSnapshotsRequest {
     pub location: ::prost::alloc::string::String,
 }
 /// List of snapshots.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSnapshotsResponse {
     /// Returned snapshots.
@@ -883,6 +899,7 @@ pub mod snapshots_v1_beta3_client {
     }
 }
 /// Defines a job to be run by the Cloud Dataflow service.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Job {
     /// The unique ID of this job.
@@ -1046,6 +1063,7 @@ pub struct Job {
     pub satisfies_pzs: bool,
 }
 /// Metadata for a Datastore connector used by the job.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DatastoreIoDetails {
     /// Namespace used in the connection.
@@ -1056,6 +1074,7 @@ pub struct DatastoreIoDetails {
     pub project_id: ::prost::alloc::string::String,
 }
 /// Metadata for a Pub/Sub connector used by the job.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PubSubIoDetails {
     /// Topic accessed in the connection.
@@ -1066,6 +1085,7 @@ pub struct PubSubIoDetails {
     pub subscription: ::prost::alloc::string::String,
 }
 /// Metadata for a File connector used by the job.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FileIoDetails {
     /// File Pattern used to access files by the connector.
@@ -1073,6 +1093,7 @@ pub struct FileIoDetails {
     pub file_pattern: ::prost::alloc::string::String,
 }
 /// Metadata for a Cloud Bigtable connector used by the job.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BigTableIoDetails {
     /// ProjectId accessed in the connection.
@@ -1086,6 +1107,7 @@ pub struct BigTableIoDetails {
     pub table_id: ::prost::alloc::string::String,
 }
 /// Metadata for a BigQuery connector used by the job.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BigQueryIoDetails {
     /// Table accessed in the connection.
@@ -1102,6 +1124,7 @@ pub struct BigQueryIoDetails {
     pub query: ::prost::alloc::string::String,
 }
 /// Metadata for a Spanner connector used by the job.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SpannerIoDetails {
     /// ProjectId accessed in the connection.
@@ -1115,6 +1138,7 @@ pub struct SpannerIoDetails {
     pub database_id: ::prost::alloc::string::String,
 }
 /// The version of the SDK used to run the job.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SdkVersion {
     /// The version of the SDK used to run the job.
@@ -1173,6 +1197,7 @@ pub mod sdk_version {
 }
 /// Metadata available primarily for filtering jobs. Will be included in the
 /// ListJob response and Job SUMMARY view.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct JobMetadata {
     /// The SDK version used to run the job.
@@ -1198,6 +1223,7 @@ pub struct JobMetadata {
     pub datastore_details: ::prost::alloc::vec::Vec<DatastoreIoDetails>,
 }
 /// A message describing the state of a particular execution stage.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExecutionStageState {
     /// The name of the execution stage.
@@ -1213,6 +1239,7 @@ pub struct ExecutionStageState {
 /// A descriptive representation of submitted pipeline as well as the executed
 /// form.  This data is provided by the Dataflow service for ease of visualizing
 /// the pipeline and interpreting Dataflow provided metrics.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PipelineDescription {
     /// Description of each transform in the pipeline and collections between them.
@@ -1226,6 +1253,7 @@ pub struct PipelineDescription {
     pub display_data: ::prost::alloc::vec::Vec<DisplayData>,
 }
 /// Description of the type, names/ids, and input/outputs for a transform.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TransformSummary {
     /// Type of transform.
@@ -1250,6 +1278,7 @@ pub struct TransformSummary {
 /// Description of the composing transforms, names/ids, and input/outputs of a
 /// stage of execution.  Some composing transforms and sources may have been
 /// generated by the Dataflow service during execution planning.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExecutionStageSummary {
     /// Dataflow service generated name for this stage.
@@ -1284,6 +1313,7 @@ pub struct ExecutionStageSummary {
 /// Nested message and enum types in `ExecutionStageSummary`.
 pub mod execution_stage_summary {
     /// Description of an input or output of an execution stage.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct StageSource {
         /// Human-readable name for this source; may be user or system generated.
@@ -1301,6 +1331,7 @@ pub mod execution_stage_summary {
         pub size_bytes: i64,
     }
     /// Description of a transform executed as part of an execution stage.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ComponentTransform {
         /// Human-readable name for this transform; may be user or system generated.
@@ -1316,6 +1347,7 @@ pub mod execution_stage_summary {
     }
     /// Description of an interstitial value between transforms in an execution
     /// stage.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ComponentSource {
         /// Human-readable name for this transform; may be user or system generated.
@@ -1331,6 +1363,7 @@ pub mod execution_stage_summary {
     }
 }
 /// Data provided with a pipeline or transform to provide descriptive info.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DisplayData {
     /// The key identifying the display data.
@@ -1367,6 +1400,7 @@ pub struct DisplayData {
 pub mod display_data {
     /// Various value types which can be used for display data.  Only one will be
     /// set.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Value {
         /// Contains value if the data is of string type.
@@ -1417,6 +1451,7 @@ pub mod display_data {
 ///
 /// Note that the Cloud Dataflow service may be used to run many different
 /// types of jobs, not just Map-Reduce.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Step {
     /// The kind of step in the Cloud Dataflow job.
@@ -1434,6 +1469,7 @@ pub struct Step {
 }
 /// Additional information about how a Cloud Dataflow job will be executed that
 /// isn't contained in the submitted job.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct JobExecutionInfo {
     /// A mapping from each stage to the information about that stage.
@@ -1445,6 +1481,7 @@ pub struct JobExecutionInfo {
 }
 /// Contains information about how a particular
 /// \[google.dataflow.v1beta3.Step][google.dataflow.v1beta3.Step\] will be executed.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct JobExecutionStageInfo {
     /// The steps associated with the execution stage.
@@ -1454,6 +1491,7 @@ pub struct JobExecutionStageInfo {
     pub step_name: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request to create a Cloud Dataflow job.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateJobRequest {
     /// The ID of the Cloud Platform project that the job belongs to.
@@ -1475,6 +1513,7 @@ pub struct CreateJobRequest {
     pub location: ::prost::alloc::string::String,
 }
 /// Request to get the state of a Cloud Dataflow job.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetJobRequest {
     /// The ID of the Cloud Platform project that the job belongs to.
@@ -1493,6 +1532,7 @@ pub struct GetJobRequest {
     pub location: ::prost::alloc::string::String,
 }
 /// Request to update a Cloud Dataflow job.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateJobRequest {
     /// The ID of the Cloud Platform project that the job belongs to.
@@ -1512,6 +1552,7 @@ pub struct UpdateJobRequest {
     pub location: ::prost::alloc::string::String,
 }
 /// Request to list Cloud Dataflow jobs.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListJobsRequest {
     /// The kind of filter to use.
@@ -1589,6 +1630,7 @@ pub mod list_jobs_request {
 /// Indicates which [regional endpoint]
 /// (<https://cloud.google.com/dataflow/docs/concepts/regional-endpoints>) failed
 /// to respond to a request for data.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FailedLocation {
     /// The name of the [regional endpoint]
@@ -1602,6 +1644,7 @@ pub struct FailedLocation {
 /// However, if the project does not have any jobs, an instance of
 /// ListJobsResponse is not returned and the requests's response
 /// body is empty {}.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListJobsResponse {
     /// A subset of the requested job information.
@@ -1617,6 +1660,7 @@ pub struct ListJobsResponse {
     pub failed_location: ::prost::alloc::vec::Vec<FailedLocation>,
 }
 /// Request to create a snapshot of a job.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SnapshotJobRequest {
     /// The project which owns the job to be snapshotted.
@@ -1639,6 +1683,7 @@ pub struct SnapshotJobRequest {
     pub description: ::prost::alloc::string::String,
 }
 /// Request to check is active jobs exists for a project
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CheckActiveJobsRequest {
     /// The project which owns the jobs.
@@ -1646,6 +1691,7 @@ pub struct CheckActiveJobsRequest {
     pub project_id: ::prost::alloc::string::String,
 }
 /// Response for CheckActiveJobsRequest.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CheckActiveJobsResponse {
     /// If True, active jobs exists for project. False otherwise.
@@ -2051,6 +2097,7 @@ pub mod jobs_v1_beta3_client {
     }
 }
 /// A particular message pertaining to a Dataflow job.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct JobMessage {
     /// Deprecated.
@@ -2069,6 +2116,7 @@ pub struct JobMessage {
 /// A rich message format, including a human readable string, a key for
 /// identifying the message, and structured data associated with the message for
 /// programmatic consumption.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StructuredMessage {
     /// Human-readable version of message.
@@ -2085,6 +2133,7 @@ pub struct StructuredMessage {
 /// Nested message and enum types in `StructuredMessage`.
 pub mod structured_message {
     /// Structured data associated with this message.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Parameter {
         /// Key or name for this parameter.
@@ -2097,6 +2146,7 @@ pub mod structured_message {
 }
 /// A structured message reporting an autoscaling decision made by the Dataflow
 /// service.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AutoscalingEvent {
     /// The current number of workers the job has.
@@ -2182,6 +2232,7 @@ pub mod autoscaling_event {
 /// Up to max_results messages will be returned in the time range specified
 /// starting with the oldest messages first. If no time range is specified
 /// the results with start with the oldest message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListJobMessagesRequest {
     /// A project id.
@@ -2218,6 +2269,7 @@ pub struct ListJobMessagesRequest {
     pub location: ::prost::alloc::string::String,
 }
 /// Response to a request to list job messages.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListJobMessagesResponse {
     /// Messages in ascending timestamp order.
@@ -2382,6 +2434,7 @@ pub mod messages_v1_beta3_client {
 }
 /// Identifies a metric, by describing the source which generated the
 /// metric.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MetricStructuredName {
     /// Origin (namespace) of metric name. May be blank for user-define metrics;
@@ -2404,6 +2457,7 @@ pub struct MetricStructuredName {
     >,
 }
 /// Describes the state of a metric.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MetricUpdate {
     /// Name of the metric.
@@ -2464,6 +2518,7 @@ pub struct MetricUpdate {
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Request to get job metrics.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetJobMetricsRequest {
     /// A project id.
@@ -2489,6 +2544,7 @@ pub struct GetJobMetricsRequest {
 /// This resource captures only the most recent values of each metric;
 /// time-series data can be queried for them (under the same metric names)
 /// from Cloud Monitoring.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct JobMetrics {
     /// Timestamp as of which metric values are current.
@@ -2499,6 +2555,7 @@ pub struct JobMetrics {
     pub metrics: ::prost::alloc::vec::Vec<MetricUpdate>,
 }
 /// Request to get job execution details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetJobExecutionDetailsRequest {
     /// A project id.
@@ -2524,6 +2581,7 @@ pub struct GetJobExecutionDetailsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Information about the progress of some component of job execution.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProgressTimeseries {
     /// The current progress of the component, in the range \[0,1\].
@@ -2538,6 +2596,7 @@ pub struct ProgressTimeseries {
 /// Nested message and enum types in `ProgressTimeseries`.
 pub mod progress_timeseries {
     /// A point in the timeseries.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Point {
         /// The timestamp of the point.
@@ -2549,6 +2608,7 @@ pub mod progress_timeseries {
     }
 }
 /// Information about a particular execution stage of a job.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StageSummary {
     /// ID of this stage
@@ -2575,6 +2635,7 @@ pub struct StageSummary {
     pub metrics: ::prost::alloc::vec::Vec<MetricUpdate>,
 }
 /// Information about the execution of a job.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct JobExecutionDetails {
     /// The stages of the job execution.
@@ -2588,6 +2649,7 @@ pub struct JobExecutionDetails {
 }
 /// Request to get information about a particular execution stage of a job.
 /// Currently only tracked for Batch jobs.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetStageExecutionDetailsRequest {
     /// A project id.
@@ -2622,6 +2684,7 @@ pub struct GetStageExecutionDetailsRequest {
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Information about an individual work item execution.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WorkItemDetails {
     /// Name of this work item.
@@ -2650,6 +2713,7 @@ pub struct WorkItemDetails {
     pub metrics: ::prost::alloc::vec::Vec<MetricUpdate>,
 }
 /// Information about a worker
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WorkerDetails {
     /// Name of this worker
@@ -2660,6 +2724,7 @@ pub struct WorkerDetails {
     pub work_items: ::prost::alloc::vec::Vec<WorkItemDetails>,
 }
 /// Information about the workers and work items within a stage.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StageExecutionDetails {
     /// Workers that have done work on the stage.
@@ -2850,6 +2915,7 @@ pub mod metrics_v1_beta3_client {
 }
 /// Global topology of the streaming Dataflow job, including all
 /// computations and their sharded locations.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TopologyConfig {
     /// The computations associated with a streaming Dataflow job.
@@ -2873,6 +2939,7 @@ pub struct TopologyConfig {
 }
 /// Identifies a pubsub location to use for transferring data into or
 /// out of a streaming Dataflow job.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PubsubLocation {
     /// A pubsub topic, in the form of
@@ -2904,6 +2971,7 @@ pub struct PubsubLocation {
 }
 /// Identifies the location of a streaming computation stage, for
 /// stage-to-stage communication.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StreamingStageLocation {
     /// Identifies the particular stream within the streaming Dataflow
@@ -2912,6 +2980,7 @@ pub struct StreamingStageLocation {
     pub stream_id: ::prost::alloc::string::String,
 }
 /// Identifies the location of a streaming side input.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StreamingSideInputLocation {
     /// Identifies the particular side input within the streaming Dataflow job.
@@ -2922,6 +2991,7 @@ pub struct StreamingSideInputLocation {
     pub state_family: ::prost::alloc::string::String,
 }
 /// Identifies the location of a custom souce.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomSourceLocation {
     /// Whether this source is stateful.
@@ -2930,6 +3000,7 @@ pub struct CustomSourceLocation {
 }
 /// Describes a stream of data, either as input to be processed or as
 /// output of a streaming Dataflow job.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StreamLocation {
     /// A specification of a stream's location.
@@ -2939,6 +3010,7 @@ pub struct StreamLocation {
 /// Nested message and enum types in `StreamLocation`.
 pub mod stream_location {
     /// A specification of a stream's location.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Location {
         /// The stream is part of another computation within the current
@@ -2957,6 +3029,7 @@ pub mod stream_location {
     }
 }
 /// State family configuration.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StateFamilyConfig {
     /// The state family value.
@@ -2967,6 +3040,7 @@ pub struct StateFamilyConfig {
     pub is_read: bool,
 }
 /// All configuration data for a particular Computation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ComputationTopology {
     /// The system stage name.
@@ -2991,6 +3065,7 @@ pub struct ComputationTopology {
 /// Location information for a specific key-range of a sharded computation.
 /// Currently we only support UTF-8 character splits to simplify encoding into
 /// JSON.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KeyRangeLocation {
     /// The start (inclusive) of the key range.
@@ -3016,6 +3091,7 @@ pub struct KeyRangeLocation {
     pub deprecated_persistent_directory: ::prost::alloc::string::String,
 }
 /// Describes mounted data disk.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MountedDataDisk {
     /// The name of the data disk.
@@ -3026,6 +3102,7 @@ pub struct MountedDataDisk {
     pub data_disk: ::prost::alloc::string::String,
 }
 /// Data disk assignment for a given VM instance.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataDiskAssignment {
     /// VM instance name the data disks mounted to, for example
@@ -3043,6 +3120,7 @@ pub struct DataDiskAssignment {
 /// computation.
 /// Currently we only support UTF-8 character splits to simplify encoding into
 /// JSON.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KeyRangeDataDiskAssignment {
     /// The start (inclusive) of the key range.
@@ -3060,6 +3138,7 @@ pub struct KeyRangeDataDiskAssignment {
 }
 /// Describes full or partial data disk assignment information of the computation
 /// ranges.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StreamingComputationRanges {
     /// The ID of the computation.
@@ -3070,6 +3149,7 @@ pub struct StreamingComputationRanges {
     pub range_assignments: ::prost::alloc::vec::Vec<KeyRangeDataDiskAssignment>,
 }
 /// Streaming appliance snapshot configuration.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StreamingApplianceSnapshotConfig {
     /// If set, indicates the snapshot id for the snapshot being performed.
@@ -3080,6 +3160,7 @@ pub struct StreamingApplianceSnapshotConfig {
     pub import_state_endpoint: ::prost::alloc::string::String,
 }
 /// Response to the request to launch a job from Flex Template.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LaunchFlexTemplateResponse {
     /// The job that was launched, if the request was not a dry run and
@@ -3088,6 +3169,7 @@ pub struct LaunchFlexTemplateResponse {
     pub job: ::core::option::Option<Job>,
 }
 /// Container Spec.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ContainerSpec {
     /// Name of the docker container image. E.g., gcr.io/project/some-image
@@ -3104,6 +3186,7 @@ pub struct ContainerSpec {
     pub default_environment: ::core::option::Option<FlexTemplateRuntimeEnvironment>,
 }
 /// Launch FlexTemplate Parameter.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LaunchFlexTemplateParameter {
     /// Required. The job name to use for the created job. For update job request,
@@ -3147,6 +3230,7 @@ pub struct LaunchFlexTemplateParameter {
 /// Nested message and enum types in `LaunchFlexTemplateParameter`.
 pub mod launch_flex_template_parameter {
     /// Launch Mechanism.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Template {
         /// Spec about the container image to launch.
@@ -3159,6 +3243,7 @@ pub mod launch_flex_template_parameter {
     }
 }
 /// The environment values to be set at runtime for flex template.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FlexTemplateRuntimeEnvironment {
     /// The initial number of Google Compute Engine instances for the job.
@@ -3273,6 +3358,7 @@ pub struct FlexTemplateRuntimeEnvironment {
     pub launcher_machine_type: ::prost::alloc::string::String,
 }
 /// A request to launch a Cloud Dataflow job from a FlexTemplate.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LaunchFlexTemplateRequest {
     /// Required. The ID of the Cloud Platform project that the job belongs to.
@@ -3292,6 +3378,7 @@ pub struct LaunchFlexTemplateRequest {
     pub validate_only: bool,
 }
 /// The environment values to set at runtime.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RuntimeEnvironment {
     /// The initial number of Google Compute Engine instnaces for the job.
@@ -3377,6 +3464,7 @@ pub struct RuntimeEnvironment {
     pub enable_streaming_engine: bool,
 }
 /// Metadata for a specific parameter.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ParameterMetadata {
     /// Required. The name of the parameter.
@@ -3406,6 +3494,7 @@ pub struct ParameterMetadata {
     >,
 }
 /// Metadata describing a template.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TemplateMetadata {
     /// Required. The name of the template.
@@ -3419,6 +3508,7 @@ pub struct TemplateMetadata {
     pub parameters: ::prost::alloc::vec::Vec<ParameterMetadata>,
 }
 /// SDK Information.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SdkInfo {
     /// Required. The SDK Language.
@@ -3466,6 +3556,7 @@ pub mod sdk_info {
     }
 }
 /// RuntimeMetadata describing a runtime environment.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RuntimeMetadata {
     /// SDK Info for the template.
@@ -3476,6 +3567,7 @@ pub struct RuntimeMetadata {
     pub parameters: ::prost::alloc::vec::Vec<ParameterMetadata>,
 }
 /// A request to create a Cloud Dataflow job from a template.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateJobFromTemplateRequest {
     /// Required. The ID of the Cloud Platform project that the job belongs to.
@@ -3505,6 +3597,7 @@ pub struct CreateJobFromTemplateRequest {
 /// Nested message and enum types in `CreateJobFromTemplateRequest`.
 pub mod create_job_from_template_request {
     /// The template from which to create the job.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Template {
         /// Required. A Cloud Storage path to the template from which to
@@ -3515,6 +3608,7 @@ pub mod create_job_from_template_request {
     }
 }
 /// A request to retrieve a Cloud Dataflow job template.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetTemplateRequest {
     /// Required. The ID of the Cloud Platform project that the job belongs to.
@@ -3564,6 +3658,7 @@ pub mod get_template_request {
         }
     }
     /// The template from which to create the job.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Template {
         /// Required. A Cloud Storage path to the template from which to
@@ -3574,6 +3669,7 @@ pub mod get_template_request {
     }
 }
 /// The response to a GetTemplate request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetTemplateResponse {
     /// The status of the get template request. Any problems with the
@@ -3629,6 +3725,7 @@ pub mod get_template_response {
     }
 }
 /// Parameters to provide to the template being launched.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LaunchTemplateParameters {
     /// Required. The job name to use for the created job.
@@ -3656,6 +3753,7 @@ pub struct LaunchTemplateParameters {
     >,
 }
 /// A request to launch a template.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LaunchTemplateRequest {
     /// Required. The ID of the Cloud Platform project that the job belongs to.
@@ -3681,6 +3779,7 @@ pub struct LaunchTemplateRequest {
 /// Nested message and enum types in `LaunchTemplateRequest`.
 pub mod launch_template_request {
     /// The template from which to create the job.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Template {
         /// A Cloud Storage path to the template from which to create
@@ -3694,6 +3793,7 @@ pub mod launch_template_request {
     }
 }
 /// Response to the request to launch a template.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LaunchTemplateResponse {
     /// The job that was launched, if the request was not a dry run and
@@ -3703,6 +3803,7 @@ pub struct LaunchTemplateResponse {
 }
 /// Used in the error_details field of a google.rpc.Status message, this
 /// indicates problems with the template parameter.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InvalidTemplateParameters {
     /// Describes all parameter violations in a template request.
@@ -3714,6 +3815,7 @@ pub struct InvalidTemplateParameters {
 /// Nested message and enum types in `InvalidTemplateParameters`.
 pub mod invalid_template_parameters {
     /// A specific template-parameter violation.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ParameterViolation {
         /// The parameter that failed to validate.
@@ -3725,6 +3827,7 @@ pub mod invalid_template_parameters {
     }
 }
 /// Params which should be passed when launching a dynamic template.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DynamicTemplateLaunchParams {
     /// Path to dynamic template spec file on Cloud Storage.

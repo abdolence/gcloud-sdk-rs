@@ -1,4 +1,5 @@
 /// Represents the metadata of the long-running operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationMetadata {
     /// Output only. The time the operation was created.
@@ -27,6 +28,7 @@ pub struct OperationMetadata {
     pub api_version: ::prost::alloc::string::String,
 }
 /// Specification of a port-based selector.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TrafficPortSelector {
     /// Optional. A list of ports. Can be port numbers or port range
@@ -38,6 +40,7 @@ pub struct TrafficPortSelector {
 }
 /// A definition of a matcher that selects endpoints to which the policies
 /// should be applied.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EndpointMatcher {
     /// Specifies type of the matcher used for this endpoint matcher.
@@ -47,6 +50,7 @@ pub struct EndpointMatcher {
 /// Nested message and enum types in `EndpointMatcher`.
 pub mod endpoint_matcher {
     /// The matcher that is based on node metadata presented by xDS clients.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct MetadataLabelMatcher {
         /// Specifies how matching should be done.
@@ -93,6 +97,7 @@ pub mod endpoint_matcher {
     /// Nested message and enum types in `MetadataLabelMatcher`.
     pub mod metadata_label_matcher {
         /// Defines a name-pair value for a single label.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct MetadataLabels {
             /// Required. Label name presented as key in xDS Node Metadata.
@@ -143,6 +148,7 @@ pub mod endpoint_matcher {
         }
     }
     /// Specifies type of the matcher used for this endpoint matcher.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum MatcherType {
         /// The matcher is based on node metadata presented by xDS clients.
@@ -154,6 +160,7 @@ pub mod endpoint_matcher {
 /// on the endpoints that match specific criteria.
 /// For example, this resource can be used to apply "authentication config"
 /// an all endpoints that serve on port 8080.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EndpointPolicy {
     /// Required. Name of the EndpointPolicy resource. It matches pattern
@@ -248,6 +255,7 @@ pub mod endpoint_policy {
     }
 }
 /// Request used with the ListEndpointPolicies method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEndpointPoliciesRequest {
     /// Required. The project and location from which the EndpointPolicies should be
@@ -265,6 +273,7 @@ pub struct ListEndpointPoliciesRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response returned by the ListEndpointPolicies method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEndpointPoliciesResponse {
     /// List of EndpointPolicy resources.
@@ -277,6 +286,7 @@ pub struct ListEndpointPoliciesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request used with the GetEndpointPolicy method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetEndpointPolicyRequest {
     /// Required. A name of the EndpointPolicy to get. Must be in the format
@@ -285,6 +295,7 @@ pub struct GetEndpointPolicyRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request used with the CreateEndpointPolicy method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateEndpointPolicyRequest {
     /// Required. The parent resource of the EndpointPolicy. Must be in the
@@ -300,6 +311,7 @@ pub struct CreateEndpointPolicyRequest {
     pub endpoint_policy: ::core::option::Option<EndpointPolicy>,
 }
 /// Request used with the UpdateEndpointPolicy method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateEndpointPolicyRequest {
     /// Optional. Field mask is used to specify the fields to be overwritten in the
@@ -314,6 +326,7 @@ pub struct UpdateEndpointPolicyRequest {
     pub endpoint_policy: ::core::option::Option<EndpointPolicy>,
 }
 /// Request used with the DeleteEndpointPolicy method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteEndpointPolicyRequest {
     /// Required. A name of the EndpointPolicy to delete. Must be in the format
@@ -325,6 +338,7 @@ pub struct DeleteEndpointPolicyRequest {
 /// It captures the ip:port over which the services are exposed by the proxy,
 /// along with any policy configurations. Routes have reference to to Gateways to
 /// dictate how requests should be routed by this Gateway.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Gateway {
     /// Required. Name of the Gateway resource. It matches pattern
@@ -415,6 +429,7 @@ pub mod gateway {
     }
 }
 /// Request used with the ListGateways method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListGatewaysRequest {
     /// Required. The project and location from which the Gateways should be
@@ -431,6 +446,7 @@ pub struct ListGatewaysRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response returned by the ListGateways method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListGatewaysResponse {
     /// List of Gateway resources.
@@ -443,6 +459,7 @@ pub struct ListGatewaysResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request used by the GetGateway method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetGatewayRequest {
     /// Required. A name of the Gateway to get. Must be in the format
@@ -451,6 +468,7 @@ pub struct GetGatewayRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request used by the CreateGateway method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateGatewayRequest {
     /// Required. The parent resource of the Gateway. Must be in the
@@ -465,6 +483,7 @@ pub struct CreateGatewayRequest {
     pub gateway: ::core::option::Option<Gateway>,
 }
 /// Request used by the UpdateGateway method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateGatewayRequest {
     /// Optional. Field mask is used to specify the fields to be overwritten in the
@@ -479,6 +498,7 @@ pub struct UpdateGatewayRequest {
     pub gateway: ::core::option::Option<Gateway>,
 }
 /// Request used by the DeleteGateway method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteGatewayRequest {
     /// Required. A name of the Gateway to delete. Must be in the format
@@ -488,6 +508,7 @@ pub struct DeleteGatewayRequest {
 }
 /// GrpcRoute is the resource defining how gRPC traffic routed by a Mesh
 /// or Gateway resource is routed.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GrpcRoute {
     /// Required. Name of the GrpcRoute resource. It matches pattern
@@ -570,6 +591,7 @@ pub struct GrpcRoute {
 /// Nested message and enum types in `GrpcRoute`.
 pub mod grpc_route {
     /// Specifies a match against a method.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct MethodMatch {
         /// Optional. Specifies how to match against the name. If not specified, a default
@@ -628,6 +650,7 @@ pub mod grpc_route {
         }
     }
     /// A match against a collection of headers.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct HeaderMatch {
         /// Optional. Specifies how to match against the value of the header. If not
@@ -681,6 +704,7 @@ pub mod grpc_route {
     }
     /// Criteria for matching traffic. A RouteMatch will be considered to match
     /// when all supplied fields match.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct RouteMatch {
         /// Optional. A gRPC method to match against. If this field is empty or omitted, will
@@ -692,6 +716,7 @@ pub mod grpc_route {
         pub headers: ::prost::alloc::vec::Vec<HeaderMatch>,
     }
     /// The destination to which traffic will be routed.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Destination {
         /// Optional. Specifies the proportion of requests forwarded to the backend referenced
@@ -717,6 +742,7 @@ pub mod grpc_route {
     /// Nested message and enum types in `Destination`.
     pub mod destination {
         /// Specifies the kind of destination to which traffic will be routed.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum DestinationType {
             /// Required. The URL of a destination service to which to route traffic. Must refer
@@ -731,6 +757,7 @@ pub mod grpc_route {
     /// introduced on a percentage of requests before sending those requests to the
     /// destination service. Similarly requests from clients can be aborted by for
     /// a percentage of requests.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct FaultInjectionPolicy {
         /// The specification for injecting delay to client requests.
@@ -744,6 +771,7 @@ pub mod grpc_route {
     pub mod fault_injection_policy {
         /// Specification of how client requests are delayed as part of fault
         /// injection before being sent to a destination.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Delay {
             /// Specify a fixed delay before forwarding the request.
@@ -757,6 +785,7 @@ pub mod grpc_route {
         }
         /// Specification of how client requests are aborted as part of fault
         /// injection before being sent to a destination.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Abort {
             /// The HTTP status code used to abort the request.
@@ -772,6 +801,7 @@ pub mod grpc_route {
         }
     }
     /// The specifications for retries.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct RetryPolicy {
         /// - connect-failure: Router will retry on failures connecting to Backend
@@ -798,6 +828,7 @@ pub mod grpc_route {
         pub num_retries: u32,
     }
     /// Specifies how to route matched traffic.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct RouteAction {
         /// Optional. The destination services to which traffic should be forwarded. If
@@ -826,6 +857,7 @@ pub mod grpc_route {
         pub retry_policy: ::core::option::Option<RetryPolicy>,
     }
     /// Describes how to route traffic.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct RouteRule {
         /// Optional. Matches define conditions used for matching the rule against incoming
@@ -840,6 +872,7 @@ pub mod grpc_route {
     }
 }
 /// Request used with the ListGrpcRoutes method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListGrpcRoutesRequest {
     /// Required. The project and location from which the GrpcRoutes should be
@@ -856,6 +889,7 @@ pub struct ListGrpcRoutesRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response returned by the ListGrpcRoutes method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListGrpcRoutesResponse {
     /// List of GrpcRoute resources.
@@ -868,6 +902,7 @@ pub struct ListGrpcRoutesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request used by the GetGrpcRoute method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetGrpcRouteRequest {
     /// Required. A name of the GrpcRoute to get. Must be in the format
@@ -876,6 +911,7 @@ pub struct GetGrpcRouteRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request used by the CreateGrpcRoute method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateGrpcRouteRequest {
     /// Required. The parent resource of the GrpcRoute. Must be in the
@@ -890,6 +926,7 @@ pub struct CreateGrpcRouteRequest {
     pub grpc_route: ::core::option::Option<GrpcRoute>,
 }
 /// Request used by the UpdateGrpcRoute method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateGrpcRouteRequest {
     /// Optional. Field mask is used to specify the fields to be overwritten in the
@@ -904,6 +941,7 @@ pub struct UpdateGrpcRouteRequest {
     pub grpc_route: ::core::option::Option<GrpcRoute>,
 }
 /// Request used by the DeleteGrpcRoute method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteGrpcRouteRequest {
     /// Required. A name of the GrpcRoute to delete. Must be in the format
@@ -913,6 +951,7 @@ pub struct DeleteGrpcRouteRequest {
 }
 /// HttpRoute is the resource defining how HTTP traffic should be routed by a
 /// Mesh or Gateway resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HttpRoute {
     /// Required. Name of the HttpRoute resource. It matches pattern
@@ -988,6 +1027,7 @@ pub struct HttpRoute {
 /// Nested message and enum types in `HttpRoute`.
 pub mod http_route {
     /// Specifies how to select a route rule based on HTTP request headers.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct HeaderMatch {
         /// The name of the HTTP header to match against.
@@ -1003,6 +1043,7 @@ pub mod http_route {
     /// Nested message and enum types in `HeaderMatch`.
     pub mod header_match {
         /// Represents an integer value range.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct IntegerRange {
             /// Start of the range (inclusive)
@@ -1012,6 +1053,7 @@ pub mod http_route {
             #[prost(int32, tag = "2")]
             pub end: i32,
         }
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum MatchType {
             /// The value of the header should match exactly the content of
@@ -1040,6 +1082,7 @@ pub mod http_route {
         }
     }
     /// Specifications to match a query parameter in the request.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct QueryParameterMatch {
         /// The name of the query parameter to match.
@@ -1050,6 +1093,7 @@ pub mod http_route {
     }
     /// Nested message and enum types in `QueryParameterMatch`.
     pub mod query_parameter_match {
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum MatchType {
             /// The value of the query parameter must exactly match the contents of
@@ -1077,6 +1121,7 @@ pub mod http_route {
     /// RouteMatch defines specifications used to match requests. If multiple match
     /// types are set, this RouteMatch will match if ALL type of matches are
     /// matched.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct RouteMatch {
         /// Specifies if prefix_match and full_path_match matches are case sensitive.
@@ -1096,6 +1141,7 @@ pub mod http_route {
     }
     /// Nested message and enum types in `RouteMatch`.
     pub mod route_match {
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum PathMatch {
             /// The HTTP request path value should exactly match this value.
@@ -1123,6 +1169,7 @@ pub mod http_route {
         }
     }
     /// Specifications of a destination to which the request should be routed to.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Destination {
         /// The URL of a BackendService to route traffic to.
@@ -1146,6 +1193,7 @@ pub mod http_route {
         pub weight: i32,
     }
     /// The specification for redirecting traffic.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Redirect {
         /// The host that will be used in the redirect response instead of the one
@@ -1238,6 +1286,7 @@ pub mod http_route {
     /// introduced by client proxy on a percentage of requests before sending those
     /// requests to the destination service. Similarly requests can be aborted by
     /// client proxy for a percentage of requests.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct FaultInjectionPolicy {
         /// The specification for injecting delay to client requests.
@@ -1251,6 +1300,7 @@ pub mod http_route {
     pub mod fault_injection_policy {
         /// Specification of how client requests are delayed as part of fault
         /// injection before being sent to a destination.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Delay {
             /// Specify a fixed delay before forwarding the request.
@@ -1264,6 +1314,7 @@ pub mod http_route {
         }
         /// Specification of how client requests are aborted as part of fault
         /// injection before being sent to a destination.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Abort {
             /// The HTTP status code used to abort the request.
@@ -1280,6 +1331,7 @@ pub mod http_route {
     }
     /// The specification for modifying HTTP header in HTTP request and HTTP
     /// response.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct HeaderModifier {
         /// Completely overwrite/replace the headers with given map where key is the
@@ -1302,6 +1354,7 @@ pub mod http_route {
     }
     /// The specification for modifying the URL of the request, prior to forwarding
     /// the request to the destination.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct UrlRewrite {
         /// Prior to forwarding the request to the selected destination, the matching
@@ -1314,6 +1367,7 @@ pub mod http_route {
         pub host_rewrite: ::prost::alloc::string::String,
     }
     /// The specifications for retries.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct RetryPolicy {
         /// Specifies one or more conditions when this retry policy applies. Valid
@@ -1352,6 +1406,7 @@ pub mod http_route {
     /// destination service. The proxy does not wait for responses from the
     /// shadow service. Prior to sending traffic to the shadow service, the
     /// host/authority header is suffixed with -shadow.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct RequestMirrorPolicy {
         /// The destination the requests will be mirrored to. The weight of the
@@ -1360,6 +1415,7 @@ pub mod http_route {
         pub destination: ::core::option::Option<Destination>,
     }
     /// The Specification for allowing client side cross-origin requests.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CorsPolicy {
         /// Specifies the list of origins that will be allowed to do CORS requests.
@@ -1400,6 +1456,7 @@ pub mod http_route {
         pub disabled: bool,
     }
     /// The specifications for routing traffic and applying associated policies.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct RouteAction {
         /// The destination to which traffic should be forwarded.
@@ -1452,6 +1509,7 @@ pub mod http_route {
     }
     /// Specifies how to match traffic and how to route traffic when traffic is
     /// matched.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct RouteRule {
         /// A list of matches define conditions used for matching the rule against
@@ -1471,6 +1529,7 @@ pub mod http_route {
     }
 }
 /// Request used with the ListHttpRoutes method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListHttpRoutesRequest {
     /// Required. The project and location from which the HttpRoutes should be
@@ -1487,6 +1546,7 @@ pub struct ListHttpRoutesRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response returned by the ListHttpRoutes method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListHttpRoutesResponse {
     /// List of HttpRoute resources.
@@ -1499,6 +1559,7 @@ pub struct ListHttpRoutesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request used by the GetHttpRoute method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetHttpRouteRequest {
     /// Required. A name of the HttpRoute to get. Must be in the format
@@ -1507,6 +1568,7 @@ pub struct GetHttpRouteRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request used by the HttpRoute method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateHttpRouteRequest {
     /// Required. The parent resource of the HttpRoute. Must be in the
@@ -1521,6 +1583,7 @@ pub struct CreateHttpRouteRequest {
     pub http_route: ::core::option::Option<HttpRoute>,
 }
 /// Request used by the UpdateHttpRoute method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateHttpRouteRequest {
     /// Optional. Field mask is used to specify the fields to be overwritten in the
@@ -1535,6 +1598,7 @@ pub struct UpdateHttpRouteRequest {
     pub http_route: ::core::option::Option<HttpRoute>,
 }
 /// Request used by the DeleteHttpRoute method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteHttpRouteRequest {
     /// Required. A name of the HttpRoute to delete. Must be in the format
@@ -1545,6 +1609,7 @@ pub struct DeleteHttpRouteRequest {
 /// Mesh represents a logical configuration grouping for workload to workload
 /// communication within a service mesh. Routes that point to mesh dictate how
 /// requests are routed within this logical mesh boundary.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Mesh {
     /// Required. Name of the Mesh resource. It matches pattern
@@ -1579,6 +1644,7 @@ pub struct Mesh {
     pub interception_port: i32,
 }
 /// Request used with the ListMeshes method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListMeshesRequest {
     /// Required. The project and location from which the Meshes should be
@@ -1595,6 +1661,7 @@ pub struct ListMeshesRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response returned by the ListMeshes method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListMeshesResponse {
     /// List of Mesh resources.
@@ -1607,6 +1674,7 @@ pub struct ListMeshesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request used by the GetMesh method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetMeshRequest {
     /// Required. A name of the Mesh to get. Must be in the format
@@ -1615,6 +1683,7 @@ pub struct GetMeshRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request used by the CreateMesh method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateMeshRequest {
     /// Required. The parent resource of the Mesh. Must be in the
@@ -1629,6 +1698,7 @@ pub struct CreateMeshRequest {
     pub mesh: ::core::option::Option<Mesh>,
 }
 /// Request used by the UpdateMesh method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateMeshRequest {
     /// Optional. Field mask is used to specify the fields to be overwritten in the
@@ -1643,6 +1713,7 @@ pub struct UpdateMeshRequest {
     pub mesh: ::core::option::Option<Mesh>,
 }
 /// Request used by the DeleteMesh method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteMeshRequest {
     /// Required. A name of the Mesh to delete. Must be in the format
@@ -1652,6 +1723,7 @@ pub struct DeleteMeshRequest {
 }
 /// ServiceBinding is the resource that defines a Service Directory Service to
 /// be used in a BackendService resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ServiceBinding {
     /// Required. Name of the ServiceBinding resource. It matches pattern
@@ -1679,6 +1751,7 @@ pub struct ServiceBinding {
     >,
 }
 /// Request used with the ListServiceBindings method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListServiceBindingsRequest {
     /// Required. The project and location from which the ServiceBindings should be
@@ -1695,6 +1768,7 @@ pub struct ListServiceBindingsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response returned by the ListServiceBindings method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListServiceBindingsResponse {
     /// List of ServiceBinding resources.
@@ -1707,6 +1781,7 @@ pub struct ListServiceBindingsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request used by the GetServiceBinding method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetServiceBindingRequest {
     /// Required. A name of the ServiceBinding to get. Must be in the format
@@ -1715,6 +1790,7 @@ pub struct GetServiceBindingRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request used by the ServiceBinding method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateServiceBindingRequest {
     /// Required. The parent resource of the ServiceBinding. Must be in the
@@ -1729,6 +1805,7 @@ pub struct CreateServiceBindingRequest {
     pub service_binding: ::core::option::Option<ServiceBinding>,
 }
 /// Request used by the DeleteServiceBinding method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteServiceBindingRequest {
     /// Required. A name of the ServiceBinding to delete. Must be in the format
@@ -1738,6 +1815,7 @@ pub struct DeleteServiceBindingRequest {
 }
 /// TcpRoute is the resource defining how TCP traffic should be routed by a
 /// Mesh/Gateway resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TcpRoute {
     /// Required. Name of the TcpRoute resource. It matches pattern
@@ -1788,6 +1866,7 @@ pub struct TcpRoute {
 pub mod tcp_route {
     /// Specifies how to match traffic and how to route traffic when traffic is
     /// matched.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct RouteRule {
         /// Optional. RouteMatch defines the predicate used to match requests to a given
@@ -1804,6 +1883,7 @@ pub mod tcp_route {
     /// Multiple match types are "OR"ed for evaluation.
     /// If no routeMatch field is specified, this rule will unconditionally match
     /// traffic.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct RouteMatch {
         /// Required. Must be specified in the CIDR range format. A CIDR range consists of an
@@ -1822,6 +1902,7 @@ pub mod tcp_route {
         pub port: ::prost::alloc::string::String,
     }
     /// The specifications for routing traffic and applying associated policies.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct RouteAction {
         /// Optional. The destination services to which traffic should be forwarded. At least
@@ -1834,6 +1915,7 @@ pub mod tcp_route {
         pub original_destination: bool,
     }
     /// Describe the destination for traffic to be routed to.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct RouteDestination {
         /// Required. The URL of a BackendService to route traffic to.
@@ -1858,6 +1940,7 @@ pub mod tcp_route {
     }
 }
 /// Request used with the ListTcpRoutes method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTcpRoutesRequest {
     /// Required. The project and location from which the TcpRoutes should be
@@ -1874,6 +1957,7 @@ pub struct ListTcpRoutesRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response returned by the ListTcpRoutes method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTcpRoutesResponse {
     /// List of TcpRoute resources.
@@ -1886,6 +1970,7 @@ pub struct ListTcpRoutesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request used by the GetTcpRoute method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetTcpRouteRequest {
     /// Required. A name of the TcpRoute to get. Must be in the format
@@ -1894,6 +1979,7 @@ pub struct GetTcpRouteRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request used by the TcpRoute method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateTcpRouteRequest {
     /// Required. The parent resource of the TcpRoute. Must be in the
@@ -1909,6 +1995,7 @@ pub struct CreateTcpRouteRequest {
     pub tcp_route: ::core::option::Option<TcpRoute>,
 }
 /// Request used by the UpdateTcpRoute method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateTcpRouteRequest {
     /// Optional. Field mask is used to specify the fields to be overwritten in the
@@ -1923,6 +2010,7 @@ pub struct UpdateTcpRouteRequest {
     pub tcp_route: ::core::option::Option<TcpRoute>,
 }
 /// Request used by the DeleteTcpRoute method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteTcpRouteRequest {
     /// Required. A name of the TcpRoute to delete. Must be in the format
@@ -1932,6 +2020,7 @@ pub struct DeleteTcpRouteRequest {
 }
 /// TlsRoute defines how traffic should be routed based on SNI and other matching
 /// L3 attributes.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TlsRoute {
     /// Required. Name of the TlsRoute resource. It matches pattern
@@ -1976,6 +2065,7 @@ pub struct TlsRoute {
 pub mod tls_route {
     /// Specifies how to match traffic and how to route traffic when traffic is
     /// matched.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct RouteRule {
         /// Required. RouteMatch defines the predicate used to match requests to a given
@@ -1990,6 +2080,7 @@ pub mod tls_route {
     /// Multiple match types are "AND"ed for evaluation.
     /// If no routeMatch field is specified, this rule will unconditionally match
     /// traffic.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct RouteMatch {
         /// Optional. SNI (server name indicator) to match against.
@@ -2010,6 +2101,7 @@ pub mod tls_route {
         pub alpn: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
     /// The specifications for routing traffic and applying associated policies.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct RouteAction {
         /// Required. The destination services to which traffic should be forwarded. At least
@@ -2018,6 +2110,7 @@ pub mod tls_route {
         pub destinations: ::prost::alloc::vec::Vec<RouteDestination>,
     }
     /// Describe the destination for traffic to be routed to.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct RouteDestination {
         /// Required. The URL of a BackendService to route traffic to.
@@ -2032,6 +2125,7 @@ pub mod tls_route {
     }
 }
 /// Request used with the ListTlsRoutes method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTlsRoutesRequest {
     /// Required. The project and location from which the TlsRoutes should be
@@ -2048,6 +2142,7 @@ pub struct ListTlsRoutesRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response returned by the ListTlsRoutes method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTlsRoutesResponse {
     /// List of TlsRoute resources.
@@ -2060,6 +2155,7 @@ pub struct ListTlsRoutesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request used by the GetTlsRoute method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetTlsRouteRequest {
     /// Required. A name of the TlsRoute to get. Must be in the format
@@ -2068,6 +2164,7 @@ pub struct GetTlsRouteRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request used by the TlsRoute method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateTlsRouteRequest {
     /// Required. The parent resource of the TlsRoute. Must be in the
@@ -2083,6 +2180,7 @@ pub struct CreateTlsRouteRequest {
     pub tls_route: ::core::option::Option<TlsRoute>,
 }
 /// Request used by the UpdateTlsRoute method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateTlsRouteRequest {
     /// Optional. Field mask is used to specify the fields to be overwritten in the
@@ -2097,6 +2195,7 @@ pub struct UpdateTlsRouteRequest {
     pub tls_route: ::core::option::Option<TlsRoute>,
 }
 /// Request used by the DeleteTlsRoute method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteTlsRouteRequest {
     /// Required. A name of the TlsRoute to delete. Must be in the format

@@ -1,4 +1,5 @@
 /// Request message for the Parse method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ParseRequest {
     /// Required. Source text in CEL syntax.
@@ -15,6 +16,7 @@ pub struct ParseRequest {
     pub disable_macros: bool,
 }
 /// Response message for the Parse method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ParseResponse {
     /// The parsed representation, or unset if parsing failed.
@@ -25,6 +27,7 @@ pub struct ParseResponse {
     pub issues: ::prost::alloc::vec::Vec<super::super::super::super::rpc::Status>,
 }
 /// Request message for the Check method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CheckRequest {
     /// Required. The parsed representation of the CEL program.
@@ -46,6 +49,7 @@ pub struct CheckRequest {
     pub no_std_env: bool,
 }
 /// Response message for the Check method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CheckResponse {
     /// The annotated representation, or unset if checking failed.
@@ -56,6 +60,7 @@ pub struct CheckResponse {
     pub issues: ::prost::alloc::vec::Vec<super::super::super::super::rpc::Status>,
 }
 /// Request message for the Eval method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EvalRequest {
     /// Bindings for the external variables.  The types SHOULD be compatible
@@ -75,6 +80,7 @@ pub struct EvalRequest {
 /// Nested message and enum types in `EvalRequest`.
 pub mod eval_request {
     /// Required. Either the parsed or annotated representation of the CEL program.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ExprKind {
         /// Evaluate based on the parsed representation.
@@ -86,6 +92,7 @@ pub mod eval_request {
     }
 }
 /// Response message for the Eval method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EvalResponse {
     /// The execution result, or unset if execution couldn't start.
@@ -101,6 +108,7 @@ pub struct EvalResponse {
 /// Warnings or errors in service execution are represented by
 /// \[google.rpc.Status][google.rpc.Status\] messages, with the following message
 /// in the details field.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IssueDetails {
     /// The severity of the issue.

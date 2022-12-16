@@ -1,5 +1,6 @@
 /// A publisher account contains information relevant to the use of this API,
 /// such as the time zone used for the reports.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PublisherAccount {
     /// Resource name of this account.
@@ -57,6 +58,7 @@ pub struct PublisherAccount {
 ///          AND COUNTRY IN ('US', 'CN')
 ///      GROUP BY DATE, APP, COUNTRY
 ///      ORDER BY APP ASC, CLICKS DESC;
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NetworkReportSpec {
     /// The date range for which the report is generated.
@@ -101,6 +103,7 @@ pub struct NetworkReportSpec {
 /// Nested message and enum types in `NetworkReportSpec`.
 pub mod network_report_spec {
     /// Describes which report rows to match based on their dimension values.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DimensionFilter {
         /// Applies the filter criterion to the specified dimension.
@@ -113,6 +116,7 @@ pub mod network_report_spec {
     /// Nested message and enum types in `DimensionFilter`.
     pub mod dimension_filter {
         /// Filter operator to be applied.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Operator {
             /// Matches a row if its value for the specified dimension is in one of the
@@ -122,6 +126,7 @@ pub mod network_report_spec {
         }
     }
     /// Sorting direction to be applied on a dimension or a metric.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SortCondition {
         /// Sorting order of the dimension or metric.
@@ -134,6 +139,7 @@ pub mod network_report_spec {
     /// Nested message and enum types in `SortCondition`.
     pub mod sort_condition {
         /// Identifies which values to sort on.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum SortOn {
             /// Sort by the specified dimension.
@@ -327,6 +333,7 @@ pub mod network_report_spec {
 ///          AND COUNTRY IN ('US', 'CN')
 ///      GROUP BY AD_SOURCE, APP, COUNTRY
 ///      ORDER BY APP ASC;
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MediationReportSpec {
     /// The date range for which the report is generated.
@@ -371,6 +378,7 @@ pub struct MediationReportSpec {
 /// Nested message and enum types in `MediationReportSpec`.
 pub mod mediation_report_spec {
     /// Describes which report rows to match based on their dimension values.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DimensionFilter {
         /// Applies the filter criterion to the specified dimension.
@@ -383,6 +391,7 @@ pub mod mediation_report_spec {
     /// Nested message and enum types in `DimensionFilter`.
     pub mod dimension_filter {
         /// Filter operator to be applied.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Operator {
             /// Matches a row if its value for the specified dimension is in one of the
@@ -392,6 +401,7 @@ pub mod mediation_report_spec {
         }
     }
     /// Sorting direction to be applied on a dimension or a metric.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SortCondition {
         /// Sorting order of the dimension or metric.
@@ -404,6 +414,7 @@ pub mod mediation_report_spec {
     /// Nested message and enum types in `SortCondition`.
     pub mod sort_condition {
         /// Identifies which values to sort on.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum SortOn {
             /// Sort by the specified dimension.
@@ -562,6 +573,7 @@ pub mod mediation_report_spec {
     }
 }
 /// A row of the returning report.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReportRow {
     /// Map of dimension values in a row, with keys as enum name of the dimensions.
@@ -582,6 +594,7 @@ pub struct ReportRow {
 /// Nested message and enum types in `ReportRow`.
 pub mod report_row {
     /// Representation of a dimension value.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DimensionValue {
         /// Dimension value in the format specified in the report's spec Dimension
@@ -594,6 +607,7 @@ pub mod report_row {
         pub display_label: ::prost::alloc::string::String,
     }
     /// Representation of a metric value.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct MetricValue {
         /// Metric value in the format specified in the report's spec Metric enum
@@ -605,6 +619,7 @@ pub mod report_row {
     pub mod metric_value {
         /// Metric value in the format specified in the report's spec Metric enum
         /// name.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Value {
             /// Metric integer value.
@@ -622,6 +637,7 @@ pub mod report_row {
     }
 }
 /// Warnings associated with generation of the report.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReportWarning {
     /// Type of the warning.
@@ -691,6 +707,7 @@ pub mod report_warning {
 }
 /// Groups data helps to treat the generated report. Always sent as a first
 /// message in the stream response.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReportHeader {
     /// The date range for which the report is generated. This is identical to the
@@ -708,6 +725,7 @@ pub struct ReportHeader {
 }
 /// Groups data available after report generation, for example, warnings and row
 /// counts. Always sent as the last message in the stream response.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReportFooter {
     /// Warnings associated with generation of the report.
@@ -721,6 +739,7 @@ pub struct ReportFooter {
     pub matching_row_count: i64,
 }
 /// Specification of a single date range. Both dates are inclusive.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DateRange {
     /// Start date of the date range, inclusive. Must be less than or equal to the
@@ -734,6 +753,7 @@ pub struct DateRange {
 }
 /// Localization settings for reports, such as currency and language. It affects
 /// how metrics are calculated.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LocalizationSettings {
     /// Currency code of the earning related metrics, which is the 3-letter code
@@ -748,6 +768,7 @@ pub struct LocalizationSettings {
     pub language_code: ::prost::alloc::string::String,
 }
 /// List of string values.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StringList {
     /// The string values.
@@ -779,6 +800,7 @@ impl SortOrder {
     }
 }
 /// Request to retrieve the specified publisher account.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetPublisherAccountRequest {
     /// Resource name of the publisher account to retrieve.
@@ -788,6 +810,7 @@ pub struct GetPublisherAccountRequest {
 }
 /// Request to retrieve the AdMob publisher account accessible with the client
 /// credential. Currently all credentials have access to at most 1 account.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPublisherAccountsRequest {
     /// Maximum number of accounts to return.
@@ -800,6 +823,7 @@ pub struct ListPublisherAccountsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response for the publisher account list request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPublisherAccountsResponse {
     /// Publisher that the client credentials can access.
@@ -811,6 +835,7 @@ pub struct ListPublisherAccountsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request to generate an AdMob Mediation report.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateMediationReportRequest {
     /// Resource name of the account to generate the report for.
@@ -856,6 +881,7 @@ pub struct GenerateMediationReportRequest {
 ///      {
 ///        "footer": {"matching_row_count": 1}
 ///      }]
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateMediationReportResponse {
     /// Each stream response message contains one type of payload.
@@ -865,6 +891,7 @@ pub struct GenerateMediationReportResponse {
 /// Nested message and enum types in `GenerateMediationReportResponse`.
 pub mod generate_mediation_report_response {
     /// Each stream response message contains one type of payload.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Payload {
         /// Report generation settings that describes the report contents, such as
@@ -881,6 +908,7 @@ pub mod generate_mediation_report_response {
     }
 }
 /// Request to generate an AdMob Network report.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateNetworkReportRequest {
     /// Resource name of the account to generate the report for.
@@ -926,6 +954,7 @@ pub struct GenerateNetworkReportRequest {
 ///      {
 ///        "footer": {"matchingRowCount": 1}
 ///      }]
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateNetworkReportResponse {
     /// Each stream response message contains one type of payload.
@@ -935,6 +964,7 @@ pub struct GenerateNetworkReportResponse {
 /// Nested message and enum types in `GenerateNetworkReportResponse`.
 pub mod generate_network_report_response {
     /// Each stream response message contains one type of payload.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Payload {
         /// Report generation settings that describes the report contents, such as

@@ -1,6 +1,7 @@
 /// A RuntimeConfig resource is the primary resource in the Cloud RuntimeConfig
 /// service. A RuntimeConfig resource consists of metadata and a hierarchy of
 /// variables.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RuntimeConfig {
     /// The resource name of a runtime config. The name must have the format:
@@ -25,6 +26,7 @@ pub struct RuntimeConfig {
 /// `ports/serving_port` is a valid variable name. The variable value is an
 /// opaque string and only leaf variables can have values (that is, variables
 /// that do not have any child variables).
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Variable {
     /// The name of the variable resource, in the format:
@@ -64,6 +66,7 @@ pub mod variable {
     /// The value of the variable. It can be either a binary or a string
     /// value. You must specify one of either `value` or `text`. Specifying both
     /// will cause the server to return an error.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Contents {
         /// The binary value of the variable. The length of the value must be less
@@ -79,6 +82,7 @@ pub mod variable {
     }
 }
 /// The condition that a Waiter resource is waiting for.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EndCondition {
     /// The condition oneof holds the available condition types for this
@@ -102,6 +106,7 @@ pub mod end_condition {
     /// 3, however, because there is only 2 paths that start with `/foo`.
     /// Cardinality conditions are recursive; all subtrees under the specific
     /// path prefix are counted.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Cardinality {
         /// The root of the variable subtree to monitor. For example, `/foo`.
@@ -114,6 +119,7 @@ pub mod end_condition {
     }
     /// The condition oneof holds the available condition types for this
     /// EndCondition. Currently, the only available type is Cardinality.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Condition {
         /// The cardinality of the `EndCondition`.
@@ -137,6 +143,7 @@ pub mod end_condition {
 /// [Creating a
 /// Waiter](/deployment-manager/runtime-configurator/creating-a-waiter)
 /// documentation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Waiter {
     /// The name of the Waiter resource, in the format:
@@ -214,6 +221,7 @@ impl VariableState {
     }
 }
 /// Request for the `ListConfigs()` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListConfigsRequest {
     /// The [project
@@ -232,6 +240,7 @@ pub struct ListConfigsRequest {
 }
 /// `ListConfigs()` returns the following response. The order of returned
 /// objects is arbitrary; that is, it is not ordered in any particular way.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListConfigsResponse {
     /// A list of the configurations in the project. The order of returned
@@ -247,6 +256,7 @@ pub struct ListConfigsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Gets a RuntimeConfig resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetConfigRequest {
     /// The name of the RuntimeConfig resource to retrieve, in the format:
@@ -256,6 +266,7 @@ pub struct GetConfigRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Creates a RuntimeConfig resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateConfigRequest {
     /// The [project
@@ -280,6 +291,7 @@ pub struct CreateConfigRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for `UpdateConfig()` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateConfigRequest {
     /// The name of the RuntimeConfig resource to update, in the format:
@@ -292,6 +304,7 @@ pub struct UpdateConfigRequest {
     pub config: ::core::option::Option<RuntimeConfig>,
 }
 /// Request for the `DeleteConfig()` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteConfigRequest {
     /// The RuntimeConfig resource to delete, in the format:
@@ -301,6 +314,7 @@ pub struct DeleteConfigRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for the `ListVariables()` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListVariablesRequest {
     /// The path to the RuntimeConfig resource for which you want to list
@@ -330,6 +344,7 @@ pub struct ListVariablesRequest {
     pub return_values: bool,
 }
 /// Response for the `ListVariables()` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListVariablesResponse {
     /// A list of variables and their values. The order of returned variable
@@ -345,6 +360,7 @@ pub struct ListVariablesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request for the `WatchVariable()` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WatchVariableRequest {
     /// The name of the variable to watch, in the format:
@@ -362,6 +378,7 @@ pub struct WatchVariableRequest {
     pub newer_than: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Request for the `GetVariable()` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetVariableRequest {
     /// The name of the variable to return, in the format:
@@ -371,6 +388,7 @@ pub struct GetVariableRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for the `CreateVariable()` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateVariableRequest {
     /// The path to the RutimeConfig resource that this variable should belong to.
@@ -396,6 +414,7 @@ pub struct CreateVariableRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request for the `UpdateVariable()` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateVariableRequest {
     /// The name of the variable to update, in the format:
@@ -408,6 +427,7 @@ pub struct UpdateVariableRequest {
     pub variable: ::core::option::Option<Variable>,
 }
 /// Request for the `DeleteVariable()` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteVariableRequest {
     /// The name of the variable to delete, in the format:
@@ -421,6 +441,7 @@ pub struct DeleteVariableRequest {
     pub recursive: bool,
 }
 /// Request for the `ListWaiters()` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListWaitersRequest {
     /// The path to the configuration for which you want to get a list of waiters.
@@ -440,6 +461,7 @@ pub struct ListWaitersRequest {
 }
 /// Response for the `ListWaiters()` method.
 /// Order of returned waiter objects is arbitrary.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListWaitersResponse {
     /// Found waiters in the project.
@@ -454,6 +476,7 @@ pub struct ListWaitersResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request for the `GetWaiter()` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetWaiterRequest {
     /// The fully-qualified name of the Waiter resource object to retrieve, in the
@@ -464,6 +487,7 @@ pub struct GetWaiterRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for `CreateWaiter()` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateWaiterRequest {
     /// The path to the configuration that will own the waiter.
@@ -489,6 +513,7 @@ pub struct CreateWaiterRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request for the `DeleteWaiter()` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteWaiterRequest {
     /// The Waiter resource to delete, in the format:

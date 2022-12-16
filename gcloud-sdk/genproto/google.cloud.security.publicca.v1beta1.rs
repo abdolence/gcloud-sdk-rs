@@ -1,5 +1,6 @@
 /// A representation of an ExternalAccountKey used for [external account
 /// binding](<https://tools.ietf.org/html/rfc8555#section-7.3.4>) within ACME.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExternalAccountKey {
     /// Output only. Resource name.
@@ -18,6 +19,7 @@ pub struct ExternalAccountKey {
     pub b64_mac_key: ::prost::alloc::vec::Vec<u8>,
 }
 /// Creates a new \[ExternalAccountKey][google.cloud.security.publicca.v1beta1.ExternalAccountKey\] in a given project.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateExternalAccountKeyRequest {
     /// Required. The parent resource where this external_account_key will be created.

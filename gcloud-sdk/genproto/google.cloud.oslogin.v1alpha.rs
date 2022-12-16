@@ -1,5 +1,6 @@
 /// The user profile information used for logging in to a virtual machine on
 /// Google Compute Engine.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LoginProfile {
     /// A unique user ID for identifying the user.
@@ -19,6 +20,7 @@ pub struct LoginProfile {
     pub suspended: bool,
 }
 /// A request message for deleting a POSIX account entry.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeletePosixAccountRequest {
     /// A reference to the POSIX account to update. POSIX accounts are identified
@@ -28,6 +30,7 @@ pub struct DeletePosixAccountRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// A request message for deleting an SSH public key.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteSshPublicKeyRequest {
     /// The fingerprint of the public key to update. Public keys are identified by
@@ -37,6 +40,7 @@ pub struct DeleteSshPublicKeyRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// A request message for retrieving the login profile information for a user.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetLoginProfileRequest {
     /// The unique ID for the user in format `users/{user}`.
@@ -44,6 +48,7 @@ pub struct GetLoginProfileRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// A request message for retrieving an SSH public key.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetSshPublicKeyRequest {
     /// The fingerprint of the public key to retrieve. Public keys are identified
@@ -53,6 +58,7 @@ pub struct GetSshPublicKeyRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// A request message for importing an SSH public key.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportSshPublicKeyRequest {
     /// The unique ID for the user in format `users/{user}`.
@@ -66,6 +72,7 @@ pub struct ImportSshPublicKeyRequest {
     pub project_id: ::prost::alloc::string::String,
 }
 /// A response message for importing an SSH public key.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportSshPublicKeyResponse {
     /// The login profile information for the user.
@@ -73,6 +80,7 @@ pub struct ImportSshPublicKeyResponse {
     pub login_profile: ::core::option::Option<LoginProfile>,
 }
 /// A request message for updating an SSH public key.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateSshPublicKeyRequest {
     /// The fingerprint of the public key to update. Public keys are identified by

@@ -1,4 +1,5 @@
 /// The request message for \[Locations.ListLocations][google.cloud.location.Locations.ListLocations\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListLocationsRequest {
     /// The resource that owns the locations collection, if applicable.
@@ -15,6 +16,7 @@ pub struct ListLocationsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// The response message for \[Locations.ListLocations][google.cloud.location.Locations.ListLocations\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListLocationsResponse {
     /// A list of locations that matches the specified filter in the request.
@@ -25,6 +27,7 @@ pub struct ListLocationsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request message for \[Locations.GetLocation][google.cloud.location.Locations.GetLocation\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetLocationRequest {
     /// Resource name for the location.
@@ -32,6 +35,7 @@ pub struct GetLocationRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// A resource that represents Google Cloud Platform location.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Location {
     /// Resource name for the location, which may vary between implementations.

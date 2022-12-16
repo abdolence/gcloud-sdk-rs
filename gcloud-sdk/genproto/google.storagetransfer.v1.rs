@@ -1,4 +1,5 @@
 /// Google service account
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GoogleServiceAccount {
     /// Email address of the service account.
@@ -14,6 +15,7 @@ pub struct GoogleServiceAccount {
 ///
 /// For information on our data retention policy for user credentials, see
 /// [User credentials](/storage-transfer/docs/data-retention#user-credentials).
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AwsAccessKey {
     /// Required. AWS access key ID.
@@ -28,6 +30,7 @@ pub struct AwsAccessKey {
 ///
 /// For information on our data retention policy for user credentials, see
 /// [User credentials](/storage-transfer/docs/data-retention#user-credentials).
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AzureCredentials {
     /// Required. Azure shared access signature (SAS).
@@ -49,6 +52,7 @@ pub struct AzureCredentials {
 ///
 /// Transfers with a \[PosixFilesystem][google.storagetransfer.v1.PosixFilesystem\] source or destination don't support
 /// `ObjectConditions`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ObjectConditions {
     /// Ensures that objects are not transferred until a specific minimum time
@@ -160,6 +164,7 @@ pub struct ObjectConditions {
 /// name and its "last modification time" refers to the object's `updated`
 /// property of Cloud Storage objects, which changes when the content or the
 /// metadata of the object is updated.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GcsData {
     /// Required. Cloud Storage bucket name. Must meet
@@ -179,6 +184,7 @@ pub struct GcsData {
 }
 /// An AwsS3Data resource can be a data source, but not a data sink.
 /// In an AwsS3Data resource, an object's name is the S3 object's key name.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AwsS3Data {
     /// Required. S3 Bucket name (see
@@ -219,6 +225,7 @@ pub struct AwsS3Data {
 /// In an AzureBlobStorageData resource, a blobs's name is the [Azure Blob
 /// Storage blob's key
 /// name](<https://docs.microsoft.com/en-us/rest/api/storageservices/naming-and-referencing-containers--blobs--and-metadata#blob-names>).
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AzureBlobStorageData {
     /// Required. The name of the Azure Storage account.
@@ -280,6 +287,7 @@ pub struct AzureBlobStorageData {
 /// header in each response.
 ///
 /// * \[ObjectConditions][google.storagetransfer.v1.ObjectConditions\] have no effect when filtering objects to transfer.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HttpData {
     /// Required. The URL that points to the file that stores the object list
@@ -289,6 +297,7 @@ pub struct HttpData {
     pub list_url: ::prost::alloc::string::String,
 }
 /// A POSIX filesystem resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PosixFilesystem {
     /// Root directory path to the filesystem.
@@ -296,6 +305,7 @@ pub struct PosixFilesystem {
     pub root_directory: ::prost::alloc::string::String,
 }
 /// An AwsS3CompatibleData resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AwsS3CompatibleData {
     /// Required. Specifies the name of the bucket.
@@ -326,6 +336,7 @@ pub mod aws_s3_compatible_data {
     /// Specifies the metadata of the S3 compatible data provider. Each provider
     /// may contain some attributes that do not apply to all S3-compatible data
     /// providers. When not specified, S3CompatibleMetadata is used by default.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum DataProvider {
         /// A S3 compatible metadata.
@@ -335,6 +346,7 @@ pub mod aws_s3_compatible_data {
 }
 /// S3CompatibleMetadata contains the metadata fields that apply to the basic
 /// types of S3-compatible data providers.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct S3CompatibleMetadata {
     /// Specifies the authentication and authorization method used by the storage
@@ -500,6 +512,7 @@ pub mod s3_compatible_metadata {
     }
 }
 /// Represents an On-Premises Agent pool.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AgentPool {
     /// Required. Specifies a unique string that identifies the agent pool.
@@ -521,6 +534,7 @@ pub struct AgentPool {
 /// Nested message and enum types in `AgentPool`.
 pub mod agent_pool {
     /// Specifies a bandwidth limit for an agent pool.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct BandwidthLimit {
         /// Bandwidth rate in megabytes per second, distributed across all the agents
@@ -570,6 +584,7 @@ pub mod agent_pool {
     }
 }
 /// TransferOptions define the actions to be performed on objects in a transfer.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TransferOptions {
     /// When to overwrite objects that already exist in the sink. The default is
@@ -645,6 +660,7 @@ pub mod transfer_options {
     }
 }
 /// Configuration for running a transfer.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TransferSpec {
     /// Only objects that satisfy these object conditions are included in the set
@@ -689,6 +705,7 @@ pub struct TransferSpec {
 /// Nested message and enum types in `TransferSpec`.
 pub mod transfer_spec {
     /// The write sink for the data.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum DataSink {
         /// A Cloud Storage data sink.
@@ -699,6 +716,7 @@ pub mod transfer_spec {
         PosixDataSink(super::PosixFilesystem),
     }
     /// The read source of the data.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum DataSource {
         /// A Cloud Storage data source.
@@ -723,6 +741,7 @@ pub mod transfer_spec {
     /// Represents a supported data container type which is required for transfer
     /// jobs which needs a data source, a data sink and an intermediate location to
     /// transfer data through. This is validated on TransferJob creation.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum IntermediateDataLocation {
         /// Cloud Storage intermediate data location.
@@ -731,6 +750,7 @@ pub mod transfer_spec {
     }
 }
 /// Specifies the metadata options for running a transfer.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MetadataOptions {
     /// Specifies how symlinks should be handled by the transfer. By default,
@@ -1119,6 +1139,7 @@ pub mod metadata_options {
     }
 }
 /// Specifies where the manifest is located.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TransferManifest {
     /// Specifies the path to the manifest in Cloud Storage. The Google-managed
@@ -1129,6 +1150,7 @@ pub struct TransferManifest {
     pub location: ::prost::alloc::string::String,
 }
 /// Transfers can be scheduled to recur or to run just once.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Schedule {
     /// Required. The start date of a transfer. Date boundaries are determined
@@ -1193,6 +1215,7 @@ pub struct Schedule {
 }
 /// This resource represents the configuration of a transfer job that runs
 /// periodically.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TransferJob {
     /// A unique name (within the transfer project) assigned when the job is
@@ -1313,6 +1336,7 @@ pub mod transfer_job {
     }
 }
 /// An entry describing an error that has occurred.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ErrorLogEntry {
     /// Required. A URL that refers to the target (a data source, a data sink,
@@ -1325,6 +1349,7 @@ pub struct ErrorLogEntry {
 }
 /// A summary of errors by error code, plus a count and sample error log
 /// entries.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ErrorSummary {
     /// Required.
@@ -1341,6 +1366,7 @@ pub struct ErrorSummary {
     pub error_log_entries: ::prost::alloc::vec::Vec<ErrorLogEntry>,
 }
 /// A collection of counters that report the progress of a transfer operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TransferCounters {
     /// Objects found in the data source that are scheduled to be transferred,
@@ -1443,6 +1469,7 @@ pub struct TransferCounters {
 ///
 /// The `PubsubMessage.data` contains a \[TransferOperation][google.storagetransfer.v1.TransferOperation\] resource
 /// formatted according to the specified `PayloadFormat`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NotificationConfig {
     /// Required. The `Topic.name` of the Pub/Sub topic to which to publish
@@ -1555,6 +1582,7 @@ pub mod notification_config {
 /// See [Managing Transfer for on-premises jobs]
 /// (<https://cloud.google.com/storage-transfer/docs/managing-on-prem-jobs#viewing-logs>)
 /// for details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LoggingConfig {
     /// Specifies the actions to be logged. If empty, no logs are generated.
@@ -1649,6 +1677,7 @@ pub mod logging_config {
     }
 }
 /// A description of the execution of a transfer.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TransferOperation {
     /// A globally unique ID assigned by the system.
@@ -1732,6 +1761,7 @@ pub mod transfer_operation {
     }
 }
 /// Request passed to GetGoogleServiceAccount.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetGoogleServiceAccountRequest {
     /// Required. The ID of the Google Cloud project that the Google service
@@ -1740,6 +1770,7 @@ pub struct GetGoogleServiceAccountRequest {
     pub project_id: ::prost::alloc::string::String,
 }
 /// Request passed to CreateTransferJob.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateTransferJobRequest {
     /// Required. The job to create.
@@ -1747,6 +1778,7 @@ pub struct CreateTransferJobRequest {
     pub transfer_job: ::core::option::Option<TransferJob>,
 }
 /// Request passed to UpdateTransferJob.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateTransferJobRequest {
     /// Required. The name of job to update.
@@ -1782,6 +1814,7 @@ pub struct UpdateTransferJobRequest {
     pub update_transfer_job_field_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request passed to GetTransferJob.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetTransferJobRequest {
     /// Required. The job to get.
@@ -1793,6 +1826,7 @@ pub struct GetTransferJobRequest {
     pub project_id: ::prost::alloc::string::String,
 }
 /// Request passed to DeleteTransferJob.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteTransferJobRequest {
     /// Required. The job to delete.
@@ -1805,6 +1839,7 @@ pub struct DeleteTransferJobRequest {
 }
 /// `projectId`, `jobNames`, and `jobStatuses` are query parameters that can
 /// be specified when listing transfer jobs.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTransferJobsRequest {
     /// Required. A list of query parameters specified as JSON text in the form of:
@@ -1829,6 +1864,7 @@ pub struct ListTransferJobsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response from ListTransferJobs.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTransferJobsResponse {
     /// A list of transfer jobs.
@@ -1839,6 +1875,7 @@ pub struct ListTransferJobsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request passed to PauseTransferOperation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PauseTransferOperationRequest {
     /// Required. The name of the transfer operation.
@@ -1846,6 +1883,7 @@ pub struct PauseTransferOperationRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request passed to ResumeTransferOperation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResumeTransferOperationRequest {
     /// Required. The name of the transfer operation.
@@ -1853,6 +1891,7 @@ pub struct ResumeTransferOperationRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request passed to RunTransferJob.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RunTransferJobRequest {
     /// Required. The name of the transfer job.
@@ -1864,6 +1903,7 @@ pub struct RunTransferJobRequest {
     pub project_id: ::prost::alloc::string::String,
 }
 /// Specifies the request passed to CreateAgentPool.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateAgentPoolRequest {
     /// Required. The ID of the Google Cloud project that owns the
@@ -1890,6 +1930,7 @@ pub struct CreateAgentPoolRequest {
     pub agent_pool_id: ::prost::alloc::string::String,
 }
 /// Specifies the request passed to UpdateAgentPool.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateAgentPoolRequest {
     /// Required. The agent pool to update. `agent_pool` is expected to specify following
@@ -1916,6 +1957,7 @@ pub struct UpdateAgentPoolRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Specifies the request passed to GetAgentPool.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAgentPoolRequest {
     /// Required. The name of the agent pool to get.
@@ -1923,6 +1965,7 @@ pub struct GetAgentPoolRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Specifies the request passed to DeleteAgentPool.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteAgentPoolRequest {
     /// Required. The name of the agent pool to delete.
@@ -1930,6 +1973,7 @@ pub struct DeleteAgentPoolRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request passed to ListAgentPools.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAgentPoolsRequest {
     /// Required. The ID of the Google Cloud project that owns the job.
@@ -1953,6 +1997,7 @@ pub struct ListAgentPoolsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response from ListAgentPools.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAgentPoolsResponse {
     /// A list of agent pools.

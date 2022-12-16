@@ -1,4 +1,5 @@
 /// Type of information detected by the API.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InfoType {
     /// Name of the information type. Either a name of your choosing when
@@ -14,6 +15,7 @@ pub struct InfoType {
 }
 /// Score is a summary of all elements in the data profile.
 /// A higher number means more sensitive.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SensitivityScore {
     /// The score applied to the resource.
@@ -67,6 +69,7 @@ pub mod sensitivity_score {
     }
 }
 /// A reference to a StoredInfoType to use with scanning.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StoredType {
     /// Resource name of the requested `StoredInfoType`, for example
@@ -81,6 +84,7 @@ pub struct StoredType {
 }
 /// Custom information type provided by the user. Used to find domain-specific
 /// sensitive information configurable to the data in question.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomInfoType {
     /// CustomInfoType can either be a new infoType, or an extension of built-in
@@ -133,6 +137,7 @@ pub mod custom_info_type {
     /// the size limits of dictionaries. For dictionaries that do not fit within
     /// these constraints, consider using `LargeCustomDictionaryConfig` in the
     /// `StoredInfoType` API.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Dictionary {
         #[prost(oneof = "dictionary::Source", tags = "1, 3")]
@@ -141,6 +146,7 @@ pub mod custom_info_type {
     /// Nested message and enum types in `Dictionary`.
     pub mod dictionary {
         /// Message defining a list of words or phrases to search for in the data.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct WordList {
             /// Words or phrases defining the dictionary. The dictionary must contain
@@ -149,6 +155,7 @@ pub mod custom_info_type {
             #[prost(string, repeated, tag = "1")]
             pub words: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         }
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Source {
             /// List of words or phrases to search for.
@@ -161,6 +168,7 @@ pub mod custom_info_type {
         }
     }
     /// Message defining a custom regular expression.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Regex {
         /// Pattern defining the regular expression. Its syntax
@@ -181,12 +189,14 @@ pub mod custom_info_type {
     /// output. This should be used in conjunction with a field on the
     /// transformation such as `surrogate_info_type`. This CustomInfoType does
     /// not support the use of `detection_rules`.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SurrogateType {}
     /// Deprecated; use `InspectionRuleSet` instead. Rule for modifying a
     /// `CustomInfoType` to alter behavior under certain circumstances, depending
     /// on the specific details of the rule. Not supported for the `surrogate_type`
     /// custom infoType.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DetectionRule {
         #[prost(oneof = "detection_rule::Type", tags = "1")]
@@ -196,6 +206,7 @@ pub mod custom_info_type {
     pub mod detection_rule {
         /// Message for specifying a window around a finding to apply a detection
         /// rule.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Proximity {
             /// Number of characters before the finding to consider. For tabular data,
@@ -211,6 +222,7 @@ pub mod custom_info_type {
         }
         /// Message for specifying an adjustment to the likelihood of a finding as
         /// part of a detection rule.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct LikelihoodAdjustment {
             #[prost(oneof = "likelihood_adjustment::Adjustment", tags = "1, 2")]
@@ -218,6 +230,7 @@ pub mod custom_info_type {
         }
         /// Nested message and enum types in `LikelihoodAdjustment`.
         pub mod likelihood_adjustment {
+            #[allow(clippy::derive_partial_eq_without_eq)]
             #[derive(Clone, PartialEq, ::prost::Oneof)]
             pub enum Adjustment {
                 /// Set the likelihood of a finding to a fixed value.
@@ -237,6 +250,7 @@ pub mod custom_info_type {
         }
         /// The rule that adjusts the likelihood of findings within a certain
         /// proximity of hotwords.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct HotwordRule {
             /// Regular expression pattern defining what qualifies as a hotword.
@@ -261,6 +275,7 @@ pub mod custom_info_type {
             #[prost(message, optional, tag = "3")]
             pub likelihood_adjustment: ::core::option::Option<LikelihoodAdjustment>,
         }
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Type {
             /// Hotword-based detection rule.
@@ -299,6 +314,7 @@ pub mod custom_info_type {
             }
         }
     }
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Type {
         /// A list of phrases to detect as a CustomInfoType.
@@ -318,6 +334,7 @@ pub mod custom_info_type {
     }
 }
 /// General identifier of a data field in a storage service.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FieldId {
     /// Name describing the field.
@@ -330,6 +347,7 @@ pub struct FieldId {
 ///
 /// A partition ID contains several dimensions:
 /// project ID and namespace ID.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PartitionId {
     /// The ID of the project to which the entities belong.
@@ -340,6 +358,7 @@ pub struct PartitionId {
     pub namespace_id: ::prost::alloc::string::String,
 }
 /// A representation of a Datastore kind.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KindExpression {
     /// The name of the kind.
@@ -347,6 +366,7 @@ pub struct KindExpression {
     pub name: ::prost::alloc::string::String,
 }
 /// Options defining a data set within Google Cloud Datastore.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DatastoreOptions {
     /// A partition ID identifies a grouping of entities. The grouping is always
@@ -389,6 +409,7 @@ pub struct DatastoreOptions {
 /// * `{bucket_name: "mybucket", include_regex: \["directory/[^/]+"\]}` will
 /// include all files directly under `gs://mybucket/directory/`, without matching
 /// across `/`
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CloudStorageRegexFileSet {
     /// The name of a Cloud Storage bucket. Required.
@@ -417,6 +438,7 @@ pub struct CloudStorageRegexFileSet {
 }
 /// Options defining a file or a set of files within a Cloud Storage
 /// bucket.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CloudStorageOptions {
     /// The set of one or more files to scan.
@@ -455,6 +477,7 @@ pub struct CloudStorageOptions {
 /// Nested message and enum types in `CloudStorageOptions`.
 pub mod cloud_storage_options {
     /// Set of files to scan.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct FileSet {
         /// The Cloud Storage url of the file(s) to scan, in the format
@@ -512,6 +535,7 @@ pub mod cloud_storage_options {
     }
 }
 /// Message representing a set of files in Cloud Storage.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CloudStorageFileSet {
     /// The url, in the format `gs://<bucket>/<path>`. Trailing wildcard in the
@@ -520,6 +544,7 @@ pub struct CloudStorageFileSet {
     pub url: ::prost::alloc::string::String,
 }
 /// Message representing a single file or path in Cloud Storage.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CloudStoragePath {
     /// A url representing a file or path (no wildcards) in Cloud Storage.
@@ -528,6 +553,7 @@ pub struct CloudStoragePath {
     pub path: ::prost::alloc::string::String,
 }
 /// Options defining BigQuery table and row identifiers.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BigQueryOptions {
     /// Complete BigQuery table reference.
@@ -604,6 +630,7 @@ pub mod big_query_options {
     }
 }
 /// Shared message indicating Cloud storage type.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StorageConfig {
     #[prost(message, optional, tag = "6")]
@@ -615,6 +642,7 @@ pub struct StorageConfig {
 pub mod storage_config {
     /// Configuration of the timespan of the items to include in scanning.
     /// Currently only supported when inspecting Cloud Storage and BigQuery.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct TimespanConfig {
         /// Exclude files, tables, or rows older than this value.
@@ -669,6 +697,7 @@ pub mod storage_config {
         #[prost(bool, tag = "4")]
         pub enable_auto_population_of_timespan_config: bool,
     }
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Type {
         /// Google Cloud Datastore options.
@@ -687,6 +716,7 @@ pub mod storage_config {
 }
 /// Configuration to control jobs where the content being inspected is outside
 /// of Google Cloud Platform.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HybridOptions {
     /// A short description of where the data is coming from. Will be stored once
@@ -729,6 +759,7 @@ pub struct HybridOptions {
     pub table_options: ::core::option::Option<TableOptions>,
 }
 /// Row key for identifying a record in BigQuery table.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BigQueryKey {
     /// Complete BigQuery table reference.
@@ -743,6 +774,7 @@ pub struct BigQueryKey {
     pub row_number: i64,
 }
 /// Record key for a finding in Cloud Datastore.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DatastoreKey {
     /// Datastore entity key.
@@ -753,6 +785,7 @@ pub struct DatastoreKey {
 /// If a key's partition ID or any of its path kinds or names are
 /// reserved/read-only, the key is reserved/read-only.
 /// A reserved/read-only key is forbidden in certain documented contexts.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Key {
     /// Entities are partitioned into subsets, currently identified by a project
@@ -778,6 +811,7 @@ pub mod key {
     ///
     /// If either name or ID is set, the element is complete.
     /// If neither is set, the element is incomplete.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct PathElement {
         /// The kind of the entity.
@@ -793,6 +827,7 @@ pub mod key {
     /// Nested message and enum types in `PathElement`.
     pub mod path_element {
         /// The type of ID.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum IdType {
             /// The auto-allocated ID of the entity.
@@ -810,6 +845,7 @@ pub mod key {
     }
 }
 /// Message for a unique key indicating a record that contains a finding.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RecordKey {
     /// Values of identifying columns in the given row. Order of values matches
@@ -821,6 +857,7 @@ pub struct RecordKey {
 }
 /// Nested message and enum types in `RecordKey`.
 pub mod record_key {
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Type {
         #[prost(message, tag = "2")]
@@ -834,6 +871,7 @@ pub mod record_key {
 /// a table is often referenced with a string in the format of:
 /// `<project_id>:<dataset_id>.<table_id>` or
 /// `<project_id>.<dataset_id>.<table_id>`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BigQueryTable {
     /// The Google Cloud Platform project ID of the project containing the table.
@@ -848,6 +886,7 @@ pub struct BigQueryTable {
     pub table_id: ::prost::alloc::string::String,
 }
 /// Message defining a field of a BigQuery table.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BigQueryField {
     /// Source table of the field.
@@ -862,6 +901,7 @@ pub struct BigQueryField {
 /// patient identifier, or for financial records it might be an account
 /// identifier. This message is used when generalizations or analysis must take
 /// into account that multiple rows correspond to the same entity.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EntityId {
     /// Composite key indicating which field contains the entity identifier.
@@ -869,6 +909,7 @@ pub struct EntityId {
     pub field: ::core::option::Option<FieldId>,
 }
 /// Instructions regarding the table content being inspected.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TableOptions {
     /// The columns that are the primary keys for table objects included in
@@ -984,6 +1025,7 @@ impl FileType {
     }
 }
 /// List of excluded infoTypes.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExcludeInfoTypes {
     /// InfoType list in ExclusionRule rule drops a finding when it overlaps or
@@ -1000,6 +1042,7 @@ pub struct ExcludeInfoTypes {
 /// The rule to exclude findings based on a hotword. For record inspection of
 /// tables, column names are considered hotwords. An example of this is to
 /// exclude a finding if a BigQuery column matches a specific pattern.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExcludeByHotword {
     /// Regular expression pattern defining what qualifies as a hotword.
@@ -1014,6 +1057,7 @@ pub struct ExcludeByHotword {
 }
 /// The rule that specifies conditions when findings of infoTypes specified in
 /// `InspectionRuleSet` are removed from results.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExclusionRule {
     /// How the rule is applied, see MatchingType documentation for details.
@@ -1026,6 +1070,7 @@ pub struct ExclusionRule {
 /// Nested message and enum types in `ExclusionRule`.
 pub mod exclusion_rule {
     /// Exclusion rule types.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Type {
         /// Dictionary which defines the rule.
@@ -1045,6 +1090,7 @@ pub mod exclusion_rule {
 }
 /// A single inspection rule to be applied to infoTypes, specified in
 /// `InspectionRuleSet`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InspectionRule {
     /// Inspection rule types.
@@ -1054,6 +1100,7 @@ pub struct InspectionRule {
 /// Nested message and enum types in `InspectionRule`.
 pub mod inspection_rule {
     /// Inspection rule types.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Type {
         /// Hotword-based detection rule.
@@ -1066,6 +1113,7 @@ pub mod inspection_rule {
 }
 /// Rule set for modifying a set of infoTypes to alter behavior under certain
 /// circumstances, depending on the specific details of the rules within the set.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InspectionRuleSet {
     /// List of infoTypes this rule set is applied to.
@@ -1078,6 +1126,7 @@ pub struct InspectionRuleSet {
 /// Configuration description of the scanning process.
 /// When used with redactContent only info_types and min_likelihood are currently
 /// used.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InspectConfig {
     /// Restricts what info_types to look for. The values must correspond to
@@ -1140,6 +1189,7 @@ pub mod inspect_config {
     /// redacted. Don't include finding limits in
     /// \[RedactImage][google.privacy.dlp.v2.DlpService.RedactImage\]
     /// requests. Otherwise, Cloud DLP returns an error.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct FindingLimits {
         /// Max number of findings that will be returned for each item scanned.
@@ -1163,6 +1213,7 @@ pub mod inspect_config {
     pub mod finding_limits {
         /// Max findings configuration per infoType, per content item or long
         /// running DlpJob.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct InfoTypeLimit {
             /// Type of information the findings limit applies to. Only one limit per
@@ -1178,6 +1229,7 @@ pub mod inspect_config {
     }
 }
 /// Container for bytes to inspect or redact.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ByteContentItem {
     /// The type of data stored in the bytes string. Default will be TEXT_UTF8.
@@ -1259,6 +1311,7 @@ pub mod byte_content_item {
         }
     }
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ContentItem {
     /// Data of the item either in the byte array or UTF-8 string form, or table.
@@ -1268,6 +1321,7 @@ pub struct ContentItem {
 /// Nested message and enum types in `ContentItem`.
 pub mod content_item {
     /// Data of the item either in the byte array or UTF-8 string form, or table.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum DataItem {
         /// String data to inspect or redact.
@@ -1286,6 +1340,7 @@ pub mod content_item {
 /// Structured content to inspect. Up to 50,000 `Value`s per request allowed. See
 /// <https://cloud.google.com/dlp/docs/inspecting-structured-text#inspecting_a_table>
 /// to learn more.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Table {
     /// Headers of the table.
@@ -1298,6 +1353,7 @@ pub struct Table {
 /// Nested message and enum types in `Table`.
 pub mod table {
     /// Values of the row.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Row {
         /// Individual cells.
@@ -1306,6 +1362,7 @@ pub mod table {
     }
 }
 /// All the findings for a single scanned item.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InspectResult {
     /// List of findings for an item.
@@ -1321,6 +1378,7 @@ pub struct InspectResult {
     pub findings_truncated: bool,
 }
 /// Represents a piece of potentially sensitive content.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Finding {
     /// Resource name in format
@@ -1388,6 +1446,7 @@ pub struct Finding {
     pub finding_id: ::prost::alloc::string::String,
 }
 /// Specifies the location of the finding.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Location {
     /// Zero-based byte offsets delimiting the finding.
@@ -1412,6 +1471,7 @@ pub struct Location {
 }
 /// Precise location of the finding within a document, record, image, or metadata
 /// container.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ContentLocation {
     /// Name of the container where the finding is located.
@@ -1443,6 +1503,7 @@ pub struct ContentLocation {
 /// Nested message and enum types in `ContentLocation`.
 pub mod content_location {
     /// Type of the container within the file with location of the finding.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Location {
         /// Location within a row or record of a database table.
@@ -1460,6 +1521,7 @@ pub mod content_location {
     }
 }
 /// Metadata Location
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MetadataLocation {
     /// Type of metadata containing the finding.
@@ -1474,6 +1536,7 @@ pub struct MetadataLocation {
 pub mod metadata_location {
     /// Label of the piece of metadata containing the finding, for example -
     /// latitude, author, caption.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Label {
         /// Storage metadata.
@@ -1482,12 +1545,14 @@ pub mod metadata_location {
     }
 }
 /// Storage metadata label to indicate which metadata entry contains findings.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StorageMetadataLabel {
     #[prost(string, tag = "1")]
     pub key: ::prost::alloc::string::String,
 }
 /// Location of a finding within a document.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DocumentLocation {
     /// Offset of the line, from the beginning of the file, where the finding
@@ -1496,6 +1561,7 @@ pub struct DocumentLocation {
     pub file_offset: i64,
 }
 /// Location of a finding within a row or record.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RecordLocation {
     /// Key of the finding.
@@ -1509,6 +1575,7 @@ pub struct RecordLocation {
     pub table_location: ::core::option::Option<TableLocation>,
 }
 /// Location of a finding within a table.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TableLocation {
     /// The zero-based index of the row where the finding is located. Only
@@ -1522,6 +1589,7 @@ pub struct TableLocation {
 }
 /// Represents a container that may contain DLP findings.
 /// Examples of a container include a file, table, or database record.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Container {
     /// Container type, for example BigQuery or Cloud Storage.
@@ -1567,6 +1635,7 @@ pub struct Container {
     pub version: ::prost::alloc::string::String,
 }
 /// Generic half-open interval [start, end)
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Range {
     /// Index of the first character of the range (inclusive).
@@ -1577,6 +1646,7 @@ pub struct Range {
     pub end: i64,
 }
 /// Location of the finding within an image.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImageLocation {
     /// Bounding boxes locating the pixels within the image containing the finding.
@@ -1584,6 +1654,7 @@ pub struct ImageLocation {
     pub bounding_boxes: ::prost::alloc::vec::Vec<BoundingBox>,
 }
 /// Bounding box encompassing detected text within an image.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BoundingBox {
     /// Top coordinate of the bounding box. (0,0) is upper left.
@@ -1601,6 +1672,7 @@ pub struct BoundingBox {
 }
 /// Request to search for potentially sensitive info in an image and redact it
 /// by covering it with a colored rectangle.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RedactImageRequest {
     /// Parent resource name.
@@ -1643,6 +1715,7 @@ pub struct RedactImageRequest {
 /// Nested message and enum types in `RedactImageRequest`.
 pub mod redact_image_request {
     /// Configuration for determining how redaction of images should occur.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ImageRedactionConfig {
         /// The color to use when redacting content from an image. If not specified,
@@ -1656,6 +1729,7 @@ pub mod redact_image_request {
     /// Nested message and enum types in `ImageRedactionConfig`.
     pub mod image_redaction_config {
         /// Type of information to redact from images.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Target {
             /// Only one per info_type should be provided per request. If not
@@ -1672,6 +1746,7 @@ pub mod redact_image_request {
     }
 }
 /// Represents a color in the RGB color space.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Color {
     /// The amount of red in the color as a value in the interval [0, 1].
@@ -1685,6 +1760,7 @@ pub struct Color {
     pub blue: f32,
 }
 /// Results of redacting an image.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RedactImageResponse {
     /// The redacted image. The type will be the same as the original image.
@@ -1700,6 +1776,7 @@ pub struct RedactImageResponse {
     pub inspect_result: ::core::option::Option<InspectResult>,
 }
 /// Request to de-identify a ContentItem.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeidentifyContentRequest {
     /// Parent resource name.
@@ -1759,6 +1836,7 @@ pub struct DeidentifyContentRequest {
     pub location_id: ::prost::alloc::string::String,
 }
 /// Results of de-identifying a ContentItem.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeidentifyContentResponse {
     /// The de-identified item.
@@ -1769,6 +1847,7 @@ pub struct DeidentifyContentResponse {
     pub overview: ::core::option::Option<TransformationOverview>,
 }
 /// Request to re-identify an item.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReidentifyContentRequest {
     /// Required. Parent resource name.
@@ -1828,6 +1907,7 @@ pub struct ReidentifyContentRequest {
     pub location_id: ::prost::alloc::string::String,
 }
 /// Results of re-identifying an item.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReidentifyContentResponse {
     /// The re-identified item.
@@ -1838,6 +1918,7 @@ pub struct ReidentifyContentResponse {
     pub overview: ::core::option::Option<TransformationOverview>,
 }
 /// Request to search for potentially sensitive info in a ContentItem.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InspectContentRequest {
     /// Parent resource name.
@@ -1877,6 +1958,7 @@ pub struct InspectContentRequest {
     pub location_id: ::prost::alloc::string::String,
 }
 /// Results of inspecting an item.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InspectContentResponse {
     /// The findings.
@@ -1884,6 +1966,7 @@ pub struct InspectContentResponse {
     pub result: ::core::option::Option<InspectResult>,
 }
 /// Cloud repository for storing output.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OutputStorageConfig {
     /// Schema used for writing the findings for Inspect jobs. This field is only
@@ -1950,6 +2033,7 @@ pub mod output_storage_config {
         }
     }
     /// Output storage types.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Type {
         /// Store findings in an existing table or a new table in an existing
@@ -1971,6 +2055,7 @@ pub mod output_storage_config {
     }
 }
 /// Statistics regarding a specific InfoType.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InfoTypeStats {
     /// The type of finding this stat is for.
@@ -1981,6 +2066,7 @@ pub struct InfoTypeStats {
     pub count: i64,
 }
 /// The results of an inspect DataSource job.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InspectDataSourceDetails {
     /// The configuration used for this job.
@@ -1995,6 +2081,7 @@ pub struct InspectDataSourceDetails {
 /// Nested message and enum types in `InspectDataSourceDetails`.
 pub mod inspect_data_source_details {
     /// Snapshot of the inspection configuration.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct RequestedOptions {
         /// If run with an InspectTemplate, a snapshot of its state at the time of
@@ -2006,6 +2093,7 @@ pub mod inspect_data_source_details {
         pub job_config: ::core::option::Option<super::InspectJobConfig>,
     }
     /// All result fields mentioned below are updated while the job is processing.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Result {
         /// Total size in bytes that were processed.
@@ -2024,6 +2112,7 @@ pub mod inspect_data_source_details {
     }
 }
 /// Statistics related to processing hybrid inspect requests.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HybridInspectStatistics {
     /// The number of hybrid inspection requests processed within this job.
@@ -2042,6 +2131,7 @@ pub struct HybridInspectStatistics {
     pub pending_count: i64,
 }
 /// InfoType description.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InfoTypeDescription {
     /// Internal name of the infoType.
@@ -2066,6 +2156,7 @@ pub struct InfoTypeDescription {
 }
 /// Classification of infoTypes to organize them according to geographic
 /// location, industry, and data type.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InfoTypeCategory {
     #[prost(oneof = "info_type_category::Category", tags = "1, 2, 3")]
@@ -2318,6 +2409,7 @@ pub mod info_type_category {
             }
         }
     }
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Category {
         /// The region or country that issued the ID or document represented by the
@@ -2333,6 +2425,7 @@ pub mod info_type_category {
     }
 }
 /// Details about each available version for an infotype.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VersionDescription {
     /// Name of the version
@@ -2343,6 +2436,7 @@ pub struct VersionDescription {
     pub description: ::prost::alloc::string::String,
 }
 /// Request for the list of infoTypes.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListInfoTypesRequest {
     /// The parent resource name.
@@ -2366,6 +2460,7 @@ pub struct ListInfoTypesRequest {
     pub location_id: ::prost::alloc::string::String,
 }
 /// Response to the ListInfoTypes request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListInfoTypesResponse {
     /// Set of sensitive infoTypes.
@@ -2374,6 +2469,7 @@ pub struct ListInfoTypesResponse {
 }
 /// Configuration for a risk analysis job. See
 /// <https://cloud.google.com/dlp/docs/concepts-risk-analysis> to learn more.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RiskAnalysisJobConfig {
     /// Privacy metric to compute.
@@ -2388,6 +2484,7 @@ pub struct RiskAnalysisJobConfig {
     pub actions: ::prost::alloc::vec::Vec<Action>,
 }
 /// A column with a semantic tag attached.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QuasiId {
     /// Required. Identifies the column.
@@ -2404,6 +2501,7 @@ pub mod quasi_id {
     /// Semantic tag that identifies what a column contains, to determine which
     /// statistical model to use to estimate the reidentifiability of each
     /// value. \[required\]
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Tag {
         /// A column can be tagged with a InfoType to use the relevant public
@@ -2431,6 +2529,7 @@ pub mod quasi_id {
 /// If a tuple is present in the data but not in the auxiliary table, the
 /// corresponding relative frequency is assumed to be zero (and thus, the
 /// tuple is highly reidentifiable).
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StatisticalTable {
     /// Required. Auxiliary table location.
@@ -2448,6 +2547,7 @@ pub struct StatisticalTable {
 pub mod statistical_table {
     /// A quasi-identifier column has a custom_tag, used to know which column
     /// in the data corresponds to which column in the statistical model.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct QuasiIdentifierField {
         /// Identifies the column.
@@ -2461,6 +2561,7 @@ pub mod statistical_table {
     }
 }
 /// Privacy metric to compute for reidentification risk analysis.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PrivacyMetric {
     /// Types of analysis.
@@ -2471,6 +2572,7 @@ pub struct PrivacyMetric {
 pub mod privacy_metric {
     /// Compute numerical stats over an individual column, including
     /// min, max, and quantiles.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct NumericalStatsConfig {
         /// Field to compute numerical stats on. Supported types are
@@ -2480,6 +2582,7 @@ pub mod privacy_metric {
     }
     /// Compute numerical stats over an individual column, including
     /// number of distinct values and value count distribution.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CategoricalStatsConfig {
         /// Field to compute categorical stats on. All column types are
@@ -2490,6 +2593,7 @@ pub mod privacy_metric {
         pub field: ::core::option::Option<super::FieldId>,
     }
     /// k-anonymity metric, used for analysis of reidentification risk.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct KAnonymityConfig {
         /// Set of fields to compute k-anonymity over. When multiple fields are
@@ -2513,6 +2617,7 @@ pub mod privacy_metric {
         pub entity_id: ::core::option::Option<super::EntityId>,
     }
     /// l-diversity metric, used for analysis of reidentification risk.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct LDiversityConfig {
         /// Set of quasi-identifiers indicating how equivalence classes are
@@ -2530,6 +2635,7 @@ pub mod privacy_metric {
     /// using publicly available data (like the US Census), or using a custom
     /// statistical model (indicated as one or several BigQuery tables), or by
     /// extrapolating from the distribution of values in the input dataset.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct KMapEstimationConfig {
         /// Required. Fields considered to be quasi-identifiers. No two columns can have the
@@ -2552,6 +2658,7 @@ pub mod privacy_metric {
     /// Nested message and enum types in `KMapEstimationConfig`.
     pub mod k_map_estimation_config {
         /// A column with a semantic tag attached.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct TaggedField {
             /// Required. Identifies the column.
@@ -2568,6 +2675,7 @@ pub mod privacy_metric {
             /// Semantic tag that identifies what a column contains, to determine which
             /// statistical model to use to estimate the reidentifiability of each
             /// value. \[required\]
+            #[allow(clippy::derive_partial_eq_without_eq)]
             #[derive(Clone, PartialEq, ::prost::Oneof)]
             pub enum Tag {
                 /// A column can be tagged with a InfoType to use the relevant public
@@ -2595,6 +2703,7 @@ pub mod privacy_metric {
         /// If a tuple is present in the data but not in the auxiliary table, the
         /// corresponding relative frequency is assumed to be zero (and thus, the
         /// tuple is highly reidentifiable).
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct AuxiliaryTable {
             /// Required. Auxiliary table location.
@@ -2612,6 +2721,7 @@ pub mod privacy_metric {
         pub mod auxiliary_table {
             /// A quasi-identifier column has a custom_tag, used to know which column
             /// in the data corresponds to which column in the statistical model.
+            #[allow(clippy::derive_partial_eq_without_eq)]
             #[derive(Clone, PartialEq, ::prost::Message)]
             pub struct QuasiIdField {
                 /// Identifies the column.
@@ -2627,6 +2737,7 @@ pub mod privacy_metric {
     /// figure out that one given individual appears in a de-identified dataset.
     /// Similarly to the k-map metric, we cannot compute δ-presence exactly without
     /// knowing the attack dataset, so we use a statistical model instead.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DeltaPresenceEstimationConfig {
         /// Required. Fields considered to be quasi-identifiers. No two fields can have the
@@ -2645,6 +2756,7 @@ pub mod privacy_metric {
         pub auxiliary_tables: ::prost::alloc::vec::Vec<super::StatisticalTable>,
     }
     /// Types of analysis.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Type {
         /// Numerical stats
@@ -2668,6 +2780,7 @@ pub mod privacy_metric {
     }
 }
 /// Result of a risk analysis operation request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnalyzeDataSourceRiskDetails {
     /// Privacy metric to compute.
@@ -2691,6 +2804,7 @@ pub struct AnalyzeDataSourceRiskDetails {
 /// Nested message and enum types in `AnalyzeDataSourceRiskDetails`.
 pub mod analyze_data_source_risk_details {
     /// Result of the numerical stats computation.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct NumericalStatsResult {
         /// Minimum value appearing in the column.
@@ -2705,6 +2819,7 @@ pub mod analyze_data_source_risk_details {
         pub quantile_values: ::prost::alloc::vec::Vec<super::Value>,
     }
     /// Result of the categorical stats computation.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CategoricalStatsResult {
         /// Histogram of value frequencies in the column.
@@ -2716,6 +2831,7 @@ pub mod analyze_data_source_risk_details {
     /// Nested message and enum types in `CategoricalStatsResult`.
     pub mod categorical_stats_result {
         /// Histogram of value frequencies in the column.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct CategoricalStatsHistogramBucket {
             /// Lower bound on the value frequency of the values in this bucket.
@@ -2737,6 +2853,7 @@ pub mod analyze_data_source_risk_details {
         }
     }
     /// Result of the k-anonymity computation.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct KAnonymityResult {
         /// Histogram of k-anonymity equivalence classes.
@@ -2748,6 +2865,7 @@ pub mod analyze_data_source_risk_details {
     /// Nested message and enum types in `KAnonymityResult`.
     pub mod k_anonymity_result {
         /// The set of columns' values that share the same ldiversity value
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct KAnonymityEquivalenceClass {
             /// Set of values defining the equivalence class. One value per
@@ -2761,6 +2879,7 @@ pub mod analyze_data_source_risk_details {
             pub equivalence_class_size: i64,
         }
         /// Histogram of k-anonymity equivalence classes.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct KAnonymityHistogramBucket {
             /// Lower bound on the size of the equivalence classes in this bucket.
@@ -2782,6 +2901,7 @@ pub mod analyze_data_source_risk_details {
         }
     }
     /// Result of the l-diversity computation.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct LDiversityResult {
         /// Histogram of l-diversity equivalence class sensitive value frequencies.
@@ -2793,6 +2913,7 @@ pub mod analyze_data_source_risk_details {
     /// Nested message and enum types in `LDiversityResult`.
     pub mod l_diversity_result {
         /// The set of columns' values that share the same ldiversity value.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct LDiversityEquivalenceClass {
             /// Quasi-identifier values defining the k-anonymity equivalence
@@ -2812,6 +2933,7 @@ pub mod analyze_data_source_risk_details {
             >,
         }
         /// Histogram of l-diversity equivalence class sensitive value frequencies.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct LDiversityHistogramBucket {
             /// Lower bound on the sensitive value frequencies of the equivalence
@@ -2836,6 +2958,7 @@ pub mod analyze_data_source_risk_details {
     }
     /// Result of the reidentifiability analysis. Note that these results are an
     /// estimation, not exact values.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct KMapEstimationResult {
         /// The intervals [min_anonymity, max_anonymity] do not overlap. If a value
@@ -2854,6 +2977,7 @@ pub mod analyze_data_source_risk_details {
     /// Nested message and enum types in `KMapEstimationResult`.
     pub mod k_map_estimation_result {
         /// A tuple of values for the quasi-identifier columns.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct KMapEstimationQuasiIdValues {
             /// The quasi-identifier values.
@@ -2871,6 +2995,7 @@ pub mod analyze_data_source_risk_details {
         /// to 3, 4 or 5 people in the overlying population. An important particular
         /// case is when min_anonymity = max_anonymity = 1: the frequency field then
         /// corresponds to the number of uniquely identifiable records.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct KMapEstimationHistogramBucket {
             /// Always positive.
@@ -2893,6 +3018,7 @@ pub mod analyze_data_source_risk_details {
     }
     /// Result of the δ-presence computation. Note that these results are an
     /// estimation, not exact values.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DeltaPresenceEstimationResult {
         /// The intervals [min_probability, max_probability) do not overlap. If a
@@ -2911,6 +3037,7 @@ pub mod analyze_data_source_risk_details {
     /// Nested message and enum types in `DeltaPresenceEstimationResult`.
     pub mod delta_presence_estimation_result {
         /// A tuple of values for the quasi-identifier columns.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct DeltaPresenceEstimationQuasiIdValues {
             /// The quasi-identifier values.
@@ -2936,6 +3063,7 @@ pub mod analyze_data_source_risk_details {
         /// important particular case is when min_probability = max_probability = 1:
         /// then, every individual who shares this quasi-identifier combination is in
         /// the dataset.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct DeltaPresenceEstimationHistogramBucket {
             /// Between 0 and 1.
@@ -2959,6 +3087,7 @@ pub mod analyze_data_source_risk_details {
         }
     }
     /// Risk analysis options.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct RequestedRiskAnalysisOptions {
         /// The job config for the risk job.
@@ -2966,6 +3095,7 @@ pub mod analyze_data_source_risk_details {
         pub job_config: ::core::option::Option<super::RiskAnalysisJobConfig>,
     }
     /// Values associated with this metric.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Result {
         /// Numerical stats result
@@ -2989,6 +3119,7 @@ pub mod analyze_data_source_risk_details {
     }
 }
 /// A value of a field, including its frequency.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ValueFrequency {
     /// A value contained in the field in question.
@@ -3004,6 +3135,7 @@ pub struct ValueFrequency {
 /// as a UTF-8 encoded string. For example, if 'integer_value' is set to
 /// 123456789, the number of bytes would be counted as 9, even though an
 /// int64 only holds up to 8 bytes of data.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Value {
     /// Value types
@@ -3013,6 +3145,7 @@ pub struct Value {
 /// Nested message and enum types in `Value`.
 pub mod value {
     /// Value types
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Type {
         /// integer
@@ -3045,6 +3178,7 @@ pub mod value {
     }
 }
 /// Message for infoType-dependent details parsed from quote.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QuoteInfo {
     /// Object representation of the quote.
@@ -3054,6 +3188,7 @@ pub struct QuoteInfo {
 /// Nested message and enum types in `QuoteInfo`.
 pub mod quote_info {
     /// Object representation of the quote.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ParsedQuote {
         /// The date time indicated by the quote.
@@ -3063,6 +3198,7 @@ pub mod quote_info {
 }
 /// Message for a date time object.
 /// e.g. 2018-01-01, 5th August.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DateTime {
     /// One or more of the following must be set.
@@ -3082,6 +3218,7 @@ pub struct DateTime {
 /// Nested message and enum types in `DateTime`.
 pub mod date_time {
     /// Time zone of the date time object.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct TimeZone {
         /// Set only if the offset can be determined. Positive for time ahead of UTC.
@@ -3091,6 +3228,7 @@ pub mod date_time {
     }
 }
 /// The configuration that controls how the data will change.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeidentifyConfig {
     /// Mode for handling transformation errors. If left unspecified, the default
@@ -3104,6 +3242,7 @@ pub struct DeidentifyConfig {
 }
 /// Nested message and enum types in `DeidentifyConfig`.
 pub mod deidentify_config {
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Transformation {
         /// Treat the dataset as free-form text and apply the same free text
@@ -3121,6 +3260,7 @@ pub mod deidentify_config {
     }
 }
 /// A type of transformation that is applied over images.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImageTransformations {
     #[prost(message, repeated, tag = "2")]
@@ -3129,6 +3269,7 @@ pub struct ImageTransformations {
 /// Nested message and enum types in `ImageTransformations`.
 pub mod image_transformations {
     /// Configuration for determining how redaction of images should occur.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ImageTransformation {
         /// The color to use when redacting content from an image. If not
@@ -3141,6 +3282,7 @@ pub mod image_transformations {
     /// Nested message and enum types in `ImageTransformation`.
     pub mod image_transformation {
         /// Apply transformation to the selected info_types.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct SelectedInfoTypes {
             /// Required. InfoTypes to apply the transformation to. Required. Provided InfoType
@@ -3149,11 +3291,14 @@ pub mod image_transformations {
             pub info_types: ::prost::alloc::vec::Vec<super::super::InfoType>,
         }
         /// Apply transformation to all findings.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct AllInfoTypes {}
         /// Apply to all text.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct AllText {}
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Target {
             /// Apply transformation to the selected info_types.
@@ -3179,6 +3324,7 @@ pub mod image_transformations {
 /// Information about any incompatible transformations, and how they were
 /// handled, is returned in the response as part of the
 /// `TransformationOverviews`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TransformationErrorHandling {
     /// How transformation errors should be handled.
@@ -3188,15 +3334,18 @@ pub struct TransformationErrorHandling {
 /// Nested message and enum types in `TransformationErrorHandling`.
 pub mod transformation_error_handling {
     /// Throw an error and fail the request when a transformation error occurs.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ThrowError {}
     /// Skips the data without modifying it if the requested transformation would
     /// cause an error. For example, if a `DateShift` transformation were applied
     /// an an IP address, this mode would leave the IP address unchanged in the
     /// response.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct LeaveUntransformed {}
     /// How transformation errors should be handled.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Mode {
         /// Throw an error
@@ -3208,6 +3357,7 @@ pub mod transformation_error_handling {
     }
 }
 /// A rule for transforming a value.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PrimitiveTransformation {
     #[prost(
@@ -3218,6 +3368,7 @@ pub struct PrimitiveTransformation {
 }
 /// Nested message and enum types in `PrimitiveTransformation`.
 pub mod primitive_transformation {
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Transformation {
         /// Replace with a specified value.
@@ -3260,6 +3411,7 @@ pub mod primitive_transformation {
 }
 /// For use with `Date`, `Timestamp`, and `TimeOfDay`, extract or preserve a
 /// portion of the value.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TimePartConfig {
     /// The part of the time to keep.
@@ -3322,6 +3474,7 @@ pub mod time_part_config {
 /// (for example, L7k0BHmF1ha5U3NfGykjro4xWi1MPVQPjhMAZbSV9mM=).
 /// Currently, only string and integer values can be hashed.
 /// See <https://cloud.google.com/dlp/docs/pseudonymization> to learn more.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CryptoHashConfig {
     /// The key used by the hash function.
@@ -3331,6 +3484,7 @@ pub struct CryptoHashConfig {
 /// Pseudonymization method that generates deterministic encryption for the given
 /// input. Outputs a base64 encoded representation of the encrypted output.
 /// Uses AES-SIV based on the RFC <https://tools.ietf.org/html/rfc5297.>
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CryptoDeterministicConfig {
     /// The key used by the encryption function. For deterministic encryption
@@ -3394,6 +3548,7 @@ pub struct CryptoDeterministicConfig {
     pub context: ::core::option::Option<FieldId>,
 }
 /// Replace each input value with a given `Value`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReplaceValueConfig {
     /// Value to replace it with.
@@ -3401,6 +3556,7 @@ pub struct ReplaceValueConfig {
     pub new_value: ::core::option::Option<Value>,
 }
 /// Replace each input value with a value randomly selected from the dictionary.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReplaceDictionaryConfig {
     #[prost(oneof = "replace_dictionary_config::Type", tags = "1")]
@@ -3408,6 +3564,7 @@ pub struct ReplaceDictionaryConfig {
 }
 /// Nested message and enum types in `ReplaceDictionaryConfig`.
 pub mod replace_dictionary_config {
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Type {
         /// A list of words to select from for random replacement. The
@@ -3418,15 +3575,18 @@ pub mod replace_dictionary_config {
     }
 }
 /// Replace each matching finding with the name of the info_type.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReplaceWithInfoTypeConfig {}
 /// Redact a given value. For example, if used with an `InfoTypeTransformation`
 /// transforming PHONE_NUMBER, and input 'My phone number is 206-555-0123', the
 /// output would be 'My phone number is '.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RedactConfig {}
 /// Characters to skip when doing deidentification of a value. These will be left
 /// alone and skipped.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CharsToIgnore {
     #[prost(oneof = "chars_to_ignore::Characters", tags = "1, 2")]
@@ -3477,6 +3637,7 @@ pub mod chars_to_ignore {
             }
         }
     }
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Characters {
         /// Characters to not transform when masking.
@@ -3494,6 +3655,7 @@ pub mod chars_to_ignore {
 /// de-identifying structured data we'll attempt to preserve the original data's
 /// type. (This allows you to take a long like 123 and modify it to a string like
 /// **3.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CharacterMaskConfig {
     /// Character to use to mask the sensitive values&mdash;for example, `*` for an
@@ -3551,6 +3713,7 @@ pub struct CharacterMaskConfig {
 /// be transformed to match the type of the bound before comparing.
 ///
 /// See <https://cloud.google.com/dlp/docs/concepts-bucketing> to learn more.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FixedSizeBucketingConfig {
     /// Required. Lower bound value of buckets. All values less than `lower_bound` are
@@ -3579,6 +3742,7 @@ pub struct FixedSizeBucketingConfig {
 /// will first attempt converting the type of the data to be transformed to match
 /// the type of the bound before comparing.
 /// See <https://cloud.google.com/dlp/docs/concepts-bucketing> to learn more.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BucketingConfig {
     /// Set of buckets. Ranges must be non-overlapping.
@@ -3588,6 +3752,7 @@ pub struct BucketingConfig {
 /// Nested message and enum types in `BucketingConfig`.
 pub mod bucketing_config {
     /// Bucket is represented as a range, along with replacement values.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Bucket {
         /// Lower bound of the range, inclusive. Type should be the same as max if
@@ -3615,6 +3780,7 @@ pub mod bucketing_config {
 /// Note: We recommend using  CryptoDeterministicConfig for all use cases which
 /// do not require preserving the input alphabet space and size, plus warrant
 /// referential integrity.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CryptoReplaceFfxFpeConfig {
     /// Required. The key used by the encryption algorithm.
@@ -3722,6 +3888,7 @@ pub mod crypto_replace_ffx_fpe_config {
         }
     }
     /// Choose an alphabet which the data being transformed will be made up of.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Alphabet {
         /// Common alphabets.
@@ -3750,6 +3917,7 @@ pub mod crypto_replace_ffx_fpe_config {
 /// When using Cloud KMS to wrap or unwrap a DEK, be sure to set an appropriate
 /// IAM policy on the KEK to ensure an attacker cannot
 /// unwrap the DEK.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CryptoKey {
     /// Sources of crypto keys.
@@ -3759,6 +3927,7 @@ pub struct CryptoKey {
 /// Nested message and enum types in `CryptoKey`.
 pub mod crypto_key {
     /// Sources of crypto keys.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
         /// Transient crypto key
@@ -3774,6 +3943,7 @@ pub mod crypto_key {
 }
 /// Use this to have a random data crypto key generated.
 /// It will be discarded after the request finishes.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TransientCryptoKey {
     /// Required. Name of the key.
@@ -3787,6 +3957,7 @@ pub struct TransientCryptoKey {
 }
 /// Using raw keys is prone to security risks due to accidentally
 /// leaking the key. Choose another type of key if possible.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UnwrappedCryptoKey {
     /// Required. A 128/192/256 bit key.
@@ -3804,6 +3975,7 @@ pub struct UnwrappedCryptoKey {
 ///
 /// Note: When you use Cloud KMS for cryptographic operations,
 /// [charges apply](<https://cloud.google.com/kms/pricing>).
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KmsWrappedCryptoKey {
     /// Required. The wrapped data crypto key.
@@ -3816,6 +3988,7 @@ pub struct KmsWrappedCryptoKey {
 /// Shifts dates by random number of days, with option to be consistent for the
 /// same context. See <https://cloud.google.com/dlp/docs/concepts-date-shifting>
 /// to learn more.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DateShiftConfig {
     /// Required. Range of shift in days. Actual shift will be selected at random within this
@@ -3842,6 +4015,7 @@ pub struct DateShiftConfig {
 pub mod date_shift_config {
     /// Method for calculating shift that takes context into consideration. If
     /// set, must also set context. Can only be applied to table items.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Method {
         /// Causes the shift to be computed based on this key and the context. This
@@ -3855,6 +4029,7 @@ pub mod date_shift_config {
 /// apply various `PrimitiveTransformation`s to each finding, where the
 /// transformation is applied to only values that were identified as a specific
 /// info_type.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InfoTypeTransformations {
     /// Required. Transformation for each infoType. Cannot specify more than one
@@ -3868,6 +4043,7 @@ pub struct InfoTypeTransformations {
 pub mod info_type_transformations {
     /// A transformation to apply to text that is identified as a specific
     /// info_type.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct InfoTypeTransformation {
         /// InfoTypes to apply the transformation to. An empty list will cause
@@ -3883,6 +4059,7 @@ pub mod info_type_transformations {
     }
 }
 /// The transformation to apply to the field.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FieldTransformation {
     /// Required. Input field(s) to apply the transformation to.
@@ -3909,6 +4086,7 @@ pub struct FieldTransformation {
 /// Nested message and enum types in `FieldTransformation`.
 pub mod field_transformation {
     /// Transformation to apply. \[required\]
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Transformation {
         /// Apply the transformation to the entire field.
@@ -3922,6 +4100,7 @@ pub mod field_transformation {
 }
 /// A type of transformation that is applied over structured data such as a
 /// table.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RecordTransformations {
     /// Transform the record by applying various field transformations.
@@ -3934,6 +4113,7 @@ pub struct RecordTransformations {
 }
 /// Configuration to suppress records whose suppression conditions evaluate to
 /// true.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RecordSuppression {
     /// A condition that when it evaluates to true will result in the record being
@@ -3943,6 +4123,7 @@ pub struct RecordSuppression {
 }
 /// A condition for determining whether a transformation should be applied to
 /// a field.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RecordCondition {
     /// An expression.
@@ -3970,6 +4151,7 @@ pub mod record_condition {
     ///
     /// If we fail to compare do to type mismatch, a warning will be given and
     /// the condition will evaluate to false.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Condition {
         /// Required. Field within the record this condition is evaluated against.
@@ -3983,6 +4165,7 @@ pub mod record_condition {
         pub value: ::core::option::Option<super::Value>,
     }
     /// A collection of conditions.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Conditions {
         /// A collection of conditions.
@@ -3990,6 +4173,7 @@ pub mod record_condition {
         pub conditions: ::prost::alloc::vec::Vec<Condition>,
     }
     /// An expression, consisting of an operator and conditions.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Expressions {
         /// The operator to apply to the result of conditions. Default and currently
@@ -4034,6 +4218,7 @@ pub mod record_condition {
             }
         }
         /// Expression types.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Type {
             /// Conditions to apply to the expression.
@@ -4043,6 +4228,7 @@ pub mod record_condition {
     }
 }
 /// Overview of the modifications that occurred.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TransformationOverview {
     /// Total size in bytes that were transformed in some way.
@@ -4055,6 +4241,7 @@ pub struct TransformationOverview {
 /// Summary of a single transformation.
 /// Only one of 'transformation', 'field_transformation', or 'record_suppress'
 /// will be set.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TransformationSummary {
     /// Set if the transformation was limited to a specific InfoType.
@@ -4085,6 +4272,7 @@ pub struct TransformationSummary {
 pub mod transformation_summary {
     /// A collection that informs the user the number of times a particular
     /// `TransformationResultCode` and error details occurred.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SummaryResult {
         /// Number of transformations counted by this result.
@@ -4137,6 +4325,7 @@ pub mod transformation_summary {
 }
 /// A flattened description of a `PrimitiveTransformation` or
 /// `RecordSuppression`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TransformationDescription {
     /// The transformation type.
@@ -4168,6 +4357,7 @@ pub struct TransformationDescription {
 /// the transformation, information about whether the transformation was
 /// successfully applied, and the precise location where the transformation
 /// occurred. These details are stored in a user-specified BigQuery table.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TransformationDetails {
     /// The name of the job that completed the transformation.
@@ -4199,6 +4389,7 @@ pub struct TransformationDetails {
     pub transformation_location: ::core::option::Option<TransformationLocation>,
 }
 /// Specifies the location of a transformation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TransformationLocation {
     /// Information about the functionality of the container where this finding
@@ -4210,6 +4401,7 @@ pub struct TransformationLocation {
 }
 /// Nested message and enum types in `TransformationLocation`.
 pub mod transformation_location {
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum LocationType {
         /// For infotype transformations, link to the corresponding findings ID so
@@ -4224,6 +4416,7 @@ pub mod transformation_location {
         RecordTransformation(super::RecordTransformation),
     }
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RecordTransformation {
     /// For record transformations, provide a field.
@@ -4236,6 +4429,7 @@ pub struct RecordTransformation {
     #[prost(string, tag = "3")]
     pub container_version: ::prost::alloc::string::String,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TransformationResultStatus {
     /// Transformation result status type, this will be either SUCCESS, or it will
@@ -4247,6 +4441,7 @@ pub struct TransformationResultStatus {
     pub details: ::core::option::Option<super::super::super::rpc::Status>,
 }
 /// Config for storing transformation details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TransformationDetailsStorageConfig {
     /// Location to store the transformation summary.
@@ -4256,6 +4451,7 @@ pub struct TransformationDetailsStorageConfig {
 /// Nested message and enum types in `TransformationDetailsStorageConfig`.
 pub mod transformation_details_storage_config {
     /// Location to store the transformation summary.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Type {
         /// The BigQuery table in which to store the output. This may be an existing
@@ -4269,6 +4465,7 @@ pub mod transformation_details_storage_config {
     }
 }
 /// Schedule for inspect job triggers.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Schedule {
     #[prost(oneof = "schedule::Option", tags = "1")]
@@ -4276,6 +4473,7 @@ pub struct Schedule {
 }
 /// Nested message and enum types in `Schedule`.
 pub mod schedule {
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Option {
         /// With this option a job is started on a regular periodic basis. For
@@ -4292,12 +4490,14 @@ pub mod schedule {
 }
 /// Job trigger option for hybrid jobs. Jobs must be manually created
 /// and finished.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Manual {}
 /// The inspectTemplate contains a configuration (set of types of sensitive data
 /// to be detected) to be used anywhere you otherwise would normally specify
 /// InspectConfig. See <https://cloud.google.com/dlp/docs/concepts-templates>
 /// to learn more.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InspectTemplate {
     /// Output only. The template name.
@@ -4325,6 +4525,7 @@ pub struct InspectTemplate {
 }
 /// DeidentifyTemplates contains instructions on how to de-identify content.
 /// See <https://cloud.google.com/dlp/docs/concepts-templates> to learn more.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeidentifyTemplate {
     /// Output only. The template name.
@@ -4352,6 +4553,7 @@ pub struct DeidentifyTemplate {
 }
 /// Details information about an error encountered during job execution or
 /// the results of an unsuccessful activation of the JobTrigger.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Error {
     /// Detailed error codes and messages.
@@ -4363,6 +4565,7 @@ pub struct Error {
 }
 /// Contains a configuration to make dlp api calls on a repeating basis.
 /// See <https://cloud.google.com/dlp/docs/concepts-job-triggers> to learn more.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct JobTrigger {
     /// Unique resource name for the triggeredJob, assigned by the service when the
@@ -4406,6 +4609,7 @@ pub struct JobTrigger {
 /// Nested message and enum types in `JobTrigger`.
 pub mod job_trigger {
     /// What event needs to occur for a new job to be started.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Trigger {
         #[prost(oneof = "trigger::Trigger", tags = "1, 2")]
@@ -4413,6 +4617,7 @@ pub mod job_trigger {
     }
     /// Nested message and enum types in `Trigger`.
     pub mod trigger {
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Trigger {
             /// Create a job on a repeating basis based on the elapse of time.
@@ -4464,6 +4669,7 @@ pub mod job_trigger {
         }
     }
     /// The configuration details for the specific type of job to run.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Job {
         /// For inspect jobs, a snapshot of the configuration.
@@ -4473,6 +4679,7 @@ pub mod job_trigger {
 }
 /// A task to execute on the completion of a job.
 /// See <https://cloud.google.com/dlp/docs/concepts-actions> to learn more.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Action {
     #[prost(oneof = "action::Action", tags = "1, 2, 3, 5, 7, 8, 9")]
@@ -4484,6 +4691,7 @@ pub mod action {
     /// OutputStorageConfig. Only a single instance of this action can be
     /// specified.
     /// Compatible with: Inspect, Risk
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SaveFindings {
         /// Location to store findings outside of DLP.
@@ -4495,6 +4703,7 @@ pub mod action {
     /// finished job's
     /// \[`DlpJob.name`\](<https://cloud.google.com/dlp/docs/reference/rest/v2/projects.dlpJobs#DlpJob>).
     /// Compatible with: Inspect, Risk
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct PublishToPubSub {
         /// Cloud Pub/Sub topic to send notifications to. The topic must have given
@@ -4514,6 +4723,7 @@ pub mod action {
     /// by CSCC service-specific policy, see
     /// <https://cloud.google.com/terms/service-terms> Only a single instance of this
     /// action can be specified. Compatible with: Inspect
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct PublishSummaryToCscc {}
     /// Publish findings of a DlpJob to Data Catalog. In Data Catalog, tag
@@ -4534,6 +4744,7 @@ pub mod action {
     /// Only a single instance of this action can be specified. This action is
     /// allowed only if all resources being scanned are BigQuery tables.
     /// Compatible with: Inspect
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct PublishFindingsToCloudDataCatalog {}
     /// Create a de-identified copy of the requested table or files.
@@ -4550,6 +4761,7 @@ pub mod action {
     /// same project and dataset as the original table.
     ///
     /// Compatible with: Inspect
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Deidentify {
         /// User specified deidentify templates and configs for structured,
@@ -4581,6 +4793,7 @@ pub mod action {
     }
     /// Nested message and enum types in `Deidentify`.
     pub mod deidentify {
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Output {
             /// Required. User settable Cloud Storage bucket and folders to store de-identified
@@ -4596,14 +4809,17 @@ pub mod action {
     /// Sends an email when the job completes. The email goes to IAM project owners
     /// and technical [Essential
     /// Contacts](<https://cloud.google.com/resource-manager/docs/managing-notification-contacts>).
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct JobNotificationEmails {}
     /// Enable Stackdriver metric dlp.googleapis.com/finding_count. This
     /// will publish a metric to stack driver on each infotype requested and
     /// how many findings were found for it. CustomDetectors will be bucketed
     /// as 'Custom' under the Stackdriver label 'info_type'.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct PublishToStackdriver {}
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Action {
         /// Save resulting findings in a provided location.
@@ -4634,6 +4850,7 @@ pub mod action {
 /// User specified templates and configs for how to deidentify structured,
 /// unstructures, and image files. User must provide either a unstructured
 /// deidentify template or at least one redact image config.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TransformationConfig {
     /// De-identify template.
@@ -4661,6 +4878,7 @@ pub struct TransformationConfig {
     pub image_redact_template: ::prost::alloc::string::String,
 }
 /// Request message for CreateInspectTemplate.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateInspectTemplateRequest {
     /// Required. Parent resource name.
@@ -4699,6 +4917,7 @@ pub struct CreateInspectTemplateRequest {
     pub location_id: ::prost::alloc::string::String,
 }
 /// Request message for UpdateInspectTemplate.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateInspectTemplateRequest {
     /// Required. Resource name of organization and inspectTemplate to be updated, for
@@ -4714,6 +4933,7 @@ pub struct UpdateInspectTemplateRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for GetInspectTemplate.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetInspectTemplateRequest {
     /// Required. Resource name of the organization and inspectTemplate to be read, for
@@ -4723,6 +4943,7 @@ pub struct GetInspectTemplateRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for ListInspectTemplates.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListInspectTemplatesRequest {
     /// Required. Parent resource name.
@@ -4775,6 +4996,7 @@ pub struct ListInspectTemplatesRequest {
     pub location_id: ::prost::alloc::string::String,
 }
 /// Response message for ListInspectTemplates.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListInspectTemplatesResponse {
     /// List of inspectTemplates, up to page_size in ListInspectTemplatesRequest.
@@ -4786,6 +5008,7 @@ pub struct ListInspectTemplatesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for DeleteInspectTemplate.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteInspectTemplateRequest {
     /// Required. Resource name of the organization and inspectTemplate to be deleted, for
@@ -4795,6 +5018,7 @@ pub struct DeleteInspectTemplateRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for CreateJobTrigger.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateJobTriggerRequest {
     /// Required. Parent resource name.
@@ -4829,6 +5053,7 @@ pub struct CreateJobTriggerRequest {
     pub location_id: ::prost::alloc::string::String,
 }
 /// Request message for ActivateJobTrigger.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ActivateJobTriggerRequest {
     /// Required. Resource name of the trigger to activate, for example
@@ -4837,6 +5062,7 @@ pub struct ActivateJobTriggerRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for UpdateJobTrigger.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateJobTriggerRequest {
     /// Required. Resource name of the project and the triggeredJob, for example
@@ -4851,6 +5077,7 @@ pub struct UpdateJobTriggerRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for GetJobTrigger.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetJobTriggerRequest {
     /// Required. Resource name of the project and the triggeredJob, for example
@@ -4861,6 +5088,7 @@ pub struct GetJobTriggerRequest {
 /// Request message for CreateDlpJobRequest. Used to initiate long running
 /// jobs such as calculating risk metrics or inspecting Google Cloud
 /// Storage.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateDlpJobRequest {
     /// Required. Parent resource name.
@@ -4897,6 +5125,7 @@ pub struct CreateDlpJobRequest {
 /// Nested message and enum types in `CreateDlpJobRequest`.
 pub mod create_dlp_job_request {
     /// The configuration details for the specific type of job to run.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Job {
         /// An inspection job scans a storage repository for InfoTypes.
@@ -4909,6 +5138,7 @@ pub mod create_dlp_job_request {
     }
 }
 /// Request message for ListJobTriggers.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListJobTriggersRequest {
     /// Required. Parent resource name.
@@ -4988,6 +5218,7 @@ pub struct ListJobTriggersRequest {
     pub location_id: ::prost::alloc::string::String,
 }
 /// Response message for ListJobTriggers.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListJobTriggersResponse {
     /// List of triggeredJobs, up to page_size in ListJobTriggersRequest.
@@ -4999,6 +5230,7 @@ pub struct ListJobTriggersResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for DeleteJobTrigger.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteJobTriggerRequest {
     /// Required. Resource name of the project and the triggeredJob, for example
@@ -5007,6 +5239,7 @@ pub struct DeleteJobTriggerRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Controls what and how to inspect for findings.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InspectJobConfig {
     /// The data to scan.
@@ -5025,6 +5258,7 @@ pub struct InspectJobConfig {
     pub actions: ::prost::alloc::vec::Vec<Action>,
 }
 /// A task to execute when a data profile has been generated.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataProfileAction {
     #[prost(oneof = "data_profile_action::Action", tags = "1, 2")]
@@ -5034,6 +5268,7 @@ pub struct DataProfileAction {
 pub mod data_profile_action {
     /// If set, the detailed data profiles will be persisted to the location
     /// of your choice whenever updated.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Export {
         /// Store all table and column profiles in an existing table or a new table
@@ -5045,6 +5280,7 @@ pub mod data_profile_action {
     /// Send a Pub/Sub message into the given Pub/Sub topic to connect other
     /// systems to data profile generation. The message payload data will
     /// be the byte serialization of `DataProfilePubSubMessage`.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct PubSubNotification {
         /// Cloud Pub/Sub topic to send notifications to.
@@ -5148,6 +5384,7 @@ pub mod data_profile_action {
             }
         }
     }
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Action {
         /// Export data profiles into a provided location.
@@ -5165,6 +5402,7 @@ pub mod data_profile_action {
 /// The generated data profiles are retained according to the
 /// [data retention policy]
 /// (<https://cloud.google.com/dlp/docs/data-profiles#retention>).
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataProfileJobConfig {
     /// The data to scan.
@@ -5198,6 +5436,7 @@ pub struct DataProfileJobConfig {
     pub data_profile_actions: ::prost::alloc::vec::Vec<DataProfileAction>,
 }
 /// The data that will be profiled.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataProfileLocation {
     /// The location to be scanned.
@@ -5207,6 +5446,7 @@ pub struct DataProfileLocation {
 /// Nested message and enum types in `DataProfileLocation`.
 pub mod data_profile_location {
     /// The location to be scanned.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Location {
         /// The ID of an organization to scan.
@@ -5218,6 +5458,7 @@ pub mod data_profile_location {
     }
 }
 /// Combines all of the information about a DLP job.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DlpJob {
     /// The server-assigned name.
@@ -5300,6 +5541,7 @@ pub mod dlp_job {
             }
         }
     }
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Details {
         /// Results from analyzing risk of a data source.
@@ -5311,6 +5553,7 @@ pub mod dlp_job {
     }
 }
 /// The request message for \[DlpJobs.GetDlpJob][\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetDlpJobRequest {
     /// Required. The name of the DlpJob resource.
@@ -5318,6 +5561,7 @@ pub struct GetDlpJobRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request message for listing DLP jobs.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDlpJobsRequest {
     /// Required. Parent resource name.
@@ -5397,6 +5641,7 @@ pub struct ListDlpJobsRequest {
     pub location_id: ::prost::alloc::string::String,
 }
 /// The response message for listing DLP jobs.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDlpJobsResponse {
     /// A list of DlpJobs that matches the specified filter in the request.
@@ -5407,6 +5652,7 @@ pub struct ListDlpJobsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request message for canceling a DLP job.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CancelDlpJobRequest {
     /// Required. The name of the DlpJob resource to be cancelled.
@@ -5414,6 +5660,7 @@ pub struct CancelDlpJobRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request message for finishing a DLP hybrid job.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FinishDlpJobRequest {
     /// Required. The name of the DlpJob resource to be cancelled.
@@ -5421,6 +5668,7 @@ pub struct FinishDlpJobRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request message for deleting a DLP job.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteDlpJobRequest {
     /// Required. The name of the DlpJob resource to be deleted.
@@ -5428,6 +5676,7 @@ pub struct DeleteDlpJobRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for CreateDeidentifyTemplate.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateDeidentifyTemplateRequest {
     /// Required. Parent resource name.
@@ -5466,6 +5715,7 @@ pub struct CreateDeidentifyTemplateRequest {
     pub location_id: ::prost::alloc::string::String,
 }
 /// Request message for UpdateDeidentifyTemplate.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateDeidentifyTemplateRequest {
     /// Required. Resource name of organization and deidentify template to be updated, for
@@ -5481,6 +5731,7 @@ pub struct UpdateDeidentifyTemplateRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for GetDeidentifyTemplate.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetDeidentifyTemplateRequest {
     /// Required. Resource name of the organization and deidentify template to be read, for
@@ -5490,6 +5741,7 @@ pub struct GetDeidentifyTemplateRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for ListDeidentifyTemplates.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDeidentifyTemplatesRequest {
     /// Required. Parent resource name.
@@ -5542,6 +5794,7 @@ pub struct ListDeidentifyTemplatesRequest {
     pub location_id: ::prost::alloc::string::String,
 }
 /// Response message for ListDeidentifyTemplates.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDeidentifyTemplatesResponse {
     /// List of deidentify templates, up to page_size in
@@ -5554,6 +5807,7 @@ pub struct ListDeidentifyTemplatesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for DeleteDeidentifyTemplate.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteDeidentifyTemplateRequest {
     /// Required. Resource name of the organization and deidentify template to be deleted,
@@ -5568,6 +5822,7 @@ pub struct DeleteDeidentifyTemplateRequest {
 /// dictionary creation are stored in the specified Cloud Storage
 /// location. Consider using `CustomInfoType.Dictionary` for smaller dictionaries
 /// that satisfy the size requirements.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LargeCustomDictionaryConfig {
     /// Location to store dictionary artifacts in Cloud Storage. These files
@@ -5581,6 +5836,7 @@ pub struct LargeCustomDictionaryConfig {
 }
 /// Nested message and enum types in `LargeCustomDictionaryConfig`.
 pub mod large_custom_dictionary_config {
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
         /// Set of files containing newline-delimited lists of dictionary phrases.
@@ -5592,6 +5848,7 @@ pub mod large_custom_dictionary_config {
     }
 }
 /// Summary statistics of a custom dictionary.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LargeCustomDictionaryStats {
     /// Approximate number of distinct phrases in the dictionary.
@@ -5601,6 +5858,7 @@ pub struct LargeCustomDictionaryStats {
 /// Configuration for stored infoTypes. All fields and subfield are provided
 /// by the user. For more information, see
 /// <https://cloud.google.com/dlp/docs/creating-custom-infotypes.>
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StoredInfoTypeConfig {
     /// Display name of the StoredInfoType (max 256 characters).
@@ -5616,6 +5874,7 @@ pub struct StoredInfoTypeConfig {
 /// Nested message and enum types in `StoredInfoTypeConfig`.
 pub mod stored_info_type_config {
     /// Stored infotype types.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Type {
         /// StoredInfoType where findings are defined by a dictionary of phrases.
@@ -5630,6 +5889,7 @@ pub mod stored_info_type_config {
     }
 }
 /// Statistics for a StoredInfoType.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StoredInfoTypeStats {
     /// Stat types
@@ -5639,6 +5899,7 @@ pub struct StoredInfoTypeStats {
 /// Nested message and enum types in `StoredInfoTypeStats`.
 pub mod stored_info_type_stats {
     /// Stat types
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Type {
         /// StoredInfoType where findings are defined by a dictionary of phrases.
@@ -5648,6 +5909,7 @@ pub mod stored_info_type_stats {
 }
 /// Version of a StoredInfoType, including the configuration used to build it,
 /// create timestamp, and current state.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StoredInfoTypeVersion {
     /// StoredInfoType configuration.
@@ -5682,6 +5944,7 @@ pub struct StoredInfoTypeVersion {
 }
 /// StoredInfoType resource message that contains information about the current
 /// version and any pending updates.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StoredInfoType {
     /// Resource name.
@@ -5696,6 +5959,7 @@ pub struct StoredInfoType {
     pub pending_versions: ::prost::alloc::vec::Vec<StoredInfoTypeVersion>,
 }
 /// Request message for CreateStoredInfoType.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateStoredInfoTypeRequest {
     /// Required. Parent resource name.
@@ -5734,6 +5998,7 @@ pub struct CreateStoredInfoTypeRequest {
     pub location_id: ::prost::alloc::string::String,
 }
 /// Request message for UpdateStoredInfoType.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateStoredInfoTypeRequest {
     /// Required. Resource name of organization and storedInfoType to be updated, for
@@ -5751,6 +6016,7 @@ pub struct UpdateStoredInfoTypeRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for GetStoredInfoType.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetStoredInfoTypeRequest {
     /// Required. Resource name of the organization and storedInfoType to be read, for
@@ -5760,6 +6026,7 @@ pub struct GetStoredInfoTypeRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for ListStoredInfoTypes.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListStoredInfoTypesRequest {
     /// Required. Parent resource name.
@@ -5809,6 +6076,7 @@ pub struct ListStoredInfoTypesRequest {
     pub location_id: ::prost::alloc::string::String,
 }
 /// Response message for ListStoredInfoTypes.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListStoredInfoTypesResponse {
     /// List of storedInfoTypes, up to page_size in ListStoredInfoTypesRequest.
@@ -5820,6 +6088,7 @@ pub struct ListStoredInfoTypesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for DeleteStoredInfoType.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteStoredInfoTypeRequest {
     /// Required. Resource name of the organization and storedInfoType to be deleted, for
@@ -5829,6 +6098,7 @@ pub struct DeleteStoredInfoTypeRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request to search for potentially sensitive info in a custom location.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HybridInspectJobTriggerRequest {
     /// Required. Resource name of the trigger to execute a hybrid inspect on, for example
@@ -5840,6 +6110,7 @@ pub struct HybridInspectJobTriggerRequest {
     pub hybrid_item: ::core::option::Option<HybridContentItem>,
 }
 /// Request to search for potentially sensitive info in a custom location.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HybridInspectDlpJobRequest {
     /// Required. Resource name of the job to execute a hybrid inspect on, for example
@@ -5852,6 +6123,7 @@ pub struct HybridInspectDlpJobRequest {
 }
 /// An individual hybrid item to inspect. Will be stored temporarily during
 /// processing.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HybridContentItem {
     /// The item to inspect.
@@ -5862,6 +6134,7 @@ pub struct HybridContentItem {
     pub finding_details: ::core::option::Option<HybridFindingDetails>,
 }
 /// Populate to associate additional data with each finding.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HybridFindingDetails {
     /// Details about the container where the content being inspected is from.
@@ -5908,10 +6181,12 @@ pub struct HybridFindingDetails {
     >,
 }
 /// Quota exceeded errors will be thrown once quota has been met.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HybridInspectResponse {}
 /// Score is a summary of all elements in the data profile.
 /// A higher number means more risk.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataRiskLevel {
     /// The score applied to the resource.
@@ -5965,6 +6240,7 @@ pub mod data_risk_level {
     }
 }
 /// Snapshot of the configurations used to generate the profile.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataProfileConfigSnapshot {
     /// A copy of the inspection config used to generate this profile. This
@@ -5976,6 +6252,7 @@ pub struct DataProfileConfigSnapshot {
     pub data_profile_job: ::core::option::Option<DataProfileJobConfig>,
 }
 /// The profile for a scanned table.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TableDataProfile {
     /// The name of the profile.
@@ -6102,6 +6379,7 @@ pub mod table_data_profile {
         }
     }
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProfileStatus {
     /// Profiling status code and optional message
@@ -6112,6 +6390,7 @@ pub struct ProfileStatus {
     pub timestamp: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// The infoType details for this column.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InfoTypeSummary {
     /// The infoType.
@@ -6123,6 +6402,7 @@ pub struct InfoTypeSummary {
     pub estimated_prevalence: i32,
 }
 /// Infotype details for other infoTypes found within a column.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OtherInfoTypeSummary {
     /// The other infoType.
@@ -6134,6 +6414,7 @@ pub struct OtherInfoTypeSummary {
     pub estimated_prevalence: i32,
 }
 /// A condition for determining whether a Pub/Sub should be triggered.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataProfilePubSubCondition {
     /// An expression.
@@ -6145,6 +6426,7 @@ pub struct DataProfilePubSubCondition {
 /// Nested message and enum types in `DataProfilePubSubCondition`.
 pub mod data_profile_pub_sub_condition {
     /// A condition consisting of a value.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct PubSubCondition {
         /// The value for the condition to trigger.
@@ -6154,6 +6436,7 @@ pub mod data_profile_pub_sub_condition {
     /// Nested message and enum types in `PubSubCondition`.
     pub mod pub_sub_condition {
         /// The value for the condition to trigger.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Value {
             /// The minimum data risk score that triggers the condition.
@@ -6165,6 +6448,7 @@ pub mod data_profile_pub_sub_condition {
         }
     }
     /// An expression, consisting of an operator and conditions.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct PubSubExpressions {
         /// The operator to apply to the collection of conditions.
@@ -6251,6 +6535,7 @@ pub mod data_profile_pub_sub_condition {
 /// Pub/Sub topic message for a DataProfileAction.PubSubNotification event.
 /// To receive a message of protocol buffer schema type, convert the message data
 /// to an object of this proto class.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataProfilePubSubMessage {
     /// If `DetailLevel` is `TABLE_PROFILE` this will be fully populated.

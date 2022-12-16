@@ -1,5 +1,6 @@
 /// A vertex represents a 2D point in the image.
 /// NOTE: the vertex coordinates are in the same scale as the original image.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Vertex {
     /// X coordinate.
@@ -10,6 +11,7 @@ pub struct Vertex {
     pub y: i32,
 }
 /// A bounding polygon for the detected image annotation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BoundingPoly {
     /// The bounding polygon vertices.
@@ -19,6 +21,7 @@ pub struct BoundingPoly {
 /// A 3D position in the image, used primarily for Face detection landmarks.
 /// A valid Position must have both x and y coordinates.
 /// The position coordinates are in the same scale as the original image.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Position {
     /// X coordinate.
@@ -39,6 +42,7 @@ pub struct Position {
 /// to the
 /// \[TextAnnotation.TextProperty][google.cloud.vision.v1p1beta1.TextAnnotation.TextProperty\]
 /// message definition below for more detail.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TextAnnotation {
     /// List of pages detected by OCR.
@@ -51,6 +55,7 @@ pub struct TextAnnotation {
 /// Nested message and enum types in `TextAnnotation`.
 pub mod text_annotation {
     /// Detected language for a structural component.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DetectedLanguage {
         /// The BCP-47 language code, such as "en-US" or "sr-Latn". For more
@@ -63,6 +68,7 @@ pub mod text_annotation {
         pub confidence: f32,
     }
     /// Detected start or end of a structural component.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DetectedBreak {
         /// Detected break type.
@@ -120,6 +126,7 @@ pub mod text_annotation {
         }
     }
     /// Additional information detected on the structural component.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct TextProperty {
         /// A list of detected languages together with confidence.
@@ -131,6 +138,7 @@ pub mod text_annotation {
     }
 }
 /// Detected page from OCR.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Page {
     /// Additional information detected on the page.
@@ -150,6 +158,7 @@ pub struct Page {
     pub confidence: f32,
 }
 /// Logical element on the page.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Block {
     /// Additional information detected for the block.
@@ -229,6 +238,7 @@ pub mod block {
     }
 }
 /// Structural unit of text representing a number of words in certain order.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Paragraph {
     /// Additional information detected for the paragraph.
@@ -259,6 +269,7 @@ pub struct Paragraph {
     pub confidence: f32,
 }
 /// A word representation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Word {
     /// Additional information detected for the word.
@@ -290,6 +301,7 @@ pub struct Word {
     pub confidence: f32,
 }
 /// A single symbol representation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Symbol {
     /// Additional information detected for the symbol.
@@ -320,6 +332,7 @@ pub struct Symbol {
     pub confidence: f32,
 }
 /// Relevant information for the image from the Internet.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WebDetection {
     /// Deduced entities from similar images on the Internet.
@@ -347,6 +360,7 @@ pub struct WebDetection {
 /// Nested message and enum types in `WebDetection`.
 pub mod web_detection {
     /// Entity deduced from similar images on the Internet.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct WebEntity {
         /// Opaque entity ID.
@@ -361,6 +375,7 @@ pub mod web_detection {
         pub description: ::prost::alloc::string::String,
     }
     /// Metadata for online images.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct WebImage {
         /// The result image URL.
@@ -371,6 +386,7 @@ pub mod web_detection {
         pub score: f32,
     }
     /// Metadata for web pages.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct WebPage {
         /// The result web page URL.
@@ -394,6 +410,7 @@ pub mod web_detection {
         pub partial_matching_images: ::prost::alloc::vec::Vec<WebImage>,
     }
     /// Label to provide extra metadata for the web detection.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct WebLabel {
         /// Label for extra metadata.
@@ -410,6 +427,7 @@ pub mod web_detection {
 /// images by using *Feature*s. Each Feature indicates a type of image
 /// detection task to perform. Features encode the Cloud Vision API
 /// vertical to operate on and the number of top-scoring results to return.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Feature {
     /// The feature type.
@@ -488,6 +506,7 @@ pub mod feature {
     }
 }
 /// External image source (Google Cloud Storage image location).
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImageSource {
     /// NOTE: For new code `image_uri` below is preferred.
@@ -512,6 +531,7 @@ pub struct ImageSource {
     pub image_uri: ::prost::alloc::string::String,
 }
 /// Client image to perform Google Cloud Vision API tasks over.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Image {
     /// Image content, represented as a stream of bytes.
@@ -526,6 +546,7 @@ pub struct Image {
     pub source: ::core::option::Option<ImageSource>,
 }
 /// A face annotation object contains the results of face detection.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FaceAnnotation {
     /// The bounding polygon around the face. The coordinates of the bounding box
@@ -593,6 +614,7 @@ pub struct FaceAnnotation {
 /// Nested message and enum types in `FaceAnnotation`.
 pub mod face_annotation {
     /// A face-specific landmark (for example, a face feature).
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Landmark {
         /// Face landmark type.
@@ -740,6 +762,7 @@ pub mod face_annotation {
     }
 }
 /// Detected entity location information.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LocationInfo {
     /// lat/long location coordinates.
@@ -747,6 +770,7 @@ pub struct LocationInfo {
     pub lat_lng: ::core::option::Option<super::super::super::r#type::LatLng>,
 }
 /// A `Property` consists of a user-supplied name/value pair.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Property {
     /// Name of the property.
@@ -760,6 +784,7 @@ pub struct Property {
     pub uint64_value: u64,
 }
 /// Set of detected entity features.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EntityAnnotation {
     /// Opaque entity ID. Some IDs may be available in
@@ -809,6 +834,7 @@ pub struct EntityAnnotation {
 /// Set of features pertaining to the image, computed by computer vision
 /// methods over safe-search verticals (for example, adult, spoof, medical,
 /// violence).
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SafeSearchAnnotation {
     /// Represents the adult content likelihood for the image. Adult content may
@@ -835,6 +861,7 @@ pub struct SafeSearchAnnotation {
     pub racy: i32,
 }
 /// Rectangle determined by min and max `LatLng` pairs.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LatLongRect {
     /// Min lat/long pair.
@@ -846,6 +873,7 @@ pub struct LatLongRect {
 }
 /// Color information consists of RGB channels, score, and the fraction of
 /// the image that the color occupies in the image.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ColorInfo {
     /// RGB components of the color.
@@ -860,6 +888,7 @@ pub struct ColorInfo {
     pub pixel_fraction: f32,
 }
 /// Set of dominant colors and their corresponding scores.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DominantColorsAnnotation {
     /// RGB color values with their score and pixel fraction.
@@ -867,6 +896,7 @@ pub struct DominantColorsAnnotation {
     pub colors: ::prost::alloc::vec::Vec<ColorInfo>,
 }
 /// Stores image properties, such as dominant colors.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImageProperties {
     /// If present, dominant colors completed successfully.
@@ -874,6 +904,7 @@ pub struct ImageProperties {
     pub dominant_colors: ::core::option::Option<DominantColorsAnnotation>,
 }
 /// Single crop hint that is used to generate a new crop when serving an image.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CropHint {
     /// The bounding polygon for the crop region. The coordinates of the bounding
@@ -889,6 +920,7 @@ pub struct CropHint {
     pub importance_fraction: f32,
 }
 /// Set of crop hints that are used to generate new crops when serving images.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CropHintsAnnotation {
     /// Crop hint results.
@@ -896,6 +928,7 @@ pub struct CropHintsAnnotation {
     pub crop_hints: ::prost::alloc::vec::Vec<CropHint>,
 }
 /// Parameters for crop hints annotation request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CropHintsParams {
     /// Aspect ratios in floats, representing the ratio of the width to the height
@@ -908,6 +941,7 @@ pub struct CropHintsParams {
     pub aspect_ratios: ::prost::alloc::vec::Vec<f32>,
 }
 /// Parameters for web detection request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WebDetectionParams {
     /// Whether to include results derived from the geo information in the image.
@@ -916,6 +950,7 @@ pub struct WebDetectionParams {
 }
 /// Parameters for text detections. This is used to control TEXT_DETECTION and
 /// DOCUMENT_TEXT_DETECTION features.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TextDetectionParams {
     /// By default, Cloud Vision API only includes confidence score for
@@ -928,6 +963,7 @@ pub struct TextDetectionParams {
     pub advanced_ocr_options: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Image context and/or feature-specific parameters.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImageContext {
     /// lat/long rectangle that specifies the location of the image.
@@ -955,6 +991,7 @@ pub struct ImageContext {
 }
 /// Request for performing Google Cloud Vision API tasks over a user-provided
 /// image, with user-requested features.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnnotateImageRequest {
     /// The image to be processed.
@@ -968,6 +1005,7 @@ pub struct AnnotateImageRequest {
     pub image_context: ::core::option::Option<ImageContext>,
 }
 /// Response to an image annotation request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnnotateImageResponse {
     /// If present, face detection has completed successfully.
@@ -1010,6 +1048,7 @@ pub struct AnnotateImageResponse {
     pub error: ::core::option::Option<super::super::super::rpc::Status>,
 }
 /// Multiple image annotation requests are batched into a single service call.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchAnnotateImagesRequest {
     /// Required. Individual image annotation requests for this batch.
@@ -1017,6 +1056,7 @@ pub struct BatchAnnotateImagesRequest {
     pub requests: ::prost::alloc::vec::Vec<AnnotateImageRequest>,
 }
 /// Response to a batch image annotation request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchAnnotateImagesResponse {
     /// Individual responses to image annotation requests within the batch.

@@ -1,5 +1,6 @@
 /// An insight along with the information used to derive the insight. The insight
 /// may have associated recomendations as well.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Insight {
     /// Name of the insight.
@@ -49,6 +50,7 @@ pub struct Insight {
 /// Nested message and enum types in `Insight`.
 pub mod insight {
     /// Reference to an associated recommendation.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct RecommendationReference {
         /// Recommendation resource name, e.g.
@@ -138,6 +140,7 @@ pub mod insight {
     }
 }
 /// Information related to insight state.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsightStateInfo {
     /// Insight state.
@@ -198,6 +201,7 @@ pub mod insight_state_info {
 }
 /// A recommendation along with a suggested action. E.g., a rightsizing
 /// recommendation for an underutilized VM, IAM role recommendations, etc
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Recommendation {
     /// Name of recommendation.
@@ -257,6 +261,7 @@ pub struct Recommendation {
 /// Nested message and enum types in `Recommendation`.
 pub mod recommendation {
     /// Reference to an associated insight.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct InsightReference {
         /// Insight resource name, e.g.
@@ -306,6 +311,7 @@ pub mod recommendation {
     }
 }
 /// Contains what resources are changing and how they are changing.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RecommendationContent {
     /// Operations to one or more Google Cloud resources grouped in such a way
@@ -318,6 +324,7 @@ pub struct RecommendationContent {
     pub overview: ::core::option::Option<::prost_types::Struct>,
 }
 /// Group of operations that need to be performed atomically.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationGroup {
     /// List of operations across one or more resources that belong to this group.
@@ -334,6 +341,7 @@ pub struct OperationGroup {
 ///    described.
 /// * Allows extension to custom operations not natively supported by RFC6902.
 /// See <https://tools.ietf.org/html/rfc6902> for details on the original RFC.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Operation {
     /// Type of this operation. Contains one of 'add', 'remove', 'replace', 'move',
@@ -418,6 +426,7 @@ pub struct Operation {
 pub mod operation {
     /// One of the fields in the following block will be set and intend to
     /// describe a value for 'path' field.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum PathValue {
         /// Value for the `path` field. Will be set for actions:'add'/'replace'.
@@ -432,6 +441,7 @@ pub mod operation {
     }
 }
 /// Contains various matching options for values for a GCP resource field.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ValueMatcher {
     #[prost(oneof = "value_matcher::MatchVariant", tags = "1")]
@@ -439,6 +449,7 @@ pub struct ValueMatcher {
 }
 /// Nested message and enum types in `ValueMatcher`.
 pub mod value_matcher {
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum MatchVariant {
         /// To be used for full regex matching. The regular expression is using the
@@ -449,6 +460,7 @@ pub mod value_matcher {
     }
 }
 /// Contains metadata about how much money a recommendation can save or incur.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CostProjection {
     /// An approximate projection on amount saved or amount incurred. Negative cost
@@ -464,6 +476,7 @@ pub struct CostProjection {
     pub duration: ::core::option::Option<::prost_types::Duration>,
 }
 /// Contains various ways of describing the impact on Security.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SecurityProjection {
     /// This field can be used by the recommender to define details specific to
@@ -473,6 +486,7 @@ pub struct SecurityProjection {
 }
 /// Contains metadata about how much sustainability a recommendation can save or
 /// incur.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SustainabilityProjection {
     /// Carbon Footprint generated in kg of CO2 equivalent.
@@ -484,6 +498,7 @@ pub struct SustainabilityProjection {
     pub duration: ::core::option::Option<::prost_types::Duration>,
 }
 /// Contains the impact a recommendation can have for a given category.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Impact {
     /// Category that is being targeted.
@@ -539,6 +554,7 @@ pub mod impact {
         }
     }
     /// Contains projections (if any) for this category.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Projection {
         /// Use with CategoryType.COST
@@ -553,6 +569,7 @@ pub mod impact {
     }
 }
 /// Information for state. Contains state and metadata.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RecommendationStateInfo {
     /// The state of the recommendation, Eg ACTIVE, SUCCEEDED, FAILED.
@@ -627,6 +644,7 @@ pub mod recommendation_state_info {
     }
 }
 /// Configuration for an InsightType.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsightTypeConfig {
     /// Name of insight type config.
@@ -673,6 +691,7 @@ pub struct InsightTypeConfig {
 /// A configuration to customize the generation of insights.
 /// Eg, customizing the lookback period considered when generating a
 /// insight.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsightTypeGenerationConfig {
     /// Parameters for this InsightTypeGenerationConfig. These configs can be used
@@ -681,6 +700,7 @@ pub struct InsightTypeGenerationConfig {
     pub params: ::core::option::Option<::prost_types::Struct>,
 }
 /// Configuration for a Recommender.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RecommenderConfig {
     /// Name of recommender config.
@@ -727,6 +747,7 @@ pub struct RecommenderConfig {
 /// A Configuration to customize the generation of recommendations.
 /// Eg, customizing the lookback period considered when generating a
 /// recommendation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RecommenderGenerationConfig {
     /// Parameters for this RecommenderGenerationConfig. These configs can be used
@@ -735,6 +756,7 @@ pub struct RecommenderGenerationConfig {
     pub params: ::core::option::Option<::prost_types::Struct>,
 }
 /// Request for the `ListInsights` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListInsightsRequest {
     /// Required. The container resource on which to execute the request.
@@ -792,6 +814,7 @@ pub struct ListInsightsRequest {
     pub filter: ::prost::alloc::string::String,
 }
 /// Response to the `ListInsights` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListInsightsResponse {
     /// The set of insights for the `parent` resource.
@@ -803,6 +826,7 @@ pub struct ListInsightsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request to the `GetInsight` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetInsightRequest {
     /// Required. Name of the insight.
@@ -810,6 +834,7 @@ pub struct GetInsightRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for the `MarkInsightAccepted` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MarkInsightAcceptedRequest {
     /// Required. Name of the insight.
@@ -827,6 +852,7 @@ pub struct MarkInsightAcceptedRequest {
     pub etag: ::prost::alloc::string::String,
 }
 /// Request for the `ListRecommendations` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRecommendationsRequest {
     /// Required. The container resource on which to execute the request.
@@ -884,6 +910,7 @@ pub struct ListRecommendationsRequest {
     pub filter: ::prost::alloc::string::String,
 }
 /// Response to the `ListRecommendations` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRecommendationsResponse {
     /// The set of recommendations for the `parent` resource.
@@ -895,6 +922,7 @@ pub struct ListRecommendationsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request to the `GetRecommendation` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetRecommendationRequest {
     /// Required. Name of the recommendation.
@@ -902,6 +930,7 @@ pub struct GetRecommendationRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for the `MarkRecommendationClaimed` Method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MarkRecommendationClaimedRequest {
     /// Required. Name of the recommendation.
@@ -921,6 +950,7 @@ pub struct MarkRecommendationClaimedRequest {
     pub etag: ::prost::alloc::string::String,
 }
 /// Request for the `MarkRecommendationSucceeded` Method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MarkRecommendationSucceededRequest {
     /// Required. Name of the recommendation.
@@ -940,6 +970,7 @@ pub struct MarkRecommendationSucceededRequest {
     pub etag: ::prost::alloc::string::String,
 }
 /// Request for the `MarkRecommendationFailed` Method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MarkRecommendationFailedRequest {
     /// Required. Name of the recommendation.
@@ -959,6 +990,7 @@ pub struct MarkRecommendationFailedRequest {
     pub etag: ::prost::alloc::string::String,
 }
 /// Request for the GetRecommenderConfig` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetRecommenderConfigRequest {
     /// Required. Name of the Recommendation Config to get.
@@ -974,6 +1006,7 @@ pub struct GetRecommenderConfigRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for the `UpdateRecommenderConfig` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateRecommenderConfigRequest {
     /// Required. The RecommenderConfig to update.
@@ -988,6 +1021,7 @@ pub struct UpdateRecommenderConfigRequest {
     pub validate_only: bool,
 }
 /// Request for the GetInsightTypeConfig` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetInsightTypeConfigRequest {
     /// Required. Name of the InsightTypeConfig to get.
@@ -1003,6 +1037,7 @@ pub struct GetInsightTypeConfigRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for the `UpdateInsightTypeConfig` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateInsightTypeConfigRequest {
     /// Required. The InsightTypeConfig to update.

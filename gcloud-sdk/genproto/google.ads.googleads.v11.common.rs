@@ -1,5 +1,6 @@
 /// Key of the violation. The key is used for referring to a violation
 /// when filing an exemption request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PolicyViolationKey {
     /// Unique ID of the violated policy.
@@ -14,6 +15,7 @@ pub struct PolicyViolationKey {
     pub violating_text: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Parameter for controlling how policy exemption is done.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PolicyValidationParameter {
     /// The list of policy topics that should not cause a PolicyFindingError to
@@ -48,6 +50,7 @@ pub struct PolicyValidationParameter {
 /// on serving. It may optionally have one or more evidences that indicate the
 /// reason for the finding. It may also optionally have one or more constraints
 /// that provide details about how serving may be restricted.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PolicyTopicEntry {
     /// Policy topic this finding refers to. For example, "ALCOHOL",
@@ -72,6 +75,7 @@ pub struct PolicyTopicEntry {
     pub constraints: ::prost::alloc::vec::Vec<PolicyTopicConstraint>,
 }
 /// Additional information that explains a policy finding.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PolicyTopicEvidence {
     /// Specific evidence information depending on the evidence type.
@@ -81,6 +85,7 @@ pub struct PolicyTopicEvidence {
 /// Nested message and enum types in `PolicyTopicEvidence`.
 pub mod policy_topic_evidence {
     /// A list of fragments of text that violated a policy.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct TextList {
         /// The fragments of text from the resource that caused the policy finding.
@@ -91,6 +96,7 @@ pub mod policy_topic_evidence {
     /// ONE_WEBSITE_PER_AD_GROUP policy topic, for example. In case there are more
     /// than five websites, only the top five (those that appear in resources the
     /// most) will be listed here.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct WebsiteList {
         /// Websites that caused the policy finding.
@@ -99,6 +105,7 @@ pub mod policy_topic_evidence {
     }
     /// A list of strings found in a destination page that caused a policy
     /// finding.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DestinationTextList {
         /// List of text found in the resource's destination page.
@@ -106,6 +113,7 @@ pub mod policy_topic_evidence {
         pub destination_texts: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
     /// Evidence of mismatches between the URLs of a resource.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DestinationMismatch {
         /// The set of URLs that did not match each other.
@@ -118,6 +126,7 @@ pub mod policy_topic_evidence {
     }
     /// Evidence details when the destination is returning an HTTP error
     /// code or isn't functional in all locations for commonly used devices.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DestinationNotWorking {
         /// The full URL that didn't work.
@@ -143,6 +152,7 @@ pub mod policy_topic_evidence {
     /// Nested message and enum types in `DestinationNotWorking`.
     pub mod destination_not_working {
         /// Indicates the reason of the DESTINATION_NOT_WORKING policy finding.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Reason {
             /// The type of DNS error.
@@ -157,6 +167,7 @@ pub mod policy_topic_evidence {
         }
     }
     /// Specific evidence information depending on the evidence type.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Value {
         /// List of websites linked with this resource.
@@ -183,6 +194,7 @@ pub mod policy_topic_evidence {
     }
 }
 /// Describes the effect on serving that a policy topic entry will have.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PolicyTopicConstraint {
     /// Specific information about the constraint.
@@ -192,6 +204,7 @@ pub struct PolicyTopicConstraint {
 /// Nested message and enum types in `PolicyTopicConstraint`.
 pub mod policy_topic_constraint {
     /// A list of countries where a resource's serving is constrained.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CountryConstraintList {
         /// Total number of countries targeted by the resource.
@@ -203,10 +216,12 @@ pub mod policy_topic_constraint {
     }
     /// Indicates that a policy topic was constrained due to disapproval of the
     /// website for reseller purposes.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ResellerConstraint {}
     /// Indicates that a resource's ability to serve in a particular country is
     /// constrained.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CountryConstraint {
         /// Geo target constant resource name of the country in which serving is
@@ -215,6 +230,7 @@ pub mod policy_topic_constraint {
         pub country_criterion: ::core::option::Option<::prost::alloc::string::String>,
     }
     /// Specific information about the constraint.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Value {
         /// Countries where the resource cannot serve.
@@ -233,6 +249,7 @@ pub mod policy_topic_constraint {
     }
 }
 /// Contains policy information for an asset inside an ad.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AdAssetPolicySummary {
     /// The list of policy findings for this asset.
@@ -253,6 +270,7 @@ pub struct AdAssetPolicySummary {
     pub approval_status: i32,
 }
 /// A text asset used inside an ad.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AdTextAsset {
     /// Asset text.
@@ -278,6 +296,7 @@ pub struct AdTextAsset {
     pub policy_summary_info: ::core::option::Option<AdAssetPolicySummary>,
 }
 /// An image asset used inside an ad.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AdImageAsset {
     /// The Asset resource name of this image.
@@ -285,6 +304,7 @@ pub struct AdImageAsset {
     pub asset: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A video asset used inside an ad.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AdVideoAsset {
     /// The Asset resource name of this video.
@@ -292,6 +312,7 @@ pub struct AdVideoAsset {
     pub asset: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A media bundle asset used inside an ad.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AdMediaBundleAsset {
     /// The Asset resource name of this media bundle.
@@ -299,6 +320,7 @@ pub struct AdMediaBundleAsset {
     pub asset: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A discovery carousel card asset used inside an ad.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AdDiscoveryCarouselCardAsset {
     /// The Asset resource name of this discovery carousel card.
@@ -306,6 +328,7 @@ pub struct AdDiscoveryCarouselCardAsset {
     pub asset: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A text ad.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TextAdInfo {
     /// The headline of the ad.
@@ -319,6 +342,7 @@ pub struct TextAdInfo {
     pub description2: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// An expanded text ad.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExpandedTextAdInfo {
     /// The first part of the ad's headline.
@@ -344,6 +368,7 @@ pub struct ExpandedTextAdInfo {
     pub path2: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// An expanded dynamic search ad.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExpandedDynamicSearchAdInfo {
     /// The description of the ad.
@@ -354,15 +379,19 @@ pub struct ExpandedDynamicSearchAdInfo {
     pub description2: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A hotel ad.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HotelAdInfo {}
 /// A Smart Shopping ad.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ShoppingSmartAdInfo {}
 /// A standard Shopping ad.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ShoppingProductAdInfo {}
 /// A Shopping Comparison Listing ad.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ShoppingComparisonListingAdInfo {
     /// Headline of the ad. This field is required. Allowed length is between 25
@@ -371,6 +400,7 @@ pub struct ShoppingComparisonListingAdInfo {
     pub headline: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A Gmail ad.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GmailAdInfo {
     /// The Gmail teaser.
@@ -410,6 +440,7 @@ pub struct GmailAdInfo {
 }
 /// Gmail teaser data. The teaser is a small header that acts as an invitation
 /// to view the rest of the ad (the body).
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GmailTeaser {
     /// Headline of the teaser.
@@ -430,6 +461,7 @@ pub struct GmailTeaser {
 /// Data for display call to action. The call to action is a piece of the ad
 /// that prompts the user to do something. Like clicking a link or making a phone
 /// call.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DisplayCallToAction {
     /// Text for the display-call-to-action.
@@ -445,6 +477,7 @@ pub struct DisplayCallToAction {
     pub url_collection_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Product image specific data.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProductImage {
     /// The MediaFile resource name of the product image. Valid image types are
@@ -460,6 +493,7 @@ pub struct ProductImage {
     pub display_call_to_action: ::core::option::Option<DisplayCallToAction>,
 }
 /// Product video specific data.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProductVideo {
     /// The MediaFile resource name of a video which must be hosted on YouTube.
@@ -467,6 +501,7 @@ pub struct ProductVideo {
     pub product_video: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// An image ad.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImageAdInfo {
     /// Width in pixels of the full size image.
@@ -507,6 +542,7 @@ pub mod image_ad_info {
     /// two ways.
     /// 1. An existing MediaFile resource.
     /// 2. The raw image data as bytes.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Image {
         /// The MediaFile resource to use for the image.
@@ -522,6 +558,7 @@ pub mod image_ad_info {
 }
 /// Representation of video bumper in-stream ad format (very short in-stream
 /// non-skippable video ad).
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VideoBumperInStreamAdInfo {
     /// The image assets of the companion banner used with the ad.
@@ -530,6 +567,7 @@ pub struct VideoBumperInStreamAdInfo {
 }
 /// Representation of video non-skippable in-stream ad format (15 second
 /// in-stream non-skippable video ad).
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VideoNonSkippableInStreamAdInfo {
     /// The image assets of the companion banner used with the ad.
@@ -547,6 +585,7 @@ pub struct VideoNonSkippableInStreamAdInfo {
 /// Representation of video TrueView in-stream ad format (ad shown during video
 /// playback, often at beginning, which displays a skip button a few seconds into
 /// the video).
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VideoTrueViewInStreamAdInfo {
     /// Label on the CTA (call-to-action) button taking the user to the video ad's
@@ -564,6 +603,7 @@ pub struct VideoTrueViewInStreamAdInfo {
 }
 /// Representation of video out-stream ad format (ad shown alongside a feed
 /// with automatic playback, without sound).
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VideoOutstreamAdInfo {
     /// The headline of the ad.
@@ -574,6 +614,7 @@ pub struct VideoOutstreamAdInfo {
     pub description: ::prost::alloc::string::String,
 }
 /// Representation of In-feed video ad format.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InFeedVideoAdInfo {
     /// The headline of the ad.
@@ -593,6 +634,7 @@ pub struct InFeedVideoAdInfo {
     pub thumbnail: i32,
 }
 /// A video ad.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VideoAdInfo {
     /// The YouTube video assets used for the ad.
@@ -605,6 +647,7 @@ pub struct VideoAdInfo {
 /// Nested message and enum types in `VideoAdInfo`.
 pub mod video_ad_info {
     /// Format-specific schema for the different video formats.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Format {
         /// Video TrueView in-stream ad format.
@@ -625,6 +668,7 @@ pub mod video_ad_info {
     }
 }
 /// A video responsive ad.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VideoResponsiveAdInfo {
     /// List of text assets used for the short headline, for example, the "Call To
@@ -670,6 +714,7 @@ pub struct VideoResponsiveAdInfo {
 /// performance.
 ///
 /// More information at <https://support.google.com/google-ads/answer/7684791>
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResponsiveSearchAdInfo {
     /// List of text assets for headlines. When the ad serves the headlines will
@@ -690,6 +735,7 @@ pub struct ResponsiveSearchAdInfo {
 }
 /// A legacy responsive display ad. Ads of this type are labeled 'Responsive ads'
 /// in the Google Ads UI.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LegacyResponsiveDisplayAdInfo {
     /// The short version of the ad's headline.
@@ -751,6 +797,7 @@ pub struct LegacyResponsiveDisplayAdInfo {
     pub promo_text: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// An app ad.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AppAdInfo {
     /// Mandatory ad text.
@@ -778,6 +825,7 @@ pub struct AppAdInfo {
 /// the app, like checking in, making a purchase, or booking a flight.
 /// They allow you to send users to a specific part of your app where they can
 /// find what they're looking for easier and faster.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AppEngagementAdInfo {
     /// List of text assets for headlines. When the ad serves the headlines will
@@ -800,6 +848,7 @@ pub struct AppEngagementAdInfo {
 /// and mobile websites on the Display Network. It will help capture people's
 /// interest in your app or game and generate an early install base for your app
 /// or game before a launch.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AppPreRegistrationAdInfo {
     /// List of text assets for headlines. When the ad serves the headlines will
@@ -818,6 +867,7 @@ pub struct AppPreRegistrationAdInfo {
     pub youtube_videos: ::prost::alloc::vec::Vec<AdVideoAsset>,
 }
 /// A legacy app install ad that only can be used by a few select customers.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LegacyAppInstallAdInfo {
     /// The ID of the mobile app.
@@ -840,6 +890,7 @@ pub struct LegacyAppInstallAdInfo {
     pub description2: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A responsive display ad.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResponsiveDisplayAdInfo {
     /// Marketing images to be used in the ad. Valid image types are GIF,
@@ -919,6 +970,7 @@ pub struct ResponsiveDisplayAdInfo {
     pub control_spec: ::core::option::Option<ResponsiveDisplayAdControlSpec>,
 }
 /// A local ad.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LocalAdInfo {
     /// List of text assets for headlines. When the ad serves the headlines will
@@ -961,6 +1013,7 @@ pub struct LocalAdInfo {
 /// A generic type of display ad. The exact ad format is controlled by the
 /// `display_upload_product_type` field, which determines what kinds of data
 /// need to be included with the ad.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DisplayUploadAdInfo {
     /// The product type of this ad. See comments on the enum for details.
@@ -976,6 +1029,7 @@ pub struct DisplayUploadAdInfo {
 /// Nested message and enum types in `DisplayUploadAdInfo`.
 pub mod display_upload_ad_info {
     /// The asset data that makes up the ad.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum MediaAsset {
         /// A media bundle asset to be used in the ad. For information about the
@@ -990,6 +1044,7 @@ pub mod display_upload_ad_info {
     }
 }
 /// Specification for various creative controls for a responsive display ad.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResponsiveDisplayAdControlSpec {
     /// Whether the advertiser has opted into the asset enhancements feature.
@@ -1000,6 +1055,7 @@ pub struct ResponsiveDisplayAdControlSpec {
     pub enable_autogen_video: bool,
 }
 /// A Smart campaign ad.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SmartCampaignAdInfo {
     /// List of text assets, each of which corresponds to a headline when the ad
@@ -1012,6 +1068,7 @@ pub struct SmartCampaignAdInfo {
     pub descriptions: ::prost::alloc::vec::Vec<AdTextAsset>,
 }
 /// A call ad.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CallAdInfo {
     /// The country code in the ad.
@@ -1069,6 +1126,7 @@ pub struct CallAdInfo {
     pub path2: ::prost::alloc::string::String,
 }
 /// A discovery multi asset ad.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DiscoveryMultiAssetAdInfo {
     /// Marketing image assets to be used in the ad. Valid image types are GIF,
@@ -1114,6 +1172,7 @@ pub struct DiscoveryMultiAssetAdInfo {
     pub lead_form_only: ::core::option::Option<bool>,
 }
 /// A discovery carousel ad.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DiscoveryCarouselAdInfo {
     /// Required. The Advertiser/brand name.
@@ -1137,6 +1196,7 @@ pub struct DiscoveryCarouselAdInfo {
     pub carousel_cards: ::prost::alloc::vec::Vec<AdDiscoveryCarouselCardAsset>,
 }
 /// A keyword criterion.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KeywordInfo {
     /// The text of the keyword (at most 80 characters and 10 words).
@@ -1151,6 +1211,7 @@ pub struct KeywordInfo {
 }
 /// A placement criterion. This can be used to modify bids for sites when
 /// targeting the content network.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PlacementInfo {
     /// URL of the placement.
@@ -1160,6 +1221,7 @@ pub struct PlacementInfo {
     pub url: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A mobile app category criterion.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MobileAppCategoryInfo {
     /// The mobile app category constant resource name.
@@ -1169,6 +1231,7 @@ pub struct MobileAppCategoryInfo {
     >,
 }
 /// A mobile application criterion.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MobileApplicationInfo {
     /// A string that uniquely identifies a mobile application to Google Ads API.
@@ -1193,6 +1256,7 @@ pub struct MobileApplicationInfo {
     pub name: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A location criterion.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LocationInfo {
     /// The geo target constant resource name.
@@ -1200,6 +1264,7 @@ pub struct LocationInfo {
     pub geo_target_constant: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A device criterion.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeviceInfo {
     /// Type of the device.
@@ -1207,6 +1272,7 @@ pub struct DeviceInfo {
     pub r#type: i32,
 }
 /// A preferred content criterion.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PreferredContentInfo {
     /// Type of the preferred content.
@@ -1217,6 +1283,7 @@ pub struct PreferredContentInfo {
     pub r#type: i32,
 }
 /// A listing group criterion.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListingGroupInfo {
     /// Type of the listing group.
@@ -1237,6 +1304,7 @@ pub struct ListingGroupInfo {
     >,
 }
 /// A listing scope criterion.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListingScopeInfo {
     /// Scope of the campaign criterion.
@@ -1244,6 +1312,7 @@ pub struct ListingScopeInfo {
     pub dimensions: ::prost::alloc::vec::Vec<ListingDimensionInfo>,
 }
 /// Listing dimensions for listing group criterion.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListingDimensionInfo {
     /// Dimension of one of the types below is always present.
@@ -1256,6 +1325,7 @@ pub struct ListingDimensionInfo {
 /// Nested message and enum types in `ListingDimensionInfo`.
 pub mod listing_dimension_info {
     /// Dimension of one of the types below is always present.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Dimension {
         /// Advertiser-specific hotel ID.
@@ -1315,6 +1385,7 @@ pub mod listing_dimension_info {
     }
 }
 /// Advertiser-specific hotel ID.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HotelIdInfo {
     /// String value of the hotel ID.
@@ -1322,6 +1393,7 @@ pub struct HotelIdInfo {
     pub value: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Class of the hotel as a number of stars 1 to 5.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HotelClassInfo {
     /// Long value of the hotel class.
@@ -1329,6 +1401,7 @@ pub struct HotelClassInfo {
     pub value: ::core::option::Option<i64>,
 }
 /// Country or Region the hotel is located in.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HotelCountryRegionInfo {
     /// The Geo Target Constant resource name.
@@ -1336,6 +1409,7 @@ pub struct HotelCountryRegionInfo {
     pub country_region_criterion: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// State the hotel is located in.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HotelStateInfo {
     /// The Geo Target Constant resource name.
@@ -1343,6 +1417,7 @@ pub struct HotelStateInfo {
     pub state_criterion: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// City the hotel is located in.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HotelCityInfo {
     /// The Geo Target Constant resource name.
@@ -1350,6 +1425,7 @@ pub struct HotelCityInfo {
     pub city_criterion: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Bidding category of a product offer.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProductBiddingCategoryInfo {
     /// ID of the product bidding category.
@@ -1370,6 +1446,7 @@ pub struct ProductBiddingCategoryInfo {
     pub level: i32,
 }
 /// Brand of the product.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProductBrandInfo {
     /// String value of the product brand.
@@ -1377,6 +1454,7 @@ pub struct ProductBrandInfo {
     pub value: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Locality of a product offer.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProductChannelInfo {
     /// Value of the locality.
@@ -1387,6 +1465,7 @@ pub struct ProductChannelInfo {
     pub channel: i32,
 }
 /// Availability of a product offer.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProductChannelExclusivityInfo {
     /// Value of the availability.
@@ -1397,6 +1476,7 @@ pub struct ProductChannelExclusivityInfo {
     pub channel_exclusivity: i32,
 }
 /// Condition of a product offer.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProductConditionInfo {
     /// Value of the condition.
@@ -1407,6 +1487,7 @@ pub struct ProductConditionInfo {
     pub condition: i32,
 }
 /// Custom attribute of a product offer.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProductCustomAttributeInfo {
     /// String value of the product custom attribute.
@@ -1420,6 +1501,7 @@ pub struct ProductCustomAttributeInfo {
     pub index: i32,
 }
 /// Item id of a product offer.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProductItemIdInfo {
     /// Value of the id.
@@ -1427,6 +1509,7 @@ pub struct ProductItemIdInfo {
     pub value: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Type of a product offer.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProductTypeInfo {
     /// Value of the type.
@@ -1441,6 +1524,7 @@ pub struct ProductTypeInfo {
 }
 /// Grouping of a product offer. This listing dimension is deprecated and it is
 /// supported only in Display campaigns.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProductGroupingInfo {
     /// String value of the product grouping.
@@ -1449,6 +1533,7 @@ pub struct ProductGroupingInfo {
 }
 /// Labels of a product offer. This listing dimension is deprecated and it is
 /// supported only in Display campaigns.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProductLabelsInfo {
     /// String value of the product labels.
@@ -1457,6 +1542,7 @@ pub struct ProductLabelsInfo {
 }
 /// Legacy condition of a product offer. This listing dimension is deprecated and
 /// it is supported only in Display campaigns.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProductLegacyConditionInfo {
     /// String value of the product legacy condition.
@@ -1465,6 +1551,7 @@ pub struct ProductLegacyConditionInfo {
 }
 /// Full type of a product offer. This listing dimension is deprecated and it is
 /// supported only in Display campaigns.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProductTypeFullInfo {
     /// String value of the product full type.
@@ -1472,9 +1559,11 @@ pub struct ProductTypeFullInfo {
     pub value: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Unknown listing dimension.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UnknownListingDimensionInfo {}
 /// Criterion for hotel date selection (default dates versus user selected).
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HotelDateSelectionTypeInfo {
     /// Type of the hotel date selection
@@ -1485,6 +1574,7 @@ pub struct HotelDateSelectionTypeInfo {
     pub r#type: i32,
 }
 /// Criterion for number of days prior to the stay the booking is being made.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HotelAdvanceBookingWindowInfo {
     /// Low end of the number of days prior to the stay.
@@ -1495,6 +1585,7 @@ pub struct HotelAdvanceBookingWindowInfo {
     pub max_days: ::core::option::Option<i64>,
 }
 /// Criterion for length of hotel stay in nights.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HotelLengthOfStayInfo {
     /// Low end of the number of nights in the stay.
@@ -1505,6 +1596,7 @@ pub struct HotelLengthOfStayInfo {
     pub max_nights: ::core::option::Option<i64>,
 }
 /// Criterion for a check-in date range.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HotelCheckInDateRangeInfo {
     /// Start date in the YYYY-MM-DD format.
@@ -1515,6 +1607,7 @@ pub struct HotelCheckInDateRangeInfo {
     pub end_date: ::prost::alloc::string::String,
 }
 /// Criterion for day of the week the booking is for.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HotelCheckInDayInfo {
     /// The day of the week.
@@ -1522,6 +1615,7 @@ pub struct HotelCheckInDayInfo {
     pub day_of_week: i32,
 }
 /// Criterion for Interaction Type.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InteractionTypeInfo {
     /// The interaction type.
@@ -1537,6 +1631,7 @@ pub struct InteractionTypeInfo {
 /// within which ads will be shown.
 ///
 /// No more than six AdSchedules can be added for the same day.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AdScheduleInfo {
     /// Minutes after the start hour at which this schedule starts.
@@ -1574,6 +1669,7 @@ pub struct AdScheduleInfo {
     pub day_of_week: i32,
 }
 /// An age range criterion.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AgeRangeInfo {
     /// Type of the age range.
@@ -1581,6 +1677,7 @@ pub struct AgeRangeInfo {
     pub r#type: i32,
 }
 /// A gender criterion.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenderInfo {
     /// Type of the gender.
@@ -1588,6 +1685,7 @@ pub struct GenderInfo {
     pub r#type: i32,
 }
 /// An income range criterion.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IncomeRangeInfo {
     /// Type of the income range.
@@ -1598,6 +1696,7 @@ pub struct IncomeRangeInfo {
     pub r#type: i32,
 }
 /// A parental status criterion.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ParentalStatusInfo {
     /// Type of the parental status.
@@ -1608,6 +1707,7 @@ pub struct ParentalStatusInfo {
     pub r#type: i32,
 }
 /// A YouTube Video criterion.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct YouTubeVideoInfo {
     /// YouTube video id as it appears on the YouTube watch page.
@@ -1615,6 +1715,7 @@ pub struct YouTubeVideoInfo {
     pub video_id: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A YouTube Channel criterion.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct YouTubeChannelInfo {
     /// The YouTube uploader channel id or the channel code of a YouTube channel.
@@ -1623,6 +1724,7 @@ pub struct YouTubeChannelInfo {
 }
 /// A User List criterion. Represents a user list that is defined by the
 /// advertiser to be targeted.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UserListInfo {
     /// The User List resource name.
@@ -1637,6 +1739,7 @@ pub struct UserListInfo {
 /// and radius. The geo point will be automatically computed. Second, by
 /// setting a geo point and radius. The address is an optional label that won't
 /// be validated.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProximityInfo {
     /// Latitude and longitude.
@@ -1656,6 +1759,7 @@ pub struct ProximityInfo {
     pub address: ::core::option::Option<AddressInfo>,
 }
 /// Geo point for proximity criterion.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GeoPointInfo {
     /// Micro degrees for the longitude.
@@ -1666,6 +1770,7 @@ pub struct GeoPointInfo {
     pub latitude_in_micro_degrees: ::core::option::Option<i32>,
 }
 /// Address for proximity criterion.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddressInfo {
     /// Postal code.
@@ -1695,6 +1800,7 @@ pub struct AddressInfo {
 /// A topic criterion. Use topics to target or exclude placements in the
 /// Google Display Network based on the category into which the placement falls
 /// (for example, "Pets & Animals/Pets/Dogs").
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TopicInfo {
     /// The Topic Constant resource name.
@@ -1708,6 +1814,7 @@ pub struct TopicInfo {
     pub path: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// A language criterion.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LanguageInfo {
     /// The language constant resource name.
@@ -1719,6 +1826,7 @@ pub struct LanguageInfo {
 ///   - individual addresses (192.168.0.1)
 ///   - masks for individual addresses (192.168.0.1/32)
 ///   - masks for Class C networks (192.168.0.1/24)
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IpBlockInfo {
     /// The IP address of this IP block.
@@ -1726,6 +1834,7 @@ pub struct IpBlockInfo {
     pub ip_address: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Content Label for category exclusion.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ContentLabelInfo {
     /// Content label type, required for CREATE operations.
@@ -1736,6 +1845,7 @@ pub struct ContentLabelInfo {
     pub r#type: i32,
 }
 /// Represents a Carrier Criterion.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CarrierInfo {
     /// The Carrier constant resource name.
@@ -1743,6 +1853,7 @@ pub struct CarrierInfo {
     pub carrier_constant: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Represents a particular interest-based topic to be targeted.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UserInterestInfo {
     /// The UserInterest resource name.
@@ -1750,6 +1861,7 @@ pub struct UserInterestInfo {
     pub user_interest_category: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Represents a criterion for targeting webpages of an advertiser's website.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WebpageInfo {
     /// The name of the criterion that is defined by this parameter. The name value
@@ -1781,6 +1893,7 @@ pub struct WebpageInfo {
     pub sample: ::core::option::Option<WebpageSampleInfo>,
 }
 /// Logical expression for targeting webpages of an advertiser's website.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WebpageConditionInfo {
     /// Operand of webpage targeting condition.
@@ -1800,6 +1913,7 @@ pub struct WebpageConditionInfo {
     pub argument: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// List of sample urls that match the website target
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WebpageSampleInfo {
     /// Webpage sample urls
@@ -1807,6 +1921,7 @@ pub struct WebpageSampleInfo {
     pub sample_urls: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Represents an operating system version to be targeted.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperatingSystemVersionInfo {
     /// The operating system version constant resource name.
@@ -1816,6 +1931,7 @@ pub struct OperatingSystemVersionInfo {
     >,
 }
 /// An app payment model criterion.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AppPaymentModelInfo {
     /// Type of the app payment model.
@@ -1826,6 +1942,7 @@ pub struct AppPaymentModelInfo {
     pub r#type: i32,
 }
 /// A mobile device criterion.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MobileDeviceInfo {
     /// The mobile device constant resource name.
@@ -1834,6 +1951,7 @@ pub struct MobileDeviceInfo {
 }
 /// A custom affinity criterion.
 /// A criterion of this type is only targetable.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomAffinityInfo {
     /// The CustomInterest resource name.
@@ -1842,6 +1960,7 @@ pub struct CustomAffinityInfo {
 }
 /// A custom intent criterion.
 /// A criterion of this type is only targetable.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomIntentInfo {
     /// The CustomInterest resource name.
@@ -1849,6 +1968,7 @@ pub struct CustomIntentInfo {
     pub custom_intent: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A radius around a list of locations specified through a feed.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LocationGroupInfo {
     /// Feed specifying locations for targeting.
@@ -1879,6 +1999,7 @@ pub struct LocationGroupInfo {
     pub feed_item_sets: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// A custom audience criterion.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomAudienceInfo {
     /// The CustomAudience resource name.
@@ -1886,6 +2007,7 @@ pub struct CustomAudienceInfo {
     pub custom_audience: ::prost::alloc::string::String,
 }
 /// A combined audience criterion.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CombinedAudienceInfo {
     /// The CombinedAudience resource name.
@@ -1893,6 +2015,7 @@ pub struct CombinedAudienceInfo {
     pub combined_audience: ::prost::alloc::string::String,
 }
 /// An audience criterion.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AudienceInfo {
     /// The Audience resource name.
@@ -1900,6 +2023,7 @@ pub struct AudienceInfo {
     pub audience: ::prost::alloc::string::String,
 }
 /// A Smart Campaign keyword theme.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KeywordThemeInfo {
     /// Either a predefined keyword theme constant or free-form text may be
@@ -1911,6 +2035,7 @@ pub struct KeywordThemeInfo {
 pub mod keyword_theme_info {
     /// Either a predefined keyword theme constant or free-form text may be
     /// specified.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum KeywordTheme {
         /// The resource name of a Smart Campaign keyword theme constant.
@@ -1924,6 +2049,7 @@ pub mod keyword_theme_info {
     }
 }
 /// Represents a price in a particular currency.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Money {
     /// Three-character ISO 4217 currency code.
@@ -1934,6 +2060,7 @@ pub struct Money {
     pub amount_micros: ::core::option::Option<i64>,
 }
 /// A YouTube asset.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct YoutubeVideoAsset {
     /// YouTube video id. This is the 11 character string value used in the
@@ -1945,6 +2072,7 @@ pub struct YoutubeVideoAsset {
     pub youtube_video_title: ::prost::alloc::string::String,
 }
 /// A MediaBundle asset.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MediaBundleAsset {
     /// Media bundle (ZIP file) asset data. The format of the uploaded ZIP file
@@ -1955,6 +2083,7 @@ pub struct MediaBundleAsset {
     pub data: ::core::option::Option<::prost::alloc::vec::Vec<u8>>,
 }
 /// An Image asset.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImageAsset {
     /// The raw bytes data of an image. This field is mutate only.
@@ -1971,6 +2100,7 @@ pub struct ImageAsset {
     pub full_size: ::core::option::Option<ImageDimension>,
 }
 /// Metadata for an image at a certain size, either original or resized.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImageDimension {
     /// Height of the image.
@@ -1984,6 +2114,7 @@ pub struct ImageDimension {
     pub url: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A Text asset.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TextAsset {
     /// Text content of the text asset.
@@ -1991,6 +2122,7 @@ pub struct TextAsset {
     pub text: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// A Lead Form asset.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LeadFormAsset {
     /// Required. The name of the business being advertised.
@@ -2060,6 +2192,7 @@ pub struct LeadFormAsset {
     pub custom_disclosure: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// One input field instance within a form.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LeadFormField {
     /// Describes the input type, which may be a predefined type such as
@@ -2078,6 +2211,7 @@ pub struct LeadFormField {
 pub mod lead_form_field {
     /// Defines answer configuration that this form field accepts. If oneof is not
     /// set, this is a free-text answer.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Answers {
         /// Answer configuration for a single choice question. Can be set only for
@@ -2088,6 +2222,7 @@ pub mod lead_form_field {
     }
 }
 /// One custom question input field instance within a form.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LeadFormCustomQuestionField {
     /// The exact custom question field text (for example, "Do you own a car?").
@@ -2102,6 +2237,7 @@ pub struct LeadFormCustomQuestionField {
 pub mod lead_form_custom_question_field {
     /// Defines answer configuration that this form field accepts. If
     /// oneof is not set, this is a free-text answer.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Answers {
         /// Answer configuration for a single choice question.
@@ -2112,6 +2248,7 @@ pub mod lead_form_custom_question_field {
 }
 /// Defines possible answers for a single choice question, usually presented as
 /// a single-choice drop-down list.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LeadFormSingleChoiceAnswers {
     /// List of choices for a single question field. The order of entries defines
@@ -2120,6 +2257,7 @@ pub struct LeadFormSingleChoiceAnswers {
     pub answers: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// A configuration of how leads are delivered to the advertiser.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LeadFormDeliveryMethod {
     /// Various subtypes of delivery.
@@ -2131,6 +2269,7 @@ pub struct LeadFormDeliveryMethod {
 /// Nested message and enum types in `LeadFormDeliveryMethod`.
 pub mod lead_form_delivery_method {
     /// Various subtypes of delivery.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum DeliveryDetails {
         /// Webhook method of delivery.
@@ -2141,6 +2280,7 @@ pub mod lead_form_delivery_method {
 /// Google notifies the advertiser of leads by making HTTP calls to an
 /// endpoint they specify. The requests contain JSON matching a schema that
 /// Google publishes as part of form ads documentation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WebhookDelivery {
     /// Webhook url specified by advertiser to send the lead.
@@ -2156,9 +2296,11 @@ pub struct WebhookDelivery {
 /// A Book on Google asset. Used to redirect user to book through Google.
 /// Book on Google will change the redirect url to book directly through
 /// Google.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BookOnGoogleAsset {}
 /// A Promotion asset.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PromotionAsset {
     /// Required. A freeform description of what the promotion is targeting.
@@ -2214,6 +2356,7 @@ pub struct PromotionAsset {
 /// Nested message and enum types in `PromotionAsset`.
 pub mod promotion_asset {
     /// Discount type, can be percentage off or amount off.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum DiscountType {
         /// Percentage off discount in the promotion. 1,000,000 = 100%.
@@ -2227,6 +2370,7 @@ pub mod promotion_asset {
     }
     /// Promotion trigger. Can be by promotion code or promo by eligible order
     /// amount.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum PromotionTrigger {
         /// A code the user should use in order to be eligible for the promotion.
@@ -2239,6 +2383,7 @@ pub mod promotion_asset {
     }
 }
 /// A Callout asset.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CalloutAsset {
     /// Required. The callout text.
@@ -2260,6 +2405,7 @@ pub struct CalloutAsset {
     pub ad_schedule_targets: ::prost::alloc::vec::Vec<AdScheduleInfo>,
 }
 /// A Structured Snippet asset.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StructuredSnippetAsset {
     /// Required. The header of the snippet.
@@ -2274,6 +2420,7 @@ pub struct StructuredSnippetAsset {
     pub values: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// A Sitelink asset.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SitelinkAsset {
     /// Required. URL display text for the sitelink.
@@ -2305,6 +2452,7 @@ pub struct SitelinkAsset {
     pub ad_schedule_targets: ::prost::alloc::vec::Vec<AdScheduleInfo>,
 }
 /// A Page Feed asset.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PageFeedAsset {
     /// Required. The webpage that advertisers want to target.
@@ -2315,6 +2463,7 @@ pub struct PageFeedAsset {
     pub labels: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// A Dynamic Education asset.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DynamicEducationAsset {
     /// Required. Program ID which can be any sequence of letters and digits, and must be
@@ -2372,6 +2521,7 @@ pub struct DynamicEducationAsset {
     pub image_url: ::prost::alloc::string::String,
 }
 /// An asset representing a mobile app.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MobileAppAsset {
     /// Required. A string that uniquely identifies a mobile application. It should just
@@ -2399,6 +2549,7 @@ pub struct MobileAppAsset {
     pub end_date: ::prost::alloc::string::String,
 }
 /// An asset representing a hotel callout.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HotelCalloutAsset {
     /// Required. The text of the hotel callout asset.
@@ -2411,6 +2562,7 @@ pub struct HotelCalloutAsset {
     pub language_code: ::prost::alloc::string::String,
 }
 /// A Call asset.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CallAsset {
     /// Required. Two-letter country code of the phone number. Examples: 'US', 'us'.
@@ -2439,6 +2591,7 @@ pub struct CallAsset {
     pub ad_schedule_targets: ::prost::alloc::vec::Vec<AdScheduleInfo>,
 }
 /// An asset representing a list of price offers.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PriceAsset {
     /// Required. The type of the price asset.
@@ -2463,6 +2616,7 @@ pub struct PriceAsset {
     pub price_offerings: ::prost::alloc::vec::Vec<PriceOffering>,
 }
 /// A single price offering within a PriceAsset.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PriceOffering {
     /// Required. The header of the price offering.
@@ -2490,6 +2644,7 @@ pub struct PriceOffering {
     pub final_mobile_url: ::prost::alloc::string::String,
 }
 /// A call to action asset.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CallToActionAsset {
     /// Call to action.
@@ -2500,6 +2655,7 @@ pub struct CallToActionAsset {
     pub call_to_action: i32,
 }
 /// A dynamic real estate asset.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DynamicRealEstateAsset {
     /// Required. Listing ID which can be any sequence of letters and digits, and must be
@@ -2560,6 +2716,7 @@ pub struct DynamicRealEstateAsset {
     pub similar_listing_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// A dynamic custom asset.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DynamicCustomAsset {
     /// Required. ID which can be any sequence of letters and digits, and must be
@@ -2630,6 +2787,7 @@ pub struct DynamicCustomAsset {
     pub similar_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// A dynamic hotels and rentals asset.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DynamicHotelsAndRentalsAsset {
     /// Required. Property ID which can be any sequence of letters and digits, and must be
@@ -2697,6 +2855,7 @@ pub struct DynamicHotelsAndRentalsAsset {
     pub similar_property_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// A dynamic flights asset.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DynamicFlightsAsset {
     /// Required. Destination ID which can be any sequence of letters and digits, and must be
@@ -2763,6 +2922,7 @@ pub struct DynamicFlightsAsset {
     pub custom_mapping: ::prost::alloc::string::String,
 }
 /// A Discovery Carousel Card asset.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DiscoveryCarouselCardAsset {
     /// Asset resource name of the associated 1.91:1 marketing image. This and/or
@@ -2784,6 +2944,7 @@ pub struct DiscoveryCarouselCardAsset {
     pub call_to_action_text: ::prost::alloc::string::String,
 }
 /// A dynamic travel asset.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DynamicTravelAsset {
     /// Required. Destination ID which can be any sequence of letters and digits, and must be
@@ -2855,6 +3016,7 @@ pub struct DynamicTravelAsset {
     pub ios_app_store_id: i64,
 }
 /// A dynamic local asset.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DynamicLocalAsset {
     /// Required. Deal ID which can be any sequence of letters and digits, and must be
@@ -2920,6 +3082,7 @@ pub struct DynamicLocalAsset {
     pub ios_app_store_id: i64,
 }
 /// A dynamic jobs asset.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DynamicJobsAsset {
     /// Required. Job ID which can be any sequence of letters and digits, and must be
@@ -2975,6 +3138,7 @@ pub struct DynamicJobsAsset {
     pub ios_app_store_id: i64,
 }
 /// Contains the usage information of the asset.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AssetUsage {
     /// Resource name of the asset.
@@ -2988,6 +3152,7 @@ pub struct AssetUsage {
     pub served_asset_field_type: i32,
 }
 /// Positive dimension specifying user's audience.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AudienceDimension {
     /// Dimension specifying users who belong to the audience.
@@ -2997,6 +3162,7 @@ pub struct AudienceDimension {
 /// Nested message and enum types in `AudienceDimension`.
 pub mod audience_dimension {
     /// Dimension specifying users who belong to the audience.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Dimension {
         /// Dimension specifying users by their age.
@@ -3018,6 +3184,7 @@ pub mod audience_dimension {
     }
 }
 /// Negative dimension specifying users to exclude from the audience.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AudienceExclusionDimension {
     /// Audience segment to be excluded.
@@ -3025,6 +3192,7 @@ pub struct AudienceExclusionDimension {
     pub exclusions: ::prost::alloc::vec::Vec<ExclusionSegment>,
 }
 /// An audience segment to be excluded from an audience.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExclusionSegment {
     /// Segment to be excluded.
@@ -3034,6 +3202,7 @@ pub struct ExclusionSegment {
 /// Nested message and enum types in `ExclusionSegment`.
 pub mod exclusion_segment {
     /// Segment to be excluded.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Segment {
         /// User list segment to be excluded.
@@ -3042,6 +3211,7 @@ pub mod exclusion_segment {
     }
 }
 /// Dimension specifying users by their age.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AgeDimension {
     /// Contiguous age range to be included in the dimension.
@@ -3052,6 +3222,7 @@ pub struct AgeDimension {
     pub include_undetermined: ::core::option::Option<bool>,
 }
 /// Contiguous age range.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AgeSegment {
     /// Minimum age to include. A minimum age must be specified and must be at
@@ -3065,6 +3236,7 @@ pub struct AgeSegment {
     pub max_age: ::core::option::Option<i32>,
 }
 /// Dimension specifying users by their gender.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenderDimension {
     /// Included gender demographic segments.
@@ -3079,6 +3251,7 @@ pub struct GenderDimension {
     pub include_undetermined: ::core::option::Option<bool>,
 }
 /// Dimension specifying users by their household income.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HouseholdIncomeDimension {
     /// Included household income demographic segments.
@@ -3093,6 +3266,7 @@ pub struct HouseholdIncomeDimension {
     pub include_undetermined: ::core::option::Option<bool>,
 }
 /// Dimension specifying users by their parental status.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ParentalStatusDimension {
     /// Included parental status demographic segments.
@@ -3107,6 +3281,7 @@ pub struct ParentalStatusDimension {
     pub include_undetermined: ::core::option::Option<bool>,
 }
 /// Dimension specifying users by their membership in other audience segments.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AudienceSegmentDimension {
     /// Included audience segments. Users are included if they belong to at least
@@ -3115,6 +3290,7 @@ pub struct AudienceSegmentDimension {
     pub segments: ::prost::alloc::vec::Vec<AudienceSegment>,
 }
 /// Positive audience segment.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AudienceSegment {
     /// Positive segment.
@@ -3124,6 +3300,7 @@ pub struct AudienceSegment {
 /// Nested message and enum types in `AudienceSegment`.
 pub mod audience_segment {
     /// Positive segment.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Segment {
         /// User list segment.
@@ -3144,6 +3321,7 @@ pub mod audience_segment {
     }
 }
 /// User list segment.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UserListSegment {
     /// The user list resource.
@@ -3151,6 +3329,7 @@ pub struct UserListSegment {
     pub user_list: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// User interest segment.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UserInterestSegment {
     /// The user interest resource.
@@ -3158,6 +3337,7 @@ pub struct UserInterestSegment {
     pub user_interest_category: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Live event segment.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LifeEventSegment {
     /// The life event resource.
@@ -3165,6 +3345,7 @@ pub struct LifeEventSegment {
     pub life_event: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Detailed demographic segment.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DetailedDemographicSegment {
     /// The detailed demographic resource.
@@ -3172,6 +3353,7 @@ pub struct DetailedDemographicSegment {
     pub detailed_demographic: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Custom audience segment.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomAudienceSegment {
     /// The custom audience resource.
@@ -3180,6 +3362,7 @@ pub struct CustomAudienceSegment {
 }
 /// Commission is an automatic bidding strategy in which the advertiser pays a
 /// certain portion of the conversion value.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Commission {
     /// Commission rate defines the portion of the conversion value that the
@@ -3195,13 +3378,16 @@ pub struct Commission {
 ///
 /// This bidding strategy is deprecated and cannot be created anymore. Use
 /// ManualCpc with enhanced_cpc_enabled set to true for equivalent functionality.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EnhancedCpc {}
 /// Manual bidding strategy that allows advertiser to set the bid per
 /// advertiser-specified action.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ManualCpa {}
 /// Manual click-based bidding where user pays per click.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ManualCpc {
     /// Whether bids are to be enhanced based on conversion optimizer data.
@@ -3209,13 +3395,16 @@ pub struct ManualCpc {
     pub enhanced_cpc_enabled: ::core::option::Option<bool>,
 }
 /// Manual impression-based bidding where user pays per thousand impressions.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ManualCpm {}
 /// View based bidding where user pays per video view.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ManualCpv {}
 /// An automated bidding strategy to help get the most conversions for your
 /// campaigns while spending your budget.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MaximizeConversions {
     /// Maximum bid limit that can be set by the bid strategy.
@@ -3239,6 +3428,7 @@ pub struct MaximizeConversions {
 }
 /// An automated bidding strategy to help get the most conversion value for your
 /// campaigns while spending your budget.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MaximizeConversionValue {
     /// The target return on ad spend (ROAS) option. If set, the bid strategy will
@@ -3261,6 +3451,7 @@ pub struct MaximizeConversionValue {
 }
 /// An automated bid strategy that sets bids to help get as many conversions as
 /// possible at the target cost-per-acquisition (CPA) you set.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetCpa {
     /// Average CPA target.
@@ -3281,11 +3472,13 @@ pub struct TargetCpa {
 }
 /// Target CPM (cost per thousand impressions) is an automated bidding strategy
 /// that sets bids to optimize performance given the target CPM you set.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetCpm {}
 /// An automated bidding strategy that sets bids so that a certain percentage of
 /// search ads are shown at the top of the first page (or other targeted
 /// location).
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetImpressionShare {
     /// The targeted location on the search results page.
@@ -3306,6 +3499,7 @@ pub struct TargetImpressionShare {
 }
 /// An automated bidding strategy that helps you maximize revenue while
 /// averaging a specific target return on ad spend (ROAS).
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetRoas {
     /// Required. The chosen revenue (based on conversion data) per unit of spend.
@@ -3325,6 +3519,7 @@ pub struct TargetRoas {
 }
 /// An automated bid strategy that sets your bids to help get as many clicks
 /// as possible within your budget.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetSpend {
     /// The spend target under which to maximize clicks.
@@ -3344,6 +3539,7 @@ pub struct TargetSpend {
 }
 /// A bidding strategy where bids are a fraction of the advertised price for
 /// some good or service.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PercentCpc {
     /// Maximum bid limit that can be set by the bid strategy. This is
@@ -3360,6 +3556,7 @@ pub struct PercentCpc {
     pub enhanced_cpc_enabled: ::core::option::Option<bool>,
 }
 /// Location criteria associated with a click.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ClickLocation {
     /// The city location criterion associated with the impression.
@@ -3379,6 +3576,7 @@ pub struct ClickLocation {
     pub region: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Information of category availability, per advertising channel.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CriterionCategoryAvailability {
     /// Channel types and subtypes that are available to the category.
@@ -3390,6 +3588,7 @@ pub struct CriterionCategoryAvailability {
 }
 /// Information of advertising channel type and subtypes a category is available
 /// in.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CriterionCategoryChannelAvailability {
     /// Format of the channel availability. Can be ALL_CHANNELS (the rest of the
@@ -3424,6 +3623,7 @@ pub struct CriterionCategoryChannelAvailability {
     pub include_default_channel_sub_type: ::core::option::Option<bool>,
 }
 /// Information about which locales a category is available in.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CriterionCategoryLocaleAvailability {
     /// Format of the locale availability. Can be LAUNCHED_TO_ALL (both country and
@@ -3444,6 +3644,7 @@ pub struct CriterionCategoryLocaleAvailability {
 }
 /// A mapping that can be used by custom parameter tags in a
 /// `tracking_url_template`, `final_urls`, or `mobile_final_urls`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomParameter {
     /// The key matching the parameter tag name.
@@ -3455,6 +3656,7 @@ pub struct CustomParameter {
 }
 /// A customizer value that is referenced in customizer linkage entities
 /// like CustomerCustomizer, CampaignCustomizer, etc.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomizerValue {
     /// Required. The data type for the customizer value. It must match the attribute type.
@@ -3471,6 +3673,7 @@ pub struct CustomizerValue {
     pub string_value: ::prost::alloc::string::String,
 }
 /// A date range.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DateRange {
     /// The start date, in yyyy-mm-dd format. This date is inclusive.
@@ -3482,6 +3685,7 @@ pub struct DateRange {
 }
 /// The year month range inclusive of the start and end months.
 /// Eg: A year month range to represent Jan 2020 would be: (Jan 2020, Jan 2020).
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct YearMonthRange {
     /// The inclusive start year month.
@@ -3492,6 +3696,7 @@ pub struct YearMonthRange {
     pub end: ::core::option::Option<YearMonth>,
 }
 /// Year month.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct YearMonth {
     /// The year (for example, 2020).
@@ -3504,6 +3709,7 @@ pub struct YearMonth {
 /// Settings for the Display Campaign Optimizer, initially named "Explorer".
 /// Learn more about
 /// [automatic targeting](<https://support.google.com/google-ads/answer/190596>).
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExplorerAutoOptimizerSetting {
     /// Indicates whether the optimizer is turned on.
@@ -3511,6 +3717,7 @@ pub struct ExplorerAutoOptimizerSetting {
     pub opt_in: ::core::option::Option<bool>,
 }
 /// Represents an App extension.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AppFeedItem {
     /// The visible text displayed when the link is rendered in an ad.
@@ -3546,6 +3753,7 @@ pub struct AppFeedItem {
     pub final_url_suffix: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Represents a Call extension.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CallFeedItem {
     /// The advertiser's phone number to append to the ad.
@@ -3579,6 +3787,7 @@ pub struct CallFeedItem {
     pub call_conversion_reporting_state: i32,
 }
 /// Represents a callout extension.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CalloutFeedItem {
     /// The callout text.
@@ -3587,6 +3796,7 @@ pub struct CalloutFeedItem {
     pub callout_text: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Represents a location extension.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LocationFeedItem {
     /// The name of the business.
@@ -3615,6 +3825,7 @@ pub struct LocationFeedItem {
     pub phone_number: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Represents an affiliate location extension.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AffiliateLocationFeedItem {
     /// The name of the business.
@@ -3650,6 +3861,7 @@ pub struct AffiliateLocationFeedItem {
 }
 /// An extension that users can click on to send a text message to the
 /// advertiser.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TextMessageFeedItem {
     /// The business name to prepend to the message text.
@@ -3672,6 +3884,7 @@ pub struct TextMessageFeedItem {
     pub extension_text: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Represents a Price extension.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PriceFeedItem {
     /// Price extension type of this extension.
@@ -3700,6 +3913,7 @@ pub struct PriceFeedItem {
     pub final_url_suffix: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Represents one price offer in a price extension.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PriceOffer {
     /// Header text of this offer.
@@ -3725,6 +3939,7 @@ pub struct PriceOffer {
     pub final_mobile_urls: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Represents a Promotion extension.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PromotionFeedItem {
     /// A freeform description of what the promotion is targeting.
@@ -3784,6 +3999,7 @@ pub struct PromotionFeedItem {
 /// Nested message and enum types in `PromotionFeedItem`.
 pub mod promotion_feed_item {
     /// Discount type, can be percentage off or amount off.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum DiscountType {
         /// Percentage off discount in the promotion in micros.
@@ -3798,6 +4014,7 @@ pub mod promotion_feed_item {
     }
     /// Promotion trigger. Can be by promotion code or promo by eligible order
     /// amount.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum PromotionTrigger {
         /// A code the user should use in order to be eligible for the promotion.
@@ -3810,6 +4027,7 @@ pub mod promotion_feed_item {
     }
 }
 /// Represents a structured snippet extension.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StructuredSnippetFeedItem {
     /// The header of the snippet.
@@ -3822,6 +4040,7 @@ pub struct StructuredSnippetFeedItem {
     pub values: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Represents a sitelink extension.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SitelinkFeedItem {
     /// URL display text for the sitelink.
@@ -3857,6 +4076,7 @@ pub struct SitelinkFeedItem {
     pub final_url_suffix: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Represents a hotel callout extension.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HotelCalloutFeedItem {
     /// The callout text.
@@ -3869,6 +4089,7 @@ pub struct HotelCalloutFeedItem {
     pub language_code: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Represents an advertiser provided image extension.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImageFeedItem {
     /// Required. Resource name of the image asset.
@@ -3877,6 +4098,7 @@ pub struct ImageFeedItem {
 }
 /// Represents a filter on locations in a feed item set.
 /// Only applicable if the parent Feed of the FeedItemSet is a LOCATION feed.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DynamicLocationSetFilter {
     /// If multiple labels are set, then only feeditems marked with all the labels
@@ -3888,6 +4110,7 @@ pub struct DynamicLocationSetFilter {
     pub business_name_filter: ::core::option::Option<BusinessNameFilter>,
 }
 /// Represents a business name filter on locations in a FeedItemSet.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BusinessNameFilter {
     /// Business name string to use for filtering.
@@ -3903,6 +4126,7 @@ pub struct BusinessNameFilter {
 /// Represents a filter on affiliate locations in a FeedItemSet.
 /// Only applicable if the parent Feed of the FeedItemSet is an
 /// AFFILIATE_LOCATION feed.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DynamicAffiliateLocationSetFilter {
     /// Used to filter affiliate locations by chain ids. Only affiliate locations
@@ -3911,6 +4135,7 @@ pub struct DynamicAffiliateLocationSetFilter {
     pub chain_ids: ::prost::alloc::vec::Vec<i64>,
 }
 /// A URL for deep linking into an app for the given operating system.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FinalAppUrl {
     /// The operating system targeted by this URL. Required.
@@ -3931,6 +4156,7 @@ pub struct FinalAppUrl {
 }
 /// A rule specifying the maximum number of times an ad (or some set of ads) can
 /// be shown to a user over a particular time period.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FrequencyCapEntry {
     /// The key of a particular frequency cap. There can be no more
@@ -3943,6 +4169,7 @@ pub struct FrequencyCapEntry {
 }
 /// A group of fields used as keys for a frequency cap.
 /// There can be no more than one frequency cap with the same key.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FrequencyCapKey {
     /// The level on which the cap is to be applied (for example, ad group ad, ad
@@ -3972,6 +4199,7 @@ pub struct FrequencyCapKey {
 /// Targeting options include geographies, network, etc.
 /// Refer to <https://support.google.com/google-ads/answer/3022575> for more
 /// details.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KeywordPlanHistoricalMetrics {
     /// Approximate number of monthly searches on this query averaged
@@ -4005,6 +4233,7 @@ pub struct KeywordPlanHistoricalMetrics {
     pub average_cpc_micros: ::core::option::Option<i64>,
 }
 /// Historical metrics options.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HistoricalMetricsOptions {
     /// The year month range for historical metrics. If not specified the searches
@@ -4023,6 +4252,7 @@ pub struct HistoricalMetricsOptions {
     pub include_average_cpc: bool,
 }
 /// Monthly search volume.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MonthlySearchVolume {
     /// The year of the search volume (for example, 2020).
@@ -4038,6 +4268,7 @@ pub struct MonthlySearchVolume {
     pub monthly_searches: ::core::option::Option<i64>,
 }
 /// The aggregate metrics specification of the request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KeywordPlanAggregateMetrics {
     /// The list of aggregate metrics to fetch data.
@@ -4049,6 +4280,7 @@ pub struct KeywordPlanAggregateMetrics {
     pub aggregate_metric_types: ::prost::alloc::vec::Vec<i32>,
 }
 /// The aggregated historical metrics for keyword plan keywords.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KeywordPlanAggregateMetricResults {
     /// The aggregate searches for all the keywords segmented by device
@@ -4061,6 +4293,7 @@ pub struct KeywordPlanAggregateMetricResults {
     pub device_searches: ::prost::alloc::vec::Vec<KeywordPlanDeviceSearches>,
 }
 /// The total searches for the device type during the specified time period.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KeywordPlanDeviceSearches {
     /// The device type.
@@ -4071,6 +4304,7 @@ pub struct KeywordPlanDeviceSearches {
     pub search_count: ::core::option::Option<i64>,
 }
 /// The Annotations for the Keyword plan keywords.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KeywordAnnotations {
     /// The list of concepts for the keyword.
@@ -4078,6 +4312,7 @@ pub struct KeywordAnnotations {
     pub concepts: ::prost::alloc::vec::Vec<KeywordConcept>,
 }
 /// The concept for the keyword.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KeywordConcept {
     /// The concept name for the keyword in the concept_group.
@@ -4088,6 +4323,7 @@ pub struct KeywordConcept {
     pub concept_group: ::core::option::Option<ConceptGroup>,
 }
 /// The concept group for the keyword concept.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConceptGroup {
     /// The concept group name.
@@ -4103,6 +4339,7 @@ pub struct ConceptGroup {
 /// Matching function associated with a
 /// CustomerFeed, CampaignFeed, or AdGroupFeed. The matching function is used
 /// to filter the set of feed items selected.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MatchingFunction {
     /// String representation of the Function.
@@ -4139,6 +4376,7 @@ pub struct MatchingFunction {
     pub right_operands: ::prost::alloc::vec::Vec<Operand>,
 }
 /// An operand in a matching function.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Operand {
     /// Different operands that can be used in a matching function. Required.
@@ -4150,6 +4388,7 @@ pub struct Operand {
 /// Nested message and enum types in `Operand`.
 pub mod operand {
     /// A constant operand in a matching function.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ConstantOperand {
         /// Constant operand values. Required.
@@ -4161,6 +4400,7 @@ pub mod operand {
     /// Nested message and enum types in `ConstantOperand`.
     pub mod constant_operand {
         /// Constant operand values. Required.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum ConstantOperandValue {
             /// String value of the operand if it is a string type.
@@ -4179,6 +4419,7 @@ pub mod operand {
     }
     /// A feed attribute operand in a matching function.
     /// Used to represent a feed attribute in feed.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct FeedAttributeOperand {
         /// The associated feed. Required.
@@ -4190,6 +4431,7 @@ pub mod operand {
     }
     /// A function operand in a matching function.
     /// Used to represent nested functions.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct FunctionOperand {
         /// The matching function held in this operand.
@@ -4197,6 +4439,7 @@ pub mod operand {
         pub matching_function: ::core::option::Option<super::MatchingFunction>,
     }
     /// An operand in a function referring to a value in the request context.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct RequestContextOperand {
         /// Type of value to be referred in the request context.
@@ -4207,6 +4450,7 @@ pub mod operand {
         pub context_type: i32,
     }
     /// Different operands that can be used in a matching function. Required.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum FunctionArgumentOperand {
         /// A constant operand in a matching function.
@@ -4225,6 +4469,7 @@ pub mod operand {
     }
 }
 /// A metric goal for an experiment.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MetricGoal {
     /// The metric of the goal. For example, clicks, impressions, cost,
@@ -4243,6 +4488,7 @@ pub struct MetricGoal {
     pub direction: i32,
 }
 /// Metrics data.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Metrics {
     /// The percent of your ad impressions that are shown as the very first ad
@@ -4912,6 +5158,7 @@ pub struct Metrics {
     pub sk_ad_network_conversions: i64,
 }
 /// Address identifier of offline data.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OfflineUserAddressInfo {
     /// First name of the user, which is hashed as SHA-256 after normalized
@@ -4944,6 +5191,7 @@ pub struct OfflineUserAddressInfo {
     pub hashed_street_address: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// User identifying information.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UserIdentifier {
     /// Source of the user identifier when the upload is from Store Sales,
@@ -4972,6 +5220,7 @@ pub mod user_identifier {
     /// ConversionUploadService accepts hashed_email and hashed_phone_number.
     /// ConversionAdjustmentUploadService accepts hashed_email,
     /// hashed_phone_number, and address_info.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Identifier {
         /// Hashed email address using SHA-256 hash function after normalization.
@@ -4999,6 +5248,7 @@ pub mod user_identifier {
     }
 }
 /// Attribute of the store sales transaction.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TransactionAttribute {
     /// Timestamp when transaction occurred. Required.
@@ -5039,6 +5289,7 @@ pub struct TransactionAttribute {
     pub item_attribute: ::core::option::Option<ItemAttribute>,
 }
 /// Store attributes of the transaction.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StoreAttribute {
     /// Store code from
@@ -5047,6 +5298,7 @@ pub struct StoreAttribute {
     pub store_code: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Item attributes of the transaction.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ItemAttribute {
     /// A unique identifier of a product. It can be either the Merchant Center Item
@@ -5071,6 +5323,7 @@ pub struct ItemAttribute {
     pub quantity: i64,
 }
 /// User data holding user identifiers and attributes.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UserData {
     /// User identification info. Required.
@@ -5087,6 +5340,7 @@ pub struct UserData {
 }
 /// User attribute, can only be used with CUSTOMER_MATCH_WITH_ATTRIBUTES job
 /// type.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UserAttribute {
     /// Advertiser defined lifetime value for the user.
@@ -5138,6 +5392,7 @@ pub struct UserAttribute {
 }
 /// Advertiser defined events and their attributes. All the values in the
 /// nested fields are required.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EventAttribute {
     /// Required. Advertiser defined event to be used for remarketing. The accepted values
@@ -5155,6 +5410,7 @@ pub struct EventAttribute {
     pub item_attribute: ::prost::alloc::vec::Vec<EventItemAttribute>,
 }
 /// Event Item attributes of the Customer Match.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EventItemAttribute {
     /// Optional. A unique identifier of a product. It can be either the Merchant Center Item
@@ -5165,6 +5421,7 @@ pub struct EventItemAttribute {
 /// The shopping loyalty related data. Shopping utilizes this data to provide
 /// users with a better experience.
 /// Accessible only to merchants on the allow-list.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ShoppingLoyalty {
     /// The membership tier. It is a free-form string as each merchant may have
@@ -5174,6 +5431,7 @@ pub struct ShoppingLoyalty {
     pub loyalty_tier: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Metadata for customer match user list.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomerMatchUserListMetadata {
     /// The resource name of remarketing list to update data.
@@ -5182,6 +5440,7 @@ pub struct CustomerMatchUserListMetadata {
     pub user_list: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Metadata for Store Sales Direct.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StoreSalesMetadata {
     /// This is the fraction of all transactions that are identifiable (for
@@ -5210,6 +5469,7 @@ pub struct StoreSalesMetadata {
 /// This product is only for customers on the allow-list. Contact your
 /// Google business development representative for details on the upload
 /// configuration.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StoreSalesThirdPartyMetadata {
     /// Time the advertiser uploaded the data to the partner. Required.
@@ -5245,6 +5505,7 @@ pub struct StoreSalesThirdPartyMetadata {
     pub partner_id: ::core::option::Option<i64>,
 }
 /// Contains policy summary information.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PolicySummary {
     /// The list of policy findings.
@@ -5266,6 +5527,7 @@ pub struct PolicySummary {
 }
 /// Settings for Real-Time Bidding, a feature only available for campaigns
 /// targeting the Ad Exchange network.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RealTimeBiddingSetting {
     /// Whether the campaign is opted in to real-time bidding.
@@ -5273,6 +5535,7 @@ pub struct RealTimeBiddingSetting {
     pub opt_in: ::core::option::Option<bool>,
 }
 /// Segment only fields.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Segments {
     /// Ad Destination type.
@@ -5665,6 +5928,7 @@ pub struct Segments {
     pub asset_interaction_target: ::core::option::Option<AssetInteractionTarget>,
 }
 /// A Keyword criterion segment.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Keyword {
     /// The AdGroupCriterion resource name.
@@ -5675,6 +5939,7 @@ pub struct Keyword {
     pub info: ::core::option::Option<KeywordInfo>,
 }
 /// A BudgetCampaignAssociationStatus segment.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BudgetCampaignAssociationStatus {
     /// The campaign resource name.
@@ -5688,6 +5953,7 @@ pub struct BudgetCampaignAssociationStatus {
     pub status: i32,
 }
 /// An AssetInteractionTarget segment.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AssetInteractionTarget {
     /// The asset resource name.
@@ -5700,6 +5966,7 @@ pub struct AssetInteractionTarget {
     pub interaction_on_this_asset: bool,
 }
 /// A SkAdNetworkSourceApp segment.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SkAdNetworkSourceApp {
     /// App id where the ad that drove the iOS Store Kit Ad Network install was
@@ -5710,6 +5977,7 @@ pub struct SkAdNetworkSourceApp {
     >,
 }
 /// A container for simulation points for simulations of type BID_MODIFIER.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BidModifierSimulationPointList {
     /// Projected metrics for a series of bid modifier amounts.
@@ -5717,6 +5985,7 @@ pub struct BidModifierSimulationPointList {
     pub points: ::prost::alloc::vec::Vec<BidModifierSimulationPoint>,
 }
 /// A container for simulation points for simulations of type CPC_BID.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CpcBidSimulationPointList {
     /// Projected metrics for a series of CPC bid amounts.
@@ -5724,6 +5993,7 @@ pub struct CpcBidSimulationPointList {
     pub points: ::prost::alloc::vec::Vec<CpcBidSimulationPoint>,
 }
 /// A container for simulation points for simulations of type CPV_BID.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CpvBidSimulationPointList {
     /// Projected metrics for a series of CPV bid amounts.
@@ -5731,6 +6001,7 @@ pub struct CpvBidSimulationPointList {
     pub points: ::prost::alloc::vec::Vec<CpvBidSimulationPoint>,
 }
 /// A container for simulation points for simulations of type TARGET_CPA.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetCpaSimulationPointList {
     /// Projected metrics for a series of target CPA amounts.
@@ -5738,6 +6009,7 @@ pub struct TargetCpaSimulationPointList {
     pub points: ::prost::alloc::vec::Vec<TargetCpaSimulationPoint>,
 }
 /// A container for simulation points for simulations of type TARGET_ROAS.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetRoasSimulationPointList {
     /// Projected metrics for a series of target ROAS amounts.
@@ -5745,6 +6017,7 @@ pub struct TargetRoasSimulationPointList {
     pub points: ::prost::alloc::vec::Vec<TargetRoasSimulationPoint>,
 }
 /// A container for simulation points for simulations of type PERCENT_CPC_BID.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PercentCpcBidSimulationPointList {
     /// Projected metrics for a series of percent CPC bid amounts.
@@ -5752,6 +6025,7 @@ pub struct PercentCpcBidSimulationPointList {
     pub points: ::prost::alloc::vec::Vec<PercentCpcBidSimulationPoint>,
 }
 /// A container for simulation points for simulations of type BUDGET.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BudgetSimulationPointList {
     /// Projected metrics for a series of budget amounts.
@@ -5760,6 +6034,7 @@ pub struct BudgetSimulationPointList {
 }
 /// A container for simulation points for simulations of type
 /// TARGET_IMPRESSION_SHARE.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetImpressionShareSimulationPointList {
     /// Projected metrics for a specific target impression share value.
@@ -5767,6 +6042,7 @@ pub struct TargetImpressionShareSimulationPointList {
     pub points: ::prost::alloc::vec::Vec<TargetImpressionShareSimulationPoint>,
 }
 /// Projected metrics for a specific bid modifier amount.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BidModifierSimulationPoint {
     /// The simulated bid modifier upon which projected metrics are based.
@@ -5820,6 +6096,7 @@ pub struct BidModifierSimulationPoint {
     pub parent_required_budget_micros: ::core::option::Option<i64>,
 }
 /// Projected metrics for a specific CPC bid amount.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CpcBidSimulationPoint {
     /// Projected required daily budget that the advertiser must set in order to
@@ -5860,6 +6137,7 @@ pub mod cpc_bid_simulation_point {
     /// cpc_bid_micros is set.
     /// When SimulationModificationMethod = SCALING,
     /// cpc_bid_scaling_modifier is set.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum CpcSimulationKeyValue {
         /// The simulated CPC bid upon which projected metrics are based.
@@ -5873,6 +6151,7 @@ pub mod cpc_bid_simulation_point {
     }
 }
 /// Projected metrics for a specific CPV bid amount.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CpvBidSimulationPoint {
     /// The simulated CPV bid upon which projected metrics are based.
@@ -5889,6 +6168,7 @@ pub struct CpvBidSimulationPoint {
     pub views: ::core::option::Option<i64>,
 }
 /// Projected metrics for a specific target CPA amount.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetCpaSimulationPoint {
     /// Projected required daily budget that the advertiser must set in order to
@@ -5938,6 +6218,7 @@ pub mod target_cpa_simulation_point {
     /// target_cpa_micros is set.
     /// When SimulationModificationMethod = SCALING,
     /// target_cpa_scaling_modifier is set.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum TargetCpaSimulationKeyValue {
         /// The simulated target CPA upon which projected metrics are based.
@@ -5951,6 +6232,7 @@ pub mod target_cpa_simulation_point {
     }
 }
 /// Projected metrics for a specific target ROAS amount.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetRoasSimulationPoint {
     /// The simulated target ROAS upon which projected metrics are based.
@@ -5982,6 +6264,7 @@ pub struct TargetRoasSimulationPoint {
 }
 /// Projected metrics for a specific percent CPC amount. Only Hotel advertising
 /// channel type supports this field.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PercentCpcBidSimulationPoint {
     /// The simulated percent CPC upon which projected metrics are based. Percent
@@ -6009,6 +6292,7 @@ pub struct PercentCpcBidSimulationPoint {
     pub top_slot_impressions: ::core::option::Option<i64>,
 }
 /// Projected metrics for a specific budget amount.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BudgetSimulationPoint {
     /// The simulated budget upon which projected metrics are based.
@@ -6040,6 +6324,7 @@ pub struct BudgetSimulationPoint {
     pub top_slot_impressions: i64,
 }
 /// Projected metrics for a specific target impression share value.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetImpressionShareSimulationPoint {
     /// The simulated target impression share value (in micros) upon which
@@ -6081,6 +6366,7 @@ pub struct TargetImpressionShareSimulationPoint {
     pub absolute_top_impressions: i64,
 }
 /// The site tag and event snippet pair for a TrackingCodeType.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TagSnippet {
     /// The type of the generated tag snippets for tracking conversions.
@@ -6108,6 +6394,7 @@ pub struct TagSnippet {
 /// Settings for the targeting-related features, at the campaign and ad group
 /// levels. For more details about the targeting setting, visit
 /// <https://support.google.com/google-ads/answer/7365594>
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetingSetting {
     /// The per-targeting-dimension setting to restrict the reach of your campaign
@@ -6124,6 +6411,7 @@ pub struct TargetingSetting {
     >,
 }
 /// The list of per-targeting-dimension targeting settings.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetRestriction {
     /// The targeting dimension that these settings apply to.
@@ -6143,6 +6431,7 @@ pub struct TargetRestriction {
     pub bid_only: ::core::option::Option<bool>,
 }
 /// Operation to be performed on a target restriction list in a mutate.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetRestrictionOperation {
     /// Type of list operation to perform.
@@ -6193,6 +6482,7 @@ pub mod target_restriction_operation {
     }
 }
 /// A type of label displaying text on a colored background.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TextLabel {
     /// Background color of the label in RGB format. This string must match the
@@ -6206,6 +6496,7 @@ pub struct TextLabel {
     pub description: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Collection of urls that is tagged with a unique identifier.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UrlCollection {
     /// Unique identifier for this UrlCollection instance.
@@ -6223,6 +6514,7 @@ pub struct UrlCollection {
 }
 /// SimilarUserList is a list of users which are similar to users from another
 /// UserList. These lists are read-only and automatically created by Google.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SimilarUserListInfo {
     /// Seed UserList from which this list is derived.
@@ -6230,6 +6522,7 @@ pub struct SimilarUserListInfo {
     pub seed_user_list: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// UserList of CRM users provided by the advertiser.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CrmBasedUserListInfo {
     /// A string that uniquely identifies a mobile application from which the data
@@ -6262,6 +6555,7 @@ pub struct CrmBasedUserListInfo {
 }
 /// A client defined rule based on custom parameters sent by web sites or
 /// uploaded by the advertiser.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UserListRuleInfo {
     /// Rule type is used to determine how to group rule items.
@@ -6283,6 +6577,7 @@ pub struct UserListRuleInfo {
     pub rule_item_groups: ::prost::alloc::vec::Vec<UserListRuleItemGroupInfo>,
 }
 /// A group of rule items.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UserListRuleItemGroupInfo {
     /// Rule items that will be grouped together based on rule_type.
@@ -6290,6 +6585,7 @@ pub struct UserListRuleItemGroupInfo {
     pub rule_items: ::prost::alloc::vec::Vec<UserListRuleItemInfo>,
 }
 /// An atomic rule item.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UserListRuleItemInfo {
     /// Rule variable name. It should match the corresponding key name fired
@@ -6309,6 +6605,7 @@ pub struct UserListRuleItemInfo {
 /// Nested message and enum types in `UserListRuleItemInfo`.
 pub mod user_list_rule_item_info {
     /// An atomic rule item.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum RuleItem {
         /// An atomic rule item composed of a number operation.
@@ -6323,6 +6620,7 @@ pub mod user_list_rule_item_info {
     }
 }
 /// A rule item composed of a date operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UserListDateRuleItemInfo {
     /// Date comparison operator.
@@ -6345,6 +6643,7 @@ pub struct UserListDateRuleItemInfo {
     pub offset_in_days: ::core::option::Option<i64>,
 }
 /// A rule item composed of a number operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UserListNumberRuleItemInfo {
     /// Number comparison operator.
@@ -6362,6 +6661,7 @@ pub struct UserListNumberRuleItemInfo {
     pub value: ::core::option::Option<f64>,
 }
 /// A rule item composed of a string operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UserListStringRuleItemInfo {
     /// String comparison operator.
@@ -6382,6 +6682,7 @@ pub struct UserListStringRuleItemInfo {
 /// User lists defined by combining two rules, left operand and right operand.
 /// There are two operators: AND where left operand and right operand have to be
 /// true; AND_NOT where left operand is true but right operand is false.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CombinedRuleUserListInfo {
     /// Left operand of the combined rule.
@@ -6404,6 +6705,7 @@ pub struct CombinedRuleUserListInfo {
     pub rule_operator: i32,
 }
 /// Visitors of a page. The page visit is defined by one boolean rule expression.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExpressionRuleUserListInfo {
     /// Boolean rule that defines this user list. The rule consists of a list of
@@ -6416,6 +6718,7 @@ pub struct ExpressionRuleUserListInfo {
     pub rule: ::core::option::Option<UserListRuleInfo>,
 }
 /// Flexible rule that wraps the common rule and a lookback window.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FlexibleRuleOperandInfo {
     /// List of rule item groups that defines this rule.
@@ -6427,6 +6730,7 @@ pub struct FlexibleRuleOperandInfo {
     pub lookback_window_days: ::core::option::Option<i64>,
 }
 /// Flexible rule representation of visitors with one or multiple actions.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FlexibleRuleUserListInfo {
     /// Operator that defines how the inclusive operands are combined.
@@ -6446,6 +6750,7 @@ pub struct FlexibleRuleUserListInfo {
     pub exclusive_operands: ::prost::alloc::vec::Vec<FlexibleRuleOperandInfo>,
 }
 /// Representation of a userlist that is generated by a rule.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RuleBasedUserListInfo {
     /// The status of pre-population. The field is default to NONE if not set which
@@ -6473,6 +6778,7 @@ pub struct RuleBasedUserListInfo {
 /// Nested message and enum types in `RuleBasedUserListInfo`.
 pub mod rule_based_user_list_info {
     /// Subtypes of rule based user lists.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum RuleBasedUserList {
         /// User lists defined by combining two rules.
@@ -6487,6 +6793,7 @@ pub mod rule_based_user_list_info {
     }
 }
 /// Represents a user list that is a custom combination of user lists.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LogicalUserListInfo {
     /// Logical list rules that define this user list. The rules are defined as a
@@ -6499,6 +6806,7 @@ pub struct LogicalUserListInfo {
 }
 /// A user list logical rule. A rule has a logical operator (and/or/not) and a
 /// list of user lists as operands.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UserListLogicalRuleInfo {
     /// The logical operator of the rule.
@@ -6512,6 +6820,7 @@ pub struct UserListLogicalRuleInfo {
     pub rule_operands: ::prost::alloc::vec::Vec<LogicalUserListOperandInfo>,
 }
 /// Operand of logical user list that consists of a user list.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LogicalUserListOperandInfo {
     /// Resource name of a user list as an operand.
@@ -6519,6 +6828,7 @@ pub struct LogicalUserListOperandInfo {
     pub user_list: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// User list targeting as a collection of conversions or remarketing actions.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BasicUserListInfo {
     /// Actions associated with this user list.
@@ -6526,6 +6836,7 @@ pub struct BasicUserListInfo {
     pub actions: ::prost::alloc::vec::Vec<UserListActionInfo>,
 }
 /// Represents an action type used for building remarketing user lists.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UserListActionInfo {
     /// Subtypes of user list action.
@@ -6535,6 +6846,7 @@ pub struct UserListActionInfo {
 /// Nested message and enum types in `UserListActionInfo`.
 pub mod user_list_action_info {
     /// Subtypes of user list action.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum UserListAction {
         /// A conversion action that's not generated from remarketing.
@@ -6546,6 +6858,7 @@ pub mod user_list_action_info {
     }
 }
 /// A generic data container.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Value {
     /// A value.
@@ -6555,6 +6868,7 @@ pub struct Value {
 /// Nested message and enum types in `Value`.
 pub mod value {
     /// A value.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Value {
         /// A boolean.

@@ -1,4 +1,5 @@
 /// Request message for \[PrivateCatalog.SearchCatalogs][google.cloud.privatecatalog.v1beta1.PrivateCatalog.SearchCatalogs\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchCatalogsRequest {
     /// Required. The name of the resource context. It can be in following formats:
@@ -22,6 +23,7 @@ pub struct SearchCatalogsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for \[PrivateCatalog.SearchCatalogs][google.cloud.privatecatalog.v1beta1.PrivateCatalog.SearchCatalogs\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchCatalogsResponse {
     /// The `Catalog`s computed from the resource context.
@@ -33,6 +35,7 @@ pub struct SearchCatalogsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for \[PrivateCatalog.SearchProducts][google.cloud.privatecatalog.v1beta1.PrivateCatalog.SearchProducts\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchProductsRequest {
     /// Required. The name of the resource context. See \[SearchCatalogsRequest.resource][google.cloud.privatecatalog.v1beta1.SearchCatalogsRequest.resource\]
@@ -57,6 +60,7 @@ pub struct SearchProductsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for \[PrivateCatalog.SearchProducts][google.cloud.privatecatalog.v1beta1.PrivateCatalog.SearchProducts\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchProductsResponse {
     /// The `Product` resources computed from the resource context.
@@ -68,6 +72,7 @@ pub struct SearchProductsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for \[PrivateCatalog.SearchVersions][google.cloud.privatecatalog.v1beta1.PrivateCatalog.SearchVersions\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchVersionsRequest {
     /// Required. The name of the resource context. See \[SearchCatalogsRequest.resource][google.cloud.privatecatalog.v1beta1.SearchCatalogsRequest.resource\]
@@ -92,6 +97,7 @@ pub struct SearchVersionsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for \[PrivateCatalog.SearchVersions][google.cloud.privatecatalog.v1beta1.PrivateCatalog.SearchVersions\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchVersionsResponse {
     /// The `Version` resources computed from the resource context.
@@ -104,6 +110,7 @@ pub struct SearchVersionsResponse {
 }
 /// The readonly representation of a catalog computed with a given resource
 /// context.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Catalog {
     /// Output only. The resource name of the target catalog, in the format of
@@ -125,6 +132,7 @@ pub struct Catalog {
 }
 /// The readonly representation of a product computed with a given resource
 /// context.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Product {
     /// Output only. The resource name of the target product, in the format of
@@ -314,6 +322,7 @@ pub struct Product {
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Defines the reference of an asset belonging to a product.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AssetReference {
     /// Output only. A unique identifier among asset references in a product.
@@ -391,6 +400,7 @@ pub mod asset_reference {
         }
     }
     /// The destination of the asset.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
         /// Output only. The asset resource name if an asset is hosted by Private Catalog.
@@ -405,6 +415,7 @@ pub mod asset_reference {
     }
 }
 /// Defines definition of input parameters of asset templates.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Inputs {
     /// Output only. The JSON schema defining the inputs and their formats.
@@ -412,6 +423,7 @@ pub struct Inputs {
     pub parameters: ::core::option::Option<::prost_types::Struct>,
 }
 /// Defines how to access Cloud Storage source.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GcsSource {
     /// Output only. the cloud storage object path.
@@ -426,6 +438,7 @@ pub struct GcsSource {
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Defines how to access a Git Source.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GitSource {
     /// Location of the Git repo to build.
@@ -446,6 +459,7 @@ pub struct GitSource {
 pub mod git_source {
     /// The revision to fetch from the Git repository such as a branch, a tag, a
     /// commit SHA, or any Git ref.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Ref {
         /// The revision commit to use.
@@ -461,6 +475,7 @@ pub mod git_source {
 }
 /// The consumer representation of a version which is a child resource under a
 /// `Product` with asset data.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Version {
     /// Output only. The resource name of the version, in the format

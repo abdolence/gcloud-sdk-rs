@@ -1,5 +1,6 @@
 /// Note holding the version of the provider's builder and the signature of the
 /// provenance message in the build details occurrence.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Build {
     /// Required. Immutable. Version of the builder which produced this build.
@@ -11,6 +12,7 @@ pub struct Build {
     pub signature: ::core::option::Option<BuildSignature>,
 }
 /// Message encapsulating the signature of the verified build.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BuildSignature {
     /// Public key of the builder which can be used to verify that the related
@@ -81,6 +83,7 @@ pub mod build_signature {
     }
 }
 /// Details of a build occurrence.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Details {
     /// Required. The actual provenance for the build.

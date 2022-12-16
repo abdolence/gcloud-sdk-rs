@@ -1,6 +1,7 @@
 /// An AnnotationSpecSet is a collection of label definitions. For example, in
 /// image classification tasks, you define a set of possible labels for images as
 /// an AnnotationSpecSet. An AnnotationSpecSet is immutable upon creation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnnotationSpecSet {
     /// Output only. The AnnotationSpecSet resource name in the following format:
@@ -29,6 +30,7 @@ pub struct AnnotationSpecSet {
 /// in a labeling task. For example, an image classification task where images
 /// are labeled as `dog` or `cat` must reference an AnnotationSpec for `dog` and
 /// an AnnotationSpec for `cat`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnnotationSpec {
     /// Required. The display name of the AnnotationSpec. Maximum of 64 characters.
@@ -42,6 +44,7 @@ pub struct AnnotationSpec {
 /// Annotation for Example. Each example may have one or more annotations. For
 /// example in image classification problem, each image might have one or more
 /// labels. We call labels binded with this image an Annotation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Annotation {
     /// Output only. Unique name of this annotation, format is:
@@ -65,6 +68,7 @@ pub struct Annotation {
     pub annotation_sentiment: i32,
 }
 /// Annotation value for an example.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnnotationValue {
     #[prost(oneof = "annotation_value::ValueType", tags = "1, 2, 8, 9, 3, 10, 4, 5, 6")]
@@ -72,6 +76,7 @@ pub struct AnnotationValue {
 }
 /// Nested message and enum types in `AnnotationValue`.
 pub mod annotation_value {
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ValueType {
         /// Annotation value for image classification case.
@@ -108,6 +113,7 @@ pub mod annotation_value {
     }
 }
 /// Image classification annotation definition.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImageClassificationAnnotation {
     /// Label of image.
@@ -116,6 +122,7 @@ pub struct ImageClassificationAnnotation {
 }
 /// A vertex represents a 2D point in the image.
 /// NOTE: the vertex coordinates are in the same scale as the original image.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Vertex {
     /// X coordinate.
@@ -128,6 +135,7 @@ pub struct Vertex {
 /// A vertex represents a 2D point in the image.
 /// NOTE: the normalized vertex coordinates are relative to the original image
 /// and range from 0 to 1.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NormalizedVertex {
     /// X coordinate.
@@ -138,6 +146,7 @@ pub struct NormalizedVertex {
     pub y: f32,
 }
 /// A bounding polygon in the image.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BoundingPoly {
     /// The bounding polygon vertices.
@@ -145,6 +154,7 @@ pub struct BoundingPoly {
     pub vertices: ::prost::alloc::vec::Vec<Vertex>,
 }
 /// Normalized bounding polygon.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NormalizedBoundingPoly {
     /// The bounding polygon normalized vertices.
@@ -153,6 +163,7 @@ pub struct NormalizedBoundingPoly {
 }
 /// Image bounding poly annotation. It represents a polygon including
 /// bounding box in the image.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImageBoundingPolyAnnotation {
     /// Label of object in this bounding polygon.
@@ -169,6 +180,7 @@ pub struct ImageBoundingPolyAnnotation {
 pub mod image_bounding_poly_annotation {
     /// The region of the polygon. If it is a bounding box, it is guaranteed to be
     /// four points.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum BoundedArea {
         #[prost(message, tag = "2")]
@@ -178,6 +190,7 @@ pub mod image_bounding_poly_annotation {
     }
 }
 /// A line with multiple line segments.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Polyline {
     /// The polyline vertices.
@@ -185,6 +198,7 @@ pub struct Polyline {
     pub vertices: ::prost::alloc::vec::Vec<Vertex>,
 }
 /// Normalized polyline.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NormalizedPolyline {
     /// The normalized polyline vertices.
@@ -192,6 +206,7 @@ pub struct NormalizedPolyline {
     pub normalized_vertices: ::prost::alloc::vec::Vec<NormalizedVertex>,
 }
 /// A polyline for the image annotation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImagePolylineAnnotation {
     /// Label of this polyline.
@@ -202,6 +217,7 @@ pub struct ImagePolylineAnnotation {
 }
 /// Nested message and enum types in `ImagePolylineAnnotation`.
 pub mod image_polyline_annotation {
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Poly {
         #[prost(message, tag = "2")]
@@ -211,6 +227,7 @@ pub mod image_polyline_annotation {
     }
 }
 /// Image segmentation annotation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImageSegmentationAnnotation {
     /// The mapping between rgb color and annotation spec. The key is the rgb
@@ -229,6 +246,7 @@ pub struct ImageSegmentationAnnotation {
     pub image_bytes: ::prost::alloc::vec::Vec<u8>,
 }
 /// Text classification annotation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TextClassificationAnnotation {
     /// Label of the text.
@@ -236,6 +254,7 @@ pub struct TextClassificationAnnotation {
     pub annotation_spec: ::core::option::Option<AnnotationSpec>,
 }
 /// Text entity extraction annotation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TextEntityExtractionAnnotation {
     /// Label of the text entities.
@@ -246,6 +265,7 @@ pub struct TextEntityExtractionAnnotation {
     pub sequential_segment: ::core::option::Option<SequentialSegment>,
 }
 /// Start and end position in a sequence (e.g. text segment).
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SequentialSegment {
     /// Start position (inclusive).
@@ -256,6 +276,7 @@ pub struct SequentialSegment {
     pub end: i32,
 }
 /// A time period inside of an example that has a time dimension (e.g. video).
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TimeSegment {
     /// Start of the time segment (inclusive), represented as the duration since
@@ -268,6 +289,7 @@ pub struct TimeSegment {
     pub end_time_offset: ::core::option::Option<::prost_types::Duration>,
 }
 /// Video classification annotation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VideoClassificationAnnotation {
     /// The time segment of the video to which the annotation applies.
@@ -278,6 +300,7 @@ pub struct VideoClassificationAnnotation {
     pub annotation_spec: ::core::option::Option<AnnotationSpec>,
 }
 /// Video frame level annotation for object detection and tracking.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ObjectTrackingFrame {
     /// The time offset of this frame relative to the beginning of the video.
@@ -290,6 +313,7 @@ pub struct ObjectTrackingFrame {
 /// Nested message and enum types in `ObjectTrackingFrame`.
 pub mod object_tracking_frame {
     /// The bounding box location of this object track for the frame.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum BoundedArea {
         #[prost(message, tag = "1")]
@@ -299,6 +323,7 @@ pub mod object_tracking_frame {
     }
 }
 /// Video object tracking annotation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VideoObjectTrackingAnnotation {
     /// Label of the object tracked in this annotation.
@@ -312,6 +337,7 @@ pub struct VideoObjectTrackingAnnotation {
     pub object_tracking_frames: ::prost::alloc::vec::Vec<ObjectTrackingFrame>,
 }
 /// Video event annotation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VideoEventAnnotation {
     /// Label of the event in this annotation.
@@ -322,6 +348,7 @@ pub struct VideoEventAnnotation {
     pub time_segment: ::core::option::Option<TimeSegment>,
 }
 /// Additional information associated with the annotation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnnotationMetadata {
     /// Metadata related to human labeling.
@@ -329,6 +356,7 @@ pub struct AnnotationMetadata {
     pub operator_metadata: ::core::option::Option<OperatorMetadata>,
 }
 /// General information useful for labels coming from contributors.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperatorMetadata {
     /// Confidence score corresponding to a label. For examle, if 3 contributors
@@ -467,6 +495,7 @@ impl AnnotationType {
     }
 }
 /// Container of information about an image.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImagePayload {
     /// Image format.
@@ -483,6 +512,7 @@ pub struct ImagePayload {
     pub signed_uri: ::prost::alloc::string::String,
 }
 /// Container of information about a piece of text.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TextPayload {
     /// Text content.
@@ -490,6 +520,7 @@ pub struct TextPayload {
     pub text_content: ::prost::alloc::string::String,
 }
 /// Container of information of a video thumbnail.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VideoThumbnail {
     /// A byte string of the video frame.
@@ -501,6 +532,7 @@ pub struct VideoThumbnail {
     pub time_offset: ::core::option::Option<::prost_types::Duration>,
 }
 /// Container of information of a video.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VideoPayload {
     /// Video format.
@@ -520,6 +552,7 @@ pub struct VideoPayload {
     pub signed_uri: ::prost::alloc::string::String,
 }
 /// Configuration for how human labeling task should be done.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HumanAnnotationConfig {
     /// Required. Instruction resource name.
@@ -568,6 +601,7 @@ pub struct HumanAnnotationConfig {
     pub user_email_address: ::prost::alloc::string::String,
 }
 /// Config for image classification human labeling task.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImageClassificationConfig {
     /// Required. Annotation spec set resource name.
@@ -582,6 +616,7 @@ pub struct ImageClassificationConfig {
     pub answer_aggregation_type: i32,
 }
 /// Config for image bounding poly (and bounding box) human labeling task.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BoundingPolyConfig {
     /// Required. Annotation spec set resource name.
@@ -592,6 +627,7 @@ pub struct BoundingPolyConfig {
     pub instruction_message: ::prost::alloc::string::String,
 }
 /// Config for image polyline human labeling task.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PolylineConfig {
     /// Required. Annotation spec set resource name.
@@ -602,6 +638,7 @@ pub struct PolylineConfig {
     pub instruction_message: ::prost::alloc::string::String,
 }
 /// Config for image segmentation
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SegmentationConfig {
     /// Required. Annotation spec set resource name. format:
@@ -617,6 +654,7 @@ pub struct SegmentationConfig {
 /// 1. Assign labels on the entire video.
 /// 2. Split the video into multiple video clips based on camera shot, and
 /// assign labels on each video clip.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VideoClassificationConfig {
     /// Required. The list of annotation spec set configs.
@@ -636,6 +674,7 @@ pub struct VideoClassificationConfig {
 /// Nested message and enum types in `VideoClassificationConfig`.
 pub mod video_classification_config {
     /// Annotation spec set with the setting of allowing multi labels or not.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AnnotationSpecSetConfig {
         /// Required. Annotation spec set resource name.
@@ -652,6 +691,7 @@ pub mod video_classification_config {
 /// and those objects will be labeled with bounding boxes.
 /// User need to specify the number of images to be extracted per second as the
 /// extraction frame rate.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ObjectDetectionConfig {
     /// Required. Annotation spec set resource name.
@@ -662,6 +702,7 @@ pub struct ObjectDetectionConfig {
     pub extraction_frame_rate: f64,
 }
 /// Config for video object tracking human labeling task.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ObjectTrackingConfig {
     /// Required. Annotation spec set resource name.
@@ -669,6 +710,7 @@ pub struct ObjectTrackingConfig {
     pub annotation_spec_set: ::prost::alloc::string::String,
 }
 /// Config for video event human labeling task.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EventConfig {
     /// Required. The list of annotation spec set resource name. Similar to video
@@ -678,6 +720,7 @@ pub struct EventConfig {
     pub annotation_spec_sets: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Config for text classification human labeling task.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TextClassificationConfig {
     /// Optional. If allow_multi_label is true, contributors are able to choose
@@ -692,6 +735,7 @@ pub struct TextClassificationConfig {
     pub sentiment_config: ::core::option::Option<SentimentConfig>,
 }
 /// Config for setting up sentiments.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SentimentConfig {
     /// If set to true, contributors will have the option to select sentiment of
@@ -701,6 +745,7 @@ pub struct SentimentConfig {
     pub enable_label_sentiment_selection: bool,
 }
 /// Config for text entity extraction human labeling task.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TextEntityExtractionConfig {
     /// Required. Annotation spec set resource name.
@@ -734,6 +779,7 @@ impl StringAggregationType {
 }
 /// Dataset is the resource to hold your data. You can request multiple labeling
 /// tasks for a dataset while each one will generate an AnnotatedDataset.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Dataset {
     /// Output only. Dataset resource name, format is:
@@ -764,6 +810,7 @@ pub struct Dataset {
     pub data_item_count: i64,
 }
 /// The configuration of input data, including data type, location, etc.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InputConfig {
     /// Required. Data type must be specifed when user tries to import data.
@@ -789,6 +836,7 @@ pub struct InputConfig {
 /// Nested message and enum types in `InputConfig`.
 pub mod input_config {
     /// Optional. The metadata associated with each data type.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum DataTypeMetadata {
         /// Required for text import, as language code must be specified.
@@ -796,6 +844,7 @@ pub mod input_config {
         TextMetadata(super::TextMetadata),
     }
     /// Required. Where the data is from.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
         /// Source located in Cloud Storage.
@@ -808,6 +857,7 @@ pub mod input_config {
     }
 }
 /// Metadata for the text.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TextMetadata {
     /// The language of this text, as a
@@ -817,6 +867,7 @@ pub struct TextMetadata {
     pub language_code: ::prost::alloc::string::String,
 }
 /// Metadata for classification annotations.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ClassificationMetadata {
     /// Whether the classification task is multi-label or not.
@@ -824,6 +875,7 @@ pub struct ClassificationMetadata {
     pub is_multi_label: bool,
 }
 /// Source of the Cloud Storage file to be imported.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GcsSource {
     /// Required. The input URI of source file. This must be a Cloud Storage path
@@ -837,6 +889,7 @@ pub struct GcsSource {
 /// The BigQuery location for input data. If used in an \[EvaluationJob][google.cloud.datalabeling.v1beta1.EvaluationJob\], this
 /// is where the service saves the prediction input and output sampled from the
 /// model version.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BigQuerySource {
     /// Required. BigQuery URI to a table, up to 2,000 characters long. If you
@@ -857,6 +910,7 @@ pub struct BigQuerySource {
     pub input_uri: ::prost::alloc::string::String,
 }
 /// The configuration of output data.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OutputConfig {
     /// Required. Location to output data to.
@@ -866,6 +920,7 @@ pub struct OutputConfig {
 /// Nested message and enum types in `OutputConfig`.
 pub mod output_config {
     /// Required. Location to output data to.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Destination {
         /// Output to a file in Cloud Storage. Should be used for labeling output
@@ -880,6 +935,7 @@ pub mod output_config {
 }
 /// Export destination of the data.Only gcs path is allowed in
 /// output_uri.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GcsDestination {
     /// Required. The output uri of destination file.
@@ -892,6 +948,7 @@ pub struct GcsDestination {
     pub mime_type: ::prost::alloc::string::String,
 }
 /// Export folder destination of the data.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GcsFolderDestination {
     /// Required. Cloud Storage directory to export data to.
@@ -899,6 +956,7 @@ pub struct GcsFolderDestination {
     pub output_folder_uri: ::prost::alloc::string::String,
 }
 /// DataItem is a piece of data, without annotation. For example, an image.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataItem {
     /// Output only. Name of the data item, in format of:
@@ -912,6 +970,7 @@ pub struct DataItem {
 /// Nested message and enum types in `DataItem`.
 pub mod data_item {
     /// Output only.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Payload {
         /// The image payload, a container of the image bytes/uri.
@@ -928,6 +987,7 @@ pub mod data_item {
 /// AnnotatedDataset is a set holding annotations for data in a Dataset. Each
 /// labeling task will generate an AnnotatedDataset under the Dataset that the
 /// task is requested for.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnnotatedDataset {
     /// Output only. AnnotatedDataset resource name in format of:
@@ -974,6 +1034,7 @@ pub struct AnnotatedDataset {
     pub blocking_resources: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Statistics about annotation specs.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LabelStats {
     /// Map of each annotation spec's example count. Key is the annotation spec
@@ -985,6 +1046,7 @@ pub struct LabelStats {
     pub example_count: ::std::collections::HashMap<::prost::alloc::string::String, i64>,
 }
 /// Metadata on AnnotatedDataset.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnnotatedDatasetMetadata {
     /// HumanAnnotationConfig used when requesting the human labeling task for this
@@ -1003,6 +1065,7 @@ pub struct AnnotatedDatasetMetadata {
 /// Nested message and enum types in `AnnotatedDatasetMetadata`.
 pub mod annotated_dataset_metadata {
     /// Specific request configuration used when requesting the labeling task.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum AnnotationRequestConfig {
         /// Configuration for image classification task.
@@ -1039,6 +1102,7 @@ pub mod annotated_dataset_metadata {
 }
 /// An Example is a piece of data and its annotation. For example, an image with
 /// label "house".
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Example {
     /// Output only. Name of the example, in format of:
@@ -1057,6 +1121,7 @@ pub struct Example {
 /// Nested message and enum types in `Example`.
 pub mod example {
     /// Output only. The data part of Example.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Payload {
         /// The image payload, a container of the image bytes/uri.
@@ -1099,6 +1164,7 @@ impl DataType {
 }
 /// Describes an evaluation between a machine learning model's predictions and
 /// ground truth labels. Created when an \[EvaluationJob][google.cloud.datalabeling.v1beta1.EvaluationJob\] runs successfully.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Evaluation {
     /// Output only. Resource name of an evaluation. The name has the following
@@ -1136,6 +1202,7 @@ pub struct Evaluation {
 }
 /// Configuration details used for calculating evaluation metrics and creating an
 /// \[Evaluation][google.cloud.datalabeling.v1beta1.Evaluation\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EvaluationConfig {
     /// Vertical specific options for general metrics.
@@ -1145,6 +1212,7 @@ pub struct EvaluationConfig {
 /// Nested message and enum types in `EvaluationConfig`.
 pub mod evaluation_config {
     /// Vertical specific options for general metrics.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum VerticalOption {
         /// Only specify this field if the related model performs image object
@@ -1155,6 +1223,7 @@ pub mod evaluation_config {
     }
 }
 /// Options regarding evaluation between bounding boxes.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BoundingBoxEvaluationOptions {
     /// Minimum
@@ -1166,6 +1235,7 @@ pub struct BoundingBoxEvaluationOptions {
     #[prost(float, tag = "1")]
     pub iou_threshold: f32,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EvaluationMetrics {
     /// Common metrics covering most general cases.
@@ -1175,6 +1245,7 @@ pub struct EvaluationMetrics {
 /// Nested message and enum types in `EvaluationMetrics`.
 pub mod evaluation_metrics {
     /// Common metrics covering most general cases.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Metrics {
         #[prost(message, tag = "1")]
@@ -1184,6 +1255,7 @@ pub mod evaluation_metrics {
     }
 }
 /// Metrics calculated for a classification model.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ClassificationMetrics {
     /// Precision-recall curve based on ground truth labels, predicted labels, and
@@ -1195,12 +1267,14 @@ pub struct ClassificationMetrics {
     pub confusion_matrix: ::core::option::Option<ConfusionMatrix>,
 }
 /// Metrics calculated for an image object detection (bounding box) model.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ObjectDetectionMetrics {
     /// Precision-recall curve.
     #[prost(message, optional, tag = "1")]
     pub pr_curve: ::core::option::Option<PrCurve>,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PrCurve {
     /// The annotation spec of the label for which the precision-recall curve
@@ -1224,6 +1298,7 @@ pub struct PrCurve {
 }
 /// Nested message and enum types in `PrCurve`.
 pub mod pr_curve {
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ConfidenceMetricsEntry {
         /// Threshold used for this entry.
@@ -1272,6 +1347,7 @@ pub mod pr_curve {
 /// Confusion matrix of the model running the classification. Only applicable
 /// when the metrics entry aggregates multiple labels. Not applicable when the
 /// entry is for a single label.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConfusionMatrix {
     #[prost(message, repeated, tag = "1")]
@@ -1279,6 +1355,7 @@ pub struct ConfusionMatrix {
 }
 /// Nested message and enum types in `ConfusionMatrix`.
 pub mod confusion_matrix {
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ConfusionMatrixEntry {
         /// The annotation spec of a predicted label.
@@ -1291,6 +1368,7 @@ pub mod confusion_matrix {
     }
     /// A row in the confusion matrix. Each entry in this row has the same
     /// ground truth label.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Row {
         /// The annotation spec of the ground truth label for this row.
@@ -1306,6 +1384,7 @@ pub mod confusion_matrix {
 /// \[Evaluations][google.cloud.datalabeling.v1beta1.Evaluation\]. [Creating an evaluation
 /// job](/ml-engine/docs/continuous-evaluation/create-job) is the starting point
 /// for using continuous evaluation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EvaluationJob {
     /// Output only. After you create a job, Data Labeling Service assigns a name
@@ -1446,6 +1525,7 @@ pub mod evaluation_job {
 }
 /// Configures specific details of how a continuous evaluation job works. Provide
 /// this configuration when you create an EvaluationJob.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EvaluationJobConfig {
     /// Rquired. Details for the sampled prediction input. Within this
@@ -1532,6 +1612,7 @@ pub struct EvaluationJobConfig {
 pub mod evaluation_job_config {
     /// Required. Details for how you want human reviewers to provide ground truth
     /// labels.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum HumanAnnotationRequestConfig {
         /// Specify this field if your model version performs image classification or
@@ -1562,6 +1643,7 @@ pub mod evaluation_job_config {
 }
 /// Provides details for how an evaluation job sends email alerts based on the
 /// results of a run.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EvaluationJobAlertConfig {
     /// Required. An email address to send alerts to.
@@ -1576,6 +1658,7 @@ pub struct EvaluationJobAlertConfig {
     pub min_acceptable_mean_average_precision: f64,
 }
 /// Records a failed evaluation job run.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Attempt {
     #[prost(message, optional, tag = "1")]
@@ -1586,6 +1669,7 @@ pub struct Attempt {
 }
 /// Instruction of how to perform the labeling task for human operators.
 /// Currently only PDF instruction is supported.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Instruction {
     /// Output only. Instruction resource name, format:
@@ -1628,6 +1712,7 @@ pub struct Instruction {
 }
 /// Deprecated: this instruction format is not supported any more.
 /// Instruction from a CSV file.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CsvInstruction {
     /// CSV file for the instruction. Only gcs path is allowed.
@@ -1635,6 +1720,7 @@ pub struct CsvInstruction {
     pub gcs_file_uri: ::prost::alloc::string::String,
 }
 /// Instruction from a PDF file.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PdfInstruction {
     /// PDF file for the instruction. Only gcs path is allowed.
@@ -1642,6 +1728,7 @@ pub struct PdfInstruction {
     pub gcs_file_uri: ::prost::alloc::string::String,
 }
 /// Request message for CreateDataset.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateDatasetRequest {
     /// Required. Dataset resource parent, format:
@@ -1653,6 +1740,7 @@ pub struct CreateDatasetRequest {
     pub dataset: ::core::option::Option<Dataset>,
 }
 /// Request message for GetDataSet.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetDatasetRequest {
     /// Required. Dataset resource name, format:
@@ -1661,6 +1749,7 @@ pub struct GetDatasetRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for ListDataset.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDatasetsRequest {
     /// Required. Dataset resource parent, format:
@@ -1683,6 +1772,7 @@ pub struct ListDatasetsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Results of listing datasets within a project.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDatasetsResponse {
     /// The list of datasets to return.
@@ -1693,6 +1783,7 @@ pub struct ListDatasetsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for DeleteDataset.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteDatasetRequest {
     /// Required. Dataset resource name, format:
@@ -1701,6 +1792,7 @@ pub struct DeleteDatasetRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for ImportData API.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportDataRequest {
     /// Required. Dataset resource name, format:
@@ -1716,6 +1808,7 @@ pub struct ImportDataRequest {
     pub user_email_address: ::prost::alloc::string::String,
 }
 /// Request message for ExportData API.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportDataRequest {
     /// Required. Dataset resource name, format:
@@ -1741,6 +1834,7 @@ pub struct ExportDataRequest {
     pub user_email_address: ::prost::alloc::string::String,
 }
 /// Request message for GetDataItem.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetDataItemRequest {
     /// Required. The name of the data item to get, format:
@@ -1749,6 +1843,7 @@ pub struct GetDataItemRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for ListDataItems.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDataItemsRequest {
     /// Required. Name of the dataset to list data items, format:
@@ -1771,6 +1866,7 @@ pub struct ListDataItemsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Results of listing data items in a dataset.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDataItemsResponse {
     /// The list of data items to return.
@@ -1781,6 +1877,7 @@ pub struct ListDataItemsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for GetAnnotatedDataset.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAnnotatedDatasetRequest {
     /// Required. Name of the annotated dataset to get, format:
@@ -1790,6 +1887,7 @@ pub struct GetAnnotatedDatasetRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for ListAnnotatedDatasets.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAnnotatedDatasetsRequest {
     /// Required. Name of the dataset to list annotated datasets, format:
@@ -1812,6 +1910,7 @@ pub struct ListAnnotatedDatasetsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Results of listing annotated datasets for a dataset.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAnnotatedDatasetsResponse {
     /// The list of annotated datasets to return.
@@ -1822,6 +1921,7 @@ pub struct ListAnnotatedDatasetsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for DeleteAnnotatedDataset.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteAnnotatedDatasetRequest {
     /// Required. Name of the annotated dataset to delete, format:
@@ -1831,6 +1931,7 @@ pub struct DeleteAnnotatedDatasetRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for starting an image labeling task.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LabelImageRequest {
     /// Required. Name of the dataset to request labeling task, format:
@@ -1901,6 +2002,7 @@ pub mod label_image_request {
     }
     /// Required. Config for labeling tasks. The type of request config must
     /// match the selected feature.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum RequestConfig {
         /// Configuration for image classification task.
@@ -1926,6 +2028,7 @@ pub mod label_image_request {
     }
 }
 /// Request message for LabelVideo.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LabelVideoRequest {
     /// Required. Name of the dataset to request labeling task, format:
@@ -1986,6 +2089,7 @@ pub mod label_video_request {
     }
     /// Required. Config for labeling tasks. The type of request config must
     /// match the selected feature.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum RequestConfig {
         /// Configuration for video classification task.
@@ -2011,6 +2115,7 @@ pub mod label_video_request {
     }
 }
 /// Request message for LabelText.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LabelTextRequest {
     /// Required. Name of the data set to request labeling task, format:
@@ -2065,6 +2170,7 @@ pub mod label_text_request {
     }
     /// Required. Config for labeling tasks. The type of request config must
     /// match the selected feature.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum RequestConfig {
         /// Configuration for text classification task.
@@ -2080,6 +2186,7 @@ pub mod label_text_request {
     }
 }
 /// Request message for GetExample
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetExampleRequest {
     /// Required. Name of example, format:
@@ -2094,6 +2201,7 @@ pub struct GetExampleRequest {
     pub filter: ::prost::alloc::string::String,
 }
 /// Request message for ListExamples.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListExamplesRequest {
     /// Required. Example resource parent.
@@ -2118,6 +2226,7 @@ pub struct ListExamplesRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Results of listing Examples in and annotated dataset.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListExamplesResponse {
     /// The list of examples to return.
@@ -2128,6 +2237,7 @@ pub struct ListExamplesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for CreateAnnotationSpecSet.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateAnnotationSpecSetRequest {
     /// Required. AnnotationSpecSet resource parent, format:
@@ -2141,6 +2251,7 @@ pub struct CreateAnnotationSpecSetRequest {
     pub annotation_spec_set: ::core::option::Option<AnnotationSpecSet>,
 }
 /// Request message for GetAnnotationSpecSet.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAnnotationSpecSetRequest {
     /// Required. AnnotationSpecSet resource name, format:
@@ -2149,6 +2260,7 @@ pub struct GetAnnotationSpecSetRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for ListAnnotationSpecSets.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAnnotationSpecSetsRequest {
     /// Required. Parent of AnnotationSpecSet resource, format:
@@ -2171,6 +2283,7 @@ pub struct ListAnnotationSpecSetsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Results of listing annotation spec set under a project.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAnnotationSpecSetsResponse {
     /// The list of annotation spec sets.
@@ -2181,6 +2294,7 @@ pub struct ListAnnotationSpecSetsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for DeleteAnnotationSpecSet.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteAnnotationSpecSetRequest {
     /// Required. AnnotationSpec resource name, format:
@@ -2189,6 +2303,7 @@ pub struct DeleteAnnotationSpecSetRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for CreateInstruction.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateInstructionRequest {
     /// Required. Instruction resource parent, format:
@@ -2200,6 +2315,7 @@ pub struct CreateInstructionRequest {
     pub instruction: ::core::option::Option<Instruction>,
 }
 /// Request message for GetInstruction.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetInstructionRequest {
     /// Required. Instruction resource name, format:
@@ -2208,6 +2324,7 @@ pub struct GetInstructionRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for DeleteInstruction.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteInstructionRequest {
     /// Required. Instruction resource name, format:
@@ -2216,6 +2333,7 @@ pub struct DeleteInstructionRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for ListInstructions.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListInstructionsRequest {
     /// Required. Instruction resource parent, format:
@@ -2238,6 +2356,7 @@ pub struct ListInstructionsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Results of listing instructions under a project.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListInstructionsResponse {
     /// The list of Instructions to return.
@@ -2248,6 +2367,7 @@ pub struct ListInstructionsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for GetEvaluation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetEvaluationRequest {
     /// Required. Name of the evaluation. Format:
@@ -2257,6 +2377,7 @@ pub struct GetEvaluationRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for SearchEvaluation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchEvaluationsRequest {
     /// Required. Evaluation search parent (project ID). Format:
@@ -2311,6 +2432,7 @@ pub struct SearchEvaluationsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Results of searching evaluations.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchEvaluationsResponse {
     /// The list of evaluations matching the search.
@@ -2321,6 +2443,7 @@ pub struct SearchEvaluationsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message of SearchExampleComparisons.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchExampleComparisonsRequest {
     /// Required. Name of the \[Evaluation][google.cloud.datalabeling.v1beta1.Evaluation\] resource to search for example
@@ -2344,6 +2467,7 @@ pub struct SearchExampleComparisonsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Results of searching example comparisons.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchExampleComparisonsResponse {
     /// A list of example comparisons matching the search criteria.
@@ -2359,6 +2483,7 @@ pub struct SearchExampleComparisonsResponse {
 pub mod search_example_comparisons_response {
     /// Example comparisons comparing ground truth output and predictions for a
     /// specific input.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ExampleComparison {
         /// The ground truth output for the input.
@@ -2370,6 +2495,7 @@ pub mod search_example_comparisons_response {
     }
 }
 /// Request message for CreateEvaluationJob.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateEvaluationJobRequest {
     /// Required. Evaluation job resource parent. Format:
@@ -2381,6 +2507,7 @@ pub struct CreateEvaluationJobRequest {
     pub job: ::core::option::Option<EvaluationJob>,
 }
 /// Request message for UpdateEvaluationJob.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateEvaluationJobRequest {
     /// Required. Evaluation job that is going to be updated.
@@ -2399,6 +2526,7 @@ pub struct UpdateEvaluationJobRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for GetEvaluationJob.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetEvaluationJobRequest {
     /// Required. Name of the evaluation job. Format:
@@ -2408,6 +2536,7 @@ pub struct GetEvaluationJobRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for PauseEvaluationJob.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PauseEvaluationJobRequest {
     /// Required. Name of the evaluation job that is going to be paused. Format:
@@ -2417,6 +2546,7 @@ pub struct PauseEvaluationJobRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message ResumeEvaluationJob.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResumeEvaluationJobRequest {
     /// Required. Name of the evaluation job that is going to be resumed. Format:
@@ -2426,6 +2556,7 @@ pub struct ResumeEvaluationJobRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message DeleteEvaluationJob.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteEvaluationJobRequest {
     /// Required. Name of the evaluation job that is going to be deleted. Format:
@@ -2435,6 +2566,7 @@ pub struct DeleteEvaluationJobRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for ListEvaluationJobs.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEvaluationJobsRequest {
     /// Required. Evaluation job resource parent. Format:
@@ -2464,6 +2596,7 @@ pub struct ListEvaluationJobsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Results for listing evaluation jobs.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEvaluationJobsResponse {
     /// The list of evaluation jobs to return.
@@ -3273,6 +3406,7 @@ pub mod data_labeling_service_client {
     }
 }
 /// Response used for ImportData longrunning operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportDataOperationResponse {
     /// Ouptut only. The name of imported dataset.
@@ -3286,6 +3420,7 @@ pub struct ImportDataOperationResponse {
     pub import_count: i32,
 }
 /// Response used for ExportDataset longrunning operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportDataOperationResponse {
     /// Ouptut only. The name of dataset.
@@ -3306,6 +3441,7 @@ pub struct ExportDataOperationResponse {
     pub output_config: ::core::option::Option<OutputConfig>,
 }
 /// Metadata of an ImportData operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportDataOperationMetadata {
     /// Output only. The name of imported dataset.
@@ -3322,6 +3458,7 @@ pub struct ImportDataOperationMetadata {
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Metadata of an ExportData operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportDataOperationMetadata {
     /// Output only. The name of dataset to be exported.
@@ -3339,6 +3476,7 @@ pub struct ExportDataOperationMetadata {
 }
 /// Metadata of a labeling operation, such as LabelImage or LabelVideo.
 /// Next tag: 20
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LabelOperationMetadata {
     /// Output only. Progress of label operation. Range: [0, 100].
@@ -3362,6 +3500,7 @@ pub struct LabelOperationMetadata {
 /// Nested message and enum types in `LabelOperationMetadata`.
 pub mod label_operation_metadata {
     /// Ouptut only. Details of specific label operation.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Details {
         /// Details of label image classification operation.
@@ -3405,6 +3544,7 @@ pub mod label_operation_metadata {
     }
 }
 /// Metadata of a LabelImageClassification operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LabelImageClassificationOperationMetadata {
     /// Basic human annotation config used in labeling request.
@@ -3412,6 +3552,7 @@ pub struct LabelImageClassificationOperationMetadata {
     pub basic_config: ::core::option::Option<HumanAnnotationConfig>,
 }
 /// Details of a LabelImageBoundingBox operation metadata.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LabelImageBoundingBoxOperationMetadata {
     /// Basic human annotation config used in labeling request.
@@ -3419,6 +3560,7 @@ pub struct LabelImageBoundingBoxOperationMetadata {
     pub basic_config: ::core::option::Option<HumanAnnotationConfig>,
 }
 /// Details of a LabelImageOrientedBoundingBox operation metadata.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LabelImageOrientedBoundingBoxOperationMetadata {
     /// Basic human annotation config.
@@ -3426,6 +3568,7 @@ pub struct LabelImageOrientedBoundingBoxOperationMetadata {
     pub basic_config: ::core::option::Option<HumanAnnotationConfig>,
 }
 /// Details of LabelImageBoundingPoly operation metadata.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LabelImageBoundingPolyOperationMetadata {
     /// Basic human annotation config used in labeling request.
@@ -3433,6 +3576,7 @@ pub struct LabelImageBoundingPolyOperationMetadata {
     pub basic_config: ::core::option::Option<HumanAnnotationConfig>,
 }
 /// Details of LabelImagePolyline operation metadata.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LabelImagePolylineOperationMetadata {
     /// Basic human annotation config used in labeling request.
@@ -3440,6 +3584,7 @@ pub struct LabelImagePolylineOperationMetadata {
     pub basic_config: ::core::option::Option<HumanAnnotationConfig>,
 }
 /// Details of a LabelImageSegmentation operation metadata.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LabelImageSegmentationOperationMetadata {
     /// Basic human annotation config.
@@ -3447,6 +3592,7 @@ pub struct LabelImageSegmentationOperationMetadata {
     pub basic_config: ::core::option::Option<HumanAnnotationConfig>,
 }
 /// Details of a LabelVideoClassification operation metadata.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LabelVideoClassificationOperationMetadata {
     /// Basic human annotation config used in labeling request.
@@ -3454,6 +3600,7 @@ pub struct LabelVideoClassificationOperationMetadata {
     pub basic_config: ::core::option::Option<HumanAnnotationConfig>,
 }
 /// Details of a LabelVideoObjectDetection operation metadata.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LabelVideoObjectDetectionOperationMetadata {
     /// Basic human annotation config used in labeling request.
@@ -3461,6 +3608,7 @@ pub struct LabelVideoObjectDetectionOperationMetadata {
     pub basic_config: ::core::option::Option<HumanAnnotationConfig>,
 }
 /// Details of a LabelVideoObjectTracking operation metadata.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LabelVideoObjectTrackingOperationMetadata {
     /// Basic human annotation config used in labeling request.
@@ -3468,6 +3616,7 @@ pub struct LabelVideoObjectTrackingOperationMetadata {
     pub basic_config: ::core::option::Option<HumanAnnotationConfig>,
 }
 /// Details of a LabelVideoEvent operation metadata.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LabelVideoEventOperationMetadata {
     /// Basic human annotation config used in labeling request.
@@ -3475,6 +3624,7 @@ pub struct LabelVideoEventOperationMetadata {
     pub basic_config: ::core::option::Option<HumanAnnotationConfig>,
 }
 /// Details of a LabelTextClassification operation metadata.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LabelTextClassificationOperationMetadata {
     /// Basic human annotation config used in labeling request.
@@ -3482,6 +3632,7 @@ pub struct LabelTextClassificationOperationMetadata {
     pub basic_config: ::core::option::Option<HumanAnnotationConfig>,
 }
 /// Details of a LabelTextEntityExtraction operation metadata.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LabelTextEntityExtractionOperationMetadata {
     /// Basic human annotation config used in labeling request.
@@ -3489,6 +3640,7 @@ pub struct LabelTextEntityExtractionOperationMetadata {
     pub basic_config: ::core::option::Option<HumanAnnotationConfig>,
 }
 /// Metadata of a CreateInstruction operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateInstructionMetadata {
     /// The name of the created Instruction.

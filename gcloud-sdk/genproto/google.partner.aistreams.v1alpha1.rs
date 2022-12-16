@@ -1,4 +1,5 @@
 /// Cluster resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Cluster {
     /// The name of the cluster. The format of cluster is:
@@ -26,6 +27,7 @@ pub struct Cluster {
     pub service_endpoint: ::prost::alloc::string::String,
 }
 /// Request message for 'ListClusters'.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListClustersRequest {
     /// Required. The parent that owns the collection of Clusters.
@@ -48,6 +50,7 @@ pub struct ListClustersRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// Response message from 'ListClusters'.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListClustersResponse {
     /// List of clusters.
@@ -62,6 +65,7 @@ pub struct ListClustersResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for 'GetCluster'.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetClusterRequest {
     /// Required. The name of the Cluster resource to get.
@@ -69,6 +73,7 @@ pub struct GetClusterRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for 'CreateCluster'.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateClusterRequest {
     /// Required. The parent that owns the collection of Clusters.
@@ -97,6 +102,7 @@ pub struct CreateClusterRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for 'UpdateCluster'.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateClusterRequest {
     /// Required. Field mask is used to specify the fields to be overwritten in the
@@ -126,6 +132,7 @@ pub struct UpdateClusterRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for 'DeleteCluster'.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteClusterRequest {
     /// Required. The name of cluster to delete.
@@ -148,6 +155,7 @@ pub struct DeleteClusterRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Stream resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Stream {
     /// The name of the stream. The format for the full name is:
@@ -168,6 +176,7 @@ pub struct Stream {
     >,
 }
 /// Request message for 'ListStreams'.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListStreamsRequest {
     /// Required. The parent that owns the collection of the Streams.
@@ -190,6 +199,7 @@ pub struct ListStreamsRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// Response message from 'ListStreams'.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListStreamsResponse {
     /// List of the streams.
@@ -204,6 +214,7 @@ pub struct ListStreamsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for 'GetStream'.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetStreamRequest {
     /// Required. The name of the stream.
@@ -211,6 +222,7 @@ pub struct GetStreamRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for 'CreateStream'.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateStreamRequest {
     /// Required. The parent that owns the collection of streams.
@@ -239,6 +251,7 @@ pub struct CreateStreamRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for 'UpdateStream'.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateStreamRequest {
     /// Required. Field mask is used to specify the fields to be overwritten in the
@@ -268,6 +281,7 @@ pub struct UpdateStreamRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for 'DeleteStream'.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteStreamRequest {
     /// Required. The name of the stream.
@@ -290,6 +304,7 @@ pub struct DeleteStreamRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Represents the metadata of the long-running operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationMetadata {
     /// Output only. The time the operation was created.

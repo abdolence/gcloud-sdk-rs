@@ -1,4 +1,5 @@
 /// AWS S3 object metadata.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AwsS3ObjectMetadata {
     /// Required. Name of the S3 bucket.
@@ -18,6 +19,7 @@ pub struct AwsS3ObjectMetadata {
     pub size: i64,
 }
 /// AWS S3 bucket metadata.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AwsS3BucketMetadata {
     /// Required. Name of the S3 bucket.
@@ -28,6 +30,7 @@ pub struct AwsS3BucketMetadata {
     pub path: ::prost::alloc::string::String,
 }
 /// Google Cloud Storage object metadata.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GcsObjectMetadata {
     /// Required. Name of the Cloud Storage bucket.
@@ -50,6 +53,7 @@ pub struct GcsObjectMetadata {
     pub size: i64,
 }
 /// Google Cloud Storage bucket metadata.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GcsBucketMetadata {
     /// Required. Name of the Cloud Storage bucket.
@@ -60,6 +64,7 @@ pub struct GcsBucketMetadata {
     pub path: ::prost::alloc::string::String,
 }
 /// Azure Blob Storage blob metadata.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AzureBlobMetadata {
     /// Required. Name of the Azure Blob storage account.
@@ -82,6 +87,7 @@ pub struct AzureBlobMetadata {
     pub size: i64,
 }
 /// Azure Blob Storage container metadata.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AzureBlobContainerMetadata {
     /// Required. Name of the Azure Blob storage account.
@@ -95,6 +101,7 @@ pub struct AzureBlobContainerMetadata {
     pub path: ::prost::alloc::string::String,
 }
 /// POSIX file metadata.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PosixFileMetadata {
     /// Required. Path of a file.
@@ -111,6 +118,7 @@ pub struct PosixFileMetadata {
     pub size: i64,
 }
 /// HTTP file metadata.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HttpFileMetadata {
     /// Required. Url of the HTTP file.
@@ -124,6 +132,7 @@ pub struct HttpFileMetadata {
     pub size: i64,
 }
 /// HTTP manifest file metadata.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HttpManifestMetadata {
     /// Required. Url of the HTTP manifest which contains the list of HTTP files to
@@ -132,6 +141,7 @@ pub struct HttpManifestMetadata {
     pub url: ::prost::alloc::string::String,
 }
 /// Metadata of a blob/file/object.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ObjectMetadata {
     /// Required. Storage system type of the object.
@@ -142,6 +152,7 @@ pub struct ObjectMetadata {
 }
 /// Nested message and enum types in `ObjectMetadata`.
 pub mod object_metadata {
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Metadata {
         /// Object metadata of AWS S3.
@@ -162,6 +173,7 @@ pub mod object_metadata {
     }
 }
 /// Metadata of a bucket/container/directory
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ContainerMetadata {
     /// Required. Storage system type of the object.
@@ -172,6 +184,7 @@ pub struct ContainerMetadata {
 }
 /// Nested message and enum types in `ContainerMetadata`.
 pub mod container_metadata {
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Metadata {
         /// Bucket metadata of AWS S3.
@@ -192,6 +205,7 @@ pub mod container_metadata {
     }
 }
 /// Schema of log payload of transfer activity.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TransferActivityLog {
     /// Required. Name of the transfer operation.
@@ -226,6 +240,7 @@ pub struct TransferActivityLog {
 /// Nested message and enum types in `TransferActivityLog`.
 pub mod transfer_activity_log {
     /// Status of an action.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Status {
         /// Required. A string value of the Google RPC code as the status of the

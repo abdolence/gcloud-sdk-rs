@@ -1,4 +1,5 @@
 /// The request for \[ConnectionService.CreateConnection][google.cloud.bigquery.connection.v1.ConnectionService.CreateConnection\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateConnectionRequest {
     /// Required. Parent resource name.
@@ -13,6 +14,7 @@ pub struct CreateConnectionRequest {
     pub connection: ::core::option::Option<Connection>,
 }
 /// The request for \[ConnectionService.GetConnection][google.cloud.bigquery.connection.v1.ConnectionService.GetConnection\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetConnectionRequest {
     /// Required. Name of the requested connection, for example:
@@ -21,6 +23,7 @@ pub struct GetConnectionRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request for \[ConnectionService.ListConnections][google.cloud.bigquery.connection.v1.ConnectionService.ListConnections\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListConnectionsRequest {
     /// Required. Parent resource name.
@@ -35,6 +38,7 @@ pub struct ListConnectionsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// The response for \[ConnectionService.ListConnections][google.cloud.bigquery.connection.v1.ConnectionService.ListConnections\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListConnectionsResponse {
     /// Next page token.
@@ -45,6 +49,7 @@ pub struct ListConnectionsResponse {
     pub connections: ::prost::alloc::vec::Vec<Connection>,
 }
 /// The request for \[ConnectionService.UpdateConnection][google.cloud.bigquery.connection.v1.ConnectionService.UpdateConnection\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateConnectionRequest {
     /// Required. Name of the connection to update, for example:
@@ -59,6 +64,7 @@ pub struct UpdateConnectionRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The request for \[ConnectionService.DeleteConnectionRequest][\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteConnectionRequest {
     /// Required. Name of the deleted connection, for example:
@@ -68,6 +74,7 @@ pub struct DeleteConnectionRequest {
 }
 /// Configuration parameters to establish connection with an external data
 /// source, except the credential attributes.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Connection {
     /// The resource name of the connection in the form of:
@@ -96,6 +103,7 @@ pub struct Connection {
 /// Nested message and enum types in `Connection`.
 pub mod connection {
     /// Properties specific to the underlying data source.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Properties {
         /// Cloud SQL properties.
@@ -116,6 +124,7 @@ pub mod connection {
     }
 }
 /// Connection properties specific to the Cloud SQL.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CloudSqlProperties {
     /// Cloud SQL instance ID in the form `project:location:instance`.
@@ -176,6 +185,7 @@ pub mod cloud_sql_properties {
     }
 }
 /// Credential info for the Cloud SQL.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CloudSqlCredential {
     /// The username for the credential.
@@ -186,6 +196,7 @@ pub struct CloudSqlCredential {
     pub password: ::prost::alloc::string::String,
 }
 /// Connection properties specific to Cloud Spanner.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CloudSpannerProperties {
     /// Cloud Spanner database in the form `project/instance/database'
@@ -196,6 +207,7 @@ pub struct CloudSpannerProperties {
     pub use_parallelism: bool,
 }
 /// Connection properties specific to Amazon Web Services (AWS).
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AwsProperties {
     /// Authentication method chosen at connection creation.
@@ -207,6 +219,7 @@ pub struct AwsProperties {
 /// Nested message and enum types in `AwsProperties`.
 pub mod aws_properties {
     /// Authentication method chosen at connection creation.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum AuthenticationMethod {
         /// Authentication using Google owned AWS IAM user's access key to assume
@@ -222,6 +235,7 @@ pub mod aws_properties {
 }
 /// Authentication method for Amazon Web Services (AWS) that uses Google owned
 /// AWS IAM user's access key to assume into customer's AWS IAM Role.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AwsCrossAccountRole {
     /// The user’s AWS IAM Role that trusts the Google-owned AWS IAM user
@@ -239,6 +253,7 @@ pub struct AwsCrossAccountRole {
 }
 /// Authentication method for Amazon Web Services (AWS) that uses Google owned
 /// Google service account to assume into customer's AWS IAM Role.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AwsAccessRole {
     /// The user’s AWS IAM Role that trusts the Google-owned AWS IAM user
@@ -251,6 +266,7 @@ pub struct AwsAccessRole {
     pub identity: ::prost::alloc::string::String,
 }
 /// Container for connection properties specific to Azure.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AzureProperties {
     /// Output only. The name of the Azure Active Directory Application.
@@ -281,6 +297,7 @@ pub struct AzureProperties {
 }
 /// Container for connection properties for delegation of access to GCP
 /// resources.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CloudResourceProperties {
     /// Output only. The account ID of the service created for the purpose of this connection.

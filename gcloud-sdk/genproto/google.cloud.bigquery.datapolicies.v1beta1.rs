@@ -1,4 +1,5 @@
 /// Request message for the CreateDataPolicy method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateDataPolicyRequest {
     /// Required. Resource name of the project that the data policy will belong to. The
@@ -11,6 +12,7 @@ pub struct CreateDataPolicyRequest {
     pub data_policy: ::core::option::Option<DataPolicy>,
 }
 /// Response message for the UpdateDataPolicy method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateDataPolicyRequest {
     /// Required. Update the data policy's metadata.
@@ -29,6 +31,7 @@ pub struct UpdateDataPolicyRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for the DeleteDataPolicy method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteDataPolicyRequest {
     /// Required. Resource name of the data policy to delete. Format is
@@ -37,6 +40,7 @@ pub struct DeleteDataPolicyRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for the GetDataPolicy method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetDataPolicyRequest {
     /// Required. Resource name of the requested data policy. Format is
@@ -45,6 +49,7 @@ pub struct GetDataPolicyRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for the ListDataPolicies method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDataPoliciesRequest {
     /// Required. Resource name of the project for which to list data policies. Format is
@@ -62,6 +67,7 @@ pub struct ListDataPoliciesRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for the ListDataPolicies method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDataPoliciesResponse {
     /// Data policies that belong to the requested project.
@@ -73,6 +79,7 @@ pub struct ListDataPoliciesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Represents the label-policy binding.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataPolicy {
     /// Output only. Resource name of this data policy, in the format of
@@ -134,6 +141,7 @@ pub mod data_policy {
         }
     }
     /// Label that is bound to this data policy.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum MatchingLabel {
         /// Policy tag resource name, in the format of
@@ -142,6 +150,7 @@ pub mod data_policy {
         PolicyTag(::prost::alloc::string::String),
     }
     /// The policy that is bound to this data policy.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Policy {
         /// The data masking policy that specifies the data masking rule to use.
@@ -150,6 +159,7 @@ pub mod data_policy {
     }
 }
 /// The data masking policy that is used to specify data masking rule.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataMaskingPolicy {
     /// A masking expression to bind to the data masking rule.
@@ -217,6 +227,7 @@ pub mod data_masking_policy {
         }
     }
     /// A masking expression to bind to the data masking rule.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum MaskingExpression {
         /// A predefined masking expression.

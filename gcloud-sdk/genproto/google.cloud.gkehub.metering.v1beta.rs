@@ -1,4 +1,5 @@
 /// **Metering**: Per-Membership Feature State.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MembershipState {
     /// The time stamp of the most recent measurement of the number of vCPUs

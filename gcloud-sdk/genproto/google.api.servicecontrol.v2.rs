@@ -1,4 +1,5 @@
 /// Request message for the Check method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CheckRequest {
     /// The service name as specified in its service configuration. For example,
@@ -27,6 +28,7 @@ pub struct CheckRequest {
     pub flags: ::prost::alloc::string::String,
 }
 /// Describes a resource referenced in the request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResourceInfo {
     /// The name of the resource referenced in the request.
@@ -56,6 +58,7 @@ pub struct ResourceInfo {
     pub location: ::prost::alloc::string::String,
 }
 /// Response message for the Check method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CheckResponse {
     /// Operation is allowed when this field is not set. Any non-'OK' status
@@ -71,6 +74,7 @@ pub struct CheckResponse {
     >,
 }
 /// Request message for the Report method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReportRequest {
     /// The service name as specified in its service configuration. For example,
@@ -96,6 +100,7 @@ pub struct ReportRequest {
 }
 /// Response message for the Report method.
 /// If the request contains any invalid data, the server returns an RPC error.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReportResponse {}
 /// Generated client implementations.

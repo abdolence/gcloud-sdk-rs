@@ -1,4 +1,5 @@
 /// Status used for both invocation attempt and overall build completion.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BuildStatus {
     /// The end result.
@@ -12,6 +13,9 @@ pub struct BuildStatus {
     /// Might not be available in some cases, e.g., a build timeout.
     #[prost(message, optional, tag = "4")]
     pub build_tool_exit_code: ::core::option::Option<i32>,
+    /// Human-readable error message. Do not use for programmatic purposes.
+    #[prost(string, tag = "5")]
+    pub error_message: ::prost::alloc::string::String,
     /// Fine-grained diagnostic information to complement the status.
     #[prost(message, optional, tag = "2")]
     pub details: ::core::option::Option<::prost_types::Any>,
@@ -73,9 +77,11 @@ pub mod build_status {
 }
 /// An event representing some state change that occurred in the build. This
 /// message does not include field for uniquely identifying an event.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BuildEvent {
-    /// The timestamp of this event.
+    /// This should be precisely the time when this event happened, and not when
+    /// the event proto was created or sent.
     #[prost(message, optional, tag = "1")]
     pub event_time: ::core::option::Option<::prost_types::Timestamp>,
     /// //////////////////////////////////////////////////////////////////////////
@@ -87,6 +93,7 @@ pub struct BuildEvent {
 /// Nested message and enum types in `BuildEvent`.
 pub mod build_event {
     /// Notification that the build system has attempted to run the build tool.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct InvocationAttemptStarted {
         /// The number of the invocation attempt, starting at 1 and increasing by 1
@@ -99,6 +106,7 @@ pub mod build_event {
         pub details: ::core::option::Option<::prost_types::Any>,
     }
     /// Notification that an invocation attempt has finished.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct InvocationAttemptFinished {
         /// Final status of the invocation.
@@ -109,6 +117,7 @@ pub mod build_event {
         pub details: ::core::option::Option<::prost_types::Any>,
     }
     /// Notification that the build request is enqueued.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct BuildEnqueued {
         /// Additional details about the Build.
@@ -118,6 +127,7 @@ pub mod build_event {
     /// Notification that the build request has finished, and no further
     /// invocations will occur.  Note that this applies to the entire Build.
     /// Individual invocations trigger InvocationFinished when they finish.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct BuildFinished {
         /// Final status of the build.
@@ -128,6 +138,7 @@ pub mod build_event {
         pub details: ::core::option::Option<::prost_types::Any>,
     }
     /// Textual output written to standard output or standard error.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ConsoleOutput {
         /// The output stream type.
@@ -140,6 +151,7 @@ pub mod build_event {
     /// Nested message and enum types in `ConsoleOutput`.
     pub mod console_output {
         /// The output stream content.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Output {
             /// Regular UTF-8 output; normal text.
@@ -152,6 +164,7 @@ pub mod build_event {
     }
     /// Notification of the end of a build event stream published by a build
     /// component other than CONTROLLER (See StreamId.BuildComponents).
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct BuildComponentStreamFinished {
         /// How the event stream finished.
@@ -201,6 +214,7 @@ pub mod build_event {
     /// //////////////////////////////////////////////////////////////////////////
     /// Events that indicate a state change of a build request in the build
     /// queue.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Event {
         /// An invocation attempt has started.
@@ -237,6 +251,7 @@ pub mod build_event {
     }
 }
 /// Unique identifier for a build event stream.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StreamId {
     /// The id of a Build message.
@@ -321,13 +336,14 @@ impl ConsoleOutputStream {
 ///      multiple invocations for a build (e.g. retries).
 /// - InvocationAttemptCompleted: When work for a build finishes.
 /// - BuildFinished: When a build is finished.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PublishLifecycleEventRequest {
     /// The interactivity of this build.
     #[prost(enumeration = "publish_lifecycle_event_request::ServiceLevel", tag = "1")]
     pub service_level: i32,
-    /// Required. The lifecycle build event. If this is a build tool event, the RPC
-    /// will fail with INVALID_REQUEST.
+    /// Required. The lifecycle build event. If this is a build tool event, the RPC will fail
+    /// with INVALID_REQUEST.
     #[prost(message, optional, tag = "2")]
     pub build_event: ::core::option::Option<OrderedBuildEvent>,
     /// If the next event for this build or invocation (depending on the event
@@ -396,6 +412,7 @@ pub mod publish_lifecycle_event_request {
 }
 /// States which event has been committed. Any failure to commit will cause
 /// RPC errors, hence not recorded by this proto.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PublishBuildToolEventStreamResponse {
     /// The stream that contains this event.
@@ -407,6 +424,7 @@ pub struct PublishBuildToolEventStreamResponse {
 }
 /// Build event with contextual information about the stream it belongs to and
 /// its position in that stream.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OrderedBuildEvent {
     /// Which build event stream this event belongs to.
@@ -422,6 +440,7 @@ pub struct OrderedBuildEvent {
     pub event: ::core::option::Option<BuildEvent>,
 }
 /// Streaming request message for PublishBuildToolEventStream.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PublishBuildToolEventStreamRequest {
     /// Required. The build event with position info.
@@ -538,7 +557,7 @@ pub mod publish_build_event_client {
         /// jobs immediately without batching.
         ///
         /// The commit status of the request is reported by the RPC's util_status()
-        /// function. The error code is the canoncial error code defined in
+        /// function. The error code is the canonical error code defined in
         /// //util/task/codes.proto.
         pub async fn publish_lifecycle_event(
             &mut self,

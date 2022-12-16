@@ -1,4 +1,5 @@
 /// Presents a workspace
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Workspace {
     /// The Workspace name in the format of "projects/*/locations/*/workspaces/*".
@@ -6,6 +7,7 @@ pub struct Workspace {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for listing Workspaces.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListWorkspacesRequest {
     /// The parent used for listing. It should have the format of
@@ -20,6 +22,7 @@ pub struct ListWorkspacesRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// A list of workspaces.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListWorkspacesResponse {
     /// The list of workspaces.
@@ -30,6 +33,7 @@ pub struct ListWorkspacesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for retrieving a Workspace.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetWorkspaceRequest {
     /// The name of the Workspace to retrieve.
@@ -37,6 +41,7 @@ pub struct GetWorkspaceRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for creating a Workspace.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateWorkspaceRequest {
     /// The namespace in which the Workspace should be created.
@@ -47,6 +52,7 @@ pub struct CreateWorkspaceRequest {
     pub workspace: ::core::option::Option<Workspace>,
 }
 /// Request message for replacing a Workspace.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateWorkspaceRequest {
     /// The name of the Workspace being replaced.
@@ -57,6 +63,7 @@ pub struct UpdateWorkspaceRequest {
     pub workspace: ::core::option::Option<Workspace>,
 }
 /// Request message for deleting a Workspace.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteWorkspaceRequest {
     /// The name of the Workspace to delete.

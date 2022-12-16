@@ -1,5 +1,6 @@
 /// Provides information to the speech translation that specifies how to process
 /// the request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TranslateSpeechConfig {
     /// Required. Encoding of audio data.
@@ -77,6 +78,7 @@ pub struct TranslateSpeechConfig {
     pub model: ::prost::alloc::string::String,
 }
 /// Config used for streaming translation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StreamingTranslateSpeechConfig {
     /// Required. The common config for all the following audio contents.
@@ -146,6 +148,7 @@ pub struct StreamingTranslateSpeechConfig {
 /// first message must contain a `streaming_config` message and must not contain
 /// `audio_content` data. All subsequent messages must contain `audio_content`
 /// data and must not contain a `streaming_config` message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StreamingTranslateSpeechRequest {
     /// The streaming request, which is either a streaming config or content.
@@ -160,6 +163,7 @@ pub struct StreamingTranslateSpeechRequest {
 /// Nested message and enum types in `StreamingTranslateSpeechRequest`.
 pub mod streaming_translate_speech_request {
     /// The streaming request, which is either a streaming config or content.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum StreamingRequest {
         /// Provides information to the recognizer that specifies how to process the
@@ -181,6 +185,7 @@ pub mod streaming_translate_speech_request {
 }
 /// A streaming speech translation result corresponding to a portion of the audio
 /// that is currently being processed.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StreamingTranslateSpeechResult {
     /// Text translation result.
@@ -205,6 +210,7 @@ pub struct StreamingTranslateSpeechResult {
 /// Nested message and enum types in `StreamingTranslateSpeechResult`.
 pub mod streaming_translate_speech_result {
     /// Text translation result.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct TextTranslationResult {
         /// Output only. The translated sentence.
@@ -220,6 +226,7 @@ pub mod streaming_translate_speech_result {
         pub is_final: bool,
     }
     /// Audio translation result.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AudioTranslationResult {
         /// Output only. The translated audio.
@@ -229,6 +236,7 @@ pub mod streaming_translate_speech_result {
 }
 /// A streaming speech translation response corresponding to a portion of
 /// the audio currently processed.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StreamingTranslateSpeechResponse {
     /// Output only. If set, returns a \[google.rpc.Status][google.rpc.Status\] message that

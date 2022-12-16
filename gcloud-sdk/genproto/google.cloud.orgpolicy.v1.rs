@@ -1,5 +1,6 @@
 /// Defines a Cloud Organization `Policy` which is used to specify `Constraints`
 /// for configurations of Cloud Platform resources.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Policy {
     /// Version of the `Policy`. Default version is 0;
@@ -72,6 +73,7 @@ pub mod policy {
     /// `ALL_VALUES_UNSPECIFIED`. `ALLOW` or `DENY` are used to allow or deny all
     /// values. If `all_values` is set to either `ALLOW` or `DENY`,
     /// `allowed_values` and `denied_values` must be unset.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ListPolicy {
         /// List of values allowed  at this resource. Can only be set if `all_values`
@@ -238,6 +240,7 @@ pub mod policy {
     }
     /// Used in `policy_type` to specify how `boolean_policy` will behave at this
     /// resource.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct BooleanPolicy {
         /// If `true`, then the `Policy` is enforced. If `false`, then any
@@ -299,6 +302,7 @@ pub mod policy {
     /// several experimental projects, restoring the `constraint_default`
     /// enforcement of the `Constraint` for only those projects, allowing those
     /// projects to have all services activated.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct RestoreDefault {}
     /// The field to populate is based on the `constraint_type` value in the
@@ -313,6 +317,7 @@ pub mod policy {
     ///
     /// Attempting to set a `Policy` with a `policy_type` not set will result in an
     /// `invalid_argument` error.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum PolicyType {
         /// List of values either allowed or disallowed.

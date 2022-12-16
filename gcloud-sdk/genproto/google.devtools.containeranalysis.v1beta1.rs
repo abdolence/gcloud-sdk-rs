@@ -1,6 +1,7 @@
 /// A scan configuration specifies whether Cloud components in a project have a
 /// particular type of analysis being run. For example, it can configure whether
 /// vulnerability scanning is being done on Docker images or not.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ScanConfig {
     /// Output only. The name of the scan configuration in the form of
@@ -22,6 +23,7 @@ pub struct ScanConfig {
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Request to get a scan configuration.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetScanConfigRequest {
     /// Required. The name of the scan configuration in the form of
@@ -30,6 +32,7 @@ pub struct GetScanConfigRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request to list scan configurations.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListScanConfigsRequest {
     /// Required. The name of the project to list scan configurations for in the form of
@@ -47,6 +50,7 @@ pub struct ListScanConfigsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response for listing scan configurations.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListScanConfigsResponse {
     /// The scan configurations requested.
@@ -59,6 +63,7 @@ pub struct ListScanConfigsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// A request to update a scan configuration.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateScanConfigRequest {
     /// Required. The name of the scan configuration in the form of

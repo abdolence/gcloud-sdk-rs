@@ -1,4 +1,5 @@
 /// The message used by the client to register interest in an entity.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Request {
     /// The `target` value **must** be a valid URL path pointing to an entity
@@ -60,6 +61,7 @@ pub struct Request {
     pub resume_marker: ::prost::alloc::vec::Vec<u8>,
 }
 /// A batch of Change messages.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ChangeBatch {
     /// A list of Change messages.
@@ -67,6 +69,7 @@ pub struct ChangeBatch {
     pub changes: ::prost::alloc::vec::Vec<Change>,
 }
 /// A Change indicates the most recent state of an element.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Change {
     /// Name of the element, interpreted relative to the entity's actual

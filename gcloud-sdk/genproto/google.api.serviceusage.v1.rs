@@ -1,4 +1,5 @@
 /// A service that is available for use by the consumer.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Service {
     /// The resource name of the consumer and service.
@@ -24,6 +25,7 @@ pub struct Service {
     pub state: i32,
 }
 /// The configuration of the service.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ServiceConfig {
     /// The DNS address at which this service is available.
@@ -68,6 +70,7 @@ pub struct ServiceConfig {
     pub monitoring: ::core::option::Option<super::super::Monitoring>,
 }
 /// The operation metadata returned for the batchend services operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationMetadata {
     /// The full name of the resources that this operation is directly
@@ -103,6 +106,7 @@ impl State {
     }
 }
 /// Request message for the `EnableService` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EnableServiceRequest {
     /// Name of the consumer and service to enable the service on.
@@ -122,6 +126,7 @@ pub struct EnableServiceRequest {
 /// Response message for the `EnableService` method.
 /// This response message is assigned to the `response` field of the returned
 /// Operation when that operation is done.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EnableServiceResponse {
     /// The new state of the service after enabling.
@@ -129,6 +134,7 @@ pub struct EnableServiceResponse {
     pub service: ::core::option::Option<Service>,
 }
 /// Request message for the `DisableService` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DisableServiceRequest {
     /// Name of the consumer and service to disable the service on.
@@ -196,6 +202,7 @@ pub mod disable_service_request {
 /// Response message for the `DisableService` method.
 /// This response message is assigned to the `response` field of the returned
 /// Operation when that operation is done.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DisableServiceResponse {
     /// The new state of the service after disabling.
@@ -203,6 +210,7 @@ pub struct DisableServiceResponse {
     pub service: ::core::option::Option<Service>,
 }
 /// Request message for the `GetService` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetServiceRequest {
     /// Name of the consumer and service to get the `ConsumerState` for.
@@ -214,6 +222,7 @@ pub struct GetServiceRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for the `ListServices` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListServicesRequest {
     /// Parent to search for services on.
@@ -237,6 +246,7 @@ pub struct ListServicesRequest {
     pub filter: ::prost::alloc::string::String,
 }
 /// Response message for the `ListServices` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListServicesResponse {
     /// The available services for the requested project.
@@ -248,6 +258,7 @@ pub struct ListServicesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for the `BatchEnableServices` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchEnableServicesRequest {
     /// Parent to enable services on.
@@ -275,6 +286,7 @@ pub struct BatchEnableServicesRequest {
 /// Response message for the `BatchEnableServices` method.
 /// This response message is assigned to the `response` field of the returned
 /// Operation when that operation is done.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchEnableServicesResponse {
     /// The new state of the services after enabling.
@@ -290,6 +302,7 @@ pub struct BatchEnableServicesResponse {
 /// Nested message and enum types in `BatchEnableServicesResponse`.
 pub mod batch_enable_services_response {
     /// Provides error messages for the failing services.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct EnableFailure {
         /// The service id of a service that could not be enabled.
@@ -301,6 +314,7 @@ pub mod batch_enable_services_response {
     }
 }
 /// Request message for the `BatchGetServices` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchGetServicesRequest {
     /// Parent to retrieve services from.
@@ -320,6 +334,7 @@ pub struct BatchGetServicesRequest {
     pub names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Response message for the `BatchGetServices` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchGetServicesResponse {
     /// The requested Service states.

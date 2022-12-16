@@ -1,6 +1,7 @@
 /// Encoding of an input element such as an audio, video, or text track.
 /// Elementary streams must be packaged before mapping and sharing between
 /// different output formats.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ElementaryStream {
     /// A unique key for this elementary stream.
@@ -13,6 +14,7 @@ pub struct ElementaryStream {
 /// Nested message and enum types in `ElementaryStream`.
 pub mod elementary_stream {
     /// Required. Encoding of an audio, video, or text track.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ElementaryStream {
         /// Encoding of a video stream.
@@ -27,6 +29,7 @@ pub mod elementary_stream {
     }
 }
 /// Multiplexing settings for output stream.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MuxStream {
     /// A unique key for this multiplexed stream.
@@ -53,6 +56,7 @@ pub struct MuxStream {
     pub segment_settings: ::core::option::Option<SegmentSettings>,
 }
 /// Manifest configuration.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Manifest {
     /// The name of the generated file. The default is `manifest` with the
@@ -124,6 +128,7 @@ pub mod manifest {
     }
 }
 /// Sprite sheet configuration.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SpriteSheet {
     /// Format type. The default is `jpeg`.
@@ -167,6 +172,7 @@ pub struct SpriteSheet {
     pub quality: i32,
 }
 /// Preprocessing configurations.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PreprocessingConfig {
     /// Specify the video cropping configuration.
@@ -180,6 +186,7 @@ pub struct PreprocessingConfig {
 pub mod preprocessing_config {
     /// Video cropping configuration for the input video. The cropped input video
     /// is scaled to match the output resolution.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Crop {
         /// The number of pixels to crop from the top. The default is 0.
@@ -197,6 +204,7 @@ pub mod preprocessing_config {
     }
     /// Pad filter configuration for the input video. The padded input video
     /// is scaled after padding with black to match the output resolution.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Pad {
         /// The number of pixels to add to the top. The default is 0.
@@ -214,6 +222,7 @@ pub mod preprocessing_config {
     }
 }
 /// Video stream resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VideoStream {
     /// Codec settings.
@@ -223,6 +232,7 @@ pub struct VideoStream {
 /// Nested message and enum types in `VideoStream`.
 pub mod video_stream {
     /// H264 codec settings.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct H264CodecSettings {
         /// Required. The width of the video in pixels. Must be an even integer.
@@ -311,6 +321,7 @@ pub mod video_stream {
     /// Nested message and enum types in `H264CodecSettings`.
     pub mod h264_codec_settings {
         /// GOP mode can be either by frame count or duration.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum GopMode {
             /// Select the GOP size based on the specified frame count.
@@ -332,6 +343,7 @@ pub mod video_stream {
         }
     }
     /// Codec settings.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum CodecSettings {
         /// H264 codec settings.
@@ -340,6 +352,7 @@ pub mod video_stream {
     }
 }
 /// Audio stream resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AudioStream {
     /// Specifies whether pass through (transmuxing) is enabled or not.
@@ -384,6 +397,7 @@ pub struct AudioStream {
 /// Nested message and enum types in `AudioStream`.
 pub mod audio_stream {
     /// The mapping for the input streams and audio channels.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AudioMapping {
         /// Required. The `Channel` \[InputAttachment.key][google.cloud.video.livestream.v1.InputAttachment.key\] that identifies the input that this
@@ -406,6 +420,7 @@ pub mod audio_stream {
     }
 }
 /// Encoding of a text stream. For example, closed captions or subtitles.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TextStream {
     /// Required. The codec for this text stream.
@@ -418,6 +433,7 @@ pub struct TextStream {
     pub codec: ::prost::alloc::string::String,
 }
 /// Segment settings for `fmp4` and `ts`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SegmentSettings {
     /// Duration of the segments in seconds. The default is `6s`. Note that
@@ -434,6 +450,7 @@ pub struct SegmentSettings {
 }
 /// Input resource represents the endpoint from which the channel ingests
 /// the input stream.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Input {
     /// The resource name of the input, in the form of:
@@ -484,6 +501,7 @@ pub mod input {
     /// Security rules for access control. Each field represents one security rule.
     /// Only when the source of the input stream satisfies all the fields, this
     /// input stream can be accepted.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SecurityRule {
         /// At least one ip range must match unless none specified. The IP range is
@@ -569,6 +587,7 @@ pub mod input {
 /// input, transcoding it to multiple renditions, and publishing output live
 /// streams in certain formats (for example, HLS or DASH) to the specified
 /// location.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Channel {
     /// The resource name of the channel, in the form of:
@@ -627,6 +646,7 @@ pub struct Channel {
 /// Nested message and enum types in `Channel`.
 pub mod channel {
     /// Location of output file(s) in a Google Cloud Storage bucket.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Output {
         /// URI for the output file(s). For example, `gs://my-bucket/outputs/`.
@@ -692,6 +712,7 @@ pub mod channel {
 /// See [Using and managing platform
 /// logs](<https://cloud.google.com/logging/docs/api/platform-logs#managing-logs>)
 /// for more information about how to view platform logs through Cloud Logging.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LogConfig {
     /// The severity level of platform logging for this resource.
@@ -752,6 +773,7 @@ pub mod log_config {
     }
 }
 /// Properties of the input stream.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InputStreamProperty {
     /// The time that the current input stream is accepted and the connection is
@@ -766,6 +788,7 @@ pub struct InputStreamProperty {
     pub audio_streams: ::prost::alloc::vec::Vec<AudioStreamProperty>,
 }
 /// Properties of the video stream.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VideoStreamProperty {
     /// Index of this video stream.
@@ -776,6 +799,7 @@ pub struct VideoStreamProperty {
     pub video_format: ::core::option::Option<VideoFormat>,
 }
 /// Properties of the video format.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VideoFormat {
     /// Video codec used in this video stream.
@@ -792,6 +816,7 @@ pub struct VideoFormat {
     pub frame_rate: f64,
 }
 /// Properties of the audio stream.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AudioStreamProperty {
     /// Index of this audio stream.
@@ -802,6 +827,7 @@ pub struct AudioStreamProperty {
     pub audio_format: ::core::option::Option<AudioFormat>,
 }
 /// Properties of the audio format.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AudioFormat {
     /// Audio codec used in this audio stream.
@@ -815,6 +841,7 @@ pub struct AudioFormat {
     pub channel_layout: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// A group of information for attaching an input resource to this channel.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InputAttachment {
     /// A unique key for this input attachment.
@@ -831,6 +858,7 @@ pub struct InputAttachment {
 /// Nested message and enum types in `InputAttachment`.
 pub mod input_attachment {
     /// Configurations to follow when automatic failover happens.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AutomaticFailover {
         /// The \[InputAttachment.key][google.cloud.video.livestream.v1.InputAttachment.key\]s of inputs to failover to when this input is
@@ -841,6 +869,7 @@ pub mod input_attachment {
 }
 /// Event is a sub-resource of a channel, which can be scheduled by the user to
 /// execute operations on a channel resource without having to stop the channel.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Event {
     /// The resource name of the event, in the form of:
@@ -883,6 +912,7 @@ pub struct Event {
 /// Nested message and enum types in `Event`.
 pub mod event {
     /// Inserts a new ad opportunity.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AdBreakTask {
         /// Duration of an ad opportunity. Must be greater than 0.
@@ -936,6 +966,7 @@ pub mod event {
         }
     }
     /// Required. Operation to be executed by this event.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Task {
         /// Required. Inserts a new ad opportunity.
@@ -944,6 +975,7 @@ pub mod event {
     }
 }
 /// Request message for "LivestreamService.CreateChannel".
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateChannelRequest {
     /// Required. The parent location for the resource, in the form of:
@@ -975,6 +1007,7 @@ pub struct CreateChannelRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for "LivestreamService.ListChannels".
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListChannelsRequest {
     /// Required. The parent location for the resource, in the form of:
@@ -1000,6 +1033,7 @@ pub struct ListChannelsRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// Response message for "LivestreamService.ListChannels".
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListChannelsResponse {
     /// A list of channels.
@@ -1014,6 +1048,7 @@ pub struct ListChannelsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for "LivestreamService.GetChannel".
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetChannelRequest {
     /// Required. The name of the channel resource, in the form of:
@@ -1022,6 +1057,7 @@ pub struct GetChannelRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for "LivestreamService.DeleteChannel".
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteChannelRequest {
     /// Required. The name of the channel resource, in the form of:
@@ -1051,6 +1087,7 @@ pub struct DeleteChannelRequest {
     pub force: bool,
 }
 /// Request message for "LivestreamService.UpdateChannel".
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateChannelRequest {
     /// Field mask is used to specify the fields to be overwritten in the Channel
@@ -1087,6 +1124,7 @@ pub struct UpdateChannelRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for "LivestreamService.StartChannel".
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StartChannelRequest {
     /// Required. The name of the channel resource, in the form of:
@@ -1110,6 +1148,7 @@ pub struct StartChannelRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for "LivestreamService.StopChannel".
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StopChannelRequest {
     /// Required. The name of the channel resource, in the form of:
@@ -1133,6 +1172,7 @@ pub struct StopChannelRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for "LivestreamService.CreateInput".
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateInputRequest {
     /// Required. The parent location for the resource, in the form of:
@@ -1164,6 +1204,7 @@ pub struct CreateInputRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for "LivestreamService.ListInputs".
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListInputsRequest {
     /// Required. The parent location for the resource, in the form of:
@@ -1189,6 +1230,7 @@ pub struct ListInputsRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// Response message for "LivestreamService.ListInputs".
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListInputsResponse {
     /// A list of inputs.
@@ -1203,6 +1245,7 @@ pub struct ListInputsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for "LivestreamService.GetInput".
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetInputRequest {
     /// Required. The name of the input resource, in the form of:
@@ -1211,6 +1254,7 @@ pub struct GetInputRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for "LivestreamService.DeleteInput".
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteInputRequest {
     /// Required. The name of the input resource, in the form of:
@@ -1234,6 +1278,7 @@ pub struct DeleteInputRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for "LivestreamService.UpdateInput".
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateInputRequest {
     /// Field mask is used to specify the fields to be overwritten in the Input
@@ -1266,6 +1311,7 @@ pub struct UpdateInputRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for "LivestreamService.CreateEvent".
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateEventRequest {
     /// Required. The parent channel for the resource, in the form of:
@@ -1297,6 +1343,7 @@ pub struct CreateEventRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for "LivestreamService.ListEvents".
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEventsRequest {
     /// Required. The parent channel for the resource, in the form of:
@@ -1322,6 +1369,7 @@ pub struct ListEventsRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// Response message for "LivestreamService.ListEvents".
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEventsResponse {
     /// A list of events.
@@ -1336,6 +1384,7 @@ pub struct ListEventsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for "LivestreamService.GetEvent".
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetEventRequest {
     /// Required. The name of the event resource, in the form of:
@@ -1344,6 +1393,7 @@ pub struct GetEventRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for "LivestreamService.DeleteEvent".
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteEventRequest {
     /// Required. The name of the event resource, in the form of:
@@ -1367,9 +1417,11 @@ pub struct DeleteEventRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Response message for Start/Stop Channel long-running operations.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ChannelOperationResponse {}
 /// Represents the metadata of the long-running operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationMetadata {
     /// Output only. The time the operation was created.

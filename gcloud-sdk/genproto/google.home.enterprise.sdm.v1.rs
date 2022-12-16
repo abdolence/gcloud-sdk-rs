@@ -1,5 +1,6 @@
 /// Device resource represents an instance of enterprise managed device in the
 /// property.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Device {
     /// Required. The resource name of the device. For example:
@@ -21,6 +22,7 @@ pub struct Device {
 }
 /// Represents device relationships, for instance, structure/room to which the
 /// device is assigned to. For now this is only filled in the enterprise flow.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ParentRelation {
     /// Output only. The name of the relation -- e.g., structure/room where the
@@ -35,6 +37,7 @@ pub struct ParentRelation {
 }
 /// Structure resource represents an instance of enterprise managed home or hotel
 /// room.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Structure {
     /// Output only. The resource name of the structure. For example:
@@ -47,6 +50,7 @@ pub struct Structure {
 }
 /// Room resource represents an instance of sub-space within a structure such as
 /// rooms in a hotel suite or rental apartment.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Room {
     /// Output only. The resource name of the room. For example:
@@ -58,6 +62,7 @@ pub struct Room {
     pub traits: ::core::option::Option<::prost_types::Struct>,
 }
 /// Request message for SmartDeviceManagementService.GetDevice
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetDeviceRequest {
     /// The name of the device requested. For example:
@@ -66,6 +71,7 @@ pub struct GetDeviceRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for SmartDeviceManagementService.ListDevices
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDevicesRequest {
     /// The parent enterprise to list devices under. E.g. "enterprises/XYZ".
@@ -88,6 +94,7 @@ pub struct ListDevicesRequest {
     pub filter: ::prost::alloc::string::String,
 }
 /// Response message for SmartDeviceManagementService.ListDevices
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDevicesResponse {
     /// The list of devices.
@@ -98,6 +105,7 @@ pub struct ListDevicesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for SmartDeviceManagementService.ExecuteDeviceCommand
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExecuteDeviceCommandRequest {
     /// The name of the device requested. For example:
@@ -113,6 +121,7 @@ pub struct ExecuteDeviceCommandRequest {
     pub params: ::core::option::Option<::prost_types::Struct>,
 }
 /// Response message for SmartDeviceManagementService.ExecuteDeviceCommand
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExecuteDeviceCommandResponse {
     /// The results of executing the command.
@@ -120,6 +129,7 @@ pub struct ExecuteDeviceCommandResponse {
     pub results: ::core::option::Option<::prost_types::Struct>,
 }
 /// Request message for SmartDeviceManagementService.GetStructure
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetStructureRequest {
     /// The name of the structure requested. For example:
@@ -128,6 +138,7 @@ pub struct GetStructureRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for SmartDeviceManagementService.ListStructures
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListStructuresRequest {
     /// The parent enterprise to list structures under. E.g. "enterprises/XYZ".
@@ -145,6 +156,7 @@ pub struct ListStructuresRequest {
     pub filter: ::prost::alloc::string::String,
 }
 /// Response message for SmartDeviceManagementService.ListStructures
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListStructuresResponse {
     /// The list of structures.
@@ -156,6 +168,7 @@ pub struct ListStructuresResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for SmartDeviceManagementService.GetRoom
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetRoomRequest {
     /// The name of the room requested. For example:
@@ -164,6 +177,7 @@ pub struct GetRoomRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for SmartDeviceManagementService.ListRooms
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRoomsRequest {
     /// The parent resource name of the rooms requested. For example:
@@ -179,6 +193,7 @@ pub struct ListRoomsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for SmartDeviceManagementService.ListRooms
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRoomsResponse {
     /// The list of rooms.

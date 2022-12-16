@@ -1,4 +1,5 @@
 /// The actor of a Drive activity.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Actor {
     /// The type of actor.
@@ -8,6 +9,7 @@ pub struct Actor {
 /// Nested message and enum types in `Actor`.
 pub mod actor {
     /// The type of actor.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Type {
         /// An end user.
@@ -28,6 +30,7 @@ pub mod actor {
     }
 }
 /// Information about an end user.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct User {
     /// The type of user, such as known, unknown, and deleted.
@@ -37,6 +40,7 @@ pub struct User {
 /// Nested message and enum types in `User`.
 pub mod user {
     /// A known user.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct KnownUser {
         /// The identifier for this user that can be used with the People API to get
@@ -49,12 +53,15 @@ pub mod user {
         pub is_current_user: bool,
     }
     /// A user whose account has since been deleted.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DeletedUser {}
     /// A user about whom nothing is currently known.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct UnknownUser {}
     /// The type of user, such as known, unknown, and deleted.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Type {
         /// A known user.
@@ -70,10 +77,12 @@ pub mod user {
 }
 /// Empty message representing an anonymous user or indicating the authenticated
 /// user should be anonymized.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnonymousUser {}
 /// Information about an impersonation, where an admin acts on behalf of an end
 /// user. Information about the acting admin is not currently available.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Impersonation {
     /// The impersonated user.
@@ -81,6 +90,7 @@ pub struct Impersonation {
     pub impersonated_user: ::core::option::Option<User>,
 }
 /// Event triggered by system operations instead of end users.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SystemEvent {
     /// The type of the system event that may triggered activity.
@@ -125,9 +135,11 @@ pub mod system_event {
     }
 }
 /// Empty message representing an administrator.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Administrator {}
 /// Information about time ranges.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TimeRange {
     /// The start of the time range.
@@ -138,6 +150,7 @@ pub struct TimeRange {
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Information about a group.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Group {
     /// The email address of the group.
@@ -148,6 +161,7 @@ pub struct Group {
     pub title: ::prost::alloc::string::String,
 }
 /// Information about a domain.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Domain {
     /// The name of the domain, e.g. `google.com`.
@@ -158,6 +172,7 @@ pub struct Domain {
     pub legacy_id: ::prost::alloc::string::String,
 }
 /// Information about the target of activity.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Target {
     /// This field is deprecated; please use the `drive` field instead.
@@ -171,6 +186,7 @@ pub struct Target {
 /// Nested message and enum types in `Target`.
 pub mod target {
     /// The type of target object.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Object {
         /// The target is a Drive item.
@@ -185,6 +201,7 @@ pub mod target {
     }
 }
 /// A lightweight reference to the target of activity.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetReference {
     /// This field is deprecated; please use the `drive` field instead.
@@ -198,6 +215,7 @@ pub struct TargetReference {
 /// Nested message and enum types in `TargetReference`.
 pub mod target_reference {
     /// The type of target object.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Object {
         /// The target is a Drive item.
@@ -209,6 +227,7 @@ pub mod target_reference {
     }
 }
 /// A comment on a file.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FileComment {
     /// The comment in the discussion thread. This identifier is an opaque string
@@ -231,6 +250,7 @@ pub struct FileComment {
     pub parent: ::core::option::Option<DriveItem>,
 }
 /// A Drive item, such as a file or folder.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DriveItem {
     /// The target Drive item. The format is `items/ITEM_ID`.
@@ -261,9 +281,11 @@ pub struct DriveItem {
 /// Nested message and enum types in `DriveItem`.
 pub mod drive_item {
     /// This item is deprecated; please see `DriveFile` instead.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct File {}
     /// This item is deprecated; please see `DriveFolder` instead.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Folder {
         /// This field is deprecated; please see `DriveFolder.type` instead.
@@ -311,9 +333,11 @@ pub mod drive_item {
         }
     }
     /// A Drive item which is a file.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DriveFile {}
     /// A Drive item which is a folder.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DriveFolder {
         /// The type of Drive folder.
@@ -361,6 +385,7 @@ pub mod drive_item {
         }
     }
     /// If present, this describes the type of the Drive item.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ItemType {
         /// The Drive item is a file.
@@ -373,6 +398,7 @@ pub mod drive_item {
     }
 }
 /// Information about the owner of a Drive item.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Owner {
     /// This field is deprecated; please use the `drive` field instead.
@@ -389,6 +415,7 @@ pub struct Owner {
 /// Nested message and enum types in `Owner`.
 pub mod owner {
     /// The owner of the Drive item.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Owner {
         /// The user that owns the Drive item.
@@ -400,6 +427,7 @@ pub mod owner {
     }
 }
 /// This item is deprecated; please see `Drive` instead.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TeamDrive {
     /// This field is deprecated; please see `Drive.name` instead.
@@ -413,6 +441,7 @@ pub struct TeamDrive {
     pub root: ::core::option::Option<DriveItem>,
 }
 /// Information about a shared drive.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Drive {
     /// The resource name of the shared drive. The format is
@@ -428,6 +457,7 @@ pub struct Drive {
     pub root: ::core::option::Option<DriveItem>,
 }
 /// A lightweight reference to a Drive item, such as a file or folder.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DriveItemReference {
     /// The target Drive item. The format is `items/ITEM_ID`.
@@ -451,6 +481,7 @@ pub struct DriveItemReference {
 /// Nested message and enum types in `DriveItemReference`.
 pub mod drive_item_reference {
     /// If present, this describes the type of the Drive item.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ItemType {
         /// The Drive item is a file.
@@ -463,6 +494,7 @@ pub mod drive_item_reference {
     }
 }
 /// This item is deprecated; please see `DriveReference` instead.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TeamDriveReference {
     /// This field is deprecated; please see `DriveReference.name` instead.
@@ -473,6 +505,7 @@ pub struct TeamDriveReference {
     pub title: ::prost::alloc::string::String,
 }
 /// A lightweight reference to a shared drive.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DriveReference {
     /// The resource name of the shared drive. The format is
@@ -485,6 +518,7 @@ pub struct DriveReference {
     pub title: ::prost::alloc::string::String,
 }
 /// Information about the action.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Action {
     /// The type and detailed information about the action.
@@ -505,6 +539,7 @@ pub struct Action {
 /// Nested message and enum types in `Action`.
 pub mod action {
     /// When the action occurred (or empty if same time as entire activity).
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Time {
         /// The action occurred at this specific time.
@@ -516,6 +551,7 @@ pub mod action {
     }
 }
 /// Data describing the type and additional information of an action.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ActionDetail {
     /// Data describing the type and additional information of an action.
@@ -528,6 +564,7 @@ pub struct ActionDetail {
 /// Nested message and enum types in `ActionDetail`.
 pub mod action_detail {
     /// Data describing the type and additional information of an action.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ActionDetail {
         /// An object was created.
@@ -569,6 +606,7 @@ pub mod action_detail {
     }
 }
 /// An object was created.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Create {
     /// The origin of the new object.
@@ -578,12 +616,15 @@ pub struct Create {
 /// Nested message and enum types in `Create`.
 pub mod create {
     /// An object was created from scratch.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct New {}
     /// An object was uploaded into Drive.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Upload {}
     /// An object was created by copying an existing object.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Copy {
         /// The original object.
@@ -591,6 +632,7 @@ pub mod create {
         pub original_object: ::core::option::Option<super::TargetReference>,
     }
     /// The origin of the new object.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Origin {
         /// If present, indicates the object was newly created (e.g. as a blank
@@ -608,9 +650,11 @@ pub mod create {
     }
 }
 /// An empty message indicating an object was edited.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Edit {}
 /// An object was moved.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Move {
     /// The added parent object(s).
@@ -621,6 +665,7 @@ pub struct Move {
     pub removed_parents: ::prost::alloc::vec::Vec<TargetReference>,
 }
 /// An object was renamed.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Rename {
     /// The previous title of the drive object.
@@ -631,6 +676,7 @@ pub struct Rename {
     pub new_title: ::prost::alloc::string::String,
 }
 /// An object was deleted.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Delete {
     /// The type of delete action taken.
@@ -675,6 +721,7 @@ pub mod delete {
     }
 }
 /// A deleted object was restored.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Restore {
     /// The type of restore action taken.
@@ -716,6 +763,7 @@ pub mod restore {
     }
 }
 /// A change of the permission setting on an item.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PermissionChange {
     /// The set of permissions added by this change.
@@ -726,6 +774,7 @@ pub struct PermissionChange {
     pub removed_permissions: ::prost::alloc::vec::Vec<Permission>,
 }
 /// The permission setting of an object.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Permission {
     /// Indicates the
@@ -745,6 +794,7 @@ pub struct Permission {
 /// Nested message and enum types in `Permission`.
 pub mod permission {
     /// Represents any user (including a logged out user).
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Anyone {}
     /// The [Google Drive permissions
@@ -803,6 +853,7 @@ pub mod permission {
         }
     }
     /// The entity granted the role.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Scope {
         /// The user to whom this permission applies.
@@ -820,6 +871,7 @@ pub mod permission {
     }
 }
 /// A change about comments on an object.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Comment {
     /// Users who are mentioned in this comment.
@@ -832,6 +884,7 @@ pub struct Comment {
 /// Nested message and enum types in `Comment`.
 pub mod comment {
     /// A regular posted comment.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Post {
         /// The sub-type of this event.
@@ -888,6 +941,7 @@ pub mod comment {
         }
     }
     /// A comment with an assignment.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Assignment {
         /// The sub-type of this event.
@@ -950,6 +1004,7 @@ pub mod comment {
         }
     }
     /// A suggestion.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Suggestion {
         /// The sub-type of this event.
@@ -1012,6 +1067,7 @@ pub mod comment {
         }
     }
     /// The type of changed comment.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Type {
         /// A change on a regular posted comment.
@@ -1026,6 +1082,7 @@ pub mod comment {
     }
 }
 /// A change in the object's data leak prevention status.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataLeakPreventionChange {
     /// The type of Data Leak Prevention (DLP) change.
@@ -1070,6 +1127,7 @@ pub mod data_leak_prevention_change {
     }
 }
 /// Activity in applications other than Drive.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ApplicationReference {
     /// The reference type corresponding to this event.
@@ -1114,6 +1172,7 @@ pub mod application_reference {
     }
 }
 /// Information about settings changes.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SettingsChange {
     /// The set of changes made to restrictions.
@@ -1125,6 +1184,7 @@ pub struct SettingsChange {
 /// Nested message and enum types in `SettingsChange`.
 pub mod settings_change {
     /// Information about restriction policy changes to a feature.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct RestrictionChange {
         /// The feature which had a change in restriction policy.
@@ -1215,6 +1275,7 @@ pub mod settings_change {
     }
 }
 /// Label changes that were made on the Target.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AppliedLabelChange {
     /// Changes that were made to the Label on the Target.
@@ -1226,6 +1287,7 @@ pub struct AppliedLabelChange {
 /// Nested message and enum types in `AppliedLabelChange`.
 pub mod applied_label_change {
     /// A change made to a Label on the Target.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AppliedLabelChangeDetail {
         /// The Label name representing the Label that changed.
@@ -1250,6 +1312,7 @@ pub mod applied_label_change {
     /// Nested message and enum types in `AppliedLabelChangeDetail`.
     pub mod applied_label_change_detail {
         /// Change to a Field value.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct FieldValueChange {
             /// The ID of this field. Field IDs are unique within a Label.
@@ -1271,6 +1334,7 @@ pub mod applied_label_change {
         /// Nested message and enum types in `FieldValueChange`.
         pub mod field_value_change {
             /// Contains a value of a Field.
+            #[allow(clippy::derive_partial_eq_without_eq)]
             #[derive(Clone, PartialEq, ::prost::Message)]
             pub struct FieldValue {
                 /// Field values for all Field types.
@@ -1280,6 +1344,7 @@ pub mod applied_label_change {
             /// Nested message and enum types in `FieldValue`.
             pub mod field_value {
                 /// Wrapper for Text Field value.
+                #[allow(clippy::derive_partial_eq_without_eq)]
                 #[derive(Clone, PartialEq, ::prost::Message)]
                 pub struct Text {
                     /// Value of Text Field.
@@ -1287,6 +1352,7 @@ pub mod applied_label_change {
                     pub value: ::core::option::Option<::prost::alloc::string::String>,
                 }
                 /// Wrapper for Text List Field value.
+                #[allow(clippy::derive_partial_eq_without_eq)]
                 #[derive(Clone, PartialEq, ::prost::Message)]
                 pub struct TextList {
                     /// Text values.
@@ -1295,6 +1361,7 @@ pub mod applied_label_change {
                 }
                 /// Wrapper for Selection Field value as combined value/display_name
                 /// pair for selected choice.
+                #[allow(clippy::derive_partial_eq_without_eq)]
                 #[derive(Clone, PartialEq, ::prost::Message)]
                 pub struct Selection {
                     /// Selection value as Field Choice ID.
@@ -1307,6 +1374,7 @@ pub mod applied_label_change {
                     >,
                 }
                 /// Wrapper for SelectionList Field value.
+                #[allow(clippy::derive_partial_eq_without_eq)]
                 #[derive(Clone, PartialEq, ::prost::Message)]
                 pub struct SelectionList {
                     /// Selection values.
@@ -1314,6 +1382,7 @@ pub mod applied_label_change {
                     pub values: ::prost::alloc::vec::Vec<Selection>,
                 }
                 /// Wrapper for Integer Field value.
+                #[allow(clippy::derive_partial_eq_without_eq)]
                 #[derive(Clone, PartialEq, ::prost::Message)]
                 pub struct Integer {
                     /// Integer value.
@@ -1321,6 +1390,7 @@ pub mod applied_label_change {
                     pub value: ::core::option::Option<i64>,
                 }
                 /// Wrapper for User Field value.
+                #[allow(clippy::derive_partial_eq_without_eq)]
                 #[derive(Clone, PartialEq, ::prost::Message)]
                 pub struct SingleUser {
                     /// User value as email.
@@ -1328,6 +1398,7 @@ pub mod applied_label_change {
                     pub value: ::core::option::Option<::prost::alloc::string::String>,
                 }
                 /// Wrapper for UserList Field value.
+                #[allow(clippy::derive_partial_eq_without_eq)]
                 #[derive(Clone, PartialEq, ::prost::Message)]
                 pub struct UserList {
                     /// User values.
@@ -1335,6 +1406,7 @@ pub mod applied_label_change {
                     pub values: ::prost::alloc::vec::Vec<SingleUser>,
                 }
                 /// Wrapper for Date Field value.
+                #[allow(clippy::derive_partial_eq_without_eq)]
                 #[derive(Clone, PartialEq, ::prost::Message)]
                 pub struct Date {
                     /// Date value.
@@ -1342,6 +1414,7 @@ pub mod applied_label_change {
                     pub value: ::core::option::Option<::prost_types::Timestamp>,
                 }
                 /// Field values for all Field types.
+                #[allow(clippy::derive_partial_eq_without_eq)]
                 #[derive(Clone, PartialEq, ::prost::Oneof)]
                 pub enum Value {
                     /// Text Field value.
@@ -1414,6 +1487,7 @@ pub mod applied_label_change {
     }
 }
 /// The request message for querying Drive activity.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryDriveActivityRequest {
     /// Details on how to consolidate related actions that make up the activity. If
@@ -1463,6 +1537,7 @@ pub struct QueryDriveActivityRequest {
 pub mod query_drive_activity_request {
     /// The primary criteria in the query. The default is
     /// ancestor_name = `items/root` if no key is specified.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Key {
         /// Return activities for this Drive item. The format is
@@ -1480,6 +1555,7 @@ pub mod query_drive_activity_request {
 /// as one actor performing the same action on multiple targets, or multiple
 /// actors performing the same action on a single target. The strategy defines
 /// the rules for which activities are related.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConsolidationStrategy {
     /// How the individual activities are consolidated.
@@ -1489,6 +1565,7 @@ pub struct ConsolidationStrategy {
 /// Nested message and enum types in `ConsolidationStrategy`.
 pub mod consolidation_strategy {
     /// A strategy which does no consolidation of individual activities.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct NoConsolidation {}
     /// A strategy which consolidates activities using the grouping rules from the
@@ -1496,9 +1573,11 @@ pub mod consolidation_strategy {
     /// can be grouped across multiple targets (such as moving a set of files at
     /// once) or multiple actors (such as several users editing the same item).
     /// Grouping rules for this strategy are specific to each type of action.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Legacy {}
     /// How the individual activities are consolidated.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Strategy {
         /// The individual activities are not consolidated.
@@ -1510,6 +1589,7 @@ pub mod consolidation_strategy {
     }
 }
 /// Response message for querying Drive activity.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryDriveActivityResponse {
     /// List of activity requested.
@@ -1526,6 +1606,7 @@ pub struct QueryDriveActivityResponse {
 /// Other groupings of related Actions, such as multiple Actors editing one item
 /// or moving multiple files into a new folder, are controlled by the selection
 /// of a ConsolidationStrategy in the QueryDriveActivityRequest.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DriveActivity {
     /// Key information about the primary action for this activity. This is either
@@ -1551,6 +1632,7 @@ pub struct DriveActivity {
 /// Nested message and enum types in `DriveActivity`.
 pub mod drive_activity {
     /// The period of time when this activity occurred.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Time {
         /// The activity occurred at this specific time.

@@ -1,4 +1,5 @@
 /// SSL configuration information.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SslConfig {
     /// Output only. The ssl config type according to 'client_key', 'client_certificate' and
@@ -60,6 +61,7 @@ pub mod ssl_config {
     }
 }
 /// Specifies connection parameters required specifically for MySQL databases.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MySqlConnectionProfile {
     /// Required. The IP or hostname of the source MySQL database.
@@ -90,6 +92,7 @@ pub struct MySqlConnectionProfile {
 }
 /// Specifies connection parameters required specifically for PostgreSQL
 /// databases.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PostgreSqlConnectionProfile {
     /// Required. The IP or hostname of the source PostgreSQL database.
@@ -120,6 +123,7 @@ pub struct PostgreSqlConnectionProfile {
 }
 /// Specifies required connection parameters, and, optionally, the parameters
 /// required to create a Cloud SQL destination database instance.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CloudSqlConnectionProfile {
     /// Output only. The Cloud SQL instance ID that this connection profile is associated with.
@@ -136,6 +140,7 @@ pub struct CloudSqlConnectionProfile {
     pub public_ip: ::prost::alloc::string::String,
 }
 /// An entry for an Access Control list.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlAclEntry {
     /// The allowlisted value for the access control list.
@@ -151,6 +156,7 @@ pub struct SqlAclEntry {
 /// Nested message and enum types in `SqlAclEntry`.
 pub mod sql_acl_entry {
     /// The access control entry entry expiration.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Expiration {
         /// The time when this access control entry expires in
@@ -164,6 +170,7 @@ pub mod sql_acl_entry {
     }
 }
 /// IP Management configuration.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlIpConfig {
     /// Whether the instance should be assigned an IPv4 address or not.
@@ -186,6 +193,7 @@ pub struct SqlIpConfig {
     pub authorized_networks: ::prost::alloc::vec::Vec<SqlAclEntry>,
 }
 /// Settings for creating a Cloud SQL database instance.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CloudSqlSettings {
     /// The database engine type and version.
@@ -396,6 +404,7 @@ pub mod cloud_sql_settings {
 /// database's public IP. You can retrieve the Cloud SQL instance's public IP
 /// from the Cloud SQL console or using Cloud SQL APIs. No additional
 /// configuration is required.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StaticIpConnectivity {}
 /// The details needed to configure a reverse SSH tunnel between the source and
@@ -404,6 +413,7 @@ pub struct StaticIpConnectivity {}
 /// <https://cloud.google.com/database-migration/docs/reference/rest/v1/projects.locations.migrationJobs/generateSshScript>)
 /// to produce the script that will help set up the reverse SSH tunnel, and to
 /// set up the VPC peering between the Cloud SQL private network and the VPC.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReverseSshConnectivity {
     /// Required. The IP of the virtual machine (Compute Engine) used as the bastion server
@@ -425,6 +435,7 @@ pub struct ReverseSshConnectivity {
 /// The details of the VPC where the source database is located in Google Cloud.
 /// We will use this information to set up the VPC peering connection between
 /// Cloud SQL and this VPC.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VpcPeeringConnectivity {
     /// The name of the VPC network to peer with the Cloud SQL private network.
@@ -432,6 +443,7 @@ pub struct VpcPeeringConnectivity {
     pub vpc: ::prost::alloc::string::String,
 }
 /// A message defining the database engine and provider.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DatabaseType {
     /// The database provider.
@@ -442,6 +454,7 @@ pub struct DatabaseType {
     pub engine: i32,
 }
 /// Represents a Database Migration Service migration job object.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MigrationJob {
     /// The name (URI) of this migration job resource, in the form of:
@@ -665,6 +678,7 @@ pub mod migration_job {
         }
     }
     /// The connectivity method.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Connectivity {
         /// The details needed to communicate to the source over Reverse SSH
@@ -680,6 +694,7 @@ pub mod migration_job {
     }
 }
 /// A connection profile definition.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConnectionProfile {
     /// The name of this connection profile resource in the form of
@@ -776,6 +791,7 @@ pub mod connection_profile {
         }
     }
     /// The connection profile definition.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ConnectionProfile {
         /// A MySQL database connection profile.
@@ -790,6 +806,7 @@ pub mod connection_profile {
     }
 }
 /// Error message of a verification Migration job.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MigrationJobVerificationError {
     /// Output only. An instance of ErrorCode specifying the error that occurred.
@@ -956,6 +973,7 @@ impl DatabaseProvider {
     }
 }
 /// Retrieve a list of all migration jobs in a given project and location.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListMigrationJobsRequest {
     /// Required. The parent, which owns this collection of migrationJobs.
@@ -991,6 +1009,7 @@ pub struct ListMigrationJobsRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// Response message for 'ListMigrationJobs' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListMigrationJobsResponse {
     /// The list of migration jobs objects.
@@ -1005,6 +1024,7 @@ pub struct ListMigrationJobsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for 'GetMigrationJob' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetMigrationJobRequest {
     /// Required. Name of the migration job resource to get.
@@ -1013,6 +1033,7 @@ pub struct GetMigrationJobRequest {
 }
 /// Request message to create a new Database Migration Service migration job
 /// in the specified project and region.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateMigrationJobRequest {
     /// Required. The parent, which owns this collection of migration jobs.
@@ -1037,6 +1058,7 @@ pub struct CreateMigrationJobRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for 'UpdateMigrationJob' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateMigrationJobRequest {
     /// Required. Field mask is used to specify the fields to be overwritten in the
@@ -1057,6 +1079,7 @@ pub struct UpdateMigrationJobRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for 'DeleteMigrationJob' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteMigrationJobRequest {
     /// Required. Name of the migration job resource to delete.
@@ -1078,6 +1101,7 @@ pub struct DeleteMigrationJobRequest {
     pub force: bool,
 }
 /// Request message for 'StartMigrationJob' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StartMigrationJobRequest {
     /// Name of the migration job resource to start.
@@ -1085,6 +1109,7 @@ pub struct StartMigrationJobRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for 'StopMigrationJob' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StopMigrationJobRequest {
     /// Name of the migration job resource to stop.
@@ -1092,6 +1117,7 @@ pub struct StopMigrationJobRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for 'ResumeMigrationJob' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResumeMigrationJobRequest {
     /// Name of the migration job resource to resume.
@@ -1099,6 +1125,7 @@ pub struct ResumeMigrationJobRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for 'PromoteMigrationJob' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PromoteMigrationJobRequest {
     /// Name of the migration job resource to promote.
@@ -1106,6 +1133,7 @@ pub struct PromoteMigrationJobRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for 'VerifyMigrationJob' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VerifyMigrationJobRequest {
     /// Name of the migration job resource to verify.
@@ -1113,6 +1141,7 @@ pub struct VerifyMigrationJobRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for 'RestartMigrationJob' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RestartMigrationJobRequest {
     /// Name of the migration job resource to restart.
@@ -1120,6 +1149,7 @@ pub struct RestartMigrationJobRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for 'GenerateSshScript' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateSshScriptRequest {
     /// Name of the migration job resource to generate the SSH script.
@@ -1138,6 +1168,7 @@ pub struct GenerateSshScriptRequest {
 /// Nested message and enum types in `GenerateSshScriptRequest`.
 pub mod generate_ssh_script_request {
     /// The VM configuration
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum VmConfig {
         /// The VM creation configuration
@@ -1149,6 +1180,7 @@ pub mod generate_ssh_script_request {
     }
 }
 /// VM creation configuration message
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VmCreationConfig {
     /// Required. VM instance machine type to create.
@@ -1162,6 +1194,7 @@ pub struct VmCreationConfig {
     pub subnet: ::prost::alloc::string::String,
 }
 /// VM selection configuration message
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VmSelectionConfig {
     /// Required. The Google Cloud Platform zone the VM is located.
@@ -1169,6 +1202,7 @@ pub struct VmSelectionConfig {
     pub vm_zone: ::prost::alloc::string::String,
 }
 /// Response message for 'GenerateSshScript' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SshScript {
     /// The ssh configuration script.
@@ -1176,6 +1210,7 @@ pub struct SshScript {
     pub script: ::prost::alloc::string::String,
 }
 /// Request message for 'ListConnectionProfiles' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListConnectionProfilesRequest {
     /// Required. The parent, which owns this collection of connection profiles.
@@ -1210,6 +1245,7 @@ pub struct ListConnectionProfilesRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// Response message for 'ListConnectionProfiles' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListConnectionProfilesResponse {
     /// The response list of connection profiles.
@@ -1224,6 +1260,7 @@ pub struct ListConnectionProfilesResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for 'GetConnectionProfile' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetConnectionProfileRequest {
     /// Required. Name of the connection profile resource to get.
@@ -1231,6 +1268,7 @@ pub struct GetConnectionProfileRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for 'CreateConnectionProfile' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateConnectionProfileRequest {
     /// Required. The parent, which owns this collection of connection profiles.
@@ -1253,6 +1291,7 @@ pub struct CreateConnectionProfileRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for 'UpdateConnectionProfile' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateConnectionProfileRequest {
     /// Required. Field mask is used to specify the fields to be overwritten in the
@@ -1273,6 +1312,7 @@ pub struct UpdateConnectionProfileRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for 'DeleteConnectionProfile' request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteConnectionProfileRequest {
     /// Required. Name of the connection profile resource to delete.
@@ -1293,6 +1333,7 @@ pub struct DeleteConnectionProfileRequest {
     pub force: bool,
 }
 /// Represents the metadata of the long-running operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationMetadata {
     /// Output only. The time the operation was created.

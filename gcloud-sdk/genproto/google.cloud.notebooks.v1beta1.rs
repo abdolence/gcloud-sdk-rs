@@ -1,5 +1,6 @@
 /// Definition of a software environment that is used to start a notebook
 /// instance.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Environment {
     /// Output only. Name of this environment.
@@ -28,6 +29,7 @@ pub struct Environment {
 /// Nested message and enum types in `Environment`.
 pub mod environment {
     /// Type of the environment; can be one of VM image, or container image.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ImageType {
         /// Use a Compute Engine VM image to start the notebook instance.
@@ -40,6 +42,7 @@ pub mod environment {
 }
 /// Definition of a custom Compute Engine virtual machine image for starting a
 /// notebook instance with the environment installed directly on the VM.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VmImage {
     /// Required. The name of the Google Cloud project that this VM image belongs to.
@@ -53,6 +56,7 @@ pub struct VmImage {
 /// Nested message and enum types in `VmImage`.
 pub mod vm_image {
     /// The reference to an external Compute Engine VM image.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Image {
         /// Use VM image name to find the image.
@@ -66,6 +70,7 @@ pub mod vm_image {
 }
 /// Definition of a container image for starting a notebook instance with the
 /// environment installed in a container.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ContainerImage {
     /// Required. The path to the container image repository. For example:
@@ -78,6 +83,7 @@ pub struct ContainerImage {
     pub tag: ::prost::alloc::string::String,
 }
 /// Reservation Affinity for consuming Zonal reservation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReservationAffinity {
     /// Optional. Type of reservation to consume
@@ -132,6 +138,7 @@ pub mod reservation_affinity {
     }
 }
 /// The definition of a notebook instance.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Instance {
     /// Output only. The name of this notebook instance. Format:
@@ -278,6 +285,7 @@ pub mod instance {
     /// of `type` and `core_count` are valid. Check [GPUs on
     /// Compute Engine](/compute/docs/gpus/#gpus-list) to find a valid
     /// combination. TPUs are not supported.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AcceleratorConfig {
         /// Type of this accelerator.
@@ -515,6 +523,7 @@ pub mod instance {
         }
     }
     /// Type of the environment; can be one of VM image, or container image.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Environment {
         /// Use a Compute Engine VM image to start the notebook instance.
@@ -526,6 +535,7 @@ pub mod instance {
     }
 }
 /// Represents the metadata of the long-running operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationMetadata {
     /// The time the operation was created.
@@ -557,6 +567,7 @@ pub struct OperationMetadata {
     pub endpoint: ::prost::alloc::string::String,
 }
 /// Request for listing notebook instances.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListInstancesRequest {
     /// Required. Format:
@@ -572,6 +583,7 @@ pub struct ListInstancesRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response for listing notebook instances.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListInstancesResponse {
     /// A list of returned instances.
@@ -588,6 +600,7 @@ pub struct ListInstancesResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request for getting a notebook instance.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetInstanceRequest {
     /// Required. Format:
@@ -596,6 +609,7 @@ pub struct GetInstanceRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for creating a notebook instance.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateInstanceRequest {
     /// Required. Format:
@@ -610,6 +624,7 @@ pub struct CreateInstanceRequest {
     pub instance: ::core::option::Option<Instance>,
 }
 /// Request for registering a notebook instance.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegisterInstanceRequest {
     /// Required. Format:
@@ -624,6 +639,7 @@ pub struct RegisterInstanceRequest {
     pub instance_id: ::prost::alloc::string::String,
 }
 /// Request for setting instance accelerator.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetInstanceAcceleratorRequest {
     /// Required. Format:
@@ -641,6 +657,7 @@ pub struct SetInstanceAcceleratorRequest {
     pub core_count: i64,
 }
 /// Request for setting instance machine type.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetInstanceMachineTypeRequest {
     /// Required. Format:
@@ -653,6 +670,7 @@ pub struct SetInstanceMachineTypeRequest {
     pub machine_type: ::prost::alloc::string::String,
 }
 /// Request for setting instance labels.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetInstanceLabelsRequest {
     /// Required. Format:
@@ -668,6 +686,7 @@ pub struct SetInstanceLabelsRequest {
     >,
 }
 /// Request for deleting a notebook instance.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteInstanceRequest {
     /// Required. Format:
@@ -676,6 +695,7 @@ pub struct DeleteInstanceRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for starting a notebook instance
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StartInstanceRequest {
     /// Required. Format:
@@ -684,6 +704,7 @@ pub struct StartInstanceRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for stopping a notebook instance
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StopInstanceRequest {
     /// Required. Format:
@@ -692,6 +713,7 @@ pub struct StopInstanceRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for reseting a notebook instance
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResetInstanceRequest {
     /// Required. Format:
@@ -700,6 +722,7 @@ pub struct ResetInstanceRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for notebook instances to report information to Notebooks API.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReportInstanceInfoRequest {
     /// Required. Format:
@@ -719,6 +742,7 @@ pub struct ReportInstanceInfoRequest {
     >,
 }
 /// Request for checking if a notebook instance is upgradeable.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IsInstanceUpgradeableRequest {
     /// Required. Format:
@@ -727,6 +751,7 @@ pub struct IsInstanceUpgradeableRequest {
     pub notebook_instance: ::prost::alloc::string::String,
 }
 /// Response for checking if a notebook instance is upgradeable.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IsInstanceUpgradeableResponse {
     /// If an instance is upgradeable.
@@ -746,6 +771,7 @@ pub struct IsInstanceUpgradeableResponse {
     pub upgrade_image: ::prost::alloc::string::String,
 }
 /// Request for upgrading a notebook instance
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpgradeInstanceRequest {
     /// Required. Format:
@@ -754,6 +780,7 @@ pub struct UpgradeInstanceRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for upgrading a notebook instance from within the VM
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpgradeInstanceInternalRequest {
     /// Required. Format:
@@ -766,6 +793,7 @@ pub struct UpgradeInstanceInternalRequest {
     pub vm_id: ::prost::alloc::string::String,
 }
 /// Request for listing environments.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEnvironmentsRequest {
     /// Required. Format: `projects/{project_id}/locations/{location}`
@@ -780,6 +808,7 @@ pub struct ListEnvironmentsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response for listing environments.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEnvironmentsResponse {
     /// A list of returned environments.
@@ -794,6 +823,7 @@ pub struct ListEnvironmentsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request for getting a notebook environment.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetEnvironmentRequest {
     /// Required. Format:
@@ -802,6 +832,7 @@ pub struct GetEnvironmentRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for creating a notebook environment.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateEnvironmentRequest {
     /// Required. Format: `projects/{project_id}/locations/{location}`
@@ -818,6 +849,7 @@ pub struct CreateEnvironmentRequest {
     pub environment: ::core::option::Option<Environment>,
 }
 /// Request for deleting a notebook environment.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteEnvironmentRequest {
     /// Required. Format:

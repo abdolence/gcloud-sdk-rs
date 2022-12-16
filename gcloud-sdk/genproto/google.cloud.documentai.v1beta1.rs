@@ -1,5 +1,6 @@
 /// A vertex represents a 2D point in the image.
 /// NOTE: the vertex coordinates are in the same scale as the original image.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Vertex {
     /// X coordinate.
@@ -12,6 +13,7 @@ pub struct Vertex {
 /// A vertex represents a 2D point in the image.
 /// NOTE: the normalized vertex coordinates are relative to the original image
 /// and range from 0 to 1.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NormalizedVertex {
     /// X coordinate.
@@ -22,6 +24,7 @@ pub struct NormalizedVertex {
     pub y: f32,
 }
 /// A bounding polygon for the detected image annotation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BoundingPoly {
     /// The bounding polygon vertices.
@@ -36,6 +39,7 @@ pub struct BoundingPoly {
 /// It is an interchange format that provides insights into documents and allows
 /// for collaboration between users and Document Understanding AI to iterate and
 /// optimize for quality.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Document {
     /// An IANA published MIME type (also referred to as media type). For more
@@ -79,6 +83,7 @@ pub mod document {
     /// For a large document, sharding may be performed to produce several
     /// document shards. Each document shard contains this field to detail which
     /// shard it is.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ShardInfo {
         /// The 0-based index of this shard.
@@ -95,6 +100,7 @@ pub mod document {
     }
     /// Annotation for common text style attributes. This adheres to CSS
     /// conventions as much as possible.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Style {
         /// Text anchor indexing into the
@@ -129,6 +135,7 @@ pub mod document {
     /// Nested message and enum types in `Style`.
     pub mod style {
         /// Font size with unit.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct FontSize {
             /// Font size for the text.
@@ -140,6 +147,7 @@ pub mod document {
         }
     }
     /// A page in a \[Document][google.cloud.documentai.v1beta1.Document\].
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Page {
         /// 1-based index for current
@@ -189,6 +197,7 @@ pub mod document {
     /// Nested message and enum types in `Page`.
     pub mod page {
         /// Dimension for the page.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Dimension {
             /// Page width.
@@ -202,6 +211,7 @@ pub mod document {
             pub unit: ::prost::alloc::string::String,
         }
         /// Visual element describing a layout unit on a page.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Layout {
             /// Text anchor indexing into the
@@ -272,6 +282,7 @@ pub mod document {
         }
         /// A block has a set of lines (collected into paragraphs) that have a
         /// common line-spacing and orientation.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Block {
             /// \[Layout][google.cloud.documentai.v1beta1.Document.Page.Layout\] for
@@ -283,6 +294,7 @@ pub mod document {
             pub detected_languages: ::prost::alloc::vec::Vec<DetectedLanguage>,
         }
         /// A collection of lines that a human would perceive as a paragraph.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Paragraph {
             /// \[Layout][google.cloud.documentai.v1beta1.Document.Page.Layout\] for
@@ -295,6 +307,7 @@ pub mod document {
         }
         /// A collection of tokens that a human would perceive as a line.
         /// Does not cross column boundaries, can be horizontal, vertical, etc.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Line {
             /// \[Layout][google.cloud.documentai.v1beta1.Document.Page.Layout\] for
@@ -306,6 +319,7 @@ pub mod document {
             pub detected_languages: ::prost::alloc::vec::Vec<DetectedLanguage>,
         }
         /// A detected token.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Token {
             /// \[Layout][google.cloud.documentai.v1beta1.Document.Page.Layout\] for
@@ -324,6 +338,7 @@ pub mod document {
         pub mod token {
             /// Detected break at the end of a
             /// \[Token][google.cloud.documentai.v1beta1.Document.Page.Token\].
+            #[allow(clippy::derive_partial_eq_without_eq)]
             #[derive(Clone, PartialEq, ::prost::Message)]
             pub struct DetectedBreak {
                 /// Detected break type.
@@ -373,6 +388,7 @@ pub mod document {
         }
         /// Detected non-text visual elements e.g. checkbox, signature etc. on the
         /// page.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct VisualElement {
             /// \[Layout][google.cloud.documentai.v1beta1.Document.Page.Layout\] for
@@ -388,6 +404,7 @@ pub mod document {
             pub detected_languages: ::prost::alloc::vec::Vec<DetectedLanguage>,
         }
         /// A table representation similar to HTML table structure.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Table {
             /// \[Layout][google.cloud.documentai.v1beta1.Document.Page.Layout\] for
@@ -407,6 +424,7 @@ pub mod document {
         /// Nested message and enum types in `Table`.
         pub mod table {
             /// A row of table cells.
+            #[allow(clippy::derive_partial_eq_without_eq)]
             #[derive(Clone, PartialEq, ::prost::Message)]
             pub struct TableRow {
                 /// Cells that make up this row.
@@ -414,6 +432,7 @@ pub mod document {
                 pub cells: ::prost::alloc::vec::Vec<TableCell>,
             }
             /// A cell representation inside the table.
+            #[allow(clippy::derive_partial_eq_without_eq)]
             #[derive(Clone, PartialEq, ::prost::Message)]
             pub struct TableCell {
                 /// \[Layout][google.cloud.documentai.v1beta1.Document.Page.Layout\] for
@@ -434,6 +453,7 @@ pub mod document {
             }
         }
         /// A form field detected on the page.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct FormField {
             /// \[Layout][google.cloud.documentai.v1beta1.Document.Page.Layout\] for the
@@ -454,6 +474,7 @@ pub mod document {
             pub value_detected_languages: ::prost::alloc::vec::Vec<DetectedLanguage>,
         }
         /// Detected language for a structural component.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct DetectedLanguage {
             /// The BCP-47 language code, such as "en-US" or "sr-Latn". For more
@@ -468,6 +489,7 @@ pub mod document {
     }
     /// A phrase in the text that is a known entity type, such as a person, an
     /// organization, or location.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Entity {
         /// Provenance of the entity.
@@ -488,6 +510,7 @@ pub mod document {
     }
     /// Relationship between
     /// \[Entities][google.cloud.documentai.v1beta1.Document.Entity\].
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct EntityRelation {
         /// Subject entity mention_id.
@@ -502,6 +525,7 @@ pub mod document {
     }
     /// Text reference indexing into the
     /// \[Document.text][google.cloud.documentai.v1beta1.Document.text\].
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct TextAnchor {
         /// The text segments from the
@@ -516,6 +540,7 @@ pub mod document {
         /// indices may be out of bounds which indicate that the text extends into
         /// another document shard for large sharded documents. See
         /// \[ShardInfo.text_offset][google.cloud.documentai.v1beta1.Document.ShardInfo.text_offset\]
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct TextSegment {
             /// \[TextSegment][google.cloud.documentai.v1beta1.Document.TextAnchor.TextSegment\]
@@ -531,6 +556,7 @@ pub mod document {
         }
     }
     /// Original source document from the user.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
         /// Currently supports Google Cloud Storage URI of the form
@@ -548,6 +574,7 @@ pub mod document {
     }
 }
 /// Request to batch process documents as an asynchronous operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchProcessDocumentsRequest {
     /// Required. Individual requests for each document.
@@ -562,6 +589,7 @@ pub struct BatchProcessDocumentsRequest {
     pub parent: ::prost::alloc::string::String,
 }
 /// Request to process one document.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProcessDocumentRequest {
     /// Required. Information about the input file.
@@ -594,6 +622,7 @@ pub struct ProcessDocumentRequest {
 }
 /// Response to an batch document processing request. This is returned in
 /// the LRO Operation after the operation is complete.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchProcessDocumentsResponse {
     /// Responses for each individual document.
@@ -601,6 +630,7 @@ pub struct BatchProcessDocumentsResponse {
     pub responses: ::prost::alloc::vec::Vec<ProcessDocumentResponse>,
 }
 /// Response to a single document processing request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProcessDocumentResponse {
     /// Information about the input file. This is the same as the corresponding
@@ -613,6 +643,7 @@ pub struct ProcessDocumentResponse {
     pub output_config: ::core::option::Option<OutputConfig>,
 }
 /// Parameters to control Optical Character Recognition (OCR) behavior.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OcrParams {
     /// List of languages to use for OCR. In most cases, an empty value
@@ -627,6 +658,7 @@ pub struct OcrParams {
     pub language_hints: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Parameters to control table extraction behavior.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TableExtractionParams {
     /// Whether to enable table extraction.
@@ -646,6 +678,7 @@ pub struct TableExtractionParams {
     pub model_version: ::prost::alloc::string::String,
 }
 /// A hint for a table bounding box on the page for table parsing.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TableBoundHint {
     /// Optional. Page number for multi-paged inputs this hint applies to. If not
@@ -659,6 +692,7 @@ pub struct TableBoundHint {
     pub bounding_box: ::core::option::Option<BoundingPoly>,
 }
 /// Parameters to control form extraction behavior.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FormExtractionParams {
     /// Whether to enable form extraction.
@@ -684,6 +718,7 @@ pub struct FormExtractionParams {
     pub model_version: ::prost::alloc::string::String,
 }
 /// User-provided hint for key value pair.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KeyValuePairHint {
     /// The key text for the hint.
@@ -697,6 +732,7 @@ pub struct KeyValuePairHint {
     pub value_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Parameters to control entity extraction behavior.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EntityExtractionParams {
     /// Whether to enable entity extraction.
@@ -708,6 +744,7 @@ pub struct EntityExtractionParams {
     pub model_version: ::prost::alloc::string::String,
 }
 /// The desired input location and metadata.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InputConfig {
     /// Required. Mimetype of the input. Current supported mimetypes are
@@ -721,6 +758,7 @@ pub struct InputConfig {
 /// Nested message and enum types in `InputConfig`.
 pub mod input_config {
     /// Required.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
         /// The Google Cloud Storage location to read the input from. This must be a
@@ -730,6 +768,7 @@ pub mod input_config {
     }
 }
 /// The desired output location and metadata.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OutputConfig {
     /// The max number of pages to include into each output Document shard JSON on
@@ -758,6 +797,7 @@ pub struct OutputConfig {
 /// Nested message and enum types in `OutputConfig`.
 pub mod output_config {
     /// Required.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Destination {
         /// The Google Cloud Storage location to write the output to.
@@ -766,18 +806,21 @@ pub mod output_config {
     }
 }
 /// The Google Cloud Storage location where the input file will be read from.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GcsSource {
     #[prost(string, tag = "1")]
     pub uri: ::prost::alloc::string::String,
 }
 /// The Google Cloud Storage location where the output file will be written to.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GcsDestination {
     #[prost(string, tag = "1")]
     pub uri: ::prost::alloc::string::String,
 }
 /// Contains metadata for the BatchProcessDocuments operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationMetadata {
     /// The state of the current batch processing.

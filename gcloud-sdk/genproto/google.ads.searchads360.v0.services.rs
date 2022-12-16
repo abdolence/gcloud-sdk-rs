@@ -1,4 +1,5 @@
 /// Request message for \[CustomColumnService.GetCustomColumn][google.ads.searchads360.v0.services.CustomColumnService.GetCustomColumn\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCustomColumnRequest {
     /// Required. The resource name of the custom column to fetch.
@@ -6,6 +7,7 @@ pub struct GetCustomColumnRequest {
     pub resource_name: ::prost::alloc::string::String,
 }
 /// Request message for \[CustomColumnService.ListCustomColumns][google.ads.searchads360.v0.services.CustomColumnService.ListCustomColumns\]
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCustomColumnsRequest {
     /// Required. The ID of the customer to apply the CustomColumn list operation to.
@@ -13,6 +15,7 @@ pub struct ListCustomColumnsRequest {
     pub customer_id: ::prost::alloc::string::String,
 }
 /// Response message for fetching all custom columns associated with a customer.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCustomColumnsResponse {
     /// The CustomColumns owned by the provided customer.
@@ -135,6 +138,7 @@ pub mod custom_column_service_client {
     }
 }
 /// Request message for \[SearchAds360FieldService.GetSearchAds360Field][google.ads.searchads360.v0.services.SearchAds360FieldService.GetSearchAds360Field\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetSearchAds360FieldRequest {
     /// Required. The resource name of the field to get.
@@ -142,6 +146,7 @@ pub struct GetSearchAds360FieldRequest {
     pub resource_name: ::prost::alloc::string::String,
 }
 /// Request message for \[SearchAds360FieldService.SearchSearchAds360Fields][google.ads.searchads360.v0.services.SearchAds360FieldService.SearchSearchAds360Fields\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchSearchAds360FieldsRequest {
     /// Required. The query string.
@@ -159,6 +164,7 @@ pub struct SearchSearchAds360FieldsRequest {
     pub page_size: i32,
 }
 /// Response message for \[SearchAds360FieldService.SearchSearchAds360Fields][google.ads.searchads360.v0.services.SearchAds360FieldService.SearchSearchAds360Fields\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchSearchAds360FieldsResponse {
     /// The list of fields that matched the query.
@@ -311,6 +317,7 @@ pub mod search_ads360_field_service_client {
     }
 }
 /// Request message for \[SearchAds360Service.Search][google.ads.searchads360.v0.services.SearchAds360Service.Search\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchSearchAds360Request {
     /// Required. The ID of the customer being queried.
@@ -348,6 +355,7 @@ pub struct SearchSearchAds360Request {
     pub summary_row_setting: i32,
 }
 /// Response message for \[SearchAds360Service.Search][google.ads.searchads360.v0.services.SearchAds360Service.Search\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchSearchAds360Response {
     /// The list of rows that matched the query.
@@ -376,6 +384,7 @@ pub struct SearchSearchAds360Response {
     pub custom_column_headers: ::prost::alloc::vec::Vec<CustomColumnHeader>,
 }
 /// Request message for \[SearchAds360Service.SearchStream][google.ads.searchads360.v0.services.SearchAds360Service.SearchStream\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchSearchAds360StreamRequest {
     /// Required. The ID of the customer being queried.
@@ -399,6 +408,7 @@ pub struct SearchSearchAds360StreamRequest {
     pub summary_row_setting: i32,
 }
 /// Response message for \[SearchAds360Service.SearchStream][google.ads.searchads360.v0.services.SearchAds360Service.SearchStream\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchSearchAds360StreamResponse {
     /// The list of rows that matched the query.
@@ -420,6 +430,7 @@ pub struct SearchSearchAds360StreamResponse {
     pub request_id: ::prost::alloc::string::String,
 }
 /// A returned row from the query.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchAds360Row {
     /// The ad group referenced in the query.
@@ -476,6 +487,7 @@ pub struct SearchAds360Row {
     pub custom_columns: ::prost::alloc::vec::Vec<super::common::Value>,
 }
 /// Message for custom column header.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomColumnHeader {
     /// The custom column ID.

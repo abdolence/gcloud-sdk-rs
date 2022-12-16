@@ -1,4 +1,5 @@
 /// Workflow program to be executed by Workflows.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Workflow {
     /// The resource name of the workflow.
@@ -99,6 +100,7 @@ pub mod workflow {
     /// Required. Location of the workflow source code.
     /// Modifying this field for an existing workflow results in a new workflow
     /// revision.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum SourceCode {
         /// Workflow code to be executed. The size limit is 32KB.
@@ -109,6 +111,7 @@ pub mod workflow {
 /// Request for the
 /// \[ListWorkflows][google.cloud.workflows.v1beta.Workflows.ListWorkflows\]
 /// method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListWorkflowsRequest {
     /// Required. Project and location from which the workflows should be listed.
@@ -141,6 +144,7 @@ pub struct ListWorkflowsRequest {
 /// Response for the
 /// \[ListWorkflows][google.cloud.workflows.v1beta.Workflows.ListWorkflows\]
 /// method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListWorkflowsResponse {
     /// The workflows which match the request.
@@ -156,6 +160,7 @@ pub struct ListWorkflowsResponse {
 }
 /// Request for the
 /// \[GetWorkflow][google.cloud.workflows.v1beta.Workflows.GetWorkflow\] method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetWorkflowRequest {
     /// Required. Name of the workflow which information should be retrieved.
@@ -166,6 +171,7 @@ pub struct GetWorkflowRequest {
 /// Request for the
 /// \[CreateWorkflow][google.cloud.workflows.v1beta.Workflows.CreateWorkflow\]
 /// method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateWorkflowRequest {
     /// Required. Project and location in which the workflow should be created.
@@ -189,6 +195,7 @@ pub struct CreateWorkflowRequest {
 /// Request for the
 /// \[DeleteWorkflow][google.cloud.workflows.v1beta.Workflows.DeleteWorkflow\]
 /// method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteWorkflowRequest {
     /// Required. Name of the workflow to be deleted.
@@ -199,6 +206,7 @@ pub struct DeleteWorkflowRequest {
 /// Request for the
 /// \[UpdateWorkflow][google.cloud.workflows.v1beta.Workflows.UpdateWorkflow\]
 /// method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateWorkflowRequest {
     /// Required. Workflow to be updated.
@@ -210,6 +218,7 @@ pub struct UpdateWorkflowRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Represents the metadata of the long-running operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationMetadata {
     /// The time the operation was created.

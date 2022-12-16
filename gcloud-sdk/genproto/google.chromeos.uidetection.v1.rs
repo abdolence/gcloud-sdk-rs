@@ -1,4 +1,5 @@
 /// Request message for UI detection.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UiDetectionRequest {
     /// Required. Required field that represents a PNG image.
@@ -9,6 +10,7 @@ pub struct UiDetectionRequest {
     pub request: ::core::option::Option<DetectionRequest>,
 }
 /// Detection type specifies what to detect in the image.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DetectionRequest {
     #[prost(oneof = "detection_request::DetectionRequestType", tags = "1, 2, 3")]
@@ -18,6 +20,7 @@ pub struct DetectionRequest {
 }
 /// Nested message and enum types in `DetectionRequest`.
 pub mod detection_request {
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum DetectionRequestType {
         /// Detection type for word detection.
@@ -32,6 +35,7 @@ pub mod detection_request {
     }
 }
 /// Detection type for word detection.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WordDetectionRequest {
     /// Required. The word to locate in the image.
@@ -49,6 +53,7 @@ pub struct WordDetectionRequest {
     pub max_edit_distance: ::core::option::Option<i32>,
 }
 /// Detection type for text block detection.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TextBlockDetectionRequest {
     /// Required. The text block consisting a list of words to locate in the image.
@@ -66,6 +71,7 @@ pub struct TextBlockDetectionRequest {
     pub max_edit_distance: ::core::option::Option<i32>,
 }
 /// Detection type for custom icon detection.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomIconDetectionRequest {
     /// Required. Required field that represents an icon in PNG format.
@@ -80,6 +86,7 @@ pub struct CustomIconDetectionRequest {
     pub min_confidence_threshold: f64,
 }
 /// Response message for UI detection.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UiDetectionResponse {
     /// Locations of matching UI elements.
@@ -89,6 +96,7 @@ pub struct UiDetectionResponse {
 /// The location of a UI element.
 /// A bounding box is reprensented by its top-left point [left, top]
 /// and its bottom-right point [right, bottom].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BoundingBox {
     /// The text found in the bounding box.

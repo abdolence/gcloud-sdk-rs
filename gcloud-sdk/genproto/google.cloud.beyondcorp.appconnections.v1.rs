@@ -1,4 +1,5 @@
 /// Request message for BeyondCorp.ListAppConnections.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAppConnectionsRequest {
     /// Required. The resource name of the AppConnection location using the form:
@@ -28,6 +29,7 @@ pub struct ListAppConnectionsRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// Response message for BeyondCorp.ListAppConnections.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAppConnectionsResponse {
     /// A list of BeyondCorp AppConnections in the project.
@@ -42,6 +44,7 @@ pub struct ListAppConnectionsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for BeyondCorp.GetAppConnection.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAppConnectionRequest {
     /// Required. BeyondCorp AppConnection name using the form:
@@ -50,6 +53,7 @@ pub struct GetAppConnectionRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for BeyondCorp.CreateAppConnection.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateAppConnectionRequest {
     /// Required. The resource project name of the AppConnection location using the
@@ -86,6 +90,7 @@ pub struct CreateAppConnectionRequest {
     pub validate_only: bool,
 }
 /// Request message for BeyondCorp.UpdateAppConnection.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateAppConnectionRequest {
     /// Required. Mask of fields to update. At least one path must be supplied in
@@ -125,6 +130,7 @@ pub struct UpdateAppConnectionRequest {
     pub allow_missing: bool,
 }
 /// Request message for BeyondCorp.DeleteAppConnection.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteAppConnectionRequest {
     /// Required. BeyondCorp Connector name using the form:
@@ -152,6 +158,7 @@ pub struct DeleteAppConnectionRequest {
     pub validate_only: bool,
 }
 /// Request message for BeyondCorp.ResolveAppConnections.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResolveAppConnectionsRequest {
     /// Required. The resource name of the AppConnection location using the form:
@@ -177,6 +184,7 @@ pub struct ResolveAppConnectionsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for BeyondCorp.ResolveAppConnections.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResolveAppConnectionsResponse {
     /// A list of BeyondCorp AppConnections with details in the project.
@@ -195,6 +203,7 @@ pub struct ResolveAppConnectionsResponse {
 /// Nested message and enum types in `ResolveAppConnectionsResponse`.
 pub mod resolve_app_connections_response {
     /// Details of the AppConnection.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AppConnectionDetails {
         /// A BeyondCorp AppConnection in the project.
@@ -210,6 +219,7 @@ pub mod resolve_app_connections_response {
 /// AppConnection to a remote application. It creates all the necessary GCP
 /// components needed for creating a BeyondCorp protected AppConnection. Multiple
 /// connectors can be authorised for a single AppConnection.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AppConnection {
     /// Required. Unique resource name of the AppConnection.
@@ -259,6 +269,7 @@ pub struct AppConnection {
 /// Nested message and enum types in `AppConnection`.
 pub mod app_connection {
     /// ApplicationEndpoint represents a remote application endpoint.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ApplicationEndpoint {
         /// Required. Hostname or IP address of the remote application endpoint.
@@ -270,6 +281,7 @@ pub mod app_connection {
     }
     /// Gateway represents a user facing component that serves as an entrance to
     /// enable connectivity.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Gateway {
         /// Required. The type of hosting used by the gateway.
@@ -400,6 +412,7 @@ pub mod app_connection {
     }
 }
 /// Represents the metadata of the long-running operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AppConnectionOperationMetadata {
     /// Output only. The time the operation was created.

@@ -38,6 +38,7 @@
 /// California is returned as a candidate in the candidate_place_ids field.
 ///
 /// Next available tag: 10
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegionIdentifier {
     /// Required. Place type to match.
@@ -117,6 +118,7 @@ pub mod region_identifier {
         }
     }
     /// The location must be specified by one of the following:
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Location {
         /// The name of the region to match to a Place ID.
@@ -164,6 +166,7 @@ pub mod region_identifier {
 /// Region Match.
 ///
 /// Next available tag: 5
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegionMatch {
     /// Place ID of the region that is matched. If region is found, this field is
@@ -216,6 +219,7 @@ pub struct RegionMatch {
 /// the candidate_place_ids field.
 ///
 /// Next available tag: 10
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegionSearchValue {
     /// Required. The type of the place to match.
@@ -295,6 +299,7 @@ pub mod region_search_value {
         }
     }
     /// The location must be specified by one of the following:
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Location {
         /// The unstructured street address that is contained inside a region to
@@ -312,6 +317,7 @@ pub mod region_search_value {
 /// Lookup Region Request.
 ///
 /// Next available tag: 4
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LookupRegionRequest {
     /// Each `RegionIdentifier` represents the desired fields used to lookup a
@@ -336,6 +342,7 @@ pub struct LookupRegionRequest {
 /// Lookup Region Response.
 ///
 /// Next available tag: 3
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LookupRegionResponse {
     /// Lookup region matches, one for each `RegionIdentifier` in
@@ -350,6 +357,7 @@ pub struct LookupRegionResponse {
 /// Search Region Request.
 ///
 /// Next available tag: 4
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchRegionRequest {
     /// Each value represents desired search values of a single region to match.
@@ -375,6 +383,7 @@ pub struct SearchRegionRequest {
 /// Match Region Response.
 ///
 /// Next available tag: 3
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchRegionResponse {
     /// Search region matches, one for each `RegionSearchValue` in

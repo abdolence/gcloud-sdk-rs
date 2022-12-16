@@ -1,4 +1,5 @@
 /// Calendar add-on manifest.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CalendarAddOnManifest {
     /// Defines an endpoint that will be executed contexts that don't
@@ -76,6 +77,7 @@ pub mod calendar_add_on_manifest {
     }
 }
 /// Defines conference related values.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConferenceSolution {
     /// Required. The endpoint to call when ConferenceData should be created.
@@ -96,6 +98,7 @@ pub struct ConferenceSolution {
     pub logo_url: ::prost::alloc::string::String,
 }
 /// Common format for declaring a calendar add-on's triggers.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CalendarExtensionPoint {
     /// Required. The endpoint to execute when this extension point is

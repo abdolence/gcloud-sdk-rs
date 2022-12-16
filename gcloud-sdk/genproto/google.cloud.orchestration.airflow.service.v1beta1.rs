@@ -1,4 +1,5 @@
 /// Create a new environment.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateEnvironmentRequest {
     /// The parent must be of the form
@@ -10,6 +11,7 @@ pub struct CreateEnvironmentRequest {
     pub environment: ::core::option::Option<Environment>,
 }
 /// Get an environment.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetEnvironmentRequest {
     /// The resource name of the environment to get, in the form:
@@ -18,6 +20,7 @@ pub struct GetEnvironmentRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// List environments in a project and location.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEnvironmentsRequest {
     /// List environments in the given project and location, in the form:
@@ -32,6 +35,7 @@ pub struct ListEnvironmentsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// The environments in a project and location.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEnvironmentsResponse {
     /// The list of environments returned by a ListEnvironmentsRequest.
@@ -42,6 +46,7 @@ pub struct ListEnvironmentsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Delete an environment.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteEnvironmentRequest {
     /// The environment to delete, in the form:
@@ -50,6 +55,7 @@ pub struct DeleteEnvironmentRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Update an environment.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateEnvironmentRequest {
     /// The relative resource name of the environment to update, in the form:
@@ -208,6 +214,7 @@ pub struct UpdateEnvironmentRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Restart Airflow web server.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RestartWebServerRequest {
     /// The resource name of the environment to restart the web server for, in the
@@ -217,6 +224,7 @@ pub struct RestartWebServerRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Response to ExecuteAirflowCommandRequest.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExecuteAirflowCommandResponse {
     /// The unique ID of the command execution for polling.
@@ -233,6 +241,7 @@ pub struct ExecuteAirflowCommandResponse {
     pub error: ::prost::alloc::string::String,
 }
 /// Response to PollAirflowCommandRequest.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PollAirflowCommandResponse {
     /// Output from the command execution. It may not contain the full output
@@ -249,6 +258,7 @@ pub struct PollAirflowCommandResponse {
 /// Nested message and enum types in `PollAirflowCommandResponse`.
 pub mod poll_airflow_command_response {
     /// Contains information about a single line from logs.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Line {
         /// Number of the line.
@@ -259,6 +269,7 @@ pub mod poll_airflow_command_response {
         pub content: ::prost::alloc::string::String,
     }
     /// Information about how a command ended.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ExitInfo {
         /// The exit code from the command execution.
@@ -270,6 +281,7 @@ pub mod poll_airflow_command_response {
     }
 }
 /// Request to create a snapshot of a Cloud Composer environment.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SaveSnapshotRequest {
     /// The resource name of the source environment in the form:
@@ -282,6 +294,7 @@ pub struct SaveSnapshotRequest {
     pub snapshot_location: ::prost::alloc::string::String,
 }
 /// Response to SaveSnapshotRequest.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SaveSnapshotResponse {
     /// The fully-resolved Cloud Storage path of the created snapshot,
@@ -292,6 +305,7 @@ pub struct SaveSnapshotResponse {
     pub snapshot_path: ::prost::alloc::string::String,
 }
 /// Request to load a snapshot into a Cloud Composer environment.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LoadSnapshotRequest {
     /// The resource name of the target environment in the form:
@@ -320,9 +334,11 @@ pub struct LoadSnapshotRequest {
     pub skip_gcs_data_copying: bool,
 }
 /// Response to LoadSnapshotRequest.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LoadSnapshotResponse {}
 /// Configuration information for an environment.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EnvironmentConfig {
     /// Output only. The Kubernetes Engine cluster used to run this environment.
@@ -462,6 +478,7 @@ pub mod environment_config {
     }
 }
 /// Network-level access control policy for the Airflow web server.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WebServerNetworkAccessControl {
     /// A collection of allowed IP ranges with descriptions.
@@ -473,6 +490,7 @@ pub struct WebServerNetworkAccessControl {
 /// Nested message and enum types in `WebServerNetworkAccessControl`.
 pub mod web_server_network_access_control {
     /// Allowed IP range with user-provided description.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AllowedIpRange {
         /// IP address or range, defined using CIDR notation, of requests that this
@@ -491,6 +509,7 @@ pub mod web_server_network_access_control {
     }
 }
 /// Specifies the selection and configuration of software inside the environment.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SoftwareConfig {
     /// The version of the software running in the environment.
@@ -604,6 +623,7 @@ pub struct SoftwareConfig {
 }
 /// Configuration for controlling how IPs are allocated in the
 /// GKE cluster.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IpAllocationPolicy {
     /// Optional. Whether or not to enable Alias IPs in the GKE cluster.
@@ -673,6 +693,7 @@ pub struct IpAllocationPolicy {
 }
 /// The configuration information for the Kubernetes Engine nodes running
 /// the Apache Airflow software.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NodeConfig {
     /// Optional. The Compute Engine \[zone\](/compute/docs/regions-zones) in which
@@ -802,6 +823,7 @@ pub struct NodeConfig {
 }
 /// Configuration options for the private GKE cluster in a Cloud Composer
 /// environment.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PrivateClusterConfig {
     /// Optional. If `true`, access to the public endpoint of the GKE cluster is
@@ -822,6 +844,7 @@ pub struct PrivateClusterConfig {
 }
 /// Configuration options for networking connections in the Composer 2
 /// environment.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NetworkingConfig {
     /// Optional. Indicates the user requested specifc connection type between Tenant and
@@ -874,6 +897,7 @@ pub mod networking_config {
 }
 /// The configuration information for configuring a Private IP Cloud Composer
 /// environment.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PrivateEnvironmentConfig {
     /// Optional. If `true`, a Private IP Cloud Composer environment is created.
@@ -936,6 +960,7 @@ pub struct PrivateEnvironmentConfig {
 }
 /// The configuration of Cloud SQL instance that is used by the Apache Airflow
 /// software.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DatabaseConfig {
     /// Optional. Cloud SQL machine type used by Airflow database.
@@ -949,6 +974,7 @@ pub struct DatabaseConfig {
 /// The configuration settings for the Airflow web server App Engine instance.
 /// Supported for Cloud Composer environments in versions
 /// composer-1.*.*-airflow-*.*.*.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WebServerConfig {
     /// Optional. Machine type on which Airflow web server is running.
@@ -963,6 +989,7 @@ pub struct WebServerConfig {
 /// The encryption options for the Cloud Composer environment and its
 /// dependencies. Supported for Cloud Composer environments in versions
 /// composer-1.*.*-airflow-*.*.*.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EncryptionConfig {
     /// Optional. Customer-managed Encryption Key available through Google's Key Management
@@ -984,6 +1011,7 @@ pub struct EncryptionConfig {
 ///
 /// would define a maintenance window between 01 and 07 hours UTC during
 /// each Tuesday and Wednesday.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MaintenanceWindow {
     /// Required. Start time of the first recurrence of the maintenance window.
@@ -1004,6 +1032,7 @@ pub struct MaintenanceWindow {
 /// The Kubernetes workloads configuration for GKE cluster associated with the
 /// Cloud Composer environment. Supported for Cloud Composer environments in
 /// versions composer-2.*.*-airflow-*.*.* and newer.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WorkloadsConfig {
     /// Optional. Resources used by Airflow schedulers.
@@ -1022,6 +1051,7 @@ pub struct WorkloadsConfig {
 /// Nested message and enum types in `WorkloadsConfig`.
 pub mod workloads_config {
     /// Configuration for resources used by Airflow schedulers.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SchedulerResource {
         /// Optional. CPU request and limit for a single Airflow scheduler replica.
@@ -1038,6 +1068,7 @@ pub mod workloads_config {
         pub count: i32,
     }
     /// Configuration for resources used by Airflow web server.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct WebServerResource {
         /// Optional. CPU request and limit for Airflow web server.
@@ -1051,6 +1082,7 @@ pub mod workloads_config {
         pub storage_gb: f32,
     }
     /// Configuration for resources used by Airflow workers.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct WorkerResource {
         /// Optional. CPU request and limit for a single Airflow worker replica.
@@ -1070,6 +1102,7 @@ pub mod workloads_config {
         pub max_count: i32,
     }
     /// Configuration for resources used by Airflow triggerers.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct TriggererResource {
         /// Optional. The number of triggerers.
@@ -1084,6 +1117,7 @@ pub mod workloads_config {
     }
 }
 /// The Recovery settings of an environment.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RecoveryConfig {
     /// Optional. The configuration for scheduled snapshot creation mechanism.
@@ -1091,6 +1125,7 @@ pub struct RecoveryConfig {
     pub scheduled_snapshots_config: ::core::option::Option<ScheduledSnapshotsConfig>,
 }
 /// The configuration for scheduled snapshot creation mechanism.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ScheduledSnapshotsConfig {
     /// Optional. Whether scheduled snapshots creation is enabled.
@@ -1112,6 +1147,7 @@ pub struct ScheduledSnapshotsConfig {
 /// master authorized networks will disallow all external traffic to access
 /// Kubernetes master through HTTPS except traffic from the given CIDR blocks,
 /// Google Compute Engine Public IPs and Google Prod IPs.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MasterAuthorizedNetworksConfig {
     /// Whether or not master authorized networks feature is enabled.
@@ -1127,6 +1163,7 @@ pub struct MasterAuthorizedNetworksConfig {
 /// Nested message and enum types in `MasterAuthorizedNetworksConfig`.
 pub mod master_authorized_networks_config {
     /// CIDR block with an optional name.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CidrBlock {
         /// User-defined name that identifies the CIDR block.
@@ -1138,6 +1175,7 @@ pub mod master_authorized_networks_config {
     }
 }
 /// Configuration for Cloud Data Lineage integration.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CloudDataLineageIntegration {
     /// Optional. Whether or not Cloud Data Lineage integration is enabled.
@@ -1145,6 +1183,7 @@ pub struct CloudDataLineageIntegration {
     pub enabled: bool,
 }
 /// An environment for running orchestration tasks.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Environment {
     /// The resource name of the environment, in the form:
@@ -1232,6 +1271,7 @@ pub mod environment {
     }
 }
 /// Request to check whether image upgrade will succeed.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CheckUpgradeRequest {
     /// The resource name of the environment to check upgrade for, in the
@@ -1268,6 +1308,7 @@ pub struct CheckUpgradeRequest {
 }
 /// Message containing information about the result of an upgrade check
 /// operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CheckUpgradeResponse {
     /// Output only. Url for a docker build log of an upgraded image.
@@ -1624,6 +1665,7 @@ pub mod environments_client {
     }
 }
 /// List ImageVersions in a project and location.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListImageVersionsRequest {
     /// List ImageVersions in the given project and location, in the form:
@@ -1641,6 +1683,7 @@ pub struct ListImageVersionsRequest {
     pub include_past_releases: bool,
 }
 /// The ImageVersions in a project and location.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListImageVersionsResponse {
     /// The list of supported ImageVersions in a location.
@@ -1651,6 +1694,7 @@ pub struct ListImageVersionsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Image Version information
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImageVersion {
     /// The string identifier of the ImageVersion, in the form:
@@ -1772,6 +1816,7 @@ pub mod image_versions_client {
     }
 }
 /// Metadata describing an operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationMetadata {
     /// Output only. The current operation state.

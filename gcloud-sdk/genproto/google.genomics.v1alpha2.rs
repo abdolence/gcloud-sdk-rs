@@ -1,5 +1,6 @@
 /// Describes a Compute Engine resource that is being managed by a running
 /// \[pipeline][google.genomics.v1alpha2.Pipeline\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ComputeEngine {
     /// The instance on which the operation is running.
@@ -18,6 +19,7 @@ pub struct ComputeEngine {
 /// Runtime metadata that will be populated in the
 /// \[runtimeMetadata][google.genomics.v1.OperationMetadata.runtime_metadata\]
 /// field of the Operation associated with a RunPipeline execution.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RuntimeMetadata {
     /// Execution information specific to Google Compute Engine.
@@ -30,6 +32,7 @@ pub struct RuntimeMetadata {
 /// is run on a Google Compute Engine VM. A pipeline can be created with the
 /// `create` method and then later run with the `run` method, or a pipeline can
 /// be defined and run all at once with the `run` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Pipeline {
     /// Required. The project in which to create the pipeline. The caller must have
@@ -73,6 +76,7 @@ pub struct Pipeline {
 /// Nested message and enum types in `Pipeline`.
 pub mod pipeline {
     /// Required. The executor indicates in which environment the pipeline runs.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Executor {
         /// Specifies the docker run information.
@@ -82,6 +86,7 @@ pub mod pipeline {
 }
 /// The request to create a pipeline. The pipeline field here should not have
 /// `pipelineId` populated, as that will be populated by the server.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreatePipelineRequest {
     /// The pipeline to create. Should not have `pipelineId` populated.
@@ -89,6 +94,7 @@ pub struct CreatePipelineRequest {
     pub pipeline: ::core::option::Option<Pipeline>,
 }
 /// The pipeline run arguments.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RunPipelineArgs {
     /// Required. The project in which to run the pipeline. The caller must have
@@ -162,6 +168,7 @@ pub struct RunPipelineArgs {
 /// with the given args and not saved. It is an error to specify both
 /// `pipelineId` and `ephemeralPipeline`. `pipelineArgs`
 /// must be specified.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RunPipelineRequest {
     /// The arguments to use when running this pipeline.
@@ -172,6 +179,7 @@ pub struct RunPipelineRequest {
 }
 /// Nested message and enum types in `RunPipelineRequest`.
 pub mod run_pipeline_request {
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Pipeline {
         /// The already created pipeline to run.
@@ -183,6 +191,7 @@ pub mod run_pipeline_request {
     }
 }
 /// A request to get a saved pipeline by id.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetPipelineRequest {
     /// Caller must have READ access to the project in which this pipeline
@@ -196,6 +205,7 @@ pub struct GetPipelineRequest {
 /// `pageSize` indicates how many pipelines to return, and
 /// `pageToken` comes from a previous ListPipelinesResponse to
 /// indicate offset.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPipelinesRequest {
     /// Required. The name of the project to search for pipelines. Caller
@@ -221,6 +231,7 @@ pub struct ListPipelinesRequest {
 /// exist, then `nextPageToken` will be populated and should be
 /// used as the `pageToken` argument to a subsequent ListPipelines
 /// request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPipelinesResponse {
     /// The matched pipelines.
@@ -231,6 +242,7 @@ pub struct ListPipelinesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request to delete a saved pipeline by ID.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeletePipelineRequest {
     /// Caller must have WRITE access to the project in which this pipeline
@@ -240,6 +252,7 @@ pub struct DeletePipelineRequest {
 }
 /// Request to get controller configuation.  Should only be used
 /// by VMs created by the Pipelines Service and not by end users.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetControllerConfigRequest {
     /// The operation to retrieve controller configuration for.
@@ -251,6 +264,7 @@ pub struct GetControllerConfigRequest {
 /// Stores the information that the controller will fetch from the
 /// server in order to run. Should only be used by VMs created by the
 /// Pipelines Service and not by end users.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ControllerConfig {
     #[prost(string, tag = "1")]
@@ -284,6 +298,7 @@ pub struct ControllerConfig {
 }
 /// Nested message and enum types in `ControllerConfig`.
 pub mod controller_config {
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct RepeatedString {
         #[prost(string, repeated, tag = "1")]
@@ -292,6 +307,7 @@ pub mod controller_config {
 }
 /// Stores the list of events and times they occured for major events in job
 /// execution.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TimestampEvent {
     /// String indicating the type of event
@@ -303,6 +319,7 @@ pub struct TimestampEvent {
 }
 /// Request to set operation status. Should only be used by VMs
 /// created by the Pipelines Service and not by end users.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetOperationStatusRequest {
     #[prost(string, tag = "1")]
@@ -317,6 +334,7 @@ pub struct SetOperationStatusRequest {
     pub validation_token: u64,
 }
 /// A Google Cloud Service Account.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ServiceAccount {
     /// Email address of the service account. Defaults to `default`,
@@ -335,6 +353,7 @@ pub struct ServiceAccount {
     pub scopes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The logging options for the pipeline run.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LoggingOptions {
     /// The location in Google Cloud Storage to which the pipeline logs
@@ -349,6 +368,7 @@ pub struct LoggingOptions {
     pub gcs_path: ::prost::alloc::string::String,
 }
 /// The system resources for the pipeline run.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PipelineResources {
     /// The minimum number of cores to use. Defaults to 1.
@@ -389,6 +409,7 @@ pub struct PipelineResources {
 /// Nested message and enum types in `PipelineResources`.
 pub mod pipeline_resources {
     /// A Google Compute Engine disk resource specification.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Disk {
         /// Required. The name of the disk that can be used in the pipeline
@@ -558,6 +579,7 @@ pub mod pipeline_resources {
 ///
 /// One restriction due to docker limitations, is that for outputs that are found
 /// on the boot disk, the local path cannot be a glob and must be a file.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PipelineParameter {
     /// Required. Name of the parameter - the pipeline runner uses this string
@@ -582,6 +604,7 @@ pub struct PipelineParameter {
 /// Nested message and enum types in `PipelineParameter`.
 pub mod pipeline_parameter {
     /// LocalCopy defines how a remote file should be copied to and from the VM.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct LocalCopy {
         /// Required. The path within the user's docker container where
@@ -598,6 +621,7 @@ pub mod pipeline_parameter {
     }
 }
 /// The Docker execuctor specification.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DockerExecutor {
     /// Required. Image name from either Docker Hub or Google Container Registry.

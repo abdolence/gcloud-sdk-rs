@@ -1,5 +1,6 @@
 /// Log message which notifies about expired or close to
 /// expiry certificates.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CertificatesExpiry {
     /// Number of reported certificates.

@@ -15,6 +15,7 @@
 /// NOTE: Different system may generate different subset of attributes. Please
 /// verify the system specification before relying on an attribute generated
 /// a system.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AttributeContext {
     /// The origin of a network activity. In a multi hop network activity,
@@ -56,6 +57,7 @@ pub mod attribute_context {
     /// The node can be either a service or an application that sends, forwards,
     /// or receives the request. Service peers should fill in
     /// `principal` and `labels` as appropriate.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Peer {
         /// The IP address of the peer.
@@ -72,7 +74,7 @@ pub mod attribute_context {
         >,
         /// The identity of this peer. Similar to `Request.auth.principal`, but
         /// relative to the peer instead of the request. For example, the
-        /// idenity associated with a load balancer that forwared the request.
+        /// identity associated with a load balancer that forwarded the request.
         #[prost(string, tag = "7")]
         pub principal: ::prost::alloc::string::String,
         /// The CLDR country/region code associated with the above IP address.
@@ -84,6 +86,7 @@ pub mod attribute_context {
     /// This message defines attributes associated with API operations, such as
     /// a network API request. The terminology is based on the conventions used
     /// by Google APIs, Istio, and OpenAPI.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Api {
         /// The API service name. It is a logical identifier for a networked API,
@@ -108,6 +111,7 @@ pub mod attribute_context {
     /// This message defines request authentication attributes. Terminology is
     /// based on the JSON Web Token (JWT) standard, but the terms also
     /// correlate to concepts in other standards.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Auth {
         /// The authenticated principal. Reflects the issuer (`iss`) and subject
@@ -169,6 +173,7 @@ pub mod attribute_context {
     /// This message defines attributes for an HTTP request. If the actual
     /// request is not an HTTP request, the runtime system should try to map
     /// the actual request to an equivalent HTTP request.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Request {
         /// The unique ID for a request, which can be propagated to downstream
@@ -187,7 +192,7 @@ pub mod attribute_context {
             ::prost::alloc::string::String,
             ::prost::alloc::string::String,
         >,
-        /// The HTTP URL path.
+        /// The HTTP URL path, excluding the query parameters.
         #[prost(string, tag = "4")]
         pub path: ::prost::alloc::string::String,
         /// The HTTP request `Host` header value.
@@ -224,6 +229,7 @@ pub mod attribute_context {
     }
     /// This message defines attributes for a typical network response. It
     /// generally models semantics of an HTTP response.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Response {
         /// The HTTP response status code, such as `200` and `404`.
@@ -244,7 +250,7 @@ pub mod attribute_context {
         /// the response.
         #[prost(message, optional, tag = "4")]
         pub time: ::core::option::Option<::prost_types::Timestamp>,
-        /// The length of time it takes the backend service to fully respond to a
+        /// The amount of time it takes the backend service to fully respond to a
         /// request. Measured from when the destination service starts to send the
         /// request to the backend until when the destination service receives the
         /// complete response from the backend.
@@ -254,6 +260,7 @@ pub mod attribute_context {
     /// This message defines core attributes for a resource. A resource is an
     /// addressable (named) entity provided by the destination service. For
     /// example, a file stored on a network storage service.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Resource {
         /// The name of the service that this resource belongs to, such as
@@ -278,7 +285,8 @@ pub mod attribute_context {
         /// The type of the resource. The syntax is platform-specific because
         /// different platforms define their resources differently.
         ///
-        /// For Google APIs, the type format must be "{service}/{kind}".
+        /// For Google APIs, the type format must be "{service}/{kind}", such as
+        /// "pubsub.googleapis.com/Topic".
         #[prost(string, tag = "3")]
         pub r#type: ::prost::alloc::string::String,
         /// The labels or tags on the resource, such as AWS resource tags and
@@ -337,4 +345,30 @@ pub mod attribute_context {
         #[prost(string, tag = "12")]
         pub location: ::prost::alloc::string::String,
     }
+}
+/// `AuditContext` provides information that is needed for audit logging.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AuditContext {
+    /// Serialized audit log.
+    #[prost(bytes = "vec", tag = "1")]
+    pub audit_log: ::prost::alloc::vec::Vec<u8>,
+    /// An API request message that is scrubbed based on the method annotation.
+    /// This field should only be filled if audit_log field is present.
+    /// Service Control will use this to assemble a complete log for Cloud Audit
+    /// Logs and Google internal audit logs.
+    #[prost(message, optional, tag = "2")]
+    pub scrubbed_request: ::core::option::Option<::prost_types::Struct>,
+    /// An API response message that is scrubbed based on the method annotation.
+    /// This field should only be filled if audit_log field is present.
+    /// Service Control will use this to assemble a complete log for Cloud Audit
+    /// Logs and Google internal audit logs.
+    #[prost(message, optional, tag = "3")]
+    pub scrubbed_response: ::core::option::Option<::prost_types::Struct>,
+    /// Number of scrubbed response items.
+    #[prost(int32, tag = "4")]
+    pub scrubbed_response_item_count: i32,
+    /// Audit resource name which is scrubbed.
+    #[prost(string, tag = "5")]
+    pub target_resource: ::prost::alloc::string::String,
 }

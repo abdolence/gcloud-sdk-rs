@@ -1,3 +1,4 @@
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateAccessTokenRequest {
     /// Required. The resource name of the service account for which the credentials
@@ -31,6 +32,7 @@ pub struct GenerateAccessTokenRequest {
     #[prost(message, optional, tag = "7")]
     pub lifetime: ::core::option::Option<::prost_types::Duration>,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateAccessTokenResponse {
     /// The OAuth 2.0 access token.
@@ -41,6 +43,7 @@ pub struct GenerateAccessTokenResponse {
     #[prost(message, optional, tag = "3")]
     pub expire_time: ::core::option::Option<::prost_types::Timestamp>,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SignBlobRequest {
     /// Required. The resource name of the service account for which the credentials
@@ -65,6 +68,7 @@ pub struct SignBlobRequest {
     #[prost(bytes = "vec", tag = "5")]
     pub payload: ::prost::alloc::vec::Vec<u8>,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SignBlobResponse {
     /// The ID of the key used to sign the blob.
@@ -74,6 +78,7 @@ pub struct SignBlobResponse {
     #[prost(bytes = "vec", tag = "4")]
     pub signed_blob: ::prost::alloc::vec::Vec<u8>,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SignJwtRequest {
     /// Required. The resource name of the service account for which the credentials
@@ -98,6 +103,7 @@ pub struct SignJwtRequest {
     #[prost(string, tag = "5")]
     pub payload: ::prost::alloc::string::String,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SignJwtResponse {
     /// The ID of the key used to sign the JWT.
@@ -107,6 +113,7 @@ pub struct SignJwtResponse {
     #[prost(string, tag = "2")]
     pub signed_jwt: ::prost::alloc::string::String,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateIdTokenRequest {
     /// Required. The resource name of the service account for which the credentials
@@ -136,6 +143,7 @@ pub struct GenerateIdTokenRequest {
     #[prost(bool, tag = "4")]
     pub include_email: bool,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateIdTokenResponse {
     /// The OpenId Connect ID token.

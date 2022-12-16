@@ -1,6 +1,7 @@
 /// A billing account in the
 /// [Google Cloud Console](<https://console.cloud.google.com/>). You can assign a
 /// billing account to one or more projects.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BillingAccount {
     /// Output only. The resource name of the billing account. The resource name has the form
@@ -29,6 +30,7 @@ pub struct BillingAccount {
 /// Encapsulation of billing information for a Google Cloud Console project. A
 /// project has at most one associated billing account at a time (but a billing
 /// account can be assigned to multiple projects).
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProjectBillingInfo {
     /// The resource name for the `ProjectBillingInfo`; has the form
@@ -54,6 +56,7 @@ pub struct ProjectBillingInfo {
     pub billing_enabled: bool,
 }
 /// Request message for `GetBillingAccount`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetBillingAccountRequest {
     /// Required. The resource name of the billing account to retrieve. For example,
@@ -62,6 +65,7 @@ pub struct GetBillingAccountRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for `ListBillingAccounts`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListBillingAccountsRequest {
     /// Requested page size. The maximum page size is 100; this is also the
@@ -83,6 +87,7 @@ pub struct ListBillingAccountsRequest {
     pub filter: ::prost::alloc::string::String,
 }
 /// Response message for `ListBillingAccounts`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListBillingAccountsResponse {
     /// A list of billing accounts.
@@ -95,6 +100,7 @@ pub struct ListBillingAccountsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for `CreateBillingAccount`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateBillingAccountRequest {
     /// Required. The billing account resource to create.
@@ -105,6 +111,7 @@ pub struct CreateBillingAccountRequest {
     pub billing_account: ::core::option::Option<BillingAccount>,
 }
 /// Request message for `UpdateBillingAccount`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateBillingAccountRequest {
     /// Required. The name of the billing account resource to be updated.
@@ -119,6 +126,7 @@ pub struct UpdateBillingAccountRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for `ListProjectBillingInfo`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListProjectBillingInfoRequest {
     /// Required. The resource name of the billing account associated with the projects that
@@ -136,6 +144,7 @@ pub struct ListProjectBillingInfoRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Request message for `ListProjectBillingInfoResponse`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListProjectBillingInfoResponse {
     /// A list of `ProjectBillingInfo` resources representing the projects
@@ -149,6 +158,7 @@ pub struct ListProjectBillingInfoResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for `GetProjectBillingInfo`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetProjectBillingInfoRequest {
     /// Required. The resource name of the project for which billing information is
@@ -157,6 +167,7 @@ pub struct GetProjectBillingInfoRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for `UpdateProjectBillingInfo`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateProjectBillingInfoRequest {
     /// Required. The resource name of the project associated with the billing information
@@ -531,6 +542,7 @@ pub mod cloud_billing_client {
     }
 }
 /// Encapsulates a single service in Google Cloud Platform.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Service {
     /// The resource name for the service.
@@ -550,6 +562,7 @@ pub struct Service {
     pub business_entity_name: ::prost::alloc::string::String,
 }
 /// Encapsulates a single SKU in Google Cloud Platform
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Sku {
     /// The resource name for the SKU.
@@ -584,6 +597,7 @@ pub struct Sku {
     pub geo_taxonomy: ::core::option::Option<GeoTaxonomy>,
 }
 /// Represents the category hierarchy of a SKU.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Category {
     /// The display name of the service this SKU belongs to.
@@ -603,6 +617,7 @@ pub struct Category {
     pub usage_type: ::prost::alloc::string::String,
 }
 /// Represents the pricing information for a SKU at a single point of time.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PricingInfo {
     /// The timestamp from which this pricing was effective within the requested
@@ -642,6 +657,7 @@ pub struct PricingInfo {
 /// The above expresses a pricing formula where the first 20GB is free, the
 /// next 80GB is priced at $10 per GB followed by $5 per GB for additional
 /// usage.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PricingExpression {
     /// The short hand for unit of usage this pricing is specified in.
@@ -686,6 +702,7 @@ pub struct PricingExpression {
 /// Nested message and enum types in `PricingExpression`.
 pub mod pricing_expression {
     /// The price rate indicating starting usage and its corresponding price.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct TierRate {
         /// Usage is priced at this rate only after this amount.
@@ -702,6 +719,7 @@ pub mod pricing_expression {
     }
 }
 /// Represents the aggregation level and interval for pricing of a single SKU.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AggregationInfo {
     #[prost(enumeration = "aggregation_info::AggregationLevel", tag = "1")]
@@ -784,6 +802,7 @@ pub mod aggregation_info {
     }
 }
 /// Encapsulates the geographic taxonomy data for a sku.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GeoTaxonomy {
     /// The type of Geo Taxonomy: GLOBAL, REGIONAL, or MULTI_REGIONAL.
@@ -837,6 +856,7 @@ pub mod geo_taxonomy {
     }
 }
 /// Request message for `ListServices`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListServicesRequest {
     /// Requested page size. Defaults to 5000.
@@ -849,6 +869,7 @@ pub struct ListServicesRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for `ListServices`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListServicesResponse {
     /// A list of services.
@@ -861,6 +882,7 @@ pub struct ListServicesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for `ListSkus`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSkusRequest {
     /// Required. The name of the service.
@@ -898,6 +920,7 @@ pub struct ListSkusRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for `ListSkus`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSkusResponse {
     /// The list of public SKUs of the given service.

@@ -1,5 +1,6 @@
 /// Configures which glossary should be used for a specific target language,
 /// and defines options for applying that glossary.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TranslateTextGlossaryConfig {
     /// Required. The `glossary` to be applied for this translation.
@@ -16,6 +17,7 @@ pub struct TranslateTextGlossaryConfig {
     pub ignore_case: bool,
 }
 /// The request message for synchronous translation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TranslateTextRequest {
     /// Required. The content of the input in string format.
@@ -93,6 +95,7 @@ pub struct TranslateTextRequest {
         ::prost::alloc::string::String,
     >,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TranslateTextResponse {
     /// Text translation responses with no glossary applied.
@@ -109,6 +112,7 @@ pub struct TranslateTextResponse {
     pub glossary_translations: ::prost::alloc::vec::Vec<Translation>,
 }
 /// A single translation response.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Translation {
     /// Text translated into the target language.
@@ -137,6 +141,7 @@ pub struct Translation {
     pub glossary_config: ::core::option::Option<TranslateTextGlossaryConfig>,
 }
 /// The request message for language detection.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DetectLanguageRequest {
     /// Required. Project or location to make a call. Must refer to a caller's
@@ -188,6 +193,7 @@ pub struct DetectLanguageRequest {
 /// Nested message and enum types in `DetectLanguageRequest`.
 pub mod detect_language_request {
     /// Required. The source of the document from which to detect the language.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
         /// The content of the input stored as a string.
@@ -196,6 +202,7 @@ pub mod detect_language_request {
     }
 }
 /// The response message for language detection.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DetectedLanguage {
     /// The BCP-47 language code of source content in the request, detected
@@ -207,6 +214,7 @@ pub struct DetectedLanguage {
     pub confidence: f32,
 }
 /// The response message for language detection.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DetectLanguageResponse {
     /// The most probable language detected by the Translation API. For each
@@ -215,6 +223,7 @@ pub struct DetectLanguageResponse {
     pub languages: ::prost::alloc::vec::Vec<DetectedLanguage>,
 }
 /// The request message for discovering supported languages.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetSupportedLanguagesRequest {
     /// Required. Project or location to make a call. Must refer to a caller's
@@ -254,6 +263,7 @@ pub struct GetSupportedLanguagesRequest {
     pub model: ::prost::alloc::string::String,
 }
 /// The response message for discovering supported languages.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SupportedLanguages {
     /// A list of supported language responses. This list contains an entry
@@ -263,6 +273,7 @@ pub struct SupportedLanguages {
 }
 /// A single supported language response corresponds to information related
 /// to one supported language.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SupportedLanguage {
     /// Supported language code, generally consisting of its ISO 639-1
@@ -283,6 +294,7 @@ pub struct SupportedLanguage {
     pub support_target: bool,
 }
 /// The Google Cloud Storage location for the input content.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GcsSource {
     /// Required. Source data URI. For example, `gs://my_bucket/my_object`.
@@ -290,6 +302,7 @@ pub struct GcsSource {
     pub input_uri: ::prost::alloc::string::String,
 }
 /// Input configuration for BatchTranslateText request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InputConfig {
     /// Optional. Can be "text/plain" or "text/html".
@@ -305,6 +318,7 @@ pub struct InputConfig {
 /// Nested message and enum types in `InputConfig`.
 pub mod input_config {
     /// Required. Specify the input.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
         /// Required. Google Cloud Storage location for the source input.
@@ -330,6 +344,7 @@ pub mod input_config {
     }
 }
 /// The Google Cloud Storage location for the output content.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GcsDestination {
     /// Required. The bucket used in 'output_uri_prefix' must exist and there must
@@ -341,6 +356,7 @@ pub struct GcsDestination {
     pub output_uri_prefix: ::prost::alloc::string::String,
 }
 /// Output configuration for BatchTranslateText request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OutputConfig {
     /// Required. The destination of output.
@@ -350,6 +366,7 @@ pub struct OutputConfig {
 /// Nested message and enum types in `OutputConfig`.
 pub mod output_config {
     /// Required. The destination of output.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Destination {
         /// Google Cloud Storage destination for output content.
@@ -428,6 +445,7 @@ pub mod output_config {
     }
 }
 /// A document translation request input config.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DocumentInputConfig {
     /// Specifies the input document's mime_type.
@@ -461,6 +479,7 @@ pub mod document_input_config {
     /// - application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
     /// The input file size should be <= 20MB and the maximum page limit is 20 for
     /// - application/pdf
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
         /// Document's content represented as a stream of bytes.
@@ -473,6 +492,7 @@ pub mod document_input_config {
     }
 }
 /// A document translation request output config.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DocumentOutputConfig {
     /// Optional. Specifies the translated document's mime_type.
@@ -503,6 +523,7 @@ pub mod document_output_config {
     /// Whether a destination is provided or not, the translated documents will be
     /// returned within TranslateDocumentResponse.document_translation and
     /// TranslateDocumentResponse.glossary_document_translation.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Destination {
         /// Optional. Google Cloud Storage destination for the translation output,
@@ -553,6 +574,7 @@ pub mod document_output_config {
     }
 }
 /// A document translation request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TranslateDocumentRequest {
     /// Required. Location to make a regional call.
@@ -627,6 +649,7 @@ pub struct TranslateDocumentRequest {
     >,
 }
 /// A translated document message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DocumentTranslation {
     /// The array of translated documents. It is expected to be size 1 for now. We
@@ -646,6 +669,7 @@ pub struct DocumentTranslation {
     pub detected_language_code: ::prost::alloc::string::String,
 }
 /// A translated document response message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TranslateDocumentResponse {
     /// Translated document.
@@ -671,6 +695,7 @@ pub struct TranslateDocumentResponse {
     pub glossary_config: ::core::option::Option<TranslateTextGlossaryConfig>,
 }
 /// The batch translation request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchTranslateTextRequest {
     /// Required. Location to make a call. Must refer to a caller's project.
@@ -744,6 +769,7 @@ pub struct BatchTranslateTextRequest {
     >,
 }
 /// State metadata for the batch translation operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchTranslateMetadata {
     /// The state of the operation.
@@ -819,6 +845,7 @@ pub mod batch_translate_metadata {
 /// \[google.longrunning.Operation.response][google.longrunning.Operation.response\]
 /// field returned by BatchTranslateText if at least one sentence is translated
 /// successfully.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchTranslateResponse {
     /// Total number of characters (Unicode codepoints).
@@ -840,6 +867,7 @@ pub struct BatchTranslateResponse {
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Input configuration for glossaries.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GlossaryInputConfig {
     /// Required. Specify the input.
@@ -849,6 +877,7 @@ pub struct GlossaryInputConfig {
 /// Nested message and enum types in `GlossaryInputConfig`.
 pub mod glossary_input_config {
     /// Required. Specify the input.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
         /// Required. Google Cloud Storage location of glossary data.
@@ -877,6 +906,7 @@ pub mod glossary_input_config {
     }
 }
 /// Represents a glossary built from user provided data.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Glossary {
     /// Required. The resource name of the glossary. Glossary names have the form
@@ -903,6 +933,7 @@ pub struct Glossary {
 /// Nested message and enum types in `Glossary`.
 pub mod glossary {
     /// Used with unidirectional glossaries.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct LanguageCodePair {
         /// Required. The BCP-47 language code of the input text, for example,
@@ -915,6 +946,7 @@ pub mod glossary {
         pub target_language_code: ::prost::alloc::string::String,
     }
     /// Used with equivalent term set glossaries.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct LanguageCodesSet {
         /// The BCP-47 language code(s) for terms defined in the glossary.
@@ -924,6 +956,7 @@ pub mod glossary {
         pub language_codes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
     /// Languages supported by the glossary.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Languages {
         /// Used with unidirectional glossaries.
@@ -935,6 +968,7 @@ pub mod glossary {
     }
 }
 /// Request message for CreateGlossary.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateGlossaryRequest {
     /// Required. The project name.
@@ -945,6 +979,7 @@ pub struct CreateGlossaryRequest {
     pub glossary: ::core::option::Option<Glossary>,
 }
 /// Request message for GetGlossary.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetGlossaryRequest {
     /// Required. The name of the glossary to retrieve.
@@ -952,6 +987,7 @@ pub struct GetGlossaryRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for DeleteGlossary.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteGlossaryRequest {
     /// Required. The name of the glossary to delete.
@@ -959,6 +995,7 @@ pub struct DeleteGlossaryRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for ListGlossaries.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListGlossariesRequest {
     /// Required. The name of the project from which to list all of the glossaries.
@@ -994,6 +1031,7 @@ pub struct ListGlossariesRequest {
     pub filter: ::prost::alloc::string::String,
 }
 /// Response message for ListGlossaries.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListGlossariesResponse {
     /// The list of glossaries for a project.
@@ -1008,6 +1046,7 @@ pub struct ListGlossariesResponse {
 /// Stored in the
 /// \[google.longrunning.Operation.metadata][google.longrunning.Operation.metadata\]
 /// field returned by CreateGlossary.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateGlossaryMetadata {
     /// The name of the glossary that is being created.
@@ -1070,6 +1109,7 @@ pub mod create_glossary_metadata {
 /// Stored in the
 /// \[google.longrunning.Operation.metadata][google.longrunning.Operation.metadata\]
 /// field returned by DeleteGlossary.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteGlossaryMetadata {
     /// The name of the glossary that is being deleted.
@@ -1132,6 +1172,7 @@ pub mod delete_glossary_metadata {
 /// Stored in the
 /// \[google.longrunning.Operation.response][google.longrunning.Operation.response\]
 /// field returned by DeleteGlossary.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteGlossaryResponse {
     /// The name of the deleted glossary.
@@ -1147,6 +1188,7 @@ pub struct DeleteGlossaryResponse {
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// The BatchTranslateDocument request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchTranslateDocumentRequest {
     /// Required. Location to make a regional call.
@@ -1223,6 +1265,7 @@ pub struct BatchTranslateDocumentRequest {
     >,
 }
 /// Input configuration for BatchTranslateDocument request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchDocumentInputConfig {
     /// Specify the input.
@@ -1232,6 +1275,7 @@ pub struct BatchDocumentInputConfig {
 /// Nested message and enum types in `BatchDocumentInputConfig`.
 pub mod batch_document_input_config {
     /// Specify the input.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
         /// Google Cloud Storage location for the source input.
@@ -1258,6 +1302,7 @@ pub mod batch_document_input_config {
     }
 }
 /// Output configuration for BatchTranslateDocument request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchDocumentOutputConfig {
     /// The destination of output. The destination directory provided must exist
@@ -1269,6 +1314,7 @@ pub struct BatchDocumentOutputConfig {
 pub mod batch_document_output_config {
     /// The destination of output. The destination directory provided must exist
     /// and be empty.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Destination {
         /// Google Cloud Storage destination for output content.
@@ -1324,6 +1370,7 @@ pub mod batch_document_output_config {
 /// \[google.longrunning.Operation.response][google.longrunning.Operation.response\]
 /// field returned by BatchTranslateDocument if at least one document is
 /// translated successfully.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchTranslateDocumentResponse {
     /// Total number of pages to translate in all documents. Documents without
@@ -1367,6 +1414,7 @@ pub struct BatchTranslateDocumentResponse {
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// State metadata for the batch translation operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchTranslateDocumentMetadata {
     /// The state of the operation.

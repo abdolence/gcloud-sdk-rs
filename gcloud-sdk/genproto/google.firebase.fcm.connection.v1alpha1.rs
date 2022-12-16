@@ -1,4 +1,5 @@
 /// Request sent to FCM from the connected client.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpstreamRequest {
     /// The type of request the client is making to FCM.
@@ -8,6 +9,7 @@ pub struct UpstreamRequest {
 /// Nested message and enum types in `UpstreamRequest`.
 pub mod upstream_request {
     /// The type of request the client is making to FCM.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum RequestType {
         /// Message acknowledgement.
@@ -16,6 +18,7 @@ pub mod upstream_request {
     }
 }
 /// Response sent to the connected client from FCM.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DownstreamResponse {
     /// The type of response FCM is sending to the client.
@@ -25,6 +28,7 @@ pub struct DownstreamResponse {
 /// Nested message and enum types in `DownstreamResponse`.
 pub mod downstream_response {
     /// The type of response FCM is sending to the client.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ResponseType {
         /// Message sent to FCM via the [Send
@@ -38,6 +42,7 @@ pub mod downstream_response {
 ///
 /// If a message is not acked, FCM will continously resend the message until
 /// it expires. Duplicate delivery in this case is working as intended.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Ack {
     /// Id of message being acknowledged
@@ -46,6 +51,7 @@ pub struct Ack {
 }
 /// Message created through the [Send
 /// API](<https://firebase.google.com/docs/reference/fcm/rest/v1/projects.messages#resource-message>).
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Message {
     /// The identifier of the message. Used to ack the message.

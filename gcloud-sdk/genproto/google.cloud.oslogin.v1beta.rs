@@ -1,5 +1,6 @@
 /// The user profile information used for logging in to a virtual machine on
 /// Google Compute Engine.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LoginProfile {
     /// Required. A unique user ID.
@@ -19,6 +20,7 @@ pub struct LoginProfile {
     pub security_keys: ::prost::alloc::vec::Vec<SecurityKey>,
 }
 /// A request message for creating an SSH public key.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateSshPublicKeyRequest {
     /// Required. The unique ID for the user in format `users/{user}`.
@@ -29,6 +31,7 @@ pub struct CreateSshPublicKeyRequest {
     pub ssh_public_key: ::core::option::Option<super::common::SshPublicKey>,
 }
 /// A request message for deleting a POSIX account entry.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeletePosixAccountRequest {
     /// Required. A reference to the POSIX account to update. POSIX accounts are identified
@@ -38,6 +41,7 @@ pub struct DeletePosixAccountRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// A request message for deleting an SSH public key.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteSshPublicKeyRequest {
     /// Required. The fingerprint of the public key to update. Public keys are identified by
@@ -47,6 +51,7 @@ pub struct DeleteSshPublicKeyRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// A request message for retrieving the login profile information for a user.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetLoginProfileRequest {
     /// Required. The unique ID for the user in format `users/{user}`.
@@ -63,6 +68,7 @@ pub struct GetLoginProfileRequest {
     pub view: i32,
 }
 /// A request message for retrieving an SSH public key.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetSshPublicKeyRequest {
     /// Required. The fingerprint of the public key to retrieve. Public keys are identified
@@ -72,6 +78,7 @@ pub struct GetSshPublicKeyRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// A request message for importing an SSH public key.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportSshPublicKeyRequest {
     /// The unique ID for the user in format `users/{user}`.
@@ -88,6 +95,7 @@ pub struct ImportSshPublicKeyRequest {
     pub view: i32,
 }
 /// A response message for importing an SSH public key.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportSshPublicKeyResponse {
     /// The login profile information for the user.
@@ -98,6 +106,7 @@ pub struct ImportSshPublicKeyResponse {
     pub details: ::prost::alloc::string::String,
 }
 /// A request message for updating an SSH public key.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateSshPublicKeyRequest {
     /// Required. The fingerprint of the public key to update. Public keys are identified by
@@ -113,6 +122,7 @@ pub struct UpdateSshPublicKeyRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The credential information for a Google registered security key.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SecurityKey {
     /// Public key text in SSH format, defined by
@@ -129,6 +139,7 @@ pub struct SecurityKey {
 /// Nested message and enum types in `SecurityKey`.
 pub mod security_key {
     /// The FIDO protocol type used to register this credential.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ProtocolType {
         /// The U2F protocol type.
@@ -140,6 +151,7 @@ pub mod security_key {
     }
 }
 /// Security key information specific to the U2F protocol.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UniversalTwoFactor {
     /// Application ID for the U2F protocol.
@@ -147,6 +159,7 @@ pub struct UniversalTwoFactor {
     pub app_id: ::prost::alloc::string::String,
 }
 /// Security key information specific to the Web Authentication protocol.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WebAuthn {
     /// Relying party ID for Web Authentication.

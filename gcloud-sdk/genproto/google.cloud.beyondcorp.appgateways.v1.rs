@@ -1,4 +1,5 @@
 /// Request message for BeyondCorp.ListAppGateways.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAppGatewaysRequest {
     /// Required. The resource name of the AppGateway location using the form:
@@ -28,6 +29,7 @@ pub struct ListAppGatewaysRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// Response message for BeyondCorp.ListAppGateways.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAppGatewaysResponse {
     /// A list of BeyondCorp AppGateways in the project.
@@ -42,6 +44,7 @@ pub struct ListAppGatewaysResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for BeyondCorp.GetAppGateway.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAppGatewayRequest {
     /// Required. BeyondCorp AppGateway name using the form:
@@ -50,6 +53,7 @@ pub struct GetAppGatewayRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for BeyondCorp.CreateAppGateway.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateAppGatewayRequest {
     /// Required. The resource project name of the AppGateway location using the
@@ -86,6 +90,7 @@ pub struct CreateAppGatewayRequest {
     pub validate_only: bool,
 }
 /// Request message for BeyondCorp.DeleteAppGateway.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteAppGatewayRequest {
     /// Required. BeyondCorp AppGateway name using the form:
@@ -116,6 +121,7 @@ pub struct DeleteAppGatewayRequest {
 /// to a remote application. It creates all the necessary GCP components needed
 /// for creating a BeyondCorp protected AppGateway. Multiple connectors can be
 /// authorised for a single AppGateway.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AppGateway {
     /// Required. Unique resource name of the AppGateway.
@@ -163,6 +169,7 @@ pub struct AppGateway {
 /// Nested message and enum types in `AppGateway`.
 pub mod app_gateway {
     /// Allocated connection of the AppGateway.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AllocatedConnection {
         /// Required. The PSC uri of an allocated connection
@@ -282,6 +289,7 @@ pub mod app_gateway {
     }
 }
 /// Represents the metadata of the long-running operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AppGatewayOperationMetadata {
     /// Output only. The time the operation was created.

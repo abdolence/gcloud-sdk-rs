@@ -1,5 +1,6 @@
 /// A SourceContext is a reference to a tree of files. A SourceContext together
 /// with a path point to a unique revision of a single file or directory.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SourceContext {
     /// A SourceContext can refer any one of the following types of repositories.
@@ -9,6 +10,7 @@ pub struct SourceContext {
 /// Nested message and enum types in `SourceContext`.
 pub mod source_context {
     /// A SourceContext can refer any one of the following types of repositories.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Context {
         /// A SourceContext referring to a revision in a cloud repo.
@@ -27,6 +29,7 @@ pub mod source_context {
 }
 /// An ExtendedSourceContext is a SourceContext combined with additional
 /// details describing the context.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExtendedSourceContext {
     /// Any source context.
@@ -40,6 +43,7 @@ pub struct ExtendedSourceContext {
     >,
 }
 /// An alias to a repo revision.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AliasContext {
     /// The alias kind.
@@ -93,6 +97,7 @@ pub mod alias_context {
 }
 /// A CloudRepoSourceContext denotes a particular revision in a cloud
 /// repo (a repo hosted by the Google Cloud Platform).
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CloudRepoSourceContext {
     /// The ID of the repo.
@@ -107,6 +112,7 @@ pub struct CloudRepoSourceContext {
 pub mod cloud_repo_source_context {
     /// A revision in a cloud repository can be identified by either its revision
     /// ID or its Alias.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Revision {
         /// A revision ID.
@@ -121,6 +127,7 @@ pub mod cloud_repo_source_context {
     }
 }
 /// A CloudWorkspaceSourceContext denotes a workspace at a particular snapshot.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CloudWorkspaceSourceContext {
     /// The ID of the workspace.
@@ -132,6 +139,7 @@ pub struct CloudWorkspaceSourceContext {
     pub snapshot_id: ::prost::alloc::string::String,
 }
 /// A SourceContext referring to a Gerrit project.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GerritSourceContext {
     /// The URI of a running Gerrit instance.
@@ -151,6 +159,7 @@ pub struct GerritSourceContext {
 pub mod gerrit_source_context {
     /// A revision in a Gerrit project can be identified by either its revision ID
     /// or its alias.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Revision {
         /// A revision (commit) ID.
@@ -166,6 +175,7 @@ pub mod gerrit_source_context {
 }
 /// A GitSourceContext denotes a particular revision in a third party Git
 /// repository (e.g. GitHub).
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GitSourceContext {
     /// Git repository URL.
@@ -177,6 +187,7 @@ pub struct GitSourceContext {
     pub revision_id: ::prost::alloc::string::String,
 }
 /// A unique identifier for a cloud repo.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RepoId {
     /// A cloud repository can be identified by either its project ID and
@@ -188,6 +199,7 @@ pub struct RepoId {
 pub mod repo_id {
     /// A cloud repository can be identified by either its project ID and
     /// repository name combination, or its globally unique identifier.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Id {
         /// A combination of a project ID and a repo name.
@@ -200,6 +212,7 @@ pub mod repo_id {
 }
 /// Selects a repo using a Google Cloud Platform project ID
 /// (e.g. winged-cargo-31) and a repo name within that project.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProjectRepoId {
     /// The ID of the project.
@@ -212,6 +225,7 @@ pub struct ProjectRepoId {
 /// A CloudWorkspaceId is a unique identifier for a cloud workspace.
 /// A cloud workspace is a place associated with a repo where modified files
 /// can be stored before they are committed.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CloudWorkspaceId {
     /// The ID of the repo containing the workspace.

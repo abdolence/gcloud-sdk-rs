@@ -1,4 +1,5 @@
 /// Request object for ByteStream.Read.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReadRequest {
     /// The name of the resource to read.
@@ -22,6 +23,7 @@ pub struct ReadRequest {
     pub read_limit: i64,
 }
 /// Response object for ByteStream.Read.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReadResponse {
     /// A portion of the data for the resource. The service **may** leave `data`
@@ -32,6 +34,7 @@ pub struct ReadResponse {
     pub data: ::prost::alloc::vec::Vec<u8>,
 }
 /// Request object for ByteStream.Write.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WriteRequest {
     /// The name of the resource to write. This **must** be set on the first
@@ -66,6 +69,7 @@ pub struct WriteRequest {
     pub data: ::prost::alloc::vec::Vec<u8>,
 }
 /// Response object for ByteStream.Write.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WriteResponse {
     /// The number of bytes that have been processed for the given resource.
@@ -73,6 +77,7 @@ pub struct WriteResponse {
     pub committed_size: i64,
 }
 /// Request object for ByteStream.QueryWriteStatus.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryWriteStatusRequest {
     /// The name of the resource whose write status is being requested.
@@ -80,6 +85,7 @@ pub struct QueryWriteStatusRequest {
     pub resource_name: ::prost::alloc::string::String,
 }
 /// Response object for ByteStream.QueryWriteStatus.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryWriteStatusResponse {
     /// The number of bytes that have been processed for the given resource.

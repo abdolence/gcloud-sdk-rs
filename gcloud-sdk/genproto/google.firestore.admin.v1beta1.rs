@@ -1,4 +1,5 @@
 /// A field of an index.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IndexField {
     /// The path of the field. Must match the field path specification described
@@ -55,6 +56,7 @@ pub mod index_field {
     }
 }
 /// An index definition.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Index {
     /// The resource name of the index.
@@ -126,6 +128,7 @@ pub mod index {
 }
 /// Metadata for index operations. This metadata populates
 /// the metadata field of \[google.longrunning.Operation][google.longrunning.Operation\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IndexOperationMetadata {
     /// The time that work began on the operation.
@@ -186,6 +189,7 @@ pub mod index_operation_metadata {
     }
 }
 /// Measures the progress of a particular metric.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Progress {
     /// An estimate of how much work has been completed. Note that this may be
@@ -198,6 +202,7 @@ pub struct Progress {
     pub work_estimated: i64,
 }
 /// The request for \[FirestoreAdmin.CreateIndex][google.firestore.admin.v1beta1.FirestoreAdmin.CreateIndex\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateIndexRequest {
     /// The name of the database this index will apply to. For example:
@@ -210,6 +215,7 @@ pub struct CreateIndexRequest {
     pub index: ::core::option::Option<Index>,
 }
 /// The request for \[FirestoreAdmin.GetIndex][google.firestore.admin.v1beta1.FirestoreAdmin.GetIndex\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetIndexRequest {
     /// The name of the index. For example:
@@ -218,6 +224,7 @@ pub struct GetIndexRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request for \[FirestoreAdmin.ListIndexes][google.firestore.admin.v1beta1.FirestoreAdmin.ListIndexes\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListIndexesRequest {
     /// The database name. For example:
@@ -234,6 +241,7 @@ pub struct ListIndexesRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// The request for \[FirestoreAdmin.DeleteIndex][google.firestore.admin.v1beta1.FirestoreAdmin.DeleteIndex\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteIndexRequest {
     /// The index name. For example:
@@ -242,6 +250,7 @@ pub struct DeleteIndexRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The response for \[FirestoreAdmin.ListIndexes][google.firestore.admin.v1beta1.FirestoreAdmin.ListIndexes\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListIndexesResponse {
     /// The indexes.
@@ -252,6 +261,7 @@ pub struct ListIndexesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request for \[FirestoreAdmin.ExportDocuments][google.firestore.admin.v1beta1.FirestoreAdmin.ExportDocuments\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportDocumentsRequest {
     /// Database to export. Should be of the form:
@@ -273,6 +283,7 @@ pub struct ExportDocumentsRequest {
     pub output_uri_prefix: ::prost::alloc::string::String,
 }
 /// The request for \[FirestoreAdmin.ImportDocuments][google.firestore.admin.v1beta1.FirestoreAdmin.ImportDocuments\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportDocumentsRequest {
     /// Database to import into. Should be of the form:
@@ -292,6 +303,7 @@ pub struct ImportDocumentsRequest {
     pub input_uri_prefix: ::prost::alloc::string::String,
 }
 /// Returned in the \[google.longrunning.Operation][google.longrunning.Operation\] response field.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportDocumentsResponse {
     /// Location of the output files. This can be used to begin an import
@@ -301,6 +313,7 @@ pub struct ExportDocumentsResponse {
     pub output_uri_prefix: ::prost::alloc::string::String,
 }
 /// Metadata for ExportDocuments operations.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportDocumentsMetadata {
     /// The time that work began on the operation.
@@ -327,6 +340,7 @@ pub struct ExportDocumentsMetadata {
     pub output_uri_prefix: ::prost::alloc::string::String,
 }
 /// Metadata for ImportDocuments operations.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportDocumentsMetadata {
     /// The time that work began on the operation.
@@ -660,5 +674,6 @@ pub mod firestore_admin_client {
     }
 }
 /// The metadata message for \[google.cloud.location.Location.metadata][google.cloud.location.Location.metadata\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LocationMetadata {}

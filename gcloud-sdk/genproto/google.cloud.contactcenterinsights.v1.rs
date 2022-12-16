@@ -1,4 +1,5 @@
 /// The conversation resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Conversation {
     /// Immutable. The resource name of the conversation.
@@ -75,6 +76,7 @@ pub struct Conversation {
 /// Nested message and enum types in `Conversation`.
 pub mod conversation {
     /// Call-specific metadata.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CallMetadata {
         /// The audio channel that contains the customer.
@@ -85,6 +87,7 @@ pub mod conversation {
         pub agent_channel: i32,
     }
     /// A message representing the transcript of a conversation.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Transcript {
         /// A list of sequential transcript segments that comprise the conversation.
@@ -94,6 +97,7 @@ pub mod conversation {
     /// Nested message and enum types in `Transcript`.
     pub mod transcript {
         /// A segment of a full transcript.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct TranscriptSegment {
             /// The time that the message occurred, if provided.
@@ -137,6 +141,7 @@ pub mod conversation {
         /// Nested message and enum types in `TranscriptSegment`.
         pub mod transcript_segment {
             /// Word-level info for words in a transcript.
+            #[allow(clippy::derive_partial_eq_without_eq)]
             #[derive(Clone, PartialEq, ::prost::Message)]
             pub struct WordInfo {
                 /// Time offset of the start of this word relative to the beginning of
@@ -156,6 +161,7 @@ pub mod conversation {
                 pub confidence: f32,
             }
             /// Metadata from Dialogflow relating to the current transcript segment.
+            #[allow(clippy::derive_partial_eq_without_eq)]
             #[derive(Clone, PartialEq, ::prost::Message)]
             pub struct DialogflowSegmentMetadata {
                 /// Whether the transcript segment was covered under the configured smart
@@ -200,6 +206,7 @@ pub mod conversation {
         }
     }
     /// Metadata that applies to the conversation.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Metadata {
         /// Call-specific metadata.
@@ -210,6 +217,7 @@ pub mod conversation {
     /// duration from the time that the conversation creation request was received.
     /// Conversations with an expiration set will be removed up to 24 hours after
     /// the specified time.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Expiration {
         /// The time at which this conversation should expire. After this time, the
@@ -223,6 +231,7 @@ pub mod conversation {
     }
 }
 /// The analysis resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Analysis {
     /// Immutable. The resource name of the analysis.
@@ -241,8 +250,13 @@ pub struct Analysis {
     /// finishes.
     #[prost(message, optional, tag = "7")]
     pub analysis_result: ::core::option::Option<AnalysisResult>,
+    /// To select the annotators to run and the phrase matchers to use
+    /// (if any). If not specified, all annotators will be run.
+    #[prost(message, optional, tag = "8")]
+    pub annotator_selector: ::core::option::Option<AnnotatorSelector>,
 }
 /// The conversation source, which is a combination of transcript and audio.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConversationDataSource {
     /// The source of the conversation.
@@ -252,6 +266,7 @@ pub struct ConversationDataSource {
 /// Nested message and enum types in `ConversationDataSource`.
 pub mod conversation_data_source {
     /// The source of the conversation.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
         /// A Cloud Storage location specification for the audio and transcript.
@@ -263,6 +278,7 @@ pub mod conversation_data_source {
     }
 }
 /// A Cloud Storage source of conversation data.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GcsSource {
     /// Cloud Storage URI that points to a file that contains the conversation
@@ -275,6 +291,7 @@ pub struct GcsSource {
     pub transcript_uri: ::prost::alloc::string::String,
 }
 /// A Dialogflow source of conversation data.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DialogflowSource {
     /// Output only. The name of the Dialogflow conversation that this conversation
@@ -288,6 +305,7 @@ pub struct DialogflowSource {
     pub audio_uri: ::prost::alloc::string::String,
 }
 /// The result of an analysis.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnalysisResult {
     /// The time at which the analysis ended.
@@ -300,6 +318,7 @@ pub struct AnalysisResult {
 /// Nested message and enum types in `AnalysisResult`.
 pub mod analysis_result {
     /// Call-specific metadata created during analysis.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CallAnalysisMetadata {
         /// A list of call annotations that apply to this call.
@@ -331,6 +350,7 @@ pub mod analysis_result {
         pub issue_model_result: ::core::option::Option<super::IssueModelResult>,
     }
     /// Metadata discovered during analysis.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Metadata {
         /// Call-specific metadata created by the analysis.
@@ -339,6 +359,7 @@ pub mod analysis_result {
     }
 }
 /// Issue Modeling result on a conversation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IssueModelResult {
     /// Issue model that generates the result.
@@ -350,6 +371,7 @@ pub struct IssueModelResult {
     pub issues: ::prost::alloc::vec::Vec<IssueAssignment>,
 }
 /// One channel of conversation-level sentiment data.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConversationLevelSentiment {
     /// The channel of the audio that the data applies to.
@@ -360,6 +382,7 @@ pub struct ConversationLevelSentiment {
     pub sentiment_data: ::core::option::Option<SentimentData>,
 }
 /// Information about the issue.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IssueAssignment {
     /// Resource name of the assigned issue.
@@ -375,6 +398,7 @@ pub struct IssueAssignment {
     pub display_name: ::prost::alloc::string::String,
 }
 /// A piece of metadata that applies to a window of a call.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CallAnnotation {
     /// The channel of the audio where the annotation occurs. For single-channel
@@ -388,12 +412,13 @@ pub struct CallAnnotation {
     #[prost(message, optional, tag = "5")]
     pub annotation_end_boundary: ::core::option::Option<AnnotationBoundary>,
     /// The data in the annotation.
-    #[prost(oneof = "call_annotation::Data", tags = "10, 11, 12, 13, 15, 16, 17")]
+    #[prost(oneof = "call_annotation::Data", tags = "10, 11, 12, 13, 15, 16, 17, 18")]
     pub data: ::core::option::Option<call_annotation::Data>,
 }
 /// Nested message and enum types in `CallAnnotation`.
 pub mod call_annotation {
     /// The data in the annotation.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Data {
         /// Data specifying an interruption.
@@ -417,9 +442,13 @@ pub mod call_annotation {
         /// Data specifying a phrase match.
         #[prost(message, tag = "17")]
         PhraseMatchData(super::PhraseMatchData),
+        /// Data specifying an issue match.
+        #[prost(message, tag = "18")]
+        IssueMatchData(super::IssueMatchData),
     }
 }
 /// A point in a conversation that marks the start or the end of an annotation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnnotationBoundary {
     /// The index in the sequence of transcribed pieces of the conversation where
@@ -433,6 +462,7 @@ pub struct AnnotationBoundary {
 /// Nested message and enum types in `AnnotationBoundary`.
 pub mod annotation_boundary {
     /// A detailed boundary, which describes a more specific point.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum DetailedBoundary {
         /// The word index of this boundary with respect to the first word in the
@@ -444,6 +474,7 @@ pub mod annotation_boundary {
 /// The data for an entity annotation.
 /// Represents a phrase in the conversation that is a known entity, such
 /// as a person, an organization, or location.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Entity {
     /// The representative name for the entity.
@@ -580,6 +611,7 @@ pub mod entity {
 }
 /// The data for an intent.
 /// Represents a detected intent in the conversation, for example MAKES_PROMISE.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Intent {
     /// The unique identifier of the intent.
@@ -591,6 +623,7 @@ pub struct Intent {
 }
 /// The data for a matched phrase matcher.
 /// Represents information identifying a phrase matcher for a given match.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PhraseMatchData {
     /// The unique identifier (the resource name) of the phrase matcher.
@@ -602,6 +635,7 @@ pub struct PhraseMatchData {
 }
 /// The data for a Dialogflow intent.
 /// Represents a detected intent in the conversation, e.g. MAKES_PROMISE.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DialogflowIntent {
     /// The human-readable name of the intent.
@@ -609,16 +643,20 @@ pub struct DialogflowIntent {
     pub display_name: ::prost::alloc::string::String,
 }
 /// The data for an interruption annotation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InterruptionData {}
 /// The data for a silence annotation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SilenceData {}
 /// The data for a hold annotation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HoldData {}
 /// The data for an entity mention annotation.
 /// This represents a mention of an `Entity` in the conversation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EntityMentionData {
     /// The key of this entity in conversation entities.
@@ -673,6 +711,7 @@ pub mod entity_mention_data {
 /// Represents an intent match for a text segment in the conversation. A text
 /// segment can be part of a sentence, a complete sentence, or an utterance
 /// with multiple sentences.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IntentMatchData {
     /// The id of the matched intent.
@@ -681,6 +720,7 @@ pub struct IntentMatchData {
     pub intent_unique_id: ::prost::alloc::string::String,
 }
 /// The data for a sentiment annotation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SentimentData {
     /// A non-negative number from 0 to infinity which represents the abolute
@@ -691,7 +731,16 @@ pub struct SentimentData {
     #[prost(float, tag = "2")]
     pub score: f32,
 }
+/// The data for an issue match annotation.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct IssueMatchData {
+    /// Information about the issue's assignment.
+    #[prost(message, optional, tag = "1")]
+    pub issue_assignment: ::core::option::Option<IssueAssignment>,
+}
 /// The issue model resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IssueModel {
     /// Immutable. The resource name of the issue model.
@@ -721,6 +770,7 @@ pub struct IssueModel {
 /// Nested message and enum types in `IssueModel`.
 pub mod issue_model {
     /// Configs for the input data used to create the issue model.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct InputDataConfig {
         /// Medium of conversations used in training data. This field is being
@@ -783,6 +833,7 @@ pub mod issue_model {
     }
 }
 /// The issue resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Issue {
     /// Immutable. The resource name of the issue.
@@ -799,8 +850,13 @@ pub struct Issue {
     /// Output only. The most recent time that this issue was updated.
     #[prost(message, optional, tag = "4")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Resource names of the sample representative utterances that match to this
+    /// issue.
+    #[prost(string, repeated, tag = "6")]
+    pub sample_utterances: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Aggregated statistics about an issue model.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IssueModelLabelStats {
     /// Number of conversations the issue model has analyzed at this point in time.
@@ -820,6 +876,7 @@ pub struct IssueModelLabelStats {
 /// Nested message and enum types in `IssueModelLabelStats`.
 pub mod issue_model_label_stats {
     /// Aggregated statistics about an issue.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct IssueStats {
         /// Issue resource.
@@ -836,6 +893,7 @@ pub mod issue_model_label_stats {
     }
 }
 /// The phrase matcher resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PhraseMatcher {
     /// The resource name of the phrase matcher.
@@ -920,6 +978,7 @@ pub mod phrase_matcher {
     }
 }
 /// A message representing a rule in the phrase matcher.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PhraseMatchRuleGroup {
     /// Required. The type of this phrase match rule group.
@@ -973,6 +1032,7 @@ pub mod phrase_match_rule_group {
     }
 }
 /// The data for a phrase match rule.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PhraseMatchRule {
     /// Required. The phrase to be matched.
@@ -988,6 +1048,7 @@ pub struct PhraseMatchRule {
     pub config: ::core::option::Option<PhraseMatchRuleConfig>,
 }
 /// Configuration information of a phrase match rule.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PhraseMatchRuleConfig {
     /// The configuration of the phrase match rule.
@@ -997,6 +1058,7 @@ pub struct PhraseMatchRuleConfig {
 /// Nested message and enum types in `PhraseMatchRuleConfig`.
 pub mod phrase_match_rule_config {
     /// The configuration of the phrase match rule.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Config {
         /// The configuration for the exact match rule.
@@ -1005,6 +1067,7 @@ pub mod phrase_match_rule_config {
     }
 }
 /// Exact match configuration.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExactMatchConfig {
     /// Whether to consider case sensitivity when performing an exact match.
@@ -1012,6 +1075,7 @@ pub struct ExactMatchConfig {
     pub case_sensitive: bool,
 }
 /// The settings resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Settings {
     /// Immutable. The resource name of the settings resource.
@@ -1063,15 +1127,21 @@ pub struct Settings {
 /// Nested message and enum types in `Settings`.
 pub mod settings {
     /// Default configuration when creating Analyses in Insights.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AnalysisConfig {
         /// Percentage of conversations created using Dialogflow runtime integration
         /// to analyze automatically, between [0, 100].
         #[prost(double, tag = "1")]
         pub runtime_integration_analysis_percentage: f64,
+        /// To select the annotators to run and the phrase matchers to use
+        /// (if any). If not specified, all annotators will be run.
+        #[prost(message, optional, tag = "5")]
+        pub annotator_selector: ::core::option::Option<super::AnnotatorSelector>,
     }
 }
 /// An annotation that was generated during the customer and agent interaction.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RuntimeAnnotation {
     /// The unique identifier of the annotation.
@@ -1098,6 +1168,7 @@ pub struct RuntimeAnnotation {
 /// Nested message and enum types in `RuntimeAnnotation`.
 pub mod runtime_annotation {
     /// The data in the annotation.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Data {
         /// Agent Assist Article Suggestion data.
@@ -1119,6 +1190,7 @@ pub mod runtime_annotation {
 }
 /// The feedback that the customer has about a certain answer in the
 /// conversation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnswerFeedback {
     /// The correctness level of an answer.
@@ -1173,6 +1245,7 @@ pub mod answer_feedback {
     }
 }
 /// Agent Assist Article Suggestion data.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ArticleSuggestionData {
     /// Article title.
@@ -1205,6 +1278,7 @@ pub struct ArticleSuggestionData {
     pub source: ::prost::alloc::string::String,
 }
 /// Agent Assist frequently-asked-question answer data.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FaqAnswerData {
     /// The piece of text from the `source` knowledge base document.
@@ -1237,6 +1311,7 @@ pub struct FaqAnswerData {
     pub source: ::prost::alloc::string::String,
 }
 /// Agent Assist Smart Reply data.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SmartReplyData {
     /// The content of the reply.
@@ -1261,6 +1336,7 @@ pub struct SmartReplyData {
     pub query_record: ::prost::alloc::string::String,
 }
 /// Agent Assist Smart Compose suggestion data.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SmartComposeSuggestionData {
     /// The content of the suggestion.
@@ -1285,6 +1361,7 @@ pub struct SmartComposeSuggestionData {
     pub query_record: ::prost::alloc::string::String,
 }
 /// Dialogflow interaction data.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DialogflowInteractionData {
     /// The Dialogflow intent resource path. Format:
@@ -1297,6 +1374,7 @@ pub struct DialogflowInteractionData {
     pub confidence: f32,
 }
 /// The call participant speaking for a given utterance.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConversationParticipant {
     /// Deprecated. Use `dialogflow_participant_name` instead.
@@ -1356,6 +1434,7 @@ pub mod conversation_participant {
             }
         }
     }
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Participant {
         /// The name of the participant provided by Dialogflow. Format:
@@ -1368,6 +1447,7 @@ pub mod conversation_participant {
     }
 }
 /// The View resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct View {
     /// Immutable. The resource name of the view.
@@ -1388,7 +1468,49 @@ pub struct View {
     #[prost(string, tag = "5")]
     pub value: ::prost::alloc::string::String,
 }
+/// Selector of all available annotators and phrase matchers to run.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AnnotatorSelector {
+    /// Whether to run the interruption annotator.
+    #[prost(bool, tag = "1")]
+    pub run_interruption_annotator: bool,
+    /// Whether to run the silence annotator.
+    #[prost(bool, tag = "2")]
+    pub run_silence_annotator: bool,
+    /// Whether to run the active phrase matcher annotator(s).
+    #[prost(bool, tag = "3")]
+    pub run_phrase_matcher_annotator: bool,
+    /// The list of phrase matchers to run. If not provided, all active phrase
+    /// matchers will be used. If inactive phrase matchers are provided, they will
+    /// not be used. Phrase matchers will be run only if
+    /// run_phrase_matcher_annotator is set to true. Format:
+    /// projects/{project}/locations/{location}/phraseMatchers/{phrase_matcher}
+    #[prost(string, repeated, tag = "4")]
+    pub phrase_matchers: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Whether to run the sentiment annotator.
+    #[prost(bool, tag = "5")]
+    pub run_sentiment_annotator: bool,
+    /// Whether to run the entity annotator.
+    #[prost(bool, tag = "6")]
+    pub run_entity_annotator: bool,
+    /// Whether to run the intent annotator.
+    #[prost(bool, tag = "7")]
+    pub run_intent_annotator: bool,
+    /// Whether to run the issue model annotator. A model should have already been
+    /// deployed for this to take effect.
+    #[prost(bool, tag = "8")]
+    pub run_issue_model_annotator: bool,
+    /// The issue model to run. If not provided, the most recently deployed topic
+    /// model will be used. The provided issue model will only be used for
+    /// inference if the issue model is deployed and if run_issue_model_annotator
+    /// is set to true. If more than one issue model is provided, only the first
+    /// provided issue model will be used for inference.
+    #[prost(string, repeated, tag = "10")]
+    pub issue_models: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
 /// The request for calculating conversation statistics.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CalculateStatsRequest {
     /// Required. The location of the conversations.
@@ -1400,6 +1522,7 @@ pub struct CalculateStatsRequest {
     pub filter: ::prost::alloc::string::String,
 }
 /// The response for calculating conversation statistics.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CalculateStatsResponse {
     /// The average duration of all conversations. The average is calculated using
@@ -1450,6 +1573,7 @@ pub struct CalculateStatsResponse {
 /// Nested message and enum types in `CalculateStatsResponse`.
 pub mod calculate_stats_response {
     /// A time series representing conversations over time.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct TimeSeries {
         /// The duration of each interval.
@@ -1464,6 +1588,7 @@ pub mod calculate_stats_response {
     /// Nested message and enum types in `TimeSeries`.
     pub mod time_series {
         /// A single interval in a time series.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Interval {
             /// The start time of this interval.
@@ -1476,6 +1601,7 @@ pub mod calculate_stats_response {
     }
 }
 /// Metadata for a create analysis operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateAnalysisOperationMetadata {
     /// Output only. The time the operation was created.
@@ -1487,8 +1613,12 @@ pub struct CreateAnalysisOperationMetadata {
     /// Output only. The Conversation that this Analysis Operation belongs to.
     #[prost(string, tag = "3")]
     pub conversation: ::prost::alloc::string::String,
+    /// Output only. The annotator selector used for the analysis (if any).
+    #[prost(message, optional, tag = "4")]
+    pub annotator_selector: ::core::option::Option<AnnotatorSelector>,
 }
 /// Request to create a conversation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateConversationRequest {
     /// Required. The parent resource of the conversation.
@@ -1507,6 +1637,7 @@ pub struct CreateConversationRequest {
     pub conversation_id: ::prost::alloc::string::String,
 }
 /// Request to list conversations.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListConversationsRequest {
     /// Required. The parent resource of the conversation.
@@ -1532,6 +1663,7 @@ pub struct ListConversationsRequest {
     pub view: i32,
 }
 /// The response of listing conversations.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListConversationsResponse {
     /// The conversations that match the request.
@@ -1544,6 +1676,7 @@ pub struct ListConversationsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request to get a conversation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetConversationRequest {
     /// Required. The name of the conversation to get.
@@ -1554,6 +1687,7 @@ pub struct GetConversationRequest {
     pub view: i32,
 }
 /// The request to update a conversation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateConversationRequest {
     /// Required. The new values for the conversation.
@@ -1564,6 +1698,7 @@ pub struct UpdateConversationRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The request to delete a conversation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteConversationRequest {
     /// Required. The name of the conversation to delete.
@@ -1575,7 +1710,97 @@ pub struct DeleteConversationRequest {
     #[prost(bool, tag = "2")]
     pub force: bool,
 }
+/// The request to ingest conversations.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct IngestConversationsRequest {
+    /// Required. The parent resource for new conversations.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Configuration that applies to all conversations.
+    #[prost(message, optional, tag = "4")]
+    pub conversation_config: ::core::option::Option<
+        ingest_conversations_request::ConversationConfig,
+    >,
+    /// Configuration for an external data store containing objects that will
+    /// be converted to conversations.
+    #[prost(oneof = "ingest_conversations_request::Source", tags = "2")]
+    pub source: ::core::option::Option<ingest_conversations_request::Source>,
+    /// Configuration for converting individual `source` objects to conversations.
+    #[prost(oneof = "ingest_conversations_request::ObjectConfig", tags = "3")]
+    pub object_config: ::core::option::Option<
+        ingest_conversations_request::ObjectConfig,
+    >,
+}
+/// Nested message and enum types in `IngestConversationsRequest`.
+pub mod ingest_conversations_request {
+    /// Configuration for Cloud Storage bucket sources.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct GcsSource {
+        /// Required. The Cloud Storage bucket containing source objects.
+        #[prost(string, tag = "1")]
+        pub bucket_uri: ::prost::alloc::string::String,
+    }
+    /// Configuration for processing transcript objects.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct TranscriptObjectConfig {
+        /// Required. The medium transcript objects represent.
+        #[prost(enumeration = "super::conversation::Medium", tag = "1")]
+        pub medium: i32,
+    }
+    /// Configuration that applies to all conversations.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ConversationConfig {
+        /// An opaque, user-specified string representing the human agent who handled
+        /// the conversations.
+        #[prost(string, tag = "1")]
+        pub agent_id: ::prost::alloc::string::String,
+    }
+    /// Configuration for an external data store containing objects that will
+    /// be converted to conversations.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Source {
+        /// A cloud storage bucket source.
+        #[prost(message, tag = "2")]
+        GcsSource(GcsSource),
+    }
+    /// Configuration for converting individual `source` objects to conversations.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum ObjectConfig {
+        /// Configuration for when `source` contains conversation transcripts.
+        #[prost(message, tag = "3")]
+        TranscriptObjectConfig(TranscriptObjectConfig),
+    }
+}
+/// The metadata for an IngestConversations operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct IngestConversationsMetadata {
+    /// Output only. The time the operation was created.
+    #[prost(message, optional, tag = "1")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The time the operation finished running.
+    #[prost(message, optional, tag = "2")]
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The original request for ingest.
+    #[prost(message, optional, tag = "3")]
+    pub request: ::core::option::Option<IngestConversationsRequest>,
+    /// Output only. Partial errors during ingest operation that might cause the operation
+    /// output to be incomplete.
+    #[prost(message, repeated, tag = "4")]
+    pub partial_errors: ::prost::alloc::vec::Vec<super::super::super::rpc::Status>,
+}
+/// The response to an IngestConversations operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct IngestConversationsResponse {}
 /// The request to create an analysis.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateAnalysisRequest {
     /// Required. The parent resource of the analysis.
@@ -1586,6 +1811,7 @@ pub struct CreateAnalysisRequest {
     pub analysis: ::core::option::Option<Analysis>,
 }
 /// The request to list analyses.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAnalysesRequest {
     /// Required. The parent resource of the analyses.
@@ -1608,6 +1834,7 @@ pub struct ListAnalysesRequest {
     pub filter: ::prost::alloc::string::String,
 }
 /// The response to list analyses.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAnalysesResponse {
     /// The analyses that match the request.
@@ -1619,6 +1846,7 @@ pub struct ListAnalysesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request to get an analysis.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAnalysisRequest {
     /// Required. The name of the analysis to get.
@@ -1626,13 +1854,69 @@ pub struct GetAnalysisRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request to delete an analysis.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteAnalysisRequest {
     /// Required. The name of the analysis to delete.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
+/// The request to analyze conversations in bulk.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BulkAnalyzeConversationsRequest {
+    /// Required. The parent resource to create analyses in.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. Filter used to select the subset of conversations to analyze.
+    #[prost(string, tag = "2")]
+    pub filter: ::prost::alloc::string::String,
+    /// Required. Percentage of selected conversation to analyze, between
+    /// [0, 100].
+    #[prost(float, tag = "3")]
+    pub analysis_percentage: f32,
+    /// To select the annotators to run and the phrase matchers to use
+    /// (if any). If not specified, all annotators will be run.
+    #[prost(message, optional, tag = "8")]
+    pub annotator_selector: ::core::option::Option<AnnotatorSelector>,
+}
+/// The metadata for a bulk analyze conversations operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BulkAnalyzeConversationsMetadata {
+    /// The time the operation was created.
+    #[prost(message, optional, tag = "1")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The time the operation finished running.
+    #[prost(message, optional, tag = "2")]
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The original request for bulk analyze.
+    #[prost(message, optional, tag = "3")]
+    pub request: ::core::option::Option<BulkAnalyzeConversationsRequest>,
+    /// The number of requested analyses that have completed successfully so far.
+    #[prost(int32, tag = "4")]
+    pub completed_analyses_count: i32,
+    /// The number of requested analyses that have failed so far.
+    #[prost(int32, tag = "5")]
+    pub failed_analyses_count: i32,
+    /// Total number of analyses requested. Computed by the number of conversations
+    /// returned by `filter` multiplied by `analysis_percentage` in the request.
+    #[prost(int32, tag = "6")]
+    pub total_requested_analyses_count: i32,
+}
+/// The response for a bulk analyze conversations operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BulkAnalyzeConversationsResponse {
+    /// Count of successful analyses.
+    #[prost(int32, tag = "1")]
+    pub successful_analysis_count: i32,
+    /// Count of failed analyses.
+    #[prost(int32, tag = "2")]
+    pub failed_analysis_count: i32,
+}
 /// The request to export insights.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportInsightsDataRequest {
     /// Required. The parent resource to export data from.
@@ -1657,6 +1941,7 @@ pub struct ExportInsightsDataRequest {
 /// Nested message and enum types in `ExportInsightsDataRequest`.
 pub mod export_insights_data_request {
     /// A BigQuery Table Reference.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct BigQueryDestination {
         /// A project ID or number. If specified, then export will attempt to
@@ -1711,6 +1996,7 @@ pub mod export_insights_data_request {
         }
     }
     /// Exporter destination.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Destination {
         /// Specified if sink is a BigQuery table.
@@ -1719,6 +2005,7 @@ pub mod export_insights_data_request {
     }
 }
 /// Metadata for an export insights operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportInsightsDataMetadata {
     /// Output only. The time the operation was created.
@@ -1736,9 +2023,11 @@ pub struct ExportInsightsDataMetadata {
     pub partial_errors: ::prost::alloc::vec::Vec<super::super::super::rpc::Status>,
 }
 /// Response for an export insights operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportInsightsDataResponse {}
 /// The request to create an issue model.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateIssueModelRequest {
     /// Required. The parent resource of the issue model.
@@ -1749,6 +2038,7 @@ pub struct CreateIssueModelRequest {
     pub issue_model: ::core::option::Option<IssueModel>,
 }
 /// Metadata for creating an issue model.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateIssueModelMetadata {
     /// Output only. The time the operation was created.
@@ -1762,6 +2052,7 @@ pub struct CreateIssueModelMetadata {
     pub request: ::core::option::Option<CreateIssueModelRequest>,
 }
 /// The request to update an issue model.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateIssueModelRequest {
     /// Required. The new values for the issue model.
@@ -1772,6 +2063,7 @@ pub struct UpdateIssueModelRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request to list issue models.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListIssueModelsRequest {
     /// Required. The parent resource of the issue model.
@@ -1779,6 +2071,7 @@ pub struct ListIssueModelsRequest {
     pub parent: ::prost::alloc::string::String,
 }
 /// The response of listing issue models.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListIssueModelsResponse {
     /// The issue models that match the request.
@@ -1786,6 +2079,7 @@ pub struct ListIssueModelsResponse {
     pub issue_models: ::prost::alloc::vec::Vec<IssueModel>,
 }
 /// The request to get an issue model.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetIssueModelRequest {
     /// Required. The name of the issue model to get.
@@ -1793,6 +2087,7 @@ pub struct GetIssueModelRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request to delete an issue model.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteIssueModelRequest {
     /// Required. The name of the issue model to delete.
@@ -1800,6 +2095,7 @@ pub struct DeleteIssueModelRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Metadata for deleting an issue model.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteIssueModelMetadata {
     /// Output only. The time the operation was created.
@@ -1813,6 +2109,7 @@ pub struct DeleteIssueModelMetadata {
     pub request: ::core::option::Option<DeleteIssueModelRequest>,
 }
 /// The request to deploy an issue model.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeployIssueModelRequest {
     /// Required. The issue model to deploy.
@@ -1820,9 +2117,11 @@ pub struct DeployIssueModelRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The response to deploy an issue model.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeployIssueModelResponse {}
 /// Metadata for deploying an issue model.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeployIssueModelMetadata {
     /// Output only. The time the operation was created.
@@ -1836,6 +2135,7 @@ pub struct DeployIssueModelMetadata {
     pub request: ::core::option::Option<DeployIssueModelRequest>,
 }
 /// The request to undeploy an issue model.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UndeployIssueModelRequest {
     /// Required. The issue model to undeploy.
@@ -1843,9 +2143,11 @@ pub struct UndeployIssueModelRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The response to undeploy an issue model.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UndeployIssueModelResponse {}
 /// Metadata for undeploying an issue model.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UndeployIssueModelMetadata {
     /// Output only. The time the operation was created.
@@ -1859,6 +2161,7 @@ pub struct UndeployIssueModelMetadata {
     pub request: ::core::option::Option<UndeployIssueModelRequest>,
 }
 /// The request to get an issue.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetIssueRequest {
     /// Required. The name of the issue to get.
@@ -1866,6 +2169,7 @@ pub struct GetIssueRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request to list issues.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListIssuesRequest {
     /// Required. The parent resource of the issue.
@@ -1873,6 +2177,7 @@ pub struct ListIssuesRequest {
     pub parent: ::prost::alloc::string::String,
 }
 /// The response of listing issues.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListIssuesResponse {
     /// The issues that match the request.
@@ -1880,6 +2185,7 @@ pub struct ListIssuesResponse {
     pub issues: ::prost::alloc::vec::Vec<Issue>,
 }
 /// The request to update an issue.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateIssueRequest {
     /// Required. The new values for the issue.
@@ -1889,7 +2195,16 @@ pub struct UpdateIssueRequest {
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
+/// The request to delete an issue.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteIssueRequest {
+    /// Required. The name of the issue to delete.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
 /// Request to get statistics of an issue model.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CalculateIssueModelStatsRequest {
     /// Required. The resource name of the issue model to query against.
@@ -1897,6 +2212,7 @@ pub struct CalculateIssueModelStatsRequest {
     pub issue_model: ::prost::alloc::string::String,
 }
 /// Response of querying an issue model's statistics.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CalculateIssueModelStatsResponse {
     /// The latest label statistics for the queried issue model. Includes results
@@ -1905,6 +2221,7 @@ pub struct CalculateIssueModelStatsResponse {
     pub current_stats: ::core::option::Option<IssueModelLabelStats>,
 }
 /// Request to create a phrase matcher.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreatePhraseMatcherRequest {
     /// Required. The parent resource of the phrase matcher. Required. The location to create
@@ -1918,6 +2235,7 @@ pub struct CreatePhraseMatcherRequest {
     pub phrase_matcher: ::core::option::Option<PhraseMatcher>,
 }
 /// Request to list phrase matchers.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPhraseMatchersRequest {
     /// Required. The parent resource of the phrase matcher.
@@ -1940,6 +2258,7 @@ pub struct ListPhraseMatchersRequest {
     pub filter: ::prost::alloc::string::String,
 }
 /// The response of listing phrase matchers.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPhraseMatchersResponse {
     /// The phrase matchers that match the request.
@@ -1951,6 +2270,7 @@ pub struct ListPhraseMatchersResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request to get a a phrase matcher.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetPhraseMatcherRequest {
     /// Required. The name of the phrase matcher to get.
@@ -1958,6 +2278,7 @@ pub struct GetPhraseMatcherRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request to delete a phrase matcher.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeletePhraseMatcherRequest {
     /// Required. The name of the phrase matcher to delete.
@@ -1965,6 +2286,7 @@ pub struct DeletePhraseMatcherRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request to update a phrase matcher.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdatePhraseMatcherRequest {
     /// Required. The new values for the phrase matcher.
@@ -1975,6 +2297,7 @@ pub struct UpdatePhraseMatcherRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The request to get project-level settings.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetSettingsRequest {
     /// Required. The name of the settings resource to get.
@@ -1982,6 +2305,7 @@ pub struct GetSettingsRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request to update project-level settings.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateSettingsRequest {
     /// Required. The new settings values.
@@ -1992,6 +2316,7 @@ pub struct UpdateSettingsRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The request to create a view.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateViewRequest {
     /// Required. The parent resource of the view. Required. The location to create
@@ -2005,6 +2330,7 @@ pub struct CreateViewRequest {
     pub view: ::core::option::Option<View>,
 }
 /// The request to get a view.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetViewRequest {
     /// Required. The name of the view to get.
@@ -2012,6 +2338,7 @@ pub struct GetViewRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request to list views.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListViewsRequest {
     /// Required. The parent resource of the views.
@@ -2030,6 +2357,7 @@ pub struct ListViewsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// The response of listing views.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListViewsResponse {
     /// The views that match the request.
@@ -2041,6 +2369,7 @@ pub struct ListViewsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request to update a view.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateViewRequest {
     /// Required. The new view.
@@ -2051,6 +2380,7 @@ pub struct UpdateViewRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The request to delete a view.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteViewRequest {
     /// Required. The name of the view to delete.
@@ -2338,6 +2668,53 @@ pub mod contact_center_insights_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
+        /// Analyzes multiple conversations in a single request.
+        pub async fn bulk_analyze_conversations(
+            &mut self,
+            request: impl tonic::IntoRequest<super::BulkAnalyzeConversationsRequest>,
+        ) -> Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/BulkAnalyzeConversations",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Imports conversations and processes them according to the user's
+        /// configuration.
+        pub async fn ingest_conversations(
+            &mut self,
+            request: impl tonic::IntoRequest<super::IngestConversationsRequest>,
+        ) -> Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/IngestConversations",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
         /// Export insights data to a destination defined in the request body.
         pub async fn export_insights_data(
             &mut self,
@@ -2572,6 +2949,26 @@ pub mod contact_center_insights_client {
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/UpdateIssue",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Deletes an issue.
+        pub async fn delete_issue(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteIssueRequest>,
+        ) -> Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/DeleteIssue",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }

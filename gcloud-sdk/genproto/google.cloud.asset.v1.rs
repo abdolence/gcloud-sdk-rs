@@ -1,5 +1,6 @@
 /// An asset in Google Cloud and its temporal metadata, including the time window
 /// when it was observed and its status during that window.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TemporalAsset {
     /// The time window when the asset data and state was observed.
@@ -63,6 +64,7 @@ pub mod temporal_asset {
     }
 }
 /// A time window specified by its `start_time` and `end_time`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TimeWindow {
     /// Start time of the time window (exclusive).
@@ -82,6 +84,7 @@ pub struct TimeWindow {
 /// See [Supported asset
 /// types](<https://cloud.google.com/asset-inventory/docs/supported-asset-types>)
 /// for more information.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Asset {
     /// The last update timestamp of an asset. update_time is updated when
@@ -158,6 +161,7 @@ pub struct Asset {
 pub mod asset {
     /// A representation of an [access
     /// policy](<https://cloud.google.com/access-context-manager/docs/overview#access-policies>).
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum AccessContextPolicy {
         /// Please also refer to the [access policy user
@@ -181,6 +185,7 @@ pub mod asset {
     }
 }
 /// A representation of a Google Cloud resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Resource {
     /// The API version. Example: `v1`
@@ -235,6 +240,7 @@ pub struct Resource {
 /// backward-compatibility. The server will never populate this message in
 /// responses.
 /// The detailed related assets with the `relationship_type`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RelatedAssets {
     /// The detailed relationship attributes.
@@ -249,6 +255,7 @@ pub struct RelatedAssets {
 /// responses.
 /// The relationship attributes which include  `type`, `source_resource_type`,
 /// `target_resource_type` and `action`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RelationshipAttributes {
     /// The unique identifier of the relationship type. Example:
@@ -273,6 +280,7 @@ pub struct RelationshipAttributes {
 /// See [Supported asset
 /// types](<https://cloud.google.com/asset-inventory/docs/supported-asset-types>)
 /// for more information.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RelatedAsset {
     /// The full name of the asset. Example:
@@ -305,6 +313,7 @@ pub struct RelatedAsset {
 }
 /// A result of Resource Search, containing information of a cloud resource.
 /// Next ID: 31
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResourceSearchResult {
     /// The full resource name of this resource. Example:
@@ -608,6 +617,7 @@ pub struct ResourceSearchResult {
 }
 /// Resource representation as defined by the corresponding service providing the
 /// resource for a given API version.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VersionedResource {
     /// API version of the resource.
@@ -635,6 +645,7 @@ pub struct VersionedResource {
 }
 /// Attached resource representation, which is defined by the corresponding
 /// service provider. It represents an attached resource's payload.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AttachedResource {
     /// The type of this attached resource.
@@ -653,6 +664,7 @@ pub struct AttachedResource {
     pub versioned_resources: ::prost::alloc::vec::Vec<VersionedResource>,
 }
 /// The related resources of the primary resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RelatedResources {
     /// The detailed related resources of the primary resource.
@@ -660,6 +672,7 @@ pub struct RelatedResources {
     pub related_resources: ::prost::alloc::vec::Vec<RelatedResource>,
 }
 /// The detailed related resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RelatedResource {
     /// The type of the asset. Example: `compute.googleapis.com/Instance`
@@ -671,6 +684,7 @@ pub struct RelatedResource {
     pub full_resource_name: ::prost::alloc::string::String,
 }
 /// A result of IAM Policy search, containing information of an IAM policy.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IamPolicySearchResult {
     /// The full resource name of the resource associated with this IAM policy.
@@ -750,6 +764,7 @@ pub struct IamPolicySearchResult {
 /// Nested message and enum types in `IamPolicySearchResult`.
 pub mod iam_policy_search_result {
     /// Explanation about the IAM policy search result.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Explanation {
         /// The map from roles to their included permissions that match the
@@ -768,6 +783,7 @@ pub mod iam_policy_search_result {
     /// Nested message and enum types in `Explanation`.
     pub mod explanation {
         /// IAM permissions
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Permissions {
             /// A list of permissions. A sample permission string: `compute.disk.get`.
@@ -778,6 +794,7 @@ pub mod iam_policy_search_result {
 }
 /// Represents the detailed state of an entity under analysis, such as a
 /// resource, an identity or an access.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IamPolicyAnalysisState {
     /// The Google standard error code that best describes the state.
@@ -793,6 +810,7 @@ pub struct IamPolicyAnalysisState {
     pub cause: ::prost::alloc::string::String,
 }
 /// The Condition evaluation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConditionEvaluation {
     /// The evaluation result.
@@ -843,6 +861,7 @@ pub mod condition_evaluation {
 }
 /// IAM Policy analysis result, consisting of one IAM policy binding and derived
 /// access control lists.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IamPolicyAnalysisResult {
     /// The [full resource
@@ -871,6 +890,7 @@ pub struct IamPolicyAnalysisResult {
 /// Nested message and enum types in `IamPolicyAnalysisResult`.
 pub mod iam_policy_analysis_result {
     /// A Google Cloud resource under analysis.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Resource {
         /// The [full resource
@@ -882,6 +902,7 @@ pub mod iam_policy_analysis_result {
         pub analysis_state: ::core::option::Option<super::IamPolicyAnalysisState>,
     }
     /// An IAM role or permission under analysis.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Access {
         /// The analysis state of this access.
@@ -892,6 +913,7 @@ pub mod iam_policy_analysis_result {
     }
     /// Nested message and enum types in `Access`.
     pub mod access {
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum OneofAccess {
             /// The role.
@@ -903,6 +925,7 @@ pub mod iam_policy_analysis_result {
         }
     }
     /// An identity under analysis.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Identity {
         /// The identity name in any form of members appear in
@@ -923,6 +946,7 @@ pub mod iam_policy_analysis_result {
         pub analysis_state: ::core::option::Option<super::IamPolicyAnalysisState>,
     }
     /// A directional edge.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Edge {
         /// The source node of the edge. For example, it could be a full resource
@@ -949,6 +973,7 @@ pub mod iam_policy_analysis_result {
     /// This will result in the following access control lists:
     /// - AccessControlList 1: [R1, R2], [P1, P2]
     /// - AccessControlList 2: [R2, R3], \[P3\]
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AccessControlList {
         /// The resources that match one of the following conditions:
@@ -974,6 +999,7 @@ pub mod iam_policy_analysis_result {
         pub condition_evaluation: ::core::option::Option<super::ConditionEvaluation>,
     }
     /// The identities and group edges.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct IdentityList {
         /// Only the identities that match one of the following conditions will be
@@ -995,6 +1021,7 @@ pub mod iam_policy_analysis_result {
 }
 /// Represents the metadata of the longrunning operation for the
 /// AnalyzeIamPolicyLongrunning rpc.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnalyzeIamPolicyLongrunningMetadata {
     /// Output only. The time the operation was created.
@@ -1002,6 +1029,7 @@ pub struct AnalyzeIamPolicyLongrunningMetadata {
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Export asset request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportAssetsRequest {
     /// Required. The relative name of the root asset. This can only be an
@@ -1065,6 +1093,7 @@ pub struct ExportAssetsRequest {
 /// The export asset response. This message is returned by the
 /// \[google.longrunning.Operations.GetOperation][google.longrunning.Operations.GetOperation\] method in the returned
 /// \[google.longrunning.Operation.response][google.longrunning.Operation.response\] field.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportAssetsResponse {
     /// Time the snapshot was taken.
@@ -1082,6 +1111,7 @@ pub struct ExportAssetsResponse {
     pub output_result: ::core::option::Option<OutputResult>,
 }
 /// ListAssets request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAssetsRequest {
     /// Required. Name of the organization, folder, or project the assets belong to. Format:
@@ -1150,6 +1180,7 @@ pub struct ListAssetsRequest {
     pub relationship_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// ListAssets response.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAssetsResponse {
     /// Time the snapshot was taken.
@@ -1165,6 +1196,7 @@ pub struct ListAssetsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Batch get assets history request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchGetAssetsHistoryRequest {
     /// Required. The relative name of the root asset. It can only be an
@@ -1213,6 +1245,7 @@ pub struct BatchGetAssetsHistoryRequest {
     pub relationship_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Batch get assets history response.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchGetAssetsHistoryResponse {
     /// A list of assets with valid time windows.
@@ -1220,6 +1253,7 @@ pub struct BatchGetAssetsHistoryResponse {
     pub assets: ::prost::alloc::vec::Vec<TemporalAsset>,
 }
 /// Create asset feed request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateFeedRequest {
     /// Required. The name of the project/folder/organization where this feed
@@ -1242,6 +1276,7 @@ pub struct CreateFeedRequest {
     pub feed: ::core::option::Option<Feed>,
 }
 /// Get asset feed request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetFeedRequest {
     /// Required. The name of the Feed and it must be in the format of:
@@ -1252,6 +1287,7 @@ pub struct GetFeedRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// List asset feeds request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFeedsRequest {
     /// Required. The parent project/folder/organization whose feeds are to be
@@ -1260,6 +1296,7 @@ pub struct ListFeedsRequest {
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFeedsResponse {
     /// A list of feeds.
@@ -1267,6 +1304,7 @@ pub struct ListFeedsResponse {
     pub feeds: ::prost::alloc::vec::Vec<Feed>,
 }
 /// Update asset feed request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateFeedRequest {
     /// Required. The new values of feed details. It must match an existing feed and the
@@ -1282,6 +1320,7 @@ pub struct UpdateFeedRequest {
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteFeedRequest {
     /// Required. The name of the feed and it must be in the format of:
@@ -1292,6 +1331,7 @@ pub struct DeleteFeedRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Output configuration for export assets destination.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OutputConfig {
     /// Asset export destination.
@@ -1301,6 +1341,7 @@ pub struct OutputConfig {
 /// Nested message and enum types in `OutputConfig`.
 pub mod output_config {
     /// Asset export destination.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Destination {
         /// Destination on Cloud Storage.
@@ -1313,6 +1354,7 @@ pub mod output_config {
     }
 }
 /// Output result of export assets.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OutputResult {
     /// Asset export result.
@@ -1322,6 +1364,7 @@ pub struct OutputResult {
 /// Nested message and enum types in `OutputResult`.
 pub mod output_result {
     /// Asset export result.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Result {
         /// Export result on Cloud Storage.
@@ -1330,6 +1373,7 @@ pub mod output_result {
     }
 }
 /// A Cloud Storage output result.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GcsOutputResult {
     /// List of uris of the Cloud Storage objects. Example:
@@ -1338,6 +1382,7 @@ pub struct GcsOutputResult {
     pub uris: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// A Cloud Storage location.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GcsDestination {
     /// Required.
@@ -1347,6 +1392,7 @@ pub struct GcsDestination {
 /// Nested message and enum types in `GcsDestination`.
 pub mod gcs_destination {
     /// Required.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ObjectUri {
         /// The uri of the Cloud Storage object. It's the same uri that is used by
@@ -1374,6 +1420,7 @@ pub mod gcs_destination {
     }
 }
 /// A BigQuery destination for exporting assets to.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BigQueryDestination {
     /// Required. The BigQuery dataset in format
@@ -1447,6 +1494,7 @@ pub struct BigQueryDestination {
     pub separate_tables_per_asset_type: bool,
 }
 /// Specifications of BigQuery partitioned table as export destination.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PartitionSpec {
     /// The partition key for BigQuery partitioned table.
@@ -1502,6 +1550,7 @@ pub mod partition_spec {
     }
 }
 /// A Pub/Sub destination.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PubsubDestination {
     /// The name of the Pub/Sub topic to publish to.
@@ -1510,6 +1559,7 @@ pub struct PubsubDestination {
     pub topic: ::prost::alloc::string::String,
 }
 /// Output configuration for asset feed destination.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FeedOutputConfig {
     /// Asset feed destination.
@@ -1519,6 +1569,7 @@ pub struct FeedOutputConfig {
 /// Nested message and enum types in `FeedOutputConfig`.
 pub mod feed_output_config {
     /// Asset feed destination.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Destination {
         /// Destination on Pub/Sub.
@@ -1531,6 +1582,7 @@ pub mod feed_output_config {
 /// The asset feed must be created within a project, organization, or
 /// folder. Supported destinations are:
 /// Pub/Sub topics.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Feed {
     /// Required. The format will be
@@ -1602,6 +1654,7 @@ pub struct Feed {
     pub relationship_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Search all resources request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchAllResourcesRequest {
     /// Required. A scope can be a project, a folder, or an organization. The search is
@@ -1759,6 +1812,7 @@ pub struct SearchAllResourcesRequest {
     pub read_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Search all resources response.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchAllResourcesResponse {
     /// A list of Resources that match the search query. It contains the resource
@@ -1772,6 +1826,7 @@ pub struct SearchAllResourcesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Search all IAM policies request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchAllIamPoliciesRequest {
     /// Required. A scope can be a project, a folder, or an organization. The search is
@@ -1876,6 +1931,7 @@ pub struct SearchAllIamPoliciesRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// Search all IAM policies response.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchAllIamPoliciesResponse {
     /// A list of IamPolicy that match the search query. Related information such
@@ -1889,6 +1945,7 @@ pub struct SearchAllIamPoliciesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// IAM policy analysis query message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IamPolicyAnalysisQuery {
     /// Required. The relative name of the root asset. Only resources and IAM policies within
@@ -1934,6 +1991,7 @@ pub mod iam_policy_analysis_query {
     /// Specifies the resource to analyze for access policies, which may be set
     /// directly on the resource, or on ancestors such as organizations, folders or
     /// projects.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ResourceSelector {
         /// Required. The [full resource name]
@@ -1946,6 +2004,7 @@ pub mod iam_policy_analysis_query {
     /// Specifies an identity for which to determine resource access, based on
     /// roles assigned either directly to them or to the groups they belong to,
     /// directly or indirectly.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct IdentitySelector {
         /// Required. The identity appear in the form of principals in
@@ -1968,6 +2027,7 @@ pub mod iam_policy_analysis_query {
     /// values are specified, results will include roles or permissions matching
     /// any of them. The total number of roles and permissions should be equal or
     /// less than 10.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AccessSelector {
         /// Optional. The roles to appear in result.
@@ -1978,6 +2038,7 @@ pub mod iam_policy_analysis_query {
         pub permissions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
     /// Contains query options.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Options {
         /// Optional. If true, the identities section of the result will expand any
@@ -2076,6 +2137,7 @@ pub mod iam_policy_analysis_query {
         pub analyze_service_account_impersonation: bool,
     }
     /// The IAM conditions context.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ConditionContext {
         /// The IAM conditions time context.
@@ -2085,6 +2147,7 @@ pub mod iam_policy_analysis_query {
     /// Nested message and enum types in `ConditionContext`.
     pub mod condition_context {
         /// The IAM conditions time context.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum TimeContext {
             /// The hypothetical access timestamp to evaluate IAM conditions. Note that
@@ -2096,6 +2159,7 @@ pub mod iam_policy_analysis_query {
     }
 }
 /// A request message for \[AssetService.AnalyzeIamPolicy][google.cloud.asset.v1.AssetService.AnalyzeIamPolicy\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnalyzeIamPolicyRequest {
     /// Required. The request query.
@@ -2133,6 +2197,7 @@ pub struct AnalyzeIamPolicyRequest {
     pub execution_timeout: ::core::option::Option<::prost_types::Duration>,
 }
 /// A response message for \[AssetService.AnalyzeIamPolicy][google.cloud.asset.v1.AssetService.AnalyzeIamPolicy\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnalyzeIamPolicyResponse {
     /// The main analysis that matches the original request.
@@ -2156,6 +2221,7 @@ pub struct AnalyzeIamPolicyResponse {
 /// Nested message and enum types in `AnalyzeIamPolicyResponse`.
 pub mod analyze_iam_policy_response {
     /// An analysis message to group the query and results.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct IamPolicyAnalysis {
         /// The analysis query.
@@ -2175,6 +2241,7 @@ pub mod analyze_iam_policy_response {
     }
 }
 /// Output configuration for export IAM policy analysis destination.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IamPolicyAnalysisOutputConfig {
     /// IAM policy analysis export destination.
@@ -2186,6 +2253,7 @@ pub struct IamPolicyAnalysisOutputConfig {
 /// Nested message and enum types in `IamPolicyAnalysisOutputConfig`.
 pub mod iam_policy_analysis_output_config {
     /// A Cloud Storage location.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct GcsDestination {
         /// Required. The uri of the Cloud Storage object. It's the same uri that is used by
@@ -2201,6 +2269,7 @@ pub mod iam_policy_analysis_output_config {
         pub uri: ::prost::alloc::string::String,
     }
     /// A BigQuery destination.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct BigQueryDestination {
         /// Required. The BigQuery dataset in format "projects/projectId/datasets/datasetId",
@@ -2277,6 +2346,7 @@ pub mod iam_policy_analysis_output_config {
         }
     }
     /// IAM policy analysis export destination.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Destination {
         /// Destination on Cloud Storage.
@@ -2288,6 +2358,7 @@ pub mod iam_policy_analysis_output_config {
     }
 }
 /// A request message for \[AssetService.AnalyzeIamPolicyLongrunning][google.cloud.asset.v1.AssetService.AnalyzeIamPolicyLongrunning\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnalyzeIamPolicyLongrunningRequest {
     /// Required. The request query.
@@ -2316,9 +2387,11 @@ pub struct AnalyzeIamPolicyLongrunningRequest {
     pub output_config: ::core::option::Option<IamPolicyAnalysisOutputConfig>,
 }
 /// A response message for \[AssetService.AnalyzeIamPolicyLongrunning][google.cloud.asset.v1.AssetService.AnalyzeIamPolicyLongrunning\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnalyzeIamPolicyLongrunningResponse {}
 /// A saved query which can be shared with others or used later.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SavedQuery {
     /// The resource name of the saved query. The format must be:
@@ -2359,6 +2432,7 @@ pub struct SavedQuery {
 /// Nested message and enum types in `SavedQuery`.
 pub mod saved_query {
     /// The query content.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct QueryContent {
         #[prost(oneof = "query_content::QueryContent", tags = "1")]
@@ -2366,6 +2440,7 @@ pub mod saved_query {
     }
     /// Nested message and enum types in `QueryContent`.
     pub mod query_content {
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum QueryContent {
             /// An IAM Policy Analysis query, which could be used in
@@ -2377,6 +2452,7 @@ pub mod saved_query {
     }
 }
 /// Request to create a saved query.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateSavedQueryRequest {
     /// Required. The name of the project/folder/organization where this saved_query
@@ -2403,6 +2479,7 @@ pub struct CreateSavedQueryRequest {
     pub saved_query_id: ::prost::alloc::string::String,
 }
 /// Request to get a saved query.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetSavedQueryRequest {
     /// Required. The name of the saved query and it must be in the format of:
@@ -2414,6 +2491,7 @@ pub struct GetSavedQueryRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request to list saved queries.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSavedQueriesRequest {
     /// Required. The parent project/folder/organization whose savedQueries are to be
@@ -2444,6 +2522,7 @@ pub struct ListSavedQueriesRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response of listing saved queries.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSavedQueriesResponse {
     /// A list of savedQueries.
@@ -2455,6 +2534,7 @@ pub struct ListSavedQueriesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request to update a saved query.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateSavedQueryRequest {
     /// Required. The saved query to update.
@@ -2472,6 +2552,7 @@ pub struct UpdateSavedQueryRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request to delete a saved query.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteSavedQueryRequest {
     /// Required. The name of the saved query to delete. It must be in the format of:
@@ -2483,6 +2564,7 @@ pub struct DeleteSavedQueryRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request message for performing resource move analysis.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnalyzeMoveRequest {
     /// Required. Name of the resource to perform the analysis against.
@@ -2544,6 +2626,7 @@ pub mod analyze_move_request {
     }
 }
 /// The response message for resource move analysis.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnalyzeMoveResponse {
     /// The list of analyses returned from performing the intended resource move
@@ -2552,6 +2635,7 @@ pub struct AnalyzeMoveResponse {
     pub move_analysis: ::prost::alloc::vec::Vec<MoveAnalysis>,
 }
 /// A message to group the analysis information.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MoveAnalysis {
     /// The user friendly display name of the analysis. E.g. IAM, Organization
@@ -2563,6 +2647,7 @@ pub struct MoveAnalysis {
 }
 /// Nested message and enum types in `MoveAnalysis`.
 pub mod move_analysis {
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Result {
         /// Analysis result of moving the target resource.
@@ -2574,6 +2659,7 @@ pub mod move_analysis {
     }
 }
 /// An analysis result including blockers and warnings.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MoveAnalysisResult {
     /// Blocking information that would prevent the target resource from moving
@@ -2587,6 +2673,7 @@ pub struct MoveAnalysisResult {
     pub warnings: ::prost::alloc::vec::Vec<MoveImpact>,
 }
 /// A message to group impacts of moving the target resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MoveImpact {
     /// User friendly impact detail in a free form message.
@@ -2594,6 +2681,7 @@ pub struct MoveImpact {
     pub detail: ::prost::alloc::string::String,
 }
 /// Output configuration query assets.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryAssetsOutputConfig {
     /// BigQuery destination where the query results will be saved.
@@ -2605,6 +2693,7 @@ pub struct QueryAssetsOutputConfig {
 /// Nested message and enum types in `QueryAssetsOutputConfig`.
 pub mod query_assets_output_config {
     /// BigQuery destination.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct BigQueryDestination {
         /// Required. The BigQuery dataset where the query results will be saved. It has the
@@ -2631,6 +2720,7 @@ pub mod query_assets_output_config {
     }
 }
 /// QueryAssets request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryAssetsRequest {
     /// Required. The relative name of the root asset. This can only be an
@@ -2694,6 +2784,7 @@ pub struct QueryAssetsRequest {
 }
 /// Nested message and enum types in `QueryAssetsRequest`.
 pub mod query_assets_request {
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Query {
         /// Optional. A SQL statement that's compatible with [BigQuery Standard
@@ -2712,6 +2803,7 @@ pub mod query_assets_request {
     /// * \[read_time\] - query asset metadata as it was at that point in time.
     /// If data for the timestamp/date range selected does not exist,
     /// it will simply return a valid response with no rows.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Time {
         /// Optional. \[start_time\] is required. \[start_time\] must be less than \[end_time\]
@@ -2725,6 +2817,7 @@ pub mod query_assets_request {
     }
 }
 /// QueryAssets response.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryAssetsResponse {
     /// Reference to a query job.
@@ -2743,6 +2836,7 @@ pub struct QueryAssetsResponse {
 }
 /// Nested message and enum types in `QueryAssetsResponse`.
 pub mod query_assets_response {
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Response {
         /// Error status.
@@ -2762,6 +2856,7 @@ pub mod query_assets_response {
 /// The result is formatted as rows represented by BigQuery compatible \[schema\].
 /// When pagination is necessary, it will contains the page token to retrieve
 /// the results of following pages.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryResult {
     /// Each row hold a query result in the format of `Struct`.
@@ -2778,6 +2873,7 @@ pub struct QueryResult {
     pub total_rows: i64,
 }
 /// BigQuery Compatible table schema.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TableSchema {
     /// Describes the fields in a table.
@@ -2785,6 +2881,7 @@ pub struct TableSchema {
     pub fields: ::prost::alloc::vec::Vec<TableFieldSchema>,
 }
 /// A field in TableSchema.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TableFieldSchema {
     /// The field name. The name must contain only letters (a-z, A-Z),
@@ -2819,6 +2916,7 @@ pub struct TableFieldSchema {
     pub fields: ::prost::alloc::vec::Vec<TableFieldSchema>,
 }
 /// A request message for \[AssetService.BatchGetEffectiveIamPolicies][google.cloud.asset.v1.AssetService.BatchGetEffectiveIamPolicies\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchGetEffectiveIamPoliciesRequest {
     /// Required. Only IAM policies on or below the scope will be returned.
@@ -2843,6 +2941,7 @@ pub struct BatchGetEffectiveIamPoliciesRequest {
     pub names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// A response message for \[AssetService.BatchGetEffectiveIamPolicies][google.cloud.asset.v1.AssetService.BatchGetEffectiveIamPolicies\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchGetEffectiveIamPoliciesResponse {
     /// The effective policies for a batch of resources. Note that the results
@@ -2858,6 +2957,7 @@ pub struct BatchGetEffectiveIamPoliciesResponse {
 /// Nested message and enum types in `BatchGetEffectiveIamPoliciesResponse`.
 pub mod batch_get_effective_iam_policies_response {
     /// The effective IAM policies on one resource.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct EffectiveIamPolicy {
         /// The \[full_resource_name\]
@@ -2886,6 +2986,7 @@ pub mod batch_get_effective_iam_policies_response {
     /// Nested message and enum types in `EffectiveIamPolicy`.
     pub mod effective_iam_policy {
         /// The IAM policy and its attached resource.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct PolicyInfo {
             /// The full resource name the \[policy][google.cloud.asset.v1.BatchGetEffectiveIamPoliciesResponse.EffectiveIamPolicy.PolicyInfo.policy\] is directly attached to.

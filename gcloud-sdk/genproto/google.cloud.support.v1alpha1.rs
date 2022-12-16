@@ -1,4 +1,5 @@
 /// The request message for `GetSupportAccount`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetSupportAccountRequest {
     /// The resource name of the support accounts. For example:
@@ -7,6 +8,7 @@ pub struct GetSupportAccountRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request message for `ListSupportAccount`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSupportAccountsRequest {
     /// The filter applied to search results. It only supports filtering a support
@@ -24,6 +26,7 @@ pub struct ListSupportAccountsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// The response message for `ListSupportAccount`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSupportAccountsResponse {
     /// A list of support accounts.
@@ -36,6 +39,7 @@ pub struct ListSupportAccountsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request message for `GetCase` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCaseRequest {
     /// Name of case resource requested.
@@ -44,6 +48,7 @@ pub struct GetCaseRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request message for `ListCase` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCasesRequest {
     /// Name of the account resource for which cases are requested. For example:
@@ -63,6 +68,7 @@ pub struct ListCasesRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// The response message for `ListCase` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCasesResponse {
     /// A list of cases.
@@ -75,6 +81,7 @@ pub struct ListCasesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request message for `ListComments` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCommentsRequest {
     /// The resource name of case for which comments should be listed.
@@ -82,6 +89,7 @@ pub struct ListCommentsRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The response message for `ListComments` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCommentsResponse {
     /// A list of comments.
@@ -89,6 +97,7 @@ pub struct ListCommentsResponse {
     pub comments: ::prost::alloc::vec::Vec<super::common::Comment>,
 }
 /// The request message for `CreateCase` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateCaseRequest {
     /// The resource name for `SupportAccount` under which this case is created.
@@ -99,6 +108,7 @@ pub struct CreateCaseRequest {
     pub case: ::core::option::Option<super::common::Case>,
 }
 /// The request message for `UpdateCase` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateCaseRequest {
     /// The case resource to update.
@@ -110,6 +120,7 @@ pub struct UpdateCaseRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The request message for `CreateComment` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateCommentRequest {
     /// The resource name of case to which this comment should be added.
@@ -120,6 +131,7 @@ pub struct CreateCommentRequest {
     pub comment: ::core::option::Option<super::common::Comment>,
 }
 /// The request message for `GetIssueTaxonomy` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetIssueTaxonomyRequest {}
 /// Generated client implementations.

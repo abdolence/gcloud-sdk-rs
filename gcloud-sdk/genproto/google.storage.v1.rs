@@ -1,4 +1,5 @@
 /// A bucket.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Bucket {
     /// Access controls on the bucket.
@@ -148,6 +149,7 @@ pub struct Bucket {
 /// Nested message and enum types in `Bucket`.
 pub mod bucket {
     /// Billing properties of a bucket.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Billing {
         /// When set to true, Requester Pays is enabled for this bucket.
@@ -158,6 +160,7 @@ pub mod bucket {
     /// For more on GCS and CORS, see
     /// <https://cloud.google.com/storage/docs/cross-origin.>
     /// For more on CORS in general, see <https://tools.ietf.org/html/rfc6454.>
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Cors {
         /// The list of Origins eligible to receive CORS response headers. See
@@ -182,6 +185,7 @@ pub mod bucket {
         pub max_age_seconds: i32,
     }
     /// Encryption properties of a bucket.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Encryption {
         /// A Cloud KMS key that will be used to encrypt objects inserted into this
@@ -190,6 +194,7 @@ pub mod bucket {
         pub default_kms_key_name: ::prost::alloc::string::String,
     }
     /// Bucket restriction options currently enforced on the bucket.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct IamConfiguration {
         #[prost(message, optional, tag = "1")]
@@ -202,6 +207,7 @@ pub mod bucket {
     }
     /// Nested message and enum types in `IamConfiguration`.
     pub mod iam_configuration {
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct UniformBucketLevelAccess {
             /// If set, access checks only use bucket-level IAM policies or above.
@@ -256,6 +262,7 @@ pub mod bucket {
     }
     /// Lifecycle properties of a bucket.
     /// For more information, see <https://cloud.google.com/storage/docs/lifecycle.>
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Lifecycle {
         /// A lifecycle management rule, which is made of an action to take and the
@@ -267,6 +274,7 @@ pub mod bucket {
     pub mod lifecycle {
         /// A lifecycle Rule, combining an action to take on an object and a
         /// condition which will trigger that action.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Rule {
             /// The action to take.
@@ -279,6 +287,7 @@ pub mod bucket {
         /// Nested message and enum types in `Rule`.
         pub mod rule {
             /// An action to take on an object.
+            #[allow(clippy::derive_partial_eq_without_eq)]
             #[derive(Clone, PartialEq, ::prost::Message)]
             pub struct Action {
                 /// Type of the action. Currently, only `Delete`, `SetStorageClass`, and
@@ -291,6 +300,7 @@ pub mod bucket {
                 pub storage_class: ::prost::alloc::string::String,
             }
             /// A condition of an object which triggers some action.
+            #[allow(clippy::derive_partial_eq_without_eq)]
             #[derive(Clone, PartialEq, ::prost::Message)]
             pub struct Condition {
                 /// Age of an object (in days). This condition is satisfied when an
@@ -367,6 +377,7 @@ pub mod bucket {
         }
     }
     /// Logging-related properties of a bucket.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Logging {
         /// The destination bucket where the current bucket's logs should be placed.
@@ -377,6 +388,7 @@ pub mod bucket {
         pub log_object_prefix: ::prost::alloc::string::String,
     }
     /// Retention policy properties of a bucket.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct RetentionPolicy {
         /// Server-determined value that indicates the time from which policy was
@@ -397,6 +409,7 @@ pub mod bucket {
     /// Properties of a bucket related to versioning.
     /// For more on GCS versioning, see
     /// <https://cloud.google.com/storage/docs/object-versioning.>
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Versioning {
         /// While set to true, versioning is fully enabled for this bucket.
@@ -406,6 +419,7 @@ pub mod bucket {
     /// Properties of a bucket related to accessing the contents as a static
     /// website. For more on hosting a static website via GCS, see
     /// <https://cloud.google.com/storage/docs/hosting-static-website.>
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Website {
         /// If the requested object path is missing, the service will ensure the path
@@ -423,6 +437,7 @@ pub mod bucket {
         pub not_found_page: ::prost::alloc::string::String,
     }
     /// Configuration for a bucket's Autoclass feature.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Autoclass {
         /// Enables Autoclass.
@@ -434,6 +449,7 @@ pub mod bucket {
     }
 }
 /// An access-control entry.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BucketAccessControl {
     /// The access permission for the entity.
@@ -480,6 +496,7 @@ pub struct BucketAccessControl {
     pub project_team: ::core::option::Option<ProjectTeam>,
 }
 /// The response to a call to BucketAccessControls.ListBucketAccessControls.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListBucketAccessControlsResponse {
     /// The list of items.
@@ -487,6 +504,7 @@ pub struct ListBucketAccessControlsResponse {
     pub items: ::prost::alloc::vec::Vec<BucketAccessControl>,
 }
 /// The result of a call to Buckets.ListBuckets
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListBucketsResponse {
     /// The list of items.
@@ -498,6 +516,7 @@ pub struct ListBucketsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// An notification channel used to watch for resource changes.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Channel {
     /// A UUID or similar unique string that identifies this channel.
@@ -534,6 +553,7 @@ pub struct Channel {
     pub payload: bool,
 }
 /// The result of a call to Channels.ListChannels
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListChannelsResponse {
     /// The list of notification channels for a bucket.
@@ -542,6 +562,7 @@ pub struct ListChannelsResponse {
 }
 /// Nested message and enum types in `ListChannelsResponse`.
 pub mod list_channels_response {
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Items {
         /// User-specified name for a channel. Needed to unsubscribe.
@@ -564,6 +585,7 @@ pub mod list_channels_response {
 }
 /// Message used to convey content being read or written, along with its
 /// checksum.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ChecksummedData {
     /// The data.
@@ -574,6 +596,7 @@ pub struct ChecksummedData {
     pub crc32c: ::core::option::Option<u32>,
 }
 /// Message used for storing full (not subrange) object checksums.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ObjectChecksums {
     /// CRC32C digest of the object data. Computed by the GCS service for
@@ -587,6 +610,7 @@ pub struct ObjectChecksums {
     pub md5_hash: ::prost::alloc::string::String,
 }
 /// A collection of enums used in multiple places throughout the API.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CommonEnums {}
 /// Nested message and enum types in `CommonEnums`.
@@ -738,6 +762,7 @@ pub mod common_enums {
     }
 }
 /// Specifies a requested range of bytes to download.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ContentRange {
     /// The starting offset of the object data.
@@ -751,6 +776,7 @@ pub struct ContentRange {
     pub complete_length: i64,
 }
 /// Hmac Key Metadata, which includes all information other than the secret.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HmacKeyMetadata {
     /// Resource name ID of the key in the format <projectId>/<accessId>.
@@ -779,6 +805,7 @@ pub struct HmacKeyMetadata {
     pub etag: ::prost::alloc::string::String,
 }
 /// A subscription to receive Google PubSub notifications.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Notification {
     /// The Cloud PubSub topic to which this subscription publishes. Formatted as:
@@ -812,6 +839,7 @@ pub struct Notification {
     pub id: ::prost::alloc::string::String,
 }
 /// The result of a call to Notifications.ListNotifications
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNotificationsResponse {
     /// The list of items.
@@ -819,6 +847,7 @@ pub struct ListNotificationsResponse {
     pub items: ::prost::alloc::vec::Vec<Notification>,
 }
 /// An object.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Object {
     /// Content-Encoding of the object data, matching
@@ -995,6 +1024,7 @@ pub struct Object {
 /// Nested message and enum types in `Object`.
 pub mod object {
     /// Describes the customer-specified mechanism used to store the data at rest.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CustomerEncryption {
         /// The encryption algorithm.
@@ -1006,6 +1036,7 @@ pub mod object {
     }
 }
 /// An access-control entry.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ObjectAccessControl {
     /// The access permission for the entity.
@@ -1058,6 +1089,7 @@ pub struct ObjectAccessControl {
     pub project_team: ::core::option::Option<ProjectTeam>,
 }
 /// The result of a call to ObjectAccessControls.ListObjectAccessControls.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListObjectAccessControlsResponse {
     /// The list of items.
@@ -1065,6 +1097,7 @@ pub struct ListObjectAccessControlsResponse {
     pub items: ::prost::alloc::vec::Vec<ObjectAccessControl>,
 }
 /// The result of a call to Objects.ListObjects
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListObjectsResponse {
     /// The list of prefixes of objects matching-but-not-listed up to and including
@@ -1080,6 +1113,7 @@ pub struct ListObjectsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Represents the Viewers, Editors, or Owners of a given project.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProjectTeam {
     /// The project number.
@@ -1090,6 +1124,7 @@ pub struct ProjectTeam {
     pub team: ::prost::alloc::string::String,
 }
 /// A subscription to receive Google PubSub notifications.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ServiceAccount {
     /// The ID of the notification.
@@ -1097,6 +1132,7 @@ pub struct ServiceAccount {
     pub email_address: ::prost::alloc::string::String,
 }
 /// The owner of a specific resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Owner {
     /// The entity, in the form `user-`*userId*.
@@ -1107,6 +1143,7 @@ pub struct Owner {
     pub entity_id: ::prost::alloc::string::String,
 }
 /// Request message for DeleteBucketAccessControl.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteBucketAccessControlRequest {
     /// Required. Name of a bucket.
@@ -1126,6 +1163,7 @@ pub struct DeleteBucketAccessControlRequest {
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
 /// Request message for GetBucketAccessControl.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetBucketAccessControlRequest {
     /// Required. Name of a bucket.
@@ -1145,6 +1183,7 @@ pub struct GetBucketAccessControlRequest {
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
 /// Request message for InsertBucketAccessControl.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertBucketAccessControlRequest {
     /// Required. Name of a bucket.
@@ -1158,6 +1197,7 @@ pub struct InsertBucketAccessControlRequest {
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
 /// Request message for ListBucketAccessControl.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListBucketAccessControlsRequest {
     /// Required. Name of a bucket.
@@ -1168,6 +1208,7 @@ pub struct ListBucketAccessControlsRequest {
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
 /// Request for PatchBucketAccessControl.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchBucketAccessControlRequest {
     /// Required. Name of a bucket.
@@ -1201,6 +1242,7 @@ pub struct PatchBucketAccessControlRequest {
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
 /// Request for UpdateBucketAccessControl.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateBucketAccessControlRequest {
     /// Required. Name of a bucket.
@@ -1223,6 +1265,7 @@ pub struct UpdateBucketAccessControlRequest {
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
 /// Request message for DeleteBucket.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteBucketRequest {
     /// Required. Name of a bucket.
@@ -1240,6 +1283,7 @@ pub struct DeleteBucketRequest {
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
 /// Request message for GetBucket.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetBucketRequest {
     /// Required. Name of a bucket.
@@ -1261,6 +1305,7 @@ pub struct GetBucketRequest {
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
 /// Request message for InsertBucket.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertBucketRequest {
     /// Apply a predefined set of access controls to this bucket.
@@ -1285,6 +1330,7 @@ pub struct InsertBucketRequest {
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
 /// Request message for ListChannels.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListChannelsRequest {
     /// Required. Name of a bucket.
@@ -1295,6 +1341,7 @@ pub struct ListChannelsRequest {
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
 /// Request message for ListBuckets.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListBucketsRequest {
     /// Maximum number of buckets to return in a single response. The service will
@@ -1319,6 +1366,7 @@ pub struct ListBucketsRequest {
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
 /// Request message for LockRetentionPolicy.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LockRetentionPolicyRequest {
     /// Required. Name of a bucket.
@@ -1333,6 +1381,7 @@ pub struct LockRetentionPolicyRequest {
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
 /// Request for PatchBucket method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchBucketRequest {
     /// Required. Name of a bucket.
@@ -1375,6 +1424,7 @@ pub struct PatchBucketRequest {
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
 /// Request for UpdateBucket method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateBucketRequest {
     /// Required. Name of a bucket.
@@ -1405,6 +1455,7 @@ pub struct UpdateBucketRequest {
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
 /// Request message for StopChannel.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StopChannelRequest {
     /// The channel to be stopped.
@@ -1415,6 +1466,7 @@ pub struct StopChannelRequest {
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
 /// Request message for DeleteDefaultObjectAccessControl.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteDefaultObjectAccessControlRequest {
     /// Required. Name of a bucket.
@@ -1434,6 +1486,7 @@ pub struct DeleteDefaultObjectAccessControlRequest {
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
 /// Request message for GetDefaultObjectAccessControl.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetDefaultObjectAccessControlRequest {
     /// Required. Name of a bucket.
@@ -1453,6 +1506,7 @@ pub struct GetDefaultObjectAccessControlRequest {
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
 /// Request message for InsertDefaultObjectAccessControl.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertDefaultObjectAccessControlRequest {
     /// Required. Name of a bucket.
@@ -1466,6 +1520,7 @@ pub struct InsertDefaultObjectAccessControlRequest {
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
 /// Request message for ListDefaultObjectAccessControls.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDefaultObjectAccessControlsRequest {
     /// Required. Name of a bucket.
@@ -1484,6 +1539,7 @@ pub struct ListDefaultObjectAccessControlsRequest {
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
 /// Request message for PatchDefaultObjectAccessControl.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchDefaultObjectAccessControlRequest {
     /// Required. Name of a bucket.
@@ -1518,6 +1574,7 @@ pub struct PatchDefaultObjectAccessControlRequest {
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
 /// Request message for UpdateDefaultObjectAccessControl.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateDefaultObjectAccessControlRequest {
     /// Required. Name of a bucket.
@@ -1540,6 +1597,7 @@ pub struct UpdateDefaultObjectAccessControlRequest {
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
 /// Request message for DeleteNotification.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteNotificationRequest {
     /// Required. The parent bucket of the notification.
@@ -1553,6 +1611,7 @@ pub struct DeleteNotificationRequest {
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
 /// Request message for GetNotification.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetNotificationRequest {
     /// Required. The parent bucket of the notification.
@@ -1567,6 +1626,7 @@ pub struct GetNotificationRequest {
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
 /// Request message for InsertNotification.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertNotificationRequest {
     /// Required. The parent bucket of the notification.
@@ -1580,6 +1640,7 @@ pub struct InsertNotificationRequest {
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
 /// Request message for ListNotifications.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNotificationsRequest {
     /// Required. Name of a Google Cloud Storage bucket.
@@ -1590,6 +1651,7 @@ pub struct ListNotificationsRequest {
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
 /// Request message for DeleteObjectAccessControl.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteObjectAccessControlRequest {
     /// Required. Name of a bucket.
@@ -1616,6 +1678,7 @@ pub struct DeleteObjectAccessControlRequest {
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
 /// Request message for GetObjectAccessControl.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetObjectAccessControlRequest {
     /// Required. Name of a bucket.
@@ -1642,6 +1705,7 @@ pub struct GetObjectAccessControlRequest {
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
 /// Request message for InsertObjectAccessControl.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertObjectAccessControlRequest {
     /// Required. Name of a bucket.
@@ -1662,6 +1726,7 @@ pub struct InsertObjectAccessControlRequest {
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
 /// Request message for ListObjectAccessControls.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListObjectAccessControlsRequest {
     /// Required. Name of a bucket.
@@ -1679,6 +1744,7 @@ pub struct ListObjectAccessControlsRequest {
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
 /// Request message for PatchObjectAccessControl.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchObjectAccessControlRequest {
     /// Required. Name of a bucket.
@@ -1721,6 +1787,7 @@ pub struct PatchObjectAccessControlRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for UpdateObjectAccessControl.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateObjectAccessControlRequest {
     /// Required. Name of a bucket.
@@ -1763,6 +1830,7 @@ pub struct UpdateObjectAccessControlRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for ComposeObject.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ComposeObjectRequest {
     /// Required. Name of the bucket containing the source objects. The destination object is
@@ -1806,6 +1874,7 @@ pub struct ComposeObjectRequest {
 /// Nested message and enum types in `ComposeObjectRequest`.
 pub mod compose_object_request {
     /// Description of a source object for a composition request.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SourceObjects {
         /// The source object's name. All source objects must reside in the same
@@ -1824,6 +1893,7 @@ pub mod compose_object_request {
     /// Nested message and enum types in `SourceObjects`.
     pub mod source_objects {
         /// Preconditions for a source object of a composition request.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct ObjectPreconditions {
             /// Only perform the composition if the generation of the source object
@@ -1835,6 +1905,7 @@ pub mod compose_object_request {
     }
 }
 /// Request message for CopyObject.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CopyObjectRequest {
     /// Required. Name of the bucket in which to store the new object. Overrides the provided
@@ -1919,6 +1990,7 @@ pub struct CopyObjectRequest {
 }
 /// Message for deleting an object.
 /// Either `bucket` and `object` *or* `upload_id` **must** be set (but not both).
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteObjectRequest {
     /// Required. Name of the bucket in which the object resides.
@@ -1963,6 +2035,7 @@ pub struct DeleteObjectRequest {
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
 /// Request message for GetObjectMedia.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetObjectMediaRequest {
     /// The name of the bucket containing the object to read.
@@ -2022,6 +2095,7 @@ pub struct GetObjectMediaRequest {
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
 /// Request message for GetObject.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetObjectRequest {
     /// Required. Name of the bucket in which the object resides.
@@ -2064,6 +2138,7 @@ pub struct GetObjectRequest {
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
 /// Response message for GetObject.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetObjectMediaResponse {
     /// A portion of the data for the object. The service **may** leave `data`
@@ -2088,6 +2163,7 @@ pub struct GetObjectMediaResponse {
     pub metadata: ::core::option::Option<Object>,
 }
 /// Describes an attempt to insert an object, possibly over multiple requests.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertObjectSpec {
     /// Destination object, including its name and its metadata.
@@ -2122,6 +2198,7 @@ pub struct InsertObjectSpec {
     pub projection: i32,
 }
 /// Message for writing an object.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsertObjectRequest {
     /// Required. The offset from the beginning of the object at which the data should be
@@ -2169,6 +2246,7 @@ pub struct InsertObjectRequest {
 /// Nested message and enum types in `InsertObjectRequest`.
 pub mod insert_object_request {
     /// The first message of each stream should set one of the following.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum FirstMessage {
         /// For resumable uploads. This should be the `upload_id` returned from a
@@ -2181,6 +2259,7 @@ pub mod insert_object_request {
         InsertObjectSpec(super::InsertObjectSpec),
     }
     /// A portion of the data for the object.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Data {
         /// The data to insert. If a crc32c checksum is provided that doesn't match
@@ -2204,6 +2283,7 @@ pub mod insert_object_request {
     }
 }
 /// Request message for ListObjects.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListObjectsRequest {
     /// Required. Name of the bucket in which to look for objects.
@@ -2261,6 +2341,7 @@ pub struct ListObjectsRequest {
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
 /// Request object for `QueryWriteStatus`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryWriteStatusRequest {
     /// Required. The name of the resume token for the object whose write status is being
@@ -2275,6 +2356,7 @@ pub struct QueryWriteStatusRequest {
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
 /// Response object for `QueryWriteStatus`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryWriteStatusResponse {
     /// The number of bytes that have been processed for the given object.
@@ -2289,6 +2371,7 @@ pub struct QueryWriteStatusResponse {
     pub resource: ::core::option::Option<Object>,
 }
 /// Request message for RewriteObject.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RewriteObjectRequest {
     /// Required. Name of the bucket in which to store the new object. Overrides the provided
@@ -2396,6 +2479,7 @@ pub struct RewriteObjectRequest {
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
 /// A rewrite response.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RewriteResponse {
     /// The total bytes written so far, which can be used to provide a waiting user
@@ -2420,6 +2504,7 @@ pub struct RewriteResponse {
     pub resource: ::core::option::Option<Object>,
 }
 /// Request message StartResumableWrite.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StartResumableWriteRequest {
     /// The destination bucket, object, and metadata, as well as any preconditions.
@@ -2433,6 +2518,7 @@ pub struct StartResumableWriteRequest {
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
 /// Response object for `StartResumableWrite`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StartResumableWriteResponse {
     /// The upload_id of the newly started resumable write operation. This
@@ -2441,6 +2527,7 @@ pub struct StartResumableWriteResponse {
     pub upload_id: ::prost::alloc::string::String,
 }
 /// Request message for PatchObject.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchObjectRequest {
     /// Required. Name of the bucket in which the object resides.
@@ -2501,6 +2588,7 @@ pub struct PatchObjectRequest {
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
 /// Request message for UpdateObject.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateObjectRequest {
     /// Required. Name of the bucket in which the object resides.
@@ -2549,6 +2637,7 @@ pub struct UpdateObjectRequest {
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
 /// Request message for WatchAllObjects.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WatchAllObjectsRequest {
     /// Name of the bucket in which to look for objects.
@@ -2597,6 +2686,7 @@ pub struct WatchAllObjectsRequest {
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
 /// Request message for GetProjectServiceAccount.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetProjectServiceAccountRequest {
     /// Required. Project ID.
@@ -2606,6 +2696,7 @@ pub struct GetProjectServiceAccountRequest {
     #[prost(message, optional, tag = "3")]
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateHmacKeyRequest {
     /// Required. The project that the HMAC-owning service account lives in.
@@ -2619,6 +2710,7 @@ pub struct CreateHmacKeyRequest {
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
 /// Create hmac response.  The only time the secret for an HMAC will be returned.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateHmacKeyResponse {
     /// Key metadata.
@@ -2629,6 +2721,7 @@ pub struct CreateHmacKeyResponse {
     pub secret: ::prost::alloc::string::String,
 }
 /// Request object to delete a given HMAC key.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteHmacKeyRequest {
     /// Required. The identifying key for the HMAC to delete.
@@ -2642,6 +2735,7 @@ pub struct DeleteHmacKeyRequest {
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
 /// Request object to get metadata on a given HMAC key.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetHmacKeyRequest {
     /// Required. The identifying key for the HMAC to delete.
@@ -2655,6 +2749,7 @@ pub struct GetHmacKeyRequest {
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
 /// Request to fetch a list of HMAC keys under a given project.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListHmacKeysRequest {
     /// Required. The project id to list HMAC keys for.
@@ -2677,6 +2772,7 @@ pub struct ListHmacKeysRequest {
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
 /// Hmac key list response with next page information.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListHmacKeysResponse {
     /// The continuation token, used to page through large result sets. Provide
@@ -2688,6 +2784,7 @@ pub struct ListHmacKeysResponse {
     pub items: ::prost::alloc::vec::Vec<HmacKeyMetadata>,
 }
 /// Request object to update an HMAC key state.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateHmacKeyRequest {
     /// Required. The id of the HMAC key.
@@ -2705,6 +2802,7 @@ pub struct UpdateHmacKeyRequest {
 }
 /// A wrapper around the IAM get policy request to support our
 /// common_request_params.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetIamPolicyRequest {
     /// The request sent to IAM.
@@ -2716,6 +2814,7 @@ pub struct GetIamPolicyRequest {
 }
 /// A wrapper around the IAM set policy request to support our
 /// common_request_params.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetIamPolicyRequest {
     /// The request sent to IAM.
@@ -2727,6 +2826,7 @@ pub struct SetIamPolicyRequest {
 }
 /// A wrapper around the IAM test iam permissions request to support our
 /// common_request_params.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TestIamPermissionsRequest {
     /// The request sent to IAM.
@@ -2739,6 +2839,7 @@ pub struct TestIamPermissionsRequest {
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
 /// Parameters that can be passed to any object request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CommonObjectRequestParams {
     /// Encryption algorithm used with Customer-Supplied Encryption Keys feature.
@@ -2753,6 +2854,7 @@ pub struct CommonObjectRequestParams {
     pub encryption_key_sha256: ::prost::alloc::string::String,
 }
 /// Parameters that can be passed to any request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CommonRequestParams {
     /// Required. Required when using buckets with Requestor Pays feature enabled.

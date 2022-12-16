@@ -1,5 +1,6 @@
 /// A geographical point suitable for placing game objects in location-based
 /// games.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PlayableLocation {
     /// Required. The name of this playable location.
@@ -34,6 +35,7 @@ pub struct PlayableLocation {
 pub mod playable_location {
     /// Required.
     /// Each location has one of the following identifiers:
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum LocationId {
         /// A [place ID] (<https://developers.google.com/places/place-id>)
@@ -45,6 +47,7 @@ pub mod playable_location {
     }
 }
 /// A set of options that specifies the separation between playable locations.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SpacingOptions {
     /// Required. The minimum spacing between any two playable locations, measured
@@ -140,6 +143,7 @@ pub mod spacing_options {
     }
 }
 /// Specifies the filters to use when searching for playable locations.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Filter {
     /// Specifies the maximum number of playable locations to return. This value
@@ -159,6 +163,7 @@ pub struct Filter {
 }
 /// Encapsulates a filter criterion for searching for a set of playable
 /// locations.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Criterion {
     /// Required. An arbitrary, developer-defined identifier of the type of game
@@ -193,6 +198,7 @@ pub struct Criterion {
     pub fields_to_return: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Specifies the area to search for playable locations.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AreaFilter {
     /// Required. The S2 cell ID of the area you want. This must be between cell
@@ -211,6 +217,7 @@ pub struct AreaFilter {
     pub s2_cell_id: u64,
 }
 /// A list of PlayableLocation objects that satisfies a single Criterion.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PlayableLocationList {
     /// A list of playable locations for this game object type.

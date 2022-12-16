@@ -1,4 +1,5 @@
 /// Specification for the BigQuery connection.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BigQueryConnectionSpec {
     /// The type of the BigQuery connection.
@@ -46,6 +47,7 @@ pub mod big_query_connection_spec {
             }
         }
     }
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ConnectionSpec {
         /// Specification for the BigQuery connection to a Cloud SQL instance.
@@ -54,6 +56,7 @@ pub mod big_query_connection_spec {
     }
 }
 /// Specification for the BigQuery connection to a Cloud SQL instance.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CloudSqlBigQueryConnectionSpec {
     /// Cloud SQL instance ID in the format of `project:location:instance`.
@@ -107,6 +110,7 @@ pub mod cloud_sql_big_query_connection_spec {
     }
 }
 /// Fields specific for BigQuery routines.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BigQueryRoutineSpec {
     /// Paths of the imported libraries.
@@ -114,6 +118,7 @@ pub struct BigQueryRoutineSpec {
     pub imported_libraries: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Entry metadata relevant only to the user and private to them.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PersonalDetails {
     /// True if the entry is starred by the user; false otherwise.
@@ -154,6 +159,7 @@ impl IntegratedSystem {
     }
 }
 /// Physical location of an entry.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataSource {
     /// Service that physically stores the data.
@@ -206,6 +212,7 @@ pub mod data_source {
             }
         }
     }
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Properties {
         /// Detailed properties of the underlying storage.
@@ -214,6 +221,7 @@ pub mod data_source {
     }
 }
 /// Details the properties of the underlying storage.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StorageProperties {
     /// Patterns to identify a set of files for this fileset.
@@ -244,6 +252,7 @@ pub struct StorageProperties {
 }
 /// Native schema used by a resource represented as an entry. Used by query
 /// engines for deserializing and parsing source data.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PhysicalSchema {
     #[prost(oneof = "physical_schema::Schema", tags = "1, 2, 3, 4, 5, 6")]
@@ -252,6 +261,7 @@ pub struct PhysicalSchema {
 /// Nested message and enum types in `PhysicalSchema`.
 pub mod physical_schema {
     /// Schema in Avro JSON format.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AvroSchema {
         /// JSON source of the Avro schema.
@@ -259,6 +269,7 @@ pub mod physical_schema {
         pub text: ::prost::alloc::string::String,
     }
     /// Schema in Thrift format.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ThriftSchema {
         /// Thrift IDL source of the schema.
@@ -266,6 +277,7 @@ pub mod physical_schema {
         pub text: ::prost::alloc::string::String,
     }
     /// Schema in protocol buffer format.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ProtobufSchema {
         /// Protocol buffer source of the schema.
@@ -273,14 +285,18 @@ pub mod physical_schema {
         pub text: ::prost::alloc::string::String,
     }
     /// Marks a Parquet-encoded data source.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ParquetSchema {}
     /// Marks an ORC-encoded data source.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct OrcSchema {}
     /// Marks a CSV-encoded data source.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CsvSchema {}
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Schema {
         /// Schema in Avro JSON format.
@@ -304,6 +320,7 @@ pub mod physical_schema {
     }
 }
 /// Common Dataplex fields.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataplexSpec {
     /// Fully qualified resource name of an asset in Dataplex, to which the
@@ -324,6 +341,7 @@ pub struct DataplexSpec {
     pub project_id: ::prost::alloc::string::String,
 }
 /// Entry specyfication for a Dataplex fileset.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataplexFilesetSpec {
     /// Common Dataplex fields.
@@ -331,6 +349,7 @@ pub struct DataplexFilesetSpec {
     pub dataplex_spec: ::core::option::Option<DataplexSpec>,
 }
 /// Entry specification for a Dataplex table.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataplexTableSpec {
     /// List of external tables registered by Dataplex in other systems based on
@@ -353,6 +372,7 @@ pub struct DataplexTableSpec {
 /// This message contains pointers to
 /// those external tables (fully qualified name, resource name et cetera) within
 /// the Data Catalog.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataplexExternalTable {
     /// Service in which the external table is registered.
@@ -369,6 +389,7 @@ pub struct DataplexExternalTable {
     pub data_catalog_entry: ::prost::alloc::string::String,
 }
 /// Timestamps associated with this resource in a particular system.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SystemTimestamps {
     /// Creation timestamp of the resource within the given system.
@@ -390,6 +411,7 @@ pub struct SystemTimestamps {
     pub expire_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Describes a Cloud Storage fileset entry.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GcsFilesetSpec {
     /// Required. Patterns to identify a set of files in Google Cloud Storage.
@@ -429,6 +451,7 @@ pub struct GcsFilesetSpec {
     pub sample_gcs_file_specs: ::prost::alloc::vec::Vec<GcsFileSpec>,
 }
 /// Specification of a single file in Cloud Storage.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GcsFileSpec {
     /// Required. Full file path. Example: `gs://bucket_name/a/b.txt`.
@@ -442,6 +465,7 @@ pub struct GcsFileSpec {
     pub size_bytes: i64,
 }
 /// Represents a schema, for example, a BigQuery, GoogleSQL, or Avro schema.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Schema {
     /// The unified GoogleSQL-like schema of columns.
@@ -453,6 +477,7 @@ pub struct Schema {
 }
 /// A column within a schema. Columns can be nested inside
 /// other columns.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ColumnSchema {
     /// Required. Name of the column.
@@ -486,6 +511,7 @@ pub struct ColumnSchema {
 /// Result in the response to a search request.
 ///
 /// Each result captures details of one entry that matches the search.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchCatalogResult {
     /// Type of the search result.
@@ -556,6 +582,7 @@ pub struct SearchCatalogResult {
 pub mod search_catalog_result {
     /// The source system of the entry. Applicable only when the
     /// `search_result_type` is `ENTRY`.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum System {
         /// Output only. The source system that Data Catalog automatically integrates  with, such
@@ -595,6 +622,7 @@ impl SearchResultType {
     }
 }
 /// Describes a BigQuery table.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BigQueryTableSpec {
     /// Output only. The table source type.
@@ -607,6 +635,7 @@ pub struct BigQueryTableSpec {
 /// Nested message and enum types in `BigQueryTableSpec`.
 pub mod big_query_table_spec {
     /// Output only.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum TypeSpec {
         /// Table view specification. Populated only if
@@ -620,6 +649,7 @@ pub mod big_query_table_spec {
     }
 }
 /// Table view specification.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ViewSpec {
     /// Output only. The query that defines the table view.
@@ -627,6 +657,7 @@ pub struct ViewSpec {
     pub view_query: ::prost::alloc::string::String,
 }
 /// Normal BigQuery table specification.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TableSpec {
     /// Output only. If the table is date-sharded, that is, it matches the `\[prefix\]YYYYMMDD`
@@ -644,6 +675,7 @@ pub struct TableSpec {
 ///
 /// For more information, see [Introduction to partitioned tables]
 /// (<https://cloud.google.com/bigquery/docs/partitioned-tables#partitioning_versus_sharding>).
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BigQueryDateShardedSpec {
     /// Output only. The Data Catalog resource name of the dataset entry the current table
@@ -699,6 +731,7 @@ impl TableSourceType {
 /// See [Data Catalog
 /// IAM](<https://cloud.google.com/data-catalog/docs/concepts/iam>) for information
 /// on the permissions needed to create or view tags.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Tag {
     /// The resource name of the tag in URL format where tag ID is a
@@ -744,6 +777,7 @@ pub mod tag {
     /// to that scope.
     ///
     /// These fields cannot be updated after creation.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Scope {
         /// Resources like entry can have schemas associated with them. This scope
@@ -757,6 +791,7 @@ pub mod tag {
 }
 /// Contains the value and additional information on a field within
 /// a \[Tag][google.cloud.datacatalog.v1.Tag\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TagField {
     /// Output only. The display name of this field.
@@ -777,6 +812,7 @@ pub struct TagField {
 /// Nested message and enum types in `TagField`.
 pub mod tag_field {
     /// An enum value.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct EnumValue {
         /// The display name of the enum value.
@@ -784,6 +820,7 @@ pub mod tag_field {
         pub display_name: ::prost::alloc::string::String,
     }
     /// Required. The value of this field.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Kind {
         /// The value of a tag field with a double type.
@@ -823,6 +860,7 @@ pub mod tag_field {
 /// see the [TagTemplate User]
 /// (<https://cloud.google.com/data-catalog/docs/how-to/template-user>) role
 /// that includes a permission to use the tag template to tag resources.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TagTemplate {
     /// The resource name of the tag template in URL format.
@@ -864,6 +902,7 @@ pub struct TagTemplate {
     >,
 }
 /// The template for an individual field within a tag template.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TagTemplateField {
     /// Output only. The resource name of the tag template field in URL format. Example:
@@ -903,6 +942,7 @@ pub struct TagTemplateField {
     #[prost(int32, tag = "5")]
     pub order: i32,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FieldType {
     /// Required.
@@ -911,6 +951,7 @@ pub struct FieldType {
 }
 /// Nested message and enum types in `FieldType`.
 pub mod field_type {
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct EnumType {
         /// The set of allowed values for this enum.
@@ -927,6 +968,7 @@ pub mod field_type {
     }
     /// Nested message and enum types in `EnumType`.
     pub mod enum_type {
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct EnumValue {
             /// Required. The display name of the enum value. Must not be an empty string.
@@ -981,6 +1023,7 @@ pub mod field_type {
         }
     }
     /// Required.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum TypeDecl {
         /// Primitive types, such as string, boolean, etc.
@@ -1001,6 +1044,7 @@ pub mod field_type {
 ///    are not yet counted. For more information, see
 ///    [Querying multiple tables using a wildcard table]
 ///    (<https://cloud.google.com/bigquery/docs/querying-wildcard-tables>)
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UsageStats {
     /// The number of successful uses of the underlying entry.
@@ -1020,6 +1064,7 @@ pub struct UsageStats {
 ///
 /// Note: Usually, these signals are updated daily. In rare cases, an update may
 /// fail but will be performed again on the next day.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UsageSignal {
     /// The end timestamp of the duration of usage statistics.
@@ -1036,6 +1081,7 @@ pub struct UsageSignal {
 }
 /// Request message for
 /// \[SearchCatalog][google.cloud.datacatalog.v1.DataCatalog.SearchCatalog\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchCatalogRequest {
     /// Required. The scope of this search request.
@@ -1091,6 +1137,7 @@ pub struct SearchCatalogRequest {
 /// Nested message and enum types in `SearchCatalogRequest`.
 pub mod search_catalog_request {
     /// The criteria that select the subspace used for query matching.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Scope {
         /// The list of organization IDs to search within.
@@ -1143,6 +1190,7 @@ pub mod search_catalog_request {
 }
 /// Response message for
 /// \[SearchCatalog][google.cloud.datacatalog.v1.DataCatalog.SearchCatalog\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchCatalogResponse {
     /// Search results.
@@ -1163,6 +1211,7 @@ pub struct SearchCatalogResponse {
 }
 /// Request message for
 /// \[CreateEntryGroup][google.cloud.datacatalog.v1.DataCatalog.CreateEntryGroup\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateEntryGroupRequest {
     /// Required. The names of the project and location that the new entry group belongs to.
@@ -1184,6 +1233,7 @@ pub struct CreateEntryGroupRequest {
 }
 /// Request message for
 /// \[UpdateEntryGroup][google.cloud.datacatalog.v1.DataCatalog.UpdateEntryGroup\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateEntryGroupRequest {
     /// Required. Updates for the entry group. The `name` field must be set.
@@ -1199,6 +1249,7 @@ pub struct UpdateEntryGroupRequest {
 }
 /// Request message for
 /// \[GetEntryGroup][google.cloud.datacatalog.v1.DataCatalog.GetEntryGroup\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetEntryGroupRequest {
     /// Required. The name of the entry group to get.
@@ -1210,6 +1261,7 @@ pub struct GetEntryGroupRequest {
 }
 /// Request message for
 /// \[DeleteEntryGroup][google.cloud.datacatalog.v1.DataCatalog.DeleteEntryGroup\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteEntryGroupRequest {
     /// Required. The name of the entry group to delete.
@@ -1221,6 +1273,7 @@ pub struct DeleteEntryGroupRequest {
 }
 /// Request message for
 /// \[ListEntryGroups][google.cloud.datacatalog.v1.DataCatalog.ListEntryGroups\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEntryGroupsRequest {
     /// Required. The name of the location that contains the entry groups to list.
@@ -1241,6 +1294,7 @@ pub struct ListEntryGroupsRequest {
 }
 /// Response message for
 /// \[ListEntryGroups][google.cloud.datacatalog.v1.DataCatalog.ListEntryGroups\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEntryGroupsResponse {
     /// Entry group details.
@@ -1253,6 +1307,7 @@ pub struct ListEntryGroupsResponse {
 }
 /// Request message for
 /// \[CreateEntry][google.cloud.datacatalog.v1.DataCatalog.CreateEntry\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateEntryRequest {
     /// Required. The name of the entry group this entry belongs to.
@@ -1274,6 +1329,7 @@ pub struct CreateEntryRequest {
 }
 /// Request message for
 /// \[UpdateEntry][google.cloud.datacatalog.v1.DataCatalog.UpdateEntry\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateEntryRequest {
     /// Required. Updates for the entry. The `name` field must be set.
@@ -1313,6 +1369,7 @@ pub struct UpdateEntryRequest {
 }
 /// Request message for
 /// \[DeleteEntry][google.cloud.datacatalog.v1.DataCatalog.DeleteEntry\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteEntryRequest {
     /// Required. The name of the entry to delete.
@@ -1321,6 +1378,7 @@ pub struct DeleteEntryRequest {
 }
 /// Request message for
 /// \[GetEntry][google.cloud.datacatalog.v1.DataCatalog.GetEntry\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetEntryRequest {
     /// Required. The name of the entry to get.
@@ -1329,6 +1387,7 @@ pub struct GetEntryRequest {
 }
 /// Request message for
 /// \[LookupEntry][google.cloud.datacatalog.v1.DataCatalog.LookupEntry\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LookupEntryRequest {
     /// Required. A full name, SQL name, or a fully qualified name of a
@@ -1340,6 +1399,7 @@ pub struct LookupEntryRequest {
 pub mod lookup_entry_request {
     /// Required. A full name, SQL name, or a fully qualified name of a
     /// Google Cloud Platform resource.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum TargetName {
         /// The full name of the Google Cloud Platform resource the Data Catalog
@@ -1396,6 +1456,7 @@ pub mod lookup_entry_request {
 /// An entry resource contains resource details, for example, its schema.
 /// Additionally, you can attach flexible metadata to an entry in the form of a
 /// \[Tag][google.cloud.datacatalog.v1.Tag\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Entry {
     /// Output only. The resource name of an entry in URL format.
@@ -1517,6 +1578,7 @@ pub struct Entry {
 /// Nested message and enum types in `Entry`.
 pub mod entry {
     /// Required. Entry type.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum EntryType {
         /// The type of the entry.
@@ -1543,6 +1605,7 @@ pub mod entry {
         UserSpecifiedType(::prost::alloc::string::String),
     }
     /// The source system of the entry.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum System {
         /// Output only. Indicates the entry's source system that Data Catalog
@@ -1562,6 +1625,7 @@ pub mod entry {
         UserSpecifiedSystem(::prost::alloc::string::String),
     }
     /// Type specification.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum TypeSpec {
         /// Specification that applies to a Cloud Storage fileset. Valid only
@@ -1586,6 +1650,7 @@ pub mod entry {
     ///
     /// When extending the API with new types and systems, use this field instead
     /// of the legacy `type_spec`.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Spec {
         /// Specification that applies to a table resource. Valid only
@@ -1608,6 +1673,7 @@ pub mod entry {
 }
 /// Specification that applies to a table resource. Valid only
 /// for entries with the `TABLE` type.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DatabaseTableSpec {
     /// Type of this table.
@@ -1657,6 +1723,7 @@ pub mod database_table_spec {
 }
 /// Specification that applies to a fileset. Valid only for entries with the
 /// 'FILESET' type.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FilesetSpec {
     /// Fields specific to a Dataplex fileset and present only in the Dataplex
@@ -1668,6 +1735,7 @@ pub struct FilesetSpec {
 /// entries with the `DATA_SOURCE_CONNECTION` type.
 /// Only one of internal specs can be set at the time, and cannot
 /// be changed later.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataSourceConnectionSpec {
     /// Output only. Fields specific to BigQuery connections.
@@ -1676,6 +1744,7 @@ pub struct DataSourceConnectionSpec {
 }
 /// Specification that applies to a routine. Valid only for
 /// entries with the `ROUTINE` type.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RoutineSpec {
     /// The type of the routine.
@@ -1705,6 +1774,7 @@ pub struct RoutineSpec {
 /// Nested message and enum types in `RoutineSpec`.
 pub mod routine_spec {
     /// Input or output argument of a function or stored procedure.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Argument {
         /// The name of the argument. A return argument of a function might not have
@@ -1794,6 +1864,7 @@ pub mod routine_spec {
         }
     }
     /// Contains fields specific to the source system.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum SystemSpec {
         /// Fields specific for BigQuery routines.
@@ -1802,6 +1873,7 @@ pub mod routine_spec {
     }
 }
 /// Business Context of the entry.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BusinessContext {
     /// Entry overview fields for rich text descriptions of entries.
@@ -1812,6 +1884,7 @@ pub struct BusinessContext {
     pub contacts: ::core::option::Option<Contacts>,
 }
 /// Entry overview fields for rich text descriptions of entries.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EntryOverview {
     /// Entry overview with support for rich text.
@@ -1825,6 +1898,7 @@ pub struct EntryOverview {
     pub overview: ::prost::alloc::string::String,
 }
 /// Contact people for the entry.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Contacts {
     /// The list of contact people for the entry.
@@ -1834,6 +1908,7 @@ pub struct Contacts {
 /// Nested message and enum types in `Contacts`.
 pub mod contacts {
     /// A contact person for the entry.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Person {
         /// Designation of the person, for example, Data Steward.
@@ -1849,6 +1924,7 @@ pub mod contacts {
 ///
 /// An `EntryGroup` resource represents a logical grouping of zero or more
 /// Data Catalog \[Entry][google.cloud.datacatalog.v1.Entry\] resources.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EntryGroup {
     /// The resource name of the entry group in URL format.
@@ -1872,6 +1948,7 @@ pub struct EntryGroup {
 }
 /// Request message for
 /// \[CreateTagTemplate][google.cloud.datacatalog.v1.DataCatalog.CreateTagTemplate\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateTagTemplateRequest {
     /// Required. The name of the project and the template location
@@ -1891,6 +1968,7 @@ pub struct CreateTagTemplateRequest {
 }
 /// Request message for
 /// \[GetTagTemplate][google.cloud.datacatalog.v1.DataCatalog.GetTagTemplate\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetTagTemplateRequest {
     /// Required. The name of the tag template to get.
@@ -1899,6 +1977,7 @@ pub struct GetTagTemplateRequest {
 }
 /// Request message for
 /// \[UpdateTagTemplate][google.cloud.datacatalog.v1.DataCatalog.UpdateTagTemplate\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateTagTemplateRequest {
     /// Required. The template to update. The `name` field must be set.
@@ -1918,6 +1997,7 @@ pub struct UpdateTagTemplateRequest {
 }
 /// Request message for
 /// \[DeleteTagTemplate][google.cloud.datacatalog.v1.DataCatalog.DeleteTagTemplate\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteTagTemplateRequest {
     /// Required. The name of the tag template to delete.
@@ -1931,6 +2011,7 @@ pub struct DeleteTagTemplateRequest {
 }
 /// Request message for
 /// \[CreateTag][google.cloud.datacatalog.v1.DataCatalog.CreateTag\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateTagRequest {
     /// Required. The name of the resource to attach this tag to.
@@ -1948,6 +2029,7 @@ pub struct CreateTagRequest {
 }
 /// Request message for
 /// \[UpdateTag][google.cloud.datacatalog.v1.DataCatalog.UpdateTag\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateTagRequest {
     /// Required. The updated tag. The "name" field must be set.
@@ -1964,6 +2046,7 @@ pub struct UpdateTagRequest {
 }
 /// Request message for
 /// \[DeleteTag][google.cloud.datacatalog.v1.DataCatalog.DeleteTag\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteTagRequest {
     /// Required. The name of the tag to delete.
@@ -1972,6 +2055,7 @@ pub struct DeleteTagRequest {
 }
 /// Request message for
 /// \[CreateTagTemplateField][google.cloud.datacatalog.v1.DataCatalog.CreateTagTemplateField\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateTagTemplateFieldRequest {
     /// Required. The name of the project and the template location
@@ -1994,6 +2078,7 @@ pub struct CreateTagTemplateFieldRequest {
 }
 /// Request message for
 /// \[UpdateTagTemplateField][google.cloud.datacatalog.v1.DataCatalog.UpdateTagTemplateField\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateTagTemplateFieldRequest {
     /// Required. The name of the tag template field.
@@ -2023,6 +2108,7 @@ pub struct UpdateTagTemplateFieldRequest {
 }
 /// Request message for
 /// \[RenameTagTemplateField][google.cloud.datacatalog.v1.DataCatalog.RenameTagTemplateField\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RenameTagTemplateFieldRequest {
     /// Required. The name of the tag template field.
@@ -2034,6 +2120,7 @@ pub struct RenameTagTemplateFieldRequest {
 }
 /// Request message for
 /// \[RenameTagTemplateFieldEnumValue][google.cloud.datacatalog.v1.DataCatalog.RenameTagTemplateFieldEnumValue\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RenameTagTemplateFieldEnumValueRequest {
     /// Required. The name of the enum field value.
@@ -2045,6 +2132,7 @@ pub struct RenameTagTemplateFieldEnumValueRequest {
 }
 /// Request message for
 /// \[DeleteTagTemplateField][google.cloud.datacatalog.v1.DataCatalog.DeleteTagTemplateField\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteTagTemplateFieldRequest {
     /// Required. The name of the tag template field to delete.
@@ -2058,6 +2146,7 @@ pub struct DeleteTagTemplateFieldRequest {
 }
 /// Request message for
 /// \[ListTags][google.cloud.datacatalog.v1.DataCatalog.ListTags\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTagsRequest {
     /// Required. The name of the Data Catalog resource to list the tags of.
@@ -2077,6 +2166,7 @@ pub struct ListTagsRequest {
 }
 /// Response message for
 /// \[ListTags][google.cloud.datacatalog.v1.DataCatalog.ListTags\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTagsResponse {
     /// \[Tag][google.cloud.datacatalog.v1.Tag\] details.
@@ -2089,6 +2179,7 @@ pub struct ListTagsResponse {
 }
 /// Request message for
 /// \[ListEntries][google.cloud.datacatalog.v1.DataCatalog.ListEntries\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEntriesRequest {
     /// Required. The name of the entry group that contains the entries to list.
@@ -2114,6 +2205,7 @@ pub struct ListEntriesRequest {
 }
 /// Response message for
 /// \[ListEntries][google.cloud.datacatalog.v1.DataCatalog.ListEntries\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEntriesResponse {
     /// Entry details.
@@ -2126,6 +2218,7 @@ pub struct ListEntriesResponse {
 }
 /// Request message for
 /// \[StarEntry][google.cloud.datacatalog.v1.DataCatalog.StarEntry\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StarEntryRequest {
     /// Required. The name of the entry to mark as starred.
@@ -2135,10 +2228,12 @@ pub struct StarEntryRequest {
 /// Response message for
 /// \[StarEntry][google.cloud.datacatalog.v1.DataCatalog.StarEntry\].
 /// Empty for now
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StarEntryResponse {}
 /// Request message for
 /// \[UnstarEntry][google.cloud.datacatalog.v1.DataCatalog.UnstarEntry\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UnstarEntryRequest {
     /// Required. The name of the entry to mark as **not** starred.
@@ -2148,10 +2243,12 @@ pub struct UnstarEntryRequest {
 /// Response message for
 /// \[UnstarEntry][google.cloud.datacatalog.v1.DataCatalog.UnstarEntry\].
 /// Empty for now
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UnstarEntryResponse {}
 /// Request message for
 /// \[ModifyEntryOverview][google.cloud.datacatalog.v1.DataCatalog.ModifyEntryOverview\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ModifyEntryOverviewRequest {
     /// Required. The full resource name of the entry.
@@ -2163,6 +2260,7 @@ pub struct ModifyEntryOverviewRequest {
 }
 /// Request message for
 /// \[ModifyEntryContacts][google.cloud.datacatalog.v1.DataCatalog.ModifyEntryContacts\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ModifyEntryContactsRequest {
     /// Required. The full resource name of the entry.
@@ -3177,6 +3275,7 @@ pub mod data_catalog_client {
 /// + Partner data
 /// + Public data
 /// ```
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Taxonomy {
     /// Output only. Resource name of this taxonomy in URL format.
@@ -3258,6 +3357,7 @@ pub mod taxonomy {
 /// ```
 ///
 /// Where the "Geolocation" policy tag contains three children.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PolicyTag {
     /// Output only. Resource name of this policy tag in the URL format.
@@ -3293,6 +3393,7 @@ pub struct PolicyTag {
 }
 /// Request message for
 /// \[CreateTaxonomy][google.cloud.datacatalog.v1.PolicyTagManager.CreateTaxonomy\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateTaxonomyRequest {
     /// Required. Resource name of the project that the taxonomy will belong to.
@@ -3304,6 +3405,7 @@ pub struct CreateTaxonomyRequest {
 }
 /// Request message for
 /// \[DeleteTaxonomy][google.cloud.datacatalog.v1.PolicyTagManager.DeleteTaxonomy\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteTaxonomyRequest {
     /// Required. Resource name of the taxonomy to delete.
@@ -3314,6 +3416,7 @@ pub struct DeleteTaxonomyRequest {
 }
 /// Request message for
 /// \[UpdateTaxonomy][google.cloud.datacatalog.v1.PolicyTagManager.UpdateTaxonomy\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateTaxonomyRequest {
     /// The taxonomy to update. You can update only its description, display name,
@@ -3330,6 +3433,7 @@ pub struct UpdateTaxonomyRequest {
 }
 /// Request message for
 /// \[ListTaxonomies][google.cloud.datacatalog.v1.PolicyTagManager.ListTaxonomies\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTaxonomiesRequest {
     /// Required. Resource name of the project to list the taxonomies of.
@@ -3348,6 +3452,7 @@ pub struct ListTaxonomiesRequest {
 }
 /// Response message for
 /// \[ListTaxonomies][google.cloud.datacatalog.v1.PolicyTagManager.ListTaxonomies\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTaxonomiesResponse {
     /// Taxonomies that the project contains.
@@ -3360,6 +3465,7 @@ pub struct ListTaxonomiesResponse {
 }
 /// Request message for
 /// \[GetTaxonomy][google.cloud.datacatalog.v1.PolicyTagManager.GetTaxonomy\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetTaxonomyRequest {
     /// Required. Resource name of the taxonomy to get.
@@ -3368,6 +3474,7 @@ pub struct GetTaxonomyRequest {
 }
 /// Request message for
 /// \[CreatePolicyTag][google.cloud.datacatalog.v1.PolicyTagManager.CreatePolicyTag\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreatePolicyTagRequest {
     /// Required. Resource name of the taxonomy that the policy tag will belong to.
@@ -3379,6 +3486,7 @@ pub struct CreatePolicyTagRequest {
 }
 /// Request message for
 /// \[DeletePolicyTag][google.cloud.datacatalog.v1.PolicyTagManager.DeletePolicyTag\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeletePolicyTagRequest {
     /// Required. Resource name of the policy tag to delete.
@@ -3389,6 +3497,7 @@ pub struct DeletePolicyTagRequest {
 }
 /// Request message for
 /// \[UpdatePolicyTag][google.cloud.datacatalog.v1.PolicyTagManager.UpdatePolicyTag\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdatePolicyTagRequest {
     /// The policy tag to update. You can update only its description, display
@@ -3406,6 +3515,7 @@ pub struct UpdatePolicyTagRequest {
 }
 /// Request message for
 /// \[ListPolicyTags][google.cloud.datacatalog.v1.PolicyTagManager.ListPolicyTags\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPolicyTagsRequest {
     /// Required. Resource name of the taxonomy to list the policy tags of.
@@ -3425,6 +3535,7 @@ pub struct ListPolicyTagsRequest {
 }
 /// Response message for
 /// \[ListPolicyTags][google.cloud.datacatalog.v1.PolicyTagManager.ListPolicyTags\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPolicyTagsResponse {
     /// The policy tags that belong to the taxonomy.
@@ -3437,6 +3548,7 @@ pub struct ListPolicyTagsResponse {
 }
 /// Request message for
 /// \[GetPolicyTag][google.cloud.datacatalog.v1.PolicyTagManager.GetPolicyTag\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetPolicyTagRequest {
     /// Required. Resource name of the policy tag.
@@ -3813,6 +3925,7 @@ pub mod policy_tag_manager_client {
 /// A nested protocol buffer that represents a taxonomy and the hierarchy of its
 /// policy tags. Used for taxonomy replacement, import, and
 /// export.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SerializedTaxonomy {
     /// Required. Display name of the taxonomy. At most 200 bytes when encoded in UTF-8.
@@ -3831,6 +3944,7 @@ pub struct SerializedTaxonomy {
 }
 /// A nested protocol buffer that represents a policy tag and all its
 /// descendants.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SerializedPolicyTag {
     /// Resource name of the policy tag.
@@ -3853,6 +3967,7 @@ pub struct SerializedPolicyTag {
 }
 /// Request message for
 /// \[ReplaceTaxonomy][google.cloud.datacatalog.v1.PolicyTagManagerSerialization.ReplaceTaxonomy\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReplaceTaxonomyRequest {
     /// Required. Resource name of the taxonomy to update.
@@ -3864,6 +3979,7 @@ pub struct ReplaceTaxonomyRequest {
 }
 /// Request message for
 /// \[ImportTaxonomies][google.cloud.datacatalog.v1.PolicyTagManagerSerialization.ImportTaxonomies\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportTaxonomiesRequest {
     /// Required. Resource name of project that the imported taxonomies will belong to.
@@ -3876,6 +3992,7 @@ pub struct ImportTaxonomiesRequest {
 /// Nested message and enum types in `ImportTaxonomiesRequest`.
 pub mod import_taxonomies_request {
     /// Source taxonomies to import.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
         /// Inline source taxonomy to import.
@@ -3887,6 +4004,7 @@ pub mod import_taxonomies_request {
     }
 }
 /// Inline source containing taxonomies to import.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InlineSource {
     /// Required. Taxonomies to import.
@@ -3895,6 +4013,7 @@ pub struct InlineSource {
 }
 /// Cross-regional source used to import an existing taxonomy into a different
 /// region.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CrossRegionalSource {
     /// Required. The resource name of the source taxonomy to import.
@@ -3903,6 +4022,7 @@ pub struct CrossRegionalSource {
 }
 /// Response message for
 /// \[ImportTaxonomies][google.cloud.datacatalog.v1.PolicyTagManagerSerialization.ImportTaxonomies\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportTaxonomiesResponse {
     /// Imported taxonomies.
@@ -3911,6 +4031,7 @@ pub struct ImportTaxonomiesResponse {
 }
 /// Request message for
 /// \[ExportTaxonomies][google.cloud.datacatalog.v1.PolicyTagManagerSerialization.ExportTaxonomies\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportTaxonomiesRequest {
     /// Required. Resource name of the project that the exported taxonomies belong to.
@@ -3926,6 +4047,7 @@ pub struct ExportTaxonomiesRequest {
 /// Nested message and enum types in `ExportTaxonomiesRequest`.
 pub mod export_taxonomies_request {
     /// Required. Export destination for taxonomies.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Destination {
         /// Serialized export taxonomies that contain all the policy
@@ -3936,6 +4058,7 @@ pub mod export_taxonomies_request {
 }
 /// Response message for
 /// \[ExportTaxonomies][google.cloud.datacatalog.v1.PolicyTagManagerSerialization.ExportTaxonomies\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportTaxonomiesResponse {
     /// List of taxonomies and policy tags as nested protocol buffers.

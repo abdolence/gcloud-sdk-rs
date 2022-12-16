@@ -1,4 +1,5 @@
 /// A repository (or repo) is a Git repository storing versioned source content.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Repo {
     /// Resource name of the repository, of the form
@@ -21,6 +22,7 @@ pub struct Repo {
 }
 /// Configuration to automatically mirror a repository from another
 /// hosting service, for example GitHub or BitBucket.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MirrorConfig {
     /// URL of the main repository at the other hosting service.
@@ -39,6 +41,7 @@ pub struct MirrorConfig {
     pub deploy_key_id: ::prost::alloc::string::String,
 }
 /// Request for GetRepo.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetRepoRequest {
     /// The name of the requested repository. Values are of the form
@@ -47,6 +50,7 @@ pub struct GetRepoRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for ListRepos.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListReposRequest {
     /// The project ID whose repos should be listed. Values are of the form
@@ -64,6 +68,7 @@ pub struct ListReposRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response for ListRepos.  The size is not set in the returned repositories.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListReposResponse {
     /// The listed repos.
@@ -76,6 +81,7 @@ pub struct ListReposResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request for CreateRepo
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateRepoRequest {
     /// The project in which to create the repo. Values are of the form
@@ -88,6 +94,7 @@ pub struct CreateRepoRequest {
     pub repo: ::core::option::Option<Repo>,
 }
 /// Request for DeleteRepo.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteRepoRequest {
     /// The name of the repo to delete. Values are of the form

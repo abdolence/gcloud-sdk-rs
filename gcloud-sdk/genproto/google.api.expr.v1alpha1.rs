@@ -1,4 +1,5 @@
 /// An expression together with source information as returned by the parser.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ParsedExpr {
     /// The parsed expression.
@@ -23,6 +24,7 @@ pub struct ParsedExpr {
 /// For example, the expression `google.api.name.startsWith('expr')` references
 /// the declaration `google.api.name` within a \[Expr.Select][google.api.expr.v1alpha1.Expr.Select\] expression, and
 /// the function declaration `startsWith`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Expr {
     /// Required. An id assigned to this node by the parser which is unique in a
@@ -37,6 +39,7 @@ pub struct Expr {
 /// Nested message and enum types in `Expr`.
 pub mod expr {
     /// An identifier expression. e.g. `request`.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Ident {
         /// Required. Holds a single, unqualified identifier, possibly preceded by a
@@ -47,6 +50,7 @@ pub mod expr {
         pub name: ::prost::alloc::string::String,
     }
     /// A field selection expression. e.g. `request.auth`.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Select {
         /// Required. The target of the selection expression.
@@ -70,6 +74,7 @@ pub mod expr {
     /// A call expression, including calls to predefined functions and operators.
     ///
     /// For example, `value == 10`, `size(map_value)`.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Call {
         /// The target of an method call-style expression. For example, `x` in
@@ -87,6 +92,7 @@ pub mod expr {
     ///
     /// Lists may either be homogenous, e.g. `[1, 2, 3]`, or heterogeneous, e.g.
     /// `dyn([1, 'hello', 2.0])`
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CreateList {
         /// The elements part of the list.
@@ -106,6 +112,7 @@ pub mod expr {
     /// Maps are constructed as `{'key_name': 'value'}`. Message construction is
     /// similar, but prefixed with a type name and composed of field ids:
     /// `types.MyType{field_id: 'value'}`.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CreateStruct {
         /// The type name of the message to be created, empty when creating map
@@ -119,6 +126,7 @@ pub mod expr {
     /// Nested message and enum types in `CreateStruct`.
     pub mod create_struct {
         /// Represents an entry.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Entry {
             /// Required. An id assigned to this node by the parser which is unique
@@ -143,6 +151,7 @@ pub mod expr {
         /// Nested message and enum types in `Entry`.
         pub mod entry {
             /// The `Entry` key kinds.
+            #[allow(clippy::derive_partial_eq_without_eq)]
             #[derive(Clone, PartialEq, ::prost::Oneof)]
             pub enum KeyKind {
                 /// The field key for a message creator statement.
@@ -180,6 +189,7 @@ pub mod expr {
     /// messages `has(m.x)` is defined as 'defined, but not set`. For proto3, the
     /// macro tests whether the property is set to its default. For map and struct
     /// types, the macro tests whether the property `x` is defined on `m`.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Comprehension {
         /// The name of the iteration variable.
@@ -214,6 +224,7 @@ pub mod expr {
         pub result: ::core::option::Option<::prost::alloc::boxed::Box<super::Expr>>,
     }
     /// Required. Variants of expressions.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ExprKind {
         /// A literal expression.
@@ -252,6 +263,7 @@ pub mod expr {
 ///
 /// Examples of literals include: `"hello"`, `b'bytes'`, `1u`, `4.2`, `-2`,
 /// `true`, `null`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Constant {
     /// Required. The valid constant kinds.
@@ -261,6 +273,7 @@ pub struct Constant {
 /// Nested message and enum types in `Constant`.
 pub mod constant {
     /// Required. The valid constant kinds.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ConstantKind {
         /// null value.
@@ -297,6 +310,7 @@ pub mod constant {
     }
 }
 /// Source information collected at parse time.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SourceInfo {
     /// The syntax version of the source, e.g. `cel1`.
@@ -333,6 +347,7 @@ pub struct SourceInfo {
     pub macro_calls: ::std::collections::HashMap<i64, Expr>,
 }
 /// A specific position in source.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SourcePosition {
     /// The soucre location name (e.g. file name).
@@ -351,6 +366,7 @@ pub struct SourcePosition {
     pub column: i32,
 }
 /// A CEL expression which has been successfully type checked.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CheckedExpr {
     /// A map from expression ids to resolved references.
@@ -396,6 +412,7 @@ pub struct CheckedExpr {
     pub expr: ::core::option::Option<Expr>,
 }
 /// Represents a CEL type.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Type {
     /// The kind of type.
@@ -408,6 +425,7 @@ pub struct Type {
 /// Nested message and enum types in `Type`.
 pub mod r#type {
     /// List type with typed elements, e.g. `list<example.proto.MyMessage>`.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ListType {
         /// The element type.
@@ -415,6 +433,7 @@ pub mod r#type {
         pub elem_type: ::core::option::Option<::prost::alloc::boxed::Box<super::Type>>,
     }
     /// Map type with parameterized key and value types, e.g. `map<string, int>`.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct MapType {
         /// The type of the key.
@@ -425,6 +444,7 @@ pub mod r#type {
         pub value_type: ::core::option::Option<::prost::alloc::boxed::Box<super::Type>>,
     }
     /// Function type with result and arg types.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct FunctionType {
         /// Result type of the function.
@@ -435,6 +455,7 @@ pub mod r#type {
         pub arg_types: ::prost::alloc::vec::Vec<super::Type>,
     }
     /// Application defined abstract type.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AbstractType {
         /// The fully qualified name of this abstract type.
@@ -538,6 +559,7 @@ pub mod r#type {
         }
     }
     /// The kind of type.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum TypeKind {
         /// Dynamic type.
@@ -599,6 +621,7 @@ pub mod r#type {
 ///
 /// A declaration is part of the contract between the expression, the agent
 /// evaluating that expression, and the caller requesting evaluation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Decl {
     /// The fully qualified name of the declaration.
@@ -625,6 +648,7 @@ pub mod decl {
     /// evaluation time. An identifier with a value should resolve to a constant,
     /// but may be used in conjunction with other identifiers bound at evaluation
     /// time.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct IdentDecl {
         /// Required. The type of the identifier.
@@ -643,6 +667,7 @@ pub mod decl {
     ///
     /// Functions have no observable side-effects (there may be side-effects like
     /// logging which are not observable from CEL).
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct FunctionDecl {
         /// Required. List of function overloads, must contain at least one overload.
@@ -661,6 +686,7 @@ pub mod decl {
         ///
         /// Overloads must have non-overlapping argument types after erasure of all
         /// parameterized type variables (similar as type erasure in Java).
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Overload {
             /// Required. Globally unique overload name of the function which reflects
@@ -707,6 +733,7 @@ pub mod decl {
         }
     }
     /// Required. The declaration kind.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum DeclKind {
         /// Identifier declaration.
@@ -718,6 +745,7 @@ pub mod decl {
     }
 }
 /// Describes a resolved reference to a declaration.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Reference {
     /// The fully qualified name of the declaration.
@@ -743,6 +771,7 @@ pub struct Reference {
 ///
 /// This is similar to `google.protobuf.Value`, but can represent CEL's full
 /// range of values.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Value {
     /// Required. The valid kinds of values.
@@ -752,6 +781,7 @@ pub struct Value {
 /// Nested message and enum types in `Value`.
 pub mod value {
     /// Required. The valid kinds of values.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Kind {
         /// Null value.
@@ -793,6 +823,7 @@ pub mod value {
     }
 }
 /// An enum value.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EnumValue {
     /// The fully qualified name of the enum type.
@@ -806,6 +837,7 @@ pub struct EnumValue {
 ///
 /// Wrapped in a message so 'not set' and empty can be differentiated, which is
 /// required for use in a 'oneof'.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListValue {
     /// The ordered values in the list.
@@ -816,6 +848,7 @@ pub struct ListValue {
 ///
 /// Wrapped in a message so 'not set' and empty can be differentiated, which is
 /// required for use in a 'oneof'.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MapValue {
     /// The set of map entries.
@@ -828,6 +861,7 @@ pub struct MapValue {
 /// Nested message and enum types in `MapValue`.
 pub mod map_value {
     /// An entry in the map.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Entry {
         /// The key.
@@ -844,6 +878,7 @@ pub mod map_value {
 /// The state of an evaluation.
 ///
 /// Can represent an inital, partial, or completed state of evaluation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EvalState {
     /// The unique values referenced in this message.
@@ -859,6 +894,7 @@ pub struct EvalState {
 /// Nested message and enum types in `EvalState`.
 pub mod eval_state {
     /// A single evalution result.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Result {
         /// The id of the expression this result if for.
@@ -870,6 +906,7 @@ pub mod eval_state {
     }
 }
 /// The value of an evaluated expression.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExprValue {
     /// An expression can resolve to a value, error or unknown.
@@ -879,6 +916,7 @@ pub struct ExprValue {
 /// Nested message and enum types in `ExprValue`.
 pub mod expr_value {
     /// An expression can resolve to a value, error or unknown.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Kind {
         /// A concrete value.
@@ -933,6 +971,7 @@ pub mod expr_value {
 /// A set of errors.
 ///
 /// The errors included depend on the context. See `ExprValue.error`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ErrorSet {
     /// The errors in the set.
@@ -942,6 +981,7 @@ pub struct ErrorSet {
 /// A set of expressions for which the value is unknown.
 ///
 /// The unknowns included depend on the context. See `ExprValue.unknown`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UnknownSet {
     /// The ids of the expressions with unknown values.
@@ -950,6 +990,7 @@ pub struct UnknownSet {
 }
 /// Values of intermediate expressions produced when evaluating expression.
 /// Deprecated, use `EvalState` instead.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Explain {
     /// All of the observed values.
@@ -969,6 +1010,7 @@ pub struct Explain {
 /// Nested message and enum types in `Explain`.
 pub mod explain {
     /// ID and value index of one step.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ExprStep {
         /// ID of corresponding Expr node.

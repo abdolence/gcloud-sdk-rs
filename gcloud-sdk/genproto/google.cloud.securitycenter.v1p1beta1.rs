@@ -1,5 +1,6 @@
 /// Message that contains the resource name and display name of a folder
 /// resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Folder {
     /// Full resource name of this folder. See:
@@ -14,6 +15,7 @@ pub struct Folder {
 /// Command Center resource. Security marks are scoped within a Security Command
 /// Center organization -- they can be modified and viewed by all users who have
 /// proper permissions on the organization.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SecurityMarks {
     /// The relative resource name of the SecurityMarks. See:
@@ -54,6 +56,7 @@ pub struct SecurityMarks {
 /// about a single Google Cloud resource. All modifications to an Asset are only
 /// within the context of Security Command Center and don't affect the referenced
 /// Google Cloud resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Asset {
     /// The relative resource name of this asset. See:
@@ -103,6 +106,7 @@ pub struct Asset {
 pub mod asset {
     /// Security Command Center managed properties. These properties are managed by
     /// Security Command Center and cannot be modified by the user.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SecurityCenterProperties {
         /// The full resource name of the Google Cloud resource this asset
@@ -146,6 +150,7 @@ pub mod asset {
     /// described by the Security Command Center asset. This information is managed
     /// and defined by the Google Cloud resource and cannot be modified by the
     /// user.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct IamPolicy {
         /// The JSON representation of the Policy associated with the asset.
@@ -161,6 +166,7 @@ pub mod asset {
 /// ingested into Security Command Center for presentation, notification,
 /// analysis, policy testing, and enforcement. For example, an XSS vulnerability
 /// in an App Engine application is a finding.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Finding {
     /// The relative resource name of this finding. See:
@@ -319,6 +325,7 @@ pub mod finding {
 /// A notification config is a Security Command Center resource that contains the
 /// configuration to send notifications for create/update events of findings,
 /// assets and etc.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NotificationConfig {
     /// The relative resource name of this notification config. See:
@@ -349,6 +356,7 @@ pub struct NotificationConfig {
 pub mod notification_config {
     /// The config for streaming-based notifications, which send each event as soon
     /// as it is detected.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct StreamingConfig {
         /// Expression that defines the filter to apply across create/update events
@@ -407,6 +415,7 @@ pub mod notification_config {
         }
     }
     /// The config for triggering notifications.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum NotifyConfig {
         /// The config for triggering streaming-based notifications.
@@ -415,6 +424,7 @@ pub mod notification_config {
     }
 }
 /// Information related to the Google Cloud resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Resource {
     /// The full resource name of the resource. See:
@@ -440,6 +450,7 @@ pub struct Resource {
     pub folders: ::prost::alloc::vec::Vec<Folder>,
 }
 /// Security Command Center's Notification
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NotificationMessage {
     /// Name of the notification config that generated current notification.
@@ -455,6 +466,7 @@ pub struct NotificationMessage {
 /// Nested message and enum types in `NotificationMessage`.
 pub mod notification_message {
     /// Notification Event.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Event {
         /// If it's a Finding based notification config, this field will be
@@ -465,6 +477,7 @@ pub mod notification_message {
 }
 /// User specified settings that are attached to the Security Command
 /// Center organization.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OrganizationSettings {
     /// The relative resource name of the settings. See:
@@ -488,6 +501,7 @@ pub struct OrganizationSettings {
 /// Nested message and enum types in `OrganizationSettings`.
 pub mod organization_settings {
     /// The configuration used for Asset Discovery runs.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AssetDiscoveryConfig {
         /// The project ids to use for filtering asset discovery.
@@ -550,6 +564,7 @@ pub mod organization_settings {
     }
 }
 /// Response of asset discovery run
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RunAssetDiscoveryResponse {
     /// The state of an asset discovery run.
@@ -603,6 +618,7 @@ pub mod run_asset_discovery_response {
 /// Security Command Center finding source. A finding source
 /// is an entity or a mechanism that can produce a finding. A source is like a
 /// container of findings that come from the same scanner, logger, monitor, etc.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Source {
     /// The relative resource name of this source. See:
@@ -637,6 +653,7 @@ pub struct Source {
     pub canonical_name: ::prost::alloc::string::String,
 }
 /// Request message for creating a finding.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateFindingRequest {
     /// Required. Resource name of the new finding's parent. Its format should be
@@ -652,6 +669,7 @@ pub struct CreateFindingRequest {
     pub finding: ::core::option::Option<Finding>,
 }
 /// Request message for creating a notification config.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateNotificationConfigRequest {
     /// Required. Resource name of the new notification config's parent. Its format is
@@ -669,6 +687,7 @@ pub struct CreateNotificationConfigRequest {
     pub notification_config: ::core::option::Option<NotificationConfig>,
 }
 /// Request message for creating a source.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateSourceRequest {
     /// Required. Resource name of the new source's parent. Its format should be
@@ -681,6 +700,7 @@ pub struct CreateSourceRequest {
     pub source: ::core::option::Option<Source>,
 }
 /// Request message for deleting a notification config.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteNotificationConfigRequest {
     /// Required. Name of the notification config to delete. Its format is
@@ -689,6 +709,7 @@ pub struct DeleteNotificationConfigRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for getting a notification config.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetNotificationConfigRequest {
     /// Required. Name of the notification config to get. Its format is
@@ -697,6 +718,7 @@ pub struct GetNotificationConfigRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for getting organization settings.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetOrganizationSettingsRequest {
     /// Required. Name of the organization to get organization settings for. Its format is
@@ -705,6 +727,7 @@ pub struct GetOrganizationSettingsRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for getting a source.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetSourceRequest {
     /// Required. Relative resource name of the source. Its format is
@@ -713,6 +736,7 @@ pub struct GetSourceRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for grouping by assets.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GroupAssetsRequest {
     /// Required. Name of the organization to groupBy. Its format is
@@ -850,6 +874,7 @@ pub struct GroupAssetsRequest {
     pub page_size: i32,
 }
 /// Response message for grouping by assets.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GroupAssetsResponse {
     /// Group results. There exists an element for each existing unique
@@ -869,6 +894,7 @@ pub struct GroupAssetsResponse {
     pub total_size: i32,
 }
 /// Request message for grouping by findings.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GroupFindingsRequest {
     /// Required. Name of the source to groupBy. Its format is
@@ -1000,6 +1026,7 @@ pub struct GroupFindingsRequest {
     pub page_size: i32,
 }
 /// Response message for group by findings.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GroupFindingsResponse {
     /// Group results. There exists an element for each existing unique
@@ -1019,6 +1046,7 @@ pub struct GroupFindingsResponse {
     pub total_size: i32,
 }
 /// Result containing the properties and count of a groupBy request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GroupResult {
     /// Properties matching the groupBy fields in the request.
@@ -1032,6 +1060,7 @@ pub struct GroupResult {
     pub count: i64,
 }
 /// Request message for listing notification configs.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNotificationConfigsRequest {
     /// Required. Name of the organization to list notification configs.
@@ -1049,6 +1078,7 @@ pub struct ListNotificationConfigsRequest {
     pub page_size: i32,
 }
 /// Response message for listing notification configs.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNotificationConfigsResponse {
     /// Notification configs belonging to the requested parent.
@@ -1060,6 +1090,7 @@ pub struct ListNotificationConfigsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for listing sources.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSourcesRequest {
     /// Required. Resource name of the parent of sources to list. Its format should be
@@ -1078,6 +1109,7 @@ pub struct ListSourcesRequest {
     pub page_size: i32,
 }
 /// Response message for listing sources.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSourcesResponse {
     /// Sources belonging to the requested parent.
@@ -1089,6 +1121,7 @@ pub struct ListSourcesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for listing assets.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAssetsRequest {
     /// Required. Name of the organization assets should belong to. Its format is
@@ -1231,6 +1264,7 @@ pub struct ListAssetsRequest {
     pub page_size: i32,
 }
 /// Response message for listing assets.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAssetsResponse {
     /// Assets matching the list request.
@@ -1252,6 +1286,7 @@ pub struct ListAssetsResponse {
 /// Nested message and enum types in `ListAssetsResponse`.
 pub mod list_assets_response {
     /// Result containing the Asset and its State.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ListAssetsResult {
         /// Asset matching the search request.
@@ -1308,6 +1343,7 @@ pub mod list_assets_response {
     }
 }
 /// Request message for listing findings.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFindingsRequest {
     /// Required. Name of the source the findings belong to. Its format is
@@ -1444,6 +1480,7 @@ pub struct ListFindingsRequest {
     pub page_size: i32,
 }
 /// Response message for listing findings.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFindingsResponse {
     /// Findings matching the list request.
@@ -1465,6 +1502,7 @@ pub struct ListFindingsResponse {
 /// Nested message and enum types in `ListFindingsResponse`.
 pub mod list_findings_response {
     /// Result containing the Finding and its StateChange.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ListFindingsResult {
         /// Finding matching the search request.
@@ -1481,6 +1519,7 @@ pub mod list_findings_response {
     pub mod list_findings_result {
         /// Information related to the Google Cloud resource that is
         /// associated with this finding.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Resource {
             /// The full resource name of the resource. See:
@@ -1558,6 +1597,7 @@ pub mod list_findings_response {
     }
 }
 /// Request message for updating a finding's state.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetFindingStateRequest {
     /// Required. The relative resource name of the finding. See:
@@ -1574,6 +1614,7 @@ pub struct SetFindingStateRequest {
     pub start_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Request message for running asset discovery for an organization.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RunAssetDiscoveryRequest {
     /// Required. Name of the organization to run asset discovery for. Its format is
@@ -1582,6 +1623,7 @@ pub struct RunAssetDiscoveryRequest {
     pub parent: ::prost::alloc::string::String,
 }
 /// Request message for updating or creating a finding.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateFindingRequest {
     /// Required. The finding resource to update or create if it does not already exist.
@@ -1603,6 +1645,7 @@ pub struct UpdateFindingRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for updating a notification config.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateNotificationConfigRequest {
     /// Required. The notification config to update.
@@ -1615,6 +1658,7 @@ pub struct UpdateNotificationConfigRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for updating an organization's settings.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateOrganizationSettingsRequest {
     /// Required. The organization settings resource to update.
@@ -1627,6 +1671,7 @@ pub struct UpdateOrganizationSettingsRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for updating a source.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateSourceRequest {
     /// Required. The source resource to update.
@@ -1639,6 +1684,7 @@ pub struct UpdateSourceRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for updating a SecurityMarks resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateSecurityMarksRequest {
     /// Required. The security marks resource to update.

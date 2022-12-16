@@ -1,5 +1,6 @@
 /// An entry of mapping between color and AnnotationSpec. The mapping is used in
 /// segmentation mask.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnnotationSpecColor {
     /// The color of the AnnotationSpec in a segmentation mask.
@@ -17,6 +18,7 @@ pub struct AnnotationSpecColor {
 /// A vertex represents a 2D point in the image.
 /// NOTE: the normalized vertex coordinates are relative to the original image
 /// and range from 0 to 1.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Vertex {
     /// X coordinate.
@@ -27,6 +29,7 @@ pub struct Vertex {
     pub y: f64,
 }
 /// Annotation details specific to image classification.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImageClassificationAnnotation {
     /// The resource Id of the AnnotationSpec that this Annotation pertains to.
@@ -37,6 +40,7 @@ pub struct ImageClassificationAnnotation {
     pub display_name: ::prost::alloc::string::String,
 }
 /// Annotation details specific to image object detection.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImageBoundingBoxAnnotation {
     /// The resource Id of the AnnotationSpec that this Annotation pertains to.
@@ -59,6 +63,7 @@ pub struct ImageBoundingBoxAnnotation {
     pub y_max: f64,
 }
 /// Annotation details specific to image segmentation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImageSegmentationAnnotation {
     #[prost(oneof = "image_segmentation_annotation::Annotation", tags = "3, 4, 5")]
@@ -67,6 +72,7 @@ pub struct ImageSegmentationAnnotation {
 /// Nested message and enum types in `ImageSegmentationAnnotation`.
 pub mod image_segmentation_annotation {
     /// The mask based segmentation annotation.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct MaskAnnotation {
         /// Google Cloud Storage URI that points to the mask image. The image must be
@@ -81,6 +87,7 @@ pub mod image_segmentation_annotation {
         pub annotation_spec_colors: ::prost::alloc::vec::Vec<super::AnnotationSpecColor>,
     }
     /// Represents a polygon in image.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct PolygonAnnotation {
         /// The vertexes are connected one by one and the last vertex is connected to
@@ -95,6 +102,7 @@ pub mod image_segmentation_annotation {
         pub display_name: ::prost::alloc::string::String,
     }
     /// Represents a polyline in image.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct PolylineAnnotation {
         /// The vertexes are connected one by one and the last vertex in not
@@ -108,6 +116,7 @@ pub mod image_segmentation_annotation {
         #[prost(string, tag = "3")]
         pub display_name: ::prost::alloc::string::String,
     }
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Annotation {
         /// Mask based segmentation annotation. Only one mask annotation can exist
@@ -123,6 +132,7 @@ pub mod image_segmentation_annotation {
     }
 }
 /// Annotation details specific to text classification.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TextClassificationAnnotation {
     /// The resource Id of the AnnotationSpec that this Annotation pertains to.
@@ -133,6 +143,7 @@ pub struct TextClassificationAnnotation {
     pub display_name: ::prost::alloc::string::String,
 }
 /// Annotation details specific to text extraction.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TextExtractionAnnotation {
     /// The segment of the text content.
@@ -146,6 +157,7 @@ pub struct TextExtractionAnnotation {
     pub display_name: ::prost::alloc::string::String,
 }
 /// The text segment inside of DataItem.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TextSegment {
     /// Zero-based character index of the first character of the text
@@ -162,6 +174,7 @@ pub struct TextSegment {
     pub content: ::prost::alloc::string::String,
 }
 /// Annotation details specific to text sentiment.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TextSentimentAnnotation {
     /// The sentiment score for text.
@@ -178,6 +191,7 @@ pub struct TextSentimentAnnotation {
     pub display_name: ::prost::alloc::string::String,
 }
 /// Annotation details specific to video classification.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VideoClassificationAnnotation {
     /// This Annotation applies to the time period represented by the TimeSegment.
@@ -192,6 +206,7 @@ pub struct VideoClassificationAnnotation {
     pub display_name: ::prost::alloc::string::String,
 }
 /// A time period inside of a DataItem that has a time dimension (e.g. video).
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TimeSegment {
     /// Start of the time segment (inclusive), represented as the duration since
@@ -204,6 +219,7 @@ pub struct TimeSegment {
     pub end_time_offset: ::core::option::Option<::prost_types::Duration>,
 }
 /// Annotation details specific to video object tracking.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VideoObjectTrackingAnnotation {
     /// A time (frame) of a video to which this annotation pertains.
@@ -234,6 +250,7 @@ pub struct VideoObjectTrackingAnnotation {
     pub display_name: ::prost::alloc::string::String,
 }
 /// Annotation details specific to video action recognition.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VideoActionRecognitionAnnotation {
     /// This Annotation applies to the time period represented by the TimeSegment.
@@ -248,6 +265,7 @@ pub struct VideoActionRecognitionAnnotation {
     pub display_name: ::prost::alloc::string::String,
 }
 /// Payload of Image DataItem.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImageDataItem {
     /// Required. Google Cloud Storage URI points to the original image in user's bucket.
@@ -267,6 +285,7 @@ pub struct ImageDataItem {
     pub mime_type: ::prost::alloc::string::String,
 }
 /// Payload of Video DataItem.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VideoDataItem {
     /// Required. Google Cloud Storage URI points to the original video in user's bucket.
@@ -283,6 +302,7 @@ pub struct VideoDataItem {
     pub mime_type: ::prost::alloc::string::String,
 }
 /// Payload of Text DataItem.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TextDataItem {
     /// Output only. Google Cloud Storage URI points to the original text in user's bucket.
@@ -291,6 +311,7 @@ pub struct TextDataItem {
     pub gcs_uri: ::prost::alloc::string::String,
 }
 /// The metadata of Datasets that contain Image DataItems.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImageDatasetMetadata {
     /// Points to a YAML file stored on Google Cloud Storage describing payload of
@@ -303,6 +324,7 @@ pub struct ImageDatasetMetadata {
     pub gcs_bucket: ::prost::alloc::string::String,
 }
 /// The metadata of Datasets that contain Text DataItems.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TextDatasetMetadata {
     /// Points to a YAML file stored on Google Cloud Storage describing payload of
@@ -315,6 +337,7 @@ pub struct TextDatasetMetadata {
     pub gcs_bucket: ::prost::alloc::string::String,
 }
 /// The metadata of Datasets that contain Video DataItems.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VideoDatasetMetadata {
     /// Points to a YAML file stored on Google Cloud Storage describing payload of
@@ -327,6 +350,7 @@ pub struct VideoDatasetMetadata {
     pub gcs_bucket: ::prost::alloc::string::String,
 }
 /// The metadata of Datasets that contain tables data.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TablesDatasetMetadata {
     #[prost(message, optional, tag = "1")]
@@ -336,6 +360,7 @@ pub struct TablesDatasetMetadata {
 pub mod tables_dataset_metadata {
     /// The tables Dataset's data source. The Dataset doesn't store the data
     /// directly, but only pointer(s) to its data.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct InputConfig {
         #[prost(oneof = "input_config::Source", tags = "1, 2")]
@@ -343,6 +368,7 @@ pub mod tables_dataset_metadata {
     }
     /// Nested message and enum types in `InputConfig`.
     pub mod input_config {
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Source {
             #[prost(message, tag = "1")]
@@ -351,6 +377,7 @@ pub mod tables_dataset_metadata {
             BigquerySource(super::BigQuerySource),
         }
     }
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct GcsSource {
         /// Cloud Storage URI of one or more files. Only CSV files are supported.
@@ -361,6 +388,7 @@ pub mod tables_dataset_metadata {
         #[prost(string, repeated, tag = "1")]
         pub uri: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct BigQuerySource {
         /// The URI of a BigQuery table.
@@ -370,6 +398,7 @@ pub mod tables_dataset_metadata {
     }
 }
 /// The metadata of Datasets that contain time series data.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TimeSeriesDatasetMetadata {
     #[prost(message, optional, tag = "1")]
@@ -387,6 +416,7 @@ pub struct TimeSeriesDatasetMetadata {
 pub mod time_series_dataset_metadata {
     /// The time series Dataset's data source. The Dataset doesn't store the data
     /// directly, but only pointer(s) to its data.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct InputConfig {
         #[prost(oneof = "input_config::Source", tags = "1, 2")]
@@ -394,6 +424,7 @@ pub mod time_series_dataset_metadata {
     }
     /// Nested message and enum types in `InputConfig`.
     pub mod input_config {
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Source {
             #[prost(message, tag = "1")]
@@ -402,6 +433,7 @@ pub mod time_series_dataset_metadata {
             BigquerySource(super::BigQuerySource),
         }
     }
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct GcsSource {
         /// Cloud Storage URI of one or more files. Only CSV files are supported.
@@ -412,6 +444,7 @@ pub mod time_series_dataset_metadata {
         #[prost(string, repeated, tag = "1")]
         pub uri: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct BigQuerySource {
         /// The URI of a BigQuery table.
@@ -420,6 +453,7 @@ pub mod time_series_dataset_metadata {
     }
 }
 /// Represents a line of JSONL in the batch prediction output file.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PredictionResult {
     /// The prediction result.
@@ -440,6 +474,7 @@ pub struct PredictionResult {
 }
 /// Nested message and enum types in `PredictionResult`.
 pub mod prediction_result {
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Error {
         /// Error status. This will be serialized into the enum name e.g.
@@ -452,6 +487,7 @@ pub mod prediction_result {
     }
     /// Some identifier from the input so that the prediction can be mapped back to
     /// the input instance.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Input {
         /// User's input instance.

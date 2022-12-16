@@ -1,5 +1,6 @@
 /// A reference to uniquely identify an account according to India's UPI
 /// standards.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AccountReference {
     /// IFSC code of a bank's branch.
@@ -15,6 +16,7 @@ pub struct AccountReference {
 /// A participant in a payment settlement transaction processed by the issuer
 /// switch. The participant could either be the payer or the payee in the
 /// transaction.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SettlementParticipant {
     /// The participant information.
@@ -35,6 +37,7 @@ pub struct SettlementParticipant {
     pub device_id: ::prost::alloc::string::String,
 }
 /// A participant in a transaction processed by the issuer switch.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Participant {
     /// The virtual payment address (VPA) of the participant.
@@ -85,6 +88,7 @@ pub mod participant {
     }
 }
 /// A merchant entity participating in a payment settlement transaction.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MerchantInfo {
     /// A unique identifier for the merchant.
@@ -100,6 +104,7 @@ pub struct MerchantInfo {
 }
 /// The name of a merchant who is a participant in a payment settlement
 /// transaction. Includes multiple possible names for the merchant.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MerchantName {
     /// The brand name of the merchant.
@@ -113,6 +118,7 @@ pub struct MerchantName {
     pub franchise: ::prost::alloc::string::String,
 }
 /// Additional merchant information specific to India's UPI requirements.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MerchantAdditionalInfo {
     /// Merchant Category Code (MCC) as specified by UPI. This is a four-digit
@@ -606,6 +612,7 @@ impl XmlApiType {
     }
 }
 /// A complaint processed by the issuer switch.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Complaint {
     /// The name of the complaint. This uniquely identifies the complaint.
@@ -635,6 +642,7 @@ pub struct Complaint {
     pub resolve_complaint_adjustment: ::core::option::Option<ResolveComplaintAdjustment>,
 }
 /// Request for the `CreateComplaint` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateComplaintRequest {
     /// Required. The parent resource for the complaint. The format is
@@ -646,6 +654,7 @@ pub struct CreateComplaintRequest {
     pub complaint: ::core::option::Option<Complaint>,
 }
 /// Request for the `ResolveComplaint` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResolveComplaintRequest {
     /// Required. The complaint to be resolved.
@@ -653,6 +662,7 @@ pub struct ResolveComplaintRequest {
     pub complaint: ::core::option::Option<Complaint>,
 }
 /// A dispute processed by the issuer switch.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Dispute {
     /// The name of the dispute. This uniquely identifies the dispute.
@@ -679,6 +689,7 @@ pub struct Dispute {
     pub resolve_dispute_adjustment: ::core::option::Option<ResolveDisputeAdjustment>,
 }
 /// Request for the `CreateDispute` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateDisputeRequest {
     /// Required. The parent resource for the dispute. The format is
@@ -690,6 +701,7 @@ pub struct CreateDisputeRequest {
     pub dispute: ::core::option::Option<Dispute>,
 }
 /// Request for the `ResolveDispute` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResolveDisputeRequest {
     /// Required. The dispute to be resolved.
@@ -697,6 +709,7 @@ pub struct ResolveDisputeRequest {
     pub dispute: ::core::option::Option<Dispute>,
 }
 /// Details of original transaction.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OriginalTransaction {
     /// Required. Uniquely identifies the original transaction. This maps to the `Txn.Id`
@@ -711,6 +724,7 @@ pub struct OriginalTransaction {
     pub request_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Details of the complaint or dispute.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CaseDetails {
     /// Required. Details of original transaction.
@@ -734,6 +748,7 @@ pub struct CaseDetails {
     pub current_cycle: bool,
 }
 /// Response to the complaint or dispute.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CaseResponse {
     /// Complaint Reference Number(CRN) sent by UPI as a reference against the
@@ -780,6 +795,7 @@ pub struct CaseResponse {
 /// Nested message and enum types in `CaseResponse`.
 pub mod case_response {
     /// The details of the participant of the original financial transaction.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Participant {
         /// The payer in the original financial transaction.
@@ -791,6 +807,7 @@ pub mod case_response {
     }
 }
 /// The adjusment flag and reason code for raising complaint.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RaiseComplaintAdjustment {
     /// Required. The adjustment flag in URCS for the complaint transaction. This maps to
@@ -908,6 +925,7 @@ pub mod raise_complaint_adjustment {
     }
 }
 /// The adjusment flag and reason code for resolving the complaint.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResolveComplaintAdjustment {
     /// Required. The adjustment flag in URCS for the complaint transaction. This maps to
@@ -1065,6 +1083,7 @@ pub mod resolve_complaint_adjustment {
     }
 }
 /// The adjusment flag and reason code for raising dispute.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RaiseDisputeAdjustment {
     /// Required. The adjustment flag in URCS for the complaint transaction. This maps to
@@ -1272,6 +1291,7 @@ pub mod raise_dispute_adjustment {
     }
 }
 /// The adjusment flag and reason code for resolving the dispute.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResolveDisputeAdjustment {
     /// Required. The adjustment flag in URCS for the complaint transaction. This maps to
@@ -1677,15 +1697,19 @@ pub mod resolve_dispute_adjustment {
     }
 }
 /// Metadata for CreateComplaint.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateComplaintMetadata {}
 /// Metadata for ResolveComplaint.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResolveComplaintMetadata {}
 /// Metadata for CreateDispute.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateDisputeMetadata {}
 /// Metadata for ResolveDispute.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResolveDisputeMetadata {}
 /// The subtype of the complaint or dispute.
@@ -1897,6 +1921,7 @@ pub mod issuer_switch_resolutions_client {
 /// Information about a transaction processed by the issuer switch.
 /// The fields in this type are common across both financial and metadata
 /// transactions.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TransactionInfo {
     /// Output only. An identifier that is mandatorily present in every transaction processed
@@ -2032,6 +2057,7 @@ pub mod transaction_info {
 }
 /// A metadata API transaction processed by the issuer switch. This
 /// includes UPI APIs such as List Accounts, Balance Enquiry, etc.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MetadataTransaction {
     /// The name of the metadata transaction. This uniquely identifies the
@@ -2048,6 +2074,7 @@ pub struct MetadataTransaction {
 }
 /// A financial API transaction processed by the issuer switch. In UPI, this maps
 /// to the Pay API.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FinancialTransaction {
     /// The name of the financial transaction. This uniquely identifies the
@@ -2075,6 +2102,7 @@ pub struct FinancialTransaction {
 }
 /// A mandate processed by the issuer switch. In UPI, this maps to the Mandate
 /// API.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MandateTransaction {
     /// The name of the mandate transaction. This uniquely identifies the
@@ -2282,6 +2310,7 @@ pub mod mandate_transaction {
 }
 /// A complaint API transaction processed by the issuer switch. In
 /// UPI, this maps to the Complaint API.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ComplaintTransaction {
     /// The name of the complaint transaction. This uniquely identifies the
@@ -2301,6 +2330,7 @@ pub struct ComplaintTransaction {
 pub mod complaint_transaction {
     /// Information about the complaint transaction. It can be one of Complaint or
     /// Dispute.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Case {
         /// Output only. Information about the complaint transaction when it is of type complaint.
@@ -2314,6 +2344,7 @@ pub mod complaint_transaction {
 /// Request for the `ListMetadataTransactions` method. Callers can request for
 /// transactions to be filtered by the given filter criteria and specified
 /// pagination parameters.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListMetadataTransactionsRequest {
     /// Required. The parent resource. The format is `projects/{project}`.
@@ -2384,6 +2415,7 @@ pub struct ListMetadataTransactionsRequest {
 /// Request for the `ListFinancialTransactions` method. Callers can request for
 /// transactions to be filtered by the given filter criteria and specified
 /// pagination parameters.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFinancialTransactionsRequest {
     /// Required. The parent resource. The format is `projects/{project}`.
@@ -2468,6 +2500,7 @@ pub struct ListFinancialTransactionsRequest {
 /// Request for the `ListMandateTransactions` method. Callers can request for
 /// transactions to be filtered by the given filter criteria and specified
 /// pagination parameters.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListMandateTransactionsRequest {
     /// Required. The parent resource. The format is `projects/{project}`.
@@ -2562,6 +2595,7 @@ pub struct ListMandateTransactionsRequest {
 /// Request for the `ListComplaintTransactions` method. Callers can request for
 /// transactions to be filtered by the given filter criteria and specified
 /// pagination parameters.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListComplaintTransactionsRequest {
     /// Required. The parent resource. The format is `projects/{project}`.
@@ -2630,6 +2664,7 @@ pub struct ListComplaintTransactionsRequest {
     pub filter: ::prost::alloc::string::String,
 }
 /// Response for the `ListMetadataTransactions` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListMetadataTransactionsResponse {
     /// List of non financial metadata transactions satisfying the filtered
@@ -2643,6 +2678,7 @@ pub struct ListMetadataTransactionsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Response for the `ListFinancialTransactions` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFinancialTransactionsResponse {
     /// List of financial transactions satisfying the filtered request.
@@ -2655,6 +2691,7 @@ pub struct ListFinancialTransactionsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Response for the `ListMandateTransactionsResponse` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListMandateTransactionsResponse {
     /// List of mandate transactions satisfying the filtered request.
@@ -2667,6 +2704,7 @@ pub struct ListMandateTransactionsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Response for the `ListComplaintTransactionsResponse` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListComplaintTransactionsResponse {
     /// List of complaint transactions satisfying the filtered request.
@@ -2679,6 +2717,7 @@ pub struct ListComplaintTransactionsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request for the `ExportFinancialTransactions` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportFinancialTransactionsRequest {
     /// Required. The parent resource for the transactions. The format is
@@ -2704,6 +2743,7 @@ pub struct ExportFinancialTransactionsRequest {
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Request for the `ExportMetadataTransactions` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportMetadataTransactionsRequest {
     /// Required. The parent resource for the transactions. The format is
@@ -2733,6 +2773,7 @@ pub struct ExportMetadataTransactionsRequest {
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Request for the `ExportMandateTransactions` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportMandateTransactionsRequest {
     /// Required. The parent resource for the transactions. The format is
@@ -2758,6 +2799,7 @@ pub struct ExportMandateTransactionsRequest {
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Request for the `ExportComplaintTransactions` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportComplaintTransactionsRequest {
     /// Required. The parent resource for the transactions. The format is
@@ -2786,6 +2828,7 @@ pub struct ExportComplaintTransactionsRequest {
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Response for the `ExportFinancialTransactions` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportFinancialTransactionsResponse {
     /// URI of the exported file.
@@ -2793,6 +2836,7 @@ pub struct ExportFinancialTransactionsResponse {
     pub target_uri: ::prost::alloc::string::String,
 }
 /// Response for the `ExportMetadataTransactions` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportMetadataTransactionsResponse {
     /// URI of the exported file.
@@ -2800,6 +2844,7 @@ pub struct ExportMetadataTransactionsResponse {
     pub target_uri: ::prost::alloc::string::String,
 }
 /// Response for the `ExportMandateTransactions` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportMandateTransactionsResponse {
     /// URI of the exported file.
@@ -2807,6 +2852,7 @@ pub struct ExportMandateTransactionsResponse {
     pub target_uri: ::prost::alloc::string::String,
 }
 /// Response for the `ExportComplaintTransactions` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportComplaintTransactionsResponse {
     /// URI of the exported file.
@@ -2814,6 +2860,7 @@ pub struct ExportComplaintTransactionsResponse {
     pub target_uri: ::prost::alloc::string::String,
 }
 /// Metadata for ExportFinancialTransactions.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportFinancialTransactionsMetadata {
     /// Output only. The time at which the operation was created.
@@ -2821,6 +2868,7 @@ pub struct ExportFinancialTransactionsMetadata {
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Metadata for ExportMandateTransactions.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportMandateTransactionsMetadata {
     /// Output only. The time at which the operation was created.
@@ -2828,6 +2876,7 @@ pub struct ExportMandateTransactionsMetadata {
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Metadata for ExportMetadataTransactions.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportMetadataTransactionsMetadata {
     /// Output only. The time at which the operation was created.
@@ -2835,6 +2884,7 @@ pub struct ExportMetadataTransactionsMetadata {
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Metadata for ExportComplaintTransactions.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportComplaintTransactionsMetadata {
     /// Output only. The time at which the operation was created.
@@ -3550,6 +3600,7 @@ pub mod issuer_switch_transactions_client {
     }
 }
 /// The payload for the log entry.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpiTransaction {
     /// A human readable message about the log entry.
@@ -3609,6 +3660,7 @@ pub struct UpiTransaction {
 /// Nested message and enum types in `UpiTransaction`.
 pub mod upi_transaction {
     /// The ack, request or response payload.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Payload {
         /// The payload in XML format sent to the issuer switch.
@@ -3621,6 +3673,7 @@ pub mod upi_transaction {
 }
 /// A rule that is executed by the issuer switch while processing an
 /// API transaction.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Rule {
     /// The unique identifier for this resource.
@@ -3643,6 +3696,7 @@ pub struct Rule {
 }
 /// The metadata associated with a rule. This defines data that are used by the
 /// rule during execution.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RuleMetadata {
     /// The unique identifier for this resource.
@@ -3692,6 +3746,7 @@ pub mod rule_metadata {
     }
 }
 /// Represent a single value in a rule's metadata.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RuleMetadataValue {
     /// Output only. The unique identifier for this resource.
@@ -3739,6 +3794,7 @@ pub mod rule_metadata_value {
     /// Device identifier   | 1   | 255   |
     /// Mobile number   | 12   | 12  |
     /// Virtual private address (VPA)   | 3   | 255   |
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Value {
         /// The value for string metadata.
@@ -3750,6 +3806,7 @@ pub mod rule_metadata_value {
     }
 }
 /// Request body for the `ListRules` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRulesRequest {
     /// Required. The parent resource must have the format of `projects/{project}`.
@@ -3767,6 +3824,7 @@ pub struct ListRulesRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response body for the `ListRules` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRulesResponse {
     /// List of rules satisfying the specified filter criteria.
@@ -3782,6 +3840,7 @@ pub struct ListRulesResponse {
     pub total_size: i64,
 }
 /// Request body for the `ListRuleMetadata` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRuleMetadataRequest {
     /// Required. The parent resource. The format is `projects/{project}/rules/{rule}`.
@@ -3799,6 +3858,7 @@ pub struct ListRuleMetadataRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response body for the `ListRuleMetadata` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRuleMetadataResponse {
     /// List of rule metadata associated with the rule.
@@ -3814,6 +3874,7 @@ pub struct ListRuleMetadataResponse {
     pub total_size: i64,
 }
 /// Request body for the `ListRuleMetadataValues` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRuleMetadataValuesRequest {
     /// Required. The parent resource. The format is
@@ -3834,6 +3895,7 @@ pub struct ListRuleMetadataValuesRequest {
 }
 /// Response body for ListRuleMetadataValues. Contains a List of values for a
 /// given rule metadata resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRuleMetadataValuesResponse {
     /// List of values for a given rule metadata resource identifier.
@@ -3846,6 +3908,7 @@ pub struct ListRuleMetadataValuesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request body for the `BatchCreateRuleMetadataValues` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchCreateRuleMetadataValuesRequest {
     /// The parent resource shared by all ruleMetadataValue being created. The
@@ -3861,6 +3924,7 @@ pub struct BatchCreateRuleMetadataValuesRequest {
     pub requests: ::prost::alloc::vec::Vec<CreateRuleMetadataValueRequest>,
 }
 /// Response body for the `BatchCreateRuleMetadataValues` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchCreateRuleMetadataValuesResponse {
     /// List of RuleMetadataValue created.
@@ -3868,6 +3932,7 @@ pub struct BatchCreateRuleMetadataValuesResponse {
     pub rule_metadata_value: ::prost::alloc::vec::Vec<RuleMetadataValue>,
 }
 /// Request for creating a single `RuleMetadataValue`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateRuleMetadataValueRequest {
     /// Required. The parent resource where this RuleMetadataValue will be created. The
@@ -3879,6 +3944,7 @@ pub struct CreateRuleMetadataValueRequest {
     pub rule_metadata_value: ::core::option::Option<RuleMetadataValue>,
 }
 /// Request body for the `BatchDeleteRuleMetadataValues` method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchDeleteRuleMetadataValuesRequest {
     /// The parent resource shared by all RuleMetadataValues being deleted. The

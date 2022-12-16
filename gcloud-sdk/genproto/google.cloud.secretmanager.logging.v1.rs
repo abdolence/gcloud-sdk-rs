@@ -1,4 +1,5 @@
 /// Logged event relating to a specific secret
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SecretEvent {
     /// Resource name of the secret in the format `projects/*/secrets/*`

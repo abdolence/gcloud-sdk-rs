@@ -1,4 +1,5 @@
 /// Contains annotation details specific to classification.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ClassificationAnnotation {
     /// Output only. A confidence estimate between 0.0 and 1.0. A higher value
@@ -12,6 +13,7 @@ pub struct ClassificationAnnotation {
 /// Model evaluation metrics for classification problems.
 /// Note: For Video Classification this metrics only describe quality of the
 /// Video Classification predictions of "segment_classification" type.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ClassificationEvaluationMetrics {
     /// Output only. The Area Under Precision-Recall Curve metric. Micro-averaged
@@ -51,6 +53,7 @@ pub struct ClassificationEvaluationMetrics {
 /// Nested message and enum types in `ClassificationEvaluationMetrics`.
 pub mod classification_evaluation_metrics {
     /// Metrics for a single confidence threshold.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ConfidenceMetricsEntry {
         /// Output only. Metrics are computed with an assumption that the model
@@ -111,6 +114,7 @@ pub mod classification_evaluation_metrics {
         pub true_negative_count: i64,
     }
     /// Confusion matrix of the model running the classification.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ConfusionMatrix {
         /// Output only. IDs of the annotation specs used in the confusion matrix.
@@ -138,6 +142,7 @@ pub mod classification_evaluation_metrics {
     /// Nested message and enum types in `ConfusionMatrix`.
     pub mod confusion_matrix {
         /// Output only. A row in the confusion matrix.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Row {
             /// Output only. Value of the specific cell in the confusion matrix.
@@ -178,6 +183,7 @@ impl ClassificationType {
 /// the original plane (image, video). E.g. if the plane (e.g. whole image) would
 /// have size 10 x 20 then a point with normalized coordinates (0.1, 0.3) would
 /// be at the position (1, 6) on that plane.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NormalizedVertex {
     /// Required. Horizontal coordinate.
@@ -190,6 +196,7 @@ pub struct NormalizedVertex {
 /// A bounding polygon of a detected object on a plane.
 /// On output both vertices and normalized_vertices are provided.
 /// The polygon is formed by connecting vertices in the order they are listed.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BoundingPoly {
     /// Output only . The bounding polygon normalized vertices.
@@ -197,6 +204,7 @@ pub struct BoundingPoly {
     pub normalized_vertices: ::prost::alloc::vec::Vec<NormalizedVertex>,
 }
 /// Annotation details for image object detection.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImageObjectDetectionAnnotation {
     /// Output only. The rectangle representing the object location.
@@ -209,6 +217,7 @@ pub struct ImageObjectDetectionAnnotation {
 }
 /// Bounding box matching model metrics for a single intersection-over-union
 /// threshold and multiple label match confidence thresholds.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BoundingBoxMetricsEntry {
     /// Output only. The intersection-over-union threshold value used to compute
@@ -229,6 +238,7 @@ pub struct BoundingBoxMetricsEntry {
 /// Nested message and enum types in `BoundingBoxMetricsEntry`.
 pub mod bounding_box_metrics_entry {
     /// Metrics for a single confidence threshold.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ConfidenceMetricsEntry {
         /// Output only. The confidence threshold value used to compute the metrics.
@@ -247,6 +257,7 @@ pub mod bounding_box_metrics_entry {
 }
 /// Model evaluation metrics for image object detection problems.
 /// Evaluates prediction quality of labeled bounding boxes.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImageObjectDetectionEvaluationMetrics {
     /// Output only. The total number of bounding boxes (i.e. summed over all
@@ -265,6 +276,7 @@ pub struct ImageObjectDetectionEvaluationMetrics {
     pub bounding_box_mean_average_precision: f32,
 }
 /// A contiguous part of a text (string), assuming it has an UTF-8 NFC encoding.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TextSegment {
     /// Output only. The content of the TextSegment.
@@ -281,6 +293,7 @@ pub struct TextSegment {
     pub end_offset: i64,
 }
 /// Annotation for identifying spans of text.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TextExtractionAnnotation {
     /// Output only. A confidence estimate between 0.0 and 1.0. A higher value
@@ -296,6 +309,7 @@ pub struct TextExtractionAnnotation {
 pub mod text_extraction_annotation {
     /// Required. Text extraction annotations can either be a text segment or a
     /// text relation.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Annotation {
         /// An entity annotation will set this, which is the part of the original
@@ -305,6 +319,7 @@ pub mod text_extraction_annotation {
     }
 }
 /// Model evaluation metrics for text extraction problems.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TextExtractionEvaluationMetrics {
     /// Output only. The Area under precision recall curve metric.
@@ -320,6 +335,7 @@ pub struct TextExtractionEvaluationMetrics {
 /// Nested message and enum types in `TextExtractionEvaluationMetrics`.
 pub mod text_extraction_evaluation_metrics {
     /// Metrics for a single confidence threshold.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ConfidenceMetricsEntry {
         /// Output only. The confidence threshold value used to compute the metrics.
@@ -339,6 +355,7 @@ pub mod text_extraction_evaluation_metrics {
     }
 }
 /// Contains annotation details specific to text sentiment.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TextSentimentAnnotation {
     /// Output only. The sentiment with the semantic, as given to the
@@ -357,6 +374,7 @@ pub struct TextSentimentAnnotation {
     pub sentiment: i32,
 }
 /// Model evaluation metrics for text sentiment problems.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TextSentimentEvaluationMetrics {
     /// Output only. Precision.
@@ -1004,6 +1022,7 @@ pub struct TextSentimentEvaluationMetrics {
 ///   failures, up to a certain count cap, is listed in
 ///   Operation.metadata.partial_failures.
 ///
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InputConfig {
     /// Additional domain-specific parameters describing the semantic of the
@@ -1029,6 +1048,7 @@ pub struct InputConfig {
 /// Nested message and enum types in `InputConfig`.
 pub mod input_config {
     /// The source of the input.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
         /// The Google Cloud Storage location for the input content.
@@ -1312,6 +1332,7 @@ pub mod input_config {
 ///   prediction does not happen. Regardless of overall success or failure the
 ///   per-row failures, up to a certain count cap, will be listed in
 ///   Operation.metadata.partial_failures.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchPredictInputConfig {
     /// The source of the input.
@@ -1321,6 +1342,7 @@ pub struct BatchPredictInputConfig {
 /// Nested message and enum types in `BatchPredictInputConfig`.
 pub mod batch_predict_input_config {
     /// The source of the input.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
         /// Required. The Google Cloud Storage location for the input content.
@@ -1329,6 +1351,7 @@ pub mod batch_predict_input_config {
     }
 }
 /// Input configuration of a \[Document][google.cloud.automl.v1.Document\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DocumentInputConfig {
     /// The Google Cloud Storage location of the document file. Only a single path
@@ -1368,6 +1391,7 @@ pub struct DocumentInputConfig {
 ///            YYYY_MM_DDThh_mm_ss_sssZ "based on ISO-8601" format. In that
 ///            dataset a new table called `primary_table` will be created, and
 ///            filled with precisely the same data as this obtained on import.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OutputConfig {
     /// The destination of the output.
@@ -1377,6 +1401,7 @@ pub struct OutputConfig {
 /// Nested message and enum types in `OutputConfig`.
 pub mod output_config {
     /// The destination of the output.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Destination {
         /// Required. The Google Cloud Storage location where the output is to be written to.
@@ -1638,6 +1663,7 @@ pub mod output_config {
 ///            and as a value has
 ///            \[`google.rpc.Status`\](<https://github.com/googleapis/googleapis/blob/master/google/rpc/status.proto>)
 ///            represented as a STRUCT, and containing only `code` and `message`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchPredictOutputConfig {
     /// The destination of the output.
@@ -1647,6 +1673,7 @@ pub struct BatchPredictOutputConfig {
 /// Nested message and enum types in `BatchPredictOutputConfig`.
 pub mod batch_predict_output_config {
     /// The destination of the output.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Destination {
         /// Required. The Google Cloud Storage location of the directory where the output is to
@@ -1656,6 +1683,7 @@ pub mod batch_predict_output_config {
     }
 }
 /// Output configuration for ModelExport Action.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ModelExportOutputConfig {
     /// The format in which the model must be exported. The available, and default,
@@ -1710,6 +1738,7 @@ pub struct ModelExportOutputConfig {
 /// Nested message and enum types in `ModelExportOutputConfig`.
 pub mod model_export_output_config {
     /// The destination of the output.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Destination {
         /// Required. The Google Cloud Storage location where the model is to be written to.
@@ -1726,6 +1755,7 @@ pub mod model_export_output_config {
     }
 }
 /// The Google Cloud Storage location for the input content.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GcsSource {
     /// Required. Google Cloud Storage URIs to input files, up to 2000
@@ -1735,6 +1765,7 @@ pub struct GcsSource {
     pub input_uris: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The Google Cloud Storage location where the output is to be written to.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GcsDestination {
     /// Required. Google Cloud Storage URI to output directory, up to 2000
@@ -1748,6 +1779,7 @@ pub struct GcsDestination {
 }
 /// A representation of an image.
 /// Only images up to 30MB in size are supported.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Image {
     /// Output only. HTTP URI to the thumbnail image.
@@ -1762,6 +1794,7 @@ pub struct Image {
 pub mod image {
     /// Input only. The data representing the image.
     /// For Predict calls \[image_bytes][google.cloud.automl.v1.Image.image_bytes\] must be set .
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Data {
         /// Image content represented as a stream of bytes.
@@ -1772,6 +1805,7 @@ pub mod image {
     }
 }
 /// A representation of a text snippet.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TextSnippet {
     /// Required. The content of the text snippet as a string. Up to 250000
@@ -1788,6 +1822,7 @@ pub struct TextSnippet {
     pub content_uri: ::prost::alloc::string::String,
 }
 /// Message that describes dimension of a document.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DocumentDimensions {
     /// Unit of the dimension.
@@ -1843,6 +1878,7 @@ pub mod document_dimensions {
     }
 }
 /// A structured text document e.g. a PDF.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Document {
     /// An input config specifying the content of the document.
@@ -1865,6 +1901,7 @@ pub struct Document {
 /// Nested message and enum types in `Document`.
 pub mod document {
     /// Describes the layout information of a \[text_segment][google.cloud.automl.v1.Document.Layout.text_segment\] in the document.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Layout {
         /// Text Segment that represents a segment in
@@ -1959,6 +1996,7 @@ pub mod document {
     }
 }
 /// Example data used for training or prediction.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExamplePayload {
     /// Required. The example data.
@@ -1968,6 +2006,7 @@ pub struct ExamplePayload {
 /// Nested message and enum types in `ExamplePayload`.
 pub mod example_payload {
     /// Required. The example data.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Payload {
         /// Example image.
@@ -1982,6 +2021,7 @@ pub mod example_payload {
     }
 }
 /// Dataset metadata that is specific to translation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TranslationDatasetMetadata {
     /// Required. The BCP-47 language code of the source language.
@@ -1992,6 +2032,7 @@ pub struct TranslationDatasetMetadata {
     pub target_language_code: ::prost::alloc::string::String,
 }
 /// Evaluation metrics for the dataset.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TranslationEvaluationMetrics {
     /// Output only. BLEU score.
@@ -2002,6 +2043,7 @@ pub struct TranslationEvaluationMetrics {
     pub base_bleu_score: f64,
 }
 /// Model metadata that is specific to translation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TranslationModelMetadata {
     /// The resource name of the model to use as a baseline to train the custom
@@ -2020,6 +2062,7 @@ pub struct TranslationModelMetadata {
     pub target_language_code: ::prost::alloc::string::String,
 }
 /// Annotation details specific to translation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TranslationAnnotation {
     /// Output only . The translated content.
@@ -2027,6 +2070,7 @@ pub struct TranslationAnnotation {
     pub translated_content: ::core::option::Option<TextSnippet>,
 }
 /// Contains annotation information that is relevant to AutoML.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnnotationPayload {
     /// Output only . The resource ID of the annotation spec that
@@ -2051,6 +2095,7 @@ pub struct AnnotationPayload {
 pub mod annotation_payload {
     /// Output only . Additional information about the annotation
     /// specific to the AutoML domain.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Detail {
         /// Annotation details for translation.
@@ -2071,6 +2116,7 @@ pub mod annotation_payload {
     }
 }
 /// A definition of an annotation spec.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnnotationSpec {
     /// Output only. Resource name of the annotation spec.
@@ -2088,6 +2134,7 @@ pub struct AnnotationSpec {
     pub example_count: i32,
 }
 /// Dataset metadata that is specific to image classification.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImageClassificationDatasetMetadata {
     /// Required. Type of the classification problem.
@@ -2095,9 +2142,11 @@ pub struct ImageClassificationDatasetMetadata {
     pub classification_type: i32,
 }
 /// Dataset metadata specific to image object detection.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImageObjectDetectionDatasetMetadata {}
 /// Model metadata for image classification.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImageClassificationModelMetadata {
     /// Optional. The ID of the `base` model. If it is specified, the new model
@@ -2178,6 +2227,7 @@ pub struct ImageClassificationModelMetadata {
     pub node_count: i64,
 }
 /// Model metadata specific to image object detection.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImageObjectDetectionModelMetadata {
     /// Optional. Type of the model. The available values are:
@@ -2242,6 +2292,7 @@ pub struct ImageObjectDetectionModelMetadata {
     pub train_cost_milli_node_hours: i64,
 }
 /// Model deployment metadata specific to Image Classification.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImageClassificationModelDeploymentMetadata {
     /// Input only. The number of nodes to deploy the model on. A node is an
@@ -2253,6 +2304,7 @@ pub struct ImageClassificationModelDeploymentMetadata {
     pub node_count: i64,
 }
 /// Model deployment metadata specific to Image Object Detection.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImageObjectDetectionModelDeploymentMetadata {
     /// Input only. The number of nodes to deploy the model on. A node is an
@@ -2264,6 +2316,7 @@ pub struct ImageObjectDetectionModelDeploymentMetadata {
     pub node_count: i64,
 }
 /// Dataset metadata for classification.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TextClassificationDatasetMetadata {
     /// Required. Type of the classification problem.
@@ -2271,6 +2324,7 @@ pub struct TextClassificationDatasetMetadata {
     pub classification_type: i32,
 }
 /// Model metadata that is specific to text classification.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TextClassificationModelMetadata {
     /// Output only. Classification type of the dataset used to train this model.
@@ -2278,12 +2332,15 @@ pub struct TextClassificationModelMetadata {
     pub classification_type: i32,
 }
 /// Dataset metadata that is specific to text extraction
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TextExtractionDatasetMetadata {}
 /// Model metadata that is specific to text extraction.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TextExtractionModelMetadata {}
 /// Dataset metadata for text sentiment.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TextSentimentDatasetMetadata {
     /// Required. A sentiment is expressed as an integer ordinal, where higher value
@@ -2296,10 +2353,12 @@ pub struct TextSentimentDatasetMetadata {
     pub sentiment_max: i32,
 }
 /// Model metadata that is specific to text sentiment.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TextSentimentModelMetadata {}
 /// A workspace for solving a single, particular machine learning (ML) problem.
 /// A workspace contains examples that may be annotated.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Dataset {
     /// Output only. The resource name of the dataset.
@@ -2348,6 +2407,7 @@ pub struct Dataset {
 pub mod dataset {
     /// Required.
     /// The dataset metadata that is specific to the problem type.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum DatasetMetadata {
         /// Metadata for a dataset used for translation.
@@ -2371,6 +2431,7 @@ pub mod dataset {
     }
 }
 /// API proto representing a trained machine learning model.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Model {
     /// Output only. Resource name of the model.
@@ -2459,6 +2520,7 @@ pub mod model {
     /// Required.
     /// The model metadata that is specific to the problem type.
     /// Must match the metadata type of the dataset used to train the model.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ModelMetadata {
         /// Metadata for translation models.
@@ -2482,6 +2544,7 @@ pub mod model {
     }
 }
 /// Evaluation results of a model.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ModelEvaluation {
     /// Output only. Resource name of the model evaluation.
@@ -2531,6 +2594,7 @@ pub struct ModelEvaluation {
 /// Nested message and enum types in `ModelEvaluation`.
 pub mod model_evaluation {
     /// Output only. Problem type specific evaluation metrics.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Metrics {
         /// Model evaluation metrics for image, text, video and tables
@@ -2556,6 +2620,7 @@ pub mod model_evaluation {
     }
 }
 /// Metadata used across all long running operations returned by AutoML API.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationMetadata {
     /// Output only. Progress of operation. Range: [0, 100].
@@ -2586,6 +2651,7 @@ pub struct OperationMetadata {
 pub mod operation_metadata {
     /// Ouptut only. Details of specific operation. Even if this field is empty,
     /// the presence allows to distinguish different types of operations.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Details {
         /// Details of a Delete operation.
@@ -2618,24 +2684,31 @@ pub mod operation_metadata {
     }
 }
 /// Details of operations that perform deletes of any entities.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteOperationMetadata {}
 /// Details of DeployModel operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeployModelOperationMetadata {}
 /// Details of UndeployModel operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UndeployModelOperationMetadata {}
 /// Details of CreateDataset operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateDatasetOperationMetadata {}
 /// Details of CreateModel operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateModelOperationMetadata {}
 /// Details of ImportData operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportDataOperationMetadata {}
 /// Details of ExportData operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportDataOperationMetadata {
     /// Output only. Information further describing this export data's output.
@@ -2649,6 +2722,7 @@ pub mod export_data_operation_metadata {
     /// Further describes this export data's output.
     /// Supplements
     /// \[OutputConfig][google.cloud.automl.v1.OutputConfig\].
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ExportDataOutputInfo {
         /// The output location to which the exported data is written.
@@ -2660,6 +2734,7 @@ pub mod export_data_operation_metadata {
     /// Nested message and enum types in `ExportDataOutputInfo`.
     pub mod export_data_output_info {
         /// The output location to which the exported data is written.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum OutputLocation {
             /// The full path of the Google Cloud Storage directory created, into which
@@ -2670,6 +2745,7 @@ pub mod export_data_operation_metadata {
     }
 }
 /// Details of BatchPredict operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchPredictOperationMetadata {
     /// Output only. The input config that was given upon starting this
@@ -2687,6 +2763,7 @@ pub mod batch_predict_operation_metadata {
     /// Further describes this batch predict's output.
     /// Supplements
     /// \[BatchPredictOutputConfig][google.cloud.automl.v1.BatchPredictOutputConfig\].
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct BatchPredictOutputInfo {
         /// The output location into which prediction output is written.
@@ -2698,6 +2775,7 @@ pub mod batch_predict_operation_metadata {
     /// Nested message and enum types in `BatchPredictOutputInfo`.
     pub mod batch_predict_output_info {
         /// The output location into which prediction output is written.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum OutputLocation {
             /// The full path of the Google Cloud Storage directory created, into which
@@ -2708,6 +2786,7 @@ pub mod batch_predict_operation_metadata {
     }
 }
 /// Details of ExportModel operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportModelOperationMetadata {
     /// Output only. Information further describing the output of this model
@@ -2722,6 +2801,7 @@ pub mod export_model_operation_metadata {
     /// Further describes the output of model export.
     /// Supplements
     /// \[ModelExportOutputConfig][google.cloud.automl.v1.ModelExportOutputConfig\].
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ExportModelOutputInfo {
         /// The full path of the Google Cloud Storage directory created, into which
@@ -2731,6 +2811,7 @@ pub mod export_model_operation_metadata {
     }
 }
 /// Request message for \[PredictionService.Predict][google.cloud.automl.v1.PredictionService.Predict\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PredictRequest {
     /// Required. Name of the model requested to serve the prediction.
@@ -2777,6 +2858,7 @@ pub struct PredictRequest {
     >,
 }
 /// Response message for \[PredictionService.Predict][google.cloud.automl.v1.PredictionService.Predict\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PredictResponse {
     /// Prediction result.
@@ -2819,6 +2901,7 @@ pub struct PredictResponse {
     >,
 }
 /// Request message for \[PredictionService.BatchPredict][google.cloud.automl.v1.PredictionService.BatchPredict\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchPredictRequest {
     /// Required. Name of the model requested to serve the batch prediction.
@@ -2924,6 +3007,7 @@ pub struct BatchPredictRequest {
 /// Result of the Batch Predict. This message is returned in
 /// \[response][google.longrunning.Operation.response\] of the operation returned
 /// by the \[PredictionService.BatchPredict][google.cloud.automl.v1.PredictionService.BatchPredict\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchPredictResult {
     /// Additional domain-specific prediction response metadata.
@@ -3111,6 +3195,7 @@ pub mod prediction_service_client {
     }
 }
 /// Request message for \[AutoMl.CreateDataset][google.cloud.automl.v1.AutoMl.CreateDataset\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateDatasetRequest {
     /// Required. The resource name of the project to create the dataset for.
@@ -3121,6 +3206,7 @@ pub struct CreateDatasetRequest {
     pub dataset: ::core::option::Option<Dataset>,
 }
 /// Request message for \[AutoMl.GetDataset][google.cloud.automl.v1.AutoMl.GetDataset\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetDatasetRequest {
     /// Required. The resource name of the dataset to retrieve.
@@ -3128,6 +3214,7 @@ pub struct GetDatasetRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for \[AutoMl.ListDatasets][google.cloud.automl.v1.AutoMl.ListDatasets\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDatasetsRequest {
     /// Required. The resource name of the project from which to list datasets.
@@ -3154,6 +3241,7 @@ pub struct ListDatasetsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for \[AutoMl.ListDatasets][google.cloud.automl.v1.AutoMl.ListDatasets\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDatasetsResponse {
     /// The datasets read.
@@ -3165,6 +3253,7 @@ pub struct ListDatasetsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for \[AutoMl.UpdateDataset][google.cloud.automl.v1.AutoMl.UpdateDataset\]
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateDatasetRequest {
     /// Required. The dataset which replaces the resource on the server.
@@ -3175,6 +3264,7 @@ pub struct UpdateDatasetRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for \[AutoMl.DeleteDataset][google.cloud.automl.v1.AutoMl.DeleteDataset\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteDatasetRequest {
     /// Required. The resource name of the dataset to delete.
@@ -3182,6 +3272,7 @@ pub struct DeleteDatasetRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for \[AutoMl.ImportData][google.cloud.automl.v1.AutoMl.ImportData\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportDataRequest {
     /// Required. Dataset name. Dataset must already exist. All imported
@@ -3194,6 +3285,7 @@ pub struct ImportDataRequest {
     pub input_config: ::core::option::Option<InputConfig>,
 }
 /// Request message for \[AutoMl.ExportData][google.cloud.automl.v1.AutoMl.ExportData\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportDataRequest {
     /// Required. The resource name of the dataset.
@@ -3204,6 +3296,7 @@ pub struct ExportDataRequest {
     pub output_config: ::core::option::Option<OutputConfig>,
 }
 /// Request message for \[AutoMl.GetAnnotationSpec][google.cloud.automl.v1.AutoMl.GetAnnotationSpec\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAnnotationSpecRequest {
     /// Required. The resource name of the annotation spec to retrieve.
@@ -3211,6 +3304,7 @@ pub struct GetAnnotationSpecRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for \[AutoMl.CreateModel][google.cloud.automl.v1.AutoMl.CreateModel\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateModelRequest {
     /// Required. Resource name of the parent project where the model is being created.
@@ -3221,6 +3315,7 @@ pub struct CreateModelRequest {
     pub model: ::core::option::Option<Model>,
 }
 /// Request message for \[AutoMl.GetModel][google.cloud.automl.v1.AutoMl.GetModel\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetModelRequest {
     /// Required. Resource name of the model.
@@ -3228,6 +3323,7 @@ pub struct GetModelRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for \[AutoMl.ListModels][google.cloud.automl.v1.AutoMl.ListModels\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListModelsRequest {
     /// Required. Resource name of the project, from which to list the models.
@@ -3255,6 +3351,7 @@ pub struct ListModelsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for \[AutoMl.ListModels][google.cloud.automl.v1.AutoMl.ListModels\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListModelsResponse {
     /// List of models in the requested page.
@@ -3266,6 +3363,7 @@ pub struct ListModelsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for \[AutoMl.DeleteModel][google.cloud.automl.v1.AutoMl.DeleteModel\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteModelRequest {
     /// Required. Resource name of the model being deleted.
@@ -3273,6 +3371,7 @@ pub struct DeleteModelRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for \[AutoMl.UpdateModel][google.cloud.automl.v1.AutoMl.UpdateModel\]
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateModelRequest {
     /// Required. The model which replaces the resource on the server.
@@ -3283,6 +3382,7 @@ pub struct UpdateModelRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for \[AutoMl.DeployModel][google.cloud.automl.v1.AutoMl.DeployModel\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeployModelRequest {
     /// Required. Resource name of the model to deploy.
@@ -3297,6 +3397,7 @@ pub struct DeployModelRequest {
 /// Nested message and enum types in `DeployModelRequest`.
 pub mod deploy_model_request {
     /// The per-domain specific deployment parameters.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ModelDeploymentMetadata {
         /// Model deployment metadata specific to Image Object Detection.
@@ -3312,6 +3413,7 @@ pub mod deploy_model_request {
     }
 }
 /// Request message for \[AutoMl.UndeployModel][google.cloud.automl.v1.AutoMl.UndeployModel\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UndeployModelRequest {
     /// Required. Resource name of the model to undeploy.
@@ -3321,6 +3423,7 @@ pub struct UndeployModelRequest {
 /// Request message for \[AutoMl.ExportModel][google.cloud.automl.v1.AutoMl.ExportModel\].
 /// Models need to be enabled for exporting, otherwise an error code will be
 /// returned.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportModelRequest {
     /// Required. The resource name of the model to export.
@@ -3331,6 +3434,7 @@ pub struct ExportModelRequest {
     pub output_config: ::core::option::Option<ModelExportOutputConfig>,
 }
 /// Request message for \[AutoMl.GetModelEvaluation][google.cloud.automl.v1.AutoMl.GetModelEvaluation\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetModelEvaluationRequest {
     /// Required. Resource name for the model evaluation.
@@ -3338,6 +3442,7 @@ pub struct GetModelEvaluationRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for \[AutoMl.ListModelEvaluations][google.cloud.automl.v1.AutoMl.ListModelEvaluations\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListModelEvaluationsRequest {
     /// Required. Resource name of the model to list the model evaluations for.
@@ -3369,6 +3474,7 @@ pub struct ListModelEvaluationsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for \[AutoMl.ListModelEvaluations][google.cloud.automl.v1.AutoMl.ListModelEvaluations\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListModelEvaluationsResponse {
     /// List of model evaluations in the requested page.

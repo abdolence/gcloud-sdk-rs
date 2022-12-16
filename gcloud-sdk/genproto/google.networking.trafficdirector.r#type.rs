@@ -1,5 +1,6 @@
 /// A common proto for describing how the Traffic Director handles
 /// xDS-connections/requests/responses.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TrafficDirectorLogEntry {
     /// An ID of xDS-client connecting to the Traffic Director.

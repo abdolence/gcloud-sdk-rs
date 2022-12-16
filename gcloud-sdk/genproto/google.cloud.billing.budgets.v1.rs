@@ -3,6 +3,7 @@
 /// (for example, send an alert when 90% of the target spend is met).
 /// The budget time period is configurable, with options such as month (default),
 /// quarter, year, or custom time period.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Budget {
     /// Output only. Resource name of the budget.
@@ -37,6 +38,7 @@ pub struct Budget {
     pub etag: ::prost::alloc::string::String,
 }
 /// The budgeted amount for each usage period.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BudgetAmount {
     /// Specification for what amount to use as the budget.
@@ -46,6 +48,7 @@ pub struct BudgetAmount {
 /// Nested message and enum types in `BudgetAmount`.
 pub mod budget_amount {
     /// Specification for what amount to use as the budget.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum BudgetAmount {
         /// A specified amount to use as the budget.
@@ -73,6 +76,7 @@ pub mod budget_amount {
 /// LastPeriodAmount cannot be set for a budget configured with
 /// a
 /// \[Filter.custom_period][google.cloud.billing.budgets.v1.Filter.custom_period\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LastPeriodAmount {}
 /// ThresholdRule contains a definition of a threshold which triggers
@@ -82,6 +86,7 @@ pub struct LastPeriodAmount {}
 /// Administrator role or the Billing Account User role.
 /// The thresholds here have no effect on notifications sent to anything
 /// configured under `Budget.all_updates_rule`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ThresholdRule {
     /// Required. Send an alert when this threshold is exceeded.
@@ -138,6 +143,7 @@ pub mod threshold_rule {
 }
 /// NotificationsRule defines notifications that are sent based on budget spend
 /// and thresholds.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NotificationsRule {
     /// Optional. The name of the Pub/Sub topic where budget related messages will
@@ -181,6 +187,7 @@ pub struct NotificationsRule {
     pub disable_default_iam_recipients: bool,
 }
 /// A filter for a budget, limiting the scope of the cost to calculate.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Filter {
     /// Optional. A set of projects of the form `projects/{project}`,
@@ -288,6 +295,7 @@ pub mod filter {
     /// Multiple options to choose the budget's time period, specifying that only
     /// usage that occurs during this time period should be included in the budget.
     /// If not set, the `usage_period` defaults to CalendarPeriod.MONTH.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum UsagePeriod {
         /// Optional. Specifies to track usage for recurring calendar period.
@@ -305,6 +313,7 @@ pub mod filter {
     }
 }
 /// All date times begin at 12 AM US and Canadian Pacific Time (UTC-8).
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomPeriod {
     /// Required. The start date must be after January 1, 2017.
@@ -348,6 +357,7 @@ impl CalendarPeriod {
     }
 }
 /// Request for CreateBudget
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateBudgetRequest {
     /// Required. The name of the billing account to create the budget in. Values
@@ -359,6 +369,7 @@ pub struct CreateBudgetRequest {
     pub budget: ::core::option::Option<Budget>,
 }
 /// Request for UpdateBudget
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateBudgetRequest {
     /// Required. The updated budget object.
@@ -375,6 +386,7 @@ pub struct UpdateBudgetRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request for GetBudget
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetBudgetRequest {
     /// Required. Name of budget to get. Values are of the form
@@ -383,6 +395,7 @@ pub struct GetBudgetRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for ListBudgets
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListBudgetsRequest {
     /// Required. Name of billing account to list budgets under. Values
@@ -400,6 +413,7 @@ pub struct ListBudgetsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response for ListBudgets
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListBudgetsResponse {
     /// List of the budgets owned by the requested billing account.
@@ -411,6 +425,7 @@ pub struct ListBudgetsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request for DeleteBudget
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteBudgetRequest {
     /// Required. Name of the budget to delete. Values are of the form

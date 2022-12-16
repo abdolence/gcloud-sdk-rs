@@ -1,5 +1,6 @@
 /// A \[CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority\] represents an individual Certificate Authority.
 /// A \[CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority\] can be used to create \[Certificates][google.cloud.security.privateca.v1beta1.Certificate\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CertificateAuthority {
     /// Output only. The resource name for this \[CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority\] in the
@@ -86,6 +87,7 @@ pub struct CertificateAuthority {
 /// Nested message and enum types in `CertificateAuthority`.
 pub mod certificate_authority {
     /// Options that affect all certificates issued by a \[CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority\].
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct IssuingOptions {
         /// Required. When true, includes a URL to the issuing CA certificate in the
@@ -102,6 +104,7 @@ pub mod certificate_authority {
     /// The issuing policy for a \[CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority\].
     /// \[Certificates][google.cloud.security.privateca.v1beta1.Certificate\] will not be successfully issued from this
     /// \[CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority\] if they violate the policy.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CertificateAuthorityPolicy {
         /// Optional. If any \[Subject][google.cloud.security.privateca.v1beta1.Subject\] is specified here, then all
@@ -150,6 +153,7 @@ pub mod certificate_authority {
     }
     /// Nested message and enum types in `CertificateAuthorityPolicy`.
     pub mod certificate_authority_policy {
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct AllowedConfigList {
             /// Required. All \[Certificates][google.cloud.security.privateca.v1beta1.Certificate\] issued by the \[CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority\]
@@ -164,6 +168,7 @@ pub mod certificate_authority {
         /// \[AllowedSubjectAltNames][google.cloud.security.privateca.v1beta1.CertificateAuthority.CertificateAuthorityPolicy.AllowedSubjectAltNames\] specifies the allowed values for
         /// \[SubjectAltNames][google.cloud.security.privateca.v1beta1.SubjectAltNames\] by the \[CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority\] when issuing
         /// \[Certificates][google.cloud.security.privateca.v1beta1.Certificate\].
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct AllowedSubjectAltNames {
             /// Optional. Contains valid, fully-qualified host names. Glob patterns are also
@@ -205,6 +210,7 @@ pub mod certificate_authority {
         /// \[IssuanceModes][google.cloud.security.privateca.v1beta1.CertificateAuthority.CertificateAuthorityPolicy.IssuanceModes\] specifies the allowed ways in which
         /// \[Certificates][google.cloud.security.privateca.v1beta1.Certificate\] may be requested from this
         /// \[CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority\].
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct IssuanceModes {
             /// Required. When true, allows callers to create \[Certificates][google.cloud.security.privateca.v1beta1.Certificate\] by
@@ -218,6 +224,7 @@ pub mod certificate_authority {
         }
         /// Allowed configurations or a single configuration for all issued
         /// certificates.
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum ConfigPolicy {
             /// Optional. All \[Certificates][google.cloud.security.privateca.v1beta1.Certificate\] issued by the \[CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority\]
@@ -232,6 +239,7 @@ pub mod certificate_authority {
         }
     }
     /// URLs where a \[CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority\] will publish content.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AccessUrls {
         /// The URL where this \[CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority\]'s CA certificate is
@@ -244,6 +252,7 @@ pub mod certificate_authority {
         pub crl_access_url: ::prost::alloc::string::String,
     }
     /// A Cloud KMS key configuration that a \[CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority\] will use.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct KeyVersionSpec {
         #[prost(oneof = "key_version_spec::KeyVersion", tags = "1, 2")]
@@ -251,6 +260,7 @@ pub mod certificate_authority {
     }
     /// Nested message and enum types in `KeyVersionSpec`.
     pub mod key_version_spec {
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum KeyVersion {
             /// Required. The resource name for an existing Cloud KMS CryptoKeyVersion in the
@@ -442,6 +452,7 @@ pub mod certificate_authority {
 /// A \[CertificateRevocationList][google.cloud.security.privateca.v1beta1.CertificateRevocationList\] corresponds to a signed X.509 certificate
 /// Revocation List (CRL). A CRL contains the serial numbers of certificates that
 /// should no longer be trusted.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CertificateRevocationList {
     /// Output only. The resource path for this \[CertificateRevocationList][google.cloud.security.privateca.v1beta1.CertificateRevocationList\] in
@@ -483,6 +494,7 @@ pub struct CertificateRevocationList {
 /// Nested message and enum types in `CertificateRevocationList`.
 pub mod certificate_revocation_list {
     /// Describes a revoked \[Certificate][google.cloud.security.privateca.v1beta1.Certificate\].
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct RevokedCertificate {
         /// The resource path for the \[Certificate][google.cloud.security.privateca.v1beta1.Certificate\] in the format
@@ -533,6 +545,7 @@ pub mod certificate_revocation_list {
 }
 /// A \[Certificate][google.cloud.security.privateca.v1beta1.Certificate\] corresponds to a signed X.509 certificate issued by a
 /// \[CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Certificate {
     /// Output only. The resource path for this \[Certificate][google.cloud.security.privateca.v1beta1.Certificate\] in the format
@@ -578,6 +591,7 @@ pub struct Certificate {
 /// Nested message and enum types in `Certificate`.
 pub mod certificate {
     /// Describes fields that are relavent to the revocation of a \[Certificate][google.cloud.security.privateca.v1beta1.Certificate\].
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct RevocationDetails {
         /// Indicates why a \[Certificate][google.cloud.security.privateca.v1beta1.Certificate\] was revoked.
@@ -588,6 +602,7 @@ pub mod certificate {
         pub revocation_time: ::core::option::Option<::prost_types::Timestamp>,
     }
     /// The config used to create a signed X.509 certificate.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum CertificateConfig {
         /// Immutable. A pem-encoded X.509 certificate signing request (CSR).
@@ -603,6 +618,7 @@ pub mod certificate {
 /// turn, are used to describe certain fields of an X.509 certificate, such as
 /// the key usage fields, fields specific to CA certificates, certificate policy
 /// extensions and custom extensions.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReusableConfig {
     /// Output only. The resource path for this \[ReusableConfig][google.cloud.security.privateca.v1beta1.ReusableConfig\] in the format
@@ -632,6 +648,7 @@ pub struct ReusableConfig {
 /// A \[ReusableConfigValues][google.cloud.security.privateca.v1beta1.ReusableConfigValues\] is used to describe certain fields of an
 /// X.509 certificate, such as the key usage fields, fields specific to CA
 /// certificates, certificate policy extensions and custom extensions.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReusableConfigValues {
     /// Optional. Indicates the intended use for keys that correspond to a certificate.
@@ -657,6 +674,7 @@ pub struct ReusableConfigValues {
 /// Nested message and enum types in `ReusableConfigValues`.
 pub mod reusable_config_values {
     /// Describes values that are relevant in a CA certificate.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CaOptions {
         /// Optional. Refers to the "CA" X.509 extension, which is a boolean value. When this
@@ -675,6 +693,7 @@ pub mod reusable_config_values {
 }
 /// A \[ReusableConfigWrapper][google.cloud.security.privateca.v1beta1.ReusableConfigWrapper\] describes values that may assist in creating an
 /// X.509 certificate, or a reference to a pre-defined set of values.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReusableConfigWrapper {
     /// Reusable or inline config values.
@@ -684,6 +703,7 @@ pub struct ReusableConfigWrapper {
 /// Nested message and enum types in `ReusableConfigWrapper`.
 pub mod reusable_config_wrapper {
     /// Reusable or inline config values.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ConfigValues {
         /// Required. A resource path to a \[ReusableConfig][google.cloud.security.privateca.v1beta1.ReusableConfig\] in the format
@@ -697,6 +717,7 @@ pub mod reusable_config_wrapper {
 }
 /// Describes a subordinate CA's issuers. This is either a resource path to a
 /// known issuing \[CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority\], or a PEM issuer certificate chain.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SubordinateConfig {
     #[prost(oneof = "subordinate_config::SubordinateConfig", tags = "1, 2")]
@@ -708,12 +729,14 @@ pub struct SubordinateConfig {
 pub mod subordinate_config {
     /// This message describes a subordinate CA's issuer certificate chain. This
     /// wrapper exists for compatibility reasons.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SubordinateConfigChain {
         /// Required. Expected to be in leaf-to-root order according to RFC 5246.
         #[prost(string, repeated, tag = "1")]
         pub pem_certificates: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum SubordinateConfig {
         /// Required. This can refer to a \[CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority\] in the same project that
@@ -729,6 +752,7 @@ pub mod subordinate_config {
     }
 }
 /// A \[PublicKey][google.cloud.security.privateca.v1beta1.PublicKey\] describes a public key.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PublicKey {
     /// Required. The type of public key.
@@ -780,6 +804,7 @@ pub mod public_key {
 }
 /// A \[CertificateConfig][google.cloud.security.privateca.v1beta1.CertificateConfig\] describes an X.509 certificate or CSR that is to be
 /// created, as an alternative to using ASN.1.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CertificateConfig {
     /// Required. Specifies some of the values in a certificate that are related to the
@@ -800,6 +825,7 @@ pub struct CertificateConfig {
 pub mod certificate_config {
     /// These values are used to create the distinguished name and subject
     /// alternative name fields in an X.509 certificate.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SubjectConfig {
         /// Required. Contains distinguished name fields such as the location and organization.
@@ -815,6 +841,7 @@ pub mod certificate_config {
 }
 /// A \[CertificateDescription][google.cloud.security.privateca.v1beta1.CertificateDescription\] describes an X.509 certificate or CSR that has
 /// been issued, as an alternative to using ASN.1 / X.509.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CertificateDescription {
     /// Describes some of the values in a certificate that are related to the
@@ -860,6 +887,7 @@ pub struct CertificateDescription {
 pub mod certificate_description {
     /// These values describe fields in an issued X.509 certificate such as the
     /// distinguished name, subject alternative names, serial number, and lifetime.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SubjectDescription {
         /// Contains distinguished name fields such as the location and organization.
@@ -887,6 +915,7 @@ pub mod certificate_description {
     }
     /// A KeyId identifies a specific public key, usually by hashing the public
     /// key.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct KeyId {
         /// Optional. The value of this KeyId encoded in lowercase hexadecimal. This is most
@@ -895,6 +924,7 @@ pub mod certificate_description {
         pub key_id: ::prost::alloc::string::String,
     }
     /// A group of fingerprints for the x509 certificate.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CertificateFingerprint {
         /// The SHA 256 hash, encoded in hexadecimal, of the DER x509 certificate.
@@ -904,6 +934,7 @@ pub mod certificate_description {
 }
 /// An \[ObjectId][google.cloud.security.privateca.v1beta1.ObjectId\] specifies an object identifier (OID). These provide context
 /// and describe types in ASN.1 messages.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ObjectId {
     /// Required. The parts of an OID path. The most significant parts of the path come
@@ -913,6 +944,7 @@ pub struct ObjectId {
 }
 /// An \[X509Extension][google.cloud.security.privateca.v1beta1.X509Extension\] specifies an X.509 extension, which may be used in
 /// different parts of X.509 objects like certificates, CSRs, and CRLs.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct X509Extension {
     /// Required. The OID for this X.509 extension.
@@ -929,6 +961,7 @@ pub struct X509Extension {
 }
 /// A \[KeyUsage][google.cloud.security.privateca.v1beta1.KeyUsage\] describes key usage values that may appear in an X.509
 /// certificate.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KeyUsage {
     /// Describes high-level ways in which a key may be used.
@@ -946,6 +979,7 @@ pub struct KeyUsage {
 pub mod key_usage {
     /// \[KeyUsage.KeyUsageOptions][google.cloud.security.privateca.v1beta1.KeyUsage.KeyUsageOptions\] corresponds to the key usage values
     /// described in <https://tools.ietf.org/html/rfc5280#section-4.2.1.3.>
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct KeyUsageOptions {
         /// The key may be used for digital signatures.
@@ -979,6 +1013,7 @@ pub mod key_usage {
     }
     /// \[KeyUsage.ExtendedKeyUsageOptions][google.cloud.security.privateca.v1beta1.KeyUsage.ExtendedKeyUsageOptions\] has fields that correspond to
     /// certain common OIDs that could be specified as an extended key usage value.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ExtendedKeyUsageOptions {
         /// Corresponds to OID 1.3.6.1.5.5.7.3.1. Officially described as "TLS WWW
@@ -1009,6 +1044,7 @@ pub mod key_usage {
 }
 /// \[Subject][google.cloud.security.privateca.v1beta1.Subject\] describes parts of a distinguished name that, in turn,
 /// describes the subject of the certificate.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Subject {
     /// The country code of the subject.
@@ -1036,6 +1072,7 @@ pub struct Subject {
 /// \[SubjectAltNames][google.cloud.security.privateca.v1beta1.SubjectAltNames\] corresponds to a more modern way of listing what
 /// the asserted identity is in a certificate (i.e., compared to the "common
 /// name" in the distinguished name).
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SubjectAltNames {
     /// Contains only valid, fully-qualified host names.
@@ -1111,6 +1148,7 @@ impl RevocationReason {
     }
 }
 /// Request message for \[CertificateAuthorityService.CreateCertificate][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.CreateCertificate\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateCertificateRequest {
     /// Required. The resource name of the location and \[CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority\]
@@ -1145,6 +1183,7 @@ pub struct CreateCertificateRequest {
 }
 /// Request message for
 /// \[CertificateAuthorityService.GetCertificate][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.GetCertificate\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCertificateRequest {
     /// Required. The \[name][google.cloud.security.privateca.v1beta1.Certificate.name\] of the \[Certificate][google.cloud.security.privateca.v1beta1.Certificate\] to get.
@@ -1152,6 +1191,7 @@ pub struct GetCertificateRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for \[CertificateAuthorityService.ListCertificates][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.ListCertificates\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCertificatesRequest {
     /// Required. The resource name of the location associated with the
@@ -1183,6 +1223,7 @@ pub struct ListCertificatesRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// Response message for \[CertificateAuthorityService.ListCertificates][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.ListCertificates\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCertificatesResponse {
     /// The list of \[Certificates][google.cloud.security.privateca.v1beta1.Certificate\].
@@ -1199,6 +1240,7 @@ pub struct ListCertificatesResponse {
 }
 /// Request message for
 /// \[CertificateAuthorityService.RevokeCertificate][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.RevokeCertificate\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RevokeCertificateRequest {
     /// Required. The resource name for this \[Certificate][google.cloud.security.privateca.v1beta1.Certificate\] in the
@@ -1225,6 +1267,7 @@ pub struct RevokeCertificateRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for \[CertificateAuthorityService.UpdateCertificate][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.UpdateCertificate\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateCertificateRequest {
     /// Required. \[Certificate][google.cloud.security.privateca.v1beta1.Certificate\] with updated values.
@@ -1251,6 +1294,7 @@ pub struct UpdateCertificateRequest {
 }
 /// Request message for
 /// \[CertificateAuthorityService.ActivateCertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.ActivateCertificateAuthority\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ActivateCertificateAuthorityRequest {
     /// Required. The resource name for this \[CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority\] in the
@@ -1283,6 +1327,7 @@ pub struct ActivateCertificateAuthorityRequest {
 }
 /// Request message for
 /// \[CertificateAuthorityService.CreateCertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.CreateCertificateAuthority\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateCertificateAuthorityRequest {
     /// Required. The resource name of the location associated with the
@@ -1315,6 +1360,7 @@ pub struct CreateCertificateAuthorityRequest {
 }
 /// Request message for
 /// \[CertificateAuthorityService.DisableCertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.DisableCertificateAuthority\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DisableCertificateAuthorityRequest {
     /// Required. The resource name for this \[CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority\] in the
@@ -1339,6 +1385,7 @@ pub struct DisableCertificateAuthorityRequest {
 }
 /// Request message for
 /// \[CertificateAuthorityService.EnableCertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.EnableCertificateAuthority\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EnableCertificateAuthorityRequest {
     /// Required. The resource name for this \[CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority\] in the
@@ -1363,6 +1410,7 @@ pub struct EnableCertificateAuthorityRequest {
 }
 /// Request message for
 /// \[CertificateAuthorityService.FetchCertificateAuthorityCsr][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.FetchCertificateAuthorityCsr\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FetchCertificateAuthorityCsrRequest {
     /// Required. The resource name for this \[CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority\] in the
@@ -1372,6 +1420,7 @@ pub struct FetchCertificateAuthorityCsrRequest {
 }
 /// Response message for
 /// \[CertificateAuthorityService.FetchCertificateAuthorityCsr][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.FetchCertificateAuthorityCsr\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FetchCertificateAuthorityCsrResponse {
     /// Output only. The PEM-encoded signed certificate signing request (CSR).
@@ -1379,6 +1428,7 @@ pub struct FetchCertificateAuthorityCsrResponse {
     pub pem_csr: ::prost::alloc::string::String,
 }
 /// Request message for \[CertificateAuthorityService.GetCertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.GetCertificateAuthority\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCertificateAuthorityRequest {
     /// Required. The \[name][google.cloud.security.privateca.v1beta1.CertificateAuthority.name\] of the \[CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority\] to
@@ -1388,6 +1438,7 @@ pub struct GetCertificateAuthorityRequest {
 }
 /// Request message for
 /// \[CertificateAuthorityService.ListCertificateAuthorities][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.ListCertificateAuthorities\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCertificateAuthoritiesRequest {
     /// Required. The resource name of the location associated with the
@@ -1416,6 +1467,7 @@ pub struct ListCertificateAuthoritiesRequest {
 }
 /// Response message for
 /// \[CertificateAuthorityService.ListCertificateAuthorities][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.ListCertificateAuthorities\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCertificateAuthoritiesResponse {
     /// The list of \[CertificateAuthorities][google.cloud.security.privateca.v1beta1.CertificateAuthority\].
@@ -1432,6 +1484,7 @@ pub struct ListCertificateAuthoritiesResponse {
 }
 /// Request message for
 /// \[CertificateAuthorityService.RestoreCertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.RestoreCertificateAuthority\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RestoreCertificateAuthorityRequest {
     /// Required. The resource name for this \[CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority\] in the
@@ -1456,6 +1509,7 @@ pub struct RestoreCertificateAuthorityRequest {
 }
 /// Request message for
 /// \[CertificateAuthorityService.ScheduleDeleteCertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.ScheduleDeleteCertificateAuthority\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ScheduleDeleteCertificateAuthorityRequest {
     /// Required. The resource name for this \[CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority\] in the
@@ -1480,6 +1534,7 @@ pub struct ScheduleDeleteCertificateAuthorityRequest {
 }
 /// Request message for
 /// \[CertificateAuthorityService.UpdateCertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.UpdateCertificateAuthority\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateCertificateAuthorityRequest {
     /// Required. \[CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority\] with updated values.
@@ -1506,6 +1561,7 @@ pub struct UpdateCertificateAuthorityRequest {
 }
 /// Request message for
 /// \[CertificateAuthorityService.GetCertificateRevocationList][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.GetCertificateRevocationList\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCertificateRevocationListRequest {
     /// Required. The \[name][google.cloud.security.privateca.v1beta1.CertificateRevocationList.name\] of the
@@ -1515,6 +1571,7 @@ pub struct GetCertificateRevocationListRequest {
 }
 /// Request message for
 /// \[CertificateAuthorityService.ListCertificateRevocationLists][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.ListCertificateRevocationLists\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCertificateRevocationListsRequest {
     /// Required. The resource name of the location associated with the
@@ -1543,6 +1600,7 @@ pub struct ListCertificateRevocationListsRequest {
 }
 /// Response message for
 /// \[CertificateAuthorityService.ListCertificateRevocationLists][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.ListCertificateRevocationLists\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCertificateRevocationListsResponse {
     /// The list of \[CertificateRevocationLists][google.cloud.security.privateca.v1beta1.CertificateRevocationList\].
@@ -1561,6 +1619,7 @@ pub struct ListCertificateRevocationListsResponse {
 }
 /// Request message for
 /// \[CertificateAuthorityService.UpdateCertificateRevocationList][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.UpdateCertificateRevocationList\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateCertificateRevocationListRequest {
     /// Required. \[CertificateRevocationList][google.cloud.security.privateca.v1beta1.CertificateRevocationList\] with updated values.
@@ -1587,6 +1646,7 @@ pub struct UpdateCertificateRevocationListRequest {
 }
 /// Request message for
 /// \[CertificateAuthorityService.GetReusableConfig][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.GetReusableConfig\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetReusableConfigRequest {
     /// Required. The \[name][ReusableConfigs.name\] of the \[ReusableConfigs][\] to get.
@@ -1595,6 +1655,7 @@ pub struct GetReusableConfigRequest {
 }
 /// Request message for
 /// \[CertificateAuthorityService.ListReusableConfigs][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.ListReusableConfigs\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListReusableConfigsRequest {
     /// Required. The resource name of the location associated with the
@@ -1623,6 +1684,7 @@ pub struct ListReusableConfigsRequest {
 }
 /// Response message for
 /// \[CertificateAuthorityService.ListReusableConfigs][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.ListReusableConfigs\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListReusableConfigsResponse {
     /// The list of \[ReusableConfigs][google.cloud.security.privateca.v1beta1.ReusableConfig\].
@@ -1638,6 +1700,7 @@ pub struct ListReusableConfigsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Represents the metadata of the long-running operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationMetadata {
     /// Output only. The time the operation was created.

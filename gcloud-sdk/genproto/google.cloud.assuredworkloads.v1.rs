@@ -1,4 +1,5 @@
 /// Request for creating a workload.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateWorkloadRequest {
     /// Required. The resource name of the new Workload's parent.
@@ -16,6 +17,7 @@ pub struct CreateWorkloadRequest {
     pub external_id: ::prost::alloc::string::String,
 }
 /// Request for Updating a workload.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateWorkloadRequest {
     /// Required. The workload to update.
@@ -29,6 +31,7 @@ pub struct UpdateWorkloadRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request for deleting a Workload.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteWorkloadRequest {
     /// Required. The `name` field is used to identify the workload.
@@ -42,6 +45,7 @@ pub struct DeleteWorkloadRequest {
     pub etag: ::prost::alloc::string::String,
 }
 /// Request for fetching a workload.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetWorkloadRequest {
     /// Required. The resource name of the Workload to fetch. This is the workload's
@@ -53,6 +57,7 @@ pub struct GetWorkloadRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for fetching workloads in an organization.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListWorkloadsRequest {
     /// Required. Parent Resource to list workloads from.
@@ -73,6 +78,7 @@ pub struct ListWorkloadsRequest {
     pub filter: ::prost::alloc::string::String,
 }
 /// Response of ListWorkloads endpoint.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListWorkloadsResponse {
     /// List of Workloads under a given parent.
@@ -84,6 +90,7 @@ pub struct ListWorkloadsResponse {
 }
 /// A Workload object for managing highly regulated workloads of cloud
 /// customers.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Workload {
     /// Optional. The resource name of the workload.
@@ -181,6 +188,7 @@ pub struct Workload {
 /// Nested message and enum types in `Workload`.
 pub mod workload {
     /// Represent the resources that are children of this Workload.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ResourceInfo {
         /// Resource identifier.
@@ -242,6 +250,7 @@ pub mod workload {
     /// This message is deprecated.
     /// In order to create a Keyring, callers should specify,
     /// ENCRYPTION_KEYS_PROJECT or KEYRING in ResourceSettings.resource_type field.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct KmsSettings {
         /// Required. Input only. Immutable. The time at which the Key Management Service will automatically create a
@@ -255,6 +264,7 @@ pub mod workload {
         pub rotation_period: ::core::option::Option<::prost_types::Duration>,
     }
     /// Represent the custom settings for the resources to be created.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ResourceSettings {
         /// Resource identifier.
@@ -276,6 +286,7 @@ pub mod workload {
         pub display_name: ::prost::alloc::string::String,
     }
     /// Signed Access Approvals (SAA) enrollment response.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SaaEnrollmentResponse {
         /// Indicates SAA enrollment status of a given workload.
@@ -512,6 +523,7 @@ pub mod workload {
     }
 }
 /// Operation metadata to give request details of CreateWorkload.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateWorkloadOperationMetadata {
     /// Optional. Time when the operation was created.
@@ -529,6 +541,7 @@ pub struct CreateWorkloadOperationMetadata {
     pub compliance_regime: i32,
 }
 /// Request for restricting list of available resources in Workload environment.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RestrictAllowedResourcesRequest {
     /// Required. The resource name of the Workload. This is the workloads's
@@ -587,10 +600,12 @@ pub mod restrict_allowed_resources_request {
     }
 }
 /// Response for restricting the list of allowed resources.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RestrictAllowedResourcesResponse {}
 /// Request for acknowledging the violation
 /// Next Id: 4
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AcknowledgeViolationRequest {
     /// Required. The resource name of the Violation to acknowledge.
@@ -613,9 +628,11 @@ pub struct AcknowledgeViolationRequest {
     pub non_compliant_org_policy: ::prost::alloc::string::String,
 }
 /// Response for violation acknowledgement
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AcknowledgeViolationResponse {}
 /// Interval defining a time window.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TimeWindow {
     /// The start of the time window.
@@ -626,6 +643,7 @@ pub struct TimeWindow {
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Request for fetching violations in an organization.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListViolationsRequest {
     /// Required. The Workload name.
@@ -648,6 +666,7 @@ pub struct ListViolationsRequest {
     pub filter: ::prost::alloc::string::String,
 }
 /// Response of ListViolations endpoint.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListViolationsResponse {
     /// List of Violations under a Workload.
@@ -658,6 +677,7 @@ pub struct ListViolationsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request for fetching a Workload Violation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetViolationRequest {
     /// Required. The resource name of the Violation to fetch (ie. Violation.name).
@@ -667,6 +687,7 @@ pub struct GetViolationRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Workload monitoring Violation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Violation {
     /// Output only. Immutable. Name of the Violation.
@@ -732,6 +753,7 @@ pub struct Violation {
 pub mod violation {
     /// Represents remediation guidance to resolve compliance violation for
     /// AssuredWorkload
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Remediation {
         /// Required. Remediation instructions to resolve violations
@@ -749,6 +771,7 @@ pub mod violation {
     /// Nested message and enum types in `Remediation`.
     pub mod remediation {
         /// Instructions to remediate violation
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Instructions {
             /// Remediation instructions to resolve violation via gcloud cli
@@ -761,6 +784,7 @@ pub mod violation {
         /// Nested message and enum types in `Instructions`.
         pub mod instructions {
             /// Remediation instructions to resolve violation via gcloud cli
+            #[allow(clippy::derive_partial_eq_without_eq)]
             #[derive(Clone, PartialEq, ::prost::Message)]
             pub struct Gcloud {
                 /// Gcloud command to resolve violation
@@ -778,6 +802,7 @@ pub mod violation {
                 >,
             }
             /// Remediation instructions to resolve violation via cloud console
+            #[allow(clippy::derive_partial_eq_without_eq)]
             #[derive(Clone, PartialEq, ::prost::Message)]
             pub struct Console {
                 /// Link to console page where violations can be resolved

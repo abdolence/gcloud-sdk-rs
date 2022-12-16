@@ -1,6 +1,7 @@
 /// A detailed representation of an Apt artifact. Information in the record
 /// is derived from the archive's control file.
 /// See <https://www.debian.org/doc/debian-policy/ch-controlfields.html>
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AptArtifact {
     /// Output only. The Artifact Registry resource name of the artifact.
@@ -60,6 +61,7 @@ pub mod apt_artifact {
     }
 }
 /// Google Cloud Storage location where the artifacts currently reside.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportAptArtifactsGcsSource {
     /// Cloud Storage paths URI (e.g., gs://my_bucket//my_object).
@@ -70,6 +72,7 @@ pub struct ImportAptArtifactsGcsSource {
     pub use_wildcards: bool,
 }
 /// The request to import new apt artifacts.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportAptArtifactsRequest {
     /// The name of the parent resource where the artifacts will be imported.
@@ -82,6 +85,7 @@ pub struct ImportAptArtifactsRequest {
 /// Nested message and enum types in `ImportAptArtifactsRequest`.
 pub mod import_apt_artifacts_request {
     /// The source location of the package binaries.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
         /// Google Cloud Storage location where input content is located.
@@ -90,6 +94,7 @@ pub mod import_apt_artifacts_request {
     }
 }
 /// Error information explaining why a package was not imported.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportAptArtifactsErrorInfo {
     /// The detailed error status.
@@ -102,6 +107,7 @@ pub struct ImportAptArtifactsErrorInfo {
 /// Nested message and enum types in `ImportAptArtifactsErrorInfo`.
 pub mod import_apt_artifacts_error_info {
     /// The source that was not imported.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
         /// Google Cloud Storage location requested.
@@ -110,6 +116,7 @@ pub mod import_apt_artifacts_error_info {
     }
 }
 /// The response message from importing APT artifacts.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportAptArtifactsResponse {
     /// The Apt artifacts imported.
@@ -120,9 +127,11 @@ pub struct ImportAptArtifactsResponse {
     pub errors: ::prost::alloc::vec::Vec<ImportAptArtifactsErrorInfo>,
 }
 /// The operation metadata for importing artifacts.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportAptArtifactsMetadata {}
 /// A hash of file content.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Hash {
     /// The algorithm used to compute the hash value.
@@ -170,6 +179,7 @@ pub mod hash {
     }
 }
 /// Files store content that is potentially associated with Packages or Versions.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct File {
     /// The name of the file, for example:
@@ -194,6 +204,7 @@ pub struct File {
     pub owner: ::prost::alloc::string::String,
 }
 /// The request to list files.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFilesRequest {
     /// The name of the repository whose files will be listed. For example:
@@ -222,6 +233,7 @@ pub struct ListFilesRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// The response from listing files.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFilesResponse {
     /// The files returned.
@@ -233,6 +245,7 @@ pub struct ListFilesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request to retrieve a file.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetFileRequest {
     /// The name of the file to retrieve.
@@ -240,6 +253,7 @@ pub struct GetFileRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Packages are named collections of versions.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Package {
     /// The name of the package, for example:
@@ -258,6 +272,7 @@ pub struct Package {
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// The request to list packages.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPackagesRequest {
     /// The name of the parent resource whose packages will be listed.
@@ -272,6 +287,7 @@ pub struct ListPackagesRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// The response from listing packages.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPackagesResponse {
     /// The packages returned.
@@ -283,6 +299,7 @@ pub struct ListPackagesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request to retrieve a package.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetPackageRequest {
     /// The name of the package to retrieve.
@@ -290,6 +307,7 @@ pub struct GetPackageRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request to delete a package.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeletePackageRequest {
     /// The name of the package to delete.
@@ -297,6 +315,7 @@ pub struct DeletePackageRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// A Repository for storing artifacts with a specific format.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Repository {
     /// The name of the repository, for example:
@@ -340,6 +359,7 @@ pub mod repository {
     /// MavenRepositoryConfig is maven related repository details.
     /// Provides additional configuration details for repositories of the maven
     /// format type.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct MavenRepositoryConfig {
         /// The repository with this flag will allow publishing
@@ -436,6 +456,7 @@ pub mod repository {
         }
     }
     /// Repository-specific configurations.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum FormatConfig {
         /// Maven repository config contains repository level configuration
@@ -445,6 +466,7 @@ pub mod repository {
     }
 }
 /// The request to list repositories.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRepositoriesRequest {
     /// Required. The name of the parent resource whose repositories will be listed.
@@ -458,6 +480,7 @@ pub struct ListRepositoriesRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// The response from listing repositories.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRepositoriesResponse {
     /// The repositories returned.
@@ -469,6 +492,7 @@ pub struct ListRepositoriesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request to retrieve a repository.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetRepositoryRequest {
     /// Required. The name of the repository to retrieve.
@@ -476,6 +500,7 @@ pub struct GetRepositoryRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request to create a new repository.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateRepositoryRequest {
     /// Required. The name of the parent resource where the repository will be created.
@@ -489,6 +514,7 @@ pub struct CreateRepositoryRequest {
     pub repository: ::core::option::Option<Repository>,
 }
 /// The request to update a repository.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateRepositoryRequest {
     /// The repository that replaces the resource on the server.
@@ -501,6 +527,7 @@ pub struct UpdateRepositoryRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The request to delete a repository.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteRepositoryRequest {
     /// Required. The name of the repository to delete.
@@ -508,6 +535,7 @@ pub struct DeleteRepositoryRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The Artifact Registry settings that apply to a Project.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProjectSettings {
     /// The name of the project's settings.
@@ -570,6 +598,7 @@ pub mod project_settings {
     }
 }
 /// Gets the redirection status for a project.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetProjectSettingsRequest {
     /// Required. The name of the projectSettings resource.
@@ -577,6 +606,7 @@ pub struct GetProjectSettingsRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Sets the settings of the project.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateProjectSettingsRequest {
     /// The project settings.
@@ -588,6 +618,7 @@ pub struct UpdateProjectSettingsRequest {
 }
 /// Tags point to a version and represent an alternative name that can be used
 /// to access the version.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Tag {
     /// The name of the tag, for example:
@@ -605,6 +636,7 @@ pub struct Tag {
     pub version: ::prost::alloc::string::String,
 }
 /// The request to list tags.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTagsRequest {
     /// The name of the parent resource whose tags will be listed.
@@ -629,6 +661,7 @@ pub struct ListTagsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// The response from listing tags.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTagsResponse {
     /// The tags returned.
@@ -640,6 +673,7 @@ pub struct ListTagsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request to retrieve a tag.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetTagRequest {
     /// The name of the tag to retrieve.
@@ -647,6 +681,7 @@ pub struct GetTagRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request to create a new tag.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateTagRequest {
     /// The name of the parent resource where the tag will be created.
@@ -660,6 +695,7 @@ pub struct CreateTagRequest {
     pub tag: ::core::option::Option<Tag>,
 }
 /// The request to create or update a tag.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateTagRequest {
     /// The tag that replaces the resource on the server.
@@ -672,6 +708,7 @@ pub struct UpdateTagRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The request to delete a tag.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteTagRequest {
     /// The name of the tag to delete.
@@ -681,6 +718,7 @@ pub struct DeleteTagRequest {
 /// The body of a version resource. A version resource represents a
 /// collection of components, such as files and other data. This may correspond
 /// to a version in many package management schemes.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Version {
     /// The name of the version, for example:
@@ -710,6 +748,7 @@ pub struct Version {
     pub metadata: ::core::option::Option<::prost_types::Struct>,
 }
 /// The request to list versions.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListVersionsRequest {
     /// The name of the parent resource whose versions will be listed.
@@ -729,6 +768,7 @@ pub struct ListVersionsRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// The response from listing versions.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListVersionsResponse {
     /// The versions returned.
@@ -740,6 +780,7 @@ pub struct ListVersionsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request to retrieve a version.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetVersionRequest {
     /// The name of the version to retrieve.
@@ -750,6 +791,7 @@ pub struct GetVersionRequest {
     pub view: i32,
 }
 /// The request to delete a version.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteVersionRequest {
     /// The name of the version to delete.
@@ -787,6 +829,7 @@ impl VersionView {
     }
 }
 /// A detailed representation of a Yum artifact.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct YumArtifact {
     /// Output only. The Artifact Registry resource name of the artifact.
@@ -840,6 +883,7 @@ pub mod yum_artifact {
     }
 }
 /// Google Cloud Storage location where the artifacts currently reside.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportYumArtifactsGcsSource {
     /// Cloud Storage paths URI (e.g., gs://my_bucket//my_object).
@@ -850,6 +894,7 @@ pub struct ImportYumArtifactsGcsSource {
     pub use_wildcards: bool,
 }
 /// The request to import new yum artifacts.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportYumArtifactsRequest {
     /// The name of the parent resource where the artifacts will be imported.
@@ -862,6 +907,7 @@ pub struct ImportYumArtifactsRequest {
 /// Nested message and enum types in `ImportYumArtifactsRequest`.
 pub mod import_yum_artifacts_request {
     /// The source location of the package binaries.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
         /// Google Cloud Storage location where input content is located.
@@ -870,6 +916,7 @@ pub mod import_yum_artifacts_request {
     }
 }
 /// Error information explaining why a package was not imported.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportYumArtifactsErrorInfo {
     /// The detailed error status.
@@ -882,6 +929,7 @@ pub struct ImportYumArtifactsErrorInfo {
 /// Nested message and enum types in `ImportYumArtifactsErrorInfo`.
 pub mod import_yum_artifacts_error_info {
     /// The source that was not imported.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
         /// Google Cloud Storage location requested.
@@ -890,6 +938,7 @@ pub mod import_yum_artifacts_error_info {
     }
 }
 /// The response message from importing YUM artifacts.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportYumArtifactsResponse {
     /// The yum artifacts imported.
@@ -900,9 +949,11 @@ pub struct ImportYumArtifactsResponse {
     pub errors: ::prost::alloc::vec::Vec<ImportYumArtifactsErrorInfo>,
 }
 /// The operation metadata for importing artifacts.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportYumArtifactsMetadata {}
 /// Metadata type for longrunning-operations, currently empty.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationMetadata {}
 /// Generated client implementations.

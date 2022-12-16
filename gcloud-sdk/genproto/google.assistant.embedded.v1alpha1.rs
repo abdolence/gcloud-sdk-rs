@@ -1,4 +1,5 @@
 /// Specifies how to process the `ConverseRequest` messages.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConverseConfig {
     /// *Required* Specifies how to process the subsequent incoming audio.
@@ -15,6 +16,7 @@ pub struct ConverseConfig {
 /// subsequent requests. For recommended settings, see the Google Assistant SDK
 /// [best
 /// practices](<https://developers.google.com/assistant/sdk/develop/grpc/best-practices/audio>).
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AudioInConfig {
     /// *Required* Encoding of audio data sent in all `audio_in` messages.
@@ -75,6 +77,7 @@ pub mod audio_in_config {
 }
 /// Specifies the desired format for the server to use when it returns
 /// `audio_out` messages.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AudioOutConfig {
     /// *Required* The encoding of audio data to be returned in all `audio_out`
@@ -135,6 +138,7 @@ pub mod audio_out_config {
     }
 }
 /// Provides information about the current dialog state.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConverseState {
     /// *Required* The `conversation_state` value returned in the prior
@@ -147,6 +151,7 @@ pub struct ConverseState {
 }
 /// The audio containing the assistant's response to the query. Sequential chunks
 /// of audio data are received in sequential `ConverseResponse` messages.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AudioOut {
     /// *Output-only* The audio data containing the assistant's response to the
@@ -156,6 +161,7 @@ pub struct AudioOut {
     pub audio_data: ::prost::alloc::vec::Vec<u8>,
 }
 /// The semantic result for the user's spoken query.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConverseResult {
     /// *Output-only* The recognized transcript of what the user said.
@@ -233,6 +239,7 @@ pub mod converse_result {
 /// contain a `config` message and must not contain `audio_in` data. All
 /// subsequent messages must contain `audio_in` data and must not contain a
 /// `config` message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConverseRequest {
     /// Exactly one of these fields must be specified in each `ConverseRequest`.
@@ -242,6 +249,7 @@ pub struct ConverseRequest {
 /// Nested message and enum types in `ConverseRequest`.
 pub mod converse_request {
     /// Exactly one of these fields must be specified in each `ConverseRequest`.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ConverseRequest {
         /// The `config` message provides information to the recognizer that
@@ -263,6 +271,7 @@ pub mod converse_request {
 }
 /// The top-level message received by the client. A series of one or more
 /// `ConverseResponse` messages are streamed back to the client.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConverseResponse {
     /// Exactly one of these fields will be populated in each `ConverseResponse`.
@@ -308,6 +317,7 @@ pub mod converse_response {
         }
     }
     /// Exactly one of these fields will be populated in each `ConverseResponse`.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ConverseResponse {
         /// *Output-only* If set, returns a \[google.rpc.Status][google.rpc.Status\]

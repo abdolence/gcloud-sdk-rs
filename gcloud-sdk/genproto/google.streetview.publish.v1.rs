@@ -1,4 +1,5 @@
 /// Upload reference for media files.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UploadRef {
     /// Required.
@@ -8,6 +9,7 @@ pub struct UploadRef {
 /// Nested message and enum types in `UploadRef`.
 pub mod upload_ref {
     /// Required.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum FileSource {
         /// An upload reference should be unique for each user. It follows
@@ -18,6 +20,7 @@ pub mod upload_ref {
     }
 }
 /// Identifier for a \[Photo][google.streetview.publish.v1.Photo\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PhotoId {
     /// A unique identifier for a photo.
@@ -25,6 +28,7 @@ pub struct PhotoId {
     pub id: ::prost::alloc::string::String,
 }
 /// Level information containing level number and its corresponding name.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Level {
     /// Optional. Floor number, used for ordering. 0 indicates the ground level, 1 indicates
@@ -39,6 +43,7 @@ pub struct Level {
     pub name: ::prost::alloc::string::String,
 }
 /// Raw pose measurement for an entity.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Pose {
     /// Latitude and longitude pair of the pose, as explained here:
@@ -89,6 +94,7 @@ pub struct Pose {
     pub accuracy_meters: f32,
 }
 /// IMU data from the device sensors.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Imu {
     /// The accelerometer measurements in meters/sec^2 with increasing timestamps
@@ -107,6 +113,7 @@ pub struct Imu {
 /// Nested message and enum types in `Imu`.
 pub mod imu {
     /// A Generic 3d measurement sample.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Measurement3d {
         /// The timestamp of the IMU measurement.
@@ -124,6 +131,7 @@ pub mod imu {
     }
 }
 /// Place metadata for an entity.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Place {
     /// Place identifier, as described in
@@ -139,6 +147,7 @@ pub struct Place {
     pub language_code: ::prost::alloc::string::String,
 }
 /// A connection is the link from a source photo to a destination photo.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Connection {
     /// Required. The destination of the connection from the containing photo to
@@ -147,6 +156,7 @@ pub struct Connection {
     pub target: ::core::option::Option<PhotoId>,
 }
 /// Photo is used to store 360 photos along with photo metadata.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Photo {
     /// Required. Output only. Required when updating a photo. Output only when creating a photo.
@@ -290,6 +300,7 @@ pub mod photo {
     }
 }
 /// A sequence of 360 photos along with metadata.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PhotoSequence {
     /// Output only. Unique identifier for the photo sequence.
@@ -397,6 +408,7 @@ pub mod photo_sequence {
     }
 }
 /// A rectangle in geographical coordinates.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LatLngBounds {
     /// The southwest corner of these bounds.
@@ -410,6 +422,7 @@ pub struct LatLngBounds {
 /// This message is always expected to be used in conjunction with
 /// ProcessingFailureReason, and the oneof value set in this message should match
 /// the FailureReason.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProcessingFailureDetails {
     /// Only one set of details will be set, and must match the corresponding enum
@@ -421,6 +434,7 @@ pub struct ProcessingFailureDetails {
 pub mod processing_failure_details {
     /// Only one set of details will be set, and must match the corresponding enum
     /// in ProcessingFailureReason.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Details {
         /// See InsufficientGpsFailureDetails.
@@ -438,6 +452,7 @@ pub mod processing_failure_details {
     }
 }
 /// Details related to ProcessingFailureReason#INSUFFICIENT_GPS.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InsufficientGpsFailureDetails {
     /// The number of GPS points that were found in the video.
@@ -447,6 +462,7 @@ pub struct InsufficientGpsFailureDetails {
 /// Details related to ProcessingFailureReason#GPS_DATA_GAP.
 /// If there are multiple GPS data gaps, only the one with the largest duration
 /// is reported here.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GpsDataGapFailureDetails {
     /// The duration of the gap in GPS data that was found.
@@ -459,6 +475,7 @@ pub struct GpsDataGapFailureDetails {
 /// Details related to ProcessingFailureReason#IMU_DATA_GAP.
 /// If there are multiple IMU data gaps, only the one with the largest duration
 /// is reported here.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImuDataGapFailureDetails {
     /// The duration of the gap in IMU data that was found.
@@ -470,6 +487,7 @@ pub struct ImuDataGapFailureDetails {
 }
 /// Details related to ProcessingFailureReason#NOT_OUTDOORS.
 /// If there are multiple indoor frames found, the first frame is recorded here.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NotOutdoorsFailureDetails {
     /// Relative time (from the start of the video stream) when an indoor frame was
@@ -618,6 +636,7 @@ impl ProcessingFailureReason {
     }
 }
 /// Request to create a \[Photo][google.streetview.publish.v1.Photo\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreatePhotoRequest {
     /// Required. Photo to create.
@@ -633,6 +652,7 @@ pub struct CreatePhotoRequest {
 /// Parameters:
 ///
 /// * `view` controls if the download URL for the photo bytes is returned.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetPhotoRequest {
     /// Required. ID of the \[Photo][google.streetview.publish.v1.Photo\].
@@ -658,6 +678,7 @@ pub struct GetPhotoRequest {
 /// Parameters:
 ///
 /// * `view` controls if the download URL for the photo bytes is returned.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchGetPhotosRequest {
     /// Required. IDs of the \[Photos][google.streetview.publish.v1.Photo\]. For HTTP
@@ -678,6 +699,7 @@ pub struct BatchGetPhotosRequest {
     pub language_code: ::prost::alloc::string::String,
 }
 /// Response to batch get of \[Photos][google.streetview.publish.v1.Photo\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchGetPhotosResponse {
     /// List of results for each individual
@@ -693,6 +715,7 @@ pub struct BatchGetPhotosResponse {
 /// \[BatchGetPhotos][google.streetview.publish.v1.StreetViewPublishService.BatchGetPhotos\]
 /// and
 /// \[BatchUpdatePhotos][google.streetview.publish.v1.StreetViewPublishService.BatchUpdatePhotos\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PhotoResponse {
     /// The status for the operation to get or update a single photo in the batch
@@ -719,6 +742,7 @@ pub struct PhotoResponse {
 ///      request, if any.
 /// * `filter` allows filtering by a given parameter. 'placeId' is the only
 /// parameter supported at the moment.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPhotosRequest {
     /// Required. Specifies if a download URL for the photos bytes should be returned in the
@@ -755,6 +779,7 @@ pub struct ListPhotosRequest {
     pub language_code: ::prost::alloc::string::String,
 }
 /// Response to list all photos that belong to a user.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPhotosResponse {
     /// List of photos. The
@@ -770,6 +795,7 @@ pub struct ListPhotosResponse {
 /// Request to update the metadata of a
 /// \[Photo][google.streetview.publish.v1.Photo\]. Updating the pixels of a photo
 /// is not supported.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdatePhotoRequest {
     /// Required. \[Photo][google.streetview.publish.v1.Photo\] object containing the
@@ -807,6 +833,7 @@ pub struct UpdatePhotoRequest {
 }
 /// Request to update the metadata of photos.
 /// Updating the pixels of photos is not supported.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchUpdatePhotosRequest {
     /// Required. List of
@@ -816,6 +843,7 @@ pub struct BatchUpdatePhotosRequest {
 }
 /// Response to batch update of metadata of one or more
 /// \[Photos][google.streetview.publish.v1.Photo\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchUpdatePhotosResponse {
     /// List of results for each individual
@@ -825,6 +853,7 @@ pub struct BatchUpdatePhotosResponse {
     pub results: ::prost::alloc::vec::Vec<PhotoResponse>,
 }
 /// Request to delete a \[Photo][google.streetview.publish.v1.Photo\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeletePhotoRequest {
     /// Required. ID of the \[Photo][google.streetview.publish.v1.Photo\].
@@ -832,6 +861,7 @@ pub struct DeletePhotoRequest {
     pub photo_id: ::prost::alloc::string::String,
 }
 /// Request to delete multiple \[Photos][google.streetview.publish.v1.Photo\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchDeletePhotosRequest {
     /// Required. IDs of the \[Photos][google.streetview.publish.v1.Photo\]. HTTP
@@ -842,6 +872,7 @@ pub struct BatchDeletePhotosRequest {
 }
 /// Request to create a
 /// \[PhotoSequence][google.streetview.publish.v1.PhotoSequence\] from a video.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreatePhotoSequenceRequest {
     /// Required. \[PhotoSequence][google.streetview.publish.v1.PhotoSequence\] to
@@ -902,6 +933,7 @@ pub mod create_photo_sequence_request {
 /// * `view` controls if the download URL for the
 /// \[PhotoSequence][google.streetview.publish.v1.PhotoSequence\] is
 ///    returned.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetPhotoSequenceRequest {
     /// Required. ID of the photo sequence.
@@ -923,6 +955,7 @@ pub struct GetPhotoSequenceRequest {
 }
 /// Request to delete a
 /// \[PhotoSequence][google.streetview.publish.v1.PhotoSequence\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeletePhotoSequenceRequest {
     /// Required. ID of the
@@ -932,6 +965,7 @@ pub struct DeletePhotoSequenceRequest {
 }
 /// Response to batch delete of one or more
 /// \[Photos][google.streetview.publish.v1.Photo\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchDeletePhotosResponse {
     /// The status for the operation to delete a single
@@ -948,6 +982,7 @@ pub struct BatchDeletePhotosResponse {
 /// * `pageToken` is the next page token value returned from a previous
 /// \[ListPhotoSequences][google.streetview.publish.v1.StreetViewPublishService.ListPhotoSequences\]
 ///    request, if any.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPhotoSequencesRequest {
     /// Optional. The maximum number of photo sequences to return.
@@ -977,6 +1012,7 @@ pub struct ListPhotoSequencesRequest {
     pub filter: ::prost::alloc::string::String,
 }
 /// Response to list all photo sequences that belong to a user.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPhotoSequencesResponse {
     /// List of photo sequences via \[Operation][google.longrunning.Operation\]

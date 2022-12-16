@@ -6,6 +6,7 @@
 /// See [Supported asset
 /// types](<https://cloud.google.com/asset-inventory/docs/supported-asset-types>)
 /// for more information.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Asset {
     /// The last update timestamp of an asset. update_time is updated when
@@ -70,6 +71,7 @@ pub struct Asset {
 pub mod asset {
     /// A representation of an [access
     /// policy](<https://cloud.google.com/access-context-manager/docs/overview#access-policies>).
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum AccessContextPolicy {
         /// Please also refer to the [access policy user
@@ -93,6 +95,7 @@ pub mod asset {
     }
 }
 /// A representation of a Google Cloud resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Resource {
     /// The API version. Example: `v1`
@@ -144,6 +147,7 @@ pub struct Resource {
     pub location: ::prost::alloc::string::String,
 }
 /// The detailed related assets with the `relationship_type`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RelatedAssets {
     /// The detailed relation attributes.
@@ -155,6 +159,7 @@ pub struct RelatedAssets {
 }
 /// The relationship attributes which include  `type`, `source_resource_type`,
 /// `target_resource_type` and `action`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RelationshipAttributes {
     /// The unique identifier of the relationship type. Example:
@@ -179,6 +184,7 @@ pub struct RelationshipAttributes {
 /// See [Supported asset
 /// types](<https://cloud.google.com/asset-inventory/docs/supported-asset-types>)
 /// for more information.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RelatedAsset {
     /// The full name of the asset. Example:
@@ -206,6 +212,7 @@ pub struct RelatedAsset {
     pub ancestors: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Export asset request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportAssetsRequest {
     /// Required. The relative name of the root asset. This can only be an
@@ -267,6 +274,7 @@ pub struct ExportAssetsRequest {
 /// method in the returned
 /// \[google.longrunning.Operation.response][google.longrunning.Operation.response\]
 /// field.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportAssetsResponse {
     /// Time the snapshot was taken.
@@ -284,6 +292,7 @@ pub struct ExportAssetsResponse {
     pub output_result: ::core::option::Option<OutputResult>,
 }
 /// Output configuration for export assets destination.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OutputConfig {
     /// Asset export destination.
@@ -293,6 +302,7 @@ pub struct OutputConfig {
 /// Nested message and enum types in `OutputConfig`.
 pub mod output_config {
     /// Asset export destination.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Destination {
         /// Destination on Cloud Storage.
@@ -305,6 +315,7 @@ pub mod output_config {
     }
 }
 /// Output result of export assets.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OutputResult {
     /// Asset export result.
@@ -314,6 +325,7 @@ pub struct OutputResult {
 /// Nested message and enum types in `OutputResult`.
 pub mod output_result {
     /// Asset export result.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Result {
         /// Export result on Cloud Storage.
@@ -322,6 +334,7 @@ pub mod output_result {
     }
 }
 /// A Cloud Storage output result.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GcsOutputResult {
     /// List of uris of the Cloud Storage objects. Example:
@@ -330,6 +343,7 @@ pub struct GcsOutputResult {
     pub uris: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// A Cloud Storage location.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GcsDestination {
     /// Required.
@@ -339,6 +353,7 @@ pub struct GcsDestination {
 /// Nested message and enum types in `GcsDestination`.
 pub mod gcs_destination {
     /// Required.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ObjectUri {
         /// The uri of the Cloud Storage object. It's the same uri that is used by
@@ -362,6 +377,7 @@ pub mod gcs_destination {
     }
 }
 /// A BigQuery destination for exporting assets to.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BigQueryDestination {
     /// Required. The BigQuery dataset in format
@@ -431,6 +447,7 @@ pub struct BigQueryDestination {
     pub separate_tables_per_asset_type: bool,
 }
 /// Specifications of BigQuery partitioned table as export destination.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PartitionSpec {
     /// The partition key for BigQuery partitioned table.

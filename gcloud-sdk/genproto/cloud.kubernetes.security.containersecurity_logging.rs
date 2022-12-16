@@ -1,4 +1,5 @@
 /// Identifies a package vulnerability found within a workload.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Vulnerability {
     /// package name where vulnerability detected
@@ -48,6 +49,7 @@ pub struct Vulnerability {
 /// corresponds to a type of security concern. A finding is created during the
 /// scan of an asset by any one of the GKE Security Posture features that are
 /// enabled.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Finding {
     /// Fully qualified resource name of the k8s resource, e.g.:
@@ -111,6 +113,7 @@ pub mod finding {
         }
     }
     /// Specific details about the security finding if there are any.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Details {
         #[prost(message, tag = "7")]

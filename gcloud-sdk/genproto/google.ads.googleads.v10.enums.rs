@@ -1,4 +1,5 @@
 /// Container for enum describing possible policy topic entry types.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PolicyTopicEntryTypeEnum {}
 /// Nested message and enum types in `PolicyTopicEntryTypeEnum`.
@@ -59,6 +60,7 @@ pub mod policy_topic_entry_type_enum {
 }
 /// Container for enum describing possible policy topic evidence destination
 /// mismatch url types.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PolicyTopicEvidenceDestinationMismatchUrlTypeEnum {}
 /// Nested message and enum types in `PolicyTopicEvidenceDestinationMismatchUrlTypeEnum`.
@@ -124,6 +126,7 @@ pub mod policy_topic_evidence_destination_mismatch_url_type_enum {
 }
 /// Container for enum describing possible policy topic evidence destination not
 /// working devices.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PolicyTopicEvidenceDestinationNotWorkingDeviceEnum {}
 /// Nested message and enum types in `PolicyTopicEvidenceDestinationNotWorkingDeviceEnum`.
@@ -175,6 +178,7 @@ pub mod policy_topic_evidence_destination_not_working_device_enum {
 }
 /// Container for enum describing possible policy topic evidence destination not
 /// working DNS error types.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PolicyTopicEvidenceDestinationNotWorkingDnsErrorTypeEnum {}
 /// Nested message and enum types in `PolicyTopicEvidenceDestinationNotWorkingDnsErrorTypeEnum`.
@@ -230,6 +234,7 @@ pub mod policy_topic_evidence_destination_not_working_dns_error_type_enum {
     }
 }
 /// Container for enum describing possible policy approval statuses.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PolicyApprovalStatusEnum {}
 /// Nested message and enum types in `PolicyApprovalStatusEnum`.
@@ -284,6 +289,7 @@ pub mod policy_approval_status_enum {
     }
 }
 /// Container for enum describing possible policy review statuses.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PolicyReviewStatusEnum {}
 /// Nested message and enum types in `PolicyReviewStatusEnum`.
@@ -337,6 +343,7 @@ pub mod policy_review_status_enum {
     }
 }
 /// Container for enum describing the performance label of an asset.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AssetPerformanceLabelEnum {}
 /// Nested message and enum types in `AssetPerformanceLabelEnum`.
@@ -392,6 +399,7 @@ pub mod asset_performance_label_enum {
     }
 }
 /// Container for enum describing possible asset field types.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ServedAssetFieldTypeEnum {}
 /// Nested message and enum types in `ServedAssetFieldTypeEnum`.
@@ -447,6 +455,7 @@ pub mod served_asset_field_type_enum {
 }
 /// Container for enum describing possible data types for call conversion
 /// reporting state.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CallConversionReportingStateEnum {}
 /// Nested message and enum types in `CallConversionReportingStateEnum`.
@@ -499,6 +508,7 @@ pub mod call_conversion_reporting_state_enum {
     }
 }
 /// Container for display ad format settings.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DisplayAdFormatSettingEnum {}
 /// Nested message and enum types in `DisplayAdFormatSettingEnum`.
@@ -550,6 +560,7 @@ pub mod display_ad_format_setting_enum {
 /// remarketing feed. See <https://support.google.com/google-ads/answer/6053288>
 /// for more info about dynamic remarketing. Other product types are regarded
 /// as "static" and do not have this requirement.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DisplayUploadProductTypeEnum {}
 /// Nested message and enum types in `DisplayUploadProductTypeEnum`.
@@ -648,6 +659,7 @@ pub mod display_upload_product_type_enum {
     }
 }
 /// Container for enum describing app store type in a legacy app install ad.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LegacyAppInstallAdAppStoreEnum {}
 /// Nested message and enum types in `LegacyAppInstallAdAppStoreEnum`.
@@ -700,6 +712,7 @@ pub mod legacy_app_install_ad_app_store_enum {
     }
 }
 /// Container for enum describing the mime types.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MimeTypeEnum {}
 /// Nested message and enum types in `MimeTypeEnum`.
@@ -777,6 +790,7 @@ pub mod mime_type_enum {
 /// Defines the thumbnail to use for In-Display video ads. Note that
 /// DEFAULT_THUMBNAIL may have been uploaded by the user while thumbnails 1-3 are
 /// auto-generated from the video.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VideoThumbnailEnum {}
 /// Nested message and enum types in `VideoThumbnailEnum`.
@@ -827,6 +841,7 @@ pub mod video_thumbnail_enum {
     }
 }
 /// Container for enum describing the type of demographic age ranges.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AgeRangeTypeEnum {}
 /// Nested message and enum types in `AgeRangeTypeEnum`.
@@ -885,6 +900,7 @@ pub mod age_range_type_enum {
     }
 }
 /// Represents a criterion for targeting paid apps.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AppPaymentModelTypeEnum {}
 /// Nested message and enum types in `AppPaymentModelTypeEnum`.
@@ -925,6 +941,7 @@ pub mod app_payment_model_type_enum {
     }
 }
 /// Container for enum describing content label types in ContentLabel.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ContentLabelTypeEnum {}
 /// Nested message and enum types in `ContentLabelTypeEnum`.
@@ -1007,6 +1024,7 @@ pub mod content_label_type_enum {
     }
 }
 /// Container for enumeration of days of the week, e.g., "Monday".
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DayOfWeekEnum {}
 /// Nested message and enum types in `DayOfWeekEnum`.
@@ -1065,6 +1083,7 @@ pub mod day_of_week_enum {
     }
 }
 /// Container for enumeration of Google Ads devices available for targeting.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeviceEnum {}
 /// Nested message and enum types in `DeviceEnum`.
@@ -1117,6 +1136,7 @@ pub mod device_enum {
     }
 }
 /// Container for enum describing the type of demographic genders.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenderTypeEnum {}
 /// Nested message and enum types in `GenderTypeEnum`.
@@ -1163,6 +1183,7 @@ pub mod gender_type_enum {
     }
 }
 /// Container for enum describing possible hotel date selection types
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HotelDateSelectionTypeEnum {}
 /// Nested message and enum types in `HotelDateSelectionTypeEnum`.
@@ -1206,6 +1227,7 @@ pub mod hotel_date_selection_type_enum {
     }
 }
 /// Container for enum describing the type of demographic income ranges.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IncomeRangeTypeEnum {}
 /// Nested message and enum types in `IncomeRangeTypeEnum`.
@@ -1264,6 +1286,7 @@ pub mod income_range_type_enum {
     }
 }
 /// Container for enum describing possible interaction types.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InteractionTypeEnum {}
 /// Nested message and enum types in `InteractionTypeEnum`.
@@ -1304,6 +1327,7 @@ pub mod interaction_type_enum {
     }
 }
 /// Message describing Keyword match types.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KeywordMatchTypeEnum {}
 /// Nested message and enum types in `KeywordMatchTypeEnum`.
@@ -1350,6 +1374,7 @@ pub mod keyword_match_type_enum {
     }
 }
 /// Container for enum describing the type of the listing group.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListingGroupTypeEnum {}
 /// Nested message and enum types in `ListingGroupTypeEnum`.
@@ -1395,6 +1420,7 @@ pub mod listing_group_type_enum {
     }
 }
 /// Container for enum describing unit of radius in location group.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LocationGroupRadiusUnitsEnum {}
 /// Nested message and enum types in `LocationGroupRadiusUnitsEnum`.
@@ -1441,6 +1467,7 @@ pub mod location_group_radius_units_enum {
     }
 }
 /// Container for enumeration of quarter-hours.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MinuteOfHourEnum {}
 /// Nested message and enum types in `MinuteOfHourEnum`.
@@ -1490,6 +1517,7 @@ pub mod minute_of_hour_enum {
     }
 }
 /// Container for enum describing the type of demographic parental statuses.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ParentalStatusTypeEnum {}
 /// Nested message and enum types in `ParentalStatusTypeEnum`.
@@ -1536,6 +1564,7 @@ pub mod parental_status_type_enum {
     }
 }
 /// Container for enumeration of preferred content criterion type.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PreferredContentTypeEnum {}
 /// Nested message and enum types in `PreferredContentTypeEnum`.
@@ -1576,6 +1605,7 @@ pub mod preferred_content_type_enum {
     }
 }
 /// Level of a product bidding category.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProductBiddingCategoryLevelEnum {}
 /// Nested message and enum types in `ProductBiddingCategoryLevelEnum`.
@@ -1628,6 +1658,7 @@ pub mod product_bidding_category_level_enum {
     }
 }
 /// Locality of a product offer.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProductChannelEnum {}
 /// Nested message and enum types in `ProductChannelEnum`.
@@ -1671,6 +1702,7 @@ pub mod product_channel_enum {
     }
 }
 /// Availability of a product offer.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProductChannelExclusivityEnum {}
 /// Nested message and enum types in `ProductChannelExclusivityEnum`.
@@ -1716,6 +1748,7 @@ pub mod product_channel_exclusivity_enum {
     }
 }
 /// Condition of a product offer.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProductConditionEnum {}
 /// Nested message and enum types in `ProductConditionEnum`.
@@ -1762,6 +1795,7 @@ pub mod product_condition_enum {
     }
 }
 /// Container for enum describing the index of the product custom attribute.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProductCustomAttributeIndexEnum {}
 /// Nested message and enum types in `ProductCustomAttributeIndexEnum`.
@@ -1814,6 +1848,7 @@ pub mod product_custom_attribute_index_enum {
     }
 }
 /// Level of the type of a product offer.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProductTypeLevelEnum {}
 /// Nested message and enum types in `ProductTypeLevelEnum`.
@@ -1866,6 +1901,7 @@ pub mod product_type_level_enum {
     }
 }
 /// Container for enum describing unit of radius in proximity.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProximityRadiusUnitsEnum {}
 /// Nested message and enum types in `ProximityRadiusUnitsEnum`.
@@ -1909,6 +1945,7 @@ pub mod proximity_radius_units_enum {
     }
 }
 /// Container for enum describing webpage condition operand in webpage criterion.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WebpageConditionOperandEnum {}
 /// Nested message and enum types in `WebpageConditionOperandEnum`.
@@ -1962,6 +1999,7 @@ pub mod webpage_condition_operand_enum {
 }
 /// Container for enum describing webpage condition operator in webpage
 /// criterion.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WebpageConditionOperatorEnum {}
 /// Nested message and enum types in `WebpageConditionOperatorEnum`.
@@ -2005,6 +2043,7 @@ pub mod webpage_condition_operator_enum {
     }
 }
 /// Container for enum describing the call to action types.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CallToActionTypeEnum {}
 /// Nested message and enum types in `CallToActionTypeEnum`.
@@ -2069,6 +2108,7 @@ pub mod call_to_action_type_enum {
     }
 }
 /// Describes the type of call-to-action phrases in a lead form.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LeadFormCallToActionTypeEnum {}
 /// Nested message and enum types in `LeadFormCallToActionTypeEnum`.
@@ -2148,6 +2188,7 @@ pub mod lead_form_call_to_action_type_enum {
     }
 }
 /// Describes the desired level of intent of generated leads.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LeadFormDesiredIntentEnum {}
 /// Nested message and enum types in `LeadFormDesiredIntentEnum`.
@@ -2191,6 +2232,7 @@ pub mod lead_form_desired_intent_enum {
     }
 }
 /// Describes the input type of a lead form field.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LeadFormFieldUserInputTypeEnum {}
 /// Nested message and enum types in `LeadFormFieldUserInputTypeEnum`.
@@ -2512,6 +2554,7 @@ pub mod lead_form_field_user_input_type_enum {
     }
 }
 /// Describes the type of post-submit call-to-action phrases for a lead form.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LeadFormPostSubmitCallToActionTypeEnum {}
 /// Nested message and enum types in `LeadFormPostSubmitCallToActionTypeEnum`.
@@ -2562,6 +2605,7 @@ pub mod lead_form_post_submit_call_to_action_type_enum {
     }
 }
 /// Container for enum describing different types of mobile app vendors.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MobileAppVendorEnum {}
 /// Nested message and enum types in `MobileAppVendorEnum`.
@@ -2605,6 +2649,7 @@ pub mod mobile_app_vendor_enum {
     }
 }
 /// Container for enum describing a price extension price qualifier.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PriceExtensionPriceQualifierEnum {}
 /// Nested message and enum types in `PriceExtensionPriceQualifierEnum`.
@@ -2651,6 +2696,7 @@ pub mod price_extension_price_qualifier_enum {
     }
 }
 /// Container for enum describing price extension price unit.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PriceExtensionPriceUnitEnum {}
 /// Nested message and enum types in `PriceExtensionPriceUnitEnum`.
@@ -2706,6 +2752,7 @@ pub mod price_extension_price_unit_enum {
     }
 }
 /// Container for enum describing types for a price extension.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PriceExtensionTypeEnum {}
 /// Nested message and enum types in `PriceExtensionTypeEnum`.
@@ -2771,6 +2818,7 @@ pub mod price_extension_type_enum {
 }
 /// Container for enum describing possible a promotion extension
 /// discount modifier.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PromotionExtensionDiscountModifierEnum {}
 /// Nested message and enum types in `PromotionExtensionDiscountModifierEnum`.
@@ -2813,6 +2861,7 @@ pub mod promotion_extension_discount_modifier_enum {
 /// Container for enum describing a promotion extension occasion.
 /// For more information about the occasions please check:
 /// <https://support.google.com/google-ads/answer/7367521>
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PromotionExtensionOccasionEnum {}
 /// Nested message and enum types in `PromotionExtensionOccasionEnum`.
@@ -2963,6 +3012,7 @@ pub mod promotion_extension_occasion_enum {
 /// Container for enum describing where on the first search results page the
 /// automated bidding system should target impressions for the
 /// TargetImpressionShare bidding strategy.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetImpressionShareLocationEnum {}
 /// Nested message and enum types in `TargetImpressionShareLocationEnum`.
@@ -3011,6 +3061,7 @@ pub mod target_impression_share_location_enum {
     }
 }
 /// An immutable specialization of an Advertising Channel.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AdvertisingChannelSubTypeEnum {}
 /// Nested message and enum types in `AdvertisingChannelSubTypeEnum`.
@@ -3114,6 +3165,7 @@ pub mod advertising_channel_sub_type_enum {
     }
 }
 /// The channel type a campaign may target to serve on.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AdvertisingChannelTypeEnum {}
 /// Nested message and enum types in `AdvertisingChannelTypeEnum`.
@@ -3189,6 +3241,7 @@ pub mod advertising_channel_type_enum {
 /// the availability is meant to include all advertising channels, or a
 /// particular channel with all its channel subtypes, or a channel with a certain
 /// subset of channel subtypes.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CriterionCategoryChannelAvailabilityModeEnum {}
 /// Nested message and enum types in `CriterionCategoryChannelAvailabilityModeEnum`.
@@ -3243,6 +3296,7 @@ pub mod criterion_category_channel_availability_mode_enum {
 /// Describes locale availability mode for a criterion availability - whether
 /// it's available globally, or a particular country with all languages, or a
 /// particular language with all countries, or a country-language pair.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CriterionCategoryLocaleAvailabilityModeEnum {}
 /// Nested message and enum types in `CriterionCategoryLocaleAvailabilityModeEnum`.
@@ -3301,6 +3355,7 @@ pub mod criterion_category_locale_availability_mode_enum {
     }
 }
 /// Container for enum describing possible types of a customizer attribute.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomizerAttributeTypeEnum {}
 /// Nested message and enum types in `CustomizerAttributeTypeEnum`.
@@ -3350,6 +3405,7 @@ pub mod customizer_attribute_type_enum {
     }
 }
 /// Container for enumeration of months of the year, e.g., "January".
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MonthOfYearEnum {}
 /// Nested message and enum types in `MonthOfYearEnum`.
@@ -3423,6 +3479,7 @@ pub mod month_of_year_enum {
     }
 }
 /// Container for enum describing app store type in an app extension.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AppStoreEnum {}
 /// Nested message and enum types in `AppStoreEnum`.
@@ -3466,6 +3523,7 @@ pub mod app_store_enum {
     }
 }
 /// The type of string matching to be used for a dynamic FeedItemSet filter.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FeedItemSetStringFilterTypeEnum {}
 /// Nested message and enum types in `FeedItemSetStringFilterTypeEnum`.
@@ -3506,6 +3564,7 @@ pub mod feed_item_set_string_filter_type_enum {
     }
 }
 /// The possible OS types for a deeplink AppUrl.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AppUrlOperatingSystemTypeEnum {}
 /// Nested message and enum types in `AppUrlOperatingSystemTypeEnum`.
@@ -3549,6 +3608,7 @@ pub mod app_url_operating_system_type_enum {
     }
 }
 /// Container for enum describing the type of event that the cap applies to.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FrequencyCapEventTypeEnum {}
 /// Nested message and enum types in `FrequencyCapEventTypeEnum`.
@@ -3592,6 +3652,7 @@ pub mod frequency_cap_event_type_enum {
     }
 }
 /// Container for enum describing the level on which the cap is to be applied.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FrequencyCapLevelEnum {}
 /// Nested message and enum types in `FrequencyCapLevelEnum`.
@@ -3639,6 +3700,7 @@ pub mod frequency_cap_level_enum {
     }
 }
 /// Container for enum describing the unit of time the cap is defined at.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FrequencyCapTimeUnitEnum {}
 /// Nested message and enum types in `FrequencyCapTimeUnitEnum`.
@@ -3685,6 +3747,7 @@ pub mod frequency_cap_time_unit_enum {
     }
 }
 /// The enumeration of keyword plan aggregate metric types.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KeywordPlanAggregateMetricTypeEnum {}
 /// Nested message and enum types in `KeywordPlanAggregateMetricTypeEnum`.
@@ -3729,6 +3792,7 @@ pub mod keyword_plan_aggregate_metric_type_enum {
 /// is determined by the number of advertisers bidding on that keyword relative
 /// to all keywords across Google. The competition level can depend on the
 /// location and Search Network targeting options you've selected.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KeywordPlanCompetitionLevelEnum {}
 /// Nested message and enum types in `KeywordPlanCompetitionLevelEnum`.
@@ -3775,6 +3839,7 @@ pub mod keyword_plan_competition_level_enum {
     }
 }
 /// Container for enumeration of keyword plan concept group types.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KeywordPlanConceptGroupTypeEnum {}
 /// Nested message and enum types in `KeywordPlanConceptGroupTypeEnum`.
@@ -3826,6 +3891,7 @@ pub mod keyword_plan_concept_group_type_enum {
     }
 }
 /// Container for context types for an operand in a matching function.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MatchingFunctionContextTypeEnum {}
 /// Nested message and enum types in `MatchingFunctionContextTypeEnum`.
@@ -3872,6 +3938,7 @@ pub mod matching_function_context_type_enum {
     }
 }
 /// Container for enum describing matching function operator.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MatchingFunctionOperatorEnum {}
 /// Nested message and enum types in `MatchingFunctionOperatorEnum`.
@@ -3930,6 +3997,7 @@ pub mod matching_function_operator_enum {
     }
 }
 /// Container for enum describing the type of experiment metric.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExperimentMetricEnum {}
 /// Nested message and enum types in `ExperimentMetricEnum`.
@@ -4008,6 +4076,7 @@ pub mod experiment_metric_enum {
     }
 }
 /// Container for enum describing the type of experiment metric direction.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExperimentMetricDirectionEnum {}
 /// Nested message and enum types in `ExperimentMetricDirectionEnum`.
@@ -4062,6 +4131,7 @@ pub mod experiment_metric_direction_enum {
     }
 }
 /// Container for enum describing types of payable and free interactions.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InteractionEventTypeEnum {}
 /// Nested message and enum types in `InteractionEventTypeEnum`.
@@ -4117,6 +4187,7 @@ pub mod interaction_event_type_enum {
     }
 }
 /// The relative performance compared to other advertisers.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QualityScoreBucketEnum {}
 /// Nested message and enum types in `QualityScoreBucketEnum`.
@@ -4164,6 +4235,7 @@ pub mod quality_score_bucket_enum {
 }
 /// Container for enum describing the source of the user identifier for offline
 /// Store Sales, click conversion, and conversion adjustment uploads.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UserIdentifierSourceEnum {}
 /// Nested message and enum types in `UserIdentifierSourceEnum`.
@@ -4210,6 +4282,7 @@ pub mod user_identifier_source_enum {
     }
 }
 /// Container for enumeration of Google Ads destination types.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AdDestinationTypeEnum {}
 /// Nested message and enum types in `AdDestinationTypeEnum`.
@@ -4280,6 +4353,7 @@ pub mod ad_destination_type_enum {
     }
 }
 /// Container for enumeration of Google Ads network types.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AdNetworkTypeEnum {}
 /// Nested message and enum types in `AdNetworkTypeEnum`.
@@ -4336,6 +4410,7 @@ pub mod ad_network_type_enum {
 }
 /// Message describing the status of the association between the Budget and the
 /// Campaign.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BudgetCampaignAssociationStatusEnum {}
 /// Nested message and enum types in `BudgetCampaignAssociationStatusEnum`.
@@ -4379,6 +4454,7 @@ pub mod budget_campaign_association_status_enum {
     }
 }
 /// Container for enumeration of Google Ads click types.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ClickTypeEnum {}
 /// Nested message and enum types in `ClickTypeEnum`.
@@ -4603,6 +4679,7 @@ pub mod click_type_enum {
 }
 /// Container for enum describing the category of conversions that are associated
 /// with a ConversionAction.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConversionActionCategoryEnum {}
 /// Nested message and enum types in `ConversionActionCategoryEnum`.
@@ -4713,6 +4790,7 @@ pub mod conversion_action_category_enum {
     }
 }
 /// Container for enum indicating the event type the conversion is attributed to.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConversionAttributionEventTypeEnum {}
 /// Nested message and enum types in `ConversionAttributionEventTypeEnum`.
@@ -4757,6 +4835,7 @@ pub mod conversion_attribution_event_type_enum {
 }
 /// Container for enum representing the number of days between impression and
 /// conversion.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConversionLagBucketEnum {}
 /// Nested message and enum types in `ConversionLagBucketEnum`.
@@ -4873,6 +4952,7 @@ pub mod conversion_lag_bucket_enum {
 }
 /// Container for enum representing the number of days between the impression and
 /// the conversion or between the impression and adjustments to the conversion.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConversionOrAdjustmentLagBucketEnum {}
 /// Nested message and enum types in `ConversionOrAdjustmentLagBucketEnum`.
@@ -5155,6 +5235,7 @@ pub mod conversion_or_adjustment_lag_bucket_enum {
     }
 }
 /// Container for enum describing value rule primary dimension for stats.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConversionValueRulePrimaryDimensionEnum {}
 /// Nested message and enum types in `ConversionValueRulePrimaryDimensionEnum`.
@@ -5217,6 +5298,7 @@ pub mod conversion_value_rule_primary_dimension_enum {
 }
 /// Container for enum describing the external conversion source that is
 /// associated with a ConversionAction.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExternalConversionSourceEnum {}
 /// Nested message and enum types in `ExternalConversionSourceEnum`.
@@ -5378,6 +5460,7 @@ pub mod external_conversion_source_enum {
     }
 }
 /// Container for enum describing hotel price bucket for a hotel itinerary.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HotelPriceBucketEnum {}
 /// Nested message and enum types in `HotelPriceBucketEnum`.
@@ -5430,6 +5513,7 @@ pub mod hotel_price_bucket_enum {
     }
 }
 /// Container for enum describing possible hotel rate types.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HotelRateTypeEnum {}
 /// Nested message and enum types in `HotelRateTypeEnum`.
@@ -5485,6 +5569,7 @@ pub mod hotel_rate_type_enum {
     }
 }
 /// Container for enum describing possible placeholder types for a feed mapping.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PlaceholderTypeEnum {}
 /// Nested message and enum types in `PlaceholderTypeEnum`.
@@ -5602,6 +5687,7 @@ pub mod placeholder_type_enum {
     }
 }
 /// Container for enum describing types of recommendations.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RecommendationTypeEnum {}
 /// Nested message and enum types in `RecommendationTypeEnum`.
@@ -5722,6 +5808,7 @@ pub mod recommendation_type_enum {
     }
 }
 /// The type of the search engine results page.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchEngineResultsPageTypeEnum {}
 /// Nested message and enum types in `SearchEngineResultsPageTypeEnum`.
@@ -5769,6 +5856,7 @@ pub mod search_engine_results_page_type_enum {
     }
 }
 /// Container for enum describing match types for a keyword triggering an ad.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchTermMatchTypeEnum {}
 /// Nested message and enum types in `SearchTermMatchTypeEnum`.
@@ -5821,6 +5909,7 @@ pub mod search_term_match_type_enum {
     }
 }
 /// Container for enumeration of SkAdNetwork ad event types.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SkAdNetworkAdEventTypeEnum {}
 /// Nested message and enum types in `SkAdNetworkAdEventTypeEnum`.
@@ -5868,6 +5957,7 @@ pub mod sk_ad_network_ad_event_type_enum {
     }
 }
 /// Container for enumeration of SkAdNetwork attribution credits.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SkAdNetworkAttributionCreditEnum {}
 /// Nested message and enum types in `SkAdNetworkAttributionCreditEnum`.
@@ -5916,6 +6006,7 @@ pub mod sk_ad_network_attribution_credit_enum {
     }
 }
 /// Container for enumeration of SkAdNetwork user types.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SkAdNetworkUserTypeEnum {}
 /// Nested message and enum types in `SkAdNetworkUserTypeEnum`.
@@ -5963,6 +6054,7 @@ pub mod sk_ad_network_user_type_enum {
     }
 }
 /// Container for enumeration of possible positions of the Ad.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SlotEnum {}
 /// Nested message and enum types in `SlotEnum`.
@@ -6022,6 +6114,7 @@ pub mod slot_enum {
 }
 /// Container for enum describing the format of the web page where the tracking
 /// tag and snippet will be installed.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TrackingCodePageFormatEnum {}
 /// Nested message and enum types in `TrackingCodePageFormatEnum`.
@@ -6067,6 +6160,7 @@ pub mod tracking_code_page_format_enum {
 }
 /// Container for enum describing the type of the generated tag snippets for
 /// tracking conversions.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TrackingCodeTypeEnum {}
 /// Nested message and enum types in `TrackingCodeTypeEnum`.
@@ -6120,6 +6214,7 @@ pub mod tracking_code_type_enum {
     }
 }
 /// The dimensions that can be targeted.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetingDimensionEnum {}
 /// Nested message and enum types in `TargetingDimensionEnum`.
@@ -6187,6 +6282,7 @@ pub mod targeting_dimension_enum {
     }
 }
 /// Indicates what type of data are the user list's members matched from.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomerMatchUploadKeyTypeEnum {}
 /// Nested message and enum types in `CustomerMatchUploadKeyTypeEnum`.
@@ -6237,6 +6333,7 @@ pub mod customer_match_upload_key_type_enum {
     }
 }
 /// Logical operator connecting two rules.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UserListCombinedRuleOperatorEnum {}
 /// Nested message and enum types in `UserListCombinedRuleOperatorEnum`.
@@ -6280,6 +6377,7 @@ pub mod user_list_combined_rule_operator_enum {
     }
 }
 /// Indicates source of Crm upload data.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UserListCrmDataSourceTypeEnum {}
 /// Nested message and enum types in `UserListCrmDataSourceTypeEnum`.
@@ -6330,6 +6428,7 @@ pub mod user_list_crm_data_source_type_enum {
     }
 }
 /// Supported rule operator for date type.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UserListDateRuleItemOperatorEnum {}
 /// Nested message and enum types in `UserListDateRuleItemOperatorEnum`.
@@ -6379,6 +6478,7 @@ pub mod user_list_date_rule_item_operator_enum {
     }
 }
 /// The logical operator of the rule.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UserListLogicalRuleOperatorEnum {}
 /// Nested message and enum types in `UserListLogicalRuleOperatorEnum`.
@@ -6425,6 +6525,7 @@ pub mod user_list_logical_rule_operator_enum {
     }
 }
 /// Supported rule operator for number type.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UserListNumberRuleItemOperatorEnum {}
 /// Nested message and enum types in `UserListNumberRuleItemOperatorEnum`.
@@ -6482,6 +6583,7 @@ pub mod user_list_number_rule_item_operator_enum {
     }
 }
 /// Indicates status of prepopulation based on the rule.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UserListPrepopulationStatusEnum {}
 /// Nested message and enum types in `UserListPrepopulationStatusEnum`.
@@ -6528,6 +6630,7 @@ pub mod user_list_prepopulation_status_enum {
     }
 }
 /// Rule based user list rule type.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UserListRuleTypeEnum {}
 /// Nested message and enum types in `UserListRuleTypeEnum`.
@@ -6571,6 +6674,7 @@ pub mod user_list_rule_type_enum {
     }
 }
 /// Supported rule operator for string type.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UserListStringRuleItemOperatorEnum {}
 /// Nested message and enum types in `UserListStringRuleItemOperatorEnum`.
@@ -6632,6 +6736,7 @@ pub mod user_list_string_rule_item_operator_enum {
     }
 }
 /// Container for enum for identifying the status of access invitation
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AccessInvitationStatusEnum {}
 /// Nested message and enum types in `AccessInvitationStatusEnum`.
@@ -6680,6 +6785,7 @@ pub mod access_invitation_status_enum {
     }
 }
 /// Indicates the way the resource such as user list is related to a user.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AccessReasonEnum {}
 /// Nested message and enum types in `AccessReasonEnum`.
@@ -6732,6 +6838,7 @@ pub mod access_reason_enum {
     }
 }
 /// Container for enum describing possible access role for user.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AccessRoleEnum {}
 /// Nested message and enum types in `AccessRoleEnum`.
@@ -6782,6 +6889,7 @@ pub mod access_role_enum {
     }
 }
 /// Message describing AccountBudgetProposal statuses.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AccountBudgetProposalStatusEnum {}
 /// Nested message and enum types in `AccountBudgetProposalStatusEnum`.
@@ -6838,6 +6946,7 @@ pub mod account_budget_proposal_status_enum {
     }
 }
 /// Message describing AccountBudgetProposal types.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AccountBudgetProposalTypeEnum {}
 /// Nested message and enum types in `AccountBudgetProposalTypeEnum`.
@@ -6887,6 +6996,7 @@ pub mod account_budget_proposal_type_enum {
     }
 }
 /// Message describing AccountBudget statuses.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AccountBudgetStatusEnum {}
 /// Nested message and enum types in `AccountBudgetStatusEnum`.
@@ -6933,6 +7043,7 @@ pub mod account_budget_status_enum {
     }
 }
 /// Container for enum describing possible statuses of an account link.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AccountLinkStatusEnum {}
 /// Nested message and enum types in `AccountLinkStatusEnum`.
@@ -6991,6 +7102,7 @@ pub mod account_link_status_enum {
     }
 }
 /// Values for Ad Customizer placeholder fields.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AdCustomizerPlaceholderFieldEnum {}
 /// Nested message and enum types in `AdCustomizerPlaceholderFieldEnum`.
@@ -7041,6 +7153,7 @@ pub mod ad_customizer_placeholder_field_enum {
 }
 /// Container for enum describing possible ad rotation modes of ads within an
 /// ad group.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AdGroupAdRotationModeEnum {}
 /// Nested message and enum types in `AdGroupAdRotationModeEnum`.
@@ -7086,6 +7199,7 @@ pub mod ad_group_ad_rotation_mode_enum {
     }
 }
 /// Container for enum describing possible statuses of an AdGroupAd.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AdGroupAdStatusEnum {}
 /// Nested message and enum types in `AdGroupAdStatusEnum`.
@@ -7134,6 +7248,7 @@ pub mod ad_group_ad_status_enum {
     }
 }
 /// Container for enum describing possible AdGroupCriterion approval statuses.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AdGroupCriterionApprovalStatusEnum {}
 /// Nested message and enum types in `AdGroupCriterionApprovalStatusEnum`.
@@ -7183,6 +7298,7 @@ pub mod ad_group_criterion_approval_status_enum {
     }
 }
 /// Message describing AdGroupCriterion statuses.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AdGroupCriterionStatusEnum {}
 /// Nested message and enum types in `AdGroupCriterionStatusEnum`.
@@ -7231,6 +7347,7 @@ pub mod ad_group_criterion_status_enum {
     }
 }
 /// Container for enum describing possible statuses of an ad group.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AdGroupStatusEnum {}
 /// Nested message and enum types in `AdGroupStatusEnum`.
@@ -7281,6 +7398,7 @@ pub mod ad_group_status_enum {
 /// Defines types of an ad group, specific to a particular campaign channel
 /// type. This type drives validations that restrict which entities can be
 /// added to the ad group.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AdGroupTypeEnum {}
 /// Nested message and enum types in `AdGroupTypeEnum`.
@@ -7370,6 +7488,7 @@ pub mod ad_group_type_enum {
     }
 }
 /// Possible ad serving statuses of a campaign.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AdServingOptimizationStatusEnum {}
 /// Nested message and enum types in `AdServingOptimizationStatusEnum`.
@@ -7427,6 +7546,7 @@ pub mod ad_serving_optimization_status_enum {
     }
 }
 /// Container for enum describing possible ad strengths.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AdStrengthEnum {}
 /// Nested message and enum types in `AdStrengthEnum`.
@@ -7482,6 +7602,7 @@ pub mod ad_strength_enum {
     }
 }
 /// Container for enum describing possible types of an ad.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AdTypeEnum {}
 /// Nested message and enum types in `AdTypeEnum`.
@@ -7613,6 +7734,7 @@ pub mod ad_type_enum {
 }
 /// Container for enum describing possible values for a relationship type for
 /// an affiliate location feed.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AffiliateLocationFeedRelationshipTypeEnum {}
 /// Nested message and enum types in `AffiliateLocationFeedRelationshipTypeEnum`.
@@ -7655,6 +7777,7 @@ pub mod affiliate_location_feed_relationship_type_enum {
     }
 }
 /// Values for Affiliate Location placeholder fields.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AffiliateLocationPlaceholderFieldEnum {}
 /// Nested message and enum types in `AffiliateLocationPlaceholderFieldEnum`.
@@ -7725,6 +7848,7 @@ pub mod affiliate_location_placeholder_field_enum {
     }
 }
 /// The application store that distributes mobile applications.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AppCampaignAppStoreEnum {}
 /// Nested message and enum types in `AppCampaignAppStoreEnum`.
@@ -7769,6 +7893,7 @@ pub mod app_campaign_app_store_enum {
 }
 /// Container for enum describing goal towards which the bidding strategy of an
 /// app campaign should optimize for.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AppCampaignBiddingStrategyGoalTypeEnum {}
 /// Nested message and enum types in `AppCampaignBiddingStrategyGoalTypeEnum`.
@@ -7843,6 +7968,7 @@ pub mod app_campaign_bidding_strategy_goal_type_enum {
     }
 }
 /// Values for App placeholder fields.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AppPlaceholderFieldEnum {}
 /// Nested message and enum types in `AppPlaceholderFieldEnum`.
@@ -7911,6 +8037,7 @@ pub mod app_placeholder_field_enum {
     }
 }
 /// Container for enum describing the possible placements of an asset.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AssetFieldTypeEnum {}
 /// Nested message and enum types in `AssetFieldTypeEnum`.
@@ -8021,6 +8148,7 @@ pub mod asset_field_type_enum {
     }
 }
 /// Container for enum describing possible statuses of an asset group.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AssetGroupStatusEnum {}
 /// Nested message and enum types in `AssetGroupStatusEnum`.
@@ -8067,6 +8195,7 @@ pub mod asset_group_status_enum {
     }
 }
 /// Container for enum describing possible statuses of an asset link.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AssetLinkStatusEnum {}
 /// Nested message and enum types in `AssetLinkStatusEnum`.
@@ -8113,6 +8242,7 @@ pub mod asset_link_status_enum {
     }
 }
 /// Container for enum describing possible statuses of an asset set asset.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AssetSetAssetStatusEnum {}
 /// Nested message and enum types in `AssetSetAssetStatusEnum`.
@@ -8158,6 +8288,7 @@ pub mod asset_set_asset_status_enum {
 }
 /// Container for enum describing possible statuses of the linkage between asset
 /// set and its container.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AssetSetLinkStatusEnum {}
 /// Nested message and enum types in `AssetSetLinkStatusEnum`.
@@ -8202,6 +8333,7 @@ pub mod asset_set_link_status_enum {
     }
 }
 /// Container for enum describing possible statuses of an asset set.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AssetSetStatusEnum {}
 /// Nested message and enum types in `AssetSetStatusEnum`.
@@ -8246,6 +8378,7 @@ pub mod asset_set_status_enum {
     }
 }
 /// Container for enum describing possible types of an asset set.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AssetSetTypeEnum {}
 /// Nested message and enum types in `AssetSetTypeEnum`.
@@ -8313,6 +8446,7 @@ pub mod asset_set_type_enum {
     }
 }
 /// Container for enum describing the types of asset.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AssetTypeEnum {}
 /// Nested message and enum types in `AssetTypeEnum`.
@@ -8425,6 +8559,7 @@ pub mod asset_type_enum {
     }
 }
 /// Container for enum describing the experiment async action status.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AsyncActionStatusEnum {}
 /// Nested message and enum types in `AsyncActionStatusEnum`.
@@ -8479,6 +8614,7 @@ pub mod async_action_status_enum {
 /// Container for enum representing the attribution model that describes how to
 /// distribute credit for a particular conversion across potentially many prior
 /// interactions.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AttributionModelEnum {}
 /// Nested message and enum types in `AttributionModelEnum`.
@@ -8554,6 +8690,7 @@ pub mod attribution_model_enum {
     }
 }
 /// The status of audience.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AudienceStatusEnum {}
 /// Nested message and enum types in `AudienceStatusEnum`.
@@ -8598,6 +8735,7 @@ pub mod audience_status_enum {
     }
 }
 /// Container for enum describing possible batch job statuses.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchJobStatusEnum {}
 /// Nested message and enum types in `BatchJobStatusEnum`.
@@ -8644,6 +8782,7 @@ pub mod batch_job_status_enum {
     }
 }
 /// Container for enum describing possible bid modifier sources.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BidModifierSourceEnum {}
 /// Nested message and enum types in `BidModifierSourceEnum`.
@@ -8688,6 +8827,7 @@ pub mod bid_modifier_source_enum {
     }
 }
 /// Container for enum describing possible bidding sources.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BiddingSourceEnum {}
 /// Nested message and enum types in `BiddingSourceEnum`.
@@ -8736,6 +8876,7 @@ pub mod bidding_source_enum {
     }
 }
 /// Message describing BiddingStrategy statuses.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BiddingStrategyStatusEnum {}
 /// Nested message and enum types in `BiddingStrategyStatusEnum`.
@@ -8781,6 +8922,7 @@ pub mod bidding_strategy_status_enum {
     }
 }
 /// Container for enum describing possible bidding strategy types.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BiddingStrategyTypeEnum {}
 /// Nested message and enum types in `BiddingStrategyTypeEnum`.
@@ -8895,6 +9037,7 @@ pub mod bidding_strategy_type_enum {
     }
 }
 /// Message describing BillingSetup statuses.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BillingSetupStatusEnum {}
 /// Nested message and enum types in `BillingSetupStatusEnum`.
@@ -8946,6 +9089,7 @@ pub mod billing_setup_status_enum {
     }
 }
 /// Container for enum with 3-Tier brand safety suitability control.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BrandSafetySuitabilityEnum {}
 /// Nested message and enum types in `BrandSafetySuitabilityEnum`.
@@ -9013,6 +9157,7 @@ pub mod brand_safety_suitability_enum {
 }
 /// Message describing Budget delivery methods. A delivery method determines the
 /// rate at which the Budget is spent.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BudgetDeliveryMethodEnum {}
 /// Nested message and enum types in `BudgetDeliveryMethodEnum`.
@@ -9058,6 +9203,7 @@ pub mod budget_delivery_method_enum {
     }
 }
 /// Message describing Budget period.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BudgetPeriodEnum {}
 /// Nested message and enum types in `BudgetPeriodEnum`.
@@ -9104,6 +9250,7 @@ pub mod budget_period_enum {
     }
 }
 /// Message describing a Budget status
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BudgetStatusEnum {}
 /// Nested message and enum types in `BudgetStatusEnum`.
@@ -9147,6 +9294,7 @@ pub mod budget_status_enum {
     }
 }
 /// Describes Budget types.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BudgetTypeEnum {}
 /// Nested message and enum types in `BudgetTypeEnum`.
@@ -9213,6 +9361,7 @@ pub mod budget_type_enum {
     }
 }
 /// Values for Call placeholder fields.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CallPlaceholderFieldEnum {}
 /// Nested message and enum types in `CallPlaceholderFieldEnum`.
@@ -9274,6 +9423,7 @@ pub mod call_placeholder_field_enum {
     }
 }
 /// Container for enum describing possible call tracking display locations.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CallTrackingDisplayLocationEnum {}
 /// Nested message and enum types in `CallTrackingDisplayLocationEnum`.
@@ -9318,6 +9468,7 @@ pub mod call_tracking_display_location_enum {
 }
 /// Container for enum describing possible types of property from where the call
 /// was made.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CallTypeEnum {}
 /// Nested message and enum types in `CallTypeEnum`.
@@ -9361,6 +9512,7 @@ pub mod call_type_enum {
     }
 }
 /// Values for Callout placeholder fields.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CalloutPlaceholderFieldEnum {}
 /// Nested message and enum types in `CalloutPlaceholderFieldEnum`.
@@ -9401,6 +9553,7 @@ pub mod callout_placeholder_field_enum {
     }
 }
 /// Message describing CampaignCriterion statuses.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CampaignCriterionStatusEnum {}
 /// Nested message and enum types in `CampaignCriterionStatusEnum`.
@@ -9449,6 +9602,7 @@ pub mod campaign_criterion_status_enum {
     }
 }
 /// Container for enum describing possible statuses of a campaign draft.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CampaignDraftStatusEnum {}
 /// Nested message and enum types in `CampaignDraftStatusEnum`.
@@ -9507,6 +9661,7 @@ pub mod campaign_draft_status_enum {
     }
 }
 /// Container for enum describing possible statuses of a campaign experiment.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CampaignExperimentStatusEnum {}
 /// Nested message and enum types in `CampaignExperimentStatusEnum`.
@@ -9577,6 +9732,7 @@ pub mod campaign_experiment_status_enum {
     }
 }
 /// Container for enum describing campaign experiment traffic split type.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CampaignExperimentTrafficSplitTypeEnum {}
 /// Nested message and enum types in `CampaignExperimentTrafficSplitTypeEnum`.
@@ -9623,6 +9779,7 @@ pub mod campaign_experiment_traffic_split_type_enum {
     }
 }
 /// Container for enum describing campaign experiment type.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CampaignExperimentTypeEnum {}
 /// Nested message and enum types in `CampaignExperimentTypeEnum`.
@@ -9675,6 +9832,7 @@ pub mod campaign_experiment_type_enum {
     }
 }
 /// Message describing CampaignGroup statuses.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CampaignGroupStatusEnum {}
 /// Nested message and enum types in `CampaignGroupStatusEnum`.
@@ -9718,6 +9876,7 @@ pub mod campaign_group_status_enum {
     }
 }
 /// Message describing Campaign serving statuses.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CampaignServingStatusEnum {}
 /// Nested message and enum types in `CampaignServingStatusEnum`.
@@ -9772,6 +9931,7 @@ pub mod campaign_serving_status_enum {
     }
 }
 /// Container for enum describing types of campaign shared set statuses.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CampaignSharedSetStatusEnum {}
 /// Nested message and enum types in `CampaignSharedSetStatusEnum`.
@@ -9815,6 +9975,7 @@ pub mod campaign_shared_set_status_enum {
     }
 }
 /// Container for enum describing possible statuses of a campaign.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CampaignStatusEnum {}
 /// Nested message and enum types in `CampaignStatusEnum`.
@@ -9862,6 +10023,7 @@ pub mod campaign_status_enum {
 }
 /// Container for enum describing the sources that the change event resource
 /// was made through.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ChangeClientTypeEnum {}
 /// Nested message and enum types in `ChangeClientTypeEnum`.
@@ -9943,6 +10105,7 @@ pub mod change_client_type_enum {
 }
 /// Container for enum describing supported resource types for the ChangeEvent
 /// resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ChangeEventResourceTypeEnum {}
 /// Nested message and enum types in `ChangeEventResourceTypeEnum`.
@@ -10038,6 +10201,7 @@ pub mod change_event_resource_type_enum {
     }
 }
 /// Container for enum describing operations for the ChangeStatus resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ChangeStatusOperationEnum {}
 /// Nested message and enum types in `ChangeStatusOperationEnum`.
@@ -10086,6 +10250,7 @@ pub mod change_status_operation_enum {
 }
 /// Container for enum describing supported resource types for the ChangeStatus
 /// resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ChangeStatusResourceTypeEnum {}
 /// Nested message and enum types in `ChangeStatusResourceTypeEnum`.
@@ -10172,6 +10337,7 @@ pub mod change_status_resource_type_enum {
     }
 }
 /// The status of combined audience.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CombinedAudienceStatusEnum {}
 /// Nested message and enum types in `CombinedAudienceStatusEnum`.
@@ -10217,6 +10383,7 @@ pub mod combined_audience_status_enum {
 }
 /// Container for enum describing the conversion deduplication mode for
 /// conversion optimizer.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConversionActionCountingTypeEnum {}
 /// Nested message and enum types in `ConversionActionCountingTypeEnum`.
@@ -10261,6 +10428,7 @@ pub mod conversion_action_counting_type_enum {
     }
 }
 /// Container for enum describing possible statuses of a conversion action.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConversionActionStatusEnum {}
 /// Nested message and enum types in `ConversionActionStatusEnum`.
@@ -10308,6 +10476,7 @@ pub mod conversion_action_status_enum {
     }
 }
 /// Container for enum describing possible types of a conversion action.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConversionActionTypeEnum {}
 /// Nested message and enum types in `ConversionActionTypeEnum`.
@@ -10509,6 +10678,7 @@ pub mod conversion_action_type_enum {
     }
 }
 /// Container for enum describing conversion adjustment types.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConversionAdjustmentTypeEnum {}
 /// Nested message and enum types in `ConversionAdjustmentTypeEnum`.
@@ -10559,6 +10729,7 @@ pub mod conversion_adjustment_type_enum {
 }
 /// Container for enum describing possible statuses of a conversion custom
 /// variable.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConversionCustomVariableStatusEnum {}
 /// Nested message and enum types in `ConversionCustomVariableStatusEnum`.
@@ -10610,6 +10781,7 @@ pub mod conversion_custom_variable_status_enum {
 }
 /// Container for enum representing the conversion environment an uploaded
 /// conversion was recorded on. e.g. App or Web.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConversionEnvironmentEnum {}
 /// Nested message and enum types in `ConversionEnvironmentEnum`.
@@ -10653,6 +10825,7 @@ pub mod conversion_environment_enum {
     }
 }
 /// Container for enum describing possible conversion origins.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConversionOriginEnum {}
 /// Nested message and enum types in `ConversionOriginEnum`.
@@ -10714,6 +10887,7 @@ pub mod conversion_origin_enum {
 }
 /// Container for enum representing the conversion tracking status of the
 /// customer.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConversionTrackingStatusEnum {}
 /// Nested message and enum types in `ConversionTrackingStatusEnum`.
@@ -10775,6 +10949,7 @@ pub mod conversion_tracking_status_enum {
 }
 /// Container for enum describing possible statuses of a conversion value rule
 /// set.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConversionValueRuleSetStatusEnum {}
 /// Nested message and enum types in `ConversionValueRuleSetStatusEnum`.
@@ -10822,6 +10997,7 @@ pub mod conversion_value_rule_set_status_enum {
     }
 }
 /// Container for enum describing possible statuses of a conversion value rule.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConversionValueRuleStatusEnum {}
 /// Nested message and enum types in `ConversionValueRuleStatusEnum`.
@@ -10868,6 +11044,7 @@ pub mod conversion_value_rule_status_enum {
     }
 }
 /// Container for enum describing possible criterion system serving statuses.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CriterionSystemServingStatusEnum {}
 /// Nested message and enum types in `CriterionSystemServingStatusEnum`.
@@ -10911,6 +11088,7 @@ pub mod criterion_system_serving_status_enum {
     }
 }
 /// The possible types of a criterion.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CriterionTypeEnum {}
 /// Nested message and enum types in `CriterionTypeEnum`.
@@ -11050,6 +11228,7 @@ pub mod criterion_type_enum {
     }
 }
 /// The type of custom audience member.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomAudienceMemberTypeEnum {}
 /// Nested message and enum types in `CustomAudienceMemberTypeEnum`.
@@ -11099,6 +11278,7 @@ pub mod custom_audience_member_type_enum {
     }
 }
 /// The status of custom audience.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomAudienceStatusEnum {}
 /// Nested message and enum types in `CustomAudienceStatusEnum`.
@@ -11143,6 +11323,7 @@ pub mod custom_audience_status_enum {
     }
 }
 /// The types of custom audience.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomAudienceTypeEnum {}
 /// Nested message and enum types in `CustomAudienceTypeEnum`.
@@ -11194,6 +11375,7 @@ pub mod custom_audience_type_enum {
     }
 }
 /// Container for enum describing possible statuses of a custom conversion goal.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomConversionGoalStatusEnum {}
 /// Nested message and enum types in `CustomConversionGoalStatusEnum`.
@@ -11237,6 +11419,7 @@ pub mod custom_conversion_goal_status_enum {
     }
 }
 /// The types of custom interest member, either KEYWORD or URL.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomInterestMemberTypeEnum {}
 /// Nested message and enum types in `CustomInterestMemberTypeEnum`.
@@ -11280,6 +11463,7 @@ pub mod custom_interest_member_type_enum {
     }
 }
 /// The status of custom interest.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomInterestStatusEnum {}
 /// Nested message and enum types in `CustomInterestStatusEnum`.
@@ -11324,6 +11508,7 @@ pub mod custom_interest_status_enum {
     }
 }
 /// The types of custom interest.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomInterestTypeEnum {}
 /// Nested message and enum types in `CustomInterestTypeEnum`.
@@ -11369,6 +11554,7 @@ pub mod custom_interest_type_enum {
 /// Values for Custom placeholder fields.
 /// For more information about dynamic remarketing feeds, see
 /// <https://support.google.com/google-ads/answer/6053288.>
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomPlaceholderFieldEnum {}
 /// Nested message and enum types in `CustomPlaceholderFieldEnum`.
@@ -11490,6 +11676,7 @@ pub mod custom_placeholder_field_enum {
 }
 /// Container for enum describing reasons why a customer is not eligible to use
 /// PaymentMode.CONVERSIONS.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomerPayPerConversionEligibilityFailureReasonEnum {}
 /// Nested message and enum types in `CustomerPayPerConversionEligibilityFailureReasonEnum`.
@@ -11564,6 +11751,7 @@ pub mod customer_pay_per_conversion_eligibility_failure_reason_enum {
     }
 }
 /// Container for enum describing possible statuses of a customer.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomerStatusEnum {}
 /// Nested message and enum types in `CustomerStatusEnum`.
@@ -11617,6 +11805,7 @@ pub mod customer_status_enum {
     }
 }
 /// Container for enum describing possible statuses of a customizer attribute.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomizerAttributeStatusEnum {}
 /// Nested message and enum types in `CustomizerAttributeStatusEnum`.
@@ -11660,6 +11849,7 @@ pub mod customizer_attribute_status_enum {
     }
 }
 /// Container for enum describing possible statuses of a customizer value.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomizerValueStatusEnum {}
 /// Nested message and enum types in `CustomizerValueStatusEnum`.
@@ -11703,6 +11893,7 @@ pub mod customizer_value_status_enum {
     }
 }
 /// Container for enum indicating data driven model status.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataDrivenModelStatusEnum {}
 /// Nested message and enum types in `DataDrivenModelStatusEnum`.
@@ -11759,6 +11950,7 @@ pub mod data_driven_model_status_enum {
 }
 /// Container for distance buckets of a user's distance from an advertiser's
 /// location extension.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DistanceBucketEnum {}
 /// Nested message and enum types in `DistanceBucketEnum`.
@@ -11878,6 +12070,7 @@ pub mod distance_bucket_enum {
     }
 }
 /// Values for Dynamic Search Ad Page Feed criterion fields.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DsaPageFeedCriterionFieldEnum {}
 /// Nested message and enum types in `DsaPageFeedCriterionFieldEnum`.
@@ -11924,6 +12117,7 @@ pub mod dsa_page_feed_criterion_field_enum {
 /// Values for Education placeholder fields.
 /// For more information about dynamic remarketing feeds, see
 /// <https://support.google.com/google-ads/answer/6053288.>
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EducationPlaceholderFieldEnum {}
 /// Nested message and enum types in `EducationPlaceholderFieldEnum`.
@@ -12028,6 +12222,7 @@ pub mod education_placeholder_field_enum {
     }
 }
 /// Container for enum describing the experiment status.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExperimentStatusEnum {}
 /// Nested message and enum types in `ExperimentStatusEnum`.
@@ -12088,6 +12283,7 @@ pub mod experiment_status_enum {
     }
 }
 /// Container for enum describing the type of experiment.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExperimentTypeEnum {}
 /// Nested message and enum types in `ExperimentTypeEnum`.
@@ -12164,6 +12360,7 @@ pub mod experiment_type_enum {
     }
 }
 /// Container for enum describing extension setting device types.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExtensionSettingDeviceEnum {}
 /// Nested message and enum types in `ExtensionSettingDeviceEnum`.
@@ -12210,6 +12407,7 @@ pub mod extension_setting_device_enum {
 }
 /// Container for enum describing possible data types for an extension in an
 /// extension setting.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExtensionTypeEnum {}
 /// Nested message and enum types in `ExtensionTypeEnum`.
@@ -12286,6 +12484,7 @@ pub mod extension_type_enum {
     }
 }
 /// Container for enum describing possible data types for a feed attribute.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FeedAttributeTypeEnum {}
 /// Nested message and enum types in `FeedAttributeTypeEnum`.
@@ -12363,6 +12562,7 @@ pub mod feed_attribute_type_enum {
 }
 /// Container for enum describing possible quality evaluation approval statuses
 /// of a feed item.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FeedItemQualityApprovalStatusEnum {}
 /// Nested message and enum types in `FeedItemQualityApprovalStatusEnum`.
@@ -12408,6 +12608,7 @@ pub mod feed_item_quality_approval_status_enum {
 }
 /// Container for enum describing possible quality evaluation disapproval reasons
 /// of a feed item.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FeedItemQualityDisapprovalReasonEnum {}
 /// Nested message and enum types in `FeedItemQualityDisapprovalReasonEnum`.
@@ -12535,6 +12736,7 @@ pub mod feed_item_quality_disapproval_reason_enum {
     }
 }
 /// Container for enum describing possible statuses of a feed item set.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FeedItemSetStatusEnum {}
 /// Nested message and enum types in `FeedItemSetStatusEnum`.
@@ -12578,6 +12780,7 @@ pub mod feed_item_set_status_enum {
     }
 }
 /// Container for enum describing possible statuses of a feed item.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FeedItemStatusEnum {}
 /// Nested message and enum types in `FeedItemStatusEnum`.
@@ -12622,6 +12825,7 @@ pub mod feed_item_status_enum {
 }
 /// Container for enum describing possible data types for a feed item target
 /// device.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FeedItemTargetDeviceEnum {}
 /// Nested message and enum types in `FeedItemTargetDeviceEnum`.
@@ -12662,6 +12866,7 @@ pub mod feed_item_target_device_enum {
     }
 }
 /// Container for enum describing possible statuses of a feed item target.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FeedItemTargetStatusEnum {}
 /// Nested message and enum types in `FeedItemTargetStatusEnum`.
@@ -12705,6 +12910,7 @@ pub mod feed_item_target_status_enum {
     }
 }
 /// Container for enum describing possible types of a feed item target.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FeedItemTargetTypeEnum {}
 /// Nested message and enum types in `FeedItemTargetTypeEnum`.
@@ -12751,6 +12957,7 @@ pub mod feed_item_target_type_enum {
     }
 }
 /// Container for enum describing possible validation statuses of a feed item.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FeedItemValidationStatusEnum {}
 /// Nested message and enum types in `FeedItemValidationStatusEnum`.
@@ -12797,6 +13004,7 @@ pub mod feed_item_validation_status_enum {
     }
 }
 /// Container for an enum describing possible statuses of a feed link.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FeedLinkStatusEnum {}
 /// Nested message and enum types in `FeedLinkStatusEnum`.
@@ -12840,6 +13048,7 @@ pub mod feed_link_status_enum {
     }
 }
 /// Container for enum describing possible criterion types for a feed mapping.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FeedMappingCriterionTypeEnum {}
 /// Nested message and enum types in `FeedMappingCriterionTypeEnum`.
@@ -12885,6 +13094,7 @@ pub mod feed_mapping_criterion_type_enum {
     }
 }
 /// Container for enum describing possible statuses of a feed mapping.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FeedMappingStatusEnum {}
 /// Nested message and enum types in `FeedMappingStatusEnum`.
@@ -12928,6 +13138,7 @@ pub mod feed_mapping_status_enum {
     }
 }
 /// Container for enum describing possible values for a feed origin.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FeedOriginEnum {}
 /// Nested message and enum types in `FeedOriginEnum`.
@@ -12974,6 +13185,7 @@ pub mod feed_origin_enum {
     }
 }
 /// Container for enum describing possible statuses of a feed.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FeedStatusEnum {}
 /// Nested message and enum types in `FeedStatusEnum`.
@@ -13019,6 +13231,7 @@ pub mod feed_status_enum {
 /// Values for Flight placeholder fields.
 /// For more information about dynamic remarketing feeds, see
 /// <https://support.google.com/google-ads/answer/6053288.>
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FlightPlaceholderFieldEnum {}
 /// Nested message and enum types in `FlightPlaceholderFieldEnum`.
@@ -13130,6 +13343,7 @@ pub mod flight_placeholder_field_enum {
     }
 }
 /// Container for describing the status of a geo target constant.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GeoTargetConstantStatusEnum {}
 /// Nested message and enum types in `GeoTargetConstantStatusEnum`.
@@ -13175,6 +13389,7 @@ pub mod geo_target_constant_status_enum {
     }
 }
 /// Message describing feed item geo targeting restriction.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GeoTargetingRestrictionEnum {}
 /// Nested message and enum types in `GeoTargetingRestrictionEnum`.
@@ -13217,6 +13432,7 @@ pub mod geo_targeting_restriction_enum {
     }
 }
 /// Container for enum describing possible geo targeting types.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GeoTargetingTypeEnum {}
 /// Nested message and enum types in `GeoTargetingTypeEnum`.
@@ -13260,6 +13476,7 @@ pub mod geo_targeting_type_enum {
     }
 }
 /// Container for enum describing possible goal config levels.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GoalConfigLevelEnum {}
 /// Nested message and enum types in `GoalConfigLevelEnum`.
@@ -13306,6 +13523,7 @@ pub mod goal_config_level_enum {
 }
 /// Container for enum that determines if the described artifact is a resource
 /// or a field, and if it is a field, when it segments search queries.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GoogleAdsFieldCategoryEnum {}
 /// Nested message and enum types in `GoogleAdsFieldCategoryEnum`.
@@ -13359,6 +13577,7 @@ pub mod google_ads_field_category_enum {
     }
 }
 /// Container holding the various data types.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GoogleAdsFieldDataTypeEnum {}
 /// Nested message and enum types in `GoogleAdsFieldDataTypeEnum`.
@@ -13454,6 +13673,7 @@ pub mod google_ads_field_data_type_enum {
     }
 }
 /// Container for enum describing possible statuses of a google voice call.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GoogleVoiceCallStatusEnum {}
 /// Nested message and enum types in `GoogleVoiceCallStatusEnum`.
@@ -13499,6 +13719,7 @@ pub mod google_voice_call_status_enum {
 /// Values for Hotel placeholder fields.
 /// For more information about dynamic remarketing feeds, see
 /// <https://support.google.com/google-ads/answer/6053288.>
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HotelPlaceholderFieldEnum {}
 /// Nested message and enum types in `HotelPlaceholderFieldEnum`.
@@ -13614,6 +13835,7 @@ pub mod hotel_placeholder_field_enum {
     }
 }
 /// Container for HotelReconciliationStatus.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HotelReconciliationStatusEnum {}
 /// Nested message and enum types in `HotelReconciliationStatusEnum`.
@@ -13671,6 +13893,7 @@ pub mod hotel_reconciliation_status_enum {
     }
 }
 /// Values for Advertiser Provided Image placeholder fields.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImagePlaceholderFieldEnum {}
 /// Nested message and enum types in `ImagePlaceholderFieldEnum`.
@@ -13711,6 +13934,7 @@ pub mod image_placeholder_field_enum {
     }
 }
 /// Container for enum describing the type of invoices.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InvoiceTypeEnum {}
 /// Nested message and enum types in `InvoiceTypeEnum`.
@@ -13756,6 +13980,7 @@ pub mod invoice_type_enum {
 /// Values for Job placeholder fields.
 /// For more information about dynamic remarketing feeds, see
 /// <https://support.google.com/google-ads/answer/6053288.>
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct JobPlaceholderFieldEnum {}
 /// Nested message and enum types in `JobPlaceholderFieldEnum`.
@@ -13862,6 +14087,7 @@ pub mod job_placeholder_field_enum {
     }
 }
 /// Container for enumeration of forecast intervals.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KeywordPlanForecastIntervalEnum {}
 /// Nested message and enum types in `KeywordPlanForecastIntervalEnum`.
@@ -13911,6 +14137,7 @@ pub mod keyword_plan_forecast_interval_enum {
     }
 }
 /// Container for enumeration of keyword plan keyword annotations.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KeywordPlanKeywordAnnotationEnum {}
 /// Nested message and enum types in `KeywordPlanKeywordAnnotationEnum`.
@@ -13951,6 +14178,7 @@ pub mod keyword_plan_keyword_annotation_enum {
     }
 }
 /// Container for enumeration of keyword plan forecastable network types.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KeywordPlanNetworkEnum {}
 /// Nested message and enum types in `KeywordPlanNetworkEnum`.
@@ -13996,6 +14224,7 @@ pub mod keyword_plan_network_enum {
     }
 }
 /// Container for enum describing possible status of a label.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LabelStatusEnum {}
 /// Nested message and enum types in `LabelStatusEnum`.
@@ -14039,6 +14268,7 @@ pub mod label_status_enum {
     }
 }
 /// Container for enum describing different types of Linked accounts.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LinkedAccountTypeEnum {}
 /// Nested message and enum types in `LinkedAccountTypeEnum`.
@@ -14090,6 +14320,7 @@ pub mod linked_account_type_enum {
 }
 /// Container for enum describing the levels of bidding category used in
 /// ListingGroupFilterDimension.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListingGroupFilterBiddingCategoryLevelEnum {}
 /// Nested message and enum types in `ListingGroupFilterBiddingCategoryLevelEnum`.
@@ -14143,6 +14374,7 @@ pub mod listing_group_filter_bidding_category_level_enum {
 }
 /// Container for enum describing the indexes of custom attribute used in
 /// ListingGroupFilterDimension.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListingGroupFilterCustomAttributeIndexEnum {}
 /// Nested message and enum types in `ListingGroupFilterCustomAttributeIndexEnum`.
@@ -14195,6 +14427,7 @@ pub mod listing_group_filter_custom_attribute_index_enum {
     }
 }
 /// Locality of a product offer.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListingGroupFilterProductChannelEnum {}
 /// Nested message and enum types in `ListingGroupFilterProductChannelEnum`.
@@ -14238,6 +14471,7 @@ pub mod listing_group_filter_product_channel_enum {
     }
 }
 /// Condition of a product offer.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListingGroupFilterProductConditionEnum {}
 /// Nested message and enum types in `ListingGroupFilterProductConditionEnum`.
@@ -14284,6 +14518,7 @@ pub mod listing_group_filter_product_condition_enum {
     }
 }
 /// Level of the type of a product offer.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListingGroupFilterProductTypeLevelEnum {}
 /// Nested message and enum types in `ListingGroupFilterProductTypeLevelEnum`.
@@ -14336,6 +14571,7 @@ pub mod listing_group_filter_product_type_level_enum {
     }
 }
 /// Container for enum describing the type of the listing group filter node.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListingGroupFilterTypeEnum {}
 /// Nested message and enum types in `ListingGroupFilterTypeEnum`.
@@ -14383,6 +14619,7 @@ pub mod listing_group_filter_type_enum {
 }
 /// Container for enum describing the type of the vertical a listing group filter
 /// tree represents.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListingGroupFilterVerticalEnum {}
 /// Nested message and enum types in `ListingGroupFilterVerticalEnum`.
@@ -14425,6 +14662,7 @@ pub mod listing_group_filter_vertical_enum {
 /// Values for Local placeholder fields.
 /// For more information about dynamic remarketing feeds, see
 /// <https://support.google.com/google-ads/answer/6053288.>
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LocalPlaceholderFieldEnum {}
 /// Nested message and enum types in `LocalPlaceholderFieldEnum`.
@@ -14535,6 +14773,7 @@ pub mod local_placeholder_field_enum {
     }
 }
 /// Values for Location Extension Targeting criterion fields.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LocationExtensionTargetingCriterionFieldEnum {}
 /// Nested message and enum types in `LocationExtensionTargetingCriterionFieldEnum`.
@@ -14594,6 +14833,7 @@ pub mod location_extension_targeting_criterion_field_enum {
     }
 }
 /// Values for Location placeholder fields.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LocationPlaceholderFieldEnum {}
 /// Nested message and enum types in `LocationPlaceholderFieldEnum`.
@@ -14655,6 +14895,7 @@ pub mod location_placeholder_field_enum {
     }
 }
 /// Used to distinguish the location source type.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LocationSourceTypeEnum {}
 /// Nested message and enum types in `LocationSourceTypeEnum`.
@@ -14698,6 +14939,7 @@ pub mod location_source_type_enum {
     }
 }
 /// Container for enum describing possible status of a manager and client link.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ManagerLinkStatusEnum {}
 /// Nested message and enum types in `ManagerLinkStatusEnum`.
@@ -14752,6 +14994,7 @@ pub mod manager_link_status_enum {
     }
 }
 /// Container for enum describing the types of media.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MediaTypeEnum {}
 /// Nested message and enum types in `MediaTypeEnum`.
@@ -14810,6 +15053,7 @@ pub mod media_type_enum {
 }
 /// Container for enum describing possible statuses of a Google Merchant Center
 /// link.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MerchantCenterLinkStatusEnum {}
 /// Nested message and enum types in `MerchantCenterLinkStatusEnum`.
@@ -14855,6 +15099,7 @@ pub mod merchant_center_link_status_enum {
     }
 }
 /// Values for Message placeholder fields.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MessagePlaceholderFieldEnum {}
 /// Nested message and enum types in `MessagePlaceholderFieldEnum`.
@@ -14909,6 +15154,7 @@ pub mod message_placeholder_field_enum {
     }
 }
 /// Container for enum describing the types of mobile device.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MobileDeviceTypeEnum {}
 /// Nested message and enum types in `MobileDeviceTypeEnum`.
@@ -14952,6 +15198,7 @@ pub mod mobile_device_type_enum {
     }
 }
 /// Container for enum describing possible negative geo target types.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NegativeGeoTargetTypeEnum {}
 /// Nested message and enum types in `NegativeGeoTargetTypeEnum`.
@@ -14998,6 +15245,7 @@ pub mod negative_geo_target_type_enum {
 }
 /// Container for enum describing reasons why an offline user data job
 /// failed to be processed.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OfflineUserDataJobFailureReasonEnum {}
 /// Nested message and enum types in `OfflineUserDataJobFailureReasonEnum`.
@@ -15046,6 +15294,7 @@ pub mod offline_user_data_job_failure_reason_enum {
 }
 /// Container for enum describing reasons match rate ranges for a customer match
 /// list upload.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OfflineUserDataJobMatchRateRangeEnum {}
 /// Nested message and enum types in `OfflineUserDataJobMatchRateRangeEnum`.
@@ -15129,6 +15378,7 @@ pub mod offline_user_data_job_match_rate_range_enum {
     }
 }
 /// Container for enum describing status of an offline user data job.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OfflineUserDataJobStatusEnum {}
 /// Nested message and enum types in `OfflineUserDataJobStatusEnum`.
@@ -15178,6 +15428,7 @@ pub mod offline_user_data_job_status_enum {
     }
 }
 /// Container for enum describing types of an offline user data job.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OfflineUserDataJobTypeEnum {}
 /// Nested message and enum types in `OfflineUserDataJobTypeEnum`.
@@ -15235,6 +15486,7 @@ pub mod offline_user_data_job_type_enum {
     }
 }
 /// Container for enum describing the type of OS operators.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperatingSystemVersionOperatorTypeEnum {}
 /// Nested message and enum types in `OperatingSystemVersionOperatorTypeEnum`.
@@ -15280,6 +15532,7 @@ pub mod operating_system_version_operator_type_enum {
     }
 }
 /// Container for enum describing the type of optimization goal.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OptimizationGoalTypeEnum {}
 /// Nested message and enum types in `OptimizationGoalTypeEnum`.
@@ -15331,6 +15584,7 @@ pub mod optimization_goal_type_enum {
     }
 }
 /// Container for enum describing possible payment modes.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PaymentModeEnum {}
 /// Nested message and enum types in `PaymentModeEnum`.
@@ -15388,6 +15642,7 @@ pub mod payment_mode_enum {
     }
 }
 /// Container for enum describing possible placement types.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PlacementTypeEnum {}
 /// Nested message and enum types in `PlacementTypeEnum`.
@@ -15440,6 +15695,7 @@ pub mod placement_type_enum {
     }
 }
 /// Container for enum describing possible positive geo target types.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PositiveGeoTargetTypeEnum {}
 /// Nested message and enum types in `PositiveGeoTargetTypeEnum`.
@@ -15491,6 +15747,7 @@ pub mod positive_geo_target_type_enum {
     }
 }
 /// Values for Price placeholder fields.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PricePlaceholderFieldEnum {}
 /// Nested message and enum types in `PricePlaceholderFieldEnum`.
@@ -15724,6 +15981,7 @@ pub mod price_placeholder_field_enum {
     }
 }
 /// Status of the product bidding category.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProductBiddingCategoryStatusEnum {}
 /// Nested message and enum types in `ProductBiddingCategoryStatusEnum`.
@@ -15767,6 +16025,7 @@ pub mod product_bidding_category_status_enum {
     }
 }
 /// Values for Promotion placeholder fields.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PromotionPlaceholderFieldEnum {}
 /// Nested message and enum types in `PromotionPlaceholderFieldEnum`.
@@ -15855,6 +16114,7 @@ pub mod promotion_placeholder_field_enum {
     }
 }
 /// Message describing length of a plannable video ad.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReachPlanAdLengthEnum {}
 /// Nested message and enum types in `ReachPlanAdLengthEnum`.
@@ -15901,6 +16161,7 @@ pub mod reach_plan_ad_length_enum {
     }
 }
 /// Message describing plannable age ranges.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReachPlanAgeRangeEnum {}
 /// Nested message and enum types in `ReachPlanAgeRangeEnum`.
@@ -16016,6 +16277,7 @@ pub mod reach_plan_age_range_enum {
     }
 }
 /// Container for enum describing plannable networks.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReachPlanNetworkEnum {}
 /// Nested message and enum types in `ReachPlanNetworkEnum`.
@@ -16067,6 +16329,7 @@ pub mod reach_plan_network_enum {
 /// Values for Real Estate placeholder fields.
 /// For more information about dynamic remarketing feeds, see
 /// <https://support.google.com/google-ads/answer/6053288.>
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RealEstatePlaceholderFieldEnum {}
 /// Nested message and enum types in `RealEstatePlaceholderFieldEnum`.
@@ -16174,6 +16437,7 @@ pub mod real_estate_placeholder_field_enum {
 }
 /// Container for enum describing resource change operations
 /// in the ChangeEvent resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResourceChangeOperationEnum {}
 /// Nested message and enum types in `ResourceChangeOperationEnum`.
@@ -16221,6 +16485,7 @@ pub mod resource_change_operation_enum {
     }
 }
 /// Container for enum describing possible resource limit types.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResourceLimitTypeEnum {}
 /// Nested message and enum types in `ResourceLimitTypeEnum`.
@@ -16899,6 +17164,7 @@ pub mod resource_limit_type_enum {
     }
 }
 /// Container for possible response content types.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResponseContentTypeEnum {}
 /// Nested message and enum types in `ResponseContentTypeEnum`.
@@ -16941,6 +17207,7 @@ pub mod response_content_type_enum {
 }
 /// Container for enum indicating whether a search term is one of your targeted
 /// or excluded keywords.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchTermTargetingStatusEnum {}
 /// Nested message and enum types in `SearchTermTargetingStatusEnum`.
@@ -16992,6 +17259,7 @@ pub mod search_term_targeting_status_enum {
 }
 /// Message describing seasonality event scopes. The two types of seasonality
 /// events are BiddingSeasonalityAdjustments and BiddingDataExclusions.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SeasonalityEventScopeEnum {}
 /// Nested message and enum types in `SeasonalityEventScopeEnum`.
@@ -17044,6 +17312,7 @@ pub mod seasonality_event_scope_enum {
 }
 /// Message describing seasonality event statuses. The two types of seasonality
 /// events are BiddingSeasonalityAdjustments and BiddingDataExclusions.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SeasonalityEventStatusEnum {}
 /// Nested message and enum types in `SeasonalityEventStatusEnum`.
@@ -17089,6 +17358,7 @@ pub mod seasonality_event_status_enum {
     }
 }
 /// Container for enum describing types of shared set statuses.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SharedSetStatusEnum {}
 /// Nested message and enum types in `SharedSetStatusEnum`.
@@ -17132,6 +17402,7 @@ pub mod shared_set_status_enum {
     }
 }
 /// Container for enum describing types of shared sets.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SharedSetTypeEnum {}
 /// Nested message and enum types in `SharedSetTypeEnum`.
@@ -17176,6 +17447,7 @@ pub mod shared_set_type_enum {
 }
 /// Container for enum describing the method by which a simulation modifies
 /// a field.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SimulationModificationMethodEnum {}
 /// Nested message and enum types in `SimulationModificationMethodEnum`.
@@ -17227,6 +17499,7 @@ pub mod simulation_modification_method_enum {
     }
 }
 /// Container for enum describing the field a simulation modifies.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SimulationTypeEnum {}
 /// Nested message and enum types in `SimulationTypeEnum`.
@@ -17288,6 +17561,7 @@ pub mod simulation_type_enum {
     }
 }
 /// Values for Sitelink placeholder fields.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SitelinkPlaceholderFieldEnum {}
 /// Nested message and enum types in `SitelinkPlaceholderFieldEnum`.
@@ -17350,6 +17624,7 @@ pub mod sitelink_placeholder_field_enum {
     }
 }
 /// Message describing spending limit types.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SpendingLimitTypeEnum {}
 /// Nested message and enum types in `SpendingLimitTypeEnum`.
@@ -17391,6 +17666,7 @@ pub mod spending_limit_type_enum {
     }
 }
 /// Values for Structured Snippet placeholder fields.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StructuredSnippetPlaceholderFieldEnum {}
 /// Nested message and enum types in `StructuredSnippetPlaceholderFieldEnum`.
@@ -17439,6 +17715,7 @@ pub mod structured_snippet_placeholder_field_enum {
     }
 }
 /// Indicates summary row setting in request parameter.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SummaryRowSettingEnum {}
 /// Nested message and enum types in `SummaryRowSettingEnum`.
@@ -17486,6 +17763,7 @@ pub mod summary_row_setting_enum {
     }
 }
 /// Container for enum describing possible system managed entity sources.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SystemManagedResourceSourceEnum {}
 /// Nested message and enum types in `SystemManagedResourceSourceEnum`.
@@ -17526,6 +17804,7 @@ pub mod system_managed_resource_source_enum {
     }
 }
 /// Container for enum describing goals for TargetCpaOptIn recommendation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetCpaOptInRecommendationGoalEnum {}
 /// Nested message and enum types in `TargetCpaOptInRecommendationGoalEnum`.
@@ -17576,6 +17855,7 @@ pub mod target_cpa_opt_in_recommendation_goal_enum {
     }
 }
 /// Message describing time types.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TimeTypeEnum {}
 /// Nested message and enum types in `TimeTypeEnum`.
@@ -17622,6 +17902,7 @@ pub mod time_type_enum {
 /// Values for Travel placeholder fields.
 /// For more information about dynamic remarketing feeds, see
 /// <https://support.google.com/google-ads/answer/6053288.>
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TravelPlaceholderFieldEnum {}
 /// Nested message and enum types in `TravelPlaceholderFieldEnum`.
@@ -17743,6 +18024,7 @@ pub mod travel_placeholder_field_enum {
     }
 }
 /// Message describing a UserInterestTaxonomyType.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UserInterestTaxonomyTypeEnum {}
 /// Nested message and enum types in `UserInterestTaxonomyTypeEnum`.
@@ -17797,6 +18079,7 @@ pub mod user_interest_taxonomy_type_enum {
     }
 }
 /// Indicates if this client still has access to the list.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UserListAccessStatusEnum {}
 /// Nested message and enum types in `UserListAccessStatusEnum`.
@@ -17841,6 +18124,7 @@ pub mod user_list_access_status_enum {
 }
 /// Indicates the reason why the userlist was closed.
 /// This enum is only used when a list is auto-closed by the system.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UserListClosingReasonEnum {}
 /// Nested message and enum types in `UserListClosingReasonEnum`.
@@ -17883,6 +18167,7 @@ pub mod user_list_closing_reason_enum {
 /// Membership status of this user list. Indicates whether a user list is open
 /// or active. Only open user lists can accumulate more users and can be used for
 /// targeting.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UserListMembershipStatusEnum {}
 /// Nested message and enum types in `UserListMembershipStatusEnum`.
@@ -17926,6 +18211,7 @@ pub mod user_list_membership_status_enum {
     }
 }
 /// Size range in terms of number of users of a UserList.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UserListSizeRangeEnum {}
 /// Nested message and enum types in `UserListSizeRangeEnum`.
@@ -18035,6 +18321,7 @@ pub mod user_list_size_range_enum {
     }
 }
 /// The user list types.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UserListTypeEnum {}
 /// Nested message and enum types in `UserListTypeEnum`.
@@ -18092,6 +18379,7 @@ pub mod user_list_type_enum {
 }
 /// Container for enum describing possible device types used in a conversion
 /// value rule.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ValueRuleDeviceTypeEnum {}
 /// Nested message and enum types in `ValueRuleDeviceTypeEnum`.
@@ -18139,6 +18427,7 @@ pub mod value_rule_device_type_enum {
 }
 /// Container for enum describing possible geographic location matching types
 /// used in a conversion value rule.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ValueRuleGeoLocationMatchTypeEnum {}
 /// Nested message and enum types in `ValueRuleGeoLocationMatchTypeEnum`.
@@ -18185,6 +18474,7 @@ pub mod value_rule_geo_location_match_type_enum {
 }
 /// Container for enum describing possible operations for value rules which are
 /// executed when rules are triggered.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ValueRuleOperationEnum {}
 /// Nested message and enum types in `ValueRuleOperationEnum`.
@@ -18231,6 +18521,7 @@ pub mod value_rule_operation_enum {
     }
 }
 /// Container for enum describing where a value rule set is attached.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ValueRuleSetAttachmentTypeEnum {}
 /// Nested message and enum types in `ValueRuleSetAttachmentTypeEnum`.
@@ -18275,6 +18566,7 @@ pub mod value_rule_set_attachment_type_enum {
 }
 /// Container for enum describing possible dimensions of a conversion value rule
 /// set.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ValueRuleSetDimensionEnum {}
 /// Nested message and enum types in `ValueRuleSetDimensionEnum`.
@@ -18324,6 +18616,7 @@ pub mod value_rule_set_dimension_enum {
     }
 }
 /// The display mode for vanity pharma URLs.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VanityPharmaDisplayUrlModeEnum {}
 /// Nested message and enum types in `VanityPharmaDisplayUrlModeEnum`.
@@ -18370,6 +18663,7 @@ pub mod vanity_pharma_display_url_mode_enum {
 }
 /// The text that will be displayed in display URL of the text ad when website
 /// description is the selected display mode for vanity pharma URLs.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VanityPharmaTextEnum {}
 /// Nested message and enum types in `VanityPharmaTextEnum`.

@@ -1,6 +1,7 @@
 /// An attestation wrapper with a PGP-compatible signature. This message only
 /// supports `ATTACHED` signatures, where the payload that is signed is included
 /// alongside the signature itself in the same file.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PgpSignedAttestation {
     /// Required. The raw content of the signature, as output by GNU Privacy Guard
@@ -75,6 +76,7 @@ pub mod pgp_signed_attestation {
     /// different ID that would verify the signature. Note that this ID should also
     /// be present in the signature content above, but that is not expected to be
     /// used by the verifier.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum KeyId {
         /// The cryptographic fingerprint of the key used to generate the signature,
@@ -101,6 +103,7 @@ pub mod pgp_signed_attestation {
 /// This attestation must define the `serialized_payload` that the `signatures`
 /// verify and any metadata necessary to interpret that plaintext.  The
 /// signatures should always be over the `serialized_payload` bytestring.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenericSignedAttestation {
     /// Type (for example schema) of the attestation payload that was signed.
@@ -166,6 +169,7 @@ pub mod generic_signed_attestation {
 /// to attach an occurrence to a given note. It also provides a single point of
 /// lookup to find all attached attestation occurrences, even if they don't all
 /// live in the same project.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Authority {
     /// Hint hints at the purpose of the attestation authority.
@@ -181,6 +185,7 @@ pub mod authority {
     /// output. Note that these hints should not be used to look up authorities in
     /// security sensitive contexts, such as when looking up attestations to
     /// verify.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Hint {
         /// Required. The human readable name of this attestation authority, for
@@ -190,6 +195,7 @@ pub mod authority {
     }
 }
 /// Details of an attestation occurrence.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Details {
     /// Required. Attestation for the resource.
@@ -204,6 +210,7 @@ pub struct Details {
 /// this attestation if you already know the authority and artifact to be
 /// verified) and intent (which authority was this attestation intended to sign
 /// for).
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Attestation {
     /// Required. The signature, generally over the `resource_url`, that verifies
@@ -217,6 +224,7 @@ pub mod attestation {
     /// Required. The signature, generally over the `resource_url`, that verifies
     /// this attestation. The semantics of the signature veracity are ultimately
     /// determined by the verification engine.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Signature {
         /// A PGP signed attestation.

@@ -1,4 +1,5 @@
 /// A message defining the database engine and provider.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DatabaseType {
     /// The database provider.
@@ -10,6 +11,7 @@ pub struct DatabaseType {
 }
 /// Migration job as stored in Cloud Logging logs.
 /// NEXT_TAG = 36.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LoggedMigrationJob {
     /// Required. The unique identifier for a migration job.
@@ -255,6 +257,7 @@ pub mod logged_migration_job {
     }
 }
 /// An MySQL database connection profile.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MySqlConnectionProfile {
     /// The database version.
@@ -308,6 +311,7 @@ pub mod my_sql_connection_profile {
     }
 }
 /// An PostgreSQL connection profile.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PostgreSqlConnectionProfile {
     /// The database version.
@@ -364,6 +368,7 @@ pub mod postgre_sql_connection_profile {
     }
 }
 /// A CloudSQL connection profile.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CloudSqlConnectionProfile {
     /// The Cloud SQL id.
@@ -371,6 +376,7 @@ pub struct CloudSqlConnectionProfile {
     pub cloud_sql_id: ::prost::alloc::string::String,
 }
 /// An Oracle connection profile.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OracleConnectionProfile {
     /// Required. Type of connectivity to source database.
@@ -419,6 +425,7 @@ pub mod oracle_connection_profile {
 }
 /// An producer connection profile definition.
 /// NEXT_TAG = 8.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LoggedConnectionProfile {
     /// The unique identifier for a connection profile.
@@ -503,6 +510,7 @@ pub mod logged_connection_profile {
         }
     }
     /// The connection profile definition
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ConnectionProfile {
         /// A MySQL database connection profile.
@@ -520,6 +528,7 @@ pub mod logged_connection_profile {
     }
 }
 /// Log definition for Migration Job event
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MigrationJobEventLog {
     /// The migration job resource
@@ -541,6 +550,7 @@ pub struct MigrationJobEventLog {
 /// Nested message and enum types in `MigrationJobEventLog`.
 pub mod migration_job_event_log {
     /// Original event data
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum OriginalCause {
         /// Original event code
@@ -552,6 +562,7 @@ pub mod migration_job_event_log {
     }
 }
 /// Log definition for Connection Profile event
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConnectionProfileEventLog {
     /// The connection profilr resource
@@ -575,6 +586,7 @@ pub struct ConnectionProfileEventLog {
 /// Nested message and enum types in `ConnectionProfileEventLog`.
 pub mod connection_profile_event_log {
     /// Original event data
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum OriginalCause {
         /// Original event code
@@ -587,6 +599,7 @@ pub mod connection_profile_event_log {
 }
 /// The PrivateConnection resource is used to establish private connectivity
 /// with the customer's network.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LoggedPrivateConnection {
     /// The resource's name.
@@ -662,6 +675,7 @@ pub mod logged_private_connection {
 }
 /// The VPC Peering configuration is used to create VPC peering between
 /// the data plane and the consumer's VPC.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VpcPeeringConfig {
     /// Fully qualified name of the VPC DMS will peer to.
@@ -672,6 +686,7 @@ pub struct VpcPeeringConfig {
     pub subnet: ::prost::alloc::string::String,
 }
 /// Log definition for a Private Connection event.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PrivateConnectionEventLog {
     /// The private connection resource.
@@ -695,6 +710,7 @@ pub struct PrivateConnectionEventLog {
 /// Nested message and enum types in `PrivateConnectionEventLog`.
 pub mod private_connection_event_log {
     /// Original event data.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum OriginalCause {
         /// Original event code.

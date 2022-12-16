@@ -1,5 +1,6 @@
 /// Request message for
 /// \[EkmService.ListEkmConnections][google.cloud.kms.v1.EkmService.ListEkmConnections\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEkmConnectionsRequest {
     /// Required. The resource name of the location associated with the
@@ -35,6 +36,7 @@ pub struct ListEkmConnectionsRequest {
 }
 /// Response message for
 /// \[EkmService.ListEkmConnections][google.cloud.kms.v1.EkmService.ListEkmConnections\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEkmConnectionsResponse {
     /// The list of \[EkmConnections][google.cloud.kms.v1.EkmConnection\].
@@ -52,6 +54,7 @@ pub struct ListEkmConnectionsResponse {
 }
 /// Request message for
 /// \[EkmService.GetEkmConnection][google.cloud.kms.v1.EkmService.GetEkmConnection\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetEkmConnectionRequest {
     /// Required. The \[name][google.cloud.kms.v1.EkmConnection.name\] of the
@@ -61,6 +64,7 @@ pub struct GetEkmConnectionRequest {
 }
 /// Request message for
 /// \[EkmService.CreateEkmConnection][google.cloud.kms.v1.EkmService.CreateEkmConnection\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateEkmConnectionRequest {
     /// Required. The resource name of the location associated with the
@@ -79,6 +83,7 @@ pub struct CreateEkmConnectionRequest {
 }
 /// Request message for
 /// \[EkmService.UpdateEkmConnection][google.cloud.kms.v1.EkmService.UpdateEkmConnection\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateEkmConnectionRequest {
     /// Required. \[EkmConnection][google.cloud.kms.v1.EkmConnection\] with updated
@@ -91,6 +96,7 @@ pub struct UpdateEkmConnectionRequest {
 }
 /// A \[Certificate][google.cloud.kms.v1.Certificate\] represents an X.509
 /// certificate used to authenticate HTTPS connections to EKM replicas.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Certificate {
     /// Required. The raw certificate bytes in DER format.
@@ -138,6 +144,7 @@ pub struct Certificate {
 /// \[EXTERNAL_VPC][CryptoKeyVersion.ProtectionLevel.EXTERNAL_VPC\], as well as
 /// performing cryptographic operations using keys created within the
 /// \[EkmConnection][google.cloud.kms.v1.EkmConnection\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EkmConnection {
     /// Output only. The resource name for the
@@ -167,6 +174,7 @@ pub mod ekm_connection {
     /// A \[ServiceResolver][google.cloud.kms.v1.EkmConnection.ServiceResolver\]
     /// represents an EKM replica that can be reached within an
     /// \[EkmConnection][google.cloud.kms.v1.EkmConnection\].
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ServiceResolver {
         /// Required. The resource name of the Service Directory service pointing to
@@ -352,6 +360,7 @@ pub mod ekm_service_client {
 }
 /// A \[KeyRing][google.cloud.kms.v1.KeyRing\] is a toplevel logical grouping of
 /// \[CryptoKeys][google.cloud.kms.v1.CryptoKey\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KeyRing {
     /// Output only. The resource name for the
@@ -370,6 +379,7 @@ pub struct KeyRing {
 /// A \[CryptoKey][google.cloud.kms.v1.CryptoKey\] is made up of zero or more
 /// \[versions][google.cloud.kms.v1.CryptoKeyVersion\], which represent the actual
 /// key material used in cryptographic operations.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CryptoKey {
     /// Output only. The resource name for this
@@ -517,6 +527,7 @@ pub mod crypto_key {
         }
     }
     /// Controls the rate of automatic rotation.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum RotationSchedule {
         /// \[next_rotation_time][google.cloud.kms.v1.CryptoKey.next_rotation_time\]
@@ -541,6 +552,7 @@ pub mod crypto_key {
 /// with
 /// \[CreateCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.CreateCryptoKeyVersion\]
 /// or automatically as a result of auto-rotation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CryptoKeyVersionTemplate {
     /// \[ProtectionLevel][google.cloud.kms.v1.ProtectionLevel\] to use when creating
@@ -565,6 +577,7 @@ pub struct CryptoKeyVersionTemplate {
 /// Contains an HSM-generated attestation about a key operation. For more
 /// information, see [Verifying attestations]
 /// (<https://cloud.google.com/kms/docs/attest-key>).
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KeyOperationAttestation {
     /// Output only. The format of the attestation data.
@@ -585,6 +598,7 @@ pub mod key_operation_attestation {
     /// Certificate chains needed to verify the attestation.
     /// Certificates in chains are PEM-encoded and are ordered based on
     /// <https://tools.ietf.org/html/rfc5246#section-7.4.2.>
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CertificateChains {
         /// Cavium certificate chain corresponding to the attestation.
@@ -650,6 +664,7 @@ pub mod key_operation_attestation {
 /// \[CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion\] can never be viewed
 /// or exported. It can only be used to encrypt, decrypt, or sign data when an
 /// authorized user or application invokes Cloud KMS.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CryptoKeyVersion {
     /// Output only. The resource name for this
@@ -1060,6 +1075,7 @@ pub mod crypto_key_version {
 /// The public key for a given
 /// \[CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion\]. Obtained via
 /// \[GetPublicKey][google.cloud.kms.v1.KeyManagementService.GetPublicKey\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PublicKey {
     /// The public key, encoded in PEM format. For more information, see the
@@ -1135,6 +1151,7 @@ pub struct PublicKey {
 ///
 /// For more information, see
 /// [Importing a key](<https://cloud.google.com/kms/docs/importing-a-key>).
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportJob {
     /// Output only. The resource name for this
@@ -1195,6 +1212,7 @@ pub mod import_job {
     /// The public key component of the wrapping key. For details of the type of
     /// key this public key corresponds to, see the
     /// \[ImportMethod][google.cloud.kms.v1.ImportJob.ImportMethod\].
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct WrappingPublicKey {
         /// The public key, encoded in PEM format. For more information, see the [RFC
@@ -1331,6 +1349,7 @@ pub mod import_job {
 /// protection level and
 /// \[EXTERNAL_VPC][google.cloud.kms.v1.ProtectionLevel.EXTERNAL_VPC\] protection
 /// levels.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExternalProtectionLevelOptions {
     /// The URI for an external resource that this
@@ -1378,6 +1397,7 @@ impl ProtectionLevel {
 }
 /// Request message for
 /// \[KeyManagementService.ListKeyRings][google.cloud.kms.v1.KeyManagementService.ListKeyRings\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListKeyRingsRequest {
     /// Required. The resource name of the location associated with the
@@ -1413,6 +1433,7 @@ pub struct ListKeyRingsRequest {
 }
 /// Request message for
 /// \[KeyManagementService.ListCryptoKeys][google.cloud.kms.v1.KeyManagementService.ListCryptoKeys\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCryptoKeysRequest {
     /// Required. The resource name of the \[KeyRing][google.cloud.kms.v1.KeyRing\]
@@ -1450,6 +1471,7 @@ pub struct ListCryptoKeysRequest {
 }
 /// Request message for
 /// \[KeyManagementService.ListCryptoKeyVersions][google.cloud.kms.v1.KeyManagementService.ListCryptoKeyVersions\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCryptoKeyVersionsRequest {
     /// Required. The resource name of the
@@ -1488,6 +1510,7 @@ pub struct ListCryptoKeyVersionsRequest {
 }
 /// Request message for
 /// \[KeyManagementService.ListImportJobs][google.cloud.kms.v1.KeyManagementService.ListImportJobs\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListImportJobsRequest {
     /// Required. The resource name of the \[KeyRing][google.cloud.kms.v1.KeyRing\]
@@ -1522,6 +1545,7 @@ pub struct ListImportJobsRequest {
 }
 /// Response message for
 /// \[KeyManagementService.ListKeyRings][google.cloud.kms.v1.KeyManagementService.ListKeyRings\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListKeyRingsResponse {
     /// The list of \[KeyRings][google.cloud.kms.v1.KeyRing\].
@@ -1539,6 +1563,7 @@ pub struct ListKeyRingsResponse {
 }
 /// Response message for
 /// \[KeyManagementService.ListCryptoKeys][google.cloud.kms.v1.KeyManagementService.ListCryptoKeys\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCryptoKeysResponse {
     /// The list of \[CryptoKeys][google.cloud.kms.v1.CryptoKey\].
@@ -1556,6 +1581,7 @@ pub struct ListCryptoKeysResponse {
 }
 /// Response message for
 /// \[KeyManagementService.ListCryptoKeyVersions][google.cloud.kms.v1.KeyManagementService.ListCryptoKeyVersions\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCryptoKeyVersionsResponse {
     /// The list of \[CryptoKeyVersions][google.cloud.kms.v1.CryptoKeyVersion\].
@@ -1574,6 +1600,7 @@ pub struct ListCryptoKeyVersionsResponse {
 }
 /// Response message for
 /// \[KeyManagementService.ListImportJobs][google.cloud.kms.v1.KeyManagementService.ListImportJobs\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListImportJobsResponse {
     /// The list of \[ImportJobs][google.cloud.kms.v1.ImportJob\].
@@ -1591,6 +1618,7 @@ pub struct ListImportJobsResponse {
 }
 /// Request message for
 /// \[KeyManagementService.GetKeyRing][google.cloud.kms.v1.KeyManagementService.GetKeyRing\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetKeyRingRequest {
     /// Required. The \[name][google.cloud.kms.v1.KeyRing.name\] of the
@@ -1600,6 +1628,7 @@ pub struct GetKeyRingRequest {
 }
 /// Request message for
 /// \[KeyManagementService.GetCryptoKey][google.cloud.kms.v1.KeyManagementService.GetCryptoKey\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCryptoKeyRequest {
     /// Required. The \[name][google.cloud.kms.v1.CryptoKey.name\] of the
@@ -1609,6 +1638,7 @@ pub struct GetCryptoKeyRequest {
 }
 /// Request message for
 /// \[KeyManagementService.GetCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.GetCryptoKeyVersion\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCryptoKeyVersionRequest {
     /// Required. The \[name][google.cloud.kms.v1.CryptoKeyVersion.name\] of the
@@ -1618,6 +1648,7 @@ pub struct GetCryptoKeyVersionRequest {
 }
 /// Request message for
 /// \[KeyManagementService.GetPublicKey][google.cloud.kms.v1.KeyManagementService.GetPublicKey\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetPublicKeyRequest {
     /// Required. The \[name][google.cloud.kms.v1.CryptoKeyVersion.name\] of the
@@ -1627,6 +1658,7 @@ pub struct GetPublicKeyRequest {
 }
 /// Request message for
 /// \[KeyManagementService.GetImportJob][google.cloud.kms.v1.KeyManagementService.GetImportJob\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetImportJobRequest {
     /// Required. The \[name][google.cloud.kms.v1.ImportJob.name\] of the
@@ -1636,6 +1668,7 @@ pub struct GetImportJobRequest {
 }
 /// Request message for
 /// \[KeyManagementService.CreateKeyRing][google.cloud.kms.v1.KeyManagementService.CreateKeyRing\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateKeyRingRequest {
     /// Required. The resource name of the location associated with the
@@ -1654,6 +1687,7 @@ pub struct CreateKeyRingRequest {
 }
 /// Request message for
 /// \[KeyManagementService.CreateCryptoKey][google.cloud.kms.v1.KeyManagementService.CreateCryptoKey\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateCryptoKeyRequest {
     /// Required. The \[name][google.cloud.kms.v1.KeyRing.name\] of the KeyRing
@@ -1681,6 +1715,7 @@ pub struct CreateCryptoKeyRequest {
 }
 /// Request message for
 /// \[KeyManagementService.CreateCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.CreateCryptoKeyVersion\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateCryptoKeyVersionRequest {
     /// Required. The \[name][google.cloud.kms.v1.CryptoKey.name\] of the
@@ -1695,6 +1730,7 @@ pub struct CreateCryptoKeyVersionRequest {
 }
 /// Request message for
 /// \[KeyManagementService.ImportCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.ImportCryptoKeyVersion\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportCryptoKeyVersionRequest {
     /// Required. The \[name][google.cloud.kms.v1.CryptoKey.name\] of the
@@ -1792,6 +1828,7 @@ pub mod import_crypto_key_version_request {
     /// This field is legacy. Use the field
     /// \[wrapped_key][google.cloud.kms.v1.ImportCryptoKeyVersionRequest.wrapped_key\]
     /// instead.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum WrappedKeyMaterial {
         /// Optional. This field has the same meaning as
@@ -1804,6 +1841,7 @@ pub mod import_crypto_key_version_request {
 }
 /// Request message for
 /// \[KeyManagementService.CreateImportJob][google.cloud.kms.v1.KeyManagementService.CreateImportJob\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateImportJobRequest {
     /// Required. The \[name][google.cloud.kms.v1.KeyRing.name\] of the
@@ -1822,6 +1860,7 @@ pub struct CreateImportJobRequest {
 }
 /// Request message for
 /// \[KeyManagementService.UpdateCryptoKey][google.cloud.kms.v1.KeyManagementService.UpdateCryptoKey\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateCryptoKeyRequest {
     /// Required. \[CryptoKey][google.cloud.kms.v1.CryptoKey\] with updated values.
@@ -1833,6 +1872,7 @@ pub struct UpdateCryptoKeyRequest {
 }
 /// Request message for
 /// \[KeyManagementService.UpdateCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.UpdateCryptoKeyVersion\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateCryptoKeyVersionRequest {
     /// Required. \[CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion\] with
@@ -1845,6 +1885,7 @@ pub struct UpdateCryptoKeyVersionRequest {
 }
 /// Request message for
 /// \[KeyManagementService.UpdateCryptoKeyPrimaryVersion][google.cloud.kms.v1.KeyManagementService.UpdateCryptoKeyPrimaryVersion\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateCryptoKeyPrimaryVersionRequest {
     /// Required. The resource name of the
@@ -1858,6 +1899,7 @@ pub struct UpdateCryptoKeyPrimaryVersionRequest {
 }
 /// Request message for
 /// \[KeyManagementService.DestroyCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.DestroyCryptoKeyVersion\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DestroyCryptoKeyVersionRequest {
     /// Required. The resource name of the
@@ -1867,6 +1909,7 @@ pub struct DestroyCryptoKeyVersionRequest {
 }
 /// Request message for
 /// \[KeyManagementService.RestoreCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.RestoreCryptoKeyVersion\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RestoreCryptoKeyVersionRequest {
     /// Required. The resource name of the
@@ -1876,6 +1919,7 @@ pub struct RestoreCryptoKeyVersionRequest {
 }
 /// Request message for
 /// \[KeyManagementService.Decrypt][google.cloud.kms.v1.KeyManagementService.Decrypt\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DecryptRequest {
     /// Required. The resource name of the
@@ -1936,6 +1980,7 @@ pub struct DecryptRequest {
 }
 /// Request message for
 /// \[KeyManagementService.AsymmetricSign][google.cloud.kms.v1.KeyManagementService.AsymmetricSign\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AsymmetricSignRequest {
     /// Required. The resource name of the
@@ -2003,6 +2048,7 @@ pub struct AsymmetricSignRequest {
 }
 /// Request message for
 /// \[KeyManagementService.AsymmetricDecrypt][google.cloud.kms.v1.KeyManagementService.AsymmetricDecrypt\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AsymmetricDecryptRequest {
     /// Required. The resource name of the
@@ -2039,6 +2085,7 @@ pub struct AsymmetricDecryptRequest {
 }
 /// Request message for
 /// \[KeyManagementService.MacSign][google.cloud.kms.v1.KeyManagementService.MacSign\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MacSignRequest {
     /// Required. The resource name of the
@@ -2072,6 +2119,7 @@ pub struct MacSignRequest {
 }
 /// Request message for
 /// \[KeyManagementService.MacVerify][google.cloud.kms.v1.KeyManagementService.MacVerify\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MacVerifyRequest {
     /// Required. The resource name of the
@@ -2128,6 +2176,7 @@ pub struct MacVerifyRequest {
 }
 /// Request message for
 /// \[KeyManagementService.GenerateRandomBytes][google.cloud.kms.v1.KeyManagementService.GenerateRandomBytes\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateRandomBytesRequest {
     /// The project-specific location in which to generate random bytes.
@@ -2147,6 +2196,7 @@ pub struct GenerateRandomBytesRequest {
 }
 /// Response message for
 /// \[KeyManagementService.Encrypt][google.cloud.kms.v1.KeyManagementService.Encrypt\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EncryptResponse {
     /// The resource name of the
@@ -2213,6 +2263,7 @@ pub struct EncryptResponse {
 }
 /// Response message for
 /// \[KeyManagementService.AsymmetricSign][google.cloud.kms.v1.KeyManagementService.AsymmetricSign\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AsymmetricSignResponse {
     /// The created signature.
@@ -2277,6 +2328,7 @@ pub struct AsymmetricSignResponse {
 }
 /// Response message for
 /// \[KeyManagementService.AsymmetricDecrypt][google.cloud.kms.v1.KeyManagementService.AsymmetricDecrypt\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AsymmetricDecryptResponse {
     /// The decrypted data originally encrypted with the matching public key.
@@ -2321,6 +2373,7 @@ pub struct AsymmetricDecryptResponse {
 }
 /// Response message for
 /// \[KeyManagementService.MacSign][google.cloud.kms.v1.KeyManagementService.MacSign\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MacSignResponse {
     /// The resource name of the
@@ -2369,6 +2422,7 @@ pub struct MacSignResponse {
 }
 /// Response message for
 /// \[KeyManagementService.MacVerify][google.cloud.kms.v1.KeyManagementService.MacVerify\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MacVerifyResponse {
     /// The resource name of the
@@ -2429,6 +2483,7 @@ pub struct MacVerifyResponse {
 }
 /// Response message for
 /// \[KeyManagementService.GenerateRandomBytes][google.cloud.kms.v1.KeyManagementService.GenerateRandomBytes\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateRandomBytesResponse {
     /// The generated data.
@@ -2451,6 +2506,7 @@ pub struct GenerateRandomBytesResponse {
     pub data_crc32c: ::core::option::Option<i64>,
 }
 /// A \[Digest][google.cloud.kms.v1.Digest\] holds a cryptographic message digest.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Digest {
     /// Required. The message digest.
@@ -2460,6 +2516,7 @@ pub struct Digest {
 /// Nested message and enum types in `Digest`.
 pub mod digest {
     /// Required. The message digest.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Digest {
         /// A message digest produced with the SHA-256 algorithm.
@@ -2475,6 +2532,7 @@ pub mod digest {
 }
 /// Cloud KMS metadata for the given
 /// \[google.cloud.location.Location][google.cloud.location.Location\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LocationMetadata {
     /// Indicates whether \[CryptoKeys][google.cloud.kms.v1.CryptoKey\] with

@@ -1,4 +1,5 @@
 /// Message for requesting list of ReportConfigs
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListReportConfigsRequest {
     /// Required. Parent value for ListReportConfigsRequest
@@ -19,6 +20,7 @@ pub struct ListReportConfigsRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// Message for response to listing ReportConfigs
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListReportConfigsResponse {
     /// The list of ReportConfig
@@ -32,6 +34,7 @@ pub struct ListReportConfigsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Message for getting a ReportConfig
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetReportConfigRequest {
     /// Required. Name of the resource
@@ -39,6 +42,7 @@ pub struct GetReportConfigRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Message for creating a ReportConfig
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateReportConfigRequest {
     /// Required. Value for parent.
@@ -64,6 +68,7 @@ pub struct CreateReportConfigRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Message for updating a ReportConfig
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateReportConfigRequest {
     /// Required. Field mask is used to specify the fields to be overwritten in the
@@ -93,6 +98,7 @@ pub struct UpdateReportConfigRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Message for deleting a ReportConfig
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteReportConfigRequest {
     /// Required. Name of the resource
@@ -120,6 +126,7 @@ pub struct DeleteReportConfigRequest {
 /// Message describing ReportDetail object. ReportDetail represents metadata of
 /// generated reports for a ReportConfig.
 /// Next ID: 8
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReportDetail {
     /// Name of resource. It will be of form
@@ -154,6 +161,7 @@ pub struct ReportDetail {
 /// Nested message and enum types in `ReportDetail`.
 pub mod report_detail {
     /// Different metrics associated with the generated report.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Metrics {
         /// Count of Cloud Storage objects which are part of the report.
@@ -162,6 +170,7 @@ pub mod report_detail {
     }
 }
 /// Message for requesting list of ReportDetails
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListReportDetailsRequest {
     /// Required. Parent value for ListReportDetailsRequest
@@ -182,6 +191,7 @@ pub struct ListReportDetailsRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// Message for response to listing ReportDetails
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListReportDetailsResponse {
     /// The list of ReportDetail
@@ -195,6 +205,7 @@ pub struct ListReportDetailsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Message for getting a ReportDetail
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetReportDetailRequest {
     /// Required. Name of the resource
@@ -202,6 +213,7 @@ pub struct GetReportDetailRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Represents the metadata of the long-running operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationMetadata {
     /// Output only. The time the operation was created.
@@ -233,6 +245,7 @@ pub struct OperationMetadata {
 /// ReportConfig Resource:
 ///
 /// Options to setup frequency of report generation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FrequencyOptions {
     /// Frequency of report generation.
@@ -285,6 +298,7 @@ pub mod frequency_options {
     }
 }
 /// Options to configure CSV formatted reports.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CsvOptions {
     /// Record separator characters in CSV.
@@ -299,6 +313,7 @@ pub struct CsvOptions {
 }
 /// Options to filter data on storage systems.
 /// Next ID: 2
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CloudStorageFilters {
     /// Bucket for which the report will be generated.
@@ -307,6 +322,7 @@ pub struct CloudStorageFilters {
 }
 /// Options to store reports in storage systems.
 /// Next ID: 3
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CloudStorageDestinationOptions {
     /// Destination bucket.
@@ -319,6 +335,7 @@ pub struct CloudStorageDestinationOptions {
 }
 /// Report specification for exporting object metadata.
 /// Next ID: 4
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ObjectMetadataReportOptions {
     /// Metadata fields to be included in the report.
@@ -336,6 +353,7 @@ pub struct ObjectMetadataReportOptions {
 /// Nested message and enum types in `ObjectMetadataReportOptions`.
 pub mod object_metadata_report_options {
     /// Filter options for storage systems.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Filter {
         /// Cloud Storage as the storage system.
@@ -343,6 +361,7 @@ pub mod object_metadata_report_options {
         StorageFilters(super::CloudStorageFilters),
     }
     /// Options on destination for storage systems.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum DestinationOptions {
         /// Cloud Storage as the storage system.
@@ -353,6 +372,7 @@ pub mod object_metadata_report_options {
 /// Message describing ReportConfig object. ReportConfig is the configuration to
 /// generate reports.
 /// Next ID: 12
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReportConfig {
     /// name of resource. It will be of form
@@ -388,6 +408,7 @@ pub struct ReportConfig {
 /// Nested message and enum types in `ReportConfig`.
 pub mod report_config {
     /// Format in which report will be published.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ReportFormat {
         /// Options for CSV formatted reports.
@@ -395,6 +416,7 @@ pub mod report_config {
         CsvOptions(super::CsvOptions),
     }
     /// Configuration options for report contents.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ReportKind {
         /// Report for exporting object metadata.

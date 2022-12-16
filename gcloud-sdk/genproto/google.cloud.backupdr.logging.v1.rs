@@ -1,4 +1,5 @@
 /// This is an event
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Event {
     /// The event_time field displays the time when the event was reported

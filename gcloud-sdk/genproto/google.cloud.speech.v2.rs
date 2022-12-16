@@ -1,5 +1,6 @@
 /// Request message for the
 /// \[CreateRecognizer][google.cloud.speech.v2.Speech.CreateRecognizer\] method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateRecognizerRequest {
     /// Required. The Recognizer to create.
@@ -22,6 +23,7 @@ pub struct CreateRecognizerRequest {
     pub parent: ::prost::alloc::string::String,
 }
 /// Represents the metadata of a long-running operation.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationMetadata {
     /// The time the operation was created.
@@ -65,6 +67,7 @@ pub struct OperationMetadata {
 /// Nested message and enum types in `OperationMetadata`.
 pub mod operation_metadata {
     /// The request that spawned the Operation.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Request {
         /// The BatchRecognizeRequest that spawned the Operation.
@@ -111,6 +114,7 @@ pub mod operation_metadata {
         UpdateConfigRequest(super::UpdateConfigRequest),
     }
     /// Specific metadata per RPC
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Metadata {
         /// Metadata specific to the BatchRecognize method.
@@ -120,6 +124,7 @@ pub mod operation_metadata {
 }
 /// Request message for the
 /// \[ListRecognizers][google.cloud.speech.v2.Speech.ListRecognizers\] method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRecognizersRequest {
     /// Required. The project and location of Recognizers to list. The expected
@@ -146,6 +151,7 @@ pub struct ListRecognizersRequest {
 }
 /// Response message for the
 /// \[ListRecognizers][google.cloud.speech.v2.Speech.ListRecognizers\] method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRecognizersResponse {
     /// The list of requested Recognizers.
@@ -160,6 +166,7 @@ pub struct ListRecognizersResponse {
 }
 /// Request message for the
 /// \[GetRecognizer][google.cloud.speech.v2.Speech.GetRecognizer\] method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetRecognizerRequest {
     /// Required. The name of the Recognizer to retrieve. The expected format is
@@ -169,6 +176,7 @@ pub struct GetRecognizerRequest {
 }
 /// Request message for the
 /// \[UpdateRecognizer][google.cloud.speech.v2.Speech.UpdateRecognizer\] method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateRecognizerRequest {
     /// Required. The Recognizer to update.
@@ -188,6 +196,7 @@ pub struct UpdateRecognizerRequest {
 }
 /// Request message for the
 /// \[DeleteRecognizer][google.cloud.speech.v2.Speech.DeleteRecognizer\] method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteRecognizerRequest {
     /// Required. The name of the Recognizer to delete.
@@ -211,6 +220,7 @@ pub struct DeleteRecognizerRequest {
 /// Request message for the
 /// \[UndeleteRecognizer][google.cloud.speech.v2.Speech.UndeleteRecognizer\]
 /// method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UndeleteRecognizerRequest {
     /// Required. The name of the Recognizer to undelete.
@@ -228,6 +238,7 @@ pub struct UndeleteRecognizerRequest {
     pub etag: ::prost::alloc::string::String,
 }
 /// A Recognizer message. Stores recognition configuration and metadata.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Recognizer {
     /// Output only. The resource name of the Recognizer.
@@ -380,9 +391,11 @@ pub mod recognizer {
 /// * MP3: MPEG audio frames with optional (ignored) ID3 metadata.
 /// * OGG_OPUS: Opus audio frames in an Ogg container.
 /// * WEBM_OPUS: Opus audio frames in a WebM container.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AutoDetectDecodingConfig {}
 /// Explicitly specified decoding parameters.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExplicitDecodingConfig {
     /// Required. Encoding of the audio data sent for recognition.
@@ -447,6 +460,7 @@ pub mod explicit_decoding_config {
     }
 }
 /// Configuration to enable speaker diarization.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SpeakerDiarizationConfig {
     /// Required. Minimum number of speakers in the conversation. This range gives
@@ -465,6 +479,7 @@ pub struct SpeakerDiarizationConfig {
     pub max_speaker_count: i32,
 }
 /// Available recognition features.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RecognitionFeatures {
     /// If set to `true`, the server will attempt to filter out profanities,
@@ -564,6 +579,7 @@ pub mod recognition_features {
 /// Provides "hints" to the speech recognizer to favor specific words and phrases
 /// in the results. Phrase sets can be specified as an inline resource, or a
 /// reference to an existing phrase set resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SpeechAdaptation {
     /// A list of inline or referenced phrase sets.
@@ -578,6 +594,7 @@ pub struct SpeechAdaptation {
 pub mod speech_adaptation {
     /// A biasing phrase set, which can be either a string referencing the name of
     /// an existing phrase set resource, or an inline definition of a phrase set.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AdaptationPhraseSet {
         #[prost(oneof = "adaptation_phrase_set::Value", tags = "1, 2")]
@@ -585,6 +602,7 @@ pub mod speech_adaptation {
     }
     /// Nested message and enum types in `AdaptationPhraseSet`.
     pub mod adaptation_phrase_set {
+        #[allow(clippy::derive_partial_eq_without_eq)]
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Value {
             /// The name of an existing phrase set resource. The user must have read
@@ -599,6 +617,7 @@ pub mod speech_adaptation {
 }
 /// Provides information to the Recognizer that specifies how to process the
 /// recognition request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RecognitionConfig {
     /// Speech recognition features to enable.
@@ -615,6 +634,7 @@ pub struct RecognitionConfig {
 /// Nested message and enum types in `RecognitionConfig`.
 pub mod recognition_config {
     /// Decoding parameters for audio being sent for recognition.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum DecodingConfig {
         /// Automatically detect decoding parameters.
@@ -632,6 +652,7 @@ pub mod recognition_config {
 /// `content` or `uri` must be supplied. Supplying both or neither returns
 /// \[INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT\]. See [content
 /// limits](<https://cloud.google.com/speech-to-text/quotas#content>).
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RecognizeRequest {
     /// Required. The name of the Recognizer to use during recognition. The
@@ -671,6 +692,7 @@ pub struct RecognizeRequest {
 pub mod recognize_request {
     /// The audio source, which is either inline content or a Google Cloud
     /// Storage URI.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum AudioSource {
         /// The audio data bytes encoded as specified in
@@ -692,6 +714,7 @@ pub mod recognize_request {
     }
 }
 /// Metadata about the recognition request and response.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RecognitionResponseMetadata {
     /// When available, billed audio seconds for the corresponding request.
@@ -699,6 +722,7 @@ pub struct RecognitionResponseMetadata {
     pub total_billed_duration: ::core::option::Option<::prost_types::Duration>,
 }
 /// Alternative hypotheses (a.k.a. n-best list).
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SpeechRecognitionAlternative {
     /// Transcript text representing the words that the user spoke.
@@ -722,6 +746,7 @@ pub struct SpeechRecognitionAlternative {
     pub words: ::prost::alloc::vec::Vec<WordInfo>,
 }
 /// Word-specific information for recognized words.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WordInfo {
     /// Time offset relative to the beginning of the audio,
@@ -762,6 +787,7 @@ pub struct WordInfo {
     pub speaker_label: ::prost::alloc::string::String,
 }
 /// A speech recognition result corresponding to a portion of the audio.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SpeechRecognitionResult {
     /// May contain one or more recognition hypotheses. These alternatives are
@@ -787,6 +813,7 @@ pub struct SpeechRecognitionResult {
 }
 /// Response message for the
 /// \[Recognize][google.cloud.speech.v2.Speech.Recognize\] method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RecognizeResponse {
     /// Sequential list of transcription results corresponding to sequential
@@ -798,6 +825,7 @@ pub struct RecognizeResponse {
     pub metadata: ::core::option::Option<RecognitionResponseMetadata>,
 }
 /// Available recognition features specific to streaming recognition requests.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StreamingRecognitionFeatures {
     /// If `true`, responses with voice activity speech events will be returned as
@@ -820,6 +848,7 @@ pub struct StreamingRecognitionFeatures {
 /// Nested message and enum types in `StreamingRecognitionFeatures`.
 pub mod streaming_recognition_features {
     /// Events that a timeout can be set on for voice activity.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct VoiceActivityTimeout {
         /// Duration to timeout the stream if no speech begins. If this is set and
@@ -835,6 +864,7 @@ pub mod streaming_recognition_features {
     }
 }
 /// Provides configuration information for the StreamingRecognize request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StreamingRecognitionConfig {
     /// Required. Features and audio metadata to use for the Automatic Speech
@@ -880,6 +910,7 @@ pub struct StreamingRecognitionConfig {
 /// contain a
 /// \[streaming_config][google.cloud.speech.v2.StreamingRecognizeRequest.streaming_config\]
 /// message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StreamingRecognizeRequest {
     /// Required. Streaming recognition should start with an initial request having
@@ -897,6 +928,7 @@ pub struct StreamingRecognizeRequest {
 }
 /// Nested message and enum types in `StreamingRecognizeRequest`.
 pub mod streaming_recognize_request {
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum StreamingRequest {
         /// StreamingRecognitionConfig to be used in this recognition attempt.
@@ -912,6 +944,7 @@ pub mod streaming_recognize_request {
 /// Request message for the
 /// \[BatchRecognize][google.cloud.speech.v2.Speech.BatchRecognize\]
 /// method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchRecognizeRequest {
     /// Required. Resource name of the recognizer to be used for ASR.
@@ -947,6 +980,7 @@ pub struct BatchRecognizeRequest {
 /// Response message for
 /// \[BatchRecognize][google.cloud.speech.v2.Speech.BatchRecognize\] that is
 /// packaged into a longrunning \[Operation][google.longrunning.Operation\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchRecognizeResponse {
     /// Map from filename to the final result for that file.
@@ -957,6 +991,7 @@ pub struct BatchRecognizeResponse {
     >,
 }
 /// Final results for a single file.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchRecognizeFileResult {
     /// The GCS URI to which recognition results were written.
@@ -968,6 +1003,7 @@ pub struct BatchRecognizeFileResult {
 }
 /// Metadata about transcription for a single file (for example, progress
 /// percent).
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchRecognizeTranscriptionMetadata {
     /// How much of the file has been transcribed so far.
@@ -982,6 +1018,7 @@ pub struct BatchRecognizeTranscriptionMetadata {
 }
 /// Operation metadata for
 /// \[BatchRecognize][google.cloud.speech.v2.Speech.BatchRecognize\].
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchRecognizeMetadata {
     /// Map from provided filename to the transcription metadata for that file.
@@ -992,6 +1029,7 @@ pub struct BatchRecognizeMetadata {
     >,
 }
 /// Metadata about a single file in a batch for BatchRecognize.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchRecognizeFileMetadata {
     /// Features and audio metadata to use for the Automatic Speech Recognition.
@@ -1026,6 +1064,7 @@ pub struct BatchRecognizeFileMetadata {
 /// Nested message and enum types in `BatchRecognizeFileMetadata`.
 pub mod batch_recognize_file_metadata {
     /// The audio source, which is a Google Cloud Storage URI.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum AudioSource {
         /// Cloud Storage URI for the audio file.
@@ -1035,6 +1074,7 @@ pub mod batch_recognize_file_metadata {
 }
 /// A streaming speech recognition result corresponding to a portion of the audio
 /// that is currently being processed.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StreamingRecognitionResult {
     /// May contain one or more recognition hypotheses. These alternatives are
@@ -1122,6 +1162,7 @@ pub struct StreamingRecognitionResult {
 ///      `error`,
 ///      `speech_event_type`, or
 ///      one or more (repeated) `results`.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StreamingRecognizeResponse {
     /// This repeated list contains zero or more results that
@@ -1197,6 +1238,7 @@ pub mod streaming_recognize_response {
 /// Message representing the config for the Speech-to-Text API. This includes an
 /// optional [KMS key](<https://cloud.google.com/kms/docs/resource-hierarchy#keys>)
 /// with which incoming data will be encrypted.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Config {
     /// Output only. The name of the config resource. There is exactly one config
@@ -1218,6 +1260,7 @@ pub struct Config {
 }
 /// Request message for the
 /// \[GetConfig][google.cloud.speech.v2.Speech.GetConfig\] method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetConfigRequest {
     /// Required. The name of the config to retrieve. There is exactly one config
@@ -1228,6 +1271,7 @@ pub struct GetConfigRequest {
 }
 /// Request message for the
 /// \[UpdateConfig][google.cloud.speech.v2.Speech.UpdateConfig\] method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateConfigRequest {
     /// Required. The config to update.
@@ -1243,6 +1287,7 @@ pub struct UpdateConfigRequest {
 /// CustomClass for biasing in speech recognition. Used to define a set of words
 /// or phrases that represents a common concept or theme likely to appear in your
 /// audio, for example a list of passenger ship names.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomClass {
     /// Output only. The resource name of the CustomClass.
@@ -1308,6 +1353,7 @@ pub struct CustomClass {
 /// Nested message and enum types in `CustomClass`.
 pub mod custom_class {
     /// An item of the class.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ClassItem {
         /// The class item's value.
@@ -1353,6 +1399,7 @@ pub mod custom_class {
 /// PhraseSet for biasing in speech recognition. A PhraseSet is used to provide
 /// "hints" to the speech recognizer to favor specific words and phrases in the
 /// results.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PhraseSet {
     /// Output only. The resource name of the PhraseSet.
@@ -1431,6 +1478,7 @@ pub mod phrase_set {
     ///
     /// List items can also include CustomClass references containing groups of
     /// words that represent common concepts that occur in natural language.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Phrase {
         /// The phrase itself.
@@ -1487,6 +1535,7 @@ pub mod phrase_set {
 }
 /// Request message for the
 /// \[CreateCustomClass][google.cloud.speech.v2.Speech.CreateCustomClass\] method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateCustomClassRequest {
     /// Required. The CustomClass to create.
@@ -1510,6 +1559,7 @@ pub struct CreateCustomClassRequest {
 }
 /// Request message for the
 /// \[ListCustomClasses][google.cloud.speech.v2.Speech.ListCustomClasses\] method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCustomClassesRequest {
     /// Required. The project and location of CustomClass resources to list. The
@@ -1537,6 +1587,7 @@ pub struct ListCustomClassesRequest {
 }
 /// Response message for the
 /// \[ListCustomClasses][google.cloud.speech.v2.Speech.ListCustomClasses\] method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCustomClassesResponse {
     /// The list of requested CustomClasses.
@@ -1551,6 +1602,7 @@ pub struct ListCustomClassesResponse {
 }
 /// Request message for the
 /// \[GetCustomClass][google.cloud.speech.v2.Speech.GetCustomClass\] method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCustomClassRequest {
     /// Required. The name of the CustomClass to retrieve. The expected format is
@@ -1560,6 +1612,7 @@ pub struct GetCustomClassRequest {
 }
 /// Request message for the
 /// \[UpdateCustomClass][google.cloud.speech.v2.Speech.UpdateCustomClass\] method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateCustomClassRequest {
     /// Required. The CustomClass to update.
@@ -1580,6 +1633,7 @@ pub struct UpdateCustomClassRequest {
 }
 /// Request message for the
 /// \[DeleteCustomClass][google.cloud.speech.v2.Speech.DeleteCustomClass\] method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteCustomClassRequest {
     /// Required. The name of the CustomClass to delete.
@@ -1604,6 +1658,7 @@ pub struct DeleteCustomClassRequest {
 /// Request message for the
 /// \[UndeleteCustomClass][google.cloud.speech.v2.Speech.UndeleteCustomClass\]
 /// method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UndeleteCustomClassRequest {
     /// Required. The name of the CustomClass to undelete.
@@ -1623,6 +1678,7 @@ pub struct UndeleteCustomClassRequest {
 }
 /// Request message for the
 /// \[CreatePhraseSet][google.cloud.speech.v2.Speech.CreatePhraseSet\] method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreatePhraseSetRequest {
     /// Required. The PhraseSet to create.
@@ -1646,6 +1702,7 @@ pub struct CreatePhraseSetRequest {
 }
 /// Request message for the
 /// \[ListPhraseSets][google.cloud.speech.v2.Speech.ListPhraseSets\] method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPhraseSetsRequest {
     /// Required. The project and location of PhraseSet resources to list. The
@@ -1672,6 +1729,7 @@ pub struct ListPhraseSetsRequest {
 }
 /// Response message for the
 /// \[ListPhraseSets][google.cloud.speech.v2.Speech.ListPhraseSets\] method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPhraseSetsResponse {
     /// The list of requested PhraseSets.
@@ -1686,6 +1744,7 @@ pub struct ListPhraseSetsResponse {
 }
 /// Request message for the
 /// \[GetPhraseSet][google.cloud.speech.v2.Speech.GetPhraseSet\] method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetPhraseSetRequest {
     /// Required. The name of the PhraseSet to retrieve. The expected format is
@@ -1695,6 +1754,7 @@ pub struct GetPhraseSetRequest {
 }
 /// Request message for the
 /// \[UpdatePhraseSet][google.cloud.speech.v2.Speech.UpdatePhraseSet\] method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdatePhraseSetRequest {
     /// Required. The PhraseSet to update.
@@ -1714,6 +1774,7 @@ pub struct UpdatePhraseSetRequest {
 }
 /// Request message for the
 /// \[DeletePhraseSet][google.cloud.speech.v2.Speech.DeletePhraseSet\] method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeletePhraseSetRequest {
     /// Required. The name of the PhraseSet to delete.
@@ -1737,6 +1798,7 @@ pub struct DeletePhraseSetRequest {
 /// Request message for the
 /// \[UndeletePhraseSet][google.cloud.speech.v2.Speech.UndeletePhraseSet\]
 /// method.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UndeletePhraseSetRequest {
     /// Required. The name of the PhraseSet to undelete.

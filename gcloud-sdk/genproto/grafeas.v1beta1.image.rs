@@ -1,4 +1,5 @@
 /// Layer holds metadata specific to a layer of a Docker image.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Layer {
     /// Required. The recovered Dockerfile directive used to construct this layer.
@@ -91,6 +92,7 @@ pub mod layer {
     }
 }
 /// A set of properties that uniquely identify a given Docker image.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Fingerprint {
     /// Required. The layer ID of the final layer in the Docker image's v1
@@ -112,6 +114,7 @@ pub struct Fingerprint {
 /// equivalent image via:
 ///    FROM <Basis.resource_url>
 /// Or an equivalent reference, e.g. a tag of the resource_url.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Basis {
     /// Required. Immutable. The resource_url for the resource representing the
@@ -123,6 +126,7 @@ pub struct Basis {
     pub fingerprint: ::core::option::Option<Fingerprint>,
 }
 /// Details of an image occurrence.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Details {
     /// Required. Immutable. The child image derived from the base image.
@@ -132,6 +136,7 @@ pub struct Details {
 /// Derived describes the derived image portion (Occurrence) of the DockerImage
 /// relationship. This image would be produced from a Dockerfile with FROM
 /// <DockerImage.Basis in attached Note>.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Derived {
     /// Required. The fingerprint of the derived image.

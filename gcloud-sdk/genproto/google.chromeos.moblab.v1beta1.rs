@@ -1,4 +1,5 @@
 /// Resource that represents a build target.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BuildTarget {
     /// The resource name of the build target.
@@ -8,6 +9,7 @@ pub struct BuildTarget {
 }
 /// Resource that represents a model. Each model belongs to a build target. For
 /// non-unified build, the model name is the same as its build target name.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Model {
     /// The resource name of the model.
@@ -16,6 +18,7 @@ pub struct Model {
     pub name: ::prost::alloc::string::String,
 }
 /// Resource that represents a chrome OS milestone.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Milestone {
     /// The resource name of the milestone.
@@ -25,6 +28,7 @@ pub struct Milestone {
 }
 /// Resource that represents a build for the given build target, model, milestone
 /// and build version.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Build {
     /// The resource name of the build.
@@ -132,6 +136,7 @@ pub mod build {
 }
 /// Resource that represents a build artifact stored in Google Cloud Storage for
 /// the given build target, model, build version and bucket.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BuildArtifact {
     /// The resource name of the build artifact.
@@ -157,6 +162,7 @@ pub struct BuildArtifact {
     pub object_count: u32,
 }
 /// Request message for finding the most stable build.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FindMostStableBuildRequest {
     /// Required. The full resource name of the build target.
@@ -166,6 +172,7 @@ pub struct FindMostStableBuildRequest {
     pub build_target: ::prost::alloc::string::String,
 }
 /// Response message for finding the most stable build.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FindMostStableBuildResponse {
     /// The most stable build.
@@ -173,6 +180,7 @@ pub struct FindMostStableBuildResponse {
     pub build: ::core::option::Option<Build>,
 }
 /// Request message for listing build targets.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListBuildTargetsRequest {
     /// Optional. The number of build targets to return in a page.
@@ -184,6 +192,7 @@ pub struct ListBuildTargetsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for listing build targets.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListBuildTargetsResponse {
     /// The list of build targets.
@@ -198,6 +207,7 @@ pub struct ListBuildTargetsResponse {
     pub total_size: i32,
 }
 /// Request message for listing models.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListModelsRequest {
     /// Required. The full resource name of build target.
@@ -212,6 +222,7 @@ pub struct ListModelsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for listing models.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListModelsResponse {
     /// The list of models.
@@ -226,6 +237,7 @@ pub struct ListModelsResponse {
     pub total_size: i32,
 }
 /// Request message for listing builds.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListBuildsRequest {
     /// Required. The full resource name of the model. The model id is the same as
@@ -261,6 +273,7 @@ pub struct ListBuildsRequest {
     pub group_by: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Response message for listing builds.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListBuildsResponse {
     /// The list of builds.
@@ -275,6 +288,7 @@ pub struct ListBuildsResponse {
     pub total_size: i32,
 }
 /// Request message for checking if the build artifact is staged.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CheckBuildStageStatusRequest {
     /// Required. The full resource name of the build artifact.
@@ -289,6 +303,7 @@ pub struct CheckBuildStageStatusRequest {
     pub filter: ::prost::alloc::string::String,
 }
 /// Response message for checking the stage status of a build artifact.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CheckBuildStageStatusResponse {
     /// The status to represent if the build is staged or not.
@@ -302,6 +317,7 @@ pub struct CheckBuildStageStatusResponse {
     pub source_build_artifact: ::core::option::Option<BuildArtifact>,
 }
 /// Request message for staging a build artifact.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StageBuildRequest {
     /// Required. The full resource name of the build artifact.
@@ -316,6 +332,7 @@ pub struct StageBuildRequest {
     pub filter: ::prost::alloc::string::String,
 }
 /// Response message for staging a build artifact.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StageBuildResponse {
     /// The staged build in the destination bucket.
@@ -323,6 +340,7 @@ pub struct StageBuildResponse {
     pub staged_build_artifact: ::core::option::Option<BuildArtifact>,
 }
 /// Metadata message for staging a build artifact.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StageBuildMetadata {
     /// Approximate percentage of progress, e.g. "50" means 50%.

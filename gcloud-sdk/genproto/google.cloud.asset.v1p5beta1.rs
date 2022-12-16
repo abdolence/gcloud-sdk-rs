@@ -1,5 +1,6 @@
 /// Cloud asset. This includes all Google Cloud Platform resources,
 /// Cloud IAM policies, and other non-GCP assets.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Asset {
     /// The full name of the asset. For example:
@@ -39,6 +40,7 @@ pub struct Asset {
 /// Nested message and enum types in `Asset`.
 pub mod asset {
     /// Representation of the Cloud Organization access policy.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum AccessContextPolicy {
         #[prost(message, tag = "7")]
@@ -56,6 +58,7 @@ pub mod asset {
     }
 }
 /// Representation of a cloud resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Resource {
     /// The API version. Example: "v1".
@@ -99,6 +102,7 @@ pub struct Resource {
     pub data: ::core::option::Option<::prost_types::Struct>,
 }
 /// ListAssets request.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAssetsRequest {
     /// Required. Name of the organization or project the assets belong to. Format:
@@ -136,6 +140,7 @@ pub struct ListAssetsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// ListAssets response.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAssetsResponse {
     /// Time the snapshot was taken.

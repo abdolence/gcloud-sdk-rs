@@ -1,4 +1,5 @@
 /// Defines a status condition for a resource.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Condition {
     /// type is used to communicate the status of the reconciliation process.
@@ -299,6 +300,7 @@ pub mod condition {
     /// The reason for this condition. Depending on the condition type,
     /// it will populate one of these fields.
     /// Successful conditions cannot have a reason.
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Reasons {
         /// A common (service-level) reason for this condition.
@@ -317,6 +319,7 @@ pub mod condition {
 /// and the arguments to supply to it.
 /// Note that additional arguments may be supplied by the system to the container
 /// at runtime.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Container {
     /// Name of the container specified as a DNS_LABEL.
@@ -388,6 +391,7 @@ pub struct Container {
     pub startup_probe: ::core::option::Option<Probe>,
 }
 /// ResourceRequirements describes the compute resource requirements.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResourceRequirements {
     /// Only memory and CPU are supported. Note: The only
@@ -405,6 +409,7 @@ pub struct ResourceRequirements {
     pub cpu_idle: bool,
 }
 /// EnvVar represents an environment variable present in a Container.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EnvVar {
     /// Required. Name of the environment variable. Must be a C_IDENTIFIER, and mnay not
@@ -416,6 +421,7 @@ pub struct EnvVar {
 }
 /// Nested message and enum types in `EnvVar`.
 pub mod env_var {
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Values {
         /// Variable references $(VAR_NAME) are expanded
@@ -434,6 +440,7 @@ pub mod env_var {
     }
 }
 /// EnvVarSource represents a source for the value of an EnvVar.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EnvVarSource {
     /// Selects a secret and a specific version from Cloud Secret Manager.
@@ -441,6 +448,7 @@ pub struct EnvVarSource {
     pub secret_key_ref: ::core::option::Option<SecretKeySelector>,
 }
 /// SecretEnvVarSource represents a source for the value of an EnvVar.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SecretKeySelector {
     /// Required. The name of the secret in Cloud Secret Manager.
@@ -456,6 +464,7 @@ pub struct SecretKeySelector {
     pub version: ::prost::alloc::string::String,
 }
 /// ContainerPort represents a network port in a single container.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ContainerPort {
     /// If specified, used to specify which protocol to use.
@@ -468,6 +477,7 @@ pub struct ContainerPort {
     pub container_port: i32,
 }
 /// VolumeMount describes a mounting of a Volume within a container.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VolumeMount {
     /// Required. This must match the Name of a Volume.
@@ -482,6 +492,7 @@ pub struct VolumeMount {
     pub mount_path: ::prost::alloc::string::String,
 }
 /// Volume represents a named volume in a container.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Volume {
     /// Required. Volume's name.
@@ -492,6 +503,7 @@ pub struct Volume {
 }
 /// Nested message and enum types in `Volume`.
 pub mod volume {
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum VolumeType {
         /// Secret represents a secret that should populate this volume.
@@ -508,6 +520,7 @@ pub mod volume {
 /// The secret's value will be presented as the content of a file whose
 /// name is defined in the item path. If no items are defined, the name of
 /// the file is the secret.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SecretVolumeSource {
     /// Required. The name of the secret in Cloud Secret Manager.
@@ -546,6 +559,7 @@ pub struct SecretVolumeSource {
 }
 /// VersionToPath maps a specific version of a secret to a relative file to mount
 /// to, relative to VolumeMount's mount_path.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VersionToPath {
     /// Required. The relative path of the secret in the container.
@@ -575,6 +589,7 @@ pub struct VersionToPath {
     pub mode: i32,
 }
 /// Represents a specific Cloud SQL instance.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CloudSqlInstance {
     /// The Cloud SQL instance connection names, as can be found in
@@ -587,6 +602,7 @@ pub struct CloudSqlInstance {
 }
 /// Probe describes a health check to be performed against a container to
 /// determine whether it is alive or ready to receive traffic.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Probe {
     /// Number of seconds after the container has started before the probe is
@@ -619,6 +635,7 @@ pub struct Probe {
 }
 /// Nested message and enum types in `Probe`.
 pub mod probe {
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ProbeType {
         /// HTTPGet specifies the http request to perform.
@@ -636,6 +653,7 @@ pub mod probe {
     }
 }
 /// HTTPGetAction describes an action based on HTTP Get requests.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HttpGetAction {
     /// Path to access on the HTTP server. Defaults to '/'.
@@ -646,6 +664,7 @@ pub struct HttpGetAction {
     pub http_headers: ::prost::alloc::vec::Vec<HttpHeader>,
 }
 /// HTTPHeader describes a custom header to be used in HTTP probes
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HttpHeader {
     /// Required. The header field name
@@ -656,6 +675,7 @@ pub struct HttpHeader {
     pub value: ::prost::alloc::string::String,
 }
 /// TCPSocketAction describes an action based on opening a socket
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TcpSocketAction {
     /// Port number to access on the container. Must be in the range 1 to 65535.
@@ -664,6 +684,7 @@ pub struct TcpSocketAction {
     pub port: i32,
 }
 /// GRPCAction describes an action involving a GRPC port.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GrpcAction {
     /// Port number of the gRPC service. Number must be in the range 1 to 65535.
@@ -680,6 +701,7 @@ pub struct GrpcAction {
 /// <https://cloud.google.com/vpc/docs/configure-serverless-vpc-access> For
 /// information on how to configure Cloud Run with an existing VPC Connector,
 /// visit <https://cloud.google.com/run/docs/configuring/connecting-vpc>
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VpcAccess {
     /// VPC Access connector name.
@@ -729,6 +751,7 @@ pub mod vpc_access {
     }
 }
 /// Settings for Binary Authorization feature.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BinaryAuthorization {
     /// If present, indicates to use Breakglass using this justification.
@@ -742,6 +765,7 @@ pub struct BinaryAuthorization {
 }
 /// Nested message and enum types in `BinaryAuthorization`.
 pub mod binary_authorization {
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum BinauthzMethod {
         /// If True, indicates to use the default project's binary authorization
@@ -751,6 +775,7 @@ pub mod binary_authorization {
     }
 }
 /// Settings for revision-level scaling settings.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RevisionScaling {
     /// Minimum number of serving instances that this resource should have.
@@ -815,6 +840,7 @@ impl ExecutionEnvironment {
 }
 /// TaskTemplate describes the data a task should have when created
 /// from a template.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TaskTemplate {
     /// Holds the single container that defines the unit of execution for this
@@ -852,6 +878,7 @@ pub struct TaskTemplate {
 }
 /// Nested message and enum types in `TaskTemplate`.
 pub mod task_template {
+    #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Retries {
         /// Number of retries allowed per Task, before marking this Task failed.
@@ -860,6 +887,7 @@ pub mod task_template {
     }
 }
 /// Request message for obtaining a Execution by its full name.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetExecutionRequest {
     /// Required. The full name of the Execution.
@@ -870,6 +898,7 @@ pub struct GetExecutionRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for retrieving a list of Executions.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListExecutionsRequest {
     /// Required. The Execution from which the Executions should be listed.
@@ -890,6 +919,7 @@ pub struct ListExecutionsRequest {
     pub show_deleted: bool,
 }
 /// Response message containing a list of Executions.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListExecutionsResponse {
     /// The resulting list of Executions.
@@ -901,6 +931,7 @@ pub struct ListExecutionsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for deleting an Execution.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteExecutionRequest {
     /// Required. The name of the Execution to delete.
@@ -921,6 +952,7 @@ pub struct DeleteExecutionRequest {
 /// Execution represents the configuration of a single execution. A execution an
 /// immutable resource that references a container image which is run to
 /// completion.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Execution {
     /// Output only. The unique name of this Execution.
@@ -1171,6 +1203,7 @@ pub mod executions_client {
 }
 /// ExecutionTemplate describes the data an execution should have when created
 /// from a template.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExecutionTemplate {
     /// KRM-style labels for the resource.
@@ -1206,6 +1239,7 @@ pub struct ExecutionTemplate {
     pub template: ::core::option::Option<TaskTemplate>,
 }
 /// Request message for creating a Job.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateJobRequest {
     /// Required. The location and project in which this Job should be created.
@@ -1226,6 +1260,7 @@ pub struct CreateJobRequest {
     pub validate_only: bool,
 }
 /// Request message for obtaining a Job by its full name.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetJobRequest {
     /// Required. The full name of the Job.
@@ -1235,6 +1270,7 @@ pub struct GetJobRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for updating a Job.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateJobRequest {
     /// Required. The Job to be updated.
@@ -1251,6 +1287,7 @@ pub struct UpdateJobRequest {
     pub allow_missing: bool,
 }
 /// Request message for retrieving a list of Jobs.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListJobsRequest {
     /// Required. The location and project to list resources on.
@@ -1270,6 +1307,7 @@ pub struct ListJobsRequest {
     pub show_deleted: bool,
 }
 /// Response message containing a list of Jobs.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListJobsResponse {
     /// The resulting list of Jobs.
@@ -1281,6 +1319,7 @@ pub struct ListJobsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message to delete a Job by its full name.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteJobRequest {
     /// Required. The full name of the Job.
@@ -1298,6 +1337,7 @@ pub struct DeleteJobRequest {
     pub etag: ::prost::alloc::string::String,
 }
 /// Request message to create a new Execution of a Job.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RunJobRequest {
     /// Required. The full name of the Job.
@@ -1316,6 +1356,7 @@ pub struct RunJobRequest {
 }
 /// Job represents the configuration of a single job. A job an immutable resource
 /// that references a container image which is run to completion.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Job {
     /// The fully qualified name of this Job.
@@ -1445,6 +1486,7 @@ pub struct Job {
 }
 /// Reference to an Execution. Use /Executions.GetExecution with the given name
 /// to get full execution including the latest status.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExecutionReference {
     /// Name of the execution.
@@ -1743,6 +1785,7 @@ pub mod jobs_client {
     }
 }
 /// Request message for obtaining a Revision by its full name.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetRevisionRequest {
     /// Required. The full name of the Revision.
@@ -1752,6 +1795,7 @@ pub struct GetRevisionRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for retrieving a list of Revisions.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRevisionsRequest {
     /// Required. The Service from which the Revisions should be listed.
@@ -1772,6 +1816,7 @@ pub struct ListRevisionsRequest {
     pub show_deleted: bool,
 }
 /// Response message containing a list of Revisions.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRevisionsResponse {
     /// The resulting list of Revisions.
@@ -1785,6 +1830,7 @@ pub struct ListRevisionsResponse {
 /// Request message for deleting a retired Revision.
 /// Revision lifecycle is usually managed by making changes to the parent
 /// Service. Only retired revisions can be deleted with this API.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteRevisionRequest {
     /// Required. The name of the Revision to delete.
@@ -1804,6 +1850,7 @@ pub struct DeleteRevisionRequest {
 /// A Revision is an immutable snapshot of code and configuration.  A Revision
 /// references a container image. Revisions are only created by updates to its
 /// parent Service.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Revision {
     /// Output only. The unique name of this Revision.
@@ -2053,6 +2100,7 @@ pub mod revisions_client {
 }
 /// RevisionTemplate describes the data a revision should have when created from
 /// a template.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RevisionTemplate {
     /// The unique name for the revision. If this field is omitted, it will be
@@ -2108,6 +2156,7 @@ pub struct RevisionTemplate {
 }
 /// Holds a single traffic routing entry for the Service. Allocations can be done
 /// to a specific Revision name, or pointing to the latest Ready Revision.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TrafficTarget {
     /// The allocation type for this traffic target.
@@ -2127,6 +2176,7 @@ pub struct TrafficTarget {
     pub tag: ::prost::alloc::string::String,
 }
 /// Represents the observed state of a single `TrafficTarget` entry.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TrafficTargetStatus {
     /// The allocation type for this traffic target.
@@ -2176,6 +2226,7 @@ impl TrafficTargetAllocationType {
     }
 }
 /// Request message for creating a Service.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateServiceRequest {
     /// Required. The location and project in which this service should be created.
@@ -2197,6 +2248,7 @@ pub struct CreateServiceRequest {
     pub validate_only: bool,
 }
 /// Request message for updating a service.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateServiceRequest {
     /// Required. The Service to be updated.
@@ -2213,6 +2265,7 @@ pub struct UpdateServiceRequest {
     pub allow_missing: bool,
 }
 /// Request message for retrieving a list of Services.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListServicesRequest {
     /// Required. The location and project to list resources on.
@@ -2233,6 +2286,7 @@ pub struct ListServicesRequest {
     pub show_deleted: bool,
 }
 /// Response message containing a list of Services.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListServicesResponse {
     /// The resulting list of Services.
@@ -2244,6 +2298,7 @@ pub struct ListServicesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for obtaining a Service by its full name.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetServiceRequest {
     /// Required. The full name of the Service.
@@ -2253,6 +2308,7 @@ pub struct GetServiceRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message to delete a Service by its full name.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteServiceRequest {
     /// Required. The full name of the Service.
@@ -2274,6 +2330,7 @@ pub struct DeleteServiceRequest {
 /// Service exists to provide a singular abstraction which can be access
 /// controlled, reasoned about, and which encapsulates software lifecycle
 /// decisions such as rollout policy and team resource ownership.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Service {
     /// The fully qualified name of this Service. In CreateServiceRequest, this
@@ -2701,6 +2758,7 @@ pub mod services_client {
     }
 }
 /// Request message for obtaining a Task by its full name.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetTaskRequest {
     /// Required. The full name of the Task.
@@ -2710,6 +2768,7 @@ pub struct GetTaskRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for retrieving a list of Tasks.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTasksRequest {
     /// Required. The Execution from which the Tasks should be listed.
@@ -2730,6 +2789,7 @@ pub struct ListTasksRequest {
     pub show_deleted: bool,
 }
 /// Response message containing a list of Tasks.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTasksResponse {
     /// The resulting list of Tasks.
@@ -2741,6 +2801,7 @@ pub struct ListTasksResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Task represents a single run of a container to completion.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Task {
     /// Output only. The unique name of this Task.
@@ -2868,6 +2929,7 @@ pub struct Task {
     pub etag: ::prost::alloc::string::String,
 }
 /// Result of a task attempt.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TaskAttemptResult {
     /// Output only. The status of this attempt.

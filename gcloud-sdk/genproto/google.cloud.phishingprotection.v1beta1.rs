@@ -1,4 +1,5 @@
 /// The ReportPhishing request message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReportPhishingRequest {
     /// Required. The name of the project for which the report will be created,
@@ -10,6 +11,7 @@ pub struct ReportPhishingRequest {
     pub uri: ::prost::alloc::string::String,
 }
 /// The ReportPhishing (empty) response message.
+#[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReportPhishingResponse {}
 /// Generated client implementations.
