@@ -112,6 +112,15 @@ pub mod compute_threat_list_diff_response {
                 ResponseType::Reset => "RESET",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "RESPONSE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "DIFF" => Some(Self::Diff),
+                "RESET" => Some(Self::Reset),
+                _ => None,
+            }
+        }
     }
 }
 /// Request to check URI entries against threatLists.
@@ -299,6 +308,16 @@ impl ThreatType {
             ThreatType::UnwantedSoftware => "UNWANTED_SOFTWARE",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "THREAT_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "MALWARE" => Some(Self::Malware),
+            "SOCIAL_ENGINEERING" => Some(Self::SocialEngineering),
+            "UNWANTED_SOFTWARE" => Some(Self::UnwantedSoftware),
+            _ => None,
+        }
+    }
 }
 /// The ways in which threat entry sets can be compressed.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -321,6 +340,15 @@ impl CompressionType {
             CompressionType::Unspecified => "COMPRESSION_TYPE_UNSPECIFIED",
             CompressionType::Raw => "RAW",
             CompressionType::Rice => "RICE",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "COMPRESSION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "RAW" => Some(Self::Raw),
+            "RICE" => Some(Self::Rice),
+            _ => None,
         }
     }
 }

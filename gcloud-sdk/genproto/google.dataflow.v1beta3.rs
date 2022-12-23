@@ -467,6 +467,15 @@ impl JobType {
             JobType::Streaming => "JOB_TYPE_STREAMING",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "JOB_TYPE_UNKNOWN" => Some(Self::Unknown),
+            "JOB_TYPE_BATCH" => Some(Self::Batch),
+            "JOB_TYPE_STREAMING" => Some(Self::Streaming),
+            _ => None,
+        }
+    }
 }
 /// Specifies the resource to optimize for in Flexible Resource Scheduling.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -489,6 +498,15 @@ impl FlexResourceSchedulingGoal {
             FlexResourceSchedulingGoal::FlexrsUnspecified => "FLEXRS_UNSPECIFIED",
             FlexResourceSchedulingGoal::FlexrsSpeedOptimized => "FLEXRS_SPEED_OPTIMIZED",
             FlexResourceSchedulingGoal::FlexrsCostOptimized => "FLEXRS_COST_OPTIMIZED",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "FLEXRS_UNSPECIFIED" => Some(Self::FlexrsUnspecified),
+            "FLEXRS_SPEED_OPTIMIZED" => Some(Self::FlexrsSpeedOptimized),
+            "FLEXRS_COST_OPTIMIZED" => Some(Self::FlexrsCostOptimized),
+            _ => None,
         }
     }
 }
@@ -521,6 +539,16 @@ impl TeardownPolicy {
             TeardownPolicy::TeardownNever => "TEARDOWN_NEVER",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "TEARDOWN_POLICY_UNKNOWN" => Some(Self::Unknown),
+            "TEARDOWN_ALWAYS" => Some(Self::TeardownAlways),
+            "TEARDOWN_ON_SUCCESS" => Some(Self::TeardownOnSuccess),
+            "TEARDOWN_NEVER" => Some(Self::TeardownNever),
+            _ => None,
+        }
+    }
 }
 /// The default set of packages to be staged on a pool of workers.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -547,6 +575,16 @@ impl DefaultPackageSet {
             DefaultPackageSet::None => "DEFAULT_PACKAGE_SET_NONE",
             DefaultPackageSet::Java => "DEFAULT_PACKAGE_SET_JAVA",
             DefaultPackageSet::Python => "DEFAULT_PACKAGE_SET_PYTHON",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "DEFAULT_PACKAGE_SET_UNKNOWN" => Some(Self::Unknown),
+            "DEFAULT_PACKAGE_SET_NONE" => Some(Self::None),
+            "DEFAULT_PACKAGE_SET_JAVA" => Some(Self::Java),
+            "DEFAULT_PACKAGE_SET_PYTHON" => Some(Self::Python),
+            _ => None,
         }
     }
 }
@@ -576,6 +614,15 @@ impl AutoscalingAlgorithm {
             AutoscalingAlgorithm::Basic => "AUTOSCALING_ALGORITHM_BASIC",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "AUTOSCALING_ALGORITHM_UNKNOWN" => Some(Self::Unknown),
+            "AUTOSCALING_ALGORITHM_NONE" => Some(Self::None),
+            "AUTOSCALING_ALGORITHM_BASIC" => Some(Self::Basic),
+            _ => None,
+        }
+    }
 }
 /// Specifies how IP addresses should be allocated to the worker machines.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -598,6 +645,15 @@ impl WorkerIpAddressConfiguration {
             WorkerIpAddressConfiguration::WorkerIpUnspecified => "WORKER_IP_UNSPECIFIED",
             WorkerIpAddressConfiguration::WorkerIpPublic => "WORKER_IP_PUBLIC",
             WorkerIpAddressConfiguration::WorkerIpPrivate => "WORKER_IP_PRIVATE",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "WORKER_IP_UNSPECIFIED" => Some(Self::WorkerIpUnspecified),
+            "WORKER_IP_PUBLIC" => Some(Self::WorkerIpPublic),
+            "WORKER_IP_PRIVATE" => Some(Self::WorkerIpPrivate),
+            _ => None,
         }
     }
 }
@@ -625,6 +681,15 @@ impl ShuffleMode {
             ShuffleMode::Unspecified => "SHUFFLE_MODE_UNSPECIFIED",
             ShuffleMode::VmBased => "VM_BASED",
             ShuffleMode::ServiceBased => "SERVICE_BASED",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "SHUFFLE_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+            "VM_BASED" => Some(Self::VmBased),
+            "SERVICE_BASED" => Some(Self::ServiceBased),
+            _ => None,
         }
     }
 }
@@ -763,6 +828,18 @@ impl SnapshotState {
             SnapshotState::Ready => "READY",
             SnapshotState::Failed => "FAILED",
             SnapshotState::Deleted => "DELETED",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "UNKNOWN_SNAPSHOT_STATE" => Some(Self::UnknownSnapshotState),
+            "PENDING" => Some(Self::Pending),
+            "RUNNING" => Some(Self::Running),
+            "READY" => Some(Self::Ready),
+            "FAILED" => Some(Self::Failed),
+            "DELETED" => Some(Self::Deleted),
+            _ => None,
         }
     }
 }
@@ -1191,6 +1268,17 @@ pub mod sdk_version {
                 SdkSupportStatus::Stale => "STALE",
                 SdkSupportStatus::Deprecated => "DEPRECATED",
                 SdkSupportStatus::Unsupported => "UNSUPPORTED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNKNOWN" => Some(Self::Unknown),
+                "SUPPORTED" => Some(Self::Supported),
+                "STALE" => Some(Self::Stale),
+                "DEPRECATED" => Some(Self::Deprecated),
+                "UNSUPPORTED" => Some(Self::Unsupported),
+                _ => None,
             }
         }
     }
@@ -1625,6 +1713,16 @@ pub mod list_jobs_request {
                 Filter::Active => "ACTIVE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNKNOWN" => Some(Self::Unknown),
+                "ALL" => Some(Self::All),
+                "TERMINATED" => Some(Self::Terminated),
+                "ACTIVE" => Some(Self::Active),
+                _ => None,
+            }
+        }
     }
 }
 /// Indicates which [regional endpoint]
@@ -1739,6 +1837,21 @@ impl KindType {
             KindType::ShuffleKind => "SHUFFLE_KIND",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "UNKNOWN_KIND" => Some(Self::UnknownKind),
+            "PAR_DO_KIND" => Some(Self::ParDoKind),
+            "GROUP_BY_KEY_KIND" => Some(Self::GroupByKeyKind),
+            "FLATTEN_KIND" => Some(Self::FlattenKind),
+            "READ_KIND" => Some(Self::ReadKind),
+            "WRITE_KIND" => Some(Self::WriteKind),
+            "CONSTANT_KIND" => Some(Self::ConstantKind),
+            "SINGLETON_KIND" => Some(Self::SingletonKind),
+            "SHUFFLE_KIND" => Some(Self::ShuffleKind),
+            _ => None,
+        }
+    }
 }
 /// Describes the overall state of a \[google.dataflow.v1beta3.Job][google.dataflow.v1beta3.Job\].
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -1825,6 +1938,25 @@ impl JobState {
             JobState::ResourceCleaningUp => "JOB_STATE_RESOURCE_CLEANING_UP",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "JOB_STATE_UNKNOWN" => Some(Self::Unknown),
+            "JOB_STATE_STOPPED" => Some(Self::Stopped),
+            "JOB_STATE_RUNNING" => Some(Self::Running),
+            "JOB_STATE_DONE" => Some(Self::Done),
+            "JOB_STATE_FAILED" => Some(Self::Failed),
+            "JOB_STATE_CANCELLED" => Some(Self::Cancelled),
+            "JOB_STATE_UPDATED" => Some(Self::Updated),
+            "JOB_STATE_DRAINING" => Some(Self::Draining),
+            "JOB_STATE_DRAINED" => Some(Self::Drained),
+            "JOB_STATE_PENDING" => Some(Self::Pending),
+            "JOB_STATE_CANCELLING" => Some(Self::Cancelling),
+            "JOB_STATE_QUEUED" => Some(Self::Queued),
+            "JOB_STATE_RESOURCE_CLEANING_UP" => Some(Self::ResourceCleaningUp),
+            _ => None,
+        }
+    }
 }
 /// Selector for how much information is returned in Job responses.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -1855,6 +1987,16 @@ impl JobView {
             JobView::Summary => "JOB_VIEW_SUMMARY",
             JobView::All => "JOB_VIEW_ALL",
             JobView::Description => "JOB_VIEW_DESCRIPTION",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "JOB_VIEW_UNKNOWN" => Some(Self::Unknown),
+            "JOB_VIEW_SUMMARY" => Some(Self::Summary),
+            "JOB_VIEW_ALL" => Some(Self::All),
+            "JOB_VIEW_DESCRIPTION" => Some(Self::Description),
+            _ => None,
         }
     }
 }
@@ -2226,6 +2368,17 @@ pub mod autoscaling_event {
                 AutoscalingEventType::NoChange => "NO_CHANGE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNKNOWN" => Some(Self::TypeUnknown),
+                "TARGET_NUM_WORKERS_CHANGED" => Some(Self::TargetNumWorkersChanged),
+                "CURRENT_NUM_WORKERS_CHANGED" => Some(Self::CurrentNumWorkersChanged),
+                "ACTUATION_FAILURE" => Some(Self::ActuationFailure),
+                "NO_CHANGE" => Some(Self::NoChange),
+                _ => None,
+            }
+        }
     }
 }
 /// Request to list job messages.
@@ -2330,6 +2483,18 @@ impl JobMessageImportance {
             JobMessageImportance::JobMessageBasic => "JOB_MESSAGE_BASIC",
             JobMessageImportance::JobMessageWarning => "JOB_MESSAGE_WARNING",
             JobMessageImportance::JobMessageError => "JOB_MESSAGE_ERROR",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "JOB_MESSAGE_IMPORTANCE_UNKNOWN" => Some(Self::Unknown),
+            "JOB_MESSAGE_DEBUG" => Some(Self::JobMessageDebug),
+            "JOB_MESSAGE_DETAILED" => Some(Self::JobMessageDetailed),
+            "JOB_MESSAGE_BASIC" => Some(Self::JobMessageBasic),
+            "JOB_MESSAGE_WARNING" => Some(Self::JobMessageWarning),
+            "JOB_MESSAGE_ERROR" => Some(Self::JobMessageError),
+            _ => None,
         }
     }
 }
@@ -2766,6 +2931,18 @@ impl ExecutionState {
             ExecutionState::Succeeded => "EXECUTION_STATE_SUCCEEDED",
             ExecutionState::Failed => "EXECUTION_STATE_FAILED",
             ExecutionState::Cancelled => "EXECUTION_STATE_CANCELLED",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "EXECUTION_STATE_UNKNOWN" => Some(Self::Unknown),
+            "EXECUTION_STATE_NOT_STARTED" => Some(Self::NotStarted),
+            "EXECUTION_STATE_RUNNING" => Some(Self::Running),
+            "EXECUTION_STATE_SUCCEEDED" => Some(Self::Succeeded),
+            "EXECUTION_STATE_FAILED" => Some(Self::Failed),
+            "EXECUTION_STATE_CANCELLED" => Some(Self::Cancelled),
+            _ => None,
         }
     }
 }
@@ -3553,6 +3730,15 @@ pub mod sdk_info {
                 Language::Python => "PYTHON",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNKNOWN" => Some(Self::Unknown),
+                "JAVA" => Some(Self::Java),
+                "PYTHON" => Some(Self::Python),
+                _ => None,
+            }
+        }
     }
 }
 /// RuntimeMetadata describing a runtime environment.
@@ -3656,6 +3842,13 @@ pub mod get_template_request {
                 TemplateView::MetadataOnly => "METADATA_ONLY",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "METADATA_ONLY" => Some(Self::MetadataOnly),
+                _ => None,
+            }
+        }
     }
     /// The template from which to create the job.
     #[allow(clippy::derive_partial_eq_without_eq)]
@@ -3720,6 +3913,15 @@ pub mod get_template_response {
                 TemplateType::Unknown => "UNKNOWN",
                 TemplateType::Legacy => "LEGACY",
                 TemplateType::Flex => "FLEX",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNKNOWN" => Some(Self::Unknown),
+                "LEGACY" => Some(Self::Legacy),
+                "FLEX" => Some(Self::Flex),
+                _ => None,
             }
         }
     }
@@ -3881,6 +4083,22 @@ impl ParameterType {
             ParameterType::GcsWriteFolder => "GCS_WRITE_FOLDER",
             ParameterType::PubsubTopic => "PUBSUB_TOPIC",
             ParameterType::PubsubSubscription => "PUBSUB_SUBSCRIPTION",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "DEFAULT" => Some(Self::Default),
+            "TEXT" => Some(Self::Text),
+            "GCS_READ_BUCKET" => Some(Self::GcsReadBucket),
+            "GCS_WRITE_BUCKET" => Some(Self::GcsWriteBucket),
+            "GCS_READ_FILE" => Some(Self::GcsReadFile),
+            "GCS_WRITE_FILE" => Some(Self::GcsWriteFile),
+            "GCS_READ_FOLDER" => Some(Self::GcsReadFolder),
+            "GCS_WRITE_FOLDER" => Some(Self::GcsWriteFolder),
+            "PUBSUB_TOPIC" => Some(Self::PubsubTopic),
+            "PUBSUB_SUBSCRIPTION" => Some(Self::PubsubSubscription),
+            _ => None,
         }
     }
 }

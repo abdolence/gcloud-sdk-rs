@@ -103,6 +103,17 @@ pub mod report {
                 Priority::Low => "LOW",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SEVERITY_UNSPECIFIED" => Some(Self::SeverityUnspecified),
+                "CRITICAL" => Some(Self::Critical),
+                "HIGH" => Some(Self::High),
+                "MEDIUM" => Some(Self::Medium),
+                "LOW" => Some(Self::Low),
+                _ => None,
+            }
+        }
     }
     /// Type of an report.
     #[derive(
@@ -136,6 +147,16 @@ pub mod report {
                 Type::Error => "ERROR",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "REPORT_TYPE_UNSPECIFIED" => Some(Self::ReportTypeUnspecified),
+                "INFO" => Some(Self::Info),
+                "WARNING" => Some(Self::Warning),
+                "ERROR" => Some(Self::Error),
+                _ => None,
+            }
+        }
     }
     /// Status of an report.
     #[derive(
@@ -167,6 +188,16 @@ pub mod report {
                 ReportStatus::Active => "ACTIVE",
                 ReportStatus::Fixed => "FIXED",
                 ReportStatus::Dismissed => "DISMISSED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "REPORT_STATUS_UNSPECIFIED" => Some(Self::Unspecified),
+                "ACTIVE" => Some(Self::Active),
+                "FIXED" => Some(Self::Fixed),
+                "DISMISSED" => Some(Self::Dismissed),
+                _ => None,
             }
         }
     }
@@ -204,6 +235,18 @@ pub mod report {
                 ReportGroup::KubernetesEngine => "KUBERNETES_ENGINE",
                 ReportGroup::HybridConnectivity => "HYBRID_CONNECTIVITY",
                 ReportGroup::ManagedServices => "MANAGED_SERVICES",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CATEGORY_UNSPECIFIED" => Some(Self::CategoryUnspecified),
+                "VPC_NETWORK" => Some(Self::VpcNetwork),
+                "NETWORK_SERVICES" => Some(Self::NetworkServices),
+                "KUBERNETES_ENGINE" => Some(Self::KubernetesEngine),
+                "HYBRID_CONNECTIVITY" => Some(Self::HybridConnectivity),
+                "MANAGED_SERVICES" => Some(Self::ManagedServices),
+                _ => None,
             }
         }
     }
@@ -356,6 +399,114 @@ impl ReportCauseCode {
             ReportCauseCode::LoadBalancerBestPracticesBackendServiceHealthCheckPortMismatch => {
                 "LOAD_BALANCER_BEST_PRACTICES_BACKEND_SERVICE_HEALTH_CHECK_PORT_MISMATCH"
             }
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "REPORT_CAUSE_CODE_UNSPECIFIED" => Some(Self::Unspecified),
+            "ROUTE_INVALID_NEXT_HOP_VM_IP_FORWARDING_DISABLED" => {
+                Some(Self::RouteInvalidNextHopVmIpForwardingDisabled)
+            }
+            "ROUTE_INVALID_NEXT_HOP_VM_DELETED" => {
+                Some(Self::RouteInvalidNextHopVmDeleted)
+            }
+            "ROUTE_INVALID_NEXT_HOP_VM_STOPPED" => {
+                Some(Self::RouteInvalidNextHopVmStopped)
+            }
+            "ROUTE_INVALID_NEXT_HOP_ILB_MISCONFIGURED" => {
+                Some(Self::RouteInvalidNextHopIlbMisconfigured)
+            }
+            "ROUTE_INVALID_NEXT_HOP_VPN_TUNNEL_DELETED" => {
+                Some(Self::RouteInvalidNextHopVpnTunnelDeleted)
+            }
+            "ROUTE_INVALID_NEXT_HOP_ILB_BACKEND_IP_FORWARDING_DISABLED" => {
+                Some(Self::RouteInvalidNextHopIlbBackendIpForwardingDisabled)
+            }
+            "IP_UTILIZATION_IP_ALLOCATION_RATIO_HIGH" => {
+                Some(Self::IpUtilizationIpAllocationRatioHigh)
+            }
+            "GKE_NODE_TO_CONTROL_PLANE_BLOCKED_BY_ROUTING_ISSUE" => {
+                Some(Self::GkeNodeToControlPlaneBlockedByRoutingIssue)
+            }
+            "GKE_NODE_TO_CONTROL_PLANE_PUBLIC_ENDPOINT_BLOCKED_BY_EGRESS_FIREWALL" => {
+                Some(Self::GkeNodeToControlPlanePublicEndpointBlockedByEgressFirewall)
+            }
+            "GKE_NODE_TO_CONTROL_PLANE_PRIVATE_ENDPOINT_BLOCKED_BY_EGRESS_FIREWALL" => {
+                Some(Self::GkeNodeToControlPlanePrivateEndpointBlockedByEgressFirewall)
+            }
+            "GKE_CONTROL_PLANE_TO_NODE_BLOCKED_BY_ROUTING_ISSUE" => {
+                Some(Self::GkeControlPlaneToNodeBlockedByRoutingIssue)
+            }
+            "GKE_CONTROL_PLANE_TO_NODE_BLOCKED_BY_INGRESS_FIREWALL_ON_NODE" => {
+                Some(Self::GkeControlPlaneToNodeBlockedByIngressFirewallOnNode)
+            }
+            "GKE_IP_UTILIZATION_POD_RANGES_ALLOCATION_HIGH" => {
+                Some(Self::GkeIpUtilizationPodRangesAllocationHigh)
+            }
+            "GKE_IP_UTILIZATION_POD_RANGES_ALLOCATION_LIMITES_AUTOSCALING" => {
+                Some(Self::GkeIpUtilizationPodRangesAllocationLimitesAutoscaling)
+            }
+            "CLOUD_SQL_PRIVATE_IP_BLOCKED_BY_EGRESS_FIREWALL" => {
+                Some(Self::CloudSqlPrivateIpBlockedByEgressFirewall)
+            }
+            "CLOUD_SQL_PRIVATE_IP_BLOCKED_BY_ROUTING_ISSUE" => {
+                Some(Self::CloudSqlPrivateIpBlockedByRoutingIssue)
+            }
+            "CLOUD_SQL_PRIVATE_IP_INSTANCE_NOT_RUNNING" => {
+                Some(Self::CloudSqlPrivateIpInstanceNotRunning)
+            }
+            "DYNAMIC_ROUTE_SHADOWED_FULLY_SHADOWED_BY_SUBNET_ROUTE" => {
+                Some(Self::DynamicRouteShadowedFullyShadowedBySubnetRoute)
+            }
+            "DYNAMIC_ROUTE_SHADOWED_FULLY_SHADOWED_BY_PEERING_SUBNET_ROUTE" => {
+                Some(Self::DynamicRouteShadowedFullyShadowedByPeeringSubnetRoute)
+            }
+            "DYNAMIC_ROUTE_SHADOWED_FULLY_SHADOWED_BY_STATIC_ROUTE" => {
+                Some(Self::DynamicRouteShadowedFullyShadowedByStaticRoute)
+            }
+            "DYNAMIC_ROUTE_SHADOWED_FULLY_SHADOWED_BY_PEERING_STATIC_ROUTE" => {
+                Some(Self::DynamicRouteShadowedFullyShadowedByPeeringStaticRoute)
+            }
+            "DYNAMIC_ROUTE_SHADOWED_PARTIALLY_SHADOWED_BY_SUBNET_ROUTE" => {
+                Some(Self::DynamicRouteShadowedPartiallyShadowedBySubnetRoute)
+            }
+            "DYNAMIC_ROUTE_SHADOWED_PARTIALLY_SHADOWED_BY_PEERING_SUBNET_ROUTE" => {
+                Some(Self::DynamicRouteShadowedPartiallyShadowedByPeeringSubnetRoute)
+            }
+            "DYNAMIC_ROUTE_SHADOWED_PARTIALLY_SHADOWED_BY_STATIC_ROUTE" => {
+                Some(Self::DynamicRouteShadowedPartiallyShadowedByStaticRoute)
+            }
+            "DYNAMIC_ROUTE_SHADOWED_PARTIALLY_SHADOWED_BY_PEERING_STATIC_ROUTE" => {
+                Some(Self::DynamicRouteShadowedPartiallyShadowedByPeeringStaticRoute)
+            }
+            "LOAD_BALANCER_HEALTH_CHECK_FIREWALL_HEALTH_CHECK_FIREWALL_NOT_CONFIGURED" => {
+                Some(
+                    Self::LoadBalancerHealthCheckFirewallHealthCheckFirewallNotConfigured,
+                )
+            }
+            "LOAD_BALANCER_HEALTH_CHECK_FIREWALL_HEALTH_CHECK_RANGE_BLOCKED" => {
+                Some(Self::LoadBalancerHealthCheckFirewallHealthCheckRangeBlocked)
+            }
+            "LOAD_BALANCER_HEALTH_CHECK_FIREWALL_FIREWALL_CONFIG_INCONSISTENT" => {
+                Some(Self::LoadBalancerHealthCheckFirewallFirewallConfigInconsistent)
+            }
+            "LOAD_BALANCER_HEALTH_CHECK_FIREWALL_HEALTH_CHECK_RANGE_PARTIALLY_BLOCKED" => {
+                Some(
+                    Self::LoadBalancerHealthCheckFirewallHealthCheckRangePartiallyBlocked,
+                )
+            }
+            "LOAD_BALANCER_BEST_PRACTICES_BACKEND_SERVICE_BALANCING_MODE_BREAKS_SESSION_AFFINITY" => {
+                Some(
+                    Self::LoadBalancerBestPracticesBackendServiceBalancingModeBreaksSessionAffinity,
+                )
+            }
+            "LOAD_BALANCER_BEST_PRACTICES_BACKEND_SERVICE_HEALTH_CHECK_PORT_MISMATCH" => {
+                Some(
+                    Self::LoadBalancerBestPracticesBackendServiceHealthCheckPortMismatch,
+                )
+            }
+            _ => None,
         }
     }
 }

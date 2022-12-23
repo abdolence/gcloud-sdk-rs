@@ -106,6 +106,20 @@ pub mod access_reason {
                 }
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CUSTOMER_INITIATED_SUPPORT" => Some(Self::CustomerInitiatedSupport),
+                "GOOGLE_INITIATED_SERVICE" => Some(Self::GoogleInitiatedService),
+                "GOOGLE_INITIATED_REVIEW" => Some(Self::GoogleInitiatedReview),
+                "THIRD_PARTY_DATA_REQUEST" => Some(Self::ThirdPartyDataRequest),
+                "GOOGLE_RESPONSE_TO_PRODUCTION_ALERT" => {
+                    Some(Self::GoogleResponseToProductionAlert)
+                }
+                _ => None,
+            }
+        }
     }
 }
 /// Information about the digital signature of the resource.
@@ -514,6 +528,14 @@ impl EnrollmentLevel {
         match self {
             EnrollmentLevel::Unspecified => "ENROLLMENT_LEVEL_UNSPECIFIED",
             EnrollmentLevel::BlockAll => "BLOCK_ALL",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "ENROLLMENT_LEVEL_UNSPECIFIED" => Some(Self::Unspecified),
+            "BLOCK_ALL" => Some(Self::BlockAll),
+            _ => None,
         }
     }
 }

@@ -236,6 +236,15 @@ pub mod policy {
                     AllValues::Deny => "DENY",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "ALL_VALUES_UNSPECIFIED" => Some(Self::Unspecified),
+                    "ALLOW" => Some(Self::Allow),
+                    "DENY" => Some(Self::Deny),
+                    _ => None,
+                }
+            }
         }
     }
     /// Used in `policy_type` to specify how `boolean_policy` will behave at this

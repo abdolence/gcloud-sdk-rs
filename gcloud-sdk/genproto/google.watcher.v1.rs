@@ -139,6 +139,16 @@ pub mod change {
                 State::Error => "ERROR",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "EXISTS" => Some(Self::Exists),
+                "DOES_NOT_EXIST" => Some(Self::DoesNotExist),
+                "INITIAL_STATE_SKIPPED" => Some(Self::InitialStateSkipped),
+                "ERROR" => Some(Self::Error),
+                _ => None,
+            }
+        }
     }
 }
 /// Generated client implementations.

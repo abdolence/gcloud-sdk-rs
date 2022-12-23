@@ -394,6 +394,14 @@ impl AnnotationSource {
             AnnotationSource::Operator => "OPERATOR",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "ANNOTATION_SOURCE_UNSPECIFIED" => Some(Self::Unspecified),
+            "OPERATOR" => Some(Self::Operator),
+            _ => None,
+        }
+    }
 }
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
@@ -414,6 +422,15 @@ impl AnnotationSentiment {
             AnnotationSentiment::Unspecified => "ANNOTATION_SENTIMENT_UNSPECIFIED",
             AnnotationSentiment::Negative => "NEGATIVE",
             AnnotationSentiment::Positive => "POSITIVE",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "ANNOTATION_SENTIMENT_UNSPECIFIED" => Some(Self::Unspecified),
+            "NEGATIVE" => Some(Self::Negative),
+            "POSITIVE" => Some(Self::Positive),
+            _ => None,
         }
     }
 }
@@ -491,6 +508,40 @@ impl AnnotationType {
             AnnotationType::GeneralClassificationAnnotation => {
                 "GENERAL_CLASSIFICATION_ANNOTATION"
             }
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "ANNOTATION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "IMAGE_CLASSIFICATION_ANNOTATION" => {
+                Some(Self::ImageClassificationAnnotation)
+            }
+            "IMAGE_BOUNDING_BOX_ANNOTATION" => Some(Self::ImageBoundingBoxAnnotation),
+            "IMAGE_ORIENTED_BOUNDING_BOX_ANNOTATION" => {
+                Some(Self::ImageOrientedBoundingBoxAnnotation)
+            }
+            "IMAGE_BOUNDING_POLY_ANNOTATION" => Some(Self::ImageBoundingPolyAnnotation),
+            "IMAGE_POLYLINE_ANNOTATION" => Some(Self::ImagePolylineAnnotation),
+            "IMAGE_SEGMENTATION_ANNOTATION" => Some(Self::ImageSegmentationAnnotation),
+            "VIDEO_SHOTS_CLASSIFICATION_ANNOTATION" => {
+                Some(Self::VideoShotsClassificationAnnotation)
+            }
+            "VIDEO_OBJECT_TRACKING_ANNOTATION" => {
+                Some(Self::VideoObjectTrackingAnnotation)
+            }
+            "VIDEO_OBJECT_DETECTION_ANNOTATION" => {
+                Some(Self::VideoObjectDetectionAnnotation)
+            }
+            "VIDEO_EVENT_ANNOTATION" => Some(Self::VideoEventAnnotation),
+            "TEXT_CLASSIFICATION_ANNOTATION" => Some(Self::TextClassificationAnnotation),
+            "TEXT_ENTITY_EXTRACTION_ANNOTATION" => {
+                Some(Self::TextEntityExtractionAnnotation)
+            }
+            "GENERAL_CLASSIFICATION_ANNOTATION" => {
+                Some(Self::GeneralClassificationAnnotation)
+            }
+            _ => None,
         }
     }
 }
@@ -774,6 +825,16 @@ impl StringAggregationType {
             StringAggregationType::MajorityVote => "MAJORITY_VOTE",
             StringAggregationType::UnanimousVote => "UNANIMOUS_VOTE",
             StringAggregationType::NoAggregation => "NO_AGGREGATION",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "STRING_AGGREGATION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "MAJORITY_VOTE" => Some(Self::MajorityVote),
+            "UNANIMOUS_VOTE" => Some(Self::UnanimousVote),
+            "NO_AGGREGATION" => Some(Self::NoAggregation),
+            _ => None,
         }
     }
 }
@@ -1161,6 +1222,17 @@ impl DataType {
             DataType::GeneralData => "GENERAL_DATA",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "DATA_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "IMAGE" => Some(Self::Image),
+            "VIDEO" => Some(Self::Video),
+            "TEXT" => Some(Self::Text),
+            "GENERAL_DATA" => Some(Self::GeneralData),
+            _ => None,
+        }
+    }
 }
 /// Describes an evaluation between a machine learning model's predictions and
 /// ground truth labels. Created when an \[EvaluationJob][google.cloud.datalabeling.v1beta1.EvaluationJob\] runs successfully.
@@ -1519,6 +1591,17 @@ pub mod evaluation_job {
                 State::Running => "RUNNING",
                 State::Paused => "PAUSED",
                 State::Stopped => "STOPPED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "SCHEDULED" => Some(Self::Scheduled),
+                "RUNNING" => Some(Self::Running),
+                "PAUSED" => Some(Self::Paused),
+                "STOPPED" => Some(Self::Stopped),
+                _ => None,
             }
         }
     }
@@ -1999,6 +2082,19 @@ pub mod label_image_request {
                 Feature::Segmentation => "SEGMENTATION",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "FEATURE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CLASSIFICATION" => Some(Self::Classification),
+                "BOUNDING_BOX" => Some(Self::BoundingBox),
+                "ORIENTED_BOUNDING_BOX" => Some(Self::OrientedBoundingBox),
+                "BOUNDING_POLY" => Some(Self::BoundingPoly),
+                "POLYLINE" => Some(Self::Polyline),
+                "SEGMENTATION" => Some(Self::Segmentation),
+                _ => None,
+            }
+        }
     }
     /// Required. Config for labeling tasks. The type of request config must
     /// match the selected feature.
@@ -2086,6 +2182,17 @@ pub mod label_video_request {
                 Feature::Event => "EVENT",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "FEATURE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CLASSIFICATION" => Some(Self::Classification),
+                "OBJECT_DETECTION" => Some(Self::ObjectDetection),
+                "OBJECT_TRACKING" => Some(Self::ObjectTracking),
+                "EVENT" => Some(Self::Event),
+                _ => None,
+            }
+        }
     }
     /// Required. Config for labeling tasks. The type of request config must
     /// match the selected feature.
@@ -2165,6 +2272,15 @@ pub mod label_text_request {
                 Feature::Unspecified => "FEATURE_UNSPECIFIED",
                 Feature::TextClassification => "TEXT_CLASSIFICATION",
                 Feature::TextEntityExtraction => "TEXT_ENTITY_EXTRACTION",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "FEATURE_UNSPECIFIED" => Some(Self::Unspecified),
+                "TEXT_CLASSIFICATION" => Some(Self::TextClassification),
+                "TEXT_ENTITY_EXTRACTION" => Some(Self::TextEntityExtraction),
+                _ => None,
             }
         }
     }

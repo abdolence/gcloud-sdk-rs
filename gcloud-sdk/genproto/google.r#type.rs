@@ -604,6 +604,20 @@ impl DayOfWeek {
             DayOfWeek::Sunday => "SUNDAY",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "DAY_OF_WEEK_UNSPECIFIED" => Some(Self::Unspecified),
+            "MONDAY" => Some(Self::Monday),
+            "TUESDAY" => Some(Self::Tuesday),
+            "WEDNESDAY" => Some(Self::Wednesday),
+            "THURSDAY" => Some(Self::Thursday),
+            "FRIDAY" => Some(Self::Friday),
+            "SATURDAY" => Some(Self::Saturday),
+            "SUNDAY" => Some(Self::Sunday),
+            _ => None,
+        }
+    }
 }
 /// Represents a time of day. The date and time zone are either not significant
 /// or are specified elsewhere. An API may choose to allow leap seconds. Related
@@ -669,6 +683,20 @@ impl CalendarPeriod {
             CalendarPeriod::Quarter => "QUARTER",
             CalendarPeriod::Half => "HALF",
             CalendarPeriod::Year => "YEAR",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "CALENDAR_PERIOD_UNSPECIFIED" => Some(Self::Unspecified),
+            "DAY" => Some(Self::Day),
+            "WEEK" => Some(Self::Week),
+            "FORTNIGHT" => Some(Self::Fortnight),
+            "MONTH" => Some(Self::Month),
+            "QUARTER" => Some(Self::Quarter),
+            "HALF" => Some(Self::Half),
+            "YEAR" => Some(Self::Year),
+            _ => None,
         }
     }
 }
@@ -749,6 +777,25 @@ impl Month {
             Month::October => "OCTOBER",
             Month::November => "NOVEMBER",
             Month::December => "DECEMBER",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "MONTH_UNSPECIFIED" => Some(Self::Unspecified),
+            "JANUARY" => Some(Self::January),
+            "FEBRUARY" => Some(Self::February),
+            "MARCH" => Some(Self::March),
+            "APRIL" => Some(Self::April),
+            "MAY" => Some(Self::May),
+            "JUNE" => Some(Self::June),
+            "JULY" => Some(Self::July),
+            "AUGUST" => Some(Self::August),
+            "SEPTEMBER" => Some(Self::September),
+            "OCTOBER" => Some(Self::October),
+            "NOVEMBER" => Some(Self::November),
+            "DECEMBER" => Some(Self::December),
+            _ => None,
         }
     }
 }

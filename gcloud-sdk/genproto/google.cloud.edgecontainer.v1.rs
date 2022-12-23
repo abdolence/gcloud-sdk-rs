@@ -336,6 +336,16 @@ pub mod vpn_connection {
                     State::Error => "STATE_ERROR",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "STATE_CONNECTED" => Some(Self::Connected),
+                    "STATE_CONNECTING" => Some(Self::Connecting),
+                    "STATE_ERROR" => Some(Self::Error),
+                    _ => None,
+                }
+            }
         }
     }
     /// Routing mode.
@@ -369,6 +379,15 @@ pub mod vpn_connection {
                 BgpRoutingMode::Unspecified => "BGP_ROUTING_MODE_UNSPECIFIED",
                 BgpRoutingMode::Regional => "REGIONAL",
                 BgpRoutingMode::Global => "GLOBAL",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "BGP_ROUTING_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "REGIONAL" => Some(Self::Regional),
+                "GLOBAL" => Some(Self::Global),
+                _ => None,
             }
         }
     }
@@ -471,6 +490,15 @@ impl KmsKeyState {
             KmsKeyState::Unspecified => "KMS_KEY_STATE_UNSPECIFIED",
             KmsKeyState::KeyAvailable => "KMS_KEY_STATE_KEY_AVAILABLE",
             KmsKeyState::KeyUnavailable => "KMS_KEY_STATE_KEY_UNAVAILABLE",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "KMS_KEY_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+            "KMS_KEY_STATE_KEY_AVAILABLE" => Some(Self::KeyAvailable),
+            "KMS_KEY_STATE_KEY_UNAVAILABLE" => Some(Self::KeyUnavailable),
+            _ => None,
         }
     }
 }

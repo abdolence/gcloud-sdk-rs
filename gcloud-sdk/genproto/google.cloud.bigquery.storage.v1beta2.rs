@@ -62,6 +62,15 @@ pub mod arrow_serialization_options {
                 Format::Arrow015 => "ARROW_0_15",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "FORMAT_UNSPECIFIED" => Some(Self::Unspecified),
+                "ARROW_0_14" => Some(Self::Arrow014),
+                "ARROW_0_15" => Some(Self::Arrow015),
+                _ => None,
+            }
+        }
     }
 }
 /// Avro schema.
@@ -204,6 +213,28 @@ pub mod table_field_schema {
                 Type::Json => "JSON",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "STRING" => Some(Self::String),
+                "INT64" => Some(Self::Int64),
+                "DOUBLE" => Some(Self::Double),
+                "STRUCT" => Some(Self::Struct),
+                "BYTES" => Some(Self::Bytes),
+                "BOOL" => Some(Self::Bool),
+                "TIMESTAMP" => Some(Self::Timestamp),
+                "DATE" => Some(Self::Date),
+                "TIME" => Some(Self::Time),
+                "DATETIME" => Some(Self::Datetime),
+                "GEOGRAPHY" => Some(Self::Geography),
+                "NUMERIC" => Some(Self::Numeric),
+                "BIGNUMERIC" => Some(Self::Bignumeric),
+                "INTERVAL" => Some(Self::Interval),
+                "JSON" => Some(Self::Json),
+                _ => None,
+            }
+        }
     }
     #[derive(
         Clone,
@@ -235,6 +266,16 @@ pub mod table_field_schema {
                 Mode::Nullable => "NULLABLE",
                 Mode::Required => "REQUIRED",
                 Mode::Repeated => "REPEATED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "NULLABLE" => Some(Self::Nullable),
+                "REQUIRED" => Some(Self::Required),
+                "REPEATED" => Some(Self::Repeated),
+                _ => None,
             }
         }
     }
@@ -409,6 +450,16 @@ pub mod write_stream {
                 Type::Buffered => "BUFFERED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "COMMITTED" => Some(Self::Committed),
+                "PENDING" => Some(Self::Pending),
+                "BUFFERED" => Some(Self::Buffered),
+                _ => None,
+            }
+        }
     }
 }
 /// Data format for input or output data.
@@ -433,6 +484,15 @@ impl DataFormat {
             DataFormat::Unspecified => "DATA_FORMAT_UNSPECIFIED",
             DataFormat::Avro => "AVRO",
             DataFormat::Arrow => "ARROW",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "DATA_FORMAT_UNSPECIFIED" => Some(Self::Unspecified),
+            "AVRO" => Some(Self::Avro),
+            "ARROW" => Some(Self::Arrow),
+            _ => None,
         }
     }
 }
@@ -856,6 +916,19 @@ pub mod storage_error {
                 StorageErrorCode::InvalidStreamType => "INVALID_STREAM_TYPE",
                 StorageErrorCode::InvalidStreamState => "INVALID_STREAM_STATE",
                 StorageErrorCode::StreamFinalized => "STREAM_FINALIZED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STORAGE_ERROR_CODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "TABLE_NOT_FOUND" => Some(Self::TableNotFound),
+                "STREAM_ALREADY_COMMITTED" => Some(Self::StreamAlreadyCommitted),
+                "STREAM_NOT_FOUND" => Some(Self::StreamNotFound),
+                "INVALID_STREAM_TYPE" => Some(Self::InvalidStreamType),
+                "INVALID_STREAM_STATE" => Some(Self::InvalidStreamState),
+                "STREAM_FINALIZED" => Some(Self::StreamFinalized),
+                _ => None,
             }
         }
     }

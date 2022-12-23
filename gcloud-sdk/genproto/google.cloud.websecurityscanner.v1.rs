@@ -177,6 +177,28 @@ pub mod xss {
                 AttackVector::UserControllableUrl => "USER_CONTROLLABLE_URL",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ATTACK_VECTOR_UNSPECIFIED" => Some(Self::Unspecified),
+                "LOCAL_STORAGE" => Some(Self::LocalStorage),
+                "SESSION_STORAGE" => Some(Self::SessionStorage),
+                "WINDOW_NAME" => Some(Self::WindowName),
+                "REFERRER" => Some(Self::Referrer),
+                "FORM_INPUT" => Some(Self::FormInput),
+                "COOKIE" => Some(Self::Cookie),
+                "POST_MESSAGE" => Some(Self::PostMessage),
+                "GET_PARAMETERS" => Some(Self::GetParameters),
+                "URL_FRAGMENT" => Some(Self::UrlFragment),
+                "HTML_COMMENT" => Some(Self::HtmlComment),
+                "POST_PARAMETERS" => Some(Self::PostParameters),
+                "PROTOCOL" => Some(Self::Protocol),
+                "STORED_XSS" => Some(Self::StoredXss),
+                "SAME_ORIGIN" => Some(Self::SameOrigin),
+                "USER_CONTROLLABLE_URL" => Some(Self::UserControllableUrl),
+                _ => None,
+            }
+        }
     }
 }
 /// Information reported for an XXE.
@@ -221,6 +243,14 @@ pub mod xxe {
             match self {
                 Location::Unspecified => "LOCATION_UNSPECIFIED",
                 Location::CompleteRequestBody => "COMPLETE_REQUEST_BODY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "LOCATION_UNSPECIFIED" => Some(Self::Unspecified),
+                "COMPLETE_REQUEST_BODY" => Some(Self::CompleteRequestBody),
+                _ => None,
             }
         }
     }
@@ -336,6 +366,17 @@ pub mod finding {
                 Severity::High => "HIGH",
                 Severity::Medium => "MEDIUM",
                 Severity::Low => "LOW",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SEVERITY_UNSPECIFIED" => Some(Self::Unspecified),
+                "CRITICAL" => Some(Self::Critical),
+                "HIGH" => Some(Self::High),
+                "MEDIUM" => Some(Self::Medium),
+                "LOW" => Some(Self::Low),
+                _ => None,
             }
         }
     }
@@ -542,6 +583,16 @@ pub mod scan_config {
                 UserAgent::SafariIphone => "SAFARI_IPHONE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "USER_AGENT_UNSPECIFIED" => Some(Self::Unspecified),
+                "CHROME_LINUX" => Some(Self::ChromeLinux),
+                "CHROME_ANDROID" => Some(Self::ChromeAndroid),
+                "SAFARI_IPHONE" => Some(Self::SafariIphone),
+                _ => None,
+            }
+        }
     }
     /// Scan risk levels supported by Web Security Scanner. LOW impact
     /// scanning will minimize requests with the potential to modify data. To
@@ -576,6 +627,15 @@ pub mod scan_config {
                 RiskLevel::Unspecified => "RISK_LEVEL_UNSPECIFIED",
                 RiskLevel::Normal => "NORMAL",
                 RiskLevel::Low => "LOW",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "RISK_LEVEL_UNSPECIFIED" => Some(Self::Unspecified),
+                "NORMAL" => Some(Self::Normal),
+                "LOW" => Some(Self::Low),
+                _ => None,
             }
         }
     }
@@ -613,6 +673,17 @@ pub mod scan_config {
                 }
                 ExportToSecurityCommandCenter::Enabled => "ENABLED",
                 ExportToSecurityCommandCenter::Disabled => "DISABLED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "EXPORT_TO_SECURITY_COMMAND_CENTER_UNSPECIFIED" => {
+                    Some(Self::Unspecified)
+                }
+                "ENABLED" => Some(Self::Enabled),
+                "DISABLED" => Some(Self::Disabled),
+                _ => None,
             }
         }
     }
@@ -823,6 +894,85 @@ pub mod scan_config_error {
                 Code::UnsupportedUrlScheme => "UNSUPPORTED_URL_SCHEME",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "INTERNAL_ERROR" => Some(Self::InternalError),
+                "APPENGINE_API_BACKEND_ERROR" => Some(Self::AppengineApiBackendError),
+                "APPENGINE_API_NOT_ACCESSIBLE" => Some(Self::AppengineApiNotAccessible),
+                "APPENGINE_DEFAULT_HOST_MISSING" => {
+                    Some(Self::AppengineDefaultHostMissing)
+                }
+                "CANNOT_USE_GOOGLE_COM_ACCOUNT" => Some(Self::CannotUseGoogleComAccount),
+                "CANNOT_USE_OWNER_ACCOUNT" => Some(Self::CannotUseOwnerAccount),
+                "COMPUTE_API_BACKEND_ERROR" => Some(Self::ComputeApiBackendError),
+                "COMPUTE_API_NOT_ACCESSIBLE" => Some(Self::ComputeApiNotAccessible),
+                "CUSTOM_LOGIN_URL_DOES_NOT_BELONG_TO_CURRENT_PROJECT" => {
+                    Some(Self::CustomLoginUrlDoesNotBelongToCurrentProject)
+                }
+                "CUSTOM_LOGIN_URL_MALFORMED" => Some(Self::CustomLoginUrlMalformed),
+                "CUSTOM_LOGIN_URL_MAPPED_TO_NON_ROUTABLE_ADDRESS" => {
+                    Some(Self::CustomLoginUrlMappedToNonRoutableAddress)
+                }
+                "CUSTOM_LOGIN_URL_MAPPED_TO_UNRESERVED_ADDRESS" => {
+                    Some(Self::CustomLoginUrlMappedToUnreservedAddress)
+                }
+                "CUSTOM_LOGIN_URL_HAS_NON_ROUTABLE_IP_ADDRESS" => {
+                    Some(Self::CustomLoginUrlHasNonRoutableIpAddress)
+                }
+                "CUSTOM_LOGIN_URL_HAS_UNRESERVED_IP_ADDRESS" => {
+                    Some(Self::CustomLoginUrlHasUnreservedIpAddress)
+                }
+                "DUPLICATE_SCAN_NAME" => Some(Self::DuplicateScanName),
+                "INVALID_FIELD_VALUE" => Some(Self::InvalidFieldValue),
+                "FAILED_TO_AUTHENTICATE_TO_TARGET" => {
+                    Some(Self::FailedToAuthenticateToTarget)
+                }
+                "FINDING_TYPE_UNSPECIFIED" => Some(Self::FindingTypeUnspecified),
+                "FORBIDDEN_TO_SCAN_COMPUTE" => Some(Self::ForbiddenToScanCompute),
+                "FORBIDDEN_UPDATE_TO_MANAGED_SCAN" => {
+                    Some(Self::ForbiddenUpdateToManagedScan)
+                }
+                "MALFORMED_FILTER" => Some(Self::MalformedFilter),
+                "MALFORMED_RESOURCE_NAME" => Some(Self::MalformedResourceName),
+                "PROJECT_INACTIVE" => Some(Self::ProjectInactive),
+                "REQUIRED_FIELD" => Some(Self::RequiredField),
+                "RESOURCE_NAME_INCONSISTENT" => Some(Self::ResourceNameInconsistent),
+                "SCAN_ALREADY_RUNNING" => Some(Self::ScanAlreadyRunning),
+                "SCAN_NOT_RUNNING" => Some(Self::ScanNotRunning),
+                "SEED_URL_DOES_NOT_BELONG_TO_CURRENT_PROJECT" => {
+                    Some(Self::SeedUrlDoesNotBelongToCurrentProject)
+                }
+                "SEED_URL_MALFORMED" => Some(Self::SeedUrlMalformed),
+                "SEED_URL_MAPPED_TO_NON_ROUTABLE_ADDRESS" => {
+                    Some(Self::SeedUrlMappedToNonRoutableAddress)
+                }
+                "SEED_URL_MAPPED_TO_UNRESERVED_ADDRESS" => {
+                    Some(Self::SeedUrlMappedToUnreservedAddress)
+                }
+                "SEED_URL_HAS_NON_ROUTABLE_IP_ADDRESS" => {
+                    Some(Self::SeedUrlHasNonRoutableIpAddress)
+                }
+                "SEED_URL_HAS_UNRESERVED_IP_ADDRESS" => {
+                    Some(Self::SeedUrlHasUnreservedIpAddress)
+                }
+                "SERVICE_ACCOUNT_NOT_CONFIGURED" => {
+                    Some(Self::ServiceAccountNotConfigured)
+                }
+                "TOO_MANY_SCANS" => Some(Self::TooManyScans),
+                "UNABLE_TO_RESOLVE_PROJECT_INFO" => {
+                    Some(Self::UnableToResolveProjectInfo)
+                }
+                "UNSUPPORTED_BLACKLIST_PATTERN_FORMAT" => {
+                    Some(Self::UnsupportedBlacklistPatternFormat)
+                }
+                "UNSUPPORTED_FILTER" => Some(Self::UnsupportedFilter),
+                "UNSUPPORTED_FINDING_TYPE" => Some(Self::UnsupportedFindingType),
+                "UNSUPPORTED_URL_SCHEME" => Some(Self::UnsupportedUrlScheme),
+                _ => None,
+            }
+        }
     }
 }
 /// Output only.
@@ -898,6 +1048,19 @@ pub mod scan_run_error_trace {
                 Code::TooManyHttpErrors => "TOO_MANY_HTTP_ERRORS",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "INTERNAL_ERROR" => Some(Self::InternalError),
+                "SCAN_CONFIG_ISSUE" => Some(Self::ScanConfigIssue),
+                "AUTHENTICATION_CONFIG_ISSUE" => Some(Self::AuthenticationConfigIssue),
+                "TIMED_OUT_WHILE_SCANNING" => Some(Self::TimedOutWhileScanning),
+                "TOO_MANY_REDIRECTS" => Some(Self::TooManyRedirects),
+                "TOO_MANY_HTTP_ERRORS" => Some(Self::TooManyHttpErrors),
+                _ => None,
+            }
+        }
     }
 }
 /// Output only.
@@ -961,6 +1124,20 @@ pub mod scan_run_warning_trace {
                 Code::NoStartingUrlFoundForManagedScan => {
                     "NO_STARTING_URL_FOUND_FOR_MANAGED_SCAN"
                 }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "INSUFFICIENT_CRAWL_RESULTS" => Some(Self::InsufficientCrawlResults),
+                "TOO_MANY_CRAWL_RESULTS" => Some(Self::TooManyCrawlResults),
+                "TOO_MANY_FUZZ_TASKS" => Some(Self::TooManyFuzzTasks),
+                "BLOCKED_BY_IAP" => Some(Self::BlockedByIap),
+                "NO_STARTING_URL_FOUND_FOR_MANAGED_SCAN" => {
+                    Some(Self::NoStartingUrlFoundForManagedScan)
+                }
+                _ => None,
             }
         }
     }
@@ -1055,6 +1232,16 @@ pub mod scan_run {
                 ExecutionState::Finished => "FINISHED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "EXECUTION_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "QUEUED" => Some(Self::Queued),
+                "SCANNING" => Some(Self::Scanning),
+                "FINISHED" => Some(Self::Finished),
+                _ => None,
+            }
+        }
     }
     /// Types of ScanRun result state.
     #[derive(
@@ -1091,6 +1278,16 @@ pub mod scan_run {
                 ResultState::Success => "SUCCESS",
                 ResultState::Error => "ERROR",
                 ResultState::Killed => "KILLED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "RESULT_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "SUCCESS" => Some(Self::Success),
+                "ERROR" => Some(Self::Error),
+                "KILLED" => Some(Self::Killed),
+                _ => None,
             }
         }
     }

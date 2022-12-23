@@ -1175,6 +1175,43 @@ pub mod service_constants {
                 Values::SplitTokenMaxValidDays => "SPLIT_TOKEN_MAX_VALID_DAYS",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "VALUES_UNSPECIFIED" => Some(Self::Unspecified),
+                "MAX_READ_CHUNK_BYTES" => Some(Self::MaxReadChunkBytes),
+                "MAX_OBJECT_SIZE_MB" => Some(Self::MaxObjectSizeMb),
+                "MAX_CUSTOM_METADATA_FIELD_NAME_BYTES" => {
+                    Some(Self::MaxCustomMetadataFieldNameBytes)
+                }
+                "MAX_CUSTOM_METADATA_FIELD_VALUE_BYTES" => {
+                    Some(Self::MaxCustomMetadataFieldValueBytes)
+                }
+                "MAX_CUSTOM_METADATA_TOTAL_SIZE_BYTES" => {
+                    Some(Self::MaxCustomMetadataTotalSizeBytes)
+                }
+                "MAX_BUCKET_METADATA_TOTAL_SIZE_BYTES" => {
+                    Some(Self::MaxBucketMetadataTotalSizeBytes)
+                }
+                "MAX_NOTIFICATION_CONFIGS_PER_BUCKET" => {
+                    Some(Self::MaxNotificationConfigsPerBucket)
+                }
+                "MAX_NOTIFICATION_CUSTOM_ATTRIBUTES" => {
+                    Some(Self::MaxNotificationCustomAttributes)
+                }
+                "MAX_NOTIFICATION_CUSTOM_ATTRIBUTE_KEY_LENGTH" => {
+                    Some(Self::MaxNotificationCustomAttributeKeyLength)
+                }
+                "MAX_LABELS_ENTRIES_COUNT" => Some(Self::MaxLabelsEntriesCount),
+                "MAX_LABELS_KEY_VALUE_LENGTH" => Some(Self::MaxLabelsKeyValueLength),
+                "MAX_LABELS_KEY_VALUE_BYTES" => Some(Self::MaxLabelsKeyValueBytes),
+                "MAX_OBJECT_IDS_PER_DELETE_OBJECTS_REQUEST" => {
+                    Some(Self::MaxObjectIdsPerDeleteObjectsRequest)
+                }
+                "SPLIT_TOKEN_MAX_VALID_DAYS" => Some(Self::SplitTokenMaxValidDays),
+                _ => None,
+            }
+        }
     }
 }
 /// A bucket.

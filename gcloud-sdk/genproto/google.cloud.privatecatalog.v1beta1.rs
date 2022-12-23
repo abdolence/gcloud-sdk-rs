@@ -398,6 +398,16 @@ pub mod asset_reference {
                 AssetValidationState::Invalid => "INVALID",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ASSET_VALIDATION_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PENDING" => Some(Self::Pending),
+                "VALID" => Some(Self::Valid),
+                "INVALID" => Some(Self::Invalid),
+                _ => None,
+            }
+        }
     }
     /// The destination of the asset.
     #[allow(clippy::derive_partial_eq_without_eq)]

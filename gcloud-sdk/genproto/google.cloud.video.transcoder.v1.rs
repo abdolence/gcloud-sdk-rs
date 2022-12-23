@@ -98,6 +98,17 @@ pub mod job {
                 ProcessingState::Failed => "FAILED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PROCESSING_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PENDING" => Some(Self::Pending),
+                "RUNNING" => Some(Self::Running),
+                "SUCCEEDED" => Some(Self::Succeeded),
+                "FAILED" => Some(Self::Failed),
+                _ => None,
+            }
+        }
     }
     /// Specify the `job_config` for the transcoding job. If you don't specify the
     /// `job_config`, the API selects `templateId`; this template ID is set to
@@ -360,6 +371,15 @@ pub mod manifest {
                 ManifestType::Dash => "DASH",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MANIFEST_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "HLS" => Some(Self::Hls),
+                "DASH" => Some(Self::Dash),
+                _ => None,
+            }
+        }
     }
 }
 /// A Pub/Sub destination.
@@ -602,6 +622,15 @@ pub mod overlay {
                 FadeType::Unspecified => "FADE_TYPE_UNSPECIFIED",
                 FadeType::FadeIn => "FADE_IN",
                 FadeType::FadeOut => "FADE_OUT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "FADE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "FADE_IN" => Some(Self::FadeIn),
+                "FADE_OUT" => Some(Self::FadeOut),
+                _ => None,
             }
         }
     }

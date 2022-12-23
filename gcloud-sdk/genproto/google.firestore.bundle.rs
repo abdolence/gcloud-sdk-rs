@@ -42,6 +42,14 @@ pub mod bundled_query {
                 LimitType::Last => "LAST",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "FIRST" => Some(Self::First),
+                "LAST" => Some(Self::Last),
+                _ => None,
+            }
+        }
     }
     /// The query to run.
     #[allow(clippy::derive_partial_eq_without_eq)]

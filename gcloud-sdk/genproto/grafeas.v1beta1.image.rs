@@ -89,6 +89,30 @@ pub mod layer {
                 Directive::Shell => "SHELL",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DIRECTIVE_UNSPECIFIED" => Some(Self::Unspecified),
+                "MAINTAINER" => Some(Self::Maintainer),
+                "RUN" => Some(Self::Run),
+                "CMD" => Some(Self::Cmd),
+                "LABEL" => Some(Self::Label),
+                "EXPOSE" => Some(Self::Expose),
+                "ENV" => Some(Self::Env),
+                "ADD" => Some(Self::Add),
+                "COPY" => Some(Self::Copy),
+                "ENTRYPOINT" => Some(Self::Entrypoint),
+                "VOLUME" => Some(Self::Volume),
+                "USER" => Some(Self::User),
+                "WORKDIR" => Some(Self::Workdir),
+                "ARG" => Some(Self::Arg),
+                "ONBUILD" => Some(Self::Onbuild),
+                "STOPSIGNAL" => Some(Self::Stopsignal),
+                "HEALTHCHECK" => Some(Self::Healthcheck),
+                "SHELL" => Some(Self::Shell),
+                _ => None,
+            }
+        }
     }
 }
 /// A set of properties that uniquely identify a given Docker image.

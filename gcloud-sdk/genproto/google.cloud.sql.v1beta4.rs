@@ -63,6 +63,14 @@ pub mod api_warning {
                 SqlApiWarningCode::RegionUnreachable => "REGION_UNREACHABLE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SQL_API_WARNING_CODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "REGION_UNREACHABLE" => Some(Self::RegionUnreachable),
+                _ => None,
+            }
+        }
     }
 }
 /// We currently only support backup retention by specifying the number
@@ -109,6 +117,14 @@ pub mod backup_retention_settings {
             match self {
                 RetentionUnit::Unspecified => "RETENTION_UNIT_UNSPECIFIED",
                 RetentionUnit::Count => "COUNT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "RETENTION_UNIT_UNSPECIFIED" => Some(Self::Unspecified),
+                "COUNT" => Some(Self::Count),
+                _ => None,
             }
         }
     }
@@ -641,6 +657,15 @@ pub mod database_instance {
                     SqlOutOfDiskState::SoftShutdown => "SOFT_SHUTDOWN",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "SQL_OUT_OF_DISK_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "NORMAL" => Some(Self::Normal),
+                    "SOFT_SHUTDOWN" => Some(Self::SoftShutdown),
+                    _ => None,
+                }
+            }
         }
     }
     /// The current serving state of the database instance.
@@ -690,6 +715,20 @@ pub mod database_instance {
                 SqlInstanceState::Maintenance => "MAINTENANCE",
                 SqlInstanceState::Failed => "FAILED",
                 SqlInstanceState::OnlineMaintenance => "ONLINE_MAINTENANCE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SQL_INSTANCE_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "RUNNABLE" => Some(Self::Runnable),
+                "SUSPENDED" => Some(Self::Suspended),
+                "PENDING_DELETE" => Some(Self::PendingDelete),
+                "PENDING_CREATE" => Some(Self::PendingCreate),
+                "MAINTENANCE" => Some(Self::Maintenance),
+                "FAILED" => Some(Self::Failed),
+                "ONLINE_MAINTENANCE" => Some(Self::OnlineMaintenance),
+                _ => None,
             }
         }
     }
@@ -1326,6 +1365,53 @@ pub mod sql_external_sync_setting_error {
                 }
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SQL_EXTERNAL_SYNC_SETTING_ERROR_TYPE_UNSPECIFIED" => {
+                    Some(Self::Unspecified)
+                }
+                "CONNECTION_FAILURE" => Some(Self::ConnectionFailure),
+                "BINLOG_NOT_ENABLED" => Some(Self::BinlogNotEnabled),
+                "INCOMPATIBLE_DATABASE_VERSION" => {
+                    Some(Self::IncompatibleDatabaseVersion)
+                }
+                "REPLICA_ALREADY_SETUP" => Some(Self::ReplicaAlreadySetup),
+                "INSUFFICIENT_PRIVILEGE" => Some(Self::InsufficientPrivilege),
+                "UNSUPPORTED_MIGRATION_TYPE" => Some(Self::UnsupportedMigrationType),
+                "NO_PGLOGICAL_INSTALLED" => Some(Self::NoPglogicalInstalled),
+                "PGLOGICAL_NODE_ALREADY_EXISTS" => Some(Self::PglogicalNodeAlreadyExists),
+                "INVALID_WAL_LEVEL" => Some(Self::InvalidWalLevel),
+                "INVALID_SHARED_PRELOAD_LIBRARY" => {
+                    Some(Self::InvalidSharedPreloadLibrary)
+                }
+                "INSUFFICIENT_MAX_REPLICATION_SLOTS" => {
+                    Some(Self::InsufficientMaxReplicationSlots)
+                }
+                "INSUFFICIENT_MAX_WAL_SENDERS" => Some(Self::InsufficientMaxWalSenders),
+                "INSUFFICIENT_MAX_WORKER_PROCESSES" => {
+                    Some(Self::InsufficientMaxWorkerProcesses)
+                }
+                "UNSUPPORTED_EXTENSIONS" => Some(Self::UnsupportedExtensions),
+                "INVALID_RDS_LOGICAL_REPLICATION" => {
+                    Some(Self::InvalidRdsLogicalReplication)
+                }
+                "INVALID_LOGGING_SETUP" => Some(Self::InvalidLoggingSetup),
+                "INVALID_DB_PARAM" => Some(Self::InvalidDbParam),
+                "UNSUPPORTED_GTID_MODE" => Some(Self::UnsupportedGtidMode),
+                "SQLSERVER_AGENT_NOT_RUNNING" => Some(Self::SqlserverAgentNotRunning),
+                "UNSUPPORTED_TABLE_DEFINITION" => Some(Self::UnsupportedTableDefinition),
+                "UNSUPPORTED_DEFINER" => Some(Self::UnsupportedDefiner),
+                "SQLSERVER_SERVERNAME_MISMATCH" => {
+                    Some(Self::SqlserverServernameMismatch)
+                }
+                "PRIMARY_ALREADY_SETUP" => Some(Self::PrimaryAlreadySetup),
+                "UNSUPPORTED_BINLOG_FORMAT" => Some(Self::UnsupportedBinlogFormat),
+                "BINLOG_RETENTION_SETTING" => Some(Self::BinlogRetentionSetting),
+                "UNSUPPORTED_STORAGE_ENGINE" => Some(Self::UnsupportedStorageEngine),
+                _ => None,
+            }
+        }
     }
 }
 /// IP Management configuration.
@@ -1777,6 +1863,47 @@ pub mod operation {
                 SqlOperationType::StartExternalSync => "START_EXTERNAL_SYNC",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SQL_OPERATION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "IMPORT" => Some(Self::Import),
+                "EXPORT" => Some(Self::Export),
+                "CREATE" => Some(Self::Create),
+                "UPDATE" => Some(Self::Update),
+                "DELETE" => Some(Self::Delete),
+                "RESTART" => Some(Self::Restart),
+                "BACKUP" => Some(Self::Backup),
+                "SNAPSHOT" => Some(Self::Snapshot),
+                "BACKUP_VOLUME" => Some(Self::BackupVolume),
+                "DELETE_VOLUME" => Some(Self::DeleteVolume),
+                "RESTORE_VOLUME" => Some(Self::RestoreVolume),
+                "INJECT_USER" => Some(Self::InjectUser),
+                "CLONE" => Some(Self::Clone),
+                "STOP_REPLICA" => Some(Self::StopReplica),
+                "START_REPLICA" => Some(Self::StartReplica),
+                "PROMOTE_REPLICA" => Some(Self::PromoteReplica),
+                "CREATE_REPLICA" => Some(Self::CreateReplica),
+                "CREATE_USER" => Some(Self::CreateUser),
+                "DELETE_USER" => Some(Self::DeleteUser),
+                "UPDATE_USER" => Some(Self::UpdateUser),
+                "CREATE_DATABASE" => Some(Self::CreateDatabase),
+                "DELETE_DATABASE" => Some(Self::DeleteDatabase),
+                "UPDATE_DATABASE" => Some(Self::UpdateDatabase),
+                "FAILOVER" => Some(Self::Failover),
+                "DELETE_BACKUP" => Some(Self::DeleteBackup),
+                "RECREATE_REPLICA" => Some(Self::RecreateReplica),
+                "TRUNCATE_LOG" => Some(Self::TruncateLog),
+                "DEMOTE_MASTER" => Some(Self::DemoteMaster),
+                "MAINTENANCE" => Some(Self::Maintenance),
+                "ENABLE_PRIVATE_IP" => Some(Self::EnablePrivateIp),
+                "DEFER_MAINTENANCE" => Some(Self::DeferMaintenance),
+                "CREATE_CLONE" => Some(Self::CreateClone),
+                "RESCHEDULE_MAINTENANCE" => Some(Self::RescheduleMaintenance),
+                "START_EXTERNAL_SYNC" => Some(Self::StartExternalSync),
+                _ => None,
+            }
+        }
     }
     /// The status of an operation.
     #[derive(
@@ -1812,6 +1939,16 @@ pub mod operation {
                 SqlOperationStatus::Pending => "PENDING",
                 SqlOperationStatus::Running => "RUNNING",
                 SqlOperationStatus::Done => "DONE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SQL_OPERATION_STATUS_UNSPECIFIED" => Some(Self::Unspecified),
+                "PENDING" => Some(Self::Pending),
+                "RUNNING" => Some(Self::Running),
+                "DONE" => Some(Self::Done),
+                _ => None,
             }
         }
     }
@@ -1896,6 +2033,14 @@ pub mod password_validation_policy {
             match self {
                 Complexity::Unspecified => "COMPLEXITY_UNSPECIFIED",
                 Complexity::Default => "COMPLEXITY_DEFAULT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "COMPLEXITY_UNSPECIFIED" => Some(Self::Unspecified),
+                "COMPLEXITY_DEFAULT" => Some(Self::Default),
+                _ => None,
             }
         }
     }
@@ -2131,6 +2276,16 @@ pub mod settings {
                 SqlActivationPolicy::OnDemand => "ON_DEMAND",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SQL_ACTIVATION_POLICY_UNSPECIFIED" => Some(Self::Unspecified),
+                "ALWAYS" => Some(Self::Always),
+                "NEVER" => Some(Self::Never),
+                "ON_DEMAND" => Some(Self::OnDemand),
+                _ => None,
+            }
+        }
     }
 }
 /// SslCerts Resource
@@ -2261,6 +2416,16 @@ pub mod sql_instances_reschedule_maintenance_request_body {
                 RescheduleType::SpecificTime => "SPECIFIC_TIME",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "RESCHEDULE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "IMMEDIATE" => Some(Self::Immediate),
+                "NEXT_AVAILABLE_WINDOW" => Some(Self::NextAvailableWindow),
+                "SPECIFIC_TIME" => Some(Self::SpecificTime),
+                _ => None,
+            }
+        }
     }
 }
 /// SslCert insert response.
@@ -2357,6 +2522,16 @@ impl SqlFileType {
             SqlFileType::Bak => "BAK",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "SQL_FILE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "SQL" => Some(Self::Sql),
+            "CSV" => Some(Self::Csv),
+            "BAK" => Some(Self::Bak),
+            _ => None,
+        }
+    }
 }
 /// The status of a backup run.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -2405,6 +2580,22 @@ impl SqlBackupRunStatus {
             SqlBackupRunStatus::Deleted => "DELETED",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "SQL_BACKUP_RUN_STATUS_UNSPECIFIED" => Some(Self::Unspecified),
+            "ENQUEUED" => Some(Self::Enqueued),
+            "OVERDUE" => Some(Self::Overdue),
+            "RUNNING" => Some(Self::Running),
+            "FAILED" => Some(Self::Failed),
+            "SUCCESSFUL" => Some(Self::Successful),
+            "SKIPPED" => Some(Self::Skipped),
+            "DELETION_PENDING" => Some(Self::DeletionPending),
+            "DELETION_FAILED" => Some(Self::DeletionFailed),
+            "DELETED" => Some(Self::Deleted),
+            _ => None,
+        }
+    }
 }
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
@@ -2426,6 +2617,15 @@ impl SqlBackupRunType {
             SqlBackupRunType::Unspecified => "SQL_BACKUP_RUN_TYPE_UNSPECIFIED",
             SqlBackupRunType::Automated => "AUTOMATED",
             SqlBackupRunType::OnDemand => "ON_DEMAND",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "SQL_BACKUP_RUN_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "AUTOMATED" => Some(Self::Automated),
+            "ON_DEMAND" => Some(Self::OnDemand),
+            _ => None,
         }
     }
 }
@@ -2452,6 +2652,15 @@ impl SqlBackupKind {
             SqlBackupKind::Physical => "PHYSICAL",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "SQL_BACKUP_KIND_UNSPECIFIED" => Some(Self::Unspecified),
+            "SNAPSHOT" => Some(Self::Snapshot),
+            "PHYSICAL" => Some(Self::Physical),
+            _ => None,
+        }
+    }
 }
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
@@ -2476,6 +2685,16 @@ impl SqlBackendType {
             SqlBackendType::FirstGen => "FIRST_GEN",
             SqlBackendType::SecondGen => "SECOND_GEN",
             SqlBackendType::External => "EXTERNAL",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "SQL_BACKEND_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "FIRST_GEN" => Some(Self::FirstGen),
+            "SECOND_GEN" => Some(Self::SecondGen),
+            "EXTERNAL" => Some(Self::External),
+            _ => None,
         }
     }
 }
@@ -2513,6 +2732,17 @@ impl SqlIpAddressType {
             SqlIpAddressType::Migrated1stGen => "MIGRATED_1ST_GEN",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "SQL_IP_ADDRESS_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "PRIMARY" => Some(Self::Primary),
+            "OUTGOING" => Some(Self::Outgoing),
+            "PRIVATE" => Some(Self::Private),
+            "MIGRATED_1ST_GEN" => Some(Self::Migrated1stGen),
+            _ => None,
+        }
+    }
 }
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
@@ -2539,6 +2769,16 @@ impl SqlInstanceType {
             SqlInstanceType::CloudSqlInstance => "CLOUD_SQL_INSTANCE",
             SqlInstanceType::OnPremisesInstance => "ON_PREMISES_INSTANCE",
             SqlInstanceType::ReadReplicaInstance => "READ_REPLICA_INSTANCE",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "SQL_INSTANCE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "CLOUD_SQL_INSTANCE" => Some(Self::CloudSqlInstance),
+            "ON_PREMISES_INSTANCE" => Some(Self::OnPremisesInstance),
+            "READ_REPLICA_INSTANCE" => Some(Self::ReadReplicaInstance),
+            _ => None,
         }
     }
 }
@@ -2628,6 +2868,36 @@ impl SqlDatabaseVersion {
             SqlDatabaseVersion::Sqlserver2019Web => "SQLSERVER_2019_WEB",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "SQL_DATABASE_VERSION_UNSPECIFIED" => Some(Self::Unspecified),
+            "MYSQL_5_1" => Some(Self::Mysql51),
+            "MYSQL_5_5" => Some(Self::Mysql55),
+            "MYSQL_5_6" => Some(Self::Mysql56),
+            "MYSQL_5_7" => Some(Self::Mysql57),
+            "POSTGRES_9_6" => Some(Self::Postgres96),
+            "POSTGRES_11" => Some(Self::Postgres11),
+            "SQLSERVER_2017_STANDARD" => Some(Self::Sqlserver2017Standard),
+            "SQLSERVER_2017_ENTERPRISE" => Some(Self::Sqlserver2017Enterprise),
+            "SQLSERVER_2017_EXPRESS" => Some(Self::Sqlserver2017Express),
+            "SQLSERVER_2017_WEB" => Some(Self::Sqlserver2017Web),
+            "POSTGRES_10" => Some(Self::Postgres10),
+            "POSTGRES_12" => Some(Self::Postgres12),
+            "MYSQL_8_0" => Some(Self::Mysql80),
+            "MYSQL_8_0_18" => Some(Self::Mysql8018),
+            "MYSQL_8_0_26" => Some(Self::Mysql8026),
+            "MYSQL_8_0_27" => Some(Self::Mysql8027),
+            "MYSQL_8_0_28" => Some(Self::Mysql8028),
+            "POSTGRES_13" => Some(Self::Postgres13),
+            "POSTGRES_14" => Some(Self::Postgres14),
+            "SQLSERVER_2019_STANDARD" => Some(Self::Sqlserver2019Standard),
+            "SQLSERVER_2019_ENTERPRISE" => Some(Self::Sqlserver2019Enterprise),
+            "SQLSERVER_2019_EXPRESS" => Some(Self::Sqlserver2019Express),
+            "SQLSERVER_2019_WEB" => Some(Self::Sqlserver2019Web),
+            _ => None,
+        }
+    }
 }
 /// The suspension reason of the database instance if the state is SUSPENDED.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -2661,6 +2931,17 @@ impl SqlSuspensionReason {
             SqlSuspensionReason::KmsKeyIssue => "KMS_KEY_ISSUE",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "SQL_SUSPENSION_REASON_UNSPECIFIED" => Some(Self::Unspecified),
+            "BILLING_ISSUE" => Some(Self::BillingIssue),
+            "LEGAL_ISSUE" => Some(Self::LegalIssue),
+            "OPERATIONAL_ISSUE" => Some(Self::OperationalIssue),
+            "KMS_KEY_ISSUE" => Some(Self::KmsKeyIssue),
+            _ => None,
+        }
+    }
 }
 /// The pricing plan for this instance.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -2683,6 +2964,15 @@ impl SqlPricingPlan {
             SqlPricingPlan::Unspecified => "SQL_PRICING_PLAN_UNSPECIFIED",
             SqlPricingPlan::Package => "PACKAGE",
             SqlPricingPlan::PerUse => "PER_USE",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "SQL_PRICING_PLAN_UNSPECIFIED" => Some(Self::Unspecified),
+            "PACKAGE" => Some(Self::Package),
+            "PER_USE" => Some(Self::PerUse),
+            _ => None,
         }
     }
 }
@@ -2710,6 +3000,15 @@ impl SqlReplicationType {
             SqlReplicationType::Unspecified => "SQL_REPLICATION_TYPE_UNSPECIFIED",
             SqlReplicationType::Synchronous => "SYNCHRONOUS",
             SqlReplicationType::Asynchronous => "ASYNCHRONOUS",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "SQL_REPLICATION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "SYNCHRONOUS" => Some(Self::Synchronous),
+            "ASYNCHRONOUS" => Some(Self::Asynchronous),
+            _ => None,
         }
     }
 }
@@ -2740,6 +3039,16 @@ impl SqlDataDiskType {
             SqlDataDiskType::ObsoleteLocalSsd => "OBSOLETE_LOCAL_SSD",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "SQL_DATA_DISK_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "PD_SSD" => Some(Self::PdSsd),
+            "PD_HDD" => Some(Self::PdHdd),
+            "OBSOLETE_LOCAL_SSD" => Some(Self::ObsoleteLocalSsd),
+            _ => None,
+        }
+    }
 }
 /// The availability type of the given Cloud SQL instance.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -2762,6 +3071,15 @@ impl SqlAvailabilityType {
             SqlAvailabilityType::Unspecified => "SQL_AVAILABILITY_TYPE_UNSPECIFIED",
             SqlAvailabilityType::Zonal => "ZONAL",
             SqlAvailabilityType::Regional => "REGIONAL",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "SQL_AVAILABILITY_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "ZONAL" => Some(Self::Zonal),
+            "REGIONAL" => Some(Self::Regional),
+            _ => None,
         }
     }
 }
@@ -2789,6 +3107,15 @@ impl SqlUpdateTrack {
             SqlUpdateTrack::Unspecified => "SQL_UPDATE_TRACK_UNSPECIFIED",
             SqlUpdateTrack::Canary => "canary",
             SqlUpdateTrack::Stable => "stable",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "SQL_UPDATE_TRACK_UNSPECIFIED" => Some(Self::Unspecified),
+            "canary" => Some(Self::Canary),
+            "stable" => Some(Self::Stable),
+            _ => None,
         }
     }
 }
@@ -2828,6 +3155,20 @@ impl SqlFlagType {
             SqlFlagType::MysqlTimezoneOffset => "MYSQL_TIMEZONE_OFFSET",
             SqlFlagType::Float => "FLOAT",
             SqlFlagType::RepeatedString => "REPEATED_STRING",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "SQL_FLAG_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "BOOLEAN" => Some(Self::Boolean),
+            "STRING" => Some(Self::String),
+            "INTEGER" => Some(Self::Integer),
+            "NONE" => Some(Self::None),
+            "MYSQL_TIMEZONE_OFFSET" => Some(Self::MysqlTimezoneOffset),
+            "FLOAT" => Some(Self::Float),
+            "REPEATED_STRING" => Some(Self::RepeatedString),
+            _ => None,
         }
     }
 }
@@ -3281,6 +3622,15 @@ pub mod sql_instances_verify_external_sync_settings_request {
                 ExternalSyncMode::Unspecified => "EXTERNAL_SYNC_MODE_UNSPECIFIED",
                 ExternalSyncMode::Online => "ONLINE",
                 ExternalSyncMode::Offline => "OFFLINE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "EXTERNAL_SYNC_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ONLINE" => Some(Self::Online),
+                "OFFLINE" => Some(Self::Offline),
+                _ => None,
             }
         }
     }
@@ -5226,6 +5576,15 @@ pub mod user {
                 SqlUserType::BuiltIn => "BUILT_IN",
                 SqlUserType::CloudIamUser => "CLOUD_IAM_USER",
                 SqlUserType::CloudIamServiceAccount => "CLOUD_IAM_SERVICE_ACCOUNT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "BUILT_IN" => Some(Self::BuiltIn),
+                "CLOUD_IAM_USER" => Some(Self::CloudIamUser),
+                "CLOUD_IAM_SERVICE_ACCOUNT" => Some(Self::CloudIamServiceAccount),
+                _ => None,
             }
         }
     }

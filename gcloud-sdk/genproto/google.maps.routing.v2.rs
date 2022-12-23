@@ -42,6 +42,15 @@ impl FallbackReason {
             FallbackReason::LatencyExceeded => "LATENCY_EXCEEDED",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "FALLBACK_REASON_UNSPECIFIED" => Some(Self::Unspecified),
+            "SERVER_ERROR" => Some(Self::ServerError),
+            "LATENCY_EXCEEDED" => Some(Self::LatencyExceeded),
+            _ => None,
+        }
+    }
 }
 /// Actual routing mode used for returned fallback response.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -66,6 +75,15 @@ impl FallbackRoutingMode {
             FallbackRoutingMode::Unspecified => "FALLBACK_ROUTING_MODE_UNSPECIFIED",
             FallbackRoutingMode::FallbackTrafficUnaware => "FALLBACK_TRAFFIC_UNAWARE",
             FallbackRoutingMode::FallbackTrafficAware => "FALLBACK_TRAFFIC_AWARE",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "FALLBACK_ROUTING_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+            "FALLBACK_TRAFFIC_UNAWARE" => Some(Self::FallbackTrafficUnaware),
+            "FALLBACK_TRAFFIC_AWARE" => Some(Self::FallbackTrafficAware),
+            _ => None,
         }
     }
 }
@@ -156,6 +174,31 @@ impl Maneuver {
             Maneuver::RoundaboutRight => "ROUNDABOUT_RIGHT",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "MANEUVER_UNSPECIFIED" => Some(Self::Unspecified),
+            "TURN_SLIGHT_LEFT" => Some(Self::TurnSlightLeft),
+            "TURN_SHARP_LEFT" => Some(Self::TurnSharpLeft),
+            "UTURN_LEFT" => Some(Self::UturnLeft),
+            "TURN_LEFT" => Some(Self::TurnLeft),
+            "TURN_SLIGHT_RIGHT" => Some(Self::TurnSlightRight),
+            "TURN_SHARP_RIGHT" => Some(Self::TurnSharpRight),
+            "UTURN_RIGHT" => Some(Self::UturnRight),
+            "TURN_RIGHT" => Some(Self::TurnRight),
+            "STRAIGHT" => Some(Self::Straight),
+            "RAMP_LEFT" => Some(Self::RampLeft),
+            "RAMP_RIGHT" => Some(Self::RampRight),
+            "MERGE" => Some(Self::Merge),
+            "FORK_LEFT" => Some(Self::ForkLeft),
+            "FORK_RIGHT" => Some(Self::ForkRight),
+            "FERRY" => Some(Self::Ferry),
+            "FERRY_TRAIN" => Some(Self::FerryTrain),
+            "ROUNDABOUT_LEFT" => Some(Self::RoundaboutLeft),
+            "ROUNDABOUT_RIGHT" => Some(Self::RoundaboutRight),
+            _ => None,
+        }
+    }
 }
 /// Encapsulates navigation instructions for a
 /// \[RouteLegStep][google.maps.routing.v2.RouteLegStep\]
@@ -222,6 +265,15 @@ impl PolylineQuality {
             PolylineQuality::Overview => "OVERVIEW",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "POLYLINE_QUALITY_UNSPECIFIED" => Some(Self::Unspecified),
+            "HIGH_QUALITY" => Some(Self::HighQuality),
+            "OVERVIEW" => Some(Self::Overview),
+            _ => None,
+        }
+    }
 }
 /// Specifies the preferred type of polyline to be returned.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -246,6 +298,15 @@ impl PolylineEncoding {
             PolylineEncoding::Unspecified => "POLYLINE_ENCODING_UNSPECIFIED",
             PolylineEncoding::EncodedPolyline => "ENCODED_POLYLINE",
             PolylineEncoding::GeoJsonLinestring => "GEO_JSON_LINESTRING",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "POLYLINE_ENCODING_UNSPECIFIED" => Some(Self::Unspecified),
+            "ENCODED_POLYLINE" => Some(Self::EncodedPolyline),
+            "GEO_JSON_LINESTRING" => Some(Self::GeoJsonLinestring),
+            _ => None,
         }
     }
 }
@@ -277,6 +338,16 @@ impl RouteLabel {
             RouteLabel::DefaultRoute => "DEFAULT_ROUTE",
             RouteLabel::DefaultRouteAlternate => "DEFAULT_ROUTE_ALTERNATE",
             RouteLabel::FuelEfficient => "FUEL_EFFICIENT",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "ROUTE_LABEL_UNSPECIFIED" => Some(Self::Unspecified),
+            "DEFAULT_ROUTE" => Some(Self::DefaultRoute),
+            "DEFAULT_ROUTE_ALTERNATE" => Some(Self::DefaultRouteAlternate),
+            "FUEL_EFFICIENT" => Some(Self::FuelEfficient),
+            _ => None,
         }
     }
 }
@@ -333,6 +404,16 @@ pub mod speed_reading_interval {
                 Speed::Normal => "NORMAL",
                 Speed::Slow => "SLOW",
                 Speed::TrafficJam => "TRAFFIC_JAM",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SPEED_UNSPECIFIED" => Some(Self::Unspecified),
+                "NORMAL" => Some(Self::Normal),
+                "SLOW" => Some(Self::Slow),
+                "TRAFFIC_JAM" => Some(Self::TrafficJam),
+                _ => None,
             }
         }
     }
@@ -872,6 +953,118 @@ impl TollPass {
             TollPass::UsWvNewellTollBridgeTicket => "US_WV_NEWELL_TOLL_BRIDGE_TICKET",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "TOLL_PASS_UNSPECIFIED" => Some(Self::Unspecified),
+            "AU_ETOLL_TAG" => Some(Self::AuEtollTag),
+            "AU_EWAY_TAG" => Some(Self::AuEwayTag),
+            "AU_LINKT" => Some(Self::AuLinkt),
+            "AR_TELEPASE" => Some(Self::ArTelepase),
+            "BR_AUTO_EXPRESO" => Some(Self::BrAutoExpreso),
+            "BR_CONECTCAR" => Some(Self::BrConectcar),
+            "BR_MOVE_MAIS" => Some(Self::BrMoveMais),
+            "BR_PASSA_RAPIDO" => Some(Self::BrPassaRapido),
+            "BR_SEM_PARAR" => Some(Self::BrSemParar),
+            "BR_TAGGY" => Some(Self::BrTaggy),
+            "BR_VELOE" => Some(Self::BrVeloe),
+            "CA_US_AKWASASNE_SEAWAY_CORPORATE_CARD" => {
+                Some(Self::CaUsAkwasasneSeawayCorporateCard)
+            }
+            "CA_US_AKWASASNE_SEAWAY_TRANSIT_CARD" => {
+                Some(Self::CaUsAkwasasneSeawayTransitCard)
+            }
+            "CA_US_BLUE_WATER_EDGE_PASS" => Some(Self::CaUsBlueWaterEdgePass),
+            "CA_US_CONNEXION" => Some(Self::CaUsConnexion),
+            "CA_US_NEXUS_CARD" => Some(Self::CaUsNexusCard),
+            "ID_E_TOLL" => Some(Self::IdEToll),
+            "IN_FASTAG" => Some(Self::InFastag),
+            "IN_LOCAL_HP_PLATE_EXEMPT" => Some(Self::InLocalHpPlateExempt),
+            "MX_IAVE" => Some(Self::MxIave),
+            "MX_PASE" => Some(Self::MxPase),
+            "MX_QUICKPASS" => Some(Self::MxQuickpass),
+            "MX_SISTEMA_TELEPEAJE_CHIHUAHUA" => Some(Self::MxSistemaTelepeajeChihuahua),
+            "MX_TAG_IAVE" => Some(Self::MxTagIave),
+            "MX_TAG_TELEVIA" => Some(Self::MxTagTelevia),
+            "MX_TELEVIA" => Some(Self::MxTelevia),
+            "MX_VIAPASS" => Some(Self::MxViapass),
+            "US_AL_FREEDOM_PASS" => Some(Self::UsAlFreedomPass),
+            "US_AK_ANTON_ANDERSON_TUNNEL_BOOK_OF_10_TICKETS" => {
+                Some(Self::UsAkAntonAndersonTunnelBookOf10Tickets)
+            }
+            "US_CA_FASTRAK" => Some(Self::UsCaFastrak),
+            "US_CA_FASTRAK_CAV_STICKER" => Some(Self::UsCaFastrakCavSticker),
+            "US_CO_EXPRESSTOLL" => Some(Self::UsCoExpresstoll),
+            "US_CO_GO_PASS" => Some(Self::UsCoGoPass),
+            "US_DE_EZPASSDE" => Some(Self::UsDeEzpassde),
+            "US_FL_BOB_SIKES_TOLL_BRIDGE_PASS" => Some(Self::UsFlBobSikesTollBridgePass),
+            "US_FL_DUNES_COMMUNITY_DEVELOPMENT_DISTRICT_EXPRESSCARD" => {
+                Some(Self::UsFlDunesCommunityDevelopmentDistrictExpresscard)
+            }
+            "US_FL_EPASS" => Some(Self::UsFlEpass),
+            "US_FL_GIBA_TOLL_PASS" => Some(Self::UsFlGibaTollPass),
+            "US_FL_LEEWAY" => Some(Self::UsFlLeeway),
+            "US_FL_SUNPASS" => Some(Self::UsFlSunpass),
+            "US_FL_SUNPASS_PRO" => Some(Self::UsFlSunpassPro),
+            "US_IL_EZPASSIL" => Some(Self::UsIlEzpassil),
+            "US_IL_IPASS" => Some(Self::UsIlIpass),
+            "US_IN_EZPASSIN" => Some(Self::UsInEzpassin),
+            "US_KS_BESTPASS_HORIZON" => Some(Self::UsKsBestpassHorizon),
+            "US_KS_KTAG" => Some(Self::UsKsKtag),
+            "US_KS_NATIONALPASS" => Some(Self::UsKsNationalpass),
+            "US_KS_PREPASS_ELITEPASS" => Some(Self::UsKsPrepassElitepass),
+            "US_KY_RIVERLINK" => Some(Self::UsKyRiverlink),
+            "US_LA_GEAUXPASS" => Some(Self::UsLaGeauxpass),
+            "US_LA_TOLL_TAG" => Some(Self::UsLaTollTag),
+            "US_MA_EZPASSMA" => Some(Self::UsMaEzpassma),
+            "US_MD_EZPASSMD" => Some(Self::UsMdEzpassmd),
+            "US_ME_EZPASSME" => Some(Self::UsMeEzpassme),
+            "US_MI_AMBASSADOR_BRIDGE_PREMIER_COMMUTER_CARD" => {
+                Some(Self::UsMiAmbassadorBridgePremierCommuterCard)
+            }
+            "US_MI_GROSSE_ILE_TOLL_BRIDGE_PASS_TAG" => {
+                Some(Self::UsMiGrosseIleTollBridgePassTag)
+            }
+            "US_MI_IQ_PROX_CARD" => Some(Self::UsMiIqProxCard),
+            "US_MI_MACKINAC_BRIDGE_MAC_PASS" => Some(Self::UsMiMackinacBridgeMacPass),
+            "US_MI_NEXPRESS_TOLL" => Some(Self::UsMiNexpressToll),
+            "US_MN_EZPASSMN" => Some(Self::UsMnEzpassmn),
+            "US_NC_EZPASSNC" => Some(Self::UsNcEzpassnc),
+            "US_NC_PEACH_PASS" => Some(Self::UsNcPeachPass),
+            "US_NC_QUICK_PASS" => Some(Self::UsNcQuickPass),
+            "US_NH_EZPASSNH" => Some(Self::UsNhEzpassnh),
+            "US_NJ_DOWNBEACH_EXPRESS_PASS" => Some(Self::UsNjDownbeachExpressPass),
+            "US_NJ_EZPASSNJ" => Some(Self::UsNjEzpassnj),
+            "US_NY_EXPRESSPASS" => Some(Self::UsNyExpresspass),
+            "US_NY_EZPASSNY" => Some(Self::UsNyEzpassny),
+            "US_OH_EZPASSOH" => Some(Self::UsOhEzpassoh),
+            "US_PA_EZPASSPA" => Some(Self::UsPaEzpasspa),
+            "US_RI_EZPASSRI" => Some(Self::UsRiEzpassri),
+            "US_SC_PALPASS" => Some(Self::UsScPalpass),
+            "US_TX_BANCPASS" => Some(Self::UsTxBancpass),
+            "US_TX_DEL_RIO_PASS" => Some(Self::UsTxDelRioPass),
+            "US_TX_EFAST_PASS" => Some(Self::UsTxEfastPass),
+            "US_TX_EAGLE_PASS_EXPRESS_CARD" => Some(Self::UsTxEaglePassExpressCard),
+            "US_TX_EPTOLL" => Some(Self::UsTxEptoll),
+            "US_TX_EZ_CROSS" => Some(Self::UsTxEzCross),
+            "US_TX_EZTAG" => Some(Self::UsTxEztag),
+            "US_TX_LAREDO_TRADE_TAG" => Some(Self::UsTxLaredoTradeTag),
+            "US_TX_PLUSPASS" => Some(Self::UsTxPluspass),
+            "US_TX_TOLLTAG" => Some(Self::UsTxTolltag),
+            "US_TX_TXTAG" => Some(Self::UsTxTxtag),
+            "US_TX_XPRESS_CARD" => Some(Self::UsTxXpressCard),
+            "US_UT_ADAMS_AVE_PARKWAY_EXPRESSCARD" => {
+                Some(Self::UsUtAdamsAveParkwayExpresscard)
+            }
+            "US_VA_EZPASSVA" => Some(Self::UsVaEzpassva),
+            "US_WA_BREEZEBY" => Some(Self::UsWaBreezeby),
+            "US_WA_GOOD_TO_GO" => Some(Self::UsWaGoodToGo),
+            "US_WV_EZPASSWV" => Some(Self::UsWvEzpasswv),
+            "US_WV_MEMORIAL_BRIDGE_TICKETS" => Some(Self::UsWvMemorialBridgeTickets),
+            "US_WV_NEWELL_TOLL_BRIDGE_TICKET" => Some(Self::UsWvNewellTollBridgeTicket),
+            _ => None,
+        }
+    }
 }
 /// A set of values describing the vehicle's emission type.
 /// Applies only to the DRIVE travel mode.
@@ -901,6 +1094,17 @@ impl VehicleEmissionType {
             VehicleEmissionType::Electric => "ELECTRIC",
             VehicleEmissionType::Hybrid => "HYBRID",
             VehicleEmissionType::Diesel => "DIESEL",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "VEHICLE_EMISSION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "GASOLINE" => Some(Self::Gasoline),
+            "ELECTRIC" => Some(Self::Electric),
+            "HYBRID" => Some(Self::Hybrid),
+            "DIESEL" => Some(Self::Diesel),
+            _ => None,
         }
     }
 }
@@ -984,6 +1188,17 @@ impl RouteTravelMode {
             RouteTravelMode::TwoWheeler => "TWO_WHEELER",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "TRAVEL_MODE_UNSPECIFIED" => Some(Self::TravelModeUnspecified),
+            "DRIVE" => Some(Self::Drive),
+            "BICYCLE" => Some(Self::Bicycle),
+            "WALK" => Some(Self::Walk),
+            "TWO_WHEELER" => Some(Self::TwoWheeler),
+            _ => None,
+        }
+    }
 }
 /// A set of values that specify factors to take into consideration when
 /// calculating the route.
@@ -1024,6 +1239,16 @@ impl RoutingPreference {
             RoutingPreference::TrafficAwareOptimal => "TRAFFIC_AWARE_OPTIMAL",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "ROUTING_PREFERENCE_UNSPECIFIED" => Some(Self::Unspecified),
+            "TRAFFIC_UNAWARE" => Some(Self::TrafficUnaware),
+            "TRAFFIC_AWARE" => Some(Self::TrafficAware),
+            "TRAFFIC_AWARE_OPTIMAL" => Some(Self::TrafficAwareOptimal),
+            _ => None,
+        }
+    }
 }
 /// A set of values that specify the unit of measure used in the display.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -1047,6 +1272,15 @@ impl Units {
             Units::Unspecified => "UNITS_UNSPECIFIED",
             Units::Metric => "METRIC",
             Units::Imperial => "IMPERIAL",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "UNITS_UNSPECIFIED" => Some(Self::Unspecified),
+            "METRIC" => Some(Self::Metric),
+            "IMPERIAL" => Some(Self::Imperial),
+            _ => None,
         }
     }
 }
@@ -1207,6 +1441,14 @@ pub mod compute_routes_request {
                 ReferenceRoute::FuelEfficient => "FUEL_EFFICIENT",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "REFERENCE_ROUTE_UNSPECIFIED" => Some(Self::Unspecified),
+                "FUEL_EFFICIENT" => Some(Self::FuelEfficient),
+                _ => None,
+            }
+        }
     }
 }
 /// ComputeRoutes the response message.
@@ -1350,6 +1592,15 @@ impl RouteMatrixElementCondition {
             }
             RouteMatrixElementCondition::RouteExists => "ROUTE_EXISTS",
             RouteMatrixElementCondition::RouteNotFound => "ROUTE_NOT_FOUND",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "ROUTE_MATRIX_ELEMENT_CONDITION_UNSPECIFIED" => Some(Self::Unspecified),
+            "ROUTE_EXISTS" => Some(Self::RouteExists),
+            "ROUTE_NOT_FOUND" => Some(Self::RouteNotFound),
+            _ => None,
         }
     }
 }

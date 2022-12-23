@@ -92,6 +92,17 @@ pub mod environment {
                 State::Deleting => "DELETING",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "SUSPENDED" => Some(Self::Suspended),
+                "PENDING" => Some(Self::Pending),
+                "RUNNING" => Some(Self::Running),
+                "DELETING" => Some(Self::Deleting),
+                _ => None,
+            }
+        }
     }
 }
 /// Request message for
@@ -227,6 +238,17 @@ pub mod start_environment_metadata {
                 State::Finished => "FINISHED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "STARTING" => Some(Self::Starting),
+                "UNARCHIVING_DISK" => Some(Self::UnarchivingDisk),
+                "AWAITING_COMPUTE_RESOURCES" => Some(Self::AwaitingComputeResources),
+                "FINISHED" => Some(Self::Finished),
+                _ => None,
+            }
+        }
     }
 }
 /// Message included in the response field of operations returned from
@@ -350,6 +372,18 @@ pub mod cloud_shell_error_details {
                 CloudShellErrorCode::TosViolation => "TOS_VIOLATION",
                 CloudShellErrorCode::QuotaExceeded => "QUOTA_EXCEEDED",
                 CloudShellErrorCode::EnvironmentUnavailable => "ENVIRONMENT_UNAVAILABLE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CLOUD_SHELL_ERROR_CODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "IMAGE_UNAVAILABLE" => Some(Self::ImageUnavailable),
+                "CLOUD_SHELL_DISABLED" => Some(Self::CloudShellDisabled),
+                "TOS_VIOLATION" => Some(Self::TosViolation),
+                "QUOTA_EXCEEDED" => Some(Self::QuotaExceeded),
+                "ENVIRONMENT_UNAVAILABLE" => Some(Self::EnvironmentUnavailable),
+                _ => None,
             }
         }
     }

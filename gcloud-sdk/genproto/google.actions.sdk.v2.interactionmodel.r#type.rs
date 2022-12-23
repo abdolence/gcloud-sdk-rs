@@ -137,6 +137,15 @@ pub mod synonym_type {
                 MatchType::FuzzyMatch => "FUZZY_MATCH",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "EXACT_MATCH" => Some(Self::ExactMatch),
+                "FUZZY_MATCH" => Some(Self::FuzzyMatch),
+                _ => None,
+            }
+        }
     }
 }
 /// Declaration of a custom type, as opposed to built-in types. Types can be

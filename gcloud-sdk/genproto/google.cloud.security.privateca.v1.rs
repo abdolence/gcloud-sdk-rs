@@ -154,6 +154,15 @@ pub mod certificate_authority {
                 Type::Subordinate => "SUBORDINATE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "SELF_SIGNED" => Some(Self::SelfSigned),
+                "SUBORDINATE" => Some(Self::Subordinate),
+                _ => None,
+            }
+        }
     }
     /// The state of a \[CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority\], indicating if it can be used.
     #[derive(
@@ -208,6 +217,18 @@ pub mod certificate_authority {
                 State::Staged => "STAGED",
                 State::AwaitingUserActivation => "AWAITING_USER_ACTIVATION",
                 State::Deleted => "DELETED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ENABLED" => Some(Self::Enabled),
+                "DISABLED" => Some(Self::Disabled),
+                "STAGED" => Some(Self::Staged),
+                "AWAITING_USER_ACTIVATION" => Some(Self::AwaitingUserActivation),
+                "DELETED" => Some(Self::Deleted),
+                _ => None,
             }
         }
     }
@@ -268,6 +289,21 @@ pub mod certificate_authority {
                 SignHashAlgorithm::RsaPkcs14096Sha256 => "RSA_PKCS1_4096_SHA256",
                 SignHashAlgorithm::EcP256Sha256 => "EC_P256_SHA256",
                 SignHashAlgorithm::EcP384Sha384 => "EC_P384_SHA384",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SIGN_HASH_ALGORITHM_UNSPECIFIED" => Some(Self::Unspecified),
+                "RSA_PSS_2048_SHA256" => Some(Self::RsaPss2048Sha256),
+                "RSA_PSS_3072_SHA256" => Some(Self::RsaPss3072Sha256),
+                "RSA_PSS_4096_SHA256" => Some(Self::RsaPss4096Sha256),
+                "RSA_PKCS1_2048_SHA256" => Some(Self::RsaPkcs12048Sha256),
+                "RSA_PKCS1_3072_SHA256" => Some(Self::RsaPkcs13072Sha256),
+                "RSA_PKCS1_4096_SHA256" => Some(Self::RsaPkcs14096Sha256),
+                "EC_P256_SHA256" => Some(Self::EcP256Sha256),
+                "EC_P384_SHA384" => Some(Self::EcP384Sha384),
+                _ => None,
             }
         }
     }
@@ -467,6 +503,18 @@ pub mod ca_pool {
                             EcSignatureAlgorithm::Eddsa25519 => "EDDSA_25519",
                         }
                     }
+                    /// Creates an enum from field names used in the ProtoBuf definition.
+                    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                        match value {
+                            "EC_SIGNATURE_ALGORITHM_UNSPECIFIED" => {
+                                Some(Self::Unspecified)
+                            }
+                            "ECDSA_P256" => Some(Self::EcdsaP256),
+                            "ECDSA_P384" => Some(Self::EcdsaP384),
+                            "EDDSA_25519" => Some(Self::Eddsa25519),
+                            _ => None,
+                        }
+                    }
                 }
             }
             #[allow(clippy::derive_partial_eq_without_eq)]
@@ -528,6 +576,15 @@ pub mod ca_pool {
                 Tier::Unspecified => "TIER_UNSPECIFIED",
                 Tier::Enterprise => "ENTERPRISE",
                 Tier::Devops => "DEVOPS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TIER_UNSPECIFIED" => Some(Self::Unspecified),
+                "ENTERPRISE" => Some(Self::Enterprise),
+                "DEVOPS" => Some(Self::Devops),
+                _ => None,
             }
         }
     }
@@ -627,6 +684,15 @@ pub mod certificate_revocation_list {
                 State::Unspecified => "STATE_UNSPECIFIED",
                 State::Active => "ACTIVE",
                 State::Superseded => "SUPERSEDED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ACTIVE" => Some(Self::Active),
+                "SUPERSEDED" => Some(Self::Superseded),
+                _ => None,
             }
         }
     }
@@ -906,6 +972,14 @@ pub mod public_key {
             match self {
                 KeyFormat::Unspecified => "KEY_FORMAT_UNSPECIFIED",
                 KeyFormat::Pem => "PEM",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "KEY_FORMAT_UNSPECIFIED" => Some(Self::Unspecified),
+                "PEM" => Some(Self::Pem),
+                _ => None,
             }
         }
     }
@@ -1306,6 +1380,18 @@ pub mod certificate_extension_constraints {
                 KnownCertificateExtension::AiaOcspServers => "AIA_OCSP_SERVERS",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "KNOWN_CERTIFICATE_EXTENSION_UNSPECIFIED" => Some(Self::Unspecified),
+                "BASE_KEY_USAGE" => Some(Self::BaseKeyUsage),
+                "EXTENDED_KEY_USAGE" => Some(Self::ExtendedKeyUsage),
+                "CA_OPTIONS" => Some(Self::CaOptions),
+                "POLICY_IDS" => Some(Self::PolicyIds),
+                "AIA_OCSP_SERVERS" => Some(Self::AiaOcspServers),
+                _ => None,
+            }
+        }
     }
 }
 /// A \[RevocationReason][google.cloud.security.privateca.v1.RevocationReason\] indicates whether a \[Certificate][google.cloud.security.privateca.v1.Certificate\] has been revoked,
@@ -1363,6 +1449,23 @@ impl RevocationReason {
             }
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "REVOCATION_REASON_UNSPECIFIED" => Some(Self::Unspecified),
+            "KEY_COMPROMISE" => Some(Self::KeyCompromise),
+            "CERTIFICATE_AUTHORITY_COMPROMISE" => {
+                Some(Self::CertificateAuthorityCompromise)
+            }
+            "AFFILIATION_CHANGED" => Some(Self::AffiliationChanged),
+            "SUPERSEDED" => Some(Self::Superseded),
+            "CESSATION_OF_OPERATION" => Some(Self::CessationOfOperation),
+            "CERTIFICATE_HOLD" => Some(Self::CertificateHold),
+            "PRIVILEGE_WITHDRAWN" => Some(Self::PrivilegeWithdrawn),
+            "ATTRIBUTE_AUTHORITY_COMPROMISE" => Some(Self::AttributeAuthorityCompromise),
+            _ => None,
+        }
+    }
 }
 /// Describes the way in which a \[Certificate][google.cloud.security.privateca.v1.Certificate\]'s \[Subject][google.cloud.security.privateca.v1.Subject\] and/or
 /// \[SubjectAltNames][google.cloud.security.privateca.v1.SubjectAltNames\] will be resolved.
@@ -1394,6 +1497,15 @@ impl SubjectRequestMode {
             SubjectRequestMode::Unspecified => "SUBJECT_REQUEST_MODE_UNSPECIFIED",
             SubjectRequestMode::Default => "DEFAULT",
             SubjectRequestMode::ReflectedSpiffe => "REFLECTED_SPIFFE",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "SUBJECT_REQUEST_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+            "DEFAULT" => Some(Self::Default),
+            "REFLECTED_SPIFFE" => Some(Self::ReflectedSpiffe),
+            _ => None,
         }
     }
 }

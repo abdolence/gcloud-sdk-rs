@@ -102,6 +102,23 @@ pub mod location {
                 LocationType::StreetAddress => "STREET_ADDRESS",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "LOCATION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "COUNTRY" => Some(Self::Country),
+                "ADMINISTRATIVE_AREA" => Some(Self::AdministrativeArea),
+                "SUB_ADMINISTRATIVE_AREA" => Some(Self::SubAdministrativeArea),
+                "LOCALITY" => Some(Self::Locality),
+                "POSTAL_CODE" => Some(Self::PostalCode),
+                "SUB_LOCALITY" => Some(Self::SubLocality),
+                "SUB_LOCALITY_1" => Some(Self::SubLocality1),
+                "SUB_LOCALITY_2" => Some(Self::SubLocality2),
+                "NEIGHBORHOOD" => Some(Self::Neighborhood),
+                "STREET_ADDRESS" => Some(Self::StreetAddress),
+                _ => None,
+            }
+        }
     }
 }
 /// Meta information related to the job searcher or entity
@@ -237,6 +254,19 @@ pub mod device_info {
                 DeviceType::Ios => "IOS",
                 DeviceType::Bot => "BOT",
                 DeviceType::Other => "OTHER",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DEVICE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "WEB" => Some(Self::Web),
+                "MOBILE_WEB" => Some(Self::MobileWeb),
+                "ANDROID" => Some(Self::Android),
+                "IOS" => Some(Self::Ios),
+                "BOT" => Some(Self::Bot),
+                "OTHER" => Some(Self::Other),
+                _ => None,
             }
         }
     }
@@ -477,6 +507,21 @@ pub mod compensation_info {
                 CompensationType::OtherCompensationType => "OTHER_COMPENSATION_TYPE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "COMPENSATION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "BASE" => Some(Self::Base),
+                "BONUS" => Some(Self::Bonus),
+                "SIGNING_BONUS" => Some(Self::SigningBonus),
+                "EQUITY" => Some(Self::Equity),
+                "PROFIT_SHARING" => Some(Self::ProfitSharing),
+                "COMMISSIONS" => Some(Self::Commissions),
+                "TIPS" => Some(Self::Tips),
+                "OTHER_COMPENSATION_TYPE" => Some(Self::OtherCompensationType),
+                _ => None,
+            }
+        }
     }
     /// Pay frequency.
     #[derive(
@@ -524,6 +569,20 @@ pub mod compensation_info {
                 CompensationUnit::Yearly => "YEARLY",
                 CompensationUnit::OneTime => "ONE_TIME",
                 CompensationUnit::OtherCompensationUnit => "OTHER_COMPENSATION_UNIT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "COMPENSATION_UNIT_UNSPECIFIED" => Some(Self::Unspecified),
+                "HOURLY" => Some(Self::Hourly),
+                "DAILY" => Some(Self::Daily),
+                "WEEKLY" => Some(Self::Weekly),
+                "MONTHLY" => Some(Self::Monthly),
+                "YEARLY" => Some(Self::Yearly),
+                "ONE_TIME" => Some(Self::OneTime),
+                "OTHER_COMPENSATION_UNIT" => Some(Self::OtherCompensationUnit),
+                _ => None,
             }
         }
     }
@@ -611,6 +670,19 @@ pub mod batch_operation_metadata {
                 State::Cancelled => "CANCELLED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "INITIALIZING" => Some(Self::Initializing),
+                "PROCESSING" => Some(Self::Processing),
+                "SUCCEEDED" => Some(Self::Succeeded),
+                "FAILED" => Some(Self::Failed),
+                "CANCELLING" => Some(Self::Cancelling),
+                "CANCELLED" => Some(Self::Cancelled),
+                _ => None,
+            }
+        }
     }
 }
 /// An enum that represents the size of the company.
@@ -649,6 +721,20 @@ impl CompanySize {
             CompanySize::Big => "BIG",
             CompanySize::Bigger => "BIGGER",
             CompanySize::Giant => "GIANT",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "COMPANY_SIZE_UNSPECIFIED" => Some(Self::Unspecified),
+            "MINI" => Some(Self::Mini),
+            "SMALL" => Some(Self::Small),
+            "SMEDIUM" => Some(Self::Smedium),
+            "MEDIUM" => Some(Self::Medium),
+            "BIG" => Some(Self::Big),
+            "BIGGER" => Some(Self::Bigger),
+            "GIANT" => Some(Self::Giant),
+            _ => None,
         }
     }
 }
@@ -706,6 +792,24 @@ impl JobBenefit {
             JobBenefit::SickDays => "SICK_DAYS",
             JobBenefit::Vacation => "VACATION",
             JobBenefit::Vision => "VISION",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "JOB_BENEFIT_UNSPECIFIED" => Some(Self::Unspecified),
+            "CHILD_CARE" => Some(Self::ChildCare),
+            "DENTAL" => Some(Self::Dental),
+            "DOMESTIC_PARTNER" => Some(Self::DomesticPartner),
+            "FLEXIBLE_HOURS" => Some(Self::FlexibleHours),
+            "MEDICAL" => Some(Self::Medical),
+            "LIFE_INSURANCE" => Some(Self::LifeInsurance),
+            "PARENTAL_LEAVE" => Some(Self::ParentalLeave),
+            "RETIREMENT_PLAN" => Some(Self::RetirementPlan),
+            "SICK_DAYS" => Some(Self::SickDays),
+            "VACATION" => Some(Self::Vacation),
+            "VISION" => Some(Self::Vision),
+            _ => None,
         }
     }
 }
@@ -775,6 +879,21 @@ impl DegreeType {
             DegreeType::DoctoralOrEquivalent => "DOCTORAL_OR_EQUIVALENT",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "DEGREE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "PRIMARY_EDUCATION" => Some(Self::PrimaryEducation),
+            "LOWER_SECONDARY_EDUCATION" => Some(Self::LowerSecondaryEducation),
+            "UPPER_SECONDARY_EDUCATION" => Some(Self::UpperSecondaryEducation),
+            "ADULT_REMEDIAL_EDUCATION" => Some(Self::AdultRemedialEducation),
+            "ASSOCIATES_OR_EQUIVALENT" => Some(Self::AssociatesOrEquivalent),
+            "BACHELORS_OR_EQUIVALENT" => Some(Self::BachelorsOrEquivalent),
+            "MASTERS_OR_EQUIVALENT" => Some(Self::MastersOrEquivalent),
+            "DOCTORAL_OR_EQUIVALENT" => Some(Self::DoctoralOrEquivalent),
+            _ => None,
+        }
+    }
 }
 /// An enum that represents the employment type of a job.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -836,6 +955,23 @@ impl EmploymentType {
             EmploymentType::OtherEmploymentType => "OTHER_EMPLOYMENT_TYPE",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "EMPLOYMENT_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "FULL_TIME" => Some(Self::FullTime),
+            "PART_TIME" => Some(Self::PartTime),
+            "CONTRACTOR" => Some(Self::Contractor),
+            "CONTRACT_TO_HIRE" => Some(Self::ContractToHire),
+            "TEMPORARY" => Some(Self::Temporary),
+            "INTERN" => Some(Self::Intern),
+            "VOLUNTEER" => Some(Self::Volunteer),
+            "PER_DIEM" => Some(Self::PerDiem),
+            "FLY_IN_FLY_OUT" => Some(Self::FlyInFlyOut),
+            "OTHER_EMPLOYMENT_TYPE" => Some(Self::OtherEmploymentType),
+            _ => None,
+        }
+    }
 }
 /// An enum that represents the required experience level required for the job.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -869,6 +1005,18 @@ impl JobLevel {
             JobLevel::Manager => "MANAGER",
             JobLevel::Director => "DIRECTOR",
             JobLevel::Executive => "EXECUTIVE",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "JOB_LEVEL_UNSPECIFIED" => Some(Self::Unspecified),
+            "ENTRY_LEVEL" => Some(Self::EntryLevel),
+            "EXPERIENCED" => Some(Self::Experienced),
+            "MANAGER" => Some(Self::Manager),
+            "DIRECTOR" => Some(Self::Director),
+            "EXECUTIVE" => Some(Self::Executive),
+            _ => None,
         }
     }
 }
@@ -986,6 +1134,47 @@ impl JobCategory {
             JobCategory::TransportationAndLogistics => "TRANSPORTATION_AND_LOGISTICS",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "JOB_CATEGORY_UNSPECIFIED" => Some(Self::Unspecified),
+            "ACCOUNTING_AND_FINANCE" => Some(Self::AccountingAndFinance),
+            "ADMINISTRATIVE_AND_OFFICE" => Some(Self::AdministrativeAndOffice),
+            "ADVERTISING_AND_MARKETING" => Some(Self::AdvertisingAndMarketing),
+            "ANIMAL_CARE" => Some(Self::AnimalCare),
+            "ART_FASHION_AND_DESIGN" => Some(Self::ArtFashionAndDesign),
+            "BUSINESS_OPERATIONS" => Some(Self::BusinessOperations),
+            "CLEANING_AND_FACILITIES" => Some(Self::CleaningAndFacilities),
+            "COMPUTER_AND_IT" => Some(Self::ComputerAndIt),
+            "CONSTRUCTION" => Some(Self::Construction),
+            "CUSTOMER_SERVICE" => Some(Self::CustomerService),
+            "EDUCATION" => Some(Self::Education),
+            "ENTERTAINMENT_AND_TRAVEL" => Some(Self::EntertainmentAndTravel),
+            "FARMING_AND_OUTDOORS" => Some(Self::FarmingAndOutdoors),
+            "HEALTHCARE" => Some(Self::Healthcare),
+            "HUMAN_RESOURCES" => Some(Self::HumanResources),
+            "INSTALLATION_MAINTENANCE_AND_REPAIR" => {
+                Some(Self::InstallationMaintenanceAndRepair)
+            }
+            "LEGAL" => Some(Self::Legal),
+            "MANAGEMENT" => Some(Self::Management),
+            "MANUFACTURING_AND_WAREHOUSE" => Some(Self::ManufacturingAndWarehouse),
+            "MEDIA_COMMUNICATIONS_AND_WRITING" => {
+                Some(Self::MediaCommunicationsAndWriting)
+            }
+            "OIL_GAS_AND_MINING" => Some(Self::OilGasAndMining),
+            "PERSONAL_CARE_AND_SERVICES" => Some(Self::PersonalCareAndServices),
+            "PROTECTIVE_SERVICES" => Some(Self::ProtectiveServices),
+            "REAL_ESTATE" => Some(Self::RealEstate),
+            "RESTAURANT_AND_HOSPITALITY" => Some(Self::RestaurantAndHospitality),
+            "SALES_AND_RETAIL" => Some(Self::SalesAndRetail),
+            "SCIENCE_AND_ENGINEERING" => Some(Self::ScienceAndEngineering),
+            "SOCIAL_SERVICES_AND_NON_PROFIT" => Some(Self::SocialServicesAndNonProfit),
+            "SPORTS_FITNESS_AND_RECREATION" => Some(Self::SportsFitnessAndRecreation),
+            "TRANSPORTATION_AND_LOGISTICS" => Some(Self::TransportationAndLogistics),
+            _ => None,
+        }
+    }
 }
 /// An enum that represents the job posting region. In most cases, job postings
 /// don't need to specify a region. If a region is given, jobs are
@@ -1029,6 +1218,16 @@ impl PostingRegion {
             PostingRegion::Telecommute => "TELECOMMUTE",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "POSTING_REGION_UNSPECIFIED" => Some(Self::Unspecified),
+            "ADMINISTRATIVE_AREA" => Some(Self::AdministrativeArea),
+            "NATION" => Some(Self::Nation),
+            "TELECOMMUTE" => Some(Self::Telecommute),
+            _ => None,
+        }
+    }
 }
 /// Deprecated. All resources are only visible to the owner.
 ///
@@ -1060,6 +1259,16 @@ impl Visibility {
             Visibility::SharedWithPublic => "SHARED_WITH_PUBLIC",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "VISIBILITY_UNSPECIFIED" => Some(Self::Unspecified),
+            "ACCOUNT_ONLY" => Some(Self::AccountOnly),
+            "SHARED_WITH_GOOGLE" => Some(Self::SharedWithGoogle),
+            "SHARED_WITH_PUBLIC" => Some(Self::SharedWithPublic),
+            _ => None,
+        }
+    }
 }
 /// Option for HTML content sanitization on user input fields, for example, job
 /// description. By setting this option, user can determine whether and how
@@ -1085,6 +1294,15 @@ impl HtmlSanitization {
             HtmlSanitization::Unspecified => "HTML_SANITIZATION_UNSPECIFIED",
             HtmlSanitization::Disabled => "HTML_SANITIZATION_DISABLED",
             HtmlSanitization::SimpleFormattingOnly => "SIMPLE_FORMATTING_ONLY",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "HTML_SANITIZATION_UNSPECIFIED" => Some(Self::Unspecified),
+            "HTML_SANITIZATION_DISABLED" => Some(Self::Disabled),
+            "SIMPLE_FORMATTING_ONLY" => Some(Self::SimpleFormattingOnly),
+            _ => None,
         }
     }
 }
@@ -1116,6 +1334,17 @@ impl CommuteMethod {
             CommuteMethod::Transit => "TRANSIT",
             CommuteMethod::Walking => "WALKING",
             CommuteMethod::Cycling => "CYCLING",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "COMMUTE_METHOD_UNSPECIFIED" => Some(Self::Unspecified),
+            "DRIVING" => Some(Self::Driving),
+            "TRANSIT" => Some(Self::Transit),
+            "WALKING" => Some(Self::Walking),
+            "CYCLING" => Some(Self::Cycling),
+            _ => None,
         }
     }
 }
@@ -1580,6 +1809,15 @@ pub mod complete_query_request {
                 CompletionScope::Public => "PUBLIC",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "COMPLETION_SCOPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "TENANT" => Some(Self::Tenant),
+                "PUBLIC" => Some(Self::Public),
+                _ => None,
+            }
+        }
     }
     /// Enum to specify auto-completion topics.
     #[derive(
@@ -1626,6 +1864,16 @@ pub mod complete_query_request {
                 CompletionType::JobTitle => "JOB_TITLE",
                 CompletionType::CompanyName => "COMPANY_NAME",
                 CompletionType::Combined => "COMBINED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "COMPLETION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "JOB_TITLE" => Some(Self::JobTitle),
+                "COMPANY_NAME" => Some(Self::CompanyName),
+                "COMBINED" => Some(Self::Combined),
+                _ => None,
             }
         }
     }
@@ -1950,6 +2198,30 @@ pub mod job_event {
                 JobEventType::Hired => "HIRED",
                 JobEventType::SentCv => "SENT_CV",
                 JobEventType::InterviewGranted => "INTERVIEW_GRANTED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "JOB_EVENT_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "IMPRESSION" => Some(Self::Impression),
+                "VIEW" => Some(Self::View),
+                "VIEW_REDIRECT" => Some(Self::ViewRedirect),
+                "APPLICATION_START" => Some(Self::ApplicationStart),
+                "APPLICATION_FINISH" => Some(Self::ApplicationFinish),
+                "APPLICATION_QUICK_SUBMISSION" => Some(Self::ApplicationQuickSubmission),
+                "APPLICATION_REDIRECT" => Some(Self::ApplicationRedirect),
+                "APPLICATION_START_FROM_SEARCH" => Some(Self::ApplicationStartFromSearch),
+                "APPLICATION_REDIRECT_FROM_SEARCH" => {
+                    Some(Self::ApplicationRedirectFromSearch)
+                }
+                "APPLICATION_COMPANY_SUBMIT" => Some(Self::ApplicationCompanySubmit),
+                "BOOKMARK" => Some(Self::Bookmark),
+                "NOTIFICATION" => Some(Self::Notification),
+                "HIRED" => Some(Self::Hired),
+                "SENT_CV" => Some(Self::SentCv),
+                "INTERVIEW_GRANTED" => Some(Self::InterviewGranted),
+                _ => None,
             }
         }
     }
@@ -2342,6 +2614,16 @@ pub mod location_filter {
                 }
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TELECOMMUTE_PREFERENCE_UNSPECIFIED" => Some(Self::Unspecified),
+                "TELECOMMUTE_EXCLUDED" => Some(Self::TelecommuteExcluded),
+                "TELECOMMUTE_ALLOWED" => Some(Self::TelecommuteAllowed),
+                "TELECOMMUTE_JOBS_EXCLUDED" => Some(Self::TelecommuteJobsExcluded),
+                _ => None,
+            }
+        }
     }
 }
 /// Filter on job compensation type and amount.
@@ -2427,6 +2709,17 @@ pub mod compensation_filter {
                 FilterType::AnnualizedTotalAmount => "ANNUALIZED_TOTAL_AMOUNT",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "FILTER_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "UNIT_ONLY" => Some(Self::UnitOnly),
+                "UNIT_AND_AMOUNT" => Some(Self::UnitAndAmount),
+                "ANNUALIZED_BASE_AMOUNT" => Some(Self::AnnualizedBaseAmount),
+                "ANNUALIZED_TOTAL_AMOUNT" => Some(Self::AnnualizedTotalAmount),
+                _ => None,
+            }
+        }
     }
 }
 /// Parameters needed for commute search.
@@ -2488,6 +2781,15 @@ pub mod commute_filter {
                 RoadTraffic::Unspecified => "ROAD_TRAFFIC_UNSPECIFIED",
                 RoadTraffic::TrafficFree => "TRAFFIC_FREE",
                 RoadTraffic::BusyHour => "BUSY_HOUR",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ROAD_TRAFFIC_UNSPECIFIED" => Some(Self::Unspecified),
+                "TRAFFIC_FREE" => Some(Self::TrafficFree),
+                "BUSY_HOUR" => Some(Self::BusyHour),
+                _ => None,
             }
         }
     }
@@ -3380,6 +3682,19 @@ pub mod search_jobs_request {
                     ImportanceLevel::Extreme => "EXTREME",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "IMPORTANCE_LEVEL_UNSPECIFIED" => Some(Self::Unspecified),
+                    "NONE" => Some(Self::None),
+                    "LOW" => Some(Self::Low),
+                    "MILD" => Some(Self::Mild),
+                    "MEDIUM" => Some(Self::Medium),
+                    "HIGH" => Some(Self::High),
+                    "EXTREME" => Some(Self::Extreme),
+                    _ => None,
+                }
+            }
         }
     }
     /// A string-represented enumeration of the job search mode. The service
@@ -3420,6 +3735,15 @@ pub mod search_jobs_request {
                 SearchMode::Unspecified => "SEARCH_MODE_UNSPECIFIED",
                 SearchMode::JobSearch => "JOB_SEARCH",
                 SearchMode::FeaturedJobSearch => "FEATURED_JOB_SEARCH",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SEARCH_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "JOB_SEARCH" => Some(Self::JobSearch),
+                "FEATURED_JOB_SEARCH" => Some(Self::FeaturedJobSearch),
+                _ => None,
             }
         }
     }
@@ -3466,6 +3790,15 @@ pub mod search_jobs_request {
                 DiversificationLevel::Unspecified => "DIVERSIFICATION_LEVEL_UNSPECIFIED",
                 DiversificationLevel::Disabled => "DISABLED",
                 DiversificationLevel::Simple => "SIMPLE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DIVERSIFICATION_LEVEL_UNSPECIFIED" => Some(Self::Unspecified),
+                "DISABLED" => Some(Self::Disabled),
+                "SIMPLE" => Some(Self::Simple),
+                _ => None,
             }
         }
     }
@@ -3522,6 +3855,16 @@ pub mod search_jobs_request {
                 KeywordMatchMode::KeywordMatchDisabled => "KEYWORD_MATCH_DISABLED",
                 KeywordMatchMode::KeywordMatchAll => "KEYWORD_MATCH_ALL",
                 KeywordMatchMode::KeywordMatchTitleOnly => "KEYWORD_MATCH_TITLE_ONLY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "KEYWORD_MATCH_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "KEYWORD_MATCH_DISABLED" => Some(Self::KeywordMatchDisabled),
+                "KEYWORD_MATCH_ALL" => Some(Self::KeywordMatchAll),
+                "KEYWORD_MATCH_TITLE_ONLY" => Some(Self::KeywordMatchTitleOnly),
+                _ => None,
             }
         }
     }
@@ -3726,6 +4069,17 @@ impl JobView {
             JobView::Minimal => "JOB_VIEW_MINIMAL",
             JobView::Small => "JOB_VIEW_SMALL",
             JobView::Full => "JOB_VIEW_FULL",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "JOB_VIEW_UNSPECIFIED" => Some(Self::Unspecified),
+            "JOB_VIEW_ID_ONLY" => Some(Self::IdOnly),
+            "JOB_VIEW_MINIMAL" => Some(Self::Minimal),
+            "JOB_VIEW_SMALL" => Some(Self::Small),
+            "JOB_VIEW_FULL" => Some(Self::Full),
+            _ => None,
         }
     }
 }
@@ -4103,6 +4457,15 @@ pub mod tenant {
                 DataUsageType::Unspecified => "DATA_USAGE_TYPE_UNSPECIFIED",
                 DataUsageType::Aggregated => "AGGREGATED",
                 DataUsageType::Isolated => "ISOLATED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DATA_USAGE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "AGGREGATED" => Some(Self::Aggregated),
+                "ISOLATED" => Some(Self::Isolated),
+                _ => None,
             }
         }
     }

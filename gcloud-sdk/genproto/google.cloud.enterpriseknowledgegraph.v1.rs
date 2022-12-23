@@ -42,6 +42,22 @@ impl JobState {
             JobState::ExportingClusters => "JOB_STATE_EXPORTING_CLUSTERS",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "JOB_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+            "JOB_STATE_PENDING" => Some(Self::Pending),
+            "JOB_STATE_RUNNING" => Some(Self::Running),
+            "JOB_STATE_SUCCEEDED" => Some(Self::Succeeded),
+            "JOB_STATE_FAILED" => Some(Self::Failed),
+            "JOB_STATE_CANCELLED" => Some(Self::Cancelled),
+            "JOB_STATE_KNOWLEDGE_EXTRACTION" => Some(Self::KnowledgeExtraction),
+            "JOB_STATE_RECON_PREPROCESSING" => Some(Self::ReconPreprocessing),
+            "JOB_STATE_CLUSTERING" => Some(Self::Clustering),
+            "JOB_STATE_EXPORTING_CLUSTERS" => Some(Self::ExportingClusters),
+            _ => None,
+        }
+    }
 }
 /// The common metadata for long running operations.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -102,6 +118,19 @@ pub mod common_operation_metadata {
                 State::Failed => "FAILED",
                 State::Cancelled => "CANCELLED",
                 State::Pending => "PENDING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "RUNNING" => Some(Self::Running),
+                "CANCELLING" => Some(Self::Cancelling),
+                "SUCCEEDED" => Some(Self::Succeeded),
+                "FAILED" => Some(Self::Failed),
+                "CANCELLED" => Some(Self::Cancelled),
+                "PENDING" => Some(Self::Pending),
+                _ => None,
             }
         }
     }
@@ -172,6 +201,20 @@ pub mod input_config {
                 EntityType::Organization => "ORGANIZATION",
                 EntityType::LocalBusiness => "LOCAL_BUSINESS",
                 EntityType::Person => "PERSON",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ENTITY_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PEOPLE" => Some(Self::People),
+                "ESTABLISHMENT" => Some(Self::Establishment),
+                "PROPERTY" => Some(Self::Property),
+                "PRODUCT" => Some(Self::Product),
+                "ORGANIZATION" => Some(Self::Organization),
+                "LOCAL_BUSINESS" => Some(Self::LocalBusiness),
+                "PERSON" => Some(Self::Person),
+                _ => None,
             }
         }
     }

@@ -359,6 +359,14 @@ pub mod structured_query {
                     Operator::And => "AND",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "OPERATOR_UNSPECIFIED" => Some(Self::Unspecified),
+                    "AND" => Some(Self::And),
+                    _ => None,
+                }
+            }
         }
     }
     /// A filter on a specific field.
@@ -473,6 +481,23 @@ pub mod structured_query {
                     Operator::NotIn => "NOT_IN",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "OPERATOR_UNSPECIFIED" => Some(Self::Unspecified),
+                    "LESS_THAN" => Some(Self::LessThan),
+                    "LESS_THAN_OR_EQUAL" => Some(Self::LessThanOrEqual),
+                    "GREATER_THAN" => Some(Self::GreaterThan),
+                    "GREATER_THAN_OR_EQUAL" => Some(Self::GreaterThanOrEqual),
+                    "EQUAL" => Some(Self::Equal),
+                    "NOT_EQUAL" => Some(Self::NotEqual),
+                    "ARRAY_CONTAINS" => Some(Self::ArrayContains),
+                    "IN" => Some(Self::In),
+                    "ARRAY_CONTAINS_ANY" => Some(Self::ArrayContainsAny),
+                    "NOT_IN" => Some(Self::NotIn),
+                    _ => None,
+                }
+            }
         }
     }
     /// A filter with a single operand.
@@ -535,6 +560,17 @@ pub mod structured_query {
                     Operator::IsNull => "IS_NULL",
                     Operator::IsNotNan => "IS_NOT_NAN",
                     Operator::IsNotNull => "IS_NOT_NULL",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "OPERATOR_UNSPECIFIED" => Some(Self::Unspecified),
+                    "IS_NAN" => Some(Self::IsNan),
+                    "IS_NULL" => Some(Self::IsNull),
+                    "IS_NOT_NAN" => Some(Self::IsNotNan),
+                    "IS_NOT_NULL" => Some(Self::IsNotNull),
+                    _ => None,
                 }
             }
         }
@@ -607,6 +643,15 @@ pub mod structured_query {
                 Direction::Unspecified => "DIRECTION_UNSPECIFIED",
                 Direction::Ascending => "ASCENDING",
                 Direction::Descending => "DESCENDING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DIRECTION_UNSPECIFIED" => Some(Self::Unspecified),
+                "ASCENDING" => Some(Self::Ascending),
+                "DESCENDING" => Some(Self::Descending),
+                _ => None,
             }
         }
     }
@@ -735,6 +780,14 @@ pub mod document_transform {
                 match self {
                     ServerValue::Unspecified => "SERVER_VALUE_UNSPECIFIED",
                     ServerValue::RequestTime => "REQUEST_TIME",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "SERVER_VALUE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "REQUEST_TIME" => Some(Self::RequestTime),
+                    _ => None,
                 }
             }
         }
@@ -1738,6 +1791,17 @@ pub mod target_change {
                 TargetChangeType::Remove => "REMOVE",
                 TargetChangeType::Current => "CURRENT",
                 TargetChangeType::Reset => "RESET",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "NO_CHANGE" => Some(Self::NoChange),
+                "ADD" => Some(Self::Add),
+                "REMOVE" => Some(Self::Remove),
+                "CURRENT" => Some(Self::Current),
+                "RESET" => Some(Self::Reset),
+                _ => None,
             }
         }
     }

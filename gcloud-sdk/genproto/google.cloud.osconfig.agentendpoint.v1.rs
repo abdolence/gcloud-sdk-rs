@@ -304,6 +304,19 @@ pub mod os_policy_resource_config_step {
                 }
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "VALIDATION" => Some(Self::Validation),
+                "DESIRED_STATE_CHECK" => Some(Self::DesiredStateCheck),
+                "DESIRED_STATE_ENFORCEMENT" => Some(Self::DesiredStateEnforcement),
+                "DESIRED_STATE_CHECK_POST_ENFORCEMENT" => {
+                    Some(Self::DesiredStateCheckPostEnforcement)
+                }
+                _ => None,
+            }
+        }
     }
     /// Supported outcomes for a configuration step.
     #[derive(
@@ -336,6 +349,15 @@ pub mod os_policy_resource_config_step {
                 Outcome::Unspecified => "OUTCOME_UNSPECIFIED",
                 Outcome::Succeeded => "SUCCEEDED",
                 Outcome::Failed => "FAILED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "OUTCOME_UNSPECIFIED" => Some(Self::Unspecified),
+                "SUCCEEDED" => Some(Self::Succeeded),
+                "FAILED" => Some(Self::Failed),
+                _ => None,
             }
         }
     }
@@ -410,6 +432,17 @@ impl OsPolicyComplianceState {
             OsPolicyComplianceState::NoOsPoliciesApplicable => {
                 "NO_OS_POLICIES_APPLICABLE"
             }
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "OS_POLICY_COMPLIANCE_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+            "COMPLIANT" => Some(Self::Compliant),
+            "NON_COMPLIANT" => Some(Self::NonCompliant),
+            "UNKNOWN" => Some(Self::Unknown),
+            "NO_OS_POLICIES_APPLICABLE" => Some(Self::NoOsPoliciesApplicable),
+            _ => None,
         }
     }
 }
@@ -634,6 +667,15 @@ pub mod os_policy {
                         DesiredState::Removed => "REMOVED",
                     }
                 }
+                /// Creates an enum from field names used in the ProtoBuf definition.
+                pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                    match value {
+                        "DESIRED_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                        "INSTALLED" => Some(Self::Installed),
+                        "REMOVED" => Some(Self::Removed),
+                        _ => None,
+                    }
+                }
             }
             /// A system package.
             #[allow(clippy::derive_partial_eq_without_eq)]
@@ -730,6 +772,15 @@ pub mod os_policy {
                             ArchiveType::Unspecified => "ARCHIVE_TYPE_UNSPECIFIED",
                             ArchiveType::Deb => "DEB",
                             ArchiveType::DebSrc => "DEB_SRC",
+                        }
+                    }
+                    /// Creates an enum from field names used in the ProtoBuf definition.
+                    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                        match value {
+                            "ARCHIVE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                            "DEB" => Some(Self::Deb),
+                            "DEB_SRC" => Some(Self::DebSrc),
+                            _ => None,
                         }
                     }
                 }
@@ -892,6 +943,16 @@ pub mod os_policy {
                             Interpreter::Powershell => "POWERSHELL",
                         }
                     }
+                    /// Creates an enum from field names used in the ProtoBuf definition.
+                    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                        match value {
+                            "INTERPRETER_UNSPECIFIED" => Some(Self::Unspecified),
+                            "NONE" => Some(Self::None),
+                            "SHELL" => Some(Self::Shell),
+                            "POWERSHELL" => Some(Self::Powershell),
+                            _ => None,
+                        }
+                    }
                 }
                 /// What to execute.
                 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -974,6 +1035,16 @@ pub mod os_policy {
                         DesiredState::ContentsMatch => "CONTENTS_MATCH",
                     }
                 }
+                /// Creates an enum from field names used in the ProtoBuf definition.
+                pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                    match value {
+                        "DESIRED_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                        "PRESENT" => Some(Self::Present),
+                        "ABSENT" => Some(Self::Absent),
+                        "CONTENTS_MATCH" => Some(Self::ContentsMatch),
+                        _ => None,
+                    }
+                }
             }
             /// The source for the contents of the file.
             #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1039,6 +1110,15 @@ pub mod os_policy {
                 Mode::Unspecified => "MODE_UNSPECIFIED",
                 Mode::Validation => "VALIDATION",
                 Mode::Enforcement => "ENFORCEMENT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "VALIDATION" => Some(Self::Validation),
+                "ENFORCEMENT" => Some(Self::Enforcement),
+                _ => None,
             }
         }
     }
@@ -1122,6 +1202,16 @@ pub mod patch_config {
                 RebootConfig::Never => "NEVER",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "REBOOT_CONFIG_UNSPECIFIED" => Some(Self::Unspecified),
+                "DEFAULT" => Some(Self::Default),
+                "ALWAYS" => Some(Self::Always),
+                "NEVER" => Some(Self::Never),
+                _ => None,
+            }
+        }
     }
 }
 /// Apt patching will be performed by executing `apt-get update && apt-get
@@ -1176,6 +1266,15 @@ pub mod apt_settings {
                 Type::Unspecified => "TYPE_UNSPECIFIED",
                 Type::Dist => "DIST",
                 Type::Upgrade => "UPGRADE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "DIST" => Some(Self::Dist),
+                "UPGRADE" => Some(Self::Upgrade),
+                _ => None,
             }
         }
     }
@@ -1333,6 +1432,22 @@ pub mod windows_update_settings {
                 Classification::Update => "UPDATE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CLASSIFICATION_UNSPECIFIED" => Some(Self::Unspecified),
+                "CRITICAL" => Some(Self::Critical),
+                "SECURITY" => Some(Self::Security),
+                "DEFINITION" => Some(Self::Definition),
+                "DRIVER" => Some(Self::Driver),
+                "FEATURE_PACK" => Some(Self::FeaturePack),
+                "SERVICE_PACK" => Some(Self::ServicePack),
+                "TOOL" => Some(Self::Tool),
+                "UPDATE_ROLLUP" => Some(Self::UpdateRollup),
+                "UPDATE" => Some(Self::Update),
+                _ => None,
+            }
+        }
     }
 }
 /// The strategy for retrying failed patches during the patch window.
@@ -1412,6 +1527,16 @@ pub mod exec_step_config {
                 Interpreter::None => "NONE",
                 Interpreter::Shell => "SHELL",
                 Interpreter::Powershell => "POWERSHELL",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "INTERPRETER_UNSPECIFIED" => Some(Self::Unspecified),
+                "NONE" => Some(Self::None),
+                "SHELL" => Some(Self::Shell),
+                "POWERSHELL" => Some(Self::Powershell),
+                _ => None,
             }
         }
     }
@@ -1549,6 +1674,17 @@ pub mod apply_patches_task_progress {
                 State::Rebooting => "REBOOTING",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "STARTED" => Some(Self::Started),
+                "DOWNLOADING_PATCHES" => Some(Self::DownloadingPatches),
+                "APPLYING_PATCHES" => Some(Self::ApplyingPatches),
+                "REBOOTING" => Some(Self::Rebooting),
+                _ => None,
+            }
+        }
     }
 }
 /// Information reported from the agent about applying patches execution.
@@ -1595,6 +1731,16 @@ pub mod apply_patches_task_output {
                 State::Succeeded => "SUCCEEDED",
                 State::SucceededRebootRequired => "SUCCEEDED_REBOOT_REQUIRED",
                 State::Failed => "FAILED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "SUCCEEDED" => Some(Self::Succeeded),
+                "SUCCEEDED_REBOOT_REQUIRED" => Some(Self::SucceededRebootRequired),
+                "FAILED" => Some(Self::Failed),
+                _ => None,
             }
         }
     }
@@ -1647,6 +1793,14 @@ pub mod exec_step_task_progress {
                 State::Started => "STARTED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "STARTED" => Some(Self::Started),
+                _ => None,
+            }
+        }
     }
 }
 /// Information reported from the agent about the exec step execution.
@@ -1696,6 +1850,16 @@ pub mod exec_step_task_output {
                 State::Completed => "COMPLETED",
                 State::TimedOut => "TIMED_OUT",
                 State::Cancelled => "CANCELLED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "COMPLETED" => Some(Self::Completed),
+                "TIMED_OUT" => Some(Self::TimedOut),
+                "CANCELLED" => Some(Self::Cancelled),
+                _ => None,
             }
         }
     }
@@ -1779,6 +1943,15 @@ pub mod apply_config_task_progress {
                 State::ApplyingConfig => "APPLYING_CONFIG",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "STARTED" => Some(Self::Started),
+                "APPLYING_CONFIG" => Some(Self::ApplyingConfig),
+                _ => None,
+            }
+        }
     }
 }
 /// Information reported from the agent regarding the output of the task of
@@ -1853,6 +2026,16 @@ pub mod apply_config_task_output {
                 State::Cancelled => "CANCELLED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "SUCCEEDED" => Some(Self::Succeeded),
+                "FAILED" => Some(Self::Failed),
+                "CANCELLED" => Some(Self::Cancelled),
+                _ => None,
+            }
+        }
     }
 }
 /// Specifies the current agent behavior.
@@ -1880,6 +2063,15 @@ impl TaskDirective {
             TaskDirective::Stop => "STOP",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "TASK_DIRECTIVE_UNSPECIFIED" => Some(Self::Unspecified),
+            "CONTINUE" => Some(Self::Continue),
+            "STOP" => Some(Self::Stop),
+            _ => None,
+        }
+    }
 }
 /// Specifies the type of task to perform.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -1905,6 +2097,16 @@ impl TaskType {
             TaskType::ApplyPatches => "APPLY_PATCHES",
             TaskType::ExecStepTask => "EXEC_STEP_TASK",
             TaskType::ApplyConfigTask => "APPLY_CONFIG_TASK",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "TASK_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "APPLY_PATCHES" => Some(Self::ApplyPatches),
+            "EXEC_STEP_TASK" => Some(Self::ExecStepTask),
+            "APPLY_CONFIG_TASK" => Some(Self::ApplyConfigTask),
+            _ => None,
         }
     }
 }

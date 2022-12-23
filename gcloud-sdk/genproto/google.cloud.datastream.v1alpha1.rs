@@ -180,6 +180,16 @@ pub mod private_connection {
                 State::Failed => "FAILED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CREATING" => Some(Self::Creating),
+                "CREATED" => Some(Self::Created),
+                "FAILED" => Some(Self::Failed),
+                _ => None,
+            }
+        }
     }
 }
 /// Private Connectivity
@@ -529,6 +539,15 @@ pub mod json_file_format {
                 JsonCompression::Gzip => "GZIP",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "JSON_COMPRESSION_UNSPECIFIED" => Some(Self::Unspecified),
+                "NO_COMPRESSION" => Some(Self::NoCompression),
+                "GZIP" => Some(Self::Gzip),
+                _ => None,
+            }
+        }
     }
 }
 /// Google Cloud Storage destination configuration
@@ -714,6 +733,21 @@ pub mod stream {
                 State::Draining => "DRAINING",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CREATED" => Some(Self::Created),
+                "RUNNING" => Some(Self::Running),
+                "PAUSED" => Some(Self::Paused),
+                "MAINTENANCE" => Some(Self::Maintenance),
+                "FAILED" => Some(Self::Failed),
+                "FAILED_PERMANENTLY" => Some(Self::FailedPermanently),
+                "STARTING" => Some(Self::Starting),
+                "DRAINING" => Some(Self::Draining),
+                _ => None,
+            }
+        }
     }
     /// Stream backfill strategy.
     #[allow(clippy::derive_partial_eq_without_eq)]
@@ -815,6 +849,16 @@ pub mod validation {
                 Status::Passed => "PASSED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATUS_UNSPECIFIED" => Some(Self::Unspecified),
+                "NOT_EXECUTED" => Some(Self::NotExecuted),
+                "FAILED" => Some(Self::Failed),
+                "PASSED" => Some(Self::Passed),
+                _ => None,
+            }
+        }
     }
 }
 /// Represent user-facing validation result message.
@@ -872,6 +916,15 @@ pub mod validation_message {
                 Level::Error => "ERROR",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "LEVEL_UNSPECIFIED" => Some(Self::Unspecified),
+                "WARNING" => Some(Self::Warning),
+                "ERROR" => Some(Self::Error),
+                _ => None,
+            }
+        }
     }
 }
 /// File format in Cloud Storage.
@@ -892,6 +945,14 @@ impl GcsFileFormat {
         match self {
             GcsFileFormat::Unspecified => "GCS_FILE_FORMAT_UNSPECIFIED",
             GcsFileFormat::Avro => "AVRO",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "GCS_FILE_FORMAT_UNSPECIFIED" => Some(Self::Unspecified),
+            "AVRO" => Some(Self::Avro),
+            _ => None,
         }
     }
 }
@@ -916,6 +977,15 @@ impl SchemaFileFormat {
             SchemaFileFormat::Unspecified => "SCHEMA_FILE_FORMAT_UNSPECIFIED",
             SchemaFileFormat::NoSchemaFile => "NO_SCHEMA_FILE",
             SchemaFileFormat::AvroSchemaFile => "AVRO_SCHEMA_FILE",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "SCHEMA_FILE_FORMAT_UNSPECIFIED" => Some(Self::Unspecified),
+            "NO_SCHEMA_FILE" => Some(Self::NoSchemaFile),
+            "AVRO_SCHEMA_FILE" => Some(Self::AvroSchemaFile),
+            _ => None,
         }
     }
 }

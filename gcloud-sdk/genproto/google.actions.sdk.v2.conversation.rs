@@ -128,6 +128,16 @@ pub mod image {
                 ImageFill::Cropped => "CROPPED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "GRAY" => Some(Self::Gray),
+                "WHITE" => Some(Self::White),
+                "CROPPED" => Some(Self::Cropped),
+                _ => None,
+            }
+        }
     }
 }
 /// Link content.
@@ -172,6 +182,14 @@ impl UrlHint {
         match self {
             UrlHint::LinkUnspecified => "LINK_UNSPECIFIED",
             UrlHint::Amp => "AMP",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "LINK_UNSPECIFIED" => Some(Self::LinkUnspecified),
+            "AMP" => Some(Self::Amp),
+            _ => None,
         }
     }
 }
@@ -314,6 +332,15 @@ pub mod media {
                 MediaType::MediaStatusAck => "MEDIA_STATUS_ACK",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MEDIA_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "AUDIO" => Some(Self::Audio),
+                "MEDIA_STATUS_ACK" => Some(Self::MediaStatusAck),
+                _ => None,
+            }
+        }
     }
     /// Optional media control types the media response can support
     #[derive(
@@ -349,6 +376,15 @@ pub mod media {
                 }
                 OptionalMediaControls::Paused => "PAUSED",
                 OptionalMediaControls::Stopped => "STOPPED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "OPTIONAL_MEDIA_CONTROLS_UNSPECIFIED" => Some(Self::Unspecified),
+                "PAUSED" => Some(Self::Paused),
+                "STOPPED" => Some(Self::Stopped),
+                _ => None,
             }
         }
     }
@@ -468,6 +504,16 @@ pub mod table_column {
                 HorizontalAlignment::Leading => "LEADING",
                 HorizontalAlignment::Center => "CENTER",
                 HorizontalAlignment::Trailing => "TRAILING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "LEADING" => Some(Self::Leading),
+                "CENTER" => Some(Self::Center),
+                "TRAILING" => Some(Self::Trailing),
+                _ => None,
             }
         }
     }
@@ -674,6 +720,15 @@ pub mod slot {
                 SlotMode::Required => "REQUIRED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MODE_UNSPECIFIED" => Some(Self::ModeUnspecified),
+                "OPTIONAL" => Some(Self::Optional),
+                "REQUIRED" => Some(Self::Required),
+                _ => None,
+            }
+        }
     }
     /// Represents the status of a slot.
     #[derive(
@@ -714,6 +769,16 @@ pub mod slot {
                 SlotStatus::Filled => "FILLED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SLOT_UNSPECIFIED" => Some(Self::SlotUnspecified),
+                "EMPTY" => Some(Self::Empty),
+                "INVALID" => Some(Self::Invalid),
+                "FILLED" => Some(Self::Filled),
+                _ => None,
+            }
+        }
     }
 }
 /// Represents the current status of slot filling.
@@ -740,6 +805,16 @@ impl SlotFillingStatus {
             SlotFillingStatus::Initialized => "INITIALIZED",
             SlotFillingStatus::Collecting => "COLLECTING",
             SlotFillingStatus::Final => "FINAL",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "UNSPECIFIED" => Some(Self::Unspecified),
+            "INITIALIZED" => Some(Self::Initialized),
+            "COLLECTING" => Some(Self::Collecting),
+            "FINAL" => Some(Self::Final),
+            _ => None,
         }
     }
 }

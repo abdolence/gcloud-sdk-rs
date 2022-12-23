@@ -284,6 +284,19 @@ pub mod filter {
                     MatchType::PartialRegexp => "PARTIAL_REGEXP",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "MATCH_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "EXACT" => Some(Self::Exact),
+                    "BEGINS_WITH" => Some(Self::BeginsWith),
+                    "ENDS_WITH" => Some(Self::EndsWith),
+                    "CONTAINS" => Some(Self::Contains),
+                    "FULL_REGEXP" => Some(Self::FullRegexp),
+                    "PARTIAL_REGEXP" => Some(Self::PartialRegexp),
+                    _ => None,
+                }
+            }
         }
     }
     /// The result needs to be in a list of string values.
@@ -351,6 +364,18 @@ pub mod filter {
                     Operation::LessThanOrEqual => "LESS_THAN_OR_EQUAL",
                     Operation::GreaterThan => "GREATER_THAN",
                     Operation::GreaterThanOrEqual => "GREATER_THAN_OR_EQUAL",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "OPERATION_UNSPECIFIED" => Some(Self::Unspecified),
+                    "EQUAL" => Some(Self::Equal),
+                    "LESS_THAN" => Some(Self::LessThan),
+                    "LESS_THAN_OR_EQUAL" => Some(Self::LessThanOrEqual),
+                    "GREATER_THAN" => Some(Self::GreaterThan),
+                    "GREATER_THAN_OR_EQUAL" => Some(Self::GreaterThanOrEqual),
+                    _ => None,
                 }
             }
         }
@@ -461,6 +486,18 @@ pub mod order_by {
                         "CASE_INSENSITIVE_ALPHANUMERIC"
                     }
                     OrderType::Numeric => "NUMERIC",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "ORDER_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "ALPHANUMERIC" => Some(Self::Alphanumeric),
+                    "CASE_INSENSITIVE_ALPHANUMERIC" => {
+                        Some(Self::CaseInsensitiveAlphanumeric)
+                    }
+                    "NUMERIC" => Some(Self::Numeric),
+                    _ => None,
                 }
             }
         }
@@ -706,6 +743,16 @@ pub mod cohorts_range {
                 Granularity::Daily => "DAILY",
                 Granularity::Weekly => "WEEKLY",
                 Granularity::Monthly => "MONTHLY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "GRANULARITY_UNSPECIFIED" => Some(Self::Unspecified),
+                "DAILY" => Some(Self::Daily),
+                "WEEKLY" => Some(Self::Weekly),
+                "MONTHLY" => Some(Self::Monthly),
+                _ => None,
             }
         }
     }
@@ -1122,6 +1169,15 @@ pub mod metric_metadata {
                 BlockedReason::NoCostMetrics => "NO_COST_METRICS",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "BLOCKED_REASON_UNSPECIFIED" => Some(Self::Unspecified),
+                "NO_REVENUE_METRICS" => Some(Self::NoRevenueMetrics),
+                "NO_COST_METRICS" => Some(Self::NoCostMetrics),
+                _ => None,
+            }
+        }
     }
 }
 /// The compatibility for a single dimension.
@@ -1181,6 +1237,17 @@ impl MetricAggregation {
             MetricAggregation::Count => "COUNT",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "METRIC_AGGREGATION_UNSPECIFIED" => Some(Self::Unspecified),
+            "TOTAL" => Some(Self::Total),
+            "MINIMUM" => Some(Self::Minimum),
+            "MAXIMUM" => Some(Self::Maximum),
+            "COUNT" => Some(Self::Count),
+            _ => None,
+        }
+    }
 }
 /// A metric's value type.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -1235,6 +1302,25 @@ impl MetricType {
             MetricType::TypeKilometers => "TYPE_KILOMETERS",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "METRIC_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "TYPE_INTEGER" => Some(Self::TypeInteger),
+            "TYPE_FLOAT" => Some(Self::TypeFloat),
+            "TYPE_SECONDS" => Some(Self::TypeSeconds),
+            "TYPE_MILLISECONDS" => Some(Self::TypeMilliseconds),
+            "TYPE_MINUTES" => Some(Self::TypeMinutes),
+            "TYPE_HOURS" => Some(Self::TypeHours),
+            "TYPE_STANDARD" => Some(Self::TypeStandard),
+            "TYPE_CURRENCY" => Some(Self::TypeCurrency),
+            "TYPE_FEET" => Some(Self::TypeFeet),
+            "TYPE_MILES" => Some(Self::TypeMiles),
+            "TYPE_METERS" => Some(Self::TypeMeters),
+            "TYPE_KILOMETERS" => Some(Self::TypeKilometers),
+            _ => None,
+        }
+    }
 }
 /// Categories of data that you may be restricted from viewing on certain GA4
 /// properties.
@@ -1258,6 +1344,15 @@ impl RestrictedMetricType {
             RestrictedMetricType::Unspecified => "RESTRICTED_METRIC_TYPE_UNSPECIFIED",
             RestrictedMetricType::CostData => "COST_DATA",
             RestrictedMetricType::RevenueData => "REVENUE_DATA",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "RESTRICTED_METRIC_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "COST_DATA" => Some(Self::CostData),
+            "REVENUE_DATA" => Some(Self::RevenueData),
+            _ => None,
         }
     }
 }
@@ -1284,6 +1379,15 @@ impl Compatibility {
             Compatibility::Unspecified => "COMPATIBILITY_UNSPECIFIED",
             Compatibility::Compatible => "COMPATIBLE",
             Compatibility::Incompatible => "INCOMPATIBLE",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "COMPATIBILITY_UNSPECIFIED" => Some(Self::Unspecified),
+            "COMPATIBLE" => Some(Self::Compatible),
+            "INCOMPATIBLE" => Some(Self::Incompatible),
+            _ => None,
         }
     }
 }

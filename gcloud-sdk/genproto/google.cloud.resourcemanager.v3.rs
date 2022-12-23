@@ -77,6 +77,15 @@ pub mod folder {
                 State::DeleteRequested => "DELETE_REQUESTED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ACTIVE" => Some(Self::Active),
+                "DELETE_REQUESTED" => Some(Self::DeleteRequested),
+                _ => None,
+            }
+        }
     }
 }
 /// The GetFolder request message.
@@ -789,6 +798,15 @@ pub mod organization {
                 State::DeleteRequested => "DELETE_REQUESTED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ACTIVE" => Some(Self::Active),
+                "DELETE_REQUESTED" => Some(Self::DeleteRequested),
+                _ => None,
+            }
+        }
     }
     /// The owner of this organization. The owner should be specified on
     /// creation. Once set, it cannot be changed.
@@ -1191,6 +1209,15 @@ pub mod project {
                 State::Unspecified => "STATE_UNSPECIFIED",
                 State::Active => "ACTIVE",
                 State::DeleteRequested => "DELETE_REQUESTED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ACTIVE" => Some(Self::Active),
+                "DELETE_REQUESTED" => Some(Self::DeleteRequested),
+                _ => None,
             }
         }
     }

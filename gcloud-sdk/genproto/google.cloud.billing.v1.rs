@@ -766,6 +766,15 @@ pub mod aggregation_info {
                 AggregationLevel::Project => "PROJECT",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "AGGREGATION_LEVEL_UNSPECIFIED" => Some(Self::Unspecified),
+                "ACCOUNT" => Some(Self::Account),
+                "PROJECT" => Some(Self::Project),
+                _ => None,
+            }
+        }
     }
     /// The interval at which usage is aggregated to compute cost.
     /// Example: "MONTHLY" aggregation interval indicates that usage for tiered
@@ -797,6 +806,15 @@ pub mod aggregation_info {
                 AggregationInterval::Unspecified => "AGGREGATION_INTERVAL_UNSPECIFIED",
                 AggregationInterval::Daily => "DAILY",
                 AggregationInterval::Monthly => "MONTHLY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "AGGREGATION_INTERVAL_UNSPECIFIED" => Some(Self::Unspecified),
+                "DAILY" => Some(Self::Daily),
+                "MONTHLY" => Some(Self::Monthly),
+                _ => None,
             }
         }
     }
@@ -851,6 +869,16 @@ pub mod geo_taxonomy {
                 Type::Global => "GLOBAL",
                 Type::Regional => "REGIONAL",
                 Type::MultiRegional => "MULTI_REGIONAL",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "GLOBAL" => Some(Self::Global),
+                "REGIONAL" => Some(Self::Regional),
+                "MULTI_REGIONAL" => Some(Self::MultiRegional),
+                _ => None,
             }
         }
     }

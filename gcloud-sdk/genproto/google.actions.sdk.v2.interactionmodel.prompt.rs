@@ -93,6 +93,16 @@ pub mod static_image_prompt {
                 ImageFill::Cropped => "CROPPED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "GRAY" => Some(Self::Gray),
+                "WHITE" => Some(Self::White),
+                "CROPPED" => Some(Self::Cropped),
+                _ => None,
+            }
+        }
     }
 }
 /// Defines a link which will be displayed as a suggestion chip and can be opened
@@ -138,6 +148,14 @@ impl UrlHint {
         match self {
             UrlHint::HintUnspecified => "HINT_UNSPECIFIED",
             UrlHint::Amp => "AMP",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "HINT_UNSPECIFIED" => Some(Self::HintUnspecified),
+            "AMP" => Some(Self::Amp),
+            _ => None,
         }
     }
 }
@@ -345,6 +363,15 @@ pub mod static_media_prompt {
                 MediaType::MediaStatusAck => "MEDIA_STATUS_ACK",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MEDIA_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "AUDIO" => Some(Self::Audio),
+                "MEDIA_STATUS_ACK" => Some(Self::MediaStatusAck),
+                _ => None,
+            }
+        }
     }
     /// Media control types the media response can supported optionally
     #[derive(
@@ -381,6 +408,15 @@ pub mod static_media_prompt {
                 OptionalMediaControls::Stopped => "STOPPED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "OPTIONAL_MEDIA_CONTROLS_UNSPECIFIED" => Some(Self::Unspecified),
+                "PAUSED" => Some(Self::Paused),
+                "STOPPED" => Some(Self::Stopped),
+                _ => None,
+            }
+        }
     }
     /// The types of repeat mode for a list of media objects.
     #[derive(
@@ -414,6 +450,15 @@ pub mod static_media_prompt {
                 RepeatMode::Unspecified => "REPEAT_MODE_UNSPECIFIED",
                 RepeatMode::Off => "OFF",
                 RepeatMode::All => "ALL",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "REPEAT_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "OFF" => Some(Self::Off),
+                "ALL" => Some(Self::All),
+                _ => None,
             }
         }
     }
@@ -533,6 +578,16 @@ pub mod table_column {
                 HorizontalAlignment::Leading => "LEADING",
                 HorizontalAlignment::Center => "CENTER",
                 HorizontalAlignment::Trailing => "TRAILING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "LEADING" => Some(Self::Leading),
+                "CENTER" => Some(Self::Center),
+                "TRAILING" => Some(Self::Trailing),
+                _ => None,
             }
         }
     }
@@ -695,6 +750,19 @@ pub mod surface_capabilities {
                 Capability::InteractiveCanvas => "INTERACTIVE_CANVAS",
                 Capability::WebLink => "WEB_LINK",
                 Capability::HomeStorage => "HOME_STORAGE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "SPEECH" => Some(Self::Speech),
+                "RICH_RESPONSE" => Some(Self::RichResponse),
+                "LONG_FORM_AUDIO" => Some(Self::LongFormAudio),
+                "INTERACTIVE_CANVAS" => Some(Self::InteractiveCanvas),
+                "WEB_LINK" => Some(Self::WebLink),
+                "HOME_STORAGE" => Some(Self::HomeStorage),
+                _ => None,
             }
         }
     }

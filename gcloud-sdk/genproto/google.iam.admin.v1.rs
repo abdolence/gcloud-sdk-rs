@@ -287,6 +287,15 @@ pub mod list_service_account_keys_request {
                 KeyType::SystemManaged => "SYSTEM_MANAGED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "KEY_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "USER_MANAGED" => Some(Self::UserManaged),
+                "SYSTEM_MANAGED" => Some(Self::SystemManaged),
+                _ => None,
+            }
+        }
     }
 }
 /// The service account keys list response.
@@ -653,6 +662,18 @@ pub mod role {
                 RoleLaunchStage::Eap => "EAP",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ALPHA" => Some(Self::Alpha),
+                "BETA" => Some(Self::Beta),
+                "GA" => Some(Self::Ga),
+                "DEPRECATED" => Some(Self::Deprecated),
+                "DISABLED" => Some(Self::Disabled),
+                "EAP" => Some(Self::Eap),
+                _ => None,
+            }
+        }
     }
 }
 /// The grantable role query request.
@@ -1005,6 +1026,16 @@ pub mod permission {
                 PermissionLaunchStage::Deprecated => "DEPRECATED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ALPHA" => Some(Self::Alpha),
+                "BETA" => Some(Self::Beta),
+                "GA" => Some(Self::Ga),
+                "DEPRECATED" => Some(Self::Deprecated),
+                _ => None,
+            }
+        }
     }
     /// The state of the permission with regards to custom roles.
     #[derive(
@@ -1037,6 +1068,15 @@ pub mod permission {
                 CustomRolesSupportLevel::Supported => "SUPPORTED",
                 CustomRolesSupportLevel::Testing => "TESTING",
                 CustomRolesSupportLevel::NotSupported => "NOT_SUPPORTED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SUPPORTED" => Some(Self::Supported),
+                "TESTING" => Some(Self::Testing),
+                "NOT_SUPPORTED" => Some(Self::NotSupported),
+                _ => None,
             }
         }
     }
@@ -1206,6 +1246,14 @@ pub mod lint_result {
                 Level::Condition => "CONDITION",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "LEVEL_UNSPECIFIED" => Some(Self::Unspecified),
+                "CONDITION" => Some(Self::Condition),
+                _ => None,
+            }
+        }
     }
     /// Possible Severity values of an issued result.
     #[derive(
@@ -1264,6 +1312,18 @@ pub mod lint_result {
                 Severity::Deprecated => "DEPRECATED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SEVERITY_UNSPECIFIED" => Some(Self::Unspecified),
+                "ERROR" => Some(Self::Error),
+                "WARNING" => Some(Self::Warning),
+                "NOTICE" => Some(Self::Notice),
+                "INFO" => Some(Self::Info),
+                "DEPRECATED" => Some(Self::Deprecated),
+                _ => None,
+            }
+        }
     }
 }
 /// The response of a lint operation. An empty response indicates
@@ -1298,6 +1358,15 @@ impl ServiceAccountKeyAlgorithm {
             ServiceAccountKeyAlgorithm::KeyAlgRsa2048 => "KEY_ALG_RSA_2048",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "KEY_ALG_UNSPECIFIED" => Some(Self::KeyAlgUnspecified),
+            "KEY_ALG_RSA_1024" => Some(Self::KeyAlgRsa1024),
+            "KEY_ALG_RSA_2048" => Some(Self::KeyAlgRsa2048),
+            _ => None,
+        }
+    }
 }
 /// Supported private key output formats.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -1326,6 +1395,15 @@ impl ServiceAccountPrivateKeyType {
             }
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "TYPE_UNSPECIFIED" => Some(Self::TypeUnspecified),
+            "TYPE_PKCS12_FILE" => Some(Self::TypePkcs12File),
+            "TYPE_GOOGLE_CREDENTIALS_FILE" => Some(Self::TypeGoogleCredentialsFile),
+            _ => None,
+        }
+    }
 }
 /// Supported public key output formats.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -1348,6 +1426,15 @@ impl ServiceAccountPublicKeyType {
             ServiceAccountPublicKeyType::TypeNone => "TYPE_NONE",
             ServiceAccountPublicKeyType::TypeX509PemFile => "TYPE_X509_PEM_FILE",
             ServiceAccountPublicKeyType::TypeRawPublicKey => "TYPE_RAW_PUBLIC_KEY",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "TYPE_NONE" => Some(Self::TypeNone),
+            "TYPE_X509_PEM_FILE" => Some(Self::TypeX509PemFile),
+            "TYPE_RAW_PUBLIC_KEY" => Some(Self::TypeRawPublicKey),
+            _ => None,
         }
     }
 }
@@ -1374,6 +1461,15 @@ impl ServiceAccountKeyOrigin {
             ServiceAccountKeyOrigin::GoogleProvided => "GOOGLE_PROVIDED",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "ORIGIN_UNSPECIFIED" => Some(Self::OriginUnspecified),
+            "USER_PROVIDED" => Some(Self::UserProvided),
+            "GOOGLE_PROVIDED" => Some(Self::GoogleProvided),
+            _ => None,
+        }
+    }
 }
 /// A view for Role objects.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -1394,6 +1490,14 @@ impl RoleView {
         match self {
             RoleView::Basic => "BASIC",
             RoleView::Full => "FULL",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "BASIC" => Some(Self::Basic),
+            "FULL" => Some(Self::Full),
+            _ => None,
         }
     }
 }

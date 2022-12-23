@@ -236,6 +236,16 @@ pub mod product_catalog_item {
                 StockState::Backorder => "BACKORDER",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STOCK_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "OUT_OF_STOCK" => Some(Self::OutOfStock),
+                "PREORDER" => Some(Self::Preorder),
+                "BACKORDER" => Some(Self::Backorder),
+                _ => None,
+            }
+        }
     }
     /// Product price. Only one of 'exactPrice'/'priceRange' can be provided.
     #[allow(clippy::derive_partial_eq_without_eq)]
@@ -368,6 +378,16 @@ pub mod user_event {
                 EventSource::Automl => "AUTOML",
                 EventSource::Ecommerce => "ECOMMERCE",
                 EventSource::BatchUpload => "BATCH_UPLOAD",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "EVENT_SOURCE_UNSPECIFIED" => Some(Self::Unspecified),
+                "AUTOML" => Some(Self::Automl),
+                "ECOMMERCE" => Some(Self::Ecommerce),
+                "BATCH_UPLOAD" => Some(Self::BatchUpload),
+                _ => None,
             }
         }
     }

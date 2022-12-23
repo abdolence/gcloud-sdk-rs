@@ -280,6 +280,19 @@ pub mod translation_task_details {
                 FileEncoding::Utf16be => "UTF_16BE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "FILE_ENCODING_UNSPECIFIED" => Some(Self::Unspecified),
+                "UTF_8" => Some(Self::Utf8),
+                "ISO_8859_1" => Some(Self::Iso88591),
+                "US_ASCII" => Some(Self::UsAscii),
+                "UTF_16" => Some(Self::Utf16),
+                "UTF_16LE" => Some(Self::Utf16le),
+                "UTF_16BE" => Some(Self::Utf16be),
+                _ => None,
+            }
+        }
     }
     /// The special token data type.
     #[derive(
@@ -327,6 +340,20 @@ pub mod translation_task_details {
                 TokenType::Float64 => "FLOAT64",
                 TokenType::Date => "DATE",
                 TokenType::Timestamp => "TIMESTAMP",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TOKEN_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "STRING" => Some(Self::String),
+                "INT64" => Some(Self::Int64),
+                "NUMERIC" => Some(Self::Numeric),
+                "BOOL" => Some(Self::Bool),
+                "FLOAT64" => Some(Self::Float64),
+                "DATE" => Some(Self::Date),
+                "TIMESTAMP" => Some(Self::Timestamp),
+                _ => None,
             }
         }
     }
@@ -401,6 +428,16 @@ pub mod identifier_settings {
                 IdentifierCase::Lower => "LOWER",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "IDENTIFIER_CASE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ORIGINAL" => Some(Self::Original),
+                "UPPER" => Some(Self::Upper),
+                "LOWER" => Some(Self::Lower),
+                _ => None,
+            }
+        }
     }
     /// The SQL identifier rewrite mode.
     #[derive(
@@ -435,6 +472,15 @@ pub mod identifier_settings {
                 }
                 IdentifierRewriteMode::None => "NONE",
                 IdentifierRewriteMode::RewriteAll => "REWRITE_ALL",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "IDENTIFIER_REWRITE_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "NONE" => Some(Self::None),
+                "REWRITE_ALL" => Some(Self::RewriteAll),
+                _ => None,
             }
         }
     }
@@ -555,6 +601,17 @@ pub mod migration_workflow {
                 State::Completed => "COMPLETED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "DRAFT" => Some(Self::Draft),
+                "RUNNING" => Some(Self::Running),
+                "PAUSED" => Some(Self::Paused),
+                "COMPLETED" => Some(Self::Completed),
+                _ => None,
+            }
+        }
     }
 }
 /// A single task for a migration which has details about the configuration of
@@ -640,6 +697,19 @@ pub mod migration_task {
                 State::Paused => "PAUSED",
                 State::Succeeded => "SUCCEEDED",
                 State::Failed => "FAILED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PENDING" => Some(Self::Pending),
+                "ORCHESTRATING" => Some(Self::Orchestrating),
+                "RUNNING" => Some(Self::Running),
+                "PAUSED" => Some(Self::Paused),
+                "SUCCEEDED" => Some(Self::Succeeded),
+                "FAILED" => Some(Self::Failed),
+                _ => None,
             }
         }
     }
@@ -747,6 +817,18 @@ pub mod migration_subtask {
                 State::Succeeded => "SUCCEEDED",
                 State::Failed => "FAILED",
                 State::Paused => "PAUSED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ACTIVE" => Some(Self::Active),
+                "RUNNING" => Some(Self::Running),
+                "SUCCEEDED" => Some(Self::Succeeded),
+                "FAILED" => Some(Self::Failed),
+                "PAUSED" => Some(Self::Paused),
+                _ => None,
             }
         }
     }
@@ -1173,6 +1255,14 @@ pub mod translate_query_request {
                 SqlTranslationSourceDialect::Teradata => "TERADATA",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SQL_TRANSLATION_SOURCE_DIALECT_UNSPECIFIED" => Some(Self::Unspecified),
+                "TERADATA" => Some(Self::Teradata),
+                _ => None,
+            }
+        }
     }
 }
 /// The response of translating a SQL query to Standard SQL.
@@ -1259,6 +1349,15 @@ pub mod sql_translation_error {
                 SqlTranslationErrorType::UnsupportedSqlFunction => {
                     "UNSUPPORTED_SQL_FUNCTION"
                 }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SQL_TRANSLATION_ERROR_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "SQL_PARSE_ERROR" => Some(Self::SqlParseError),
+                "UNSUPPORTED_SQL_FUNCTION" => Some(Self::UnsupportedSqlFunction),
+                _ => None,
             }
         }
     }

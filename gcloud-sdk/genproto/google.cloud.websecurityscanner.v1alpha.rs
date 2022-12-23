@@ -235,6 +235,28 @@ pub mod finding {
                 }
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "FINDING_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "MIXED_CONTENT" => Some(Self::MixedContent),
+                "OUTDATED_LIBRARY" => Some(Self::OutdatedLibrary),
+                "ROSETTA_FLASH" => Some(Self::RosettaFlash),
+                "XSS_CALLBACK" => Some(Self::XssCallback),
+                "XSS_ERROR" => Some(Self::XssError),
+                "CLEAR_TEXT_PASSWORD" => Some(Self::ClearTextPassword),
+                "INVALID_CONTENT_TYPE" => Some(Self::InvalidContentType),
+                "XSS_ANGULAR_CALLBACK" => Some(Self::XssAngularCallback),
+                "INVALID_HEADER" => Some(Self::InvalidHeader),
+                "MISSPELLED_SECURITY_HEADER_NAME" => {
+                    Some(Self::MisspelledSecurityHeaderName)
+                }
+                "MISMATCHING_SECURITY_HEADER_VALUES" => {
+                    Some(Self::MismatchingSecurityHeaderValues)
+                }
+                _ => None,
+            }
+        }
     }
 }
 /// A FindingTypeStats resource represents stats regarding a specific FindingType
@@ -331,6 +353,16 @@ pub mod scan_run {
                 ExecutionState::Finished => "FINISHED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "EXECUTION_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "QUEUED" => Some(Self::Queued),
+                "SCANNING" => Some(Self::Scanning),
+                "FINISHED" => Some(Self::Finished),
+                _ => None,
+            }
+        }
     }
     /// Types of ScanRun result state.
     #[derive(
@@ -367,6 +399,16 @@ pub mod scan_run {
                 ResultState::Success => "SUCCESS",
                 ResultState::Error => "ERROR",
                 ResultState::Killed => "KILLED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "RESULT_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "SUCCESS" => Some(Self::Success),
+                "ERROR" => Some(Self::Error),
+                "KILLED" => Some(Self::Killed),
+                _ => None,
             }
         }
     }
@@ -518,6 +560,16 @@ pub mod scan_config {
                 UserAgent::SafariIphone => "SAFARI_IPHONE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "USER_AGENT_UNSPECIFIED" => Some(Self::Unspecified),
+                "CHROME_LINUX" => Some(Self::ChromeLinux),
+                "CHROME_ANDROID" => Some(Self::ChromeAndroid),
+                "SAFARI_IPHONE" => Some(Self::SafariIphone),
+                _ => None,
+            }
+        }
     }
     /// Cloud platforms supported by Cloud Web Security Scanner.
     #[derive(
@@ -551,6 +603,15 @@ pub mod scan_config {
                 TargetPlatform::Unspecified => "TARGET_PLATFORM_UNSPECIFIED",
                 TargetPlatform::AppEngine => "APP_ENGINE",
                 TargetPlatform::Compute => "COMPUTE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TARGET_PLATFORM_UNSPECIFIED" => Some(Self::Unspecified),
+                "APP_ENGINE" => Some(Self::AppEngine),
+                "COMPUTE" => Some(Self::Compute),
+                _ => None,
             }
         }
     }

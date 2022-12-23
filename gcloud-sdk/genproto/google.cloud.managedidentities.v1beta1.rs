@@ -112,6 +112,20 @@ pub mod domain {
                 State::Unavailable => "UNAVAILABLE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CREATING" => Some(Self::Creating),
+                "READY" => Some(Self::Ready),
+                "UPDATING" => Some(Self::Updating),
+                "DELETING" => Some(Self::Deleting),
+                "REPAIRING" => Some(Self::Repairing),
+                "PERFORMING_MAINTENANCE" => Some(Self::PerformingMaintenance),
+                "UNAVAILABLE" => Some(Self::Unavailable),
+                _ => None,
+            }
+        }
     }
 }
 /// Represents a relationship between two domains. This allows a controller in
@@ -207,6 +221,18 @@ pub mod trust {
                 State::Disconnected => "DISCONNECTED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CREATING" => Some(Self::Creating),
+                "UPDATING" => Some(Self::Updating),
+                "DELETING" => Some(Self::Deleting),
+                "CONNECTED" => Some(Self::Connected),
+                "DISCONNECTED" => Some(Self::Disconnected),
+                _ => None,
+            }
+        }
     }
     /// Represents the different inter-forest trust types.
     #[derive(
@@ -239,6 +265,15 @@ pub mod trust {
                 TrustType::Unspecified => "TRUST_TYPE_UNSPECIFIED",
                 TrustType::Forest => "FOREST",
                 TrustType::External => "EXTERNAL",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TRUST_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "FOREST" => Some(Self::Forest),
+                "EXTERNAL" => Some(Self::External),
+                _ => None,
             }
         }
     }
@@ -279,6 +314,16 @@ pub mod trust {
                 TrustDirection::Inbound => "INBOUND",
                 TrustDirection::Outbound => "OUTBOUND",
                 TrustDirection::Bidirectional => "BIDIRECTIONAL",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TRUST_DIRECTION_UNSPECIFIED" => Some(Self::Unspecified),
+                "INBOUND" => Some(Self::Inbound),
+                "OUTBOUND" => Some(Self::Outbound),
+                "BIDIRECTIONAL" => Some(Self::Bidirectional),
+                _ => None,
             }
         }
     }

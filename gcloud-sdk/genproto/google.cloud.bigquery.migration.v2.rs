@@ -320,6 +320,15 @@ pub mod teradata_dialect {
                 Mode::Bteq => "BTEQ",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "SQL" => Some(Self::Sql),
+                "BTEQ" => Some(Self::Bteq),
+                _ => None,
+            }
+        }
     }
 }
 /// The dialect definition for Oracle.
@@ -457,6 +466,20 @@ pub mod name_mapping_key {
                 Type::Function => "FUNCTION",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "DATABASE" => Some(Self::Database),
+                "SCHEMA" => Some(Self::Schema),
+                "RELATION" => Some(Self::Relation),
+                "ATTRIBUTE" => Some(Self::Attribute),
+                "RELATION_ALIAS" => Some(Self::RelationAlias),
+                "ATTRIBUTE_ALIAS" => Some(Self::AttributeAlias),
+                "FUNCTION" => Some(Self::Function),
+                _ => None,
+            }
+        }
     }
 }
 /// The potential components of a full name mapping that will be mapped
@@ -571,6 +594,17 @@ pub mod migration_workflow {
                 State::Completed => "COMPLETED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "DRAFT" => Some(Self::Draft),
+                "RUNNING" => Some(Self::Running),
+                "PAUSED" => Some(Self::Paused),
+                "COMPLETED" => Some(Self::Completed),
+                _ => None,
+            }
+        }
     }
 }
 /// A single task for a migration which has details about the configuration of
@@ -655,6 +689,19 @@ pub mod migration_task {
                 State::Paused => "PAUSED",
                 State::Succeeded => "SUCCEEDED",
                 State::Failed => "FAILED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PENDING" => Some(Self::Pending),
+                "ORCHESTRATING" => Some(Self::Orchestrating),
+                "RUNNING" => Some(Self::Running),
+                "PAUSED" => Some(Self::Paused),
+                "SUCCEEDED" => Some(Self::Succeeded),
+                "FAILED" => Some(Self::Failed),
+                _ => None,
             }
         }
     }
@@ -761,6 +808,18 @@ pub mod migration_subtask {
                 State::Succeeded => "SUCCEEDED",
                 State::Failed => "FAILED",
                 State::Paused => "PAUSED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ACTIVE" => Some(Self::Active),
+                "RUNNING" => Some(Self::Running),
+                "SUCCEEDED" => Some(Self::Succeeded),
+                "FAILED" => Some(Self::Failed),
+                "PAUSED" => Some(Self::Paused),
+                _ => None,
             }
         }
     }

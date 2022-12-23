@@ -79,5 +79,15 @@ pub mod deployment {
                 Platform::Custom => "CUSTOM",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PLATFORM_UNSPECIFIED" => Some(Self::Unspecified),
+                "GKE" => Some(Self::Gke),
+                "FLEX" => Some(Self::Flex),
+                "CUSTOM" => Some(Self::Custom),
+                _ => None,
+            }
+        }
     }
 }

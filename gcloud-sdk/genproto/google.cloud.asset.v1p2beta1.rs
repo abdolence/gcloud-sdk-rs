@@ -316,6 +316,15 @@ impl ContentType {
             ContentType::IamPolicy => "IAM_POLICY",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "CONTENT_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "RESOURCE" => Some(Self::Resource),
+            "IAM_POLICY" => Some(Self::IamPolicy),
+            _ => None,
+        }
+    }
 }
 /// Generated client implementations.
 pub mod asset_service_client {

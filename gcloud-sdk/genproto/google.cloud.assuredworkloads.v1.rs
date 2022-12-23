@@ -244,6 +244,17 @@ pub mod workload {
                     ResourceType::Keyring => "KEYRING",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "RESOURCE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "CONSUMER_PROJECT" => Some(Self::ConsumerProject),
+                    "CONSUMER_FOLDER" => Some(Self::ConsumerFolder),
+                    "ENCRYPTION_KEYS_PROJECT" => Some(Self::EncryptionKeysProject),
+                    "KEYRING" => Some(Self::Keyring),
+                    _ => None,
+                }
+            }
         }
     }
     /// Settings specific to the Key Management Service.
@@ -339,6 +350,15 @@ pub mod workload {
                     SetupState::StatusComplete => "STATUS_COMPLETE",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "SETUP_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "STATUS_PENDING" => Some(Self::StatusPending),
+                    "STATUS_COMPLETE" => Some(Self::StatusComplete),
+                    _ => None,
+                }
+            }
         }
         /// Setup error of SAA enrollment.
         #[derive(
@@ -384,6 +404,21 @@ pub mod workload {
                         "ERROR_NOT_ALL_SERVICES_ENROLLED"
                     }
                     SetupError::ErrorSetupCheckFailed => "ERROR_SETUP_CHECK_FAILED",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "SETUP_ERROR_UNSPECIFIED" => Some(Self::Unspecified),
+                    "ERROR_INVALID_BASE_SETUP" => Some(Self::ErrorInvalidBaseSetup),
+                    "ERROR_MISSING_EXTERNAL_SIGNING_KEY" => {
+                        Some(Self::ErrorMissingExternalSigningKey)
+                    }
+                    "ERROR_NOT_ALL_SERVICES_ENROLLED" => {
+                        Some(Self::ErrorNotAllServicesEnrolled)
+                    }
+                    "ERROR_SETUP_CHECK_FAILED" => Some(Self::ErrorSetupCheckFailed),
+                    _ => None,
                 }
             }
         }
@@ -455,6 +490,27 @@ pub mod workload {
                 }
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "COMPLIANCE_REGIME_UNSPECIFIED" => Some(Self::Unspecified),
+                "IL4" => Some(Self::Il4),
+                "CJIS" => Some(Self::Cjis),
+                "FEDRAMP_HIGH" => Some(Self::FedrampHigh),
+                "FEDRAMP_MODERATE" => Some(Self::FedrampModerate),
+                "US_REGIONAL_ACCESS" => Some(Self::UsRegionalAccess),
+                "HIPAA" => Some(Self::Hipaa),
+                "HITRUST" => Some(Self::Hitrust),
+                "EU_REGIONS_AND_SUPPORT" => Some(Self::EuRegionsAndSupport),
+                "CA_REGIONS_AND_SUPPORT" => Some(Self::CaRegionsAndSupport),
+                "ITAR" => Some(Self::Itar),
+                "AU_REGIONS_AND_US_SUPPORT" => Some(Self::AuRegionsAndUsSupport),
+                "ASSURED_WORKLOADS_FOR_PARTNERS" => {
+                    Some(Self::AssuredWorkloadsForPartners)
+                }
+                _ => None,
+            }
+        }
     }
     /// Key Access Justifications(KAJ) Enrollment State.
     #[derive(
@@ -489,6 +545,15 @@ pub mod workload {
                 KajEnrollmentState::Complete => "KAJ_ENROLLMENT_STATE_COMPLETE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "KAJ_ENROLLMENT_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "KAJ_ENROLLMENT_STATE_PENDING" => Some(Self::Pending),
+                "KAJ_ENROLLMENT_STATE_COMPLETE" => Some(Self::Complete),
+                _ => None,
+            }
+        }
     }
     /// Supported Assured Workloads Partners.
     #[derive(
@@ -518,6 +583,14 @@ pub mod workload {
             match self {
                 Partner::Unspecified => "PARTNER_UNSPECIFIED",
                 Partner::LocalControlsByS3ns => "LOCAL_CONTROLS_BY_S3NS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PARTNER_UNSPECIFIED" => Some(Self::Unspecified),
+                "LOCAL_CONTROLS_BY_S3NS" => Some(Self::LocalControlsByS3ns),
+                _ => None,
             }
         }
     }
@@ -595,6 +668,15 @@ pub mod restrict_allowed_resources_request {
                 RestrictionType::Unspecified => "RESTRICTION_TYPE_UNSPECIFIED",
                 RestrictionType::AllowAllGcpResources => "ALLOW_ALL_GCP_RESOURCES",
                 RestrictionType::AllowCompliantResources => "ALLOW_COMPLIANT_RESOURCES",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "RESTRICTION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ALLOW_ALL_GCP_RESOURCES" => Some(Self::AllowAllGcpResources),
+                "ALLOW_COMPLIANT_RESOURCES" => Some(Self::AllowCompliantResources),
+                _ => None,
             }
         }
     }
@@ -872,6 +954,27 @@ pub mod violation {
                     }
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "REMEDIATION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "REMEDIATION_BOOLEAN_ORG_POLICY_VIOLATION" => {
+                        Some(Self::RemediationBooleanOrgPolicyViolation)
+                    }
+                    "REMEDIATION_LIST_ALLOWED_VALUES_ORG_POLICY_VIOLATION" => {
+                        Some(Self::RemediationListAllowedValuesOrgPolicyViolation)
+                    }
+                    "REMEDIATION_LIST_DENIED_VALUES_ORG_POLICY_VIOLATION" => {
+                        Some(Self::RemediationListDeniedValuesOrgPolicyViolation)
+                    }
+                    "REMEDIATION_RESTRICT_CMEK_CRYPTO_KEY_PROJECTS_ORG_POLICY_VIOLATION" => {
+                        Some(
+                            Self::RemediationRestrictCmekCryptoKeyProjectsOrgPolicyViolation,
+                        )
+                    }
+                    _ => None,
+                }
+            }
         }
     }
     /// Violation State Values
@@ -908,6 +1011,16 @@ pub mod violation {
                 State::Resolved => "RESOLVED",
                 State::Unresolved => "UNRESOLVED",
                 State::Exception => "EXCEPTION",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "RESOLVED" => Some(Self::Resolved),
+                "UNRESOLVED" => Some(Self::Unresolved),
+                "EXCEPTION" => Some(Self::Exception),
+                _ => None,
             }
         }
     }

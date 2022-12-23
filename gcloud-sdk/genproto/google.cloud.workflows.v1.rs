@@ -98,6 +98,14 @@ pub mod workflow {
                 State::Active => "ACTIVE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ACTIVE" => Some(Self::Active),
+                _ => None,
+            }
+        }
     }
     /// Required. Location of the workflow source code.
     /// Modifying this field for an existing workflow results in a new workflow

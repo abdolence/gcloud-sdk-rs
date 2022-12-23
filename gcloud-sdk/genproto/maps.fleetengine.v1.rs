@@ -54,6 +54,16 @@ pub mod speed_reading_interval {
                 Speed::TrafficJam => "TRAFFIC_JAM",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SPEED_UNSPECIFIED" => Some(Self::Unspecified),
+                "NORMAL" => Some(Self::Normal),
+                "SLOW" => Some(Self::Slow),
+                "TRAFFIC_JAM" => Some(Self::TrafficJam),
+                _ => None,
+            }
+        }
     }
 }
 /// Traffic density along a Vehicle's path.
@@ -306,6 +316,15 @@ impl TripType {
             TripType::Exclusive => "EXCLUSIVE",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "UNKNOWN_TRIP_TYPE" => Some(Self::UnknownTripType),
+            "SHARED" => Some(Self::Shared),
+            "EXCLUSIVE" => Some(Self::Exclusive),
+            _ => None,
+        }
+    }
 }
 /// The type of waypoint.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -335,6 +354,18 @@ impl WaypointType {
             }
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "UNKNOWN_WAYPOINT_TYPE" => Some(Self::UnknownWaypointType),
+            "PICKUP_WAYPOINT_TYPE" => Some(Self::PickupWaypointType),
+            "DROP_OFF_WAYPOINT_TYPE" => Some(Self::DropOffWaypointType),
+            "INTERMEDIATE_DESTINATION_WAYPOINT_TYPE" => {
+                Some(Self::IntermediateDestinationWaypointType)
+            }
+            _ => None,
+        }
+    }
 }
 /// The type of polyline format.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -358,6 +389,15 @@ impl PolylineFormatType {
             PolylineFormatType::UnknownFormatType => "UNKNOWN_FORMAT_TYPE",
             PolylineFormatType::LatLngListType => "LAT_LNG_LIST_TYPE",
             PolylineFormatType::EncodedPolylineType => "ENCODED_POLYLINE_TYPE",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "UNKNOWN_FORMAT_TYPE" => Some(Self::UnknownFormatType),
+            "LAT_LNG_LIST_TYPE" => Some(Self::LatLngListType),
+            "ENCODED_POLYLINE_TYPE" => Some(Self::EncodedPolylineType),
+            _ => None,
         }
     }
 }
@@ -389,6 +429,17 @@ impl NavigationStatus {
             NavigationStatus::EnrouteToDestination => "ENROUTE_TO_DESTINATION",
             NavigationStatus::OffRoute => "OFF_ROUTE",
             NavigationStatus::ArrivedAtDestination => "ARRIVED_AT_DESTINATION",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "UNKNOWN_NAVIGATION_STATUS" => Some(Self::UnknownNavigationStatus),
+            "NO_GUIDANCE" => Some(Self::NoGuidance),
+            "ENROUTE_TO_DESTINATION" => Some(Self::EnrouteToDestination),
+            "OFF_ROUTE" => Some(Self::OffRoute),
+            "ARRIVED_AT_DESTINATION" => Some(Self::ArrivedAtDestination),
+            _ => None,
         }
     }
 }
@@ -427,6 +478,19 @@ impl LocationSensor {
             }
             LocationSensor::FusedLocationProvider => "FUSED_LOCATION_PROVIDER",
             LocationSensor::CoreLocation => "CORE_LOCATION",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "UNKNOWN_SENSOR" => Some(Self::UnknownSensor),
+            "GPS" => Some(Self::Gps),
+            "NETWORK" => Some(Self::Network),
+            "PASSIVE" => Some(Self::Passive),
+            "ROAD_SNAPPED_LOCATION_PROVIDER" => Some(Self::RoadSnappedLocationProvider),
+            "FUSED_LOCATION_PROVIDER" => Some(Self::FusedLocationProvider),
+            "CORE_LOCATION" => Some(Self::CoreLocation),
+            _ => None,
         }
     }
 }
@@ -518,6 +582,16 @@ pub mod request_header {
                 SdkType::Javascript => "JAVASCRIPT",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SDK_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CONSUMER" => Some(Self::Consumer),
+                "DRIVER" => Some(Self::Driver),
+                "JAVASCRIPT" => Some(Self::Javascript),
+                _ => None,
+            }
+        }
     }
     /// The platform of the calling SDK.
     #[derive(
@@ -553,6 +627,16 @@ pub mod request_header {
                 Platform::Android => "ANDROID",
                 Platform::Ios => "IOS",
                 Platform::Web => "WEB",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PLATFORM_UNSPECIFIED" => Some(Self::Unspecified),
+                "ANDROID" => Some(Self::Android),
+                "IOS" => Some(Self::Ios),
+                "WEB" => Some(Self::Web),
+                _ => None,
             }
         }
     }
@@ -801,6 +885,25 @@ impl TripStatus {
             TripStatus::Canceled => "CANCELED",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "UNKNOWN_TRIP_STATUS" => Some(Self::UnknownTripStatus),
+            "NEW" => Some(Self::New),
+            "ENROUTE_TO_PICKUP" => Some(Self::EnrouteToPickup),
+            "ARRIVED_AT_PICKUP" => Some(Self::ArrivedAtPickup),
+            "ARRIVED_AT_INTERMEDIATE_DESTINATION" => {
+                Some(Self::ArrivedAtIntermediateDestination)
+            }
+            "ENROUTE_TO_INTERMEDIATE_DESTINATION" => {
+                Some(Self::EnrouteToIntermediateDestination)
+            }
+            "ENROUTE_TO_DROPOFF" => Some(Self::EnrouteToDropoff),
+            "COMPLETE" => Some(Self::Complete),
+            "CANCELED" => Some(Self::Canceled),
+            _ => None,
+        }
+    }
 }
 /// A set of values that indicate upon which platform the request was issued.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -836,6 +939,18 @@ impl BillingPlatformIdentifier {
             BillingPlatformIdentifier::Others => "OTHERS",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "BILLING_PLATFORM_IDENTIFIER_UNSPECIFIED" => Some(Self::Unspecified),
+            "SERVER" => Some(Self::Server),
+            "WEB" => Some(Self::Web),
+            "ANDROID" => Some(Self::Android),
+            "IOS" => Some(Self::Ios),
+            "OTHERS" => Some(Self::Others),
+            _ => None,
+        }
+    }
 }
 /// Selector for different sets of Trip fields in a `GetTrip` response.  See
 /// \[AIP-157\](<https://google.aip.dev/157>) for context. Additional views are
@@ -864,6 +979,15 @@ impl TripView {
             TripView::Unspecified => "TRIP_VIEW_UNSPECIFIED",
             TripView::Sdk => "SDK",
             TripView::JourneySharingV1s => "JOURNEY_SHARING_V1S",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "TRIP_VIEW_UNSPECIFIED" => Some(Self::Unspecified),
+            "SDK" => Some(Self::Sdk),
+            "JOURNEY_SHARING_V1S" => Some(Self::JourneySharingV1s),
+            _ => None,
         }
     }
 }
@@ -1043,6 +1167,16 @@ pub mod report_billable_trip_request {
                 SolutionType::OnDemandRidesharingAndDeliveries => {
                     "ON_DEMAND_RIDESHARING_AND_DELIVERIES"
                 }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SOLUTION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ON_DEMAND_RIDESHARING_AND_DELIVERIES" => {
+                    Some(Self::OnDemandRidesharingAndDeliveries)
+                }
+                _ => None,
             }
         }
     }
@@ -1489,6 +1623,17 @@ pub mod vehicle {
                     Category::TwoWheeler => "TWO_WHEELER",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "UNKNOWN" => Some(Self::Unknown),
+                    "AUTO" => Some(Self::Auto),
+                    "TAXI" => Some(Self::Taxi),
+                    "TRUCK" => Some(Self::Truck),
+                    "TWO_WHEELER" => Some(Self::TwoWheeler),
+                    _ => None,
+                }
+            }
         }
     }
 }
@@ -1615,6 +1760,15 @@ pub mod visual_traffic_report_polyline_rendering {
                     Style::TrafficJam => "TRAFFIC_JAM",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "STYLE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "SLOWER_TRAFFIC" => Some(Self::SlowerTraffic),
+                    "TRAFFIC_JAM" => Some(Self::TrafficJam),
+                    _ => None,
+                }
+            }
         }
     }
 }
@@ -1649,6 +1803,15 @@ impl VehicleState {
             VehicleState::UnknownVehicleState => "UNKNOWN_VEHICLE_STATE",
             VehicleState::Offline => "OFFLINE",
             VehicleState::Online => "ONLINE",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "UNKNOWN_VEHICLE_STATE" => Some(Self::UnknownVehicleState),
+            "OFFLINE" => Some(Self::Offline),
+            "ONLINE" => Some(Self::Online),
+            _ => None,
         }
     }
 }
@@ -1701,6 +1864,26 @@ impl LocationPowerSaveMode {
             }
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "UNKNOWN_LOCATION_POWER_SAVE_MODE" => {
+                Some(Self::UnknownLocationPowerSaveMode)
+            }
+            "LOCATION_MODE_NO_CHANGE" => Some(Self::LocationModeNoChange),
+            "LOCATION_MODE_GPS_DISABLED_WHEN_SCREEN_OFF" => {
+                Some(Self::LocationModeGpsDisabledWhenScreenOff)
+            }
+            "LOCATION_MODE_ALL_DISABLED_WHEN_SCREEN_OFF" => {
+                Some(Self::LocationModeAllDisabledWhenScreenOff)
+            }
+            "LOCATION_MODE_FOREGROUND_ONLY" => Some(Self::LocationModeForegroundOnly),
+            "LOCATION_MODE_THROTTLE_REQUESTS_WHEN_SCREEN_OFF" => {
+                Some(Self::LocationModeThrottleRequestsWhenScreenOff)
+            }
+            _ => None,
+        }
+    }
 }
 /// Status of the battery, whether full or charging etc.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -1734,6 +1917,18 @@ impl BatteryStatus {
             BatteryStatus::PowerLow => "BATTERY_STATUS_POWER_LOW",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "UNKNOWN_BATTERY_STATUS" => Some(Self::UnknownBatteryStatus),
+            "BATTERY_STATUS_CHARGING" => Some(Self::Charging),
+            "BATTERY_STATUS_DISCHARGING" => Some(Self::Discharging),
+            "BATTERY_STATUS_FULL" => Some(Self::Full),
+            "BATTERY_STATUS_NOT_CHARGING" => Some(Self::NotCharging),
+            "BATTERY_STATUS_POWER_LOW" => Some(Self::PowerLow),
+            _ => None,
+        }
+    }
 }
 /// Type of the charger being used to charge the battery.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -1762,6 +1957,17 @@ impl PowerSource {
             PowerSource::Usb => "POWER_SOURCE_USB",
             PowerSource::Wireless => "POWER_SOURCE_WIRELESS",
             PowerSource::Unplugged => "POWER_SOURCE_UNPLUGGED",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "UNKNOWN_POWER_SOURCE" => Some(Self::UnknownPowerSource),
+            "POWER_SOURCE_AC" => Some(Self::Ac),
+            "POWER_SOURCE_USB" => Some(Self::Usb),
+            "POWER_SOURCE_WIRELESS" => Some(Self::Wireless),
+            "POWER_SOURCE_UNPLUGGED" => Some(Self::Unplugged),
+            _ => None,
         }
     }
 }
@@ -2115,6 +2321,20 @@ pub mod search_vehicles_request {
                 VehicleMatchOrder::Cost => "COST",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNKNOWN_VEHICLE_MATCH_ORDER" => Some(Self::UnknownVehicleMatchOrder),
+                "PICKUP_POINT_ETA" => Some(Self::PickupPointEta),
+                "PICKUP_POINT_DISTANCE" => Some(Self::PickupPointDistance),
+                "DROPOFF_POINT_ETA" => Some(Self::DropoffPointEta),
+                "PICKUP_POINT_STRAIGHT_DISTANCE" => {
+                    Some(Self::PickupPointStraightDistance)
+                }
+                "COST" => Some(Self::Cost),
+                _ => None,
+            }
+        }
     }
     /// Specifies the types of restrictions on a vehicle's current trips.
     #[derive(
@@ -2152,6 +2372,15 @@ pub mod search_vehicles_request {
                 CurrentTripsPresent::Unspecified => "CURRENT_TRIPS_PRESENT_UNSPECIFIED",
                 CurrentTripsPresent::None => "NONE",
                 CurrentTripsPresent::Any => "ANY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CURRENT_TRIPS_PRESENT_UNSPECIFIED" => Some(Self::Unspecified),
+                "NONE" => Some(Self::None),
+                "ANY" => Some(Self::Any),
+                _ => None,
             }
         }
     }
@@ -2420,6 +2649,17 @@ pub mod vehicle_match {
                 VehicleMatchType::BackToBack => "BACK_TO_BACK",
                 VehicleMatchType::Carpool => "CARPOOL",
                 VehicleMatchType::CarpoolBackToBack => "CARPOOL_BACK_TO_BACK",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNKNOWN" => Some(Self::Unknown),
+                "EXCLUSIVE" => Some(Self::Exclusive),
+                "BACK_TO_BACK" => Some(Self::BackToBack),
+                "CARPOOL" => Some(Self::Carpool),
+                "CARPOOL_BACK_TO_BACK" => Some(Self::CarpoolBackToBack),
+                _ => None,
             }
         }
     }

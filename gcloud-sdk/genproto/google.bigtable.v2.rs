@@ -783,6 +783,15 @@ pub mod read_rows_request {
                 RequestStatsView::RequestStatsFull => "REQUEST_STATS_FULL",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "REQUEST_STATS_VIEW_UNSPECIFIED" => Some(Self::Unspecified),
+                "REQUEST_STATS_NONE" => Some(Self::RequestStatsNone),
+                "REQUEST_STATS_FULL" => Some(Self::RequestStatsFull),
+                _ => None,
+            }
+        }
     }
 }
 /// Response message for Bigtable.ReadRows.

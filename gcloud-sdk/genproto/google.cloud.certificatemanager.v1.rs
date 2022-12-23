@@ -180,6 +180,15 @@ pub mod certificate_issuance_config {
                 KeyAlgorithm::EcdsaP256 => "ECDSA_P256",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "KEY_ALGORITHM_UNSPECIFIED" => Some(Self::Unspecified),
+                "RSA_2048" => Some(Self::Rsa2048),
+                "ECDSA_P256" => Some(Self::EcdsaP256),
+                _ => None,
+            }
+        }
     }
 }
 /// Request for the `ListCertificates` method.
@@ -714,6 +723,15 @@ pub mod certificate {
                         Reason::RateLimited => "RATE_LIMITED",
                     }
                 }
+                /// Creates an enum from field names used in the ProtoBuf definition.
+                pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                    match value {
+                        "REASON_UNSPECIFIED" => Some(Self::Unspecified),
+                        "AUTHORIZATION_ISSUE" => Some(Self::AuthorizationIssue),
+                        "RATE_LIMITED" => Some(Self::RateLimited),
+                        _ => None,
+                    }
+                }
             }
         }
         /// State of the latest attempt to authorize a domain for certificate
@@ -779,6 +797,16 @@ pub mod certificate {
                         State::Failed => "FAILED",
                     }
                 }
+                /// Creates an enum from field names used in the ProtoBuf definition.
+                pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                    match value {
+                        "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                        "AUTHORIZING" => Some(Self::Authorizing),
+                        "AUTHORIZED" => Some(Self::Authorized),
+                        "FAILED" => Some(Self::Failed),
+                        _ => None,
+                    }
+                }
             }
             #[derive(
                 Clone,
@@ -815,6 +843,16 @@ pub mod certificate {
                         FailureReason::Config => "CONFIG",
                         FailureReason::Caa => "CAA",
                         FailureReason::RateLimited => "RATE_LIMITED",
+                    }
+                }
+                /// Creates an enum from field names used in the ProtoBuf definition.
+                pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                    match value {
+                        "FAILURE_REASON_UNSPECIFIED" => Some(Self::Unspecified),
+                        "CONFIG" => Some(Self::Config),
+                        "CAA" => Some(Self::Caa),
+                        "RATE_LIMITED" => Some(Self::RateLimited),
+                        _ => None,
                     }
                 }
             }
@@ -859,6 +897,16 @@ pub mod certificate {
                     State::Active => "ACTIVE",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "PROVISIONING" => Some(Self::Provisioning),
+                    "FAILED" => Some(Self::Failed),
+                    "ACTIVE" => Some(Self::Active),
+                    _ => None,
+                }
+            }
         }
     }
     /// Certificate scope.
@@ -891,6 +939,14 @@ pub mod certificate {
             match self {
                 Scope::Default => "DEFAULT",
                 Scope::EdgeCache => "EDGE_CACHE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DEFAULT" => Some(Self::Default),
+                "EDGE_CACHE" => Some(Self::EdgeCache),
+                _ => None,
             }
         }
     }
@@ -1048,6 +1104,14 @@ pub mod certificate_map_entry {
                 Matcher::Primary => "PRIMARY",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MATCHER_UNSPECIFIED" => Some(Self::Unspecified),
+                "PRIMARY" => Some(Self::Primary),
+                _ => None,
+            }
+        }
     }
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -1142,6 +1206,15 @@ impl ServingState {
             ServingState::Unspecified => "SERVING_STATE_UNSPECIFIED",
             ServingState::Active => "ACTIVE",
             ServingState::Pending => "PENDING",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "SERVING_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+            "ACTIVE" => Some(Self::Active),
+            "PENDING" => Some(Self::Pending),
+            _ => None,
         }
     }
 }

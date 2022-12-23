@@ -82,6 +82,19 @@ pub mod status_message {
                 Reference::VariableValue => "VARIABLE_VALUE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "BREAKPOINT_SOURCE_LOCATION" => Some(Self::BreakpointSourceLocation),
+                "BREAKPOINT_CONDITION" => Some(Self::BreakpointCondition),
+                "BREAKPOINT_EXPRESSION" => Some(Self::BreakpointExpression),
+                "BREAKPOINT_AGE" => Some(Self::BreakpointAge),
+                "VARIABLE_NAME" => Some(Self::VariableName),
+                "VARIABLE_VALUE" => Some(Self::VariableValue),
+                _ => None,
+            }
+        }
     }
 }
 /// Represents a location in the source code.
@@ -413,6 +426,14 @@ pub mod breakpoint {
                 Action::Log => "LOG",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CAPTURE" => Some(Self::Capture),
+                "LOG" => Some(Self::Log),
+                _ => None,
+            }
+        }
     }
     /// Log severity levels.
     #[derive(
@@ -445,6 +466,15 @@ pub mod breakpoint {
                 LogLevel::Info => "INFO",
                 LogLevel::Warning => "WARNING",
                 LogLevel::Error => "ERROR",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "INFO" => Some(Self::Info),
+                "WARNING" => Some(Self::Warning),
+                "ERROR" => Some(Self::Error),
+                _ => None,
             }
         }
     }

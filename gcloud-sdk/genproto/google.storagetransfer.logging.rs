@@ -293,6 +293,16 @@ pub mod transfer_activity_log {
                 Action::Delete => "DELETE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ACTION_UNSPECIFIED" => Some(Self::Unspecified),
+                "FIND" => Some(Self::Find),
+                "COPY" => Some(Self::Copy),
+                "DELETE" => Some(Self::Delete),
+                _ => None,
+            }
+        }
     }
 }
 /// Type of the storage system.
@@ -325,6 +335,18 @@ impl StorageSystemType {
             StorageSystemType::Gcs => "GCS",
             StorageSystemType::PosixFs => "POSIX_FS",
             StorageSystemType::Http => "HTTP",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "STORAGE_SYSTEM_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "AWS_S3" => Some(Self::AwsS3),
+            "AZURE_BLOB" => Some(Self::AzureBlob),
+            "GCS" => Some(Self::Gcs),
+            "POSIX_FS" => Some(Self::PosixFs),
+            "HTTP" => Some(Self::Http),
+            _ => None,
         }
     }
 }

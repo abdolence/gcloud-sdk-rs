@@ -91,6 +91,16 @@ pub mod analysis_message_base {
                 Level::Info => "INFO",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "LEVEL_UNSPECIFIED" => Some(Self::Unspecified),
+                "ERROR" => Some(Self::Error),
+                "WARNING" => Some(Self::Warning),
+                "INFO" => Some(Self::Info),
+                _ => None,
+            }
+        }
     }
 }
 /// AnalysisMessage is a single message produced by an analyzer, and

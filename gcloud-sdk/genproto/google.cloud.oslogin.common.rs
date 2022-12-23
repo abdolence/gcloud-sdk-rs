@@ -80,4 +80,13 @@ impl OperatingSystemType {
             OperatingSystemType::Windows => "WINDOWS",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "OPERATING_SYSTEM_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "LINUX" => Some(Self::Linux),
+            "WINDOWS" => Some(Self::Windows),
+            _ => None,
+        }
+    }
 }

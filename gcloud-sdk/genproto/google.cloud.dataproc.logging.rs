@@ -140,6 +140,19 @@ impl AutoscalerState {
             AutoscalerState::Initializing => "INITIALIZING",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "AUTOSCALER_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+            "COOLDOWN" => Some(Self::Cooldown),
+            "RECOMMENDING" => Some(Self::Recommending),
+            "SCALING" => Some(Self::Scaling),
+            "STOPPED" => Some(Self::Stopped),
+            "FAILED" => Some(Self::Failed),
+            "INITIALIZING" => Some(Self::Initializing),
+            _ => None,
+        }
+    }
 }
 /// The Autoscaling decision type.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -167,6 +180,17 @@ impl ScalingDecisionType {
             ScalingDecisionType::ScaleDown => "SCALE_DOWN",
             ScalingDecisionType::NoScale => "NO_SCALE",
             ScalingDecisionType::Mixed => "MIXED",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "SCALING_DECISION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "SCALE_UP" => Some(Self::ScaleUp),
+            "SCALE_DOWN" => Some(Self::ScaleDown),
+            "NO_SCALE" => Some(Self::NoScale),
+            "MIXED" => Some(Self::Mixed),
+            _ => None,
         }
     }
 }
@@ -203,6 +227,18 @@ impl ConstrainingFactor {
             ConstrainingFactor::ReachedMinimumClusterSize => {
                 "REACHED_MINIMUM_CLUSTER_SIZE"
             }
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "CONSTRAINING_FACTOR_UNSPECIFIED" => Some(Self::Unspecified),
+            "SCALING_CAPPED_DUE_TO_LACK_OF_QUOTA" => {
+                Some(Self::ScalingCappedDueToLackOfQuota)
+            }
+            "REACHED_MAXIMUM_CLUSTER_SIZE" => Some(Self::ReachedMaximumClusterSize),
+            "REACHED_MINIMUM_CLUSTER_SIZE" => Some(Self::ReachedMinimumClusterSize),
+            _ => None,
         }
     }
 }

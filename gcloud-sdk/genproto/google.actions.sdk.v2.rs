@@ -110,6 +110,16 @@ pub mod account_linking {
                 LinkingType::Oauth => "OAUTH",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "LINKING_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "GOOGLE_SIGN_IN" => Some(Self::GoogleSignIn),
+                "OAUTH_AND_GOOGLE_SIGN_IN" => Some(Self::OauthAndGoogleSignIn),
+                "OAUTH" => Some(Self::Oauth),
+                _ => None,
+            }
+        }
     }
     /// The OAuth2 grant type Google uses to guide the user to sign in to your
     /// App's web service.
@@ -145,6 +155,15 @@ pub mod account_linking {
                 AuthGrantType::Unspecified => "AUTH_GRANT_TYPE_UNSPECIFIED",
                 AuthGrantType::AuthCode => "AUTH_CODE",
                 AuthGrantType::Implicit => "IMPLICIT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "AUTH_GRANT_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "AUTH_CODE" => Some(Self::AuthCode),
+                "IMPLICIT" => Some(Self::Implicit),
+                _ => None,
             }
         }
     }
@@ -362,6 +381,15 @@ pub mod theme_customization {
                 ImageCornerStyle::Angled => "ANGLED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "IMAGE_CORNER_STYLE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CURVED" => Some(Self::Curved),
+                "ANGLED" => Some(Self::Angled),
+                _ => None,
+            }
+        }
     }
 }
 /// Represents settings of an Actions project that are specific to a user locale.
@@ -500,6 +528,20 @@ pub mod capability_requirement {
                 SurfaceCapability::AccountLinking => "ACCOUNT_LINKING",
                 SurfaceCapability::InteractiveCanvas => "INTERACTIVE_CANVAS",
                 SurfaceCapability::HomeStorage => "HOME_STORAGE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SURFACE_CAPABILITY_UNSPECIFIED" => Some(Self::Unspecified),
+                "AUDIO_OUTPUT" => Some(Self::AudioOutput),
+                "SCREEN_OUTPUT" => Some(Self::ScreenOutput),
+                "MEDIA_RESPONSE_AUDIO" => Some(Self::MediaResponseAudio),
+                "WEB_BROWSER" => Some(Self::WebBrowser),
+                "ACCOUNT_LINKING" => Some(Self::AccountLinking),
+                "INTERACTIVE_CANVAS" => Some(Self::InteractiveCanvas),
+                "HOME_STORAGE" => Some(Self::HomeStorage),
+                _ => None,
             }
         }
     }
@@ -687,6 +729,33 @@ pub mod settings {
                 Category::Utilities => "UTILITIES",
                 Category::Weather => "WEATHER",
                 Category::HomeControl => "HOME_CONTROL",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CATEGORY_UNSPECIFIED" => Some(Self::Unspecified),
+                "BUSINESS_AND_FINANCE" => Some(Self::BusinessAndFinance),
+                "EDUCATION_AND_REFERENCE" => Some(Self::EducationAndReference),
+                "FOOD_AND_DRINK" => Some(Self::FoodAndDrink),
+                "GAMES_AND_TRIVIA" => Some(Self::GamesAndTrivia),
+                "HEALTH_AND_FITNESS" => Some(Self::HealthAndFitness),
+                "KIDS_AND_FAMILY" => Some(Self::KidsAndFamily),
+                "LIFESTYLE" => Some(Self::Lifestyle),
+                "LOCAL" => Some(Self::Local),
+                "MOVIES_AND_TV" => Some(Self::MoviesAndTv),
+                "MUSIC_AND_AUDIO" => Some(Self::MusicAndAudio),
+                "NEWS" => Some(Self::News),
+                "NOVELTY_AND_HUMOR" => Some(Self::NoveltyAndHumor),
+                "PRODUCTIVITY" => Some(Self::Productivity),
+                "SHOPPING" => Some(Self::Shopping),
+                "SOCIAL" => Some(Self::Social),
+                "SPORTS" => Some(Self::Sports),
+                "TRAVEL_AND_TRANSPORTATION" => Some(Self::TravelAndTransportation),
+                "UTILITIES" => Some(Self::Utilities),
+                "WEATHER" => Some(Self::Weather),
+                "HOME_CONTROL" => Some(Self::HomeControl),
+                _ => None,
             }
         }
     }
@@ -1065,6 +1134,22 @@ pub mod version {
                     State::Denied => "DENIED",
                     State::UnderTakedown => "UNDER_TAKEDOWN",
                     State::Deleted => "DELETED",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "CREATION_IN_PROGRESS" => Some(Self::CreationInProgress),
+                    "CREATION_FAILED" => Some(Self::CreationFailed),
+                    "CREATED" => Some(Self::Created),
+                    "REVIEW_IN_PROGRESS" => Some(Self::ReviewInProgress),
+                    "APPROVED" => Some(Self::Approved),
+                    "CONDITIONALLY_APPROVED" => Some(Self::ConditionallyApproved),
+                    "DENIED" => Some(Self::Denied),
+                    "UNDER_TAKEDOWN" => Some(Self::UnderTakedown),
+                    "DELETED" => Some(Self::Deleted),
+                    _ => None,
                 }
             }
         }
@@ -2017,6 +2102,17 @@ pub mod user_input {
                 InputType::Url => "URL",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "INPUT_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "TOUCH" => Some(Self::Touch),
+                "VOICE" => Some(Self::Voice),
+                "KEYBOARD" => Some(Self::Keyboard),
+                "URL" => Some(Self::Url),
+                _ => None,
+            }
+        }
     }
 }
 /// Properties of device relevant to a conversation round.
@@ -2084,6 +2180,18 @@ pub mod device_properties {
                 Surface::Allo => "ALLO",
                 Surface::SmartDisplay => "SMART_DISPLAY",
                 Surface::KaiOs => "KAI_OS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SURFACE_UNSPECIFIED" => Some(Self::Unspecified),
+                "SPEAKER" => Some(Self::Speaker),
+                "PHONE" => Some(Self::Phone),
+                "ALLO" => Some(Self::Allo),
+                "SMART_DISPLAY" => Some(Self::SmartDisplay),
+                "KAI_OS" => Some(Self::KaiOs),
+                _ => None,
             }
         }
     }

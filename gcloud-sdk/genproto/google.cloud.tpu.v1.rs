@@ -182,6 +182,27 @@ pub mod node {
                 State::Unhiding => "UNHIDING",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CREATING" => Some(Self::Creating),
+                "READY" => Some(Self::Ready),
+                "RESTARTING" => Some(Self::Restarting),
+                "REIMAGING" => Some(Self::Reimaging),
+                "DELETING" => Some(Self::Deleting),
+                "REPAIRING" => Some(Self::Repairing),
+                "STOPPED" => Some(Self::Stopped),
+                "STOPPING" => Some(Self::Stopping),
+                "STARTING" => Some(Self::Starting),
+                "PREEMPTED" => Some(Self::Preempted),
+                "TERMINATED" => Some(Self::Terminated),
+                "HIDING" => Some(Self::Hiding),
+                "HIDDEN" => Some(Self::Hidden),
+                "UNHIDING" => Some(Self::Unhiding),
+                _ => None,
+            }
+        }
     }
     /// Health defines the status of a TPU node as reported by
     /// Health Monitor.
@@ -227,6 +248,18 @@ pub mod node {
                 Health::UnhealthyMaintenance => "UNHEALTHY_MAINTENANCE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "HEALTH_UNSPECIFIED" => Some(Self::Unspecified),
+                "HEALTHY" => Some(Self::Healthy),
+                "DEPRECATED_UNHEALTHY" => Some(Self::DeprecatedUnhealthy),
+                "TIMEOUT" => Some(Self::Timeout),
+                "UNHEALTHY_TENSORFLOW" => Some(Self::UnhealthyTensorflow),
+                "UNHEALTHY_MAINTENANCE" => Some(Self::UnhealthyMaintenance),
+                _ => None,
+            }
+        }
     }
     /// TPU API Version.
     #[derive(
@@ -262,6 +295,16 @@ pub mod node {
                 ApiVersion::V1Alpha1 => "V1_ALPHA1",
                 ApiVersion::V1 => "V1",
                 ApiVersion::V2Alpha1 => "V2_ALPHA1",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "API_VERSION_UNSPECIFIED" => Some(Self::Unspecified),
+                "V1_ALPHA1" => Some(Self::V1Alpha1),
+                "V1" => Some(Self::V1),
+                "V2_ALPHA1" => Some(Self::V2Alpha1),
+                _ => None,
             }
         }
     }
@@ -548,6 +591,19 @@ pub mod symptom {
                 SymptomType::MeshBuildFail => "MESH_BUILD_FAIL",
                 SymptomType::HbmOutOfMemory => "HBM_OUT_OF_MEMORY",
                 SymptomType::ProjectAbuse => "PROJECT_ABUSE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SYMPTOM_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "LOW_MEMORY" => Some(Self::LowMemory),
+                "OUT_OF_MEMORY" => Some(Self::OutOfMemory),
+                "EXECUTE_TIMED_OUT" => Some(Self::ExecuteTimedOut),
+                "MESH_BUILD_FAIL" => Some(Self::MeshBuildFail),
+                "HBM_OUT_OF_MEMORY" => Some(Self::HbmOutOfMemory),
+                "PROJECT_ABUSE" => Some(Self::ProjectAbuse),
+                _ => None,
             }
         }
     }

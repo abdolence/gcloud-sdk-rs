@@ -59,6 +59,14 @@ pub mod network_config {
                 AddressMode::ModeIpv4 => "MODE_IPV4",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ADDRESS_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "MODE_IPV4" => Some(Self::ModeIpv4),
+                _ => None,
+            }
+        }
     }
 }
 /// File share configuration for the instance.
@@ -167,6 +175,15 @@ pub mod nfs_export_options {
                 AccessMode::ReadWrite => "READ_WRITE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ACCESS_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "READ_ONLY" => Some(Self::ReadOnly),
+                "READ_WRITE" => Some(Self::ReadWrite),
+                _ => None,
+            }
+        }
     }
     /// The squash mode.
     #[derive(
@@ -199,6 +216,15 @@ pub mod nfs_export_options {
                 SquashMode::Unspecified => "SQUASH_MODE_UNSPECIFIED",
                 SquashMode::NoRootSquash => "NO_ROOT_SQUASH",
                 SquashMode::RootSquash => "ROOT_SQUASH",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SQUASH_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "NO_ROOT_SQUASH" => Some(Self::NoRootSquash),
+                "ROOT_SQUASH" => Some(Self::RootSquash),
+                _ => None,
             }
         }
     }
@@ -299,6 +325,19 @@ pub mod instance {
                 State::Restoring => "RESTORING",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CREATING" => Some(Self::Creating),
+                "READY" => Some(Self::Ready),
+                "REPAIRING" => Some(Self::Repairing),
+                "DELETING" => Some(Self::Deleting),
+                "ERROR" => Some(Self::Error),
+                "RESTORING" => Some(Self::Restoring),
+                _ => None,
+            }
+        }
     }
     /// Available service tiers.
     #[derive(
@@ -345,6 +384,18 @@ pub mod instance {
                 Tier::BasicHdd => "BASIC_HDD",
                 Tier::BasicSsd => "BASIC_SSD",
                 Tier::HighScaleSsd => "HIGH_SCALE_SSD",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TIER_UNSPECIFIED" => Some(Self::Unspecified),
+                "STANDARD" => Some(Self::Standard),
+                "PREMIUM" => Some(Self::Premium),
+                "BASIC_HDD" => Some(Self::BasicHdd),
+                "BASIC_SSD" => Some(Self::BasicSsd),
+                "HIGH_SCALE_SSD" => Some(Self::HighScaleSsd),
+                _ => None,
             }
         }
     }
@@ -566,6 +617,17 @@ pub mod backup {
                 State::Finalizing => "FINALIZING",
                 State::Ready => "READY",
                 State::Deleting => "DELETING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CREATING" => Some(Self::Creating),
+                "FINALIZING" => Some(Self::Finalizing),
+                "READY" => Some(Self::Ready),
+                "DELETING" => Some(Self::Deleting),
+                _ => None,
             }
         }
     }

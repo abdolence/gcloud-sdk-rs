@@ -116,6 +116,23 @@ pub mod region_identifier {
                 PlaceType::SchoolDistrict => "SCHOOL_DISTRICT",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PLACE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "POSTAL_CODE" => Some(Self::PostalCode),
+                "ADMINISTRATIVE_AREA_LEVEL_1" => Some(Self::AdministrativeAreaLevel1),
+                "ADMINISTRATIVE_AREA_LEVEL_2" => Some(Self::AdministrativeAreaLevel2),
+                "LOCALITY" => Some(Self::Locality),
+                "NEIGHBORHOOD" => Some(Self::Neighborhood),
+                "COUNTRY" => Some(Self::Country),
+                "SUBLOCALITY" => Some(Self::Sublocality),
+                "ADMINISTRATIVE_AREA_LEVEL_3" => Some(Self::AdministrativeAreaLevel3),
+                "ADMINISTRATIVE_AREA_LEVEL_4" => Some(Self::AdministrativeAreaLevel4),
+                "SCHOOL_DISTRICT" => Some(Self::SchoolDistrict),
+                _ => None,
+            }
+        }
     }
     /// The location must be specified by one of the following:
     #[allow(clippy::derive_partial_eq_without_eq)]
@@ -295,6 +312,23 @@ pub mod region_search_value {
                 PlaceType::AdministrativeAreaLevel3 => "ADMINISTRATIVE_AREA_LEVEL_3",
                 PlaceType::AdministrativeAreaLevel4 => "ADMINISTRATIVE_AREA_LEVEL_4",
                 PlaceType::SchoolDistrict => "SCHOOL_DISTRICT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PLACE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "POSTAL_CODE" => Some(Self::PostalCode),
+                "ADMINISTRATIVE_AREA_LEVEL_1" => Some(Self::AdministrativeAreaLevel1),
+                "ADMINISTRATIVE_AREA_LEVEL_2" => Some(Self::AdministrativeAreaLevel2),
+                "LOCALITY" => Some(Self::Locality),
+                "NEIGHBORHOOD" => Some(Self::Neighborhood),
+                "COUNTRY" => Some(Self::Country),
+                "SUBLOCALITY" => Some(Self::Sublocality),
+                "ADMINISTRATIVE_AREA_LEVEL_3" => Some(Self::AdministrativeAreaLevel3),
+                "ADMINISTRATIVE_AREA_LEVEL_4" => Some(Self::AdministrativeAreaLevel4),
+                "SCHOOL_DISTRICT" => Some(Self::SchoolDistrict),
+                _ => None,
             }
         }
     }

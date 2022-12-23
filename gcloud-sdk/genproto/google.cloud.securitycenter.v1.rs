@@ -399,6 +399,18 @@ pub mod connection {
                 Protocol::Esp => "ESP",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PROTOCOL_UNSPECIFIED" => Some(Self::Unspecified),
+                "ICMP" => Some(Self::Icmp),
+                "TCP" => Some(Self::Tcp),
+                "UDP" => Some(Self::Udp),
+                "GRE" => Some(Self::Gre),
+                "ESP" => Some(Self::Esp),
+                _ => None,
+            }
+        }
     }
 }
 /// The details pertaining to specific contacts
@@ -613,6 +625,15 @@ pub mod iam_binding {
                 Action::Unspecified => "ACTION_UNSPECIFIED",
                 Action::Add => "ADD",
                 Action::Remove => "REMOVE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ACTION_UNSPECIFIED" => Some(Self::Unspecified),
+                "ADD" => Some(Self::Add),
+                "REMOVE" => Some(Self::Remove),
+                _ => None,
             }
         }
     }
@@ -853,6 +874,15 @@ pub mod kubernetes {
                     Kind::ClusterRole => "CLUSTER_ROLE",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "KIND_UNSPECIFIED" => Some(Self::Unspecified),
+                    "ROLE" => Some(Self::Role),
+                    "CLUSTER_ROLE" => Some(Self::ClusterRole),
+                    _ => None,
+                }
+            }
         }
     }
     /// Represents a Kubernetes RoleBinding or ClusterRoleBinding.
@@ -923,6 +953,16 @@ pub mod kubernetes {
                     AuthType::User => "USER",
                     AuthType::Serviceaccount => "SERVICEACCOUNT",
                     AuthType::Group => "GROUP",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "AUTH_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "USER" => Some(Self::User),
+                    "SERVICEACCOUNT" => Some(Self::Serviceaccount),
+                    "GROUP" => Some(Self::Group),
+                    _ => None,
                 }
             }
         }
@@ -1055,6 +1095,27 @@ pub mod mitre_attack {
                 Tactic::CommandAndControl => "COMMAND_AND_CONTROL",
                 Tactic::Exfiltration => "EXFILTRATION",
                 Tactic::Impact => "IMPACT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TACTIC_UNSPECIFIED" => Some(Self::Unspecified),
+                "RECONNAISSANCE" => Some(Self::Reconnaissance),
+                "RESOURCE_DEVELOPMENT" => Some(Self::ResourceDevelopment),
+                "INITIAL_ACCESS" => Some(Self::InitialAccess),
+                "EXECUTION" => Some(Self::Execution),
+                "PERSISTENCE" => Some(Self::Persistence),
+                "PRIVILEGE_ESCALATION" => Some(Self::PrivilegeEscalation),
+                "DEFENSE_EVASION" => Some(Self::DefenseEvasion),
+                "CREDENTIAL_ACCESS" => Some(Self::CredentialAccess),
+                "DISCOVERY" => Some(Self::Discovery),
+                "LATERAL_MOVEMENT" => Some(Self::LateralMovement),
+                "COLLECTION" => Some(Self::Collection),
+                "COMMAND_AND_CONTROL" => Some(Self::CommandAndControl),
+                "EXFILTRATION" => Some(Self::Exfiltration),
+                "IMPACT" => Some(Self::Impact),
+                _ => None,
             }
         }
     }
@@ -1199,6 +1260,60 @@ pub mod mitre_attack {
                     "ABUSE_ELEVATION_CONTROL_MECHANISM"
                 }
                 Technique::DefaultAccounts => "DEFAULT_ACCOUNTS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TECHNIQUE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ACTIVE_SCANNING" => Some(Self::ActiveScanning),
+                "SCANNING_IP_BLOCKS" => Some(Self::ScanningIpBlocks),
+                "INGRESS_TOOL_TRANSFER" => Some(Self::IngressToolTransfer),
+                "NATIVE_API" => Some(Self::NativeApi),
+                "SHARED_MODULES" => Some(Self::SharedModules),
+                "COMMAND_AND_SCRIPTING_INTERPRETER" => {
+                    Some(Self::CommandAndScriptingInterpreter)
+                }
+                "UNIX_SHELL" => Some(Self::UnixShell),
+                "RESOURCE_HIJACKING" => Some(Self::ResourceHijacking),
+                "PROXY" => Some(Self::Proxy),
+                "EXTERNAL_PROXY" => Some(Self::ExternalProxy),
+                "MULTI_HOP_PROXY" => Some(Self::MultiHopProxy),
+                "DYNAMIC_RESOLUTION" => Some(Self::DynamicResolution),
+                "UNSECURED_CREDENTIALS" => Some(Self::UnsecuredCredentials),
+                "VALID_ACCOUNTS" => Some(Self::ValidAccounts),
+                "LOCAL_ACCOUNTS" => Some(Self::LocalAccounts),
+                "CLOUD_ACCOUNTS" => Some(Self::CloudAccounts),
+                "NETWORK_DENIAL_OF_SERVICE" => Some(Self::NetworkDenialOfService),
+                "PERMISSION_GROUPS_DISCOVERY" => Some(Self::PermissionGroupsDiscovery),
+                "CLOUD_GROUPS" => Some(Self::CloudGroups),
+                "EXFILTRATION_OVER_WEB_SERVICE" => Some(Self::ExfiltrationOverWebService),
+                "EXFILTRATION_TO_CLOUD_STORAGE" => Some(Self::ExfiltrationToCloudStorage),
+                "ACCOUNT_MANIPULATION" => Some(Self::AccountManipulation),
+                "SSH_AUTHORIZED_KEYS" => Some(Self::SshAuthorizedKeys),
+                "CREATE_OR_MODIFY_SYSTEM_PROCESS" => {
+                    Some(Self::CreateOrModifySystemProcess)
+                }
+                "STEAL_WEB_SESSION_COOKIE" => Some(Self::StealWebSessionCookie),
+                "MODIFY_CLOUD_COMPUTE_INFRASTRUCTURE" => {
+                    Some(Self::ModifyCloudComputeInfrastructure)
+                }
+                "EXPLOIT_PUBLIC_FACING_APPLICATION" => {
+                    Some(Self::ExploitPublicFacingApplication)
+                }
+                "MODIFY_AUTHENTICATION_PROCESS" => {
+                    Some(Self::ModifyAuthenticationProcess)
+                }
+                "DATA_DESTRUCTION" => Some(Self::DataDestruction),
+                "DOMAIN_POLICY_MODIFICATION" => Some(Self::DomainPolicyModification),
+                "IMPAIR_DEFENSES" => Some(Self::ImpairDefenses),
+                "NETWORK_SERVICE_DISCOVERY" => Some(Self::NetworkServiceDiscovery),
+                "ACCESS_TOKEN_MANIPULATION" => Some(Self::AccessTokenManipulation),
+                "ABUSE_ELEVATION_CONTROL_MECHANISM" => {
+                    Some(Self::AbuseElevationControlMechanism)
+                }
+                "DEFAULT_ACCOUNTS" => Some(Self::DefaultAccounts),
+                _ => None,
             }
         }
     }
@@ -1387,6 +1502,17 @@ pub mod cvssv3 {
                 AttackVector::Physical => "ATTACK_VECTOR_PHYSICAL",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ATTACK_VECTOR_UNSPECIFIED" => Some(Self::Unspecified),
+                "ATTACK_VECTOR_NETWORK" => Some(Self::Network),
+                "ATTACK_VECTOR_ADJACENT" => Some(Self::Adjacent),
+                "ATTACK_VECTOR_LOCAL" => Some(Self::Local),
+                "ATTACK_VECTOR_PHYSICAL" => Some(Self::Physical),
+                _ => None,
+            }
+        }
     }
     /// This metric describes the conditions beyond the attacker's control that
     /// must exist in order to exploit the vulnerability.
@@ -1426,6 +1552,15 @@ pub mod cvssv3 {
                 AttackComplexity::Unspecified => "ATTACK_COMPLEXITY_UNSPECIFIED",
                 AttackComplexity::Low => "ATTACK_COMPLEXITY_LOW",
                 AttackComplexity::High => "ATTACK_COMPLEXITY_HIGH",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ATTACK_COMPLEXITY_UNSPECIFIED" => Some(Self::Unspecified),
+                "ATTACK_COMPLEXITY_LOW" => Some(Self::Low),
+                "ATTACK_COMPLEXITY_HIGH" => Some(Self::High),
+                _ => None,
             }
         }
     }
@@ -1473,6 +1608,16 @@ pub mod cvssv3 {
                 PrivilegesRequired::High => "PRIVILEGES_REQUIRED_HIGH",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PRIVILEGES_REQUIRED_UNSPECIFIED" => Some(Self::Unspecified),
+                "PRIVILEGES_REQUIRED_NONE" => Some(Self::None),
+                "PRIVILEGES_REQUIRED_LOW" => Some(Self::Low),
+                "PRIVILEGES_REQUIRED_HIGH" => Some(Self::High),
+                _ => None,
+            }
+        }
     }
     /// This metric captures the requirement for a human user, other than the
     /// attacker, to participate in the successful compromise of the vulnerable
@@ -1508,6 +1653,15 @@ pub mod cvssv3 {
                 UserInteraction::Unspecified => "USER_INTERACTION_UNSPECIFIED",
                 UserInteraction::None => "USER_INTERACTION_NONE",
                 UserInteraction::Required => "USER_INTERACTION_REQUIRED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "USER_INTERACTION_UNSPECIFIED" => Some(Self::Unspecified),
+                "USER_INTERACTION_NONE" => Some(Self::None),
+                "USER_INTERACTION_REQUIRED" => Some(Self::Required),
+                _ => None,
             }
         }
     }
@@ -1547,6 +1701,15 @@ pub mod cvssv3 {
                 Scope::Changed => "SCOPE_CHANGED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SCOPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "SCOPE_UNCHANGED" => Some(Self::Unchanged),
+                "SCOPE_CHANGED" => Some(Self::Changed),
+                _ => None,
+            }
+        }
     }
     /// The Impact metrics capture the effects of a successfully exploited
     /// vulnerability on the component that suffers the worst outcome that is most
@@ -1584,6 +1747,16 @@ pub mod cvssv3 {
                 Impact::High => "IMPACT_HIGH",
                 Impact::Low => "IMPACT_LOW",
                 Impact::None => "IMPACT_NONE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "IMPACT_UNSPECIFIED" => Some(Self::Unspecified),
+                "IMPACT_HIGH" => Some(Self::High),
+                "IMPACT_LOW" => Some(Self::Low),
+                "IMPACT_NONE" => Some(Self::None),
+                _ => None,
             }
         }
     }
@@ -1815,6 +1988,15 @@ pub mod finding {
                 State::Inactive => "INACTIVE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ACTIVE" => Some(Self::Active),
+                "INACTIVE" => Some(Self::Inactive),
+                _ => None,
+            }
+        }
     }
     /// The severity of the finding.
     #[derive(
@@ -1896,6 +2078,17 @@ pub mod finding {
                 Severity::Low => "LOW",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SEVERITY_UNSPECIFIED" => Some(Self::Unspecified),
+                "CRITICAL" => Some(Self::Critical),
+                "HIGH" => Some(Self::High),
+                "MEDIUM" => Some(Self::Medium),
+                "LOW" => Some(Self::Low),
+                _ => None,
+            }
+        }
     }
     /// Mute state a finding can be in.
     #[derive(
@@ -1931,6 +2124,16 @@ pub mod finding {
                 Mute::Muted => "MUTED",
                 Mute::Unmuted => "UNMUTED",
                 Mute::Undefined => "UNDEFINED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MUTE_UNSPECIFIED" => Some(Self::Unspecified),
+                "MUTED" => Some(Self::Muted),
+                "UNMUTED" => Some(Self::Unmuted),
+                "UNDEFINED" => Some(Self::Undefined),
+                _ => None,
             }
         }
     }
@@ -1976,6 +2179,18 @@ pub mod finding {
                 FindingClass::Misconfiguration => "MISCONFIGURATION",
                 FindingClass::Observation => "OBSERVATION",
                 FindingClass::SccError => "SCC_ERROR",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "FINDING_CLASS_UNSPECIFIED" => Some(Self::Unspecified),
+                "THREAT" => Some(Self::Threat),
+                "VULNERABILITY" => Some(Self::Vulnerability),
+                "MISCONFIGURATION" => Some(Self::Misconfiguration),
+                "OBSERVATION" => Some(Self::Observation),
+                "SCC_ERROR" => Some(Self::SccError),
+                _ => None,
             }
         }
     }
@@ -2249,6 +2464,15 @@ pub mod organization_settings {
                     InclusionMode::Exclude => "EXCLUDE",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "INCLUSION_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "INCLUDE_ONLY" => Some(Self::IncludeOnly),
+                    "EXCLUDE" => Some(Self::Exclude),
+                    _ => None,
+                }
+            }
         }
     }
 }
@@ -2300,6 +2524,16 @@ pub mod run_asset_discovery_response {
                 State::Completed => "COMPLETED",
                 State::Superseded => "SUPERSEDED",
                 State::Terminated => "TERMINATED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "COMPLETED" => Some(Self::Completed),
+                "SUPERSEDED" => Some(Self::Superseded),
+                "TERMINATED" => Some(Self::Terminated),
+                _ => None,
             }
         }
     }
@@ -3182,6 +3416,16 @@ pub mod list_assets_response {
                     StateChange::Active => "ACTIVE",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "UNUSED" => Some(Self::Unused),
+                    "ADDED" => Some(Self::Added),
+                    "REMOVED" => Some(Self::Removed),
+                    "ACTIVE" => Some(Self::Active),
+                    _ => None,
+                }
+            }
         }
     }
 }
@@ -3451,6 +3695,17 @@ pub mod list_findings_response {
                     StateChange::Unchanged => "UNCHANGED",
                     StateChange::Added => "ADDED",
                     StateChange::Removed => "REMOVED",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "UNUSED" => Some(Self::Unused),
+                    "CHANGED" => Some(Self::Changed),
+                    "UNCHANGED" => Some(Self::Unchanged),
+                    "ADDED" => Some(Self::Added),
+                    "REMOVED" => Some(Self::Removed),
+                    _ => None,
                 }
             }
         }

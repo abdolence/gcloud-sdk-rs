@@ -239,6 +239,19 @@ pub mod access_config {
                 }
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_NETWORK_TIER" => Some(Self::UndefinedNetworkTier),
+                "FIXED_STANDARD" => Some(Self::FixedStandard),
+                "PREMIUM" => Some(Self::Premium),
+                "STANDARD" => Some(Self::Standard),
+                "STANDARD_OVERRIDES_FIXED_STANDARD" => {
+                    Some(Self::StandardOverridesFixedStandard)
+                }
+                _ => None,
+            }
+        }
     }
     /// The type of configuration. The default and only option is ONE_TO_ONE_NAT.
     #[derive(
@@ -269,6 +282,15 @@ pub mod access_config {
                 Type::UndefinedType => "UNDEFINED_TYPE",
                 Type::DirectIpv6 => "DIRECT_IPV6",
                 Type::OneToOneNat => "ONE_TO_ONE_NAT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_TYPE" => Some(Self::UndefinedType),
+                "DIRECT_IPV6" => Some(Self::DirectIpv6),
+                "ONE_TO_ONE_NAT" => Some(Self::OneToOneNat),
+                _ => None,
             }
         }
     }
@@ -751,6 +773,16 @@ pub mod address {
                 AddressType::UnspecifiedType => "UNSPECIFIED_TYPE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_ADDRESS_TYPE" => Some(Self::UndefinedAddressType),
+                "EXTERNAL" => Some(Self::External),
+                "INTERNAL" => Some(Self::Internal),
+                "UNSPECIFIED_TYPE" => Some(Self::UnspecifiedType),
+                _ => None,
+            }
+        }
     }
     /// The IP version that will be used by this address. Valid options are IPV4 or IPV6. This can only be specified for a global address.
     #[derive(
@@ -783,6 +815,16 @@ pub mod address {
                 IpVersion::Ipv4 => "IPV4",
                 IpVersion::Ipv6 => "IPV6",
                 IpVersion::UnspecifiedVersion => "UNSPECIFIED_VERSION",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_IP_VERSION" => Some(Self::UndefinedIpVersion),
+                "IPV4" => Some(Self::Ipv4),
+                "IPV6" => Some(Self::Ipv6),
+                "UNSPECIFIED_VERSION" => Some(Self::UnspecifiedVersion),
+                _ => None,
             }
         }
     }
@@ -819,6 +861,15 @@ pub mod address {
                 }
                 Ipv6EndpointType::Netlb => "NETLB",
                 Ipv6EndpointType::Vm => "VM",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_IPV6_ENDPOINT_TYPE" => Some(Self::UndefinedIpv6EndpointType),
+                "NETLB" => Some(Self::Netlb),
+                "VM" => Some(Self::Vm),
+                _ => None,
             }
         }
     }
@@ -861,6 +912,19 @@ pub mod address {
                 NetworkTier::StandardOverridesFixedStandard => {
                     "STANDARD_OVERRIDES_FIXED_STANDARD"
                 }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_NETWORK_TIER" => Some(Self::UndefinedNetworkTier),
+                "FIXED_STANDARD" => Some(Self::FixedStandard),
+                "PREMIUM" => Some(Self::Premium),
+                "STANDARD" => Some(Self::Standard),
+                "STANDARD_OVERRIDES_FIXED_STANDARD" => {
+                    Some(Self::StandardOverridesFixedStandard)
+                }
+                _ => None,
             }
         }
     }
@@ -915,6 +979,21 @@ pub mod address {
                 Purpose::VpcPeering => "VPC_PEERING",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_PURPOSE" => Some(Self::UndefinedPurpose),
+                "DNS_RESOLVER" => Some(Self::DnsResolver),
+                "GCE_ENDPOINT" => Some(Self::GceEndpoint),
+                "IPSEC_INTERCONNECT" => Some(Self::IpsecInterconnect),
+                "NAT_AUTO" => Some(Self::NatAuto),
+                "PRIVATE_SERVICE_CONNECT" => Some(Self::PrivateServiceConnect),
+                "SERVERLESS" => Some(Self::Serverless),
+                "SHARED_LOADBALANCER_VIP" => Some(Self::SharedLoadbalancerVip),
+                "VPC_PEERING" => Some(Self::VpcPeering),
+                _ => None,
+            }
+        }
     }
     /// [Output Only] The status of the address, which can be one of RESERVING, RESERVED, or IN_USE. An address that is RESERVING is currently in the process of being reserved. A RESERVED address is currently reserved and available to use. An IN_USE address is currently being used by another resource and is not available.
     #[derive(
@@ -950,6 +1029,16 @@ pub mod address {
                 Status::InUse => "IN_USE",
                 Status::Reserved => "RESERVED",
                 Status::Reserving => "RESERVING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_STATUS" => Some(Self::UndefinedStatus),
+                "IN_USE" => Some(Self::InUse),
+                "RESERVED" => Some(Self::Reserved),
+                "RESERVING" => Some(Self::Reserving),
+                _ => None,
             }
         }
     }
@@ -2130,6 +2219,15 @@ pub mod allocation_specific_sku_allocation_allocated_instance_properties_reserve
                 Interface::Scsi => "SCSI",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_INTERFACE" => Some(Self::UndefinedInterface),
+                "NVME" => Some(Self::Nvme),
+                "SCSI" => Some(Self::Scsi),
+                _ => None,
+            }
+        }
     }
 }
 /// Properties of the SKU instances being reserved. Next ID: 9
@@ -2384,6 +2482,16 @@ pub mod attached_disk {
                 Architecture::X8664 => "X86_64",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_ARCHITECTURE" => Some(Self::UndefinedArchitecture),
+                "ARCHITECTURE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ARM64" => Some(Self::Arm64),
+                "X86_64" => Some(Self::X8664),
+                _ => None,
+            }
+        }
     }
     /// Specifies the disk interface to use for attaching this disk, which is either SCSI or NVME. For most machine types, the default is SCSI. Local SSDs can use either NVME or SCSI. In certain configurations, persistent disks can use NVMe. For more information, see About persistent disks.
     #[derive(
@@ -2414,6 +2522,15 @@ pub mod attached_disk {
                 Interface::UndefinedInterface => "UNDEFINED_INTERFACE",
                 Interface::Nvme => "NVME",
                 Interface::Scsi => "SCSI",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_INTERFACE" => Some(Self::UndefinedInterface),
+                "NVME" => Some(Self::Nvme),
+                "SCSI" => Some(Self::Scsi),
+                _ => None,
             }
         }
     }
@@ -2450,6 +2567,15 @@ pub mod attached_disk {
                 Mode::ReadWrite => "READ_WRITE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_MODE" => Some(Self::UndefinedMode),
+                "READ_ONLY" => Some(Self::ReadOnly),
+                "READ_WRITE" => Some(Self::ReadWrite),
+                _ => None,
+            }
+        }
     }
     /// Specifies the type of the disk, either SCRATCH or PERSISTENT. If not specified, the default is PERSISTENT.
     #[derive(
@@ -2480,6 +2606,15 @@ pub mod attached_disk {
                 Type::UndefinedType => "UNDEFINED_TYPE",
                 Type::Persistent => "PERSISTENT",
                 Type::Scratch => "SCRATCH",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_TYPE" => Some(Self::UndefinedType),
+                "PERSISTENT" => Some(Self::Persistent),
+                "SCRATCH" => Some(Self::Scratch),
+                _ => None,
             }
         }
     }
@@ -2580,6 +2715,16 @@ pub mod attached_disk_initialize_params {
                 Architecture::X8664 => "X86_64",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_ARCHITECTURE" => Some(Self::UndefinedArchitecture),
+                "ARCHITECTURE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ARM64" => Some(Self::Arm64),
+                "X86_64" => Some(Self::X8664),
+                _ => None,
+            }
+        }
     }
     /// Specifies which action to take on instance update with this disk. Default is to use the existing disk.
     #[derive(
@@ -2617,6 +2762,18 @@ pub mod attached_disk_initialize_params {
                     "RECREATE_DISK_IF_SOURCE_CHANGED"
                 }
                 OnUpdateAction::UseExistingDisk => "USE_EXISTING_DISK",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_ON_UPDATE_ACTION" => Some(Self::UndefinedOnUpdateAction),
+                "RECREATE_DISK" => Some(Self::RecreateDisk),
+                "RECREATE_DISK_IF_SOURCE_CHANGED" => {
+                    Some(Self::RecreateDiskIfSourceChanged)
+                }
+                "USE_EXISTING_DISK" => Some(Self::UseExistingDisk),
+                _ => None,
             }
         }
     }
@@ -2691,6 +2848,17 @@ pub mod audit_log_config {
                 LogType::Unspecified => "LOG_TYPE_UNSPECIFIED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_LOG_TYPE" => Some(Self::UndefinedLogType),
+                "ADMIN_READ" => Some(Self::AdminRead),
+                "DATA_READ" => Some(Self::DataRead),
+                "DATA_WRITE" => Some(Self::DataWrite),
+                "LOG_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                _ => None,
+            }
+        }
     }
 }
 /// This is deprecated and has no effect. Do not use.
@@ -2744,6 +2912,18 @@ pub mod authorization_logging_options {
                 PermissionType::DataRead => "DATA_READ",
                 PermissionType::DataWrite => "DATA_WRITE",
                 PermissionType::Unspecified => "PERMISSION_TYPE_UNSPECIFIED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_PERMISSION_TYPE" => Some(Self::UndefinedPermissionType),
+                "ADMIN_READ" => Some(Self::AdminRead),
+                "ADMIN_WRITE" => Some(Self::AdminWrite),
+                "DATA_READ" => Some(Self::DataRead),
+                "DATA_WRITE" => Some(Self::DataWrite),
+                "PERMISSION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                _ => None,
             }
         }
     }
@@ -2838,6 +3018,17 @@ pub mod autoscaler {
                 Status::Deleting => "DELETING",
                 Status::Error => "ERROR",
                 Status::Pending => "PENDING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_STATUS" => Some(Self::UndefinedStatus),
+                "ACTIVE" => Some(Self::Active),
+                "DELETING" => Some(Self::Deleting),
+                "ERROR" => Some(Self::Error),
+                "PENDING" => Some(Self::Pending),
+                _ => None,
             }
         }
     }
@@ -3006,6 +3197,47 @@ pub mod autoscaler_status_details {
                 Type::ZoneResourceStockout => "ZONE_RESOURCE_STOCKOUT",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_TYPE" => Some(Self::UndefinedType),
+                "ALL_INSTANCES_UNHEALTHY" => Some(Self::AllInstancesUnhealthy),
+                "BACKEND_SERVICE_DOES_NOT_EXIST" => {
+                    Some(Self::BackendServiceDoesNotExist)
+                }
+                "CAPPED_AT_MAX_NUM_REPLICAS" => Some(Self::CappedAtMaxNumReplicas),
+                "CUSTOM_METRIC_DATA_POINTS_TOO_SPARSE" => {
+                    Some(Self::CustomMetricDataPointsTooSparse)
+                }
+                "CUSTOM_METRIC_INVALID" => Some(Self::CustomMetricInvalid),
+                "MIN_EQUALS_MAX" => Some(Self::MinEqualsMax),
+                "MISSING_CUSTOM_METRIC_DATA_POINTS" => {
+                    Some(Self::MissingCustomMetricDataPoints)
+                }
+                "MISSING_LOAD_BALANCING_DATA_POINTS" => {
+                    Some(Self::MissingLoadBalancingDataPoints)
+                }
+                "MODE_OFF" => Some(Self::ModeOff),
+                "MODE_ONLY_SCALE_OUT" => Some(Self::ModeOnlyScaleOut),
+                "MODE_ONLY_UP" => Some(Self::ModeOnlyUp),
+                "MORE_THAN_ONE_BACKEND_SERVICE" => Some(Self::MoreThanOneBackendService),
+                "NOT_ENOUGH_QUOTA_AVAILABLE" => Some(Self::NotEnoughQuotaAvailable),
+                "REGION_RESOURCE_STOCKOUT" => Some(Self::RegionResourceStockout),
+                "SCALING_TARGET_DOES_NOT_EXIST" => Some(Self::ScalingTargetDoesNotExist),
+                "SCHEDULED_INSTANCES_GREATER_THAN_AUTOSCALER_MAX" => {
+                    Some(Self::ScheduledInstancesGreaterThanAutoscalerMax)
+                }
+                "SCHEDULED_INSTANCES_LESS_THAN_AUTOSCALER_MIN" => {
+                    Some(Self::ScheduledInstancesLessThanAutoscalerMin)
+                }
+                "UNKNOWN" => Some(Self::Unknown),
+                "UNSUPPORTED_MAX_RATE_LOAD_BALANCING_CONFIGURATION" => {
+                    Some(Self::UnsupportedMaxRateLoadBalancingConfiguration)
+                }
+                "ZONE_RESOURCE_STOCKOUT" => Some(Self::ZoneResourceStockout),
+                _ => None,
+            }
+        }
     }
 }
 ///
@@ -3099,6 +3331,17 @@ pub mod autoscaling_policy {
                 Mode::OnlyUp => "ONLY_UP",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_MODE" => Some(Self::UndefinedMode),
+                "OFF" => Some(Self::Off),
+                "ON" => Some(Self::On),
+                "ONLY_SCALE_OUT" => Some(Self::OnlyScaleOut),
+                "ONLY_UP" => Some(Self::OnlyUp),
+                _ => None,
+            }
+        }
     }
 }
 /// CPU utilization policy.
@@ -3148,6 +3391,15 @@ pub mod autoscaling_policy_cpu_utilization {
                 }
                 PredictiveMethod::None => "NONE",
                 PredictiveMethod::OptimizeAvailability => "OPTIMIZE_AVAILABILITY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_PREDICTIVE_METHOD" => Some(Self::UndefinedPredictiveMethod),
+                "NONE" => Some(Self::None),
+                "OPTIMIZE_AVAILABILITY" => Some(Self::OptimizeAvailability),
+                _ => None,
             }
         }
     }
@@ -3211,6 +3463,18 @@ pub mod autoscaling_policy_custom_metric_utilization {
                 UtilizationTargetType::DeltaPerMinute => "DELTA_PER_MINUTE",
                 UtilizationTargetType::DeltaPerSecond => "DELTA_PER_SECOND",
                 UtilizationTargetType::Gauge => "GAUGE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_UTILIZATION_TARGET_TYPE" => {
+                    Some(Self::UndefinedUtilizationTargetType)
+                }
+                "DELTA_PER_MINUTE" => Some(Self::DeltaPerMinute),
+                "DELTA_PER_SECOND" => Some(Self::DeltaPerSecond),
+                "GAUGE" => Some(Self::Gauge),
+                _ => None,
             }
         }
     }
@@ -3337,6 +3601,16 @@ pub mod backend {
                 BalancingMode::Utilization => "UTILIZATION",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_BALANCING_MODE" => Some(Self::UndefinedBalancingMode),
+                "CONNECTION" => Some(Self::Connection),
+                "RATE" => Some(Self::Rate),
+                "UTILIZATION" => Some(Self::Utilization),
+                _ => None,
+            }
+        }
     }
 }
 /// Represents a Cloud Storage Bucket resource. This Cloud Storage bucket resource is referenced by a URL map of a load balancer. For more information, read Backend Buckets.
@@ -3416,6 +3690,15 @@ pub mod backend_bucket {
                 CompressionMode::UndefinedCompressionMode => "UNDEFINED_COMPRESSION_MODE",
                 CompressionMode::Automatic => "AUTOMATIC",
                 CompressionMode::Disabled => "DISABLED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_COMPRESSION_MODE" => Some(Self::UndefinedCompressionMode),
+                "AUTOMATIC" => Some(Self::Automatic),
+                "DISABLED" => Some(Self::Disabled),
+                _ => None,
             }
         }
     }
@@ -3504,6 +3787,17 @@ pub mod backend_bucket_cdn_policy {
                 CacheMode::ForceCacheAll => "FORCE_CACHE_ALL",
                 CacheMode::InvalidCacheMode => "INVALID_CACHE_MODE",
                 CacheMode::UseOriginHeaders => "USE_ORIGIN_HEADERS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_CACHE_MODE" => Some(Self::UndefinedCacheMode),
+                "CACHE_ALL_STATIC" => Some(Self::CacheAllStatic),
+                "FORCE_CACHE_ALL" => Some(Self::ForceCacheAll),
+                "INVALID_CACHE_MODE" => Some(Self::InvalidCacheMode),
+                "USE_ORIGIN_HEADERS" => Some(Self::UseOriginHeaders),
+                _ => None,
             }
         }
     }
@@ -3726,6 +4020,15 @@ pub mod backend_service {
                 CompressionMode::Disabled => "DISABLED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_COMPRESSION_MODE" => Some(Self::UndefinedCompressionMode),
+                "AUTOMATIC" => Some(Self::Automatic),
+                "DISABLED" => Some(Self::Disabled),
+                _ => None,
+            }
+        }
     }
     /// Specifies the load balancer type. A backend service created for one type of load balancer cannot be used with another. For more information, refer to Choosing a load balancer.
     #[derive(
@@ -3773,6 +4076,21 @@ pub mod backend_service {
                 LoadBalancingScheme::InvalidLoadBalancingScheme => {
                     "INVALID_LOAD_BALANCING_SCHEME"
                 }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_LOAD_BALANCING_SCHEME" => {
+                    Some(Self::UndefinedLoadBalancingScheme)
+                }
+                "EXTERNAL" => Some(Self::External),
+                "EXTERNAL_MANAGED" => Some(Self::ExternalManaged),
+                "INTERNAL" => Some(Self::Internal),
+                "INTERNAL_MANAGED" => Some(Self::InternalManaged),
+                "INTERNAL_SELF_MANAGED" => Some(Self::InternalSelfManaged),
+                "INVALID_LOAD_BALANCING_SCHEME" => Some(Self::InvalidLoadBalancingScheme),
+                _ => None,
             }
         }
     }
@@ -3825,6 +4143,20 @@ pub mod backend_service {
                 LocalityLbPolicy::RoundRobin => "ROUND_ROBIN",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_LOCALITY_LB_POLICY" => Some(Self::UndefinedLocalityLbPolicy),
+                "INVALID_LB_POLICY" => Some(Self::InvalidLbPolicy),
+                "LEAST_REQUEST" => Some(Self::LeastRequest),
+                "MAGLEV" => Some(Self::Maglev),
+                "ORIGINAL_DESTINATION" => Some(Self::OriginalDestination),
+                "RANDOM" => Some(Self::Random),
+                "RING_HASH" => Some(Self::RingHash),
+                "ROUND_ROBIN" => Some(Self::RoundRobin),
+                _ => None,
+            }
+        }
     }
     /// The protocol this BackendService uses to communicate with backends. Possible values are HTTP, HTTPS, HTTP2, TCP, SSL, UDP or GRPC. depending on the chosen load balancer or Traffic Director configuration. Refer to the documentation for the load balancers or for Traffic Director for more information. Must be set to GRPC when the backend service is referenced by a URL map that is bound to target gRPC proxy.
     #[derive(
@@ -3873,6 +4205,21 @@ pub mod backend_service {
                 Protocol::Tcp => "TCP",
                 Protocol::Udp => "UDP",
                 Protocol::Unspecified => "UNSPECIFIED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_PROTOCOL" => Some(Self::UndefinedProtocol),
+                "GRPC" => Some(Self::Grpc),
+                "HTTP" => Some(Self::Http),
+                "HTTP2" => Some(Self::Http2),
+                "HTTPS" => Some(Self::Https),
+                "SSL" => Some(Self::Ssl),
+                "TCP" => Some(Self::Tcp),
+                "UDP" => Some(Self::Udp),
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                _ => None,
             }
         }
     }
@@ -3925,6 +4272,21 @@ pub mod backend_service {
                 SessionAffinity::HeaderField => "HEADER_FIELD",
                 SessionAffinity::HttpCookie => "HTTP_COOKIE",
                 SessionAffinity::None => "NONE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_SESSION_AFFINITY" => Some(Self::UndefinedSessionAffinity),
+                "CLIENT_IP" => Some(Self::ClientIp),
+                "CLIENT_IP_NO_DESTINATION" => Some(Self::ClientIpNoDestination),
+                "CLIENT_IP_PORT_PROTO" => Some(Self::ClientIpPortProto),
+                "CLIENT_IP_PROTO" => Some(Self::ClientIpProto),
+                "GENERATED_COOKIE" => Some(Self::GeneratedCookie),
+                "HEADER_FIELD" => Some(Self::HeaderField),
+                "HTTP_COOKIE" => Some(Self::HttpCookie),
+                "NONE" => Some(Self::None),
+                _ => None,
             }
         }
     }
@@ -4044,6 +4406,17 @@ pub mod backend_service_cdn_policy {
                 CacheMode::UseOriginHeaders => "USE_ORIGIN_HEADERS",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_CACHE_MODE" => Some(Self::UndefinedCacheMode),
+                "CACHE_ALL_STATIC" => Some(Self::CacheAllStatic),
+                "FORCE_CACHE_ALL" => Some(Self::ForceCacheAll),
+                "INVALID_CACHE_MODE" => Some(Self::InvalidCacheMode),
+                "USE_ORIGIN_HEADERS" => Some(Self::UseOriginHeaders),
+                _ => None,
+            }
+        }
     }
 }
 /// Bypass the cache when the specified request headers are present, e.g. Pragma or Authorization headers. Values are case insensitive. The presence of such a header overrides the cache_mode setting.
@@ -4127,6 +4500,18 @@ pub mod backend_service_connection_tracking_policy {
                 ConnectionPersistenceOnUnhealthyBackends::NeverPersist => "NEVER_PERSIST",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_CONNECTION_PERSISTENCE_ON_UNHEALTHY_BACKENDS" => {
+                    Some(Self::UndefinedConnectionPersistenceOnUnhealthyBackends)
+                }
+                "ALWAYS_PERSIST" => Some(Self::AlwaysPersist),
+                "DEFAULT_FOR_PROTOCOL" => Some(Self::DefaultForProtocol),
+                "NEVER_PERSIST" => Some(Self::NeverPersist),
+                _ => None,
+            }
+        }
     }
     /// Specifies the key used for connection tracking. There are two options: - PER_CONNECTION: This is the default mode. The Connection Tracking is performed as per the Connection Key (default Hash Method) for the specific protocol. - PER_SESSION: The Connection Tracking is performed as per the configured Session Affinity. It matches the configured Session Affinity. For more details, see [Tracking Mode for Network Load Balancing](<https://cloud.google.com/load-balancing/docs/network/networklb-backend-service#tracking-mode>) and [Tracking Mode for Internal TCP/UDP Load Balancing](<https://cloud.google.com/load-balancing/docs/internal#tracking-mode>).
     #[derive(
@@ -4159,6 +4544,16 @@ pub mod backend_service_connection_tracking_policy {
                 TrackingMode::InvalidTrackingMode => "INVALID_TRACKING_MODE",
                 TrackingMode::PerConnection => "PER_CONNECTION",
                 TrackingMode::PerSession => "PER_SESSION",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_TRACKING_MODE" => Some(Self::UndefinedTrackingMode),
+                "INVALID_TRACKING_MODE" => Some(Self::InvalidTrackingMode),
+                "PER_CONNECTION" => Some(Self::PerConnection),
+                "PER_SESSION" => Some(Self::PerSession),
+                _ => None,
             }
         }
     }
@@ -4318,6 +4713,20 @@ pub mod backend_service_locality_load_balancing_policy_config_policy {
                 Name::RoundRobin => "ROUND_ROBIN",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_NAME" => Some(Self::UndefinedName),
+                "INVALID_LB_POLICY" => Some(Self::InvalidLbPolicy),
+                "LEAST_REQUEST" => Some(Self::LeastRequest),
+                "MAGLEV" => Some(Self::Maglev),
+                "ORIGINAL_DESTINATION" => Some(Self::OriginalDestination),
+                "RANDOM" => Some(Self::Random),
+                "RING_HASH" => Some(Self::RingHash),
+                "ROUND_ROBIN" => Some(Self::RoundRobin),
+                _ => None,
+            }
+        }
     }
 }
 /// The available logging options for the load balancer traffic served by this backend service.
@@ -4459,6 +4868,29 @@ pub mod bfd_packet {
                 }
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_DIAGNOSTIC" => Some(Self::UndefinedDiagnostic),
+                "ADMINISTRATIVELY_DOWN" => Some(Self::AdministrativelyDown),
+                "CONCATENATED_PATH_DOWN" => Some(Self::ConcatenatedPathDown),
+                "CONTROL_DETECTION_TIME_EXPIRED" => {
+                    Some(Self::ControlDetectionTimeExpired)
+                }
+                "DIAGNOSTIC_UNSPECIFIED" => Some(Self::Unspecified),
+                "ECHO_FUNCTION_FAILED" => Some(Self::EchoFunctionFailed),
+                "FORWARDING_PLANE_RESET" => Some(Self::ForwardingPlaneReset),
+                "NEIGHBOR_SIGNALED_SESSION_DOWN" => {
+                    Some(Self::NeighborSignaledSessionDown)
+                }
+                "NO_DIAGNOSTIC" => Some(Self::NoDiagnostic),
+                "PATH_DOWN" => Some(Self::PathDown),
+                "REVERSE_CONCATENATED_PATH_DOWN" => {
+                    Some(Self::ReverseConcatenatedPathDown)
+                }
+                _ => None,
+            }
+        }
     }
     /// The current BFD session state as seen by the transmitting system. These states are specified in section 4.1 of RFC5880
     #[derive(
@@ -4495,6 +4927,18 @@ pub mod bfd_packet {
                 State::Init => "INIT",
                 State::Unspecified => "STATE_UNSPECIFIED",
                 State::Up => "UP",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_STATE" => Some(Self::UndefinedState),
+                "ADMIN_DOWN" => Some(Self::AdminDown),
+                "DOWN" => Some(Self::Down),
+                "INIT" => Some(Self::Init),
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "UP" => Some(Self::Up),
+                _ => None,
             }
         }
     }
@@ -4576,6 +5020,18 @@ pub mod bfd_status {
                 BfdSessionInitializationMode::Passive => "PASSIVE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_BFD_SESSION_INITIALIZATION_MODE" => {
+                    Some(Self::UndefinedBfdSessionInitializationMode)
+                }
+                "ACTIVE" => Some(Self::Active),
+                "DISABLED" => Some(Self::Disabled),
+                "PASSIVE" => Some(Self::Passive),
+                _ => None,
+            }
+        }
     }
     /// The diagnostic code specifies the local system's reason for the last change in session state. This allows remote systems to determine the reason that the previous session failed, for example. These diagnostic codes are specified in section 4.1 of RFC5880
     #[derive(
@@ -4630,6 +5086,29 @@ pub mod bfd_status {
                 }
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_LOCAL_DIAGNOSTIC" => Some(Self::UndefinedLocalDiagnostic),
+                "ADMINISTRATIVELY_DOWN" => Some(Self::AdministrativelyDown),
+                "CONCATENATED_PATH_DOWN" => Some(Self::ConcatenatedPathDown),
+                "CONTROL_DETECTION_TIME_EXPIRED" => {
+                    Some(Self::ControlDetectionTimeExpired)
+                }
+                "DIAGNOSTIC_UNSPECIFIED" => Some(Self::DiagnosticUnspecified),
+                "ECHO_FUNCTION_FAILED" => Some(Self::EchoFunctionFailed),
+                "FORWARDING_PLANE_RESET" => Some(Self::ForwardingPlaneReset),
+                "NEIGHBOR_SIGNALED_SESSION_DOWN" => {
+                    Some(Self::NeighborSignaledSessionDown)
+                }
+                "NO_DIAGNOSTIC" => Some(Self::NoDiagnostic),
+                "PATH_DOWN" => Some(Self::PathDown),
+                "REVERSE_CONCATENATED_PATH_DOWN" => {
+                    Some(Self::ReverseConcatenatedPathDown)
+                }
+                _ => None,
+            }
+        }
     }
     /// The current BFD session state as seen by the transmitting system. These states are specified in section 4.1 of RFC5880
     #[derive(
@@ -4666,6 +5145,18 @@ pub mod bfd_status {
                 LocalState::Init => "INIT",
                 LocalState::StateUnspecified => "STATE_UNSPECIFIED",
                 LocalState::Up => "UP",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_LOCAL_STATE" => Some(Self::UndefinedLocalState),
+                "ADMIN_DOWN" => Some(Self::AdminDown),
+                "DOWN" => Some(Self::Down),
+                "INIT" => Some(Self::Init),
+                "STATE_UNSPECIFIED" => Some(Self::StateUnspecified),
+                "UP" => Some(Self::Up),
+                _ => None,
             }
         }
     }
@@ -4992,6 +5483,16 @@ pub mod commitment {
                 Category::Machine => "MACHINE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_CATEGORY" => Some(Self::UndefinedCategory),
+                "CATEGORY_UNSPECIFIED" => Some(Self::Unspecified),
+                "LICENSE" => Some(Self::License),
+                "MACHINE" => Some(Self::Machine),
+                _ => None,
+            }
+        }
     }
     /// The plan for this commitment, which determines duration and discount rate. The currently supported plans are TWELVE_MONTH (1 year), and THIRTY_SIX_MONTH (3 years).
     #[derive(
@@ -5024,6 +5525,16 @@ pub mod commitment {
                 Plan::Invalid => "INVALID",
                 Plan::ThirtySixMonth => "THIRTY_SIX_MONTH",
                 Plan::TwelveMonth => "TWELVE_MONTH",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_PLAN" => Some(Self::UndefinedPlan),
+                "INVALID" => Some(Self::Invalid),
+                "THIRTY_SIX_MONTH" => Some(Self::ThirtySixMonth),
+                "TWELVE_MONTH" => Some(Self::TwelveMonth),
+                _ => None,
             }
         }
     }
@@ -5062,6 +5573,18 @@ pub mod commitment {
                 Status::Creating => "CREATING",
                 Status::Expired => "EXPIRED",
                 Status::NotYetActive => "NOT_YET_ACTIVE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_STATUS" => Some(Self::UndefinedStatus),
+                "ACTIVE" => Some(Self::Active),
+                "CANCELLED" => Some(Self::Cancelled),
+                "CREATING" => Some(Self::Creating),
+                "EXPIRED" => Some(Self::Expired),
+                "NOT_YET_ACTIVE" => Some(Self::NotYetActive),
+                _ => None,
             }
         }
     }
@@ -5112,6 +5635,24 @@ pub mod commitment {
                 Type::MemoryOptimized => "MEMORY_OPTIMIZED",
                 Type::MemoryOptimizedM3 => "MEMORY_OPTIMIZED_M3",
                 Type::Unspecified => "TYPE_UNSPECIFIED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_TYPE" => Some(Self::UndefinedType),
+                "ACCELERATOR_OPTIMIZED" => Some(Self::AcceleratorOptimized),
+                "COMPUTE_OPTIMIZED" => Some(Self::ComputeOptimized),
+                "COMPUTE_OPTIMIZED_C2D" => Some(Self::ComputeOptimizedC2d),
+                "GENERAL_PURPOSE" => Some(Self::GeneralPurpose),
+                "GENERAL_PURPOSE_E2" => Some(Self::GeneralPurposeE2),
+                "GENERAL_PURPOSE_N2" => Some(Self::GeneralPurposeN2),
+                "GENERAL_PURPOSE_N2D" => Some(Self::GeneralPurposeN2d),
+                "GENERAL_PURPOSE_T2D" => Some(Self::GeneralPurposeT2d),
+                "MEMORY_OPTIMIZED" => Some(Self::MemoryOptimized),
+                "MEMORY_OPTIMIZED_M3" => Some(Self::MemoryOptimizedM3),
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                _ => None,
             }
         }
     }
@@ -5254,6 +5795,20 @@ pub mod condition {
                 Iam::SecurityRealm => "SECURITY_REALM",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_IAM" => Some(Self::UndefinedIam),
+                "APPROVER" => Some(Self::Approver),
+                "ATTRIBUTION" => Some(Self::Attribution),
+                "AUTHORITY" => Some(Self::Authority),
+                "CREDENTIALS_TYPE" => Some(Self::CredentialsType),
+                "CREDS_ASSERTION" => Some(Self::CredsAssertion),
+                "JUSTIFICATION_TYPE" => Some(Self::JustificationType),
+                "SECURITY_REALM" => Some(Self::SecurityRealm),
+                _ => None,
+            }
+        }
     }
     /// This is deprecated and has no effect. Do not use.
     #[derive(
@@ -5300,6 +5855,19 @@ pub mod condition {
                 Op::NoOp => "NO_OP",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_OP" => Some(Self::UndefinedOp),
+                "DISCHARGED" => Some(Self::Discharged),
+                "EQUALS" => Some(Self::Equals),
+                "IN" => Some(Self::In),
+                "NOT_EQUALS" => Some(Self::NotEquals),
+                "NOT_IN" => Some(Self::NotIn),
+                "NO_OP" => Some(Self::NoOp),
+                _ => None,
+            }
+        }
     }
     /// This is deprecated and has no effect. Do not use.
     /// Additional supported values which may be not listed in the enum directly due to technical reasons:
@@ -5340,6 +5908,17 @@ pub mod condition {
                 Sys::Name => "NAME",
                 Sys::Region => "REGION",
                 Sys::Service => "SERVICE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_SYS" => Some(Self::UndefinedSys),
+                "IP" => Some(Self::Ip),
+                "NAME" => Some(Self::Name),
+                "REGION" => Some(Self::Region),
+                "SERVICE" => Some(Self::Service),
+                _ => None,
             }
         }
     }
@@ -6961,6 +7540,17 @@ pub mod deprecation_status {
                 State::Obsolete => "OBSOLETE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_STATE" => Some(Self::UndefinedState),
+                "ACTIVE" => Some(Self::Active),
+                "DELETED" => Some(Self::Deleted),
+                "DEPRECATED" => Some(Self::Deprecated),
+                "OBSOLETE" => Some(Self::Obsolete),
+                _ => None,
+            }
+        }
     }
 }
 /// A request message for Instances.DetachDisk. See the method description for details.
@@ -7213,6 +7803,16 @@ pub mod disk {
                 Architecture::X8664 => "X86_64",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_ARCHITECTURE" => Some(Self::UndefinedArchitecture),
+                "ARCHITECTURE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ARM64" => Some(Self::Arm64),
+                "X86_64" => Some(Self::X8664),
+                _ => None,
+            }
+        }
     }
     /// [Output Only] The status of disk creation. - CREATING: Disk is provisioning. - RESTORING: Source data is being copied into the disk. - FAILED: Disk creation failed. - READY: Disk is ready for use. - DELETING: Disk is deleting.
     #[derive(
@@ -7254,6 +7854,18 @@ pub mod disk {
                 Status::Failed => "FAILED",
                 Status::Ready => "READY",
                 Status::Restoring => "RESTORING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_STATUS" => Some(Self::UndefinedStatus),
+                "CREATING" => Some(Self::Creating),
+                "DELETING" => Some(Self::Deleting),
+                "FAILED" => Some(Self::Failed),
+                "READY" => Some(Self::Ready),
+                "RESTORING" => Some(Self::Restoring),
+                _ => None,
             }
         }
     }
@@ -7353,6 +7965,20 @@ pub mod disk_instantiation_config {
                 InstantiateFrom::DoNotInclude => "DO_NOT_INCLUDE",
                 InstantiateFrom::SourceImage => "SOURCE_IMAGE",
                 InstantiateFrom::SourceImageFamily => "SOURCE_IMAGE_FAMILY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_INSTANTIATE_FROM" => Some(Self::UndefinedInstantiateFrom),
+                "ATTACH_READ_ONLY" => Some(Self::AttachReadOnly),
+                "BLANK" => Some(Self::Blank),
+                "CUSTOM_IMAGE" => Some(Self::CustomImage),
+                "DEFAULT" => Some(Self::Default),
+                "DO_NOT_INCLUDE" => Some(Self::DoNotInclude),
+                "SOURCE_IMAGE" => Some(Self::SourceImage),
+                "SOURCE_IMAGE_FAMILY" => Some(Self::SourceImageFamily),
+                _ => None,
             }
         }
     }
@@ -7596,6 +8222,16 @@ pub mod distribution_policy {
                 TargetShape::Even => "EVEN",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_TARGET_SHAPE" => Some(Self::UndefinedTargetShape),
+                "ANY" => Some(Self::Any),
+                "BALANCED" => Some(Self::Balanced),
+                "EVEN" => Some(Self::Even),
+                _ => None,
+            }
+        }
     }
 }
 ///
@@ -7758,6 +8394,16 @@ pub mod exchanged_peering_route {
                 Type::SubnetPeeringRoute => "SUBNET_PEERING_ROUTE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_TYPE" => Some(Self::UndefinedType),
+                "DYNAMIC_PEERING_ROUTE" => Some(Self::DynamicPeeringRoute),
+                "STATIC_PEERING_ROUTE" => Some(Self::StaticPeeringRoute),
+                "SUBNET_PEERING_ROUTE" => Some(Self::SubnetPeeringRoute),
+                _ => None,
+            }
+        }
     }
 }
 ///
@@ -7901,6 +8547,18 @@ pub mod external_vpn_gateway {
                 RedundancyType::TwoIpsRedundancy => "TWO_IPS_REDUNDANCY",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_REDUNDANCY_TYPE" => Some(Self::UndefinedRedundancyType),
+                "FOUR_IPS_REDUNDANCY" => Some(Self::FourIpsRedundancy),
+                "SINGLE_IP_INTERNALLY_REDUNDANT" => {
+                    Some(Self::SingleIpInternallyRedundant)
+                }
+                "TWO_IPS_REDUNDANCY" => Some(Self::TwoIpsRedundancy),
+                _ => None,
+            }
+        }
     }
 }
 /// The interface for the external VPN gateway.
@@ -7984,6 +8642,16 @@ pub mod file_content_buffer {
                 FileType::Bin => "BIN",
                 FileType::Undefined => "UNDEFINED",
                 FileType::X509 => "X509",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_FILE_TYPE" => Some(Self::UndefinedFileType),
+                "BIN" => Some(Self::Bin),
+                "UNDEFINED" => Some(Self::Undefined),
+                "X509" => Some(Self::X509),
+                _ => None,
             }
         }
     }
@@ -8090,6 +8758,15 @@ pub mod firewall {
                 Direction::Ingress => "INGRESS",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_DIRECTION" => Some(Self::UndefinedDirection),
+                "EGRESS" => Some(Self::Egress),
+                "INGRESS" => Some(Self::Ingress),
+                _ => None,
+            }
+        }
     }
 }
 /// Contains a list of firewalls.
@@ -8158,6 +8835,15 @@ pub mod firewall_log_config {
                 Metadata::UndefinedMetadata => "UNDEFINED_METADATA",
                 Metadata::ExcludeAllMetadata => "EXCLUDE_ALL_METADATA",
                 Metadata::IncludeAllMetadata => "INCLUDE_ALL_METADATA",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_METADATA" => Some(Self::UndefinedMetadata),
+                "EXCLUDE_ALL_METADATA" => Some(Self::ExcludeAllMetadata),
+                "INCLUDE_ALL_METADATA" => Some(Self::IncludeAllMetadata),
+                _ => None,
             }
         }
     }
@@ -8343,6 +9029,15 @@ pub mod firewall_policy_rule {
                 Direction::Ingress => "INGRESS",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_DIRECTION" => Some(Self::UndefinedDirection),
+                "EGRESS" => Some(Self::Egress),
+                "INGRESS" => Some(Self::Ingress),
+                _ => None,
+            }
+        }
     }
 }
 /// Represents a match condition that incoming traffic is evaluated against. Exactly one field must be specified.
@@ -8416,6 +9111,15 @@ pub mod firewall_policy_rule_secure_tag {
                 State::UndefinedState => "UNDEFINED_STATE",
                 State::Effective => "EFFECTIVE",
                 State::Ineffective => "INEFFECTIVE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_STATE" => Some(Self::UndefinedState),
+                "EFFECTIVE" => Some(Self::Effective),
+                "INEFFECTIVE" => Some(Self::Ineffective),
+                _ => None,
             }
         }
     }
@@ -8585,6 +9289,20 @@ pub mod forwarding_rule {
                 IpProtocolEnum::Udp => "UDP",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_I_P_PROTOCOL_ENUM" => Some(Self::UndefinedIPProtocolEnum),
+                "AH" => Some(Self::Ah),
+                "ESP" => Some(Self::Esp),
+                "ICMP" => Some(Self::Icmp),
+                "L3_DEFAULT" => Some(Self::L3Default),
+                "SCTP" => Some(Self::Sctp),
+                "TCP" => Some(Self::Tcp),
+                "UDP" => Some(Self::Udp),
+                _ => None,
+            }
+        }
     }
     /// The IP Version that will be used by this forwarding rule. Valid options are IPV4 or IPV6.
     #[derive(
@@ -8617,6 +9335,16 @@ pub mod forwarding_rule {
                 IpVersion::Ipv4 => "IPV4",
                 IpVersion::Ipv6 => "IPV6",
                 IpVersion::UnspecifiedVersion => "UNSPECIFIED_VERSION",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_IP_VERSION" => Some(Self::UndefinedIpVersion),
+                "IPV4" => Some(Self::Ipv4),
+                "IPV6" => Some(Self::Ipv6),
+                "UNSPECIFIED_VERSION" => Some(Self::UnspecifiedVersion),
+                _ => None,
             }
         }
     }
@@ -8661,6 +9389,21 @@ pub mod forwarding_rule {
                 LoadBalancingScheme::Invalid => "INVALID",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_LOAD_BALANCING_SCHEME" => {
+                    Some(Self::UndefinedLoadBalancingScheme)
+                }
+                "EXTERNAL" => Some(Self::External),
+                "EXTERNAL_MANAGED" => Some(Self::ExternalManaged),
+                "INTERNAL" => Some(Self::Internal),
+                "INTERNAL_MANAGED" => Some(Self::InternalManaged),
+                "INTERNAL_SELF_MANAGED" => Some(Self::InternalSelfManaged),
+                "INVALID" => Some(Self::Invalid),
+                _ => None,
+            }
+        }
     }
     /// This signifies the networking tier used for configuring this load balancer and can only take the following values: PREMIUM, STANDARD. For regional ForwardingRule, the valid values are PREMIUM and STANDARD. For GlobalForwardingRule, the valid value is PREMIUM. If this field is not specified, it is assumed to be PREMIUM. If IPAddress is specified, this value must be equal to the networkTier of the Address.
     #[derive(
@@ -8701,6 +9444,19 @@ pub mod forwarding_rule {
                 NetworkTier::StandardOverridesFixedStandard => {
                     "STANDARD_OVERRIDES_FIXED_STANDARD"
                 }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_NETWORK_TIER" => Some(Self::UndefinedNetworkTier),
+                "FIXED_STANDARD" => Some(Self::FixedStandard),
+                "PREMIUM" => Some(Self::Premium),
+                "STANDARD" => Some(Self::Standard),
+                "STANDARD_OVERRIDES_FIXED_STANDARD" => {
+                    Some(Self::StandardOverridesFixedStandard)
+                }
+                _ => None,
             }
         }
     }
@@ -8748,6 +9504,21 @@ pub mod forwarding_rule {
                 PscConnectionStatus::Pending => "PENDING",
                 PscConnectionStatus::Rejected => "REJECTED",
                 PscConnectionStatus::StatusUnspecified => "STATUS_UNSPECIFIED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_PSC_CONNECTION_STATUS" => {
+                    Some(Self::UndefinedPscConnectionStatus)
+                }
+                "ACCEPTED" => Some(Self::Accepted),
+                "CLOSED" => Some(Self::Closed),
+                "NEEDS_ATTENTION" => Some(Self::NeedsAttention),
+                "PENDING" => Some(Self::Pending),
+                "REJECTED" => Some(Self::Rejected),
+                "STATUS_UNSPECIFIED" => Some(Self::StatusUnspecified),
+                _ => None,
             }
         }
     }
@@ -8892,6 +9663,16 @@ pub mod grpc_health_check {
                 PortSpecification::UseFixedPort => "USE_FIXED_PORT",
                 PortSpecification::UseNamedPort => "USE_NAMED_PORT",
                 PortSpecification::UseServingPort => "USE_SERVING_PORT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_PORT_SPECIFICATION" => Some(Self::UndefinedPortSpecification),
+                "USE_FIXED_PORT" => Some(Self::UseFixedPort),
+                "USE_NAMED_PORT" => Some(Self::UseNamedPort),
+                "USE_SERVING_PORT" => Some(Self::UseServingPort),
+                _ => None,
             }
         }
     }
@@ -10837,6 +11618,21 @@ pub mod guest_os_feature {
                 Type::Windows => "WINDOWS",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_TYPE" => Some(Self::UndefinedType),
+                "FEATURE_TYPE_UNSPECIFIED" => Some(Self::FeatureTypeUnspecified),
+                "GVNIC" => Some(Self::Gvnic),
+                "MULTI_IP_SUBNET" => Some(Self::MultiIpSubnet),
+                "SECURE_BOOT" => Some(Self::SecureBoot),
+                "SEV_CAPABLE" => Some(Self::SevCapable),
+                "UEFI_COMPATIBLE" => Some(Self::UefiCompatible),
+                "VIRTIO_SCSI_MULTIQUEUE" => Some(Self::VirtioScsiMultiqueue),
+                "WINDOWS" => Some(Self::Windows),
+                _ => None,
+            }
+        }
     }
 }
 ///
@@ -10907,6 +11703,16 @@ pub mod http2_health_check {
                 PortSpecification::UseServingPort => "USE_SERVING_PORT",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_PORT_SPECIFICATION" => Some(Self::UndefinedPortSpecification),
+                "USE_FIXED_PORT" => Some(Self::UseFixedPort),
+                "USE_NAMED_PORT" => Some(Self::UseNamedPort),
+                "USE_SERVING_PORT" => Some(Self::UseServingPort),
+                _ => None,
+            }
+        }
     }
     /// Specifies the type of proxy header to append before sending data to the backend, either NONE or PROXY_V1. The default is NONE.
     #[derive(
@@ -10937,6 +11743,15 @@ pub mod http2_health_check {
                 ProxyHeader::UndefinedProxyHeader => "UNDEFINED_PROXY_HEADER",
                 ProxyHeader::None => "NONE",
                 ProxyHeader::ProxyV1 => "PROXY_V1",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_PROXY_HEADER" => Some(Self::UndefinedProxyHeader),
+                "NONE" => Some(Self::None),
+                "PROXY_V1" => Some(Self::ProxyV1),
+                _ => None,
             }
         }
     }
@@ -11009,6 +11824,16 @@ pub mod http_health_check {
                 PortSpecification::UseServingPort => "USE_SERVING_PORT",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_PORT_SPECIFICATION" => Some(Self::UndefinedPortSpecification),
+                "USE_FIXED_PORT" => Some(Self::UseFixedPort),
+                "USE_NAMED_PORT" => Some(Self::UseNamedPort),
+                "USE_SERVING_PORT" => Some(Self::UseServingPort),
+                _ => None,
+            }
+        }
     }
     /// Specifies the type of proxy header to append before sending data to the backend, either NONE or PROXY_V1. The default is NONE.
     #[derive(
@@ -11039,6 +11864,15 @@ pub mod http_health_check {
                 ProxyHeader::UndefinedProxyHeader => "UNDEFINED_PROXY_HEADER",
                 ProxyHeader::None => "NONE",
                 ProxyHeader::ProxyV1 => "PROXY_V1",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_PROXY_HEADER" => Some(Self::UndefinedProxyHeader),
+                "NONE" => Some(Self::None),
+                "PROXY_V1" => Some(Self::ProxyV1),
+                _ => None,
             }
         }
     }
@@ -11111,6 +11945,16 @@ pub mod https_health_check {
                 PortSpecification::UseServingPort => "USE_SERVING_PORT",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_PORT_SPECIFICATION" => Some(Self::UndefinedPortSpecification),
+                "USE_FIXED_PORT" => Some(Self::UseFixedPort),
+                "USE_NAMED_PORT" => Some(Self::UseNamedPort),
+                "USE_SERVING_PORT" => Some(Self::UseServingPort),
+                _ => None,
+            }
+        }
     }
     /// Specifies the type of proxy header to append before sending data to the backend, either NONE or PROXY_V1. The default is NONE.
     #[derive(
@@ -11141,6 +11985,15 @@ pub mod https_health_check {
                 ProxyHeader::UndefinedProxyHeader => "UNDEFINED_PROXY_HEADER",
                 ProxyHeader::None => "NONE",
                 ProxyHeader::ProxyV1 => "PROXY_V1",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_PROXY_HEADER" => Some(Self::UndefinedProxyHeader),
+                "NONE" => Some(Self::None),
+                "PROXY_V1" => Some(Self::ProxyV1),
+                _ => None,
             }
         }
     }
@@ -11243,6 +12096,20 @@ pub mod health_check {
                 Type::Invalid => "INVALID",
                 Type::Ssl => "SSL",
                 Type::Tcp => "TCP",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_TYPE" => Some(Self::UndefinedType),
+                "GRPC" => Some(Self::Grpc),
+                "HTTP" => Some(Self::Http),
+                "HTTP2" => Some(Self::Http2),
+                "HTTPS" => Some(Self::Https),
+                "INVALID" => Some(Self::Invalid),
+                "SSL" => Some(Self::Ssl),
+                "TCP" => Some(Self::Tcp),
+                _ => None,
             }
         }
     }
@@ -11366,6 +12233,17 @@ pub mod health_check_service {
                 }
                 HealthStatusAggregationPolicy::And => "AND",
                 HealthStatusAggregationPolicy::NoAggregation => "NO_AGGREGATION",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_HEALTH_STATUS_AGGREGATION_POLICY" => {
+                    Some(Self::UndefinedHealthStatusAggregationPolicy)
+                }
+                "AND" => Some(Self::And),
+                "NO_AGGREGATION" => Some(Self::NoAggregation),
+                _ => None,
             }
         }
     }
@@ -11509,6 +12387,15 @@ pub mod health_status {
                 HealthState::Unhealthy => "UNHEALTHY",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_HEALTH_STATE" => Some(Self::UndefinedHealthState),
+                "HEALTHY" => Some(Self::Healthy),
+                "UNHEALTHY" => Some(Self::Unhealthy),
+                _ => None,
+            }
+        }
     }
     ///
     #[derive(
@@ -11547,6 +12434,17 @@ pub mod health_status {
                 WeightError::MissingWeight => "MISSING_WEIGHT",
                 WeightError::UnavailableWeight => "UNAVAILABLE_WEIGHT",
                 WeightError::WeightNone => "WEIGHT_NONE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_WEIGHT_ERROR" => Some(Self::UndefinedWeightError),
+                "INVALID_WEIGHT" => Some(Self::InvalidWeight),
+                "MISSING_WEIGHT" => Some(Self::MissingWeight),
+                "UNAVAILABLE_WEIGHT" => Some(Self::UnavailableWeight),
+                "WEIGHT_NONE" => Some(Self::WeightNone),
+                _ => None,
             }
         }
     }
@@ -11607,6 +12505,17 @@ pub mod health_status_for_network_endpoint {
                 HealthState::Healthy => "HEALTHY",
                 HealthState::Unhealthy => "UNHEALTHY",
                 HealthState::Unknown => "UNKNOWN",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_HEALTH_STATE" => Some(Self::UndefinedHealthState),
+                "DRAINING" => Some(Self::Draining),
+                "HEALTHY" => Some(Self::Healthy),
+                "UNHEALTHY" => Some(Self::Unhealthy),
+                "UNKNOWN" => Some(Self::Unknown),
+                _ => None,
             }
         }
     }
@@ -11828,6 +12737,20 @@ pub mod http_redirect_action {
                 RedirectResponseCode::PermanentRedirect => "PERMANENT_REDIRECT",
                 RedirectResponseCode::SeeOther => "SEE_OTHER",
                 RedirectResponseCode::TemporaryRedirect => "TEMPORARY_REDIRECT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_REDIRECT_RESPONSE_CODE" => {
+                    Some(Self::UndefinedRedirectResponseCode)
+                }
+                "FOUND" => Some(Self::Found),
+                "MOVED_PERMANENTLY_DEFAULT" => Some(Self::MovedPermanentlyDefault),
+                "PERMANENT_REDIRECT" => Some(Self::PermanentRedirect),
+                "SEE_OTHER" => Some(Self::SeeOther),
+                "TEMPORARY_REDIRECT" => Some(Self::TemporaryRedirect),
+                _ => None,
             }
         }
     }
@@ -12072,6 +12995,16 @@ pub mod image {
                 Architecture::X8664 => "X86_64",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_ARCHITECTURE" => Some(Self::UndefinedArchitecture),
+                "ARCHITECTURE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ARM64" => Some(Self::Arm64),
+                "X86_64" => Some(Self::X8664),
+                _ => None,
+            }
+        }
     }
     /// The type of the image used to create this disk. The default and only valid value is RAW.
     #[derive(
@@ -12100,6 +13033,14 @@ pub mod image {
             match self {
                 SourceType::UndefinedSourceType => "UNDEFINED_SOURCE_TYPE",
                 SourceType::Raw => "RAW",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_SOURCE_TYPE" => Some(Self::UndefinedSourceType),
+                "RAW" => Some(Self::Raw),
+                _ => None,
             }
         }
     }
@@ -12140,6 +13081,17 @@ pub mod image {
                 Status::Failed => "FAILED",
                 Status::Pending => "PENDING",
                 Status::Ready => "READY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_STATUS" => Some(Self::UndefinedStatus),
+                "DELETING" => Some(Self::Deleting),
+                "FAILED" => Some(Self::Failed),
+                "PENDING" => Some(Self::Pending),
+                "READY" => Some(Self::Ready),
+                _ => None,
             }
         }
     }
@@ -13538,6 +14490,18 @@ pub mod instance {
                 KeyRevocationActionType::Stop => "STOP",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_KEY_REVOCATION_ACTION_TYPE" => {
+                    Some(Self::UndefinedKeyRevocationActionType)
+                }
+                "KEY_REVOCATION_ACTION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "NONE" => Some(Self::None),
+                "STOP" => Some(Self::Stop),
+                _ => None,
+            }
+        }
     }
     /// The private IPv6 google access type for the VM. If not specified, use INHERIT_FROM_SUBNETWORK as default.
     #[derive(
@@ -13581,6 +14545,22 @@ pub mod instance {
                 PrivateIpv6GoogleAccess::InheritFromSubnetwork => {
                     "INHERIT_FROM_SUBNETWORK"
                 }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_PRIVATE_IPV6_GOOGLE_ACCESS" => {
+                    Some(Self::UndefinedPrivateIpv6GoogleAccess)
+                }
+                "ENABLE_BIDIRECTIONAL_ACCESS_TO_GOOGLE" => {
+                    Some(Self::EnableBidirectionalAccessToGoogle)
+                }
+                "ENABLE_OUTBOUND_VM_ACCESS_TO_GOOGLE" => {
+                    Some(Self::EnableOutboundVmAccessToGoogle)
+                }
+                "INHERIT_FROM_SUBNETWORK" => Some(Self::InheritFromSubnetwork),
+                _ => None,
             }
         }
     }
@@ -13639,6 +14619,23 @@ pub mod instance {
                 Status::Suspended => "SUSPENDED",
                 Status::Suspending => "SUSPENDING",
                 Status::Terminated => "TERMINATED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_STATUS" => Some(Self::UndefinedStatus),
+                "DEPROVISIONING" => Some(Self::Deprovisioning),
+                "PROVISIONING" => Some(Self::Provisioning),
+                "REPAIRING" => Some(Self::Repairing),
+                "RUNNING" => Some(Self::Running),
+                "STAGING" => Some(Self::Staging),
+                "STOPPED" => Some(Self::Stopped),
+                "STOPPING" => Some(Self::Stopping),
+                "SUSPENDED" => Some(Self::Suspended),
+                "SUSPENDING" => Some(Self::Suspending),
+                "TERMINATED" => Some(Self::Terminated),
+                _ => None,
             }
         }
     }
@@ -13912,6 +14909,17 @@ pub mod instance_group_manager {
                 ListManagedInstancesResults::Paginated => "PAGINATED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_LIST_MANAGED_INSTANCES_RESULTS" => {
+                    Some(Self::UndefinedListManagedInstancesResults)
+                }
+                "PAGELESS" => Some(Self::Pageless),
+                "PAGINATED" => Some(Self::Paginated),
+                _ => None,
+            }
+        }
     }
 }
 ///
@@ -14136,6 +15144,15 @@ pub mod instance_group_manager_update_policy {
                 }
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_INSTANCE_REDISTRIBUTION_TYPE" => {
+                    Some(Self::UndefinedInstanceRedistributionType)
+                }
+                _ => None,
+            }
+        }
     }
     /// Minimal action to be taken on an instance. Use this option to minimize disruption as much as possible or to apply a more disruptive action than is necessary. - To limit disruption as much as possible, set the minimal action to REFRESH. If your update requires a more disruptive action, Compute Engine performs the necessary action to execute the update. - To apply a more disruptive action than is strictly necessary, set the minimal action to RESTART or REPLACE. For example, Compute Engine does not need to restart a VM to change its metadata. But if your application reads instance metadata only when a VM is restarted, you can set the minimal action to RESTART in order to pick up metadata changes.
     /// Additional supported values which may be not listed in the enum directly due to technical reasons:
@@ -14167,6 +15184,13 @@ pub mod instance_group_manager_update_policy {
         pub fn as_str_name(&self) -> &'static str {
             match self {
                 MinimalAction::UndefinedMinimalAction => "UNDEFINED_MINIMAL_ACTION",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_MINIMAL_ACTION" => Some(Self::UndefinedMinimalAction),
+                _ => None,
             }
         }
     }
@@ -14202,6 +15226,15 @@ pub mod instance_group_manager_update_policy {
                 MostDisruptiveAllowedAction::UndefinedMostDisruptiveAllowedAction => {
                     "UNDEFINED_MOST_DISRUPTIVE_ALLOWED_ACTION"
                 }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_MOST_DISRUPTIVE_ALLOWED_ACTION" => {
+                    Some(Self::UndefinedMostDisruptiveAllowedAction)
+                }
+                _ => None,
             }
         }
     }
@@ -14240,6 +15273,15 @@ pub mod instance_group_manager_update_policy {
                 ReplacementMethod::Substitute => "SUBSTITUTE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_REPLACEMENT_METHOD" => Some(Self::UndefinedReplacementMethod),
+                "RECREATE" => Some(Self::Recreate),
+                "SUBSTITUTE" => Some(Self::Substitute),
+                _ => None,
+            }
+        }
     }
     /// The type of update process. You can specify either PROACTIVE so that the instance group manager proactively executes actions in order to bring instances to their target versions or OPPORTUNISTIC so that no action is proactively executed but the update will be performed as part of other actions (for example, resizes or recreateInstances calls).
     /// Additional supported values which may be not listed in the enum directly due to technical reasons:
@@ -14271,6 +15313,14 @@ pub mod instance_group_manager_update_policy {
             match self {
                 Type::UndefinedType => "UNDEFINED_TYPE",
                 Type::Opportunistic => "OPPORTUNISTIC",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_TYPE" => Some(Self::UndefinedType),
+                "OPPORTUNISTIC" => Some(Self::Opportunistic),
+                _ => None,
             }
         }
     }
@@ -14352,6 +15402,13 @@ pub mod instance_group_managers_apply_updates_request {
                 MinimalAction::UndefinedMinimalAction => "UNDEFINED_MINIMAL_ACTION",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_MINIMAL_ACTION" => Some(Self::UndefinedMinimalAction),
+                _ => None,
+            }
+        }
     }
     /// The most disruptive action that you want to perform on each instance during the update: - REPLACE: Delete the instance and create it again. - RESTART: Stop the instance and start it again. - REFRESH: Do not stop the instance. - NONE: Do not disrupt the instance at all. By default, the most disruptive allowed action is REPLACE. If your update requires a more disruptive action than you set with this flag, the update request will fail.
     /// Additional supported values which may be not listed in the enum directly due to technical reasons:
@@ -14385,6 +15442,15 @@ pub mod instance_group_managers_apply_updates_request {
                 MostDisruptiveAllowedAction::UndefinedMostDisruptiveAllowedAction => {
                     "UNDEFINED_MOST_DISRUPTIVE_ALLOWED_ACTION"
                 }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_MOST_DISRUPTIVE_ALLOWED_ACTION" => {
+                    Some(Self::UndefinedMostDisruptiveAllowedAction)
+                }
+                _ => None,
             }
         }
     }
@@ -14581,6 +15647,15 @@ pub mod instance_groups_list_instances_request {
                 InstanceState::Running => "RUNNING",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_INSTANCE_STATE" => Some(Self::UndefinedInstanceState),
+                "ALL" => Some(Self::All),
+                "RUNNING" => Some(Self::Running),
+                _ => None,
+            }
+        }
     }
 }
 ///
@@ -14758,6 +15833,26 @@ pub mod instance_managed_by_igm_error_instance_action_details {
                 Action::Verifying => "VERIFYING",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_ACTION" => Some(Self::UndefinedAction),
+                "ABANDONING" => Some(Self::Abandoning),
+                "CREATING" => Some(Self::Creating),
+                "CREATING_WITHOUT_RETRIES" => Some(Self::CreatingWithoutRetries),
+                "DELETING" => Some(Self::Deleting),
+                "NONE" => Some(Self::None),
+                "RECREATING" => Some(Self::Recreating),
+                "REFRESHING" => Some(Self::Refreshing),
+                "RESTARTING" => Some(Self::Restarting),
+                "RESUMING" => Some(Self::Resuming),
+                "STARTING" => Some(Self::Starting),
+                "STOPPING" => Some(Self::Stopping),
+                "SUSPENDING" => Some(Self::Suspending),
+                "VERIFYING" => Some(Self::Verifying),
+                _ => None,
+            }
+        }
     }
 }
 ///
@@ -14915,6 +16010,18 @@ pub mod instance_properties {
                 KeyRevocationActionType::Stop => "STOP",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_KEY_REVOCATION_ACTION_TYPE" => {
+                    Some(Self::UndefinedKeyRevocationActionType)
+                }
+                "KEY_REVOCATION_ACTION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "NONE" => Some(Self::None),
+                "STOP" => Some(Self::Stop),
+                _ => None,
+            }
+        }
     }
     /// The private IPv6 google access type for VMs. If not specified, use INHERIT_FROM_SUBNETWORK as default. Note that for MachineImage, this is not supported yet.
     #[derive(
@@ -14958,6 +16065,22 @@ pub mod instance_properties {
                 PrivateIpv6GoogleAccess::InheritFromSubnetwork => {
                     "INHERIT_FROM_SUBNETWORK"
                 }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_PRIVATE_IPV6_GOOGLE_ACCESS" => {
+                    Some(Self::UndefinedPrivateIpv6GoogleAccess)
+                }
+                "ENABLE_BIDIRECTIONAL_ACCESS_TO_GOOGLE" => {
+                    Some(Self::EnableBidirectionalAccessToGoogle)
+                }
+                "ENABLE_OUTBOUND_VM_ACCESS_TO_GOOGLE" => {
+                    Some(Self::EnableOutboundVmAccessToGoogle)
+                }
+                "INHERIT_FROM_SUBNETWORK" => Some(Self::InheritFromSubnetwork),
+                _ => None,
             }
         }
     }
@@ -15099,6 +16222,23 @@ pub mod instance_with_named_ports {
                 Status::Terminated => "TERMINATED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_STATUS" => Some(Self::UndefinedStatus),
+                "DEPROVISIONING" => Some(Self::Deprovisioning),
+                "PROVISIONING" => Some(Self::Provisioning),
+                "REPAIRING" => Some(Self::Repairing),
+                "RUNNING" => Some(Self::Running),
+                "STAGING" => Some(Self::Staging),
+                "STOPPED" => Some(Self::Stopped),
+                "STOPPING" => Some(Self::Stopping),
+                "SUSPENDED" => Some(Self::Suspended),
+                "SUSPENDING" => Some(Self::Suspending),
+                "TERMINATED" => Some(Self::Terminated),
+                _ => None,
+            }
+        }
     }
 }
 ///
@@ -15178,6 +16318,17 @@ pub mod instances_get_effective_firewalls_response_effective_firewall_policy {
                 Type::Network => "NETWORK",
                 Type::NetworkRegional => "NETWORK_REGIONAL",
                 Type::Unspecified => "UNSPECIFIED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_TYPE" => Some(Self::UndefinedType),
+                "HIERARCHY" => Some(Self::Hierarchy),
+                "NETWORK" => Some(Self::Network),
+                "NETWORK_REGIONAL" => Some(Self::NetworkRegional),
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                _ => None,
             }
         }
     }
@@ -15388,6 +16539,16 @@ pub mod interconnect {
                 InterconnectType::Partner => "PARTNER",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_INTERCONNECT_TYPE" => Some(Self::UndefinedInterconnectType),
+                "DEDICATED" => Some(Self::Dedicated),
+                "IT_PRIVATE" => Some(Self::ItPrivate),
+                "PARTNER" => Some(Self::Partner),
+                _ => None,
+            }
+        }
     }
     /// Type of link requested, which can take one of the following values: - LINK_TYPE_ETHERNET_10G_LR: A 10G Ethernet with LR optics - LINK_TYPE_ETHERNET_100G_LR: A 100G Ethernet with LR optics. Note that this field indicates the speed of each of the links in the bundle, not the speed of the entire bundle.
     #[derive(
@@ -15420,6 +16581,15 @@ pub mod interconnect {
                 LinkType::UndefinedLinkType => "UNDEFINED_LINK_TYPE",
                 LinkType::Ethernet100gLr => "LINK_TYPE_ETHERNET_100G_LR",
                 LinkType::Ethernet10gLr => "LINK_TYPE_ETHERNET_10G_LR",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_LINK_TYPE" => Some(Self::UndefinedLinkType),
+                "LINK_TYPE_ETHERNET_100G_LR" => Some(Self::Ethernet100gLr),
+                "LINK_TYPE_ETHERNET_10G_LR" => Some(Self::Ethernet10gLr),
+                _ => None,
             }
         }
     }
@@ -15458,6 +16628,15 @@ pub mod interconnect {
                 OperationalStatus::OsUnprovisioned => "OS_UNPROVISIONED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_OPERATIONAL_STATUS" => Some(Self::UndefinedOperationalStatus),
+                "OS_ACTIVE" => Some(Self::OsActive),
+                "OS_UNPROVISIONED" => Some(Self::OsUnprovisioned),
+                _ => None,
+            }
+        }
     }
     /// [Output Only] The current state of Interconnect functionality, which can take one of the following values: - ACTIVE: The Interconnect is valid, turned up and ready to use. Attachments may be provisioned on this Interconnect. - UNPROVISIONED: The Interconnect has not completed turnup. No attachments may be provisioned on this Interconnect. - UNDER_MAINTENANCE: The Interconnect is undergoing internal maintenance. No attachments may be provisioned or updated on this Interconnect.
     #[derive(
@@ -15490,6 +16669,15 @@ pub mod interconnect {
                 State::UndefinedState => "UNDEFINED_STATE",
                 State::Active => "ACTIVE",
                 State::Unprovisioned => "UNPROVISIONED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_STATE" => Some(Self::UndefinedState),
+                "ACTIVE" => Some(Self::Active),
+                "UNPROVISIONED" => Some(Self::Unprovisioned),
+                _ => None,
             }
         }
     }
@@ -15690,6 +16878,25 @@ pub mod interconnect_attachment {
                 Bandwidth::Bps5g => "BPS_5G",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_BANDWIDTH" => Some(Self::UndefinedBandwidth),
+                "BPS_100M" => Some(Self::Bps100m),
+                "BPS_10G" => Some(Self::Bps10g),
+                "BPS_1G" => Some(Self::Bps1g),
+                "BPS_200M" => Some(Self::Bps200m),
+                "BPS_20G" => Some(Self::Bps20g),
+                "BPS_2G" => Some(Self::Bps2g),
+                "BPS_300M" => Some(Self::Bps300m),
+                "BPS_400M" => Some(Self::Bps400m),
+                "BPS_500M" => Some(Self::Bps500m),
+                "BPS_50G" => Some(Self::Bps50g),
+                "BPS_50M" => Some(Self::Bps50m),
+                "BPS_5G" => Some(Self::Bps5g),
+                _ => None,
+            }
+        }
     }
     /// Desired availability domain for the attachment. Only available for type PARTNER, at creation time, and can take one of the following values: - AVAILABILITY_DOMAIN_ANY - AVAILABILITY_DOMAIN_1 - AVAILABILITY_DOMAIN_2 For improved reliability, customers should configure a pair of attachments, one per availability domain. The selected availability domain will be provided to the Partner via the pairing key, so that the provisioned circuit will lie in the specified domain. If not specified, the value will default to AVAILABILITY_DOMAIN_ANY.
     #[derive(
@@ -15728,6 +16935,18 @@ pub mod interconnect_attachment {
                 }
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_EDGE_AVAILABILITY_DOMAIN" => {
+                    Some(Self::UndefinedEdgeAvailabilityDomain)
+                }
+                "AVAILABILITY_DOMAIN_1" => Some(Self::AvailabilityDomain1),
+                "AVAILABILITY_DOMAIN_2" => Some(Self::AvailabilityDomain2),
+                "AVAILABILITY_DOMAIN_ANY" => Some(Self::AvailabilityDomainAny),
+                _ => None,
+            }
+        }
     }
     /// Indicates the user-supplied encryption option of this VLAN attachment (interconnectAttachment). Can only be specified at attachment creation for PARTNER or DEDICATED attachments. Possible values are: - NONE - This is the default value, which means that the VLAN attachment carries unencrypted traffic. VMs are able to send traffic to, or receive traffic from, such a VLAN attachment. - IPSEC - The VLAN attachment carries only encrypted traffic that is encrypted by an IPsec device, such as an HA VPN gateway or third-party IPsec VPN. VMs cannot directly send traffic to, or receive traffic from, such a VLAN attachment. To use *HA VPN over Cloud Interconnect*, the VLAN attachment must be created with this option.
     #[derive(
@@ -15760,6 +16979,15 @@ pub mod interconnect_attachment {
                 Encryption::UndefinedEncryption => "UNDEFINED_ENCRYPTION",
                 Encryption::Ipsec => "IPSEC",
                 Encryption::None => "NONE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_ENCRYPTION" => Some(Self::UndefinedEncryption),
+                "IPSEC" => Some(Self::Ipsec),
+                "NONE" => Some(Self::None),
+                _ => None,
             }
         }
     }
@@ -15798,6 +17026,15 @@ pub mod interconnect_attachment {
                 OperationalStatus::OsUnprovisioned => "OS_UNPROVISIONED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_OPERATIONAL_STATUS" => Some(Self::UndefinedOperationalStatus),
+                "OS_ACTIVE" => Some(Self::OsActive),
+                "OS_UNPROVISIONED" => Some(Self::OsUnprovisioned),
+                _ => None,
+            }
+        }
     }
     /// The stack type for this interconnect attachment to identify whether the IPv6 feature is enabled or not. If not specified, IPV4_ONLY will be used. This field can be both set at interconnect attachments creation and update interconnect attachment operations.
     #[derive(
@@ -15830,6 +17067,15 @@ pub mod interconnect_attachment {
                 StackType::UndefinedStackType => "UNDEFINED_STACK_TYPE",
                 StackType::Ipv4Ipv6 => "IPV4_IPV6",
                 StackType::Ipv4Only => "IPV4_ONLY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_STACK_TYPE" => Some(Self::UndefinedStackType),
+                "IPV4_IPV6" => Some(Self::Ipv4Ipv6),
+                "IPV4_ONLY" => Some(Self::Ipv4Only),
+                _ => None,
             }
         }
     }
@@ -15880,6 +17126,20 @@ pub mod interconnect_attachment {
                 State::Unprovisioned => "UNPROVISIONED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_STATE" => Some(Self::UndefinedState),
+                "ACTIVE" => Some(Self::Active),
+                "DEFUNCT" => Some(Self::Defunct),
+                "PARTNER_REQUEST_RECEIVED" => Some(Self::PartnerRequestReceived),
+                "PENDING_CUSTOMER" => Some(Self::PendingCustomer),
+                "PENDING_PARTNER" => Some(Self::PendingPartner),
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "UNPROVISIONED" => Some(Self::Unprovisioned),
+                _ => None,
+            }
+        }
     }
     /// The type of interconnect attachment this is, which can take one of the following values: - DEDICATED: an attachment to a Dedicated Interconnect. - PARTNER: an attachment to a Partner Interconnect, created by the customer. - PARTNER_PROVIDER: an attachment to a Partner Interconnect, created by the partner.
     #[derive(
@@ -15915,6 +17175,16 @@ pub mod interconnect_attachment {
                 Type::Dedicated => "DEDICATED",
                 Type::Partner => "PARTNER",
                 Type::PartnerProvider => "PARTNER_PROVIDER",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_TYPE" => Some(Self::UndefinedType),
+                "DEDICATED" => Some(Self::Dedicated),
+                "PARTNER" => Some(Self::Partner),
+                "PARTNER_PROVIDER" => Some(Self::PartnerProvider),
+                _ => None,
             }
         }
     }
@@ -16079,6 +17349,17 @@ pub mod interconnect_diagnostics {
                 BundleAggregationType::Static => "BUNDLE_AGGREGATION_TYPE_STATIC",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_BUNDLE_AGGREGATION_TYPE" => {
+                    Some(Self::UndefinedBundleAggregationType)
+                }
+                "BUNDLE_AGGREGATION_TYPE_LACP" => Some(Self::Lacp),
+                "BUNDLE_AGGREGATION_TYPE_STATIC" => Some(Self::Static),
+                _ => None,
+            }
+        }
     }
     /// The operational status of the bundle interface.
     #[derive(
@@ -16113,6 +17394,17 @@ pub mod interconnect_diagnostics {
                 }
                 BundleOperationalStatus::Down => "BUNDLE_OPERATIONAL_STATUS_DOWN",
                 BundleOperationalStatus::Up => "BUNDLE_OPERATIONAL_STATUS_UP",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_BUNDLE_OPERATIONAL_STATUS" => {
+                    Some(Self::UndefinedBundleOperationalStatus)
+                }
+                "BUNDLE_OPERATIONAL_STATUS_DOWN" => Some(Self::Down),
+                "BUNDLE_OPERATIONAL_STATUS_UP" => Some(Self::Up),
+                _ => None,
             }
         }
     }
@@ -16178,6 +17470,15 @@ pub mod interconnect_diagnostics_link_lacp_status {
                 State::Detached => "DETACHED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_STATE" => Some(Self::UndefinedState),
+                "ACTIVE" => Some(Self::Active),
+                "DETACHED" => Some(Self::Detached),
+                _ => None,
+            }
+        }
     }
 }
 ///
@@ -16234,6 +17535,18 @@ pub mod interconnect_diagnostics_link_optical_power {
                 State::LowAlarm => "LOW_ALARM",
                 State::LowWarning => "LOW_WARNING",
                 State::Ok => "OK",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_STATE" => Some(Self::UndefinedState),
+                "HIGH_ALARM" => Some(Self::HighAlarm),
+                "HIGH_WARNING" => Some(Self::HighWarning),
+                "LOW_ALARM" => Some(Self::LowAlarm),
+                "LOW_WARNING" => Some(Self::LowWarning),
+                "OK" => Some(Self::Ok),
+                _ => None,
             }
         }
     }
@@ -16307,6 +17620,15 @@ pub mod interconnect_diagnostics_link_status {
                 OperationalStatus::LinkOperationalStatusUp => {
                     "LINK_OPERATIONAL_STATUS_UP"
                 }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_OPERATIONAL_STATUS" => Some(Self::UndefinedOperationalStatus),
+                "LINK_OPERATIONAL_STATUS_DOWN" => Some(Self::LinkOperationalStatusDown),
+                "LINK_OPERATIONAL_STATUS_UP" => Some(Self::LinkOperationalStatusUp),
+                _ => None,
             }
         }
     }
@@ -16440,6 +17762,23 @@ pub mod interconnect_location {
                 Continent::SouthAmerica => "SOUTH_AMERICA",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_CONTINENT" => Some(Self::UndefinedContinent),
+                "AFRICA" => Some(Self::Africa),
+                "ASIA_PAC" => Some(Self::AsiaPac),
+                "C_AFRICA" => Some(Self::CAfrica),
+                "C_ASIA_PAC" => Some(Self::CAsiaPac),
+                "C_EUROPE" => Some(Self::CEurope),
+                "C_NORTH_AMERICA" => Some(Self::CNorthAmerica),
+                "C_SOUTH_AMERICA" => Some(Self::CSouthAmerica),
+                "EUROPE" => Some(Self::Europe),
+                "NORTH_AMERICA" => Some(Self::NorthAmerica),
+                "SOUTH_AMERICA" => Some(Self::SouthAmerica),
+                _ => None,
+            }
+        }
     }
     /// [Output Only] The status of this InterconnectLocation, which can take one of the following values: - CLOSED: The InterconnectLocation is closed and is unavailable for provisioning new Interconnects. - AVAILABLE: The InterconnectLocation is available for provisioning new Interconnects.
     #[derive(
@@ -16472,6 +17811,15 @@ pub mod interconnect_location {
                 Status::UndefinedStatus => "UNDEFINED_STATUS",
                 Status::Available => "AVAILABLE",
                 Status::Closed => "CLOSED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_STATUS" => Some(Self::UndefinedStatus),
+                "AVAILABLE" => Some(Self::Available),
+                "CLOSED" => Some(Self::Closed),
+                _ => None,
             }
         }
     }
@@ -16557,6 +17905,17 @@ pub mod interconnect_location_region_info {
                 LocationPresence::LpLocalRegion => "LP_LOCAL_REGION",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_LOCATION_PRESENCE" => Some(Self::UndefinedLocationPresence),
+                "GLOBAL" => Some(Self::Global),
+                "LOCAL_REGION" => Some(Self::LocalRegion),
+                "LP_GLOBAL" => Some(Self::LpGlobal),
+                "LP_LOCAL_REGION" => Some(Self::LpLocalRegion),
+                _ => None,
+            }
+        }
     }
 }
 /// Description of a planned outage on this Interconnect.
@@ -16632,6 +17991,17 @@ pub mod interconnect_outage_notification {
                 IssueType::PartialOutage => "PARTIAL_OUTAGE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_ISSUE_TYPE" => Some(Self::UndefinedIssueType),
+                "IT_OUTAGE" => Some(Self::ItOutage),
+                "IT_PARTIAL_OUTAGE" => Some(Self::ItPartialOutage),
+                "OUTAGE" => Some(Self::Outage),
+                "PARTIAL_OUTAGE" => Some(Self::PartialOutage),
+                _ => None,
+            }
+        }
     }
     /// The party that generated this notification, which can take the following value: - GOOGLE: this notification as generated by Google. Note that the value of NSRC_GOOGLE has been deprecated in favor of GOOGLE.
     #[derive(
@@ -16664,6 +18034,15 @@ pub mod interconnect_outage_notification {
                 Source::UndefinedSource => "UNDEFINED_SOURCE",
                 Source::Google => "GOOGLE",
                 Source::NsrcGoogle => "NSRC_GOOGLE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_SOURCE" => Some(Self::UndefinedSource),
+                "GOOGLE" => Some(Self::Google),
+                "NSRC_GOOGLE" => Some(Self::NsrcGoogle),
+                _ => None,
             }
         }
     }
@@ -16707,6 +18086,18 @@ pub mod interconnect_outage_notification {
                 State::Completed => "COMPLETED",
                 State::NsActive => "NS_ACTIVE",
                 State::NsCanceled => "NS_CANCELED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_STATE" => Some(Self::UndefinedState),
+                "ACTIVE" => Some(Self::Active),
+                "CANCELLED" => Some(Self::Cancelled),
+                "COMPLETED" => Some(Self::Completed),
+                "NS_ACTIVE" => Some(Self::NsActive),
+                "NS_CANCELED" => Some(Self::NsCanceled),
+                _ => None,
             }
         }
     }
@@ -16854,6 +18245,18 @@ pub mod license_code {
                 State::Restricted => "RESTRICTED",
                 State::Unspecified => "STATE_UNSPECIFIED",
                 State::Terminated => "TERMINATED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_STATE" => Some(Self::UndefinedState),
+                "DISABLED" => Some(Self::Disabled),
+                "ENABLED" => Some(Self::Enabled),
+                "RESTRICTED" => Some(Self::Restricted),
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "TERMINATED" => Some(Self::Terminated),
+                _ => None,
             }
         }
     }
@@ -18215,6 +19618,15 @@ pub mod list_peering_routes_networks_request {
                 Direction::UndefinedDirection => "UNDEFINED_DIRECTION",
                 Direction::Incoming => "INCOMING",
                 Direction::Outgoing => "OUTGOING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_DIRECTION" => Some(Self::UndefinedDirection),
+                "INCOMING" => Some(Self::Incoming),
+                "OUTGOING" => Some(Self::Outgoing),
+                _ => None,
             }
         }
     }
@@ -19612,6 +21024,16 @@ pub mod location_policy {
                 TargetShape::Balanced => "BALANCED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_TARGET_SHAPE" => Some(Self::UndefinedTargetShape),
+                "ANY" => Some(Self::Any),
+                "ANY_SINGLE_ZONE" => Some(Self::AnySingleZone),
+                "BALANCED" => Some(Self::Balanced),
+                _ => None,
+            }
+        }
     }
 }
 ///
@@ -19662,6 +21084,16 @@ pub mod location_policy_location {
                 Preference::Allow => "ALLOW",
                 Preference::Deny => "DENY",
                 Preference::Unspecified => "PREFERENCE_UNSPECIFIED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_PREFERENCE" => Some(Self::UndefinedPreference),
+                "ALLOW" => Some(Self::Allow),
+                "DENY" => Some(Self::Deny),
+                "PREFERENCE_UNSPECIFIED" => Some(Self::Unspecified),
+                _ => None,
             }
         }
     }
@@ -19740,6 +21172,16 @@ pub mod log_config_cloud_audit_options {
                 LogName::UnspecifiedLogName => "UNSPECIFIED_LOG_NAME",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_LOG_NAME" => Some(Self::UndefinedLogName),
+                "ADMIN_ACTIVITY" => Some(Self::AdminActivity),
+                "DATA_ACCESS" => Some(Self::DataAccess),
+                "UNSPECIFIED_LOG_NAME" => Some(Self::UnspecifiedLogName),
+                _ => None,
+            }
+        }
     }
 }
 /// This is deprecated and has no effect. Do not use.
@@ -19809,6 +21251,15 @@ pub mod log_config_data_access_options {
                 LogMode::UndefinedLogMode => "UNDEFINED_LOG_MODE",
                 LogMode::LogFailClosed => "LOG_FAIL_CLOSED",
                 LogMode::Unspecified => "LOG_MODE_UNSPECIFIED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_LOG_MODE" => Some(Self::UndefinedLogMode),
+                "LOG_FAIL_CLOSED" => Some(Self::LogFailClosed),
+                "LOG_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                _ => None,
             }
         }
     }
@@ -19907,6 +21358,18 @@ pub mod machine_image {
                 Status::Invalid => "INVALID",
                 Status::Ready => "READY",
                 Status::Uploading => "UPLOADING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_STATUS" => Some(Self::UndefinedStatus),
+                "CREATING" => Some(Self::Creating),
+                "DELETING" => Some(Self::Deleting),
+                "INVALID" => Some(Self::Invalid),
+                "READY" => Some(Self::Ready),
+                "UPLOADING" => Some(Self::Uploading),
+                _ => None,
             }
         }
     }
@@ -20149,6 +21612,24 @@ pub mod managed_instance {
                 CurrentAction::Verifying => "VERIFYING",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_CURRENT_ACTION" => Some(Self::UndefinedCurrentAction),
+                "ABANDONING" => Some(Self::Abandoning),
+                "CREATING" => Some(Self::Creating),
+                "CREATING_WITHOUT_RETRIES" => Some(Self::CreatingWithoutRetries),
+                "DELETING" => Some(Self::Deleting),
+                "NONE" => Some(Self::None),
+                "RECREATING" => Some(Self::Recreating),
+                "REFRESHING" => Some(Self::Refreshing),
+                "RESTARTING" => Some(Self::Restarting),
+                "RESUMING" => Some(Self::Resuming),
+                "STARTING" => Some(Self::Starting),
+                "VERIFYING" => Some(Self::Verifying),
+                _ => None,
+            }
+        }
     }
     /// [Output Only] The status of the instance. This field is empty when the instance does not exist.
     /// Additional supported values which may be not listed in the enum directly due to technical reasons:
@@ -20206,6 +21687,23 @@ pub mod managed_instance {
                 InstanceStatus::Suspended => "SUSPENDED",
                 InstanceStatus::Suspending => "SUSPENDING",
                 InstanceStatus::Terminated => "TERMINATED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_INSTANCE_STATUS" => Some(Self::UndefinedInstanceStatus),
+                "DEPROVISIONING" => Some(Self::Deprovisioning),
+                "PROVISIONING" => Some(Self::Provisioning),
+                "REPAIRING" => Some(Self::Repairing),
+                "RUNNING" => Some(Self::Running),
+                "STAGING" => Some(Self::Staging),
+                "STOPPED" => Some(Self::Stopped),
+                "STOPPING" => Some(Self::Stopping),
+                "SUSPENDED" => Some(Self::Suspended),
+                "SUSPENDING" => Some(Self::Suspending),
+                "TERMINATED" => Some(Self::Terminated),
+                _ => None,
             }
         }
     }
@@ -20266,6 +21764,20 @@ pub mod managed_instance_instance_health {
                 DetailedHealthState::Timeout => "TIMEOUT",
                 DetailedHealthState::Unhealthy => "UNHEALTHY",
                 DetailedHealthState::Unknown => "UNKNOWN",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_DETAILED_HEALTH_STATE" => {
+                    Some(Self::UndefinedDetailedHealthState)
+                }
+                "DRAINING" => Some(Self::Draining),
+                "HEALTHY" => Some(Self::Healthy),
+                "TIMEOUT" => Some(Self::Timeout),
+                "UNHEALTHY" => Some(Self::Unhealthy),
+                "UNKNOWN" => Some(Self::Unknown),
+                _ => None,
             }
         }
     }
@@ -20353,6 +21865,18 @@ pub mod metadata_filter {
                 FilterMatchCriteria::MatchAll => "MATCH_ALL",
                 FilterMatchCriteria::MatchAny => "MATCH_ANY",
                 FilterMatchCriteria::NotSet => "NOT_SET",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_FILTER_MATCH_CRITERIA" => {
+                    Some(Self::UndefinedFilterMatchCriteria)
+                }
+                "MATCH_ALL" => Some(Self::MatchAll),
+                "MATCH_ANY" => Some(Self::MatchAny),
+                "NOT_SET" => Some(Self::NotSet),
+                _ => None,
             }
         }
     }
@@ -20522,6 +22046,17 @@ pub mod network {
                 }
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_NETWORK_FIREWALL_POLICY_ENFORCEMENT_ORDER" => {
+                    Some(Self::UndefinedNetworkFirewallPolicyEnforcementOrder)
+                }
+                "AFTER_CLASSIC_FIREWALL" => Some(Self::AfterClassicFirewall),
+                "BEFORE_CLASSIC_FIREWALL" => Some(Self::BeforeClassicFirewall),
+                _ => None,
+            }
+        }
     }
 }
 /// NetworkAttachments A network attachment resource ...
@@ -20612,6 +22147,18 @@ pub mod network_attachment {
                 ConnectionPreference::AcceptAutomatic => "ACCEPT_AUTOMATIC",
                 ConnectionPreference::AcceptManual => "ACCEPT_MANUAL",
                 ConnectionPreference::Invalid => "INVALID",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_CONNECTION_PREFERENCE" => {
+                    Some(Self::UndefinedConnectionPreference)
+                }
+                "ACCEPT_AUTOMATIC" => Some(Self::AcceptAutomatic),
+                "ACCEPT_MANUAL" => Some(Self::AcceptManual),
+                "INVALID" => Some(Self::Invalid),
+                _ => None,
             }
         }
     }
@@ -20708,6 +22255,19 @@ pub mod network_attachment_connected_endpoint {
                 Status::Pending => "PENDING",
                 Status::Rejected => "REJECTED",
                 Status::Unspecified => "STATUS_UNSPECIFIED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_STATUS" => Some(Self::UndefinedStatus),
+                "ACCEPTED" => Some(Self::Accepted),
+                "CLOSED" => Some(Self::Closed),
+                "NEEDS_ATTENTION" => Some(Self::NeedsAttention),
+                "PENDING" => Some(Self::Pending),
+                "REJECTED" => Some(Self::Rejected),
+                "STATUS_UNSPECIFIED" => Some(Self::Unspecified),
+                _ => None,
             }
         }
     }
@@ -20964,6 +22524,22 @@ pub mod network_endpoint_group {
                 NetworkEndpointType::Serverless => "SERVERLESS",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_NETWORK_ENDPOINT_TYPE" => {
+                    Some(Self::UndefinedNetworkEndpointType)
+                }
+                "GCE_VM_IP" => Some(Self::GceVmIp),
+                "GCE_VM_IP_PORT" => Some(Self::GceVmIpPort),
+                "INTERNET_FQDN_PORT" => Some(Self::InternetFqdnPort),
+                "INTERNET_IP_PORT" => Some(Self::InternetIpPort),
+                "NON_GCP_PRIVATE_IP_PORT" => Some(Self::NonGcpPrivateIpPort),
+                "PRIVATE_SERVICE_CONNECT" => Some(Self::PrivateServiceConnect),
+                "SERVERLESS" => Some(Self::Serverless),
+                _ => None,
+            }
+        }
     }
 }
 ///
@@ -21120,6 +22696,21 @@ pub mod network_endpoint_group_psc_data {
                 PscConnectionStatus::StatusUnspecified => "STATUS_UNSPECIFIED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_PSC_CONNECTION_STATUS" => {
+                    Some(Self::UndefinedPscConnectionStatus)
+                }
+                "ACCEPTED" => Some(Self::Accepted),
+                "CLOSED" => Some(Self::Closed),
+                "NEEDS_ATTENTION" => Some(Self::NeedsAttention),
+                "PENDING" => Some(Self::Pending),
+                "REJECTED" => Some(Self::Rejected),
+                "STATUS_UNSPECIFIED" => Some(Self::StatusUnspecified),
+                _ => None,
+            }
+        }
     }
 }
 ///
@@ -21180,6 +22771,15 @@ pub mod network_endpoint_groups_list_endpoints_request {
                 HealthStatus::UndefinedHealthStatus => "UNDEFINED_HEALTH_STATUS",
                 HealthStatus::Show => "SHOW",
                 HealthStatus::Skip => "SKIP",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_HEALTH_STATUS" => Some(Self::UndefinedHealthStatus),
+                "SHOW" => Some(Self::Show),
+                "SKIP" => Some(Self::Skip),
+                _ => None,
             }
         }
     }
@@ -21318,6 +22918,16 @@ pub mod network_interface {
                 }
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_IPV6_ACCESS_TYPE" => Some(Self::UndefinedIpv6AccessType),
+                "EXTERNAL" => Some(Self::External),
+                "INTERNAL" => Some(Self::Internal),
+                "UNSPECIFIED_IPV6_ACCESS_TYPE" => Some(Self::UnspecifiedIpv6AccessType),
+                _ => None,
+            }
+        }
     }
     /// The type of vNIC to be used on this interface. This may be gVNIC or VirtioNet.
     #[derive(
@@ -21355,6 +22965,16 @@ pub mod network_interface {
                 NicType::VirtioNet => "VIRTIO_NET",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_NIC_TYPE" => Some(Self::UndefinedNicType),
+                "GVNIC" => Some(Self::Gvnic),
+                "UNSPECIFIED_NIC_TYPE" => Some(Self::UnspecifiedNicType),
+                "VIRTIO_NET" => Some(Self::VirtioNet),
+                _ => None,
+            }
+        }
     }
     /// The stack type for this network interface to identify whether the IPv6 feature is enabled or not. If not specified, IPV4_ONLY will be used. This field can be both set at instance creation and update network interface operations.
     #[derive(
@@ -21389,6 +23009,16 @@ pub mod network_interface {
                 StackType::Ipv4Ipv6 => "IPV4_IPV6",
                 StackType::Ipv4Only => "IPV4_ONLY",
                 StackType::UnspecifiedStackType => "UNSPECIFIED_STACK_TYPE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_STACK_TYPE" => Some(Self::UndefinedStackType),
+                "IPV4_IPV6" => Some(Self::Ipv4Ipv6),
+                "IPV4_ONLY" => Some(Self::Ipv4Only),
+                "UNSPECIFIED_STACK_TYPE" => Some(Self::UnspecifiedStackType),
+                _ => None,
             }
         }
     }
@@ -21494,6 +23124,15 @@ pub mod network_peering {
                 StackType::Ipv4Only => "IPV4_ONLY",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_STACK_TYPE" => Some(Self::UndefinedStackType),
+                "IPV4_IPV6" => Some(Self::Ipv4Ipv6),
+                "IPV4_ONLY" => Some(Self::Ipv4Only),
+                _ => None,
+            }
+        }
     }
     /// [Output Only] State for the peering, either `ACTIVE` or `INACTIVE`. The peering is `ACTIVE` when there's a matching configuration in the peer network.
     #[derive(
@@ -21526,6 +23165,15 @@ pub mod network_peering {
                 State::UndefinedState => "UNDEFINED_STATE",
                 State::Active => "ACTIVE",
                 State::Inactive => "INACTIVE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_STATE" => Some(Self::UndefinedState),
+                "ACTIVE" => Some(Self::Active),
+                "INACTIVE" => Some(Self::Inactive),
+                _ => None,
             }
         }
     }
@@ -21576,6 +23224,17 @@ pub mod network_performance_config {
                 TotalEgressBandwidthTier::Tier1 => "TIER_1",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_TOTAL_EGRESS_BANDWIDTH_TIER" => {
+                    Some(Self::UndefinedTotalEgressBandwidthTier)
+                }
+                "DEFAULT" => Some(Self::Default),
+                "TIER_1" => Some(Self::Tier1),
+                _ => None,
+            }
+        }
     }
 }
 /// A routing configuration attached to a network resource. The message includes the list of routers associated with the network, and a flag indicating the type of routing behavior to enforce network-wide.
@@ -21618,6 +23277,15 @@ pub mod network_routing_config {
                 RoutingMode::UndefinedRoutingMode => "UNDEFINED_ROUTING_MODE",
                 RoutingMode::Global => "GLOBAL",
                 RoutingMode::Regional => "REGIONAL",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_ROUTING_MODE" => Some(Self::UndefinedRoutingMode),
+                "GLOBAL" => Some(Self::Global),
+                "REGIONAL" => Some(Self::Regional),
+                _ => None,
             }
         }
     }
@@ -21706,6 +23374,16 @@ pub mod networks_get_effective_firewalls_response_effective_firewall_policy {
                 Type::Hierarchy => "HIERARCHY",
                 Type::Network => "NETWORK",
                 Type::Unspecified => "UNSPECIFIED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_TYPE" => Some(Self::UndefinedType),
+                "HIERARCHY" => Some(Self::Hierarchy),
+                "NETWORK" => Some(Self::Network),
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                _ => None,
             }
         }
     }
@@ -21820,6 +23498,17 @@ pub mod node_group {
                 MaintenancePolicy::RestartInPlace => "RESTART_IN_PLACE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_MAINTENANCE_POLICY" => Some(Self::UndefinedMaintenancePolicy),
+                "DEFAULT" => Some(Self::Default),
+                "MAINTENANCE_POLICY_UNSPECIFIED" => Some(Self::Unspecified),
+                "MIGRATE_WITHIN_NODE_GROUP" => Some(Self::MigrateWithinNodeGroup),
+                "RESTART_IN_PLACE" => Some(Self::RestartInPlace),
+                _ => None,
+            }
+        }
     }
     ///
     #[derive(
@@ -21854,6 +23543,17 @@ pub mod node_group {
                 Status::Deleting => "DELETING",
                 Status::Invalid => "INVALID",
                 Status::Ready => "READY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_STATUS" => Some(Self::UndefinedStatus),
+                "CREATING" => Some(Self::Creating),
+                "DELETING" => Some(Self::Deleting),
+                "INVALID" => Some(Self::Invalid),
+                "READY" => Some(Self::Ready),
+                _ => None,
             }
         }
     }
@@ -21940,6 +23640,17 @@ pub mod node_group_autoscaling_policy {
                 Mode::Off => "OFF",
                 Mode::On => "ON",
                 Mode::OnlyScaleOut => "ONLY_SCALE_OUT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_MODE" => Some(Self::UndefinedMode),
+                "MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "OFF" => Some(Self::Off),
+                "ON" => Some(Self::On),
+                "ONLY_SCALE_OUT" => Some(Self::OnlyScaleOut),
+                _ => None,
             }
         }
     }
@@ -22061,6 +23772,16 @@ pub mod node_group_node {
                 CpuOvercommitType::None => "NONE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_CPU_OVERCOMMIT_TYPE" => Some(Self::UndefinedCpuOvercommitType),
+                "CPU_OVERCOMMIT_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ENABLED" => Some(Self::Enabled),
+                "NONE" => Some(Self::None),
+                _ => None,
+            }
+        }
     }
     ///
     #[derive(
@@ -22097,6 +23818,18 @@ pub mod node_group_node {
                 Status::Invalid => "INVALID",
                 Status::Ready => "READY",
                 Status::Repairing => "REPAIRING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_STATUS" => Some(Self::UndefinedStatus),
+                "CREATING" => Some(Self::Creating),
+                "DELETING" => Some(Self::Deleting),
+                "INVALID" => Some(Self::Invalid),
+                "READY" => Some(Self::Ready),
+                "REPAIRING" => Some(Self::Repairing),
+                _ => None,
             }
         }
     }
@@ -22252,6 +23985,16 @@ pub mod node_template {
                 CpuOvercommitType::None => "NONE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_CPU_OVERCOMMIT_TYPE" => Some(Self::UndefinedCpuOvercommitType),
+                "CPU_OVERCOMMIT_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ENABLED" => Some(Self::Enabled),
+                "NONE" => Some(Self::None),
+                _ => None,
+            }
+        }
     }
     /// [Output Only] The status of the node template. One of the following values: CREATING, READY, and DELETING.
     #[derive(
@@ -22290,6 +24033,17 @@ pub mod node_template {
                 Status::Deleting => "DELETING",
                 Status::Invalid => "INVALID",
                 Status::Ready => "READY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_STATUS" => Some(Self::UndefinedStatus),
+                "CREATING" => Some(Self::Creating),
+                "DELETING" => Some(Self::Deleting),
+                "INVALID" => Some(Self::Invalid),
+                "READY" => Some(Self::Ready),
+                _ => None,
             }
         }
     }
@@ -22656,6 +24410,16 @@ pub mod operation {
                 Status::Running => "RUNNING",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_STATUS" => Some(Self::UndefinedStatus),
+                "DONE" => Some(Self::Done),
+                "PENDING" => Some(Self::Pending),
+                "RUNNING" => Some(Self::Running),
+                _ => None,
+            }
+        }
     }
 }
 ///
@@ -22822,6 +24586,17 @@ pub mod packet_intervals {
                 Duration::Minute => "MINUTE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_DURATION" => Some(Self::UndefinedDuration),
+                "DURATION_UNSPECIFIED" => Some(Self::Unspecified),
+                "HOUR" => Some(Self::Hour),
+                "MAX" => Some(Self::Max),
+                "MINUTE" => Some(Self::Minute),
+                _ => None,
+            }
+        }
     }
     /// The type of packets for which inter-packet intervals were computed.
     #[derive(
@@ -22859,6 +24634,17 @@ pub mod packet_intervals {
                 Type::Receive => "RECEIVE",
                 Type::Transmit => "TRANSMIT",
                 Type::Unspecified => "TYPE_UNSPECIFIED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_TYPE" => Some(Self::UndefinedType),
+                "LOOPBACK" => Some(Self::Loopback),
+                "RECEIVE" => Some(Self::Receive),
+                "TRANSMIT" => Some(Self::Transmit),
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                _ => None,
             }
         }
     }
@@ -22939,6 +24725,15 @@ pub mod packet_mirroring {
                 Enable::UndefinedEnable => "UNDEFINED_ENABLE",
                 Enable::False => "FALSE",
                 Enable::True => "TRUE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_ENABLE" => Some(Self::UndefinedEnable),
+                "FALSE" => Some(Self::False),
+                "TRUE" => Some(Self::True),
+                _ => None,
             }
         }
     }
@@ -23023,6 +24818,16 @@ pub mod packet_mirroring_filter {
                 Direction::Both => "BOTH",
                 Direction::Egress => "EGRESS",
                 Direction::Ingress => "INGRESS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_DIRECTION" => Some(Self::UndefinedDirection),
+                "BOTH" => Some(Self::Both),
+                "EGRESS" => Some(Self::Egress),
+                "INGRESS" => Some(Self::Ingress),
+                _ => None,
             }
         }
     }
@@ -24093,6 +25898,19 @@ pub mod per_instance_config {
                 Status::UnappliedDeletion => "UNAPPLIED_DELETION",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_STATUS" => Some(Self::UndefinedStatus),
+                "APPLYING" => Some(Self::Applying),
+                "DELETING" => Some(Self::Deleting),
+                "EFFECTIVE" => Some(Self::Effective),
+                "NONE" => Some(Self::None),
+                "UNAPPLIED" => Some(Self::Unapplied),
+                "UNAPPLIED_DELETION" => Some(Self::UnappliedDeletion),
+                _ => None,
+            }
+        }
     }
 }
 /// An Identity and Access Management (IAM) policy, which specifies access controls for Google Cloud resources. A `Policy` is a collection of `bindings`. A `binding` binds one or more `members`, or principals, to a single `role`. Principals can be user accounts, service accounts, Google groups, and domains (such as G Suite). A `role` is a named list of permissions; each `role` can be an IAM predefined role or a user-created custom role. For some types of Google Cloud resources, a `binding` can also specify a `condition`, which is a logical expression that allows access to a resource only if the expression evaluates to `true`. A condition can add constraints based on attributes of the request, the resource, or both. To learn which resources support conditions in their IAM policies, see the [IAM documentation](<https://cloud.google.com/iam/help/conditions/resource-policies>). **JSON example:** { "bindings": [ { "role": "roles/resourcemanager.organizationAdmin", "members": [ "user:mike@example.com", "group:admins@example.com", "domain:google.com", "serviceAccount:my-project-id@appspot.gserviceaccount.com" ] }, { "role": "roles/resourcemanager.organizationViewer", "members": [ "user:eve@example.com" ], "condition": { "title": "expirable access", "description": "Does not grant access after Sep 2020", "expression": "request.time < timestamp('2020-10-01T00:00:00.000Z')", } } ], "etag": "BwWWja0YfJA=", "version": 3 } **YAML example:** bindings: - members: - user:mike@example.com - group:admins@example.com - domain:google.com - serviceAccount:my-project-id@appspot.gserviceaccount.com role: roles/resourcemanager.organizationAdmin - members: - user:eve@example.com role: roles/resourcemanager.organizationViewer condition: title: expirable access description: Does not grant access after Sep 2020 expression: request.time < timestamp('2020-10-01T00:00:00.000Z') etag: BwWWja0YfJA= version: 3 For a description of IAM and its features, see the [IAM documentation](<https://cloud.google.com/iam/docs/>).
@@ -24193,6 +26011,17 @@ pub mod preserved_state_preserved_disk {
                 }
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_AUTO_DELETE" => Some(Self::UndefinedAutoDelete),
+                "NEVER" => Some(Self::Never),
+                "ON_PERMANENT_INSTANCE_DELETION" => {
+                    Some(Self::OnPermanentInstanceDeletion)
+                }
+                _ => None,
+            }
+        }
     }
     /// The mode in which to attach this disk, either READ_WRITE or READ_ONLY. If not specified, the default is to attach the disk in READ_WRITE mode.
     #[derive(
@@ -24225,6 +26054,15 @@ pub mod preserved_state_preserved_disk {
                 Mode::UndefinedMode => "UNDEFINED_MODE",
                 Mode::ReadOnly => "READ_ONLY",
                 Mode::ReadWrite => "READ_WRITE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_MODE" => Some(Self::UndefinedMode),
+                "READ_ONLY" => Some(Self::ReadOnly),
+                "READ_WRITE" => Some(Self::ReadWrite),
+                _ => None,
             }
         }
     }
@@ -24341,6 +26179,21 @@ pub mod project {
                 }
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_DEFAULT_NETWORK_TIER" => {
+                    Some(Self::UndefinedDefaultNetworkTier)
+                }
+                "FIXED_STANDARD" => Some(Self::FixedStandard),
+                "PREMIUM" => Some(Self::Premium),
+                "STANDARD" => Some(Self::Standard),
+                "STANDARD_OVERRIDES_FIXED_STANDARD" => {
+                    Some(Self::StandardOverridesFixedStandard)
+                }
+                _ => None,
+            }
+        }
     }
     /// [Output Only] Default internal DNS setting used by VMs running in this project.
     #[derive(
@@ -24377,6 +26230,17 @@ pub mod project {
                 VmDnsSetting::ZonalOnly => "ZONAL_ONLY",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_VM_DNS_SETTING" => Some(Self::UndefinedVmDnsSetting),
+                "GLOBAL_DEFAULT" => Some(Self::GlobalDefault),
+                "UNSPECIFIED_VM_DNS_SETTING" => Some(Self::UnspecifiedVmDnsSetting),
+                "ZONAL_DEFAULT" => Some(Self::ZonalDefault),
+                "ZONAL_ONLY" => Some(Self::ZonalOnly),
+                _ => None,
+            }
+        }
     }
     /// [Output Only] The role this project has in a shared VPC configuration. Currently, only projects with the host role, which is specified by the value HOST, are differentiated.
     #[derive(
@@ -24411,6 +26275,17 @@ pub mod project {
                 XpnProjectStatus::UnspecifiedXpnProjectStatus => {
                     "UNSPECIFIED_XPN_PROJECT_STATUS"
                 }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_XPN_PROJECT_STATUS" => Some(Self::UndefinedXpnProjectStatus),
+                "HOST" => Some(Self::Host),
+                "UNSPECIFIED_XPN_PROJECT_STATUS" => {
+                    Some(Self::UnspecifiedXpnProjectStatus)
+                }
+                _ => None,
             }
         }
     }
@@ -24503,6 +26378,19 @@ pub mod projects_set_default_network_tier_request {
                 NetworkTier::StandardOverridesFixedStandard => {
                     "STANDARD_OVERRIDES_FIXED_STANDARD"
                 }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_NETWORK_TIER" => Some(Self::UndefinedNetworkTier),
+                "FIXED_STANDARD" => Some(Self::FixedStandard),
+                "PREMIUM" => Some(Self::Premium),
+                "STANDARD" => Some(Self::Standard),
+                "STANDARD_OVERRIDES_FIXED_STANDARD" => {
+                    Some(Self::StandardOverridesFixedStandard)
+                }
+                _ => None,
             }
         }
     }
@@ -24601,6 +26489,24 @@ pub mod public_advertised_prefix {
                 Status::PtrConfigured => "PTR_CONFIGURED",
                 Status::ReverseDnsLookupFailed => "REVERSE_DNS_LOOKUP_FAILED",
                 Status::Validated => "VALIDATED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_STATUS" => Some(Self::UndefinedStatus),
+                "INITIAL" => Some(Self::Initial),
+                "PREFIX_CONFIGURATION_COMPLETE" => {
+                    Some(Self::PrefixConfigurationComplete)
+                }
+                "PREFIX_CONFIGURATION_IN_PROGRESS" => {
+                    Some(Self::PrefixConfigurationInProgress)
+                }
+                "PREFIX_REMOVAL_IN_PROGRESS" => Some(Self::PrefixRemovalInProgress),
+                "PTR_CONFIGURED" => Some(Self::PtrConfigured),
+                "REVERSE_DNS_LOOKUP_FAILED" => Some(Self::ReverseDnsLookupFailed),
+                "VALIDATED" => Some(Self::Validated),
+                _ => None,
             }
         }
     }
@@ -24736,6 +26642,17 @@ pub mod public_delegated_prefix {
                 Status::ReadyToAnnounce => "READY_TO_ANNOUNCE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_STATUS" => Some(Self::UndefinedStatus),
+                "ANNOUNCED" => Some(Self::Announced),
+                "DELETING" => Some(Self::Deleting),
+                "INITIALIZING" => Some(Self::Initializing),
+                "READY_TO_ANNOUNCE" => Some(Self::ReadyToAnnounce),
+                _ => None,
+            }
+        }
     }
 }
 ///
@@ -24848,6 +26765,15 @@ pub mod public_delegated_prefix_public_delegated_sub_prefix {
                 Status::UndefinedStatus => "UNDEFINED_STATUS",
                 Status::Active => "ACTIVE",
                 Status::Inactive => "INACTIVE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_STATUS" => Some(Self::UndefinedStatus),
+                "ACTIVE" => Some(Self::Active),
+                "INACTIVE" => Some(Self::Inactive),
+                _ => None,
             }
         }
     }
@@ -25240,6 +27166,208 @@ pub mod quota {
                 Metric::XpnServiceProjects => "XPN_SERVICE_PROJECTS",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_METRIC" => Some(Self::UndefinedMetric),
+                "A2_CPUS" => Some(Self::A2Cpus),
+                "AFFINITY_GROUPS" => Some(Self::AffinityGroups),
+                "AUTOSCALERS" => Some(Self::Autoscalers),
+                "BACKEND_BUCKETS" => Some(Self::BackendBuckets),
+                "BACKEND_SERVICES" => Some(Self::BackendServices),
+                "C2D_CPUS" => Some(Self::C2dCpus),
+                "C2_CPUS" => Some(Self::C2Cpus),
+                "C3_CPUS" => Some(Self::C3Cpus),
+                "COMMITMENTS" => Some(Self::Commitments),
+                "COMMITTED_A2_CPUS" => Some(Self::CommittedA2Cpus),
+                "COMMITTED_C2D_CPUS" => Some(Self::CommittedC2dCpus),
+                "COMMITTED_C2_CPUS" => Some(Self::CommittedC2Cpus),
+                "COMMITTED_C3_CPUS" => Some(Self::CommittedC3Cpus),
+                "COMMITTED_CPUS" => Some(Self::CommittedCpus),
+                "COMMITTED_E2_CPUS" => Some(Self::CommittedE2Cpus),
+                "COMMITTED_LICENSES" => Some(Self::CommittedLicenses),
+                "COMMITTED_LOCAL_SSD_TOTAL_GB" => Some(Self::CommittedLocalSsdTotalGb),
+                "COMMITTED_M3_CPUS" => Some(Self::CommittedM3Cpus),
+                "COMMITTED_MEMORY_OPTIMIZED_CPUS" => {
+                    Some(Self::CommittedMemoryOptimizedCpus)
+                }
+                "COMMITTED_N2A_CPUS" => Some(Self::CommittedN2aCpus),
+                "COMMITTED_N2D_CPUS" => Some(Self::CommittedN2dCpus),
+                "COMMITTED_N2_CPUS" => Some(Self::CommittedN2Cpus),
+                "COMMITTED_NVIDIA_A100_80GB_GPUS" => {
+                    Some(Self::CommittedNvidiaA10080gbGpus)
+                }
+                "COMMITTED_NVIDIA_A100_GPUS" => Some(Self::CommittedNvidiaA100Gpus),
+                "COMMITTED_NVIDIA_K80_GPUS" => Some(Self::CommittedNvidiaK80Gpus),
+                "COMMITTED_NVIDIA_P100_GPUS" => Some(Self::CommittedNvidiaP100Gpus),
+                "COMMITTED_NVIDIA_P4_GPUS" => Some(Self::CommittedNvidiaP4Gpus),
+                "COMMITTED_NVIDIA_T4_GPUS" => Some(Self::CommittedNvidiaT4Gpus),
+                "COMMITTED_NVIDIA_V100_GPUS" => Some(Self::CommittedNvidiaV100Gpus),
+                "COMMITTED_T2A_CPUS" => Some(Self::CommittedT2aCpus),
+                "COMMITTED_T2D_CPUS" => Some(Self::CommittedT2dCpus),
+                "CPUS" => Some(Self::Cpus),
+                "CPUS_ALL_REGIONS" => Some(Self::CpusAllRegions),
+                "DISKS_TOTAL_GB" => Some(Self::DisksTotalGb),
+                "E2_CPUS" => Some(Self::E2Cpus),
+                "EXTERNAL_MANAGED_FORWARDING_RULES" => {
+                    Some(Self::ExternalManagedForwardingRules)
+                }
+                "EXTERNAL_NETWORK_LB_FORWARDING_RULES" => {
+                    Some(Self::ExternalNetworkLbForwardingRules)
+                }
+                "EXTERNAL_PROTOCOL_FORWARDING_RULES" => {
+                    Some(Self::ExternalProtocolForwardingRules)
+                }
+                "EXTERNAL_VPN_GATEWAYS" => Some(Self::ExternalVpnGateways),
+                "FIREWALLS" => Some(Self::Firewalls),
+                "FORWARDING_RULES" => Some(Self::ForwardingRules),
+                "GLOBAL_EXTERNAL_MANAGED_BACKEND_SERVICES" => {
+                    Some(Self::GlobalExternalManagedBackendServices)
+                }
+                "GLOBAL_EXTERNAL_MANAGED_FORWARDING_RULES" => {
+                    Some(Self::GlobalExternalManagedForwardingRules)
+                }
+                "GLOBAL_EXTERNAL_PROXY_LB_BACKEND_SERVICES" => {
+                    Some(Self::GlobalExternalProxyLbBackendServices)
+                }
+                "GLOBAL_INTERNAL_ADDRESSES" => Some(Self::GlobalInternalAddresses),
+                "GLOBAL_INTERNAL_MANAGED_BACKEND_SERVICES" => {
+                    Some(Self::GlobalInternalManagedBackendServices)
+                }
+                "GLOBAL_INTERNAL_TRAFFIC_DIRECTOR_BACKEND_SERVICES" => {
+                    Some(Self::GlobalInternalTrafficDirectorBackendServices)
+                }
+                "GPUS_ALL_REGIONS" => Some(Self::GpusAllRegions),
+                "HEALTH_CHECKS" => Some(Self::HealthChecks),
+                "IMAGES" => Some(Self::Images),
+                "INSTANCES" => Some(Self::Instances),
+                "INSTANCE_GROUPS" => Some(Self::InstanceGroups),
+                "INSTANCE_GROUP_MANAGERS" => Some(Self::InstanceGroupManagers),
+                "INSTANCE_TEMPLATES" => Some(Self::InstanceTemplates),
+                "INTERCONNECTS" => Some(Self::Interconnects),
+                "INTERCONNECT_ATTACHMENTS_PER_REGION" => {
+                    Some(Self::InterconnectAttachmentsPerRegion)
+                }
+                "INTERCONNECT_ATTACHMENTS_TOTAL_MBPS" => {
+                    Some(Self::InterconnectAttachmentsTotalMbps)
+                }
+                "INTERCONNECT_TOTAL_GBPS" => Some(Self::InterconnectTotalGbps),
+                "INTERNAL_ADDRESSES" => Some(Self::InternalAddresses),
+                "INTERNAL_TRAFFIC_DIRECTOR_FORWARDING_RULES" => {
+                    Some(Self::InternalTrafficDirectorForwardingRules)
+                }
+                "IN_PLACE_SNAPSHOTS" => Some(Self::InPlaceSnapshots),
+                "IN_USE_ADDRESSES" => Some(Self::InUseAddresses),
+                "IN_USE_BACKUP_SCHEDULES" => Some(Self::InUseBackupSchedules),
+                "IN_USE_SNAPSHOT_SCHEDULES" => Some(Self::InUseSnapshotSchedules),
+                "LOCAL_SSD_TOTAL_GB" => Some(Self::LocalSsdTotalGb),
+                "M1_CPUS" => Some(Self::M1Cpus),
+                "M2_CPUS" => Some(Self::M2Cpus),
+                "M3_CPUS" => Some(Self::M3Cpus),
+                "MACHINE_IMAGES" => Some(Self::MachineImages),
+                "N2A_CPUS" => Some(Self::N2aCpus),
+                "N2D_CPUS" => Some(Self::N2dCpus),
+                "N2_CPUS" => Some(Self::N2Cpus),
+                "NETWORKS" => Some(Self::Networks),
+                "NETWORK_ENDPOINT_GROUPS" => Some(Self::NetworkEndpointGroups),
+                "NETWORK_FIREWALL_POLICIES" => Some(Self::NetworkFirewallPolicies),
+                "NODE_GROUPS" => Some(Self::NodeGroups),
+                "NODE_TEMPLATES" => Some(Self::NodeTemplates),
+                "NVIDIA_A100_80GB_GPUS" => Some(Self::NvidiaA10080gbGpus),
+                "NVIDIA_A100_GPUS" => Some(Self::NvidiaA100Gpus),
+                "NVIDIA_K80_GPUS" => Some(Self::NvidiaK80Gpus),
+                "NVIDIA_P100_GPUS" => Some(Self::NvidiaP100Gpus),
+                "NVIDIA_P100_VWS_GPUS" => Some(Self::NvidiaP100VwsGpus),
+                "NVIDIA_P4_GPUS" => Some(Self::NvidiaP4Gpus),
+                "NVIDIA_P4_VWS_GPUS" => Some(Self::NvidiaP4VwsGpus),
+                "NVIDIA_T4_GPUS" => Some(Self::NvidiaT4Gpus),
+                "NVIDIA_T4_VWS_GPUS" => Some(Self::NvidiaT4VwsGpus),
+                "NVIDIA_V100_GPUS" => Some(Self::NvidiaV100Gpus),
+                "PACKET_MIRRORINGS" => Some(Self::PacketMirrorings),
+                "PD_EXTREME_TOTAL_PROVISIONED_IOPS" => {
+                    Some(Self::PdExtremeTotalProvisionedIops)
+                }
+                "PREEMPTIBLE_CPUS" => Some(Self::PreemptibleCpus),
+                "PREEMPTIBLE_LOCAL_SSD_GB" => Some(Self::PreemptibleLocalSsdGb),
+                "PREEMPTIBLE_NVIDIA_A100_80GB_GPUS" => {
+                    Some(Self::PreemptibleNvidiaA10080gbGpus)
+                }
+                "PREEMPTIBLE_NVIDIA_A100_GPUS" => Some(Self::PreemptibleNvidiaA100Gpus),
+                "PREEMPTIBLE_NVIDIA_K80_GPUS" => Some(Self::PreemptibleNvidiaK80Gpus),
+                "PREEMPTIBLE_NVIDIA_P100_GPUS" => Some(Self::PreemptibleNvidiaP100Gpus),
+                "PREEMPTIBLE_NVIDIA_P100_VWS_GPUS" => {
+                    Some(Self::PreemptibleNvidiaP100VwsGpus)
+                }
+                "PREEMPTIBLE_NVIDIA_P4_GPUS" => Some(Self::PreemptibleNvidiaP4Gpus),
+                "PREEMPTIBLE_NVIDIA_P4_VWS_GPUS" => {
+                    Some(Self::PreemptibleNvidiaP4VwsGpus)
+                }
+                "PREEMPTIBLE_NVIDIA_T4_GPUS" => Some(Self::PreemptibleNvidiaT4Gpus),
+                "PREEMPTIBLE_NVIDIA_T4_VWS_GPUS" => {
+                    Some(Self::PreemptibleNvidiaT4VwsGpus)
+                }
+                "PREEMPTIBLE_NVIDIA_V100_GPUS" => Some(Self::PreemptibleNvidiaV100Gpus),
+                "PSC_ILB_CONSUMER_FORWARDING_RULES_PER_PRODUCER_NETWORK" => {
+                    Some(Self::PscIlbConsumerForwardingRulesPerProducerNetwork)
+                }
+                "PSC_INTERNAL_LB_FORWARDING_RULES" => {
+                    Some(Self::PscInternalLbForwardingRules)
+                }
+                "PUBLIC_ADVERTISED_PREFIXES" => Some(Self::PublicAdvertisedPrefixes),
+                "PUBLIC_DELEGATED_PREFIXES" => Some(Self::PublicDelegatedPrefixes),
+                "REGIONAL_AUTOSCALERS" => Some(Self::RegionalAutoscalers),
+                "REGIONAL_EXTERNAL_MANAGED_BACKEND_SERVICES" => {
+                    Some(Self::RegionalExternalManagedBackendServices)
+                }
+                "REGIONAL_EXTERNAL_NETWORK_LB_BACKEND_SERVICES" => {
+                    Some(Self::RegionalExternalNetworkLbBackendServices)
+                }
+                "REGIONAL_INSTANCE_GROUP_MANAGERS" => {
+                    Some(Self::RegionalInstanceGroupManagers)
+                }
+                "REGIONAL_INTERNAL_LB_BACKEND_SERVICES" => {
+                    Some(Self::RegionalInternalLbBackendServices)
+                }
+                "REGIONAL_INTERNAL_MANAGED_BACKEND_SERVICES" => {
+                    Some(Self::RegionalInternalManagedBackendServices)
+                }
+                "RESERVATIONS" => Some(Self::Reservations),
+                "RESOURCE_POLICIES" => Some(Self::ResourcePolicies),
+                "ROUTERS" => Some(Self::Routers),
+                "ROUTES" => Some(Self::Routes),
+                "SECURITY_POLICIES" => Some(Self::SecurityPolicies),
+                "SECURITY_POLICIES_PER_REGION" => Some(Self::SecurityPoliciesPerRegion),
+                "SECURITY_POLICY_CEVAL_RULES" => Some(Self::SecurityPolicyCevalRules),
+                "SECURITY_POLICY_RULES" => Some(Self::SecurityPolicyRules),
+                "SECURITY_POLICY_RULES_PER_REGION" => {
+                    Some(Self::SecurityPolicyRulesPerRegion)
+                }
+                "SERVICE_ATTACHMENTS" => Some(Self::ServiceAttachments),
+                "SNAPSHOTS" => Some(Self::Snapshots),
+                "SSD_TOTAL_GB" => Some(Self::SsdTotalGb),
+                "SSL_CERTIFICATES" => Some(Self::SslCertificates),
+                "STATIC_ADDRESSES" => Some(Self::StaticAddresses),
+                "STATIC_BYOIP_ADDRESSES" => Some(Self::StaticByoipAddresses),
+                "STATIC_EXTERNAL_IPV6_ADDRESS_RANGES" => {
+                    Some(Self::StaticExternalIpv6AddressRanges)
+                }
+                "SUBNETWORKS" => Some(Self::Subnetworks),
+                "T2A_CPUS" => Some(Self::T2aCpus),
+                "T2D_CPUS" => Some(Self::T2dCpus),
+                "TARGET_HTTPS_PROXIES" => Some(Self::TargetHttpsProxies),
+                "TARGET_HTTP_PROXIES" => Some(Self::TargetHttpProxies),
+                "TARGET_INSTANCES" => Some(Self::TargetInstances),
+                "TARGET_POOLS" => Some(Self::TargetPools),
+                "TARGET_SSL_PROXIES" => Some(Self::TargetSslProxies),
+                "TARGET_TCP_PROXIES" => Some(Self::TargetTcpProxies),
+                "TARGET_VPN_GATEWAYS" => Some(Self::TargetVpnGateways),
+                "URL_MAPS" => Some(Self::UrlMaps),
+                "VPN_GATEWAYS" => Some(Self::VpnGateways),
+                "VPN_TUNNELS" => Some(Self::VpnTunnels),
+                "XPN_SERVICE_PROJECTS" => Some(Self::XpnServiceProjects),
+                _ => None,
+            }
+        }
     }
 }
 /// Additional details for quota exceeded error for resource quota.
@@ -25306,6 +27434,14 @@ pub mod raw_disk {
             match self {
                 ContainerType::UndefinedContainerType => "UNDEFINED_CONTAINER_TYPE",
                 ContainerType::Tar => "TAR",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_CONTAINER_TYPE" => Some(Self::UndefinedContainerType),
+                "TAR" => Some(Self::Tar),
+                _ => None,
             }
         }
     }
@@ -25441,6 +27577,15 @@ pub mod region {
                 Status::UndefinedStatus => "UNDEFINED_STATUS",
                 Status::Down => "DOWN",
                 Status::Up => "UP",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_STATUS" => Some(Self::UndefinedStatus),
+                "DOWN" => Some(Self::Down),
+                "UP" => Some(Self::Up),
+                _ => None,
             }
         }
     }
@@ -25648,6 +27793,13 @@ pub mod region_instance_group_managers_apply_updates_request {
                 MinimalAction::UndefinedMinimalAction => "UNDEFINED_MINIMAL_ACTION",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_MINIMAL_ACTION" => Some(Self::UndefinedMinimalAction),
+                _ => None,
+            }
+        }
     }
     /// The most disruptive action that you want to perform on each instance during the update: - REPLACE: Delete the instance and create it again. - RESTART: Stop the instance and start it again. - REFRESH: Do not stop the instance. - NONE: Do not disrupt the instance at all. By default, the most disruptive allowed action is REPLACE. If your update requires a more disruptive action than you set with this flag, the update request will fail.
     /// Additional supported values which may be not listed in the enum directly due to technical reasons:
@@ -25681,6 +27833,15 @@ pub mod region_instance_group_managers_apply_updates_request {
                 MostDisruptiveAllowedAction::UndefinedMostDisruptiveAllowedAction => {
                     "UNDEFINED_MOST_DISRUPTIVE_ALLOWED_ACTION"
                 }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_MOST_DISRUPTIVE_ALLOWED_ACTION" => {
+                    Some(Self::UndefinedMostDisruptiveAllowedAction)
+                }
+                _ => None,
             }
         }
     }
@@ -25837,6 +27998,15 @@ pub mod region_instance_groups_list_instances_request {
                 InstanceState::Running => "RUNNING",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_INSTANCE_STATE" => Some(Self::UndefinedInstanceState),
+                "ALL" => Some(Self::All),
+                "RUNNING" => Some(Self::Running),
+                _ => None,
+            }
+        }
     }
 }
 ///
@@ -25939,6 +28109,17 @@ pub mod region_network_firewall_policies_get_effective_firewalls_response_effect
                 Type::Network => "NETWORK",
                 Type::NetworkRegional => "NETWORK_REGIONAL",
                 Type::Unspecified => "UNSPECIFIED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_TYPE" => Some(Self::UndefinedType),
+                "HIERARCHY" => Some(Self::Hierarchy),
+                "NETWORK" => Some(Self::Network),
+                "NETWORK_REGIONAL" => Some(Self::NetworkRegional),
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                _ => None,
             }
         }
     }
@@ -26356,6 +28537,18 @@ pub mod reservation {
                 Status::Updating => "UPDATING",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_STATUS" => Some(Self::UndefinedStatus),
+                "CREATING" => Some(Self::Creating),
+                "DELETING" => Some(Self::Deleting),
+                "INVALID" => Some(Self::Invalid),
+                "READY" => Some(Self::Ready),
+                "UPDATING" => Some(Self::Updating),
+                _ => None,
+            }
+        }
     }
 }
 /// Specifies the reservations that this instance can consume from.
@@ -26413,6 +28606,19 @@ pub mod reservation_affinity {
                 ConsumeReservationType::NoReservation => "NO_RESERVATION",
                 ConsumeReservationType::SpecificReservation => "SPECIFIC_RESERVATION",
                 ConsumeReservationType::Unspecified => "UNSPECIFIED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_CONSUME_RESERVATION_TYPE" => {
+                    Some(Self::UndefinedConsumeReservationType)
+                }
+                "ANY_RESERVATION" => Some(Self::AnyReservation),
+                "NO_RESERVATION" => Some(Self::NoReservation),
+                "SPECIFIC_RESERVATION" => Some(Self::SpecificReservation),
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                _ => None,
             }
         }
     }
@@ -26663,6 +28869,18 @@ pub mod resource_commitment {
                 Type::Vcpu => "VCPU",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_TYPE" => Some(Self::UndefinedType),
+                "ACCELERATOR" => Some(Self::Accelerator),
+                "LOCAL_SSD" => Some(Self::LocalSsd),
+                "MEMORY" => Some(Self::Memory),
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "VCPU" => Some(Self::Vcpu),
+                _ => None,
+            }
+        }
     }
 }
 ///
@@ -26773,6 +28991,18 @@ pub mod resource_policy {
                 Status::Ready => "READY",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_STATUS" => Some(Self::UndefinedStatus),
+                "CREATING" => Some(Self::Creating),
+                "DELETING" => Some(Self::Deleting),
+                "EXPIRED" => Some(Self::Expired),
+                "INVALID" => Some(Self::Invalid),
+                "READY" => Some(Self::Ready),
+                _ => None,
+            }
+        }
     }
 }
 /// Contains a list of resourcePolicies.
@@ -26866,6 +29096,15 @@ pub mod resource_policy_group_placement_policy {
                 Collocation::UndefinedCollocation => "UNDEFINED_COLLOCATION",
                 Collocation::Collocated => "COLLOCATED",
                 Collocation::UnspecifiedCollocation => "UNSPECIFIED_COLLOCATION",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_COLLOCATION" => Some(Self::UndefinedCollocation),
+                "COLLOCATED" => Some(Self::Collocated),
+                "UNSPECIFIED_COLLOCATION" => Some(Self::UnspecifiedCollocation),
+                _ => None,
             }
         }
     }
@@ -27031,6 +29270,20 @@ pub mod resource_policy_snapshot_schedule_policy_retention_policy {
                 }
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_ON_SOURCE_DISK_DELETE" => {
+                    Some(Self::UndefinedOnSourceDiskDelete)
+                }
+                "APPLY_RETENTION_POLICY" => Some(Self::ApplyRetentionPolicy),
+                "KEEP_AUTO_SNAPSHOTS" => Some(Self::KeepAutoSnapshots),
+                "UNSPECIFIED_ON_SOURCE_DISK_DELETE" => {
+                    Some(Self::UnspecifiedOnSourceDiskDelete)
+                }
+                _ => None,
+            }
+        }
     }
 }
 /// A schedule for disks where the schedueled operations are performed.
@@ -27130,6 +29383,21 @@ pub mod resource_policy_weekly_cycle_day_of_week {
                 Day::Thursday => "THURSDAY",
                 Day::Tuesday => "TUESDAY",
                 Day::Wednesday => "WEDNESDAY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_DAY" => Some(Self::UndefinedDay),
+                "FRIDAY" => Some(Self::Friday),
+                "INVALID" => Some(Self::Invalid),
+                "MONDAY" => Some(Self::Monday),
+                "SATURDAY" => Some(Self::Saturday),
+                "SUNDAY" => Some(Self::Sunday),
+                "THURSDAY" => Some(Self::Thursday),
+                "TUESDAY" => Some(Self::Tuesday),
+                "WEDNESDAY" => Some(Self::Wednesday),
+                _ => None,
             }
         }
     }
@@ -27270,6 +29538,17 @@ pub mod route {
                 RouteStatus::Pending => "PENDING",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_ROUTE_STATUS" => Some(Self::UndefinedRouteStatus),
+                "ACTIVE" => Some(Self::Active),
+                "DROPPED" => Some(Self::Dropped),
+                "INACTIVE" => Some(Self::Inactive),
+                "PENDING" => Some(Self::Pending),
+                _ => None,
+            }
+        }
     }
     /// [Output Only] The type of this route, which can be one of the following values: - 'TRANSIT' for a transit route that this router learned from another Cloud Router and will readvertise to one of its BGP peers - 'SUBNET' for a route from a subnet of the VPC - 'BGP' for a route learned from a BGP peer of this router - 'STATIC' for a static route
     #[derive(
@@ -27304,6 +29583,17 @@ pub mod route {
                 RouteType::Static => "STATIC",
                 RouteType::Subnet => "SUBNET",
                 RouteType::Transit => "TRANSIT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_ROUTE_TYPE" => Some(Self::UndefinedRouteType),
+                "BGP" => Some(Self::Bgp),
+                "STATIC" => Some(Self::Static),
+                "SUBNET" => Some(Self::Subnet),
+                "TRANSIT" => Some(Self::Transit),
+                _ => None,
             }
         }
     }
@@ -27357,6 +29647,17 @@ pub mod route_as_path {
                 PathSegmentType::AsConfedSet => "AS_CONFED_SET",
                 PathSegmentType::AsSequence => "AS_SEQUENCE",
                 PathSegmentType::AsSet => "AS_SET",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_PATH_SEGMENT_TYPE" => Some(Self::UndefinedPathSegmentType),
+                "AS_CONFED_SEQUENCE" => Some(Self::AsConfedSequence),
+                "AS_CONFED_SET" => Some(Self::AsConfedSet),
+                "AS_SEQUENCE" => Some(Self::AsSequence),
+                "AS_SET" => Some(Self::AsSet),
+                _ => None,
             }
         }
     }
@@ -27526,6 +29827,15 @@ pub mod router_bgp {
                 AdvertiseMode::Default => "DEFAULT",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_ADVERTISE_MODE" => Some(Self::UndefinedAdvertiseMode),
+                "CUSTOM" => Some(Self::Custom),
+                "DEFAULT" => Some(Self::Default),
+                _ => None,
+            }
+        }
     }
     ///
     #[derive(
@@ -27557,6 +29867,14 @@ pub mod router_bgp {
                     "UNDEFINED_ADVERTISED_GROUPS"
                 }
                 AdvertisedGroups::AllSubnets => "ALL_SUBNETS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_ADVERTISED_GROUPS" => Some(Self::UndefinedAdvertisedGroups),
+                "ALL_SUBNETS" => Some(Self::AllSubnets),
+                _ => None,
             }
         }
     }
@@ -27660,6 +29978,15 @@ pub mod router_bgp_peer {
                 AdvertiseMode::Default => "DEFAULT",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_ADVERTISE_MODE" => Some(Self::UndefinedAdvertiseMode),
+                "CUSTOM" => Some(Self::Custom),
+                "DEFAULT" => Some(Self::Default),
+                _ => None,
+            }
+        }
     }
     ///
     #[derive(
@@ -27691,6 +30018,14 @@ pub mod router_bgp_peer {
                     "UNDEFINED_ADVERTISED_GROUPS"
                 }
                 AdvertisedGroups::AllSubnets => "ALL_SUBNETS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_ADVERTISED_GROUPS" => Some(Self::UndefinedAdvertisedGroups),
+                "ALL_SUBNETS" => Some(Self::AllSubnets),
+                _ => None,
             }
         }
     }
@@ -27725,6 +30060,15 @@ pub mod router_bgp_peer {
                 Enable::True => "TRUE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_ENABLE" => Some(Self::UndefinedEnable),
+                "FALSE" => Some(Self::False),
+                "TRUE" => Some(Self::True),
+                _ => None,
+            }
+        }
     }
     /// [Output Only] The resource that configures and manages this BGP peer. - MANAGED_BY_USER is the default value and can be managed by you or other users - MANAGED_BY_ATTACHMENT is a BGP peer that is configured and managed by Cloud Interconnect, specifically by an InterconnectAttachment of type PARTNER. Google automatically creates, updates, and deletes this type of BGP peer when the PARTNER InterconnectAttachment is created, updated, or deleted.
     #[derive(
@@ -27757,6 +30101,15 @@ pub mod router_bgp_peer {
                 ManagementType::UndefinedManagementType => "UNDEFINED_MANAGEMENT_TYPE",
                 ManagementType::ManagedByAttachment => "MANAGED_BY_ATTACHMENT",
                 ManagementType::ManagedByUser => "MANAGED_BY_USER",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_MANAGEMENT_TYPE" => Some(Self::UndefinedManagementType),
+                "MANAGED_BY_ATTACHMENT" => Some(Self::ManagedByAttachment),
+                "MANAGED_BY_USER" => Some(Self::ManagedByUser),
+                _ => None,
             }
         }
     }
@@ -27816,6 +30169,18 @@ pub mod router_bgp_peer_bfd {
                 SessionInitializationMode::Active => "ACTIVE",
                 SessionInitializationMode::Disabled => "DISABLED",
                 SessionInitializationMode::Passive => "PASSIVE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_SESSION_INITIALIZATION_MODE" => {
+                    Some(Self::UndefinedSessionInitializationMode)
+                }
+                "ACTIVE" => Some(Self::Active),
+                "DISABLED" => Some(Self::Disabled),
+                "PASSIVE" => Some(Self::Passive),
+                _ => None,
             }
         }
     }
@@ -27885,6 +30250,15 @@ pub mod router_interface {
                 ManagementType::UndefinedManagementType => "UNDEFINED_MANAGEMENT_TYPE",
                 ManagementType::ManagedByAttachment => "MANAGED_BY_ATTACHMENT",
                 ManagementType::ManagedByUser => "MANAGED_BY_USER",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_MANAGEMENT_TYPE" => Some(Self::UndefinedManagementType),
+                "MANAGED_BY_ATTACHMENT" => Some(Self::ManagedByAttachment),
+                "MANAGED_BY_USER" => Some(Self::ManagedByUser),
+                _ => None,
             }
         }
     }
@@ -28021,6 +30395,15 @@ pub mod router_nat {
                 EndpointTypes::EndpointTypeVm => "ENDPOINT_TYPE_VM",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_ENDPOINT_TYPES" => Some(Self::UndefinedEndpointTypes),
+                "ENDPOINT_TYPE_SWG" => Some(Self::EndpointTypeSwg),
+                "ENDPOINT_TYPE_VM" => Some(Self::EndpointTypeVm),
+                _ => None,
+            }
+        }
     }
     /// Specify the NatIpAllocateOption, which can take one of the following values: - MANUAL_ONLY: Uses only Nat IP addresses provided by customers. When there are not enough specified Nat IPs, the Nat service fails for new VMs. - AUTO_ONLY: Nat IPs are allocated by Google Cloud Platform; customers can't specify any Nat IPs. When choosing AUTO_ONLY, then nat_ip should be empty.
     #[derive(
@@ -28055,6 +30438,17 @@ pub mod router_nat {
                 }
                 NatIpAllocateOption::AutoOnly => "AUTO_ONLY",
                 NatIpAllocateOption::ManualOnly => "MANUAL_ONLY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_NAT_IP_ALLOCATE_OPTION" => {
+                    Some(Self::UndefinedNatIpAllocateOption)
+                }
+                "AUTO_ONLY" => Some(Self::AutoOnly),
+                "MANUAL_ONLY" => Some(Self::ManualOnly),
+                _ => None,
             }
         }
     }
@@ -28098,6 +30492,20 @@ pub mod router_nat {
                     "ALL_SUBNETWORKS_ALL_PRIMARY_IP_RANGES"
                 }
                 SourceSubnetworkIpRangesToNat::ListOfSubnetworks => "LIST_OF_SUBNETWORKS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_SOURCE_SUBNETWORK_IP_RANGES_TO_NAT" => {
+                    Some(Self::UndefinedSourceSubnetworkIpRangesToNat)
+                }
+                "ALL_SUBNETWORKS_ALL_IP_RANGES" => Some(Self::AllSubnetworksAllIpRanges),
+                "ALL_SUBNETWORKS_ALL_PRIMARY_IP_RANGES" => {
+                    Some(Self::AllSubnetworksAllPrimaryIpRanges)
+                }
+                "LIST_OF_SUBNETWORKS" => Some(Self::ListOfSubnetworks),
+                _ => None,
             }
         }
     }
@@ -28150,6 +30558,16 @@ pub mod router_nat_log_config {
                 Filter::All => "ALL",
                 Filter::ErrorsOnly => "ERRORS_ONLY",
                 Filter::TranslationsOnly => "TRANSLATIONS_ONLY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_FILTER" => Some(Self::UndefinedFilter),
+                "ALL" => Some(Self::All),
+                "ERRORS_ONLY" => Some(Self::ErrorsOnly),
+                "TRANSLATIONS_ONLY" => Some(Self::TranslationsOnly),
+                _ => None,
             }
         }
     }
@@ -28241,6 +30659,18 @@ pub mod router_nat_subnetwork_to_nat {
                     "LIST_OF_SECONDARY_IP_RANGES"
                 }
                 SourceIpRangesToNat::PrimaryIpRange => "PRIMARY_IP_RANGE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_SOURCE_IP_RANGES_TO_NAT" => {
+                    Some(Self::UndefinedSourceIpRangesToNat)
+                }
+                "ALL_IP_RANGES" => Some(Self::AllIpRanges),
+                "LIST_OF_SECONDARY_IP_RANGES" => Some(Self::ListOfSecondaryIpRanges),
+                "PRIMARY_IP_RANGE" => Some(Self::PrimaryIpRange),
+                _ => None,
             }
         }
     }
@@ -28359,6 +30789,16 @@ pub mod router_status_bgp_peer_status {
                 Status::Up => "UP",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_STATUS" => Some(Self::UndefinedStatus),
+                "DOWN" => Some(Self::Down),
+                "UNKNOWN" => Some(Self::Unknown),
+                "UP" => Some(Self::Up),
+                _ => None,
+            }
+        }
     }
     /// Indicates why particular status was returned.
     #[derive(
@@ -28390,6 +30830,15 @@ pub mod router_status_bgp_peer_status {
                 StatusReason::UndefinedStatusReason => "UNDEFINED_STATUS_REASON",
                 StatusReason::Md5AuthInternalProblem => "MD5_AUTH_INTERNAL_PROBLEM",
                 StatusReason::Unspecified => "STATUS_REASON_UNSPECIFIED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_STATUS_REASON" => Some(Self::UndefinedStatusReason),
+                "MD5_AUTH_INTERNAL_PROBLEM" => Some(Self::Md5AuthInternalProblem),
+                "STATUS_REASON_UNSPECIFIED" => Some(Self::Unspecified),
+                _ => None,
             }
         }
     }
@@ -28555,6 +31004,19 @@ pub mod rule {
                 Action::NoAction => "NO_ACTION",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_ACTION" => Some(Self::UndefinedAction),
+                "ALLOW" => Some(Self::Allow),
+                "ALLOW_WITH_LOG" => Some(Self::AllowWithLog),
+                "DENY" => Some(Self::Deny),
+                "DENY_WITH_LOG" => Some(Self::DenyWithLog),
+                "LOG" => Some(Self::Log),
+                "NO_ACTION" => Some(Self::NoAction),
+                _ => None,
+            }
+        }
     }
 }
 ///
@@ -28622,6 +31084,16 @@ pub mod ssl_health_check {
                 PortSpecification::UseServingPort => "USE_SERVING_PORT",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_PORT_SPECIFICATION" => Some(Self::UndefinedPortSpecification),
+                "USE_FIXED_PORT" => Some(Self::UseFixedPort),
+                "USE_NAMED_PORT" => Some(Self::UseNamedPort),
+                "USE_SERVING_PORT" => Some(Self::UseServingPort),
+                _ => None,
+            }
+        }
     }
     /// Specifies the type of proxy header to append before sending data to the backend, either NONE or PROXY_V1. The default is NONE.
     #[derive(
@@ -28652,6 +31124,15 @@ pub mod ssl_health_check {
                 ProxyHeader::UndefinedProxyHeader => "UNDEFINED_PROXY_HEADER",
                 ProxyHeader::None => "NONE",
                 ProxyHeader::ProxyV1 => "PROXY_V1",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_PROXY_HEADER" => Some(Self::UndefinedProxyHeader),
+                "NONE" => Some(Self::None),
+                "PROXY_V1" => Some(Self::ProxyV1),
+                _ => None,
             }
         }
     }
@@ -28746,6 +31227,15 @@ pub mod saved_attached_disk {
                 Interface::Scsi => "SCSI",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_INTERFACE" => Some(Self::UndefinedInterface),
+                "NVME" => Some(Self::Nvme),
+                "SCSI" => Some(Self::Scsi),
+                _ => None,
+            }
+        }
     }
     /// The mode in which this disk is attached to the source instance, either READ_WRITE or READ_ONLY.
     #[derive(
@@ -28778,6 +31268,15 @@ pub mod saved_attached_disk {
                 Mode::UndefinedMode => "UNDEFINED_MODE",
                 Mode::ReadOnly => "READ_ONLY",
                 Mode::ReadWrite => "READ_WRITE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_MODE" => Some(Self::UndefinedMode),
+                "READ_ONLY" => Some(Self::ReadOnly),
+                "READ_WRITE" => Some(Self::ReadWrite),
+                _ => None,
             }
         }
     }
@@ -28814,6 +31313,17 @@ pub mod saved_attached_disk {
                 StorageBytesStatus::UpToDate => "UP_TO_DATE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_STORAGE_BYTES_STATUS" => {
+                    Some(Self::UndefinedStorageBytesStatus)
+                }
+                "UPDATING" => Some(Self::Updating),
+                "UP_TO_DATE" => Some(Self::UpToDate),
+                _ => None,
+            }
+        }
     }
     /// Specifies the type of the attached disk, either SCRATCH or PERSISTENT.
     #[derive(
@@ -28844,6 +31354,15 @@ pub mod saved_attached_disk {
                 Type::UndefinedType => "UNDEFINED_TYPE",
                 Type::Persistent => "PERSISTENT",
                 Type::Scratch => "SCRATCH",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_TYPE" => Some(Self::UndefinedType),
+                "PERSISTENT" => Some(Self::Persistent),
+                "SCRATCH" => Some(Self::Scratch),
+                _ => None,
             }
         }
     }
@@ -28908,6 +31427,16 @@ pub mod saved_disk {
                 Architecture::X8664 => "X86_64",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_ARCHITECTURE" => Some(Self::UndefinedArchitecture),
+                "ARCHITECTURE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ARM64" => Some(Self::Arm64),
+                "X86_64" => Some(Self::X8664),
+                _ => None,
+            }
+        }
     }
     /// [Output Only] An indicator whether storageBytes is in a stable state or it is being adjusted as a result of shared storage reallocation. This status can either be UPDATING, meaning the size of the snapshot is being updated, or UP_TO_DATE, meaning the size of the snapshot is up-to-date.
     #[derive(
@@ -28940,6 +31469,17 @@ pub mod saved_disk {
                 }
                 StorageBytesStatus::Updating => "UPDATING",
                 StorageBytesStatus::UpToDate => "UP_TO_DATE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_STORAGE_BYTES_STATUS" => {
+                    Some(Self::UndefinedStorageBytesStatus)
+                }
+                "UPDATING" => Some(Self::Updating),
+                "UP_TO_DATE" => Some(Self::UpToDate),
+                _ => None,
             }
         }
     }
@@ -28998,6 +31538,17 @@ pub mod scaling_schedule_status {
                 State::Disabled => "DISABLED",
                 State::Obsolete => "OBSOLETE",
                 State::Ready => "READY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_STATE" => Some(Self::UndefinedState),
+                "ACTIVE" => Some(Self::Active),
+                "DISABLED" => Some(Self::Disabled),
+                "OBSOLETE" => Some(Self::Obsolete),
+                "READY" => Some(Self::Ready),
+                _ => None,
             }
         }
     }
@@ -29078,6 +31629,18 @@ pub mod scheduling {
                 InstanceTerminationAction::Stop => "STOP",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_INSTANCE_TERMINATION_ACTION" => {
+                    Some(Self::UndefinedInstanceTerminationAction)
+                }
+                "DELETE" => Some(Self::Delete),
+                "INSTANCE_TERMINATION_ACTION_UNSPECIFIED" => Some(Self::Unspecified),
+                "STOP" => Some(Self::Stop),
+                _ => None,
+            }
+        }
     }
     /// Defines the maintenance behavior for this instance. For standard instances, the default behavior is MIGRATE. For preemptible instances, the default and only possible behavior is TERMINATE. For more information, see Set VM host maintenance policy.
     #[derive(
@@ -29114,6 +31677,15 @@ pub mod scheduling {
                 OnHostMaintenance::Terminate => "TERMINATE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_ON_HOST_MAINTENANCE" => Some(Self::UndefinedOnHostMaintenance),
+                "MIGRATE" => Some(Self::Migrate),
+                "TERMINATE" => Some(Self::Terminate),
+                _ => None,
+            }
+        }
     }
     /// Specifies the provisioning model of the instance.
     #[derive(
@@ -29148,6 +31720,15 @@ pub mod scheduling {
                 }
                 ProvisioningModel::Spot => "SPOT",
                 ProvisioningModel::Standard => "STANDARD",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_PROVISIONING_MODEL" => Some(Self::UndefinedProvisioningModel),
+                "SPOT" => Some(Self::Spot),
+                "STANDARD" => Some(Self::Standard),
+                _ => None,
             }
         }
     }
@@ -29202,6 +31783,16 @@ pub mod scheduling_node_affinity {
                 Operator::In => "IN",
                 Operator::NotIn => "NOT_IN",
                 Operator::Unspecified => "OPERATOR_UNSPECIFIED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_OPERATOR" => Some(Self::UndefinedOperator),
+                "IN" => Some(Self::In),
+                "NOT_IN" => Some(Self::NotIn),
+                "OPERATOR_UNSPECIFIED" => Some(Self::Unspecified),
+                _ => None,
             }
         }
     }
@@ -29368,6 +31959,16 @@ pub mod security_policy {
                 Type::CloudArmorNetwork => "CLOUD_ARMOR_NETWORK",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_TYPE" => Some(Self::UndefinedType),
+                "CLOUD_ARMOR" => Some(Self::CloudArmor),
+                "CLOUD_ARMOR_EDGE" => Some(Self::CloudArmorEdge),
+                "CLOUD_ARMOR_NETWORK" => Some(Self::CloudArmorNetwork),
+                _ => None,
+            }
+        }
     }
 }
 /// Configuration options for Cloud Armor Adaptive Protection (CAAP).
@@ -29425,6 +32026,15 @@ pub mod security_policy_adaptive_protection_config_layer7_ddos_defense_config {
                 RuleVisibility::Standard => "STANDARD",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_RULE_VISIBILITY" => Some(Self::UndefinedRuleVisibility),
+                "PREMIUM" => Some(Self::Premium),
+                "STANDARD" => Some(Self::Standard),
+                _ => None,
+            }
+        }
     }
 }
 ///
@@ -29478,6 +32088,15 @@ pub mod security_policy_advanced_options_config {
                 JsonParsing::Standard => "STANDARD",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_JSON_PARSING" => Some(Self::UndefinedJsonParsing),
+                "DISABLED" => Some(Self::Disabled),
+                "STANDARD" => Some(Self::Standard),
+                _ => None,
+            }
+        }
     }
     ///
     #[derive(
@@ -29508,6 +32127,15 @@ pub mod security_policy_advanced_options_config {
                 LogLevel::UndefinedLogLevel => "UNDEFINED_LOG_LEVEL",
                 LogLevel::Normal => "NORMAL",
                 LogLevel::Verbose => "VERBOSE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_LOG_LEVEL" => Some(Self::UndefinedLogLevel),
+                "NORMAL" => Some(Self::Normal),
+                "VERBOSE" => Some(Self::Verbose),
+                _ => None,
             }
         }
     }
@@ -29560,6 +32188,15 @@ pub mod security_policy_ddos_protection_config {
                 DdosProtection::UndefinedDdosProtection => "UNDEFINED_DDOS_PROTECTION",
                 DdosProtection::Advanced => "ADVANCED",
                 DdosProtection::Standard => "STANDARD",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_DDOS_PROTECTION" => Some(Self::UndefinedDdosProtection),
+                "ADVANCED" => Some(Self::Advanced),
+                "STANDARD" => Some(Self::Standard),
+                _ => None,
             }
         }
     }
@@ -29699,6 +32336,14 @@ pub mod security_policy_rule_matcher {
                 VersionedExpr::SrcIpsV1 => "SRC_IPS_V1",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_VERSIONED_EXPR" => Some(Self::UndefinedVersionedExpr),
+                "SRC_IPS_V1" => Some(Self::SrcIpsV1),
+                _ => None,
+            }
+        }
     }
 }
 ///
@@ -29790,6 +32435,21 @@ pub mod security_policy_rule_rate_limit_options {
                 EnforceOnKey::XffIp => "XFF_IP",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_ENFORCE_ON_KEY" => Some(Self::UndefinedEnforceOnKey),
+                "ALL" => Some(Self::All),
+                "HTTP_COOKIE" => Some(Self::HttpCookie),
+                "HTTP_HEADER" => Some(Self::HttpHeader),
+                "HTTP_PATH" => Some(Self::HttpPath),
+                "IP" => Some(Self::Ip),
+                "REGION_CODE" => Some(Self::RegionCode),
+                "SNI" => Some(Self::Sni),
+                "XFF_IP" => Some(Self::XffIp),
+                _ => None,
+            }
+        }
     }
 }
 ///
@@ -29846,6 +32506,15 @@ pub mod security_policy_rule_redirect_options {
                 Type::UndefinedType => "UNDEFINED_TYPE",
                 Type::External302 => "EXTERNAL_302",
                 Type::GoogleRecaptcha => "GOOGLE_RECAPTCHA",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_TYPE" => Some(Self::UndefinedType),
+                "EXTERNAL_302" => Some(Self::External302),
+                "GOOGLE_RECAPTCHA" => Some(Self::GoogleRecaptcha),
+                _ => None,
             }
         }
     }
@@ -29943,6 +32612,20 @@ pub mod server_binding {
                 Type::RestartNodeOnAnyServer => "RESTART_NODE_ON_ANY_SERVER",
                 Type::RestartNodeOnMinimalServers => "RESTART_NODE_ON_MINIMAL_SERVERS",
                 Type::ServerBindingTypeUnspecified => "SERVER_BINDING_TYPE_UNSPECIFIED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_TYPE" => Some(Self::UndefinedType),
+                "RESTART_NODE_ON_ANY_SERVER" => Some(Self::RestartNodeOnAnyServer),
+                "RESTART_NODE_ON_MINIMAL_SERVERS" => {
+                    Some(Self::RestartNodeOnMinimalServers)
+                }
+                "SERVER_BINDING_TYPE_UNSPECIFIED" => {
+                    Some(Self::ServerBindingTypeUnspecified)
+                }
+                _ => None,
             }
         }
     }
@@ -30059,6 +32742,18 @@ pub mod service_attachment {
                 ConnectionPreference::Unspecified => "CONNECTION_PREFERENCE_UNSPECIFIED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_CONNECTION_PREFERENCE" => {
+                    Some(Self::UndefinedConnectionPreference)
+                }
+                "ACCEPT_AUTOMATIC" => Some(Self::AcceptAutomatic),
+                "ACCEPT_MANUAL" => Some(Self::AcceptManual),
+                "CONNECTION_PREFERENCE_UNSPECIFIED" => Some(Self::Unspecified),
+                _ => None,
+            }
+        }
     }
 }
 /// Contains a list of ServiceAttachmentsScopedList.
@@ -30149,6 +32844,19 @@ pub mod service_attachment_connected_endpoint {
                 Status::Pending => "PENDING",
                 Status::Rejected => "REJECTED",
                 Status::Unspecified => "STATUS_UNSPECIFIED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_STATUS" => Some(Self::UndefinedStatus),
+                "ACCEPTED" => Some(Self::Accepted),
+                "CLOSED" => Some(Self::Closed),
+                "NEEDS_ATTENTION" => Some(Self::NeedsAttention),
+                "PENDING" => Some(Self::Pending),
+                "REJECTED" => Some(Self::Rejected),
+                "STATUS_UNSPECIFIED" => Some(Self::Unspecified),
+                _ => None,
             }
         }
     }
@@ -31761,6 +34469,17 @@ pub mod share_settings {
                 ShareType::SpecificProjects => "SPECIFIC_PROJECTS",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_SHARE_TYPE" => Some(Self::UndefinedShareType),
+                "LOCAL" => Some(Self::Local),
+                "ORGANIZATION" => Some(Self::Organization),
+                "SHARE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "SPECIFIC_PROJECTS" => Some(Self::SpecificProjects),
+                _ => None,
+            }
+        }
     }
 }
 /// Config for each project in the share settings.
@@ -31984,6 +34703,16 @@ pub mod snapshot {
                 Architecture::X8664 => "X86_64",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_ARCHITECTURE" => Some(Self::UndefinedArchitecture),
+                "ARCHITECTURE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ARM64" => Some(Self::Arm64),
+                "X86_64" => Some(Self::X8664),
+                _ => None,
+            }
+        }
     }
     /// Indicates the type of the snapshot.
     #[derive(
@@ -32014,6 +34743,15 @@ pub mod snapshot {
                 SnapshotType::UndefinedSnapshotType => "UNDEFINED_SNAPSHOT_TYPE",
                 SnapshotType::Archive => "ARCHIVE",
                 SnapshotType::Standard => "STANDARD",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_SNAPSHOT_TYPE" => Some(Self::UndefinedSnapshotType),
+                "ARCHIVE" => Some(Self::Archive),
+                "STANDARD" => Some(Self::Standard),
+                _ => None,
             }
         }
     }
@@ -32059,6 +34797,18 @@ pub mod snapshot {
                 Status::Uploading => "UPLOADING",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_STATUS" => Some(Self::UndefinedStatus),
+                "CREATING" => Some(Self::Creating),
+                "DELETING" => Some(Self::Deleting),
+                "FAILED" => Some(Self::Failed),
+                "READY" => Some(Self::Ready),
+                "UPLOADING" => Some(Self::Uploading),
+                _ => None,
+            }
+        }
     }
     /// [Output Only] An indicator whether storageBytes is in a stable state or it is being adjusted as a result of shared storage reallocation. This status can either be UPDATING, meaning the size of the snapshot is being updated, or UP_TO_DATE, meaning the size of the snapshot is up-to-date.
     #[derive(
@@ -32091,6 +34841,17 @@ pub mod snapshot {
                 }
                 StorageBytesStatus::Updating => "UPDATING",
                 StorageBytesStatus::UpToDate => "UP_TO_DATE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_STORAGE_BYTES_STATUS" => {
+                    Some(Self::UndefinedStorageBytesStatus)
+                }
+                "UPDATING" => Some(Self::Updating),
+                "UP_TO_DATE" => Some(Self::UpToDate),
+                _ => None,
             }
         }
     }
@@ -32232,6 +34993,18 @@ pub mod source_instance_properties {
                 KeyRevocationActionType::Stop => "STOP",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_KEY_REVOCATION_ACTION_TYPE" => {
+                    Some(Self::UndefinedKeyRevocationActionType)
+                }
+                "KEY_REVOCATION_ACTION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "NONE" => Some(Self::None),
+                "STOP" => Some(Self::Stop),
+                _ => None,
+            }
+        }
     }
 }
 /// Represents an SSL Certificate resource. Google Compute Engine has two SSL Certificate resources: * \[Global\](/compute/docs/reference/rest/v1/sslCertificates) * \[Regional\](/compute/docs/reference/rest/v1/regionSslCertificates) The sslCertificates are used by: - external HTTPS load balancers - SSL proxy load balancers The regionSslCertificates are used by internal HTTPS load balancers. Optionally, certificate file contents that you upload can contain a set of up to five PEM-encoded certificates. The API call creates an object (sslCertificate) that holds this data. You can use SSL keys and certificates to secure connections to a load balancer. For more information, read Creating and using SSL certificates, SSL certificates quotas and limits, and Troubleshooting SSL certificates.
@@ -32319,6 +35092,16 @@ pub mod ssl_certificate {
                 Type::Managed => "MANAGED",
                 Type::SelfManaged => "SELF_MANAGED",
                 Type::Unspecified => "TYPE_UNSPECIFIED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_TYPE" => Some(Self::UndefinedType),
+                "MANAGED" => Some(Self::Managed),
+                "SELF_MANAGED" => Some(Self::SelfManaged),
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                _ => None,
             }
         }
     }
@@ -32441,6 +35224,23 @@ pub mod ssl_certificate_managed_ssl_certificate {
                     "PROVISIONING_FAILED_PERMANENTLY"
                 }
                 Status::RenewalFailed => "RENEWAL_FAILED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_STATUS" => Some(Self::UndefinedStatus),
+                "ACTIVE" => Some(Self::Active),
+                "MANAGED_CERTIFICATE_STATUS_UNSPECIFIED" => {
+                    Some(Self::ManagedCertificateStatusUnspecified)
+                }
+                "PROVISIONING" => Some(Self::Provisioning),
+                "PROVISIONING_FAILED" => Some(Self::ProvisioningFailed),
+                "PROVISIONING_FAILED_PERMANENTLY" => {
+                    Some(Self::ProvisioningFailedPermanently)
+                }
+                "RENEWAL_FAILED" => Some(Self::RenewalFailed),
+                _ => None,
             }
         }
     }
@@ -32623,6 +35423,16 @@ pub mod ssl_policy {
                 MinTlsVersion::Tls12 => "TLS_1_2",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_MIN_TLS_VERSION" => Some(Self::UndefinedMinTlsVersion),
+                "TLS_1_0" => Some(Self::Tls10),
+                "TLS_1_1" => Some(Self::Tls11),
+                "TLS_1_2" => Some(Self::Tls12),
+                _ => None,
+            }
+        }
     }
     /// Profile specifies the set of SSL features that can be used by the load balancer when negotiating SSL with clients. This can be one of COMPATIBLE, MODERN, RESTRICTED, or CUSTOM. If using CUSTOM, the set of SSL features to enable must be specified in the customFeatures field.
     #[derive(
@@ -32661,6 +35471,17 @@ pub mod ssl_policy {
                 Profile::Custom => "CUSTOM",
                 Profile::Modern => "MODERN",
                 Profile::Restricted => "RESTRICTED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_PROFILE" => Some(Self::UndefinedProfile),
+                "COMPATIBLE" => Some(Self::Compatible),
+                "CUSTOM" => Some(Self::Custom),
+                "MODERN" => Some(Self::Modern),
+                "RESTRICTED" => Some(Self::Restricted),
+                _ => None,
             }
         }
     }
@@ -32772,6 +35593,17 @@ pub mod stateful_policy_preserved_state_disk_device {
                 AutoDelete::OnPermanentInstanceDeletion => {
                     "ON_PERMANENT_INSTANCE_DELETION"
                 }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_AUTO_DELETE" => Some(Self::UndefinedAutoDelete),
+                "NEVER" => Some(Self::Never),
+                "ON_PERMANENT_INSTANCE_DELETION" => {
+                    Some(Self::OnPermanentInstanceDeletion)
+                }
+                _ => None,
             }
         }
     }
@@ -32920,6 +35752,16 @@ pub mod subnetwork {
                 }
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_IPV6_ACCESS_TYPE" => Some(Self::UndefinedIpv6AccessType),
+                "EXTERNAL" => Some(Self::External),
+                "INTERNAL" => Some(Self::Internal),
+                "UNSPECIFIED_IPV6_ACCESS_TYPE" => Some(Self::UnspecifiedIpv6AccessType),
+                _ => None,
+            }
+        }
     }
     /// This field is for internal use. This field can be both set at resource creation time and updated using patch.
     #[derive(
@@ -32961,6 +35803,22 @@ pub mod subnetwork {
                 PrivateIpv6GoogleAccess::EnableOutboundVmAccessToGoogle => {
                     "ENABLE_OUTBOUND_VM_ACCESS_TO_GOOGLE"
                 }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_PRIVATE_IPV6_GOOGLE_ACCESS" => {
+                    Some(Self::UndefinedPrivateIpv6GoogleAccess)
+                }
+                "DISABLE_GOOGLE_ACCESS" => Some(Self::DisableGoogleAccess),
+                "ENABLE_BIDIRECTIONAL_ACCESS_TO_GOOGLE" => {
+                    Some(Self::EnableBidirectionalAccessToGoogle)
+                }
+                "ENABLE_OUTBOUND_VM_ACCESS_TO_GOOGLE" => {
+                    Some(Self::EnableOutboundVmAccessToGoogle)
+                }
+                _ => None,
             }
         }
     }
@@ -33006,6 +35864,18 @@ pub mod subnetwork {
                 Purpose::RegionalManagedProxy => "REGIONAL_MANAGED_PROXY",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_PURPOSE" => Some(Self::UndefinedPurpose),
+                "INTERNAL_HTTPS_LOAD_BALANCER" => Some(Self::InternalHttpsLoadBalancer),
+                "PRIVATE" => Some(Self::Private),
+                "PRIVATE_RFC_1918" => Some(Self::PrivateRfc1918),
+                "PRIVATE_SERVICE_CONNECT" => Some(Self::PrivateServiceConnect),
+                "REGIONAL_MANAGED_PROXY" => Some(Self::RegionalManagedProxy),
+                _ => None,
+            }
+        }
     }
     /// The role of subnetwork. Currently, this field is only used when purpose = INTERNAL_HTTPS_LOAD_BALANCER. The value can be set to ACTIVE or BACKUP. An ACTIVE subnetwork is one that is currently being used for Internal HTTP(S) Load Balancing. A BACKUP subnetwork is one that is ready to be promoted to ACTIVE or is currently draining. This field can be updated with a patch request.
     #[derive(
@@ -33038,6 +35908,15 @@ pub mod subnetwork {
                 Role::UndefinedRole => "UNDEFINED_ROLE",
                 Role::Active => "ACTIVE",
                 Role::Backup => "BACKUP",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_ROLE" => Some(Self::UndefinedRole),
+                "ACTIVE" => Some(Self::Active),
+                "BACKUP" => Some(Self::Backup),
+                _ => None,
             }
         }
     }
@@ -33076,6 +35955,16 @@ pub mod subnetwork {
                 StackType::UnspecifiedStackType => "UNSPECIFIED_STACK_TYPE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_STACK_TYPE" => Some(Self::UndefinedStackType),
+                "IPV4_IPV6" => Some(Self::Ipv4Ipv6),
+                "IPV4_ONLY" => Some(Self::Ipv4Only),
+                "UNSPECIFIED_STACK_TYPE" => Some(Self::UnspecifiedStackType),
+                _ => None,
+            }
+        }
     }
     /// [Output Only] The state of the subnetwork, which can be one of the following values: READY: Subnetwork is created and ready to use DRAINING: only applicable to subnetworks that have the purpose set to INTERNAL_HTTPS_LOAD_BALANCER and indicates that connections to the load balancer are being drained. A subnetwork that is draining cannot be used or modified until it reaches a status of READY
     #[derive(
@@ -33108,6 +35997,15 @@ pub mod subnetwork {
                 State::UndefinedState => "UNDEFINED_STATE",
                 State::Draining => "DRAINING",
                 State::Ready => "READY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_STATE" => Some(Self::UndefinedState),
+                "DRAINING" => Some(Self::Draining),
+                "READY" => Some(Self::Ready),
+                _ => None,
             }
         }
     }
@@ -33232,6 +36130,21 @@ pub mod subnetwork_log_config {
                 AggregationInterval::Interval5Sec => "INTERVAL_5_SEC",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_AGGREGATION_INTERVAL" => {
+                    Some(Self::UndefinedAggregationInterval)
+                }
+                "INTERVAL_10_MIN" => Some(Self::Interval10Min),
+                "INTERVAL_15_MIN" => Some(Self::Interval15Min),
+                "INTERVAL_1_MIN" => Some(Self::Interval1Min),
+                "INTERVAL_30_SEC" => Some(Self::Interval30Sec),
+                "INTERVAL_5_MIN" => Some(Self::Interval5Min),
+                "INTERVAL_5_SEC" => Some(Self::Interval5Sec),
+                _ => None,
+            }
+        }
     }
     /// Can only be specified if VPC flow logs for this subnetwork is enabled. Configures whether all, none or a subset of metadata fields should be added to the reported VPC flow logs. Default is EXCLUDE_ALL_METADATA.
     #[derive(
@@ -33264,6 +36177,16 @@ pub mod subnetwork_log_config {
                 Metadata::CustomMetadata => "CUSTOM_METADATA",
                 Metadata::ExcludeAllMetadata => "EXCLUDE_ALL_METADATA",
                 Metadata::IncludeAllMetadata => "INCLUDE_ALL_METADATA",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_METADATA" => Some(Self::UndefinedMetadata),
+                "CUSTOM_METADATA" => Some(Self::CustomMetadata),
+                "EXCLUDE_ALL_METADATA" => Some(Self::ExcludeAllMetadata),
+                "INCLUDE_ALL_METADATA" => Some(Self::IncludeAllMetadata),
+                _ => None,
             }
         }
     }
@@ -33347,6 +36270,15 @@ pub mod subsetting {
                 Policy::UndefinedPolicy => "UNDEFINED_POLICY",
                 Policy::ConsistentHashSubsetting => "CONSISTENT_HASH_SUBSETTING",
                 Policy::None => "NONE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_POLICY" => Some(Self::UndefinedPolicy),
+                "CONSISTENT_HASH_SUBSETTING" => Some(Self::ConsistentHashSubsetting),
+                "NONE" => Some(Self::None),
+                _ => None,
             }
         }
     }
@@ -33450,6 +36382,16 @@ pub mod tcp_health_check {
                 PortSpecification::UseServingPort => "USE_SERVING_PORT",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_PORT_SPECIFICATION" => Some(Self::UndefinedPortSpecification),
+                "USE_FIXED_PORT" => Some(Self::UseFixedPort),
+                "USE_NAMED_PORT" => Some(Self::UseNamedPort),
+                "USE_SERVING_PORT" => Some(Self::UseServingPort),
+                _ => None,
+            }
+        }
     }
     /// Specifies the type of proxy header to append before sending data to the backend, either NONE or PROXY_V1. The default is NONE.
     #[derive(
@@ -33480,6 +36422,15 @@ pub mod tcp_health_check {
                 ProxyHeader::UndefinedProxyHeader => "UNDEFINED_PROXY_HEADER",
                 ProxyHeader::None => "NONE",
                 ProxyHeader::ProxyV1 => "PROXY_V1",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_PROXY_HEADER" => Some(Self::UndefinedProxyHeader),
+                "NONE" => Some(Self::None),
+                "PROXY_V1" => Some(Self::ProxyV1),
+                _ => None,
             }
         }
     }
@@ -33714,6 +36665,16 @@ pub mod target_https_proxies_set_quic_override_request {
                 QuicOverride::None => "NONE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_QUIC_OVERRIDE" => Some(Self::UndefinedQuicOverride),
+                "DISABLE" => Some(Self::Disable),
+                "ENABLE" => Some(Self::Enable),
+                "NONE" => Some(Self::None),
+                _ => None,
+            }
+        }
     }
 }
 ///
@@ -33814,6 +36775,16 @@ pub mod target_https_proxy {
                 QuicOverride::Disable => "DISABLE",
                 QuicOverride::Enable => "ENABLE",
                 QuicOverride::None => "NONE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_QUIC_OVERRIDE" => Some(Self::UndefinedQuicOverride),
+                "DISABLE" => Some(Self::Disable),
+                "ENABLE" => Some(Self::Enable),
+                "NONE" => Some(Self::None),
+                _ => None,
             }
         }
     }
@@ -33936,6 +36907,14 @@ pub mod target_instance {
             match self {
                 NatPolicy::UndefinedNatPolicy => "UNDEFINED_NAT_POLICY",
                 NatPolicy::NoNat => "NO_NAT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_NAT_POLICY" => Some(Self::UndefinedNatPolicy),
+                "NO_NAT" => Some(Self::NoNat),
+                _ => None,
             }
         }
     }
@@ -34096,6 +37075,21 @@ pub mod target_pool {
                 SessionAffinity::HeaderField => "HEADER_FIELD",
                 SessionAffinity::HttpCookie => "HTTP_COOKIE",
                 SessionAffinity::None => "NONE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_SESSION_AFFINITY" => Some(Self::UndefinedSessionAffinity),
+                "CLIENT_IP" => Some(Self::ClientIp),
+                "CLIENT_IP_NO_DESTINATION" => Some(Self::ClientIpNoDestination),
+                "CLIENT_IP_PORT_PROTO" => Some(Self::ClientIpPortProto),
+                "CLIENT_IP_PROTO" => Some(Self::ClientIpProto),
+                "GENERATED_COOKIE" => Some(Self::GeneratedCookie),
+                "HEADER_FIELD" => Some(Self::HeaderField),
+                "HTTP_COOKIE" => Some(Self::HttpCookie),
+                "NONE" => Some(Self::None),
+                _ => None,
             }
         }
     }
@@ -34270,6 +37264,15 @@ pub mod target_ssl_proxies_set_proxy_header_request {
                 ProxyHeader::ProxyV1 => "PROXY_V1",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_PROXY_HEADER" => Some(Self::UndefinedProxyHeader),
+                "NONE" => Some(Self::None),
+                "PROXY_V1" => Some(Self::ProxyV1),
+                _ => None,
+            }
+        }
     }
 }
 ///
@@ -34350,6 +37353,15 @@ pub mod target_ssl_proxy {
                 ProxyHeader::UndefinedProxyHeader => "UNDEFINED_PROXY_HEADER",
                 ProxyHeader::None => "NONE",
                 ProxyHeader::ProxyV1 => "PROXY_V1",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_PROXY_HEADER" => Some(Self::UndefinedProxyHeader),
+                "NONE" => Some(Self::None),
+                "PROXY_V1" => Some(Self::ProxyV1),
+                _ => None,
             }
         }
     }
@@ -34438,6 +37450,15 @@ pub mod target_tcp_proxies_set_proxy_header_request {
                 ProxyHeader::ProxyV1 => "PROXY_V1",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_PROXY_HEADER" => Some(Self::UndefinedProxyHeader),
+                "NONE" => Some(Self::None),
+                "PROXY_V1" => Some(Self::ProxyV1),
+                _ => None,
+            }
+        }
     }
 }
 /// Represents a Target TCP Proxy resource. A target TCP proxy is a component of a TCP Proxy load balancer. Global forwarding rules reference target TCP proxy, and the target proxy then references an external backend service. For more information, read TCP Proxy Load Balancing overview.
@@ -34507,6 +37528,15 @@ pub mod target_tcp_proxy {
                 ProxyHeader::UndefinedProxyHeader => "UNDEFINED_PROXY_HEADER",
                 ProxyHeader::None => "NONE",
                 ProxyHeader::ProxyV1 => "PROXY_V1",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_PROXY_HEADER" => Some(Self::UndefinedProxyHeader),
+                "NONE" => Some(Self::None),
+                "PROXY_V1" => Some(Self::ProxyV1),
+                _ => None,
             }
         }
     }
@@ -34637,6 +37667,17 @@ pub mod target_vpn_gateway {
                 Status::Deleting => "DELETING",
                 Status::Failed => "FAILED",
                 Status::Ready => "READY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_STATUS" => Some(Self::UndefinedStatus),
+                "CREATING" => Some(Self::Creating),
+                "DELETING" => Some(Self::Deleting),
+                "FAILED" => Some(Self::Failed),
+                "READY" => Some(Self::Ready),
+                _ => None,
             }
         }
     }
@@ -35363,6 +38404,13 @@ pub mod update_instance_request {
                 MinimalAction::UndefinedMinimalAction => "UNDEFINED_MINIMAL_ACTION",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_MINIMAL_ACTION" => Some(Self::UndefinedMinimalAction),
+                _ => None,
+            }
+        }
     }
     /// Specifies the most disruptive action that can be taken on the instance as part of the update. Compute Engine returns an error if the instance properties require a more disruptive action as part of the instance update. Valid options from lowest to highest are NO_EFFECT, REFRESH, and RESTART.
     /// Additional supported values which may be not listed in the enum directly due to technical reasons:
@@ -35396,6 +38444,15 @@ pub mod update_instance_request {
                 MostDisruptiveAllowedAction::UndefinedMostDisruptiveAllowedAction => {
                     "UNDEFINED_MOST_DISRUPTIVE_ALLOWED_ACTION"
                 }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_MOST_DISRUPTIVE_ALLOWED_ACTION" => {
+                    Some(Self::UndefinedMostDisruptiveAllowedAction)
+                }
+                _ => None,
             }
         }
     }
@@ -35901,6 +38958,20 @@ pub mod url_maps_validate_request {
                 }
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_LOAD_BALANCING_SCHEMES" => {
+                    Some(Self::UndefinedLoadBalancingSchemes)
+                }
+                "EXTERNAL" => Some(Self::External),
+                "EXTERNAL_MANAGED" => Some(Self::ExternalManaged),
+                "LOAD_BALANCING_SCHEME_UNSPECIFIED" => {
+                    Some(Self::LoadBalancingSchemeUnspecified)
+                }
+                _ => None,
+            }
+        }
     }
 }
 ///
@@ -35995,6 +39066,15 @@ pub mod usable_subnetwork {
                 Ipv6AccessType::Internal => "INTERNAL",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_IPV6_ACCESS_TYPE" => Some(Self::UndefinedIpv6AccessType),
+                "EXTERNAL" => Some(Self::External),
+                "INTERNAL" => Some(Self::Internal),
+                _ => None,
+            }
+        }
     }
     /// The purpose of the resource. This field can be either PRIVATE_RFC_1918 or INTERNAL_HTTPS_LOAD_BALANCER. A subnetwork with purpose set to INTERNAL_HTTPS_LOAD_BALANCER is a user-created subnetwork that is reserved for Internal HTTP(S) Load Balancing. If unspecified, the purpose defaults to PRIVATE_RFC_1918. The enableFlowLogs field isn't supported with the purpose field set to INTERNAL_HTTPS_LOAD_BALANCER.
     #[derive(
@@ -36038,6 +39118,18 @@ pub mod usable_subnetwork {
                 Purpose::RegionalManagedProxy => "REGIONAL_MANAGED_PROXY",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_PURPOSE" => Some(Self::UndefinedPurpose),
+                "INTERNAL_HTTPS_LOAD_BALANCER" => Some(Self::InternalHttpsLoadBalancer),
+                "PRIVATE" => Some(Self::Private),
+                "PRIVATE_RFC_1918" => Some(Self::PrivateRfc1918),
+                "PRIVATE_SERVICE_CONNECT" => Some(Self::PrivateServiceConnect),
+                "REGIONAL_MANAGED_PROXY" => Some(Self::RegionalManagedProxy),
+                _ => None,
+            }
+        }
     }
     /// The role of subnetwork. Currently, this field is only used when purpose = INTERNAL_HTTPS_LOAD_BALANCER. The value can be set to ACTIVE or BACKUP. An ACTIVE subnetwork is one that is currently being used for Internal HTTP(S) Load Balancing. A BACKUP subnetwork is one that is ready to be promoted to ACTIVE or is currently draining. This field can be updated with a patch request.
     #[derive(
@@ -36072,6 +39164,15 @@ pub mod usable_subnetwork {
                 Role::Backup => "BACKUP",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_ROLE" => Some(Self::UndefinedRole),
+                "ACTIVE" => Some(Self::Active),
+                "BACKUP" => Some(Self::Backup),
+                _ => None,
+            }
+        }
     }
     /// The stack type for the subnet. If set to IPV4_ONLY, new VMs in the subnet are assigned IPv4 addresses only. If set to IPV4_IPV6, new VMs in the subnet can be assigned both IPv4 and IPv6 addresses. If not specified, IPV4_ONLY is used. This field can be both set at resource creation time and updated using patch.
     #[derive(
@@ -36104,6 +39205,15 @@ pub mod usable_subnetwork {
                 StackType::UndefinedStackType => "UNDEFINED_STACK_TYPE",
                 StackType::Ipv4Ipv6 => "IPV4_IPV6",
                 StackType::Ipv4Only => "IPV4_ONLY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_STACK_TYPE" => Some(Self::UndefinedStackType),
+                "IPV4_IPV6" => Some(Self::Ipv4Ipv6),
+                "IPV4_ONLY" => Some(Self::Ipv4Only),
+                _ => None,
             }
         }
     }
@@ -36355,6 +39465,15 @@ pub mod vpn_gateway {
                 StackType::Ipv4Only => "IPV4_ONLY",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_STACK_TYPE" => Some(Self::UndefinedStackType),
+                "IPV4_IPV6" => Some(Self::Ipv4Ipv6),
+                "IPV4_ONLY" => Some(Self::Ipv4Only),
+                _ => None,
+            }
+        }
     }
 }
 ///
@@ -36465,6 +39584,15 @@ pub mod vpn_gateway_status_high_availability_requirement_state {
                 State::ConnectionRedundancyNotMet => "CONNECTION_REDUNDANCY_NOT_MET",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_STATE" => Some(Self::UndefinedState),
+                "CONNECTION_REDUNDANCY_MET" => Some(Self::ConnectionRedundancyMet),
+                "CONNECTION_REDUNDANCY_NOT_MET" => Some(Self::ConnectionRedundancyNotMet),
+                _ => None,
+            }
+        }
     }
     /// Indicates the reason why the VPN connection does not meet the high availability redundancy criteria/requirement. Valid values is INCOMPLETE_TUNNELS_COVERAGE.
     #[derive(
@@ -36497,6 +39625,14 @@ pub mod vpn_gateway_status_high_availability_requirement_state {
                 UnsatisfiedReason::IncompleteTunnelsCoverage => {
                     "INCOMPLETE_TUNNELS_COVERAGE"
                 }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_UNSATISFIED_REASON" => Some(Self::UndefinedUnsatisfiedReason),
+                "INCOMPLETE_TUNNELS_COVERAGE" => Some(Self::IncompleteTunnelsCoverage),
+                _ => None,
             }
         }
     }
@@ -36704,6 +39840,26 @@ pub mod vpn_tunnel {
                 Status::Rejected => "REJECTED",
                 Status::Stopped => "STOPPED",
                 Status::WaitingForFullConfig => "WAITING_FOR_FULL_CONFIG",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_STATUS" => Some(Self::UndefinedStatus),
+                "ALLOCATING_RESOURCES" => Some(Self::AllocatingResources),
+                "AUTHORIZATION_ERROR" => Some(Self::AuthorizationError),
+                "DEPROVISIONING" => Some(Self::Deprovisioning),
+                "ESTABLISHED" => Some(Self::Established),
+                "FAILED" => Some(Self::Failed),
+                "FIRST_HANDSHAKE" => Some(Self::FirstHandshake),
+                "NEGOTIATION_FAILURE" => Some(Self::NegotiationFailure),
+                "NETWORK_ERROR" => Some(Self::NetworkError),
+                "NO_INCOMING_PACKETS" => Some(Self::NoIncomingPackets),
+                "PROVISIONING" => Some(Self::Provisioning),
+                "REJECTED" => Some(Self::Rejected),
+                "STOPPED" => Some(Self::Stopped),
+                "WAITING_FOR_FULL_CONFIG" => Some(Self::WaitingForFullConfig),
+                _ => None,
             }
         }
     }
@@ -36965,6 +40121,52 @@ pub mod warning {
                 Code::Unreachable => "UNREACHABLE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_CODE" => Some(Self::UndefinedCode),
+                "CLEANUP_FAILED" => Some(Self::CleanupFailed),
+                "DEPRECATED_RESOURCE_USED" => Some(Self::DeprecatedResourceUsed),
+                "DEPRECATED_TYPE_USED" => Some(Self::DeprecatedTypeUsed),
+                "DISK_SIZE_LARGER_THAN_IMAGE_SIZE" => {
+                    Some(Self::DiskSizeLargerThanImageSize)
+                }
+                "EXPERIMENTAL_TYPE_USED" => Some(Self::ExperimentalTypeUsed),
+                "EXTERNAL_API_WARNING" => Some(Self::ExternalApiWarning),
+                "FIELD_VALUE_OVERRIDEN" => Some(Self::FieldValueOverriden),
+                "INJECTED_KERNELS_DEPRECATED" => Some(Self::InjectedKernelsDeprecated),
+                "INVALID_HEALTH_CHECK_FOR_DYNAMIC_WIEGHTED_LB" => {
+                    Some(Self::InvalidHealthCheckForDynamicWieghtedLb)
+                }
+                "LARGE_DEPLOYMENT_WARNING" => Some(Self::LargeDeploymentWarning),
+                "MISSING_TYPE_DEPENDENCY" => Some(Self::MissingTypeDependency),
+                "NEXT_HOP_ADDRESS_NOT_ASSIGNED" => Some(Self::NextHopAddressNotAssigned),
+                "NEXT_HOP_CANNOT_IP_FORWARD" => Some(Self::NextHopCannotIpForward),
+                "NEXT_HOP_INSTANCE_HAS_NO_IPV6_INTERFACE" => {
+                    Some(Self::NextHopInstanceHasNoIpv6Interface)
+                }
+                "NEXT_HOP_INSTANCE_NOT_FOUND" => Some(Self::NextHopInstanceNotFound),
+                "NEXT_HOP_INSTANCE_NOT_ON_NETWORK" => {
+                    Some(Self::NextHopInstanceNotOnNetwork)
+                }
+                "NEXT_HOP_NOT_RUNNING" => Some(Self::NextHopNotRunning),
+                "NOT_CRITICAL_ERROR" => Some(Self::NotCriticalError),
+                "NO_RESULTS_ON_PAGE" => Some(Self::NoResultsOnPage),
+                "PARTIAL_SUCCESS" => Some(Self::PartialSuccess),
+                "REQUIRED_TOS_AGREEMENT" => Some(Self::RequiredTosAgreement),
+                "RESOURCE_IN_USE_BY_OTHER_RESOURCE_WARNING" => {
+                    Some(Self::ResourceInUseByOtherResourceWarning)
+                }
+                "RESOURCE_NOT_DELETED" => Some(Self::ResourceNotDeleted),
+                "SCHEMA_VALIDATION_IGNORED" => Some(Self::SchemaValidationIgnored),
+                "SINGLE_INSTANCE_PROPERTY_TEMPLATE" => {
+                    Some(Self::SingleInstancePropertyTemplate)
+                }
+                "UNDECLARED_PROPERTIES" => Some(Self::UndeclaredProperties),
+                "UNREACHABLE" => Some(Self::Unreachable),
+                _ => None,
+            }
+        }
     }
 }
 ///
@@ -37100,6 +40302,52 @@ pub mod warnings {
                 Code::Unreachable => "UNREACHABLE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_CODE" => Some(Self::UndefinedCode),
+                "CLEANUP_FAILED" => Some(Self::CleanupFailed),
+                "DEPRECATED_RESOURCE_USED" => Some(Self::DeprecatedResourceUsed),
+                "DEPRECATED_TYPE_USED" => Some(Self::DeprecatedTypeUsed),
+                "DISK_SIZE_LARGER_THAN_IMAGE_SIZE" => {
+                    Some(Self::DiskSizeLargerThanImageSize)
+                }
+                "EXPERIMENTAL_TYPE_USED" => Some(Self::ExperimentalTypeUsed),
+                "EXTERNAL_API_WARNING" => Some(Self::ExternalApiWarning),
+                "FIELD_VALUE_OVERRIDEN" => Some(Self::FieldValueOverriden),
+                "INJECTED_KERNELS_DEPRECATED" => Some(Self::InjectedKernelsDeprecated),
+                "INVALID_HEALTH_CHECK_FOR_DYNAMIC_WIEGHTED_LB" => {
+                    Some(Self::InvalidHealthCheckForDynamicWieghtedLb)
+                }
+                "LARGE_DEPLOYMENT_WARNING" => Some(Self::LargeDeploymentWarning),
+                "MISSING_TYPE_DEPENDENCY" => Some(Self::MissingTypeDependency),
+                "NEXT_HOP_ADDRESS_NOT_ASSIGNED" => Some(Self::NextHopAddressNotAssigned),
+                "NEXT_HOP_CANNOT_IP_FORWARD" => Some(Self::NextHopCannotIpForward),
+                "NEXT_HOP_INSTANCE_HAS_NO_IPV6_INTERFACE" => {
+                    Some(Self::NextHopInstanceHasNoIpv6Interface)
+                }
+                "NEXT_HOP_INSTANCE_NOT_FOUND" => Some(Self::NextHopInstanceNotFound),
+                "NEXT_HOP_INSTANCE_NOT_ON_NETWORK" => {
+                    Some(Self::NextHopInstanceNotOnNetwork)
+                }
+                "NEXT_HOP_NOT_RUNNING" => Some(Self::NextHopNotRunning),
+                "NOT_CRITICAL_ERROR" => Some(Self::NotCriticalError),
+                "NO_RESULTS_ON_PAGE" => Some(Self::NoResultsOnPage),
+                "PARTIAL_SUCCESS" => Some(Self::PartialSuccess),
+                "REQUIRED_TOS_AGREEMENT" => Some(Self::RequiredTosAgreement),
+                "RESOURCE_IN_USE_BY_OTHER_RESOURCE_WARNING" => {
+                    Some(Self::ResourceInUseByOtherResourceWarning)
+                }
+                "RESOURCE_NOT_DELETED" => Some(Self::ResourceNotDeleted),
+                "SCHEMA_VALIDATION_IGNORED" => Some(Self::SchemaValidationIgnored),
+                "SINGLE_INSTANCE_PROPERTY_TEMPLATE" => {
+                    Some(Self::SingleInstancePropertyTemplate)
+                }
+                "UNDECLARED_PROPERTIES" => Some(Self::UndeclaredProperties),
+                "UNREACHABLE" => Some(Self::Unreachable),
+                _ => None,
+            }
+        }
     }
 }
 /// In contrast to a single BackendService in HttpRouteAction to which all matching traffic is directed to, WeightedBackendService allows traffic to be split across multiple backend services. The volume of traffic for each backend service is proportional to the weight specified in each WeightedBackendService
@@ -37184,6 +40432,15 @@ pub mod xpn_resource_id {
                 Type::XpnResourceTypeUnspecified => "XPN_RESOURCE_TYPE_UNSPECIFIED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_TYPE" => Some(Self::UndefinedType),
+                "PROJECT" => Some(Self::Project),
+                "XPN_RESOURCE_TYPE_UNSPECIFIED" => Some(Self::XpnResourceTypeUnspecified),
+                _ => None,
+            }
+        }
     }
 }
 /// Represents a Zone resource. A zone is a deployment area. These deployment areas are subsets of a region. For example the zone us-east1-a is located in the us-east1 region. For more information, read Regions and Zones.
@@ -37258,6 +40515,15 @@ pub mod zone {
                 Status::UndefinedStatus => "UNDEFINED_STATUS",
                 Status::Down => "DOWN",
                 Status::Up => "UP",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_STATUS" => Some(Self::UndefinedStatus),
+                "DOWN" => Some(Self::Down),
+                "UP" => Some(Self::Up),
+                _ => None,
             }
         }
     }

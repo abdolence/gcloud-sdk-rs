@@ -167,6 +167,19 @@ pub mod private_cloud {
                 State::Purging => "PURGING",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ACTIVE" => Some(Self::Active),
+                "CREATING" => Some(Self::Creating),
+                "UPDATING" => Some(Self::Updating),
+                "FAILED" => Some(Self::Failed),
+                "DELETED" => Some(Self::Deleted),
+                "PURGING" => Some(Self::Purging),
+                _ => None,
+            }
+        }
     }
 }
 /// Request message for \[VmwareEngine.ListPrivateClouds][google.cloud.vmwareengine.v1.VmwareEngine.ListPrivateClouds\]
@@ -442,6 +455,18 @@ pub mod cluster {
                 State::Repairing => "REPAIRING",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ACTIVE" => Some(Self::Active),
+                "CREATING" => Some(Self::Creating),
+                "UPDATING" => Some(Self::Updating),
+                "DELETING" => Some(Self::Deleting),
+                "REPAIRING" => Some(Self::Repairing),
+                _ => None,
+            }
+        }
     }
 }
 /// Request message for \[VmwareEngine.ListClusters][google.cloud.vmwareengine.v1.VmwareEngine.ListClusters\]
@@ -660,6 +685,17 @@ pub mod subnet {
                 State::Creating => "CREATING",
                 State::Updating => "UPDATING",
                 State::Deleting => "DELETING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ACTIVE" => Some(Self::Active),
+                "CREATING" => Some(Self::Creating),
+                "UPDATING" => Some(Self::Updating),
+                "DELETING" => Some(Self::Deleting),
+                _ => None,
             }
         }
     }
@@ -1024,6 +1060,16 @@ pub mod hcx_activation_key {
                 State::Creating => "CREATING",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "AVAILABLE" => Some(Self::Available),
+                "CONSUMED" => Some(Self::Consumed),
+                "CREATING" => Some(Self::Creating),
+                _ => None,
+            }
+        }
     }
 }
 /// Request message for \[VmwareEngine.ListHcxActivationKeys][google.cloud.vmwareengine.v1.VmwareEngine.ListHcxActivationKeys\]
@@ -1162,6 +1208,15 @@ pub mod hcx {
                 State::Creating => "CREATING",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ACTIVE" => Some(Self::Active),
+                "CREATING" => Some(Self::Creating),
+                _ => None,
+            }
+        }
     }
 }
 /// Details about a NSX Manager appliance.
@@ -1216,6 +1271,15 @@ pub mod nsx {
                 State::Creating => "CREATING",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ACTIVE" => Some(Self::Active),
+                "CREATING" => Some(Self::Creating),
+                _ => None,
+            }
+        }
     }
 }
 /// Details about a vCenter Server management appliance.
@@ -1268,6 +1332,15 @@ pub mod vcenter {
                 State::Unspecified => "STATE_UNSPECIFIED",
                 State::Active => "ACTIVE",
                 State::Creating => "CREATING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ACTIVE" => Some(Self::Active),
+                "CREATING" => Some(Self::Creating),
+                _ => None,
             }
         }
     }
@@ -1380,6 +1453,16 @@ pub mod network_policy {
                     State::Unprovisioned => "UNPROVISIONED",
                     State::Reconciling => "RECONCILING",
                     State::Active => "ACTIVE",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "UNPROVISIONED" => Some(Self::Unprovisioned),
+                    "RECONCILING" => Some(Self::Reconciling),
+                    "ACTIVE" => Some(Self::Active),
+                    _ => None,
                 }
             }
         }
@@ -1679,6 +1762,16 @@ pub mod vmware_engine_network {
                     Type::GoogleCloud => "GOOGLE_CLOUD",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "INTRANET" => Some(Self::Intranet),
+                    "INTERNET" => Some(Self::Internet),
+                    "GOOGLE_CLOUD" => Some(Self::GoogleCloud),
+                    _ => None,
+                }
+            }
         }
     }
     /// Enum State defines possible states of VMware Engine network.
@@ -1720,6 +1813,17 @@ pub mod vmware_engine_network {
                 State::Deleting => "DELETING",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CREATING" => Some(Self::Creating),
+                "ACTIVE" => Some(Self::Active),
+                "UPDATING" => Some(Self::Updating),
+                "DELETING" => Some(Self::Deleting),
+                _ => None,
+            }
+        }
     }
     /// Enum Type defines possible types of VMware Engine network.
     #[derive(
@@ -1751,6 +1855,14 @@ pub mod vmware_engine_network {
             match self {
                 Type::Unspecified => "TYPE_UNSPECIFIED",
                 Type::Legacy => "LEGACY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "LEGACY" => Some(Self::Legacy),
+                _ => None,
             }
         }
     }

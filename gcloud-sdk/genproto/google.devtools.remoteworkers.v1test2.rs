@@ -356,6 +356,17 @@ pub mod admin_temp {
                 Command::HostRestart => "HOST_RESTART",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "BOT_UPDATE" => Some(Self::BotUpdate),
+                "BOT_RESTART" => Some(Self::BotRestart),
+                "BOT_TERMINATE" => Some(Self::BotTerminate),
+                "HOST_RESTART" => Some(Self::HostRestart),
+                _ => None,
+            }
+        }
     }
 }
 /// Request message for CreateBotSession.
@@ -428,6 +439,18 @@ impl BotStatus {
             BotStatus::Initializing => "INITIALIZING",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "BOT_STATUS_UNSPECIFIED" => Some(Self::Unspecified),
+            "OK" => Some(Self::Ok),
+            "UNHEALTHY" => Some(Self::Unhealthy),
+            "HOST_REBOOTING" => Some(Self::HostRebooting),
+            "BOT_TERMINATING" => Some(Self::BotTerminating),
+            "INITIALIZING" => Some(Self::Initializing),
+            _ => None,
+        }
+    }
 }
 /// The state of the lease. All leases start in the PENDING state. A bot can
 /// change PENDING to ACTIVE or (in the case of an error) COMPLETED, or from
@@ -463,6 +486,17 @@ impl LeaseState {
             LeaseState::Active => "ACTIVE",
             LeaseState::Completed => "COMPLETED",
             LeaseState::Cancelled => "CANCELLED",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "LEASE_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+            "PENDING" => Some(Self::Pending),
+            "ACTIVE" => Some(Self::Active),
+            "COMPLETED" => Some(Self::Completed),
+            "CANCELLED" => Some(Self::Cancelled),
+            _ => None,
         }
     }
 }

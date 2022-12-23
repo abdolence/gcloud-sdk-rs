@@ -500,6 +500,15 @@ pub mod partition_spec {
                 PartitionKey::RequestTime => "REQUEST_TIME",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PARTITION_KEY_UNSPECIFIED" => Some(Self::Unspecified),
+                "READ_TIME" => Some(Self::ReadTime),
+                "REQUEST_TIME" => Some(Self::RequestTime),
+                _ => None,
+            }
+        }
     }
 }
 /// Asset content type.
@@ -532,6 +541,18 @@ impl ContentType {
             ContentType::OrgPolicy => "ORG_POLICY",
             ContentType::AccessPolicy => "ACCESS_POLICY",
             ContentType::Relationship => "RELATIONSHIP",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "CONTENT_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "RESOURCE" => Some(Self::Resource),
+            "IAM_POLICY" => Some(Self::IamPolicy),
+            "ORG_POLICY" => Some(Self::OrgPolicy),
+            "ACCESS_POLICY" => Some(Self::AccessPolicy),
+            "RELATIONSHIP" => Some(Self::Relationship),
+            _ => None,
         }
     }
 }

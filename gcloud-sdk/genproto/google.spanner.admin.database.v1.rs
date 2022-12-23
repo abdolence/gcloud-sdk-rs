@@ -83,6 +83,15 @@ pub mod encryption_info {
                 Type::CustomerManagedEncryption => "CUSTOMER_MANAGED_ENCRYPTION",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "GOOGLE_DEFAULT_ENCRYPTION" => Some(Self::GoogleDefaultEncryption),
+                "CUSTOMER_MANAGED_ENCRYPTION" => Some(Self::CustomerManagedEncryption),
+                _ => None,
+            }
+        }
     }
 }
 /// Indicates the dialect type of a database.
@@ -107,6 +116,15 @@ impl DatabaseDialect {
             DatabaseDialect::Unspecified => "DATABASE_DIALECT_UNSPECIFIED",
             DatabaseDialect::GoogleStandardSql => "GOOGLE_STANDARD_SQL",
             DatabaseDialect::Postgresql => "POSTGRESQL",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "DATABASE_DIALECT_UNSPECIFIED" => Some(Self::Unspecified),
+            "GOOGLE_STANDARD_SQL" => Some(Self::GoogleStandardSql),
+            "POSTGRESQL" => Some(Self::Postgresql),
+            _ => None,
         }
     }
 }
@@ -227,6 +245,15 @@ pub mod backup {
                 State::Unspecified => "STATE_UNSPECIFIED",
                 State::Creating => "CREATING",
                 State::Ready => "READY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CREATING" => Some(Self::Creating),
+                "READY" => Some(Self::Ready),
+                _ => None,
             }
         }
     }
@@ -661,6 +688,16 @@ pub mod create_backup_encryption_config {
                 }
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ENCRYPTION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "USE_DATABASE_ENCRYPTION" => Some(Self::UseDatabaseEncryption),
+                "GOOGLE_DEFAULT_ENCRYPTION" => Some(Self::GoogleDefaultEncryption),
+                "CUSTOMER_MANAGED_ENCRYPTION" => Some(Self::CustomerManagedEncryption),
+                _ => None,
+            }
+        }
     }
 }
 /// Encryption configuration for the copied backup.
@@ -722,6 +759,18 @@ pub mod copy_backup_encryption_config {
                 EncryptionType::CustomerManagedEncryption => {
                     "CUSTOMER_MANAGED_ENCRYPTION"
                 }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ENCRYPTION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "USE_CONFIG_DEFAULT_OR_BACKUP_ENCRYPTION" => {
+                    Some(Self::UseConfigDefaultOrBackupEncryption)
+                }
+                "GOOGLE_DEFAULT_ENCRYPTION" => Some(Self::GoogleDefaultEncryption),
+                "CUSTOMER_MANAGED_ENCRYPTION" => Some(Self::CustomerManagedEncryption),
+                _ => None,
             }
         }
     }
@@ -857,6 +906,16 @@ pub mod database {
                 State::Creating => "CREATING",
                 State::Ready => "READY",
                 State::ReadyOptimizing => "READY_OPTIMIZING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CREATING" => Some(Self::Creating),
+                "READY" => Some(Self::Ready),
+                "READY_OPTIMIZING" => Some(Self::ReadyOptimizing),
+                _ => None,
             }
         }
     }
@@ -1235,6 +1294,18 @@ pub mod restore_database_encryption_config {
                 }
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ENCRYPTION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "USE_CONFIG_DEFAULT_OR_BACKUP_ENCRYPTION" => {
+                    Some(Self::UseConfigDefaultOrBackupEncryption)
+                }
+                "GOOGLE_DEFAULT_ENCRYPTION" => Some(Self::GoogleDefaultEncryption),
+                "CUSTOMER_MANAGED_ENCRYPTION" => Some(Self::CustomerManagedEncryption),
+                _ => None,
+            }
+        }
     }
 }
 /// Metadata type for the long-running operation returned by
@@ -1372,6 +1443,14 @@ impl RestoreSourceType {
         match self {
             RestoreSourceType::TypeUnspecified => "TYPE_UNSPECIFIED",
             RestoreSourceType::Backup => "BACKUP",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "TYPE_UNSPECIFIED" => Some(Self::TypeUnspecified),
+            "BACKUP" => Some(Self::Backup),
+            _ => None,
         }
     }
 }

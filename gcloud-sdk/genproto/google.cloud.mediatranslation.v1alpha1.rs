@@ -299,6 +299,14 @@ pub mod streaming_translate_speech_response {
                 SpeechEventType::EndOfSingleUtterance => "END_OF_SINGLE_UTTERANCE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SPEECH_EVENT_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "END_OF_SINGLE_UTTERANCE" => Some(Self::EndOfSingleUtterance),
+                _ => None,
+            }
+        }
     }
 }
 /// Generated client implementations.

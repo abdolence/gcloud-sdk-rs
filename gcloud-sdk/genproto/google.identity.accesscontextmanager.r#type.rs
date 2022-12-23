@@ -24,6 +24,16 @@ impl DeviceEncryptionStatus {
             DeviceEncryptionStatus::Encrypted => "ENCRYPTED",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "ENCRYPTION_UNSPECIFIED" => Some(Self::EncryptionUnspecified),
+            "ENCRYPTION_UNSUPPORTED" => Some(Self::EncryptionUnsupported),
+            "UNENCRYPTED" => Some(Self::Unencrypted),
+            "ENCRYPTED" => Some(Self::Encrypted),
+            _ => None,
+        }
+    }
 }
 /// The operating system type of the device.
 /// Next id: 7
@@ -61,6 +71,19 @@ impl OsType {
             OsType::Ios => "IOS",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "OS_UNSPECIFIED" => Some(Self::OsUnspecified),
+            "DESKTOP_MAC" => Some(Self::DesktopMac),
+            "DESKTOP_WINDOWS" => Some(Self::DesktopWindows),
+            "DESKTOP_LINUX" => Some(Self::DesktopLinux),
+            "DESKTOP_CHROME_OS" => Some(Self::DesktopChromeOs),
+            "ANDROID" => Some(Self::Android),
+            "IOS" => Some(Self::Ios),
+            _ => None,
+        }
+    }
 }
 /// The degree to which the device is managed by the Cloud organization.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -89,6 +112,16 @@ impl DeviceManagementLevel {
             DeviceManagementLevel::None => "NONE",
             DeviceManagementLevel::Basic => "BASIC",
             DeviceManagementLevel::Complete => "COMPLETE",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "MANAGEMENT_UNSPECIFIED" => Some(Self::ManagementUnspecified),
+            "NONE" => Some(Self::None),
+            "BASIC" => Some(Self::Basic),
+            "COMPLETE" => Some(Self::Complete),
+            _ => None,
         }
     }
 }

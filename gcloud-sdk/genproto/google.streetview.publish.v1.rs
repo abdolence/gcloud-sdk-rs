@@ -261,6 +261,20 @@ pub mod photo {
                 TransferStatus::ReceivedViaTransfer => "RECEIVED_VIA_TRANSFER",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TRANSFER_STATUS_UNKNOWN" => Some(Self::Unknown),
+                "NEVER_TRANSFERRED" => Some(Self::NeverTransferred),
+                "PENDING" => Some(Self::Pending),
+                "COMPLETED" => Some(Self::Completed),
+                "REJECTED" => Some(Self::Rejected),
+                "EXPIRED" => Some(Self::Expired),
+                "CANCELLED" => Some(Self::Cancelled),
+                "RECEIVED_VIA_TRANSFER" => Some(Self::ReceivedViaTransfer),
+                _ => None,
+            }
+        }
     }
     /// Publication status of the photo in Google Maps.
     #[derive(
@@ -295,6 +309,17 @@ pub mod photo {
                 }
                 MapsPublishStatus::Published => "PUBLISHED",
                 MapsPublishStatus::RejectedUnknown => "REJECTED_UNKNOWN",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED_MAPS_PUBLISH_STATUS" => {
+                    Some(Self::UnspecifiedMapsPublishStatus)
+                }
+                "PUBLISHED" => Some(Self::Published),
+                "REJECTED_UNKNOWN" => Some(Self::RejectedUnknown),
+                _ => None,
             }
         }
     }
@@ -403,6 +428,14 @@ pub mod photo_sequence {
             match self {
                 GpsSource::PhotoSequence => "PHOTO_SEQUENCE",
                 GpsSource::CameraMotionMetadataTrack => "CAMERA_MOTION_METADATA_TRACK",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PHOTO_SEQUENCE" => Some(Self::PhotoSequence),
+                "CAMERA_MOTION_METADATA_TRACK" => Some(Self::CameraMotionMetadataTrack),
+                _ => None,
             }
         }
     }
@@ -539,6 +572,17 @@ impl ProcessingState {
             ProcessingState::Failed => "FAILED",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "PROCESSING_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+            "PENDING" => Some(Self::Pending),
+            "PROCESSING" => Some(Self::Processing),
+            "PROCESSED" => Some(Self::Processed),
+            "FAILED" => Some(Self::Failed),
+            _ => None,
+        }
+    }
 }
 /// The possible reasons this \[PhotoSequence\]
 /// \[google.streetview.publish.v1.PhotoSequence\] failed to process.
@@ -632,6 +676,36 @@ impl ProcessingFailureReason {
             ProcessingFailureReason::InsufficientVideoFrames => {
                 "INSUFFICIENT_VIDEO_FRAMES"
             }
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "PROCESSING_FAILURE_REASON_UNSPECIFIED" => Some(Self::Unspecified),
+            "LOW_RESOLUTION" => Some(Self::LowResolution),
+            "DUPLICATE" => Some(Self::Duplicate),
+            "INSUFFICIENT_GPS" => Some(Self::InsufficientGps),
+            "NO_OVERLAP_GPS" => Some(Self::NoOverlapGps),
+            "INVALID_GPS" => Some(Self::InvalidGps),
+            "FAILED_TO_REFINE_POSITIONS" => Some(Self::FailedToRefinePositions),
+            "TAKEDOWN" => Some(Self::Takedown),
+            "CORRUPT_VIDEO" => Some(Self::CorruptVideo),
+            "INTERNAL" => Some(Self::Internal),
+            "INVALID_VIDEO_FORMAT" => Some(Self::InvalidVideoFormat),
+            "INVALID_VIDEO_DIMENSIONS" => Some(Self::InvalidVideoDimensions),
+            "INVALID_CAPTURE_TIME" => Some(Self::InvalidCaptureTime),
+            "GPS_DATA_GAP" => Some(Self::GpsDataGap),
+            "JUMPY_GPS" => Some(Self::JumpyGps),
+            "INVALID_IMU" => Some(Self::InvalidImu),
+            "INSUFFICIENT_IMU" => Some(Self::InsufficientImu),
+            "INSUFFICIENT_OVERLAP_TIME_SERIES" => {
+                Some(Self::InsufficientOverlapTimeSeries)
+            }
+            "IMU_DATA_GAP" => Some(Self::ImuDataGap),
+            "UNSUPPORTED_CAMERA" => Some(Self::UnsupportedCamera),
+            "NOT_OUTDOORS" => Some(Self::NotOutdoors),
+            "INSUFFICIENT_VIDEO_FRAMES" => Some(Self::InsufficientVideoFrames),
+            _ => None,
         }
     }
 }
@@ -919,6 +993,15 @@ pub mod create_photo_sequence_request {
                 InputType::Xdm => "XDM",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "INPUT_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "VIDEO" => Some(Self::Video),
+                "XDM" => Some(Self::Xdm),
+                _ => None,
+            }
+        }
     }
 }
 /// Request to get a \[PhotoSequence][google.streetview.publish.v1.PhotoSequence\].
@@ -1062,6 +1145,14 @@ impl PhotoView {
         match self {
             PhotoView::Basic => "BASIC",
             PhotoView::IncludeDownloadUrl => "INCLUDE_DOWNLOAD_URL",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "BASIC" => Some(Self::Basic),
+            "INCLUDE_DOWNLOAD_URL" => Some(Self::IncludeDownloadUrl),
+            _ => None,
         }
     }
 }

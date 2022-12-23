@@ -67,6 +67,14 @@ pub mod pgp_signed_attestation {
                 ContentType::SimpleSigningJson => "SIMPLE_SIGNING_JSON",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CONTENT_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "SIMPLE_SIGNING_JSON" => Some(Self::SimpleSigningJson),
+                _ => None,
+            }
+        }
     }
     /// This field is used by verifiers to select the public key used to validate
     /// the signature. Note that the policy of the verifier ultimately determines
@@ -157,6 +165,14 @@ pub mod generic_signed_attestation {
             match self {
                 ContentType::Unspecified => "CONTENT_TYPE_UNSPECIFIED",
                 ContentType::SimpleSigningJson => "SIMPLE_SIGNING_JSON",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CONTENT_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "SIMPLE_SIGNING_JSON" => Some(Self::SimpleSigningJson),
+                _ => None,
             }
         }
     }

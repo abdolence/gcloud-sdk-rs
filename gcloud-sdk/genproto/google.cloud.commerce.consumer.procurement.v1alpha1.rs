@@ -204,6 +204,17 @@ impl LineItemChangeType {
             }
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "LINE_ITEM_CHANGE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "LINE_ITEM_CHANGE_TYPE_CREATE" => Some(Self::Create),
+            "LINE_ITEM_CHANGE_TYPE_UPDATE" => Some(Self::Update),
+            "LINE_ITEM_CHANGE_TYPE_CANCEL" => Some(Self::Cancel),
+            "LINE_ITEM_CHANGE_TYPE_REVERT_CANCELLATION" => Some(Self::RevertCancellation),
+            _ => None,
+        }
+    }
 }
 /// State of a change.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -248,6 +259,19 @@ impl LineItemChangeState {
             LineItemChangeState::Activating => "LINE_ITEM_CHANGE_STATE_ACTIVATING",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "LINE_ITEM_CHANGE_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+            "LINE_ITEM_CHANGE_STATE_PENDING_APPROVAL" => Some(Self::PendingApproval),
+            "LINE_ITEM_CHANGE_STATE_APPROVED" => Some(Self::Approved),
+            "LINE_ITEM_CHANGE_STATE_COMPLETED" => Some(Self::Completed),
+            "LINE_ITEM_CHANGE_STATE_REJECTED" => Some(Self::Rejected),
+            "LINE_ITEM_CHANGE_STATE_ABANDONED" => Some(Self::Abandoned),
+            "LINE_ITEM_CHANGE_STATE_ACTIVATING" => Some(Self::Activating),
+            _ => None,
+        }
+    }
 }
 /// Predefined types for line item change state reason.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -282,6 +306,20 @@ impl LineItemChangeStateReasonType {
             LineItemChangeStateReasonType::SystemCancelled => {
                 "LINE_ITEM_CHANGE_STATE_REASON_TYPE_SYSTEM_CANCELLED"
             }
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "LINE_ITEM_CHANGE_STATE_REASON_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "LINE_ITEM_CHANGE_STATE_REASON_TYPE_EXPIRED" => Some(Self::Expired),
+            "LINE_ITEM_CHANGE_STATE_REASON_TYPE_USER_CANCELLED" => {
+                Some(Self::UserCancelled)
+            }
+            "LINE_ITEM_CHANGE_STATE_REASON_TYPE_SYSTEM_CANCELLED" => {
+                Some(Self::SystemCancelled)
+            }
+            _ => None,
         }
     }
 }

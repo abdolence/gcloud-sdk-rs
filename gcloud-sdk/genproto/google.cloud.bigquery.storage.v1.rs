@@ -68,6 +68,15 @@ pub mod arrow_serialization_options {
                 CompressionCodec::Zstd => "ZSTD",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "COMPRESSION_UNSPECIFIED" => Some(Self::CompressionUnspecified),
+                "LZ4_FRAME" => Some(Self::Lz4Frame),
+                "ZSTD" => Some(Self::Zstd),
+                _ => None,
+            }
+        }
     }
 }
 /// Avro schema.
@@ -292,6 +301,28 @@ pub mod table_field_schema {
                 Type::Json => "JSON",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "STRING" => Some(Self::String),
+                "INT64" => Some(Self::Int64),
+                "DOUBLE" => Some(Self::Double),
+                "STRUCT" => Some(Self::Struct),
+                "BYTES" => Some(Self::Bytes),
+                "BOOL" => Some(Self::Bool),
+                "TIMESTAMP" => Some(Self::Timestamp),
+                "DATE" => Some(Self::Date),
+                "TIME" => Some(Self::Time),
+                "DATETIME" => Some(Self::Datetime),
+                "GEOGRAPHY" => Some(Self::Geography),
+                "NUMERIC" => Some(Self::Numeric),
+                "BIGNUMERIC" => Some(Self::Bignumeric),
+                "INTERVAL" => Some(Self::Interval),
+                "JSON" => Some(Self::Json),
+                _ => None,
+            }
+        }
     }
     #[derive(
         Clone,
@@ -323,6 +354,16 @@ pub mod table_field_schema {
                 Mode::Nullable => "NULLABLE",
                 Mode::Required => "REQUIRED",
                 Mode::Repeated => "REPEATED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "NULLABLE" => Some(Self::Nullable),
+                "REQUIRED" => Some(Self::Required),
+                "REPEATED" => Some(Self::Repeated),
+                _ => None,
             }
         }
     }
@@ -584,6 +625,16 @@ pub mod write_stream {
                 Type::Buffered => "BUFFERED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "COMMITTED" => Some(Self::Committed),
+                "PENDING" => Some(Self::Pending),
+                "BUFFERED" => Some(Self::Buffered),
+                _ => None,
+            }
+        }
     }
     /// Mode enum of the stream.
     #[derive(
@@ -616,6 +667,14 @@ pub mod write_stream {
                 WriteMode::Insert => "INSERT",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "WRITE_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "INSERT" => Some(Self::Insert),
+                _ => None,
+            }
+        }
     }
 }
 /// Data format for input or output data.
@@ -641,6 +700,15 @@ impl DataFormat {
             DataFormat::Unspecified => "DATA_FORMAT_UNSPECIFIED",
             DataFormat::Avro => "AVRO",
             DataFormat::Arrow => "ARROW",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "DATA_FORMAT_UNSPECIFIED" => Some(Self::Unspecified),
+            "AVRO" => Some(Self::Avro),
+            "ARROW" => Some(Self::Arrow),
+            _ => None,
         }
     }
 }
@@ -670,6 +738,15 @@ impl WriteStreamView {
             WriteStreamView::Unspecified => "WRITE_STREAM_VIEW_UNSPECIFIED",
             WriteStreamView::Basic => "BASIC",
             WriteStreamView::Full => "FULL",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "WRITE_STREAM_VIEW_UNSPECIFIED" => Some(Self::Unspecified),
+            "BASIC" => Some(Self::Basic),
+            "FULL" => Some(Self::Full),
+            _ => None,
         }
     }
 }
@@ -987,6 +1064,15 @@ pub mod append_rows_request {
                 MissingValueInterpretation::DefaultValue => "DEFAULT_VALUE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MISSING_VALUE_INTERPRETATION_UNSPECIFIED" => Some(Self::Unspecified),
+                "NULL_VALUE" => Some(Self::NullValue),
+                "DEFAULT_VALUE" => Some(Self::DefaultValue),
+                _ => None,
+            }
+        }
     }
     /// Input rows. The `writer_schema` field must be specified at the initial
     /// request and currently, it will be ignored if specified in following
@@ -1220,6 +1306,22 @@ pub mod storage_error {
                 StorageErrorCode::OffsetOutOfRange => "OFFSET_OUT_OF_RANGE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STORAGE_ERROR_CODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "TABLE_NOT_FOUND" => Some(Self::TableNotFound),
+                "STREAM_ALREADY_COMMITTED" => Some(Self::StreamAlreadyCommitted),
+                "STREAM_NOT_FOUND" => Some(Self::StreamNotFound),
+                "INVALID_STREAM_TYPE" => Some(Self::InvalidStreamType),
+                "INVALID_STREAM_STATE" => Some(Self::InvalidStreamState),
+                "STREAM_FINALIZED" => Some(Self::StreamFinalized),
+                "SCHEMA_MISMATCH_EXTRA_FIELDS" => Some(Self::SchemaMismatchExtraFields),
+                "OFFSET_ALREADY_EXISTS" => Some(Self::OffsetAlreadyExists),
+                "OFFSET_OUT_OF_RANGE" => Some(Self::OffsetOutOfRange),
+                _ => None,
+            }
+        }
     }
 }
 /// The message that presents row level error info in a request.
@@ -1266,6 +1368,14 @@ pub mod row_error {
             match self {
                 RowErrorCode::Unspecified => "ROW_ERROR_CODE_UNSPECIFIED",
                 RowErrorCode::FieldsError => "FIELDS_ERROR",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ROW_ERROR_CODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "FIELDS_ERROR" => Some(Self::FieldsError),
+                _ => None,
             }
         }
     }

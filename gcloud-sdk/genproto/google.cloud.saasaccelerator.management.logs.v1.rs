@@ -56,6 +56,16 @@ pub mod notification_stage {
                 Stage::Dropped => "DROPPED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STAGE_UNSPECIFIED" => Some(Self::Unspecified),
+                "SENT" => Some(Self::Sent),
+                "SEND_FAILURE" => Some(Self::SendFailure),
+                "DROPPED" => Some(Self::Dropped),
+                _ => None,
+            }
+        }
     }
     /// Event that triggered the notification.
     #[derive(
@@ -85,6 +95,14 @@ pub mod notification_stage {
             match self {
                 Event::Unspecified => "EVENT_UNSPECIFIED",
                 Event::HealthStatusChange => "HEALTH_STATUS_CHANGE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "EVENT_UNSPECIFIED" => Some(Self::Unspecified),
+                "HEALTH_STATUS_CHANGE" => Some(Self::HealthStatusChange),
+                _ => None,
             }
         }
     }

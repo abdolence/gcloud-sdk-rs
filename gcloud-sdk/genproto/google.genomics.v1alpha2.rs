@@ -485,6 +485,16 @@ pub mod pipeline_resources {
                     Type::LocalSsd => "LOCAL_SSD",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "PERSISTENT_HDD" => Some(Self::PersistentHdd),
+                    "PERSISTENT_SSD" => Some(Self::PersistentSsd),
+                    "LOCAL_SSD" => Some(Self::LocalSsd),
+                    _ => None,
+                }
+            }
         }
     }
 }

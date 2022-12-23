@@ -73,6 +73,15 @@ pub mod audio_in_config {
                 Encoding::Flac => "FLAC",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ENCODING_UNSPECIFIED" => Some(Self::Unspecified),
+                "LINEAR16" => Some(Self::Linear16),
+                "FLAC" => Some(Self::Flac),
+                _ => None,
+            }
+        }
     }
 }
 /// Specifies the desired format for the server to use when it returns
@@ -133,6 +142,16 @@ pub mod audio_out_config {
                 Encoding::Linear16 => "LINEAR16",
                 Encoding::Mp3 => "MP3",
                 Encoding::OpusInOgg => "OPUS_IN_OGG",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ENCODING_UNSPECIFIED" => Some(Self::Unspecified),
+                "LINEAR16" => Some(Self::Linear16),
+                "MP3" => Some(Self::Mp3),
+                "OPUS_IN_OGG" => Some(Self::OpusInOgg),
+                _ => None,
             }
         }
     }
@@ -232,6 +251,15 @@ pub mod converse_result {
                 MicrophoneMode::DialogFollowOn => "DIALOG_FOLLOW_ON",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MICROPHONE_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CLOSE_MICROPHONE" => Some(Self::CloseMicrophone),
+                "DIALOG_FOLLOW_ON" => Some(Self::DialogFollowOn),
+                _ => None,
+            }
+        }
     }
 }
 /// The top-level message sent by the client. Clients must send at least two, and
@@ -313,6 +341,14 @@ pub mod converse_response {
             match self {
                 EventType::Unspecified => "EVENT_TYPE_UNSPECIFIED",
                 EventType::EndOfUtterance => "END_OF_UTTERANCE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "EVENT_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "END_OF_UTTERANCE" => Some(Self::EndOfUtterance),
+                _ => None,
             }
         }
     }

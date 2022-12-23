@@ -159,7 +159,8 @@ pub mod rule {
         pub redirect_uri: ::prost::alloc::string::String,
     }
     /// Creates a set of terms that will be treated as synonyms of each other.
-    /// Example: synonyms of "sneakers" and "shoes".
+    /// Example: synonyms of "sneakers" and "shoes":
+    ///
     ///   * "sneakers" will use a synonym of "shoes".
     ///   * "shoes" will use a synonym of "sneakers".
     #[allow(clippy::derive_partial_eq_without_eq)]
@@ -822,6 +823,15 @@ impl AttributeConfigLevel {
             }
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "ATTRIBUTE_CONFIG_LEVEL_UNSPECIFIED" => Some(Self::Unspecified),
+            "PRODUCT_LEVEL_ATTRIBUTE_CONFIG" => Some(Self::ProductLevelAttributeConfig),
+            "CATALOG_LEVEL_ATTRIBUTE_CONFIG" => Some(Self::CatalogLevelAttributeConfig),
+            _ => None,
+        }
+    }
 }
 /// The type of solution.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -844,6 +854,15 @@ impl SolutionType {
             SolutionType::Unspecified => "SOLUTION_TYPE_UNSPECIFIED",
             SolutionType::Recommendation => "SOLUTION_TYPE_RECOMMENDATION",
             SolutionType::Search => "SOLUTION_TYPE_SEARCH",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "SOLUTION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "SOLUTION_TYPE_RECOMMENDATION" => Some(Self::Recommendation),
+            "SOLUTION_TYPE_SEARCH" => Some(Self::Search),
+            _ => None,
         }
     }
 }
@@ -878,6 +897,19 @@ impl RecommendationsFilteringOption {
             }
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "RECOMMENDATIONS_FILTERING_OPTION_UNSPECIFIED" => Some(Self::Unspecified),
+            "RECOMMENDATIONS_FILTERING_DISABLED" => {
+                Some(Self::RecommendationsFilteringDisabled)
+            }
+            "RECOMMENDATIONS_FILTERING_ENABLED" => {
+                Some(Self::RecommendationsFilteringEnabled)
+            }
+            _ => None,
+        }
+    }
 }
 /// The use case of Cloud Retail Search.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -903,6 +935,15 @@ impl SearchSolutionUseCase {
             SearchSolutionUseCase::Unspecified => "SEARCH_SOLUTION_USE_CASE_UNSPECIFIED",
             SearchSolutionUseCase::Search => "SEARCH_SOLUTION_USE_CASE_SEARCH",
             SearchSolutionUseCase::Browse => "SEARCH_SOLUTION_USE_CASE_BROWSE",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "SEARCH_SOLUTION_USE_CASE_UNSPECIFIED" => Some(Self::Unspecified),
+            "SEARCH_SOLUTION_USE_CASE_SEARCH" => Some(Self::Search),
+            "SEARCH_SOLUTION_USE_CASE_BROWSE" => Some(Self::Browse),
+            _ => None,
         }
     }
 }
@@ -1146,6 +1187,11 @@ pub struct Product {
     /// The timestamp when this \[Product][google.cloud.retail.v2beta.Product\]
     /// becomes available for
     /// \[SearchService.Search][google.cloud.retail.v2beta.SearchService.Search\].
+    /// Note that this is only applicable to
+    /// \[Type.PRIMARY][google.cloud.retail.v2beta.Product.Type.PRIMARY\] and
+    /// \[Type.COLLECTION][google.cloud.retail.v2beta.Product.Type.COLLECTION\], and
+    /// ignored for
+    /// \[Type.VARIANT][google.cloud.retail.v2beta.Product.Type.VARIANT\].
     #[prost(message, optional, tag = "18")]
     pub available_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The online availability of the
@@ -1333,6 +1379,9 @@ pub struct Product {
     /// Note: Returning more fields in
     /// \[SearchResponse][google.cloud.retail.v2beta.SearchResponse\] can increase
     /// response payload size and serving latency.
+    ///
+    /// This field is deprecated. Use the retrievable site-wide control instead.
+    #[deprecated]
     #[prost(message, optional, tag = "30")]
     pub retrievable_fields: ::core::option::Option<::prost_types::FieldMask>,
     /// Output only. Product variants grouped together on primary product which
@@ -1418,6 +1467,16 @@ pub mod product {
                 Type::Collection => "COLLECTION",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PRIMARY" => Some(Self::Primary),
+                "VARIANT" => Some(Self::Variant),
+                "COLLECTION" => Some(Self::Collection),
+                _ => None,
+            }
+        }
     }
     /// Product availability. If this field is unspecified, the product is
     /// assumed to be in stock.
@@ -1461,12 +1520,30 @@ pub mod product {
                 Availability::Backorder => "BACKORDER",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "AVAILABILITY_UNSPECIFIED" => Some(Self::Unspecified),
+                "IN_STOCK" => Some(Self::InStock),
+                "OUT_OF_STOCK" => Some(Self::OutOfStock),
+                "PREORDER" => Some(Self::Preorder),
+                "BACKORDER" => Some(Self::Backorder),
+                _ => None,
+            }
+        }
     }
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Expiration {
         /// The timestamp when this product becomes unavailable for
         /// \[SearchService.Search][google.cloud.retail.v2beta.SearchService.Search\].
+        /// Note that this is only applicable to
+        /// \[Type.PRIMARY][google.cloud.retail.v2beta.Product.Type.PRIMARY\] and
+        /// \[Type.COLLECTION][google.cloud.retail.v2beta.Product.Type.COLLECTION\],
+        /// and ignored for
+        /// \[Type.VARIANT][google.cloud.retail.v2beta.Product.Type.VARIANT\]. In
+        /// general, we suggest the users to delete the stale products explicitly,
+        /// instead of using this field to determine staleness.
         ///
         /// If it is set, the \[Product][google.cloud.retail.v2beta.Product\] is not
         /// available for
@@ -1487,7 +1564,14 @@ pub mod product {
         /// \[expiration_date\](<https://support.google.com/merchants/answer/6324499>).
         #[prost(message, tag = "16")]
         ExpireTime(::prost_types::Timestamp),
-        /// Input only. The TTL (time to live) of the product.
+        /// Input only. The TTL (time to live) of the product. Note that this is only
+        /// applicable to
+        /// \[Type.PRIMARY][google.cloud.retail.v2beta.Product.Type.PRIMARY\] and
+        /// \[Type.COLLECTION][google.cloud.retail.v2beta.Product.Type.COLLECTION\],
+        /// and ignored for
+        /// \[Type.VARIANT][google.cloud.retail.v2beta.Product.Type.VARIANT\]. In
+        /// general, we suggest the users to delete the stale products explicitly,
+        /// instead of using this field to determine staleness.
         ///
         /// If it is set, it must be a non-negative value, and
         /// \[expire_time][google.cloud.retail.v2beta.Product.expire_time\] is set as
@@ -2067,6 +2151,15 @@ pub mod import_products_request {
                 ReconciliationMode::Full => "FULL",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "RECONCILIATION_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "INCREMENTAL" => Some(Self::Incremental),
+                "FULL" => Some(Self::Full),
+                _ => None,
+            }
+        }
     }
 }
 /// Request message for the ImportUserEvents request.
@@ -2362,13 +2455,13 @@ pub struct CatalogAttribute {
     /// APIs. This field is `False` for pre-loaded
     /// \[CatalogAttribute][google.cloud.retail.v2beta.CatalogAttribute\]s.
     ///
-    /// Only pre-loaded
-    /// \[CatalogAttribute][google.cloud.retail.v2beta.CatalogAttribute\]s that are
-    /// neither in use by products nor predefined can be deleted.
-    /// \[CatalogAttribute][google.cloud.retail.v2beta.CatalogAttribute\]s that are
-    /// either in use by products or are predefined cannot be deleted; however,
-    /// their configuration properties will reset to default values upon removal
-    /// request.
+    /// Only pre-loaded [catalog
+    /// attributes]\[google.cloud.retail.v2beta.CatalogAttribute\] that are neither
+    /// in use by products nor predefined can be deleted. [Catalog
+    /// attributes]\[google.cloud.retail.v2beta.CatalogAttribute\] that are
+    /// either in use by products or are predefined attributes cannot be deleted;
+    /// however, their configuration properties will reset to default values upon
+    /// removal request.
     ///
     /// After catalog changes, it takes about 10 minutes for this field to update.
     #[prost(bool, tag = "9")]
@@ -2382,12 +2475,16 @@ pub struct CatalogAttribute {
     /// is CATALOG_LEVEL_ATTRIBUTE_CONFIG, if INDEXABLE_ENABLED attribute values
     /// are indexed so that it can be filtered, faceted, or boosted in
     /// \[SearchService.Search][google.cloud.retail.v2beta.SearchService.Search\].
+    ///
+    /// Must be specified, otherwise throws INVALID_FORMAT error.
     #[prost(enumeration = "catalog_attribute::IndexableOption", tag = "5")]
     pub indexable_option: i32,
     /// If DYNAMIC_FACETABLE_ENABLED, attribute values are available for dynamic
     /// facet. Could only be DYNAMIC_FACETABLE_DISABLED if
     /// \[CatalogAttribute.indexable_option][google.cloud.retail.v2beta.CatalogAttribute.indexable_option\]
     /// is INDEXABLE_DISABLED. Otherwise, an INVALID_ARGUMENT error is returned.
+    ///
+    /// Must be specified, otherwise throws INVALID_FORMAT error.
     #[prost(enumeration = "catalog_attribute::DynamicFacetableOption", tag = "6")]
     pub dynamic_facetable_option: i32,
     /// When
@@ -2400,6 +2497,8 @@ pub struct CatalogAttribute {
     /// will not be searchable by text queries in
     /// \[SearchService.Search][google.cloud.retail.v2beta.SearchService.Search\], as
     /// there are no text values associated to numerical attributes.
+    ///
+    /// Must be specified, otherwise throws INVALID_FORMAT error.
     #[prost(enumeration = "catalog_attribute::SearchableOption", tag = "7")]
     pub searchable_option: i32,
     /// When
@@ -2415,6 +2514,10 @@ pub struct CatalogAttribute {
     /// indexable set to enabled to enable exact-searchable.
     #[prost(enumeration = "catalog_attribute::ExactSearchableOption", tag = "11")]
     pub exact_searchable_option: i32,
+    /// If RETRIEVABLE_ENABLED, attribute values are retrievable in the search
+    /// results.
+    #[prost(enumeration = "catalog_attribute::RetrievableOption", tag = "12")]
+    pub retrievable_option: i32,
 }
 /// Nested message and enum types in `CatalogAttribute`.
 pub mod catalog_attribute {
@@ -2454,6 +2557,15 @@ pub mod catalog_attribute {
                 AttributeType::Numerical => "NUMERICAL",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNKNOWN" => Some(Self::Unknown),
+                "TEXTUAL" => Some(Self::Textual),
+                "NUMERICAL" => Some(Self::Numerical),
+                _ => None,
+            }
+        }
     }
     /// The status of the indexable option of a catalog attribute.
     #[derive(
@@ -2469,8 +2581,7 @@ pub mod catalog_attribute {
     )]
     #[repr(i32)]
     pub enum IndexableOption {
-        /// Value used when unset. Defaults to
-        /// \[INDEXABLE_ENABLED][google.cloud.retail.v2beta.CatalogAttribute.IndexableOption.INDEXABLE_ENABLED\].
+        /// Value used when unset.
         Unspecified = 0,
         /// Indexable option enabled for an attribute.
         IndexableEnabled = 1,
@@ -2489,6 +2600,15 @@ pub mod catalog_attribute {
                 IndexableOption::IndexableDisabled => "INDEXABLE_DISABLED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "INDEXABLE_OPTION_UNSPECIFIED" => Some(Self::Unspecified),
+                "INDEXABLE_ENABLED" => Some(Self::IndexableEnabled),
+                "INDEXABLE_DISABLED" => Some(Self::IndexableDisabled),
+                _ => None,
+            }
+        }
     }
     /// The status of the dynamic facetable option of a catalog attribute.
     #[derive(
@@ -2504,8 +2624,7 @@ pub mod catalog_attribute {
     )]
     #[repr(i32)]
     pub enum DynamicFacetableOption {
-        /// Value used when unset. Defaults to
-        /// \[DYNAMIC_FACETABLE_ENABLED][google.cloud.retail.v2beta.CatalogAttribute.DynamicFacetableOption.DYNAMIC_FACETABLE_ENABLED\].
+        /// Value used when unset.
         Unspecified = 0,
         /// Dynamic facetable option enabled for an attribute.
         DynamicFacetableEnabled = 1,
@@ -2530,6 +2649,15 @@ pub mod catalog_attribute {
                 }
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DYNAMIC_FACETABLE_OPTION_UNSPECIFIED" => Some(Self::Unspecified),
+                "DYNAMIC_FACETABLE_ENABLED" => Some(Self::DynamicFacetableEnabled),
+                "DYNAMIC_FACETABLE_DISABLED" => Some(Self::DynamicFacetableDisabled),
+                _ => None,
+            }
+        }
     }
     /// The status of the searchable option of a catalog attribute.
     #[derive(
@@ -2545,8 +2673,7 @@ pub mod catalog_attribute {
     )]
     #[repr(i32)]
     pub enum SearchableOption {
-        /// Value used when unset. Defaults to
-        /// \[SEARCHABLE_DISABLED][google.cloud.retail.v2beta.CatalogAttribute.SearchableOption.SEARCHABLE_DISABLED\].
+        /// Value used when unset.
         Unspecified = 0,
         /// Searchable option enabled for an attribute.
         SearchableEnabled = 1,
@@ -2563,6 +2690,15 @@ pub mod catalog_attribute {
                 SearchableOption::Unspecified => "SEARCHABLE_OPTION_UNSPECIFIED",
                 SearchableOption::SearchableEnabled => "SEARCHABLE_ENABLED",
                 SearchableOption::SearchableDisabled => "SEARCHABLE_DISABLED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SEARCHABLE_OPTION_UNSPECIFIED" => Some(Self::Unspecified),
+                "SEARCHABLE_ENABLED" => Some(Self::SearchableEnabled),
+                "SEARCHABLE_DISABLED" => Some(Self::SearchableDisabled),
+                _ => None,
             }
         }
     }
@@ -2604,6 +2740,59 @@ pub mod catalog_attribute {
                 ExactSearchableOption::ExactSearchableDisabled => {
                     "EXACT_SEARCHABLE_DISABLED"
                 }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "EXACT_SEARCHABLE_OPTION_UNSPECIFIED" => Some(Self::Unspecified),
+                "EXACT_SEARCHABLE_ENABLED" => Some(Self::ExactSearchableEnabled),
+                "EXACT_SEARCHABLE_DISABLED" => Some(Self::ExactSearchableDisabled),
+                _ => None,
+            }
+        }
+    }
+    /// The status of the retrievable option of a catalog attribute.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum RetrievableOption {
+        /// Value used when unset. Defaults to
+        /// \[RETRIEVABLE_DISABLED][google.cloud.retail.v2beta.CatalogAttribute.RetrievableOption.RETRIEVABLE_DISABLED\].
+        Unspecified = 0,
+        /// Retrievable option enabled for an attribute.
+        RetrievableEnabled = 1,
+        /// Retrievable option disabled for an attribute.
+        RetrievableDisabled = 2,
+    }
+    impl RetrievableOption {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                RetrievableOption::Unspecified => "RETRIEVABLE_OPTION_UNSPECIFIED",
+                RetrievableOption::RetrievableEnabled => "RETRIEVABLE_ENABLED",
+                RetrievableOption::RetrievableDisabled => "RETRIEVABLE_DISABLED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "RETRIEVABLE_OPTION_UNSPECIFIED" => Some(Self::Unspecified),
+                "RETRIEVABLE_ENABLED" => Some(Self::RetrievableEnabled),
+                "RETRIEVABLE_DISABLED" => Some(Self::RetrievableDisabled),
+                _ => None,
             }
         }
     }
@@ -2716,16 +2905,16 @@ pub struct CompletionConfig {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MerchantCenterLink {
     /// Required. The linked [Merchant center account
-    /// id](<https://developers.google.com/shopping-content/guides/accountstatuses>).
+    /// ID](<https://developers.google.com/shopping-content/guides/accountstatuses>).
     /// The account must be a standalone account or a sub-account of a MCA.
     #[prost(int64, tag = "1")]
     pub merchant_center_account_id: i64,
-    /// The branch id (e.g. 0/1/2) within this catalog that products from
+    /// The branch ID (e.g. 0/1/2) within this catalog that products from
     /// merchant_center_account_id are streamed to. When updating this field, an
     /// empty value will use the currently configured default branch. However,
     /// changing the default branch later on won't change the linked branch here.
     ///
-    /// A single branch id can only have one linked merchant center account id.
+    /// A single branch ID can only have one linked merchant center account ID.
     #[prost(string, tag = "2")]
     pub branch_id: ::prost::alloc::string::String,
     /// String representing the destination to import for, all if left empty.
@@ -2756,6 +2945,23 @@ pub struct MerchantCenterLink {
     /// Example value: `en`.
     #[prost(string, tag = "5")]
     pub language_code: ::prost::alloc::string::String,
+    /// Criteria for the Merchant Center feeds to be ingested via the link.
+    /// All offers will be ingested if the list is empty.
+    /// Otherwise the offers will be ingested from selected feeds.
+    #[prost(message, repeated, tag = "6")]
+    pub feeds: ::prost::alloc::vec::Vec<MerchantCenterFeedFilter>,
+}
+/// Merchant Center Feed filter criterion.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MerchantCenterFeedFilter {
+    /// Merchant Center primary feed ID.
+    #[prost(int64, tag = "1")]
+    pub primary_feed_id: i64,
+    /// Merchant Center primary feed name. The name is used for the display
+    /// purposes only.
+    #[prost(string, tag = "2")]
+    pub primary_feed_name: ::prost::alloc::string::String,
 }
 /// Configures Merchant Center linking.
 /// Links contained in the config will be used to sync data from a Merchant
@@ -3048,15 +3254,20 @@ pub struct BatchRemoveCatalogAttributesRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchRemoveCatalogAttributesResponse {
-    /// Catalog attributes that were deleted. Only attributes that are not [in
-    /// use]\[CatalogAttribute.in_use\] by products can be deleted.
+    /// Catalog attributes that were deleted. Only pre-loaded [catalog
+    /// attributes]\[google.cloud.retail.v2beta.CatalogAttribute\] that are
+    /// neither [in
+    /// use]\[google.cloud.retail.v2beta.CatalogAttribute.in_use\] by
+    /// products nor predefined can be deleted.
     #[prost(string, repeated, tag = "1")]
     pub deleted_catalog_attributes: ::prost::alloc::vec::Vec<
         ::prost::alloc::string::String,
     >,
-    /// Catalog attributes that were reset. Attributes that are [in
-    /// use]\[CatalogAttribute.in_use\] by products cannot be deleted, however their
-    /// configuration properties will reset to default values upon removal request.
+    /// Catalog attributes that were reset. [Catalog
+    /// attributes]\[google.cloud.retail.v2beta.CatalogAttribute\] that are either
+    /// [in use]\[google.cloud.retail.v2beta.CatalogAttribute.in_use\] by products or
+    /// are predefined attributes cannot be deleted; however, their configuration
+    /// properties will reset to default values upon removal request.
     #[prost(string, repeated, tag = "2")]
     pub reset_catalog_attributes: ::prost::alloc::vec::Vec<
         ::prost::alloc::string::String,
@@ -3499,8 +3710,10 @@ pub struct CompleteQueryRequest {
     /// number of language codes is 3.
     #[prost(string, repeated, tag = "3")]
     pub language_codes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// The device type context for completion suggestions.
-    /// It is useful to apply different suggestions on different device types, e.g.
+    /// The device type context for completion suggestions. We recommend that you
+    /// leave this field empty.
+    ///
+    /// It can apply different suggestions on different device types, e.g.
     /// `DESKTOP`, `MOBILE`. If it is empty, the suggestions are across all device
     /// types.
     ///
@@ -3753,7 +3966,7 @@ pub struct SearchRequest {
     /// `projects/*/locations/global/catalogs/default_catalog/servingConfigs/default_serving_config`
     /// or the name of the legacy placement resource, such as
     /// `projects/*/locations/global/catalogs/default_catalog/placements/default_search`.
-    /// This field is used to identify the serving configuration name and the set
+    /// This field is used to identify the serving config name and the set
     /// of models that will be used to make the search.
     #[prost(string, tag = "1")]
     pub placement: ::prost::alloc::string::String,
@@ -4020,7 +4233,7 @@ pub mod search_request {
         #[prost(message, optional, tag = "1")]
         pub facet_key: ::core::option::Option<facet_spec::FacetKey>,
         /// Maximum of facet values that should be returned for this facet. If
-        /// unspecified, defaults to 20. The maximum allowed value is 300. Values
+        /// unspecified, defaults to 50. The maximum allowed value is 300. Values
         /// above 300 will be coerced to 300.
         ///
         /// If this field is negative, an INVALID_ARGUMENT is returned.
@@ -4291,6 +4504,15 @@ pub mod search_request {
                     Mode::Enabled => "ENABLED",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "DISABLED" => Some(Self::Disabled),
+                    "ENABLED" => Some(Self::Enabled),
+                    _ => None,
+                }
+            }
         }
     }
     /// Boost specification to boost certain items.
@@ -4409,6 +4631,15 @@ pub mod search_request {
                     Condition::Auto => "AUTO",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "CONDITION_UNSPECIFIED" => Some(Self::Unspecified),
+                    "DISABLED" => Some(Self::Disabled),
+                    "AUTO" => Some(Self::Auto),
+                    _ => None,
+                }
+            }
         }
     }
     /// The specification for personalization.
@@ -4455,6 +4686,15 @@ pub mod search_request {
                     Mode::Unspecified => "MODE_UNSPECIFIED",
                     Mode::Auto => "AUTO",
                     Mode::Disabled => "DISABLED",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "AUTO" => Some(Self::Auto),
+                    "DISABLED" => Some(Self::Disabled),
+                    _ => None,
                 }
             }
         }
@@ -4508,6 +4748,15 @@ pub mod search_request {
                     Mode::Unspecified => "MODE_UNSPECIFIED",
                     Mode::SuggestionOnly => "SUGGESTION_ONLY",
                     Mode::Auto => "AUTO",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "SUGGESTION_ONLY" => Some(Self::SuggestionOnly),
+                    "AUTO" => Some(Self::Auto),
+                    _ => None,
                 }
             }
         }
@@ -4570,6 +4819,15 @@ pub mod search_request {
                 SearchMode::Unspecified => "SEARCH_MODE_UNSPECIFIED",
                 SearchMode::ProductSearchOnly => "PRODUCT_SEARCH_ONLY",
                 SearchMode::FacetedSearchOnly => "FACETED_SEARCH_ONLY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SEARCH_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PRODUCT_SEARCH_ONLY" => Some(Self::ProductSearchOnly),
+                "FACETED_SEARCH_ONLY" => Some(Self::FacetedSearchOnly),
+                _ => None,
             }
         }
     }
@@ -4921,8 +5179,8 @@ pub struct Control {
     #[prost(string, tag = "2")]
     pub display_name: ::prost::alloc::string::String,
     /// Output only. List of [serving
-    /// configuration]\[google.cloud.retail.v2beta.ServingConfig\] ids that are
-    /// associated with this control in the same
+    /// config]\[google.cloud.retail.v2beta.ServingConfig\] ids that are associated
+    /// with this control in the same
     /// \[Catalog][google.cloud.retail.v2beta.Catalog\].
     ///
     /// Note the association is managed via the
@@ -5321,13 +5579,17 @@ pub struct ExportUserEventsResponse {
     #[prost(message, optional, tag = "3")]
     pub output_result: ::core::option::Option<OutputResult>,
 }
-/// Output result.
+/// Output result that stores the information about where the exported data is
+/// stored.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OutputResult {
-    /// Export result in BigQuery.
+    /// The BigQuery location where the result is stored.
     #[prost(message, repeated, tag = "1")]
     pub bigquery_result: ::prost::alloc::vec::Vec<BigQueryOutputResult>,
+    /// The Google Cloud Storage location where the result is stored.
+    #[prost(message, repeated, tag = "2")]
+    pub gcs_result: ::prost::alloc::vec::Vec<GcsOutputResult>,
 }
 /// A BigQuery output result.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -5339,6 +5601,14 @@ pub struct BigQueryOutputResult {
     /// The ID of a BigQuery Table.
     #[prost(string, tag = "2")]
     pub table_id: ::prost::alloc::string::String,
+}
+/// A Gcs output result.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GcsOutputResult {
+    /// The uri of Gcs output
+    #[prost(string, tag = "1")]
+    pub output_uri: ::prost::alloc::string::String,
 }
 /// Metadata that describes the training and serving parameters of a
 /// \[Model][google.cloud.retail.v2beta.Model\]. A
@@ -5388,7 +5658,8 @@ pub struct Model {
     ///
     /// Currently supported values: `recommended-for-you`, `others-you-may-like`,
     /// `frequently-bought-together`, `page-optimization`, `similar-items`,
-    /// `buy-it-again`, and `recently-viewed`(readonly value).
+    /// `buy-it-again`, `on-sale-items`, and `recently-viewed`(readonly value).
+    ///
     ///
     /// This field together with
     /// \[optimization_objective][google.cloud.retail.v2beta.Model.optimization_objective\]
@@ -5510,6 +5781,16 @@ pub mod model {
                 ServingState::Tuned => "TUNED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SERVING_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "INACTIVE" => Some(Self::Inactive),
+                "ACTIVE" => Some(Self::Active),
+                "TUNED" => Some(Self::Tuned),
+                _ => None,
+            }
+        }
     }
     /// The training state of the model.
     #[derive(
@@ -5542,6 +5823,15 @@ pub mod model {
                 TrainingState::Unspecified => "TRAINING_STATE_UNSPECIFIED",
                 TrainingState::Paused => "PAUSED",
                 TrainingState::Training => "TRAINING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TRAINING_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PAUSED" => Some(Self::Paused),
+                "TRAINING" => Some(Self::Training),
+                _ => None,
             }
         }
     }
@@ -5592,6 +5882,16 @@ pub mod model {
                 PeriodicTuningState::PeriodicTuningEnabled => "PERIODIC_TUNING_ENABLED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PERIODIC_TUNING_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PERIODIC_TUNING_DISABLED" => Some(Self::PeriodicTuningDisabled),
+                "ALL_TUNING_DISABLED" => Some(Self::AllTuningDisabled),
+                "PERIODIC_TUNING_ENABLED" => Some(Self::PeriodicTuningEnabled),
+                _ => None,
+            }
+        }
     }
     /// Describes whether this model have sufficient training data
     /// to be continuously trained.
@@ -5626,6 +5926,15 @@ pub mod model {
                 DataState::Unspecified => "DATA_STATE_UNSPECIFIED",
                 DataState::DataOk => "DATA_OK",
                 DataState::DataError => "DATA_ERROR",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DATA_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "DATA_OK" => Some(Self::DataOk),
+                "DATA_ERROR" => Some(Self::DataError),
+                _ => None,
             }
         }
     }
@@ -5999,7 +6308,7 @@ pub struct PredictRequest {
     /// The ID of the Recommendations AI serving config or placement.
     /// Before you can request predictions from your model, you must create at
     /// least one serving config or placement for it. For more information, see
-    /// [Managing serving configurations]
+    /// [Manage serving configs]
     /// (<https://cloud.google.com/retail/docs/manage-configs>).
     ///
     /// The full list of available serving configs can be seen at
@@ -6055,12 +6364,11 @@ pub struct PredictRequest {
     ///   * filterOutOfStockItems  tag=(-"promotional")
     ///   * filterOutOfStockItems
     ///
-    /// If your filter blocks all prediction results, the API will return generic
-    /// (unfiltered) popular products. If you only want results strictly matching
-    /// the filters, set `strictFiltering` to True in `PredictRequest.params` to
-    /// receive empty results instead.
-    /// Note that the API will never return items with storageStatus of "EXPIRED"
-    /// or "DELETED" regardless of filter choices.
+    /// If your filter blocks all prediction results, the API will return *no*
+    /// results. If instead you want empty result sets to return generic
+    /// (unfiltered) popular products, set `strictFiltering` to False in
+    /// `PredictRequest.params`. Note that the API will never return items with
+    /// storageStatus of "EXPIRED" or "DELETED" regardless of filter choices.
     ///
     /// If `filterSyntaxV2` is set to true under the `params` field, then
     /// attribute-based expressions are expected instead of the above described
@@ -6087,7 +6395,7 @@ pub struct PredictRequest {
     /// * `returnScore`: Boolean. If set to true, the prediction 'score'
     ///     corresponding to each returned product will be set in the
     ///     `results.metadata` field in the prediction response. The given
-    ///     'score' indicates the probability of an product being clicked/purchased
+    ///     'score' indicates the probability of a product being clicked/purchased
     ///     given the user's context and history.
     /// * `strictFiltering`: Boolean. True by default. If set to false, the service
     ///     will return generic (unfiltered) popular products instead of empty if
@@ -7673,6 +7981,15 @@ pub mod serving_config {
                 DiversityType::DataDrivenDiversity => "DATA_DRIVEN_DIVERSITY",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DIVERSITY_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "RULE_BASED_DIVERSITY" => Some(Self::RuleBasedDiversity),
+                "DATA_DRIVEN_DIVERSITY" => Some(Self::DataDrivenDiversity),
+                _ => None,
+            }
+        }
     }
 }
 /// Request for CreateServingConfig method.
@@ -8024,6 +8341,12 @@ pub struct WriteUserEventRequest {
     /// Required. User event to write.
     #[prost(message, optional, tag = "2")]
     pub user_event: ::core::option::Option<UserEvent>,
+    /// If set to true, the user event will be written asynchronously after
+    /// validation, and the API will respond without waiting for the write.
+    /// Therefore, silent failures can occur even if the API returns success. In
+    /// case of silent failures, error messages can be found in Stackdriver logs.
+    #[prost(bool, tag = "3")]
+    pub write_async: bool,
 }
 /// Request message for CollectUserEvent method.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -8048,6 +8371,31 @@ pub struct CollectUserEventRequest {
     /// payload bytes.
     #[prost(int64, tag = "4")]
     pub ets: i64,
+    /// An arbitrary serialized JSON string that contains necessary information
+    /// that can comprise a user event. When this field is specified, the
+    /// user_event field will be ignored. Note: line-delimited JSON is not
+    /// supported, a single JSON only.
+    #[prost(string, tag = "5")]
+    pub raw_json: ::prost::alloc::string::String,
+    /// The rule that can convert the raw_json to a user event. It is needed
+    /// only when the raw_json is set.
+    #[prost(oneof = "collect_user_event_request::ConversionRule", tags = "6")]
+    pub conversion_rule: ::core::option::Option<
+        collect_user_event_request::ConversionRule,
+    >,
+}
+/// Nested message and enum types in `CollectUserEventRequest`.
+pub mod collect_user_event_request {
+    /// The rule that can convert the raw_json to a user event. It is needed
+    /// only when the raw_json is set.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum ConversionRule {
+        /// The prebuilt rule name that can convert a specific type of raw_json.
+        /// For example: "default_schema/v1.0"
+        #[prost(string, tag = "6")]
+        PrebuiltRule(::prost::alloc::string::String),
+    }
 }
 /// Request message for RejoinUserEvents method.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -8106,6 +8454,15 @@ pub mod rejoin_user_events_request {
                 }
                 UserEventRejoinScope::JoinedEvents => "JOINED_EVENTS",
                 UserEventRejoinScope::UnjoinedEvents => "UNJOINED_EVENTS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "USER_EVENT_REJOIN_SCOPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "JOINED_EVENTS" => Some(Self::JoinedEvents),
+                "UNJOINED_EVENTS" => Some(Self::UnjoinedEvents),
+                _ => None,
             }
         }
     }

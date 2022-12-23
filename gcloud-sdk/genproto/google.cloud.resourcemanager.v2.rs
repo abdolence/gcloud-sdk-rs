@@ -69,6 +69,15 @@ pub mod folder {
                 LifecycleState::DeleteRequested => "DELETE_REQUESTED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "LIFECYCLE_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ACTIVE" => Some(Self::Active),
+                "DELETE_REQUESTED" => Some(Self::DeleteRequested),
+                _ => None,
+            }
+        }
     }
 }
 /// The ListFolders request message.
@@ -282,6 +291,15 @@ pub mod folder_operation {
                 OperationType::Unspecified => "OPERATION_TYPE_UNSPECIFIED",
                 OperationType::Create => "CREATE",
                 OperationType::Move => "MOVE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "OPERATION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CREATE" => Some(Self::Create),
+                "MOVE" => Some(Self::Move),
+                _ => None,
             }
         }
     }

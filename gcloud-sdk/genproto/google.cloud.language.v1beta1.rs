@@ -57,6 +57,15 @@ pub mod document {
                 Type::Html => "HTML",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PLAIN_TEXT" => Some(Self::PlainText),
+                "HTML" => Some(Self::Html),
+                _ => None,
+            }
+        }
     }
     /// The source of the document: a string containing the content or a
     /// Google Cloud Storage URI.
@@ -169,6 +178,20 @@ pub mod entity {
                 Type::WorkOfArt => "WORK_OF_ART",
                 Type::ConsumerGood => "CONSUMER_GOOD",
                 Type::Other => "OTHER",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNKNOWN" => Some(Self::Unknown),
+                "PERSON" => Some(Self::Person),
+                "LOCATION" => Some(Self::Location),
+                "ORGANIZATION" => Some(Self::Organization),
+                "EVENT" => Some(Self::Event),
+                "WORK_OF_ART" => Some(Self::WorkOfArt),
+                "CONSUMER_GOOD" => Some(Self::ConsumerGood),
+                "OTHER" => Some(Self::Other),
+                _ => None,
             }
         }
     }
@@ -319,6 +342,26 @@ pub mod part_of_speech {
                 Tag::Affix => "AFFIX",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNKNOWN" => Some(Self::Unknown),
+                "ADJ" => Some(Self::Adj),
+                "ADP" => Some(Self::Adp),
+                "ADV" => Some(Self::Adv),
+                "CONJ" => Some(Self::Conj),
+                "DET" => Some(Self::Det),
+                "NOUN" => Some(Self::Noun),
+                "NUM" => Some(Self::Num),
+                "PRON" => Some(Self::Pron),
+                "PRT" => Some(Self::Prt),
+                "PUNCT" => Some(Self::Punct),
+                "VERB" => Some(Self::Verb),
+                "X" => Some(Self::X),
+                "AFFIX" => Some(Self::Affix),
+                _ => None,
+            }
+        }
     }
     /// The characteristic of a verb that expresses time flow during an event.
     #[derive(
@@ -354,6 +397,16 @@ pub mod part_of_speech {
                 Aspect::Perfective => "PERFECTIVE",
                 Aspect::Imperfective => "IMPERFECTIVE",
                 Aspect::Progressive => "PROGRESSIVE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ASPECT_UNKNOWN" => Some(Self::Unknown),
+                "PERFECTIVE" => Some(Self::Perfective),
+                "IMPERFECTIVE" => Some(Self::Imperfective),
+                "PROGRESSIVE" => Some(Self::Progressive),
+                _ => None,
             }
         }
     }
@@ -428,6 +481,27 @@ pub mod part_of_speech {
                 Case::Vocative => "VOCATIVE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CASE_UNKNOWN" => Some(Self::Unknown),
+                "ACCUSATIVE" => Some(Self::Accusative),
+                "ADVERBIAL" => Some(Self::Adverbial),
+                "COMPLEMENTIVE" => Some(Self::Complementive),
+                "DATIVE" => Some(Self::Dative),
+                "GENITIVE" => Some(Self::Genitive),
+                "INSTRUMENTAL" => Some(Self::Instrumental),
+                "LOCATIVE" => Some(Self::Locative),
+                "NOMINATIVE" => Some(Self::Nominative),
+                "OBLIQUE" => Some(Self::Oblique),
+                "PARTITIVE" => Some(Self::Partitive),
+                "PREPOSITIONAL" => Some(Self::Prepositional),
+                "REFLEXIVE_CASE" => Some(Self::ReflexiveCase),
+                "RELATIVE_CASE" => Some(Self::RelativeCase),
+                "VOCATIVE" => Some(Self::Vocative),
+                _ => None,
+            }
+        }
     }
     /// Depending on the language, Form can be categorizing different forms of
     /// verbs, adjectives, adverbs, etc. For example, categorizing inflected
@@ -492,6 +566,24 @@ pub mod part_of_speech {
                 Form::Specific => "SPECIFIC",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "FORM_UNKNOWN" => Some(Self::Unknown),
+                "ADNOMIAL" => Some(Self::Adnomial),
+                "AUXILIARY" => Some(Self::Auxiliary),
+                "COMPLEMENTIZER" => Some(Self::Complementizer),
+                "FINAL_ENDING" => Some(Self::FinalEnding),
+                "GERUND" => Some(Self::Gerund),
+                "REALIS" => Some(Self::Realis),
+                "IRREALIS" => Some(Self::Irrealis),
+                "SHORT" => Some(Self::Short),
+                "LONG" => Some(Self::Long),
+                "ORDER" => Some(Self::Order),
+                "SPECIFIC" => Some(Self::Specific),
+                _ => None,
+            }
+        }
     }
     /// Gender classes of nouns reflected in the behaviour of associated words.
     #[derive(
@@ -527,6 +619,16 @@ pub mod part_of_speech {
                 Gender::Feminine => "FEMININE",
                 Gender::Masculine => "MASCULINE",
                 Gender::Neuter => "NEUTER",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "GENDER_UNKNOWN" => Some(Self::Unknown),
+                "FEMININE" => Some(Self::Feminine),
+                "MASCULINE" => Some(Self::Masculine),
+                "NEUTER" => Some(Self::Neuter),
+                _ => None,
             }
         }
     }
@@ -575,6 +677,19 @@ pub mod part_of_speech {
                 Mood::Subjunctive => "SUBJUNCTIVE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MOOD_UNKNOWN" => Some(Self::Unknown),
+                "CONDITIONAL_MOOD" => Some(Self::ConditionalMood),
+                "IMPERATIVE" => Some(Self::Imperative),
+                "INDICATIVE" => Some(Self::Indicative),
+                "INTERROGATIVE" => Some(Self::Interrogative),
+                "JUSSIVE" => Some(Self::Jussive),
+                "SUBJUNCTIVE" => Some(Self::Subjunctive),
+                _ => None,
+            }
+        }
     }
     /// Count distinctions.
     #[derive(
@@ -610,6 +725,16 @@ pub mod part_of_speech {
                 Number::Singular => "SINGULAR",
                 Number::Plural => "PLURAL",
                 Number::Dual => "DUAL",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "NUMBER_UNKNOWN" => Some(Self::Unknown),
+                "SINGULAR" => Some(Self::Singular),
+                "PLURAL" => Some(Self::Plural),
+                "DUAL" => Some(Self::Dual),
+                _ => None,
             }
         }
     }
@@ -652,6 +777,17 @@ pub mod part_of_speech {
                 Person::ReflexivePerson => "REFLEXIVE_PERSON",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PERSON_UNKNOWN" => Some(Self::Unknown),
+                "FIRST" => Some(Self::First),
+                "SECOND" => Some(Self::Second),
+                "THIRD" => Some(Self::Third),
+                "REFLEXIVE_PERSON" => Some(Self::ReflexivePerson),
+                _ => None,
+            }
+        }
     }
     /// This category shows if the token is part of a proper name.
     #[derive(
@@ -684,6 +820,15 @@ pub mod part_of_speech {
                 Proper::Unknown => "PROPER_UNKNOWN",
                 Proper::Proper => "PROPER",
                 Proper::NotProper => "NOT_PROPER",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PROPER_UNKNOWN" => Some(Self::Unknown),
+                "PROPER" => Some(Self::Proper),
+                "NOT_PROPER" => Some(Self::NotProper),
+                _ => None,
             }
         }
     }
@@ -719,6 +864,15 @@ pub mod part_of_speech {
                 Reciprocity::Unknown => "RECIPROCITY_UNKNOWN",
                 Reciprocity::Reciprocal => "RECIPROCAL",
                 Reciprocity::NonReciprocal => "NON_RECIPROCAL",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "RECIPROCITY_UNKNOWN" => Some(Self::Unknown),
+                "RECIPROCAL" => Some(Self::Reciprocal),
+                "NON_RECIPROCAL" => Some(Self::NonReciprocal),
+                _ => None,
             }
         }
     }
@@ -767,6 +921,19 @@ pub mod part_of_speech {
                 Tense::Pluperfect => "PLUPERFECT",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TENSE_UNKNOWN" => Some(Self::Unknown),
+                "CONDITIONAL_TENSE" => Some(Self::ConditionalTense),
+                "FUTURE" => Some(Self::Future),
+                "PAST" => Some(Self::Past),
+                "PRESENT" => Some(Self::Present),
+                "IMPERFECT" => Some(Self::Imperfect),
+                "PLUPERFECT" => Some(Self::Pluperfect),
+                _ => None,
+            }
+        }
     }
     /// The relationship between the action that a verb expresses and the
     /// participants identified by its arguments.
@@ -803,6 +970,16 @@ pub mod part_of_speech {
                 Voice::Active => "ACTIVE",
                 Voice::Causative => "CAUSATIVE",
                 Voice::Passive => "PASSIVE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "VOICE_UNKNOWN" => Some(Self::Unknown),
+                "ACTIVE" => Some(Self::Active),
+                "CAUSATIVE" => Some(Self::Causative),
+                "PASSIVE" => Some(Self::Passive),
+                _ => None,
             }
         }
     }
@@ -1079,6 +1256,89 @@ pub mod dependency_edge {
                 Label::Dislocated => "DISLOCATED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNKNOWN" => Some(Self::Unknown),
+                "ABBREV" => Some(Self::Abbrev),
+                "ACOMP" => Some(Self::Acomp),
+                "ADVCL" => Some(Self::Advcl),
+                "ADVMOD" => Some(Self::Advmod),
+                "AMOD" => Some(Self::Amod),
+                "APPOS" => Some(Self::Appos),
+                "ATTR" => Some(Self::Attr),
+                "AUX" => Some(Self::Aux),
+                "AUXPASS" => Some(Self::Auxpass),
+                "CC" => Some(Self::Cc),
+                "CCOMP" => Some(Self::Ccomp),
+                "CONJ" => Some(Self::Conj),
+                "CSUBJ" => Some(Self::Csubj),
+                "CSUBJPASS" => Some(Self::Csubjpass),
+                "DEP" => Some(Self::Dep),
+                "DET" => Some(Self::Det),
+                "DISCOURSE" => Some(Self::Discourse),
+                "DOBJ" => Some(Self::Dobj),
+                "EXPL" => Some(Self::Expl),
+                "GOESWITH" => Some(Self::Goeswith),
+                "IOBJ" => Some(Self::Iobj),
+                "MARK" => Some(Self::Mark),
+                "MWE" => Some(Self::Mwe),
+                "MWV" => Some(Self::Mwv),
+                "NEG" => Some(Self::Neg),
+                "NN" => Some(Self::Nn),
+                "NPADVMOD" => Some(Self::Npadvmod),
+                "NSUBJ" => Some(Self::Nsubj),
+                "NSUBJPASS" => Some(Self::Nsubjpass),
+                "NUM" => Some(Self::Num),
+                "NUMBER" => Some(Self::Number),
+                "P" => Some(Self::P),
+                "PARATAXIS" => Some(Self::Parataxis),
+                "PARTMOD" => Some(Self::Partmod),
+                "PCOMP" => Some(Self::Pcomp),
+                "POBJ" => Some(Self::Pobj),
+                "POSS" => Some(Self::Poss),
+                "POSTNEG" => Some(Self::Postneg),
+                "PRECOMP" => Some(Self::Precomp),
+                "PRECONJ" => Some(Self::Preconj),
+                "PREDET" => Some(Self::Predet),
+                "PREF" => Some(Self::Pref),
+                "PREP" => Some(Self::Prep),
+                "PRONL" => Some(Self::Pronl),
+                "PRT" => Some(Self::Prt),
+                "PS" => Some(Self::Ps),
+                "QUANTMOD" => Some(Self::Quantmod),
+                "RCMOD" => Some(Self::Rcmod),
+                "RCMODREL" => Some(Self::Rcmodrel),
+                "RDROP" => Some(Self::Rdrop),
+                "REF" => Some(Self::Ref),
+                "REMNANT" => Some(Self::Remnant),
+                "REPARANDUM" => Some(Self::Reparandum),
+                "ROOT" => Some(Self::Root),
+                "SNUM" => Some(Self::Snum),
+                "SUFF" => Some(Self::Suff),
+                "TMOD" => Some(Self::Tmod),
+                "TOPIC" => Some(Self::Topic),
+                "VMOD" => Some(Self::Vmod),
+                "VOCATIVE" => Some(Self::Vocative),
+                "XCOMP" => Some(Self::Xcomp),
+                "SUFFIX" => Some(Self::Suffix),
+                "TITLE" => Some(Self::Title),
+                "ADVPHMOD" => Some(Self::Advphmod),
+                "AUXCAUS" => Some(Self::Auxcaus),
+                "AUXVV" => Some(Self::Auxvv),
+                "DTMOD" => Some(Self::Dtmod),
+                "FOREIGN" => Some(Self::Foreign),
+                "KW" => Some(Self::Kw),
+                "LIST" => Some(Self::List),
+                "NOMC" => Some(Self::Nomc),
+                "NOMCSUBJ" => Some(Self::Nomcsubj),
+                "NOMCSUBJPASS" => Some(Self::Nomcsubjpass),
+                "NUMC" => Some(Self::Numc),
+                "COP" => Some(Self::Cop),
+                "DISLOCATED" => Some(Self::Dislocated),
+                _ => None,
+            }
+        }
     }
 }
 /// Represents a mention for an entity in the text. Currently, proper noun
@@ -1126,6 +1386,15 @@ pub mod entity_mention {
                 Type::Unknown => "TYPE_UNKNOWN",
                 Type::Proper => "PROPER",
                 Type::Common => "COMMON",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNKNOWN" => Some(Self::Unknown),
+                "PROPER" => Some(Self::Proper),
+                "COMMON" => Some(Self::Common),
+                _ => None,
             }
         }
     }
@@ -1323,6 +1592,16 @@ impl EncodingType {
             EncodingType::Utf8 => "UTF8",
             EncodingType::Utf16 => "UTF16",
             EncodingType::Utf32 => "UTF32",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "NONE" => Some(Self::None),
+            "UTF8" => Some(Self::Utf8),
+            "UTF16" => Some(Self::Utf16),
+            "UTF32" => Some(Self::Utf32),
+            _ => None,
         }
     }
 }

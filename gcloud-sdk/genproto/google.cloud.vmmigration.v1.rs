@@ -164,6 +164,24 @@ pub mod migrating_vm {
                 State::Error => "ERROR",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PENDING" => Some(Self::Pending),
+                "READY" => Some(Self::Ready),
+                "FIRST_SYNC" => Some(Self::FirstSync),
+                "ACTIVE" => Some(Self::Active),
+                "CUTTING_OVER" => Some(Self::CuttingOver),
+                "CUTOVER" => Some(Self::Cutover),
+                "FINAL_SYNC" => Some(Self::FinalSync),
+                "PAUSED" => Some(Self::Paused),
+                "FINALIZING" => Some(Self::Finalizing),
+                "FINALIZED" => Some(Self::Finalized),
+                "ERROR" => Some(Self::Error),
+                _ => None,
+            }
+        }
     }
     /// The default configuration of the target VM that will be created in GCP as a
     /// result of the migration.
@@ -263,6 +281,20 @@ pub mod clone_job {
                 State::AdaptingOs => "ADAPTING_OS",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PENDING" => Some(Self::Pending),
+                "ACTIVE" => Some(Self::Active),
+                "FAILED" => Some(Self::Failed),
+                "SUCCEEDED" => Some(Self::Succeeded),
+                "CANCELLED" => Some(Self::Cancelled),
+                "CANCELLING" => Some(Self::Cancelling),
+                "ADAPTING_OS" => Some(Self::AdaptingOs),
+                _ => None,
+            }
+        }
     }
     /// Details of the VM to create as the target of this clone job.
     #[allow(clippy::derive_partial_eq_without_eq)]
@@ -359,6 +391,20 @@ pub mod cutover_job {
                 State::Cancelling => "CANCELLING",
                 State::Active => "ACTIVE",
                 State::AdaptingOs => "ADAPTING_OS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PENDING" => Some(Self::Pending),
+                "FAILED" => Some(Self::Failed),
+                "SUCCEEDED" => Some(Self::Succeeded),
+                "CANCELLED" => Some(Self::Cancelled),
+                "CANCELLING" => Some(Self::Cancelling),
+                "ACTIVE" => Some(Self::Active),
+                "ADAPTING_OS" => Some(Self::AdaptingOs),
+                _ => None,
             }
         }
     }
@@ -622,6 +668,17 @@ pub mod datacenter_connector {
                 State::Active => "ACTIVE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PENDING" => Some(Self::Pending),
+                "OFFLINE" => Some(Self::Offline),
+                "FAILED" => Some(Self::Failed),
+                "ACTIVE" => Some(Self::Active),
+                _ => None,
+            }
+        }
     }
 }
 /// UpgradeStatus contains information about upgradeAppliance operation.
@@ -680,6 +737,16 @@ pub mod upgrade_status {
                 State::Running => "RUNNING",
                 State::Failed => "FAILED",
                 State::Succeeded => "SUCCEEDED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "RUNNING" => Some(Self::Running),
+                "FAILED" => Some(Self::Failed),
+                "SUCCEEDED" => Some(Self::Succeeded),
+                _ => None,
             }
         }
     }
@@ -943,6 +1010,16 @@ pub mod vmware_vm_details {
                 PowerState::Suspended => "SUSPENDED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "POWER_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ON" => Some(Self::On),
+                "OFF" => Some(Self::Off),
+                "SUSPENDED" => Some(Self::Suspended),
+                _ => None,
+            }
+        }
     }
     /// Possible values for vm boot option.
     #[derive(
@@ -975,6 +1052,15 @@ pub mod vmware_vm_details {
                 BootOption::Unspecified => "BOOT_OPTION_UNSPECIFIED",
                 BootOption::Efi => "EFI",
                 BootOption::Bios => "BIOS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "BOOT_OPTION_UNSPECIFIED" => Some(Self::Unspecified),
+                "EFI" => Some(Self::Efi),
+                "BIOS" => Some(Self::Bios),
+                _ => None,
             }
         }
     }
@@ -1091,6 +1177,16 @@ pub mod utilization_report {
                 State::Failed => "FAILED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CREATING" => Some(Self::Creating),
+                "SUCCEEDED" => Some(Self::Succeeded),
+                "FAILED" => Some(Self::Failed),
+                _ => None,
+            }
+        }
     }
     /// Report time frame options.
     #[derive(
@@ -1126,6 +1222,16 @@ pub mod utilization_report {
                 TimeFrame::Week => "WEEK",
                 TimeFrame::Month => "MONTH",
                 TimeFrame::Year => "YEAR",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TIME_FRAME_UNSPECIFIED" => Some(Self::Unspecified),
+                "WEEK" => Some(Self::Week),
+                "MONTH" => Some(Self::Month),
+                "YEAR" => Some(Self::Year),
+                _ => None,
             }
         }
     }
@@ -1635,6 +1741,16 @@ pub mod applied_license {
                 Type::Byol => "BYOL",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "NONE" => Some(Self::None),
+                "PAYG" => Some(Self::Payg),
+                "BYOL" => Some(Self::Byol),
+                _ => None,
+            }
+        }
     }
 }
 /// Node Affinity: the configuration of desired nodes onto which this Instance
@@ -1688,6 +1804,15 @@ pub mod scheduling_node_affinity {
                 Operator::Unspecified => "OPERATOR_UNSPECIFIED",
                 Operator::In => "IN",
                 Operator::NotIn => "NOT_IN",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "OPERATOR_UNSPECIFIED" => Some(Self::Unspecified),
+                "IN" => Some(Self::In),
+                "NOT_IN" => Some(Self::NotIn),
+                _ => None,
             }
         }
     }
@@ -1753,6 +1878,15 @@ pub mod compute_scheduling {
                 OnHostMaintenance::Migrate => "MIGRATE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ON_HOST_MAINTENANCE_UNSPECIFIED" => Some(Self::Unspecified),
+                "TERMINATE" => Some(Self::Terminate),
+                "MIGRATE" => Some(Self::Migrate),
+                _ => None,
+            }
+        }
     }
     /// Defines whether the Instance should be automatically restarted whenever
     /// it is terminated by Compute Engine (not terminated by user).
@@ -1788,6 +1922,15 @@ pub mod compute_scheduling {
                 RestartType::Unspecified => "RESTART_TYPE_UNSPECIFIED",
                 RestartType::AutomaticRestart => "AUTOMATIC_RESTART",
                 RestartType::NoAutomaticRestart => "NO_AUTOMATIC_RESTART",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "RESTART_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "AUTOMATIC_RESTART" => Some(Self::AutomaticRestart),
+                "NO_AUTOMATIC_RESTART" => Some(Self::NoAutomaticRestart),
+                _ => None,
             }
         }
     }
@@ -2517,6 +2660,22 @@ pub mod migration_error {
                 ErrorCode::ApplianceUpgradeError => "APPLIANCE_UPGRADE_ERROR",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ERROR_CODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN_ERROR" => Some(Self::UnknownError),
+                "SOURCE_VALIDATION_ERROR" => Some(Self::SourceValidationError),
+                "SOURCE_REPLICATION_ERROR" => Some(Self::SourceReplicationError),
+                "TARGET_REPLICATION_ERROR" => Some(Self::TargetReplicationError),
+                "OS_ADAPTATION_ERROR" => Some(Self::OsAdaptationError),
+                "CLONE_ERROR" => Some(Self::CloneError),
+                "CUTOVER_ERROR" => Some(Self::CutoverError),
+                "UTILIZATION_REPORT_ERROR" => Some(Self::UtilizationReportError),
+                "APPLIANCE_UPGRADE_ERROR" => Some(Self::ApplianceUpgradeError),
+                _ => None,
+            }
+        }
     }
 }
 /// Controls the level of details of a Utilization Report.
@@ -2545,6 +2704,15 @@ impl UtilizationReportView {
             UtilizationReportView::Full => "FULL",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "UTILIZATION_REPORT_VIEW_UNSPECIFIED" => Some(Self::Unspecified),
+            "BASIC" => Some(Self::Basic),
+            "FULL" => Some(Self::Full),
+            _ => None,
+        }
+    }
 }
 /// Controls the level of details of a Migrating VM.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -2569,6 +2737,15 @@ impl MigratingVmView {
             MigratingVmView::Unspecified => "MIGRATING_VM_VIEW_UNSPECIFIED",
             MigratingVmView::Basic => "MIGRATING_VM_VIEW_BASIC",
             MigratingVmView::Full => "MIGRATING_VM_VIEW_FULL",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "MIGRATING_VM_VIEW_UNSPECIFIED" => Some(Self::Unspecified),
+            "MIGRATING_VM_VIEW_BASIC" => Some(Self::Basic),
+            "MIGRATING_VM_VIEW_FULL" => Some(Self::Full),
+            _ => None,
         }
     }
 }
@@ -2599,6 +2776,16 @@ impl ComputeEngineDiskType {
             ComputeEngineDiskType::Balanced => "COMPUTE_ENGINE_DISK_TYPE_BALANCED",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "COMPUTE_ENGINE_DISK_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "COMPUTE_ENGINE_DISK_TYPE_STANDARD" => Some(Self::Standard),
+            "COMPUTE_ENGINE_DISK_TYPE_SSD" => Some(Self::Ssd),
+            "COMPUTE_ENGINE_DISK_TYPE_BALANCED" => Some(Self::Balanced),
+            _ => None,
+        }
+    }
 }
 /// Types of licenses used in OS adaptation.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -2621,6 +2808,15 @@ impl ComputeEngineLicenseType {
             ComputeEngineLicenseType::Default => "COMPUTE_ENGINE_LICENSE_TYPE_DEFAULT",
             ComputeEngineLicenseType::Payg => "COMPUTE_ENGINE_LICENSE_TYPE_PAYG",
             ComputeEngineLicenseType::Byol => "COMPUTE_ENGINE_LICENSE_TYPE_BYOL",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "COMPUTE_ENGINE_LICENSE_TYPE_DEFAULT" => Some(Self::Default),
+            "COMPUTE_ENGINE_LICENSE_TYPE_PAYG" => Some(Self::Payg),
+            "COMPUTE_ENGINE_LICENSE_TYPE_BYOL" => Some(Self::Byol),
+            _ => None,
         }
     }
 }
@@ -2647,6 +2843,15 @@ impl ComputeEngineBootOption {
             }
             ComputeEngineBootOption::Efi => "COMPUTE_ENGINE_BOOT_OPTION_EFI",
             ComputeEngineBootOption::Bios => "COMPUTE_ENGINE_BOOT_OPTION_BIOS",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "COMPUTE_ENGINE_BOOT_OPTION_UNSPECIFIED" => Some(Self::Unspecified),
+            "COMPUTE_ENGINE_BOOT_OPTION_EFI" => Some(Self::Efi),
+            "COMPUTE_ENGINE_BOOT_OPTION_BIOS" => Some(Self::Bios),
+            _ => None,
         }
     }
 }

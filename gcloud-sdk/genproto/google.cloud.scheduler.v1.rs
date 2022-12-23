@@ -361,6 +361,20 @@ impl HttpMethod {
             HttpMethod::Options => "OPTIONS",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "HTTP_METHOD_UNSPECIFIED" => Some(Self::Unspecified),
+            "POST" => Some(Self::Post),
+            "GET" => Some(Self::Get),
+            "HEAD" => Some(Self::Head),
+            "PUT" => Some(Self::Put),
+            "DELETE" => Some(Self::Delete),
+            "PATCH" => Some(Self::Patch),
+            "OPTIONS" => Some(Self::Options),
+            _ => None,
+        }
+    }
 }
 /// Configuration for a job.
 /// The maximum allowed size for a job is 100KB.
@@ -511,6 +525,17 @@ pub mod job {
                 State::Paused => "PAUSED",
                 State::Disabled => "DISABLED",
                 State::UpdateFailed => "UPDATE_FAILED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ENABLED" => Some(Self::Enabled),
+                "PAUSED" => Some(Self::Paused),
+                "DISABLED" => Some(Self::Disabled),
+                "UPDATE_FAILED" => Some(Self::UpdateFailed),
+                _ => None,
             }
         }
     }

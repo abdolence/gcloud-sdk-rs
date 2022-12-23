@@ -153,6 +153,15 @@ pub mod threshold_rule {
                 Basis::ForecastedSpend => "FORECASTED_SPEND",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "BASIS_UNSPECIFIED" => Some(Self::Unspecified),
+                "CURRENT_SPEND" => Some(Self::CurrentSpend),
+                "FORECASTED_SPEND" => Some(Self::ForecastedSpend),
+                _ => None,
+            }
+        }
     }
 }
 /// AllUpdatesRule defines notifications that are sent based on budget spend
@@ -305,6 +314,16 @@ pub mod filter {
                 }
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CREDIT_TYPES_TREATMENT_UNSPECIFIED" => Some(Self::Unspecified),
+                "INCLUDE_ALL_CREDITS" => Some(Self::IncludeAllCredits),
+                "EXCLUDE_ALL_CREDITS" => Some(Self::ExcludeAllCredits),
+                "INCLUDE_SPECIFIED_CREDITS" => Some(Self::IncludeSpecifiedCredits),
+                _ => None,
+            }
+        }
     }
     /// Multiple options to choose the budget's time period, specifying that only
     /// usage that occurs during this time period should be included in the budget.
@@ -369,6 +388,16 @@ impl CalendarPeriod {
             CalendarPeriod::Month => "MONTH",
             CalendarPeriod::Quarter => "QUARTER",
             CalendarPeriod::Year => "YEAR",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "CALENDAR_PERIOD_UNSPECIFIED" => Some(Self::Unspecified),
+            "MONTH" => Some(Self::Month),
+            "QUARTER" => Some(Self::Quarter),
+            "YEAR" => Some(Self::Year),
+            _ => None,
         }
     }
 }

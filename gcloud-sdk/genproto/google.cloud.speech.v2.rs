@@ -378,6 +378,15 @@ pub mod recognizer {
                 State::Deleted => "DELETED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ACTIVE" => Some(Self::Active),
+                "DELETED" => Some(Self::Deleted),
+                _ => None,
+            }
+        }
     }
 }
 /// Automatically detected decoding parameters.
@@ -455,6 +464,16 @@ pub mod explicit_decoding_config {
                 AudioEncoding::Linear16 => "LINEAR16",
                 AudioEncoding::Mulaw => "MULAW",
                 AudioEncoding::Alaw => "ALAW",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "AUDIO_ENCODING_UNSPECIFIED" => Some(Self::Unspecified),
+                "LINEAR16" => Some(Self::Linear16),
+                "MULAW" => Some(Self::Mulaw),
+                "ALAW" => Some(Self::Alaw),
+                _ => None,
             }
         }
     }
@@ -572,6 +591,16 @@ pub mod recognition_features {
                 MultiChannelMode::SeparateRecognitionPerChannel => {
                     "SEPARATE_RECOGNITION_PER_CHANNEL"
                 }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MULTI_CHANNEL_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "SEPARATE_RECOGNITION_PER_CHANNEL" => {
+                    Some(Self::SeparateRecognitionPerChannel)
+                }
+                _ => None,
             }
         }
     }
@@ -1233,6 +1262,16 @@ pub mod streaming_recognize_response {
                 SpeechEventType::SpeechActivityEnd => "SPEECH_ACTIVITY_END",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SPEECH_EVENT_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "END_OF_SINGLE_UTTERANCE" => Some(Self::EndOfSingleUtterance),
+                "SPEECH_ACTIVITY_BEGIN" => Some(Self::SpeechActivityBegin),
+                "SPEECH_ACTIVITY_END" => Some(Self::SpeechActivityEnd),
+                _ => None,
+            }
+        }
     }
 }
 /// Message representing the config for the Speech-to-Text API. This includes an
@@ -1394,6 +1433,15 @@ pub mod custom_class {
                 State::Deleted => "DELETED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ACTIVE" => Some(Self::Active),
+                "DELETED" => Some(Self::Deleted),
+                _ => None,
+            }
+        }
     }
 }
 /// PhraseSet for biasing in speech recognition. A PhraseSet is used to provide
@@ -1529,6 +1577,15 @@ pub mod phrase_set {
                 State::Unspecified => "STATE_UNSPECIFIED",
                 State::Active => "ACTIVE",
                 State::Deleted => "DELETED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ACTIVE" => Some(Self::Active),
+                "DELETED" => Some(Self::Deleted),
+                _ => None,
             }
         }
     }

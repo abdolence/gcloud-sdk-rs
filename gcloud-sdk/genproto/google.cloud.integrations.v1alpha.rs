@@ -118,6 +118,17 @@ impl JsonValidationOption {
             JsonValidationOption::PrePostExecution => "PRE_POST_EXECUTION",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "JSON_VALIDATION_OPTION_UNSPECIFIED" => Some(Self::Unspecified),
+            "SKIP" => Some(Self::Skip),
+            "PRE_EXECUTION" => Some(Self::PreExecution),
+            "POST_EXECUTION" => Some(Self::PostExecution),
+            "PRE_POST_EXECUTION" => Some(Self::PrePostExecution),
+            _ => None,
+        }
+    }
 }
 /// Enum Product.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -143,6 +154,16 @@ impl Product {
             Product::Ip => "IP",
             Product::Apigee => "APIGEE",
             Product::Security => "SECURITY",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "PRODUCT_UNSPECIFIED" => Some(Self::Unspecified),
+            "IP" => Some(Self::Ip),
+            "APIGEE" => Some(Self::Apigee),
+            "SECURITY" => Some(Self::Security),
+            _ => None,
         }
     }
 }
@@ -238,6 +259,15 @@ pub mod task_config {
                 NextTasksExecutionPolicy::RunFirstMatch => "RUN_FIRST_MATCH",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "NEXT_TASKS_EXECUTION_POLICY_UNSPECIFIED" => Some(Self::Unspecified),
+                "RUN_ALL_MATCH" => Some(Self::RunAllMatch),
+                "RUN_FIRST_MATCH" => Some(Self::RunFirstMatch),
+                _ => None,
+            }
+        }
     }
     /// Various policies to trigger the execution of this task.
     #[derive(
@@ -283,6 +313,18 @@ pub mod task_config {
                 TaskExecutionStrategy::WhenAllTasksAndConditionsSucceed => {
                     "WHEN_ALL_TASKS_AND_CONDITIONS_SUCCEED"
                 }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TASK_EXECUTION_STRATEGY_UNSPECIFIED" => Some(Self::Unspecified),
+                "WHEN_ALL_SUCCEED" => Some(Self::WhenAllSucceed),
+                "WHEN_ANY_SUCCEED" => Some(Self::WhenAnySucceed),
+                "WHEN_ALL_TASKS_AND_CONDITIONS_SUCCEED" => {
+                    Some(Self::WhenAllTasksAndConditionsSucceed)
+                }
+                _ => None,
             }
         }
     }
@@ -332,6 +374,15 @@ pub mod success_policy {
                 FinalState::Unspecified => "FINAL_STATE_UNSPECIFIED",
                 FinalState::Succeeded => "SUCCEEDED",
                 FinalState::Suspended => "SUSPENDED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "FINAL_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "SUCCEEDED" => Some(Self::Succeeded),
+                "SUSPENDED" => Some(Self::Suspended),
+                _ => None,
             }
         }
     }
@@ -430,6 +481,22 @@ pub mod failure_policy {
                 RetryStrategy::RestartIntegrationWithBackoff => {
                     "RESTART_INTEGRATION_WITH_BACKOFF"
                 }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "RETRY_STRATEGY_UNSPECIFIED" => Some(Self::Unspecified),
+                "IGNORE" => Some(Self::Ignore),
+                "NONE" => Some(Self::None),
+                "FATAL" => Some(Self::Fatal),
+                "FIXED_INTERVAL" => Some(Self::FixedInterval),
+                "LINEAR_BACKOFF" => Some(Self::LinearBackoff),
+                "EXPONENTIAL_BACKOFF" => Some(Self::ExponentialBackoff),
+                "RESTART_INTEGRATION_WITH_BACKOFF" => {
+                    Some(Self::RestartIntegrationWithBackoff)
+                }
+                _ => None,
             }
         }
     }
@@ -544,6 +611,15 @@ pub mod execution_info {
                 PostMethod::Schedule => "SCHEDULE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "POST_METHOD_UNSPECIFIED" => Some(Self::Unspecified),
+                "POST" => Some(Self::Post),
+                "SCHEDULE" => Some(Self::Schedule),
+                _ => None,
+            }
+        }
     }
 }
 /// Contains the details of the execution info of this event: this includes
@@ -621,6 +697,20 @@ pub mod event_execution_details {
                 EventExecutionState::Cancelled => "CANCELLED",
                 EventExecutionState::RetryOnHold => "RETRY_ON_HOLD",
                 EventExecutionState::Suspended => "SUSPENDED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "EVENT_EXECUTION_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ON_HOLD" => Some(Self::OnHold),
+                "IN_PROCESS" => Some(Self::InProcess),
+                "SUCCEEDED" => Some(Self::Succeeded),
+                "FAILED" => Some(Self::Failed),
+                "CANCELLED" => Some(Self::Cancelled),
+                "RETRY_ON_HOLD" => Some(Self::RetryOnHold),
+                "SUSPENDED" => Some(Self::Suspended),
+                _ => None,
             }
         }
     }
@@ -766,6 +856,25 @@ pub mod task_execution_details {
                 TaskExecutionState::RollbackInProcess => "ROLLBACK_IN_PROCESS",
                 TaskExecutionState::Rolledback => "ROLLEDBACK",
                 TaskExecutionState::Suspended => "SUSPENDED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TASK_EXECUTION_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PENDING_EXECUTION" => Some(Self::PendingExecution),
+                "IN_PROCESS" => Some(Self::InProcess),
+                "SUCCEED" => Some(Self::Succeed),
+                "FAILED" => Some(Self::Failed),
+                "FATAL" => Some(Self::Fatal),
+                "RETRY_ON_HOLD" => Some(Self::RetryOnHold),
+                "SKIPPED" => Some(Self::Skipped),
+                "CANCELLED" => Some(Self::Cancelled),
+                "PENDING_ROLLBACK" => Some(Self::PendingRollback),
+                "ROLLBACK_IN_PROCESS" => Some(Self::RollbackInProcess),
+                "ROLLEDBACK" => Some(Self::Rolledback),
+                "SUSPENDED" => Some(Self::Suspended),
+                _ => None,
             }
         }
     }

@@ -65,6 +65,71 @@ pub mod linux_node_config {
                 CgroupMode::V2 => "CGROUP_MODE_V2",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CGROUP_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CGROUP_MODE_V1" => Some(Self::V1),
+                "CGROUP_MODE_V2" => Some(Self::V2),
+                _ => None,
+            }
+        }
+    }
+}
+/// Parameters that can be configured on Windows nodes.
+/// Windows Node Config that define the parameters that will be used to
+/// configure the Windows node pool settings
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct WindowsNodeConfig {
+    /// OSVersion specifies the Windows node config to be used on the node
+    #[prost(enumeration = "windows_node_config::OsVersion", tag = "1")]
+    pub os_version: i32,
+}
+/// Nested message and enum types in `WindowsNodeConfig`.
+pub mod windows_node_config {
+    /// Possible OS version that can be used.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum OsVersion {
+        /// When OSVersion is not specified
+        Unspecified = 0,
+        /// LTSC2019 specifies to use LTSC2019 as the Windows Servercore Base Image
+        Ltsc2019 = 1,
+        /// LTSC2022 specifies to use LTSC2022 as the Windows Servercore Base Image
+        Ltsc2022 = 2,
+    }
+    impl OsVersion {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                OsVersion::Unspecified => "OS_VERSION_UNSPECIFIED",
+                OsVersion::Ltsc2019 => "OS_VERSION_LTSC2019",
+                OsVersion::Ltsc2022 => "OS_VERSION_LTSC2022",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "OS_VERSION_UNSPECIFIED" => Some(Self::Unspecified),
+                "OS_VERSION_LTSC2019" => Some(Self::Ltsc2019),
+                "OS_VERSION_LTSC2022" => Some(Self::Ltsc2022),
+                _ => None,
+            }
+        }
     }
 }
 /// Node kubelet configs.
@@ -324,6 +389,19 @@ pub struct NodeConfig {
     /// Logging configuration.
     #[prost(message, optional, tag = "38")]
     pub logging_config: ::core::option::Option<NodePoolLoggingConfig>,
+    /// Parameters that can be configured on Windows nodes.
+    #[prost(message, optional, tag = "39")]
+    pub windows_node_config: ::core::option::Option<WindowsNodeConfig>,
+    /// Parameters for using raw-block Local NVMe SSDs.
+    #[prost(message, optional, tag = "40")]
+    pub local_nvme_ssd_block_config: ::core::option::Option<LocalNvmeSsdBlockConfig>,
+    /// Parameters for the node ephemeral storage using Local SSDs.
+    /// If unspecified, ephemeral storage is backed by the boot disk.
+    /// This field is functionally equivalent to the ephemeral_storage_config
+    #[prost(message, optional, tag = "41")]
+    pub ephemeral_storage_local_ssd_config: ::core::option::Option<
+        EphemeralStorageLocalSsdConfig,
+    >,
 }
 /// Specifies options for controlling advanced machine features.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -437,6 +515,14 @@ pub mod node_network_config {
                     Tier::Tier1 => "TIER_1",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "TIER_UNSPECIFIED" => Some(Self::Unspecified),
+                    "TIER_1" => Some(Self::Tier1),
+                    _ => None,
+                }
+            }
         }
     }
 }
@@ -504,6 +590,14 @@ pub mod sandbox_config {
                 Type::Gvisor => "GVISOR",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "GVISOR" => Some(Self::Gvisor),
+                _ => None,
+            }
+        }
     }
 }
 /// EphemeralStorageConfig contains configuration for the ephemeral storage
@@ -514,6 +608,36 @@ pub struct EphemeralStorageConfig {
     /// Number of local SSDs to use to back ephemeral storage. Uses NVMe
     /// interfaces. Each local SSD is 375 GB in size.
     /// If zero, it means to disable using local SSDs as ephemeral storage.
+    #[prost(int32, tag = "1")]
+    pub local_ssd_count: i32,
+}
+/// LocalNvmeSsdBlockConfig contains configuration for using raw-block local
+/// NVMe SSDs
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct LocalNvmeSsdBlockConfig {
+    /// The number of raw-block local NVMe SSD disks to be attached to the node.
+    /// Each local SSD is 375 GB in size. If zero, it means no raw-block local NVMe
+    /// SSD disks to be attached to the node.
+    /// The limit for this value is dependent upon the maximum number of
+    /// disks available on a machine per zone. See:
+    /// <https://cloud.google.com/compute/docs/disks/local-ssd>
+    /// for more information.
+    #[prost(int32, tag = "1")]
+    pub local_ssd_count: i32,
+}
+/// EphemeralStorageLocalSsdConfig contains configuration for the node ephemeral
+/// storage using Local SSDs.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct EphemeralStorageLocalSsdConfig {
+    /// Number of local SSDs to use to back ephemeral storage. Uses NVMe
+    /// interfaces. Each local SSD is 375 GB in size.
+    /// If zero, it means to disable using local SSDs as ephemeral storage.
+    /// The limit for this value is dependent upon the maximum number of
+    /// disks available on a machine per zone. See:
+    /// <https://cloud.google.com/compute/docs/disks/local-ssd>
+    /// for more information.
     #[prost(int32, tag = "1")]
     pub local_ssd_count: i32,
 }
@@ -583,6 +707,16 @@ pub mod reservation_affinity {
                 Type::SpecificReservation => "SPECIFIC_RESERVATION",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "NO_RESERVATION" => Some(Self::NoReservation),
+                "ANY_RESERVATION" => Some(Self::AnyReservation),
+                "SPECIFIC_RESERVATION" => Some(Self::SpecificReservation),
+                _ => None,
+            }
+        }
     }
 }
 /// Kubernetes taint is comprised of three fields: key, value, and effect. Effect
@@ -640,6 +774,16 @@ pub mod node_taint {
                 Effect::NoSchedule => "NO_SCHEDULE",
                 Effect::PreferNoSchedule => "PREFER_NO_SCHEDULE",
                 Effect::NoExecute => "NO_EXECUTE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "EFFECT_UNSPECIFIED" => Some(Self::Unspecified),
+                "NO_SCHEDULE" => Some(Self::NoSchedule),
+                "PREFER_NO_SCHEDULE" => Some(Self::PreferNoSchedule),
+                "NO_EXECUTE" => Some(Self::NoExecute),
+                _ => None,
             }
         }
     }
@@ -983,6 +1127,14 @@ pub mod istio_config {
                 IstioAuthMode::AuthMutualTls => "AUTH_MUTUAL_TLS",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "AUTH_NONE" => Some(Self::AuthNone),
+                "AUTH_MUTUAL_TLS" => Some(Self::AuthMutualTls),
+                _ => None,
+            }
+        }
     }
 }
 /// Configuration options for the Cloud Run feature.
@@ -1029,6 +1181,15 @@ pub mod cloud_run_config {
                 LoadBalancerType::Unspecified => "LOAD_BALANCER_TYPE_UNSPECIFIED",
                 LoadBalancerType::External => "LOAD_BALANCER_TYPE_EXTERNAL",
                 LoadBalancerType::Internal => "LOAD_BALANCER_TYPE_INTERNAL",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "LOAD_BALANCER_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "LOAD_BALANCER_TYPE_EXTERNAL" => Some(Self::External),
+                "LOAD_BALANCER_TYPE_INTERNAL" => Some(Self::Internal),
+                _ => None,
             }
         }
     }
@@ -1121,6 +1282,14 @@ pub mod network_policy {
             match self {
                 Provider::Unspecified => "PROVIDER_UNSPECIFIED",
                 Provider::Calico => "CALICO",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PROVIDER_UNSPECIFIED" => Some(Self::Unspecified),
+                "CALICO" => Some(Self::Calico),
+                _ => None,
             }
         }
     }
@@ -1311,6 +1480,15 @@ pub mod ip_allocation_policy {
                 StackType::Ipv4Ipv6 => "IPV4_IPV6",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STACK_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "IPV4" => Some(Self::Ipv4),
+                "IPV4_IPV6" => Some(Self::Ipv4Ipv6),
+                _ => None,
+            }
+        }
     }
     /// IPv6 access type
     #[derive(
@@ -1345,6 +1523,15 @@ pub mod ip_allocation_policy {
                 }
                 IPv6AccessType::Internal => "INTERNAL",
                 IPv6AccessType::External => "EXTERNAL",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "IPV6_ACCESS_TYPE_UNSPECIFIED" => Some(Self::Ipv6AccessTypeUnspecified),
+                "INTERNAL" => Some(Self::Internal),
+                "EXTERNAL" => Some(Self::External),
+                _ => None,
             }
         }
     }
@@ -1401,6 +1588,17 @@ pub mod binary_authorization {
                 EvaluationMode::ProjectSingletonPolicyEnforce => {
                     "PROJECT_SINGLETON_POLICY_ENFORCE"
                 }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "EVALUATION_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "DISABLED" => Some(Self::Disabled),
+                "PROJECT_SINGLETON_POLICY_ENFORCE" => {
+                    Some(Self::ProjectSingletonPolicyEnforce)
+                }
+                _ => None,
             }
         }
     }
@@ -1471,6 +1669,16 @@ pub mod cluster_telemetry {
                 Type::Disabled => "DISABLED",
                 Type::Enabled => "ENABLED",
                 Type::SystemOnly => "SYSTEM_ONLY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "DISABLED" => Some(Self::Disabled),
+                "ENABLED" => Some(Self::Enabled),
+                "SYSTEM_ONLY" => Some(Self::SystemOnly),
+                _ => None,
             }
         }
     }
@@ -1895,6 +2103,19 @@ pub mod cluster {
                 Status::Degraded => "DEGRADED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATUS_UNSPECIFIED" => Some(Self::Unspecified),
+                "PROVISIONING" => Some(Self::Provisioning),
+                "RUNNING" => Some(Self::Running),
+                "RECONCILING" => Some(Self::Reconciling),
+                "STOPPING" => Some(Self::Stopping),
+                "ERROR" => Some(Self::Error),
+                "DEGRADED" => Some(Self::Degraded),
+                _ => None,
+            }
+        }
     }
 }
 /// WorkloadConfig defines the flags to enable or disable the
@@ -1948,6 +2169,17 @@ pub mod workload_config {
                 Mode::Basic => "BASIC",
                 Mode::Baseline => "BASELINE",
                 Mode::Restricted => "RESTRICTED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "DISABLED" => Some(Self::Disabled),
+                "BASIC" => Some(Self::Basic),
+                "BASELINE" => Some(Self::Baseline),
+                "RESTRICTED" => Some(Self::Restricted),
+                _ => None,
             }
         }
     }
@@ -2004,6 +2236,15 @@ pub mod protect_config {
                 }
                 WorkloadVulnerabilityMode::Disabled => "DISABLED",
                 WorkloadVulnerabilityMode::Basic => "BASIC",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "WORKLOAD_VULNERABILITY_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "DISABLED" => Some(Self::Disabled),
+                "BASIC" => Some(Self::Basic),
+                _ => None,
             }
         }
     }
@@ -2251,6 +2492,11 @@ pub struct ClusterUpdate {
     /// The desired node pool logging configuration defaults for the cluster.
     #[prost(message, optional, tag = "116")]
     pub desired_node_pool_logging_config: ::core::option::Option<NodePoolLoggingConfig>,
+    /// The desired stack type of the cluster.
+    /// If a stack type is provided and does not match the current stack type of
+    /// the cluster, update will attempt to change the stack type to the new type.
+    #[prost(enumeration = "StackType", tag = "119")]
+    pub desired_stack_type: i32,
 }
 /// This operation resource represents operations that may have happened or are
 /// happening on the cluster. All fields are output only.
@@ -2359,6 +2605,17 @@ pub mod operation {
                 Status::Aborting => "ABORTING",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATUS_UNSPECIFIED" => Some(Self::Unspecified),
+                "PENDING" => Some(Self::Pending),
+                "RUNNING" => Some(Self::Running),
+                "DONE" => Some(Self::Done),
+                "ABORTING" => Some(Self::Aborting),
+                _ => None,
+            }
+        }
     }
     /// Operation type.
     #[derive(
@@ -2433,6 +2690,29 @@ pub mod operation {
                 Type::SetNodePoolSize => "SET_NODE_POOL_SIZE",
                 Type::SetNetworkPolicy => "SET_NETWORK_POLICY",
                 Type::SetMaintenancePolicy => "SET_MAINTENANCE_POLICY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CREATE_CLUSTER" => Some(Self::CreateCluster),
+                "DELETE_CLUSTER" => Some(Self::DeleteCluster),
+                "UPGRADE_MASTER" => Some(Self::UpgradeMaster),
+                "UPGRADE_NODES" => Some(Self::UpgradeNodes),
+                "REPAIR_CLUSTER" => Some(Self::RepairCluster),
+                "UPDATE_CLUSTER" => Some(Self::UpdateCluster),
+                "CREATE_NODE_POOL" => Some(Self::CreateNodePool),
+                "DELETE_NODE_POOL" => Some(Self::DeleteNodePool),
+                "SET_NODE_POOL_MANAGEMENT" => Some(Self::SetNodePoolManagement),
+                "AUTO_REPAIR_NODES" => Some(Self::AutoRepairNodes),
+                "AUTO_UPGRADE_NODES" => Some(Self::AutoUpgradeNodes),
+                "SET_LABELS" => Some(Self::SetLabels),
+                "SET_MASTER_AUTH" => Some(Self::SetMasterAuth),
+                "SET_NODE_POOL_SIZE" => Some(Self::SetNodePoolSize),
+                "SET_NETWORK_POLICY" => Some(Self::SetNetworkPolicy),
+                "SET_MAINTENANCE_POLICY" => Some(Self::SetMaintenancePolicy),
+                _ => None,
             }
         }
     }
@@ -2680,6 +2960,9 @@ pub struct UpdateNodePoolRequest {
     /// Google Compute Engine resources.
     #[prost(message, optional, tag = "33")]
     pub resource_labels: ::core::option::Option<ResourceLabels>,
+    /// Parameters that can be configured on Windows nodes.
+    #[prost(message, optional, tag = "34")]
+    pub windows_node_config: ::core::option::Option<WindowsNodeConfig>,
 }
 /// SetNodePoolAutoscalingRequest sets the autoscaler settings of a node pool.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -2975,6 +3258,16 @@ pub mod set_master_auth_request {
                 Action::SetPassword => "SET_PASSWORD",
                 Action::GeneratePassword => "GENERATE_PASSWORD",
                 Action::SetUsername => "SET_USERNAME",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNKNOWN" => Some(Self::Unknown),
+                "SET_PASSWORD" => Some(Self::SetPassword),
+                "GENERATE_PASSWORD" => Some(Self::GeneratePassword),
+                "SET_USERNAME" => Some(Self::SetUsername),
+                _ => None,
             }
         }
     }
@@ -3664,6 +3957,20 @@ pub mod node_pool {
                         Phase::RollbackStarted => "ROLLBACK_STARTED",
                     }
                 }
+                /// Creates an enum from field names used in the ProtoBuf definition.
+                pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                    match value {
+                        "PHASE_UNSPECIFIED" => Some(Self::Unspecified),
+                        "UPDATE_STARTED" => Some(Self::UpdateStarted),
+                        "CREATING_GREEN_POOL" => Some(Self::CreatingGreenPool),
+                        "CORDONING_BLUE_POOL" => Some(Self::CordoningBluePool),
+                        "DRAINING_BLUE_POOL" => Some(Self::DrainingBluePool),
+                        "NODE_POOL_SOAKING" => Some(Self::NodePoolSoaking),
+                        "DELETING_BLUE_POOL" => Some(Self::DeletingBluePool),
+                        "ROLLBACK_STARTED" => Some(Self::RollbackStarted),
+                        _ => None,
+                    }
+                }
             }
         }
     }
@@ -3707,6 +4014,14 @@ pub mod node_pool {
                 match self {
                     Type::Unspecified => "TYPE_UNSPECIFIED",
                     Type::Compact => "COMPACT",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "COMPACT" => Some(Self::Compact),
+                    _ => None,
                 }
             }
         }
@@ -3761,6 +4076,19 @@ pub mod node_pool {
                 Status::Reconciling => "RECONCILING",
                 Status::Stopping => "STOPPING",
                 Status::Error => "ERROR",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATUS_UNSPECIFIED" => Some(Self::Unspecified),
+                "PROVISIONING" => Some(Self::Provisioning),
+                "RUNNING" => Some(Self::Running),
+                "RUNNING_WITH_ERROR" => Some(Self::RunningWithError),
+                "RECONCILING" => Some(Self::Reconciling),
+                "STOPPING" => Some(Self::Stopping),
+                "ERROR" => Some(Self::Error),
+                _ => None,
             }
         }
     }
@@ -3915,6 +4243,15 @@ pub mod maintenance_exclusion_options {
                 Scope::NoUpgrades => "NO_UPGRADES",
                 Scope::NoMinorUpgrades => "NO_MINOR_UPGRADES",
                 Scope::NoMinorOrNodeUpgrades => "NO_MINOR_OR_NODE_UPGRADES",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "NO_UPGRADES" => Some(Self::NoUpgrades),
+                "NO_MINOR_UPGRADES" => Some(Self::NoMinorUpgrades),
+                "NO_MINOR_OR_NODE_UPGRADES" => Some(Self::NoMinorOrNodeUpgrades),
+                _ => None,
             }
         }
     }
@@ -4171,6 +4508,15 @@ pub mod cluster_autoscaling {
                 AutoscalingProfile::Balanced => "BALANCED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PROFILE_UNSPECIFIED" => Some(Self::ProfileUnspecified),
+                "OPTIMIZE_UTILIZATION" => Some(Self::OptimizeUtilization),
+                "BALANCED" => Some(Self::Balanced),
+                _ => None,
+            }
+        }
     }
 }
 /// AutoprovisioningNodePoolDefaults contains defaults for a node pool created
@@ -4334,6 +4680,15 @@ pub mod node_pool_autoscaling {
                 LocationPolicy::Unspecified => "LOCATION_POLICY_UNSPECIFIED",
                 LocationPolicy::Balanced => "BALANCED",
                 LocationPolicy::Any => "ANY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "LOCATION_POLICY_UNSPECIFIED" => Some(Self::Unspecified),
+                "BALANCED" => Some(Self::Balanced),
+                "ANY" => Some(Self::Any),
+                _ => None,
             }
         }
     }
@@ -4538,6 +4893,14 @@ pub mod gpu_sharing_config {
                 GpuSharingStrategy::TimeSharing => "TIME_SHARING",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "GPU_SHARING_STRATEGY_UNSPECIFIED" => Some(Self::Unspecified),
+                "TIME_SHARING" => Some(Self::TimeSharing),
+                _ => None,
+            }
+        }
     }
 }
 /// ManagedPrometheusConfig defines the configuration for
@@ -4614,6 +4977,16 @@ pub mod workload_metadata_config {
                 NodeMetadata::GkeMetadataServer => "GKE_METADATA_SERVER",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "SECURE" => Some(Self::Secure),
+                "EXPOSE" => Some(Self::Expose),
+                "GKE_METADATA_SERVER" => Some(Self::GkeMetadataServer),
+                _ => None,
+            }
+        }
     }
     /// Mode is the configuration for how to expose metadata to workloads running
     /// on the node.
@@ -4651,6 +5024,15 @@ pub mod workload_metadata_config {
                 Mode::Unspecified => "MODE_UNSPECIFIED",
                 Mode::GceMetadata => "GCE_METADATA",
                 Mode::GkeMetadata => "GKE_METADATA",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "GCE_METADATA" => Some(Self::GceMetadata),
+                "GKE_METADATA" => Some(Self::GkeMetadata),
+                _ => None,
             }
         }
     }
@@ -4787,6 +5169,15 @@ pub mod location {
                 LocationType::Region => "REGION",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "LOCATION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ZONE" => Some(Self::Zone),
+                "REGION" => Some(Self::Region),
+                _ => None,
+            }
+        }
     }
 }
 /// StatusCondition describes why a cluster or a node pool has a certain status
@@ -4855,6 +5246,19 @@ pub mod status_condition {
                 Code::SetByOperator => "SET_BY_OPERATOR",
                 Code::CloudKmsKeyError => "CLOUD_KMS_KEY_ERROR",
                 Code::CaExpiring => "CA_EXPIRING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNKNOWN" => Some(Self::Unknown),
+                "GCE_STOCKOUT" => Some(Self::GceStockout),
+                "GKE_SERVICE_ACCOUNT_DELETED" => Some(Self::GkeServiceAccountDeleted),
+                "GCE_QUOTA_EXCEEDED" => Some(Self::GceQuotaExceeded),
+                "SET_BY_OPERATOR" => Some(Self::SetByOperator),
+                "CLOUD_KMS_KEY_ERROR" => Some(Self::CloudKmsKeyError),
+                "CA_EXPIRING" => Some(Self::CaExpiring),
+                _ => None,
             }
         }
     }
@@ -4954,6 +5358,16 @@ pub mod gateway_api_config {
                 Channel::Disabled => "CHANNEL_DISABLED",
                 Channel::Experimental => "CHANNEL_EXPERIMENTAL",
                 Channel::Standard => "CHANNEL_STANDARD",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CHANNEL_UNSPECIFIED" => Some(Self::Unspecified),
+                "CHANNEL_DISABLED" => Some(Self::Disabled),
+                "CHANNEL_EXPERIMENTAL" => Some(Self::Experimental),
+                "CHANNEL_STANDARD" => Some(Self::Standard),
+                _ => None,
             }
         }
     }
@@ -5065,6 +5479,17 @@ pub mod usable_subnetwork_secondary_range {
                 Status::InUseService => "IN_USE_SERVICE",
                 Status::InUseShareablePod => "IN_USE_SHAREABLE_POD",
                 Status::InUseManagedPod => "IN_USE_MANAGED_POD",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNKNOWN" => Some(Self::Unknown),
+                "UNUSED" => Some(Self::Unused),
+                "IN_USE_SERVICE" => Some(Self::InUseService),
+                "IN_USE_SHAREABLE_POD" => Some(Self::InUseShareablePod),
+                "IN_USE_MANAGED_POD" => Some(Self::InUseManagedPod),
+                _ => None,
             }
         }
     }
@@ -5181,6 +5606,15 @@ pub mod dns_config {
                 Provider::CloudDns => "CLOUD_DNS",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PROVIDER_UNSPECIFIED" => Some(Self::Unspecified),
+                "PLATFORM_DEFAULT" => Some(Self::PlatformDefault),
+                "CLOUD_DNS" => Some(Self::CloudDns),
+                _ => None,
+            }
+        }
     }
     /// DNSScope lists the various scopes of access to cluster DNS records.
     #[derive(
@@ -5213,6 +5647,15 @@ pub mod dns_config {
                 DnsScope::Unspecified => "DNS_SCOPE_UNSPECIFIED",
                 DnsScope::ClusterScope => "CLUSTER_SCOPE",
                 DnsScope::VpcScope => "VPC_SCOPE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DNS_SCOPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CLUSTER_SCOPE" => Some(Self::ClusterScope),
+                "VPC_SCOPE" => Some(Self::VpcScope),
+                _ => None,
             }
         }
     }
@@ -5332,6 +5775,15 @@ pub mod database_encryption {
                 State::Unknown => "UNKNOWN",
                 State::Encrypted => "ENCRYPTED",
                 State::Decrypted => "DECRYPTED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNKNOWN" => Some(Self::Unknown),
+                "ENCRYPTED" => Some(Self::Encrypted),
+                "DECRYPTED" => Some(Self::Decrypted),
+                _ => None,
             }
         }
     }
@@ -5555,6 +6007,16 @@ pub mod release_channel {
                 Channel::Stable => "STABLE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "RAPID" => Some(Self::Rapid),
+                "REGULAR" => Some(Self::Regular),
+                "STABLE" => Some(Self::Stable),
+                _ => None,
+            }
+        }
     }
 }
 /// Configuration for fine-grained cost management feature.
@@ -5664,6 +6126,16 @@ pub mod notification_config {
                 EventType::UpgradeAvailableEvent => "UPGRADE_AVAILABLE_EVENT",
                 EventType::UpgradeEvent => "UPGRADE_EVENT",
                 EventType::SecurityBulletinEvent => "SECURITY_BULLETIN_EVENT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "EVENT_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "UPGRADE_AVAILABLE_EVENT" => Some(Self::UpgradeAvailableEvent),
+                "UPGRADE_EVENT" => Some(Self::UpgradeEvent),
+                "SECURITY_BULLETIN_EVENT" => Some(Self::SecurityBulletinEvent),
+                _ => None,
             }
         }
     }
@@ -5840,6 +6312,18 @@ pub mod logging_component_config {
                 Component::ControllerManager => "CONTROLLER_MANAGER",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "COMPONENT_UNSPECIFIED" => Some(Self::Unspecified),
+                "SYSTEM_COMPONENTS" => Some(Self::SystemComponents),
+                "WORKLOADS" => Some(Self::Workloads),
+                "APISERVER" => Some(Self::Apiserver),
+                "SCHEDULER" => Some(Self::Scheduler),
+                "CONTROLLER_MANAGER" => Some(Self::ControllerManager),
+                _ => None,
+            }
+        }
     }
 }
 /// MonitoringConfig is cluster monitoring configuration.
@@ -5905,6 +6389,15 @@ pub mod logging_variant_config {
                 Variant::MaxThroughput => "MAX_THROUGHPUT",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "VARIANT_UNSPECIFIED" => Some(Self::Unspecified),
+                "DEFAULT" => Some(Self::Default),
+                "MAX_THROUGHPUT" => Some(Self::MaxThroughput),
+                _ => None,
+            }
+        }
     }
 }
 /// MonitoringComponentConfig is cluster monitoring component configuration.
@@ -5960,6 +6453,18 @@ pub mod monitoring_component_config {
                 Component::ControllerManager => "CONTROLLER_MANAGER",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "COMPONENT_UNSPECIFIED" => Some(Self::Unspecified),
+                "SYSTEM_COMPONENTS" => Some(Self::SystemComponents),
+                "WORKLOADS" => Some(Self::Workloads),
+                "APISERVER" => Some(Self::Apiserver),
+                "SCHEDULER" => Some(Self::Scheduler),
+                "CONTROLLER_MANAGER" => Some(Self::ControllerManager),
+                _ => None,
+            }
+        }
     }
 }
 /// PrivateIPv6GoogleAccess controls whether and how the pods can communicate
@@ -5997,6 +6502,24 @@ impl PrivateIPv6GoogleAccess {
             }
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "PRIVATE_IPV6_GOOGLE_ACCESS_UNSPECIFIED" => {
+                Some(Self::PrivateIpv6GoogleAccessUnspecified)
+            }
+            "PRIVATE_IPV6_GOOGLE_ACCESS_DISABLED" => {
+                Some(Self::PrivateIpv6GoogleAccessDisabled)
+            }
+            "PRIVATE_IPV6_GOOGLE_ACCESS_TO_GOOGLE" => {
+                Some(Self::PrivateIpv6GoogleAccessToGoogle)
+            }
+            "PRIVATE_IPV6_GOOGLE_ACCESS_BIDIRECTIONAL" => {
+                Some(Self::PrivateIpv6GoogleAccessBidirectional)
+            }
+            _ => None,
+        }
+    }
 }
 /// UpgradeResourceType is the resource type that is upgrading. It is used
 /// in upgrade notifications.
@@ -6020,6 +6543,15 @@ impl UpgradeResourceType {
             UpgradeResourceType::Unspecified => "UPGRADE_RESOURCE_TYPE_UNSPECIFIED",
             UpgradeResourceType::Master => "MASTER",
             UpgradeResourceType::NodePool => "NODE_POOL",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "UPGRADE_RESOURCE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "MASTER" => Some(Self::Master),
+            "NODE_POOL" => Some(Self::NodePool),
+            _ => None,
         }
     }
 }
@@ -6049,6 +6581,15 @@ impl NodePoolUpdateStrategy {
             NodePoolUpdateStrategy::Surge => "SURGE",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "NODE_POOL_UPDATE_STRATEGY_UNSPECIFIED" => Some(Self::Unspecified),
+            "BLUE_GREEN" => Some(Self::BlueGreen),
+            "SURGE" => Some(Self::Surge),
+            _ => None,
+        }
+    }
 }
 /// The datapath provider selects the implementation of the Kubernetes networking
 /// model for service resolution and network policy enforcement.
@@ -6075,6 +6616,48 @@ impl DatapathProvider {
             DatapathProvider::Unspecified => "DATAPATH_PROVIDER_UNSPECIFIED",
             DatapathProvider::LegacyDatapath => "LEGACY_DATAPATH",
             DatapathProvider::AdvancedDatapath => "ADVANCED_DATAPATH",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "DATAPATH_PROVIDER_UNSPECIFIED" => Some(Self::Unspecified),
+            "LEGACY_DATAPATH" => Some(Self::LegacyDatapath),
+            "ADVANCED_DATAPATH" => Some(Self::AdvancedDatapath),
+            _ => None,
+        }
+    }
+}
+/// Possible values for IP stack type
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum StackType {
+    /// By default, the clusters will be IPV4 only
+    Unspecified = 0,
+    /// The value used if the cluster is a IPV4 only
+    Ipv4 = 1,
+    /// The value used if the cluster is a dual stack cluster
+    Ipv4Ipv6 = 2,
+}
+impl StackType {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            StackType::Unspecified => "STACK_TYPE_UNSPECIFIED",
+            StackType::Ipv4 => "IPV4",
+            StackType::Ipv4Ipv6 => "IPV4_IPV6",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "STACK_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "IPV4" => Some(Self::Ipv4),
+            "IPV4_IPV6" => Some(Self::Ipv4Ipv6),
+            _ => None,
         }
     }
 }

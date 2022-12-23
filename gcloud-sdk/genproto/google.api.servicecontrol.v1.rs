@@ -121,6 +121,35 @@ pub mod check_error {
                 }
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ERROR_CODE_UNSPECIFIED" => Some(Self::ErrorCodeUnspecified),
+                "NOT_FOUND" => Some(Self::NotFound),
+                "PERMISSION_DENIED" => Some(Self::PermissionDenied),
+                "RESOURCE_EXHAUSTED" => Some(Self::ResourceExhausted),
+                "SERVICE_NOT_ACTIVATED" => Some(Self::ServiceNotActivated),
+                "BILLING_DISABLED" => Some(Self::BillingDisabled),
+                "PROJECT_DELETED" => Some(Self::ProjectDeleted),
+                "PROJECT_INVALID" => Some(Self::ProjectInvalid),
+                "CONSUMER_INVALID" => Some(Self::ConsumerInvalid),
+                "IP_ADDRESS_BLOCKED" => Some(Self::IpAddressBlocked),
+                "REFERER_BLOCKED" => Some(Self::RefererBlocked),
+                "CLIENT_APP_BLOCKED" => Some(Self::ClientAppBlocked),
+                "API_TARGET_BLOCKED" => Some(Self::ApiTargetBlocked),
+                "API_KEY_INVALID" => Some(Self::ApiKeyInvalid),
+                "API_KEY_EXPIRED" => Some(Self::ApiKeyExpired),
+                "API_KEY_NOT_FOUND" => Some(Self::ApiKeyNotFound),
+                "INVALID_CREDENTIAL" => Some(Self::InvalidCredential),
+                "NAMESPACE_LOOKUP_UNAVAILABLE" => Some(Self::NamespaceLookupUnavailable),
+                "SERVICE_STATUS_UNAVAILABLE" => Some(Self::ServiceStatusUnavailable),
+                "BILLING_STATUS_UNAVAILABLE" => Some(Self::BillingStatusUnavailable),
+                "CLOUD_RESOURCE_MANAGER_BACKEND_UNAVAILABLE" => {
+                    Some(Self::CloudResourceManagerBackendUnavailable)
+                }
+                _ => None,
+            }
+        }
     }
 }
 /// Distribution represents a frequency distribution of double-valued sample
@@ -671,6 +700,14 @@ pub mod operation {
                 Importance::High => "HIGH",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "LOW" => Some(Self::Low),
+                "HIGH" => Some(Self::High),
+                _ => None,
+            }
+        }
     }
 }
 /// Request message for the AllocateQuota method.
@@ -818,6 +855,18 @@ pub mod quota_operation {
                 QuotaMode::AdjustOnly => "ADJUST_ONLY",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "NORMAL" => Some(Self::Normal),
+                "BEST_EFFORT" => Some(Self::BestEffort),
+                "CHECK_ONLY" => Some(Self::CheckOnly),
+                "QUERY_ONLY" => Some(Self::QueryOnly),
+                "ADJUST_ONLY" => Some(Self::AdjustOnly),
+                _ => None,
+            }
+        }
     }
 }
 /// Response message for the AllocateQuota method.
@@ -915,6 +964,18 @@ pub mod quota_error {
                 Code::ProjectDeleted => "PROJECT_DELETED",
                 Code::ApiKeyInvalid => "API_KEY_INVALID",
                 Code::ApiKeyExpired => "API_KEY_EXPIRED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNSPECIFIED" => Some(Self::Unspecified),
+                "RESOURCE_EXHAUSTED" => Some(Self::ResourceExhausted),
+                "BILLING_NOT_ACTIVE" => Some(Self::BillingNotActive),
+                "PROJECT_DELETED" => Some(Self::ProjectDeleted),
+                "API_KEY_INVALID" => Some(Self::ApiKeyInvalid),
+                "API_KEY_EXPIRED" => Some(Self::ApiKeyExpired),
+                _ => None,
             }
         }
     }
@@ -1151,6 +1212,17 @@ pub mod check_response {
                     ConsumerType::Folder => "FOLDER",
                     ConsumerType::Organization => "ORGANIZATION",
                     ConsumerType::ServiceSpecific => "SERVICE_SPECIFIC",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "CONSUMER_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "PROJECT" => Some(Self::Project),
+                    "FOLDER" => Some(Self::Folder),
+                    "ORGANIZATION" => Some(Self::Organization),
+                    "SERVICE_SPECIFIC" => Some(Self::ServiceSpecific),
+                    _ => None,
                 }
             }
         }

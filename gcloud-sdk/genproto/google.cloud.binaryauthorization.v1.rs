@@ -102,6 +102,15 @@ pub mod policy {
                 GlobalPolicyEvaluationMode::Disable => "DISABLE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "GLOBAL_POLICY_EVALUATION_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ENABLE" => Some(Self::Enable),
+                "DISABLE" => Some(Self::Disable),
+                _ => None,
+            }
+        }
     }
 }
 /// An [admission allowlist pattern]\[google.cloud.binaryauthorization.v1.AdmissionWhitelistPattern\] exempts images
@@ -184,6 +193,16 @@ pub mod admission_rule {
                 EvaluationMode::AlwaysDeny => "ALWAYS_DENY",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "EVALUATION_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ALWAYS_ALLOW" => Some(Self::AlwaysAllow),
+                "REQUIRE_ATTESTATION" => Some(Self::RequireAttestation),
+                "ALWAYS_DENY" => Some(Self::AlwaysDeny),
+                _ => None,
+            }
+        }
     }
     /// Defines the possible actions when a pod creation is denied by an admission
     /// rule.
@@ -220,6 +239,15 @@ pub mod admission_rule {
                     "ENFORCED_BLOCK_AND_AUDIT_LOG"
                 }
                 EnforcementMode::DryrunAuditLogOnly => "DRYRUN_AUDIT_LOG_ONLY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ENFORCEMENT_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ENFORCED_BLOCK_AND_AUDIT_LOG" => Some(Self::EnforcedBlockAndAuditLog),
+                "DRYRUN_AUDIT_LOG_ONLY" => Some(Self::DryrunAuditLogOnly),
+                _ => None,
             }
         }
     }
@@ -384,6 +412,24 @@ pub mod pkix_public_key {
                 SignatureAlgorithm::EcdsaP256Sha256 => "ECDSA_P256_SHA256",
                 SignatureAlgorithm::EcdsaP384Sha384 => "ECDSA_P384_SHA384",
                 SignatureAlgorithm::EcdsaP521Sha512 => "ECDSA_P521_SHA512",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SIGNATURE_ALGORITHM_UNSPECIFIED" => Some(Self::Unspecified),
+                "RSA_PSS_2048_SHA256" => Some(Self::RsaPss2048Sha256),
+                "RSA_PSS_3072_SHA256" => Some(Self::RsaPss3072Sha256),
+                "RSA_PSS_4096_SHA256" => Some(Self::RsaPss4096Sha256),
+                "RSA_PSS_4096_SHA512" => Some(Self::RsaPss4096Sha512),
+                "RSA_SIGN_PKCS1_2048_SHA256" => Some(Self::RsaSignPkcs12048Sha256),
+                "RSA_SIGN_PKCS1_3072_SHA256" => Some(Self::RsaSignPkcs13072Sha256),
+                "RSA_SIGN_PKCS1_4096_SHA256" => Some(Self::RsaSignPkcs14096Sha256),
+                "RSA_SIGN_PKCS1_4096_SHA512" => Some(Self::RsaSignPkcs14096Sha512),
+                "ECDSA_P256_SHA256" => Some(Self::EcdsaP256Sha256),
+                "ECDSA_P384_SHA384" => Some(Self::EcdsaP384Sha384),
+                "ECDSA_P521_SHA512" => Some(Self::EcdsaP521Sha512),
+                _ => None,
             }
         }
     }
@@ -608,6 +654,15 @@ pub mod validate_attestation_occurrence_response {
                 Result::Unspecified => "RESULT_UNSPECIFIED",
                 Result::Verified => "VERIFIED",
                 Result::AttestationNotVerifiable => "ATTESTATION_NOT_VERIFIABLE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "RESULT_UNSPECIFIED" => Some(Self::Unspecified),
+                "VERIFIED" => Some(Self::Verified),
+                "ATTESTATION_NOT_VERIFIABLE" => Some(Self::AttestationNotVerifiable),
+                _ => None,
             }
         }
     }

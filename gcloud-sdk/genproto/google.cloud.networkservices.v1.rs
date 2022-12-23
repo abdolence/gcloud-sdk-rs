@@ -145,6 +145,17 @@ pub mod endpoint_matcher {
                     MetadataLabelMatchCriteria::MatchAll => "MATCH_ALL",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "METADATA_LABEL_MATCH_CRITERIA_UNSPECIFIED" => {
+                        Some(Self::Unspecified)
+                    }
+                    "MATCH_ANY" => Some(Self::MatchAny),
+                    "MATCH_ALL" => Some(Self::MatchAll),
+                    _ => None,
+                }
+            }
         }
     }
     /// Specifies type of the matcher used for this endpoint matcher.
@@ -250,6 +261,15 @@ pub mod endpoint_policy {
                 EndpointPolicyType::Unspecified => "ENDPOINT_POLICY_TYPE_UNSPECIFIED",
                 EndpointPolicyType::SidecarProxy => "SIDECAR_PROXY",
                 EndpointPolicyType::GrpcServer => "GRPC_SERVER",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ENDPOINT_POLICY_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "SIDECAR_PROXY" => Some(Self::SidecarProxy),
+                "GRPC_SERVER" => Some(Self::GrpcServer),
+                _ => None,
             }
         }
     }
@@ -424,6 +444,15 @@ pub mod gateway {
                 Type::Unspecified => "TYPE_UNSPECIFIED",
                 Type::OpenMesh => "OPEN_MESH",
                 Type::SecureWebGateway => "SECURE_WEB_GATEWAY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "OPEN_MESH" => Some(Self::OpenMesh),
+                "SECURE_WEB_GATEWAY" => Some(Self::SecureWebGateway),
+                _ => None,
             }
         }
     }
@@ -647,6 +676,15 @@ pub mod grpc_route {
                     Type::RegularExpression => "REGULAR_EXPRESSION",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "EXACT" => Some(Self::Exact),
+                    "REGULAR_EXPRESSION" => Some(Self::RegularExpression),
+                    _ => None,
+                }
+            }
         }
     }
     /// A match against a collection of headers.
@@ -698,6 +736,15 @@ pub mod grpc_route {
                     Type::Unspecified => "TYPE_UNSPECIFIED",
                     Type::Exact => "EXACT",
                     Type::RegularExpression => "REGULAR_EXPRESSION",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "EXACT" => Some(Self::Exact),
+                    "REGULAR_EXPRESSION" => Some(Self::RegularExpression),
+                    _ => None,
                 }
             }
         }
@@ -1276,6 +1323,18 @@ pub mod http_route {
                     ResponseCode::SeeOther => "SEE_OTHER",
                     ResponseCode::TemporaryRedirect => "TEMPORARY_REDIRECT",
                     ResponseCode::PermanentRedirect => "PERMANENT_REDIRECT",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "RESPONSE_CODE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "MOVED_PERMANENTLY_DEFAULT" => Some(Self::MovedPermanentlyDefault),
+                    "FOUND" => Some(Self::Found),
+                    "SEE_OTHER" => Some(Self::SeeOther),
+                    "TEMPORARY_REDIRECT" => Some(Self::TemporaryRedirect),
+                    "PERMANENT_REDIRECT" => Some(Self::PermanentRedirect),
+                    _ => None,
                 }
             }
         }

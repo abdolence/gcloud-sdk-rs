@@ -204,6 +204,15 @@ pub mod conversation {
                 Medium::Chat => "CHAT",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MEDIUM_UNSPECIFIED" => Some(Self::Unspecified),
+                "PHONE_CALL" => Some(Self::PhoneCall),
+                "CHAT" => Some(Self::Chat),
+                _ => None,
+            }
+        }
     }
     /// Metadata that applies to the conversation.
     #[allow(clippy::derive_partial_eq_without_eq)]
@@ -607,6 +616,25 @@ pub mod entity {
                 Type::Price => "PRICE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PERSON" => Some(Self::Person),
+                "LOCATION" => Some(Self::Location),
+                "ORGANIZATION" => Some(Self::Organization),
+                "EVENT" => Some(Self::Event),
+                "WORK_OF_ART" => Some(Self::WorkOfArt),
+                "CONSUMER_GOOD" => Some(Self::ConsumerGood),
+                "OTHER" => Some(Self::Other),
+                "PHONE_NUMBER" => Some(Self::PhoneNumber),
+                "ADDRESS" => Some(Self::Address),
+                "DATE" => Some(Self::Date),
+                "NUMBER" => Some(Self::Number),
+                "PRICE" => Some(Self::Price),
+                _ => None,
+            }
+        }
     }
 }
 /// The data for an intent.
@@ -703,6 +731,15 @@ pub mod entity_mention_data {
                 MentionType::Unspecified => "MENTION_TYPE_UNSPECIFIED",
                 MentionType::Proper => "PROPER",
                 MentionType::Common => "COMMON",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MENTION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PROPER" => Some(Self::Proper),
+                "COMMON" => Some(Self::Common),
+                _ => None,
             }
         }
     }
@@ -828,6 +865,18 @@ pub mod issue_model {
                 State::Deployed => "DEPLOYED",
                 State::Undeploying => "UNDEPLOYING",
                 State::Deleting => "DELETING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "UNDEPLOYED" => Some(Self::Undeployed),
+                "DEPLOYING" => Some(Self::Deploying),
+                "DEPLOYED" => Some(Self::Deployed),
+                "UNDEPLOYING" => Some(Self::Undeploying),
+                "DELETING" => Some(Self::Deleting),
+                _ => None,
             }
         }
     }
@@ -975,6 +1024,15 @@ pub mod phrase_matcher {
                 PhraseMatcherType::AnyOf => "ANY_OF",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PHRASE_MATCHER_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ALL_OF" => Some(Self::AllOf),
+                "ANY_OF" => Some(Self::AnyOf),
+                _ => None,
+            }
+        }
     }
 }
 /// A message representing a rule in the phrase matcher.
@@ -1027,6 +1085,15 @@ pub mod phrase_match_rule_group {
                 }
                 PhraseMatchRuleGroupType::AllOf => "ALL_OF",
                 PhraseMatchRuleGroupType::AnyOf => "ANY_OF",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PHRASE_MATCH_RULE_GROUP_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ALL_OF" => Some(Self::AllOf),
+                "ANY_OF" => Some(Self::AnyOf),
+                _ => None,
             }
         }
     }
@@ -1242,6 +1309,16 @@ pub mod answer_feedback {
                 CorrectnessLevel::FullyCorrect => "FULLY_CORRECT",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CORRECTNESS_LEVEL_UNSPECIFIED" => Some(Self::Unspecified),
+                "NOT_CORRECT" => Some(Self::NotCorrect),
+                "PARTIALLY_CORRECT" => Some(Self::PartiallyCorrect),
+                "FULLY_CORRECT" => Some(Self::FullyCorrect),
+                _ => None,
+            }
+        }
     }
 }
 /// Agent Assist Article Suggestion data.
@@ -1431,6 +1508,17 @@ pub mod conversation_participant {
                 Role::AutomatedAgent => "AUTOMATED_AGENT",
                 Role::EndUser => "END_USER",
                 Role::AnyAgent => "ANY_AGENT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ROLE_UNSPECIFIED" => Some(Self::Unspecified),
+                "HUMAN_AGENT" => Some(Self::HumanAgent),
+                "AUTOMATED_AGENT" => Some(Self::AutomatedAgent),
+                "END_USER" => Some(Self::EndUser),
+                "ANY_AGENT" => Some(Self::AnyAgent),
+                _ => None,
             }
         }
     }
@@ -1994,6 +2082,15 @@ pub mod export_insights_data_request {
                 WriteDisposition::WriteAppend => "WRITE_APPEND",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "WRITE_DISPOSITION_UNSPECIFIED" => Some(Self::Unspecified),
+                "WRITE_TRUNCATE" => Some(Self::WriteTruncate),
+                "WRITE_APPEND" => Some(Self::WriteAppend),
+                _ => None,
+            }
+        }
     }
     /// Exporter destination.
     #[allow(clippy::derive_partial_eq_without_eq)]
@@ -2411,6 +2508,15 @@ impl ConversationView {
             ConversationView::Unspecified => "CONVERSATION_VIEW_UNSPECIFIED",
             ConversationView::Full => "FULL",
             ConversationView::Basic => "BASIC",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "CONVERSATION_VIEW_UNSPECIFIED" => Some(Self::Unspecified),
+            "FULL" => Some(Self::Full),
+            "BASIC" => Some(Self::Basic),
+            _ => None,
         }
     }
 }

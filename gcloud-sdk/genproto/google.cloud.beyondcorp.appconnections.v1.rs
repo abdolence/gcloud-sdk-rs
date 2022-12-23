@@ -331,6 +331,14 @@ pub mod app_connection {
                     Type::GcpRegionalMig => "GCP_REGIONAL_MIG",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "GCP_REGIONAL_MIG" => Some(Self::GcpRegionalMig),
+                    _ => None,
+                }
+            }
         }
     }
     /// Enum containing list of all possible network connectivity options
@@ -363,6 +371,14 @@ pub mod app_connection {
             match self {
                 Type::Unspecified => "TYPE_UNSPECIFIED",
                 Type::TcpProxy => "TCP_PROXY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "TCP_PROXY" => Some(Self::TcpProxy),
+                _ => None,
             }
         }
     }
@@ -407,6 +423,18 @@ pub mod app_connection {
                 State::Updating => "UPDATING",
                 State::Deleting => "DELETING",
                 State::Down => "DOWN",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CREATING" => Some(Self::Creating),
+                "CREATED" => Some(Self::Created),
+                "UPDATING" => Some(Self::Updating),
+                "DELETING" => Some(Self::Deleting),
+                "DOWN" => Some(Self::Down),
+                _ => None,
             }
         }
     }

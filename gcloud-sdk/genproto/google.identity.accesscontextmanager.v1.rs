@@ -88,6 +88,14 @@ pub mod basic_level {
                 ConditionCombiningFunction::Or => "OR",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "AND" => Some(Self::And),
+                "OR" => Some(Self::Or),
+                _ => None,
+            }
+        }
     }
 }
 /// A condition necessary for an `AccessLevel` to be granted. The Condition is an
@@ -356,6 +364,14 @@ pub mod service_perimeter {
             match self {
                 PerimeterType::Regular => "PERIMETER_TYPE_REGULAR",
                 PerimeterType::Bridge => "PERIMETER_TYPE_BRIDGE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PERIMETER_TYPE_REGULAR" => Some(Self::Regular),
+                "PERIMETER_TYPE_BRIDGE" => Some(Self::Bridge),
+                _ => None,
             }
         }
     }
@@ -780,6 +796,16 @@ pub mod service_perimeter_config {
                 IdentityType::AnyIdentity => "ANY_IDENTITY",
                 IdentityType::AnyUserAccount => "ANY_USER_ACCOUNT",
                 IdentityType::AnyServiceAccount => "ANY_SERVICE_ACCOUNT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "IDENTITY_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ANY_IDENTITY" => Some(Self::AnyIdentity),
+                "ANY_USER_ACCOUNT" => Some(Self::AnyUserAccount),
+                "ANY_SERVICE_ACCOUNT" => Some(Self::AnyServiceAccount),
+                _ => None,
             }
         }
     }
@@ -1301,6 +1327,15 @@ impl LevelFormat {
             LevelFormat::Unspecified => "LEVEL_FORMAT_UNSPECIFIED",
             LevelFormat::AsDefined => "AS_DEFINED",
             LevelFormat::Cel => "CEL",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "LEVEL_FORMAT_UNSPECIFIED" => Some(Self::Unspecified),
+            "AS_DEFINED" => Some(Self::AsDefined),
+            "CEL" => Some(Self::Cel),
+            _ => None,
         }
     }
 }

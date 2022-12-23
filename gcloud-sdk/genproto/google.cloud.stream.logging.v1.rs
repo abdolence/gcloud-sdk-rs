@@ -134,6 +134,55 @@ impl OperationEventType {
             }
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "OPERATION_EVENT_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "OPERATION_EVENT_CREATE_CONTENT_STARTED" => {
+                Some(Self::OperationEventCreateContentStarted)
+            }
+            "OPERATION_EVENT_CREATE_CONTENT_ENDED" => {
+                Some(Self::OperationEventCreateContentEnded)
+            }
+            "OPERATION_EVENT_BUILD_CONTENT_STARTED" => {
+                Some(Self::OperationEventBuildContentStarted)
+            }
+            "OPERATION_EVENT_BUILD_CONTENT_ENDED" => {
+                Some(Self::OperationEventBuildContentEnded)
+            }
+            "OPERATION_EVENT_UPDATE_CONTENT_STARTED" => {
+                Some(Self::OperationEventUpdateContentStarted)
+            }
+            "OPERATION_EVENT_UPDATE_CONTENT_ENDED" => {
+                Some(Self::OperationEventUpdateContentEnded)
+            }
+            "OPERATION_EVENT_DELETE_CONTENT_STARTED" => {
+                Some(Self::OperationEventDeleteContentStarted)
+            }
+            "OPERATION_EVENT_DELETE_CONTENT_ENDED" => {
+                Some(Self::OperationEventDeleteContentEnded)
+            }
+            "OPERATION_EVENT_CREATE_INSTANCE_STARTED" => {
+                Some(Self::OperationEventCreateInstanceStarted)
+            }
+            "OPERATION_EVENT_CREATE_INSTANCE_ENDED" => {
+                Some(Self::OperationEventCreateInstanceEnded)
+            }
+            "OPERATION_EVENT_UPDATE_INSTANCE_STARTED" => {
+                Some(Self::OperationEventUpdateInstanceStarted)
+            }
+            "OPERATION_EVENT_UPDATE_INSTANCE_ENDED" => {
+                Some(Self::OperationEventUpdateInstanceEnded)
+            }
+            "OPERATION_EVENT_DELETE_INSTANCE_STARTED" => {
+                Some(Self::OperationEventDeleteInstanceStarted)
+            }
+            "OPERATION_EVENT_DELETE_INSTANCE_ENDED" => {
+                Some(Self::OperationEventDeleteInstanceEnded)
+            }
+            _ => None,
+        }
+    }
 }
 /// SessionEventType is the enum value for the state of session.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -253,6 +302,74 @@ impl SessionEventType {
                 "SESSION_EVENT_SERVER_GAME_UPDATED_FRAME_PIPELINE"
             }
             SessionEventType::SessionEventServerError => "SESSION_EVENT_SERVER_ERROR",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "SESSION_EVENT_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "SESSION_EVENT_SERVER_STREAMER_SHUTTING_DOWN" => {
+                Some(Self::SessionEventServerStreamerShuttingDown)
+            }
+            "SESSION_EVENT_SERVER_STREAMER_READY" => {
+                Some(Self::SessionEventServerStreamerReady)
+            }
+            "SESSION_EVENT_SERVER_STREAMER_BINARY_STARTED" => {
+                Some(Self::SessionEventServerStreamerBinaryStarted)
+            }
+            "SESSION_EVENT_SERVER_STREAMER_READ_POD_IMAGE_NAMES" => {
+                Some(Self::SessionEventServerStreamerReadPodImageNames)
+            }
+            "SESSION_EVENT_SERVER_STREAMER_CONNECTED_TO_GAME" => {
+                Some(Self::SessionEventServerStreamerConnectedToGame)
+            }
+            "SESSION_EVENT_SERVER_STREAMER_CONNECTED_TO_CLIENT" => {
+                Some(Self::SessionEventServerStreamerConnectedToClient)
+            }
+            "SESSION_EVENT_SERVER_STREAMER_DISCONNECTED_FROM_CLIENT" => {
+                Some(Self::SessionEventServerStreamerDisconnectedFromClient)
+            }
+            "SESSION_EVENT_SERVER_STREAMER_RECEIVED_CREATE_SESSION_REQUEST" => {
+                Some(Self::SessionEventServerStreamerReceivedCreateSessionRequest)
+            }
+            "SESSION_EVENT_SERVER_STREAMER_GAME_MESSAGE_STREAM_CLOSED" => {
+                Some(Self::SessionEventServerStreamerGameMessageStreamClosed)
+            }
+            "SESSION_EVENT_SERVER_STREAMER_GAME_FRAME_STREAM_CLOSED" => {
+                Some(Self::SessionEventServerStreamerGameFrameStreamClosed)
+            }
+            "SESSION_EVENT_SERVER_STREAMER_GAME_MESSAGE_STREAM_ERROR" => {
+                Some(Self::SessionEventServerStreamerGameMessageStreamError)
+            }
+            "SESSION_EVENT_SERVER_STREAMER_GAME_AUDIO_STREAM_ERROR" => {
+                Some(Self::SessionEventServerStreamerGameAudioStreamError)
+            }
+            "SESSION_EVENT_SERVER_STREAMER_GAME_AUDIO_STREAM_CLOSED" => {
+                Some(Self::SessionEventServerStreamerGameAudioStreamClosed)
+            }
+            "SESSION_EVENT_SERVER_STREAMER_GAME_FRAME_STREAM_ERROR" => {
+                Some(Self::SessionEventServerStreamerGameFrameStreamError)
+            }
+            "SESSION_EVENT_SERVER_GAME_DISCONNECTING_AFTER_PAUSED_TOO_LONG" => {
+                Some(Self::SessionEventServerGameDisconnectingAfterPausedTooLong)
+            }
+            "SESSION_EVENT_SERVER_STREAMER_RECEIVED_EXPERIMENT_CONFIGURATION" => {
+                Some(Self::SessionEventServerStreamerReceivedExperimentConfiguration)
+            }
+            "SESSION_EVENT_SERVER_GAME_CONNECTED_TO_LOGGING_SERVICE" => {
+                Some(Self::SessionEventServerGameConnectedToLoggingService)
+            }
+            "SESSION_EVENT_SERVER_STREAMER_DETERMINED_SESSION_OPTIONS" => {
+                Some(Self::SessionEventServerStreamerDeterminedSessionOptions)
+            }
+            "SESSION_EVENT_SERVER_STREAMER_KILLED_IN_MIDDLE_OF_SESSION" => {
+                Some(Self::SessionEventServerStreamerKilledInMiddleOfSession)
+            }
+            "SESSION_EVENT_SERVER_GAME_UPDATED_FRAME_PIPELINE" => {
+                Some(Self::SessionEventServerGameUpdatedFramePipeline)
+            }
+            "SESSION_EVENT_SERVER_ERROR" => Some(Self::SessionEventServerError),
+            _ => None,
         }
     }
 }

@@ -73,6 +73,21 @@ pub mod build_status {
                 Result::Cancelled => "CANCELLED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNKNOWN_STATUS" => Some(Self::UnknownStatus),
+                "COMMAND_SUCCEEDED" => Some(Self::CommandSucceeded),
+                "COMMAND_FAILED" => Some(Self::CommandFailed),
+                "USER_ERROR" => Some(Self::UserError),
+                "SYSTEM_ERROR" => Some(Self::SystemError),
+                "RESOURCE_EXHAUSTED" => Some(Self::ResourceExhausted),
+                "INVOCATION_DEADLINE_EXCEEDED" => Some(Self::InvocationDeadlineExceeded),
+                "REQUEST_DEADLINE_EXCEEDED" => Some(Self::RequestDeadlineExceeded),
+                "CANCELLED" => Some(Self::Cancelled),
+                _ => None,
+            }
+        }
     }
 }
 /// An event representing some state change that occurred in the build. This
@@ -209,6 +224,15 @@ pub mod build_event {
                     FinishType::Expired => "EXPIRED",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "FINISH_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "FINISHED" => Some(Self::Finished),
+                    "EXPIRED" => Some(Self::Expired),
+                    _ => None,
+                }
+            }
         }
     }
     /// //////////////////////////////////////////////////////////////////////////
@@ -304,6 +328,16 @@ pub mod stream_id {
                 BuildComponent::Tool => "TOOL",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNKNOWN_COMPONENT" => Some(Self::UnknownComponent),
+                "CONTROLLER" => Some(Self::Controller),
+                "WORKER" => Some(Self::Worker),
+                "TOOL" => Some(Self::Tool),
+                _ => None,
+            }
+        }
     }
 }
 /// The type of console output stream.
@@ -327,6 +361,15 @@ impl ConsoleOutputStream {
             ConsoleOutputStream::Unknown => "UNKNOWN",
             ConsoleOutputStream::Stdout => "STDOUT",
             ConsoleOutputStream::Stderr => "STDERR",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "UNKNOWN" => Some(Self::Unknown),
+            "STDOUT" => Some(Self::Stdout),
+            "STDERR" => Some(Self::Stderr),
+            _ => None,
         }
     }
 }
@@ -406,6 +449,14 @@ pub mod publish_lifecycle_event_request {
             match self {
                 ServiceLevel::Noninteractive => "NONINTERACTIVE",
                 ServiceLevel::Interactive => "INTERACTIVE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "NONINTERACTIVE" => Some(Self::Noninteractive),
+                "INTERACTIVE" => Some(Self::Interactive),
+                _ => None,
             }
         }
     }

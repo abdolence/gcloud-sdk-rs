@@ -170,6 +170,15 @@ pub mod authorization_policy {
                 Action::Deny => "DENY",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ACTION_UNSPECIFIED" => Some(Self::Unspecified),
+                "ALLOW" => Some(Self::Allow),
+                "DENY" => Some(Self::Deny),
+                _ => None,
+            }
+        }
     }
 }
 /// Request used with the ListAuthorizationPolicies method.

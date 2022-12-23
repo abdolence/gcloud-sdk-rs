@@ -100,6 +100,20 @@ impl NoteKind {
             NoteKind::Attestation => "ATTESTATION",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "NOTE_KIND_UNSPECIFIED" => Some(Self::Unspecified),
+            "VULNERABILITY" => Some(Self::Vulnerability),
+            "BUILD" => Some(Self::Build),
+            "IMAGE" => Some(Self::Image),
+            "PACKAGE" => Some(Self::Package),
+            "DEPLOYMENT" => Some(Self::Deployment),
+            "DISCOVERY" => Some(Self::Discovery),
+            "ATTESTATION" => Some(Self::Attestation),
+            _ => None,
+        }
+    }
 }
 /// An instance of an analysis type that has been found on a resource.
 #[allow(clippy::derive_partial_eq_without_eq)]

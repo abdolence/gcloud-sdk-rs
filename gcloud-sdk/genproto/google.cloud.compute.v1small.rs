@@ -117,6 +117,16 @@ pub mod address {
                 AddressType::UnspecifiedType => "UNSPECIFIED_TYPE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_ADDRESS_TYPE" => Some(Self::UndefinedAddressType),
+                "EXTERNAL" => Some(Self::External),
+                "INTERNAL" => Some(Self::Internal),
+                "UNSPECIFIED_TYPE" => Some(Self::UnspecifiedType),
+                _ => None,
+            }
+        }
     }
     /// The IP version that will be used by this address. Valid options are IPV4 or IPV6. This can only be specified for a global address.
     #[derive(
@@ -151,6 +161,16 @@ pub mod address {
                 IpVersion::UnspecifiedVersion => "UNSPECIFIED_VERSION",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_IP_VERSION" => Some(Self::UndefinedIpVersion),
+                "IPV4" => Some(Self::Ipv4),
+                "IPV6" => Some(Self::Ipv6),
+                "UNSPECIFIED_VERSION" => Some(Self::UnspecifiedVersion),
+                _ => None,
+            }
+        }
     }
     /// This signifies the networking tier used for configuring this address and can only take the following values: PREMIUM or STANDARD. Global forwarding rules can only be Premium Tier. Regional forwarding rules can be either Premium or Standard Tier. Standard Tier addresses applied to regional forwarding rules can be used with any external load balancer. Regional forwarding rules in Premium Tier can only be used with a network load balancer.
     ///
@@ -183,6 +203,15 @@ pub mod address {
                 NetworkTier::UndefinedNetworkTier => "UNDEFINED_NETWORK_TIER",
                 NetworkTier::Premium => "PREMIUM",
                 NetworkTier::Standard => "STANDARD",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_NETWORK_TIER" => Some(Self::UndefinedNetworkTier),
+                "PREMIUM" => Some(Self::Premium),
+                "STANDARD" => Some(Self::Standard),
+                _ => None,
             }
         }
     }
@@ -225,6 +254,17 @@ pub mod address {
                 Purpose::VpcPeering => "VPC_PEERING",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_PURPOSE" => Some(Self::UndefinedPurpose),
+                "DNS_RESOLVER" => Some(Self::DnsResolver),
+                "GCE_ENDPOINT" => Some(Self::GceEndpoint),
+                "NAT_AUTO" => Some(Self::NatAuto),
+                "VPC_PEERING" => Some(Self::VpcPeering),
+                _ => None,
+            }
+        }
     }
     /// [Output Only] The status of the address, which can be one of RESERVING, RESERVED, or IN_USE. An address that is RESERVING is currently in the process of being reserved. A RESERVED address is currently reserved and available to use. An IN_USE address is currently being used by another resource and is not available.
     #[derive(
@@ -257,6 +297,16 @@ pub mod address {
                 Status::InUse => "IN_USE",
                 Status::Reserved => "RESERVED",
                 Status::Reserving => "RESERVING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_STATUS" => Some(Self::UndefinedStatus),
+                "IN_USE" => Some(Self::InUse),
+                "RESERVED" => Some(Self::Reserved),
+                "RESERVING" => Some(Self::Reserving),
+                _ => None,
             }
         }
     }
@@ -598,6 +648,16 @@ pub mod operation {
                 Status::Running => "RUNNING",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_STATUS" => Some(Self::UndefinedStatus),
+                "DONE" => Some(Self::Done),
+                "PENDING" => Some(Self::Pending),
+                "RUNNING" => Some(Self::Running),
+                _ => None,
+            }
+        }
     }
 }
 /// A request message for RegionOperations.Wait. See the method description for details.
@@ -709,6 +769,44 @@ pub mod warning {
                 Code::Unreachable => "UNREACHABLE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_CODE" => Some(Self::UndefinedCode),
+                "CLEANUP_FAILED" => Some(Self::CleanupFailed),
+                "DEPRECATED_RESOURCE_USED" => Some(Self::DeprecatedResourceUsed),
+                "DEPRECATED_TYPE_USED" => Some(Self::DeprecatedTypeUsed),
+                "DISK_SIZE_LARGER_THAN_IMAGE_SIZE" => {
+                    Some(Self::DiskSizeLargerThanImageSize)
+                }
+                "EXPERIMENTAL_TYPE_USED" => Some(Self::ExperimentalTypeUsed),
+                "EXTERNAL_API_WARNING" => Some(Self::ExternalApiWarning),
+                "FIELD_VALUE_OVERRIDEN" => Some(Self::FieldValueOverriden),
+                "INJECTED_KERNELS_DEPRECATED" => Some(Self::InjectedKernelsDeprecated),
+                "MISSING_TYPE_DEPENDENCY" => Some(Self::MissingTypeDependency),
+                "NEXT_HOP_ADDRESS_NOT_ASSIGNED" => Some(Self::NextHopAddressNotAssigned),
+                "NEXT_HOP_CANNOT_IP_FORWARD" => Some(Self::NextHopCannotIpForward),
+                "NEXT_HOP_INSTANCE_NOT_FOUND" => Some(Self::NextHopInstanceNotFound),
+                "NEXT_HOP_INSTANCE_NOT_ON_NETWORK" => {
+                    Some(Self::NextHopInstanceNotOnNetwork)
+                }
+                "NEXT_HOP_NOT_RUNNING" => Some(Self::NextHopNotRunning),
+                "NOT_CRITICAL_ERROR" => Some(Self::NotCriticalError),
+                "NO_RESULTS_ON_PAGE" => Some(Self::NoResultsOnPage),
+                "REQUIRED_TOS_AGREEMENT" => Some(Self::RequiredTosAgreement),
+                "RESOURCE_IN_USE_BY_OTHER_RESOURCE_WARNING" => {
+                    Some(Self::ResourceInUseByOtherResourceWarning)
+                }
+                "RESOURCE_NOT_DELETED" => Some(Self::ResourceNotDeleted),
+                "SCHEMA_VALIDATION_IGNORED" => Some(Self::SchemaValidationIgnored),
+                "SINGLE_INSTANCE_PROPERTY_TEMPLATE" => {
+                    Some(Self::SingleInstancePropertyTemplate)
+                }
+                "UNDECLARED_PROPERTIES" => Some(Self::UndeclaredProperties),
+                "UNREACHABLE" => Some(Self::Unreachable),
+                _ => None,
+            }
+        }
     }
 }
 ///
@@ -804,6 +902,44 @@ pub mod warnings {
                 }
                 Code::UndeclaredProperties => "UNDECLARED_PROPERTIES",
                 Code::Unreachable => "UNREACHABLE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNDEFINED_CODE" => Some(Self::UndefinedCode),
+                "CLEANUP_FAILED" => Some(Self::CleanupFailed),
+                "DEPRECATED_RESOURCE_USED" => Some(Self::DeprecatedResourceUsed),
+                "DEPRECATED_TYPE_USED" => Some(Self::DeprecatedTypeUsed),
+                "DISK_SIZE_LARGER_THAN_IMAGE_SIZE" => {
+                    Some(Self::DiskSizeLargerThanImageSize)
+                }
+                "EXPERIMENTAL_TYPE_USED" => Some(Self::ExperimentalTypeUsed),
+                "EXTERNAL_API_WARNING" => Some(Self::ExternalApiWarning),
+                "FIELD_VALUE_OVERRIDEN" => Some(Self::FieldValueOverriden),
+                "INJECTED_KERNELS_DEPRECATED" => Some(Self::InjectedKernelsDeprecated),
+                "MISSING_TYPE_DEPENDENCY" => Some(Self::MissingTypeDependency),
+                "NEXT_HOP_ADDRESS_NOT_ASSIGNED" => Some(Self::NextHopAddressNotAssigned),
+                "NEXT_HOP_CANNOT_IP_FORWARD" => Some(Self::NextHopCannotIpForward),
+                "NEXT_HOP_INSTANCE_NOT_FOUND" => Some(Self::NextHopInstanceNotFound),
+                "NEXT_HOP_INSTANCE_NOT_ON_NETWORK" => {
+                    Some(Self::NextHopInstanceNotOnNetwork)
+                }
+                "NEXT_HOP_NOT_RUNNING" => Some(Self::NextHopNotRunning),
+                "NOT_CRITICAL_ERROR" => Some(Self::NotCriticalError),
+                "NO_RESULTS_ON_PAGE" => Some(Self::NoResultsOnPage),
+                "REQUIRED_TOS_AGREEMENT" => Some(Self::RequiredTosAgreement),
+                "RESOURCE_IN_USE_BY_OTHER_RESOURCE_WARNING" => {
+                    Some(Self::ResourceInUseByOtherResourceWarning)
+                }
+                "RESOURCE_NOT_DELETED" => Some(Self::ResourceNotDeleted),
+                "SCHEMA_VALIDATION_IGNORED" => Some(Self::SchemaValidationIgnored),
+                "SINGLE_INSTANCE_PROPERTY_TEMPLATE" => {
+                    Some(Self::SingleInstancePropertyTemplate)
+                }
+                "UNDECLARED_PROPERTIES" => Some(Self::UndeclaredProperties),
+                "UNREACHABLE" => Some(Self::Unreachable),
+                _ => None,
             }
         }
     }

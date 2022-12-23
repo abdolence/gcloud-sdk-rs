@@ -1003,6 +1003,18 @@ pub mod invalid_request_detail {
                 Reason::NotImplemented => "NOT_IMPLEMENTED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "REASON_UNSPECIFIED" => Some(Self::Unspecified),
+                "REQUEST_INVALID" => Some(Self::RequestInvalid),
+                "RESOURCE_TOO_BIG" => Some(Self::ResourceTooBig),
+                "RESOURCE_NOT_FOUND" => Some(Self::ResourceNotFound),
+                "UNSUPPORTED" => Some(Self::Unsupported),
+                "NOT_IMPLEMENTED" => Some(Self::NotImplemented),
+                _ => None,
+            }
+        }
     }
 }
 /// Options for enabling sharding.
@@ -1161,6 +1173,15 @@ impl OrchestratorOption {
             OrchestratorOption::DoNotUseOrchestrator => "DO_NOT_USE_ORCHESTRATOR",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "ORCHESTRATOR_OPTION_UNSPECIFIED" => Some(Self::Unspecified),
+            "USE_ORCHESTRATOR" => Some(Self::UseOrchestrator),
+            "DO_NOT_USE_ORCHESTRATOR" => Some(Self::DoNotUseOrchestrator),
+            _ => None,
+        }
+    }
 }
 /// Actions which Robo can perform on UI elements.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -1188,6 +1209,16 @@ impl RoboActionType {
             RoboActionType::SingleClick => "SINGLE_CLICK",
             RoboActionType::EnterText => "ENTER_TEXT",
             RoboActionType::Ignore => "IGNORE",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "ACTION_TYPE_UNSPECIFIED" => Some(Self::ActionTypeUnspecified),
+            "SINGLE_CLICK" => Some(Self::SingleClick),
+            "ENTER_TEXT" => Some(Self::EnterText),
+            "IGNORE" => Some(Self::Ignore),
+            _ => None,
         }
     }
 }
@@ -1343,6 +1374,51 @@ impl InvalidMatrixDetails {
             InvalidMatrixDetails::InvalidApkPreviewSdk => "INVALID_APK_PREVIEW_SDK",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "INVALID_MATRIX_DETAILS_UNSPECIFIED" => Some(Self::Unspecified),
+            "DETAILS_UNAVAILABLE" => Some(Self::DetailsUnavailable),
+            "MALFORMED_APK" => Some(Self::MalformedApk),
+            "MALFORMED_TEST_APK" => Some(Self::MalformedTestApk),
+            "NO_MANIFEST" => Some(Self::NoManifest),
+            "NO_PACKAGE_NAME" => Some(Self::NoPackageName),
+            "INVALID_PACKAGE_NAME" => Some(Self::InvalidPackageName),
+            "TEST_SAME_AS_APP" => Some(Self::TestSameAsApp),
+            "NO_INSTRUMENTATION" => Some(Self::NoInstrumentation),
+            "NO_SIGNATURE" => Some(Self::NoSignature),
+            "INSTRUMENTATION_ORCHESTRATOR_INCOMPATIBLE" => {
+                Some(Self::InstrumentationOrchestratorIncompatible)
+            }
+            "NO_TEST_RUNNER_CLASS" => Some(Self::NoTestRunnerClass),
+            "NO_LAUNCHER_ACTIVITY" => Some(Self::NoLauncherActivity),
+            "FORBIDDEN_PERMISSIONS" => Some(Self::ForbiddenPermissions),
+            "INVALID_ROBO_DIRECTIVES" => Some(Self::InvalidRoboDirectives),
+            "INVALID_RESOURCE_NAME" => Some(Self::InvalidResourceName),
+            "INVALID_DIRECTIVE_ACTION" => Some(Self::InvalidDirectiveAction),
+            "TEST_LOOP_INTENT_FILTER_NOT_FOUND" => {
+                Some(Self::TestLoopIntentFilterNotFound)
+            }
+            "SCENARIO_LABEL_NOT_DECLARED" => Some(Self::ScenarioLabelNotDeclared),
+            "SCENARIO_LABEL_MALFORMED" => Some(Self::ScenarioLabelMalformed),
+            "SCENARIO_NOT_DECLARED" => Some(Self::ScenarioNotDeclared),
+            "DEVICE_ADMIN_RECEIVER" => Some(Self::DeviceAdminReceiver),
+            "MALFORMED_XC_TEST_ZIP" => Some(Self::MalformedXcTestZip),
+            "BUILT_FOR_IOS_SIMULATOR" => Some(Self::BuiltForIosSimulator),
+            "NO_TESTS_IN_XC_TEST_ZIP" => Some(Self::NoTestsInXcTestZip),
+            "USE_DESTINATION_ARTIFACTS" => Some(Self::UseDestinationArtifacts),
+            "TEST_NOT_APP_HOSTED" => Some(Self::TestNotAppHosted),
+            "PLIST_CANNOT_BE_PARSED" => Some(Self::PlistCannotBeParsed),
+            "TEST_ONLY_APK" => Some(Self::TestOnlyApk),
+            "MALFORMED_IPA" => Some(Self::MalformedIpa),
+            "MISSING_URL_SCHEME" => Some(Self::MissingUrlScheme),
+            "MALFORMED_APP_BUNDLE" => Some(Self::MalformedAppBundle),
+            "NO_CODE_APK" => Some(Self::NoCodeApk),
+            "INVALID_INPUT_APK" => Some(Self::InvalidInputApk),
+            "INVALID_APK_PREVIEW_SDK" => Some(Self::InvalidApkPreviewSdk),
+            _ => None,
+        }
+    }
 }
 /// The state (i.e., progress) of a test execution or matrix.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -1417,6 +1493,23 @@ impl TestState {
             TestState::Invalid => "INVALID",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "TEST_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+            "VALIDATING" => Some(Self::Validating),
+            "PENDING" => Some(Self::Pending),
+            "RUNNING" => Some(Self::Running),
+            "FINISHED" => Some(Self::Finished),
+            "ERROR" => Some(Self::Error),
+            "UNSUPPORTED_ENVIRONMENT" => Some(Self::UnsupportedEnvironment),
+            "INCOMPATIBLE_ENVIRONMENT" => Some(Self::IncompatibleEnvironment),
+            "INCOMPATIBLE_ARCHITECTURE" => Some(Self::IncompatibleArchitecture),
+            "CANCELLED" => Some(Self::Cancelled),
+            "INVALID" => Some(Self::Invalid),
+            _ => None,
+        }
+    }
 }
 /// Outcome summary for a finished test matrix.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -1453,6 +1546,17 @@ impl OutcomeSummary {
             OutcomeSummary::Failure => "FAILURE",
             OutcomeSummary::Inconclusive => "INCONCLUSIVE",
             OutcomeSummary::Skipped => "SKIPPED",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "OUTCOME_SUMMARY_UNSPECIFIED" => Some(Self::Unspecified),
+            "SUCCESS" => Some(Self::Success),
+            "FAILURE" => Some(Self::Failure),
+            "INCONCLUSIVE" => Some(Self::Inconclusive),
+            "SKIPPED" => Some(Self::Skipped),
+            _ => None,
         }
     }
 }
@@ -1866,6 +1970,18 @@ pub mod get_test_environment_catalog_request {
                 EnvironmentType::DeviceIpBlocks => "DEVICE_IP_BLOCKS",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ENVIRONMENT_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ANDROID" => Some(Self::Android),
+                "IOS" => Some(Self::Ios),
+                "NETWORK_CONFIGURATION" => Some(Self::NetworkConfiguration),
+                "PROVIDED_SOFTWARE" => Some(Self::ProvidedSoftware),
+                "DEVICE_IP_BLOCKS" => Some(Self::DeviceIpBlocks),
+                _ => None,
+            }
+        }
     }
 }
 /// A description of a test environment.
@@ -2270,6 +2386,16 @@ impl DeviceForm {
             DeviceForm::Emulator => "EMULATOR",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "DEVICE_FORM_UNSPECIFIED" => Some(Self::Unspecified),
+            "VIRTUAL" => Some(Self::Virtual),
+            "PHYSICAL" => Some(Self::Physical),
+            "EMULATOR" => Some(Self::Emulator),
+            _ => None,
+        }
+    }
 }
 /// The form factor of a device.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -2295,6 +2421,16 @@ impl DeviceFormFactor {
             DeviceFormFactor::Phone => "PHONE",
             DeviceFormFactor::Tablet => "TABLET",
             DeviceFormFactor::Wearable => "WEARABLE",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "DEVICE_FORM_FACTOR_UNSPECIFIED" => Some(Self::Unspecified),
+            "PHONE" => Some(Self::Phone),
+            "TABLET" => Some(Self::Tablet),
+            "WEARABLE" => Some(Self::Wearable),
+            _ => None,
         }
     }
 }

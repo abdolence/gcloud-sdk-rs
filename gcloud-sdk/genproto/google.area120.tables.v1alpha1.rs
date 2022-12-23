@@ -370,6 +370,14 @@ impl View {
             View::ColumnIdView => "COLUMN_ID_VIEW",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "VIEW_UNSPECIFIED" => Some(Self::Unspecified),
+            "COLUMN_ID_VIEW" => Some(Self::ColumnIdView),
+            _ => None,
+        }
+    }
 }
 /// Generated client implementations.
 pub mod tables_service_client {

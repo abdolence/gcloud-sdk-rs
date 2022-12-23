@@ -169,6 +169,41 @@ pub mod step {
                 State::ViewerPermissionMissing => "VIEWER_PERMISSION_MISSING",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "START_FROM_INSTANCE" => Some(Self::StartFromInstance),
+                "START_FROM_INTERNET" => Some(Self::StartFromInternet),
+                "START_FROM_PRIVATE_NETWORK" => Some(Self::StartFromPrivateNetwork),
+                "START_FROM_GKE_MASTER" => Some(Self::StartFromGkeMaster),
+                "START_FROM_CLOUD_SQL_INSTANCE" => Some(Self::StartFromCloudSqlInstance),
+                "START_FROM_CLOUD_FUNCTION" => Some(Self::StartFromCloudFunction),
+                "APPLY_INGRESS_FIREWALL_RULE" => Some(Self::ApplyIngressFirewallRule),
+                "APPLY_EGRESS_FIREWALL_RULE" => Some(Self::ApplyEgressFirewallRule),
+                "APPLY_ROUTE" => Some(Self::ApplyRoute),
+                "APPLY_FORWARDING_RULE" => Some(Self::ApplyForwardingRule),
+                "SPOOFING_APPROVED" => Some(Self::SpoofingApproved),
+                "ARRIVE_AT_INSTANCE" => Some(Self::ArriveAtInstance),
+                "ARRIVE_AT_INTERNAL_LOAD_BALANCER" => {
+                    Some(Self::ArriveAtInternalLoadBalancer)
+                }
+                "ARRIVE_AT_EXTERNAL_LOAD_BALANCER" => {
+                    Some(Self::ArriveAtExternalLoadBalancer)
+                }
+                "ARRIVE_AT_VPN_GATEWAY" => Some(Self::ArriveAtVpnGateway),
+                "ARRIVE_AT_VPN_TUNNEL" => Some(Self::ArriveAtVpnTunnel),
+                "ARRIVE_AT_VPC_CONNECTOR" => Some(Self::ArriveAtVpcConnector),
+                "NAT" => Some(Self::Nat),
+                "PROXY_CONNECTION" => Some(Self::ProxyConnection),
+                "DELIVER" => Some(Self::Deliver),
+                "DROP" => Some(Self::Drop),
+                "FORWARD" => Some(Self::Forward),
+                "ABORT" => Some(Self::Abort),
+                "VIEWER_PERMISSION_MISSING" => Some(Self::ViewerPermissionMissing),
+                _ => None,
+            }
+        }
     }
     /// Configuration or metadata associated with each step.
     /// The configuration is filtered based on viewer's permission. If a viewer
@@ -375,6 +410,21 @@ pub mod firewall_info {
                 }
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "FIREWALL_RULE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "HIERARCHICAL_FIREWALL_POLICY_RULE" => {
+                    Some(Self::HierarchicalFirewallPolicyRule)
+                }
+                "VPC_FIREWALL_RULE" => Some(Self::VpcFirewallRule),
+                "IMPLIED_VPC_FIREWALL_RULE" => Some(Self::ImpliedVpcFirewallRule),
+                "SERVERLESS_VPC_ACCESS_MANAGED_FIREWALL_RULE" => {
+                    Some(Self::ServerlessVpcAccessManagedFirewallRule)
+                }
+                _ => None,
+            }
+        }
     }
 }
 /// For display only. Metadata associated with a Compute Engine route.
@@ -460,6 +510,19 @@ pub mod route_info {
                 RouteType::PeeringDynamic => "PEERING_DYNAMIC",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ROUTE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "SUBNET" => Some(Self::Subnet),
+                "STATIC" => Some(Self::Static),
+                "DYNAMIC" => Some(Self::Dynamic),
+                "PEERING_SUBNET" => Some(Self::PeeringSubnet),
+                "PEERING_STATIC" => Some(Self::PeeringStatic),
+                "PEERING_DYNAMIC" => Some(Self::PeeringDynamic),
+                _ => None,
+            }
+        }
     }
     /// Type of next hop:
     #[derive(
@@ -525,6 +588,24 @@ pub mod route_info {
                 NextHopType::NextHopBlackhole => "NEXT_HOP_BLACKHOLE",
                 NextHopType::NextHopIlb => "NEXT_HOP_ILB",
                 NextHopType::NextHopRouterAppliance => "NEXT_HOP_ROUTER_APPLIANCE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "NEXT_HOP_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "NEXT_HOP_IP" => Some(Self::NextHopIp),
+                "NEXT_HOP_INSTANCE" => Some(Self::NextHopInstance),
+                "NEXT_HOP_NETWORK" => Some(Self::NextHopNetwork),
+                "NEXT_HOP_PEERING" => Some(Self::NextHopPeering),
+                "NEXT_HOP_INTERCONNECT" => Some(Self::NextHopInterconnect),
+                "NEXT_HOP_VPN_TUNNEL" => Some(Self::NextHopVpnTunnel),
+                "NEXT_HOP_VPN_GATEWAY" => Some(Self::NextHopVpnGateway),
+                "NEXT_HOP_INTERNET_GATEWAY" => Some(Self::NextHopInternetGateway),
+                "NEXT_HOP_BLACKHOLE" => Some(Self::NextHopBlackhole),
+                "NEXT_HOP_ILB" => Some(Self::NextHopIlb),
+                "NEXT_HOP_ROUTER_APPLIANCE" => Some(Self::NextHopRouterAppliance),
+                _ => None,
             }
         }
     }
@@ -619,6 +700,18 @@ pub mod load_balancer_info {
                 LoadBalancerType::SslProxy => "SSL_PROXY",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "LOAD_BALANCER_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "INTERNAL_TCP_UDP" => Some(Self::InternalTcpUdp),
+                "NETWORK_TCP_UDP" => Some(Self::NetworkTcpUdp),
+                "HTTP_PROXY" => Some(Self::HttpProxy),
+                "TCP_PROXY" => Some(Self::TcpProxy),
+                "SSL_PROXY" => Some(Self::SslProxy),
+                _ => None,
+            }
+        }
     }
     /// The type definition for a load balancer backend configuration:
     #[derive(
@@ -651,6 +744,15 @@ pub mod load_balancer_info {
                 BackendType::Unspecified => "BACKEND_TYPE_UNSPECIFIED",
                 BackendType::BackendService => "BACKEND_SERVICE",
                 BackendType::TargetPool => "TARGET_POOL",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "BACKEND_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "BACKEND_SERVICE" => Some(Self::BackendService),
+                "TARGET_POOL" => Some(Self::TargetPool),
+                _ => None,
             }
         }
     }
@@ -719,6 +821,15 @@ pub mod load_balancer_backend {
                 }
                 HealthCheckFirewallState::Configured => "CONFIGURED",
                 HealthCheckFirewallState::Misconfigured => "MISCONFIGURED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "HEALTH_CHECK_FIREWALL_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CONFIGURED" => Some(Self::Configured),
+                "MISCONFIGURED" => Some(Self::Misconfigured),
+                _ => None,
             }
         }
     }
@@ -817,6 +928,16 @@ pub mod vpn_tunnel_info {
                 RoutingType::RouteBased => "ROUTE_BASED",
                 RoutingType::PolicyBased => "POLICY_BASED",
                 RoutingType::Dynamic => "DYNAMIC",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ROUTING_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ROUTE_BASED" => Some(Self::RouteBased),
+                "POLICY_BASED" => Some(Self::PolicyBased),
+                "DYNAMIC" => Some(Self::Dynamic),
+                _ => None,
             }
         }
     }
@@ -919,6 +1040,21 @@ pub mod deliver_info {
                 Target::PscVpcSc => "PSC_VPC_SC",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TARGET_UNSPECIFIED" => Some(Self::Unspecified),
+                "INSTANCE" => Some(Self::Instance),
+                "INTERNET" => Some(Self::Internet),
+                "GOOGLE_API" => Some(Self::GoogleApi),
+                "GKE_MASTER" => Some(Self::GkeMaster),
+                "CLOUD_SQL_INSTANCE" => Some(Self::CloudSqlInstance),
+                "PSC_PUBLISHED_SERVICE" => Some(Self::PscPublishedService),
+                "PSC_GOOGLE_API" => Some(Self::PscGoogleApi),
+                "PSC_VPC_SC" => Some(Self::PscVpcSc),
+                _ => None,
+            }
+        }
     }
 }
 /// Details of the final state "forward" and associated resource.
@@ -977,6 +1113,21 @@ pub mod forward_info {
                 Target::GkeMaster => "GKE_MASTER",
                 Target::ImportedCustomRouteNextHop => "IMPORTED_CUSTOM_ROUTE_NEXT_HOP",
                 Target::CloudSqlInstance => "CLOUD_SQL_INSTANCE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TARGET_UNSPECIFIED" => Some(Self::Unspecified),
+                "PEERING_VPC" => Some(Self::PeeringVpc),
+                "VPN_GATEWAY" => Some(Self::VpnGateway),
+                "INTERCONNECT" => Some(Self::Interconnect),
+                "GKE_MASTER" => Some(Self::GkeMaster),
+                "IMPORTED_CUSTOM_ROUTE_NEXT_HOP" => {
+                    Some(Self::ImportedCustomRouteNextHop)
+                }
+                "CLOUD_SQL_INSTANCE" => Some(Self::CloudSqlInstance),
+                _ => None,
             }
         }
     }
@@ -1086,6 +1237,32 @@ pub mod abort_info {
                 Cause::DestinationEndpointNotFound => "DESTINATION_ENDPOINT_NOT_FOUND",
                 Cause::MismatchedDestinationNetwork => "MISMATCHED_DESTINATION_NETWORK",
                 Cause::Unsupported => "UNSUPPORTED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CAUSE_UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN_NETWORK" => Some(Self::UnknownNetwork),
+                "UNKNOWN_IP" => Some(Self::UnknownIp),
+                "UNKNOWN_PROJECT" => Some(Self::UnknownProject),
+                "PERMISSION_DENIED" => Some(Self::PermissionDenied),
+                "NO_SOURCE_LOCATION" => Some(Self::NoSourceLocation),
+                "INVALID_ARGUMENT" => Some(Self::InvalidArgument),
+                "NO_EXTERNAL_IP" => Some(Self::NoExternalIp),
+                "UNINTENDED_DESTINATION" => Some(Self::UnintendedDestination),
+                "TRACE_TOO_LONG" => Some(Self::TraceTooLong),
+                "INTERNAL_ERROR" => Some(Self::InternalError),
+                "SOURCE_ENDPOINT_NOT_FOUND" => Some(Self::SourceEndpointNotFound),
+                "MISMATCHED_SOURCE_NETWORK" => Some(Self::MismatchedSourceNetwork),
+                "DESTINATION_ENDPOINT_NOT_FOUND" => {
+                    Some(Self::DestinationEndpointNotFound)
+                }
+                "MISMATCHED_DESTINATION_NETWORK" => {
+                    Some(Self::MismatchedDestinationNetwork)
+                }
+                "UNSUPPORTED" => Some(Self::Unsupported),
+                _ => None,
             }
         }
     }
@@ -1244,6 +1421,55 @@ pub mod drop_info {
                 Cause::VpcConnectorNotRunning => "VPC_CONNECTOR_NOT_RUNNING",
                 Cause::ForwardingRuleRegionMismatch => "FORWARDING_RULE_REGION_MISMATCH",
                 Cause::PscConnectionNotAccepted => "PSC_CONNECTION_NOT_ACCEPTED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CAUSE_UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN_EXTERNAL_ADDRESS" => Some(Self::UnknownExternalAddress),
+                "FOREIGN_IP_DISALLOWED" => Some(Self::ForeignIpDisallowed),
+                "FIREWALL_RULE" => Some(Self::FirewallRule),
+                "NO_ROUTE" => Some(Self::NoRoute),
+                "ROUTE_BLACKHOLE" => Some(Self::RouteBlackhole),
+                "ROUTE_WRONG_NETWORK" => Some(Self::RouteWrongNetwork),
+                "PRIVATE_TRAFFIC_TO_INTERNET" => Some(Self::PrivateTrafficToInternet),
+                "PRIVATE_GOOGLE_ACCESS_DISALLOWED" => {
+                    Some(Self::PrivateGoogleAccessDisallowed)
+                }
+                "NO_EXTERNAL_ADDRESS" => Some(Self::NoExternalAddress),
+                "UNKNOWN_INTERNAL_ADDRESS" => Some(Self::UnknownInternalAddress),
+                "FORWARDING_RULE_MISMATCH" => Some(Self::ForwardingRuleMismatch),
+                "FORWARDING_RULE_NO_INSTANCES" => Some(Self::ForwardingRuleNoInstances),
+                "FIREWALL_BLOCKING_LOAD_BALANCER_BACKEND_HEALTH_CHECK" => {
+                    Some(Self::FirewallBlockingLoadBalancerBackendHealthCheck)
+                }
+                "INSTANCE_NOT_RUNNING" => Some(Self::InstanceNotRunning),
+                "TRAFFIC_TYPE_BLOCKED" => Some(Self::TrafficTypeBlocked),
+                "GKE_MASTER_UNAUTHORIZED_ACCESS" => {
+                    Some(Self::GkeMasterUnauthorizedAccess)
+                }
+                "CLOUD_SQL_INSTANCE_UNAUTHORIZED_ACCESS" => {
+                    Some(Self::CloudSqlInstanceUnauthorizedAccess)
+                }
+                "DROPPED_INSIDE_GKE_SERVICE" => Some(Self::DroppedInsideGkeService),
+                "DROPPED_INSIDE_CLOUD_SQL_SERVICE" => {
+                    Some(Self::DroppedInsideCloudSqlService)
+                }
+                "GOOGLE_MANAGED_SERVICE_NO_PEERING" => {
+                    Some(Self::GoogleManagedServiceNoPeering)
+                }
+                "CLOUD_SQL_INSTANCE_NO_IP_ADDRESS" => {
+                    Some(Self::CloudSqlInstanceNoIpAddress)
+                }
+                "CLOUD_FUNCTION_NOT_ACTIVE" => Some(Self::CloudFunctionNotActive),
+                "VPC_CONNECTOR_NOT_SET" => Some(Self::VpcConnectorNotSet),
+                "VPC_CONNECTOR_NOT_RUNNING" => Some(Self::VpcConnectorNotRunning),
+                "FORWARDING_RULE_REGION_MISMATCH" => {
+                    Some(Self::ForwardingRuleRegionMismatch)
+                }
+                "PSC_CONNECTION_NOT_ACCEPTED" => Some(Self::PscConnectionNotAccepted),
+                _ => None,
             }
         }
     }
@@ -1506,6 +1732,15 @@ pub mod endpoint {
                 NetworkType::NonGcpNetwork => "NON_GCP_NETWORK",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "NETWORK_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "GCP_NETWORK" => Some(Self::GcpNetwork),
+                "NON_GCP_NETWORK" => Some(Self::NonGcpNetwork),
+                _ => None,
+            }
+        }
     }
 }
 /// Results of the configuration analysis from the last run of the test.
@@ -1582,6 +1817,17 @@ pub mod reachability_details {
                 Result::Unreachable => "UNREACHABLE",
                 Result::Ambiguous => "AMBIGUOUS",
                 Result::Undetermined => "UNDETERMINED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "RESULT_UNSPECIFIED" => Some(Self::Unspecified),
+                "REACHABLE" => Some(Self::Reachable),
+                "UNREACHABLE" => Some(Self::Unreachable),
+                "AMBIGUOUS" => Some(Self::Ambiguous),
+                "UNDETERMINED" => Some(Self::Undetermined),
+                _ => None,
             }
         }
     }
@@ -1702,6 +1948,17 @@ pub mod probing_details {
                 ProbingResult::Undetermined => "UNDETERMINED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PROBING_RESULT_UNSPECIFIED" => Some(Self::Unspecified),
+                "REACHABLE" => Some(Self::Reachable),
+                "UNREACHABLE" => Some(Self::Unreachable),
+                "REACHABILITY_INCONSISTENT" => Some(Self::ReachabilityInconsistent),
+                "UNDETERMINED" => Some(Self::Undetermined),
+                _ => None,
+            }
+        }
     }
     /// Abort cause types.
     #[derive(
@@ -1735,6 +1992,15 @@ pub mod probing_details {
                 ProbingAbortCause::Unspecified => "PROBING_ABORT_CAUSE_UNSPECIFIED",
                 ProbingAbortCause::PermissionDenied => "PERMISSION_DENIED",
                 ProbingAbortCause::NoSourceLocation => "NO_SOURCE_LOCATION",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PROBING_ABORT_CAUSE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PERMISSION_DENIED" => Some(Self::PermissionDenied),
+                "NO_SOURCE_LOCATION" => Some(Self::NoSourceLocation),
+                _ => None,
             }
         }
     }

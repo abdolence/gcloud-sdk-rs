@@ -532,6 +532,21 @@ pub mod recognition_config {
                 AudioEncoding::WebmOpus => "WEBM_OPUS",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ENCODING_UNSPECIFIED" => Some(Self::EncodingUnspecified),
+                "LINEAR16" => Some(Self::Linear16),
+                "FLAC" => Some(Self::Flac),
+                "MULAW" => Some(Self::Mulaw),
+                "AMR" => Some(Self::Amr),
+                "AMR_WB" => Some(Self::AmrWb),
+                "OGG_OPUS" => Some(Self::OggOpus),
+                "SPEEX_WITH_HEADER_BYTE" => Some(Self::SpeexWithHeaderByte),
+                "WEBM_OPUS" => Some(Self::WebmOpus),
+                _ => None,
+            }
+        }
     }
 }
 /// Config to enable speaker diarization.
@@ -657,6 +672,21 @@ pub mod recognition_metadata {
                 InteractionType::Dictation => "DICTATION",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "INTERACTION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "DISCUSSION" => Some(Self::Discussion),
+                "PRESENTATION" => Some(Self::Presentation),
+                "PHONE_CALL" => Some(Self::PhoneCall),
+                "VOICEMAIL" => Some(Self::Voicemail),
+                "PROFESSIONALLY_PRODUCED" => Some(Self::ProfessionallyProduced),
+                "VOICE_SEARCH" => Some(Self::VoiceSearch),
+                "VOICE_COMMAND" => Some(Self::VoiceCommand),
+                "DICTATION" => Some(Self::Dictation),
+                _ => None,
+            }
+        }
     }
     /// Enumerates the types of capture settings describing an audio file.
     #[derive(
@@ -696,6 +726,16 @@ pub mod recognition_metadata {
                 MicrophoneDistance::Farfield => "FARFIELD",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MICROPHONE_DISTANCE_UNSPECIFIED" => Some(Self::Unspecified),
+                "NEARFIELD" => Some(Self::Nearfield),
+                "MIDFIELD" => Some(Self::Midfield),
+                "FARFIELD" => Some(Self::Farfield),
+                _ => None,
+            }
+        }
     }
     /// The original media the speech was recorded on.
     #[derive(
@@ -728,6 +768,15 @@ pub mod recognition_metadata {
                 OriginalMediaType::Unspecified => "ORIGINAL_MEDIA_TYPE_UNSPECIFIED",
                 OriginalMediaType::Audio => "AUDIO",
                 OriginalMediaType::Video => "VIDEO",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ORIGINAL_MEDIA_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "AUDIO" => Some(Self::Audio),
+                "VIDEO" => Some(Self::Video),
+                _ => None,
             }
         }
     }
@@ -774,6 +823,19 @@ pub mod recognition_metadata {
                 RecordingDeviceType::Vehicle => "VEHICLE",
                 RecordingDeviceType::OtherOutdoorDevice => "OTHER_OUTDOOR_DEVICE",
                 RecordingDeviceType::OtherIndoorDevice => "OTHER_INDOOR_DEVICE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "RECORDING_DEVICE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "SMARTPHONE" => Some(Self::Smartphone),
+                "PC" => Some(Self::Pc),
+                "PHONE_LINE" => Some(Self::PhoneLine),
+                "VEHICLE" => Some(Self::Vehicle),
+                "OTHER_OUTDOOR_DEVICE" => Some(Self::OtherOutdoorDevice),
+                "OTHER_INDOOR_DEVICE" => Some(Self::OtherIndoorDevice),
+                _ => None,
             }
         }
     }
@@ -1027,6 +1089,14 @@ pub mod streaming_recognize_response {
             match self {
                 SpeechEventType::SpeechEventUnspecified => "SPEECH_EVENT_UNSPECIFIED",
                 SpeechEventType::EndOfSingleUtterance => "END_OF_SINGLE_UTTERANCE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SPEECH_EVENT_UNSPECIFIED" => Some(Self::SpeechEventUnspecified),
+                "END_OF_SINGLE_UTTERANCE" => Some(Self::EndOfSingleUtterance),
+                _ => None,
             }
         }
     }

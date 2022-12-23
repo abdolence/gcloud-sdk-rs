@@ -89,6 +89,18 @@ pub mod package {
                 Manager::Goo => "GOO",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MANAGER_UNSPECIFIED" => Some(Self::Unspecified),
+                "ANY" => Some(Self::Any),
+                "APT" => Some(Self::Apt),
+                "YUM" => Some(Self::Yum),
+                "ZYPPER" => Some(Self::Zypper),
+                "GOO" => Some(Self::Goo),
+                _ => None,
+            }
+        }
     }
 }
 /// Represents a single Apt package repository. This repository is added to
@@ -148,6 +160,15 @@ pub mod apt_repository {
                 ArchiveType::Unspecified => "ARCHIVE_TYPE_UNSPECIFIED",
                 ArchiveType::Deb => "DEB",
                 ArchiveType::DebSrc => "DEB_SRC",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ARCHIVE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "DEB" => Some(Self::Deb),
+                "DEB_SRC" => Some(Self::DebSrc),
+                _ => None,
             }
         }
     }
@@ -481,6 +502,19 @@ pub mod software_recipe {
                         ArchiveType::Zip => "ZIP",
                     }
                 }
+                /// Creates an enum from field names used in the ProtoBuf definition.
+                pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                    match value {
+                        "ARCHIVE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                        "TAR" => Some(Self::Tar),
+                        "TAR_GZIP" => Some(Self::TarGzip),
+                        "TAR_BZIP" => Some(Self::TarBzip),
+                        "TAR_LZMA" => Some(Self::TarLzma),
+                        "TAR_XZ" => Some(Self::TarXz),
+                        "ZIP" => Some(Self::Zip),
+                        _ => None,
+                    }
+                }
             }
         }
         /// Installs an MSI file.
@@ -596,6 +630,15 @@ pub mod software_recipe {
                         Interpreter::Unspecified => "INTERPRETER_UNSPECIFIED",
                         Interpreter::Shell => "SHELL",
                         Interpreter::Powershell => "POWERSHELL",
+                    }
+                }
+                /// Creates an enum from field names used in the ProtoBuf definition.
+                pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                    match value {
+                        "INTERPRETER_UNSPECIFIED" => Some(Self::Unspecified),
+                        "SHELL" => Some(Self::Shell),
+                        "POWERSHELL" => Some(Self::Powershell),
+                        _ => None,
                     }
                 }
             }
@@ -735,6 +778,16 @@ impl DesiredState {
             DesiredState::Removed => "REMOVED",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "DESIRED_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+            "INSTALLED" => Some(Self::Installed),
+            "UPDATED" => Some(Self::Updated),
+            "REMOVED" => Some(Self::Removed),
+            _ => None,
+        }
+    }
 }
 /// Patch configuration specifications. Contains details on how to
 /// apply patches to a VM instance.
@@ -815,6 +868,16 @@ pub mod patch_config {
                 RebootConfig::Never => "NEVER",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "REBOOT_CONFIG_UNSPECIFIED" => Some(Self::Unspecified),
+                "DEFAULT" => Some(Self::Default),
+                "ALWAYS" => Some(Self::Always),
+                "NEVER" => Some(Self::Never),
+                _ => None,
+            }
+        }
     }
 }
 /// Apt patching will be performed by executing `apt-get update && apt-get
@@ -869,6 +932,15 @@ pub mod apt_settings {
                 Type::Unspecified => "TYPE_UNSPECIFIED",
                 Type::Dist => "DIST",
                 Type::Upgrade => "UPGRADE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "DIST" => Some(Self::Dist),
+                "UPGRADE" => Some(Self::Upgrade),
+                _ => None,
             }
         }
     }
@@ -1026,6 +1098,22 @@ pub mod windows_update_settings {
                 Classification::Update => "UPDATE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CLASSIFICATION_UNSPECIFIED" => Some(Self::Unspecified),
+                "CRITICAL" => Some(Self::Critical),
+                "SECURITY" => Some(Self::Security),
+                "DEFINITION" => Some(Self::Definition),
+                "DRIVER" => Some(Self::Driver),
+                "FEATURE_PACK" => Some(Self::FeaturePack),
+                "SERVICE_PACK" => Some(Self::ServicePack),
+                "TOOL" => Some(Self::Tool),
+                "UPDATE_ROLLUP" => Some(Self::UpdateRollup),
+                "UPDATE" => Some(Self::Update),
+                _ => None,
+            }
+        }
     }
 }
 /// The strategy for retrying failed patches during the patch window.
@@ -1105,6 +1193,16 @@ pub mod exec_step_config {
                 Interpreter::None => "NONE",
                 Interpreter::Shell => "SHELL",
                 Interpreter::Powershell => "POWERSHELL",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "INTERPRETER_UNSPECIFIED" => Some(Self::Unspecified),
+                "NONE" => Some(Self::None),
+                "SHELL" => Some(Self::Shell),
+                "POWERSHELL" => Some(Self::Powershell),
+                _ => None,
             }
         }
     }
@@ -1238,6 +1336,17 @@ pub mod apply_patches_task_progress {
                 State::Rebooting => "REBOOTING",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "STARTED" => Some(Self::Started),
+                "DOWNLOADING_PATCHES" => Some(Self::DownloadingPatches),
+                "APPLYING_PATCHES" => Some(Self::ApplyingPatches),
+                "REBOOTING" => Some(Self::Rebooting),
+                _ => None,
+            }
+        }
     }
 }
 /// Information reported from the agent about applying patches execution.
@@ -1284,6 +1393,16 @@ pub mod apply_patches_task_output {
                 State::Succeeded => "SUCCEEDED",
                 State::SucceededRebootRequired => "SUCCEEDED_REBOOT_REQUIRED",
                 State::Failed => "FAILED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "SUCCEEDED" => Some(Self::Succeeded),
+                "SUCCEEDED_REBOOT_REQUIRED" => Some(Self::SucceededRebootRequired),
+                "FAILED" => Some(Self::Failed),
+                _ => None,
             }
         }
     }
@@ -1334,6 +1453,14 @@ pub mod exec_step_task_progress {
             match self {
                 State::Unspecified => "STATE_UNSPECIFIED",
                 State::Started => "STARTED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "STARTED" => Some(Self::Started),
+                _ => None,
             }
         }
     }
@@ -1387,6 +1514,16 @@ pub mod exec_step_task_output {
                 State::Cancelled => "CANCELLED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "COMPLETED" => Some(Self::Completed),
+                "TIMED_OUT" => Some(Self::TimedOut),
+                "CANCELLED" => Some(Self::Cancelled),
+                _ => None,
+            }
+        }
     }
 }
 /// Specifies the current agent behavior.
@@ -1414,6 +1551,15 @@ impl TaskDirective {
             TaskDirective::Stop => "STOP",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "TASK_DIRECTIVE_UNSPECIFIED" => Some(Self::Unspecified),
+            "CONTINUE" => Some(Self::Continue),
+            "STOP" => Some(Self::Stop),
+            _ => None,
+        }
+    }
 }
 /// Specifies the type of task to perform.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -1436,6 +1582,15 @@ impl TaskType {
             TaskType::Unspecified => "TASK_TYPE_UNSPECIFIED",
             TaskType::ApplyPatches => "APPLY_PATCHES",
             TaskType::ExecStepTask => "EXEC_STEP_TASK",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "TASK_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "APPLY_PATCHES" => Some(Self::ApplyPatches),
+            "EXEC_STEP_TASK" => Some(Self::ExecStepTask),
+            _ => None,
         }
     }
 }

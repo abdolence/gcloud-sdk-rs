@@ -63,6 +63,19 @@ pub mod os_policy_resource_config_step {
                 }
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "VALIDATION" => Some(Self::Validation),
+                "DESIRED_STATE_CHECK" => Some(Self::DesiredStateCheck),
+                "DESIRED_STATE_ENFORCEMENT" => Some(Self::DesiredStateEnforcement),
+                "DESIRED_STATE_CHECK_POST_ENFORCEMENT" => {
+                    Some(Self::DesiredStateCheckPostEnforcement)
+                }
+                _ => None,
+            }
+        }
     }
     /// Supported outcomes for a configuration step.
     #[derive(
@@ -95,6 +108,15 @@ pub mod os_policy_resource_config_step {
                 Outcome::Unspecified => "OUTCOME_UNSPECIFIED",
                 Outcome::Succeeded => "SUCCEEDED",
                 Outcome::Failed => "FAILED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "OUTCOME_UNSPECIFIED" => Some(Self::Unspecified),
+                "SUCCEEDED" => Some(Self::Succeeded),
+                "FAILED" => Some(Self::Failed),
+                _ => None,
             }
         }
     }
@@ -169,6 +191,17 @@ impl OsPolicyComplianceState {
             OsPolicyComplianceState::NoOsPoliciesApplicable => {
                 "NO_OS_POLICIES_APPLICABLE"
             }
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "OS_POLICY_COMPLIANCE_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+            "COMPLIANT" => Some(Self::Compliant),
+            "NON_COMPLIANT" => Some(Self::NonCompliant),
+            "UNKNOWN" => Some(Self::Unknown),
+            "NO_OS_POLICIES_APPLICABLE" => Some(Self::NoOsPoliciesApplicable),
+            _ => None,
         }
     }
 }
@@ -439,6 +472,14 @@ pub mod inventory {
                     OriginType::InventoryReport => "INVENTORY_REPORT",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "ORIGIN_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "INVENTORY_REPORT" => Some(Self::InventoryReport),
+                    _ => None,
+                }
+            }
         }
         /// The different types of inventory that are tracked on a VM.
         #[derive(
@@ -471,6 +512,15 @@ pub mod inventory {
                     Type::Unspecified => "TYPE_UNSPECIFIED",
                     Type::InstalledPackage => "INSTALLED_PACKAGE",
                     Type::AvailablePackage => "AVAILABLE_PACKAGE",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "INSTALLED_PACKAGE" => Some(Self::InstalledPackage),
+                    "AVAILABLE_PACKAGE" => Some(Self::AvailablePackage),
+                    _ => None,
                 }
             }
         }
@@ -764,6 +814,15 @@ impl InventoryView {
             InventoryView::Full => "FULL",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "INVENTORY_VIEW_UNSPECIFIED" => Some(Self::Unspecified),
+            "BASIC" => Some(Self::Basic),
+            "FULL" => Some(Self::Full),
+            _ => None,
+        }
+    }
 }
 /// An OS policy defines the desired state configuration for a VM.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1051,6 +1110,15 @@ pub mod os_policy {
                         DesiredState::Removed => "REMOVED",
                     }
                 }
+                /// Creates an enum from field names used in the ProtoBuf definition.
+                pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                    match value {
+                        "DESIRED_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                        "INSTALLED" => Some(Self::Installed),
+                        "REMOVED" => Some(Self::Removed),
+                        _ => None,
+                    }
+                }
             }
             /// A system package.
             #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1146,6 +1214,15 @@ pub mod os_policy {
                             ArchiveType::Unspecified => "ARCHIVE_TYPE_UNSPECIFIED",
                             ArchiveType::Deb => "DEB",
                             ArchiveType::DebSrc => "DEB_SRC",
+                        }
+                    }
+                    /// Creates an enum from field names used in the ProtoBuf definition.
+                    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                        match value {
+                            "ARCHIVE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                            "DEB" => Some(Self::Deb),
+                            "DEB_SRC" => Some(Self::DebSrc),
+                            _ => None,
                         }
                     }
                 }
@@ -1333,6 +1410,16 @@ pub mod os_policy {
                             Interpreter::Powershell => "POWERSHELL",
                         }
                     }
+                    /// Creates an enum from field names used in the ProtoBuf definition.
+                    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                        match value {
+                            "INTERPRETER_UNSPECIFIED" => Some(Self::Unspecified),
+                            "NONE" => Some(Self::None),
+                            "SHELL" => Some(Self::Shell),
+                            "POWERSHELL" => Some(Self::Powershell),
+                            _ => None,
+                        }
+                    }
                 }
                 /// What to execute.
                 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1414,6 +1501,16 @@ pub mod os_policy {
                         DesiredState::Present => "PRESENT",
                         DesiredState::Absent => "ABSENT",
                         DesiredState::ContentsMatch => "CONTENTS_MATCH",
+                    }
+                }
+                /// Creates an enum from field names used in the ProtoBuf definition.
+                pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                    match value {
+                        "DESIRED_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                        "PRESENT" => Some(Self::Present),
+                        "ABSENT" => Some(Self::Absent),
+                        "CONTENTS_MATCH" => Some(Self::ContentsMatch),
+                        _ => None,
                     }
                 }
             }
@@ -1518,6 +1615,15 @@ pub mod os_policy {
                 Mode::Unspecified => "MODE_UNSPECIFIED",
                 Mode::Validation => "VALIDATION",
                 Mode::Enforcement => "ENFORCEMENT",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "VALIDATION" => Some(Self::Validation),
+                "ENFORCEMENT" => Some(Self::Enforcement),
+                _ => None,
             }
         }
     }
@@ -1776,6 +1882,21 @@ pub mod os_policy_assignment_report {
                             }
                         }
                     }
+                    /// Creates an enum from field names used in the ProtoBuf definition.
+                    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                        match value {
+                            "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                            "VALIDATION" => Some(Self::Validation),
+                            "DESIRED_STATE_CHECK" => Some(Self::DesiredStateCheck),
+                            "DESIRED_STATE_ENFORCEMENT" => {
+                                Some(Self::DesiredStateEnforcement)
+                            }
+                            "DESIRED_STATE_CHECK_POST_ENFORCEMENT" => {
+                                Some(Self::DesiredStateCheckPostEnforcement)
+                            }
+                            _ => None,
+                        }
+                    }
                 }
             }
             /// ExecResource specific output.
@@ -1821,6 +1942,15 @@ pub mod os_policy_assignment_report {
                         ComplianceState::Unknown => "UNKNOWN",
                         ComplianceState::Compliant => "COMPLIANT",
                         ComplianceState::NonCompliant => "NON_COMPLIANT",
+                    }
+                }
+                /// Creates an enum from field names used in the ProtoBuf definition.
+                pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                    match value {
+                        "UNKNOWN" => Some(Self::Unknown),
+                        "COMPLIANT" => Some(Self::Compliant),
+                        "NON_COMPLIANT" => Some(Self::NonCompliant),
+                        _ => None,
                     }
                 }
             }
@@ -1873,6 +2003,15 @@ pub mod os_policy_assignment_report {
                     ComplianceState::Unknown => "UNKNOWN",
                     ComplianceState::Compliant => "COMPLIANT",
                     ComplianceState::NonCompliant => "NON_COMPLIANT",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "UNKNOWN" => Some(Self::Unknown),
+                    "COMPLIANT" => Some(Self::Compliant),
+                    "NON_COMPLIANT" => Some(Self::NonCompliant),
+                    _ => None,
                 }
             }
         }
@@ -2114,6 +2253,17 @@ pub mod os_policy_assignment {
                 RolloutState::Succeeded => "SUCCEEDED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ROLLOUT_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "IN_PROGRESS" => Some(Self::InProgress),
+                "CANCELLING" => Some(Self::Cancelling),
+                "CANCELLED" => Some(Self::Cancelled),
+                "SUCCEEDED" => Some(Self::Succeeded),
+                _ => None,
+            }
+        }
     }
 }
 /// OS policy assignment operation metadata provided by OS policy assignment API
@@ -2184,6 +2334,16 @@ pub mod os_policy_assignment_operation_metadata {
                 ApiMethod::Delete => "DELETE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "API_METHOD_UNSPECIFIED" => Some(Self::Unspecified),
+                "CREATE" => Some(Self::Create),
+                "UPDATE" => Some(Self::Update),
+                "DELETE" => Some(Self::Delete),
+                _ => None,
+            }
+        }
     }
     /// State of the rollout
     #[derive(
@@ -2222,6 +2382,17 @@ pub mod os_policy_assignment_operation_metadata {
                 RolloutState::Cancelling => "CANCELLING",
                 RolloutState::Cancelled => "CANCELLED",
                 RolloutState::Succeeded => "SUCCEEDED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ROLLOUT_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "IN_PROGRESS" => Some(Self::InProgress),
+                "CANCELLING" => Some(Self::Cancelling),
+                "CANCELLED" => Some(Self::Cancelled),
+                "SUCCEEDED" => Some(Self::Succeeded),
+                _ => None,
             }
         }
     }
@@ -2621,6 +2792,17 @@ pub mod cvs_sv3 {
                 AttackVector::Physical => "ATTACK_VECTOR_PHYSICAL",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ATTACK_VECTOR_UNSPECIFIED" => Some(Self::Unspecified),
+                "ATTACK_VECTOR_NETWORK" => Some(Self::Network),
+                "ATTACK_VECTOR_ADJACENT" => Some(Self::Adjacent),
+                "ATTACK_VECTOR_LOCAL" => Some(Self::Local),
+                "ATTACK_VECTOR_PHYSICAL" => Some(Self::Physical),
+                _ => None,
+            }
+        }
     }
     /// This metric describes the conditions beyond the attacker's control that
     /// must exist in order to exploit the vulnerability.
@@ -2660,6 +2842,15 @@ pub mod cvs_sv3 {
                 AttackComplexity::Unspecified => "ATTACK_COMPLEXITY_UNSPECIFIED",
                 AttackComplexity::Low => "ATTACK_COMPLEXITY_LOW",
                 AttackComplexity::High => "ATTACK_COMPLEXITY_HIGH",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ATTACK_COMPLEXITY_UNSPECIFIED" => Some(Self::Unspecified),
+                "ATTACK_COMPLEXITY_LOW" => Some(Self::Low),
+                "ATTACK_COMPLEXITY_HIGH" => Some(Self::High),
+                _ => None,
             }
         }
     }
@@ -2707,6 +2898,16 @@ pub mod cvs_sv3 {
                 PrivilegesRequired::High => "PRIVILEGES_REQUIRED_HIGH",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PRIVILEGES_REQUIRED_UNSPECIFIED" => Some(Self::Unspecified),
+                "PRIVILEGES_REQUIRED_NONE" => Some(Self::None),
+                "PRIVILEGES_REQUIRED_LOW" => Some(Self::Low),
+                "PRIVILEGES_REQUIRED_HIGH" => Some(Self::High),
+                _ => None,
+            }
+        }
     }
     /// This metric captures the requirement for a human user, other than the
     /// attacker, to participate in the successful compromise of the vulnerable
@@ -2742,6 +2943,15 @@ pub mod cvs_sv3 {
                 UserInteraction::Unspecified => "USER_INTERACTION_UNSPECIFIED",
                 UserInteraction::None => "USER_INTERACTION_NONE",
                 UserInteraction::Required => "USER_INTERACTION_REQUIRED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "USER_INTERACTION_UNSPECIFIED" => Some(Self::Unspecified),
+                "USER_INTERACTION_NONE" => Some(Self::None),
+                "USER_INTERACTION_REQUIRED" => Some(Self::Required),
+                _ => None,
             }
         }
     }
@@ -2781,6 +2991,15 @@ pub mod cvs_sv3 {
                 Scope::Changed => "SCOPE_CHANGED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SCOPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "SCOPE_UNCHANGED" => Some(Self::Unchanged),
+                "SCOPE_CHANGED" => Some(Self::Changed),
+                _ => None,
+            }
+        }
     }
     /// The Impact metrics capture the effects of a successfully exploited
     /// vulnerability on the component that suffers the worst outcome that is most
@@ -2818,6 +3037,16 @@ pub mod cvs_sv3 {
                 Impact::High => "IMPACT_HIGH",
                 Impact::Low => "IMPACT_LOW",
                 Impact::None => "IMPACT_NONE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "IMPACT_UNSPECIFIED" => Some(Self::Unspecified),
+                "IMPACT_HIGH" => Some(Self::High),
+                "IMPACT_LOW" => Some(Self::Low),
+                "IMPACT_NONE" => Some(Self::None),
+                _ => None,
             }
         }
     }

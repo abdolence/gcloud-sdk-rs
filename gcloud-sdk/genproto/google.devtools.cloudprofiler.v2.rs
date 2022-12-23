@@ -158,6 +158,20 @@ impl ProfileType {
             ProfileType::HeapAlloc => "HEAP_ALLOC",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "PROFILE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "CPU" => Some(Self::Cpu),
+            "WALL" => Some(Self::Wall),
+            "HEAP" => Some(Self::Heap),
+            "THREADS" => Some(Self::Threads),
+            "CONTENTION" => Some(Self::Contention),
+            "PEAK_HEAP" => Some(Self::PeakHeap),
+            "HEAP_ALLOC" => Some(Self::HeapAlloc),
+            _ => None,
+        }
+    }
 }
 /// Generated client implementations.
 pub mod profiler_service_client {

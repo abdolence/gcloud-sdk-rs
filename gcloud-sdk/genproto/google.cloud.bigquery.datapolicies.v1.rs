@@ -160,6 +160,15 @@ pub mod data_policy {
                 DataPolicyType::DataMaskingPolicy => "DATA_MASKING_POLICY",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DATA_POLICY_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "COLUMN_LEVEL_SECURITY_POLICY" => Some(Self::ColumnLevelSecurityPolicy),
+                "DATA_MASKING_POLICY" => Some(Self::DataMaskingPolicy),
+                _ => None,
+            }
+        }
     }
     /// Label that is bound to this data policy.
     #[allow(clippy::derive_partial_eq_without_eq)]
@@ -244,6 +253,16 @@ pub mod data_masking_policy {
                 PredefinedExpression::Sha256 => "SHA256",
                 PredefinedExpression::AlwaysNull => "ALWAYS_NULL",
                 PredefinedExpression::DefaultMaskingValue => "DEFAULT_MASKING_VALUE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PREDEFINED_EXPRESSION_UNSPECIFIED" => Some(Self::Unspecified),
+                "SHA256" => Some(Self::Sha256),
+                "ALWAYS_NULL" => Some(Self::AlwaysNull),
+                "DEFAULT_MASKING_VALUE" => Some(Self::DefaultMaskingValue),
+                _ => None,
             }
         }
     }

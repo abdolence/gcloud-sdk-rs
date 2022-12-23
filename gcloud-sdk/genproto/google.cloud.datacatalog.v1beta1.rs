@@ -22,6 +22,15 @@ impl IntegratedSystem {
             IntegratedSystem::CloudPubsub => "CLOUD_PUBSUB",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "INTEGRATED_SYSTEM_UNSPECIFIED" => Some(Self::Unspecified),
+            "BIGQUERY" => Some(Self::Bigquery),
+            "CLOUD_PUBSUB" => Some(Self::CloudPubsub),
+            _ => None,
+        }
+    }
 }
 /// Timestamps about this resource according to a particular system.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -179,6 +188,16 @@ impl SearchResultType {
             SearchResultType::EntryGroup => "ENTRY_GROUP",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "SEARCH_RESULT_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "ENTRY" => Some(Self::Entry),
+            "TAG_TEMPLATE" => Some(Self::TagTemplate),
+            "ENTRY_GROUP" => Some(Self::EntryGroup),
+            _ => None,
+        }
+    }
 }
 /// Describes a BigQuery table.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -268,6 +287,15 @@ impl TableSourceType {
             TableSourceType::Unspecified => "TABLE_SOURCE_TYPE_UNSPECIFIED",
             TableSourceType::BigqueryView => "BIGQUERY_VIEW",
             TableSourceType::BigqueryTable => "BIGQUERY_TABLE",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "TABLE_SOURCE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "BIGQUERY_VIEW" => Some(Self::BigqueryView),
+            "BIGQUERY_TABLE" => Some(Self::BigqueryTable),
+            _ => None,
         }
     }
 }
@@ -512,6 +540,17 @@ pub mod field_type {
                 PrimitiveType::String => "STRING",
                 PrimitiveType::Bool => "BOOL",
                 PrimitiveType::Timestamp => "TIMESTAMP",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PRIMITIVE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "DOUBLE" => Some(Self::Double),
+                "STRING" => Some(Self::String),
+                "BOOL" => Some(Self::Bool),
+                "TIMESTAMP" => Some(Self::Timestamp),
+                _ => None,
             }
         }
     }
@@ -1271,6 +1310,17 @@ impl EntryType {
             EntryType::Model => "MODEL",
             EntryType::DataStream => "DATA_STREAM",
             EntryType::Fileset => "FILESET",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "ENTRY_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "TABLE" => Some(Self::Table),
+            "MODEL" => Some(Self::Model),
+            "DATA_STREAM" => Some(Self::DataStream),
+            "FILESET" => Some(Self::Fileset),
+            _ => None,
         }
     }
 }
@@ -2087,6 +2137,14 @@ pub mod taxonomy {
             match self {
                 PolicyType::Unspecified => "POLICY_TYPE_UNSPECIFIED",
                 PolicyType::FineGrainedAccessControl => "FINE_GRAINED_ACCESS_CONTROL",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "POLICY_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "FINE_GRAINED_ACCESS_CONTROL" => Some(Self::FineGrainedAccessControl),
+                _ => None,
             }
         }
     }

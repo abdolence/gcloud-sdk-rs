@@ -234,6 +234,19 @@ pub mod string_filter {
                 MatchType::PartialRegexp => "PARTIAL_REGEXP",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MATCH_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "EXACT" => Some(Self::Exact),
+                "BEGINS_WITH" => Some(Self::BeginsWith),
+                "ENDS_WITH" => Some(Self::EndsWith),
+                "CONTAINS" => Some(Self::Contains),
+                "FULL_REGEXP" => Some(Self::FullRegexp),
+                "PARTIAL_REGEXP" => Some(Self::PartialRegexp),
+                _ => None,
+            }
+        }
     }
 }
 /// The result needs to be in a list of string values.
@@ -301,6 +314,18 @@ pub mod numeric_filter {
                 Operation::LessThanOrEqual => "LESS_THAN_OR_EQUAL",
                 Operation::GreaterThan => "GREATER_THAN",
                 Operation::GreaterThanOrEqual => "GREATER_THAN_OR_EQUAL",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "OPERATION_UNSPECIFIED" => Some(Self::Unspecified),
+                "EQUAL" => Some(Self::Equal),
+                "LESS_THAN" => Some(Self::LessThan),
+                "LESS_THAN_OR_EQUAL" => Some(Self::LessThanOrEqual),
+                "GREATER_THAN" => Some(Self::GreaterThan),
+                "GREATER_THAN_OR_EQUAL" => Some(Self::GreaterThanOrEqual),
+                _ => None,
             }
         }
     }
@@ -1419,6 +1444,20 @@ impl UserCriteriaScoping {
             }
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "USER_CRITERIA_SCOPING_UNSPECIFIED" => Some(Self::Unspecified),
+            "USER_CRITERIA_WITHIN_SAME_EVENT" => Some(Self::UserCriteriaWithinSameEvent),
+            "USER_CRITERIA_WITHIN_SAME_SESSION" => {
+                Some(Self::UserCriteriaWithinSameSession)
+            }
+            "USER_CRITERIA_ACROSS_ALL_SESSIONS" => {
+                Some(Self::UserCriteriaAcrossAllSessions)
+            }
+            _ => None,
+        }
+    }
 }
 /// Enumerates options for how long an exclusion will last if a user matches
 /// the `userExclusionCriteria`.
@@ -1444,6 +1483,15 @@ impl UserExclusionDuration {
             UserExclusionDuration::Unspecified => "USER_EXCLUSION_DURATION_UNSPECIFIED",
             UserExclusionDuration::UserExclusionTemporary => "USER_EXCLUSION_TEMPORARY",
             UserExclusionDuration::UserExclusionPermanent => "USER_EXCLUSION_PERMANENT",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "USER_EXCLUSION_DURATION_UNSPECIFIED" => Some(Self::Unspecified),
+            "USER_EXCLUSION_TEMPORARY" => Some(Self::UserExclusionTemporary),
+            "USER_EXCLUSION_PERMANENT" => Some(Self::UserExclusionPermanent),
+            _ => None,
         }
     }
 }
@@ -1475,6 +1523,19 @@ impl SessionCriteriaScoping {
             SessionCriteriaScoping::SessionCriteriaWithinSameSession => {
                 "SESSION_CRITERIA_WITHIN_SAME_SESSION"
             }
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "SESSION_CRITERIA_SCOPING_UNSPECIFIED" => Some(Self::Unspecified),
+            "SESSION_CRITERIA_WITHIN_SAME_EVENT" => {
+                Some(Self::SessionCriteriaWithinSameEvent)
+            }
+            "SESSION_CRITERIA_WITHIN_SAME_SESSION" => {
+                Some(Self::SessionCriteriaWithinSameSession)
+            }
+            _ => None,
         }
     }
 }
@@ -1510,6 +1571,15 @@ impl SessionExclusionDuration {
             }
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "SESSION_EXCLUSION_DURATION_UNSPECIFIED" => Some(Self::Unspecified),
+            "SESSION_EXCLUSION_TEMPORARY" => Some(Self::SessionExclusionTemporary),
+            "SESSION_EXCLUSION_PERMANENT" => Some(Self::SessionExclusionPermanent),
+            _ => None,
+        }
+    }
 }
 /// Scoping specifies which events are considered when evaluating if an event
 /// meets a criteria.
@@ -1535,6 +1605,16 @@ impl EventCriteriaScoping {
             }
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "EVENT_CRITERIA_SCOPING_UNSPECIFIED" => Some(Self::Unspecified),
+            "EVENT_CRITERIA_WITHIN_SAME_EVENT" => {
+                Some(Self::EventCriteriaWithinSameEvent)
+            }
+            _ => None,
+        }
+    }
 }
 /// Enumerates options for how long an exclusion will last if an event
 /// matches the `eventExclusionCriteria`.
@@ -1558,6 +1638,14 @@ impl EventExclusionDuration {
             EventExclusionDuration::EventExclusionPermanent => {
                 "EVENT_EXCLUSION_PERMANENT"
             }
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "EVENT_EXCLUSION_DURATION_UNSPECIFIED" => Some(Self::Unspecified),
+            "EVENT_EXCLUSION_PERMANENT" => Some(Self::EventExclusionPermanent),
+            _ => None,
         }
     }
 }
@@ -1612,6 +1700,25 @@ impl MetricType {
             MetricType::TypeMiles => "TYPE_MILES",
             MetricType::TypeMeters => "TYPE_METERS",
             MetricType::TypeKilometers => "TYPE_KILOMETERS",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "METRIC_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "TYPE_INTEGER" => Some(Self::TypeInteger),
+            "TYPE_FLOAT" => Some(Self::TypeFloat),
+            "TYPE_SECONDS" => Some(Self::TypeSeconds),
+            "TYPE_MILLISECONDS" => Some(Self::TypeMilliseconds),
+            "TYPE_MINUTES" => Some(Self::TypeMinutes),
+            "TYPE_HOURS" => Some(Self::TypeHours),
+            "TYPE_STANDARD" => Some(Self::TypeStandard),
+            "TYPE_CURRENCY" => Some(Self::TypeCurrency),
+            "TYPE_FEET" => Some(Self::TypeFeet),
+            "TYPE_MILES" => Some(Self::TypeMiles),
+            "TYPE_METERS" => Some(Self::TypeMeters),
+            "TYPE_KILOMETERS" => Some(Self::TypeKilometers),
+            _ => None,
         }
     }
 }
@@ -1731,6 +1838,15 @@ pub mod run_funnel_report_request {
                 }
                 FunnelVisualizationType::StandardFunnel => "STANDARD_FUNNEL",
                 FunnelVisualizationType::TrendedFunnel => "TRENDED_FUNNEL",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "FUNNEL_VISUALIZATION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "STANDARD_FUNNEL" => Some(Self::StandardFunnel),
+                "TRENDED_FUNNEL" => Some(Self::TrendedFunnel),
+                _ => None,
             }
         }
     }

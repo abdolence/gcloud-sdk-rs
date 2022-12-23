@@ -75,6 +75,20 @@ pub mod common_metadata {
                 State::Cancelled => "CANCELLED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "INITIALIZING" => Some(Self::Initializing),
+                "PROCESSING" => Some(Self::Processing),
+                "CANCELLING" => Some(Self::Cancelling),
+                "FINALIZING" => Some(Self::Finalizing),
+                "SUCCESSFUL" => Some(Self::Successful),
+                "FAILED" => Some(Self::Failed),
+                "CANCELLED" => Some(Self::Cancelled),
+                _ => None,
+            }
+        }
     }
 }
 /// Measures the progress of a particular metric.
@@ -279,6 +293,15 @@ impl OperationType {
             OperationType::Unspecified => "OPERATION_TYPE_UNSPECIFIED",
             OperationType::ExportEntities => "EXPORT_ENTITIES",
             OperationType::ImportEntities => "IMPORT_ENTITIES",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "OPERATION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "EXPORT_ENTITIES" => Some(Self::ExportEntities),
+            "IMPORT_ENTITIES" => Some(Self::ImportEntities),
+            _ => None,
         }
     }
 }

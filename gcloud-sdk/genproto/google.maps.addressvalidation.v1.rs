@@ -136,6 +136,16 @@ pub mod address_component {
                 }
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CONFIRMATION_LEVEL_UNSPECIFIED" => Some(Self::Unspecified),
+                "CONFIRMED" => Some(Self::Confirmed),
+                "UNCONFIRMED_BUT_PLAUSIBLE" => Some(Self::UnconfirmedButPlausible),
+                "UNCONFIRMED_AND_SUSPICIOUS" => Some(Self::UnconfirmedAndSuspicious),
+                _ => None,
+            }
+        }
     }
 }
 /// A wrapper for the name of the component.
@@ -548,6 +558,17 @@ pub mod provide_validation_feedback_request {
                 ValidationConclusion::Unused => "UNUSED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "VALIDATION_CONCLUSION_UNSPECIFIED" => Some(Self::Unspecified),
+                "VALIDATED_VERSION_USED" => Some(Self::ValidatedVersionUsed),
+                "USER_VERSION_USED" => Some(Self::UserVersionUsed),
+                "UNVALIDATED_VERSION_USED" => Some(Self::UnvalidatedVersionUsed),
+                "UNUSED" => Some(Self::Unused),
+                _ => None,
+            }
+        }
     }
 }
 /// The response for validation feedback.
@@ -693,6 +714,19 @@ pub mod verdict {
                 Granularity::Block => "BLOCK",
                 Granularity::Route => "ROUTE",
                 Granularity::Other => "OTHER",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "GRANULARITY_UNSPECIFIED" => Some(Self::Unspecified),
+                "SUB_PREMISE" => Some(Self::SubPremise),
+                "PREMISE" => Some(Self::Premise),
+                "PREMISE_PROXIMITY" => Some(Self::PremiseProximity),
+                "BLOCK" => Some(Self::Block),
+                "ROUTE" => Some(Self::Route),
+                "OTHER" => Some(Self::Other),
+                _ => None,
             }
         }
     }

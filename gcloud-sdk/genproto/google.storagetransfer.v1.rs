@@ -403,6 +403,15 @@ pub mod s3_compatible_metadata {
                 AuthMethod::AwsSignatureV2 => "AUTH_METHOD_AWS_SIGNATURE_V2",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "AUTH_METHOD_UNSPECIFIED" => Some(Self::Unspecified),
+                "AUTH_METHOD_AWS_SIGNATURE_V4" => Some(Self::AwsSignatureV4),
+                "AUTH_METHOD_AWS_SIGNATURE_V2" => Some(Self::AwsSignatureV2),
+                _ => None,
+            }
+        }
     }
     /// The request model of the API.
     #[derive(
@@ -437,6 +446,15 @@ pub mod s3_compatible_metadata {
                 RequestModel::Unspecified => "REQUEST_MODEL_UNSPECIFIED",
                 RequestModel::VirtualHostedStyle => "REQUEST_MODEL_VIRTUAL_HOSTED_STYLE",
                 RequestModel::PathStyle => "REQUEST_MODEL_PATH_STYLE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "REQUEST_MODEL_UNSPECIFIED" => Some(Self::Unspecified),
+                "REQUEST_MODEL_VIRTUAL_HOSTED_STYLE" => Some(Self::VirtualHostedStyle),
+                "REQUEST_MODEL_PATH_STYLE" => Some(Self::PathStyle),
+                _ => None,
             }
         }
     }
@@ -475,6 +493,15 @@ pub mod s3_compatible_metadata {
                 NetworkProtocol::Http => "NETWORK_PROTOCOL_HTTP",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "NETWORK_PROTOCOL_UNSPECIFIED" => Some(Self::Unspecified),
+                "NETWORK_PROTOCOL_HTTPS" => Some(Self::Https),
+                "NETWORK_PROTOCOL_HTTP" => Some(Self::Http),
+                _ => None,
+            }
+        }
     }
     /// The Listing API to use for discovering objects.
     #[derive(
@@ -507,6 +534,15 @@ pub mod s3_compatible_metadata {
                 ListApi::Unspecified => "LIST_API_UNSPECIFIED",
                 ListApi::ListObjectsV2 => "LIST_OBJECTS_V2",
                 ListApi::ListObjects => "LIST_OBJECTS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "LIST_API_UNSPECIFIED" => Some(Self::Unspecified),
+                "LIST_OBJECTS_V2" => Some(Self::ListObjectsV2),
+                "LIST_OBJECTS" => Some(Self::ListObjects),
+                _ => None,
             }
         }
     }
@@ -579,6 +615,16 @@ pub mod agent_pool {
                 State::Creating => "CREATING",
                 State::Created => "CREATED",
                 State::Deleting => "DELETING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CREATING" => Some(Self::Creating),
+                "CREATED" => Some(Self::Created),
+                "DELETING" => Some(Self::Deleting),
+                _ => None,
             }
         }
     }
@@ -655,6 +701,16 @@ pub mod transfer_options {
                 OverwriteWhen::Different => "DIFFERENT",
                 OverwriteWhen::Never => "NEVER",
                 OverwriteWhen::Always => "ALWAYS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "OVERWRITE_WHEN_UNSPECIFIED" => Some(Self::Unspecified),
+                "DIFFERENT" => Some(Self::Different),
+                "NEVER" => Some(Self::Never),
+                "ALWAYS" => Some(Self::Always),
+                _ => None,
             }
         }
     }
@@ -837,6 +893,15 @@ pub mod metadata_options {
                 Symlink::Preserve => "SYMLINK_PRESERVE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SYMLINK_UNSPECIFIED" => Some(Self::Unspecified),
+                "SYMLINK_SKIP" => Some(Self::Skip),
+                "SYMLINK_PRESERVE" => Some(Self::Preserve),
+                _ => None,
+            }
+        }
     }
     /// Options for handling file mode attribute.
     #[derive(
@@ -869,6 +934,15 @@ pub mod metadata_options {
                 Mode::Unspecified => "MODE_UNSPECIFIED",
                 Mode::Skip => "MODE_SKIP",
                 Mode::Preserve => "MODE_PRESERVE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "MODE_SKIP" => Some(Self::Skip),
+                "MODE_PRESERVE" => Some(Self::Preserve),
+                _ => None,
             }
         }
     }
@@ -905,6 +979,15 @@ pub mod metadata_options {
                 Gid::Number => "GID_NUMBER",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "GID_UNSPECIFIED" => Some(Self::Unspecified),
+                "GID_SKIP" => Some(Self::Skip),
+                "GID_NUMBER" => Some(Self::Number),
+                _ => None,
+            }
+        }
     }
     /// Options for handling file UID attribute.
     #[derive(
@@ -937,6 +1020,15 @@ pub mod metadata_options {
                 Uid::Unspecified => "UID_UNSPECIFIED",
                 Uid::Skip => "UID_SKIP",
                 Uid::Number => "UID_NUMBER",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UID_UNSPECIFIED" => Some(Self::Unspecified),
+                "UID_SKIP" => Some(Self::Skip),
+                "UID_NUMBER" => Some(Self::Number),
+                _ => None,
             }
         }
     }
@@ -975,6 +1067,15 @@ pub mod metadata_options {
                 Acl::Unspecified => "ACL_UNSPECIFIED",
                 Acl::DestinationBucketDefault => "ACL_DESTINATION_BUCKET_DEFAULT",
                 Acl::Preserve => "ACL_PRESERVE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ACL_UNSPECIFIED" => Some(Self::Unspecified),
+                "ACL_DESTINATION_BUCKET_DEFAULT" => Some(Self::DestinationBucketDefault),
+                "ACL_PRESERVE" => Some(Self::Preserve),
+                _ => None,
             }
         }
     }
@@ -1026,6 +1127,21 @@ pub mod metadata_options {
                 StorageClass::Archive => "STORAGE_CLASS_ARCHIVE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STORAGE_CLASS_UNSPECIFIED" => Some(Self::Unspecified),
+                "STORAGE_CLASS_DESTINATION_BUCKET_DEFAULT" => {
+                    Some(Self::DestinationBucketDefault)
+                }
+                "STORAGE_CLASS_PRESERVE" => Some(Self::Preserve),
+                "STORAGE_CLASS_STANDARD" => Some(Self::Standard),
+                "STORAGE_CLASS_NEARLINE" => Some(Self::Nearline),
+                "STORAGE_CLASS_COLDLINE" => Some(Self::Coldline),
+                "STORAGE_CLASS_ARCHIVE" => Some(Self::Archive),
+                _ => None,
+            }
+        }
     }
     /// Options for handling temporary holds for Google Cloud Storage objects.
     #[derive(
@@ -1058,6 +1174,15 @@ pub mod metadata_options {
                 TemporaryHold::Unspecified => "TEMPORARY_HOLD_UNSPECIFIED",
                 TemporaryHold::Skip => "TEMPORARY_HOLD_SKIP",
                 TemporaryHold::Preserve => "TEMPORARY_HOLD_PRESERVE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TEMPORARY_HOLD_UNSPECIFIED" => Some(Self::Unspecified),
+                "TEMPORARY_HOLD_SKIP" => Some(Self::Skip),
+                "TEMPORARY_HOLD_PRESERVE" => Some(Self::Preserve),
+                _ => None,
             }
         }
     }
@@ -1094,6 +1219,17 @@ pub mod metadata_options {
                 KmsKey::Unspecified => "KMS_KEY_UNSPECIFIED",
                 KmsKey::DestinationBucketDefault => "KMS_KEY_DESTINATION_BUCKET_DEFAULT",
                 KmsKey::Preserve => "KMS_KEY_PRESERVE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "KMS_KEY_UNSPECIFIED" => Some(Self::Unspecified),
+                "KMS_KEY_DESTINATION_BUCKET_DEFAULT" => {
+                    Some(Self::DestinationBucketDefault)
+                }
+                "KMS_KEY_PRESERVE" => Some(Self::Preserve),
+                _ => None,
             }
         }
     }
@@ -1134,6 +1270,17 @@ pub mod metadata_options {
                 TimeCreated::PreserveAsCustomTime => {
                     "TIME_CREATED_PRESERVE_AS_CUSTOM_TIME"
                 }
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TIME_CREATED_UNSPECIFIED" => Some(Self::Unspecified),
+                "TIME_CREATED_SKIP" => Some(Self::Skip),
+                "TIME_CREATED_PRESERVE_AS_CUSTOM_TIME" => {
+                    Some(Self::PreserveAsCustomTime)
+                }
+                _ => None,
             }
         }
     }
@@ -1331,6 +1478,16 @@ pub mod transfer_job {
                 Status::Enabled => "ENABLED",
                 Status::Disabled => "DISABLED",
                 Status::Deleted => "DELETED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATUS_UNSPECIFIED" => Some(Self::Unspecified),
+                "ENABLED" => Some(Self::Enabled),
+                "DISABLED" => Some(Self::Disabled),
+                "DELETED" => Some(Self::Deleted),
+                _ => None,
             }
         }
     }
@@ -1532,6 +1689,16 @@ pub mod notification_config {
                 EventType::TransferOperationAborted => "TRANSFER_OPERATION_ABORTED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "EVENT_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "TRANSFER_OPERATION_SUCCESS" => Some(Self::TransferOperationSuccess),
+                "TRANSFER_OPERATION_FAILED" => Some(Self::TransferOperationFailed),
+                "TRANSFER_OPERATION_ABORTED" => Some(Self::TransferOperationAborted),
+                _ => None,
+            }
+        }
     }
     /// Enum for specifying the format of a notification message's payload.
     #[derive(
@@ -1566,6 +1733,15 @@ pub mod notification_config {
                 PayloadFormat::Unspecified => "PAYLOAD_FORMAT_UNSPECIFIED",
                 PayloadFormat::None => "NONE",
                 PayloadFormat::Json => "JSON",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PAYLOAD_FORMAT_UNSPECIFIED" => Some(Self::Unspecified),
+                "NONE" => Some(Self::None),
+                "JSON" => Some(Self::Json),
+                _ => None,
             }
         }
     }
@@ -1638,6 +1814,16 @@ pub mod logging_config {
                 LoggableAction::Copy => "COPY",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "LOGGABLE_ACTION_UNSPECIFIED" => Some(Self::Unspecified),
+                "FIND" => Some(Self::Find),
+                "DELETE" => Some(Self::Delete),
+                "COPY" => Some(Self::Copy),
+                _ => None,
+            }
+        }
     }
     /// Loggable action states.
     #[derive(
@@ -1672,6 +1858,15 @@ pub mod logging_config {
                 LoggableActionState::Unspecified => "LOGGABLE_ACTION_STATE_UNSPECIFIED",
                 LoggableActionState::Succeeded => "SUCCEEDED",
                 LoggableActionState::Failed => "FAILED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "LOGGABLE_ACTION_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "SUCCEEDED" => Some(Self::Succeeded),
+                "FAILED" => Some(Self::Failed),
+                _ => None,
             }
         }
     }
@@ -1756,6 +1951,19 @@ pub mod transfer_operation {
                 Status::Failed => "FAILED",
                 Status::Aborted => "ABORTED",
                 Status::Queued => "QUEUED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATUS_UNSPECIFIED" => Some(Self::Unspecified),
+                "IN_PROGRESS" => Some(Self::InProgress),
+                "PAUSED" => Some(Self::Paused),
+                "SUCCESS" => Some(Self::Success),
+                "FAILED" => Some(Self::Failed),
+                "ABORTED" => Some(Self::Aborted),
+                "QUEUED" => Some(Self::Queued),
+                _ => None,
             }
         }
     }

@@ -525,6 +525,17 @@ pub mod crypto_key {
                 CryptoKeyPurpose::Mac => "MAC",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CRYPTO_KEY_PURPOSE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ENCRYPT_DECRYPT" => Some(Self::EncryptDecrypt),
+                "ASYMMETRIC_SIGN" => Some(Self::AsymmetricSign),
+                "ASYMMETRIC_DECRYPT" => Some(Self::AsymmetricDecrypt),
+                "MAC" => Some(Self::Mac),
+                _ => None,
+            }
+        }
     }
     /// Controls the rate of automatic rotation.
     #[allow(clippy::derive_partial_eq_without_eq)]
@@ -649,6 +660,15 @@ pub mod key_operation_attestation {
                 AttestationFormat::Unspecified => "ATTESTATION_FORMAT_UNSPECIFIED",
                 AttestationFormat::CaviumV1Compressed => "CAVIUM_V1_COMPRESSED",
                 AttestationFormat::CaviumV2Compressed => "CAVIUM_V2_COMPRESSED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ATTESTATION_FORMAT_UNSPECIFIED" => Some(Self::Unspecified),
+                "CAVIUM_V1_COMPRESSED" => Some(Self::CaviumV1Compressed),
+                "CAVIUM_V2_COMPRESSED" => Some(Self::CaviumV2Compressed),
+                _ => None,
             }
         }
     }
@@ -950,6 +970,43 @@ pub mod crypto_key_version {
                 }
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CRYPTO_KEY_VERSION_ALGORITHM_UNSPECIFIED" => Some(Self::Unspecified),
+                "GOOGLE_SYMMETRIC_ENCRYPTION" => Some(Self::GoogleSymmetricEncryption),
+                "RSA_SIGN_PSS_2048_SHA256" => Some(Self::RsaSignPss2048Sha256),
+                "RSA_SIGN_PSS_3072_SHA256" => Some(Self::RsaSignPss3072Sha256),
+                "RSA_SIGN_PSS_4096_SHA256" => Some(Self::RsaSignPss4096Sha256),
+                "RSA_SIGN_PSS_4096_SHA512" => Some(Self::RsaSignPss4096Sha512),
+                "RSA_SIGN_PKCS1_2048_SHA256" => Some(Self::RsaSignPkcs12048Sha256),
+                "RSA_SIGN_PKCS1_3072_SHA256" => Some(Self::RsaSignPkcs13072Sha256),
+                "RSA_SIGN_PKCS1_4096_SHA256" => Some(Self::RsaSignPkcs14096Sha256),
+                "RSA_SIGN_PKCS1_4096_SHA512" => Some(Self::RsaSignPkcs14096Sha512),
+                "RSA_SIGN_RAW_PKCS1_2048" => Some(Self::RsaSignRawPkcs12048),
+                "RSA_SIGN_RAW_PKCS1_3072" => Some(Self::RsaSignRawPkcs13072),
+                "RSA_SIGN_RAW_PKCS1_4096" => Some(Self::RsaSignRawPkcs14096),
+                "RSA_DECRYPT_OAEP_2048_SHA256" => Some(Self::RsaDecryptOaep2048Sha256),
+                "RSA_DECRYPT_OAEP_3072_SHA256" => Some(Self::RsaDecryptOaep3072Sha256),
+                "RSA_DECRYPT_OAEP_4096_SHA256" => Some(Self::RsaDecryptOaep4096Sha256),
+                "RSA_DECRYPT_OAEP_4096_SHA512" => Some(Self::RsaDecryptOaep4096Sha512),
+                "RSA_DECRYPT_OAEP_2048_SHA1" => Some(Self::RsaDecryptOaep2048Sha1),
+                "RSA_DECRYPT_OAEP_3072_SHA1" => Some(Self::RsaDecryptOaep3072Sha1),
+                "RSA_DECRYPT_OAEP_4096_SHA1" => Some(Self::RsaDecryptOaep4096Sha1),
+                "EC_SIGN_P256_SHA256" => Some(Self::EcSignP256Sha256),
+                "EC_SIGN_P384_SHA384" => Some(Self::EcSignP384Sha384),
+                "EC_SIGN_SECP256K1_SHA256" => Some(Self::EcSignSecp256k1Sha256),
+                "HMAC_SHA256" => Some(Self::HmacSha256),
+                "HMAC_SHA1" => Some(Self::HmacSha1),
+                "HMAC_SHA384" => Some(Self::HmacSha384),
+                "HMAC_SHA512" => Some(Self::HmacSha512),
+                "HMAC_SHA224" => Some(Self::HmacSha224),
+                "EXTERNAL_SYMMETRIC_ENCRYPTION" => {
+                    Some(Self::ExternalSymmetricEncryption)
+                }
+                _ => None,
+            }
+        }
     }
     /// The state of a \[CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion\],
     /// indicating if it can be used.
@@ -1027,6 +1084,20 @@ pub mod crypto_key_version {
                 CryptoKeyVersionState::ImportFailed => "IMPORT_FAILED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CRYPTO_KEY_VERSION_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PENDING_GENERATION" => Some(Self::PendingGeneration),
+                "ENABLED" => Some(Self::Enabled),
+                "DISABLED" => Some(Self::Disabled),
+                "DESTROYED" => Some(Self::Destroyed),
+                "DESTROY_SCHEDULED" => Some(Self::DestroyScheduled),
+                "PENDING_IMPORT" => Some(Self::PendingImport),
+                "IMPORT_FAILED" => Some(Self::ImportFailed),
+                _ => None,
+            }
+        }
     }
     /// A view for \[CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion\]s.
     /// Controls the level of detail returned for
@@ -1068,6 +1139,14 @@ pub mod crypto_key_version {
                     "CRYPTO_KEY_VERSION_VIEW_UNSPECIFIED"
                 }
                 CryptoKeyVersionView::Full => "FULL",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CRYPTO_KEY_VERSION_VIEW_UNSPECIFIED" => Some(Self::Unspecified),
+                "FULL" => Some(Self::Full),
+                _ => None,
             }
         }
     }
@@ -1296,6 +1375,19 @@ pub mod import_job {
                 ImportMethod::RsaOaep4096Sha256 => "RSA_OAEP_4096_SHA256",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "IMPORT_METHOD_UNSPECIFIED" => Some(Self::Unspecified),
+                "RSA_OAEP_3072_SHA1_AES_256" => Some(Self::RsaOaep3072Sha1Aes256),
+                "RSA_OAEP_4096_SHA1_AES_256" => Some(Self::RsaOaep4096Sha1Aes256),
+                "RSA_OAEP_3072_SHA256_AES_256" => Some(Self::RsaOaep3072Sha256Aes256),
+                "RSA_OAEP_4096_SHA256_AES_256" => Some(Self::RsaOaep4096Sha256Aes256),
+                "RSA_OAEP_3072_SHA256" => Some(Self::RsaOaep3072Sha256),
+                "RSA_OAEP_4096_SHA256" => Some(Self::RsaOaep4096Sha256),
+                _ => None,
+            }
+        }
     }
     /// The state of the \[ImportJob][google.cloud.kms.v1.ImportJob\], indicating if
     /// it can be used.
@@ -1339,6 +1431,16 @@ pub mod import_job {
                 ImportJobState::PendingGeneration => "PENDING_GENERATION",
                 ImportJobState::Active => "ACTIVE",
                 ImportJobState::Expired => "EXPIRED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "IMPORT_JOB_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PENDING_GENERATION" => Some(Self::PendingGeneration),
+                "ACTIVE" => Some(Self::Active),
+                "EXPIRED" => Some(Self::Expired),
+                _ => None,
             }
         }
     }
@@ -1392,6 +1494,17 @@ impl ProtectionLevel {
             ProtectionLevel::Hsm => "HSM",
             ProtectionLevel::External => "EXTERNAL",
             ProtectionLevel::ExternalVpc => "EXTERNAL_VPC",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "PROTECTION_LEVEL_UNSPECIFIED" => Some(Self::Unspecified),
+            "SOFTWARE" => Some(Self::Software),
+            "HSM" => Some(Self::Hsm),
+            "EXTERNAL" => Some(Self::External),
+            "EXTERNAL_VPC" => Some(Self::ExternalVpc),
+            _ => None,
         }
     }
 }

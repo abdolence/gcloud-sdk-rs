@@ -812,6 +812,15 @@ impl AttributeConfigLevel {
             }
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "ATTRIBUTE_CONFIG_LEVEL_UNSPECIFIED" => Some(Self::Unspecified),
+            "PRODUCT_LEVEL_ATTRIBUTE_CONFIG" => Some(Self::ProductLevelAttributeConfig),
+            "CATALOG_LEVEL_ATTRIBUTE_CONFIG" => Some(Self::CatalogLevelAttributeConfig),
+            _ => None,
+        }
+    }
 }
 /// The type of solution.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -834,6 +843,15 @@ impl SolutionType {
             SolutionType::Unspecified => "SOLUTION_TYPE_UNSPECIFIED",
             SolutionType::Recommendation => "SOLUTION_TYPE_RECOMMENDATION",
             SolutionType::Search => "SOLUTION_TYPE_SEARCH",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "SOLUTION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "SOLUTION_TYPE_RECOMMENDATION" => Some(Self::Recommendation),
+            "SOLUTION_TYPE_SEARCH" => Some(Self::Search),
+            _ => None,
         }
     }
 }
@@ -861,6 +879,15 @@ impl SearchSolutionUseCase {
             SearchSolutionUseCase::Unspecified => "SEARCH_SOLUTION_USE_CASE_UNSPECIFIED",
             SearchSolutionUseCase::Search => "SEARCH_SOLUTION_USE_CASE_SEARCH",
             SearchSolutionUseCase::Browse => "SEARCH_SOLUTION_USE_CASE_BROWSE",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "SEARCH_SOLUTION_USE_CASE_UNSPECIFIED" => Some(Self::Unspecified),
+            "SEARCH_SOLUTION_USE_CASE_SEARCH" => Some(Self::Search),
+            "SEARCH_SOLUTION_USE_CASE_BROWSE" => Some(Self::Browse),
+            _ => None,
         }
     }
 }
@@ -1378,6 +1405,16 @@ pub mod product {
                 Type::Collection => "COLLECTION",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PRIMARY" => Some(Self::Primary),
+                "VARIANT" => Some(Self::Variant),
+                "COLLECTION" => Some(Self::Collection),
+                _ => None,
+            }
+        }
     }
     /// Product availability. If this field is unspecified, the product is
     /// assumed to be in stock.
@@ -1419,6 +1456,17 @@ pub mod product {
                 Availability::OutOfStock => "OUT_OF_STOCK",
                 Availability::Preorder => "PREORDER",
                 Availability::Backorder => "BACKORDER",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "AVAILABILITY_UNSPECIFIED" => Some(Self::Unspecified),
+                "IN_STOCK" => Some(Self::InStock),
+                "OUT_OF_STOCK" => Some(Self::OutOfStock),
+                "PREORDER" => Some(Self::Preorder),
+                "BACKORDER" => Some(Self::Backorder),
+                _ => None,
             }
         }
     }
@@ -2034,6 +2082,15 @@ pub mod import_products_request {
                 ReconciliationMode::Full => "FULL",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "RECONCILIATION_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "INCREMENTAL" => Some(Self::Incremental),
+                "FULL" => Some(Self::Full),
+                _ => None,
+            }
+        }
     }
 }
 /// Request message for the ImportUserEvents request.
@@ -2423,6 +2480,15 @@ pub mod catalog_attribute {
                 AttributeType::Numerical => "NUMERICAL",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNKNOWN" => Some(Self::Unknown),
+                "TEXTUAL" => Some(Self::Textual),
+                "NUMERICAL" => Some(Self::Numerical),
+                _ => None,
+            }
+        }
     }
     /// The status of the indexable option of a catalog attribute.
     #[derive(
@@ -2455,6 +2521,15 @@ pub mod catalog_attribute {
                 IndexableOption::Unspecified => "INDEXABLE_OPTION_UNSPECIFIED",
                 IndexableOption::IndexableEnabled => "INDEXABLE_ENABLED",
                 IndexableOption::IndexableDisabled => "INDEXABLE_DISABLED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "INDEXABLE_OPTION_UNSPECIFIED" => Some(Self::Unspecified),
+                "INDEXABLE_ENABLED" => Some(Self::IndexableEnabled),
+                "INDEXABLE_DISABLED" => Some(Self::IndexableDisabled),
+                _ => None,
             }
         }
     }
@@ -2497,6 +2572,15 @@ pub mod catalog_attribute {
                 }
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DYNAMIC_FACETABLE_OPTION_UNSPECIFIED" => Some(Self::Unspecified),
+                "DYNAMIC_FACETABLE_ENABLED" => Some(Self::DynamicFacetableEnabled),
+                "DYNAMIC_FACETABLE_DISABLED" => Some(Self::DynamicFacetableDisabled),
+                _ => None,
+            }
+        }
     }
     /// The status of the searchable option of a catalog attribute.
     #[derive(
@@ -2529,6 +2613,15 @@ pub mod catalog_attribute {
                 SearchableOption::Unspecified => "SEARCHABLE_OPTION_UNSPECIFIED",
                 SearchableOption::SearchableEnabled => "SEARCHABLE_ENABLED",
                 SearchableOption::SearchableDisabled => "SEARCHABLE_DISABLED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SEARCHABLE_OPTION_UNSPECIFIED" => Some(Self::Unspecified),
+                "SEARCHABLE_ENABLED" => Some(Self::SearchableEnabled),
+                "SEARCHABLE_DISABLED" => Some(Self::SearchableDisabled),
+                _ => None,
             }
         }
     }
@@ -2572,6 +2665,15 @@ pub mod catalog_attribute {
                 }
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "EXACT_SEARCHABLE_OPTION_UNSPECIFIED" => Some(Self::Unspecified),
+                "EXACT_SEARCHABLE_ENABLED" => Some(Self::ExactSearchableEnabled),
+                "EXACT_SEARCHABLE_DISABLED" => Some(Self::ExactSearchableDisabled),
+                _ => None,
+            }
+        }
     }
     /// The status of the retrievable option of a catalog attribute.
     #[derive(
@@ -2605,6 +2707,15 @@ pub mod catalog_attribute {
                 RetrievableOption::Unspecified => "RETRIEVABLE_OPTION_UNSPECIFIED",
                 RetrievableOption::RetrievableEnabled => "RETRIEVABLE_ENABLED",
                 RetrievableOption::RetrievableDisabled => "RETRIEVABLE_DISABLED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "RETRIEVABLE_OPTION_UNSPECIFIED" => Some(Self::Unspecified),
+                "RETRIEVABLE_ENABLED" => Some(Self::RetrievableEnabled),
+                "RETRIEVABLE_DISABLED" => Some(Self::RetrievableDisabled),
+                _ => None,
             }
         }
     }
@@ -5911,6 +6022,15 @@ pub mod search_request {
                     Mode::Enabled => "ENABLED",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "DISABLED" => Some(Self::Disabled),
+                    "ENABLED" => Some(Self::Enabled),
+                    _ => None,
+                }
+            }
         }
     }
     /// Boost specification to boost certain items.
@@ -6029,6 +6149,15 @@ pub mod search_request {
                     Condition::Auto => "AUTO",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "CONDITION_UNSPECIFIED" => Some(Self::Unspecified),
+                    "DISABLED" => Some(Self::Disabled),
+                    "AUTO" => Some(Self::Auto),
+                    _ => None,
+                }
+            }
         }
     }
     /// The specification for personalization.
@@ -6075,6 +6204,15 @@ pub mod search_request {
                     Mode::Unspecified => "MODE_UNSPECIFIED",
                     Mode::Auto => "AUTO",
                     Mode::Disabled => "DISABLED",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "AUTO" => Some(Self::Auto),
+                    "DISABLED" => Some(Self::Disabled),
+                    _ => None,
                 }
             }
         }
@@ -6128,6 +6266,15 @@ pub mod search_request {
                     Mode::Unspecified => "MODE_UNSPECIFIED",
                     Mode::SuggestionOnly => "SUGGESTION_ONLY",
                     Mode::Auto => "AUTO",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "SUGGESTION_ONLY" => Some(Self::SuggestionOnly),
+                    "AUTO" => Some(Self::Auto),
+                    _ => None,
                 }
             }
         }
@@ -6189,6 +6336,15 @@ pub mod search_request {
                 SearchMode::Unspecified => "SEARCH_MODE_UNSPECIFIED",
                 SearchMode::ProductSearchOnly => "PRODUCT_SEARCH_ONLY",
                 SearchMode::FacetedSearchOnly => "FACETED_SEARCH_ONLY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SEARCH_MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PRODUCT_SEARCH_ONLY" => Some(Self::ProductSearchOnly),
+                "FACETED_SEARCH_ONLY" => Some(Self::FacetedSearchOnly),
+                _ => None,
             }
         }
     }
@@ -6782,6 +6938,15 @@ pub mod serving_config {
                 DiversityType::DataDrivenDiversity => "DATA_DRIVEN_DIVERSITY",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DIVERSITY_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "RULE_BASED_DIVERSITY" => Some(Self::RuleBasedDiversity),
+                "DATA_DRIVEN_DIVERSITY" => Some(Self::DataDrivenDiversity),
+                _ => None,
+            }
+        }
     }
 }
 /// Request for CreateServingConfig method.
@@ -7246,6 +7411,15 @@ pub mod rejoin_user_events_request {
                 }
                 UserEventRejoinScope::JoinedEvents => "JOINED_EVENTS",
                 UserEventRejoinScope::UnjoinedEvents => "UNJOINED_EVENTS",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "USER_EVENT_REJOIN_SCOPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "JOINED_EVENTS" => Some(Self::JoinedEvents),
+                "UNJOINED_EVENTS" => Some(Self::UnjoinedEvents),
+                _ => None,
             }
         }
     }

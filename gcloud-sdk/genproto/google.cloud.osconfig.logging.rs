@@ -129,5 +129,19 @@ pub mod patch_job_completed_log {
                 State::TimedOut => "TIMED_OUT",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "STARTED" => Some(Self::Started),
+                "INSTANCE_LOOKUP" => Some(Self::InstanceLookup),
+                "PATCHING" => Some(Self::Patching),
+                "SUCCEEDED" => Some(Self::Succeeded),
+                "COMPLETED_WITH_ERRORS" => Some(Self::CompletedWithErrors),
+                "CANCELED" => Some(Self::Canceled),
+                "TIMED_OUT" => Some(Self::TimedOut),
+                _ => None,
+            }
+        }
     }
 }

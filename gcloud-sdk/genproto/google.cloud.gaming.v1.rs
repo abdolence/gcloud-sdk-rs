@@ -85,6 +85,16 @@ pub mod operation_status {
                 ErrorCode::ClusterConnection => "CLUSTER_CONNECTION",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ERROR_CODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "INTERNAL_ERROR" => Some(Self::InternalError),
+                "PERMISSION_DENIED" => Some(Self::PermissionDenied),
+                "CLUSTER_CONNECTION" => Some(Self::ClusterConnection),
+                _ => None,
+            }
+        }
     }
 }
 /// The label selector, used to group labels on the resources.
@@ -660,6 +670,26 @@ pub mod kubernetes_cluster_state {
                 InstallationState::AgonesNotInstalled => "AGONES_NOT_INSTALLED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "INSTALLATION_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "AGONES_KUBERNETES_VERSION_SUPPORTED" => {
+                    Some(Self::AgonesKubernetesVersionSupported)
+                }
+                "AGONES_VERSION_UNSUPPORTED" => Some(Self::AgonesVersionUnsupported),
+                "AGONES_KUBERNETES_VERSION_UNSUPPORTED" => {
+                    Some(Self::AgonesKubernetesVersionUnsupported)
+                }
+                "AGONES_VERSION_UNRECOGNIZED" => Some(Self::AgonesVersionUnrecognized),
+                "KUBERNETES_VERSION_UNRECOGNIZED" => {
+                    Some(Self::KubernetesVersionUnrecognized)
+                }
+                "VERSION_VERIFICATION_FAILED" => Some(Self::VersionVerificationFailed),
+                "AGONES_NOT_INSTALLED" => Some(Self::AgonesNotInstalled),
+                _ => None,
+            }
+        }
     }
 }
 /// A view for GameServerCluster objects.
@@ -686,6 +716,15 @@ impl GameServerClusterView {
             GameServerClusterView::Unspecified => "GAME_SERVER_CLUSTER_VIEW_UNSPECIFIED",
             GameServerClusterView::Basic => "BASIC",
             GameServerClusterView::Full => "FULL",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "GAME_SERVER_CLUSTER_VIEW_UNSPECIFIED" => Some(Self::Unspecified),
+            "BASIC" => Some(Self::Basic),
+            "FULL" => Some(Self::Full),
+            _ => None,
         }
     }
 }

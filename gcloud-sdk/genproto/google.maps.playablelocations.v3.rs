@@ -73,6 +73,18 @@ pub mod player_report {
                 BadLocationReason::TemporarilyInaccessible => "TEMPORARILY_INACCESSIBLE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "BAD_LOCATION_REASON_UNSPECIFIED" => Some(Self::Unspecified),
+                "OTHER" => Some(Self::Other),
+                "NOT_PEDESTRIAN_ACCESSIBLE" => Some(Self::NotPedestrianAccessible),
+                "NOT_OPEN_TO_PUBLIC" => Some(Self::NotOpenToPublic),
+                "PERMANENTLY_CLOSED" => Some(Self::PermanentlyClosed),
+                "TEMPORARILY_INACCESSIBLE" => Some(Self::TemporarilyInaccessible),
+                _ => None,
+            }
+        }
     }
 }
 /// Encapsulates impression event details.
@@ -131,6 +143,15 @@ pub mod impression {
                 ImpressionType::Unspecified => "IMPRESSION_TYPE_UNSPECIFIED",
                 ImpressionType::Presented => "PRESENTED",
                 ImpressionType::Interacted => "INTERACTED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "IMPRESSION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PRESENTED" => Some(Self::Presented),
+                "INTERACTED" => Some(Self::Interacted),
+                _ => None,
             }
         }
     }

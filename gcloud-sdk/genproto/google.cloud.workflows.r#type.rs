@@ -131,6 +131,17 @@ pub mod engine_call_log {
                 State::ExceptionHandled => "EXCEPTION_HANDLED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "BEGUN" => Some(Self::Begun),
+                "SUCCEEDED" => Some(Self::Succeeded),
+                "EXCEPTION_RAISED" => Some(Self::ExceptionRaised),
+                "EXCEPTION_HANDLED" => Some(Self::ExceptionHandled),
+                _ => None,
+            }
+        }
     }
     #[allow(clippy::derive_partial_eq_without_eq)]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -234,6 +245,17 @@ pub mod executions_system_log {
                 State::Succeeded => "SUCCEEDED",
                 State::Failed => "FAILED",
                 State::Cancelled => "CANCELLED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ACTIVE" => Some(Self::Active),
+                "SUCCEEDED" => Some(Self::Succeeded),
+                "FAILED" => Some(Self::Failed),
+                "CANCELLED" => Some(Self::Cancelled),
+                _ => None,
             }
         }
     }

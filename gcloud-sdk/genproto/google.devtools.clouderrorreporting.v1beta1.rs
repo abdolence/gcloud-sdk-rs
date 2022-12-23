@@ -184,6 +184,17 @@ impl ResolutionStatus {
             ResolutionStatus::Muted => "MUTED",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "RESOLUTION_STATUS_UNSPECIFIED" => Some(Self::Unspecified),
+            "OPEN" => Some(Self::Open),
+            "ACKNOWLEDGED" => Some(Self::Acknowledged),
+            "RESOLVED" => Some(Self::Resolved),
+            "MUTED" => Some(Self::Muted),
+            _ => None,
+        }
+    }
 }
 /// A request to return an individual group.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -577,6 +588,18 @@ pub mod query_time_range {
                 Period::Period30Days => "PERIOD_30_DAYS",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PERIOD_UNSPECIFIED" => Some(Self::Unspecified),
+                "PERIOD_1_HOUR" => Some(Self::Period1Hour),
+                "PERIOD_6_HOURS" => Some(Self::Period6Hours),
+                "PERIOD_1_DAY" => Some(Self::Period1Day),
+                "PERIOD_1_WEEK" => Some(Self::Period1Week),
+                "PERIOD_30_DAYS" => Some(Self::Period30Days),
+                _ => None,
+            }
+        }
     }
 }
 /// Specifies criteria for filtering a subset of service contexts.
@@ -651,6 +674,17 @@ impl TimedCountAlignment {
             TimedCountAlignment::AlignmentEqualAtEnd => "ALIGNMENT_EQUAL_AT_END",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "ERROR_COUNT_ALIGNMENT_UNSPECIFIED" => {
+                Some(Self::ErrorCountAlignmentUnspecified)
+            }
+            "ALIGNMENT_EQUAL_ROUNDED" => Some(Self::AlignmentEqualRounded),
+            "ALIGNMENT_EQUAL_AT_END" => Some(Self::AlignmentEqualAtEnd),
+            _ => None,
+        }
+    }
 }
 /// A sorting order of error groups.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -680,6 +714,17 @@ impl ErrorGroupOrder {
             ErrorGroupOrder::LastSeenDesc => "LAST_SEEN_DESC",
             ErrorGroupOrder::CreatedDesc => "CREATED_DESC",
             ErrorGroupOrder::AffectedUsersDesc => "AFFECTED_USERS_DESC",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "GROUP_ORDER_UNSPECIFIED" => Some(Self::GroupOrderUnspecified),
+            "COUNT_DESC" => Some(Self::CountDesc),
+            "LAST_SEEN_DESC" => Some(Self::LastSeenDesc),
+            "CREATED_DESC" => Some(Self::CreatedDesc),
+            "AFFECTED_USERS_DESC" => Some(Self::AffectedUsersDesc),
+            _ => None,
         }
     }
 }

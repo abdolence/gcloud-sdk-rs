@@ -305,6 +305,17 @@ pub mod document {
                         Orientation::PageLeft => "PAGE_LEFT",
                     }
                 }
+                /// Creates an enum from field names used in the ProtoBuf definition.
+                pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                    match value {
+                        "ORIENTATION_UNSPECIFIED" => Some(Self::Unspecified),
+                        "PAGE_UP" => Some(Self::PageUp),
+                        "PAGE_RIGHT" => Some(Self::PageRight),
+                        "PAGE_DOWN" => Some(Self::PageDown),
+                        "PAGE_LEFT" => Some(Self::PageLeft),
+                        _ => None,
+                    }
+                }
             }
         }
         /// A block has a set of lines (collected into paragraphs) that have a
@@ -402,6 +413,16 @@ pub mod document {
                             Type::Space => "SPACE",
                             Type::WideSpace => "WIDE_SPACE",
                             Type::Hyphen => "HYPHEN",
+                        }
+                    }
+                    /// Creates an enum from field names used in the ProtoBuf definition.
+                    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                        match value {
+                            "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                            "SPACE" => Some(Self::Space),
+                            "WIDE_SPACE" => Some(Self::WideSpace),
+                            "HYPHEN" => Some(Self::Hyphen),
+                            _ => None,
                         }
                     }
                 }
@@ -662,6 +683,20 @@ pub mod document {
                         LayoutType::VisualElement => "VISUAL_ELEMENT",
                         LayoutType::Table => "TABLE",
                         LayoutType::FormField => "FORM_FIELD",
+                    }
+                }
+                /// Creates an enum from field names used in the ProtoBuf definition.
+                pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                    match value {
+                        "LAYOUT_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                        "BLOCK" => Some(Self::Block),
+                        "PARAGRAPH" => Some(Self::Paragraph),
+                        "LINE" => Some(Self::Line),
+                        "TOKEN" => Some(Self::Token),
+                        "VISUAL_ELEMENT" => Some(Self::VisualElement),
+                        "TABLE" => Some(Self::Table),
+                        "FORM_FIELD" => Some(Self::FormField),
+                        _ => None,
                     }
                 }
             }
@@ -1029,6 +1064,19 @@ pub mod operation_metadata {
                 State::Succeeded => "SUCCEEDED",
                 State::Cancelled => "CANCELLED",
                 State::Failed => "FAILED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ACCEPTED" => Some(Self::Accepted),
+                "WAITING" => Some(Self::Waiting),
+                "RUNNING" => Some(Self::Running),
+                "SUCCEEDED" => Some(Self::Succeeded),
+                "CANCELLED" => Some(Self::Cancelled),
+                "FAILED" => Some(Self::Failed),
+                _ => None,
             }
         }
     }

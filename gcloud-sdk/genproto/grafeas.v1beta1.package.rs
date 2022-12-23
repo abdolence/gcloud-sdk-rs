@@ -131,6 +131,16 @@ pub mod version {
                 VersionKind::Maximum => "MAXIMUM",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "VERSION_KIND_UNSPECIFIED" => Some(Self::Unspecified),
+                "NORMAL" => Some(Self::Normal),
+                "MINIMUM" => Some(Self::Minimum),
+                "MAXIMUM" => Some(Self::Maximum),
+                _ => None,
+            }
+        }
     }
 }
 /// Instruction set architectures supported by various package managers.
@@ -154,6 +164,15 @@ impl Architecture {
             Architecture::Unspecified => "ARCHITECTURE_UNSPECIFIED",
             Architecture::X86 => "X86",
             Architecture::X64 => "X64",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "ARCHITECTURE_UNSPECIFIED" => Some(Self::Unspecified),
+            "X86" => Some(Self::X86),
+            "X64" => Some(Self::X64),
+            _ => None,
         }
     }
 }

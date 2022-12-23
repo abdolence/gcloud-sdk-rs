@@ -125,6 +125,17 @@ pub mod lake {
                     State::Error => "ERROR",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "NONE" => Some(Self::None),
+                    "READY" => Some(Self::Ready),
+                    "UPDATING" => Some(Self::Updating),
+                    "ERROR" => Some(Self::Error),
+                    _ => None,
+                }
+            }
         }
     }
 }
@@ -238,6 +249,15 @@ pub mod zone {
                     LocationType::Unspecified => "LOCATION_TYPE_UNSPECIFIED",
                     LocationType::SingleRegion => "SINGLE_REGION",
                     LocationType::MultiRegion => "MULTI_REGION",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "LOCATION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "SINGLE_REGION" => Some(Self::SingleRegion),
+                    "MULTI_REGION" => Some(Self::MultiRegion),
+                    _ => None,
                 }
             }
         }
@@ -359,6 +379,15 @@ pub mod zone {
                 Type::Unspecified => "TYPE_UNSPECIFIED",
                 Type::Raw => "RAW",
                 Type::Curated => "CURATED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "RAW" => Some(Self::Raw),
+                "CURATED" => Some(Self::Curated),
+                _ => None,
             }
         }
     }
@@ -507,6 +536,15 @@ pub mod action {
                     SchemaChange::Modified => "MODIFIED",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "SCHEMA_CHANGE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "INCOMPATIBLE" => Some(Self::Incompatible),
+                    "MODIFIED" => Some(Self::Modified),
+                    _ => None,
+                }
+            }
         }
     }
     /// Action details for invalid or unsupported partitions detected by discovery.
@@ -550,6 +588,15 @@ pub mod action {
                     PartitionStructure::Unspecified => "PARTITION_STRUCTURE_UNSPECIFIED",
                     PartitionStructure::ConsistentKeys => "CONSISTENT_KEYS",
                     PartitionStructure::HiveStyleKeys => "HIVE_STYLE_KEYS",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "PARTITION_STRUCTURE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "CONSISTENT_KEYS" => Some(Self::ConsistentKeys),
+                    "HIVE_STYLE_KEYS" => Some(Self::HiveStyleKeys),
+                    _ => None,
                 }
             }
         }
@@ -596,6 +643,16 @@ pub mod action {
                 Category::ResourceManagement => "RESOURCE_MANAGEMENT",
                 Category::SecurityPolicy => "SECURITY_POLICY",
                 Category::DataDiscovery => "DATA_DISCOVERY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CATEGORY_UNSPECIFIED" => Some(Self::Unspecified),
+                "RESOURCE_MANAGEMENT" => Some(Self::ResourceManagement),
+                "SECURITY_POLICY" => Some(Self::SecurityPolicy),
+                "DATA_DISCOVERY" => Some(Self::DataDiscovery),
+                _ => None,
             }
         }
     }
@@ -744,6 +801,16 @@ pub mod asset {
                     State::Error => "ERROR",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "READY" => Some(Self::Ready),
+                    "APPLYING" => Some(Self::Applying),
+                    "ERROR" => Some(Self::Error),
+                    _ => None,
+                }
+            }
         }
     }
     /// Settings to manage the metadata discovery and publishing for an asset.
@@ -877,6 +944,15 @@ pub mod asset {
                     Type::BigqueryDataset => "BIGQUERY_DATASET",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "STORAGE_BUCKET" => Some(Self::StorageBucket),
+                    "BIGQUERY_DATASET" => Some(Self::BigqueryDataset),
+                    _ => None,
+                }
+            }
         }
     }
     /// Status of the resource referenced by an asset.
@@ -926,6 +1002,15 @@ pub mod asset {
                     State::Unspecified => "STATE_UNSPECIFIED",
                     State::Ready => "READY",
                     State::Error => "ERROR",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "READY" => Some(Self::Ready),
+                    "ERROR" => Some(Self::Error),
+                    _ => None,
                 }
             }
         }
@@ -1012,6 +1097,17 @@ pub mod asset {
                     State::Disabled => "DISABLED",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "SCHEDULED" => Some(Self::Scheduled),
+                    "IN_PROGRESS" => Some(Self::InProgress),
+                    "PAUSED" => Some(Self::Paused),
+                    "DISABLED" => Some(Self::Disabled),
+                    _ => None,
+                }
+            }
         }
     }
 }
@@ -1042,6 +1138,17 @@ impl State {
             State::Creating => "CREATING",
             State::Deleting => "DELETING",
             State::ActionRequired => "ACTION_REQUIRED",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+            "ACTIVE" => Some(Self::Active),
+            "CREATING" => Some(Self::Creating),
+            "DELETING" => Some(Self::Deleting),
+            "ACTION_REQUIRED" => Some(Self::ActionRequired),
+            _ => None,
         }
     }
 }
@@ -1287,6 +1394,14 @@ pub mod content {
                     QueryEngine::Spark => "SPARK",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "QUERY_ENGINE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "SPARK" => Some(Self::Spark),
+                    _ => None,
+                }
+            }
         }
     }
     /// Configuration for Notebook content.
@@ -1327,6 +1442,14 @@ pub mod content {
                 match self {
                     KernelType::Unspecified => "KERNEL_TYPE_UNSPECIFIED",
                     KernelType::Python3 => "PYTHON3",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "KERNEL_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "PYTHON3" => Some(Self::Python3),
+                    _ => None,
                 }
             }
         }
@@ -1498,6 +1621,15 @@ pub mod get_content_request {
                 ContentView::Unspecified => "CONTENT_VIEW_UNSPECIFIED",
                 ContentView::Basic => "BASIC",
                 ContentView::Full => "FULL",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CONTENT_VIEW_UNSPECIFIED" => Some(Self::Unspecified),
+                "BASIC" => Some(Self::Basic),
+                "FULL" => Some(Self::Full),
+                _ => None,
             }
         }
     }
@@ -1769,6 +1901,1396 @@ pub mod content_service_client {
         }
     }
 }
+/// DataScan scheduling and trigger settings.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Trigger {
+    /// DataScan scheduling and trigger settings.
+    /// If not specified, the default is OnDemand, which means the scan will not
+    /// run until the user calls RunDataScan API.
+    #[prost(oneof = "trigger::Mode", tags = "100, 101")]
+    pub mode: ::core::option::Option<trigger::Mode>,
+}
+/// Nested message and enum types in `Trigger`.
+pub mod trigger {
+    /// The scan runs one-time via RunDataScan API.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct OnDemand {}
+    /// The scan is scheduled to run periodically.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Schedule {
+        /// Required. Cron schedule (<https://en.wikipedia.org/wiki/Cron>) for running
+        /// scans periodically.
+        /// To explicitly set a timezone to the cron tab, apply a prefix in the
+        /// cron tab: "CRON_TZ=${IANA_TIME_ZONE}" or "TZ=${IANA_TIME_ZONE}".
+        /// The ${IANA_TIME_ZONE} may only be a valid string from IANA time zone
+        /// database. For example, "CRON_TZ=America/New_York 1 * * * *", or
+        /// "TZ=America/New_York 1 * * * *".
+        /// This field is required for Schedule scans.
+        #[prost(string, tag = "1")]
+        pub cron: ::prost::alloc::string::String,
+    }
+    /// DataScan scheduling and trigger settings.
+    /// If not specified, the default is OnDemand, which means the scan will not
+    /// run until the user calls RunDataScan API.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Mode {
+        /// The scan runs one-time shortly after DataScan Creation.
+        #[prost(message, tag = "100")]
+        OnDemand(OnDemand),
+        /// The scan is scheduled to run periodically.
+        #[prost(message, tag = "101")]
+        Schedule(Schedule),
+    }
+}
+/// The data source for DataScan.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DataSource {
+    /// The source is required and immutable which means once entity is set, it
+    /// cannot be change to others, and vice versa.
+    #[prost(oneof = "data_source::Source", tags = "100")]
+    pub source: ::core::option::Option<data_source::Source>,
+}
+/// Nested message and enum types in `DataSource`.
+pub mod data_source {
+    /// The source is required and immutable which means once entity is set, it
+    /// cannot be change to others, and vice versa.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Source {
+        /// Immutable. The dataplex entity that contains the data for DataScan, of
+        /// the form:
+        /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}/entities/{entity_id}`.
+        #[prost(string, tag = "100")]
+        Entity(::prost::alloc::string::String),
+    }
+}
+/// The data scanned during processing (e.g. in incremental DataScan)
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ScannedData {
+    /// The range of scanned data
+    #[prost(oneof = "scanned_data::DataRange", tags = "1")]
+    pub data_range: ::core::option::Option<scanned_data::DataRange>,
+}
+/// Nested message and enum types in `ScannedData`.
+pub mod scanned_data {
+    /// A data range denoted by a pair of start/end values of a field.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct IncrementalField {
+        /// The field that contains values which monotonically increases over time
+        /// (e.g. timestamp).
+        #[prost(string, tag = "1")]
+        pub field: ::prost::alloc::string::String,
+        /// Value that marks the start of the range
+        #[prost(string, tag = "2")]
+        pub start: ::prost::alloc::string::String,
+        /// Value that marks the end of the range
+        #[prost(string, tag = "3")]
+        pub end: ::prost::alloc::string::String,
+    }
+    /// The range of scanned data
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum DataRange {
+        /// The range denoted by values of an incremental field
+        #[prost(message, tag = "1")]
+        IncrementalField(IncrementalField),
+    }
+}
+/// DataProfileScan related setting.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DataProfileSpec {}
+/// DataProfileResult defines the output of DataProfileScan.
+/// Each field of the table will have field type specific profile result.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DataProfileResult {
+    /// The count of all rows in the sampled data.
+    /// Return 0, if zero rows.
+    #[prost(int64, tag = "3")]
+    pub row_count: i64,
+    /// This represents the profile information per field.
+    #[prost(message, optional, tag = "4")]
+    pub profile: ::core::option::Option<data_profile_result::Profile>,
+    /// The data scanned for this profile.
+    #[prost(message, optional, tag = "5")]
+    pub scanned_data: ::core::option::Option<ScannedData>,
+}
+/// Nested message and enum types in `DataProfileResult`.
+pub mod data_profile_result {
+    /// Profile information describing the structure and layout of the data
+    /// and contains the profile info.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Profile {
+        /// The sequence of fields describing data in table entities.
+        #[prost(message, repeated, tag = "2")]
+        pub fields: ::prost::alloc::vec::Vec<profile::Field>,
+    }
+    /// Nested message and enum types in `Profile`.
+    pub mod profile {
+        /// Represents a column field within a table schema.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct Field {
+            /// The name of the field.
+            #[prost(string, tag = "1")]
+            pub name: ::prost::alloc::string::String,
+            /// The field data type. Possible values include:
+            ///
+            /// * STRING
+            /// * BYTE
+            /// * INT64
+            /// * INT32
+            /// * INT16
+            /// * DOUBLE
+            /// * FLOAT
+            /// * DECIMAL
+            /// * BOOLEAN
+            /// * BINARY
+            /// * TIMESTAMP
+            /// * DATE
+            /// * TIME
+            /// * NULL
+            /// * RECORD
+            #[prost(string, tag = "2")]
+            pub r#type: ::prost::alloc::string::String,
+            /// The mode of the field. Its value will be:
+            /// REQUIRED, if it is a required field.
+            /// NULLABLE, if it is an optional field.
+            /// REPEATED, if it is a repeated field.
+            #[prost(string, tag = "3")]
+            pub mode: ::prost::alloc::string::String,
+            /// The profile information for the corresponding field.
+            #[prost(message, optional, tag = "4")]
+            pub profile: ::core::option::Option<field::ProfileInfo>,
+        }
+        /// Nested message and enum types in `Field`.
+        pub mod field {
+            /// ProfileInfo defines the profile information for each schema field type.
+            #[allow(clippy::derive_partial_eq_without_eq)]
+            #[derive(Clone, PartialEq, ::prost::Message)]
+            pub struct ProfileInfo {
+                /// The ratio of null rows against the rows in the sampled data.
+                #[prost(double, tag = "2")]
+                pub null_ratio: f64,
+                /// The ratio of rows that are distinct against the rows in the sampled
+                /// data.
+                #[prost(double, tag = "3")]
+                pub distinct_ratio: f64,
+                /// The array of top N values of the field in the sampled data.
+                /// Currently N is set as 10 or equal to distinct values in the field,
+                /// whichever is smaller. This will be optional for complex non-groupable
+                /// data-types such as JSON, ARRAY, JSON, STRUCT.
+                #[prost(message, repeated, tag = "4")]
+                pub top_n_values: ::prost::alloc::vec::Vec<profile_info::TopNValue>,
+                /// The corresponding profile for specific field type.
+                /// Each field will have only one field type specific profile output.
+                #[prost(oneof = "profile_info::FieldInfo", tags = "101, 102, 103")]
+                pub field_info: ::core::option::Option<profile_info::FieldInfo>,
+            }
+            /// Nested message and enum types in `ProfileInfo`.
+            pub mod profile_info {
+                /// StringFieldInfo defines output info for any string type field.
+                #[allow(clippy::derive_partial_eq_without_eq)]
+                #[derive(Clone, PartialEq, ::prost::Message)]
+                pub struct StringFieldInfo {
+                    /// The minimum length of the string field in the sampled data.
+                    /// Optional if zero non-null rows.
+                    #[prost(int64, tag = "1")]
+                    pub min_length: i64,
+                    /// The maximum length of a string field in the sampled data.
+                    /// Optional if zero non-null rows.
+                    #[prost(int64, tag = "2")]
+                    pub max_length: i64,
+                    /// The average length of a string field in the sampled data.
+                    /// Optional if zero non-null rows.
+                    #[prost(double, tag = "3")]
+                    pub average_length: f64,
+                }
+                /// IntegerFieldInfo defines output for any integer type field.
+                #[allow(clippy::derive_partial_eq_without_eq)]
+                #[derive(Clone, PartialEq, ::prost::Message)]
+                pub struct IntegerFieldInfo {
+                    /// The average of non-null values of integer field in the sampled
+                    /// data. Return NaN, if the field has a NaN. Optional if zero non-null
+                    /// rows.
+                    #[prost(double, tag = "1")]
+                    pub average: f64,
+                    /// The standard deviation of non-null of integer field in the sampled
+                    /// data. Return NaN, if the field has a NaN. Optional if zero non-null
+                    /// rows.
+                    #[prost(double, tag = "3")]
+                    pub standard_deviation: f64,
+                    /// The minimum value of an integer field in the sampled data.
+                    /// Return NaN, if the field has a NaN. Optional if zero non-null
+                    /// rows.
+                    #[prost(int64, tag = "4")]
+                    pub min: i64,
+                    /// A quartile divide the number of data points into four parts, or
+                    /// quarters, of more-or-less equal size. Three main quartiles used
+                    /// are: The first quartile (Q1) splits off the lowest 25% of data from
+                    /// the highest 75%. It is also known as the lower or 25th empirical
+                    /// quartile, as 25% of the data is below this point. The second
+                    /// quartile (Q2) is the median of a data set. So, 50% of the data lies
+                    /// below this point. The third quartile (Q3) splits off the highest
+                    /// 25% of data from the lowest 75%. It is known as the upper or 75th
+                    /// empirical quartile, as 75% of the data lies below this point. So,
+                    /// here the quartiles is provided as an ordered list of quartile
+                    /// values, occurring in order Q1, median, Q3.
+                    #[prost(int64, repeated, tag = "6")]
+                    pub quartiles: ::prost::alloc::vec::Vec<i64>,
+                    /// The maximum value of an integer field in the sampled data.
+                    /// Return NaN, if the field has a NaN. Optional if zero non-null
+                    /// rows.
+                    #[prost(int64, tag = "5")]
+                    pub max: i64,
+                }
+                /// DoubleFieldInfo defines output for any double type field.
+                #[allow(clippy::derive_partial_eq_without_eq)]
+                #[derive(Clone, PartialEq, ::prost::Message)]
+                pub struct DoubleFieldInfo {
+                    /// The average of non-null values of double field in the sampled data.
+                    /// Return NaN, if the field has a NaN. Optional if zero non-null rows.
+                    #[prost(double, tag = "1")]
+                    pub average: f64,
+                    /// The standard deviation of non-null of double field in the sampled
+                    /// data. Return NaN, if the field has a NaN. Optional if zero non-null
+                    /// rows.
+                    #[prost(double, tag = "3")]
+                    pub standard_deviation: f64,
+                    /// The minimum value of a double field in the sampled data.
+                    /// Return NaN, if the field has a NaN. Optional if zero non-null
+                    /// rows.
+                    #[prost(double, tag = "4")]
+                    pub min: f64,
+                    /// A quartile divide the numebr of data points into four parts, or
+                    /// quarters, of more-or-less equal size. Three main quartiles used
+                    /// are: The first quartile (Q1) splits off the lowest 25% of data from
+                    /// the highest 75%. It is also known as the lower or 25th empirical
+                    /// quartile, as 25% of the data is below this point. The second
+                    /// quartile (Q2) is the median of a data set. So, 50% of the data lies
+                    /// below this point. The third quartile (Q3) splits off the highest
+                    /// 25% of data from the lowest 75%. It is known as the upper or 75th
+                    /// empirical quartile, as 75% of the data lies below this point. So,
+                    /// here the quartiles is provided as an ordered list of quartile
+                    /// values, occurring in order Q1, median, Q3.
+                    #[prost(double, repeated, tag = "6")]
+                    pub quartiles: ::prost::alloc::vec::Vec<f64>,
+                    /// The maximum value of a double field in the sampled data.
+                    /// Return NaN, if the field has a NaN. Optional if zero non-null
+                    /// rows.
+                    #[prost(double, tag = "5")]
+                    pub max: f64,
+                }
+                /// The TopNValue defines the structure of output of top N values of a
+                /// field.
+                #[allow(clippy::derive_partial_eq_without_eq)]
+                #[derive(Clone, PartialEq, ::prost::Message)]
+                pub struct TopNValue {
+                    /// The value is the string value of the actual value from the field.
+                    #[prost(string, tag = "1")]
+                    pub value: ::prost::alloc::string::String,
+                    /// The frequency count of the corresponding value in the field.
+                    #[prost(int64, tag = "2")]
+                    pub count: i64,
+                }
+                /// The corresponding profile for specific field type.
+                /// Each field will have only one field type specific profile output.
+                #[allow(clippy::derive_partial_eq_without_eq)]
+                #[derive(Clone, PartialEq, ::prost::Oneof)]
+                pub enum FieldInfo {
+                    /// The corresponding string field profile.
+                    #[prost(message, tag = "101")]
+                    StringProfile(StringFieldInfo),
+                    /// The corresponding integer field profile.
+                    #[prost(message, tag = "102")]
+                    IntegerProfile(IntegerFieldInfo),
+                    /// The corresponding double field profile.
+                    #[prost(message, tag = "103")]
+                    DoubleProfile(DoubleFieldInfo),
+                }
+            }
+        }
+    }
+}
+/// DataQualityScan related setting.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DataQualitySpec {
+    /// The list of rules to evaluate against a data source. At least one rule is
+    /// required.
+    #[prost(message, repeated, tag = "1")]
+    pub rules: ::prost::alloc::vec::Vec<DataQualityRule>,
+}
+/// The output of a DataQualityScan.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DataQualityResult {
+    /// Overall data quality result -- `true` if all rules passed.
+    #[prost(bool, tag = "5")]
+    pub passed: bool,
+    /// A list of results at the dimension-level.
+    #[prost(message, repeated, tag = "2")]
+    pub dimensions: ::prost::alloc::vec::Vec<DataQualityDimensionResult>,
+    /// A list of all the rules in a job, and their results.
+    #[prost(message, repeated, tag = "3")]
+    pub rules: ::prost::alloc::vec::Vec<DataQualityRuleResult>,
+    /// The count of rows processed.
+    #[prost(int64, tag = "4")]
+    pub row_count: i64,
+    /// The data scanned for this result.
+    #[prost(message, optional, tag = "7")]
+    pub scanned_data: ::core::option::Option<ScannedData>,
+}
+/// DataQualityRuleResult provides a more detailed, per-rule level view of the
+/// results.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DataQualityRuleResult {
+    /// The rule specified in the DataQualitySpec, as is.
+    #[prost(message, optional, tag = "1")]
+    pub rule: ::core::option::Option<DataQualityRule>,
+    /// Whether the rule passed or failed.
+    #[prost(bool, tag = "7")]
+    pub passed: bool,
+    /// The number of rows a rule was evaluated against.
+    /// This field is only valid for ColumnMap type rules.
+    /// Evaluated count can be configured to either
+    /// (1) include all rows (default) - with null rows automatically failing rule
+    /// evaluation  OR (2) exclude null rows from the evaluated_count, by setting
+    /// ignore_nulls = true
+    #[prost(int64, tag = "9")]
+    pub evaluated_count: i64,
+    /// The number of rows which passed a rule evaluation.
+    /// This field is only valid for ColumnMap type rules.
+    #[prost(int64, tag = "8")]
+    pub passed_count: i64,
+    /// The number of rows with null values in the specified column.
+    #[prost(int64, tag = "5")]
+    pub null_count: i64,
+    /// The ratio of passed_count / evaluated_count.
+    /// This field is only valid for ColumnMap type rules.
+    #[prost(double, tag = "6")]
+    pub pass_ratio: f64,
+    /// The query to find rows that did not pass this rule.
+    /// Only applies to ColumnMap and RowCondition rules.
+    #[prost(string, tag = "10")]
+    pub failing_rows_query: ::prost::alloc::string::String,
+}
+/// DataQualityDimensionResult provides a more detailed, per-dimension level view
+/// of the results.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DataQualityDimensionResult {
+    /// Whether the dimension passed or failed.
+    #[prost(bool, tag = "3")]
+    pub passed: bool,
+}
+/// A rule captures data quality intent about a data source.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DataQualityRule {
+    /// Optional. The unnested column which this rule is evaluated against.
+    #[prost(string, tag = "500")]
+    pub column: ::prost::alloc::string::String,
+    /// Optional. Rows with null values will automatically fail a rule, unless
+    /// ignore_null is true. In that case, such null rows are trivially considered
+    /// passing. Only applicable to ColumnMap rules.
+    #[prost(bool, tag = "501")]
+    pub ignore_null: bool,
+    /// Required. The dimension a rule belongs to. Results are also aggregated at
+    /// the dimension-level. Supported dimensions are ["COMPLETENESS", "ACCURACY",
+    /// "CONSISTENCY", "VALIDITY", "UNIQUENESS", "INTEGRITY"]
+    #[prost(string, tag = "502")]
+    pub dimension: ::prost::alloc::string::String,
+    /// Optional. The minimum ratio of passing_rows / total_rows required to pass
+    /// this rule, with a range of [0.0, 1.0]
+    ///
+    /// 0 indicates default value (i.e. 1.0)
+    #[prost(double, tag = "503")]
+    pub threshold: f64,
+    #[prost(
+        oneof = "data_quality_rule::RuleType",
+        tags = "1, 2, 3, 4, 100, 101, 200, 201"
+    )]
+    pub rule_type: ::core::option::Option<data_quality_rule::RuleType>,
+}
+/// Nested message and enum types in `DataQualityRule`.
+pub mod data_quality_rule {
+    /// Evaluates whether each column value lies between a specified range.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct RangeExpectation {
+        /// Optional. The minimum column value allowed for a row to pass this
+        /// validation. At least one of min_value and max_value need to be provided.
+        #[prost(string, tag = "1")]
+        pub min_value: ::prost::alloc::string::String,
+        /// Optional. The maximum column value allowed for a row to pass this
+        /// validation. At least one of min_value and max_value need to be provided.
+        #[prost(string, tag = "2")]
+        pub max_value: ::prost::alloc::string::String,
+        /// Optional. Whether each value needs to be strictly greater than ('>') the
+        /// minimum, or if equality is allowed. Only relevant if a min_value has been
+        /// defined. Default = false.
+        #[prost(bool, tag = "3")]
+        pub strict_min_enabled: bool,
+        /// Optional. Whether each value needs to be strictly lesser than ('<') the
+        /// maximum, or if equality is allowed. Only relevant if a max_value has been
+        /// defined. Default = false.
+        #[prost(bool, tag = "4")]
+        pub strict_max_enabled: bool,
+    }
+    /// Evaluates whether each column value is null.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct NonNullExpectation {}
+    /// Evaluates whether each column value is contained by a specified set.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct SetExpectation {
+        #[prost(string, repeated, tag = "1")]
+        pub values: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    }
+    /// Evaluates whether each column value matches a specified regex.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct RegexExpectation {
+        #[prost(string, tag = "1")]
+        pub regex: ::prost::alloc::string::String,
+    }
+    /// Evaluates whether the column has duplicates.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct UniquenessExpectation {}
+    /// Evaluates whether the column aggregate statistic lies between a specified
+    /// range.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct StatisticRangeExpectation {
+        #[prost(enumeration = "statistic_range_expectation::ColumnStatistic", tag = "1")]
+        pub statistic: i32,
+        /// The minimum column statistic value allowed for a row to pass this
+        /// validation.
+        /// At least one of min_value and max_value need to be provided.
+        #[prost(string, tag = "2")]
+        pub min_value: ::prost::alloc::string::String,
+        /// The maximum column statistic value allowed for a row to pass this
+        /// validation.
+        /// At least one of min_value and max_value need to be provided.
+        #[prost(string, tag = "3")]
+        pub max_value: ::prost::alloc::string::String,
+        /// Whether column statistic needs to be strictly greater than ('>')
+        /// the minimum, or if equality is allowed. Only relevant if a min_value has
+        /// been defined. Default = false.
+        #[prost(bool, tag = "4")]
+        pub strict_min_enabled: bool,
+        /// Whether column statistic needs to be strictly lesser than ('<') the
+        /// maximum, or if equality is allowed. Only relevant if a max_value has been
+        /// defined. Default = false.
+        #[prost(bool, tag = "5")]
+        pub strict_max_enabled: bool,
+    }
+    /// Nested message and enum types in `StatisticRangeExpectation`.
+    pub mod statistic_range_expectation {
+        #[derive(
+            Clone,
+            Copy,
+            Debug,
+            PartialEq,
+            Eq,
+            Hash,
+            PartialOrd,
+            Ord,
+            ::prost::Enumeration
+        )]
+        #[repr(i32)]
+        pub enum ColumnStatistic {
+            /// Unspecified statistic type
+            StatisticUndefined = 0,
+            /// Evaluate the column mean
+            Mean = 1,
+            /// Evaluate the column min
+            Min = 2,
+            /// Evaluate the column max
+            Max = 3,
+        }
+        impl ColumnStatistic {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    ColumnStatistic::StatisticUndefined => "STATISTIC_UNDEFINED",
+                    ColumnStatistic::Mean => "MEAN",
+                    ColumnStatistic::Min => "MIN",
+                    ColumnStatistic::Max => "MAX",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "STATISTIC_UNDEFINED" => Some(Self::StatisticUndefined),
+                    "MEAN" => Some(Self::Mean),
+                    "MIN" => Some(Self::Min),
+                    "MAX" => Some(Self::Max),
+                    _ => None,
+                }
+            }
+        }
+    }
+    /// Evaluates whether each row passes the specified condition.
+    /// The SQL expression needs to use BigQuery standard SQL syntax and should
+    /// produce a boolean per row as the result.
+    /// Example: col1 >= 0 AND col2 < 10
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct RowConditionExpectation {
+        #[prost(string, tag = "1")]
+        pub sql_expression: ::prost::alloc::string::String,
+    }
+    /// Evaluates whether the provided expression is true.
+    /// The SQL expression needs to use BigQuery standard SQL syntax and should
+    /// produce a scalar boolean result.
+    /// Example: MIN(col1) >= 0
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct TableConditionExpectation {
+        #[prost(string, tag = "1")]
+        pub sql_expression: ::prost::alloc::string::String,
+    }
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum RuleType {
+        /// ColumnMap rule which evaluates whether each column value lies between a
+        /// specified range.
+        #[prost(message, tag = "1")]
+        RangeExpectation(RangeExpectation),
+        /// ColumnMap rule which evaluates whether each column value is null.
+        #[prost(message, tag = "2")]
+        NonNullExpectation(NonNullExpectation),
+        /// ColumnMap rule which evaluates whether each column value is contained by
+        /// a specified set.
+        #[prost(message, tag = "3")]
+        SetExpectation(SetExpectation),
+        /// ColumnMap rule which evaluates whether each column value matches a
+        /// specified regex.
+        #[prost(message, tag = "4")]
+        RegexExpectation(RegexExpectation),
+        /// ColumnAggregate rule which evaluates whether the column has duplicates.
+        #[prost(message, tag = "100")]
+        UniquenessExpectation(UniquenessExpectation),
+        /// ColumnAggregate rule which evaluates whether the column aggregate
+        /// statistic lies between a specified range.
+        #[prost(message, tag = "101")]
+        StatisticRangeExpectation(StatisticRangeExpectation),
+        /// Table rule which evaluates whether each row passes the specified
+        /// condition.
+        #[prost(message, tag = "200")]
+        RowConditionExpectation(RowConditionExpectation),
+        /// Table rule which evaluates whether the provided expression is true.
+        #[prost(message, tag = "201")]
+        TableConditionExpectation(TableConditionExpectation),
+    }
+}
+/// Create dataScan request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateDataScanRequest {
+    /// Required. The resource name of the parent location:
+    /// projects/{project}/locations/{location_id}
+    /// where `{project}` refers to a project_id or project_number and
+    /// `location_id` refers to a GCP region.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. DataScan resource.
+    #[prost(message, optional, tag = "2")]
+    pub data_scan: ::core::option::Option<DataScan>,
+    /// Required. DataScan identifier.
+    /// * Must contain only lowercase letters, numbers and hyphens.
+    /// * Must start with a letter.
+    /// * Must end with a number or a letter.
+    /// * Must be between 1-63 characters.
+    /// * Must be unique within the customer project / location.
+    #[prost(string, tag = "3")]
+    pub data_scan_id: ::prost::alloc::string::String,
+}
+/// Update dataScan request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateDataScanRequest {
+    /// Required. Update description.
+    /// Only fields specified in `update_mask` are updated.
+    #[prost(message, optional, tag = "1")]
+    pub data_scan: ::core::option::Option<DataScan>,
+    /// Required. Mask of fields to update.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// Delete dataScan request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteDataScanRequest {
+    /// Required. The resource name of the dataScan:
+    /// projects/{project}/locations/{location_id}/dataScans/{data_scan_id}
+    /// where `{project}` refers to a project_id or project_number and
+    /// `location_id` refers to a GCP region.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Get dataScan request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetDataScanRequest {
+    /// Required. The resource name of the dataScan:
+    /// projects/{project}/locations/{location_id}/dataScans/{data_scan_id}
+    /// where `{project}` refers to a project_id or project_number and
+    /// `location_id` refers to a GCP region.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. Used to select the subset of DataScan information to return.
+    /// Defaults to `BASIC`.
+    #[prost(enumeration = "get_data_scan_request::DataScanView", tag = "2")]
+    pub view: i32,
+}
+/// Nested message and enum types in `GetDataScanRequest`.
+pub mod get_data_scan_request {
+    /// DataScan views for getting a partial dataScan.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum DataScanView {
+        /// The API will default to the `BASIC` view.
+        Unspecified = 0,
+        /// Basic view that does not include spec and result.
+        Basic = 1,
+        /// Include everything.
+        Full = 10,
+    }
+    impl DataScanView {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                DataScanView::Unspecified => "DATA_SCAN_VIEW_UNSPECIFIED",
+                DataScanView::Basic => "BASIC",
+                DataScanView::Full => "FULL",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DATA_SCAN_VIEW_UNSPECIFIED" => Some(Self::Unspecified),
+                "BASIC" => Some(Self::Basic),
+                "FULL" => Some(Self::Full),
+                _ => None,
+            }
+        }
+    }
+}
+/// List dataScans request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListDataScansRequest {
+    /// Required. projects/{project}/locations/{location_id}
+    /// where `{project}` refers to a project_id or project_number and
+    /// `location_id` refers to a GCP region.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. Maximum number of dataScans to return. The service may return
+    /// fewer than this value. If unspecified, at most 10 scans will be returned.
+    /// The maximum value is 1000; values above 1000 will be coerced to 1000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. Page token received from a previous `ListDataScans` call. Provide
+    /// this to retrieve the subsequent page. When paginating, all other parameters
+    /// provided to `ListDataScans` must match the call that provided the
+    /// page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. Filter request.
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+    /// Optional. Order by fields (name or create_time) for the result.
+    /// If not specified, the ordering is undefined.
+    #[prost(string, tag = "5")]
+    pub order_by: ::prost::alloc::string::String,
+}
+/// List dataScans response.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListDataScansResponse {
+    /// DataScans (metadata only) under the given parent location.
+    #[prost(message, repeated, tag = "1")]
+    pub data_scans: ::prost::alloc::vec::Vec<DataScan>,
+    /// Token to retrieve the next page of results, or empty if there are no more
+    /// results in the list.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Locations that could not be reached.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Run DataScan Request
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RunDataScanRequest {
+    /// Required. The resource name of the DataScan:
+    /// projects/{project}/locations/{location_id}/dataScans/{data_scan_id}.
+    /// where `{project}` refers to a project_id or project_number and
+    /// `location_id` refers to a GCP region.
+    /// Only on-demand DataScans are allowed.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Run DataScan Response.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RunDataScanResponse {
+    /// DataScanJob created by RunDataScan API.
+    #[prost(message, optional, tag = "1")]
+    pub job: ::core::option::Option<DataScanJob>,
+}
+/// Get DataScanJob request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetDataScanJobRequest {
+    /// Required. The resource name of the DataScanJob:
+    /// projects/{project}/locations/{location_id}/dataScans/{data_scan_id}/dataScanJobs/{data_scan_job_id}
+    /// where `{project}` refers to a project_id or project_number and
+    /// `location_id` refers to a GCP region.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. Used to select the subset of DataScan information to return.
+    /// Defaults to `BASIC`.
+    #[prost(enumeration = "get_data_scan_job_request::DataScanJobView", tag = "2")]
+    pub view: i32,
+}
+/// Nested message and enum types in `GetDataScanJobRequest`.
+pub mod get_data_scan_job_request {
+    /// DataScanJob views for getting a partial dataScanJob.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum DataScanJobView {
+        /// The API will default to the `BASIC` view.
+        Unspecified = 0,
+        /// Basic view that does not include spec and result.
+        Basic = 1,
+        /// Include everything.
+        Full = 10,
+    }
+    impl DataScanJobView {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                DataScanJobView::Unspecified => "DATA_SCAN_JOB_VIEW_UNSPECIFIED",
+                DataScanJobView::Basic => "BASIC",
+                DataScanJobView::Full => "FULL",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DATA_SCAN_JOB_VIEW_UNSPECIFIED" => Some(Self::Unspecified),
+                "BASIC" => Some(Self::Basic),
+                "FULL" => Some(Self::Full),
+                _ => None,
+            }
+        }
+    }
+}
+/// List DataScanJobs request.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListDataScanJobsRequest {
+    /// Required. The resource name of the parent environment:
+    /// projects/{project}/locations/{location_id}/dataScans/{data_scan_id}
+    /// where `{project}` refers to a project_id or project_number and
+    /// `location_id` refers to a GCP region.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. Maximum number of DataScanJobs to return. The service may return
+    /// fewer than this value. If unspecified, at most 10 DataScanJobs will be
+    /// returned. The maximum value is 1000; values above 1000 will be coerced to
+    /// 1000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. Page token received from a previous `ListDataScanJobs` call.
+    /// Provide this to retrieve the subsequent page. When paginating, all other
+    /// parameters provided to `ListDataScanJobs` must match the call that provided
+    /// the page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// List DataScanJobs response.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListDataScanJobsResponse {
+    /// DataScanJobs (metadata only) under a given dataScan.
+    #[prost(message, repeated, tag = "1")]
+    pub data_scan_jobs: ::prost::alloc::vec::Vec<DataScanJob>,
+    /// Token to retrieve the next page of results, or empty if there are no more
+    /// results in the list.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Represents a user-visible job which provides the insights for the related
+/// data source.
+/// For examples:
+///    - Data Quality: generates queries based on the rules and run against the
+///      data to get data quality check results.
+///    - Data Profile: analyzes the data in table(s) and generates insights about
+///      the structure, content and relationships (such as null percent,
+///      cardinality, min/max/mean, etc).
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DataScan {
+    /// Output only. The relative resource name of the scan, of the form:
+    /// projects/{project}/locations/{location_id}/dataScans/{datascan_id}.
+    /// where `{project}` refers to a project_id or project_number and
+    /// `location_id` refers to a GCP region.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. System generated globally unique ID for the scan. This ID will
+    /// be different if the scan is deleted and re-created with the same name.
+    #[prost(string, tag = "2")]
+    pub uid: ::prost::alloc::string::String,
+    /// Optional. Description of the scan.
+    /// * Must be between 1-1024 characters.
+    #[prost(string, tag = "3")]
+    pub description: ::prost::alloc::string::String,
+    /// Optional. User friendly display name.
+    /// * Must be between 1-256 characters.
+    #[prost(string, tag = "4")]
+    pub display_name: ::prost::alloc::string::String,
+    /// Optional. User-defined labels for the scan.
+    #[prost(map = "string, string", tag = "5")]
+    pub labels: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        ::prost::alloc::string::String,
+    >,
+    /// Output only. Current state of the DataScan.
+    #[prost(enumeration = "State", tag = "6")]
+    pub state: i32,
+    /// Output only. The time when the scan was created.
+    #[prost(message, optional, tag = "7")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The time when the scan was last updated.
+    #[prost(message, optional, tag = "8")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Required. The data source for DataScan.
+    #[prost(message, optional, tag = "9")]
+    pub data: ::core::option::Option<DataSource>,
+    /// Optional. DataScan execution settings.
+    /// If not specified, the fields under it will use their default values.
+    #[prost(message, optional, tag = "10")]
+    pub execution_spec: ::core::option::Option<data_scan::ExecutionSpec>,
+    /// Output only. Status of the data scan execution.
+    #[prost(message, optional, tag = "11")]
+    pub execution_status: ::core::option::Option<data_scan::ExecutionStatus>,
+    /// Output only. The type of DataScan.
+    #[prost(enumeration = "DataScanType", tag = "12")]
+    pub r#type: i32,
+    /// Data Scan related setting.
+    /// It is required and immutable which means once data_quality_spec is set, it
+    /// cannot be changed to data_profile_spec.
+    #[prost(oneof = "data_scan::Spec", tags = "100, 101")]
+    pub spec: ::core::option::Option<data_scan::Spec>,
+    /// The result of the data scan.
+    #[prost(oneof = "data_scan::Result", tags = "200, 201")]
+    pub result: ::core::option::Option<data_scan::Result>,
+}
+/// Nested message and enum types in `DataScan`.
+pub mod data_scan {
+    /// DataScan execution settings.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ExecutionSpec {
+        /// Optional. Spec related to how often and when a scan should be triggered.
+        /// If not specified, the default is OnDemand, which means the scan will not
+        /// run until the user calls RunDataScan API.
+        #[prost(message, optional, tag = "1")]
+        pub trigger: ::core::option::Option<super::Trigger>,
+        /// If not specified, run a data scan on all data in the table.
+        /// The incremental is immutable, which means once the field is set,
+        /// it cannot be unset, and vice versa.
+        #[prost(oneof = "execution_spec::Incremental", tags = "100")]
+        pub incremental: ::core::option::Option<execution_spec::Incremental>,
+    }
+    /// Nested message and enum types in `ExecutionSpec`.
+    pub mod execution_spec {
+        /// If not specified, run a data scan on all data in the table.
+        /// The incremental is immutable, which means once the field is set,
+        /// it cannot be unset, and vice versa.
+        #[allow(clippy::derive_partial_eq_without_eq)]
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum Incremental {
+            /// Immutable. The unnested field (Date or Timestamp) that contains values
+            /// that monotonically increase over time.
+            #[prost(string, tag = "100")]
+            Field(::prost::alloc::string::String),
+        }
+    }
+    /// Status of the data scan execution.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ExecutionStatus {
+        /// The time when the latest DataScanJob started.
+        #[prost(message, optional, tag = "4")]
+        pub latest_job_start_time: ::core::option::Option<::prost_types::Timestamp>,
+        /// The time when the latest DataScanJob ended.
+        #[prost(message, optional, tag = "5")]
+        pub latest_job_end_time: ::core::option::Option<::prost_types::Timestamp>,
+    }
+    /// Data Scan related setting.
+    /// It is required and immutable which means once data_quality_spec is set, it
+    /// cannot be changed to data_profile_spec.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Spec {
+        /// DataQualityScan related setting.
+        #[prost(message, tag = "100")]
+        DataQualitySpec(super::DataQualitySpec),
+        /// DataProfileScan related setting.
+        #[prost(message, tag = "101")]
+        DataProfileSpec(super::DataProfileSpec),
+    }
+    /// The result of the data scan.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Result {
+        /// Output only. The result of the data quality scan.
+        #[prost(message, tag = "200")]
+        DataQualityResult(super::DataQualityResult),
+        /// Output only. The result of the data profile scan.
+        #[prost(message, tag = "201")]
+        DataProfileResult(super::DataProfileResult),
+    }
+}
+/// A DataScanJob represents an instance of a data scan.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DataScanJob {
+    /// Output only. The relative resource name of the DataScanJob, of the form:
+    /// projects/{project}/locations/{location_id}/dataScans/{datascan_id}/jobs/{job_id}.
+    /// where `{project}` refers to a project_id or project_number and
+    /// `location_id` refers to a GCP region.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. System generated globally unique ID for the DataScanJob.
+    #[prost(string, tag = "2")]
+    pub uid: ::prost::alloc::string::String,
+    /// Output only. The time when the DataScanJob was started.
+    #[prost(message, optional, tag = "3")]
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The time when the DataScanJob ended.
+    #[prost(message, optional, tag = "4")]
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Execution state for the DataScanJob.
+    #[prost(enumeration = "data_scan_job::State", tag = "5")]
+    pub state: i32,
+    /// Output only. Additional information about the current state.
+    #[prost(string, tag = "6")]
+    pub message: ::prost::alloc::string::String,
+    /// Output only. The type of the parent DataScan.
+    #[prost(enumeration = "DataScanType", tag = "7")]
+    pub r#type: i32,
+    /// Data Scan related setting.
+    #[prost(oneof = "data_scan_job::Spec", tags = "100, 101")]
+    pub spec: ::core::option::Option<data_scan_job::Spec>,
+    /// The result of the data scan.
+    #[prost(oneof = "data_scan_job::Result", tags = "200, 201")]
+    pub result: ::core::option::Option<data_scan_job::Result>,
+}
+/// Nested message and enum types in `DataScanJob`.
+pub mod data_scan_job {
+    /// Execution state for the DataScanJob.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// The DataScanJob state is unspecified.
+        Unspecified = 0,
+        /// The DataScanJob is running.
+        Running = 1,
+        /// The DataScanJob is canceling.
+        Canceling = 2,
+        /// The DataScanJob cancellation was successful.
+        Cancelled = 3,
+        /// The DataScanJob completed successfully.
+        Succeeded = 4,
+        /// The DataScanJob is no longer running due to an error.
+        Failed = 5,
+        /// The DataScanJob has been created but not started to run yet.
+        Pending = 7,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                State::Unspecified => "STATE_UNSPECIFIED",
+                State::Running => "RUNNING",
+                State::Canceling => "CANCELING",
+                State::Cancelled => "CANCELLED",
+                State::Succeeded => "SUCCEEDED",
+                State::Failed => "FAILED",
+                State::Pending => "PENDING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "RUNNING" => Some(Self::Running),
+                "CANCELING" => Some(Self::Canceling),
+                "CANCELLED" => Some(Self::Cancelled),
+                "SUCCEEDED" => Some(Self::Succeeded),
+                "FAILED" => Some(Self::Failed),
+                "PENDING" => Some(Self::Pending),
+                _ => None,
+            }
+        }
+    }
+    /// Data Scan related setting.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Spec {
+        /// Output only. DataQualityScan related setting.
+        #[prost(message, tag = "100")]
+        DataQualitySpec(super::DataQualitySpec),
+        /// Output only. DataProfileScan related setting.
+        #[prost(message, tag = "101")]
+        DataProfileSpec(super::DataProfileSpec),
+    }
+    /// The result of the data scan.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Result {
+        /// Output only. The result of the data quality scan.
+        #[prost(message, tag = "200")]
+        DataQualityResult(super::DataQualityResult),
+        /// Output only. The result of the data profile scan.
+        #[prost(message, tag = "201")]
+        DataProfileResult(super::DataProfileResult),
+    }
+}
+/// The type of DataScan.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum DataScanType {
+    /// The DataScan Type is unspecified.
+    Unspecified = 0,
+    /// Data Quality Scan.
+    DataQuality = 1,
+    /// Data Profile Scan.
+    DataProfile = 2,
+}
+impl DataScanType {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            DataScanType::Unspecified => "DATA_SCAN_TYPE_UNSPECIFIED",
+            DataScanType::DataQuality => "DATA_QUALITY",
+            DataScanType::DataProfile => "DATA_PROFILE",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "DATA_SCAN_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "DATA_QUALITY" => Some(Self::DataQuality),
+            "DATA_PROFILE" => Some(Self::DataProfile),
+            _ => None,
+        }
+    }
+}
+/// Generated client implementations.
+pub mod data_scan_service_client {
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    #[derive(Debug, Clone)]
+    pub struct DataScanServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl DataScanServiceClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> DataScanServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> DataScanServiceClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+            >>::Error: Into<StdError> + Send + Sync,
+        {
+            DataScanServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Creates a dataScan resource.
+        pub async fn create_data_scan(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateDataScanRequest>,
+        ) -> Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.DataScanService/CreateDataScan",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Update the dataScan resource.
+        pub async fn update_data_scan(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateDataScanRequest>,
+        ) -> Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.DataScanService/UpdateDataScan",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Delete the dataScan resource.
+        pub async fn delete_data_scan(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteDataScanRequest>,
+        ) -> Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.DataScanService/DeleteDataScan",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Get dataScan resource.
+        pub async fn get_data_scan(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetDataScanRequest>,
+        ) -> Result<tonic::Response<super::DataScan>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.DataScanService/GetDataScan",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Lists dataScans.
+        pub async fn list_data_scans(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListDataScansRequest>,
+        ) -> Result<tonic::Response<super::ListDataScansResponse>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.DataScanService/ListDataScans",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Run an on demand execution of a DataScan.
+        pub async fn run_data_scan(
+            &mut self,
+            request: impl tonic::IntoRequest<super::RunDataScanRequest>,
+        ) -> Result<tonic::Response<super::RunDataScanResponse>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.DataScanService/RunDataScan",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Get DataScanJob resource.
+        pub async fn get_data_scan_job(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetDataScanJobRequest>,
+        ) -> Result<tonic::Response<super::DataScanJob>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.DataScanService/GetDataScanJob",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Lists DataScanJobs under the given dataScan.
+        pub async fn list_data_scan_jobs(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListDataScanJobsRequest>,
+        ) -> Result<tonic::Response<super::ListDataScanJobsResponse>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.dataplex.v1.DataScanService/ListDataScanJobs",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+    }
+}
 /// The payload associated with Discovery data processing.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1902,6 +3424,20 @@ pub mod discovery_event {
                 EventType::PartitionDeleted => "PARTITION_DELETED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "EVENT_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CONFIG" => Some(Self::Config),
+                "ENTITY_CREATED" => Some(Self::EntityCreated),
+                "ENTITY_UPDATED" => Some(Self::EntityUpdated),
+                "ENTITY_DELETED" => Some(Self::EntityDeleted),
+                "PARTITION_CREATED" => Some(Self::PartitionCreated),
+                "PARTITION_UPDATED" => Some(Self::PartitionUpdated),
+                "PARTITION_DELETED" => Some(Self::PartitionDeleted),
+                _ => None,
+            }
+        }
     }
     /// The type of the entity.
     #[derive(
@@ -1934,6 +3470,15 @@ pub mod discovery_event {
                 EntityType::Unspecified => "ENTITY_TYPE_UNSPECIFIED",
                 EntityType::Table => "TABLE",
                 EntityType::Fileset => "FILESET",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ENTITY_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "TABLE" => Some(Self::Table),
+                "FILESET" => Some(Self::Fileset),
+                _ => None,
             }
         }
     }
@@ -2023,6 +3568,15 @@ pub mod job_event {
                 Type::Notebook => "NOTEBOOK",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "SPARK" => Some(Self::Spark),
+                "NOTEBOOK" => Some(Self::Notebook),
+                _ => None,
+            }
+        }
     }
     /// The completion status of the job.
     #[derive(
@@ -2063,6 +3617,17 @@ pub mod job_event {
                 State::Aborted => "ABORTED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "SUCCEEDED" => Some(Self::Succeeded),
+                "FAILED" => Some(Self::Failed),
+                "CANCELLED" => Some(Self::Cancelled),
+                "ABORTED" => Some(Self::Aborted),
+                _ => None,
+            }
+        }
     }
     /// The service used to execute the job.
     #[derive(
@@ -2094,6 +3659,14 @@ pub mod job_event {
                 Service::Dataproc => "DATAPROC",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SERVICE_UNSPECIFIED" => Some(Self::Unspecified),
+                "DATAPROC" => Some(Self::Dataproc),
+                _ => None,
+            }
+        }
     }
 }
 /// These messages contain information about sessions within an environment.
@@ -2117,8 +3690,8 @@ pub struct SessionEvent {
     /// The status of the event.
     #[prost(bool, tag = "6")]
     pub event_succeeded: bool,
-    /// If the session is associated with an Environment with fast startup enabled,
-    /// and was pre-created before being assigned to a user.
+    /// If the session is associated with an environment with fast startup enabled,
+    /// and was created before being assigned to a user.
     #[prost(bool, tag = "7")]
     pub fast_startup_enabled: bool,
     /// The idle duration of a warm pooled session before it is assigned to user.
@@ -2188,6 +3761,15 @@ pub mod session_event {
                     Engine::Bigquery => "BIGQUERY",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "ENGINE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "SPARK_SQL" => Some(Self::SparkSql),
+                    "BIGQUERY" => Some(Self::Bigquery),
+                    _ => None,
+                }
+            }
         }
     }
     /// The type of the event.
@@ -2230,6 +3812,17 @@ pub mod session_event {
                 EventType::Create => "CREATE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "EVENT_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "START" => Some(Self::Start),
+                "STOP" => Some(Self::Stop),
+                "QUERY" => Some(Self::Query),
+                "CREATE" => Some(Self::Create),
+                _ => None,
+            }
+        }
     }
     /// Additional information about the Query metadata.
     #[allow(clippy::derive_partial_eq_without_eq)]
@@ -2238,6 +3831,267 @@ pub mod session_event {
         /// The execution details of the query.
         #[prost(message, tag = "5")]
         Query(QueryDetail),
+    }
+}
+/// These messages contain information about the execution of a datascan.
+/// The monitored resource is 'DataScan'
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DataScanEvent {
+    /// The data source of the data scan
+    #[prost(string, tag = "1")]
+    pub data_source: ::prost::alloc::string::String,
+    /// The identifier of the specific data scan job this log entry is for.
+    #[prost(string, tag = "2")]
+    pub job_id: ::prost::alloc::string::String,
+    /// The time when the data scan job started to run.
+    #[prost(message, optional, tag = "3")]
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The time when the data scan job finished.
+    #[prost(message, optional, tag = "4")]
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The type of the data scan.
+    #[prost(enumeration = "data_scan_event::ScanType", tag = "5")]
+    pub r#type: i32,
+    /// The status of the data scan job.
+    #[prost(enumeration = "data_scan_event::State", tag = "6")]
+    pub state: i32,
+    /// The message describing the data scan job event.
+    #[prost(string, tag = "7")]
+    pub message: ::prost::alloc::string::String,
+    /// A version identifier of the spec which was used to execute this job.
+    #[prost(string, tag = "8")]
+    pub spec_version: ::prost::alloc::string::String,
+    /// The trigger type of the data scan job.
+    #[prost(enumeration = "data_scan_event::Trigger", tag = "9")]
+    pub trigger: i32,
+    /// The scope of the data scan (e.g. full, incremental).
+    #[prost(enumeration = "data_scan_event::Scope", tag = "10")]
+    pub scope: i32,
+    /// The result of the data scan job.
+    #[prost(oneof = "data_scan_event::Result", tags = "101, 102")]
+    pub result: ::core::option::Option<data_scan_event::Result>,
+}
+/// Nested message and enum types in `DataScanEvent`.
+pub mod data_scan_event {
+    /// Data profile result for data scan job.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct DataProfileResult {
+        /// The count of rows processed in the data scan job.
+        #[prost(int64, tag = "1")]
+        pub row_count: i64,
+    }
+    /// Data quality result for data scan job.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct DataQualityResult {
+        /// The count of rows processed in the data scan job.
+        #[prost(int64, tag = "1")]
+        pub row_count: i64,
+        /// Whether the data quality result was `pass` or not.
+        #[prost(bool, tag = "2")]
+        pub passed: bool,
+        /// The result of each dimension for data quality result.
+        /// The key of the map is the name of the dimension.
+        /// The value is the bool value depicting whether the dimension result was
+        /// `pass` or not.
+        #[prost(map = "string, bool", tag = "3")]
+        pub dimension_passed: ::std::collections::HashMap<
+            ::prost::alloc::string::String,
+            bool,
+        >,
+    }
+    /// The type of the data scan.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum ScanType {
+        /// An unspecified data scan type.
+        Unspecified = 0,
+        /// Data scan for data profile.
+        DataProfile = 1,
+        /// Data scan for data quality.
+        DataQuality = 2,
+    }
+    impl ScanType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                ScanType::Unspecified => "SCAN_TYPE_UNSPECIFIED",
+                ScanType::DataProfile => "DATA_PROFILE",
+                ScanType::DataQuality => "DATA_QUALITY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SCAN_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "DATA_PROFILE" => Some(Self::DataProfile),
+                "DATA_QUALITY" => Some(Self::DataQuality),
+                _ => None,
+            }
+        }
+    }
+    /// The job state of the data scan.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum State {
+        /// Unspecified job state.
+        Unspecified = 0,
+        /// Data scan started.
+        Started = 1,
+        /// Data scan successfully completed.
+        Succeeded = 2,
+        /// Data scan was unsuccessful.
+        Failed = 3,
+        /// Data scan was cancelled.
+        Cancelled = 4,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                State::Unspecified => "STATE_UNSPECIFIED",
+                State::Started => "STARTED",
+                State::Succeeded => "SUCCEEDED",
+                State::Failed => "FAILED",
+                State::Cancelled => "CANCELLED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "STARTED" => Some(Self::Started),
+                "SUCCEEDED" => Some(Self::Succeeded),
+                "FAILED" => Some(Self::Failed),
+                "CANCELLED" => Some(Self::Cancelled),
+                _ => None,
+            }
+        }
+    }
+    /// The trigger type for the data scan.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Trigger {
+        /// An unspecified trigger type.
+        Unspecified = 0,
+        /// Data scan triggers on demand.
+        OnDemand = 1,
+        /// Data scan triggers as per schedule.
+        Schedule = 2,
+    }
+    impl Trigger {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Trigger::Unspecified => "TRIGGER_UNSPECIFIED",
+                Trigger::OnDemand => "ON_DEMAND",
+                Trigger::Schedule => "SCHEDULE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TRIGGER_UNSPECIFIED" => Some(Self::Unspecified),
+                "ON_DEMAND" => Some(Self::OnDemand),
+                "SCHEDULE" => Some(Self::Schedule),
+                _ => None,
+            }
+        }
+    }
+    /// The scope of job for the data scan.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum Scope {
+        /// An unspecified scope type.
+        Unspecified = 0,
+        /// Data scan runs on all of the data.
+        Full = 1,
+        /// Data scan runs on incremental data.
+        Incremental = 2,
+    }
+    impl Scope {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Scope::Unspecified => "SCOPE_UNSPECIFIED",
+                Scope::Full => "FULL",
+                Scope::Incremental => "INCREMENTAL",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SCOPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "FULL" => Some(Self::Full),
+                "INCREMENTAL" => Some(Self::Incremental),
+                _ => None,
+            }
+        }
+    }
+    /// The result of the data scan job.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Result {
+        /// Data profile result for data profile type data scan.
+        #[prost(message, tag = "101")]
+        DataProfile(DataProfileResult),
+        /// Data quality result for data quality type data scan.
+        #[prost(message, tag = "102")]
+        DataQuality(DataQualityResult),
     }
 }
 /// Create a metadata entity request.
@@ -2354,6 +4208,15 @@ pub mod list_entities_request {
                 EntityView::Filesets => "FILESETS",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ENTITY_VIEW_UNSPECIFIED" => Some(Self::Unspecified),
+                "TABLES" => Some(Self::Tables),
+                "FILESETS" => Some(Self::Filesets),
+                _ => None,
+            }
+        }
     }
 }
 /// List metadata entities response.
@@ -2417,6 +4280,16 @@ pub mod get_entity_request {
                 EntityView::Basic => "BASIC",
                 EntityView::Schema => "SCHEMA",
                 EntityView::Full => "FULL",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "ENTITY_VIEW_UNSPECIFIED" => Some(Self::Unspecified),
+                "BASIC" => Some(Self::Basic),
+                "SCHEMA" => Some(Self::Schema),
+                "FULL" => Some(Self::Full),
+                _ => None,
             }
         }
     }
@@ -2652,6 +4525,15 @@ pub mod entity {
                 Type::Fileset => "FILESET",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "TABLE" => Some(Self::Table),
+                "FILESET" => Some(Self::Fileset),
+                _ => None,
+            }
+        }
     }
 }
 /// Represents partition metadata contained within entity instances.
@@ -2825,6 +4707,28 @@ pub mod schema {
                 Type::Null => "NULL",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "BOOLEAN" => Some(Self::Boolean),
+                "BYTE" => Some(Self::Byte),
+                "INT16" => Some(Self::Int16),
+                "INT32" => Some(Self::Int32),
+                "INT64" => Some(Self::Int64),
+                "FLOAT" => Some(Self::Float),
+                "DOUBLE" => Some(Self::Double),
+                "DECIMAL" => Some(Self::Decimal),
+                "STRING" => Some(Self::String),
+                "BINARY" => Some(Self::Binary),
+                "TIMESTAMP" => Some(Self::Timestamp),
+                "DATE" => Some(Self::Date),
+                "TIME" => Some(Self::Time),
+                "RECORD" => Some(Self::Record),
+                "NULL" => Some(Self::Null),
+                _ => None,
+            }
+        }
     }
     /// Additional qualifiers to define field semantics.
     #[derive(
@@ -2862,6 +4766,16 @@ pub mod schema {
                 Mode::Repeated => "REPEATED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "REQUIRED" => Some(Self::Required),
+                "NULLABLE" => Some(Self::Nullable),
+                "REPEATED" => Some(Self::Repeated),
+                _ => None,
+            }
+        }
     }
     /// The structure of paths within the entity, which represent partitions.
     #[derive(
@@ -2895,6 +4809,14 @@ pub mod schema {
                 PartitionStyle::HiveCompatible => "HIVE_COMPATIBLE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PARTITION_STYLE_UNSPECIFIED" => Some(Self::Unspecified),
+                "HIVE_COMPATIBLE" => Some(Self::HiveCompatible),
+                _ => None,
+            }
+        }
     }
 }
 /// Describes the format of the data within its storage location.
@@ -2916,6 +4838,9 @@ pub struct StorageFormat {
     /// - application/x-avro
     /// - application/x-orc
     /// - application/x-tfrecord
+    /// - application/x-parquet+iceberg
+    /// - application/x-avro+iceberg
+    /// - application/x-orc+iceberg
     /// - application/json
     /// - application/{subtypes}
     /// - text/csv
@@ -2926,7 +4851,7 @@ pub struct StorageFormat {
     #[prost(string, tag = "3")]
     pub mime_type: ::prost::alloc::string::String,
     /// Additional format-specific options.
-    #[prost(oneof = "storage_format::Options", tags = "10, 11")]
+    #[prost(oneof = "storage_format::Options", tags = "10, 11, 12")]
     pub options: ::core::option::Option<storage_format::Options>,
 }
 /// Nested message and enum types in `StorageFormat`.
@@ -2960,6 +4885,15 @@ pub mod storage_format {
         /// and "ISO-8859-1". Defaults to UTF-8 if not specified.
         #[prost(string, tag = "1")]
         pub encoding: ::prost::alloc::string::String,
+    }
+    /// Describes Iceberg data format.
+    #[allow(clippy::derive_partial_eq_without_eq)]
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct IcebergOptions {
+        /// Optional. The location of where the iceberg metadata is present, must be
+        /// within the table path
+        #[prost(string, tag = "1")]
+        pub metadata_location: ::prost::alloc::string::String,
     }
     /// The specific file format of the data.
     #[derive(
@@ -3024,6 +4958,25 @@ pub mod storage_format {
                 Format::Unknown => "UNKNOWN",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "FORMAT_UNSPECIFIED" => Some(Self::Unspecified),
+                "PARQUET" => Some(Self::Parquet),
+                "AVRO" => Some(Self::Avro),
+                "ORC" => Some(Self::Orc),
+                "CSV" => Some(Self::Csv),
+                "JSON" => Some(Self::Json),
+                "IMAGE" => Some(Self::Image),
+                "AUDIO" => Some(Self::Audio),
+                "VIDEO" => Some(Self::Video),
+                "TEXT" => Some(Self::Text),
+                "TFRECORD" => Some(Self::Tfrecord),
+                "OTHER" => Some(Self::Other),
+                "UNKNOWN" => Some(Self::Unknown),
+                _ => None,
+            }
+        }
     }
     /// The specific compressed file format of the data.
     #[derive(
@@ -3058,6 +5011,15 @@ pub mod storage_format {
                 CompressionFormat::Bzip2 => "BZIP2",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "COMPRESSION_FORMAT_UNSPECIFIED" => Some(Self::Unspecified),
+                "GZIP" => Some(Self::Gzip),
+                "BZIP2" => Some(Self::Bzip2),
+                _ => None,
+            }
+        }
     }
     /// Additional format-specific options.
     #[allow(clippy::derive_partial_eq_without_eq)]
@@ -3069,6 +5031,9 @@ pub mod storage_format {
         /// Optional. Additional information about CSV formatted data.
         #[prost(message, tag = "11")]
         Json(JsonOptions),
+        /// Optional. Additional information about iceberg tables.
+        #[prost(message, tag = "12")]
+        Iceberg(IcebergOptions),
     }
 }
 /// Identifies the cloud system that manages the data storage.
@@ -3092,6 +5057,15 @@ impl StorageSystem {
             StorageSystem::Unspecified => "STORAGE_SYSTEM_UNSPECIFIED",
             StorageSystem::CloudStorage => "CLOUD_STORAGE",
             StorageSystem::Bigquery => "BIGQUERY",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "STORAGE_SYSTEM_UNSPECIFIED" => Some(Self::Unspecified),
+            "CLOUD_STORAGE" => Some(Self::CloudStorage),
+            "BIGQUERY" => Some(Self::Bigquery),
+            _ => None,
         }
     }
 }
@@ -3568,6 +5542,15 @@ pub mod task {
                     Type::Recurring => "RECURRING",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "ON_DEMAND" => Some(Self::OnDemand),
+                    "RECURRING" => Some(Self::Recurring),
+                    _ => None,
+                }
+            }
         }
         /// Trigger only applies for RECURRING tasks.
         #[allow(clippy::derive_partial_eq_without_eq)]
@@ -3797,6 +5780,14 @@ pub mod job {
                 Service::Dataproc => "DATAPROC",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "SERVICE_UNSPECIFIED" => Some(Self::Unspecified),
+                "DATAPROC" => Some(Self::Dataproc),
+                _ => None,
+            }
+        }
     }
     #[derive(
         Clone,
@@ -3840,6 +5831,19 @@ pub mod job {
                 State::Succeeded => "SUCCEEDED",
                 State::Failed => "FAILED",
                 State::Aborted => "ABORTED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "RUNNING" => Some(Self::Running),
+                "CANCELLING" => Some(Self::Cancelling),
+                "CANCELLED" => Some(Self::Cancelled),
+                "SUCCEEDED" => Some(Self::Succeeded),
+                "FAILED" => Some(Self::Failed),
+                "ABORTED" => Some(Self::Aborted),
+                _ => None,
             }
         }
     }

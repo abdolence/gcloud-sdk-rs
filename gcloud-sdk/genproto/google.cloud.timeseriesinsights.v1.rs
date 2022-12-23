@@ -118,6 +118,20 @@ pub mod data_set {
                 State::Failed => "FAILED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "UNKNOWN" => Some(Self::Unknown),
+                "PENDING" => Some(Self::Pending),
+                "LOADING" => Some(Self::Loading),
+                "LOADED" => Some(Self::Loaded),
+                "UNLOADING" => Some(Self::Unloading),
+                "UNLOADED" => Some(Self::Unloaded),
+                "FAILED" => Some(Self::Failed),
+                _ => None,
+            }
+        }
     }
 }
 /// Represents an event dimension.
@@ -408,6 +422,18 @@ pub mod forecast_params {
                 Period::Weekly => "WEEKLY",
                 Period::Monthly => "MONTHLY",
                 Period::Yearly => "YEARLY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "PERIOD_UNSPECIFIED" => Some(Self::Unspecified),
+                "HOURLY" => Some(Self::Hourly),
+                "DAILY" => Some(Self::Daily),
+                "WEEKLY" => Some(Self::Weekly),
+                "MONTHLY" => Some(Self::Monthly),
+                "YEARLY" => Some(Self::Yearly),
+                _ => None,
             }
         }
     }
@@ -738,6 +764,15 @@ pub mod timeseries_params {
                 AggregationMethod::Unspecified => "AGGREGATION_METHOD_UNSPECIFIED",
                 AggregationMethod::Sum => "SUM",
                 AggregationMethod::Average => "AVERAGE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "AGGREGATION_METHOD_UNSPECIFIED" => Some(Self::Unspecified),
+                "SUM" => Some(Self::Sum),
+                "AVERAGE" => Some(Self::Average),
+                _ => None,
             }
         }
     }

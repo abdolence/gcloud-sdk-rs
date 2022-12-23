@@ -328,6 +328,14 @@ impl Action {
             Action::OpenNewStream => "OPEN_NEW_STREAM",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "ACTION_UNSPECIFIED" => Some(Self::Unspecified),
+            "OPEN_NEW_STREAM" => Some(Self::OpenNewStream),
+            _ => None,
+        }
+    }
 }
 /// Endpoint indicates where the messages will be delivered.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -355,6 +363,16 @@ impl TetherEndpoint {
             TetherEndpoint::ApigeeMintRating => "APIGEE_MINT_RATING",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "TETHER_ENDPOINT_UNSPECIFIED" => Some(Self::Unspecified),
+            "APIGEE_MART" => Some(Self::ApigeeMart),
+            "APIGEE_RUNTIME" => Some(Self::ApigeeRuntime),
+            "APIGEE_MINT_RATING" => Some(Self::ApigeeMintRating),
+            _ => None,
+        }
+    }
 }
 /// HTTP Scheme.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -374,6 +392,14 @@ impl Scheme {
         match self {
             Scheme::Unspecified => "SCHEME_UNSPECIFIED",
             Scheme::Https => "HTTPS",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "SCHEME_UNSPECIFIED" => Some(Self::Unspecified),
+            "HTTPS" => Some(Self::Https),
+            _ => None,
         }
     }
 }

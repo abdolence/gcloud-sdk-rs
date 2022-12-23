@@ -117,6 +117,24 @@ impl UpdateType {
             }
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "UPDATE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "UPDATE_TYPE_REPLACE" => Some(Self::Replace),
+            "UPDATE_TYPE_MERGE" => Some(Self::Merge),
+            "UPDATE_TYPE_INSERT_PROPERTIES_BY_NAMES" => {
+                Some(Self::InsertPropertiesByNames)
+            }
+            "UPDATE_TYPE_REPLACE_PROPERTIES_BY_NAMES" => {
+                Some(Self::ReplacePropertiesByNames)
+            }
+            "UPDATE_TYPE_DELETE_PROPERTIES_BY_NAMES" => {
+                Some(Self::DeletePropertiesByNames)
+            }
+            _ => None,
+        }
+    }
 }
 /// Type of database used by the customer
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -139,6 +157,15 @@ impl DatabaseType {
             DatabaseType::DbUnknown => "DB_UNKNOWN",
             DatabaseType::DbInfraSpanner => "DB_INFRA_SPANNER",
             DatabaseType::DbCloudSqlPostgres => "DB_CLOUD_SQL_POSTGRES",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "DB_UNKNOWN" => Some(Self::DbUnknown),
+            "DB_INFRA_SPANNER" => Some(Self::DbInfraSpanner),
+            "DB_CLOUD_SQL_POSTGRES" => Some(Self::DbCloudSqlPostgres),
+            _ => None,
         }
     }
 }
@@ -170,6 +197,20 @@ impl AccessControlMode {
             AccessControlMode::AclModeDocumentLevelAccessControlGci => {
                 "ACL_MODE_DOCUMENT_LEVEL_ACCESS_CONTROL_GCI"
             }
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "ACL_MODE_UNKNOWN" => Some(Self::AclModeUnknown),
+            "ACL_MODE_UNIVERSAL_ACCESS" => Some(Self::AclModeUniversalAccess),
+            "ACL_MODE_DOCUMENT_LEVEL_ACCESS_CONTROL_BYOID" => {
+                Some(Self::AclModeDocumentLevelAccessControlByoid)
+            }
+            "ACL_MODE_DOCUMENT_LEVEL_ACCESS_CONTROL_GCI" => {
+                Some(Self::AclModeDocumentLevelAccessControlGci)
+            }
+            _ => None,
         }
     }
 }
@@ -520,6 +561,18 @@ impl RawDocumentFileType {
             RawDocumentFileType::Text => "RAW_DOCUMENT_FILE_TYPE_TEXT",
         }
     }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "RAW_DOCUMENT_FILE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+            "RAW_DOCUMENT_FILE_TYPE_PDF" => Some(Self::Pdf),
+            "RAW_DOCUMENT_FILE_TYPE_DOCX" => Some(Self::Docx),
+            "RAW_DOCUMENT_FILE_TYPE_XLSX" => Some(Self::Xlsx),
+            "RAW_DOCUMENT_FILE_TYPE_PPTX" => Some(Self::Pptx),
+            "RAW_DOCUMENT_FILE_TYPE_TEXT" => Some(Self::Text),
+            _ => None,
+        }
+    }
 }
 /// Response message for DocumentLinkService.ListLinkedTargets.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -652,6 +705,15 @@ pub mod document_link {
                 State::Unspecified => "STATE_UNSPECIFIED",
                 State::Active => "ACTIVE",
                 State::SoftDeleted => "SOFT_DELETED",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ACTIVE" => Some(Self::Active),
+                "SOFT_DELETED" => Some(Self::SoftDeleted),
+                _ => None,
             }
         }
     }
@@ -1383,6 +1445,15 @@ pub mod time_filter {
                 TimeField::UpdateTime => "UPDATE_TIME",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TIME_FIELD_UNSPECIFIED" => Some(Self::Unspecified),
+                "CREATE_TIME" => Some(Self::CreateTime),
+                "UPDATE_TIME" => Some(Self::UpdateTime),
+                _ => None,
+            }
+        }
     }
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -1483,6 +1554,16 @@ pub mod file_type_filter {
                 FileType::Document => "DOCUMENT",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "FILE_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ALL" => Some(Self::All),
+                "FOLDER" => Some(Self::Folder),
+                "DOCUMENT" => Some(Self::Document),
+                _ => None,
+            }
+        }
     }
 }
 /// The histogram request.
@@ -1574,6 +1655,14 @@ pub mod histogram_query_property_name_filter {
             match self {
                 HistogramYAxis::HistogramYaxisDocument => "HISTOGRAM_YAXIS_DOCUMENT",
                 HistogramYAxis::HistogramYaxisProperty => "HISTOGRAM_YAXIS_PROPERTY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "HISTOGRAM_YAXIS_DOCUMENT" => Some(Self::HistogramYaxisDocument),
+                "HISTOGRAM_YAXIS_PROPERTY" => Some(Self::HistogramYaxisProperty),
+                _ => None,
             }
         }
     }
@@ -1914,6 +2003,15 @@ pub mod rule {
                 TriggerType::OnUpdate => "ON_UPDATE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNKNOWN" => Some(Self::Unknown),
+                "ON_CREATE" => Some(Self::OnCreate),
+                "ON_UPDATE" => Some(Self::OnUpdate),
+                _ => None,
+            }
+        }
     }
 }
 /// Represents the action triggered by Rule Engine when the rule is true.
@@ -2003,6 +2101,16 @@ pub mod access_control_action {
                 OperationType::AddPolicyBinding => "ADD_POLICY_BINDING",
                 OperationType::RemovePolicyBinding => "REMOVE_POLICY_BINDING",
                 OperationType::ReplacePolicyBinding => "REPLACE_POLICY_BINDING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNKNOWN" => Some(Self::Unknown),
+                "ADD_POLICY_BINDING" => Some(Self::AddPolicyBinding),
+                "REMOVE_POLICY_BINDING" => Some(Self::RemovePolicyBinding),
+                "REPLACE_POLICY_BINDING" => Some(Self::ReplacePolicyBinding),
+                _ => None,
             }
         }
     }
@@ -2193,6 +2301,17 @@ pub mod action_output {
                 State::ActionFailed => "ACTION_FAILED",
                 State::ActionTimedOut => "ACTION_TIMED_OUT",
                 State::ActionPending => "ACTION_PENDING",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "UNKNOWN" => Some(Self::Unknown),
+                "ACTION_SUCCEEDED" => Some(Self::ActionSucceeded),
+                "ACTION_FAILED" => Some(Self::ActionFailed),
+                "ACTION_TIMED_OUT" => Some(Self::ActionTimedOut),
+                "ACTION_PENDING" => Some(Self::ActionPending),
+                _ => None,
             }
         }
     }

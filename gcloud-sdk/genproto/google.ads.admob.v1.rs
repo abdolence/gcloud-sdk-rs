@@ -220,6 +220,22 @@ pub mod network_report_spec {
                 Dimension::Platform => "PLATFORM",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DIMENSION_UNSPECIFIED" => Some(Self::Unspecified),
+                "DATE" => Some(Self::Date),
+                "MONTH" => Some(Self::Month),
+                "WEEK" => Some(Self::Week),
+                "AD_UNIT" => Some(Self::AdUnit),
+                "APP" => Some(Self::App),
+                "AD_TYPE" => Some(Self::AdType),
+                "COUNTRY" => Some(Self::Country),
+                "FORMAT" => Some(Self::Format),
+                "PLATFORM" => Some(Self::Platform),
+                _ => None,
+            }
+        }
     }
     /// The metrics of the network report. Metrics are quantitative measurements
     /// indicating how the publisher business is performing. They are aggregated
@@ -294,6 +310,22 @@ pub mod network_report_spec {
                 Metric::MatchedRequests => "MATCHED_REQUESTS",
                 Metric::MatchRate => "MATCH_RATE",
                 Metric::ShowRate => "SHOW_RATE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "METRIC_UNSPECIFIED" => Some(Self::Unspecified),
+                "AD_REQUESTS" => Some(Self::AdRequests),
+                "CLICKS" => Some(Self::Clicks),
+                "ESTIMATED_EARNINGS" => Some(Self::EstimatedEarnings),
+                "IMPRESSIONS" => Some(Self::Impressions),
+                "IMPRESSION_CTR" => Some(Self::ImpressionCtr),
+                "IMPRESSION_RPM" => Some(Self::ImpressionRpm),
+                "MATCHED_REQUESTS" => Some(Self::MatchedRequests),
+                "MATCH_RATE" => Some(Self::MatchRate),
+                "SHOW_RATE" => Some(Self::ShowRate),
+                _ => None,
             }
         }
     }
@@ -498,6 +530,24 @@ pub mod mediation_report_spec {
                 Dimension::Platform => "PLATFORM",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "DIMENSION_UNSPECIFIED" => Some(Self::Unspecified),
+                "DATE" => Some(Self::Date),
+                "MONTH" => Some(Self::Month),
+                "WEEK" => Some(Self::Week),
+                "AD_SOURCE" => Some(Self::AdSource),
+                "AD_SOURCE_INSTANCE" => Some(Self::AdSourceInstance),
+                "AD_UNIT" => Some(Self::AdUnit),
+                "APP" => Some(Self::App),
+                "MEDIATION_GROUP" => Some(Self::MediationGroup),
+                "COUNTRY" => Some(Self::Country),
+                "FORMAT" => Some(Self::Format),
+                "PLATFORM" => Some(Self::Platform),
+                _ => None,
+            }
+        }
     }
     /// The metrics of the mediation report. Metrics are quantitative measurements
     /// indicating how the publisher business is performing. They are aggregated
@@ -568,6 +618,21 @@ pub mod mediation_report_spec {
                 Metric::MatchedRequests => "MATCHED_REQUESTS",
                 Metric::MatchRate => "MATCH_RATE",
                 Metric::ObservedEcpm => "OBSERVED_ECPM",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "METRIC_UNSPECIFIED" => Some(Self::Unspecified),
+                "AD_REQUESTS" => Some(Self::AdRequests),
+                "CLICKS" => Some(Self::Clicks),
+                "ESTIMATED_EARNINGS" => Some(Self::EstimatedEarnings),
+                "IMPRESSIONS" => Some(Self::Impressions),
+                "IMPRESSION_CTR" => Some(Self::ImpressionCtr),
+                "MATCHED_REQUESTS" => Some(Self::MatchedRequests),
+                "MATCH_RATE" => Some(Self::MatchRate),
+                "OBSERVED_ECPM" => Some(Self::ObservedEcpm),
+                _ => None,
             }
         }
     }
@@ -703,6 +768,21 @@ pub mod report_warning {
                 }
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "DATA_BEFORE_ACCOUNT_TIMEZONE_CHANGE" => {
+                    Some(Self::DataBeforeAccountTimezoneChange)
+                }
+                "DATA_DELAYED" => Some(Self::DataDelayed),
+                "OTHER" => Some(Self::Other),
+                "REPORT_CURRENCY_NOT_ACCOUNT_CURRENCY" => {
+                    Some(Self::ReportCurrencyNotAccountCurrency)
+                }
+                _ => None,
+            }
+        }
     }
 }
 /// Groups data helps to treat the generated report. Always sent as a first
@@ -796,6 +876,15 @@ impl SortOrder {
             SortOrder::Unspecified => "SORT_ORDER_UNSPECIFIED",
             SortOrder::Ascending => "ASCENDING",
             SortOrder::Descending => "DESCENDING",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "SORT_ORDER_UNSPECIFIED" => Some(Self::Unspecified),
+            "ASCENDING" => Some(Self::Ascending),
+            "DESCENDING" => Some(Self::Descending),
+            _ => None,
         }
     }
 }

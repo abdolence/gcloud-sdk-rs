@@ -47,11 +47,11 @@ pub struct CreateTunnelDestGroupRequest {
     /// Required. The TunnelDestGroup to create.
     #[prost(message, optional, tag = "2")]
     pub tunnel_dest_group: ::core::option::Option<TunnelDestGroup>,
-    /// Required. The ID to use for the TunnelDestGroup, which becomes the final component of
-    /// the resource name.
+    /// Required. The ID to use for the TunnelDestGroup, which becomes the final
+    /// component of the resource name.
     ///
     /// This value must be 4-63 characters, and valid characters
-    /// are `\[a-z][0-9\]-`.
+    /// are `\[a-z\]-`.
     #[prost(string, tag = "3")]
     pub tunnel_dest_group_id: ::prost::alloc::string::String,
 }
@@ -92,14 +92,15 @@ pub struct UpdateTunnelDestGroupRequest {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TunnelDestGroup {
-    /// Required. Immutable. Identifier for the TunnelDestGroup. Must be unique within the
-    /// project.
+    /// Required. Immutable. Identifier for the TunnelDestGroup. Must be unique
+    /// within the project and contain only lower case letters (a-z) and dashes
+    /// (-).
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// null List of CIDRs that this group applies to.
+    /// Unordered list. List of CIDRs that this group applies to.
     #[prost(string, repeated, tag = "2")]
     pub cidrs: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// null List of FQDNs that this group applies to.
+    /// Unordered list. List of FQDNs that this group applies to.
     #[prost(string, repeated, tag = "3")]
     pub fqdns: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
@@ -158,6 +159,9 @@ pub struct AccessSettings {
     /// Settings to configure reauthentication policies in IAP.
     #[prost(message, optional, tag = "6")]
     pub reauth_settings: ::core::option::Option<ReauthSettings>,
+    /// Settings to configure and enable allowed domains.
+    #[prost(message, optional, tag = "7")]
+    pub allowed_domains_settings: ::core::option::Option<AllowedDomainsSettings>,
 }
 /// Allows customers to configure tenant_id for GCIP instance per-app.
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -204,7 +208,7 @@ pub struct OAuthSettings {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReauthSettings {
-    /// Reauth method required by the policy.
+    /// Reauth method requested.
     #[prost(enumeration = "reauth_settings::Method", tag = "1")]
     pub method: i32,
     /// Reauth session lifetime, how long before a user has to reauthenticate
@@ -234,13 +238,9 @@ pub mod reauth_settings {
     pub enum Method {
         /// Reauthentication disabled.
         Unspecified = 0,
-        /// Mimics the behavior as if the user had logged out and tried to log in
-        /// again. Users with 2SV (2-step verification) enabled see their 2SV
-        /// challenges if they did not opt to have their second factor responses
-        /// saved. Apps Core (GSuites) admins can configure settings to disable 2SV
-        /// cookies and require 2SV for all Apps Core users in their domains.
+        /// Prompts the user to log in again.
         Login = 1,
-        /// User must type their password.
+        /// Deprecated, no longer accepted by IAP APIs.
         Password = 2,
         /// User must use their secure key 2nd factor device.
         SecureKey = 3,
@@ -256,6 +256,16 @@ pub mod reauth_settings {
                 Method::Login => "LOGIN",
                 Method::Password => "PASSWORD",
                 Method::SecureKey => "SECURE_KEY",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "METHOD_UNSPECIFIED" => Some(Self::Unspecified),
+                "LOGIN" => Some(Self::Login),
+                "PASSWORD" => Some(Self::Password),
+                "SECURE_KEY" => Some(Self::SecureKey),
+                _ => None,
             }
         }
     }
@@ -293,13 +303,34 @@ pub mod reauth_settings {
                 PolicyType::Default => "DEFAULT",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "POLICY_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "MINIMUM" => Some(Self::Minimum),
+                "DEFAULT" => Some(Self::Default),
+                _ => None,
+            }
+        }
     }
+}
+/// Configuration for IAP allowed domains. Lets you to restrict access to an app
+/// and allow access to only the domains that you list.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AllowedDomainsSettings {
+    /// Configuration for customers to opt in for the feature.
+    #[prost(bool, optional, tag = "1")]
+    pub enable: ::core::option::Option<bool>,
+    /// List of trusted domains.
+    #[prost(string, repeated, tag = "2")]
+    pub domains: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Wrapper over application specific settings for IAP.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ApplicationSettings {
-    /// Settings to configure IAP's behavior for a CSM mesh.
+    /// Settings to configure IAP's behavior for a service mesh.
     #[prost(message, optional, tag = "1")]
     pub csm_settings: ::core::option::Option<CsmSettings>,
     /// Customization for Access Denied page.
@@ -309,11 +340,16 @@ pub struct ApplicationSettings {
     /// validated by the API, but will be ignored at runtime if invalid.
     #[prost(message, optional, tag = "3")]
     pub cookie_domain: ::core::option::Option<::prost::alloc::string::String>,
+    /// Settings to configure attribute propagation.
+    #[prost(message, optional, tag = "4")]
+    pub attribute_propagation_settings: ::core::option::Option<
+        AttributePropagationSettings,
+    >,
 }
-/// Configuration for RCTokens generated for CSM workloads protected by IAP.
-/// RCTokens are IAP generated JWTs that can be verified at the application. The
-/// RCToken is primarily used for ISTIO deployments, and can be scoped to a
-/// single mesh by configuring the audience field accordingly
+/// Configuration for RCToken generated for service mesh workloads protected by
+/// IAP. RCToken are IAP generated JWTs that can be verified at the application.
+/// The RCToken is primarily used for service mesh deployments, and can be scoped
+/// to a single mesh by configuring the audience field accordingly.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CsmSettings {
@@ -336,6 +372,108 @@ pub struct AccessDeniedPageSettings {
     /// application.
     #[prost(message, optional, tag = "2")]
     pub generate_troubleshooting_uri: ::core::option::Option<bool>,
+    /// Whether to generate remediation token on access denied events to this
+    /// application.
+    #[prost(message, optional, tag = "3")]
+    pub remediation_token_generation_enabled: ::core::option::Option<bool>,
+}
+/// Configuration for propagating attributes to applications protected
+/// by IAP.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AttributePropagationSettings {
+    /// Raw string CEL expression. Must return a list of attributes. Maximum of 45
+    /// attributes can be selected. Expressions can select different attribute
+    /// types from `attributes`: `attributes.saml_attributes`,
+    /// `attributes.iap_attributes`. Limited functions are supported:
+    ///   - `filter: <list>.filter(<iter_var>, <predicate>)` -> returns a subset of
+    ///   `<list>` where `<predicate>` is true for every item.
+    ///   - `in: <var> in <list>` -> returns true if `<list>` contains `<var>`
+    ///   - `selectByName: <list>.selectByName(<string>)` -> returns the attribute
+    ///   in
+    ///   `<list>` with the given `<string>` name, otherwise returns empty.
+    ///   - `emitAs: <attribute>.emitAs(<string>)` -> sets the `<attribute>` name
+    ///   field to the given `<string>` for propagation in selected output
+    ///   credentials.
+    ///   - `strict: <attribute>.strict()` -> ignore the `x-goog-iap-attr-` prefix
+    ///   for the provided `<attribute>` when propagating via the `HEADER` output
+    ///   credential, i.e. request headers.
+    ///   - `append: <target_list>.append(<attribute>)` OR
+    ///   `<target_list>.append(<list>)` -> append the provided `<attribute>` or
+    ///   `<list>` onto the end of `<target_list>`.
+    ///
+    /// Example expression: `attributes.saml_attributes.filter(x, x.name in
+    /// \['test'\]).append(attributes.iap_attributes.selectByName('exact').emitAs('custom').strict())`
+    #[prost(string, optional, tag = "1")]
+    pub expression: ::core::option::Option<::prost::alloc::string::String>,
+    /// Which output credentials attributes selected by the CEL expression should
+    /// be propagated in. All attributes will be fully duplicated in each selected
+    /// output credential.
+    #[prost(
+        enumeration = "attribute_propagation_settings::OutputCredentials",
+        repeated,
+        tag = "2"
+    )]
+    pub output_credentials: ::prost::alloc::vec::Vec<i32>,
+    /// Whether the provided attribute propagation settings should be evaluated on
+    /// user requests. If set to true, attributes returned from the expression will
+    /// be propagated in the set output credentials.
+    #[prost(bool, optional, tag = "3")]
+    pub enable: ::core::option::Option<bool>,
+}
+/// Nested message and enum types in `AttributePropagationSettings`.
+pub mod attribute_propagation_settings {
+    /// Supported output credentials for attribute propagation. Each output
+    /// credential maps to a "field" in the response. For example, selecting JWT
+    /// will propagate all attributes in the IAP JWT, header in the headers, etc.
+    #[derive(
+        Clone,
+        Copy,
+        Debug,
+        PartialEq,
+        Eq,
+        Hash,
+        PartialOrd,
+        Ord,
+        ::prost::Enumeration
+    )]
+    #[repr(i32)]
+    pub enum OutputCredentials {
+        /// No output credential. This is an unsupported default.
+        Unspecified = 0,
+        /// Propagate attributes in the headers with "x-goog-iap-attr-" prefix.
+        Header = 1,
+        /// Propagate attributes in the JWT of the form: `"additional_claims": {
+        /// "my_attribute": ["value1", "value2"] }`
+        Jwt = 2,
+        /// Propagate attributes in the RCToken of the form: `"additional_claims": {
+        /// "my_attribute": ["value1", "value2"] }`
+        Rctoken = 3,
+    }
+    impl OutputCredentials {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                OutputCredentials::Unspecified => "OUTPUT_CREDENTIALS_UNSPECIFIED",
+                OutputCredentials::Header => "HEADER",
+                OutputCredentials::Jwt => "JWT",
+                OutputCredentials::Rctoken => "RCTOKEN",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "OUTPUT_CREDENTIALS_UNSPECIFIED" => Some(Self::Unspecified),
+                "HEADER" => Some(Self::Header),
+                "JWT" => Some(Self::Jwt),
+                "RCTOKEN" => Some(Self::Rctoken),
+                _ => None,
+            }
+        }
+    }
 }
 /// The request sent to ListBrands.
 #[allow(clippy::derive_partial_eq_without_eq)]

@@ -53,6 +53,16 @@ pub mod index_field {
                 Mode::ArrayContains => "ARRAY_CONTAINS",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "MODE_UNSPECIFIED" => Some(Self::Unspecified),
+                "ASCENDING" => Some(Self::Ascending),
+                "DESCENDING" => Some(Self::Descending),
+                "ARRAY_CONTAINS" => Some(Self::ArrayContains),
+                _ => None,
+            }
+        }
     }
 }
 /// An index definition.
@@ -124,6 +134,16 @@ pub mod index {
                 State::Error => "ERROR",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CREATING" => Some(Self::Creating),
+                "READY" => Some(Self::Ready),
+                "ERROR" => Some(Self::Error),
+                _ => None,
+            }
+        }
     }
 }
 /// Metadata for index operations. This metadata populates
@@ -184,6 +204,14 @@ pub mod index_operation_metadata {
             match self {
                 OperationType::Unspecified => "OPERATION_TYPE_UNSPECIFIED",
                 OperationType::CreatingIndex => "CREATING_INDEX",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "OPERATION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "CREATING_INDEX" => Some(Self::CreatingIndex),
+                _ => None,
             }
         }
     }
@@ -404,6 +432,20 @@ impl OperationState {
             OperationState::Successful => "SUCCESSFUL",
             OperationState::Failed => "FAILED",
             OperationState::Cancelled => "CANCELLED",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "STATE_UNSPECIFIED" => Some(Self::StateUnspecified),
+            "INITIALIZING" => Some(Self::Initializing),
+            "PROCESSING" => Some(Self::Processing),
+            "CANCELLING" => Some(Self::Cancelling),
+            "FINALIZING" => Some(Self::Finalizing),
+            "SUCCESSFUL" => Some(Self::Successful),
+            "FAILED" => Some(Self::Failed),
+            "CANCELLED" => Some(Self::Cancelled),
+            _ => None,
         }
     }
 }

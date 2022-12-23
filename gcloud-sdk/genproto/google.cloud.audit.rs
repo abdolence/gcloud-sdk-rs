@@ -388,6 +388,16 @@ pub mod violation_info {
                 PolicyType::CustomConstraint => "CUSTOM_CONSTRAINT",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "POLICY_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "BOOLEAN_CONSTRAINT" => Some(Self::BooleanConstraint),
+                "LIST_CONSTRAINT" => Some(Self::ListConstraint),
+                "CUSTOM_CONSTRAINT" => Some(Self::CustomConstraint),
+                _ => None,
+            }
+        }
     }
 }
 /// Audit log format for BigQuery cloud audit logs metadata.
@@ -455,6 +465,15 @@ pub mod big_query_audit_metadata {
                     Reason::QueryRequest => "QUERY_REQUEST",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "REASON_UNSPECIFIED" => Some(Self::Unspecified),
+                    "JOB_INSERT_REQUEST" => Some(Self::JobInsertRequest),
+                    "QUERY_REQUEST" => Some(Self::QueryRequest),
+                    _ => None,
+                }
+            }
         }
     }
     /// Job state change event.
@@ -516,6 +535,14 @@ pub mod big_query_audit_metadata {
                     Reason::JobDeleteRequest => "JOB_DELETE_REQUEST",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "REASON_UNSPECIFIED" => Some(Self::Unspecified),
+                    "JOB_DELETE_REQUEST" => Some(Self::JobDeleteRequest),
+                    _ => None,
+                }
+            }
         }
     }
     /// Dataset creation event.
@@ -568,6 +595,15 @@ pub mod big_query_audit_metadata {
                     Reason::Unspecified => "REASON_UNSPECIFIED",
                     Reason::Create => "CREATE",
                     Reason::Query => "QUERY",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "REASON_UNSPECIFIED" => Some(Self::Unspecified),
+                    "CREATE" => Some(Self::Create),
+                    "QUERY" => Some(Self::Query),
+                    _ => None,
                 }
             }
         }
@@ -627,6 +663,16 @@ pub mod big_query_audit_metadata {
                     Reason::Query => "QUERY",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "REASON_UNSPECIFIED" => Some(Self::Unspecified),
+                    "UPDATE" => Some(Self::Update),
+                    "SET_IAM_POLICY" => Some(Self::SetIamPolicy),
+                    "QUERY" => Some(Self::Query),
+                    _ => None,
+                }
+            }
         }
     }
     /// Dataset deletion event.
@@ -676,6 +722,15 @@ pub mod big_query_audit_metadata {
                     Reason::Unspecified => "REASON_UNSPECIFIED",
                     Reason::Delete => "DELETE",
                     Reason::Query => "QUERY",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "REASON_UNSPECIFIED" => Some(Self::Unspecified),
+                    "DELETE" => Some(Self::Delete),
+                    "QUERY" => Some(Self::Query),
+                    _ => None,
                 }
             }
         }
@@ -736,6 +791,16 @@ pub mod big_query_audit_metadata {
                     Reason::TableInsertRequest => "TABLE_INSERT_REQUEST",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "REASON_UNSPECIFIED" => Some(Self::Unspecified),
+                    "JOB" => Some(Self::Job),
+                    "QUERY" => Some(Self::Query),
+                    "TABLE_INSERT_REQUEST" => Some(Self::TableInsertRequest),
+                    _ => None,
+                }
+            }
         }
     }
     /// Model creation event.
@@ -784,6 +849,14 @@ pub mod big_query_audit_metadata {
                 match self {
                     Reason::Unspecified => "REASON_UNSPECIFIED",
                     Reason::Query => "QUERY",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "REASON_UNSPECIFIED" => Some(Self::Unspecified),
+                    "QUERY" => Some(Self::Query),
+                    _ => None,
                 }
             }
         }
@@ -837,6 +910,15 @@ pub mod big_query_audit_metadata {
                     Reason::Unspecified => "REASON_UNSPECIFIED",
                     Reason::Query => "QUERY",
                     Reason::RoutineInsertRequest => "ROUTINE_INSERT_REQUEST",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "REASON_UNSPECIFIED" => Some(Self::Unspecified),
+                    "QUERY" => Some(Self::Query),
+                    "ROUTINE_INSERT_REQUEST" => Some(Self::RoutineInsertRequest),
+                    _ => None,
                 }
             }
         }
@@ -926,6 +1008,19 @@ pub mod big_query_audit_metadata {
                     Reason::MaterializedViewRefresh => "MATERIALIZED_VIEW_REFRESH",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "REASON_UNSPECIFIED" => Some(Self::Unspecified),
+                    "JOB" => Some(Self::Job),
+                    "TABLEDATA_LIST_REQUEST" => Some(Self::TabledataListRequest),
+                    "GET_QUERY_RESULTS_REQUEST" => Some(Self::GetQueryResultsRequest),
+                    "QUERY_REQUEST" => Some(Self::QueryRequest),
+                    "CREATE_READ_SESSION" => Some(Self::CreateReadSession),
+                    "MATERIALIZED_VIEW_REFRESH" => Some(Self::MaterializedViewRefresh),
+                    _ => None,
+                }
+            }
         }
     }
     /// Table metadata change event.
@@ -986,6 +1081,16 @@ pub mod big_query_audit_metadata {
                     Reason::Query => "QUERY",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "REASON_UNSPECIFIED" => Some(Self::Unspecified),
+                    "TABLE_UPDATE_REQUEST" => Some(Self::TableUpdateRequest),
+                    "JOB" => Some(Self::Job),
+                    "QUERY" => Some(Self::Query),
+                    _ => None,
+                }
+            }
         }
     }
     /// Model metadata change event.
@@ -1040,6 +1145,15 @@ pub mod big_query_audit_metadata {
                     Reason::Query => "QUERY",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "REASON_UNSPECIFIED" => Some(Self::Unspecified),
+                    "MODEL_PATCH_REQUEST" => Some(Self::ModelPatchRequest),
+                    "QUERY" => Some(Self::Query),
+                    _ => None,
+                }
+            }
         }
     }
     /// Routine change event.
@@ -1091,6 +1205,15 @@ pub mod big_query_audit_metadata {
                     Reason::Unspecified => "REASON_UNSPECIFIED",
                     Reason::Query => "QUERY",
                     Reason::RoutineUpdateRequest => "ROUTINE_UPDATE_REQUEST",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "REASON_UNSPECIFIED" => Some(Self::Unspecified),
+                    "QUERY" => Some(Self::Query),
+                    "ROUTINE_UPDATE_REQUEST" => Some(Self::RoutineUpdateRequest),
+                    _ => None,
                 }
             }
         }
@@ -1164,6 +1287,17 @@ pub mod big_query_audit_metadata {
                     Reason::WriteApi => "WRITE_API",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "REASON_UNSPECIFIED" => Some(Self::Unspecified),
+                    "JOB" => Some(Self::Job),
+                    "QUERY" => Some(Self::Query),
+                    "MATERIALIZED_VIEW_REFRESH" => Some(Self::MaterializedViewRefresh),
+                    "WRITE_API" => Some(Self::WriteApi),
+                    _ => None,
+                }
+            }
         }
     }
     /// Model data change event.
@@ -1211,6 +1345,14 @@ pub mod big_query_audit_metadata {
                     Reason::Query => "QUERY",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "REASON_UNSPECIFIED" => Some(Self::Unspecified),
+                    "QUERY" => Some(Self::Query),
+                    _ => None,
+                }
+            }
         }
     }
     /// Model data read event.
@@ -1256,6 +1398,14 @@ pub mod big_query_audit_metadata {
                 match self {
                     Reason::Unspecified => "REASON_UNSPECIFIED",
                     Reason::Job => "JOB",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "REASON_UNSPECIFIED" => Some(Self::Unspecified),
+                    "JOB" => Some(Self::Job),
+                    _ => None,
                 }
             }
         }
@@ -1312,6 +1462,16 @@ pub mod big_query_audit_metadata {
                     Reason::Query => "QUERY",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "REASON_UNSPECIFIED" => Some(Self::Unspecified),
+                    "TABLE_DELETE_REQUEST" => Some(Self::TableDeleteRequest),
+                    "EXPIRED" => Some(Self::Expired),
+                    "QUERY" => Some(Self::Query),
+                    _ => None,
+                }
+            }
         }
     }
     /// Model deletion event.
@@ -1366,6 +1526,16 @@ pub mod big_query_audit_metadata {
                     Reason::Query => "QUERY",
                 }
             }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "REASON_UNSPECIFIED" => Some(Self::Unspecified),
+                    "MODEL_DELETE_REQUEST" => Some(Self::ModelDeleteRequest),
+                    "EXPIRED" => Some(Self::Expired),
+                    "QUERY" => Some(Self::Query),
+                    _ => None,
+                }
+            }
         }
     }
     /// Routine deletion event.
@@ -1418,6 +1588,15 @@ pub mod big_query_audit_metadata {
                     Reason::Unspecified => "REASON_UNSPECIFIED",
                     Reason::Query => "QUERY",
                     Reason::RoutineDeleteRequest => "ROUTINE_DELETE_REQUEST",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "REASON_UNSPECIFIED" => Some(Self::Unspecified),
+                    "QUERY" => Some(Self::Query),
+                    "ROUTINE_DELETE_REQUEST" => Some(Self::RoutineDeleteRequest),
+                    _ => None,
                 }
             }
         }
@@ -1514,6 +1693,14 @@ pub mod big_query_audit_metadata {
                 match self {
                     Reason::Unspecified => "REASON_UNSPECIFIED",
                     Reason::UnlinkApi => "UNLINK_API",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "REASON_UNSPECIFIED" => Some(Self::Unspecified),
+                    "UNLINK_API" => Some(Self::UnlinkApi),
+                    _ => None,
                 }
             }
         }
@@ -1629,6 +1816,15 @@ pub mod big_query_audit_metadata {
                         Priority::Unspecified => "PRIORITY_UNSPECIFIED",
                         Priority::QueryInteractive => "QUERY_INTERACTIVE",
                         Priority::QueryBatch => "QUERY_BATCH",
+                    }
+                }
+                /// Creates an enum from field names used in the ProtoBuf definition.
+                pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                    match value {
+                        "PRIORITY_UNSPECIFIED" => Some(Self::Unspecified),
+                        "QUERY_INTERACTIVE" => Some(Self::QueryInteractive),
+                        "QUERY_BATCH" => Some(Self::QueryBatch),
+                        _ => None,
                     }
                 }
             }
@@ -1768,6 +1964,17 @@ pub mod big_query_audit_metadata {
                     Type::Copy => "COPY",
                     Type::Export => "EXPORT",
                     Type::Import => "IMPORT",
+                }
+            }
+            /// Creates an enum from field names used in the ProtoBuf definition.
+            pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+                match value {
+                    "TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                    "QUERY" => Some(Self::Query),
+                    "COPY" => Some(Self::Copy),
+                    "EXPORT" => Some(Self::Export),
+                    "IMPORT" => Some(Self::Import),
+                    _ => None,
                 }
             }
         }
@@ -2157,6 +2364,15 @@ pub mod big_query_audit_metadata {
                 CreateDisposition::CreateIfNeeded => "CREATE_IF_NEEDED",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "CREATE_DISPOSITION_UNSPECIFIED" => Some(Self::Unspecified),
+                "CREATE_NEVER" => Some(Self::CreateNever),
+                "CREATE_IF_NEEDED" => Some(Self::CreateIfNeeded),
+                _ => None,
+            }
+        }
     }
     /// Describes whether a job should overwrite or append the existing destination
     /// table if it already exists.
@@ -2193,6 +2409,16 @@ pub mod big_query_audit_metadata {
                 WriteDisposition::WriteEmpty => "WRITE_EMPTY",
                 WriteDisposition::WriteTruncate => "WRITE_TRUNCATE",
                 WriteDisposition::WriteAppend => "WRITE_APPEND",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "WRITE_DISPOSITION_UNSPECIFIED" => Some(Self::Unspecified),
+                "WRITE_EMPTY" => Some(Self::WriteEmpty),
+                "WRITE_TRUNCATE" => Some(Self::WriteTruncate),
+                "WRITE_APPEND" => Some(Self::WriteAppend),
+                _ => None,
             }
         }
     }
@@ -2234,6 +2460,16 @@ pub mod big_query_audit_metadata {
                 OperationType::Restore => "RESTORE",
             }
         }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "OPERATION_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "COPY" => Some(Self::Copy),
+                "SNAPSHOT" => Some(Self::Snapshot),
+                "RESTORE" => Some(Self::Restore),
+                _ => None,
+            }
+        }
     }
     /// State of a job.
     #[derive(
@@ -2269,6 +2505,16 @@ pub mod big_query_audit_metadata {
                 JobState::Pending => "PENDING",
                 JobState::Running => "RUNNING",
                 JobState::Done => "DONE",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "JOB_STATE_UNSPECIFIED" => Some(Self::Unspecified),
+                "PENDING" => Some(Self::Pending),
+                "RUNNING" => Some(Self::Running),
+                "DONE" => Some(Self::Done),
+                _ => None,
             }
         }
     }
@@ -2406,6 +2652,49 @@ pub mod big_query_audit_metadata {
                 QueryStatementType::CreateExternalTable => "CREATE_EXTERNAL_TABLE",
                 QueryStatementType::ExportData => "EXPORT_DATA",
                 QueryStatementType::Call => "CALL",
+            }
+        }
+        /// Creates an enum from field names used in the ProtoBuf definition.
+        pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+            match value {
+                "QUERY_STATEMENT_TYPE_UNSPECIFIED" => Some(Self::Unspecified),
+                "SELECT" => Some(Self::Select),
+                "ASSERT" => Some(Self::Assert),
+                "INSERT" => Some(Self::Insert),
+                "UPDATE" => Some(Self::Update),
+                "DELETE" => Some(Self::Delete),
+                "MERGE" => Some(Self::Merge),
+                "CREATE_TABLE" => Some(Self::CreateTable),
+                "CREATE_TABLE_AS_SELECT" => Some(Self::CreateTableAsSelect),
+                "CREATE_VIEW" => Some(Self::CreateView),
+                "CREATE_MODEL" => Some(Self::CreateModel),
+                "CREATE_MATERIALIZED_VIEW" => Some(Self::CreateMaterializedView),
+                "CREATE_FUNCTION" => Some(Self::CreateFunction),
+                "CREATE_TABLE_FUNCTION" => Some(Self::CreateTableFunction),
+                "CREATE_PROCEDURE" => Some(Self::CreateProcedure),
+                "CREATE_ROW_ACCESS_POLICY" => Some(Self::CreateRowAccessPolicy),
+                "CREATE_SCHEMA" => Some(Self::CreateSchema),
+                "CREATE_SNAPSHOT_TABLE" => Some(Self::CreateSnapshotTable),
+                "DROP_TABLE" => Some(Self::DropTable),
+                "DROP_EXTERNAL_TABLE" => Some(Self::DropExternalTable),
+                "DROP_VIEW" => Some(Self::DropView),
+                "DROP_MODEL" => Some(Self::DropModel),
+                "DROP_MATERIALIZED_VIEW" => Some(Self::DropMaterializedView),
+                "DROP_FUNCTION" => Some(Self::DropFunction),
+                "DROP_PROCEDURE" => Some(Self::DropProcedure),
+                "DROP_SCHEMA" => Some(Self::DropSchema),
+                "DROP_ROW_ACCESS_POLICY" => Some(Self::DropRowAccessPolicy),
+                "DROP_SNAPSHOT_TABLE" => Some(Self::DropSnapshotTable),
+                "ALTER_TABLE" => Some(Self::AlterTable),
+                "ALTER_VIEW" => Some(Self::AlterView),
+                "ALTER_MATERIALIZED_VIEW" => Some(Self::AlterMaterializedView),
+                "ALTER_SCHEMA" => Some(Self::AlterSchema),
+                "SCRIPT" => Some(Self::Script),
+                "TRUNCATE_TABLE" => Some(Self::TruncateTable),
+                "CREATE_EXTERNAL_TABLE" => Some(Self::CreateExternalTable),
+                "EXPORT_DATA" => Some(Self::ExportData),
+                "CALL" => Some(Self::Call),
+                _ => None,
             }
         }
     }
